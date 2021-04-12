@@ -1,5 +1,3 @@
-package com.relativitization.build
-
 object Versions {
     const val appName = "Relativization"
     const val appVersion = "0.1"
