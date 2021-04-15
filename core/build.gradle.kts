@@ -7,7 +7,7 @@ plugins {
 
 kotlin {
     sourceSets {
-        val jvmMain by getting {
+        val commonMain by getting {
             dependencies {
                 implementation("com.badlogicgames.gdx:gdx:${Versions.gdxVersion}")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.kotlinxSerializationVersion}")
