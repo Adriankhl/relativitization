@@ -1,2 +1,2 @@
 rootProject.name = "relativitization"
-include("desktop", "core")
+include("desktop", "core", "server")

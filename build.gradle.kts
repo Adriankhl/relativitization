@@ -1,6 +1,6 @@
 plugins {
-    kotlin("jvm") version "${com.relativitization.build.BuildConfig.kotlinVersion}"
-    kotlin("plugin.serialization") version "${com.relativitization.build.BuildConfig.kotlinVersion}"
+    kotlin("jvm") version "${Versions.kotlinVersion}"
+    kotlin("plugin.serialization") version "${Versions.kotlinVersion}"
 }
 
 allprojects {
