@@ -1,4 +1,4 @@
-package relativitization.server.utils
+package relativitization.universe.utils
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async

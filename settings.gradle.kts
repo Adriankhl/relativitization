@@ -1,2 +1,2 @@
 rootProject.name = "relativitization"
-include("desktop", "core", "server")
+include("gdxcore", "gdxdesktop", "server", "universe")

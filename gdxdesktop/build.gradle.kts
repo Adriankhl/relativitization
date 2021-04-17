@@ -9,7 +9,7 @@ kotlin {
     sourceSets {
         val main by getting {
             dependencies {
-                implementation(project(":core"))
+                implementation(project(":gdxcore"))
 
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.kotlinxSerializationVersion}")
 
