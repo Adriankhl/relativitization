@@ -9,6 +9,8 @@ kotlin {
     sourceSets {
         val main by getting {
             dependencies {
+                implementation(project(":universe"))
+
                 implementation("com.badlogicgames.gdx:gdx:${Versions.gdxVersion}")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.kotlinxSerializationVersion}")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.kotlinxCoroutineVersion}")

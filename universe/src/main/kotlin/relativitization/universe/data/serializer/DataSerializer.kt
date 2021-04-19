@@ -10,15 +10,23 @@ import kotlinx.serialization.modules.subclass
 import kotlin.reflect.KClass
 
 object DataSerializer {
+
     val format = Json {
         encodeDefaults = true
+    }
+
+    inline fun <reified I> encode(data: I): String {
+        return format.encodeToString(data)
+    }
+
+    inline fun <reified O> decode(str: String): O {
+        return format.decodeFromString(str)
     }
 
     /**
      * Deep copy of data classes by serialization
      */
     inline fun <reified I, reified O> copy(data: I): O {
-        val str: String = format.encodeToString(data)
-        return format.decodeFromString(str)
+        return decode(encode(data))
     }
 }
