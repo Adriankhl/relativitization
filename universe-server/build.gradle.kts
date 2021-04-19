@@ -11,7 +11,6 @@ kotlin {
             dependencies {
                 implementation(project(":universe"))
 
-                implementation("com.badlogicgames.gdx:gdx:${Versions.gdxVersion}")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.kotlinxSerializationVersion}")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.kotlinxCoroutineVersion}")
                 implementation("org.jetbrains.kotlin:kotlin-reflect:${Versions.kotlinVersion}")
