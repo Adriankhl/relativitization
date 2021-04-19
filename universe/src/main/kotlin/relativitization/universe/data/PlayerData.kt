@@ -28,5 +28,6 @@ enum class PlayerType {
 
 @Serializable
 data class PlayerInternalData(
-    var topLeaderId: Int = -1
+    var directLeaderId: Int = -1,
+    var subordinateIds: MutableList<Int> = mutableListOf()
 )
