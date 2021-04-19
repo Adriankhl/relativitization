@@ -11,6 +11,8 @@ sealed class Command {
     abstract val fromId: Int
     abstract val fromInt4D: Int4D
 
+    abstract val senderRequirement: SenderRequirement
+
     /**
      * Execute on playerData, for AI/human planning and action
      *
@@ -18,25 +20,30 @@ sealed class Command {
      */
     abstract fun execute(
         playerData: PlayerData,
-    ): List<Command>
+    ): Unit
 
     /**
      * Check id and and execute, for delayed execution of the command to player
      */
     fun checkAndExecute(
         playerData: PlayerData,
-    ): Pair<Boolean, List<Command>> {
+    ): Boolean {
         return if (playerData.id != toId) {
             val className = this.javaClass.kotlin.qualifiedName
             logger.error("${className}: player id not equal to command target id")
-            Pair(false, listOf())
+            false
         } else {
-            val generateCommand = execute(playerData)
-            Pair(true, generateCommand)
+            execute(playerData)
+            true
         }
     }
 
     companion object {
         private val logger = LogManager.getLogger()
     }
+}
+
+enum class SenderRequirement {
+    LEADER,
+    CASUAL
 }

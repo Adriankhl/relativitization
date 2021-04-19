@@ -11,7 +11,10 @@ data class ChangeVelocityCommand(
     override val toId: Int,
     override val fromInt4D: Int4D,
 ) : Command() {
-    override fun execute(playerData: PlayerData): List<Command> {
+
+    override val senderRequirement: SenderRequirement = SenderRequirement.LEADER
+
+    override fun execute(playerData: PlayerData): Unit {
         TODO("Not yet implemented")
     }
 }
