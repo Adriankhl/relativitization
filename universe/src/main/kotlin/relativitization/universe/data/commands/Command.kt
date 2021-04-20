@@ -11,39 +11,56 @@ sealed class Command {
     abstract val fromId: Int
     abstract val fromInt4D: Int4D
 
-    abstract val senderRequirement: SenderRequirement
+    /**
+     * Check if the player (sender) can send the command
+     * Should be overwritten by subclass if required
+     */
+    fun canSend(playerData: PlayerData): Boolean {
+        return true
+    }
 
     /**
-     * Execute on playerData, for AI/human planning and action
-     *
-     * @return pair of list of command and list of data of new player to be created
+     * Check if the player can receive the command
+     * Should be overwritten by subclass if required
      */
-    abstract fun execute(
-        playerData: PlayerData,
-    ): Unit
+    fun canExecute(playerData: PlayerData): Boolean {
+        return true
+    }
+
 
     /**
-     * Check id and and execute, for delayed execution of the command to player
+     * Check to see if id match
      */
-    fun checkAndExecute(
-        playerData: PlayerData,
-    ): Boolean {
-        return if (playerData.id != toId) {
+    fun checkId(playerData: PlayerData): Boolean {
+        return if (playerData.id == toId) {
+            true
+        } else {
             val className = this.javaClass.kotlin.qualifiedName
             logger.error("${className}: player id not equal to command target id")
             false
-        } else {
-            execute(playerData)
-            true
         }
+    }
+
+    /**
+     * Execute on playerData, for AI/human planning and action
+     */
+    abstract fun execute(playerData: PlayerData): Unit
+
+
+    /**
+     * Check and execute
+     */
+    fun checkAndExecute(playerData: PlayerData): Unit {
+        if (checkId(playerData) && canExecute(playerData)) {
+            execute(playerData)
+        } else {
+            val className = this.javaClass.kotlin.qualifiedName
+            logger.info("$className cannot be executed on $toId")
+        }
+
     }
 
     companion object {
         private val logger = LogManager.getLogger()
     }
-}
-
-enum class SenderRequirement {
-    LEADER,
-    CASUAL
 }

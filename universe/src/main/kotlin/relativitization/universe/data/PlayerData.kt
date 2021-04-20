@@ -7,11 +7,11 @@ import relativitization.universe.data.physics.Int4D
 /**
  * Data of the basic unit (player)
  *
- * @param id playerId
- * @param playerType ai / human / none (e.g. resource)
- * @param int4D 4D coordinate of the player
- * @param groupId which group of player does this player belong to in the current int4D grid
- * @param playerInternalData the internal data of this player
+ * @property id playerId
+ * @property playerType ai / human / none (e.g. resource)
+ * @property int4D 4D coordinate of the player
+ * @property groupId which group of player does this player belong to in the current int4D grid
+ * @property playerInternalData the internal data of this player
  */
 @Serializable
 data class PlayerData(
@@ -34,11 +34,11 @@ enum class PlayerType {
 /**
  * Player internal data
  *
- * @param directLeaderId player id of the direct leader, equals -1 if no leader
- * @param subordinateIds list of player ids of the subordinates of this player
- * @param leaderIds list of player ids of leader, leader of leader, etc., from -1 to direct leader
- * @param isAlive whether the player is alive or dead
- * @param currentCommandList the command list of the current turn
+ * @property directLeaderId player id of the direct leader, equals -1 if no leader
+ * @property subordinateIds list of player ids of the subordinates of this player
+ * @property leaderIds list of player ids of leader, leader of leader, etc., from -1 to direct leader
+ * @property isAlive whether the player is alive or dead
+ * @property currentCommandList the command list of the current turn
  */
 @Serializable
 data class PlayerInternalData(

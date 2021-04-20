@@ -6,7 +6,7 @@ import relativitization.universe.data.physics.Velocity
 import kotlin.math.abs
 import kotlin.math.sqrt
 
-object Interval {
+object Intervals {
     fun distance(x1: Double, y1: Double, z1: Double, x2: Double, y2: Double, z2: Double): Double =
             sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1) + (z2 - z1) * (z2 - z1))
 
@@ -52,14 +52,14 @@ object Interval {
     /**
      * Compute light travel time by turn, round up
      */
-    fun intDelay(c1: Int3D, c2: Int3D, speedOfLight: Int = 1): Int {
+    fun intDelay(c1: Int3D, c2: Int3D, speedOfLight: Int): Int {
         return (intDistance(c1, c2) - 1) / speedOfLight + 1
     }
 
     /**
      * Time after dilation
      */
-    fun dilatedTime(dt: Double, velocity: Velocity, speedOfLight: Int = 1): Double {
+    fun dilatedTime(dt: Double, velocity: Velocity, speedOfLight: Int): Double {
         return dt / gamma(velocity, speedOfLight)
     }
 
