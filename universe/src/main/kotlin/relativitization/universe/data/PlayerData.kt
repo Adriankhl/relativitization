@@ -38,7 +38,6 @@ enum class PlayerType {
  * @property subordinateIds list of player ids of the subordinates of this player
  * @property leaderIds list of player ids of leader, leader of leader, etc., from -1 to direct leader
  * @property isAlive whether the player is alive or dead
- * @property currentCommandList the command list of the current turn
  */
 @Serializable
 data class PlayerInternalData(
@@ -46,5 +45,4 @@ data class PlayerInternalData(
     var subordinateIds: MutableList<Int> = mutableListOf(),
     var leaderIds: MutableList<Int> = mutableListOf(-1),
     var isAlive: Boolean = true,
-    var currentCommandList: MutableList<Command> = mutableListOf(),
 )
