@@ -27,3 +27,8 @@ hs_err_pid*
 
 # Ignore Gradle build output directory
 build
+
+# Ignore intellij .idea folder except
+.idea/*
+!.idea/dictionaries/developer.xml
+!.idea/codeStyles/codeStyleConfig.xml
