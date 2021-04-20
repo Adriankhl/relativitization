@@ -4,6 +4,9 @@ plugins {
     kotlin("jvm")
     kotlin("plugin.serialization")
 }
+dependencies {
+    implementation("org.junit.jupiter:junit-jupiter:5.7.0")
+}
 
 kotlin {
     sourceSets {
@@ -17,10 +20,21 @@ kotlin {
                 implementation("com.github.javafaker:javafaker:${Versions.javafakerVersion}")
             }
         }
+        val test by getting {
+            dependencies {
+                implementation(kotlin("test-junit5"))
+                implementation("org.junit.jupiter:junit-jupiter-api:${Versions.junitVersion}")
+                runtimeOnly("org.junit.jupiter:junit-jupiter-engine:${Versions.junitVersion}")
+            }
+        }
     }
 }
 
 tasks.withType<KotlinCompile>().configureEach {
     kotlinOptions.jvmTarget = "11"
     kotlinOptions.languageVersion = "1.5"
+}
+
+tasks.test {
+    useJUnitPlatform()
 }
