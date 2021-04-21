@@ -3,6 +3,7 @@ package relativitization.universe.data.commands
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.PlayerData
+import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.physics.Int4D
 import relativitization.universe.data.physics.Velocity
@@ -17,18 +18,19 @@ data class ChangeVelocityCommand(
     override val toId: Int,
     override val fromInt4D: Int4D,
     val velocity: Velocity,
-    val speedOfLight: Int = 1,
 ) : Command() {
 
-    override fun canSend(playerData: MutablePlayerData): Boolean {
+    override fun canSend(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean {
         return playerData.playerInternalData.subordinateIdList.contains(toId)
     }
 
-    override fun canExecute(playerData: MutablePlayerData): Boolean {
+    override fun canExecute(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean {
         return playerData.playerInternalData.leaderIdList.contains(fromId)
     }
 
-    override fun execute(playerData: MutablePlayerData): Unit {
+    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings): Unit {
+        val speedOfLight: Int = universeSettings.speedOfLight
+
         val restMass: Double = playerData.playerInternalData.physicalData.restMass
         val efficiency: Double = playerData.playerInternalData.physicalData.moveEnergyEfficiency
         val originalVelocity: Velocity = copy(playerData.playerInternalData.physicalData.velocity)

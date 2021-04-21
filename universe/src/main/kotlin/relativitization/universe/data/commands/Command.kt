@@ -5,6 +5,7 @@ import relativitization.universe.data.physics.Int4D
 import org.apache.logging.log4j.LogManager
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.PlayerData
+import relativitization.universe.data.UniverseSettings
 
 @Serializable
 sealed class Command {
@@ -15,12 +16,12 @@ sealed class Command {
     /**
      * Check if the player (sender) can send the command
      */
-    abstract fun canSend(playerData: MutablePlayerData): Boolean
+    abstract fun canSend(playerData: MutablePlayerData, universeSetting: UniverseSettings): Boolean
 
     /**
      * Check if the player can receive the command
      */
-    abstract fun canExecute(playerData: MutablePlayerData): Boolean
+    abstract fun canExecute(playerData: MutablePlayerData, universeSetting: UniverseSettings): Boolean
 
     /**
      * Check to see if id match
@@ -38,15 +39,15 @@ sealed class Command {
     /**
      * Execute on playerData, for AI/human planning and action
      */
-    abstract fun execute(playerData: MutablePlayerData): Unit
+    abstract fun execute(playerData: MutablePlayerData, universeSetting: UniverseSettings): Unit
 
 
     /**
      * Check and execute
      */
-    fun checkAndExecute(playerData: MutablePlayerData): Unit {
-        return if (checkId(playerData) && canExecute(playerData)) {
-            execute(playerData)
+    fun checkAndExecute(playerData: MutablePlayerData, universeSetting: UniverseSettings): Unit {
+        return if (checkId(playerData) && canExecute(playerData, universeSetting)) {
+            execute(playerData, universeSetting)
         } else {
             val className = this.javaClass.kotlin.qualifiedName
             logger.info("$className cannot be executed on $toId")
