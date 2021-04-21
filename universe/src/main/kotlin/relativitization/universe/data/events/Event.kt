@@ -23,7 +23,7 @@ sealed class Event {
 
     // turn between commands generation
     // 0 when only generate once
-    val turnPerGenerate: Int = 0
+    abstract val turnPerGenerate: Int
 
     companion object {
         private val logger = LogManager.getLogger()

@@ -8,6 +8,8 @@ import relativitization.universe.data.events.EventData
 import relativitization.universe.data.events.MutableEventData
 import relativitization.universe.data.physics.Int4D
 import relativitization.universe.data.physics.MutableInt4D
+import relativitization.universe.data.physics.MutablePhysicalData
+import relativitization.universe.data.physics.PhysicalData
 
 /**
  * Data of the basic unit (player)
@@ -56,17 +58,21 @@ enum class PlayerType {
 @Serializable
 data class PlayerInternalData(
     val directLeaderId: Int = -1,
-    val subordinateIdList: List<Int> = listOf(),
+    val directSubordinateIdList: List<Int> = listOf(),
     val leaderIdList: List<Int> = listOf(-1),
+    val subordinateIdList: List<Int> = listOf(),
     val isAlive: Boolean = true,
-    val eventDataList: List<EventData> = listOf()
+    val eventDataList: List<EventData> = listOf(),
+    val physicalData: PhysicalData = PhysicalData(),
 )
 
 @Serializable
 data class MutablePlayerInternalData(
     var directLeaderId: Int = -1,
-    var subordinateIdList: MutableList<Int> = mutableListOf(),
+    var directSubordinateIdList: MutableList<Int> = mutableListOf(),
     var leaderIdList: MutableList<Int> = mutableListOf(-1),
+    val subordinateIdList: MutableList<Int> = mutableListOf(),
     var isAlive: Boolean = true,
-    var eventDataList: MutableList<MutableEventData> = mutableListOf()
+    var eventDataList: MutableList<MutableEventData> = mutableListOf(),
+    var physicalData: MutablePhysicalData = MutablePhysicalData(),
 )

@@ -14,20 +14,13 @@ sealed class Command {
 
     /**
      * Check if the player (sender) can send the command
-     * Should be overwritten by subclass if required
      */
-    fun canSend(playerData: MutablePlayerData): Boolean {
-        return true
-    }
+    abstract fun canSend(playerData: MutablePlayerData): Boolean
 
     /**
      * Check if the player can receive the command
-     * Should be overwritten by subclass if required
      */
-    fun canExecute(playerData: MutablePlayerData): Boolean {
-        return true
-    }
-
+    abstract fun canExecute(playerData: MutablePlayerData): Boolean
 
     /**
      * Check to see if id match

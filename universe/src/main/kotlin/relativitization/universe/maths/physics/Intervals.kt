@@ -3,6 +3,7 @@ package relativitization.universe.maths.physics
 import relativitization.universe.data.physics.Int3D
 import relativitization.universe.data.physics.Int4D
 import relativitization.universe.data.physics.Velocity
+import relativitization.universe.maths.physics.Relativistic.gamma
 import kotlin.math.abs
 import kotlin.math.sqrt
 
@@ -62,5 +63,4 @@ object Intervals {
     fun dilatedTime(dt: Double, velocity: Velocity, speedOfLight: Int): Double {
         return dt / gamma(velocity, speedOfLight)
     }
-
 }

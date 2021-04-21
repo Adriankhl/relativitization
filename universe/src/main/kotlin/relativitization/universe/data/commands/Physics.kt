@@ -5,15 +5,70 @@ import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.physics.Int4D
+import relativitization.universe.data.physics.Velocity
+import relativitization.universe.data.serializer.DataSerializer.copy
+import relativitization.universe.maths.physics.Relativistic
+import kotlin.math.abs
+import kotlin.math.max
 
 @Serializable
 data class ChangeVelocityCommand(
     override val fromId: Int,
     override val toId: Int,
     override val fromInt4D: Int4D,
+    val velocity: Velocity,
+    val speedOfLight: Int = 1,
 ) : Command() {
 
+    override fun canSend(playerData: MutablePlayerData): Boolean {
+        return playerData.playerInternalData.subordinateIdList.contains(toId)
+    }
+
+    override fun canExecute(playerData: MutablePlayerData): Boolean {
+        return playerData.playerInternalData.leaderIdList.contains(fromId)
+    }
+
     override fun execute(playerData: MutablePlayerData): Unit {
-        TODO("Not yet implemented")
+        val restMass: Double = playerData.playerInternalData.physicalData.restMass
+        val efficiency: Double = playerData.playerInternalData.physicalData.moveEnergyEfficiency
+        val originalVelocity: Velocity = copy(playerData.playerInternalData.physicalData.velocity)
+        val originalEnergy: Double = Relativistic.energy(restMass, originalVelocity, speedOfLight)
+
+        // max power of remaining energy
+        val energyAvailable = max(
+            playerData.playerInternalData.physicalData.energy,
+            playerData.playerInternalData.physicalData.moveMaxPower
+        )
+
+        // same energy for acceleration and deceleration
+        val required = abs(Relativistic.energy(restMass, velocity, speedOfLight) - originalEnergy)
+        val accelerationBool: Boolean = Relativistic.energy(restMass, velocity, speedOfLight) > originalEnergy
+
+        val newVelocity: Velocity = when {
+            required < energyAvailable * efficiency -> {
+                velocity
+            }
+            accelerationBool -> {
+                val vMag = Relativistic.energyToVelocityMag(
+                    restMass,
+                    energyAvailable * efficiency + originalEnergy,
+                    speedOfLight
+                )
+                velocity.scaleVelocity(vMag)
+            }
+            else -> {
+                val vMag = Relativistic.energyToVelocityMag(
+                    restMass,
+                    originalEnergy - energyAvailable * efficiency,
+                    speedOfLight
+                )
+                velocity.scaleVelocity(vMag)
+            }
+        }
+
+        val energyUsed = abs(Relativistic.energy(restMass, newVelocity, speedOfLight) - originalEnergy) / efficiency
+
+        playerData.playerInternalData.physicalData.velocity = copy(newVelocity)
+        playerData.playerInternalData.physicalData.energy -= energyUsed
     }
 }
