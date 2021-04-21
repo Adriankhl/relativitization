@@ -1,8 +1,13 @@
 package relativitization.universe.data
 
 import kotlinx.serialization.Serializable
+import org.apache.commons.lang3.mutable.Mutable
 import relativitization.universe.data.commands.Command
+import relativitization.universe.data.events.Event
+import relativitization.universe.data.events.EventData
+import relativitization.universe.data.events.MutableEventData
 import relativitization.universe.data.physics.Int4D
+import relativitization.universe.data.physics.MutableInt4D
 
 /**
  * Data of the basic unit (player)
@@ -16,10 +21,19 @@ import relativitization.universe.data.physics.Int4D
 @Serializable
 data class PlayerData(
     val id: Int,
+    val playerType: PlayerType = PlayerType.AI,
+    val int4D: Int4D = Int4D(0, 0, 0, 0),
+    val groupId: Int = -1,
+    val playerInternalData: PlayerInternalData = PlayerInternalData()
+)
+
+@Serializable
+data class MutablePlayerData(
+    val id: Int,
     var playerType: PlayerType = PlayerType.AI,
-    var int4D: Int4D = Int4D(0, 0, 0, 0),
+    var int4D: MutableInt4D = MutableInt4D(0, 0, 0, 0),
     var groupId: Int = -1,
-    var playerInternalData: PlayerInternalData = PlayerInternalData()
+    var playerInternalData: MutablePlayerInternalData = MutablePlayerInternalData()
 )
 
 /**
@@ -41,8 +55,18 @@ enum class PlayerType {
  */
 @Serializable
 data class PlayerInternalData(
+    val directLeaderId: Int = -1,
+    val subordinateIdList: List<Int> = listOf(),
+    val leaderIdList: List<Int> = listOf(-1),
+    val isAlive: Boolean = true,
+    val eventDataList: List<EventData> = listOf()
+)
+
+@Serializable
+data class MutablePlayerInternalData(
     var directLeaderId: Int = -1,
     var subordinateIdList: MutableList<Int> = mutableListOf(),
     var leaderIdList: MutableList<Int> = mutableListOf(-1),
     var isAlive: Boolean = true,
+    var eventDataList: MutableList<MutableEventData> = mutableListOf()
 )

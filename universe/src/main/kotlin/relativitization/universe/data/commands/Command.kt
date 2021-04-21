@@ -3,6 +3,7 @@ package relativitization.universe.data.commands
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.physics.Int4D
 import org.apache.logging.log4j.LogManager
+import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.PlayerData
 
 @Serializable
@@ -15,7 +16,7 @@ sealed class Command {
      * Check if the player (sender) can send the command
      * Should be overwritten by subclass if required
      */
-    fun canSend(playerData: PlayerData): Boolean {
+    fun canSend(playerData: MutablePlayerData): Boolean {
         return true
     }
 
@@ -23,7 +24,7 @@ sealed class Command {
      * Check if the player can receive the command
      * Should be overwritten by subclass if required
      */
-    fun canExecute(playerData: PlayerData): Boolean {
+    fun canExecute(playerData: MutablePlayerData): Boolean {
         return true
     }
 
@@ -31,7 +32,7 @@ sealed class Command {
     /**
      * Check to see if id match
      */
-    fun checkId(playerData: PlayerData): Boolean {
+    fun checkId(playerData: MutablePlayerData): Boolean {
         return if (playerData.id == toId) {
             true
         } else {
@@ -44,13 +45,13 @@ sealed class Command {
     /**
      * Execute on playerData, for AI/human planning and action
      */
-    abstract fun execute(playerData: PlayerData): Unit
+    abstract fun execute(playerData: MutablePlayerData): Unit
 
 
     /**
      * Check and execute
      */
-    fun checkAndExecute(playerData: PlayerData): Unit {
+    fun checkAndExecute(playerData: MutablePlayerData): Unit {
         return if (checkId(playerData) && canExecute(playerData)) {
             execute(playerData)
         } else {
