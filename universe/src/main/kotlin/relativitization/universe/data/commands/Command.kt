@@ -44,19 +44,18 @@ sealed class Command {
     /**
      * Execute on playerData, for AI/human planning and action
      */
-    abstract fun execute(playerData: PlayerData): List<Command>
+    abstract fun execute(playerData: PlayerData): Unit
 
 
     /**
      * Check and execute
      */
-    fun checkAndExecute(playerData: PlayerData): List<Command> {
+    fun checkAndExecute(playerData: PlayerData): Unit {
         return if (checkId(playerData) && canExecute(playerData)) {
             execute(playerData)
         } else {
             val className = this.javaClass.kotlin.qualifiedName
             logger.info("$className cannot be executed on $toId")
-            listOf<Command>()
         }
     }
 
