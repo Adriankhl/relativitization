@@ -35,7 +35,7 @@ sealed class Command {
         return if (playerData.id == toId) {
             true
         } else {
-            val className = this.javaClass.kotlin.qualifiedName
+            val className = this::class.qualifiedName
             logger.error("${className}: player id not equal to command target id")
             false
         }
