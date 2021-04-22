@@ -3,6 +3,7 @@ package relativitization.universe.data.events
 import kotlinx.serialization.Serializable
 import org.apache.logging.log4j.LogManager
 import relativitization.universe.data.PlayerData
+import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.commands.Command
 
 @Serializable
@@ -25,7 +26,7 @@ sealed class Event {
     abstract val stayTime: Int
 
     // generate commands
-    abstract fun generateCommands(choice: Int): List<Command>
+    abstract fun generateCommands(choice: Int, universeData3DAtPlayer: UniverseData3DAtPlayer): List<Command>
 
     // turn between commands generation
     // 0 when only generate once
@@ -56,3 +57,18 @@ data class MutableEventData(
     var choice: Int = -1,
     var stayCounter: Int = 0
 )
+
+/**
+ * Given the universe data 3D view, some events should be generated probabilistically if certain condition is satisfied
+ */
+abstract class AutoEvent {
+    abstract fun generateEventList(universeData3DAtPlayer: UniverseData3DAtPlayer): List<Event>
+}
+
+/**
+ * Object to store all the generator of events
+ */
+object AutoEventGenerator {
+    val autoEventList: List<AutoEvent> = listOf(
+    )
+}
