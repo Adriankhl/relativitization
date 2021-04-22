@@ -8,8 +8,11 @@ import relativitization.universe.data.commands.Command
 @Serializable
 sealed class Event {
 
-    // how many turns will this event stay in the player data
-    abstract val stayTime: Int
+    // Name of the event
+    abstract val name: String
+
+    // Description of the event
+    abstract val description: String
 
     // Available choice description
     abstract val choiceDescription: Map<Int, String>
@@ -17,6 +20,9 @@ sealed class Event {
     // Default choice in availableCommandList
     // -1 when no choice
     abstract val default: Int
+
+    // how many turns will this event stay in the player data
+    abstract val stayTime: Int
 
     // generate commands
     abstract fun generateCommands(choice: Int): List<Command>

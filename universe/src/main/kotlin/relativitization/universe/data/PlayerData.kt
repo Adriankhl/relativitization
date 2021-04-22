@@ -17,7 +17,7 @@ import relativitization.universe.data.physics.PhysicalData
  * @property id playerId
  * @property playerType ai / human / none (e.g. resource)
  * @property int4D 4D coordinate of the player
- * @property groupId which group of player does this player belong to in the current int4D grid
+ * @property attachedPlayerId the player which this player is currently attached to
  * @property playerInternalData the internal data of this player
  */
 @Serializable
@@ -25,7 +25,7 @@ data class PlayerData(
     val id: Int,
     val playerType: PlayerType = PlayerType.AI,
     val int4D: Int4D = Int4D(0, 0, 0, 0),
-    val groupId: Int = -1,
+    val attachedPlayerId: Int = -1,
     val playerInternalData: PlayerInternalData = PlayerInternalData()
 )
 
@@ -34,7 +34,7 @@ data class MutablePlayerData(
     val id: Int,
     var playerType: PlayerType = PlayerType.AI,
     var int4D: MutableInt4D = MutableInt4D(0, 0, 0, 0),
-    var groupId: Int = -1,
+    var attachedPlayerId: Int = -1,
     var playerInternalData: MutablePlayerInternalData = MutablePlayerInternalData()
 )
 

@@ -4,6 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class UniverseState(
-    var latestTurn: Int,
-    var numTurnStore: Int,
-)
+    private var currentTime: Int,
+) {
+    fun getCurrentTime(): Int = currentTime
+}
