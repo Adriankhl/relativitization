@@ -14,6 +14,7 @@ import relativitization.universe.maths.physics.Intervals.maxDelayAfterMove
  * @property zDim z dimension of the universe
  * @property playerAfterImageDuration how long the player data should be stored after the player move
  * @property playerHistoricalInt4DLength how many int4D should be stored in PlayerData
+ * @property humanTimeLimit Time to wait human to send command list from the end of each turn, exceeding the time
  */
 @Serializable
 data class UniverseSettings(
@@ -25,6 +26,7 @@ data class UniverseSettings(
     val zDim: Int,
     val playerAfterImageDuration: Int,
     val playerHistoricalInt4DLength: Int,
+    val humanTimeLimit: Int,
 ) {
     fun isPlayerAfterImageDurationValid(): Boolean {
         return playerAfterImageDuration >= maxDelayAfterMove(speedOfLight)
@@ -49,4 +51,5 @@ data class MutableUniverseSettings(
     var zDim: Int = 2,
     var playerAfterImageDuration: Int = 4,
     var playerHistoricalInt4DLength: Int = 4,
+    var humanTimeLimit: Int = 600,
 )

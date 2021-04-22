@@ -10,6 +10,8 @@ import relativitization.universe.data.physics.Int4D
 import relativitization.universe.data.physics.MutableInt4D
 import relativitization.universe.data.physics.MutablePhysicalData
 import relativitization.universe.data.physics.PhysicalData
+import relativitization.universe.data.popsystems.MutablePopSystemicData
+import relativitization.universe.data.popsystems.PopSystemicData
 
 /**
  * Data of the basic unit (player)
@@ -69,6 +71,7 @@ data class PlayerInternalData(
     val isAlive: Boolean = true,
     val eventDataList: List<EventData> = listOf(),
     val physicalData: PhysicalData = PhysicalData(),
+    val popSystemicData: PopSystemicData = PopSystemicData(),
 )
 
 @Serializable
@@ -80,4 +83,5 @@ data class MutablePlayerInternalData(
     var isAlive: Boolean = true,
     var eventDataList: MutableList<MutableEventData> = mutableListOf(),
     var physicalData: MutablePhysicalData = MutablePhysicalData(),
+    val popSystemicData: MutablePopSystemicData = MutablePopSystemicData(),
 )

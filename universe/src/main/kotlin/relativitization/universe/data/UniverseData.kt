@@ -4,6 +4,7 @@ import kotlinx.serialization.Serializable
 import org.apache.logging.log4j.LogManager
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.physics.*
+import relativitization.universe.data.serializer.DataSerializer.copy
 import relativitization.universe.maths.grid.Grids.create3DGrid
 import relativitization.universe.maths.physics.Intervals.intDelay
 
@@ -65,8 +66,9 @@ data class UniverseData(
      */
     fun getPlayerDataListAt(int4D: Int4D): List<PlayerData> {
         val currentTime = universeState.getCurrentTime()
+        val tDim = universeSettings.tDim
         return if (isInt4DValid(int4D)) {
-            universeData4D.getPlayerDataList(currentTime - int4D.t, int4D.x, int4D.y, int4D.z)
+            universeData4D.getPlayerDataList(int4D.t - currentTime + tDim - 1, int4D.x, int4D.y, int4D.z)
         } else {
             logger.debug("Getting player data at invalid coordinate")
             listOf()
@@ -183,4 +185,40 @@ data class UniverseData4D(
 @Serializable
 data class MutableUniverseData4D(
     private val playerData4D: MutableList<List<List<List<MutableList<PlayerData>>>>>,
-)
+) {
+    /**
+     * Add player data to data
+     * Output error log and don't do anything if the coordinate is out of bound
+     */
+    fun addPlayerData(mutablePlayerData: MutablePlayerData, currentTime: Int) {
+        val tSize: Int = playerData4D.size
+
+        playerData4D.getOrElse(mutablePlayerData.int4D.t - currentTime + tSize - 1) {
+            logger.error("Wrong int4D ${mutablePlayerData.int4D}")
+            listOf()
+        }.getOrElse(mutablePlayerData.int4D.x) {
+            logger.error("Wrong int4D ${mutablePlayerData.int4D}")
+            listOf()
+        }.getOrElse(mutablePlayerData.int4D.y) {
+            logger.error("Wrong int4D ${mutablePlayerData.int4D}")
+            listOf()
+        }.getOrElse(mutablePlayerData.int4D.z) {
+            logger.error("Wrong int4D ${mutablePlayerData.int4D}")
+            mutableListOf()
+        }.add(copy(mutablePlayerData))
+    }
+
+    /**
+     * Add player data to data
+     * Output error log and don't do anything if the coordinate is out of bound
+     */
+    fun addPlayerDataToLatest(mutablePlayerData: MutablePlayerData, currentTime: Int) {
+        mutablePlayerData.int4D.t = currentTime
+        addPlayerData(mutablePlayerData, currentTime)
+    }
+
+
+    companion object {
+        private val logger = LogManager.getLogger()
+    }
+}

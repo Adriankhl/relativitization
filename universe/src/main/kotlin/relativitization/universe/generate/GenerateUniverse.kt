@@ -20,6 +20,7 @@ data class GenerateSetting(
     var zDim: Int = 2,
     var playerAfterImageDuration: Int = 4,
     var playerHistoricalInt4DLength: Int = 4,
+    var humanTimeLimit: Int = 600,
 )
 
 @Serializable
@@ -28,7 +29,7 @@ abstract class GeneratedUniverse {
     val generateSetting = GenerateSetting()
     var hasUniverseData: Boolean = false
 
-    fun generateUniverseSetting(setting: GenerateSetting): UniverseSettings {
+    fun generateUniverseSettings(setting: GenerateSetting): UniverseSettings {
         return UniverseSettings(
             universeName = setting.universeName,
             speedOfLight = setting.speedOfLight,
@@ -37,7 +38,8 @@ abstract class GeneratedUniverse {
             yDim = setting.yDim,
             zDim = setting.zDim,
             playerAfterImageDuration = setting.playerAfterImageDuration,
-            playerHistoricalInt4DLength = setting.playerHistoricalInt4DLength
+            playerHistoricalInt4DLength = setting.playerHistoricalInt4DLength,
+            humanTimeLimit = setting.humanTimeLimit
         )
     }
 
