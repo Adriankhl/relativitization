@@ -1,5 +1,6 @@
 package relativitization.universe.data.events
 
+import com.github.javafaker.Bool
 import kotlinx.serialization.Serializable
 import org.apache.logging.log4j.LogManager
 import relativitization.universe.data.PlayerData
@@ -18,19 +19,15 @@ sealed class Event {
     // Available choice description
     abstract val choiceDescription: Map<Int, String>
 
-    // Default choice in availableCommandList
-    // -1 when no choice
-    abstract val default: Int
+    // Generate default choice if no choice is given to help ai decision
+    abstract fun defaultChoice(universeData3DAtPlayer: UniverseData3DAtPlayer): Int
 
     // how many turns will this event stay in the player data
     abstract val stayTime: Int
 
     // generate commands
+    // call once per turn
     abstract fun generateCommands(choice: Int, universeData3DAtPlayer: UniverseData3DAtPlayer): List<Command>
-
-    // turn between commands generation
-    // 0 when only generate once
-    abstract val turnPerGenerate: Int
 
     companion object {
         private val logger = LogManager.getLogger()
@@ -41,19 +38,22 @@ sealed class Event {
  * Unit of event data
  *
  * @property event the event
+ * @property hasChoice the player has a choice (instead of the default choice)
  * @property choice choice of the player
  * @property stayCounter number of turns the event has been stayed in the player data
  */
 @Serializable
 data class EventData(
     val event: Event,
-    val choice: Int = -1,
+    val hasChoice: Boolean,
+    val choice: Int = 0,
     val stayCounter: Int = 0
 )
 
 @Serializable
 data class MutableEventData(
     val event: Event,
+    var hasChoice: Boolean,
     var choice: Int = -1,
     var stayCounter: Int = 0
 )
