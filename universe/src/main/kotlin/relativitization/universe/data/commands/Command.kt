@@ -49,7 +49,7 @@ sealed class Command {
         return if (checkId(playerData) && canExecute(playerData, universeSetting)) {
             execute(playerData, universeSetting)
         } else {
-            val className = this.javaClass.kotlin.qualifiedName
+            val className = this::class.qualifiedName
             logger.info("$className cannot be executed on $toId")
         }
     }

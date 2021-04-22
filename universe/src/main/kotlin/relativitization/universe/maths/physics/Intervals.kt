@@ -58,7 +58,7 @@ object Intervals {
     }
 
     /**
-     * Maximum delay difference when a player move to an adjacent grid
+     * Maximum time delay change when a player move to an adjacent grid
      */
     fun maxDelayAfterMove(speedOfLight: Int): Int {
         return intDelay(Int3D(0, 0, 0), Int3D(1, 1, 1), speedOfLight)

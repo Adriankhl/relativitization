@@ -12,7 +12,7 @@ data class UniverseData(
     val universeData4D: UniverseData4D,
     val universeSettings: UniverseSettings,
     val universeState: UniverseState,
-    val commandMap: MutableMap<Int, List<Command>>
+    val commandMap: MutableMap<Int, MutableList<Command>>
 ) {
     /**
      * Check whether the universeData4D has the correct dimension specified in the setting
@@ -27,10 +27,17 @@ data class UniverseData(
     }
 
     /**
+     * Check if the universe state is valid
+     */
+    fun isStateValid(): Boolean {
+        return universeState.getCurrentTime() >= universeData4D.getTSizeList()[0]
+    }
+
+    /**
      * Check if the universe is valid
      */
     fun isUniverseValid(): Boolean {
-        return universeSettings.isSettingValid() && isDimensionValid()
+        return universeSettings.isSettingValid() && isDimensionValid() && isStateValid()
     }
 
     /**

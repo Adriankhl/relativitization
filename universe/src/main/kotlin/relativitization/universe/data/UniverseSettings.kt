@@ -47,6 +47,6 @@ data class MutableUniverseSettings(
     var xDim: Int = 2,
     var yDim: Int = 2,
     var zDim: Int = 2,
-    var playerAfterImageDuration: Int,
-    var playerHistoricalInt4DLength: Int,
+    var playerAfterImageDuration: Int = 4,
+    var playerHistoricalInt4DLength: Int = 4,
 )
