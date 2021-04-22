@@ -68,7 +68,7 @@ abstract class AutoEvent {
 /**
  * Object to store all the generator of events
  */
-object AutoEventGenerator {
+object AllAutoEvent {
     val autoEventList: List<AutoEvent> = listOf(
     )
 }
