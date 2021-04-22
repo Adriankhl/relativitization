@@ -24,16 +24,18 @@ import relativitization.universe.data.physics.PhysicalData
 @Serializable
 data class PlayerData(
     val id: Int,
+    val name: String = "Default Player",
     val playerType: PlayerType = PlayerType.AI,
     val int4D: Int4D = Int4D(0, 0, 0, 0),
     val attachedPlayerId: Int = -1,
-    val int4DHistory: List<Int4D>,
+    val int4DHistory: List<Int4D> = listOf(),
     val playerInternalData: PlayerInternalData = PlayerInternalData()
 )
 
 @Serializable
 data class MutablePlayerData(
     val id: Int,
+    var name: String = "Default Player",
     var playerType: PlayerType = PlayerType.AI,
     var int4D: MutableInt4D = MutableInt4D(0, 0, 0, 0),
     var attachedPlayerId: Int = -1,

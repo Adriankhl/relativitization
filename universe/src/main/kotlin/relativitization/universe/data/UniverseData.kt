@@ -74,7 +74,7 @@ data class UniverseData(
                 universeSettings.zDim
             ) { _, _, _ -> mutableListOf() }
 
-        val playerDataMap: MutableMap<Int, Pair<Int3D, PlayerData>> = mutableMapOf()
+        val playerDataMap: MutableMap<Int, PlayerData> = mutableMapOf()
 
         for (i in 0 until universeSettings.xDim) {
             for (j in 0 until universeSettings.yDim) {
@@ -91,26 +91,26 @@ data class UniverseData(
                             // Two duplicate possibility:
                             // 1. time difference -> take the latest one
                             // 2. same time, different space -> take the one with the correct space coordinate
-                            if (playerData.int4D.t > playerDataMap.getValue(id).second.int4D.t) {
-                                val oldInt3D = playerDataMap.getValue(id).first
+                            if (playerData.int4D.t > playerDataMap.getValue(id).int4D.t) {
+                                val oldInt3D = playerDataMap.getValue(id).int4D.toInt3D()
                                 playerId3D[oldInt3D.x][oldInt3D.y][oldInt3D.z].remove(id)
 
                                 playerId3D[i][j][k].add(id)
-                                playerDataMap[id] = Pair(int3D, playerData)
-                            } else if (playerData.int4D.t == playerDataMap.getValue(id).second.int4D.t) {
+                                playerDataMap[id] = playerData
+                            } else if (playerData.int4D.t == playerDataMap.getValue(id).int4D.t) {
                                 if (playerData.int4D.toInt3D() == int3D ) {
-                                    val oldInt3D = playerDataMap.getValue(id).first
+                                    val oldInt3D = playerDataMap.getValue(id).int4D.toInt3D()
                                     playerId3D[oldInt3D.x][oldInt3D.y][oldInt3D.z].remove(id)
 
                                     playerId3D[i][j][k].add(id)
-                                    playerDataMap[id] = Pair(int3D, playerData)
+                                    playerDataMap[id] = playerData
                                 }
                             } else {
                                 // Do nothing
                             }
                         } else {
                             playerId3D[i][j][k].add(id)
-                            playerDataMap[id] = Pair(int3D, playerData)
+                            playerDataMap[id] = playerData
                         }
                     }
                 }
@@ -124,9 +124,7 @@ data class UniverseData(
             centerPlayerDataList,
             playerDataMap,
             playerId3D,
-            universeSettings.xDim,
-            universeSettings.yDim,
-            universeSettings.zDim
+            universeSettings
         )
     }
 

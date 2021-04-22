@@ -1,6 +1,7 @@
 package relativitization.universe.data.physics
 
 import kotlinx.serialization.Serializable
+import kotlin.math.abs
 
 @Serializable
 data class Int4D(val t: Int, val x: Int, val y: Int, val z: Int) {
@@ -25,7 +26,14 @@ data class MutableDouble4D(var t: Double, var x: Double, var y: Double, var z: D
 }
 
 @Serializable
-data class Int3D(val x: Int, val y: Int, val z: Int)
+data class Int3D(val x: Int, val y: Int, val z: Int) {
+    fun isNearby(int3D: Int3D): Boolean {
+        val xDistance = abs(x - int3D.x)
+        val yDistance = abs(y - int3D.y)
+        val zDistance = abs(z - int3D.z)
+        return (xDistance <= 1) && (yDistance <= 1) && (zDistance <= 1)
+    }
+}
 
 @Serializable
 data class MutableInt3D(var x: Int, var y: Int, var z: Int)
