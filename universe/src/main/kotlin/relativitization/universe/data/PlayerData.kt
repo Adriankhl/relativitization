@@ -1,15 +1,12 @@
 package relativitization.universe.data
 
 import kotlinx.serialization.Serializable
-import org.apache.commons.lang3.mutable.Mutable
-import relativitization.universe.data.commands.Command
-import relativitization.universe.data.events.Event
 import relativitization.universe.data.events.EventData
 import relativitization.universe.data.events.MutableEventData
 import relativitization.universe.data.physics.Int4D
 import relativitization.universe.data.physics.MutableInt4D
-import relativitization.universe.data.physics.MutablePhysicalData
-import relativitization.universe.data.physics.PhysicalData
+import relativitization.universe.data.physics.MutablePhysicsData
+import relativitization.universe.data.physics.PhysicsData
 import relativitization.universe.data.popsystems.MutablePopSystemicData
 import relativitization.universe.data.popsystems.PopSystemicData
 
@@ -58,9 +55,13 @@ enum class PlayerType {
  * Player internal data
  *
  * @property directLeaderId player id of the direct leader, equals -1 if no leader
- * @property subordinateIds list of player ids of the subordinates of this player
- * @property leaderIds list of player ids of leader, leader of leader, etc., from -1 to direct leader
+ * @property directSubordinateIdList direct subordinates
+ * @property leaderIdList list of player ids of leader, leader of leader, etc., from -1 to direct leader
+ * @property subordinateIdList list of player ids of the subordinates of this player
  * @property isAlive whether the player is alive or dead
+ * @property eventDataList list of current event on this player
+ * @property physicsData physics-related data
+ * @property popSystemicData population system related data
  */
 @Serializable
 data class PlayerInternalData(
@@ -70,7 +71,7 @@ data class PlayerInternalData(
     val subordinateIdList: List<Int> = listOf(),
     val isAlive: Boolean = true,
     val eventDataList: List<EventData> = listOf(),
-    val physicalData: PhysicalData = PhysicalData(),
+    val physicsData: PhysicsData = PhysicsData(),
     val popSystemicData: PopSystemicData = PopSystemicData(),
 )
 
@@ -82,6 +83,6 @@ data class MutablePlayerInternalData(
     val subordinateIdList: MutableList<Int> = mutableListOf(),
     var isAlive: Boolean = true,
     var eventDataList: MutableList<MutableEventData> = mutableListOf(),
-    var physicalData: MutablePhysicalData = MutablePhysicalData(),
+    var physicsData: MutablePhysicsData = MutablePhysicsData(),
     val popSystemicData: MutablePopSystemicData = MutablePopSystemicData(),
 )

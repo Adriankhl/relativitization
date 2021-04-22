@@ -3,7 +3,7 @@ package relativitization.universe.data.physics
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class PhysicalData(
+data class PhysicsData(
     val double4D: Double4D = Double4D(-1.0, -1.0, -1.0, -1.0),
     val velocity: Velocity = Velocity(0.0, 0.0, 0.0),
     val restMass: Double = 0.0,
@@ -13,7 +13,7 @@ data class PhysicalData(
 )
 
 @Serializable
-data class MutablePhysicalData(
+data class MutablePhysicsData(
     var double4D: MutableDouble4D = MutableDouble4D(-1.0, -1.0, -1.0, -1.0),
     var velocity: MutableVelocity = MutableVelocity(0.0, 0.0, 0.0),
     var restMass: Double = 0.0,
