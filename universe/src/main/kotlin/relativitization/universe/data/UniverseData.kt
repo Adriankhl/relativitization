@@ -43,9 +43,21 @@ data class UniverseData(
         return tLower && tUpper && xLower && xUpper && yLower && yUpper && zLower && zUpper
     }
 
+    /**
+     * Get player data as a list at a int4D location
+     *
+     * @param int4D 4D coordinate
+     *
+     * @return list of player data, empty list if the location is not valid
+     */
     fun getPlayerDataListAt(int4D: Int4D): List<PlayerData> {
         val currentTime = universeState.getCurrentTime()
-        return universeData4D.getPlayerDataList(currentTime - int4D.t, int4D.x, int4D.y, int4D.z)
+        return if (isValidCoordinate(int4D)) {
+            universeData4D.getPlayerDataList(currentTime - int4D.t, int4D.x, int4D.y, int4D.z)
+        } else {
+            logger.debug("Getting player data at invalid coordinate")
+            listOf()
+        }
     }
 
     fun toUniverseData3DAtGrid(center: Int4D) {
