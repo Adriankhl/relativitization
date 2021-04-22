@@ -1,6 +1,5 @@
 package relativitization.universe.data
 
-import com.github.javafaker.Bool
 import kotlinx.serialization.Serializable
 import org.apache.logging.log4j.LogManager
 import relativitization.universe.data.commands.Command
@@ -28,9 +27,16 @@ data class UniverseData(
     }
 
     /**
+     * Check if the universe is valid
+     */
+    fun isUniverseValid(): Boolean {
+        return universeSettings.isSettingValid() && isDimensionValid()
+    }
+
+    /**
      * Check whether the int4D coordinate is within the range of our setting of the stored data
      */
-    fun isValidCoordinate(int4D: Int4D): Boolean {
+    fun isInt4DValid(int4D: Int4D): Boolean {
         val tLower: Boolean = int4D.t >= universeState.getCurrentTime() - universeSettings.tDim + 1
         val tUpper: Boolean = int4D.t <= universeState.getCurrentTime()
         val xLower: Boolean = int4D.x >= 0
@@ -52,7 +58,7 @@ data class UniverseData(
      */
     fun getPlayerDataListAt(int4D: Int4D): List<PlayerData> {
         val currentTime = universeState.getCurrentTime()
-        return if (isValidCoordinate(int4D)) {
+        return if (isInt4DValid(int4D)) {
             universeData4D.getPlayerDataList(currentTime - int4D.t, int4D.x, int4D.y, int4D.z)
         } else {
             logger.debug("Getting player data at invalid coordinate")
@@ -60,57 +66,68 @@ data class UniverseData(
         }
     }
 
-    fun toUniverseData3DAtGrid(center: Int4D) {
+    fun toUniverseData3DAtGrid(center: Int4D): UniverseData3DAtGrid {
         val playerId3D: List<List<List<MutableList<Int>>>> =
-            create3DGrid<MutableList<Int>>(
+            create3DGrid(
                 universeSettings.xDim,
                 universeSettings.yDim,
                 universeSettings.zDim
-            ) { x, y, z -> mutableListOf() }
+            ) { _, _, _ -> mutableListOf() }
 
-        val playerDataMap: MutableMap<Int, PlayerData> = mutableMapOf()
+        val playerDataMap: MutableMap<Int, Pair<Int3D, PlayerData>> = mutableMapOf()
 
         for (i in 0 until universeSettings.xDim) {
             for (j in 0 until universeSettings.yDim) {
                 for (k in 0 until universeSettings.zDim) {
                     val delay = intDelay(center.toInt3D(), Int3D(i, j, k), universeSettings.speedOfLight)
-                    val coordinate = Int4D(center.t - delay, i, j, k)
-                    val playerDataList = getPlayerDataListAt(coordinate)
+                    val int3D = Int3D(i, j, k)
+                    val int4D = Int4D(center.t - delay, i, j, k)
+                    val playerDataList = getPlayerDataListAt(int4D)
 
                     // Check repeated playerData due to movement and time delay
                     for (playerData in playerDataList) {
                         val id = playerData.id
                         if (playerDataMap.containsKey(playerData.id)) {
-                            // Two duplicate possibility: different spacetime -> take the latest data
-                            // same spacetime different location due to movement -> take the latest data:w
-                            if (playerData.int4D.t > playerDataMap.getValue(id).int4D.t) {
-                                val removePlayerData = playerDataMap.getValue(id)
-                                val remove1 = removePlayerData.int4D
-                                val remove2 = removePlayerData.oldInt4D
-                                playerId3D[remove1.x][remove1.y][remove1.z].remove(removePlayerData.id)
-                                playerId3D[remove2.x][remove2.y][remove2.z].remove(removePlayerData.id)
+                            // Two duplicate possibility:
+                            // 1. time difference -> take the latest one
+                            // 2. same time, different space -> take the one with the correct space coordinate
+                            if (playerData.int4D.t > playerDataMap.getValue(id).second.int4D.t) {
+                                val oldInt3D = playerDataMap.getValue(id).first
+                                playerId3D[oldInt3D.x][oldInt3D.y][oldInt3D.z].remove(id)
+
                                 playerId3D[i][j][k].add(id)
-                                playerDataMap[id] = playerData
-                            } else if (playerData.int4D == playerDataMap.getValue(id).int4D &&
-                                playerData.int4D == coordinate
-                            ) {
-                                val removePlayerData = playerDataMap.getValue(id)
-                                val remove2 = removePlayerData.oldInt4D
-                                playerId3D[remove2.x][remove2.y][remove2.z].remove(removePlayerData.id)
-                                playerId3D[i][j][k].add(id)
-                                playerDataMap[id] = playerData
+                                playerDataMap[id] = Pair(int3D, playerData)
+                            } else if (playerData.int4D.t == playerDataMap.getValue(id).second.int4D.t) {
+                                if (playerData.int4D.toInt3D() == int3D ) {
+                                    val oldInt3D = playerDataMap.getValue(id).first
+                                    playerId3D[oldInt3D.x][oldInt3D.y][oldInt3D.z].remove(id)
+
+                                    playerId3D[i][j][k].add(id)
+                                    playerDataMap[id] = Pair(int3D, playerData)
+                                }
+                            } else {
+                                // Do nothing
                             }
                         } else {
                             playerId3D[i][j][k].add(id)
-                            playerDataMap[id] = playerData
+                            playerDataMap[id] = Pair(int3D, playerData)
                         }
                     }
                 }
             }
         }
 
-        // player data at center grid without delay
-        val zeroDelayPlayerDataMap = getPlayerDataSetAt(center).map { it.id to it }.toMap()
+        val centerPlayerDataList: List<PlayerData> = getPlayerDataListAt(center)
+
+        return UniverseData3DAtGrid(
+            center,
+            centerPlayerDataList,
+            playerDataMap,
+            playerId3D,
+            universeSettings.xDim,
+            universeSettings.yDim,
+            universeSettings.zDim
+        )
     }
 
     companion object {
