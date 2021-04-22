@@ -137,6 +137,11 @@ data class UniverseData(
         )
     }
 
+    fun getLatestPlayerDataList(): List<PlayerData> {
+        val playerDataList: List<PlayerData> = universeData4D.getLatest().flatten().flatten().flatten()
+        return playerDataList.groupBy { it.id }.map { (k, v) -> v.maxByOrNull { it.int4D.t } }.filterNotNull()
+    }
+
     companion object {
         private val logger = LogManager.getLogger()
     }
@@ -156,6 +161,12 @@ data class UniverseData4D(
     fun getPlayerDataList(i: Int, j: Int, k: Int, l: Int): List<PlayerData> {
         return playerData4D[i][j][k][l]
     }
+
+    /**
+     * Get latest 3D slice
+     */
+    fun getLatest(): List<List<List<List<PlayerData>>>> =
+        playerData4D.last()
 
     /**
      * Get the t dimension of playerData4D as list

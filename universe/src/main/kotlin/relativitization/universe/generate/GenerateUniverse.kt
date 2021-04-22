@@ -12,6 +12,7 @@ import relativitization.universe.data.commands.Command
 data class GenerateSetting(
     var universeName: String = "Test",
     var numPlayer: Int = 4,
+    var numHumanPlayer: Int = 2,
     var speedOfLight: Int = 1,
     var numExtraStellarSystem: Int = 3,
     var tDim: Int = 8,
