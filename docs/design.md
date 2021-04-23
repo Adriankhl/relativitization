@@ -1,7 +1,8 @@
 # Game flow
-* Mechanism(Parallel): Universe server modify players' data based on game mechanism
+* Mechanism(Parallel): Universe server modify players' data based on game mechanism, clean up eventData
 * Commands(Parallel): universe server execute commands based on the space-time interval
-* Check: e.g. player dead
+* Check: e.g. player dead, new player
+* Clean up newPlayerList stored in PlayerData
 * Universe server convert mutable data to immutable data, save latest data, drop oldest data
 * Universe server is ready after save  
 * AI(Parallel): Universe server run the ai to determine command list
