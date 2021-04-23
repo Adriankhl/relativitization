@@ -45,7 +45,7 @@ sealed class Event {
 @Serializable
 data class EventData(
     val event: Event,
-    val hasChoice: Boolean,
+    val hasChoice: Boolean = false,
     val choice: Int = 0,
     val stayCounter: Int = 0
 )
@@ -53,7 +53,7 @@ data class EventData(
 @Serializable
 data class MutableEventData(
     val event: Event,
-    var hasChoice: Boolean,
+    var hasChoice: Boolean = false,
     var choice: Int = -1,
     var stayCounter: Int = 0
 )
@@ -63,12 +63,4 @@ data class MutableEventData(
  */
 abstract class AutoEvent {
     abstract fun generateEventList(universeData3DAtPlayer: UniverseData3DAtPlayer): List<Event>
-}
-
-/**
- * Object to store all the generator of events
- */
-object AllAutoEvent {
-    val autoEventList: List<AutoEvent> = listOf(
-    )
 }
