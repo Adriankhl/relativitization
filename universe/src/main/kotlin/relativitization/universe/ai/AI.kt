@@ -5,5 +5,5 @@ import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.commands.Command
 
 abstract class AI {
-    abstract fun compute(playerData: PlayerData, universeData3DAtPlayer: UniverseData3DAtPlayer): List<Command>
+    abstract fun compute(universeData3DAtPlayer: UniverseData3DAtPlayer): List<Command>
 }

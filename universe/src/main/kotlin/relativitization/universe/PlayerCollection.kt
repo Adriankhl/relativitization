@@ -34,14 +34,14 @@ class PlayerCollection(val xDim: Int, val yDim: Int, val zDim: Int) {
     /**
      * Generate 3D slice of universe
      */
-    fun getPlayer3D(): List<List<List<List<MutablePlayerData>>>> {
-        val player3D: List<List<List<MutableList<MutablePlayerData>>>> = create3DGrid(xDim, yDim, zDim) {
+    fun getPlayerId3D(): List<List<List<List<Int>>>> {
+        val playerId3D: List<List<List<MutableList<MutablePlayerData>>>> = create3DGrid(xDim, yDim, zDim) {
                 _, _, _ -> mutableListOf()
         }
 
-        playerMap.forEach { _, player -> player3D[player.int4D.x] [player.int4D.y][player.int4D.z].add(player) }
+        playerMap.forEach { _, player -> playerId3D[player.int4D.x] [player.int4D.y][player.int4D.z].add(player.id) }
 
-        return player3D
+        return playerId3D
     }
 
     /**

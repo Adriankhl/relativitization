@@ -5,6 +5,7 @@ import kotlin.math.abs
 
 @Serializable
 data class Int4D(val t: Int, val x: Int, val y: Int, val z: Int) {
+    constructor(time: Int, int3D: Int3D) : this(time, int3D.x, int3D.y, int3D.z)
     fun toInt3D() = Int3D(x, y, z)
     fun toDouble4D() = Double4D(t.toDouble(), x.toDouble(), y.toDouble(), z.toDouble())
 }
