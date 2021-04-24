@@ -18,15 +18,15 @@ import relativitization.universe.maths.physics.Intervals.maxDelayAfterMove
  */
 @Serializable
 data class UniverseSettings(
-    val universeName: String,
-    val speedOfLight: Int,
-    val tDim: Int,
-    val xDim: Int,
-    val yDim: Int,
-    val zDim: Int,
-    val playerAfterImageDuration: Int,
-    val playerHistoricalInt4DLength: Int,
-    val humanTimeLimit: Int,
+    val universeName: String = "Test",
+    val speedOfLight: Int = 1,
+    val tDim: Int = 8,
+    val xDim: Int = 2,
+    val yDim: Int = 2,
+    val zDim: Int = 2,
+    val playerAfterImageDuration: Int = 4,
+    val playerHistoricalInt4DLength: Int = 4,
+    val humanTimeLimit: Int = 600,
 ) {
     fun isPlayerAfterImageDurationValid(): Boolean {
         return playerAfterImageDuration >= maxDelayAfterMove(speedOfLight)
