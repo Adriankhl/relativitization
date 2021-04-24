@@ -3,6 +3,7 @@ package relativitization.universe
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.sync.Mutex
 import relativitization.universe.ai.AI
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseData
@@ -11,6 +12,9 @@ import relativitization.universe.data.physics.Int4D
 import relativitization.universe.maths.grid.Grids.create3DGrid
 
 class Universe(private val universeData: UniverseData) {
+
+    private val mutex: Mutex = Mutex()
+
     private val xDim = universeData.universeSettings.xDim
     private val yDim = universeData.universeSettings.yDim
     private val zDim = universeData.universeSettings.zDim
@@ -28,6 +32,9 @@ class Universe(private val universeData: UniverseData) {
         }
     }
 
+    /**
+     * Compute commands by ai for all player in a coroutine
+     */
     suspend fun computeAICommands(ai: AI) = coroutineScope {
         val time: Int = universeData.universeState.getCurrentTime()
         val playerId3D: List<List<List<List<Int>>>> = playerCollection.getPlayerId3D()

@@ -7,7 +7,7 @@ import relativitization.universe.data.PlayerType
 import relativitization.universe.data.serializer.DataSerializer.copy
 import relativitization.universe.maths.grid.Grids.create3DGrid
 
-class PlayerCollection(val xDim: Int, val yDim: Int, val zDim: Int) {
+class PlayerCollection(private val xDim: Int, private val yDim: Int, private val zDim: Int) {
     private val playerMap: MutableMap<Int, MutablePlayerData> = mutableMapOf()
 
     /**
@@ -35,11 +35,11 @@ class PlayerCollection(val xDim: Int, val yDim: Int, val zDim: Int) {
      * Generate 3D slice of universe
      */
     fun getPlayerId3D(): List<List<List<List<Int>>>> {
-        val playerId3D: List<List<List<MutableList<MutablePlayerData>>>> = create3DGrid(xDim, yDim, zDim) {
+        val playerId3D: List<List<List<MutableList<Int>>>> = create3DGrid(xDim, yDim, zDim) {
                 _, _, _ -> mutableListOf()
         }
 
-        playerMap.forEach { _, player -> playerId3D[player.int4D.x] [player.int4D.y][player.int4D.z].add(player.id) }
+        playerMap.forEach { (_, player) -> playerId3D[player.int4D.x] [player.int4D.y][player.int4D.z].add(player.id) }
 
         return playerId3D
     }
