@@ -33,12 +33,36 @@ class Universe(private val universeData: UniverseData) {
         x, y, z -> Int3D(x, y, z)
     }.flatten().flatten()
 
-    val playerCollection: PlayerCollection = PlayerCollection(xDim, yDim, zDim)
+    private val playerCollection: PlayerCollection = PlayerCollection(xDim, yDim, zDim)
 
     init {
         // for each player data at the latest time slice, create player object and add to universe3D
         universeData.universeData4D.getLatest().flatten().flatten().flatten().forEach {
             playerCollection.addPlayer(it)
+        }
+    }
+
+    /**
+     * True if player is alive
+     */
+    suspend fun isAlive(id: Int): Boolean {
+        return if (canAccess.isTrue()) {
+            playerCollection.hasPlayer(id)
+        } else {
+            logger.debug("server busy")
+            false
+        }
+    }
+
+    /**
+     * Get all available player
+     */
+    suspend fun availablePlayers: List<Int> {
+        return if (canAccess.isTrue()) {
+            playerCollection.getAllId()
+        } else {
+            logger.debug("server busy")
+            listOf()
         }
     }
 
