@@ -1,6 +1,7 @@
 package relativitization.universe.maths.grid
 
 import relativitization.universe.data.physics.Int2D
+import relativitization.universe.data.physics.Int3D
 import kotlin.math.max
 
 object Projections {
