@@ -3,11 +3,33 @@ package relativitization.universe
 import org.apache.logging.log4j.LogManager
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.PlayerData
+import relativitization.universe.data.PlayerType
 import relativitization.universe.data.serializer.DataSerializer.copy
 import relativitization.universe.maths.grid.Grids.create3DGrid
 
 class PlayerCollection(val xDim: Int, val yDim: Int, val zDim: Int) {
     private val playerMap: MutableMap<Int, MutablePlayerData> = mutableMapOf()
+
+    /**
+     * Get player
+     */
+    fun getPlayer(id: Int): MutablePlayerData {
+        return playerMap.getValue(id)
+    }
+
+    /**
+     * Get all player id
+     */
+    fun getAllId(): List<Int> {
+        return playerMap.keys.toList()
+    }
+
+    /**
+     * Get all human player id
+     */
+    fun getAllHumanId(): List<Int> {
+        return playerMap.filter { (_, player) -> player.playerType == PlayerType.HUMAN }.keys.toList()
+    }
 
     /**
      * Generate 3D slice of universe
