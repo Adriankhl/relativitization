@@ -111,6 +111,33 @@ class CoroutineCounter(start: Int = -1) {
     }
 }
 
+class CoroutineVar<T>(init: T) {
+    private val mutex: Mutex = Mutex()
+    private var t: T = init
+
+    /**
+     * Append value to map, add count
+     */
+    suspend fun set(store: T) {
+        mutex.withLock {
+            t = store
+        }
+    }
+
+    /**
+     * Check if this variable is true
+     * Normally used in a loop to check the status
+     */
+    suspend fun get(): T {
+        // Prevent too many call to this method, which may prevent other method to run
+        delay(1)
+        mutex.withLock {
+            return t
+        }
+    }
+}
+
+
 /**
  * parallel map collection by coroutine
  */
