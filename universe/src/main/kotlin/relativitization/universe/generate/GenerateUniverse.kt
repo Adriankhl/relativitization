@@ -2,62 +2,42 @@ package relativitization.universe.generate
 
 import kotlinx.serialization.Serializable
 import org.apache.logging.log4j.LogManager
-import relativitization.universe.data.MutablePlayerData
-import relativitization.universe.data.MutableUniverseData4D
-import relativitization.universe.data.UniverseData
-import relativitization.universe.data.UniverseSettings
-import relativitization.universe.data.commands.Command
+import relativitization.universe.data.*
+import relativitization.universe.generate.fixed.Minimal
 
 @Serializable
 data class GenerateSetting(
-    var universeName: String = "Test",
+    var generateMethod: String = "fixed-Minimal",
     var numPlayer: Int = 4,
     var numHumanPlayer: Int = 2,
-    var speedOfLight: Int = 1,
     var numExtraStellarSystem: Int = 3,
-    var tDim: Int = 8,
-    var xDim: Int = 2,
-    var yDim: Int = 2,
-    var zDim: Int = 2,
-    var playerAfterImageDuration: Int = 4,
-    var playerHistoricalInt4DLength: Int = 4,
-    var humanTimeLimit: Int = 600,
+    var universeSettings: MutableUniverseSettings = MutableUniverseSettings(),
 )
 
 @Serializable
 abstract class GeneratedUniverse {
-    lateinit var universeData: UniverseData
-    val generateSetting = GenerateSetting()
-    var hasUniverseData: Boolean = false
-
-    fun generateUniverseSettings(setting: GenerateSetting): UniverseSettings {
-        return UniverseSettings(
-            universeName = setting.universeName,
-            speedOfLight = setting.speedOfLight,
-            tDim = setting.tDim,
-            xDim = setting.xDim,
-            yDim = setting.yDim,
-            zDim = setting.zDim,
-            playerAfterImageDuration = setting.playerAfterImageDuration,
-            playerHistoricalInt4DLength = setting.playerHistoricalInt4DLength,
-            humanTimeLimit = setting.humanTimeLimit
-        )
-    }
-
     abstract fun generate(setting: GenerateSetting): UniverseData
 
-    fun checkAndUpdate() {
-        val generateData = generate(generateSetting)
-        if (generateData.isUniverseValid()) {
-            universeData = generateData
-            hasUniverseData = true
-        } else {
-            val className = this::class.qualifiedName
-            logger.error("$className: Generated universe is not valid")
-        }
-    }
 
     companion object {
         private val logger = LogManager.getLogger()
+
+        fun isSettingValid(setting: GenerateSetting): Boolean {
+            val generateData = generate(setting)
+            return if (generateData.isUniverseValid()) {
+                true
+            } else {
+                val className = this::class.qualifiedName
+                logger.error("$className: Generated universe is not valid")
+                false
+            }
+        }
+
+        fun generate(setting: GenerateSetting): UniverseData {
+            return when(setting.generateMethod) {
+                "fixed-Minimal" -> Minimal().generate(setting)
+                else -> Minimal().generate(setting)
+            }
+        }
     }
 }

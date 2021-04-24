@@ -57,7 +57,7 @@ class Universe(private val universeData: UniverseData) {
     /**
      * Get all available player
      */
-    suspend fun availablePlayers: List<Int> {
+    suspend fun availablePlayers(): List<Int> {
         return if (canAccess.isTrue()) {
             playerCollection.getAllId()
         } else {
