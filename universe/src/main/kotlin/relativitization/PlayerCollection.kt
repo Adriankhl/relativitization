@@ -1,0 +1,4 @@
+package relativitization
+
+class PlayerCollection {
+}

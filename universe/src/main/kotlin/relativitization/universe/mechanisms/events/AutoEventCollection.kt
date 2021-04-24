@@ -10,7 +10,7 @@ import relativitization.universe.mechanisms.Mechanism
 /**
  * Object to store all the generator of events
  */
-object AllAutoEvent : Mechanism() {
+object AutoEventCollection : Mechanism() {
     val autoEventList: List<AutoEvent> = listOf(
     )
 
