@@ -10,7 +10,7 @@ import relativitization.universe.maths.grid.Grids.create3DGrid
 
 class PlayerCollection(private val xDim: Int, private val yDim: Int, private val zDim: Int) {
     private val playerMap: MutableMap<Int, MutablePlayerData> = mutableMapOf()
-    private val deadId: MutableList<Int> = mutableListOf()
+    private val deadIdList: MutableList<Int> = mutableListOf()
 
     /**
      * has player or not
@@ -26,7 +26,7 @@ class PlayerCollection(private val xDim: Int, private val yDim: Int, private val
      * Is dead player by id
      */
     fun isDead(id: Int): Boolean {
-        return deadId.contains(id)
+        return deadIdList.contains(id)
     }
 
     /**
@@ -73,7 +73,7 @@ class PlayerCollection(private val xDim: Int, private val yDim: Int, private val
     /**
      * Remove player by id from player3D and playerMap
      */
-    fun removePlayer(id: Int) {
+    private fun removePlayer(id: Int) {
         if(playerMap.containsKey(id)) {
             playerMap.remove(id)
         } else {
@@ -91,6 +91,15 @@ class PlayerCollection(private val xDim: Int, private val yDim: Int, private val
         } else {
             logger.debug("Not going to add player ${playerData.id}")
         }
+    }
+
+    /**
+     * Remove player and add id to deadIdList if player is dead
+     */
+    fun cleanDeadPlayer() {
+        val dead: List<Int> = playerMap.values.filter { !it.playerInternalData.isAlive }.map { it.id }
+        dead.map { removePlayer(it) }
+        deadIdList.addAll(dead)
     }
 
 
