@@ -10,12 +10,23 @@ import relativitization.universe.maths.grid.Grids.create3DGrid
 
 class PlayerCollection(private val xDim: Int, private val yDim: Int, private val zDim: Int) {
     private val playerMap: MutableMap<Int, MutablePlayerData> = mutableMapOf()
+    private val deadId: MutableList<Int> = mutableListOf()
 
     /**
      * has player or not
      */
     fun hasPlayer(id: Int): Boolean {
+        if (isDead(id)) {
+            logger.debug("hasPlayer: player $id is dead")
+        }
         return playerMap.containsKey(id)
+    }
+
+    /**
+     * Is dead player by id
+     */
+    fun isDead(id: Int): Boolean {
+        return deadId.contains(id)
     }
 
     /**
