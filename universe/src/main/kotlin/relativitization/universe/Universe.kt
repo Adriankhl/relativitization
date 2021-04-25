@@ -6,12 +6,12 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.sync.Mutex
 import org.apache.logging.log4j.LogManager
 import relativitization.universe.ai.AI
-import relativitization.universe.data.UniverseData
-import relativitization.universe.data.UniverseData3DAtPlayer
+import relativitization.universe.data.*
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.physics.Int3D
 import relativitization.universe.data.physics.Int4D
 import relativitization.universe.data.serializer.DataSerializer.encode
+import relativitization.universe.data.serializer.DataSerializer.decode
 import relativitization.universe.maths.grid.Grids.create3DGrid
 import relativitization.universe.utils.CoroutineBoolean
 import relativitization.universe.utils.CoroutineMap
@@ -94,14 +94,19 @@ class Universe(private val universeData: UniverseData) {
         // Make Directory
         File("$saveDir").mkdirs()
 
+        // save universe 4D slice
+        File("${saveDir}/universeData4DSlice-${latestTime}.json").writeText(
+            encode(universeData.universeData4D.getLatest())
+        )
+
         // save state
         File("${saveDir}/universeState-${latestTime}.json").writeText(
             encode(universeData.universeState)
         )
 
-        // save universe 4D slice
-        File("${saveDir}/universeData4DSlice-${latestTime}.json").writeText(
-            encode(universeData.universeData4D.getLatest())
+        // save settings, setting should be immutable, so only one save is enough
+        File("${saveDir}/universeSetting.json").writeText(
+            encode(universeData.universeSettings)
         )
 
         // save commands
@@ -109,7 +114,7 @@ class Universe(private val universeData: UniverseData) {
             encode(universeData.commandMap)
         )
 
-        // Additionally save state to latestSetting.json for loading
+        // Additionally save state to latestState.json for loading
         File("${saveDir}/latestState.json").writeText(
             encode(universeData.universeState)
         )
@@ -125,18 +130,54 @@ class Universe(private val universeData: UniverseData) {
         val oldUniverseData4D =  universeData.universeData4D.getAllExcludeLatest()
 
         for (i in oldUniverseData4D.indices) {
-            File("${saveDir}/universeData4DSlice-${(oldestTime + i)}.json").writeText(
+            File("${saveDir}/universeData4DSlice-${oldestTime + i}.json").writeText(
                 encode(oldUniverseData4D[i])
             )
         }
+
+        // save settings, setting should be immutable, so only one save is enough
+        File("${saveDir}/universeSetting.json").writeText(
+            encode(universeData.universeSettings)
+        )
 
         // Also save the latest slice, setting, state, commandMap
         saveLatest()
     }
 
-
     companion object {
         private val logger = LogManager.getLogger()
+
+        fun loadUniverseLatest(universeName: String): UniverseData {
+            val saveDir = "saves/$universeName"
+
+            // save settings, setting should be immutable, so only one save is enough
+            val universeSettings: UniverseSettings = decode(File("${saveDir}/universeSetting.json").readText())
+
+            // load latest universe state
+            val universeState: UniverseState = decode(File("${saveDir}/latestState.json").readText())
+
+            val latestTime: Int = universeState.getCurrentTime()
+            val oldestTime: Int = latestTime - universeSettings.tDim + 1
+
+            val commandMap: MutableMap<Int, MutableList<Command>> = decode(
+                File("${saveDir}/commandMap-${latestTime}.json").readText()
+            )
+
+            val playerData4D: MutableList<List<List<List<List<PlayerData>>>>> = mutableListOf()
+            for (time in oldestTime..latestTime) {
+                playerData4D.add(decode(File("${saveDir}/universeData4DSlice-${time}.json").readText()))
+            }
+
+            val universeData4D = UniverseData4D(playerData4D)
+
+            return UniverseData(
+                universeData4D,
+                universeSettings,
+                universeState,
+                commandMap
+            )
+
+        }
     }
 
 }
