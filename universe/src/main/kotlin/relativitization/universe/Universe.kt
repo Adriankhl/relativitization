@@ -14,8 +14,10 @@ import relativitization.universe.data.physics.Int4D
 import relativitization.universe.data.serializer.DataSerializer.encode
 import relativitization.universe.data.serializer.DataSerializer.decode
 import relativitization.universe.maths.grid.Grids.create3DGrid
+import relativitization.universe.mechanisms.MechanismCollection
 import relativitization.universe.utils.CoroutineBoolean
 import relativitization.universe.utils.CoroutineMap
+import relativitization.universe.utils.pmap
 
 import java.io.File
 
@@ -150,9 +152,42 @@ class Universe(private val universeData: UniverseData) {
     /**
      * Prepare universe after the beginning of the turn
      */
-    fun prepareUniverse() {
+    suspend fun prepareUniverse() {
         val time: Int = universeData.universeState.getCurrentTime()
         val playerId3D: List<List<List<List<Int>>>> = playerCollection.getPlayerId3D()
+
+        // Mechanism process, execute produced commands on attached group, and return remaining command
+        val commandList: List<Command> = int3DList.pmap { int3D ->
+            val viewMap = universeData.toUniverseData3DAtGrid(Int4D(time, int3D)).idToUniverseData3DAtPlayer()
+            val commandListAtGrid: List<Command> = playerId3D[int3D.x][int3D.y][int3D.z].map { id ->
+                val universeData3DAtPlayer =  viewMap.getValue(id)
+                MechanismCollection.mechanismList.map { mechanism ->
+                    mechanism.process(playerCollection.getPlayer(id), universeData3DAtPlayer)
+                }.flatten()
+            }.flatten()
+
+            // Execute attached neighbor command
+            val commandExecutedList: List<Command> = playerId3D[int3D.x][int3D.y][int3D.z].map{ id ->
+                // Filter executed command
+                commandListAtGrid.filter { command ->
+                    if (command.toId == id) {
+                        val fromIdAttached: Int = playerCollection.getPlayer(command.fromId).attachedPlayerId
+                        if (playerCollection.getPlayer(id).attachedPlayerId == fromIdAttached) {
+                            command.execute(playerCollection.getPlayer(id), universeData.universeSettings)
+                            true
+                        } else {
+                            false
+                        }
+                    } else {
+                        false
+                    }
+                }
+            }.flatten()
+
+            commandListAtGrid.filter { !commandExecutedList.contains(it) }
+        }.flatten()
+
+        addToCommandMap(universeData.commandMap, commandList)
     }
 
     companion object {
@@ -187,7 +222,14 @@ class Universe(private val universeData: UniverseData) {
                 universeState,
                 commandMap
             )
+        }
 
+        /**
+         * Transform and add command list to commandMap
+         */
+        fun addToCommandMap(commandMap: MutableMap<Int, MutableList<Command>>, commandList: List<Command>) {
+            val listGroup: Map<Int, List<Command>> = commandList.groupBy { it.toId }
+            listGroup.map { (id, commands) -> commandMap.getOrDefault(id, mutableListOf()).addAll(commands)}
         }
     }
 

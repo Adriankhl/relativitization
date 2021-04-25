@@ -1,5 +1,6 @@
 # Game flow
 * Mechanism(Parallel): Universe server modify players' data based on game mechanism, clean up eventData
+  the produced command should execute on self and attached neighbor
 * Commands(Parallel): universe server execute commands based on the space-time interval
 * Check: e.g. player dead, new player
 * Clean up newPlayerList stored in PlayerData
