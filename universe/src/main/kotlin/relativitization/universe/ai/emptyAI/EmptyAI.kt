@@ -6,7 +6,7 @@ import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.commands.Command
 
 class EmptyAI : AI() {
-    override fun compute(playerData: PlayerData, universeData3DAtPlayer: UniverseData3DAtPlayer): List<Command> {
+    override fun compute(universeData3DAtPlayer: UniverseData3DAtPlayer): List<Command> {
         return listOf()
     }
 }

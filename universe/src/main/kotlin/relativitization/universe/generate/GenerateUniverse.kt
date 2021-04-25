@@ -15,7 +15,7 @@ data class GenerateSetting(
 )
 
 @Serializable
-abstract class GeneratedUniverse {
+abstract class GenerateUniverse {
     abstract fun generate(setting: GenerateSetting): UniverseData
 
 

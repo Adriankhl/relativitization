@@ -88,7 +88,7 @@ class Universe(private val universeData: UniverseData) {
      * Save Latest universe data
      */
     fun saveLatest() {
-        val saveDir = "saves/${universeData.universeSettings.universeName}"
+        val saveDir = "./saves/${universeData.universeSettings.universeName}"
         val latestTime: Int = universeData.universeState.getCurrentTime()
 
         // Make Directory
@@ -128,6 +128,8 @@ class Universe(private val universeData: UniverseData) {
         val latestTime: Int = universeData.universeState.getCurrentTime()
         val oldestTime: Int = latestTime - universeData.universeSettings.tDim + 1
         val oldUniverseData4D =  universeData.universeData4D.getAllExcludeLatest()
+
+        File("$saveDir").mkdirs()
 
         for (i in oldUniverseData4D.indices) {
             File("${saveDir}/universeData4DSlice-${oldestTime + i}.json").writeText(

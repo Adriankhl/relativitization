@@ -4,10 +4,10 @@ import relativitization.universe.data.*
 import relativitization.universe.data.physics.MutableInt4D
 import relativitization.universe.data.serializer.DataSerializer.copy
 import relativitization.universe.generate.GenerateSetting
-import relativitization.universe.generate.GeneratedUniverse
+import relativitization.universe.generate.GenerateUniverse
 import relativitization.universe.maths.grid.Grids.create4DGrid
 
-class Minimal : GeneratedUniverse() {
+class Minimal : GenerateUniverse() {
     override fun generate(setting: GenerateSetting): UniverseData {
         val universeSettings: UniverseSettings = copy(setting.universeSettings)
 

@@ -85,11 +85,15 @@ class PlayerCollection(private val xDim: Int, private val yDim: Int, private val
      * Add player if he does not exist or if the data is newer
      */
     fun addPlayer(playerData: PlayerData) {
-        if (playerData.int4D.t > playerMap.getValue(playerData.id).int4D.t) {
-            removePlayer(playerData.id)
-            playerMap[playerData.id] = copy(playerData)
+        if (hasPlayer(playerData.id)) {
+            if (playerData.int4D.t > playerMap.getValue(playerData.id).int4D.t) {
+                removePlayer(playerData.id)
+                playerMap[playerData.id] = copy(playerData)
+            } else {
+                logger.debug("Not going to add player ${playerData.id}")
+            }
         } else {
-            logger.debug("Not going to add player ${playerData.id}")
+            playerMap[playerData.id] = copy(playerData)
         }
     }
 
