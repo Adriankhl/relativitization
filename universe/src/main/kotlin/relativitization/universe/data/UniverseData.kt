@@ -196,6 +196,12 @@ data class UniverseData4D(
         playerData4D.last()
 
     /**
+     * Get all slice excluding latest
+     */
+    fun getAllExcludeLatest(): List<List<List<List<List<PlayerData>>>>> =
+        playerData4D.dropLast(1)
+
+    /**
      * Add one new universe 3d slice and remove the oldest one
      */
     internal fun addUniverse3DSlice(slice: List<List<List<List<PlayerData>>>>) {

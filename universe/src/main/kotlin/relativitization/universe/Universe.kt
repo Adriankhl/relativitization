@@ -99,8 +99,8 @@ class Universe(private val universeData: UniverseData) {
             encode(universeData.universeState)
         )
 
-        // save universe 4D
-        File("${saveDir}/universeData4D-${latestTime}.json").writeText(
+        // save universe 4D slice
+        File("${saveDir}/universeData4DSlice-${latestTime}.json").writeText(
             encode(universeData.universeData4D.getLatest())
         )
 
@@ -113,6 +113,25 @@ class Universe(private val universeData: UniverseData) {
         File("${saveDir}/latestState.json").writeText(
             encode(universeData.universeState)
         )
+    }
+
+    /**
+     * Save the whole universe
+     */
+    fun saveAll() {
+        val saveDir = "saves/${universeData.universeSettings.universeName}"
+        val latestTime: Int = universeData.universeState.getCurrentTime()
+        val oldestTime: Int = latestTime - universeData.universeSettings.tDim + 1
+        val oldUniverseData4D =  universeData.universeData4D.getAllExcludeLatest()
+
+        for (i in oldUniverseData4D.indices) {
+            File("${saveDir}/universeData4DSlice-${(oldestTime + i)}.json").writeText(
+                encode(oldUniverseData4D[i])
+            )
+        }
+
+        // Also save the latest slice, setting, state, commandMap
+        saveLatest()
     }
 
 
