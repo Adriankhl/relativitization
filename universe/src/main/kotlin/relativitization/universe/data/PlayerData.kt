@@ -17,6 +17,8 @@ import relativitization.universe.data.popsystems.MutablePopSystemicData
 import relativitization.universe.data.popsystems.PopSystemicData
 import relativitization.universe.data.science.MutableScienceData
 import relativitization.universe.data.science.ScienceData
+import relativitization.universe.data.state.MutablePlayerState
+import relativitization.universe.data.state.PlayerState
 
 /**
  * Data of the basic unit (player)
@@ -77,6 +79,7 @@ enum class PlayerType {
  * @property politicsData political related data
  * @property diplomacyData diplomatic relation data
  * @property economyData economy related data
+ * @property playerState state of the player, including ai, modifier, cooldown, etc.
  */
 @Serializable
 data class PlayerInternalData(
@@ -92,6 +95,7 @@ data class PlayerInternalData(
     val politicsData: PoliticsData = PoliticsData(),
     val diplomacyData: DiplomacyData = DiplomacyData(),
     val economyData: EconomyData = EconomyData(),
+    val playerState: PlayerState = PlayerState(),
 )
 
 @Serializable
@@ -108,4 +112,5 @@ data class MutablePlayerInternalData(
     var politicsData: MutablePoliticsData = MutablePoliticsData(),
     var diplomacyData: MutableDiplomacyData = MutableDiplomacyData(),
     var economyData: MutableEconomyData = MutableEconomyData(),
+    var playerState: MutablePlayerState = MutablePlayerState(),
 )
