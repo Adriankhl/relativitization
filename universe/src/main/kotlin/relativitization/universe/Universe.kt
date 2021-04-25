@@ -11,9 +11,12 @@ import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.physics.Int3D
 import relativitization.universe.data.physics.Int4D
+import relativitization.universe.data.serializer.DataSerializer.encode
 import relativitization.universe.maths.grid.Grids.create3DGrid
 import relativitization.universe.utils.CoroutineBoolean
 import relativitization.universe.utils.CoroutineMap
+
+import java.io.File
 
 class Universe(private val universeData: UniverseData) {
 
@@ -29,7 +32,7 @@ class Universe(private val universeData: UniverseData) {
     // Or maybe before the wait time limit has reached
     val canAccess: CoroutineBoolean = CoroutineBoolean(false)
 
-    val int3DList: List<Int3D> = create3DGrid(xDim, yDim, zDim) {
+    private val int3DList: List<Int3D> = create3DGrid(xDim, yDim, zDim) {
         x, y, z -> Int3D(x, y, z)
     }.flatten().flatten()
 
@@ -80,6 +83,38 @@ class Universe(private val universeData: UniverseData) {
             }
         }
     }
+
+    /**
+     * Save Latest universe data
+     */
+    fun saveLatest() {
+        val saveDir = "saves/${universeData.universeSettings.universeName}"
+        val latestTime: Int = universeData.universeState.getCurrentTime()
+
+        // Make Directory
+        File("$saveDir").mkdirs()
+
+        // save state
+        File("${saveDir}/universeState-${latestTime}.json").writeText(
+            encode(universeData.universeState)
+        )
+
+        // save universe 4D
+        File("${saveDir}/universeData4D-${latestTime}.json").writeText(
+            encode(universeData.universeData4D.getLatest())
+        )
+
+        // save commands
+        File("${saveDir}/commandMap-${latestTime}.json").writeText(
+            encode(universeData.commandMap)
+        )
+
+        // Additionally save state to latestSetting.json for loading
+        File("${saveDir}/latestState.json").writeText(
+            encode(universeData.universeState)
+        )
+    }
+
 
     companion object {
         private val logger = LogManager.getLogger()

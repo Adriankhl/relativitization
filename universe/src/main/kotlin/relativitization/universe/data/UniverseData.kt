@@ -164,6 +164,9 @@ data class UniverseData(
     fun updateUniverse(slice: List<List<List<List<PlayerData>>>>) {
         universeData4D.addUniverse3DSlice(slice)
         universeState.updateTime()
+        if (!isUniverseValid()) {
+            logger.error("Updated universe is not valid")
+        }
     }
 
     companion object {
@@ -189,7 +192,7 @@ data class UniverseData4D(
     /**
      * Get latest 3D slice
      */
-    internal fun getLatest(): List<List<List<List<PlayerData>>>> =
+    fun getLatest(): List<List<List<List<PlayerData>>>> =
         playerData4D.last()
 
     /**
