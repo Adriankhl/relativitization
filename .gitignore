@@ -28,7 +28,10 @@ hs_err_pid*
 # Ignore Gradle build output directory
 build
 
-# Ignore intellij .idea folder except
+# Ignore intellij .idea folder except dictionaries and code style
 .idea/*
 !.idea/dictionaries/developer.xml
 !.idea/codeStyles/codeStyleConfig.xml
+
+# Ignore save game
+saves*
