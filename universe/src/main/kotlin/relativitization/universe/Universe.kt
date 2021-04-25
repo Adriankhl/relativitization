@@ -42,44 +42,27 @@ class Universe(private val universeData: UniverseData) {
 
     /**
      * True if player is alive
+     * Should only return if canAccess is true
      */
     suspend fun isAlive(id: Int): Boolean {
-        return if (canAccess.isTrue()) {
-            playerCollection.hasPlayer(id)
-        } else {
-            logger.debug("server busy")
-            false
-        }
+        return playerCollection.hasPlayer(id)
     }
 
     /**
      * Get all available player
+     * Should only return if canAccess is true
      */
     suspend fun availablePlayers(): List<Int> {
-        return if (canAccess.isTrue()) {
-            playerCollection.getAllId()
-        } else {
-            logger.debug("server busy")
-            listOf()
-        }
+        return playerCollection.getAllId()
     }
 
     /**
      * Get universe 3d view for (human) player
+     * Should only return if canAccess is true
      */
     suspend fun getUniverse3DViewAtPlayer(id: Int): UniverseData3DAtPlayer {
-        return if (playerCollection.hasPlayer(id)) {
-            if (canAccess.isTrue()) {
-                val int4D: Int4D = playerCollection.getPlayerInt4D(id)
-                universeData.toUniverseData3DAtGrid(int4D).idToUniverseData3DAtPlayer().getValue(id)
-            } else {
-                logger.error("Cannot access the universe, it is busying")
-                UniverseData3DAtPlayer()
-            }
-        } else {
-            logger.error("No player with id: $id")
-            UniverseData3DAtPlayer()
-        }
+        val int4D: Int4D = playerCollection.getPlayerInt4D(id)
+        return universeData.toUniverseData3DAtGrid(int4D).idToUniverseData3DAtPlayer().getValue(id)
     }
 
     /**
