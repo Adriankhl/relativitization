@@ -3,7 +3,7 @@
 * Commands(Parallel): universe server execute commands based on the space-time interval
 * Check: e.g. player dead, new player
 * Clean up newPlayerList stored in PlayerData
-* Universe server convert mutable data to immutable data, save latest data, drop oldest data
+* Universe server update the universe data by replacing the latest slice 
 * Universe server is ready after save  
 * AI(Parallel): Universe server run the ai to determine command list
 * Universe client check if the universe server is ready, if ready, download 3D view
@@ -15,6 +15,8 @@
   * If some players join, add human player and prioritize them over ai generated command
   * If some/all players haven't sent back their command list within the time limit, use ai generated command   
 * Universe server execute the self-command and neighbor-command, others are stored
+* Universe server move player by their velocity, update time
+* Universe server convert mutable data to immutable data, save latest data, drop oldest data
 
 # Command
 * From player, to player

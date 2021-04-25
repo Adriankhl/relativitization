@@ -147,6 +147,14 @@ class Universe(private val universeData: UniverseData) {
         saveLatest()
     }
 
+    /**
+     * Prepare universe after the beginning of the turn
+     */
+    fun prepareUniverse() {
+        val time: Int = universeData.universeState.getCurrentTime()
+        val playerId3D: List<List<List<List<Int>>>> = playerCollection.getPlayerId3D()
+    }
+
     companion object {
         private val logger = LogManager.getLogger()
 

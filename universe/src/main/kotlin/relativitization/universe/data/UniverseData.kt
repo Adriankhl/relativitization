@@ -159,11 +159,23 @@ data class UniverseData(
     }
 
     /**
-     * Update the universe by adding a new slice and updating the universe state
+     * Update the universe by adding a new slice, remove the oldest slice and updating the universe state
      */
     fun updateUniverse(slice: List<List<List<List<PlayerData>>>>) {
-        universeData4D.addUniverse3DSlice(slice)
+        universeData4D.addAndRemoveFirstUniverse3DSlice(slice)
         universeState.updateTime()
+        if (!isUniverseValid()) {
+            logger.error("Updated universe is not valid")
+        }
+    }
+
+
+    /**
+     * Update universe by replacing the latest slice
+     * Should not update time in the universeState
+     */
+    fun updateUniverseByReplace(slice: List<List<List<List<PlayerData>>>>) {
+        universeData4D.addAndRemoveLastUniverse3DSlice(slice)
         if (!isUniverseValid()) {
             logger.error("Updated universe is not valid")
         }
@@ -204,8 +216,16 @@ data class UniverseData4D(
     /**
      * Add one new universe 3d slice and remove the oldest one
      */
-    internal fun addUniverse3DSlice(slice: List<List<List<List<PlayerData>>>>) {
-        playerData4D.removeAt(0)
+    internal fun addAndRemoveFirstUniverse3DSlice(slice: List<List<List<List<PlayerData>>>>) {
+        playerData4D.removeFirst()
+        playerData4D.add(slice)
+    }
+
+    /**
+     * Replace latest universe slice
+     */
+    internal fun addAndRemoveLastUniverse3DSlice(slice: List<List<List<List<PlayerData>>>>) {
+        playerData4D.removeLast()
         playerData4D.add(slice)
     }
 
