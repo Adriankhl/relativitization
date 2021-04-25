@@ -37,9 +37,7 @@ class Universe(private val universeData: UniverseData) {
 
     init {
         // for each player data at the latest time slice, create player object and add to universe3D
-        universeData.universeData4D.getLatest().flatten().flatten().flatten().forEach {
-            playerCollection.addPlayer(it)
-        }
+        universeData.getLatestPlayerDataList().forEach { playerCollection.addPlayer(it) }
     }
 
     /**

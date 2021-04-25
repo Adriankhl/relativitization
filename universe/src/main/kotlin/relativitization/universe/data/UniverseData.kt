@@ -18,7 +18,7 @@ data class UniverseData(
     /**
      * Check whether the universeData4D has the correct dimension specified in the setting
      */
-    fun isDimensionValid(): Boolean {
+    private fun isDimensionValid(): Boolean {
         val tCheckList = universeData4D.getTSizeList().map { it == universeSettings.tDim }
         val xCheckList = universeData4D.getXSizeList().map { it == universeSettings.xDim }
         val yCheckList = universeData4D.getYSizeList().map { it == universeSettings.yDim }
@@ -30,21 +30,32 @@ data class UniverseData(
     /**
      * Check if the universe state is valid
      */
-    fun isStateValid(): Boolean {
-        return universeState.getCurrentTime() >= universeData4D.getTSizeList()[0]
+    private fun isStateValid(): Boolean {
+        val currentTimeCheck: Boolean = universeData4D.getTSizeList()[0] >= universeState.getCurrentTime()
+        val currentIdCheck: Boolean = getLatestPlayerDataList().maxOf { it.id } <= universeState.getCurrentMaxId()
+        return currentTimeCheck && currentIdCheck
+    }
+
+    /**
+     * Check if the player data in the universeData4D is valid
+     */
+    private fun isPlayerDataValid(): Boolean {
+        val playerDataList: List<PlayerData> = getLatestPlayerDataList()
+        val playerDataCheckList: List<Boolean> = playerDataList.map { it.int4D.t == universeState.getCurrentTime() }
+        return !playerDataCheckList.contains(false)
     }
 
     /**
      * Check if the universe is valid
      */
     fun isUniverseValid(): Boolean {
-        return universeSettings.isSettingValid() && isDimensionValid() && isStateValid()
+        return universeSettings.isSettingValid() && isDimensionValid() && isStateValid() && isPlayerDataValid()
     }
 
     /**
      * Check whether the int4D coordinate is within the range of our setting of the stored data
      */
-    fun isInt4DValid(int4D: Int4D): Boolean {
+    private fun isInt4DValid(int4D: Int4D): Boolean {
         val tLower: Boolean = int4D.t >= universeState.getCurrentTime() - universeSettings.tDim + 1
         val tUpper: Boolean = int4D.t <= universeState.getCurrentTime()
         val xLower: Boolean = int4D.x >= 0
@@ -64,7 +75,7 @@ data class UniverseData(
      *
      * @return list of player data, empty list if the location is not valid
      */
-    fun getPlayerDataListAt(int4D: Int4D): List<PlayerData> {
+    private fun getPlayerDataListAt(int4D: Int4D): List<PlayerData> {
         val currentTime = universeState.getCurrentTime()
         val tDim = universeSettings.tDim
         return if (isInt4DValid(int4D)) {
@@ -137,9 +148,22 @@ data class UniverseData(
         )
     }
 
+    /**
+     * Get all player data from the latest universe slice
+     * Since there can be duplicated player id since the after image may be added after player move,
+     * only player data with maximum t is included
+     */
     fun getLatestPlayerDataList(): List<PlayerData> {
         val playerDataList: List<PlayerData> = universeData4D.getLatest().flatten().flatten().flatten()
-        return playerDataList.groupBy { it.id }.map { (k, v) -> v.maxByOrNull { it.int4D.t } }.filterNotNull()
+        return playerDataList.groupBy { it.id }.map { (_, v) -> v.maxByOrNull { it.int4D.t } }.filterNotNull()
+    }
+
+    /**
+     * Update the universe by adding a new slice and updating the universe state
+     */
+    fun updateUniverse(slice: List<List<List<List<PlayerData>>>>) {
+        universeData4D.addUniverse3DSlice(slice)
+        universeState.updateTime()
     }
 
     companion object {
@@ -158,35 +182,43 @@ data class UniverseData4D(
      * Get player data from the 4D List
      * i, j, k, l doesn't necessarily the actual t, x, y, z
      */
-    fun getPlayerDataList(i: Int, j: Int, k: Int, l: Int): List<PlayerData> {
+    internal fun getPlayerDataList(i: Int, j: Int, k: Int, l: Int): List<PlayerData> {
         return playerData4D[i][j][k][l]
     }
 
     /**
      * Get latest 3D slice
      */
-    fun getLatest(): List<List<List<List<PlayerData>>>> =
+    internal fun getLatest(): List<List<List<List<PlayerData>>>> =
         playerData4D.last()
+
+    /**
+     * Add one new universe 3d slice and remove the oldest one
+     */
+    internal fun addUniverse3DSlice(slice: List<List<List<List<PlayerData>>>>) {
+        playerData4D.removeAt(0)
+        playerData4D.add(slice)
+    }
 
     /**
      * Get the t dimension of playerData4D as list
      */
-    fun getTSizeList(): List<Int> = listOf(playerData4D.size)
+    internal fun getTSizeList(): List<Int> = listOf(playerData4D.size)
 
     /**
      * Get the x dimension of playerData4D as list
      */
-    fun getXSizeList(): List<Int> = playerData4D.map { it.size }
+    internal fun getXSizeList(): List<Int> = playerData4D.map { it.size }
 
     /**
      * Get the y dimension of playerData4D as list
      */
-    fun getYSizeList(): List<Int> = playerData4D.flatten().map{ it.size}
+    internal fun getYSizeList(): List<Int> = playerData4D.flatten().map{ it.size}
 
     /**
      * Get the z dimension of playerData4D as list
      */
-    fun getZSizeList(): List<Int> = playerData4D.flatten().flatten().map{ it.size }
+    internal fun getZSizeList(): List<Int> = playerData4D.flatten().flatten().map{ it.size }
 }
 
 /**

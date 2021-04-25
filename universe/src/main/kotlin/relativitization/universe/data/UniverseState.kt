@@ -8,6 +8,11 @@ data class UniverseState(
     private var maxPlayerId: Int = 0,
 ) {
     fun getCurrentTime(): Int = currentTime
+
+    fun updateTime() = currentTime ++
+
+    fun getCurrentMaxId(): Int = maxPlayerId
+
     fun getNewId(): Int {
         maxPlayerId ++
         return maxPlayerId
