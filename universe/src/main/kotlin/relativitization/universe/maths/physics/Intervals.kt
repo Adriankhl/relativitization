@@ -2,6 +2,7 @@ package relativitization.universe.maths.physics
 
 import relativitization.universe.data.physics.Int3D
 import relativitization.universe.data.physics.Int4D
+import relativitization.universe.data.physics.MutableInt4D
 import relativitization.universe.data.physics.Velocity
 import relativitization.universe.maths.physics.Relativistic.gamma
 import kotlin.math.abs
@@ -40,6 +41,14 @@ object Intervals {
      * Compute distance by IntCoordinates
      */
     fun intDistance(c1: Int4D, c2: Int4D): Int {
+        return intDistance(c1.x, c1.y, c1.z, c2.x, c2.y, c2.z)
+    }
+
+    fun intDistance(c1: MutableInt4D, c2: Int4D): Int {
+        return intDistance(c1.x, c1.y, c1.z, c2.x, c2.y, c2.z)
+    }
+
+    fun intDistance(c1: Int4D, c2: MutableInt4D): Int {
         return intDistance(c1.x, c1.y, c1.z, c2.x, c2.y, c2.z)
     }
 

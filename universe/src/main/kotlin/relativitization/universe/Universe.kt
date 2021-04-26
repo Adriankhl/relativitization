@@ -11,9 +11,11 @@ import relativitization.universe.data.*
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.physics.Int3D
 import relativitization.universe.data.physics.Int4D
+import relativitization.universe.data.physics.MutableInt4D
 import relativitization.universe.data.serializer.DataSerializer.encode
 import relativitization.universe.data.serializer.DataSerializer.decode
 import relativitization.universe.maths.grid.Grids.create3DGrid
+import relativitization.universe.maths.physics.Intervals.intDistance
 import relativitization.universe.mechanisms.MechanismCollection
 import relativitization.universe.utils.CoroutineBoolean
 import relativitization.universe.utils.CoroutineMap
@@ -157,49 +159,7 @@ class Universe(private val universeData: UniverseData) {
     /**
      * Run all the mechanism, add generated commands to commandMap
      */
-    suspend fun processMechanism() {
-        val time: Int = universeData.universeState.getCurrentTime()
-        val playerId3D: List<List<List<List<Int>>>> = playerCollection.getPlayerId3D()
-
-        // Mechanism process, execute produced commands on attached group, and return remaining command
-        val commandList: List<Command> = int3DList.pmap { int3D ->
-            val viewMap = universeData.toUniverseData3DAtGrid(Int4D(time, int3D)).idToUniverseData3DAtPlayer()
-            val commandListAtGrid: List<Command> = playerId3D[int3D.x][int3D.y][int3D.z].map { id ->
-                val universeData3DAtPlayer =  viewMap.getValue(id)
-                MechanismCollection.mechanismList.map { mechanism ->
-                    mechanism.process(playerCollection.getPlayer(id), universeData3DAtPlayer)
-                }.flatten()
-            }.flatten()
-
-            // Execute attached neighbor command
-            val commandExecutedList: List<Command> = playerId3D[int3D.x][int3D.y][int3D.z].map{ id ->
-                // Filter executed command
-                commandListAtGrid.filter { command ->
-                    if (command.toId == id) {
-                        val fromIdAttached: Int = playerCollection.getPlayer(command.fromId).attachedPlayerId
-                        if (playerCollection.getPlayer(id).attachedPlayerId == fromIdAttached) {
-                            command.checkAndExecute(playerCollection.getPlayer(id), universeData.universeSettings)
-                            true
-                        } else {
-                            false
-                        }
-                    } else {
-                        false
-                    }
-                }
-            }.flatten()
-
-            commandListAtGrid.filter { !commandExecutedList.contains(it) }
-        }.flatten()
-
-        addToCommandMap(universeData.commandMap, commandList)
-    }
-
-    /**
-     * First part of the main step
-     * Preprocess and save universe after the beginning of the turn
-     */
-    suspend fun preprocessUniverse() {
+    private suspend fun processMechanism() {
         val time: Int = universeData.universeState.getCurrentTime()
         val playerId3D: List<List<List<List<Int>>>> = playerCollection.getPlayerId3D()
 
@@ -236,6 +196,47 @@ class Universe(private val universeData: UniverseData) {
             commandStoreList
         }.flatten()
         addToCommandMap(universeData.commandMap, commandList)
+    }
+
+    /**
+     * Execute commands
+     */
+    private fun processCommandMap() {
+        // Remove non existing player from the command map
+        val noIdList: List<Int> = universeData.commandMap.keys.filter { !playerCollection.hasPlayer(it) }
+
+        for (id in noIdList) {
+            universeData.commandMap.remove(id)
+        }
+
+        universeData.commandMap.forEach { (id, commandList) ->
+            val playerInt4D: Int4D = playerCollection.getPlayerInt4D(id)
+
+            // Determine the command to be executed by spacetime distance
+            val commandExecuteList: List<Command> = commandList.filter {
+                val distance: Int = intDistance(it.fromInt4D, playerInt4D)
+                val timeDiff: Int = playerInt4D.t - it.fromInt4D.t
+                distance - timeDiff * universeData.universeSettings.speedOfLight <= 0
+            }
+
+            // Remove the command to be executed
+            commandList.removeAll(commandExecuteList)
+
+            // Check and execute command
+            for (command in commandExecuteList) {
+                command.checkAndExecute(playerCollection.getPlayer(command.toId), universeData.universeSettings)
+            }
+        }
+    }
+
+
+    /**
+     * First part of the main step
+     * Preprocess and save universe after the beginning of the turn
+     */
+    suspend fun preprocessUniverse() {
+        processMechanism()
+        processCommandMap()
     }
 
     companion object {
