@@ -8,6 +8,7 @@ import relativitization.universe.data.UniverseState
 import relativitization.universe.data.physics.Int4D
 import relativitization.universe.data.serializer.DataSerializer.copy
 import relativitization.universe.maths.grid.Grids.create3DGrid
+import relativitization.universe.utils.RandomName.randomPlayerName
 
 class PlayerCollection(private val xDim: Int, private val yDim: Int, private val zDim: Int) {
     private val playerMap: MutableMap<Int, MutablePlayerData> = mutableMapOf()
@@ -108,10 +109,27 @@ class PlayerCollection(private val xDim: Int, private val yDim: Int, private val
     }
 
     /**
-     * Add new player from playerData
+     * Add new player from playerData and clear newPlayerList
      */
     fun addNewPlayerFromPlayerData(universeState: UniverseState) {
+        playerMap.forEach { (_, playerData) ->
+            playerData.newPlayerList.forEach { newPlayerInternalData ->
+                val id = universeState.getNewId()
+                val name = randomPlayerName(newPlayerInternalData)
+                val newPlayerData: PlayerData = PlayerData(
+                    id = id,
+                    name = name,
+                    playerType= PlayerType.AI,
+                    int4D = copy(playerData.int4D),
+                    attachedPlayerId = playerData.attachedPlayerId,
+                    playerInternalData = newPlayerInternalData
+                )
+                addPlayer(newPlayerData)
+            }
+        }
 
+        // Clean all newPlayerList
+        playerMap.forEach { (_, playerData) -> playerData.newPlayerList.clear() }
     }
 
 
