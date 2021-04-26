@@ -1,12 +1,12 @@
 # Game flow
-* Mechanism(Parallel): Universe server modify players' data based on game mechanism, clean up eventData
+* (Parallel) Mechanism: Universe server modify players' data based on game mechanism, clean up eventData
   the produced command should execute on self and attached neighbor
-* Commands: universe server execute commands based on the space-time interval
+* (Parallel) Commands: universe server execute commands based on the space-time interval
 * Check: e.g. player dead, new player
 * Clean up newPlayerList stored in PlayerData
 * Universe server update the universe data by replacing the latest slice 
 * Universe server is ready after save  
-* AI(Parallel): Universe server run the ai to determine command list
+* (Parallel) AI: Universe server run the ai to determine command list
 * Universe client check if the universe server is ready, if ready, download 3D view
 * Universe client render the gui based on the 3D View
 * Universe client decide the command list
@@ -15,8 +15,8 @@
   * If all human player sent command list, continue
   * If some players join, add human player and prioritize them over ai generated command
   * If some/all players haven't sent back their command list within the time limit, use ai generated command   
-* Universe server execute the self-command and neighbor-command, others are stored
-* Universe server move player by their velocity, update int4D, also update attached id
+* (Parallel) Universe server execute the self-command and neighbor-command, others are stored
+* Universe server move player by their velocity, update int4D, also update attached id, add afterimage
 * Universe server convert mutable data to immutable data, save latest data, drop oldest data
 
 # Command
