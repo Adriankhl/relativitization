@@ -21,6 +21,10 @@ import relativitization.universe.utils.pmap
 
 import java.io.File
 
+/**
+ * Main class representing the 4D universe
+ * Main stepping function: preProcessUniverse and postProcessUniverse
+ */
 class Universe(private val universeData: UniverseData) {
 
     private val xDim = universeData.universeSettings.xDim
@@ -35,6 +39,7 @@ class Universe(private val universeData: UniverseData) {
     // Or maybe before the wait time limit has reached
     val canAccess: CoroutineBoolean = CoroutineBoolean(false)
 
+    // For iteration
     private val int3DList: List<Int3D> = create3DGrid(xDim, yDim, zDim) {
         x, y, z -> Int3D(x, y, z)
     }.flatten().flatten()
@@ -150,9 +155,9 @@ class Universe(private val universeData: UniverseData) {
     }
 
     /**
-     * Prepare universe after the beginning of the turn
+     * Run all the mechanism, add generated commands to commandMap
      */
-    suspend fun prepareUniverse() {
+    suspend fun processMechanism() {
         val time: Int = universeData.universeState.getCurrentTime()
         val playerId3D: List<List<List<List<Int>>>> = playerCollection.getPlayerId3D()
 
@@ -173,7 +178,7 @@ class Universe(private val universeData: UniverseData) {
                     if (command.toId == id) {
                         val fromIdAttached: Int = playerCollection.getPlayer(command.fromId).attachedPlayerId
                         if (playerCollection.getPlayer(id).attachedPlayerId == fromIdAttached) {
-                            command.execute(playerCollection.getPlayer(id), universeData.universeSettings)
+                            command.checkAndExecute(playerCollection.getPlayer(id), universeData.universeSettings)
                             true
                         } else {
                             false
@@ -187,6 +192,49 @@ class Universe(private val universeData: UniverseData) {
             commandListAtGrid.filter { !commandExecutedList.contains(it) }
         }.flatten()
 
+        addToCommandMap(universeData.commandMap, commandList)
+    }
+
+    /**
+     * First part of the main step
+     * Preprocess and save universe after the beginning of the turn
+     */
+    suspend fun preprocessUniverse() {
+        val time: Int = universeData.universeState.getCurrentTime()
+        val playerId3D: List<List<List<List<Int>>>> = playerCollection.getPlayerId3D()
+
+        // Mechanism process, execute produced commands on attached group, and return remaining command
+        val commandList: List<Command> = int3DList.pmap { int3D ->
+            val viewMap = universeData.toUniverseData3DAtGrid(Int4D(time, int3D)).idToUniverseData3DAtPlayer()
+
+            val playerIdAtGrid: List<Int> = playerId3D[int3D.x][int3D.y][int3D.z]
+
+            val commandListAtGrid: List<Command> = playerId3D[int3D.x][int3D.y][int3D.z].map { id ->
+                val universeData3DAtPlayer = viewMap.getValue(id)
+
+                val commandListFromPlayer: List<Command> = MechanismCollection.mechanismList.map { mechanism ->
+                    mechanism.process(playerCollection.getPlayer(id), universeData3DAtPlayer)
+                }.flatten()
+
+                commandListFromPlayer
+            }.flatten()
+
+            // Differentiate the commands the should be executed immediately, e.g., self and attached player
+            // or commands to be saved to command Map
+            val (commandExecuteList, commandStoreList) = commandListAtGrid.partition {
+                val inGrid = playerId3D.contains(it.toId)
+                val sameAttached = (playerCollection.getPlayer(it.fromId).attachedPlayerId ==
+                        playerCollection.getPlayer(it.toId).attachedPlayerId)
+                inGrid && sameAttached
+            }
+
+            // Check and execute immediate command
+            for (command in commandExecuteList) {
+                command.checkAndExecute(playerCollection.getPlayer(command.toId), universeData.universeSettings)
+            }
+
+            commandStoreList
+        }.flatten()
         addToCommandMap(universeData.commandMap, commandList)
     }
 
