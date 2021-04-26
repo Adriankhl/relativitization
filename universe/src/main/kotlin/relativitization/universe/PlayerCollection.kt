@@ -73,6 +73,19 @@ class PlayerCollection(private val xDim: Int, private val yDim: Int, private val
     }
 
     /**
+     * Turn data to immutable data, and return new universe slice
+     */
+    fun getUniverseSlice(): List<List<List<List<PlayerData>>>> {
+        val playerId3D: List<List<List<MutableList<MutablePlayerData>>>> = create3DGrid(xDim, yDim, zDim) {
+                _, _, _ -> mutableListOf()
+        }
+
+        playerMap.forEach { (_, player) -> playerId3D[player.int4D.x] [player.int4D.y][player.int4D.z].add(player) }
+
+        return copy(playerId3D)
+    }
+
+    /**
      * Remove player by id from player3D and playerMap
      */
     private fun removePlayer(id: Int) {

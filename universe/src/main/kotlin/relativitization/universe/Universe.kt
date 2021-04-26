@@ -1,15 +1,12 @@
 package relativitization.universe
 
 import kotlinx.coroutines.*
-import kotlinx.coroutines.sync.Mutex
 import org.apache.logging.log4j.LogManager
-import relativitization.universe.ai.AI
 import relativitization.universe.ai.PickAI
 import relativitization.universe.data.*
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.physics.Int3D
 import relativitization.universe.data.physics.Int4D
-import relativitization.universe.data.physics.MutableInt4D
 import relativitization.universe.data.serializer.DataSerializer.encode
 import relativitization.universe.data.serializer.DataSerializer.decode
 import relativitization.universe.maths.grid.Grids.create3DGrid
@@ -246,6 +243,7 @@ class Universe(private val universeData: UniverseData) {
         processMechanism()
         processCommandMap()
         processDeadAndNewPlayer()
+        universeData.updateUniverseByReplace(playerCollection.getUniverseSlice())
     }
 
     companion object {
