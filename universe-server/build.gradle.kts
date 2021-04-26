@@ -18,7 +18,6 @@ kotlin {
                 implementation("io.ktor:ktor-server-netty:${Versions.ktorVersion}")
                 implementation("org.apache.logging.log4j:log4j-api:${Versions.log4jVersion}")
                 implementation("org.apache.logging.log4j:log4j-core:${Versions.log4jVersion}")
-                implementation("com.github.javafaker:javafaker:${Versions.javafakerVersion}")
             }
         }
     }

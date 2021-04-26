@@ -10,5 +10,5 @@ object Versions {
     const val gdxVersion = "1.10.0"
     const val log4jVersion = "2.14.1"
     const val junitVersion = "5.7.1"
-    const val javafakerVersion = "1.0.2"
+    const val kotlinFakerVersion = "1.7.0"
 }

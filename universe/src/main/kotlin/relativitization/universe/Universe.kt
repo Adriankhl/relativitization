@@ -229,6 +229,13 @@ class Universe(private val universeData: UniverseData) {
         }
     }
 
+    /**
+     * Update new players and dead players
+     */
+    fun processNewAndDeadPlayer() {
+        playerCollection.cleanDeadPlayer()
+    }
+
 
     /**
      * First part of the main step

@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.PlayerType
+import relativitization.universe.data.UniverseState
 import relativitization.universe.data.physics.Int4D
 import relativitization.universe.data.serializer.DataSerializer.copy
 import relativitization.universe.maths.grid.Grids.create3DGrid
@@ -104,6 +105,13 @@ class PlayerCollection(private val xDim: Int, private val yDim: Int, private val
         val dead: List<Int> = playerMap.values.filter { !it.playerInternalData.isAlive }.map { it.id }
         dead.map { removePlayer(it) }
         deadIdList.addAll(dead)
+    }
+
+    /**
+     * Add new player from playerData
+     */
+    fun addNewPlayerFromPlayerData(universeState: UniverseState) {
+
     }
 
 
