@@ -16,12 +16,12 @@ sealed class Command {
     /**
      * Check if the player (sender) can send the command
      */
-    abstract fun canSend(playerData: MutablePlayerData, universeSetting: UniverseSettings): Boolean
+    abstract fun canSend(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean
 
     /**
      * Check if the player can receive the command
      */
-    abstract fun canExecute(playerData: MutablePlayerData, universeSetting: UniverseSettings): Boolean
+    abstract fun canExecute(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean
 
     /**
      * Check to see if id match
@@ -39,15 +39,15 @@ sealed class Command {
     /**
      * Execute on playerData, for AI/human planning and action
      */
-    abstract fun execute(playerData: MutablePlayerData, universeSetting: UniverseSettings): Unit
+    protected abstract fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings): Unit
 
 
     /**
      * Check and execute
      */
-    fun checkAndExecute(playerData: MutablePlayerData, universeSetting: UniverseSettings): Unit {
-        return if (checkId(playerData) && canExecute(playerData, universeSetting)) {
-            execute(playerData, universeSetting)
+    fun checkAndExecute(playerData: MutablePlayerData, universeSettings: UniverseSettings): Unit {
+        return if (checkId(playerData) && canExecute(playerData, universeSettings)) {
+            execute(playerData, universeSettings)
         } else {
             val className = this::class.qualifiedName
             logger.info("$className cannot be executed on $toId")
