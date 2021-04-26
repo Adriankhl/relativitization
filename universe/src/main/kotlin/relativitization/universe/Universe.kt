@@ -232,7 +232,7 @@ class Universe(private val universeData: UniverseData) {
     /**
      * Update new players and dead players
      */
-    fun processNewAndDeadPlayer() {
+    fun processDeadAndNewPlayer() {
         playerCollection.cleanDeadPlayer()
         playerCollection.addNewPlayerFromPlayerData(universeData.universeState)
     }
@@ -245,7 +245,7 @@ class Universe(private val universeData: UniverseData) {
     suspend fun preprocessUniverse() {
         processMechanism()
         processCommandMap()
-        processNewAndDeadPlayer()
+        processDeadAndNewPlayer()
     }
 
     companion object {
