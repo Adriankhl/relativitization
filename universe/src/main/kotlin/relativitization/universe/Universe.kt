@@ -206,26 +206,24 @@ class Universe(private val universeData: UniverseData) {
             universeData.commandMap.remove(id)
         }
 
-        universeData.commandMap.map { (id, commandList) ->
-            async(Dispatchers.Default) {
-                val playerInt4D: Int4D = playerCollection.getPlayerInt4D(id)
+        universeData.commandMap.pmap { id, commandList ->
+            val playerInt4D: Int4D = playerCollection.getPlayerInt4D(id)
 
-                // Determine the command to be executed by spacetime distance
-                val commandExecuteList: List<Command> = commandList.filter {
-                    val distance: Int = intDistance(it.fromInt4D, playerInt4D)
-                    val timeDiff: Int = playerInt4D.t - it.fromInt4D.t
-                    distance - timeDiff * universeData.universeSettings.speedOfLight <= 0
-                }
-
-                // Remove the command to be executed
-                commandList.removeAll(commandExecuteList)
-
-                // Check and execute command
-                for (command in commandExecuteList) {
-                    command.checkAndExecute(playerCollection.getPlayer(command.toId), universeData.universeSettings)
-                }
+            // Determine the command to be executed by spacetime distance
+            val commandExecuteList: List<Command> = commandList.filter {
+                val distance: Int = intDistance(it.fromInt4D, playerInt4D)
+                val timeDiff: Int = playerInt4D.t - it.fromInt4D.t
+                distance - timeDiff * universeData.universeSettings.speedOfLight <= 0
             }
-        }.awaitAll()
+
+            // Remove the command to be executed
+            commandList.removeAll(commandExecuteList)
+
+            // Check and execute command
+            for (command in commandExecuteList) {
+                command.checkAndExecute(playerCollection.getPlayer(command.toId), universeData.universeSettings)
+            }
+        }
     }
 
     /**

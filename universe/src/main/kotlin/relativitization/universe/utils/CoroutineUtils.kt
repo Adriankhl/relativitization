@@ -152,3 +152,15 @@ suspend fun <A, B> Collection<A>.pmap(f: suspend (A) -> B): List<B> = coroutineS
         map { async { f(it) } }.awaitAll()
     }
 }
+
+suspend fun <K, V, B> Map<K, V>.pmap(f: suspend (K, V) -> B): List<B> = coroutineScope {
+    withContext(Dispatchers.Default) {
+        /*
+        val threads = Thread.getAllStackTraces().keys.filter {
+            it.name.startsWith("CommonPool") || it.name.startsWith("ForkJoinPool")
+        }
+        println("Number of thread in coroutine: " + threads.size )
+        */
+        map { async { f(it.key, it.value) } }.awaitAll()
+    }
+}
