@@ -251,7 +251,7 @@ class Universe(private val universeData: UniverseData) {
 
         val playerId3D: List<List<List<List<Int>>>> = playerCollection.getPlayerId3D()
 
-        val commaneList: List<Command> = int3DList.pmap { int3D ->
+        val commandList: List<Command> = int3DList.pmap { int3D ->
             val playerIdAtGrid: List<Int> = playerId3D[int3D.x][int3D.y][int3D.z]
             val commandPairList: List<Pair<List<Command>,List<Command>>> = playerIdAtGrid.map { fromId ->
                 val commandFromPlayer: List<Command> = inputCommands.getValue(fromId)
@@ -281,7 +281,7 @@ class Universe(private val universeData: UniverseData) {
             }.flatten()
         }.flatten()
 
-        addToCommandMap(universeData.commandMap, commaneList)
+        addToCommandMap(universeData.commandMap, commandList)
     }
 
     /**
