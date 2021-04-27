@@ -86,6 +86,16 @@ data class UniverseData(
         }
     }
 
+    /**
+     * Get player data at the exact int4D
+     */
+    fun getPlayerDataAt(int4D: Int4D, playerId: Int): PlayerData {
+        val playerDataList: List<PlayerData> = getPlayerDataListAt(int4D)
+        return playerDataList.first {
+            (it.id == playerId) && (it.int4D == int4D)
+        }
+    }
+
     fun toUniverseData3DAtGrid(center: Int4D): UniverseData3DAtGrid {
         val playerId3D: List<List<List<MutableList<Int>>>> =
             create3DGrid(
@@ -161,7 +171,7 @@ data class UniverseData(
     /**
      * Update the universe by adding a new slice, remove the oldest slice and updating the universe state
      */
-    fun updateUniverse(slice: List<List<List<List<PlayerData>>>>) {
+    fun updateUniverseDropOldest(slice: List<List<List<List<PlayerData>>>>) {
         universeData4D.addAndRemoveFirstUniverse3DSlice(slice)
         universeState.updateTime()
         if (!isUniverseValid()) {
@@ -174,7 +184,7 @@ data class UniverseData(
      * Update universe by replacing the latest slice
      * Should not update time in the universeState
      */
-    fun updateUniverseByReplace(slice: List<List<List<List<PlayerData>>>>) {
+    fun updateUniverseReplaceLatest(slice: List<List<List<List<PlayerData>>>>) {
         universeData4D.addAndRemoveLastUniverse3DSlice(slice)
         if (!isUniverseValid()) {
             logger.error("Updated universe is not valid")

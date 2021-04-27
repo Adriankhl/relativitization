@@ -28,10 +28,10 @@ data class UniverseSettings(
     val playerHistoricalInt4DLength: Int,
     val humanTimeLimit: Int,
 ) {
-    fun isPlayerAfterImageDurationValid(): Boolean {
-        return playerAfterImageDuration >= maxDelayAfterMove(speedOfLight)
+    private fun isPlayerAfterImageDurationValid(): Boolean {
+        return (playerAfterImageDuration >= maxDelayAfterMove(speedOfLight)) && (playerAfterImageDuration < tDim)
     }
-    fun isPlayerHistoricalInt4DLengthValid(): Boolean {
+    private fun isPlayerHistoricalInt4DLengthValid(): Boolean {
         return playerHistoricalInt4DLength >= playerAfterImageDuration
     }
 

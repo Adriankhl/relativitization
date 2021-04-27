@@ -6,12 +6,15 @@ import kotlin.math.abs
 @Serializable
 data class Int4D(val t: Int, val x: Int, val y: Int, val z: Int) {
     constructor(time: Int, int3D: Int3D) : this(time, int3D.x, int3D.y, int3D.z)
+    constructor(mutableInt4D: MutableInt4D) : this(mutableInt4D.t, mutableInt4D.x, mutableInt4D.y, mutableInt4D.z)
     fun toInt3D() = Int3D(x, y, z)
     fun toDouble4D() = Double4D(t.toDouble(), x.toDouble(), y.toDouble(), z.toDouble())
 }
 
 @Serializable
 data class MutableInt4D(var t: Int, var x: Int, var y: Int, var z: Int) {
+    constructor(mutableInt4D: MutableInt4D) : this(mutableInt4D.t, mutableInt4D.x, mutableInt4D.y, mutableInt4D.z)
+
     fun toMutableInt3D() = MutableInt3D(x, y, z)
     fun toDouble4D() = Double4D(t.toDouble(), x.toDouble(), y.toDouble(), z.toDouble())
 }

@@ -247,7 +247,10 @@ class Universe(private val universeData: UniverseData) {
         aiInputCommands: Map<Int, List<Command>>
     ) {
         // Add two input command map, prefer human input commands
-        val inputCommands: Map<Int, List<Command>> = aiInputCommands + humanInputCommands
+        val inputCommands: Map<Int, List<Command>> = aiInputCommands.filter {
+                (id, _) -> !humanInputCommands.containsKey(id)
+        } + humanInputCommands
+
         val playerId3D: List<List<List<List<Int>>>> = playerCollection.getPlayerId3D()
 
         val commaneList: List<Command> = int3DList.pmap { int3D ->
@@ -289,10 +292,13 @@ class Universe(private val universeData: UniverseData) {
      * Save the latest slice and other information of the universe after that
      */
     suspend fun preprocessUniverse() {
+        // beginning of the turn
         processMechanism()
         processCommandMap()
         processDeadAndNewPlayer()
-        universeData.updateUniverseByReplace(playerCollection.getUniverseSlice())
+
+        val universeSlice = playerCollection.getUniverseSlice(universeData)
+        universeData.updateUniverseReplaceLatest(universeSlice)
         saveLatest()
     }
 
@@ -305,6 +311,11 @@ class Universe(private val universeData: UniverseData) {
         aiInputCommands: Map<Int, List<Command>>
     ) {
         processCommandInput(humanInputCommands, aiInputCommands)
+
+        // Now the end of the turn
+        playerCollection.movePlayer(universeData.universeState, universeData.universeSettings)
+        val universeSlice = playerCollection.getUniverseSlice(universeData)
+        universeData.updateUniverseDropOldest(universeSlice)
     }
 
     companion object {
