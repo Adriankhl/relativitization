@@ -164,7 +164,7 @@ class Universe(private val universeData: UniverseData) {
 
             val playerIdAtGrid: List<Int> = playerId3D[int3D.x][int3D.y][int3D.z]
 
-            val commandListAtGrid: List<Command> = playerId3D[int3D.x][int3D.y][int3D.z].map { id ->
+            val commandListAtGrid: List<Command> = playerIdAtGrid.map { id ->
                 val universeData3DAtPlayer = viewMap.getValue(id)
 
                 val commandListFromPlayer: List<Command> = MechanismCollection.mechanismList.map { mechanism ->
@@ -176,9 +176,10 @@ class Universe(private val universeData: UniverseData) {
 
             // Differentiate the commands the should be executed immediately, e.g., self and attached player
             // or commands to be saved to command Map
+            // In principle, this shouldn't contain self commands since they should be integrated in the mechanism process
             val (commandExecuteList, commandStoreList) = commandListAtGrid.partition {
-                val inGrid = playerId3D.contains(it.toId)
-                val sameAttached = (playerCollection.getPlayer(it.fromId).attachedPlayerId ==
+                val inGrid: Boolean = playerId3D.contains(it.toId)
+                val sameAttached: Boolean = (playerCollection.getPlayer(it.fromId).attachedPlayerId ==
                         playerCollection.getPlayer(it.toId).attachedPlayerId)
                 inGrid && sameAttached
             }
@@ -190,6 +191,7 @@ class Universe(private val universeData: UniverseData) {
 
             commandStoreList
         }.flatten()
+
         addToCommandMap(universeData.commandMap, commandList)
     }
 
@@ -229,21 +231,80 @@ class Universe(private val universeData: UniverseData) {
     /**
      * Update new players and dead players
      */
-    fun processDeadAndNewPlayer() {
+    private fun processDeadAndNewPlayer() {
         playerCollection.cleanDeadPlayer()
         playerCollection.addNewPlayerFromPlayerData(universeData.universeState)
     }
 
+    /**
+     * Process human and ai command input
+     *
+     * @param humanInputCommands map from player id to the command list from this player
+     * @param aiInputCommands map from player id to the command list computed by ai
+     */
+    private suspend fun processCommandInput(
+        humanInputCommands: Map<Int, List<Command>>,
+        aiInputCommands: Map<Int, List<Command>>
+    ) {
+        // Add two input command map, prefer human input commands
+        val inputCommands: Map<Int, List<Command>> = aiInputCommands + humanInputCommands
+        val playerId3D: List<List<List<List<Int>>>> = playerCollection.getPlayerId3D()
+
+        val commaneList: List<Command> = int3DList.pmap { int3D ->
+            val playerIdAtGrid: List<Int> = playerId3D[int3D.x][int3D.y][int3D.z]
+            val commandPairList: List<Pair<List<Command>,List<Command>>> = playerIdAtGrid.map { fromId ->
+                val commandFromPlayer: List<Command> = inputCommands.getValue(fromId)
+                val (selfCommandList, otherCommandList) = commandFromPlayer.partition { it.toId == fromId}
+
+                val (sameAttachCommandList, commandStoreList) = otherCommandList.partition { command ->
+                    val inGrid: Boolean = playerIdAtGrid.contains(command.toId)
+                    val sameAttach: Boolean = (playerCollection.getPlayer(fromId).attachedPlayerId ==
+                            playerCollection.getPlayer(command.toId).attachedPlayerId)
+                    inGrid && sameAttach
+                }
+
+                // Execute self command
+                for (command in selfCommandList) {
+                    command.checkAndExecute(playerCollection.getPlayer(command.toId), universeData.universeSettings)
+                }
+
+                Pair(sameAttachCommandList, commandStoreList)
+            }
+
+            // Execute command on attached neighbour and return remaining commands
+            commandPairList.map { pair ->
+                pair.second.forEach { command ->
+                    command.checkAndExecute(playerCollection.getPlayer(command.toId), universeData.universeSettings)
+                }
+                pair.first
+            }.flatten()
+        }.flatten()
+
+        addToCommandMap(universeData.commandMap, commaneList)
+    }
 
     /**
      * First part of the main step
-     * Preprocess and save universe after the beginning of the turn
+     * Preprocess after the beginning of the turn
+     * Save the latest slice and other information of the universe after that
      */
     suspend fun preprocessUniverse() {
         processMechanism()
         processCommandMap()
         processDeadAndNewPlayer()
         universeData.updateUniverseByReplace(playerCollection.getUniverseSlice())
+        saveLatest()
+    }
+
+    /**
+     * Post process universe
+     * Happens before ai and human input command list
+     */
+    suspend fun postProcessUniverse(
+        humanInputCommands: Map<Int, List<Command>>,
+        aiInputCommands: Map<Int, List<Command>>
+    ) {
+        processCommandInput(humanInputCommands, aiInputCommands)
     }
 
     companion object {
