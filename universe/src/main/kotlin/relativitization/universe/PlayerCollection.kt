@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager
 import relativitization.universe.data.*
 import relativitization.universe.data.physics.*
 import relativitization.universe.data.serializer.DataSerializer.copy
+import relativitization.universe.maths.grid.Grids.sameCube
 import relativitization.universe.maths.grid.Grids.create3DGrid
 import relativitization.universe.maths.physics.Intervals.distance
 import relativitization.universe.utils.RandomName.randomPlayerName
@@ -155,8 +156,7 @@ class PlayerCollection(private val xDim: Int, private val yDim: Int, private val
      * Does 4 things
      * 1. move player double4D position by his velocity, check the boundaries of the map
      * 2. move player int4D position by his double4D, add afterimage to int4DHistory if needed
-     * 3. clear attached id of player if it doesn't exist or if their distance is too large
-     * 4. add attached id based on targetAttachId (and his attachedId) if their distance is close enough
+     * 3. attached player by their double4D, only one attach id for a group
      */
     fun movePlayer(universeState: UniverseState, universeSettings: UniverseSettings) {
         // New time
@@ -219,53 +219,22 @@ class PlayerCollection(private val xDim: Int, private val yDim: Int, private val
             playerData.int4DHistory.removeAll { time - it.t > universeSettings.playerAfterImageDuration }
         }
 
-        // Break attached player by distance
-        for ((_, playerData) in playerMap) {
-            if (hasPlayer(playerData.attachedPlayerId)) {
-                val attachedDouble4D: MutableDouble4D = getPlayer(
-                    playerData.attachedPlayerId
-                ).playerInternalData.physicsData.double4D
-                val attachedInt4D: MutableInt4D = getPlayer(playerData.attachedPlayerId).int4D
-
-                // Break attachment if distance > 0.01 or not in the same grid, and attach to itself
-                if ((distance(playerData.playerInternalData.physicsData.double4D, attachedDouble4D) > 0.01) ||
-                    (playerData.int4D != attachedInt4D)
-                ) {
-                    playerData.attachedPlayerId = playerData.id
+        // attach player if they are within the same cube of length 0.01
+        getPlayerId3D().flatten().flatten().forEach { list ->
+            val playerIdList = list.toMutableList()
+            while (!playerIdList.isEmpty()) {
+                val playerId = playerIdList.first()
+                val sameCubePlayer: List<Int> = playerIdList.filter { id ->
+                    sameCube(
+                        getPlayer(playerId).playerInternalData.physicsData.double4D,
+                        getPlayer(id).playerInternalData.physicsData.double4D,
+                        0.01
+                    )
                 }
-            } else {
-                playerData.attachedPlayerId = playerData.id
-            }
-        }
-
-        // Attach player if distance is sufficiently close
-        for ((_, playerData) in playerMap) {
-            val targetAttachId: Int = playerData.playerInternalData.playerState.movementState.targetAttachId
-            val realTargetId: Int = if (hasPlayer(targetAttachId)) {
-                if ((getPlayer(targetAttachId).attachedPlayerId == targetAttachId) ||
-                    (getPlayer(targetAttachId).attachedPlayerId == -1)
-                ) {
-                    targetAttachId
-                } else {
-                    // Non existent attached playerid should already be removed
-                    getPlayer(targetAttachId).attachedPlayerId
-                }
-            } else {
-                playerData.id
-            }
-
-            if (hasPlayer(realTargetId)) {
-                val targetDouble4D: MutableDouble4D = getPlayer(
-                    realTargetId
-                ).playerInternalData.physicsData.double4D
-                val targetInt4D: MutableInt4D = getPlayer(realTargetId).int4D
-
-                // Add attachment when distance < 0.01
-                if ((distance(playerData.playerInternalData.physicsData.double4D, targetDouble4D) < 0.01) &&
-                    (playerData.int4D != targetInt4D)
-                ) {
-                    playerData.attachedPlayerId = realTargetId
-                }
+                getPlayer(playerId).attachedPlayerId = playerId
+                sameCubePlayer.forEach { id -> getPlayer(id).attachedPlayerId = playerId }
+                playerIdList.remove(playerId)
+                playerIdList.removeAll { sameCubePlayer.contains(it) }
             }
         }
     }

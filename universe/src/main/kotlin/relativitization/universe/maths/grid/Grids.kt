@@ -1,5 +1,7 @@
 package relativitization.universe.maths.grid
 
+import relativitization.universe.data.physics.MutableDouble4D
+
 object Grids {
 
     /**
@@ -59,6 +61,31 @@ object Grids {
         generate: (Int, Int, Int, Int) -> T
     ): MutableList<List<List<List<T>>>> =
         MutableList(tDim) { create3DGrid<T>(xDim, yDim, zDim) { x, y, z -> generate(it, x, y, z)} }
+
+    /**
+     * Whether the coordinate belong to same cube in a grid
+     */
+    fun sameCube(md1: MutableDouble4D, md2: MutableDouble4D, edgeLength: Double): Boolean {
+        return if (md1.toMutableInt4D() != md2.toMutableInt4D()) {
+            false
+        } else {
+            val xExtra1: Double = md1.x - md1.x.toInt()
+            val xExtra2: Double = md2.x - md2.x.toInt()
+            val yExtra1: Double = md1.y - md1.y.toInt()
+            val yExtra2: Double = md2.y - md2.y.toInt()
+            val zExtra1: Double = md1.z - md1.z.toInt()
+            val zExtra2: Double = md2.z - md2.z.toInt()
+
+            val xNum1 = (xExtra1 / edgeLength).toInt()
+            val xNum2 = (xExtra2 / edgeLength).toInt()
+            val yNum1 = (yExtra1 / edgeLength).toInt()
+            val yNum2 = (yExtra2 / edgeLength).toInt()
+            val zNum1 = (zExtra1 / edgeLength).toInt()
+            val zNum2 = (zExtra2 / edgeLength).toInt()
+
+            (xNum1 == xNum2) && (yNum1 == yNum2) && (zNum1 == zNum2)
+        }
+    }
 }
 
 /**
