@@ -261,8 +261,8 @@ class Universe(private val universeData: UniverseData) {
         val commandList: List<Command> = int3DList.pmap { int3D ->
             val playerIdAtGrid: List<Int> = playerId3D[int3D.x][int3D.y][int3D.z]
             val commandPairList: List<Pair<List<Command>,List<Command>>> = playerIdAtGrid.map { fromId ->
-                val commandFromPlayer: List<Command> = inputCommands.getValue(fromId)
-                val (selfCommandList, otherCommandList) = commandFromPlayer.partition { it.toId == fromId}
+                val commandFromPlayer: List<Command> = validCommand.getValue(fromId)
+                val (selfCommandList, otherCommandList) = commandFromPlayer.partition { it.toId == fromId }
 
                 val (sameAttachCommandList, commandStoreList) = otherCommandList.partition { command ->
                     val inGrid: Boolean = playerIdAtGrid.contains(command.toId)
@@ -281,10 +281,10 @@ class Universe(private val universeData: UniverseData) {
 
             // Execute command on attached neighbour and return remaining commands
             commandPairList.map { pair ->
-                pair.second.forEach { command ->
+                pair.first.forEach { command ->
                     command.checkAndExecute(playerCollection.getPlayer(command.toId), universeData.universeSettings)
                 }
-                pair.first
+                pair.second
             }.flatten()
         }.flatten()
 
@@ -326,6 +326,9 @@ class Universe(private val universeData: UniverseData) {
     companion object {
         private val logger = LogManager.getLogger()
 
+        /**
+         * Load saved universe by name
+         */
         fun loadUniverseLatest(universeName: String): UniverseData {
             val saveDir = "saves/$universeName"
 
