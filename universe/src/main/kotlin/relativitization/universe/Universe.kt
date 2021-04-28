@@ -249,6 +249,13 @@ class Universe(private val universeData: UniverseData) {
                 (id, _) -> !humanInputCommands.containsKey(id)
         } + humanInputCommands
 
+        // Check whether the command is valid
+        val validCommand: Map<Int, List<Command>> = inputCommands.mapValues { (id, commandList) ->
+            commandList.filter { command ->
+                command.canSend(playerCollection.getPlayer(id), universeData.universeSettings)
+            }
+        }
+
         val playerId3D: List<List<List<List<Int>>>> = playerCollection.getPlayerId3D()
 
         val commandList: List<Command> = int3DList.pmap { int3D ->
