@@ -6,6 +6,7 @@
 * Clean up newPlayerList stored in PlayerData
 * Universe server update the universe data by replacing the latest slice 
 * Universe server is ready after save  
+* Can access  universe
 * (Parallel) AI: Universe server run the ai to determine command list
 * Universe client check if the universe server is ready, if ready, download 3D view
 * Universe client render the gui based on the 3D View
@@ -14,9 +15,11 @@
 * Universe server wait a certain duration
   * If all human player sent command list, continue
   * If some players join, add human player and prioritize them over ai generated command
-  * If some/all players haven't sent back their command list within the time limit, use ai generated command   
+  * If some/all players haven't sent back their command list within the time limit, use ai generated command
+* Can't access universe
+* Change player type based on whether it has human input
 * (Parallel) Universe server execute the self-command and neighbor-command, others are stored
-* Universe server move player by their velocity, update int4D, also update attached id, add afterimage
+* Universe server move player by their velocity, update int4D, also update attached id by their double4D position
 * Universe server convert mutable data to immutable data, save latest data, drop oldest data
 
 # Command

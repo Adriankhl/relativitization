@@ -52,10 +52,26 @@ class PlayerCollection(private val xDim: Int, private val yDim: Int, private val
     }
 
     /**
+     * Get all NONE type (nor ai or human) player
+     */
+    fun getAllNoneId(): List<Int> {
+        return playerMap.filter { (_, player) -> player.playerType == PlayerType.NONE }.keys.toList()
+    }
+
+    /**
      * Get all human player id
      */
     fun getAllHumanId(): List<Int> {
         return playerMap.filter { (_, player) -> player.playerType == PlayerType.HUMAN }.keys.toList()
+    }
+
+    /**
+     * Get all human or ai player id
+     */
+    fun getAllOrAiId(): List<Int> {
+        return playerMap.filter { (_, player) ->
+            (player.playerType == PlayerType.HUMAN) || (player.playerType == PlayerType.AI)
+        }.keys.toList()
     }
 
     /**
