@@ -12,10 +12,12 @@ import org.apache.logging.log4j.LogManager
 import relativitization.server.routes.registerCreateUniverseRoutes
 import relativitization.server.routes.registerUniverseStatusRoutes
 import relativitization.universe.Universe
+import relativitization.universe.generate.GenerateSetting
+import relativitization.universe.generate.GenerateUniverse
 
 
 class UniverseServer {
-    lateinit var universe: Universe
+    var universe: Universe = Universe(GenerateUniverse.generate(GenerateSetting()))
 
     suspend fun start() {
         embeddedServer(

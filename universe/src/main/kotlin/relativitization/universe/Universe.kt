@@ -178,7 +178,7 @@ class Universe(private val universeData: UniverseData) {
             // or commands to be saved to command Map
             // In principle, this shouldn't contain self commands since they should be integrated in the mechanism process
             val (commandExecuteList, commandStoreList) = commandListAtGrid.partition {
-                val inGrid: Boolean = playerId3D.contains(it.toId)
+                val inGrid: Boolean = playerIdAtGrid.contains(it.toId)
                 val sameAttached: Boolean = (playerCollection.getPlayer(it.fromId).attachedPlayerId ==
                         playerCollection.getPlayer(it.toId).attachedPlayerId)
                 inGrid && sameAttached
@@ -253,7 +253,7 @@ class Universe(private val universeData: UniverseData) {
         val noneTypePlayerIdList: List<Int> = playerCollection.getAllNoneId()
 
         // Filter out none type player, Check whether the command is valid
-        val validCommand: Map<Int, List<Command>> = inputCommands.filter { (id, commandList) ->
+        val validCommand: Map<Int, List<Command>> = inputCommands.filter { (id, _) ->
             !noneTypePlayerIdList.contains(id)
         }.mapValues { (id, commandList) ->
             commandList.filter { command ->

@@ -11,8 +11,11 @@ kotlin {
             dependencies {
                 implementation(project(":gdx-core"))
                 implementation(project(":universe-server"))
+                implementation(project(":universe-client"))
 
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.kotlinxSerializationVersion}")
+                implementation("io.ktor:ktor-client-core:${Versions.ktorVersion}")
+                implementation("io.ktor:ktor-client-cio:${Versions.ktorVersion}")
 
                 implementation("com.badlogicgames.gdx:gdx-backend-lwjgl3:${Versions.gdxVersion}")
                 implementation("com.badlogicgames.gdx:gdx-platform:${Versions.gdxVersion}:natives-desktop")
@@ -27,9 +30,21 @@ kotlin {
                 implementation("org.apache.logging.log4j:log4j-core:${Versions.log4jVersion}")
             }
         }
+
+        val test by getting {
+            dependencies {
+                implementation(kotlin("test-junit5"))
+                implementation("org.junit.jupiter:junit-jupiter-api:${Versions.junitVersion}")
+                runtimeOnly("org.junit.jupiter:junit-jupiter-engine:${Versions.junitVersion}")
+            }
+        }
     }
 }
 
 tasks.withType<KotlinCompile>().configureEach {
     kotlinOptions.jvmTarget = "11"
+}
+
+tasks.test {
+    useJUnitPlatform()
 }

@@ -1,6 +1,5 @@
 package relativitization.universe.data.events
 
-import com.github.javafaker.Bool
 import kotlinx.serialization.Serializable
 import org.apache.logging.log4j.LogManager
 import relativitization.universe.data.PlayerData
