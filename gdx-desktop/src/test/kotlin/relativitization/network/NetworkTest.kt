@@ -26,6 +26,7 @@ internal class NetworkTest {
             delay(2000)
             val response: HttpResponse = universeClient.client.get("http://127.0.0.1:29979/status/hello")
             println(response.readText())
+            universeServer.stop()
         }
     }
 }

@@ -19,28 +19,34 @@ import relativitization.universe.generate.GenerateUniverse
 class UniverseServer {
     var universe: Universe = Universe(GenerateUniverse.generate(GenerateSetting()))
 
-    suspend fun start() {
-        embeddedServer(
-            CIO,
-            configure = {
-                connectionIdleTimeoutSeconds = 45
-            },
-            environment = applicationEngineEnvironment {
+    val ktorServer = embeddedServer(
+        CIO,
+        configure = {
+            connectionIdleTimeoutSeconds = 45
+        },
+        environment = applicationEngineEnvironment {
 
-                module {
-                    install(ContentNegotiation) {
-                        json()
-                    }
-                    registerUniverseStatusRoutes(universe)
-                    registerCreateUniverseRoutes(universe)
+            module {
+                install(ContentNegotiation) {
+                    json()
                 }
-
-                connector {
-                    port = 29979
-                    host = "127.0.0.1"
-                }
-
+                registerUniverseStatusRoutes(universe)
+                registerCreateUniverseRoutes(universe)
             }
-        ).start(true)
+
+            connector {
+                port = 29979
+                host = "127.0.0.1"
+            }
+
+        }
+    )
+
+    suspend fun start() {
+        ktorServer.start(true)
+    }
+
+    suspend fun stop() {
+        ktorServer.stop(1000, 1000)
     }
 }
