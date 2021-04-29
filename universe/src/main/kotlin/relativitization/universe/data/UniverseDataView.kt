@@ -61,13 +61,13 @@ data class UniverseData3DAtGrid(
 
 @Serializable
 data class UniverseData3DAtPlayer(
-    val id: Int,
-    val center: Int4D,
-    private val prioritizedPlayerDataMap: Map<Int, PlayerData>,
-    private val prioritizedPlayerId3DMap: List<List<List<Map<Int, List<Int>>>>>,
-    private val playerDataMap: Map<Int, PlayerData>,
-    private val playerId3DMap: List<List<List<Map<Int, List<Int>>>>>,
-    val universeSettings: UniverseSettings,
+    val id: Int = -1,
+    val center: Int4D = Int4D(0, 0, 0, 0),
+    private val prioritizedPlayerDataMap: Map<Int, PlayerData> = mapOf(),
+    private val prioritizedPlayerId3DMap: List<List<List<Map<Int, List<Int>>>>> = listOf(),
+    private val playerDataMap: Map<Int, PlayerData> = mapOf(),
+    private val playerId3DMap: List<List<List<Map<Int, List<Int>>>>> = listOf(),
+    val universeSettings: UniverseSettings = UniverseSettings(),
 ) {
     /**
      * Check int3D valid

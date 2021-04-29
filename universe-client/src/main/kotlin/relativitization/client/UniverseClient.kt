@@ -11,5 +11,5 @@ class UniverseClient {
             requestTimeoutMillis = 1000
         }
     }
-    lateinit var UniverseData3DCache: UniverseData3DAtPlayer
+    var UniverseData3DCache: UniverseData3DAtPlayer = UniverseData3DAtPlayer()
 }
