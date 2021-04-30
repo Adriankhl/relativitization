@@ -18,6 +18,8 @@ kotlin {
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.kotlinxSerializationVersion}")
                 implementation("io.ktor:ktor-client-core:${Versions.ktorVersion}")
                 implementation("io.ktor:ktor-client-cio:${Versions.ktorVersion}")
+                implementation("io.ktor:ktor-server-core:${Versions.ktorVersion}")
+                implementation("io.ktor:ktor-server-cio:${Versions.ktorVersion}")
 
                 implementation("com.badlogicgames.gdx:gdx-backend-lwjgl3:${Versions.gdxVersion}")
                 implementation("com.badlogicgames.gdx:gdx-platform:${Versions.gdxVersion}:natives-desktop")

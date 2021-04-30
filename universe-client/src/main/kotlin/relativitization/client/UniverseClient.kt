@@ -8,7 +8,7 @@ import io.ktor.client.statement.*
 import relativitization.universe.data.UniverseData3DAtPlayer
 
 class UniverseClient {
-    val client = HttpClient(CIO) {
+    val ktorClient = HttpClient(CIO) {
         install(HttpTimeout)
     }
     var UniverseData3DCache: UniverseData3DAtPlayer = UniverseData3DAtPlayer()
