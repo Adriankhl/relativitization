@@ -5,13 +5,11 @@ import io.ktor.client.engine.cio.*
 import io.ktor.client.features.*
 import io.ktor.client.features.json.*
 import io.ktor.client.features.json.serializer.*
-import io.ktor.client.features.observer.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import org.apache.logging.log4j.LogManager
 import relativitization.universe.communication.CreateUniverseMessage
-import relativitization.universe.data.MutableUniverseSettings
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.generate.GenerateSetting
@@ -38,11 +36,15 @@ class UniverseClient(var adminPassword: String) {
 
     // ip/url of server
     var serverAddress = "127.0.0.1"
+    var serverPort = "29979"
 
     suspend fun postCreateUniverse() {
-        val response: HttpResponse = ktorClient.post("http://$serverAddress/create") {
+        val response: HttpResponse = ktorClient.post("http://$serverAddress:$serverPort/create") {
             contentType(ContentType.Application.Json)
             body = CreateUniverseMessage(adminPassword, generateSettings)
+            timeout {
+                requestTimeoutMillis = 1000
+            }
         }
 
         logger.debug("Create universe status: ${response.status}")

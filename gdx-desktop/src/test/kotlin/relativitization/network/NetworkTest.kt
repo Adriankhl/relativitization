@@ -4,6 +4,8 @@ import io.ktor.client.features.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import kotlinx.coroutines.*
+import org.apache.logging.log4j.Level
+import org.apache.logging.log4j.core.config.Configurator
 import org.junit.jupiter.api.Test
 import relativitization.client.UniverseClient
 import relativitization.server.UniverseServer
@@ -11,9 +13,8 @@ import relativitization.server.UniverseServer
 internal class NetworkTest {
     @Test
     fun helloTest() {
-        val universeServer = UniverseServer()
-        val universeClient = UniverseClient()
-
+        val universeServer = UniverseServer("11")
+        val universeClient = UniverseClient("11")
         runBlocking {
             launch(Dispatchers.IO) {
                 universeServer.start()
@@ -34,6 +35,29 @@ internal class NetworkTest {
                 }
             }
             delay(10000)
+            universeServer.stop()
+        }
+    }
+
+    @Test
+    fun createUniverseTest() {
+        Configurator.setRootLevel(Level.DEBUG);
+
+        val universeServer = UniverseServer("11")
+        val universeClient = UniverseClient("11")
+
+        runBlocking {
+            launch(Dispatchers.IO) {
+                universeServer.start()
+            }
+            println("Launched universe server")
+
+            delay(5000)
+
+            println("create universe")
+            universeClient.postCreateUniverse()
+            println("Done create universe")
+
             universeServer.stop()
         }
     }
