@@ -18,6 +18,7 @@ import relativitization.universe.generate.GenerateUniverse
 
 class UniverseServer {
     var universe: Universe = Universe(GenerateUniverse.generate(GenerateSetting()))
+    val serverStatus: UniverseServerStatus = UniverseServerStatus()
 
     val ktorServer = embeddedServer(
         CIO,
@@ -30,8 +31,8 @@ class UniverseServer {
                 install(ContentNegotiation) {
                     json()
                 }
-                registerUniverseStatusRoutes(universe)
-                registerCreateUniverseRoutes(universe)
+                registerUniverseStatusRoutes(universe, serverStatus)
+                registerCreateUniverseRoutes(universe, serverStatus)
             }
 
             connector {

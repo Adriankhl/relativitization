@@ -5,9 +5,10 @@ import io.ktor.http.*
 import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
+import relativitization.server.UniverseServerStatus
 import relativitization.universe.Universe
 
-fun Route.createUniverseRouting(universe: Universe) {
+fun Route.createUniverseRouting(universe: Universe, serverStatus: UniverseServerStatus) {
     route("/create") {
         get {
 
@@ -15,8 +16,8 @@ fun Route.createUniverseRouting(universe: Universe) {
     }
 }
 
-fun Application.registerCreateUniverseRoutes(universe: Universe) {
+fun Application.registerCreateUniverseRoutes(universe: Universe, serverStatus: UniverseServerStatus) {
     routing {
-        createUniverseRouting(universe)
+        createUniverseRouting(universe, serverStatus)
     }
 }
