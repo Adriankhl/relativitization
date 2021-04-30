@@ -6,7 +6,7 @@ import io.ktor.routing.*
 import relativitization.server.UniverseServerState
 import relativitization.universe.Universe
 
-fun Route.universeStatueRouting(universe: Universe, serverState: UniverseServerState) {
+fun Route.universeStatueRouting(serverState: UniverseServerState) {
     route("/status/hello") {
         get {
             call.respondText("Hello, world!")
@@ -14,8 +14,8 @@ fun Route.universeStatueRouting(universe: Universe, serverState: UniverseServerS
     }
 }
 
-fun Application.registerUniverseStatusRoutes(universe: Universe, serverState: UniverseServerState) {
+fun Application.registerUniverseStatusRoutes(serverState: UniverseServerState) {
     routing {
-        universeStatueRouting(universe, serverState)
+        universeStatueRouting(serverState)
     }
 }

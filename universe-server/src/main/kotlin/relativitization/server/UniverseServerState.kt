@@ -1,8 +1,15 @@
 package relativitization.server
 
+import relativitization.universe.Universe
+import relativitization.universe.generate.GenerateSetting
+import relativitization.universe.generate.GenerateUniverse
+
 class UniverseServerState(var adminPassword: String) {
     // Whether there is already a universe
     var hasUniverse: Boolean = false
+
+    // Data of universe
+    var universe: Universe = Universe(GenerateUniverse.generate(GenerateSetting()))
 
     // map from registered player id to password
     val humanIdPasswordMap: MutableMap<Int, String> = mutableMapOf()
