@@ -3,12 +3,9 @@ package relativitization.server
 import relativitization.universe.data.serializer.DataSerializer
 import io.ktor.application.*
 import io.ktor.features.*
-import io.ktor.response.*
-import io.ktor.routing.*
 import io.ktor.server.engine.*
 import io.ktor.server.cio.*
 import io.ktor.serialization.*
-import org.apache.logging.log4j.LogManager
 import relativitization.server.routes.registerCreateUniverseRoutes
 import relativitization.server.routes.registerUniverseStatusRoutes
 import relativitization.universe.Universe
@@ -16,9 +13,9 @@ import relativitization.universe.generate.GenerateSetting
 import relativitization.universe.generate.GenerateUniverse
 
 
-class UniverseServer {
+class UniverseServer(adminPassword: String) {
     var universe: Universe = Universe(GenerateUniverse.generate(GenerateSetting()))
-    val serverStatus: UniverseServerStatus = UniverseServerStatus()
+    val serverState: UniverseServerState = UniverseServerState(adminPassword)
 
     val ktorServer = embeddedServer(
         CIO,
@@ -31,8 +28,8 @@ class UniverseServer {
                 install(ContentNegotiation) {
                     json(DataSerializer.format)
                 }
-                registerUniverseStatusRoutes(universe, serverStatus)
-                registerCreateUniverseRoutes(universe, serverStatus)
+                registerUniverseStatusRoutes(universe, serverState)
+                registerCreateUniverseRoutes(universe, serverState)
             }
 
             connector {

@@ -1,0 +1,3 @@
+package relativitization.universe.communication
+
+import kotlinx.serialization.Serializable
