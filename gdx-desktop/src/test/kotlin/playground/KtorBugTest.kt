@@ -35,7 +35,7 @@ internal class KtorBugTest {
             println("Launched response")
             delay(1000)
             println("Cancel job")
-            //job.cancel()
+            job.cancel()
             server.stop(1000, 1000)
         }
     }
