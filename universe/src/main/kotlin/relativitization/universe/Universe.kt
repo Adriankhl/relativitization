@@ -249,6 +249,19 @@ class Universe(private val universeData: UniverseData) {
                 (id, _) -> !humanInputCommands.containsKey(id)
         } + humanInputCommands
 
+        // Default all player type to Ai
+        for ((id, _) in aiInputCommands) {
+            if (playerCollection.getPlayer(id).playerType != PlayerType.NONE ) {
+                playerCollection.getPlayer(id).playerType = PlayerType.AI
+            }
+        }
+
+        // Then change the player type to human if there is human input
+        for ((id, _) in humanInputCommands) {
+            if (playerCollection.getPlayer(id).playerType != PlayerType.NONE ) {
+                playerCollection.getPlayer(id).playerType = PlayerType.HUMAN
+            }
+        }
 
         val noneTypePlayerIdList: List<Int> = playerCollection.getAllNoneId()
 
