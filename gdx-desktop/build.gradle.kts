@@ -12,6 +12,8 @@ kotlin {
                 implementation(project(":gdx-core"))
                 implementation(project(":universe-server"))
                 implementation(project(":universe-client"))
+                implementation(project(":universe"))
+
 
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.kotlinxSerializationVersion}")
                 implementation("io.ktor:ktor-client-core:${Versions.ktorVersion}")

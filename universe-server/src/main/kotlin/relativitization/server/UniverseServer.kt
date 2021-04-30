@@ -22,7 +22,7 @@ class UniverseServer {
     val ktorServer = embeddedServer(
         CIO,
         configure = {
-            connectionIdleTimeoutSeconds = 45
+            connectionIdleTimeoutSeconds = 30
         },
         environment = applicationEngineEnvironment {
 
