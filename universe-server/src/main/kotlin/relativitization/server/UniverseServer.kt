@@ -29,7 +29,7 @@ class UniverseServer {
 
             module {
                 install(ContentNegotiation) {
-                    json()
+                    json(DataSerializer.format)
                 }
                 registerUniverseStatusRoutes(universe, serverStatus)
                 registerCreateUniverseRoutes(universe, serverStatus)

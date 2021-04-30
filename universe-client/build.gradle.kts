@@ -16,6 +16,7 @@ kotlin {
                 implementation("org.jetbrains.kotlin:kotlin-reflect:${Versions.kotlinVersion}")
                 implementation("io.ktor:ktor-client-core:${Versions.ktorVersion}")
                 implementation("io.ktor:ktor-client-cio:${Versions.ktorVersion}")
+                implementation("io.ktor:ktor-client-serialization:${Versions.ktorVersion}")
                 implementation("org.apache.logging.log4j:log4j-api:${Versions.log4jVersion}")
                 implementation("org.apache.logging.log4j:log4j-core:${Versions.log4jVersion}")
             }
