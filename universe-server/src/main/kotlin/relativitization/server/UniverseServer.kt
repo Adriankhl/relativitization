@@ -8,15 +8,17 @@ import io.ktor.response.*
 import io.ktor.server.engine.*
 import io.ktor.server.cio.*
 import io.ktor.serialization.*
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import org.apache.logging.log4j.LogManager
 import relativitization.server.routes.registerCreateUniverseRoutes
 import relativitization.server.routes.registerUniverseStatusRoutes
 
 
 class UniverseServer(adminPassword: String) {
-    val universeServerInternal: UniverseServerInternal = UniverseServerInternal(adminPassword)
+    private val universeServerInternal: UniverseServerInternal = UniverseServerInternal(adminPassword)
 
-    val ktorServer = embeddedServer(
+    private val ktorServer = embeddedServer(
         CIO,
         configure = {
             connectionIdleTimeoutSeconds = 30
@@ -28,7 +30,7 @@ class UniverseServer(adminPassword: String) {
                     json(DataSerializer.format)
                 }
                 install(StatusPages) {
-                    exception<Throwable> { cause ->
+                    exception<Throwable> {
                         logger.warn("Wrong request causing exception in server")
                         call.respondText("Something wrong in the request", ContentType.Text.Plain, HttpStatusCode.InternalServerError)
                     }
@@ -45,12 +47,18 @@ class UniverseServer(adminPassword: String) {
         }
     )
 
-    suspend fun start() {
-        ktorServer.start(true)
+    suspend fun start() = coroutineScope {
+        launch {
+            ktorServer.start(true)
+        }
+        launch {
+            universeServerInternal.start()
+        }
     }
 
     suspend fun stop() {
         ktorServer.stop(1000, 1000)
+        universeServerInternal.stop()
     }
 
 

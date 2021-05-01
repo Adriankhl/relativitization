@@ -28,14 +28,6 @@ class Universe(private val universeData: UniverseData) {
     private val yDim = universeData.universeSettings.yDim
     private val zDim = universeData.universeSettings.zDim
 
-    // Store all commands from human
-    val humanCommandMap: CoroutineMap<Int, List<Command>> = CoroutineMap()
-
-    // Whether this can be accessed (like push to humanCommandMap) by external input (e.g. other human's client)
-    // Should be true only after the new universe data is ready and before for all player inputs are done
-    // Or maybe before the wait time limit has reached
-    val canAccess: CoroutineBoolean = CoroutineBoolean(false)
-
     // For iteration
     private val int3DList: List<Int3D> = create3DGrid(xDim, yDim, zDim) {
         x, y, z -> Int3D(x, y, z)
