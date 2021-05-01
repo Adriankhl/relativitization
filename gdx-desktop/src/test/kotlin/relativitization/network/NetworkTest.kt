@@ -3,18 +3,20 @@ package relativitization.network
 import io.ktor.client.features.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
+import io.ktor.http.*
 import kotlinx.coroutines.*
 import org.apache.logging.log4j.Level
 import org.apache.logging.log4j.core.config.Configurator
 import org.junit.jupiter.api.Test
 import relativitization.client.UniverseClient
 import relativitization.server.UniverseServer
+import relativitization.universe.communication.CreateUniverseMessage
 
 internal class NetworkTest {
     @Test
     fun helloTest() {
-        val universeServer = UniverseServer("11")
-        val universeClient = UniverseClient("11")
+        val universeServer = UniverseServer("pwd")
+        val universeClient = UniverseClient("pwd")
         runBlocking {
             launch(Dispatchers.IO) {
                 universeServer.start()
@@ -43,8 +45,8 @@ internal class NetworkTest {
     fun createUniverseTest() {
         Configurator.setRootLevel(Level.DEBUG);
 
-        val universeServer = UniverseServer("11")
-        val universeClient = UniverseClient("11")
+        val universeServer = UniverseServer("pwd")
+        val universeClient = UniverseClient("pwd")
 
         runBlocking {
             launch(Dispatchers.IO) {
@@ -56,6 +58,33 @@ internal class NetworkTest {
 
             println("create universe")
             universeClient.postCreateUniverse()
+            println("Done create universe")
+
+            universeServer.stop()
+        }
+    }
+
+
+    @Test
+    fun createUniverseFailTest() {
+        val universeServer = UniverseServer("pwd")
+        val universeClient = UniverseClient("pwd")
+
+        runBlocking {
+            launch(Dispatchers.IO) {
+                universeServer.start()
+            }
+            println("Launched universe server")
+
+            delay(5000)
+
+            println("create universe")
+            universeClient.postCreateUniverse()
+            println("posted normal")
+            val response: HttpResponse = universeClient.ktorClient.post("http://127.0.0.1:29979/create") {
+                contentType(ContentType.Application.Json)
+                body = "sdfsdf"
+            }
             println("Done create universe")
 
             universeServer.stop()
