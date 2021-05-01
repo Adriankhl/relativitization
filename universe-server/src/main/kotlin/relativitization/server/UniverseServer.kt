@@ -32,8 +32,7 @@ class UniverseServer(adminPassword: String) {
                 }
                 install(StatusPages) {
                     exception<Throwable> { cause ->
-                        logger.warn("Wrong request causing exception in server:w" +
-                                "")
+                        logger.warn("Wrong request causing exception in server")
                         call.respondText("Something wrong in the request", ContentType.Text.Plain, HttpStatusCode.InternalServerError)
                     }
                 }
