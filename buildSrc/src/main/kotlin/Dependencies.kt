@@ -3,7 +3,7 @@ object Versions {
     const val appVersion = "0.1"
 
     const val kotlinVersion = "1.5.0-RC"
-    const val kotlinxCoroutineVersion = "1.4.3"
+    const val kotlinxCoroutineVersion = "1.5.0-RC"
     const val kotlinxSerializationVersion = "1.1.0"
     const val ktorVersion = "1.5.3"
 
