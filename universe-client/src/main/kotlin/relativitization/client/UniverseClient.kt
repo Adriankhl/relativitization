@@ -38,7 +38,7 @@ class UniverseClient(var adminPassword: String) {
     var serverAddress = "127.0.0.1"
     var serverPort = "29979"
 
-    suspend fun postCreateUniverse() {
+    suspend fun postCreateUniverse(): HttpStatusCode {
         val response: HttpResponse = ktorClient.post("http://$serverAddress:$serverPort/create") {
             contentType(ContentType.Application.Json)
             body = CreateUniverseMessage(adminPassword, generateSettings)
@@ -48,6 +48,7 @@ class UniverseClient(var adminPassword: String) {
         }
 
         logger.debug("Create universe status: ${response.status}")
+        return response.status
     }
 
 
