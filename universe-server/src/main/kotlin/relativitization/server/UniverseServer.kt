@@ -11,13 +11,10 @@ import io.ktor.serialization.*
 import org.apache.logging.log4j.LogManager
 import relativitization.server.routes.registerCreateUniverseRoutes
 import relativitization.server.routes.registerUniverseStatusRoutes
-import relativitization.universe.Universe
-import relativitization.universe.generate.GenerateSetting
-import relativitization.universe.generate.GenerateUniverse
 
 
 class UniverseServer(adminPassword: String) {
-    val serverState: UniverseServerState = UniverseServerState(adminPassword)
+    val universeServerInternal: UniverseServerInternal = UniverseServerInternal(adminPassword)
 
     val ktorServer = embeddedServer(
         CIO,
@@ -36,8 +33,8 @@ class UniverseServer(adminPassword: String) {
                         call.respondText("Something wrong in the request", ContentType.Text.Plain, HttpStatusCode.InternalServerError)
                     }
                 }
-                registerUniverseStatusRoutes(serverState)
-                registerCreateUniverseRoutes(serverState)
+                registerUniverseStatusRoutes(universeServerInternal)
+                registerCreateUniverseRoutes(universeServerInternal)
             }
 
             connector {

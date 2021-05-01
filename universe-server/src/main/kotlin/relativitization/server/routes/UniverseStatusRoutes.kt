@@ -3,10 +3,9 @@ package relativitization.server.routes
 import io.ktor.application.*
 import io.ktor.response.*
 import io.ktor.routing.*
-import relativitization.server.UniverseServerState
-import relativitization.universe.Universe
+import relativitization.server.UniverseServerInternal
 
-fun Route.universeStatueRouting(serverState: UniverseServerState) {
+fun Route.universeStatueRouting(universeServerInternal: UniverseServerInternal) {
     route("/status/hello") {
         get {
             call.respondText("Hello, world!")
@@ -14,8 +13,8 @@ fun Route.universeStatueRouting(serverState: UniverseServerState) {
     }
 }
 
-fun Application.registerUniverseStatusRoutes(serverState: UniverseServerState) {
+fun Application.registerUniverseStatusRoutes(universeServerInternal: UniverseServerInternal) {
     routing {
-        universeStatueRouting(serverState)
+        universeStatueRouting(universeServerInternal)
     }
 }

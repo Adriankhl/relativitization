@@ -5,22 +5,20 @@ import io.ktor.http.*
 import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
-import relativitization.server.UniverseServer
-import relativitization.server.UniverseServerState
+import relativitization.server.UniverseServerInternal
 import relativitization.universe.Universe
 import relativitization.universe.communication.CreateUniverseMessage
 import relativitization.universe.data.UniverseData
-import relativitization.universe.generate.GenerateSetting
 import relativitization.universe.generate.GenerateUniverse
 
-fun Route.createUniverseRouting(serverState: UniverseServerState) {
+fun Route.createUniverseRouting(universeServerInternal: UniverseServerInternal) {
     route("/create") {
         post() {
             val createUniverseMessage: CreateUniverseMessage = call.receive()
-            if (createUniverseMessage.adminPassword == serverState.adminPassword) {
+            if (createUniverseMessage.adminPassword == universeServerInternal.adminPassword) {
                 val universeData: UniverseData = GenerateUniverse.generate(createUniverseMessage.generateSetting)
                 if (universeData.isUniverseValid()) {
-                    serverState.universe = Universe(universeData)
+                    universeServerInternal.universe = Universe(universeData)
                     call.respondText("Created Universe", ContentType.Text.Plain, HttpStatusCode.OK)
                 } else {
                     call.respondText(
@@ -40,8 +38,8 @@ fun Route.createUniverseRouting(serverState: UniverseServerState) {
     }
 }
 
-fun Application.registerCreateUniverseRoutes(serverState: UniverseServerState) {
+fun Application.registerCreateUniverseRoutes(universeServerInternal: UniverseServerInternal) {
     routing {
-        createUniverseRouting(serverState)
+        createUniverseRouting(universeServerInternal)
     }
 }

@@ -4,7 +4,7 @@ import relativitization.universe.Universe
 import relativitization.universe.generate.GenerateSetting
 import relativitization.universe.generate.GenerateUniverse
 
-class UniverseServerState(var adminPassword: String) {
+class UniverseServerInternal(var adminPassword: String) {
     // Whether there is already a universe
     var hasUniverse: Boolean = false
 
