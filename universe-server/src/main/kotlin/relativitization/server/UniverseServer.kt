@@ -8,6 +8,7 @@ import io.ktor.response.*
 import io.ktor.server.engine.*
 import io.ktor.server.cio.*
 import io.ktor.serialization.*
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import org.apache.logging.log4j.LogManager
@@ -17,6 +18,8 @@ import relativitization.server.routes.registerUniverseStatusRoutes
 
 class UniverseServer(adminPassword: String) {
     private val universeServerInternal: UniverseServerInternal = UniverseServerInternal(adminPassword)
+
+    private var universeServerInternalJob: Job = Job()
 
     private val ktorServer = embeddedServer(
         CIO,
@@ -51,13 +54,13 @@ class UniverseServer(adminPassword: String) {
         launch {
             ktorServer.start(true)
         }
-        launch {
+        universeServerInternalJob = launch {
             universeServerInternal.start()
         }
     }
 
     suspend fun stop() {
-        universeServerInternal.stop()
+        universeServerInternal.stop(universeServerInternalJob)
         ktorServer.stop(1000, 1000)
     }
 

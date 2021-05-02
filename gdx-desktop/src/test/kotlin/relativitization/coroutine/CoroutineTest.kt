@@ -26,7 +26,7 @@ internal class CoroutineTest {
 
             for (i in 1..100) {
                 println("New Job")
-                val job = launch {
+                launch {
                     val response: HttpResponse = universeClient.ktorClient.get("http://127.0.0.1:29979/status/hello") {
                         timeout {
                             requestTimeoutMillis = 1000
@@ -85,7 +85,7 @@ internal class CoroutineTest {
                 body = "sdfsdf"
             }
             println("Done create universe")
-
+            println(response)
             universeServer.stop()
         }
     }
