@@ -42,6 +42,29 @@ internal class CoroutineTest {
     }
 
     @Test
+    fun wrongPasswordTest() {
+        Configurator.setRootLevel(Level.DEBUG);
+
+        val universeServer = UniverseServer("hhhh")
+        val universeClient = UniverseClient("pwd")
+
+        runBlocking {
+            launch(Dispatchers.IO) {
+                universeServer.start()
+            }
+            println("Launched universe server")
+
+            delay(1000)
+
+            println("create universe")
+            universeClient.postNewUniverse()
+            println("Done create universe")
+
+            universeServer.stop()
+        }
+    }
+
+    @Test
     fun createUniverseTest() {
         Configurator.setRootLevel(Level.DEBUG);
 
@@ -54,7 +77,7 @@ internal class CoroutineTest {
             }
             println("Launched universe server")
 
-            delay(5000)
+            delay(1000)
 
             println("create universe")
             universeClient.postNewUniverse()
@@ -65,7 +88,6 @@ internal class CoroutineTest {
     }
 
 
-    /*
     @Test
     fun createUniverseFailTest() {
         val universeServer = UniverseServer("pwd")
@@ -86,9 +108,9 @@ internal class CoroutineTest {
                 contentType(ContentType.Application.Json)
                 body = "sdfsdf"
                 timeout {
-                    requestTimeoutMillis = 1
-                    connectTimeoutMillis = 1
-                    socketTimeoutMillis = 1
+                    requestTimeoutMillis = 1000
+                    connectTimeoutMillis = 1000
+                    socketTimeoutMillis = 1000
                 }
             }
             println("Done create universe")
@@ -96,7 +118,6 @@ internal class CoroutineTest {
             universeServer.stop()
         }
     }
-    */
 
     @Test
     fun clientFailTest() {

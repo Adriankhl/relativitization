@@ -25,6 +25,7 @@ class UniverseClient(var adminPassword: String) {
         install(JsonFeature) {
             serializer = KotlinxSerializer(DataSerializer.format)
         }
+        expectSuccess = false
     }
 
     // password for holding playerId in server
