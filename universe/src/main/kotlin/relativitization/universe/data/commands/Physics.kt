@@ -18,6 +18,10 @@ data class ChangeVelocityCommand(
     val velocity: Velocity,
 ) : Command() {
 
+    override fun description(): String {
+        return "Try to change velocity of player $toId to $Velocity"
+    }
+
     override fun canSend(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean {
         return playerData.playerInternalData.subordinateIdList.contains(toId)
     }

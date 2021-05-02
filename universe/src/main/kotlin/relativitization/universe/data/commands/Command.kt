@@ -14,6 +14,11 @@ sealed class Command {
     abstract val fromInt4D: Int4D
 
     /**
+     * Description of the command
+     */
+    abstract fun description(): String
+
+    /**
      * Check if the player (sender) can send the command
      */
     abstract fun canSend(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean
@@ -26,7 +31,7 @@ sealed class Command {
     /**
      * Check to see if id match
      */
-    fun checkId(playerData: MutablePlayerData): Boolean {
+    private fun checkId(playerData: MutablePlayerData): Boolean {
         return if (playerData.id == toId) {
             true
         } else {
@@ -39,13 +44,13 @@ sealed class Command {
     /**
      * Execute on playerData, for AI/human planning and action
      */
-    protected abstract fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings): Unit
+    protected abstract fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings)
 
 
     /**
      * Check and execute
      */
-    fun checkAndExecute(playerData: MutablePlayerData, universeSettings: UniverseSettings): Unit {
+    fun checkAndExecute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
         return if (checkId(playerData) && canExecute(playerData, universeSettings)) {
             execute(playerData, universeSettings)
         } else {
