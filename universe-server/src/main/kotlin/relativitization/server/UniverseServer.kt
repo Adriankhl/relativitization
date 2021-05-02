@@ -57,8 +57,8 @@ class UniverseServer(adminPassword: String) {
     }
 
     suspend fun stop() {
-        ktorServer.stop(1000, 1000)
         universeServerInternal.stop()
+        ktorServer.stop(1000, 1000)
     }
 
 

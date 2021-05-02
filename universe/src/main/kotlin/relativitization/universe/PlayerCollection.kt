@@ -47,28 +47,28 @@ class PlayerCollection(private val xDim: Int, private val yDim: Int, private val
     /**
      * Get all player id
      */
-    fun getAllId(): List<Int> {
+    fun getIdList(): List<Int> {
         return playerMap.keys.toList()
     }
 
     /**
      * Get all NONE type (nor ai or human) player
      */
-    fun getAllNoneId(): List<Int> {
+    fun getNoneIdList(): List<Int> {
         return playerMap.filter { (_, player) -> player.playerType == PlayerType.NONE }.keys.toList()
     }
 
     /**
      * Get all human player id
      */
-    fun getAllHumanId(): List<Int> {
+    fun getHumanIdList(): List<Int> {
         return playerMap.filter { (_, player) -> player.playerType == PlayerType.HUMAN }.keys.toList()
     }
 
     /**
      * Get all human or ai player id
      */
-    fun getAllOrAiId(): List<Int> {
+    fun getHumanOrAiIdList(): List<Int> {
         return playerMap.filter { (_, player) ->
             (player.playerType == PlayerType.HUMAN) || (player.playerType == PlayerType.AI)
         }.keys.toList()

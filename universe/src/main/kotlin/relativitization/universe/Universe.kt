@@ -12,8 +12,6 @@ import relativitization.universe.data.serializer.DataSerializer.decode
 import relativitization.universe.maths.grid.Grids.create3DGrid
 import relativitization.universe.maths.physics.Intervals.intDistance
 import relativitization.universe.mechanisms.MechanismCollection
-import relativitization.universe.utils.CoroutineBoolean
-import relativitization.universe.utils.CoroutineMap
 import relativitization.universe.utils.pmap
 
 import java.io.File
@@ -41,6 +39,13 @@ class Universe(private val universeData: UniverseData) {
     }
 
     /**
+     * Get current universe time
+     */
+    fun getCurrentUniverseTime(): Int {
+        return universeData.universeState.getCurrentTime()
+    }
+
+    /**
      * True if player is alive
      * Should only return if canAccess is true
      */
@@ -52,8 +57,15 @@ class Universe(private val universeData: UniverseData) {
      * Get all available player
      * Should only return if canAccess is true
      */
-    suspend fun availablePlayers(): List<Int> {
-        return playerCollection.getAllId()
+    fun availablePlayers(): List<Int> {
+        return playerCollection.getHumanOrAiIdList()
+    }
+
+    /**
+     * Get all suggested available player
+     */
+    fun availableHumanPLayers(): List<Int> {
+        return playerCollection.getHumanIdList()
     }
 
     /**
@@ -82,12 +94,12 @@ class Universe(private val universeData: UniverseData) {
     /**
      * Save Latest universe data
      */
-    fun saveLatest() {
+    private fun saveLatest() {
         val saveDir = "./saves/${universeData.universeSettings.universeName}"
         val latestTime: Int = universeData.universeState.getCurrentTime()
 
         // Make Directory
-        File("$saveDir").mkdirs()
+        File(saveDir).mkdirs()
 
         // save universe 4D slice
         File("${saveDir}/universeData4DSlice-${latestTime}.json").writeText(
@@ -124,7 +136,7 @@ class Universe(private val universeData: UniverseData) {
         val oldestTime: Int = latestTime - universeData.universeSettings.tDim + 1
         val oldUniverseData4D =  universeData.universeData4D.getAllExcludeLatest()
 
-        File("$saveDir").mkdirs()
+        File(saveDir).mkdirs()
 
         for (i in oldUniverseData4D.indices) {
             File("${saveDir}/universeData4DSlice-${oldestTime + i}.json").writeText(
@@ -253,7 +265,7 @@ class Universe(private val universeData: UniverseData) {
             }
         }
 
-        val noneTypePlayerIdList: List<Int> = playerCollection.getAllNoneId()
+        val noneTypePlayerIdList: List<Int> = playerCollection.getNoneIdList()
 
         // Filter out none type player, Check whether the command is valid
         val validCommand: Map<Int, List<Command>> = inputCommands.filter { (id, _) ->

@@ -19,38 +19,42 @@ class UniverseServerInternal(var adminPassword: String) {
     // Data of universe
     private var universe: Universe = Universe(GenerateUniverse.generate(GenerateSetting()))
 
+    // Current universe time
+    private var currentUniverseTime: Int = 0
+
     // Whether there is already a universe
-    var hasUniverse: CoroutineBoolean = CoroutineBoolean(false)
+    private var hasUniverse: CoroutineBoolean = CoroutineBoolean(false)
 
     // Whether the universe is running
-    var runningUniverse: CoroutineBoolean = CoroutineBoolean(false)
+    private var runningUniverse: CoroutineBoolean = CoroutineBoolean(false)
 
     // is waiting input from human
-    var waitingInput: CoroutineBoolean = CoroutineBoolean(false)
+    // client can only get data and post command list if this is true
+    private var waitingInput: CoroutineBoolean = CoroutineBoolean(false)
 
     // wait beginning time, used to calculate the time limit to stop waiting
-    var waitBeginTime: CoroutineVar<Long> = CoroutineVar(System.currentTimeMillis())
+    private var waitBeginTime: CoroutineVar<Long> = CoroutineVar(System.currentTimeMillis())
 
     // wait time limit in mini second
-    var waitTimeLimit: CoroutineVar<Long> = CoroutineVar(60000L)
+    private var waitTimeLimit: CoroutineVar<Long> = CoroutineVar(60000L)
 
     // map from registered player id to password
-    val humanIdPasswordMap: MutableMap<Int, String> = mutableMapOf()
+    private val humanIdPasswordMap: MutableMap<Int, String> = mutableMapOf()
 
     // Available id list
-    val availableIdList: MutableList<Int> = mutableListOf()
+    private val availableIdList: MutableList<Int> = mutableListOf()
+
+    // Available (suggested) human id list
+    private val availableHumanIdList: MutableList<Int> = mutableListOf()
 
     // command Map for human input
-    val humanCommandMap: MutableMap<Int, List<Command>> = mutableMapOf()
+    private val humanCommandMap: MutableMap<Int, List<Command>> = mutableMapOf()
 
     // ai computed command map
-    val aiCommandMap: MutableMap<Int, List<Command>> = mutableMapOf()
-
-    // Is ai command computed
-    var aiComputed: Boolean = false
+    private val aiCommandMap: MutableMap<Int, List<Command>> = mutableMapOf()
 
     // Clear inactive registered player id each turn or not
-    var clearInactive: Boolean = true
+    private var clearInactivePerTurn: CoroutineBoolean = CoroutineBoolean(true)
 
     /**
      * Start the universe
@@ -59,7 +63,7 @@ class UniverseServerInternal(var adminPassword: String) {
         while (runningUniverse.isTrue()) {
             delay(1000)
             mutex.withLock {
-                if ((!waitingInput.isTrue()) || exceedTimeLimit()) {
+                if (allHumanInputReady() || (!waitingInput.isTrue()) || exceedTimeLimit()) {
                     waitingInput.set(false)
                 }
             }
@@ -68,6 +72,22 @@ class UniverseServerInternal(var adminPassword: String) {
                 // Post-process then pre-process since the universe accept input in the middle of game turn
                 universe.postProcessUniverse(humanCommandMap, aiCommandMap)
                 universe.preprocessUniverse()
+
+                // Clear and update the command maps and player id list
+                updateCommandMapAndIdList()
+
+                // Update current universe time
+                currentUniverseTime = universe.getCurrentUniverseTime()
+
+                // Clear inactive (no input received) player
+                if (clearInactivePerTurn.isTrue()) {
+                    clearInactive()
+                }
+
+                // Start to accept human input
+                waitingInput.set(true)
+
+                aiCommandMap.putAll(universe.computeAICommands())
             }
         }
     }
@@ -80,10 +100,44 @@ class UniverseServerInternal(var adminPassword: String) {
     }
 
     /**
+     * Clear and update all command map and player id list
+     */
+    private fun updateCommandMapAndIdList() {
+        // Clear command map for next turn input
+        humanCommandMap.clear()
+        aiCommandMap.clear()
+        availableIdList.clear()
+        availableHumanIdList.clear()
+
+        // Change available id
+        availableIdList.addAll(universe.availablePlayers())
+        availableHumanIdList.addAll(universe.availableHumanPLayers())
+    }
+
+    /**
+     * Clear inactive player registration: id and password
+     */
+    private fun clearInactive() {
+        val oldIdList = humanIdPasswordMap.keys.toList()
+        val toRemoveIdList = oldIdList.filter { id -> !availableHumanIdList.contains(id) }
+        for (id in toRemoveIdList) {
+            humanIdPasswordMap.remove(id)
+        }
+    }
+
+    /**
      * Whether the wait time has exceed the time limit
      */
     private suspend fun exceedTimeLimit(): Boolean {
         return (System.currentTimeMillis() - waitBeginTime.get()) > waitTimeLimit.get()
+    }
+
+    /**
+     * Whether all human input is ready
+     * Note that extra human input can override ai computed input, but we won't wait for that
+     */
+    private fun allHumanInputReady(): Boolean {
+        return humanCommandMap.keys.containsAll(availableHumanIdList)
     }
 
     /**
@@ -109,6 +163,8 @@ class UniverseServerInternal(var adminPassword: String) {
     suspend fun setUniverse(newUniverse: Universe) {
         mutex.withLock {
             universe = newUniverse
+            updateCommandMapAndIdList()
+            currentUniverseTime = universe.getCurrentUniverseTime()
             hasUniverse.set(true)
         }
     }
