@@ -9,7 +9,8 @@ import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import org.apache.logging.log4j.LogManager
-import relativitization.universe.communication.CreateUniverseMessage
+import relativitization.universe.communication.LoadUniverseMessage
+import relativitization.universe.communication.NewUniverseMessage
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.generate.GenerateSetting
@@ -38,18 +39,32 @@ class UniverseClient(var adminPassword: String) {
     var serverAddress = "127.0.0.1"
     var serverPort = "29979"
 
-    suspend fun postCreateUniverse(): HttpStatusCode {
-        val response: HttpResponse = ktorClient.post("http://$serverAddress:$serverPort/create") {
+    suspend fun postNewUniverse(): HttpStatusCode {
+        val response: HttpResponse = ktorClient.post("http://$serverAddress:$serverPort/create/new") {
             contentType(ContentType.Application.Json)
-            body = CreateUniverseMessage(adminPassword, generateSettings)
+            body = NewUniverseMessage(adminPassword, generateSettings)
             timeout {
                 requestTimeoutMillis = 1000
             }
         }
 
-        logger.debug("Create universe status: ${response.status}")
+        logger.debug("Create new universe status: ${response.status}")
         return response.status
     }
+
+    suspend fun postLoadUniverse(universeName: String): HttpStatusCode {
+        val response: HttpResponse = ktorClient.post("http://$serverAddress:$serverPort/create/load") {
+            contentType(ContentType.Application.Json)
+            body = LoadUniverseMessage(adminPassword, universeName)
+            timeout {
+                requestTimeoutMillis = 1000
+            }
+        }
+
+        logger.debug("Create new universe status: ${response.status}")
+        return response.status
+    }
+
 
 
 

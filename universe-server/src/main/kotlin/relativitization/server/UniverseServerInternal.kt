@@ -142,6 +142,8 @@ class UniverseServerInternal(var adminPassword: String) {
 
     /**
      * Human input with this function
+     *
+     * @return successful input or not
      */
     suspend fun humanInput(commandInputMessage: CommandInputMessage): Boolean {
         mutex.withLock {

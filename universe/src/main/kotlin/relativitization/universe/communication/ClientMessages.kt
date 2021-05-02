@@ -5,9 +5,15 @@ import relativitization.universe.data.commands.Command
 import relativitization.universe.generate.GenerateSetting
 
 @Serializable
-data class CreateUniverseMessage(
+data class NewUniverseMessage(
     val adminPassword: String,
     val generateSetting: GenerateSetting,
+)
+
+@Serializable
+data class LoadUniverseMessage(
+    val adminPassword: String,
+    val universeName: String
 )
 
 @Serializable

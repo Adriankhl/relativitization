@@ -10,7 +10,6 @@ import org.apache.logging.log4j.core.config.Configurator
 import org.junit.jupiter.api.Test
 import relativitization.client.UniverseClient
 import relativitization.server.UniverseServer
-import relativitization.universe.communication.CreateUniverseMessage
 
 internal class NetworkTest {
     @Test
@@ -57,7 +56,7 @@ internal class NetworkTest {
             delay(5000)
 
             println("create universe")
-            universeClient.postCreateUniverse()
+            universeClient.postNewUniverse()
             println("Done create universe")
 
             universeServer.stop()
@@ -79,7 +78,7 @@ internal class NetworkTest {
             delay(5000)
 
             println("create universe")
-            universeClient.postCreateUniverse()
+            universeClient.postNewUniverse()
             println("posted normal")
             val response: HttpResponse = universeClient.ktorClient.post("http://127.0.0.1:29979/create") {
                 contentType(ContentType.Application.Json)
