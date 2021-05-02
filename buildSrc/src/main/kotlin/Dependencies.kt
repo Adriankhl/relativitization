@@ -4,7 +4,7 @@ object Versions {
 
     const val kotlinVersion = "1.5.0-RC"
     const val kotlinxCoroutineVersion = "1.5.0-RC"
-    const val kotlinxSerializationVersion = "1.1.0"
+    const val kotlinxSerializationVersion = "1.2.0"
     const val ktorVersion = "1.5.3"
 
     const val gdxVersion = "1.10.0"
