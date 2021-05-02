@@ -34,11 +34,11 @@ class UniverseServerInternal(var adminPassword: String) {
     // client can only get data and post command list if this is true
     private var waitingInput: CoroutineBoolean = CoroutineBoolean(false)
 
-    // wait beginning time, used to calculate the time limit to stop waiting
+    // wait beginning time in milli second, used to calculate the time limit to stop waiting
     private var waitBeginTime: CoroutineVar<Long> = CoroutineVar(System.currentTimeMillis())
 
-    // wait time limit in mini second
-    private var waitTimeLimit: CoroutineVar<Long> = CoroutineVar(60000L)
+    // wait time limit in second
+    private var waitTimeLimit: CoroutineVar<Int> = CoroutineVar(60)
 
     // map from registered player id to password
     private val humanIdPasswordMap: MutableMap<Int, String> = mutableMapOf()
@@ -69,6 +69,7 @@ class UniverseServerInternal(var adminPassword: String) {
                 mutex.withLock {
                     if (allHumanInputReady() || (!waitingInput.isTrue()) || exceedTimeLimit()) {
                         waitingInput.set(false)
+                        setTimeLeftTo(0)
                         logger.debug("Not accepting new input")
                     }
                 }
@@ -94,6 +95,10 @@ class UniverseServerInternal(var adminPassword: String) {
                     logger.debug("Start accepting new input")
 
                     aiCommandMap.putAll(universe.computeAICommands())
+
+                    // Restart wait timer after ai command has been computed
+                    setTimeLeftTo(waitTimeLimit.get())
+
                     logger.debug("AI done computation")
                 }
             }
@@ -134,10 +139,25 @@ class UniverseServerInternal(var adminPassword: String) {
     }
 
     /**
+     * Time left for waiting, can be negative
+     */
+    private suspend fun timeLeft(): Long =
+        (waitTimeLimit.get() * 1000).toLong() - (System.currentTimeMillis() - waitBeginTime.get())
+
+
+    /**
      * Whether the wait time has exceed the time limit
      */
-    private suspend fun exceedTimeLimit(): Boolean {
-        return (System.currentTimeMillis() - waitBeginTime.get()) > waitTimeLimit.get()
+    private suspend fun exceedTimeLimit(): Boolean =
+        timeLeft() < 0
+
+    /**
+     * Set time left to
+     *
+     * @param time time left in seconds
+     */
+    private suspend fun setTimeLeftTo(time: Int) {
+        waitBeginTime.set((waitTimeLimit.get() * 1000).toLong() + System.currentTimeMillis() - (time * 1000).toLong())
     }
 
     /**
