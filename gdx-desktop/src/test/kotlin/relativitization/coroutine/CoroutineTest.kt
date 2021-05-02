@@ -10,6 +10,7 @@ import org.apache.logging.log4j.core.config.Configurator
 import org.junit.jupiter.api.Test
 import relativitization.client.UniverseClient
 import relativitization.server.UniverseServer
+import java.net.ConnectException
 
 internal class CoroutineTest {
     @Test
@@ -64,6 +65,7 @@ internal class CoroutineTest {
     }
 
 
+    /*
     @Test
     fun createUniverseFailTest() {
         val universeServer = UniverseServer("pwd")
@@ -94,6 +96,7 @@ internal class CoroutineTest {
             universeServer.stop()
         }
     }
+    */
 
     @Test
     fun clientFailTest() {
@@ -102,9 +105,12 @@ internal class CoroutineTest {
 
         runBlocking {
             println("before")
-            val response: HttpResponse = universeClient.ktorClient.get("http://127.0.0.1:123")
+            try {
+                val response: HttpResponse = universeClient.ktorClient.get("http://127.0.0.1:123")
+            } catch(e: ConnectException) {
+                println("Connection fail")
+            }
             println("After")
-            println(response)
             universeServer.stop()
         }
     }

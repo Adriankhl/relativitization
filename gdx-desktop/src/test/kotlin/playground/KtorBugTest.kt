@@ -10,6 +10,7 @@ import kotlinx.coroutines.*
 import org.junit.jupiter.api.Test
 
 internal class KtorBugTest {
+    /*
     @Test
     fun minimalTest() {
         val server = embeddedServer(
@@ -39,4 +40,5 @@ internal class KtorBugTest {
             server.stop(1000, 1000)
         }
     }
+    */
 }
