@@ -18,7 +18,7 @@ fun Route.createUniverseRouting(universeServerInternal: UniverseServerInternal) 
             if (createUniverseMessage.adminPassword == universeServerInternal.adminPassword) {
                 val universeData: UniverseData = GenerateUniverse.generate(createUniverseMessage.generateSetting)
                 if (universeData.isUniverseValid()) {
-                    universeServerInternal.universe = Universe(universeData)
+                    universeServerInternal.setUniverse(Universe(universeData))
                     call.respondText("Created Universe", ContentType.Text.Plain, HttpStatusCode.OK)
                 } else {
                     call.respondText(

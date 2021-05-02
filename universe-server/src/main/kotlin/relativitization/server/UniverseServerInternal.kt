@@ -17,7 +17,7 @@ class UniverseServerInternal(var adminPassword: String) {
     private val mutex: Mutex = Mutex()
 
     // Data of universe
-    var universe: Universe = Universe(GenerateUniverse.generate(GenerateSetting()))
+    private var universe: Universe = Universe(GenerateUniverse.generate(GenerateSetting()))
 
     // Whether there is already a universe
     var hasUniverse: CoroutineBoolean = CoroutineBoolean(false)
@@ -43,9 +43,18 @@ class UniverseServerInternal(var adminPassword: String) {
     // command Map for human input
     val humanCommandMap: MutableMap<Int, List<Command>> = mutableMapOf()
 
+    // ai computed command map
+    val aiCommandMap: MutableMap<Int, List<Command>> = mutableMapOf()
+
+    // Is ai command computed
+    var aiComputed: Boolean = false
+
     // Clear inactive registered player id each turn or not
     var clearInactive: Boolean = true
 
+    /**
+     * Start the universe
+     */
     suspend fun start() {
         while (runningUniverse.isTrue()) {
             delay(1000)
@@ -54,17 +63,32 @@ class UniverseServerInternal(var adminPassword: String) {
                     waitingInput.set(false)
                 }
             }
+
+            if (!waitingInput.isTrue()) {
+                // Post-process then pre-process since the universe accept input in the middle of game turn
+                universe.postProcessUniverse(humanCommandMap, aiCommandMap)
+                universe.preprocessUniverse()
+            }
         }
     }
 
+    /**
+     * Stop the universe
+     */
     suspend fun stop() {
         runningUniverse.set(false)
     }
 
+    /**
+     * Whether the wait time has exceed the time limit
+     */
     private suspend fun exceedTimeLimit(): Boolean {
         return (System.currentTimeMillis() - waitBeginTime.get()) > waitTimeLimit.get()
     }
 
+    /**
+     * Human input with this function
+     */
     suspend fun humanInput(commandInputMessage: CommandInputMessage): Boolean {
         mutex.withLock {
             return if ((humanIdPasswordMap.keys.contains(commandInputMessage.id)) &&
@@ -76,6 +100,16 @@ class UniverseServerInternal(var adminPassword: String) {
             } else {
                 false
             }
+        }
+    }
+
+    /**
+     * Set new universe
+     */
+    suspend fun setUniverse(newUniverse: Universe) {
+        mutex.withLock {
+            universe = newUniverse
+            hasUniverse.set(true)
         }
     }
 }

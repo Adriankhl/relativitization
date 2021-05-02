@@ -68,17 +68,15 @@ class Universe(private val universeData: UniverseData) {
     /**
      * Compute commands by ai for all player in a coroutine
      */
-    suspend fun computeAICommands() = coroutineScope {
+    suspend fun computeAICommands(): Map<Int, List<Command>> = coroutineScope {
         val time: Int = universeData.universeState.getCurrentTime()
         val playerId3D: List<List<List<List<Int>>>> = playerCollection.getPlayerId3D()
-        int3DList.map { int3D ->
-            async(Dispatchers.Default) {
+        int3DList.pmap { int3D ->
                 val viewMap = universeData.toUniverseData3DAtGrid(Int4D(time, int3D)).idToUniverseData3DAtPlayer()
                 playerId3D[int3D.x][int3D.y][int3D.z].map { id ->
                     id to PickAI.compute(viewMap.getValue(id))
-                }
             }
-        }
+        }.flatten().toMap()
     }
 
     /**
