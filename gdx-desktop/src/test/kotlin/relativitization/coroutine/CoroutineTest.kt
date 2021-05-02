@@ -1,4 +1,4 @@
-package relativitization.network
+package relativitization.coroutine
 
 import io.ktor.client.features.*
 import io.ktor.client.request.*
@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test
 import relativitization.client.UniverseClient
 import relativitization.server.UniverseServer
 
-internal class NetworkTest {
+internal class CoroutineTest {
     @Test
     fun helloTest() {
         val universeServer = UniverseServer("pwd")
