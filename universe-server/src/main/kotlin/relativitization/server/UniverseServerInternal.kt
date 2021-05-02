@@ -2,6 +2,7 @@ package relativitization.server
 
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import relativitization.universe.Universe
@@ -59,35 +60,38 @@ class UniverseServerInternal(var adminPassword: String) {
     /**
      * Start the universe
      */
-    suspend fun start() {
-        while (runningUniverse.isTrue()) {
+    suspend fun start() = coroutineScope {
+        while (isActive) {
             delay(1000)
-            mutex.withLock {
-                if (allHumanInputReady() || (!waitingInput.isTrue()) || exceedTimeLimit()) {
-                    waitingInput.set(false)
-                }
-            }
 
-            if (!waitingInput.isTrue()) {
-                // Post-process then pre-process since the universe accept input in the middle of game turn
-                universe.postProcessUniverse(humanCommandMap, aiCommandMap)
-                universe.preprocessUniverse()
-
-                // Clear and update the command maps and player id list
-                updateCommandMapAndIdList()
-
-                // Update current universe time
-                currentUniverseTime = universe.getCurrentUniverseTime()
-
-                // Clear inactive (no input received) player
-                if (clearInactivePerTurn.isTrue()) {
-                    clearInactive()
+            if (runningUniverse.isTrue()) {
+                mutex.withLock {
+                    if (allHumanInputReady() || (!waitingInput.isTrue()) || exceedTimeLimit()) {
+                        waitingInput.set(false)
+                    }
                 }
 
-                // Start to accept human input
-                waitingInput.set(true)
+                if (!waitingInput.isTrue()) {
+                    // Post-process then pre-process since the universe accept input in the middle of game turn
+                    universe.postProcessUniverse(humanCommandMap, aiCommandMap)
+                    universe.preprocessUniverse()
 
-                aiCommandMap.putAll(universe.computeAICommands())
+                    // Clear and update the command maps and player id list
+                    updateCommandMapAndIdList()
+
+                    // Update current universe time
+                    currentUniverseTime = universe.getCurrentUniverseTime()
+
+                    // Clear inactive (no input received) player
+                    if (clearInactivePerTurn.isTrue()) {
+                        clearInactive()
+                    }
+
+                    // Start to accept human input
+                    waitingInput.set(true)
+
+                    aiCommandMap.putAll(universe.computeAICommands())
+                }
             }
         }
     }
