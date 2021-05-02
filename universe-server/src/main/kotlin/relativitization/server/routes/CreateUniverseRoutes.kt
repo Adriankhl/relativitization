@@ -32,13 +32,14 @@ fun Route.createUniverseRouting(universeServerInternal: UniverseServerInternal) 
             } else {
                 call.respondText(
                     "Create Universe Failed, wrong admin password",
-                    io.ktor.http.ContentType.Text.Plain,
-                    io.ktor.http.HttpStatusCode.Unauthorized
+                    ContentType.Text.Plain,
+                    HttpStatusCode.Unauthorized
                 )
             }
         }
     }
 
+    // load universe from save
     route("/create/load") {
         post {
             val loadUniverseMessage: LoadUniverseMessage = call.receive()
@@ -57,8 +58,8 @@ fun Route.createUniverseRouting(universeServerInternal: UniverseServerInternal) 
             } else {
                 call.respondText(
                     "Load Universe Failed, wrong admin password",
-                    io.ktor.http.ContentType.Text.Plain,
-                    io.ktor.http.HttpStatusCode.Unauthorized
+                    ContentType.Text.Plain,
+                    HttpStatusCode.Unauthorized
                 )
             }
         }
