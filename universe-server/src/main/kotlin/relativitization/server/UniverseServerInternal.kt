@@ -5,6 +5,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import org.apache.logging.log4j.LogManager
 import relativitization.universe.Universe
 import relativitization.universe.communication.CommandInputMessage
 import relativitization.universe.data.commands.Command
@@ -68,6 +69,7 @@ class UniverseServerInternal(var adminPassword: String) {
                 mutex.withLock {
                     if (allHumanInputReady() || (!waitingInput.isTrue()) || exceedTimeLimit()) {
                         waitingInput.set(false)
+                        logger.debug("Not accepting new input")
                     }
                 }
 
@@ -89,8 +91,10 @@ class UniverseServerInternal(var adminPassword: String) {
 
                     // Start to accept human input
                     waitingInput.set(true)
+                    logger.debug("Start accepting new input")
 
                     aiCommandMap.putAll(universe.computeAICommands())
+                    logger.debug("AI done computation")
                 }
             }
         }
@@ -173,5 +177,9 @@ class UniverseServerInternal(var adminPassword: String) {
             currentUniverseTime = universe.getCurrentUniverseTime()
             hasUniverse.set(true)
         }
+    }
+
+    companion object {
+        private val logger = LogManager.getLogger()
     }
 }
