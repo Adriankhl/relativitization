@@ -11,6 +11,7 @@ import io.ktor.http.*
 import org.apache.logging.log4j.LogManager
 import relativitization.universe.communication.LoadUniverseMessage
 import relativitization.universe.communication.NewUniverseMessage
+import relativitization.universe.communication.UniverseServerStatusMessage
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.generate.GenerateSetting
@@ -39,6 +40,10 @@ class UniverseClient(var adminPassword: String) {
     var serverAddress = "127.0.0.1"
     var serverPort = "29979"
 
+    suspend fun getUniverseServerStatus(): UniverseServerStatusMessage{
+        return ktorClient.get<UniverseServerStatusMessage>("http://$serverAddress:$serverPort/status")
+    }
+
     suspend fun postNewUniverse(): HttpStatusCode {
         val response: HttpResponse = ktorClient.post("http://$serverAddress:$serverPort/create/new") {
             contentType(ContentType.Application.Json)
@@ -64,8 +69,6 @@ class UniverseClient(var adminPassword: String) {
         logger.debug("Create new universe status: ${response.status}")
         return response.status
     }
-
-
 
 
     companion object {

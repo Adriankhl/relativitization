@@ -8,6 +8,7 @@ import kotlinx.coroutines.sync.withLock
 import org.apache.logging.log4j.LogManager
 import relativitization.universe.Universe
 import relativitization.universe.communication.CommandInputMessage
+import relativitization.universe.communication.UniverseServerStatusMessage
 import relativitization.universe.data.commands.Command
 import relativitization.universe.generate.GenerateSetting
 import relativitization.universe.generate.GenerateUniverse
@@ -196,6 +197,20 @@ class UniverseServerInternal(var adminPassword: String) {
             updateCommandMapAndIdList()
             currentUniverseTime = universe.getCurrentUniverseTime()
             hasUniverse.set(true)
+        }
+    }
+
+    /**
+     * Get universe status
+     */
+    suspend fun getUniverseStatusMessage(): UniverseServerStatusMessage {
+        mutex.withLock {
+            return UniverseServerStatusMessage(
+                hasUniverse = hasUniverse.isTrue(),
+                runningUniverse = runningUniverse.isTrue(),
+                waitingInput = waitingInput.isTrue(),
+                timeLeft = timeLeft(),
+            )
         }
     }
 
