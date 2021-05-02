@@ -80,11 +80,30 @@ internal class CoroutineTest {
             println("create universe")
             universeClient.postNewUniverse()
             println("posted normal")
-            val response: HttpResponse = universeClient.ktorClient.post("http://127.0.0.1:29979/create") {
+            val response: HttpResponse = universeClient.ktorClient.post("http://127.0.0.1:29979/create/new") {
                 contentType(ContentType.Application.Json)
                 body = "sdfsdf"
+                timeout {
+                    requestTimeoutMillis = 1
+                    connectTimeoutMillis = 1
+                    socketTimeoutMillis = 1
+                }
             }
             println("Done create universe")
+            println(response)
+            universeServer.stop()
+        }
+    }
+
+    @Test
+    fun clientFailTest() {
+        val universeServer = UniverseServer("pwd")
+        val universeClient = UniverseClient("pwd")
+
+        runBlocking {
+            println("before")
+            val response: HttpResponse = universeClient.ktorClient.get("http://127.0.0.1:123")
+            println("After")
             println(response)
             universeServer.stop()
         }
