@@ -27,4 +27,21 @@ internal class ServerStatusTest {
             universeServer.stop()
         }
     }
+
+    @Test
+    fun newUniverseStatus() {
+        val universeServer = UniverseServer("pwd")
+        val universeClient = UniverseClient("pwd")
+        runBlocking {
+            launch {
+                universeServer.start()
+            }
+            delay(1000)
+            universeClient.postNewUniverse()
+            val status = universeClient.getUniverseServerStatus()
+            println(status)
+            assert(status.hasUniverse == true)
+            universeServer.stop()
+        }
+    }
 }

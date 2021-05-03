@@ -205,6 +205,7 @@ class UniverseServerInternal(var adminPassword: String) {
     suspend fun getUniverseStatusMessage(): UniverseServerStatusMessage {
         mutex.withLock {
             return UniverseServerStatusMessage(
+                success = true,
                 hasUniverse = hasUniverse.isTrue(),
                 runningUniverse = runningUniverse.isTrue(),
                 waitingInput = waitingInput.isTrue(),
