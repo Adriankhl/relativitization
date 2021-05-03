@@ -6,6 +6,7 @@ import kotlinx.coroutines.sync.withLock
 import org.apache.logging.log4j.LogManager
 import relativitization.universe.Universe
 import relativitization.universe.communication.CommandInputMessage
+import relativitization.universe.communication.RegisterPlayerMessage
 import relativitization.universe.communication.UniverseServerStatusMessage
 import relativitization.universe.data.commands.Command
 import relativitization.universe.generate.GenerateSetting
@@ -113,6 +114,15 @@ class UniverseServerInternal(var adminPassword: String) {
     }
 
     /**
+     * Is waiting for input or waiting to start
+     */
+    private suspend fun isWaiting(): Boolean {
+        return ((hasUniverse.isTrue() && !runningUniverse.isTrue()) ||
+                (runningUniverse.isTrue() && waitingInput.isTrue())
+                )
+    }
+
+    /**
      * Clear and update all command map and player id list
      */
     private fun updateCommandMapAndIdList() {
@@ -192,10 +202,12 @@ class UniverseServerInternal(var adminPassword: String) {
      */
     suspend fun setUniverse(newUniverse: Universe) {
         mutex.withLock {
-            universe = newUniverse
-            updateCommandMapAndIdList()
-            currentUniverseTime = universe.getCurrentUniverseTime()
-            hasUniverse.set(true)
+            if (!runningUniverse.isTrue()) {
+                universe = newUniverse
+                updateCommandMapAndIdList()
+                currentUniverseTime = universe.getCurrentUniverseTime()
+                hasUniverse.set(true)
+            }
         }
     }
 
@@ -214,11 +226,12 @@ class UniverseServerInternal(var adminPassword: String) {
         }
     }
 
+    /**
+     * Get all alive human and ai id
+     */
     suspend fun getAvailableIdList(): List<Int> {
         mutex.withLock {
-            return if (hasUniverse.isTrue() && !runningUniverse.isTrue()) {
-                availableIdList
-            } else if (runningUniverse.isTrue() && waitingInput.isTrue()) {
+            return if (isWaiting()) {
                 availableIdList
             } else {
                 listOf()
@@ -226,14 +239,29 @@ class UniverseServerInternal(var adminPassword: String) {
         }
     }
 
+    /**
+     * Get all alive human id
+     */
     suspend fun getAvailableHumanIdList(): List<Int> {
         mutex.withLock {
-            return if (hasUniverse.isTrue() && !runningUniverse.isTrue()) {
-                availableHumanIdList
-            } else if (runningUniverse.isTrue() && waitingInput.isTrue()) {
+            return if (isWaiting()) {
                 availableHumanIdList
             } else {
                 listOf()
+            }
+        }
+    }
+
+    /**
+     * Register human player to humanIdPasswordMap
+     */
+    suspend fun registerPlayer(registerPlayerMessage: RegisterPlayerMessage): Boolean {
+        mutex.withLock {
+            return if (isWaiting() && !humanIdPasswordMap.keys.contains(registerPlayerMessage.id)) {
+                humanIdPasswordMap[registerPlayerMessage.id] = registerPlayerMessage.password
+                true
+            } else {
+                false
             }
         }
     }
