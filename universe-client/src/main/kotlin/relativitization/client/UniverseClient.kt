@@ -11,6 +11,7 @@ import io.ktor.http.*
 import org.apache.logging.log4j.LogManager
 import relativitization.universe.communication.LoadUniverseMessage
 import relativitization.universe.communication.NewUniverseMessage
+import relativitization.universe.communication.RegisterPlayerMessage
 import relativitization.universe.communication.UniverseServerStatusMessage
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.serializer.DataSerializer
@@ -26,6 +27,9 @@ class UniverseClient(var adminPassword: String) {
             serializer = KotlinxSerializer(DataSerializer.format)
         }
     }
+
+    // player id
+    var playerId: Int = -1
 
     // password for holding playerId in server
     var password: String = "player password"
@@ -105,6 +109,26 @@ class UniverseClient(var adminPassword: String) {
         }
     }
 
+    suspend fun postRegisterPlayer(): HttpStatusCode {
+        return try {
+            val response: HttpResponse = ktorClient.post("http://$serverAddress:$serverPort/run/register") {
+                contentType(ContentType.Application.Json)
+                body = RegisterPlayerMessage(playerId, password)
+                timeout {
+                    requestTimeoutMillis = 1000
+                }
+            }
+
+            logger.debug("Register player universe status: ${response.status}")
+            response.status
+        } catch (cause: ResponseException) {
+            logger.error("Register player error: " + cause.response.status)
+            cause.response.status
+        } catch (cause: Throwable) {
+            logger.error("Register player error: cannot find server")
+            HttpStatusCode.NotFound
+        }
+    }
 
     companion object {
         private val logger = LogManager.getLogger()
