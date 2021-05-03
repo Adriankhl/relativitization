@@ -25,7 +25,6 @@ class UniverseClient(var adminPassword: String) {
         install(JsonFeature) {
             serializer = KotlinxSerializer(DataSerializer.format)
         }
-        expectSuccess = false
     }
 
     // password for holding playerId in server
@@ -41,34 +40,53 @@ class UniverseClient(var adminPassword: String) {
     var serverAddress = "127.0.0.1"
     var serverPort = "29979"
 
-    suspend fun getUniverseServerStatus(): UniverseServerStatusMessage{
-        return ktorClient.get<UniverseServerStatusMessage>("http://$serverAddress:$serverPort/status")
+    suspend fun getUniverseServerStatus(): UniverseServerStatusMessage {
+        return try {
+            ktorClient.get<UniverseServerStatusMessage>("http://$serverAddress:$serverPort/status")
+        } catch (cause: Throwable) {
+            UniverseServerStatusMessage()
+        }
     }
 
     suspend fun postNewUniverse(): HttpStatusCode {
-        val response: HttpResponse = ktorClient.post("http://$serverAddress:$serverPort/create/new") {
-            contentType(ContentType.Application.Json)
-            body = NewUniverseMessage(adminPassword, generateSettings)
-            timeout {
-                requestTimeoutMillis = 1000
+        return try {
+            val response: HttpResponse = ktorClient.post("http://$serverAddress:$serverPort/create/new") {
+                contentType(ContentType.Application.Json)
+                body = NewUniverseMessage(adminPassword, generateSettings)
+                timeout {
+                    requestTimeoutMillis = 1000
+                }
             }
+            logger.debug("Create new universe status: ${response.status}")
+            response.status
+        } catch (cause: ResponseException) {
+            logger.error("postNewUniverse error: " + cause.response.status)
+            cause.response.status
+        } catch (cause: Throwable) {
+            logger.error("postNewUniverse error: cannot find server")
+            HttpStatusCode.NotFound
         }
-
-        logger.debug("Create new universe status: ${response.status}")
-        return response.status
     }
 
     suspend fun postLoadUniverse(universeName: String): HttpStatusCode {
-        val response: HttpResponse = ktorClient.post("http://$serverAddress:$serverPort/create/load") {
-            contentType(ContentType.Application.Json)
-            body = LoadUniverseMessage(adminPassword, universeName)
-            timeout {
-                requestTimeoutMillis = 1000
+        return try {
+            val response: HttpResponse = ktorClient.post("http://$serverAddress:$serverPort/create/load") {
+                contentType(ContentType.Application.Json)
+                body = LoadUniverseMessage(adminPassword, universeName)
+                timeout {
+                    requestTimeoutMillis = 1000
+                }
             }
-        }
 
-        logger.debug("Create new universe status: ${response.status}")
-        return response.status
+            logger.debug("Create new universe status: ${response.status}")
+            response.status
+        } catch (cause: ResponseException) {
+            logger.error("postLoadUniverse error: " + cause.response.status)
+            cause.response.status
+        } catch (cause: Throwable) {
+            logger.error("postLoadUniverse error: cannot find server")
+            HttpStatusCode.NotFound
+        }
     }
 
 

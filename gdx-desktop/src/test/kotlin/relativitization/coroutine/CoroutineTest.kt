@@ -10,7 +10,6 @@ import org.apache.logging.log4j.core.config.Configurator
 import org.junit.jupiter.api.Test
 import relativitization.client.UniverseClient
 import relativitization.server.UniverseServer
-import java.net.ConnectException
 
 internal class CoroutineTest {
     @Test
@@ -99,28 +98,36 @@ internal class CoroutineTest {
             }
             println("Launched universe server")
 
-            delay(5000)
+            delay(1000)
 
             println("create universe")
             universeClient.postNewUniverse()
             println("posted normal")
-            val response: HttpResponse = universeClient.ktorClient.post("http://127.0.0.1:29979/create/new") {
-                contentType(ContentType.Application.Json)
-                body = "sdfsdf"
-                timeout {
-                    requestTimeoutMillis = 1000
-                    connectTimeoutMillis = 1000
-                    socketTimeoutMillis = 1000
+            val status: HttpStatusCode = try {
+                val response: HttpResponse = universeClient.ktorClient.post("http://127.0.0.1:29979/create/new") {
+                    contentType(ContentType.Application.Json)
+                    body = "sdfsdf"
+                    timeout {
+                        requestTimeoutMillis = 1000
+                        connectTimeoutMillis = 1000
+                        socketTimeoutMillis = 1000
+                    }
                 }
+                response.status
+            } catch (cause: ResponseException) {
+                cause.response.status
+            } catch (cause: Throwable) {
+                HttpStatusCode.NotFound
             }
+
             println("Done create universe")
-            println(response)
+            println(status)
             universeServer.stop()
         }
     }
 
     @Test
-    fun clientFailTest() {
+    fun connectionFailTest() {
         val universeServer = UniverseServer("pwd")
         val universeClient = UniverseClient("pwd")
 
@@ -128,8 +135,8 @@ internal class CoroutineTest {
             println("before")
             try {
                 val response: HttpResponse = universeClient.ktorClient.get("http://127.0.0.1:123")
-            } catch(e: ConnectException) {
-                println("Connection fail")
+            } catch(cause: Throwable) {
+                println("Error: $cause")
             }
             println("After")
             universeServer.stop()
