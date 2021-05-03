@@ -6,10 +6,7 @@ import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
 import relativitization.server.UniverseServerInternal
-import relativitization.universe.Universe
 import relativitization.universe.communication.*
-import relativitization.universe.data.UniverseData
-import relativitization.universe.generate.GenerateUniverse
 
 fun Route.runUniverseRouting(universeServerInternal: UniverseServerInternal) {
     // new Universe
