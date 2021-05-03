@@ -41,4 +41,39 @@ internal class KtorBugTest {
         }
     }
     */
+
+    @Test
+    fun minimalTest2() {
+        println("Start")
+        val server = embeddedServer(
+            CIO,
+            environment = applicationEngineEnvironment {
+                connector {
+                    port = 12345
+                    host = "127.0.0.1"
+                }
+            }
+        )
+        val client = HttpClient(io.ktor.client.engine.cio.CIO)
+
+        runBlocking {
+            launch {
+                server.start(true)
+            }
+
+            println("Launched Server")
+            val job = launch {
+                try {
+                    val response: HttpResponse = client.get("http://127.0.0.1:12345")
+                } catch (cause: Throwable) {
+                    println(cause)
+                }
+            }
+            println("Launched response")
+            delay(1000)
+            println("Cancel job")
+            job.cancel()
+            server.stop(1000, 1000)
+        }
+    }
 }
