@@ -76,4 +76,32 @@ internal class KtorBugTest {
             server.stop(1000, 1000)
         }
     }
+
+    /*
+    @Test
+    fun minimalTest3() {
+        val server = embeddedServer(
+            CIO,
+            environment = applicationEngineEnvironment {
+                connector {
+                    port = 12345
+                    host = "127.0.0.1"
+                }
+            }
+        )
+        val client = HttpClient(io.ktor.client.engine.cio.CIO)
+
+        runBlocking {
+            launch {
+                server.start(true)
+            }
+
+            println("Launched Server")
+            // This one will still hang the process, while `throw RuntimeException("Error!")` crash the process
+            //val response: HttpResponse = client.get("http://127.0.0.1:12345")
+            println("Stop server")
+            server.stop(1000, 1000)
+        }
+    }
+    */
 }

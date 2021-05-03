@@ -8,13 +8,12 @@ import relativitization.universe.Universe
 import relativitization.universe.communication.CommandInputMessage
 import relativitization.universe.communication.RegisterPlayerMessage
 import relativitization.universe.communication.UniverseServerStatusMessage
-import relativitization.universe.communication.UniverseViewMessage
+import relativitization.universe.communication.UniverseData3DMessage
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.commands.Command
 import relativitization.universe.generate.GenerateSetting
 import relativitization.universe.generate.GenerateUniverse
 import relativitization.universe.utils.CoroutineBoolean
-import relativitization.universe.utils.CoroutineMap
 import relativitization.universe.utils.CoroutineVar
 
 class UniverseServerInternal(var adminPassword: String) {
@@ -101,6 +100,8 @@ class UniverseServerInternal(var adminPassword: String) {
 
     /**
      * Stop the universe
+     *
+     * @param job the job running the start() function/
      */
     suspend fun stop(job: Job) {
         runningUniverse.set(false)
@@ -233,6 +234,7 @@ class UniverseServerInternal(var adminPassword: String) {
                 runningUniverse = runningUniverse.isTrue(),
                 waitingInput = waitingInput.isTrue(),
                 timeLeft = timeLeft(),
+                currentUniverseTime = currentUniverseTime
             )
         }
     }
@@ -268,15 +270,15 @@ class UniverseServerInternal(var adminPassword: String) {
      *
      * @param playerId the id of the player getting the view
      */
-    suspend fun getUniverse3DView(universeViewMessage: UniverseViewMessage): UniverseData3DAtPlayer {
+    suspend fun getUniverseData3D(universeData3DMessage: UniverseData3DMessage): UniverseData3DAtPlayer {
         mutex.withLock {
             return if (
                 isWaiting() &&
-                universe.availableHumanPLayers().contains(universeViewMessage.id) &&
-                humanIdPasswordMap.keys.contains(universeViewMessage.id) &&
-                humanIdPasswordMap.getValue(universeViewMessage.id) == universeViewMessage.password
+                universe.availableHumanPLayers().contains(universeData3DMessage.id) &&
+                humanIdPasswordMap.keys.contains(universeData3DMessage.id) &&
+                humanIdPasswordMap.getValue(universeData3DMessage.id) == universeData3DMessage.password
             ) {
-                universe.getUniverse3DViewAtPlayer(universeViewMessage.id)
+                universe.getUniverse3DViewAtPlayer(universeData3DMessage.id)
             } else {
                 // Empty 3D view
                 UniverseData3DAtPlayer()

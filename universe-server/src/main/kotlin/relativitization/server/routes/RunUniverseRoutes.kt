@@ -49,8 +49,8 @@ fun Route.runUniverseRouting(universeServerInternal: UniverseServerInternal) {
 
     route("/run/view") {
         get {
-            val universeViewMessage: UniverseViewMessage = call.receive()
-            call.respond(status = HttpStatusCode.OK, universeServerInternal.getUniverse3DView(universeViewMessage))
+            val universeData3DMessage: UniverseData3DMessage = call.receive()
+            call.respond(status = HttpStatusCode.OK, universeServerInternal.getUniverseData3D(universeData3DMessage))
         }
     }
 }

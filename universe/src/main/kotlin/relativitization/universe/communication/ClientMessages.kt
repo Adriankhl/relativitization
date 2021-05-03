@@ -36,7 +36,7 @@ data class RunUniverseMessage(
 )
 
 @Serializable
-data class UniverseViewMessage(
+data class UniverseData3DMessage(
     val id: Int,
     val password: String,
 )
