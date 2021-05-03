@@ -90,16 +90,8 @@ class UniverseServerInternal(var adminPassword: String) {
                         clearInactive()
                     }
 
-                    // Start to accept human input
-                    waitingInput.set(true)
-                    logger.debug("Start accepting new input")
-
-                    aiCommandMap.putAll(universe.computeAICommands())
-
-                    // Restart wait timer after ai command has been computed
-                    setTimeLeftTo(waitTimeLimit.get())
-
-                    logger.debug("AI done computation")
+                    // Start waiting for human input and compute ai input
+                    humanAndAiInput()
                 }
             }
         }
@@ -135,6 +127,22 @@ class UniverseServerInternal(var adminPassword: String) {
         // Change available id
         availableIdList.addAll(universe.availablePlayers())
         availableHumanIdList.addAll(universe.availableHumanPLayers())
+    }
+
+    /**
+     * Start parallel computation of ai input and accept human input
+     */
+    private suspend fun humanAndAiInput() {
+        // Start to accept human input
+        waitingInput.set(true)
+        logger.debug("Start accepting new input")
+
+        aiCommandMap.putAll(universe.computeAICommands())
+
+        // Restart wait timer after ai command has been computed
+        setTimeLeftTo(waitTimeLimit.get())
+
+        logger.debug("AI done computation")
     }
 
     /**
@@ -254,6 +262,8 @@ class UniverseServerInternal(var adminPassword: String) {
 
     /**
      * Register human player to humanIdPasswordMap
+     *
+     * @return success or not
      */
     suspend fun registerPlayer(registerPlayerMessage: RegisterPlayerMessage): Boolean {
         mutex.withLock {
@@ -264,6 +274,18 @@ class UniverseServerInternal(var adminPassword: String) {
                 false
             }
         }
+    }
+
+    /**
+     * Run universe, compute the ai command in the first turn without entering the main loop
+     */
+    suspend fun runUniverse()  {
+        mutex.withLock {
+            updateCommandMapAndIdList()
+            waitingInput.set(true)
+            runningUniverse.set(true)
+        }
+        humanAndAiInput()
     }
 
     companion object {

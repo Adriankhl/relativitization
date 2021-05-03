@@ -10,6 +10,7 @@ import relativitization.universe.Universe
 import relativitization.universe.communication.LoadUniverseMessage
 import relativitization.universe.communication.NewUniverseMessage
 import relativitization.universe.communication.RegisterPlayerMessage
+import relativitization.universe.communication.RunUniverseMessage
 import relativitization.universe.data.UniverseData
 import relativitization.universe.generate.GenerateUniverse
 
@@ -23,6 +24,18 @@ fun Route.runUniverseRouting(universeServerInternal: UniverseServerInternal) {
                 call.respondText("Registered player", ContentType.Text.Plain, HttpStatusCode.OK)
             } else {
                 call.respondText("Can't register, try another id", ContentType.Text.Plain, HttpStatusCode.NotAcceptable)
+            }
+        }
+    }
+
+    route("/run/run-universe") {
+        post {
+            val runUniverseMessage: RunUniverseMessage = call.receive()
+            if (runUniverseMessage.adminPassword == universeServerInternal.adminPassword) {
+                universeServerInternal.runUniverse()
+                call.respondText("Run universe success", ContentType.Text.Plain, HttpStatusCode.OK)
+            } else {
+                call.respondText("Can't run universe, please use the correct admin password", ContentType.Text.Plain, HttpStatusCode.Unauthorized)
             }
         }
     }

@@ -29,3 +29,8 @@ data class RegisterPlayerMessage(
     val id: Int,
     val password: String
 )
+
+@Serializable
+data class RunUniverseMessage(
+    val adminPassword: String,
+)
