@@ -59,9 +59,9 @@ class UniverseClient(var adminPassword: String) {
         while (isActive) {
             delay(2000)
             mutex.withLock {
-                serverStatus = getUniverseServerStatus()
+                serverStatus = httpGetUniverseServerStatus()
                 if (serverStatus.currentUniverseTime > universeData3DCache.center.t) {
-                    universeData3DCache = getUniverseData3D()
+                    universeData3DCache = httpGetUniverseData3D()
                 }
             }
         }
@@ -103,7 +103,7 @@ class UniverseClient(var adminPassword: String) {
 
     fun getServerStatus(): UniverseServerStatusMessage = serverStatus
 
-    suspend fun getUniverseServerStatus(): UniverseServerStatusMessage {
+    suspend fun httpGetUniverseServerStatus(): UniverseServerStatusMessage {
         return try {
             ktorClient.get<UniverseServerStatusMessage>("http://$serverAddress:$serverPort/status") {
                 timeout {
@@ -115,7 +115,7 @@ class UniverseClient(var adminPassword: String) {
         }
     }
 
-    suspend fun getAvailableIdList(): List<Int> {
+    suspend fun httpGetAvailableIdList(): List<Int> {
         return try {
             ktorClient.get<List<Int>>("http://$serverAddress:$serverPort/status/ids") {
                 timeout {
@@ -127,7 +127,7 @@ class UniverseClient(var adminPassword: String) {
         }
     }
 
-    suspend fun getAvailableHumanIdList(): List<Int> {
+    suspend fun httpGetAvailableHumanIdList(): List<Int> {
         return try {
             ktorClient.get<List<Int>>("http://$serverAddress:$serverPort/status/human-ids") {
                 timeout {
@@ -139,7 +139,7 @@ class UniverseClient(var adminPassword: String) {
         }
     }
 
-    suspend fun getUniverseData3D(): UniverseData3DAtPlayer {
+    suspend fun httpGetUniverseData3D(): UniverseData3DAtPlayer {
         return try {
             ktorClient.get<UniverseData3DAtPlayer>("http://$serverAddress:$serverPort/run/view") {
                 contentType(ContentType.Application.Json)
@@ -153,7 +153,7 @@ class UniverseClient(var adminPassword: String) {
         }
     }
 
-    suspend fun postNewUniverse(): HttpStatusCode {
+    suspend fun httpPostNewUniverse(): HttpStatusCode {
         return try {
             val response: HttpResponse = ktorClient.post("http://$serverAddress:$serverPort/create/new") {
                 contentType(ContentType.Application.Json)
@@ -173,7 +173,7 @@ class UniverseClient(var adminPassword: String) {
         }
     }
 
-    suspend fun postLoadUniverse(universeName: String): HttpStatusCode {
+    suspend fun httpPostLoadUniverse(universeName: String): HttpStatusCode {
         return try {
             val response: HttpResponse = ktorClient.post("http://$serverAddress:$serverPort/create/load") {
                 contentType(ContentType.Application.Json)
@@ -194,7 +194,7 @@ class UniverseClient(var adminPassword: String) {
         }
     }
 
-    suspend fun postRegisterPlayer(): HttpStatusCode {
+    suspend fun httpPostRegisterPlayer(): HttpStatusCode {
         return try {
             val response: HttpResponse = ktorClient.post("http://$serverAddress:$serverPort/run/register") {
                 contentType(ContentType.Application.Json)
@@ -215,7 +215,7 @@ class UniverseClient(var adminPassword: String) {
         }
     }
 
-    suspend fun postRunUniverse(): HttpStatusCode {
+    suspend fun httpPostRunUniverse(): HttpStatusCode {
         return try {
             val response: HttpResponse = ktorClient.post("http://$serverAddress:$serverPort/run/universe") {
                 contentType(ContentType.Application.Json)
@@ -235,7 +235,7 @@ class UniverseClient(var adminPassword: String) {
         }
     }
 
-    suspend fun postHumanInput(): HttpStatusCode {
+    suspend fun httpPostHumanInput(): HttpStatusCode {
         return try {
             val response: HttpResponse = ktorClient.post("http://$serverAddress:$serverPort/run/input") {
                 contentType(ContentType.Application.Json)

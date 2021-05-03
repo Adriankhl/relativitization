@@ -56,7 +56,7 @@ internal class CoroutineTest {
             delay(1000)
 
             println("create universe")
-            universeClient.postNewUniverse()
+            universeClient.httpPostNewUniverse()
             println("Done create universe")
 
             universeServer.stop()
@@ -79,7 +79,7 @@ internal class CoroutineTest {
             delay(1000)
 
             println("create universe")
-            universeClient.postNewUniverse()
+            universeClient.httpPostNewUniverse()
             println("Done create universe")
 
             universeServer.stop()
@@ -101,7 +101,7 @@ internal class CoroutineTest {
             delay(1000)
 
             println("create universe")
-            universeClient.postNewUniverse()
+            universeClient.httpPostNewUniverse()
             println("posted normal")
             val status: HttpStatusCode = try {
                 val response: HttpResponse = universeClient.ktorClient.post("http://127.0.0.1:29979/create/new") {
