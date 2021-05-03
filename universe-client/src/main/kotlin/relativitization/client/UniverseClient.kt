@@ -9,10 +9,7 @@ import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import org.apache.logging.log4j.LogManager
-import relativitization.universe.communication.LoadUniverseMessage
-import relativitization.universe.communication.NewUniverseMessage
-import relativitization.universe.communication.RegisterPlayerMessage
-import relativitization.universe.communication.UniverseServerStatusMessage
+import relativitization.universe.communication.*
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.generate.GenerateSetting
@@ -126,6 +123,26 @@ class UniverseClient(var adminPassword: String) {
             cause.response.status
         } catch (cause: Throwable) {
             logger.error("Register player error: cannot find server")
+            HttpStatusCode.NotFound
+        }
+    }
+
+    suspend fun runUniverse(): HttpStatusCode {
+        return try {
+            val response: HttpResponse = ktorClient.post("http://$serverAddress:$serverPort/run/run-universe") {
+                contentType(ContentType.Application.Json)
+                body = RunUniverseMessage(adminPassword)
+                timeout {
+                    requestTimeoutMillis = 1000
+                }
+            }
+            logger.debug("Run universe: ${response.status}")
+            response.status
+        } catch (cause: ResponseException) {
+            logger.error("Run universe error: " + cause.response.status)
+            cause.response.status
+        } catch (cause: Throwable) {
+            logger.error("Run universe error: cannot find server")
             HttpStatusCode.NotFound
         }
     }
