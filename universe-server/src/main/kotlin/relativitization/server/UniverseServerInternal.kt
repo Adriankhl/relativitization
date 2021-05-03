@@ -227,12 +227,12 @@ class UniverseServerInternal(var adminPassword: String) {
     }
 
     /**
-     * Get all alive human and ai id
+     * Get all alive, unregistered human and ai id
      */
     suspend fun getAvailableIdList(): List<Int> {
         mutex.withLock {
             return if (isWaiting()) {
-                availableIdList
+                availableIdList.filter { !humanIdPasswordMap.keys.contains(it) }
             } else {
                 listOf()
             }
@@ -240,12 +240,12 @@ class UniverseServerInternal(var adminPassword: String) {
     }
 
     /**
-     * Get all alive human id
+     * Get all alive and unregistered human id
      */
     suspend fun getAvailableHumanIdList(): List<Int> {
         mutex.withLock {
             return if (isWaiting()) {
-                availableHumanIdList
+                availableHumanIdList.filter { !humanIdPasswordMap.keys.contains(it) }
             } else {
                 listOf()
             }

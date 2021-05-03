@@ -13,6 +13,7 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import org.apache.logging.log4j.LogManager
 import relativitization.server.routes.registerCreateUniverseRoutes
+import relativitization.server.routes.registerRunUniverseRoutes
 import relativitization.server.routes.registerUniverseStatusRoutes
 
 
@@ -40,6 +41,7 @@ class UniverseServer(adminPassword: String) {
                 }
                 registerUniverseStatusRoutes(universeServerInternal)
                 registerCreateUniverseRoutes(universeServerInternal)
+                registerRunUniverseRoutes(universeServerInternal)
             }
 
             connector {
