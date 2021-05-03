@@ -127,7 +127,7 @@ class UniverseClient(var adminPassword: String) {
         }
     }
 
-    suspend fun runUniverse(): HttpStatusCode {
+    suspend fun postRunUniverse(): HttpStatusCode {
         return try {
             val response: HttpResponse = ktorClient.post("http://$serverAddress:$serverPort/run/run-universe") {
                 contentType(ContentType.Application.Json)
