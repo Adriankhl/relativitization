@@ -34,3 +34,9 @@ data class RegisterPlayerMessage(
 data class RunUniverseMessage(
     val adminPassword: String,
 )
+
+@Serializable
+data class UniverseViewMessage(
+    val id: Int,
+    val password: String,
+)

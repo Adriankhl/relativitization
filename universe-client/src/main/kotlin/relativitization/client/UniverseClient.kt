@@ -11,6 +11,7 @@ import io.ktor.http.*
 import org.apache.logging.log4j.LogManager
 import relativitization.universe.communication.*
 import relativitization.universe.data.UniverseData3DAtPlayer
+import relativitization.universe.data.commands.Command
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.generate.GenerateSetting
 
@@ -34,6 +35,9 @@ class UniverseClient(var adminPassword: String) {
     // store downloaded but not yet used universe data
     var universeData3DCache: UniverseData3DAtPlayer = UniverseData3DAtPlayer()
 
+    // input command list
+    val commandList: MutableList<Command> = mutableListOf()
+
     // for generate universe
     var generateSettings: GenerateSetting = GenerateSetting()
 
@@ -43,7 +47,11 @@ class UniverseClient(var adminPassword: String) {
 
     suspend fun getUniverseServerStatus(): UniverseServerStatusMessage {
         return try {
-            ktorClient.get<UniverseServerStatusMessage>("http://$serverAddress:$serverPort/status")
+            ktorClient.get<UniverseServerStatusMessage>("http://$serverAddress:$serverPort/status") {
+                timeout {
+                    requestTimeoutMillis = 1000
+                }
+            }
         } catch (cause: Throwable) {
             UniverseServerStatusMessage()
         }
@@ -51,7 +59,11 @@ class UniverseClient(var adminPassword: String) {
 
     suspend fun getAvailableIdList(): List<Int> {
         return try {
-            ktorClient.get<List<Int>>("http://$serverAddress:$serverPort/status/ids")
+            ktorClient.get<List<Int>>("http://$serverAddress:$serverPort/status/ids") {
+                timeout {
+                    requestTimeoutMillis = 1000
+                }
+            }
         } catch (cause: Throwable) {
             listOf()
         }
@@ -59,9 +71,27 @@ class UniverseClient(var adminPassword: String) {
 
     suspend fun getAvailableHumanIdList(): List<Int> {
         return try {
-            ktorClient.get<List<Int>>("http://$serverAddress:$serverPort/status/human-ids")
+            ktorClient.get<List<Int>>("http://$serverAddress:$serverPort/status/human-ids") {
+                timeout {
+                    requestTimeoutMillis = 1000
+                }
+            }
         } catch (cause: Throwable) {
             listOf()
+        }
+    }
+
+    suspend fun getUniverse3DView(): UniverseData3DAtPlayer {
+        return try {
+            ktorClient.get<UniverseData3DAtPlayer>("http://$serverAddress:$serverPort/run/view") {
+                contentType(ContentType.Application.Json)
+                body = UniverseViewMessage(playerId, password)
+                timeout {
+                    requestTimeoutMillis = 10000
+                }
+            }
+        } catch (cause: Throwable) {
+            UniverseData3DAtPlayer()
         }
     }
 
@@ -129,7 +159,7 @@ class UniverseClient(var adminPassword: String) {
 
     suspend fun postRunUniverse(): HttpStatusCode {
         return try {
-            val response: HttpResponse = ktorClient.post("http://$serverAddress:$serverPort/run/run-universe") {
+            val response: HttpResponse = ktorClient.post("http://$serverAddress:$serverPort/run/universe") {
                 contentType(ContentType.Application.Json)
                 body = RunUniverseMessage(adminPassword)
                 timeout {
@@ -143,6 +173,26 @@ class UniverseClient(var adminPassword: String) {
             cause.response.status
         } catch (cause: Throwable) {
             logger.error("Run universe error: cannot find server")
+            HttpStatusCode.NotFound
+        }
+    }
+
+    suspend fun postHumanInput(): HttpStatusCode {
+        return try {
+            val response: HttpResponse = ktorClient.post("http://$serverAddress:$serverPort/run/input") {
+                contentType(ContentType.Application.Json)
+                body = CommandInputMessage(playerId, password, commandList)
+                timeout {
+                    requestTimeoutMillis = 1000
+                }
+            }
+            logger.debug("Human command input: ${response.status}")
+            response.status
+        } catch (cause: ResponseException) {
+            logger.error("Human command input error: " + cause.response.status)
+            cause.response.status
+        } catch (cause: Throwable) {
+            logger.error("Human command input error: cannot find server")
             HttpStatusCode.NotFound
         }
     }

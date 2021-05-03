@@ -8,6 +8,8 @@ import relativitization.universe.Universe
 import relativitization.universe.communication.CommandInputMessage
 import relativitization.universe.communication.RegisterPlayerMessage
 import relativitization.universe.communication.UniverseServerStatusMessage
+import relativitization.universe.communication.UniverseViewMessage
+import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.commands.Command
 import relativitization.universe.generate.GenerateSetting
 import relativitization.universe.generate.GenerateUniverse
@@ -193,7 +195,8 @@ class UniverseServerInternal(var adminPassword: String) {
      */
     suspend fun humanInput(commandInputMessage: CommandInputMessage): Boolean {
         mutex.withLock {
-            return if ((humanIdPasswordMap.keys.contains(commandInputMessage.id)) &&
+            return if (
+                (humanIdPasswordMap.keys.contains(commandInputMessage.id)) &&
                 (humanIdPasswordMap.getValue(commandInputMessage.id) == commandInputMessage.password) &&
                 (waitingInput.isTrue())
             ) {
@@ -256,6 +259,27 @@ class UniverseServerInternal(var adminPassword: String) {
                 availableHumanIdList.filter { !humanIdPasswordMap.keys.contains(it) }
             } else {
                 listOf()
+            }
+        }
+    }
+
+    /**
+     * Get universe 3D view for player
+     *
+     * @param playerId the id of the player getting the view
+     */
+    suspend fun getUniverse3DView(universeViewMessage: UniverseViewMessage): UniverseData3DAtPlayer {
+        mutex.withLock {
+            return if (
+                isWaiting() &&
+                universe.availableHumanPLayers().contains(universeViewMessage.id) &&
+                humanIdPasswordMap.keys.contains(universeViewMessage.id) &&
+                humanIdPasswordMap.getValue(universeViewMessage.id) == universeViewMessage.password
+            ) {
+                universe.getUniverse3DViewAtPlayer(universeViewMessage.id)
+            } else {
+                // Empty 3D view
+                UniverseData3DAtPlayer()
             }
         }
     }
