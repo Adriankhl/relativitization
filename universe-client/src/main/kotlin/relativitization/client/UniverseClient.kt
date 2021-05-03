@@ -48,6 +48,22 @@ class UniverseClient(var adminPassword: String) {
         }
     }
 
+    suspend fun getAvailableIdList(): List<Int> {
+        return try {
+            ktorClient.get<List<Int>>("http://$serverAddress:$serverPort/status/ids")
+        } catch (cause: Throwable) {
+            listOf()
+        }
+    }
+
+    suspend fun getAvailableHumanIdList(): List<Int> {
+        return try {
+            ktorClient.get<List<Int>>("http://$serverAddress:$serverPort/status/human-ids")
+        } catch (cause: Throwable) {
+            listOf()
+        }
+    }
+
     suspend fun postNewUniverse(): HttpStatusCode {
         return try {
             val response: HttpResponse = ktorClient.post("http://$serverAddress:$serverPort/create/new") {

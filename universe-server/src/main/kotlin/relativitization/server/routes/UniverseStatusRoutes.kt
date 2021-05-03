@@ -7,9 +7,24 @@ import io.ktor.routing.*
 import relativitization.server.UniverseServerInternal
 
 fun Route.universeStatueRouting(universeServerInternal: UniverseServerInternal) {
+    // General status
     route("/status") {
         get {
             call.respond(status = HttpStatusCode.OK, universeServerInternal.getUniverseStatusMessage())
+        }
+    }
+
+    // Get all available ids
+    route("/status/ids") {
+        get {
+            call.respond(status = HttpStatusCode.OK, universeServerInternal.getAvailableIdList())
+        }
+    }
+
+    // Get all available ids
+    route("/status/human-ids") {
+        get {
+            call.respond(status = HttpStatusCode.OK, universeServerInternal.getAvailableHumanIdList())
         }
     }
 

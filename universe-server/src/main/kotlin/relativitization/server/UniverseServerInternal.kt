@@ -214,6 +214,30 @@ class UniverseServerInternal(var adminPassword: String) {
         }
     }
 
+    suspend fun getAvailableIdList(): List<Int> {
+        mutex.withLock {
+            return if (hasUniverse.isTrue() && !runningUniverse.isTrue()) {
+                availableIdList
+            } else if (runningUniverse.isTrue() && waitingInput.isTrue()) {
+                availableIdList
+            } else {
+                listOf()
+            }
+        }
+    }
+
+    suspend fun getAvailableHumanIdList(): List<Int> {
+        mutex.withLock {
+            return if (hasUniverse.isTrue() && !runningUniverse.isTrue()) {
+                availableHumanIdList
+            } else if (runningUniverse.isTrue() && waitingInput.isTrue()) {
+                availableHumanIdList
+            } else {
+                listOf()
+            }
+        }
+    }
+
     companion object {
         private val logger = LogManager.getLogger()
     }
