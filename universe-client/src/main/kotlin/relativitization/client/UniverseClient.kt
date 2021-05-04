@@ -31,6 +31,8 @@ class UniverseClient(var adminPassword: String) {
         }
     }
 
+    private var universeClientRunJob: Job = Job()
+
     // player id
     private var playerId: Int = -1
 
@@ -55,7 +57,7 @@ class UniverseClient(var adminPassword: String) {
     /**
      * Start auto updating status and universeData3DCache
      */
-    suspend fun start() = coroutineScope {
+    suspend fun run() = coroutineScope {
         while (isActive) {
             delay(2000)
             mutex.withLock {
@@ -68,12 +70,21 @@ class UniverseClient(var adminPassword: String) {
     }
 
     /**
+     * Start running and store job
+     */
+    suspend fun start() = coroutineScope {
+        universeClientRunJob = launch {
+            run()
+        }
+    }
+
+    /**
      * Stop the client
      *
      * @param job the job running the start() function
      */
-    suspend fun stop(job: Job) {
-        job.cancelAndJoin()
+    suspend fun stop() {
+        universeClientRunJob.cancelAndJoin()
         ktorClient.close()
     }
 

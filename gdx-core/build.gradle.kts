@@ -10,6 +10,7 @@ kotlin {
         val main by getting {
             dependencies {
                 implementation(project(":universe-client"))
+                implementation(project(":universe-server"))
 
                 implementation("com.badlogicgames.gdx:gdx:${Versions.gdxVersion}")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.kotlinxSerializationVersion}")
