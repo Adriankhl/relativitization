@@ -57,13 +57,16 @@ class UniverseClient(var adminPassword: String) {
     /**
      * Start auto updating status and universeData3DCache
      */
-    suspend fun run() = coroutineScope {
+    private suspend fun run() = coroutineScope {
         while (isActive) {
             delay(2000)
             mutex.withLock {
                 serverStatus = httpGetUniverseServerStatus()
                 if (serverStatus.currentUniverseTime > universeData3DCache.center.t) {
-                    universeData3DCache = httpGetUniverseData3D()
+                    val universeData3DDownloaded =  httpGetUniverseData3D()
+                    if (universeData3DDownloaded.center.t > universeData3DCache.center.t) {
+                        universeData3DCache = universeData3DDownloaded
+                    }
                 }
             }
         }
@@ -80,8 +83,6 @@ class UniverseClient(var adminPassword: String) {
 
     /**
      * Stop the client
-     *
-     * @param job the job running the start() function
      */
     suspend fun stop() {
         universeClientRunJob.cancelAndJoin()
