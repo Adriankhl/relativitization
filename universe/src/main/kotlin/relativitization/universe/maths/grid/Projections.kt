@@ -206,11 +206,26 @@ object Projections {
             if (mapIndexToId.containsKey(gridIndex)) {
                 val mapId: Int = mapIndexToId.getValue(gridIndex)
                 val listIndex: Int = positionFunctionMap.getValue(mapId)(xPos, yPos)
-                gridMap.getValue(mapId).get(listIndex)
+                gridMap.getValue(mapId)[listIndex]
             } else {
                 -1
             }
         }
+    }
+
+    /**
+     * Compute grid scaling factor by the cell with maximum required rectangles
+     */
+    fun gridScaleFactor(
+        data3D: List<List<List<Map<Int, List<Int>>>>>,
+    ): Int {
+        return data3D.flatten().flatten().map { gridMap ->
+            val gridDivision: Int = numDivisionInGroup(gridMap.size)
+            val maxInnerDivision: Int = gridMap.values.map { idList ->
+                numDivisionInGroup(idList.size)
+            }.maxOrNull() ?: 1
+            maxInnerDivision * gridDivision
+        }.maxOrNull() ?: 1
     }
 
 
