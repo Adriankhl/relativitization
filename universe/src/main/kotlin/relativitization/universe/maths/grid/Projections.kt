@@ -1,10 +1,57 @@
 package relativitization.universe.maths.grid
 
+import org.apache.logging.log4j.LogManager
 import relativitization.universe.data.physics.Int2D
-import relativitization.universe.data.physics.Int3D
 import kotlin.math.max
+import kotlin.math.min
 
 object Projections {
+
+    /**
+     * Compute the required number of division to store rectangles in a group given the maximum index
+     *
+     * @param maxRectIndex the number of required rectangle in this group
+     * @param divAcc for recursive computation of the number of division in an axis of the group
+     */
+    private fun numDivisionInGroup(maxRectIndex: Int, divAcc: Int = 1): Int {
+        return if (maxRectIndex < divAcc * divAcc) {
+            divAcc
+        } else {
+            numDivisionInGroup(maxRectIndex, 2 * divAcc)
+        }
+    }
+
+    /**
+     * Coordinate in a single group
+     */
+    fun rectangleListInGroup(
+        maxRectangleIndex: Int,
+        imageWidth: Int,
+        imageHeight: Int,
+        groupWidth: Int,
+        groupHeight: Int,
+        xOffSet: Int,
+        yOffSet: Int,
+    ): List<IntRectangle> {
+        val numDivision: Int = numDivisionInGroup(maxRectangleIndex)
+        val totalImageWidth: Int = imageWidth * numDivision
+        val totalImageHeight: Int = imageHeight * numDivision
+        val scale: Int = min(groupWidth / totalImageWidth, groupHeight / totalImageHeight)
+
+        // If the grid size is smaller than the total required image size, something is wrong
+        if (scale == 0) {
+            logger.error("rectangleListInGroup error: scale = 0")
+        }
+
+        val scaledWidth: Int = imageWidth * scale
+        val scaledHeight: Int = imageHeight * scale
+
+        return (0..maxRectangleIndex).map {
+            val x = it % numDivision
+            val y = it / numDivision
+            IntRectangle(xOffSet + scaledWidth * x, yOffSet + scaledHeight * y, scaledWidth, scaledHeight)
+        }
+    }
 
     /**
      * Project a 3D coordinate to 2D pixel plane
@@ -53,5 +100,7 @@ object Projections {
 
         return Int2D(xPos, yPos)
     }
+
+    private val logger = LogManager.getLogger()
 }
 
