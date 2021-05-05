@@ -24,7 +24,7 @@ object Relativistic {
     // Consider the amount of energy required to accelerate something to 0.5c
     // c = 2 needs 4 times more energy then c = 1, but this the amount of energy
     // should be the same regardless of c, so the energy value should be amplified by 4 times
-    fun energyUnit(speedOfLight: Int): Int {
-        return speedOfLight * speedOfLight
+    fun Double.convertEnergyUnit(speedOfLight: Int): Double {
+        return this * speedOfLight * speedOfLight
     }
 }

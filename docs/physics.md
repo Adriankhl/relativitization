@@ -3,9 +3,8 @@
 * Fixed mass 1 kg = 1 unit (M)
 * Speed of light = c
 * Spacial unit 1 T / c
-* Energy unit
-  * c = 1, 1 unit = 1kg * c^2 = 1
-  * c != 1, 1 unit = c^2
+* Energy unit: m c^2, m = 1kg, c = 1
+  * convert energy unit when using in an equation involving spacial unit: multiply by c ^ 2
   
 # after image
 * when player 1 move from (0, 0, 0) to (0, 0, 1), due to relativistic time delay, player 2 at (0, 0, 0) cannot see player 2 for some turns
