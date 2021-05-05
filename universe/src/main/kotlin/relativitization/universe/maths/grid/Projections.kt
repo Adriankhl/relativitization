@@ -89,6 +89,21 @@ object Projections {
         }
     }
 
+    /**
+     * Map of id to list of id to Rectangle
+     */
+    fun GridRectangleFunction(
+        gridMap: Map<Int, List<Int>>,
+        imageWidth: Int,
+        imageHeight: Int,
+        groupWidth: Int,
+        groupHeight: Int,
+        xOffSet: Int,
+        yOffSet: Int,
+    ) {
+
+    }
+
 
     /**
      * Project a 3D coordinate to 2D pixel plane

@@ -113,7 +113,7 @@ data class UniverseData3DAtPlayer(
     }
 
     /**
-     * Get set of player data by index
+     * Get set of player data by Int3D
      */
     fun get(int3D: Int3D): Map<Int, List<PlayerData>> {
         return if (isInt3DValid(int3D)) {
@@ -125,6 +125,22 @@ data class UniverseData3DAtPlayer(
                 playerId3DMap[int3D.x][int3D.y][int3D.z].mapValues { it1 ->
                     it1.value.map { it2 -> get(it2) }
                 }
+            }
+        } else {
+            logger.error("$int3D is not a valid coordinate to get player")
+            mapOf()
+        }
+    }
+
+    /**
+     * Get set of player id by Int3D
+     */
+    fun getIdMap(int3D: Int3D): Map<Int, List<Int>> {
+        return if (isInt3DValid(int3D)) {
+            if (center.toInt3D().isNearby(int3D)) {
+                prioritizedPlayerId3DMap[int3D.x - center.x + 1][int3D.y - center.y + 1][int3D.z - center.z + 1]
+            } else {
+                playerId3DMap[int3D.x][int3D.y][int3D.z]
             }
         } else {
             logger.error("$int3D is not a valid coordinate to get player")
