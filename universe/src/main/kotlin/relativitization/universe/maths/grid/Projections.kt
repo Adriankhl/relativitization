@@ -8,16 +8,16 @@ import kotlin.math.min
 object Projections {
 
     /**
-     * Compute the required number of division to store rectangles in a group given the maximum index
+     * Compute the required number of division to store rectangles in a group given the number of required rectangle
      *
-     * @param maxRectIndex the number of required rectangle in this group
+     * @param numRequiredRectangle the number of required rectangle in this group
      * @param divAcc for recursive computation of the number of division in an axis of the group
      */
-    private fun numDivisionInGroup(maxRectIndex: Int, divAcc: Int = 1): Int {
-        return if (maxRectIndex < divAcc * divAcc) {
+    private fun numDivisionInGroup(numRequiredRectangle: Int, divAcc: Int = 1): Int {
+        return if (numRequiredRectangle < divAcc * divAcc) {
             divAcc
         } else {
-            numDivisionInGroup(maxRectIndex, 2 * divAcc)
+            numDivisionInGroup(numRequiredRectangle, 2 * divAcc)
         }
     }
 
@@ -27,7 +27,7 @@ object Projections {
      * @return function to convert index to rectangle
      */
     fun indexToRectangleFunction(
-        maxRectangleIndex: Int,
+        numRequiredRectangle: Int,
         imageWidth: Int,
         imageHeight: Int,
         groupWidth: Int,
@@ -35,7 +35,7 @@ object Projections {
         xOffSet: Int,
         yOffSet: Int,
     ): (Int) -> IntRectangle {
-        val numDivision: Int = numDivisionInGroup(maxRectangleIndex)
+        val numDivision: Int = numDivisionInGroup(numRequiredRectangle)
         val totalImageWidth: Int = imageWidth * numDivision
         val totalImageHeight: Int = imageHeight * numDivision
         val scale: Int = min(groupWidth / totalImageWidth, groupHeight / totalImageHeight)
@@ -61,7 +61,7 @@ object Projections {
      * @return a function from x and y position to index
      */
     fun positionToIndexFunction(
-        maxRectangleIndex: Int,
+        numRequiredRectangle: Int,
         imageWidth: Int,
         imageHeight: Int,
         groupWidth: Int,
@@ -69,7 +69,7 @@ object Projections {
         xOffSet: Int,
         yOffSet: Int,
     ): (Int, Int) -> Int {
-        val numDivision: Int = numDivisionInGroup(maxRectangleIndex)
+        val numDivision: Int = numDivisionInGroup(numRequiredRectangle)
         val totalImageWidth: Int = imageWidth * numDivision
         val totalImageHeight: Int = imageHeight * numDivision
         val scale: Int = min(groupWidth / totalImageWidth, groupHeight / totalImageHeight)
@@ -91,17 +91,47 @@ object Projections {
 
     /**
      * Map of id to list of id to Rectangle
+     *
+     * @return function of map id and list value to rectangle
      */
-    fun GridRectangleFunction(
+    fun gridToRectangleFunction(
         gridMap: Map<Int, List<Int>>,
         imageWidth: Int,
         imageHeight: Int,
-        groupWidth: Int,
-        groupHeight: Int,
+        gridWidth: Int,
+        gridHeight: Int,
         xOffSet: Int,
         yOffSet: Int,
-    ) {
+    ): (Int, Int) -> IntRectangle {
+        val gridRectangleFunction: (Int) -> IntRectangle = indexToRectangleFunction(
+            numRequiredRectangle = gridMap.size,
+            imageWidth = imageWidth,
+            imageHeight = imageHeight,
+            groupWidth = gridWidth,
+            groupHeight = gridHeight,
+            xOffSet = xOffSet,
+            yOffSet = yOffSet
+        )
 
+        val mapIdToIndex: Map<Int, Int> = gridMap.keys.toList().mapIndexed { idx, value -> value to idx }.toMap()
+
+        val rectangleFunctionMap: Map<Int, (Int) -> IntRectangle> = gridMap.mapValues {
+            val rectangle: IntRectangle = gridRectangleFunction(mapIdToIndex.getValue(it.key))
+            indexToRectangleFunction(
+                numRequiredRectangle = it.value.size,
+                imageWidth = imageWidth,
+                imageHeight = imageHeight,
+                groupWidth = rectangle.width,
+                groupHeight = rectangle.height,
+                xOffSet = rectangle.xPos,
+                yOffSet = rectangle.yPos,
+            )
+        }
+
+        return { mapId, listValue ->
+            val listIndex = gridMap.getValue(mapId).indexOf(listValue)
+            rectangleFunctionMap.getValue(mapId)(listIndex)
+        }
     }
 
 
