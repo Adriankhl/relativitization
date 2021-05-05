@@ -7,6 +7,7 @@ import relativitization.universe.data.physics.Int4D
 import relativitization.universe.data.physics.Velocity
 import relativitization.universe.data.serializer.DataSerializer.copy
 import relativitization.universe.maths.physics.Relativistic
+import relativitization.universe.maths.physics.Relativistic.convertEnergyUnit
 import kotlin.math.abs
 import kotlin.math.max
 
@@ -40,8 +41,8 @@ data class ChangeVelocityCommand(
 
         // max power of remaining energy
         val energyAvailable = max(
-            playerData.playerInternalData.physicsData.energy,
-            playerData.playerInternalData.physicsData.moveMaxPower
+            playerData.playerInternalData.physicsData.energy.convertEnergyUnit(speedOfLight),
+            playerData.playerInternalData.physicsData.moveMaxPower.convertEnergyUnit(speedOfLight)
         )
 
         // same energy for acceleration and deceleration
