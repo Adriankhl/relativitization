@@ -22,9 +22,11 @@ object Projections {
     }
 
     /**
-     * Coordinate in a single group
+     * Coordinates of rectangles in a single group
+     *
+     * @return function to convert index to rectangle
      */
-    fun rectangleListInGroup(
+    fun indexToRectangleFunction(
         maxRectangleIndex: Int,
         imageWidth: Int,
         imageHeight: Int,
@@ -32,7 +34,7 @@ object Projections {
         groupHeight: Int,
         xOffSet: Int,
         yOffSet: Int,
-    ): List<IntRectangle> {
+    ): (Int) -> IntRectangle {
         val numDivision: Int = numDivisionInGroup(maxRectangleIndex)
         val totalImageWidth: Int = imageWidth * numDivision
         val totalImageHeight: Int = imageHeight * numDivision
@@ -46,12 +48,47 @@ object Projections {
         val scaledWidth: Int = imageWidth * scale
         val scaledHeight: Int = imageHeight * scale
 
-        return (0..maxRectangleIndex).map {
-            val x = it % numDivision
-            val y = it / numDivision
+        return { rectangleIndex ->
+            val x = rectangleIndex % numDivision
+            val y = rectangleIndex / numDivision
             IntRectangle(xOffSet + scaledWidth * x, yOffSet + scaledHeight * y, scaledWidth, scaledHeight)
         }
     }
+
+    /**
+     * From position to index in a group
+     *
+     * @return a function from x and y position to index
+     */
+    fun positionToIndexFunction(
+        maxRectangleIndex: Int,
+        imageWidth: Int,
+        imageHeight: Int,
+        groupWidth: Int,
+        groupHeight: Int,
+        xOffSet: Int,
+        yOffSet: Int,
+    ): (Int, Int) -> Int {
+        val numDivision: Int = numDivisionInGroup(maxRectangleIndex)
+        val totalImageWidth: Int = imageWidth * numDivision
+        val totalImageHeight: Int = imageHeight * numDivision
+        val scale: Int = min(groupWidth / totalImageWidth, groupHeight / totalImageHeight)
+
+        // If the grid size is smaller than the total required image size, something is wrong
+        if (scale == 0) {
+            logger.error("positionToIndexInGroup error: scale = 0")
+        }
+
+        val scaledWidth: Int = imageWidth * scale
+        val scaledHeight: Int = imageHeight * scale
+
+        return { xPos: Int, yPos: Int ->
+            val xIndex: Int = (xPos - xOffSet) / scaledWidth
+            val yIndex: Int = (yPos - yOffSet) / scaledHeight
+            yIndex * numDivision + xIndex
+        }
+    }
+
 
     /**
      * Project a 3D coordinate to 2D pixel plane
