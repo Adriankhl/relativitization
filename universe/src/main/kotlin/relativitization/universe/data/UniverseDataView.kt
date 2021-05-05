@@ -18,15 +18,20 @@ data class UniverseData3DAtGrid(
 ) {
     fun idToUniverseData3DAtPlayer(): Map<Int, UniverseData3DAtPlayer> {
         // group by attached id
-        val playerGroup = centerPlayerDataList.groupBy { it.attachedPlayerId }.values.toList()
+        val playerGroups: List<List<PlayerData>> = centerPlayerDataList.groupBy { it.attachedPlayerId }.values.toList()
 
         // Group playerId in 3D grid by attachedPlayerId
-        val playerId3DMap = playerId3D.map { it1 -> it1.map { it2 -> it2.map { it3 ->
-            it3.groupBy { it4 -> playerDataMap.getValue(it4).attachedPlayerId }
-        } } }
+        val playerId3DMap: List<List<List<Map<Int, List<Int>>>>> = playerId3D.map { xList ->
+            xList.map { yList ->
+                yList.map { zList ->
+                    zList.groupBy { playerId ->
+                        playerDataMap.getValue(playerId).attachedPlayerId }
+                }
+            }
+        }
 
-        return playerGroup.map { it1 ->
-            val prioritizedPlayerDataMap = it1.associateBy { it2 -> it2.id }
+        return playerGroups.map { group ->
+            val prioritizedPlayerDataMap: Map<Int, PlayerData> = group.associateBy { it2 -> it2.id }
 
             val prioritizedPlayerId3D: List<List<List<MutableList<Int>>>> = create3DGrid(3, 3, 3) {
                     _, _, _ -> mutableListOf()
@@ -38,15 +43,21 @@ data class UniverseData3DAtGrid(
                         for (id in playerId3D[i][j][k])
                             if (!prioritizedPlayerDataMap.containsKey(id))
                                 prioritizedPlayerId3D[i - center.x + 1][j - center.y + 1][k - center.z + 1].add(id)
+
             prioritizedPlayerId3D[1][1][1].addAll(prioritizedPlayerDataMap.keys)
 
-            val prioritizedPlayerId3DMap = prioritizedPlayerId3D.map { it2 -> it2.map { it3 -> it3.map { it4 ->
-                it4.groupBy { it5 -> playerDataMap.getValue(it5).attachedPlayerId }
-            } } }
+            val prioritizedPlayerId3DMap: List<List<List<Map<Int, List<Int>>>>> = prioritizedPlayerId3D.map { xList ->
+                xList.map { yList ->
+                    yList.map { zList ->
+                        zList.groupBy { playerId ->
+                            playerDataMap.getValue(playerId).attachedPlayerId }
+                    }
+                }
+            }
 
-            it1.map { it2 ->
+            group.map { playerData ->
                 UniverseData3DAtPlayer(
-                    it2.id,
+                    playerData.id,
                     center,
                     prioritizedPlayerDataMap,
                     prioritizedPlayerId3DMap,
@@ -116,7 +127,7 @@ data class UniverseData3DAtPlayer(
                 }
             }
         } else {
-            logger.debug("$int3D is not a valid coordinate to get player")
+            logger.error("$int3D is not a valid coordinate to get player")
             mapOf()
         }
     }
