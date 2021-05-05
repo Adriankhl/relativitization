@@ -90,11 +90,12 @@ object Projections {
     }
 
     /**
-     * Map of id to list of id to Rectangle
+     * Compute rectangle for grid inside grid
      *
-     * @return function of map id and list value to rectangle
+     * @param gridMap a map of grid indexes to lists of image id
+     * @return function converting key of the gridMap and id in the gridMap value to Rectangle
      */
-    fun gridToRectangleFunction(
+    fun idAtGridToRectangleFunction(
         gridMap: Map<Int, List<Int>>,
         imageWidth: Int,
         imageHeight: Int,
@@ -113,24 +114,88 @@ object Projections {
             yOffSet = yOffSet
         )
 
-        val mapIdToIndex: Map<Int, Int> = gridMap.keys.toList().mapIndexed { idx, value -> value to idx }.toMap()
+        val mapIdToIndex: Map<Int, Int> = gridMap.keys.toList().sorted().mapIndexed { idx, value -> value to idx }.toMap()
 
         val rectangleFunctionMap: Map<Int, (Int) -> IntRectangle> = gridMap.mapValues {
-            val rectangle: IntRectangle = gridRectangleFunction(mapIdToIndex.getValue(it.key))
+            val innerRectangle: IntRectangle = gridRectangleFunction(mapIdToIndex.getValue(it.key))
             indexToRectangleFunction(
                 numRequiredRectangle = it.value.size,
                 imageWidth = imageWidth,
                 imageHeight = imageHeight,
-                groupWidth = rectangle.width,
-                groupHeight = rectangle.height,
-                xOffSet = rectangle.xPos,
-                yOffSet = rectangle.yPos,
+                groupWidth = innerRectangle.width,
+                groupHeight = innerRectangle.height,
+                xOffSet = innerRectangle.xPos,
+                yOffSet = innerRectangle.yPos,
             )
         }
 
-        return { mapId, listValue ->
-            val listIndex = gridMap.getValue(mapId).indexOf(listValue)
+        return { mapId, id ->
+            val listIndex = gridMap.getValue(mapId).indexOf(id)
             rectangleFunctionMap.getValue(mapId)(listIndex)
+        }
+    }
+
+    /**
+     * Compute rectangle for grid inside grid
+     *
+     * @param gridMap a map of grid indexes to lists of image id
+     * @return function of map id and list value to rectangle, the function return -1 if the id does not exist
+     */
+    fun positionToIdAtGridFunction(
+        gridMap: Map<Int, List<Int>>,
+        imageWidth: Int,
+        imageHeight: Int,
+        gridWidth: Int,
+        gridHeight: Int,
+        xOffSet: Int,
+        yOffSet: Int,
+    ): (Int, Int) -> Int {
+        val gridRectangleFunction: (Int) -> IntRectangle = indexToRectangleFunction(
+            numRequiredRectangle = gridMap.size,
+            imageWidth = imageWidth,
+            imageHeight = imageHeight,
+            groupWidth = gridWidth,
+            groupHeight = gridHeight,
+            xOffSet = xOffSet,
+            yOffSet = yOffSet
+        )
+
+        val positionToGridIndexFunction: (Int, Int) -> Int = positionToIndexFunction(
+            numRequiredRectangle = gridMap.size,
+            imageWidth = imageWidth,
+            imageHeight = imageHeight,
+            groupWidth = gridWidth,
+            groupHeight = gridHeight,
+            xOffSet = xOffSet,
+            yOffSet = yOffSet
+        )
+
+        val mapIndexToId: Map<Int, Int> = gridMap.keys.toList().sorted().mapIndexed { idx, value -> idx to value }.toMap()
+
+        val mapIdToIndex: Map<Int, Int> = gridMap.keys.toList().sorted().mapIndexed { idx, value -> value to idx }.toMap()
+
+        val positionFunctionMap = gridMap.mapValues {
+            val innerRectangle: IntRectangle = gridRectangleFunction(mapIdToIndex.getValue(it.key))
+            positionToIndexFunction(
+                numRequiredRectangle = it.value.size,
+                imageWidth = imageWidth,
+                imageHeight = imageHeight,
+                groupWidth = innerRectangle.width,
+                groupHeight = innerRectangle.height,
+                xOffSet = innerRectangle.xPos,
+                yOffSet = innerRectangle.yPos,
+            )
+        }
+
+        return { xPos, yPos ->
+            val gridIndex: Int = positionToGridIndexFunction(xPos - xOffSet, yPos - yOffSet)
+            if (mapIndexToId.containsKey(gridIndex)) {
+                val mapId: Int = mapIndexToId.getValue(gridIndex)
+                val listIndex: Int = positionFunctionMap.getValue(mapId)(xPos, yPos)
+                gridMap.getValue(mapId).get(listIndex)
+            } else {
+                -1
+            }
         }
     }
 
