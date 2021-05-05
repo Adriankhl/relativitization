@@ -93,6 +93,13 @@ object Projections {
      * Compute rectangle for grid inside grid
      *
      * @param gridMap a map of grid indexes to lists of image id
+     * @param imageWidth height of the texture image
+     * @param imageHeight width of the texture image
+     * @param gridWidth width of this grid
+     * @param gridHeight height of this grid
+     * @param xOffSet offset in x coordinate
+     * @param yOffSet offset in y coordinate
+     *
      * @return function converting key of the gridMap and id in the gridMap value to Rectangle
      */
     fun idAtGridToRectangleFunction(
@@ -139,6 +146,13 @@ object Projections {
      * Compute rectangle for grid inside grid
      *
      * @param gridMap a map of grid indexes to lists of image id
+     * @param imageWidth height of the texture image
+     * @param imageHeight width of the texture image
+     * @param gridWidth width of this grid
+     * @param gridHeight height of this grid
+     * @param xOffSet offset in x coordinate
+     * @param yOffSet offset in y coordinate
+     *
      * @return function of map id and list value to rectangle, the function return -1 if the id does not exist
      */
     fun positionToIdAtGridFunction(
