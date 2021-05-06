@@ -3,23 +3,13 @@ package relativitization.universe.maths.grid
 import kotlin.test.Test
 import relativitization.universe.data.physics.Int2D
 import relativitization.universe.maths.grid.Projections.coordinate2DFrom3D
+import relativitization.universe.maths.grid.Projections.indexToRectangleFunction
 
 internal class ProjectionsTest {
     @Test
-    fun test2DFrom3D() {
-        val v = coordinate2DFrom3D(
-            1,
-            1,
-            1,
-            2,
-            10,
-            10,
-            2,
-            1,
-            1,
-            1,
+    fun indexToRectangleTest() {
+        val iFunc = indexToRectangleFunction(
+            
         )
-        assert(v == Int2D(120, 110))
     }
-
 }
