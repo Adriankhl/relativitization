@@ -32,7 +32,6 @@ kotlin {
 
 tasks.withType<KotlinCompile>().configureEach {
     kotlinOptions.jvmTarget = "11"
-    kotlinOptions.languageVersion = "1.5"
 }
 
 tasks.test {
