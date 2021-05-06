@@ -7,7 +7,7 @@ import io.ktor.http.*
 import kotlinx.coroutines.*
 import org.apache.logging.log4j.Level
 import org.apache.logging.log4j.core.config.Configurator
-import org.junit.jupiter.api.Test
+import kotlin.test.Test
 import relativitization.client.UniverseClient
 import relativitization.server.UniverseServer
 

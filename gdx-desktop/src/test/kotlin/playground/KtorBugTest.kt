@@ -7,7 +7,7 @@ import io.ktor.client.statement.*
 import io.ktor.server.cio.*
 import io.ktor.server.engine.*
 import kotlinx.coroutines.*
-import org.junit.jupiter.api.Test
+import kotlin.test.Test
 
 internal class KtorBugTest {
     /*

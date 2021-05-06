@@ -1,7 +1,7 @@
 package relativitization.communication
 
 import kotlinx.coroutines.*
-import org.junit.jupiter.api.Test
+import kotlin.test.Test
 import relativitization.client.UniverseClient
 import relativitization.server.UniverseServer
 

@@ -1,6 +1,6 @@
 package relativitization.universe.maths.grid
 
-import org.junit.jupiter.api.Test
+import kotlin.test.Test
 import relativitization.universe.data.physics.Int2D
 import relativitization.universe.maths.grid.Projections.coordinate2DFrom3D
 

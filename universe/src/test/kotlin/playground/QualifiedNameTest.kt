@@ -1,6 +1,6 @@
 package playground
 
-import org.junit.jupiter.api.Test
+import kotlin.test.Test
 
 private open class A {
     fun getName() {

@@ -1,7 +1,6 @@
 package relativitization.universe.data
 
-import org.junit.jupiter.api.Assertions.*
-import org.junit.jupiter.api.Test
+import kotlin.test.Test
 import relativitization.universe.data.serializer.DataSerializer.copy
 
 internal class UniverseSettingsTest {

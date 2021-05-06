@@ -4,9 +4,6 @@ plugins {
     kotlin("jvm")
     kotlin("plugin.serialization")
 }
-dependencies {
-    implementation("org.junit.jupiter:junit-jupiter:5.7.0")
-}
 
 kotlin {
     sourceSets {

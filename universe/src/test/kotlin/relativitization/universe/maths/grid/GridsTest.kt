@@ -1,7 +1,6 @@
 package relativitization.universe.maths.grid
 
-import org.junit.jupiter.api.Assertions.*
-import org.junit.jupiter.api.Test
+import kotlin.test.Test
 import relativitization.universe.data.physics.Int3D
 
 internal class GridsTest {

@@ -1,6 +1,6 @@
 package relativitization.universe
 
-import org.junit.jupiter.api.Test
+import kotlin.test.Test
 import relativitization.universe.data.MutableUniverseSettings
 import relativitization.universe.generate.GenerateSetting
 import relativitization.universe.generate.GenerateUniverse
