@@ -22,9 +22,7 @@ kotlin {
         }
         val test by getting {
             dependencies {
-                implementation(kotlin("test-junit5"))
-                implementation("org.junit.jupiter:junit-jupiter-api:${Versions.junitVersion}")
-                runtimeOnly("org.junit.jupiter:junit-jupiter-engine:${Versions.junitVersion}")
+                implementation(kotlin("test"))
             }
         }
     }
@@ -34,6 +32,8 @@ tasks.withType<KotlinCompile>().configureEach {
     kotlinOptions.jvmTarget = "11"
 }
 
-tasks.test {
-    useJUnitPlatform()
+tasks {
+    test {
+        useJUnitPlatform()
+    }
 }
