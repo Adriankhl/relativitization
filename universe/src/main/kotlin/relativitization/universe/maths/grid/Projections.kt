@@ -209,7 +209,8 @@ object Projections {
             if (mapIndexToId.containsKey(gridIndex)) {
                 val mapId: Int = mapIndexToId.getValue(gridIndex)
                 val listIndex: Int = positionFunctionMap.getValue(mapId)(xPos, yPos)
-                gridMap.getValue(mapId)[listIndex]
+                // retunr -1 if out of bound
+                gridMap.getValue(mapId).getOrElse(listIndex) { -1 }
             } else {
                 -1
             }
