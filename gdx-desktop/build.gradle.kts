@@ -37,7 +37,7 @@ kotlin {
 
         val test by getting {
             dependencies {
-                implementation(kotlin("test5"))
+                implementation(kotlin("test"))
             }
         }
     }
