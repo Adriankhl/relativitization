@@ -3,7 +3,9 @@ package relativitization.universe.maths.grid
 import kotlin.test.Test
 import relativitization.universe.data.physics.Int2D
 import relativitization.universe.maths.grid.Projections.coordinate2DFrom3D
+import relativitization.universe.maths.grid.Projections.idAtGridToRectangleFunction
 import relativitization.universe.maths.grid.Projections.indexToRectangleFunction
+import relativitization.universe.maths.grid.Projections.positionToIdAtGridFunction
 import relativitization.universe.maths.grid.Projections.positionToIndexFunction
 
 internal class ProjectionsTest {
@@ -11,10 +13,10 @@ internal class ProjectionsTest {
     fun indexToRectangleTest() {
         val iFunc = indexToRectangleFunction(
             numRequiredRectangle = 10,
-            groupHeight = 4096,
-            groupWidth = 4096,
             imageHeight = 512,
             imageWidth = 512,
+            groupHeight = 4096,
+            groupWidth = 4096,
             xOffSet = 100,
             yOffSet = 200
         )
@@ -27,14 +29,48 @@ internal class ProjectionsTest {
     fun positionToIndexTest() {
         val pFunc = positionToIndexFunction(
             numRequiredRectangle = 10,
-            groupHeight = 4096,
-            groupWidth = 4096,
             imageHeight = 512,
             imageWidth = 512,
+            groupHeight = 4096,
+            groupWidth = 4096,
             xOffSet = 100,
             yOffSet = 200
         )
 
         assert(pFunc(2148, 1300) == 6)
+    }
+
+
+    @Test
+    fun idAtGridToRectangleTest() {
+        val gridMap = mapOf(3 to listOf(1, 3), 2 to listOf(2, 4, 5, 6))
+        val iFunc = idAtGridToRectangleFunction(
+            gridMap = gridMap,
+            imageHeight = 512,
+            imageWidth = 512,
+            gridHeight = 4096,
+            gridWidth = 4096,
+            xOffSet = 100,
+            yOffSet = 200
+        )
+
+        assert(iFunc(3, 1) == IntRectangle(xPos=2148, yPos=200, width=1024, height=1024))
+    }
+
+
+    @Test
+    fun positionToIdAtGridTest() {
+        val gridMap = mapOf(3 to listOf(1, 3), 2 to listOf(2, 4, 5, 6))
+        val pFunc = positionToIdAtGridFunction(
+            gridMap = gridMap,
+            imageHeight = 512,
+            imageWidth = 512,
+            gridHeight = 4096,
+            gridWidth = 4096,
+            xOffSet = 100,
+            yOffSet = 200
+        )
+
+        assert(pFunc(2200, 400) == 1)
     }
 }

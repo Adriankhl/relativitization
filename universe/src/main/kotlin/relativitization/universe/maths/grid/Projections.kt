@@ -138,6 +138,9 @@ object Projections {
 
         return { mapId, id ->
             val listIndex = gridMap.getValue(mapId).indexOf(id)
+            if (listIndex == -1) {
+                logger.error("idAtGridToRectangleFunction: incorrect index")
+            }
             rectangleFunctionMap.getValue(mapId)(listIndex)
         }
     }
@@ -202,7 +205,7 @@ object Projections {
         }
 
         return { xPos, yPos ->
-            val gridIndex: Int = positionToGridIndexFunction(xPos - xOffSet, yPos - yOffSet)
+            val gridIndex: Int = positionToGridIndexFunction(xPos, yPos)
             if (mapIndexToId.containsKey(gridIndex)) {
                 val mapId: Int = mapIndexToId.getValue(gridIndex)
                 val listIndex: Int = positionFunctionMap.getValue(mapId)(xPos, yPos)
@@ -279,4 +282,3 @@ object Projections {
 
     private val logger = LogManager.getLogger()
 }
-
