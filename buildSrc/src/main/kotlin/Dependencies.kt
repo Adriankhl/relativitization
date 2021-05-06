@@ -1,5 +1,5 @@
 object Versions {
-    const val appName = "Relativization"
+    const val appName = "Relativitization"
     const val appVersion = "0.1"
 
     const val kotlinVersion = "1.5.0"
