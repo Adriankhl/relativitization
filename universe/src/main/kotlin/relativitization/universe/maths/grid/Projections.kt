@@ -3,6 +3,7 @@ package relativitization.universe.maths.grid
 import org.apache.logging.log4j.LogManager
 import relativitization.universe.data.physics.Int2D
 import relativitization.universe.data.physics.Int3D
+import relativitization.universe.maths.grid.Grids.isInt3DValid
 import kotlin.math.max
 import kotlin.math.min
 
@@ -243,7 +244,7 @@ object Projections {
     /**
      * Compute rectangle for grid inside grid
      *
-     * @param data3D universe 3d view data
+     * @param data3D cropped universe 3d view data
      * @param imageWidth height of the texture image
      * @param imageHeight width of the texture image
      * @param gridXSeparation the unscaled spacing in x axis between grid of different z coordinate
@@ -265,15 +266,35 @@ object Projections {
         val scale = gridScaleFactor(data3D)
         val gridWidth = imageWidth * scale
         val gridHeight = imageHeight * scale
-        val xSpace = gridXSeparation * scale
-        val ySpace = gridYSeparation * scale
+        val zDim: Int = data3D.flatten().maxOfOrNull { zList -> zList.size } ?: 1
 
-        val data3DFunction: List<List<List<(Int, Int) -> IntRectangle>>> = data3D.map { yList ->
-            yList.map { zList ->
-                zList.map { mapId, mapList ->
+        // Compute the separation of grid with different z separated + a grid dimension
+        val xSingleSpace: Int = gridXSeparation * scale + gridWidth
+        val ySingleSpace: Int = gridYSeparation * scale + gridHeight
 
+        // Space between grid with different x and y coordinate
+        val xyFullSpace = max(xSingleSpace * (zDim + 1), ySingleSpace * (zDim + 1))
+
+        val data3DFunction: List<List<List<(Int, Int) -> IntRectangle>>> = data3D.mapIndexed { x, yList ->
+            yList.mapIndexed { y, zList ->
+                zList.mapIndexed { z, gridMap ->
+                    val gridXOffSet: Int = xOffSet + x * xyFullSpace + z * xSingleSpace
+                    val gridYOffSet: Int = yOffSet + y * xyFullSpace + z * ySingleSpace
+                    idAtGridToRectangleFunction(
+                        gridMap = gridMap,
+                        imageWidth = imageWidth,
+                        imageHeight = imageHeight,
+                        gridWidth = gridWidth,
+                        gridHeight = gridHeight,
+                        xOffSet = gridXOffSet,
+                        yOffSet = gridYOffSet,
+                    )
                 }
             }
+        }
+
+        return { int3D: Int3D, mapId: Int, id:Int ->
+            data3DFunction[int3D.x][int3D.y][int3D.z](mapId, id)
         }
     }
 

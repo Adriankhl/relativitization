@@ -1,5 +1,6 @@
 package relativitization.universe.maths.grid
 
+import relativitization.universe.data.physics.Int3D
 import relativitization.universe.data.physics.MutableDouble4D
 
 object Grids {
@@ -85,6 +86,15 @@ object Grids {
 
             (xNum1 == xNum2) && (yNum1 == yNum2) && (zNum1 == zNum2)
         }
+    }
+
+    /**
+     * Check if int3d is valid
+     */
+    fun <T> isInt3DValid(int3D: Int3D, data3D: List<List<List<T>>>): Boolean {
+        return ((int3D.x >= 0) && (int3D.x < data3D.size) &&
+                (int3D.y >= 0) && (int3D.y < data3D[int3D.x].size) &&
+                (int3D.z >= 0) && (int3D.z < data3D[int3D.x][int3D.y].size))
     }
 }
 
