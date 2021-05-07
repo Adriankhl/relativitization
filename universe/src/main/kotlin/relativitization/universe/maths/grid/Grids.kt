@@ -101,4 +101,8 @@ object Grids {
 /**
  * Rectangle with integer parameters
  */
-data class IntRectangle(val xPos: Int, val yPos: Int, val width: Int, val height: Int)
+data class IntRectangle(val xPos: Int, val yPos: Int, val width: Int, val height: Int) {
+    fun contains(x: Int, y: Int): Boolean {
+        return (x >= xPos) && (x < xPos + width) && (y >= yPos) && (y < yPos + height)
+    }
+}
