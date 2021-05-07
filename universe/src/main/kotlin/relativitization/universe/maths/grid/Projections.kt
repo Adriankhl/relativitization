@@ -2,6 +2,7 @@ package relativitization.universe.maths.grid
 
 import org.apache.logging.log4j.LogManager
 import relativitization.universe.data.physics.Int2D
+import relativitization.universe.data.physics.Int3D
 import kotlin.math.max
 import kotlin.math.min
 
@@ -238,6 +239,45 @@ object Projections {
             maxInnerDivision * gridDivision
         }.maxOrNull() ?: 1
     }
+
+    /**
+     * Compute rectangle for grid inside grid
+     *
+     * @param data3D universe 3d view data
+     * @param imageWidth height of the texture image
+     * @param imageHeight width of the texture image
+     * @param gridXSeparation the unscaled spacing in x axis between grid of different z coordinate
+     * @param gridYSeparation the unscaled spacing in Y axis between grid of different z coordinate
+     * @param xOffSet offset in x coordinate
+     * @param yOffSet offset in y coordinate
+     *
+     * @return function converting key of the gridMap and id in the gridMap value to Rectangle
+     */
+    fun data3DToRectangleFunction(
+        data3D: List<List<List<Map<Int, List<Int>>>>>,
+        imageWidth: Int,
+        imageHeight: Int,
+        gridXSeparation: Int,
+        gridYSeparation: Int,
+        xOffSet: Int,
+        yOffSet: Int,
+    ): (Int3D, Int, Int) -> IntRectangle {
+        val scale = gridScaleFactor(data3D)
+        val gridWidth = imageWidth * scale
+        val gridHeight = imageHeight * scale
+        val xSpace = gridXSeparation * scale
+        val ySpace = gridYSeparation * scale
+
+        val data3DFunction: List<List<List<(Int, Int) -> IntRectangle>>> = data3D.map { yList ->
+            yList.map { zList ->
+                zList.map { mapId, mapList ->
+
+                }
+            }
+        }
+    }
+
+
 
 
     /**
