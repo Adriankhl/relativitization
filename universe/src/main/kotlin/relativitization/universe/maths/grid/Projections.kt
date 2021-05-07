@@ -205,12 +205,19 @@ object Projections {
         }
 
         return { xPos, yPos ->
-            val gridIndex: Int = positionToGridIndexFunction(xPos, yPos)
-            if (mapIndexToId.containsKey(gridIndex)) {
-                val mapId: Int = mapIndexToId.getValue(gridIndex)
-                val listIndex: Int = positionFunctionMap.getValue(mapId)(xPos, yPos)
-                // retunr -1 if out of bound
-                gridMap.getValue(mapId).getOrElse(listIndex) { -1 }
+            // check if this is within range
+            if ((xPos >= xOffSet) && (xPos < xOffSet + gridWidth) &&
+                (yPos >= yOffSet) && (yPos < yOffSet + gridHeight)
+            ) {
+                val gridIndex: Int = positionToGridIndexFunction(xPos, yPos)
+                if (mapIndexToId.containsKey(gridIndex)) {
+                    val mapId: Int = mapIndexToId.getValue(gridIndex)
+                    val listIndex: Int = positionFunctionMap.getValue(mapId)(xPos, yPos)
+                    // return -1 if out of bound
+                    gridMap.getValue(mapId).getOrElse(listIndex) { -1 }
+                } else {
+                    -1
+                }
             } else {
                 -1
             }
