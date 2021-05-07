@@ -2,7 +2,6 @@ package relativitization.universe.maths.grid
 
 import kotlin.test.Test
 import relativitization.universe.data.physics.Int2D
-import relativitization.universe.maths.grid.Projections.coordinate2DFrom3D
 import relativitization.universe.maths.grid.Projections.idAtGridToRectangleFunction
 import relativitization.universe.maths.grid.Projections.indexToRectangleFunction
 import relativitization.universe.maths.grid.Projections.positionToIdAtGridFunction
@@ -54,7 +53,9 @@ internal class ProjectionsTest {
             yOffSet = 200
         )
 
-        assert(iFunc(3, 1) == IntRectangle(xPos=2148, yPos=200, width=1024, height=1024))
+        assert(iFunc(3, 1) == IntRectangle(xPos=2148, yPos=2248, width=1024, height=1024))
+
+        assert(iFunc(3, 1) == IntRectangle(xPos=3172, yPos=2248, width=1024, height=1024))
     }
 
 
@@ -71,6 +72,6 @@ internal class ProjectionsTest {
             yOffSet = 200
         )
 
-        assert(pFunc(2200, 400) == 1)
+        assert(pFunc(2200, 2300) == 1)
     }
 }
