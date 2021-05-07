@@ -375,6 +375,8 @@ object Projections {
         }
 
         return Data3DProjectionFunction(
+            zBegin = 0,
+            zEnd = zDim - 1,
             int3DToRectangle = int3DToRectangle,
             data3DToRectangle = data3DToRectangle,
             positionToInt3D = positionToInt3D,
@@ -449,6 +451,8 @@ object Projections {
         }
 
         return Data3DProjectionFunction(
+            zBegin = zBegin,
+            zEnd = zEnd,
             int3DToRectangle = int3DToRectangle,
             data3DToRectangle = data3DToRectangle,
             positionToInt3D = positionToInt3D,
@@ -463,12 +467,16 @@ object Projections {
 /**
  * Store function related to data 3D projection
  *
+ * @property zBegin beginning of acceptable z coordinate
+ * @property zEnd end of acceptable z coordinate
  * @property int3DToRectangle from int3D to Rectangle of the grid
  * @property data3DToRectangle from int3D, mapId, id to Rectangle of the object
  * @property positionToInt3D from posX, posY to int3D of the grid
  * @property positionToId from posX, posY to id of the object
  */
 data class Data3DProjectionFunction(
+    val zBegin: Int,
+    val zEnd: Int,
     val int3DToRectangle: (Int3D) -> IntRectangle,
     val data3DToRectangle: (Int3D, Int, Int) -> IntRectangle,
     val positionToInt3D: (Int, Int) -> Int3D,
