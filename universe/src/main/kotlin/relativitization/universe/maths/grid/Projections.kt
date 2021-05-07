@@ -102,7 +102,7 @@ object Projections {
      * @param xOffSet offset in x coordinate
      * @param yOffSet offset in y coordinate
      *
-     * @return function converting key of the gridMap and id in the gridMap value to Rectangle
+     * @return function converting key of the gridMap and id in the gridMap value to Rectangle, separated by space
      */
     fun idAtGridToRectangleFunction(
         gridMap: Map<Int, List<Int>>,
@@ -113,8 +113,11 @@ object Projections {
         xOffSet: Int,
         yOffSet: Int,
     ): (Int, Int) -> IntRectangle {
+        // Multiply by two to leave space between grids
+        val numGridDivision: Int = numDivisionInGroup(gridMap.size * 2)
+
         val gridRectangleFunction: (Int) -> IntRectangle = indexToRectangleFunction(
-            numRequiredRectangle = gridMap.size,
+            numRequiredRectangle = numGridDivision * numGridDivision,
             imageWidth = imageWidth,
             imageHeight = imageHeight,
             groupWidth = gridWidth,
@@ -123,12 +126,20 @@ object Projections {
             yOffSet = yOffSet
         )
 
-        val mapIdToIndex: Map<Int, Int> = gridMap.keys.toList().sorted().mapIndexed { idx, value -> value to idx }.toMap()
+        val mapIdToIndex: Map<Int, Int> = gridMap.keys.toList().sorted().mapIndexed { idx, value ->
+            // convert index to realIndex which is separated by empty grid
+            val realIdx: Int = if ((idx * 2 / numGridDivision) % 2 == 0) {
+                idx * 2
+            } else {
+                idx * 2 + 1
+            }
+            value to realIdx
+        }.toMap()
 
         val rectangleFunctionMap: Map<Int, (Int) -> IntRectangle> = gridMap.mapValues {
             val innerRectangle: IntRectangle = gridRectangleFunction(mapIdToIndex.getValue(it.key))
             indexToRectangleFunction(
-                numRequiredRectangle = it.value.size,
+                numRequiredRectangle = numGridDivision * numGridDivision,
                 imageWidth = imageWidth,
                 imageHeight = imageHeight,
                 groupWidth = innerRectangle.width,
@@ -158,7 +169,7 @@ object Projections {
      * @param xOffSet offset in x coordinate
      * @param yOffSet offset in y coordinate
      *
-     * @return function of map id and list value to rectangle, the function return -1 if the id does not exist
+     * @return function mapping position to id, the function return -1 if the id does not exist
      */
     fun positionToIdAtGridFunction(
         gridMap: Map<Int, List<Int>>,
@@ -169,8 +180,11 @@ object Projections {
         xOffSet: Int,
         yOffSet: Int,
     ): (Int, Int) -> Int {
+        // Multiply by two to leave space between grids
+        val numGridDivision: Int = numDivisionInGroup(gridMap.size * 2)
+
         val gridRectangleFunction: (Int) -> IntRectangle = indexToRectangleFunction(
-            numRequiredRectangle = gridMap.size,
+            numRequiredRectangle = numGridDivision * numGridDivision,
             imageWidth = imageWidth,
             imageHeight = imageHeight,
             groupWidth = gridWidth,
@@ -180,7 +194,7 @@ object Projections {
         )
 
         val positionToGridIndexFunction: (Int, Int) -> Int = positionToIndexFunction(
-            numRequiredRectangle = gridMap.size,
+            numRequiredRectangle = numGridDivision * numGridDivision,
             imageWidth = imageWidth,
             imageHeight = imageHeight,
             groupWidth = gridWidth,
@@ -189,14 +203,22 @@ object Projections {
             yOffSet = yOffSet
         )
 
-        val mapIndexToId: Map<Int, Int> = gridMap.keys.toList().sorted().mapIndexed { idx, value -> idx to value }.toMap()
+        val mapIdToIndex: Map<Int, Int> = gridMap.keys.toList().sorted().mapIndexed { idx, value ->
+            // convert index to realIndex which is separated by empty grid
+            val realIdx: Int = if ((idx * 2 / numGridDivision) % 2 == 0) {
+                idx * 2
+            } else {
+                idx * 2 + 1
+            }
+            value to realIdx
+        }.toMap()
 
-        val mapIdToIndex: Map<Int, Int> = gridMap.keys.toList().sorted().mapIndexed { idx, value -> value to idx }.toMap()
+        val mapIndexToId: Map<Int, Int> = mapIdToIndex.entries.associate { it.value to it.key }
 
         val positionFunctionMap = gridMap.mapValues {
             val innerRectangle: IntRectangle = gridRectangleFunction(mapIdToIndex.getValue(it.key))
             positionToIndexFunction(
-                numRequiredRectangle = it.value.size,
+                numRequiredRectangle = numGridDivision * numGridDivision,
                 imageWidth = imageWidth,
                 imageHeight = imageHeight,
                 groupWidth = innerRectangle.width,
@@ -275,7 +297,7 @@ object Projections {
         // Space between grid with different x and y coordinate
         val xyFullSpace = max(xSingleSpace * (zDim + 1), ySingleSpace * (zDim + 1))
 
-        val data3DFunction: List<List<List<(Int, Int) -> IntRectangle>>> = data3D.mapIndexed { x, yList ->
+        val data3DToRectangleAtGridFunction: List<List<List<(Int, Int) -> IntRectangle>>> = data3D.mapIndexed { x, yList ->
             yList.mapIndexed { y, zList ->
                 zList.mapIndexed { z, gridMap ->
                     val gridXOffSet: Int = xOffSet + x * xyFullSpace + z * xSingleSpace
@@ -294,11 +316,76 @@ object Projections {
         }
 
         return { int3D: Int3D, mapId: Int, id:Int ->
-            data3DFunction[int3D.x][int3D.y][int3D.z](mapId, id)
+            if (isInt3DValid(int3D, data3D)) {
+                logger.error("data3DToRectangleFunction: Invalid int3D")
+            }
+            data3DToRectangleAtGridFunction[int3D.x][int3D.y][int3D.z](mapId, id)
         }
     }
 
 
+    /**
+     * Compute rectangle for grid inside grid
+     *
+     * @param data3D cropped universe 3d view data
+     * @param imageWidth height of the texture image
+     * @param imageHeight width of the texture image
+     * @param gridXSeparation the unscaled spacing in x axis between grid of different z coordinate
+     * @param gridYSeparation the unscaled spacing in Y axis between grid of different z coordinate
+     * @param xOffSet offset in x coordinate
+     * @param yOffSet offset in y coordinate
+     *
+     * @return function converting position to id
+     */
+    fun positionToIdAtData3DFunction(
+        data3D: List<List<List<Map<Int, List<Int>>>>>,
+        imageWidth: Int,
+        imageHeight: Int,
+        gridXSeparation: Int,
+        gridYSeparation: Int,
+        xOffSet: Int,
+        yOffSet: Int,
+    ): (Int, Int) -> Int {
+        val scale = gridScaleFactor(data3D)
+        val gridWidth = imageWidth * scale
+        val gridHeight = imageHeight * scale
+
+        val xDim = data3D.size
+        val yDim = data3D.maxOfOrNull { yList -> yList.size } ?: 1
+        val zDim: Int = data3D.flatten().maxOfOrNull { zList -> zList.size } ?: 1
+
+        // Compute the separation of grid with different z separated + a grid dimension
+        val xSingleSpace: Int = gridXSeparation * scale + gridWidth
+        val ySingleSpace: Int = gridYSeparation * scale + gridHeight
+
+        // Space between grid with different x and y coordinate
+        val xyFullSpace = max(xSingleSpace * (zDim + 1), ySingleSpace * (zDim + 1))
+
+        val data3DToRectangleAtGridFunction: List<List<List<(Int, Int) -> IntRectangle>>> = data3D.mapIndexed { x, yList ->
+            yList.mapIndexed { y, zList ->
+                zList.mapIndexed { z, gridMap ->
+                    val gridXOffSet: Int = xOffSet + x * xyFullSpace + z * xSingleSpace
+                    val gridYOffSet: Int = yOffSet + y * xyFullSpace + z * ySingleSpace
+                    idAtGridToRectangleFunction(
+                        gridMap = gridMap,
+                        imageWidth = imageWidth,
+                        imageHeight = imageHeight,
+                        gridWidth = gridWidth,
+                        gridHeight = gridHeight,
+                        xOffSet = gridXOffSet,
+                        yOffSet = gridYOffSet,
+                    )
+                }
+            }
+        }
+
+        return { xPos, yPos ->
+            // Compute x, y ,z index, this may not be the true index if the position is out of all the rectangles
+            val x: Int = (xPos - xOffSet) / xyFullSpace
+            val y: Int = (yPos - yOffSet) / xyFullSpace
+            val z: Int = ((xPos - xOffSet) % xyFullSpace) / xSingleSpace
+        }
+    }
 
 
     /**
