@@ -1,8 +1,6 @@
 package relativitization.universe.maths.grid
 
-import kotlinx.serialization.descriptors.PrimitiveKind
 import org.apache.logging.log4j.LogManager
-import relativitization.universe.data.physics.Int2D
 import relativitization.universe.data.physics.Int3D
 import relativitization.universe.maths.grid.Grids.isInt3DValid
 import kotlin.math.max
@@ -266,7 +264,7 @@ object Projections {
     }
 
     /**
-     * Function
+     * Function to for projecting data3D
      *
      * @param data3D cropped universe 3d view data
      * @param imageWidth height of the texture image
@@ -276,9 +274,9 @@ object Projections {
      * @param xOffSet offset in x coordinate
      * @param yOffSet offset in y coordinate
      *
-     * @return function converting key of the gridMap and id in the gridMap value to Rectangle
+     * @return functions for calculating the projection
      */
-    fun data3DProjectionFunction(
+    fun createData3DProjectionFunction(
         data3D: List<List<List<Map<Int, List<Int>>>>>,
         imageWidth: Int,
         imageHeight: Int,
@@ -374,6 +372,80 @@ object Projections {
             } else {
                 -1
             }
+        }
+
+        return Data3DProjectionFunction(
+            int3DToRectangle = int3DToRectangle,
+            data3DToRectangle = data3DToRectangle,
+            positionToInt3D = positionToInt3D,
+            positionToId = positionToId,
+        )
+    }
+
+    /**
+     * Function for projecting data3D, with limited z dimension
+     *
+     * @param data3D cropped universe 3d view data
+     * @param center the Int3D coordinate which the z limit spans around
+     * @param zLimit limit of z dimension
+     * @param imageWidth height of the texture image
+     * @param imageHeight width of the texture image
+     * @param gridXSeparation the unscaled spacing in x axis between grid of different z coordinate
+     * @param gridYSeparation the unscaled spacing in Y axis between grid of different z coordinate
+     * @param xOffSet offset in x coordinate
+     * @param yOffSet offset in y coordinate
+     *
+     * @return function for calculating the projection
+     */
+    fun createData3DProjectionWithZLimitFunction(
+        data3D: List<List<List<Map<Int, List<Int>>>>>,
+        center: Int3D,
+        zLimit: Int,
+        imageWidth: Int,
+        imageHeight: Int,
+        gridXSeparation: Int,
+        gridYSeparation: Int,
+        xOffSet: Int,
+        yOffSet: Int,
+    ): Data3DProjectionFunction {
+        val zDim: Int = data3D[center.x][center.y].size
+
+        val zBegin: Int = max(0, center.z - zLimit / 2)
+        val zEnd: Int = min(zDim - 1, zBegin + zLimit - 1)
+
+        val data3DWithZLimit: List<List<List<Map<Int, List<Int>>>>> = data3D.map { yList ->
+            yList.map { zList ->
+                zList.slice(zBegin..zEnd)
+            }
+        }
+
+        val data3DProjectionFunction: Data3DProjectionFunction = createData3DProjectionFunction(
+            data3DWithZLimit,
+            imageWidth,
+            imageHeight,
+            gridXSeparation,
+            gridYSeparation,
+            xOffSet,
+            yOffSet,
+        )
+
+        val int3DToRectangle: (Int3D) -> IntRectangle = { int3D ->
+            val int3DWithZLimit = Int3D(int3D.x, int3D.y, int3D.z - zBegin)
+            data3DProjectionFunction.int3DToRectangle(int3DWithZLimit)
+        }
+
+        val data3DToRectangle: (Int3D, Int, Int) -> IntRectangle = { int3D, mapId, id ->
+            val int3DWithZLimit = Int3D(int3D.x, int3D.y, int3D.z - zBegin)
+            data3DProjectionFunction.data3DToRectangle(int3DWithZLimit, mapId, id)
+        }
+
+        val positionToInt3D: (Int, Int) -> Int3D = { xPos, yPos ->
+            val int3DWithZLimit = data3DProjectionFunction.positionToInt3D(xPos, yPos)
+            Int3D(int3DWithZLimit.x, int3DWithZLimit.y, int3DWithZLimit.z + zBegin)
+        }
+
+        val positionToId: (Int, Int) -> Int = { xPos, yPos ->
+            data3DProjectionFunction.positionToId(xPos, yPos)
         }
 
         return Data3DProjectionFunction(
