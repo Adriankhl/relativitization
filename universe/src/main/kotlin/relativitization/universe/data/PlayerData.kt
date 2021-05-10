@@ -79,7 +79,7 @@ enum class PlayerType {
  * @property politicsData political related data
  * @property diplomacyData diplomatic relation data
  * @property economyData economy related data
- * @property playerState state of the player, including ai, modifier, cooldown, etc.
+ * @property playerState state of the player, including ai, modifier, cool down, etc.
  */
 @Serializable
 data class PlayerInternalData(
