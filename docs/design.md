@@ -38,7 +38,7 @@
 # Research
 * A network of knowledge in a 2d plane
 * Knowledge affect modifier
-* Store and send only the id of the knowledge and the overall modifier to reduce data used
+* Store and send only the id of the knowledge, and the overall modifier to reduce data used
 * Scientist work at institute
 * Institute has a center in the 2d plane, and a range
 * Encourage new institute by reducing the growth speed of the range
@@ -65,3 +65,10 @@
 * Solder population
 * Attack, reduce attack, reduce defense
 * Ratio defense, absolute magnitude defense
+
+# Political
+* Democracy vs Authoritarianism
+* Policy: capitalism vs socialism
+
+# Diplomacy
+* Ally, enemy, puppet
