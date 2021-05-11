@@ -21,7 +21,7 @@ import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.generate.GenerateSetting
 
 /**
- * @property adminPassword password to admin access to server
+ * @property universeClientSettings settings of the client
  */
 class UniverseClient(var universeClientSettings: UniverseClientSettings) {
     private val mutex: Mutex = Mutex()
@@ -152,6 +152,29 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
             }
         } catch (cause: Throwable) {
             UniverseData3DAtPlayer()
+        }
+    }
+
+    suspend fun httpPostUniverseServerSettings(): HttpStatusCode {
+        return try {
+            val serverAddress = universeClientSettings.serverAddress
+            val serverPort = universeClientSettings.serverPort
+            val adminPassword = universeClientSettings.adminPassword
+            val response: HttpResponse = ktorClient.post("http://$serverAddress:$serverPort/run/update-server-settings") {
+                contentType(ContentType.Application.Json)
+                body = universeServerSettings
+                timeout {
+                    requestTimeoutMillis = 1000
+                }
+            }
+            logger.debug("Update universe settings status: ${response.status}")
+            response.status
+        } catch (cause: ResponseException) {
+            logger.error("httpPostUniverseServerSettings error: " + cause.response.status)
+            cause.response.status
+        } catch (cause: Throwable) {
+            logger.error("postNewUniverse error: cannot find server")
+            HttpStatusCode.NotFound
         }
     }
 
