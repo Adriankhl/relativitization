@@ -10,6 +10,7 @@ import kotlinx.coroutines.runBlocking
 import relativitization.client.UniverseClient
 import relativitization.game.RelativitizationGame
 import relativitization.server.UniverseServer
+import relativitization.universe.UniverseClientSettings
 import relativitization.universe.UniverseServerSettings
 import kotlin.random.Random
 
@@ -25,9 +26,11 @@ internal object DesktopLauncher {
 
         val universeServerSettings = UniverseServerSettings(adminPassword = adminPassword)
 
+        val universeClientSettings = UniverseClientSettings(adminPassword = adminPassword)
+
         runBlocking {
             val universeServer: UniverseServer = UniverseServer(universeServerSettings)
-            val universeClient: UniverseClient = UniverseClient(adminPassword)
+            val universeClient: UniverseClient = UniverseClient(universeClientSettings)
             launch(Dispatchers.IO) {
                 universeServer.start()
             }

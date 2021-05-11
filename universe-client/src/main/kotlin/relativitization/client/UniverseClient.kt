@@ -12,6 +12,8 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import org.apache.logging.log4j.LogManager
+import relativitization.universe.UniverseClientSettings
+import relativitization.universe.UniverseServerSettings
 import relativitization.universe.communication.*
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.commands.Command
@@ -21,7 +23,7 @@ import relativitization.universe.generate.GenerateSetting
 /**
  * @property adminPassword password to admin access to server
  */
-class UniverseClient(var adminPassword: String) {
+class UniverseClient(var universeClientSettings: UniverseClientSettings) {
     private val mutex: Mutex = Mutex()
 
     val ktorClient = HttpClient(CIO) {
@@ -33,12 +35,6 @@ class UniverseClient(var adminPassword: String) {
 
     private var universeClientRunJob: Job = Job()
 
-    // player id
-    private var playerId: Int = -1
-
-    // password for holding playerId in server
-    private var password: String = "player password"
-
     // store downloaded but not yet used universe data
     private var universeData3DCache: UniverseData3DAtPlayer = UniverseData3DAtPlayer()
 
@@ -48,10 +44,12 @@ class UniverseClient(var adminPassword: String) {
     // for generate universe
     var generateSettings: GenerateSetting = GenerateSetting()
 
-    // ip/url of server
-    private var serverAddress = "127.0.0.1"
-    private var serverPort = "29979"
+    // For changing server setting
+    var universeServerSettings: UniverseServerSettings = UniverseServerSettings(
+        adminPassword = universeClientSettings.adminPassword
+    )
 
+    // Server status
     private var serverStatus: UniverseServerStatusMessage = UniverseServerStatusMessage()
 
     /**
@@ -89,34 +87,18 @@ class UniverseClient(var adminPassword: String) {
         ktorClient.close()
     }
 
-    suspend fun setServerAddress(address: String) {
+    suspend fun setUniverseClientSettings(newUniverseClientSettings: UniverseClientSettings) {
         mutex.withLock {
-            serverAddress = address
+            universeClientSettings = newUniverseClientSettings
         }
     }
-
-    fun getServerAddress(): String = serverAddress
-
-    suspend fun setPlayerId(id: Int) {
-        mutex.withLock {
-            playerId = id
-        }
-    }
-
-    fun getPlayerId(): Int = playerId
-
-    suspend fun setPlayerPassword(pwd: String) {
-        mutex.withLock {
-            password = pwd
-        }
-    }
-
-    fun getPlayerPassword(): String = password
 
     fun getServerStatus(): UniverseServerStatusMessage = serverStatus
 
     suspend fun httpGetUniverseServerStatus(): UniverseServerStatusMessage {
         return try {
+            val serverAddress = universeClientSettings.serverAddress
+            val serverPort = universeClientSettings.serverPort
             ktorClient.get<UniverseServerStatusMessage>("http://$serverAddress:$serverPort/status") {
                 timeout {
                     requestTimeoutMillis = 1000
@@ -129,6 +111,8 @@ class UniverseClient(var adminPassword: String) {
 
     suspend fun httpGetAvailableIdList(): List<Int> {
         return try {
+            val serverAddress = universeClientSettings.serverAddress
+            val serverPort = universeClientSettings.serverPort
             ktorClient.get<List<Int>>("http://$serverAddress:$serverPort/status/ids") {
                 timeout {
                     requestTimeoutMillis = 1000
@@ -141,6 +125,8 @@ class UniverseClient(var adminPassword: String) {
 
     suspend fun httpGetAvailableHumanIdList(): List<Int> {
         return try {
+            val serverAddress = universeClientSettings.serverAddress
+            val serverPort = universeClientSettings.serverPort
             ktorClient.get<List<Int>>("http://$serverAddress:$serverPort/status/human-ids") {
                 timeout {
                     requestTimeoutMillis = 1000
@@ -153,6 +139,10 @@ class UniverseClient(var adminPassword: String) {
 
     suspend fun httpGetUniverseData3D(): UniverseData3DAtPlayer {
         return try {
+            val serverAddress = universeClientSettings.serverAddress
+            val serverPort = universeClientSettings.serverPort
+            val playerId = universeClientSettings.playerId
+            val password = universeClientSettings.password
             ktorClient.get<UniverseData3DAtPlayer>("http://$serverAddress:$serverPort/run/view") {
                 contentType(ContentType.Application.Json)
                 body = UniverseData3DMessage(playerId, password)
@@ -167,6 +157,9 @@ class UniverseClient(var adminPassword: String) {
 
     suspend fun httpPostNewUniverse(): HttpStatusCode {
         return try {
+            val serverAddress = universeClientSettings.serverAddress
+            val serverPort = universeClientSettings.serverPort
+            val adminPassword = universeClientSettings.adminPassword
             val response: HttpResponse = ktorClient.post("http://$serverAddress:$serverPort/create/new") {
                 contentType(ContentType.Application.Json)
                 body = NewUniverseMessage(adminPassword, generateSettings)
@@ -187,6 +180,9 @@ class UniverseClient(var adminPassword: String) {
 
     suspend fun httpPostLoadUniverse(universeName: String): HttpStatusCode {
         return try {
+            val serverAddress = universeClientSettings.serverAddress
+            val serverPort = universeClientSettings.serverPort
+            val adminPassword = universeClientSettings.adminPassword
             val response: HttpResponse = ktorClient.post("http://$serverAddress:$serverPort/create/load") {
                 contentType(ContentType.Application.Json)
                 body = LoadUniverseMessage(adminPassword, universeName)
@@ -208,6 +204,10 @@ class UniverseClient(var adminPassword: String) {
 
     suspend fun httpPostRegisterPlayer(): HttpStatusCode {
         return try {
+            val serverAddress = universeClientSettings.serverAddress
+            val serverPort = universeClientSettings.serverPort
+            val playerId = universeClientSettings.playerId
+            val password = universeClientSettings.password
             val response: HttpResponse = ktorClient.post("http://$serverAddress:$serverPort/run/register") {
                 contentType(ContentType.Application.Json)
                 body = RegisterPlayerMessage(playerId, password)
@@ -229,6 +229,9 @@ class UniverseClient(var adminPassword: String) {
 
     suspend fun httpPostRunUniverse(): HttpStatusCode {
         return try {
+            val serverAddress = universeClientSettings.serverAddress
+            val serverPort = universeClientSettings.serverPort
+            val adminPassword = universeClientSettings.adminPassword
             val response: HttpResponse = ktorClient.post("http://$serverAddress:$serverPort/run/universe") {
                 contentType(ContentType.Application.Json)
                 body = RunUniverseMessage(adminPassword)
@@ -249,6 +252,10 @@ class UniverseClient(var adminPassword: String) {
 
     suspend fun httpPostHumanInput(): HttpStatusCode {
         return try {
+            val serverAddress = universeClientSettings.serverAddress
+            val serverPort = universeClientSettings.serverPort
+            val playerId = universeClientSettings.playerId
+            val password = universeClientSettings.password
             val response: HttpResponse = ktorClient.post("http://$serverAddress:$serverPort/run/input") {
                 contentType(ContentType.Application.Json)
                 body = CommandInputMessage(playerId, password, commandList)

@@ -1,16 +1,23 @@
 package relativitization.universe
 
+import kotlinx.serialization.Serializable
+
 /**
+ * Client settings
  *
+ * @property adminPassword admin password for accessing server
+ * @property playerId id of the player
+ * @property password player password, for input commands to server
+ * @property serverAddress the url of server
+ * @property serverPort port of the server
+ * @property zLimit the z dimension limit of projected 2d universe data
  */
+@Serializable
 data class UniverseClientSettings(
-    private var adminPassword: String,
-    private var playerId: Int = -1,
-    private var password: String = "player password",
-    private var serverAddress: String = "127.0.0.1",
-    private var serverPort: String = "29979",
-    private var zLimit:Int = 10,
-) {
-    fun getAdminPassword(): String = adminPassword
-    fun getPlayerId(): Int = playerId
-}
+    var adminPassword: String,
+    var playerId: Int = -1,
+    var password: String = "player password",
+    var serverAddress: String = "127.0.0.1",
+    var serverPort: String = "29979",
+    var zLimit:Int = 10,
+)
