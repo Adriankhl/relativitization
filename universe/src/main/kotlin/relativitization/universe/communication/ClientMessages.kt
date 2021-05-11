@@ -1,6 +1,7 @@
 package relativitization.universe.communication
 
 import kotlinx.serialization.Serializable
+import relativitization.universe.UniverseServerSettings
 import relativitization.universe.data.commands.Command
 import relativitization.universe.generate.GenerateSetting
 
@@ -39,4 +40,10 @@ data class RunUniverseMessage(
 data class UniverseData3DMessage(
     val id: Int,
     val password: String,
+)
+
+@Serializable
+data class UniverseServerSettingsMessage(
+    val adminPassword: String,
+    val universeServerSettings: UniverseServerSettings
 )

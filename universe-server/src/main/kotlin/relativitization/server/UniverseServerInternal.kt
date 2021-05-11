@@ -17,7 +17,7 @@ import relativitization.universe.generate.GenerateUniverse
 import relativitization.universe.utils.CoroutineBoolean
 import relativitization.universe.utils.CoroutineVar
 
-class UniverseServerInternal(val universeServerSettings: UniverseServerSettings) {
+class UniverseServerInternal(var universeServerSettings: UniverseServerSettings) {
     private val mutex: Mutex = Mutex()
 
     // Data of universe
@@ -82,7 +82,7 @@ class UniverseServerInternal(val universeServerSettings: UniverseServerSettings)
                     currentUniverseTime = universe.getCurrentUniverseTime()
 
                     // Clear inactive (no input received) player
-                    if (universeServerSettings.getCleanInactivePerTurn()) {
+                    if (universeServerSettings.clearInactivePerTurn) {
                         clearInactive()
                     }
 
@@ -138,7 +138,7 @@ class UniverseServerInternal(val universeServerSettings: UniverseServerSettings)
         aiCommandMap.putAll(universe.computeAICommands())
 
         // Restart wait timer after ai command has been computed
-        setTimeLeftTo(universeServerSettings.getWaitTimeLimit())
+        setTimeLeftTo(universeServerSettings.waitTimeLimit)
 
         logger.debug("AI done computation")
     }
@@ -158,7 +158,7 @@ class UniverseServerInternal(val universeServerSettings: UniverseServerSettings)
      * Time left for waiting, can be negative
      */
     private suspend fun timeLeft(): Long =
-        (universeServerSettings.getWaitTimeLimit() * 1000).toLong() - (System.currentTimeMillis() - waitBeginTime.get())
+        (universeServerSettings.waitTimeLimit * 1000).toLong() - (System.currentTimeMillis() - waitBeginTime.get())
 
 
     /**
@@ -174,7 +174,7 @@ class UniverseServerInternal(val universeServerSettings: UniverseServerSettings)
      */
     private suspend fun setTimeLeftTo(time: Int) {
         waitBeginTime.set(
-            (universeServerSettings.getWaitTimeLimit() * 1000).toLong() + System.currentTimeMillis() - (time * 1000).toLong()
+            (universeServerSettings.waitTimeLimit * 1000).toLong() + System.currentTimeMillis() - (time * 1000).toLong()
         )
     }
 
@@ -217,6 +217,15 @@ class UniverseServerInternal(val universeServerSettings: UniverseServerSettings)
                 currentUniverseTime = universe.getCurrentUniverseTime()
                 hasUniverse.set(true)
             }
+        }
+    }
+
+    /**
+     * Set universe setting
+     */
+    suspend fun setUniverseServerSettings(newUniverseServerSettings: UniverseServerSettings) {
+        mutex.withLock {
+            universeServerSettings = newUniverseServerSettings
         }
     }
 

@@ -2,32 +2,18 @@ package relativitization.universe
 
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import kotlinx.serialization.Serializable
 
 /**
- * Settings of server
+ * Settings of server, should be accessed with mutex lock to prevent setting and getting at the same time
+ *
+ * @property adminPassword the password for admin access
+ * @property clearInactivePerTurn clear the human player id and password and turn them to ai
+ * @property waitTimeLimit time limit (in seconds) to wait for human input
  */
+@Serializable
 data class UniverseServerSettings(
-    private var adminPassword: String,
-    private var clearInactivePerTurn: Boolean = false,
-    private var waitTimeLimit: Int = 60,
-) {
-    private val mutex: Mutex = Mutex()
-
-    suspend fun getAdminPassword(): String {
-        mutex.withLock {
-            return adminPassword
-        }
-    }
-
-    suspend fun getCleanInactivePerTurn(): Boolean {
-        mutex.withLock {
-            return clearInactivePerTurn
-        }
-    }
-
-    suspend fun getWaitTimeLimit(): Int {
-        mutex.withLock {
-            return waitTimeLimit
-        }
-    }
-}
+    var adminPassword: String,
+    var clearInactivePerTurn: Boolean = false,
+    var waitTimeLimit: Int = 60,
+)

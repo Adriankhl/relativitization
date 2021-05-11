@@ -9,7 +9,18 @@ import relativitization.server.UniverseServerInternal
 import relativitization.universe.communication.*
 
 fun Route.runUniverseRouting(universeServerInternal: UniverseServerInternal) {
-    // new Universe
+    route("/run/update-server-settings") {
+        post {
+            val universeServerSettingsMessage: UniverseServerSettingsMessage = call.receive()
+            if (universeServerSettingsMessage.adminPassword == universeServerInternal.universeServerSettings.adminPassword) {
+                universeServerInternal.setUniverseServerSettings(universeServerSettingsMessage.universeServerSettings)
+                call.respondText("Update server settings succeed", ContentType.Text.Plain, HttpStatusCode.OK)
+            } else {
+                call.respondText("Can't update server settings, please use the correct admin password", ContentType.Text.Plain, HttpStatusCode.Unauthorized)
+            }
+        }
+    }
+
     route("/run/register") {
         post {
             val registerPlayerMessage: RegisterPlayerMessage = call.receive()
@@ -25,7 +36,7 @@ fun Route.runUniverseRouting(universeServerInternal: UniverseServerInternal) {
     route("/run/universe") {
         post {
             val runUniverseMessage: RunUniverseMessage = call.receive()
-            if (runUniverseMessage.adminPassword == universeServerInternal.universeServerSettings.getAdminPassword()) {
+            if (runUniverseMessage.adminPassword == universeServerInternal.universeServerSettings.adminPassword) {
                 universeServerInternal.runUniverse()
                 call.respondText("Run universe succeed", ContentType.Text.Plain, HttpStatusCode.OK)
             } else {
