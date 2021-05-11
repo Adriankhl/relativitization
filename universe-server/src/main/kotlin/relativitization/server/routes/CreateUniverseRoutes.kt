@@ -17,7 +17,7 @@ fun Route.createUniverseRouting(universeServerInternal: UniverseServerInternal) 
     route("/create/new") {
         post {
             val newUniverseMessage: NewUniverseMessage = call.receive()
-            if (newUniverseMessage.adminPassword == universeServerInternal.adminPassword) {
+            if (newUniverseMessage.adminPassword == universeServerInternal.universeServerSettings.getAdminPassword()) {
                 val universeData: UniverseData = GenerateUniverse.generate(newUniverseMessage.generateSetting)
                 if (universeData.isUniverseValid()) {
                     universeServerInternal.setUniverse(Universe(universeData))
@@ -43,7 +43,7 @@ fun Route.createUniverseRouting(universeServerInternal: UniverseServerInternal) 
     route("/create/load") {
         post {
             val loadUniverseMessage: LoadUniverseMessage = call.receive()
-            if (loadUniverseMessage.adminPassword == universeServerInternal.adminPassword) {
+            if (loadUniverseMessage.adminPassword == universeServerInternal.universeServerSettings.getAdminPassword()) {
                 val universeData: UniverseData = Universe.loadUniverseLatest(loadUniverseMessage.universeName)
                 if (universeData.isUniverseValid()) {
                     universeServerInternal.setUniverse(Universe(universeData))

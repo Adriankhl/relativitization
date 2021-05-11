@@ -15,10 +15,11 @@ import org.apache.logging.log4j.LogManager
 import relativitization.server.routes.registerCreateUniverseRoutes
 import relativitization.server.routes.registerRunUniverseRoutes
 import relativitization.server.routes.registerUniverseStatusRoutes
+import relativitization.universe.UniverseServerSettings
 
 
-class UniverseServer(adminPassword: String) {
-    private val universeServerInternal: UniverseServerInternal = UniverseServerInternal(adminPassword)
+class UniverseServer(universeServerSettings: UniverseServerSettings) {
+    private val universeServerInternal: UniverseServerInternal = UniverseServerInternal(universeServerSettings)
 
     private var universeServerInternalJob: Job = Job()
 

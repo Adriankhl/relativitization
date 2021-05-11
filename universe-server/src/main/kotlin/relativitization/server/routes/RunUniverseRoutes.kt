@@ -25,7 +25,7 @@ fun Route.runUniverseRouting(universeServerInternal: UniverseServerInternal) {
     route("/run/universe") {
         post {
             val runUniverseMessage: RunUniverseMessage = call.receive()
-            if (runUniverseMessage.adminPassword == universeServerInternal.adminPassword) {
+            if (runUniverseMessage.adminPassword == universeServerInternal.universeServerSettings.getAdminPassword()) {
                 universeServerInternal.runUniverse()
                 call.respondText("Run universe succeed", ContentType.Text.Plain, HttpStatusCode.OK)
             } else {

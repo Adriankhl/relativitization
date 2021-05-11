@@ -5,6 +5,7 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import org.apache.logging.log4j.LogManager
 import relativitization.universe.Universe
+import relativitization.universe.UniverseServerSettings
 import relativitization.universe.communication.CommandInputMessage
 import relativitization.universe.communication.RegisterPlayerMessage
 import relativitization.universe.communication.UniverseServerStatusMessage
@@ -16,7 +17,7 @@ import relativitization.universe.generate.GenerateUniverse
 import relativitization.universe.utils.CoroutineBoolean
 import relativitization.universe.utils.CoroutineVar
 
-class UniverseServerInternal(var adminPassword: String) {
+class UniverseServerInternal(val universeServerSettings: UniverseServerSettings) {
     private val mutex: Mutex = Mutex()
 
     // Data of universe
@@ -38,9 +39,6 @@ class UniverseServerInternal(var adminPassword: String) {
     // wait beginning time in milli second, used to calculate the time limit to stop waiting
     private var waitBeginTime: CoroutineVar<Long> = CoroutineVar(System.currentTimeMillis())
 
-    // wait time limit in second
-    private var waitTimeLimit: CoroutineVar<Int> = CoroutineVar(60)
-
     // map from registered player id to password
     private val humanIdPasswordMap: MutableMap<Int, String> = mutableMapOf()
 
@@ -55,9 +53,6 @@ class UniverseServerInternal(var adminPassword: String) {
 
     // ai computed command map
     private val aiCommandMap: MutableMap<Int, List<Command>> = mutableMapOf()
-
-    // Clear inactive registered player id each turn or not
-    private var clearInactivePerTurn: CoroutineBoolean = CoroutineBoolean(true)
 
     /**
      * Start the universe
@@ -87,7 +82,7 @@ class UniverseServerInternal(var adminPassword: String) {
                     currentUniverseTime = universe.getCurrentUniverseTime()
 
                     // Clear inactive (no input received) player
-                    if (clearInactivePerTurn.isTrue()) {
+                    if (universeServerSettings.getCleanInactivePerTurn()) {
                         clearInactive()
                     }
 
@@ -143,7 +138,7 @@ class UniverseServerInternal(var adminPassword: String) {
         aiCommandMap.putAll(universe.computeAICommands())
 
         // Restart wait timer after ai command has been computed
-        setTimeLeftTo(waitTimeLimit.get())
+        setTimeLeftTo(universeServerSettings.getWaitTimeLimit())
 
         logger.debug("AI done computation")
     }
@@ -163,7 +158,7 @@ class UniverseServerInternal(var adminPassword: String) {
      * Time left for waiting, can be negative
      */
     private suspend fun timeLeft(): Long =
-        (waitTimeLimit.get() * 1000).toLong() - (System.currentTimeMillis() - waitBeginTime.get())
+        (universeServerSettings.getWaitTimeLimit() * 1000).toLong() - (System.currentTimeMillis() - waitBeginTime.get())
 
 
     /**
@@ -178,7 +173,9 @@ class UniverseServerInternal(var adminPassword: String) {
      * @param time time left in seconds
      */
     private suspend fun setTimeLeftTo(time: Int) {
-        waitBeginTime.set((waitTimeLimit.get() * 1000).toLong() + System.currentTimeMillis() - (time * 1000).toLong())
+        waitBeginTime.set(
+            (universeServerSettings.getWaitTimeLimit() * 1000).toLong() + System.currentTimeMillis() - (time * 1000).toLong()
+        )
     }
 
     /**
