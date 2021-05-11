@@ -48,3 +48,20 @@
 * Produce resources
 * Depends on research modifier
 * Encourage newly build industry at new place: more modifier, harder to add new one
+
+# Economy
+* Transport resources produce by industry
+* Tax and tariff
+* Subsidize
+
+# Pop system
+* Daily need of population: food, energy, entertainment
+* Special need at factory
+* Each type of population has wealth
+* Prefer low cost or high quality stuff
+* Quality preference can increase or decrease
+
+# Military
+* Solder population
+* Attack, reduce attack, reduce defense
+* Ratio defense, absolute magnitude defense
