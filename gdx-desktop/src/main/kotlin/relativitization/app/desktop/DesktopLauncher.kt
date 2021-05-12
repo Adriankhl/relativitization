@@ -9,16 +9,22 @@ import com.badlogic.gdx.tools.texturepacker.TexturePacker
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import org.apache.logging.log4j.LogManager
 import relativitization.client.UniverseClient
 import relativitization.game.RelativitizationGame
 import relativitization.server.UniverseServer
 import relativitization.universe.UniverseClientSettings
 import relativitization.universe.UniverseServerSettings
+import java.io.File
 import kotlin.random.Random
 
 object DesktopLauncher {
     @JvmStatic
     fun main(arg: Array<String>) {
+
+        // pack images to atlas
+        packImages()
+
         val config = Lwjgl3ApplicationConfiguration()
         config.setTitle("Relativitization")
         config.setWindowIcon(Files.FileType.Internal, "images/normal/logo/logo.png")
@@ -58,14 +64,33 @@ object DesktopLauncher {
         // Prevent pixelated
         settings.filterMag = Texture.TextureFilter.MipMapLinearLinear
         settings.filterMin = Texture.TextureFilter.MipMapLinearLinear
+
+        // Pack if outdated
+        val atlasFileName: String = "relativitization-asset"
+        val atlasFile: File = File("$atlasFileName.atlas")
+        val input: String = "./images/pack"
+        if (!atlasFile.exists() || isAtlasOutdated(atlasFile, input)) {
+            logger.info("Pack atlas")
+            TexturePacker.process(settings, input, ".", atlasFileName)
+        }
     }
 
-    private fun packImagesIfOutdated(
-        settings: TexturePacker.Settings,
-        input: String,
-        output: String,
-        packFileName: String = "game"
-    ) {
+    /**
+     * Check if the atlas file needs to be updated
+     */
+    private fun isAtlasOutdated(atlasFile: File, path: String): Boolean {
+        val atlasFileLastModified: Long = atlasFile.lastModified()
 
+        val allFiles: Sequence<File> = File(path).walkTopDown()
+
+        return allFiles.map {
+            if (it.extension in listOf("png", "jpg", "jpeg")) {
+                it.lastModified() > atlasFileLastModified
+            } else {
+                false
+            }
+        }.contains(true)
     }
+
+    private val logger = LogManager.getLogger()
 }
