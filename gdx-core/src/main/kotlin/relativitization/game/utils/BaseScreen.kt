@@ -7,8 +7,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 
-open class BaseScreen : ScreenAdapter() {
-    private val skin: Skin = Skin(Gdx.files.internal("skin/flatearth/flatearthui/flat-earth-ui.json"))
+open class BaseScreen(assets: Assets) : ScreenAdapter() {
+    private val skin: Skin = assets.getSkin()
     protected val stage: Stage = Stage(ScreenViewport())
 
 

@@ -7,13 +7,14 @@ import com.badlogic.gdx.Input
 import com.badlogic.gdx.audio.Music
 import kotlinx.coroutines.runBlocking
 import relativitization.client.UniverseClient
+import relativitization.game.utils.Assets
 import relativitization.server.UniverseServer
 
 class RelativitizationGame(val universeClient: UniverseClient, val universeServer: UniverseServer) : Game() {
 
     var setting: GameSetting = GameSetting()
 
-    var backGroundMusicLocation: String = "music/Alexander Ehlers - Warped.mp3"
+    val assets: Assets = Assets()
 
     lateinit var backgroundMusic: Music
 
@@ -21,10 +22,12 @@ class RelativitizationGame(val universeClient: UniverseClient, val universeServe
         Gdx.input.setCatchKey(Input.Keys.BACK, true)
         Gdx.graphics.isContinuousRendering = setting.continuousRendering
 
+        assets.loadAll()
+
         restoreSize()
         startMusic()
 
-        setScreen(MainMenuScreen())
+        setScreen(MainMenuScreen(assets))
     }
 
 
@@ -40,13 +43,11 @@ class RelativitizationGame(val universeClient: UniverseClient, val universeServe
     fun startMusic() {
         if (setting.musicVolume < 0.01) return
 
-        val backGroundMusicFile = Gdx.files.internal(backGroundMusicLocation)
-        if (backGroundMusicFile.exists()) {
-            backgroundMusic = Gdx.audio.newMusic(backGroundMusicFile)
-            backgroundMusic.isLooping = true
-            backgroundMusic.volume = 0.4f * setting.musicVolume
-            backgroundMusic.play()
-        }
+        backgroundMusic = assets.getBackgroundMusic()
+
+        backgroundMusic.isLooping = true
+        backgroundMusic.volume = 0.4f * setting.musicVolume
+        backgroundMusic.play()
     }
 
     override fun dispose() {
