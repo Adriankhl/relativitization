@@ -2,7 +2,6 @@ package relativitization.game
 
 import kotlinx.serialization.Serializable
 
-
 @Serializable
 data class GameSetting(
     var resolution: String = "1360x765",

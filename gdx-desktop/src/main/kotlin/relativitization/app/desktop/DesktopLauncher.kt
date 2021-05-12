@@ -14,18 +14,17 @@ import relativitization.universe.UniverseClientSettings
 import relativitization.universe.UniverseServerSettings
 import kotlin.random.Random
 
-internal object DesktopLauncher {
+object DesktopLauncher {
     @JvmStatic
     fun main(arg: Array<String>) {
         val config = Lwjgl3ApplicationConfiguration()
         config.setTitle("Relativitization")
-        config.setWindowIcon(Files.FileType.External, "images/normal/logo/logo.png")
+        config.setWindowIcon(Files.FileType.Internal, "images/normal/logo/logo.png")
         config.setHdpiMode(HdpiMode.Logical)
 
-        val adminPassword: String= List(10) { Random.nextInt(0, 10) }.joinToString(separator="")
+        val adminPassword: String = List(10) { Random.nextInt(0, 10) }.joinToString(separator = "")
 
         val universeServerSettings = UniverseServerSettings(adminPassword = adminPassword)
-
         val universeClientSettings = UniverseClientSettings(adminPassword = adminPassword)
 
         runBlocking {
