@@ -13,6 +13,8 @@ class Assets {
         manager.load("skin/flatearth/flatearthui/flat-earth-ui.json", Skin::class.java, flatUISkin)
 
         manager.load("music/Alexander Ehlers - Warped.mp3", Music::class.java)
+
+        manager.finishLoading()
     }
 
     fun getSkin(): Skin = manager.get("skin/flatearth/flatearthui/flat-earth-ui.json")
