@@ -12,11 +12,11 @@ import relativitization.server.UniverseServer
 
 class RelativitizationGame(val universeClient: UniverseClient, val universeServer: UniverseServer) : Game() {
 
-    var setting: GameSetting = GameSetting()
+    private var setting: GameSetting = GameSetting()
 
-    val assets: Assets = Assets()
+    private val assets: Assets = Assets()
 
-    lateinit var backgroundMusic: Music
+    private lateinit var backgroundMusic: Music
 
     override fun create() {
         Gdx.input.setCatchKey(Input.Keys.BACK, true)
@@ -31,7 +31,7 @@ class RelativitizationGame(val universeClient: UniverseClient, val universeServe
     }
 
 
-    fun restoreSize() {
+    private fun restoreSize() {
         if (Gdx.app.type == Application.ApplicationType.Desktop &&
             setting.windowsWidth > 39 &&
             setting.windowsHeight > 39
@@ -40,7 +40,7 @@ class RelativitizationGame(val universeClient: UniverseClient, val universeServe
         }
     }
 
-    fun startMusic() {
+    private fun startMusic() {
         if (setting.musicVolume < 0.01) return
 
         backgroundMusic = assets.getBackgroundMusic()
