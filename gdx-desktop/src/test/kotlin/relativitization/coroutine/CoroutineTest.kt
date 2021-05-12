@@ -10,12 +10,14 @@ import org.apache.logging.log4j.core.config.Configurator
 import kotlin.test.Test
 import relativitization.client.UniverseClient
 import relativitization.server.UniverseServer
+import relativitization.universe.UniverseClientSettings
+import relativitization.universe.UniverseServerSettings
 
 internal class CoroutineTest {
     @Test
     fun helloTest() {
-        val universeServer = UniverseServer("pwd")
-        val universeClient = UniverseClient("pwd")
+        val universeServer = UniverseServer(UniverseServerSettings("pwd"))
+        val universeClient = UniverseClient(UniverseClientSettings("pwd"))
         runBlocking {
             launch(Dispatchers.IO) {
                 universeServer.start()
@@ -44,8 +46,8 @@ internal class CoroutineTest {
     fun wrongPasswordTest() {
         Configurator.setRootLevel(Level.DEBUG);
 
-        val universeServer = UniverseServer("hhhh")
-        val universeClient = UniverseClient("pwd")
+        val universeServer = UniverseServer(UniverseServerSettings("wrong"))
+        val universeClient = UniverseClient(UniverseClientSettings("pwd"))
 
         runBlocking {
             launch(Dispatchers.IO) {
@@ -67,8 +69,8 @@ internal class CoroutineTest {
     fun createUniverseTest() {
         Configurator.setRootLevel(Level.DEBUG);
 
-        val universeServer = UniverseServer("pwd")
-        val universeClient = UniverseClient("pwd")
+        val universeServer = UniverseServer(UniverseServerSettings("pwd"))
+        val universeClient = UniverseClient(UniverseClientSettings("pwd"))
 
         runBlocking {
             launch(Dispatchers.IO) {
@@ -89,8 +91,8 @@ internal class CoroutineTest {
 
     @Test
     fun createUniverseFailTest() {
-        val universeServer = UniverseServer("pwd")
-        val universeClient = UniverseClient("pwd")
+        val universeServer = UniverseServer(UniverseServerSettings("pwd"))
+        val universeClient = UniverseClient(UniverseClientSettings("pwd"))
 
         runBlocking {
             launch(Dispatchers.IO) {
@@ -128,8 +130,8 @@ internal class CoroutineTest {
 
     @Test
     fun connectionFailTest() {
-        val universeServer = UniverseServer("pwd")
-        val universeClient = UniverseClient("pwd")
+        val universeServer = UniverseServer(UniverseServerSettings("pwd"))
+        val universeClient = UniverseClient(UniverseClientSettings("pwd"))
 
         runBlocking {
             println("before")

@@ -4,12 +4,14 @@ import kotlinx.coroutines.*
 import kotlin.test.Test
 import relativitization.client.UniverseClient
 import relativitization.server.UniverseServer
+import relativitization.universe.UniverseClientSettings
+import relativitization.universe.UniverseServerSettings
 
 internal class ServerStatusTest {
     @Test
     fun newServerStatus() {
-        val universeServer = UniverseServer("pwd")
-        val universeClient = UniverseClient("pwd")
+        val universeServer = UniverseServer(UniverseServerSettings("pwd"))
+        val universeClient = UniverseClient(UniverseClientSettings("pwd"))
         runBlocking {
             launch {
                 universeServer.start()
@@ -24,8 +26,8 @@ internal class ServerStatusTest {
 
     @Test
     fun newUniverseStatus() {
-        val universeServer = UniverseServer("pwd")
-        val universeClient = UniverseClient("pwd")
+        val universeServer = UniverseServer(UniverseServerSettings("pwd"))
+        val universeClient = UniverseClient(UniverseClientSettings("pwd"))
         runBlocking {
             launch {
                 universeServer.start()
