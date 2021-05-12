@@ -8,4 +8,6 @@ data class GameSetting(
     var continuousRendering: Boolean = false,
     var musicVolume: Float = 0.5f,
     var soundEffectsVolume: Float = 0.5f,
+    var windowsWidth: Int = 1360,
+    var windowsHeight: Int = 768,
 )
