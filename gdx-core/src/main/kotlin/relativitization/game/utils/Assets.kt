@@ -24,6 +24,10 @@ class Assets {
         manager.finishLoading()
     }
 
+    fun dispose() {
+        manager.dispose()
+    }
+
     fun getSkin(): Skin = manager.get("skin/flatearth/flatearthui/flat-earth-ui.json")
 
     fun getBackgroundMusic(): Music = manager.get("music/Alexander Ehlers - Warped.mp3")
