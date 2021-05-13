@@ -33,6 +33,10 @@ open class TableScreen(assets: Assets) : ScreenAdapter() {
         stage.viewport.update(width, height, true)
     }
 
+    override fun hide() {
+        stage.clear()
+    }
+
     override fun dispose() {
         skin.dispose()
         stage.dispose()
