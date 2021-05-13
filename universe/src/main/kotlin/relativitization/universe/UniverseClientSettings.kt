@@ -1,6 +1,8 @@
 package relativitization.universe
 
 import kotlinx.serialization.Serializable
+import relativitization.universe.data.physics.Int3D
+import relativitization.universe.data.physics.MutableInt3D
 
 /**
  * Client settings
@@ -19,5 +21,6 @@ data class UniverseClientSettings(
     var password: String = "player password",
     var serverAddress: String = "127.0.0.1",
     var serverPort: String = "29979",
+    var viewCenter: MutableInt3D = MutableInt3D(0, 0, 0),
     var zLimit:Int = 10,
 )

@@ -3,7 +3,7 @@ package relativitization.game
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class GameSetting(
+data class GdxSetting(
     var resolution: String = "1360x765",
     var continuousRendering: Boolean = false,
     var musicVolume: Float = 0.5f,
