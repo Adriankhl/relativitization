@@ -7,6 +7,7 @@ import com.badlogic.gdx.Input
 import com.badlogic.gdx.audio.Music
 import kotlinx.coroutines.runBlocking
 import relativitization.client.UniverseClient
+import relativitization.game.screens.MainMenuScreen
 import relativitization.game.utils.Assets
 import relativitization.server.UniverseServer
 

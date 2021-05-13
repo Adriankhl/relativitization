@@ -1,8 +1,7 @@
-package relativitization.game
+package relativitization.game.screens
 
 import com.badlogic.gdx.scenes.scene2d.ui.Image
-import relativitization.client.UniverseClient
-import relativitization.game.utils.Assets
+import relativitization.game.RelativitizationGame
 import relativitization.game.utils.TableScreen
 
 class MainMenuScreen(
