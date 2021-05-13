@@ -17,19 +17,19 @@ class MainMenuScreen(val game: RelativitizationGame) : TableScreen(game.assets) 
 
         super.show()
 
-        val newUniverseButton = textButton("New Universe", gdxSetting.largeFontScale) {
+        val newUniverseButton = createTextButton("New Universe", gdxSetting.largeFontScale) {
             game.setScreen(NewUniverseScreen(game))
             dispose()
         }
-        root.add(newUniverseButton).width(500f).height(100f).space(20f)
+        root.add(newUniverseButton).prefSize(500f, 100f).space(20f)
         root.row()
-        val loadUniverseButton = textButton("Load Universe", gdxSetting.largeFontScale)
-        root.add(loadUniverseButton).width(500f).height(100f).space(20f)
+        val loadUniverseButton = createTextButton("Load Universe", gdxSetting.largeFontScale)
+        root.add(loadUniverseButton).prefSize(500f, 100f).space(20f)
         root.row()
-        val joinUniverseButton = textButton("Join Universe", gdxSetting.largeFontScale)
-        root.add(joinUniverseButton).width(500f).height(100f).space(20f)
+        val joinUniverseButton = createTextButton("Join Universe", gdxSetting.largeFontScale)
+        root.add(joinUniverseButton).prefSize(500f, 100f).space(20f)
         root.row()
-        val optionsButton = textButton("Options", gdxSetting.largeFontScale)
-        root.add(optionsButton).width(500f).height(100f).space(20f)
+        val optionsButton = createTextButton("Options", gdxSetting.largeFontScale)
+        root.add(optionsButton).prefSize(500f, 100f).space(20f)
     }
 }
