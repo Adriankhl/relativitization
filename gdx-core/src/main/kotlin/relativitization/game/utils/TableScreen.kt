@@ -49,7 +49,6 @@ open class TableScreen(assets: Assets) : ScreenAdapter() {
     }
 
     override fun dispose() {
-        skin.dispose()
         stage.dispose()
     }
 
@@ -81,9 +80,12 @@ open class TableScreen(assets: Assets) : ScreenAdapter() {
         return button
     }
 
-    fun createLabel(text: String): Label {
-        val labelStyle = skin.get(LabelStyle::class.java)
-        labelStyle.fontColor = Color.WHITE
-        return Label(text, labelStyle)
+    fun createLabel(text: String, fontScale: Float = -1.0f): Label {
+        val label = Label(text, skin)
+
+        if (fontScale > 0.0f) {
+            label.setFontScale(fontScale)
+        }
+        return label
     }
 }

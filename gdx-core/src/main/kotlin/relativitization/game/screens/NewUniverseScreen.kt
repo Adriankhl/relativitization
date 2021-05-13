@@ -13,6 +13,6 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
     }
 
     private fun addXDimSelectBox() {
-        root.add(createLabel("Universe x dimension: "))
+        root.add(createLabel("Universe x dimension: ", 5.0f))
     }
 }
