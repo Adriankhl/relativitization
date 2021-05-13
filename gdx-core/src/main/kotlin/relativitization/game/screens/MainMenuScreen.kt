@@ -4,7 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.TableScreen
 
-class MainMenuScreen(game: RelativitizationGame) : TableScreen(game.assets) {
+class MainMenuScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
 
     val assets = game.assets
     val background: Image = assets.getImage("background/universe-background")
@@ -17,7 +17,10 @@ class MainMenuScreen(game: RelativitizationGame) : TableScreen(game.assets) {
 
         super.show()
 
-        val newUniverseButton = textButton("New Universe", gdxSetting.largeFontScale)
+        val newUniverseButton = textButton("New Universe", gdxSetting.largeFontScale) {
+            game.setScreen(NewUniverseScreen(game))
+            dispose()
+        }
         root.add(newUniverseButton).width(500f).height(100f).space(20f)
         root.row()
         val loadUniverseButton = textButton("Load Universe", gdxSetting.largeFontScale)

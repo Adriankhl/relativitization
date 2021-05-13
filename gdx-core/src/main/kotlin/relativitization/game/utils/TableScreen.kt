@@ -3,10 +3,12 @@ package relativitization.game.utils
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.ScreenAdapter
 import com.badlogic.gdx.graphics.GL20
+import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 
 open class TableScreen(assets: Assets) : ScreenAdapter() {
@@ -18,6 +20,7 @@ open class TableScreen(assets: Assets) : ScreenAdapter() {
     override fun show() {
         root.setFillParent(true);
         stage.addActor(root)
+        Gdx.input.setInputProcessor(stage)
     }
 
     override fun render(delta: Float) {
@@ -48,13 +51,23 @@ open class TableScreen(assets: Assets) : ScreenAdapter() {
      * @param text the text in the button
      * @param fontScale scaling of the font, the label should be managed by the cell
      */
-    fun textButton(text: String, fontScale: Float = -1.0f): TextButton {
+    fun textButton(
+        text: String,
+        fontScale: Float = -1.0f,
+        function: () -> Unit = {},
+    ): TextButton {
 
         val button = TextButton(text, skin)
 
         if (fontScale > 0.0f) {
             button.label.setFontScale(fontScale)
         }
+
+        button.addListener( object : ChangeListener() {
+            override fun changed(event: ChangeEvent, actor: Actor) {
+                function()
+            }
+        })
 
         return button
     }
