@@ -23,6 +23,7 @@ kotlin {
 
                 implementation("com.badlogicgames.gdx:gdx-backend-lwjgl3:${Versions.gdxVersion}")
                 implementation("com.badlogicgames.gdx:gdx-platform:${Versions.gdxVersion}:natives-desktop")
+                implementation("com.badlogicgames.gdx:gdx-freetype-platform:${Versions.gdxVersion}:natives-desktop")
 
                 // This is for the TexturePacker class
                 implementation("com.badlogicgames.gdx:gdx-tools:${Versions.gdxVersion}") {
