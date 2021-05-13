@@ -52,6 +52,7 @@ class RelativitizationGame(val universeClient: UniverseClient, val universeServe
 
     override fun dispose() {
         runBlocking {
+            backgroundMusic.stop()
             universeClient.stop()
             universeServer.stop()
         }
