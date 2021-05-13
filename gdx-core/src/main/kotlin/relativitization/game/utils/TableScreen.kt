@@ -52,8 +52,7 @@ open class TableScreen(assets: Assets) : ScreenAdapter() {
 
         val button = TextButton(text, skin)
 
-        if (fontScale > 0.0) {
-            button.isTransform = true
+        if (fontScale > 0.0f) {
             button.label.setFontScale(fontScale)
         }
 
