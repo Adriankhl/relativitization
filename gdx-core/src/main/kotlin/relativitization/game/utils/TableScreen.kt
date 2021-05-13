@@ -14,16 +14,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 
-open class TableScreen(assets: Assets) : ScreenAdapter() {
+open class TableScreen(private val assets: Assets) : ScreenAdapter() {
     private val skin: Skin = assets.getSkin()
 
     protected val stage: Stage = Stage(ScreenViewport())
     protected val root: Table = Table()
 
-    init {
-        // Modify label color to white
-        skin.get(LabelStyle::class.java).fontColor = Color.WHITE
-    }
 
     override fun show() {
         root.setFillParent(true);
@@ -67,9 +63,7 @@ open class TableScreen(assets: Assets) : ScreenAdapter() {
 
         val button = TextButton(text, skin)
 
-        if (fontScale > 0.0f) {
-            button.label.setFontScale(fontScale)
-        }
+        button.label.style.font = assets.getSmallFont()
 
         button.addListener( object : ChangeListener() {
             override fun changed(event: ChangeEvent, actor: Actor) {
