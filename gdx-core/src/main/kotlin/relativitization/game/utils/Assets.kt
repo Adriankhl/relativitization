@@ -14,6 +14,7 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader.FreeTypeFontLoaderParameter
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
+import com.badlogic.gdx.utils.ObjectMap
 
 
 class Assets {
@@ -24,6 +25,7 @@ class Assets {
     private val textureMap: MutableMap<String, AtlasRegion> = mutableMapOf()
 
     fun loadAll() {
+        // https://stackoverflow.com/questions/46619234/libgdx-asset-manager-load-true-type-font
         manager.setLoader(FreeTypeFontGenerator::class.java, FreeTypeFontGeneratorLoader(resolver))
         manager.setLoader(BitmapFont::class.java, ".ttf", FreetypeFontLoader(resolver))
 
@@ -34,10 +36,12 @@ class Assets {
 
         manager.load("relativitization-asset.atlas", TextureAtlas::class.java)
 
-        val smallFont = FreeTypeFontLoaderParameter()
-        smallFont.fontFileName = "fonts/nerd.ttf"
-        smallFont.fontParameters.size = 10
-        manager.load("nerd10.ttf", BitmapFont::class.java, smallFont)
+        for (fontSize in 8..40) {
+            val smallFont = FreeTypeFontLoaderParameter()
+            smallFont.fontFileName = "fonts/nerd.ttf"
+            smallFont.fontParameters.size = fontSize
+            manager.load("nerd$fontSize.ttf", BitmapFont::class.java, smallFont)
+        }
 
         manager.finishLoading()
     }
@@ -56,5 +60,19 @@ class Assets {
         return Image(region)
     }
 
-    fun getSmallFont(): BitmapFont = manager.get("nerd10.ttf", BitmapFont::class.java)
+    fun getFont(fontSize: Int): BitmapFont {
+        val actualSize = when {
+            fontSize < 8 -> {
+                8
+            }
+            fontSize > 40 -> {
+                40
+            }
+            else -> {
+                fontSize
+            }
+        }
+
+       return manager.get("nerd$actualSize.ttf")
+    }
 }

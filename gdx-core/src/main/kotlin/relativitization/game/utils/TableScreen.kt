@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Label
-import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
@@ -57,13 +56,15 @@ open class TableScreen(private val assets: Assets) : ScreenAdapter() {
      */
     fun createTextButton(
         text: String,
-        fontScale: Float = -1.0f,
+        fontSize: Int = 30,
         function: () -> Unit = {},
     ): TextButton {
 
-        val button = TextButton(text, skin)
+        val style = skin.get(TextButton.TextButtonStyle::class.java)
 
-        button.label.style.font = assets.getSmallFont()
+        style.font = assets.getFont(fontSize)
+
+        val button = TextButton(text, style)
 
         button.addListener( object : ChangeListener() {
             override fun changed(event: ChangeEvent, actor: Actor) {
@@ -74,12 +75,11 @@ open class TableScreen(private val assets: Assets) : ScreenAdapter() {
         return button
     }
 
-    fun createLabel(text: String, fontScale: Float = -1.0f): Label {
-        val label = Label(text, skin)
+    fun createLabel(text: String, fontSize: Int = 16): Label {
+        val style = skin.get(Label.LabelStyle::class.java)
+        style.font = assets.getFont(fontSize)
+        style.fontColor = Color.WHITE
 
-        if (fontScale > 0.0f) {
-            label.setFontScale(fontScale)
-        }
-        return label
+        return Label(text, style)
     }
 }
