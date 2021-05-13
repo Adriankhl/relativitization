@@ -10,11 +10,11 @@ import relativitization.client.UniverseClient
 import relativitization.game.utils.Assets
 import relativitization.server.UniverseServer
 
-class RelativitizationGame(private val universeClient: UniverseClient, private val universeServer: UniverseServer) : Game() {
+class RelativitizationGame(val universeClient: UniverseClient, private val universeServer: UniverseServer) : Game() {
 
-    private var gdxSetting: GdxSetting = GdxSetting()
+    val gdxSetting: GdxSetting = GdxSetting()
 
-    private val assets: Assets = Assets()
+    val assets: Assets = Assets()
 
     private lateinit var backgroundMusic: Music
 
@@ -27,7 +27,7 @@ class RelativitizationGame(private val universeClient: UniverseClient, private v
         restoreSize()
         startMusic()
 
-        setScreen(MainMenuScreen(assets, gdxSetting, universeClient))
+        setScreen(MainMenuScreen(this))
     }
 
 
