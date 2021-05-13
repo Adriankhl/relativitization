@@ -2,7 +2,7 @@ package relativitization.game.utils
 
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.assets.loaders.FileHandleResolver
-import com.badlogic.gdx.assets.loaders.SkinLoader
+import com.badlogic.gdx.assets.loaders.SkinLoader.SkinParameter
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver
 import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.graphics.g2d.BitmapFont
@@ -14,7 +14,7 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader.FreeTypeFontLoaderParameter
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
-import com.badlogic.gdx.utils.ObjectMap
+import org.apache.logging.log4j.LogManager
 
 
 class Assets {
@@ -29,8 +29,8 @@ class Assets {
         manager.setLoader(FreeTypeFontGenerator::class.java, FreeTypeFontGeneratorLoader(resolver))
         manager.setLoader(BitmapFont::class.java, ".ttf", FreetypeFontLoader(resolver))
 
-        val flatUISkin = SkinLoader.SkinParameter("skin/flatearth/flatearthui/flat-earth-ui.atlas")
-        manager.load("skin/flatearth/flatearthui/flat-earth-ui.json", Skin::class.java, flatUISkin)
+        val skinParameter = SkinParameter("skin/flatearth/flatearthui/flat-earth-ui.atlas")
+        manager.load("skin/flatearth/flatearthui/flat-earth-ui.json", Skin::class.java, skinParameter)
 
         manager.load("music/Alexander Ehlers - Warped.mp3", Music::class.java)
 
@@ -63,9 +63,11 @@ class Assets {
     fun getFont(fontSize: Int): BitmapFont {
         val actualSize = when {
             fontSize < 8 -> {
+                logger.debug("Font cannot be smaller than 8")
                 8
             }
             fontSize > 40 -> {
+                logger.debug("Font cannot be larger than 40")
                 40
             }
             else -> {
@@ -73,6 +75,10 @@ class Assets {
             }
         }
 
-       return manager.get("nerd$actualSize.ttf")
+        return manager.get("nerd$actualSize.ttf")
+    }
+
+    companion object {
+        private val logger = LogManager.getLogger()
     }
 }
