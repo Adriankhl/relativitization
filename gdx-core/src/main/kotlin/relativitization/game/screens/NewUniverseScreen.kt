@@ -2,6 +2,7 @@ package relativitization.game.screens
 
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
+import kotlinx.coroutines.runBlocking
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.TableScreen
 import relativitization.universe.generate.GenerateUniverse
@@ -13,6 +14,24 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
         super.show()
 
         root.add(createGenerateSettingsScrollPane())
+
+        root.row().space(10f)
+
+        // Add Generate button
+        val generateFailLabel = createLabel("", gdxSetting.normalFontSize)
+        val generateButton = createTextButton("Generate", gdxSetting.buttonFontSize) {
+            if (GenerateUniverse.isSettingValid(game.universeClient.generateSettings)) {
+                runBlocking {
+                    game.universeClient.httpPostNewUniverse()
+                }
+            } else {
+                generateFailLabel.setText("Generate universe fail, some setting is wrong")
+            }
+        }
+
+        root.add(generateButton)
+        root.row().space(10f)
+        root.add(generateFailLabel)
     }
 
     /**

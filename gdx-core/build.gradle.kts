@@ -16,6 +16,9 @@ kotlin {
 
                 implementation("com.badlogicgames.gdx:gdx:${Versions.gdxVersion}")
                 implementation("com.badlogicgames.gdx:gdx-freetype:${Versions.gdxVersion}")
+
+                implementation("io.ktor:ktor-client-core:${Versions.ktorVersion}")
+
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.kotlinxSerializationVersion}")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.kotlinxCoroutineVersion}")
                 implementation("org.jetbrains.kotlin:kotlin-reflect:${Versions.kotlinVersion}")
