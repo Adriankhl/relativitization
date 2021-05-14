@@ -88,13 +88,17 @@ open class TableScreen(val assets: Assets) : ScreenAdapter() {
 
     inline fun <reified T> createSelectBox(
         itemList: List<T>,
+        default: T = itemList[0],
         fontSize: Int = 16,
         crossinline function: (T) -> Unit = {},
     ): SelectBox<T> {
         val style = skin.get(SelectBoxStyle::class.java)
         style.font = assets.getFont(fontSize)
+
         val selectBox: SelectBox<T> = SelectBox(style)
         selectBox.items = Array(itemList.toTypedArray())
+
+        selectBox.selected = default
 
         selectBox.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {

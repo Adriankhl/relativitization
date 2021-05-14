@@ -29,7 +29,11 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
 
     private fun addDimensionSelectBoxes(table: Table) {
         table.add(createLabel("Universe x dimension: ", gdxSetting.normalFontSize))
-        val xDimSelectBox = createSelectBox((1..50).toList(), gdxSetting.normalFontSize) {
+        val xDimSelectBox = createSelectBox(
+            (1..50).toList(),
+            game.universeClient.generateSettings().universeSettings.xDim,
+            gdxSetting.normalFontSize
+        ) {
             game.universeClient.generateSettings.universeSettings.xDim = it
         }
         table.add(xDimSelectBox)

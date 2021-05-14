@@ -11,6 +11,7 @@ kotlin {
             dependencies {
                 implementation(project(":universe-client"))
                 implementation(project(":universe-server"))
+                implementation(project(":universe"))
 
 
                 implementation("com.badlogicgames.gdx:gdx:${Versions.gdxVersion}")
