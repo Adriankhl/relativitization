@@ -29,8 +29,8 @@ class Assets {
         manager.setLoader(FreeTypeFontGenerator::class.java, FreeTypeFontGeneratorLoader(resolver))
         manager.setLoader(BitmapFont::class.java, ".ttf", FreetypeFontLoader(resolver))
 
-        val skinParameter = SkinParameter("skin/flatearth/flatearthui/flat-earth-ui.atlas")
-        manager.load("skin/flatearth/flatearthui/flat-earth-ui.json", Skin::class.java, skinParameter)
+        val skinParameter = SkinParameter("skin/flat-earth-ui.atlas")
+        manager.load("skin/flat-earth-ui.json", Skin::class.java, skinParameter)
 
         manager.load("music/Alexander Ehlers - Warped.mp3", Music::class.java)
 
@@ -50,7 +50,7 @@ class Assets {
         manager.dispose()
     }
 
-    fun getSkin(): Skin = manager.get("skin/flatearth/flatearthui/flat-earth-ui.json")
+    fun getSkin(): Skin = manager.get("skin/flat-earth-ui.json")
 
     fun getBackgroundMusic(): Music = manager.get("music/Alexander Ehlers - Warped.mp3")
 
