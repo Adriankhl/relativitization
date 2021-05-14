@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.utils.Align
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.TableScreen
+import relativitization.universe.generate.GenerateUniverse
 
 class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
     val gdxSetting = game.gdxSetting
@@ -21,7 +22,10 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
         val generateSettingLabel = createLabel("Generate Universe Settings:", gdxSetting.bigFontSIze)
 
         table.add(generateSettingLabel).colspan(2).space(20f)
-        table.row()
+        table.row().space(10f)
+
+        addGenerateMethod(table)
+        table.row().space(10f)
 
         addDimensionSelectBoxes(table)
 
@@ -31,6 +35,18 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
         scrollPane.setFlickScroll(false);
 
         return scrollPane
+    }
+
+    private fun addGenerateMethod(table: Table) {
+        table.add(createLabel("Generate Method: ", gdxSetting.normalFontSize))
+        val generateMethodSelectBox = createSelectBox(
+            GenerateUniverse.generateMethodMap.keys.toList(),
+            GenerateUniverse.generateMethodMap.keys.toList()[0],
+            gdxSetting.normalFontSize,
+        ) {
+            game.universeClient.generateSettings.generateMethod = it
+        }
+        table.add(generateMethodSelectBox)
     }
 
     private fun addDimensionSelectBoxes(table: Table) {
@@ -44,7 +60,7 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
         }
         table.add(xDimSelectBox)
 
-        table.row()
+        table.row().space(10f)
 
         table.add(createLabel("Universe y dimension: ", gdxSetting.normalFontSize))
         val yDimSelectBox = createSelectBox(
@@ -56,7 +72,7 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
         }
         table.add(yDimSelectBox)
 
-        table.row()
+        table.row().space(10f)
 
         table.add(createLabel("Universe z dimension: ", gdxSetting.normalFontSize))
         val zDimSelectBox = createSelectBox(
