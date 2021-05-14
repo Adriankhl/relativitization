@@ -2,7 +2,6 @@ package relativitization.game.screens
 
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
-import com.badlogic.gdx.utils.Align
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.TableScreen
 import relativitization.universe.generate.GenerateUniverse
@@ -16,6 +15,9 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
         root.add(createGenerateSettingsScrollPane())
     }
 
+    /**
+     * Create scroll pane for all generate universe setting
+     */
     private fun createGenerateSettingsScrollPane(): ScrollPane {
         val table = Table()
 
@@ -24,10 +26,10 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
         table.add(generateSettingLabel).colspan(2).space(20f)
         table.row().space(10f)
 
-        addGenerateMethod(table)
+        addGenerateSettings(table)
         table.row().space(10f)
 
-        addDimensionSelectBoxes(table)
+        addUniverseSettings(table)
 
         val scrollPane: ScrollPane = createScrollPane(table)
 
@@ -37,19 +39,37 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
         return scrollPane
     }
 
-    private fun addGenerateMethod(table: Table) {
+    /**
+     * Add generate method and various number setting except universe setting
+     */
+    private fun addGenerateSettings(table: Table) {
         table.add(createLabel("Generate Method: ", gdxSetting.normalFontSize))
         val generateMethodSelectBox = createSelectBox(
             GenerateUniverse.generateMethodMap.keys.toList(),
-            GenerateUniverse.generateMethodMap.keys.toList()[0],
+            game.universeClient.generateSettings.generateMethod,
             gdxSetting.normalFontSize,
         ) {
             game.universeClient.generateSettings.generateMethod = it
         }
         table.add(generateMethodSelectBox)
+
+        table.row().space(10f)
+
+        table.add(createLabel("Total number of player: ", gdxSetting.normalFontSize))
+        val numPlayerSelectBox = createSelectBox(
+            (1..1000).toList(),
+            game.universeClient.generateSettings.numPlayer,
+            gdxSetting.normalFontSize,
+        ) {
+            game.universeClient.generateSettings.numPlayer = it
+        }
+        table.add(numPlayerSelectBox)
     }
 
-    private fun addDimensionSelectBoxes(table: Table) {
+    /**
+     * Add Universe setting
+     */
+    private fun addUniverseSettings(table: Table) {
         table.add(createLabel("Universe x dimension: ", gdxSetting.normalFontSize))
         val xDimSelectBox = createSelectBox(
             (1..50).toList(),
