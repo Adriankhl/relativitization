@@ -2,6 +2,7 @@ package relativitization.game.screens
 
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
+import io.ktor.http.*
 import kotlinx.coroutines.runBlocking
 import org.apache.logging.log4j.LogManager
 import relativitization.game.RelativitizationGame
@@ -24,10 +25,14 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
             if (GenerateUniverse.isSettingValid(game.universeClient.generateSettings)) {
                 logger.info("Generate settings: " + game.universeClient.generateSettings)
                 runBlocking {
-                    game.universeClient.httpPostNewUniverse()
+                    val httpCode = game.universeClient.httpPostNewUniverse()
+                    if (httpCode == HttpStatusCode.OK) {
+                        game.screen = ServerSettingsScreen(game)
+                        dispose()
+                    } else {
+                        generateFailLabel.setText("Generate universe fail, http code: $httpCode")
+                    }
                 }
-                game.screen = ServerSettingsScreen(game)
-                dispose()
             } else {
                 generateFailLabel.setText("Generate universe fail, some setting is wrong")
             }

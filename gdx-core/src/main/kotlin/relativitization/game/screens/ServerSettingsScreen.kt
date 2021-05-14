@@ -9,9 +9,11 @@ class ServerSettingsScreen (val game: RelativitizationGame) : TableScreen(game.a
 
     override fun show() {
         super.show()
-    }
 
-    private fun addAdminPasswordTextField(table: Table) {
+        // Wait at the end of server
+        val adminPasswordTextField = createTextField("", gdxSetting.normalFontSize)
+        root.add(adminPasswordTextField)
 
+        root.row().space(10f)
     }
 }
