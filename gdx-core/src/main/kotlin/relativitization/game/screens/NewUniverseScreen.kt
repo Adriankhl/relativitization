@@ -55,7 +55,7 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
 
         table.row().space(10f)
 
-        table.add(createLabel("Total number of player: ", gdxSetting.normalFontSize))
+        table.add(createLabel("Total number of AI/human player: ", gdxSetting.normalFontSize))
         val numPlayerSelectBox = createSelectBox(
             (1..1000).toList(),
             game.universeClient.generateSettings.numPlayer,
@@ -64,6 +64,31 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
             game.universeClient.generateSettings.numPlayer = it
         }
         table.add(numPlayerSelectBox)
+
+        table.row().space(10f)
+
+        table.add(createLabel("Total number of human player: ", gdxSetting.normalFontSize))
+        val numHumanPlayerSelectBox = createSelectBox(
+            (1..1000).toList(),
+            game.universeClient.generateSettings.numHumanPlayer,
+            gdxSetting.normalFontSize,
+        ) {
+            game.universeClient.generateSettings.numHumanPlayer = it
+        }
+        table.add(numHumanPlayerSelectBox)
+
+        table.row().space(10f)
+
+        table.add(createLabel("Total number of extra stellar system: ", gdxSetting.normalFontSize))
+        val numExtraStellarSystemSelectBox = createSelectBox(
+            (1..1000).toList(),
+            game.universeClient.generateSettings.numExtraStellarSystem,
+            gdxSetting.normalFontSize,
+        ) {
+            game.universeClient.generateSettings.numExtraStellarSystem = it
+        }
+        table.add(numExtraStellarSystemSelectBox)
+
     }
 
     /**
