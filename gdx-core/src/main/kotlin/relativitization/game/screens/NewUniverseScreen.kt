@@ -17,7 +17,7 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
     private fun createGenerateSettingsScrollPane(): ScrollPane {
         val table = Table()
 
-        addXDimSelectBox(table)
+        addDimensionSelectBoxes(table)
 
         val scrollPane: ScrollPane = createScrollPane(table)
 
@@ -27,8 +27,11 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
         return scrollPane
     }
 
-    private fun addXDimSelectBox(table: Table) {
+    private fun addDimensionSelectBoxes(table: Table) {
         table.add(createLabel("Universe x dimension: ", gdxSetting.normalFontSize))
-
+        val xDimSelectBox = createSelectBox((1..50).toList(), gdxSetting.normalFontSize) {
+            game.universeClient.generateSettings.universeSettings.xDim = it
+        }
+        table.add(xDimSelectBox)
     }
 }
