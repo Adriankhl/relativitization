@@ -2,6 +2,7 @@ package relativitization.game.screens
 
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
+import com.badlogic.gdx.utils.Align
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.TableScreen
 
@@ -16,6 +17,11 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
 
     private fun createGenerateSettingsScrollPane(): ScrollPane {
         val table = Table()
+
+        val generateSettingLabel = createLabel("Generate Universe Settings:", gdxSetting.bigFontSIze)
+
+        table.add(generateSettingLabel).colspan(2).space(20f)
+        table.row()
 
         addDimensionSelectBoxes(table)
 
