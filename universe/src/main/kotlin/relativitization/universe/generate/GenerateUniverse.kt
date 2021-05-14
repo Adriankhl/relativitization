@@ -22,6 +22,11 @@ abstract class GenerateUniverse {
     companion object {
         private val logger = LogManager.getLogger()
 
+        // Store all generate method
+        val generateMethodMap: Map<String, GenerateUniverse> = mapOf(
+            "fixed-Minimal" to Minimal()
+        )
+
         fun isSettingValid(setting: GenerateSetting): Boolean {
             val generateData = generate(setting)
             return if (generateData.isUniverseValid()) {
@@ -34,9 +39,11 @@ abstract class GenerateUniverse {
         }
 
         fun generate(setting: GenerateSetting): UniverseData {
-            return when(setting.generateMethod) {
-                "fixed-Minimal" -> Minimal().generate(setting)
-                else -> Minimal().generate(setting)
+            return if(generateMethodMap.keys.contains(setting.generateMethod)) {
+                generateMethodMap.getValue(setting.generateMethod).generate(setting)
+            } else {
+                logger.error("Generate method doesn't exist, using default method")
+                Minimal().generate(setting)
             }
         }
     }
