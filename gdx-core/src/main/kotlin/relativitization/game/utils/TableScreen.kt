@@ -6,17 +6,16 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.Stage
-import com.badlogic.gdx.scenes.scene2d.ui.Label
+import com.badlogic.gdx.scenes.scene2d.ui.*
+import com.badlogic.gdx.scenes.scene2d.ui.SelectBox.SelectBoxStyle
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle
-import com.badlogic.gdx.scenes.scene2d.ui.Skin
-import com.badlogic.gdx.scenes.scene2d.ui.Table
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
+import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 
-open class TableScreen(private val assets: Assets) : ScreenAdapter() {
-    private val skin: Skin = assets.getSkin()
+open class TableScreen(val assets: Assets) : ScreenAdapter() {
+    val skin: Skin = assets.getSkin()
 
     protected val stage: Stage = Stage(ScreenViewport())
     protected val root: Table = Table()
@@ -83,5 +82,25 @@ open class TableScreen(private val assets: Assets) : ScreenAdapter() {
         style.fontColor = Color.WHITE
 
         return Label(text, style)
+    }
+
+    fun createScrollPane(table: Table): ScrollPane = ScrollPane(table, skin)
+
+    inline fun <reified T> createSelectBox(
+        itemList: List<T>,
+        fontSize: Int = 16,
+        crossinline function: (T) -> Unit = {},
+    ): SelectBox<T> {
+        val style = skin.get(SelectBoxStyle::class.java)
+        style.font = assets.getFont(fontSize)
+        val selectBox: SelectBox<T> = SelectBox(style)
+        selectBox.items = Array(itemList.toTypedArray())
+
+        selectBox.addListener(object : ChangeListener() {
+            override fun changed(event: ChangeEvent?, actor: Actor?) {
+                function(selectBox.selected)
+            }
+        })
+        return selectBox
     }
 }
