@@ -94,6 +94,7 @@ open class TableScreen(val assets: Assets) : ScreenAdapter() {
     ): SelectBox<T> {
         val style = skin.get(SelectBoxStyle::class.java)
         style.font = assets.getFont(fontSize)
+        style.listStyle.font = assets.getFont(fontSize)
 
         val selectBox: SelectBox<T> = SelectBox(style)
         selectBox.items = Array(itemList.toTypedArray())

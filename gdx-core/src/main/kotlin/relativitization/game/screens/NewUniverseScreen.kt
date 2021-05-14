@@ -37,5 +37,29 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
             game.universeClient.generateSettings.universeSettings.xDim = it
         }
         table.add(xDimSelectBox)
+
+        table.row()
+
+        table.add(createLabel("Universe y dimension: ", gdxSetting.normalFontSize))
+        val yDimSelectBox = createSelectBox(
+            (1..50).toList(),
+            game.universeClient.generateSettings.universeSettings.yDim,
+            gdxSetting.normalFontSize
+        ) {
+            game.universeClient.generateSettings.universeSettings.yDim = it
+        }
+        table.add(yDimSelectBox)
+
+        table.row()
+
+        table.add(createLabel("Universe z dimension: ", gdxSetting.normalFontSize))
+        val zDimSelectBox = createSelectBox(
+            (1..50).toList(),
+            game.universeClient.generateSettings.universeSettings.zDim,
+            gdxSetting.normalFontSize
+        ) {
+            game.universeClient.generateSettings.universeSettings.zDim = it
+        }
+        table.add(zDimSelectBox)
     }
 }
