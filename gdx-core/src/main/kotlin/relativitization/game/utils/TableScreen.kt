@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.scenes.scene2d.ui.CheckBox
+import com.badlogic.gdx.scenes.scene2d.ui.CheckBox.CheckBoxStyle
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
@@ -158,5 +160,35 @@ open class TableScreen(val assets: Assets) : ScreenAdapter() {
         })
 
         return textField
+    }
+
+    /**
+     * Create check box
+     *
+     * @param text Description of the option
+     * @param default the default value of the text
+     * @param fontSize the font size of the text
+     * @param function the function acted after the text field has changed
+     */
+    fun createCheckBox(
+        text: String,
+        default: Boolean,
+        fontSize: Int = 16,
+        function: (Boolean) -> Unit = {}
+    ): CheckBox {
+        val style = skin.get(CheckBoxStyle::class.java)
+        style.font = assets.getFont(fontSize)
+
+        val checkBox = CheckBox(text, style)
+
+        checkBox.isChecked = default
+
+        checkBox.addListener(object : ChangeListener() {
+            override fun changed(event: ChangeEvent, actor: Actor) {
+                function(checkBox.isChecked)
+            }
+        })
+
+        return checkBox
     }
 }

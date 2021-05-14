@@ -17,7 +17,7 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
 
         root.add(createGenerateSettingsScrollPane())
 
-        root.row().space(10f)
+        root.row().space(20f)
 
         // Add Generate button
         val generateFailLabel = createLabel("", gdxSetting.normalFontSize)
@@ -226,6 +226,5 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
 
     companion object {
         private val logger = LogManager.getLogger()
-
     }
 }
