@@ -3,6 +3,7 @@ package relativitization.game.screens
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import kotlinx.coroutines.runBlocking
+import org.apache.logging.log4j.LogManager
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.TableScreen
 import relativitization.universe.generate.GenerateUniverse
@@ -21,6 +22,7 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
         val generateFailLabel = createLabel("", gdxSetting.normalFontSize)
         val generateButton = createTextButton("Generate", gdxSetting.buttonFontSize) {
             if (GenerateUniverse.isSettingValid(game.universeClient.generateSettings)) {
+                logger.info("Generate settings: " + game.universeClient.generateSettings)
                 runBlocking {
                     game.universeClient.httpPostNewUniverse()
                 }
@@ -197,16 +199,26 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
 
         table.row().space(10f)
 
-        table.add(createLabel("Player trajectory length (must be greater than after image ducation): ", gdxSetting.normalFontSize))
+        table.add(
+            createLabel(
+                "Player trajectory length (must be greater than after image ducation): ",
+                gdxSetting.normalFontSize
+            )
+        )
         val playerHistoricalInt4DLengthSelectBox = createSelectBox(
             (4..10).toList(),
             game.universeClient.generateSettings.universeSettings.playerHistoricalInt4DLength,
             gdxSetting.normalFontSize
         ) {
-            game.universeClient.generateSettings.universeSettings.playerHistoricalInt4DLength= it
+            game.universeClient.generateSettings.universeSettings.playerHistoricalInt4DLength = it
         }
         table.add(playerHistoricalInt4DLengthSelectBox)
 
         table.row().space(10f)
+    }
+
+    companion object {
+        private val logger = LogManager.getLogger()
+
     }
 }
