@@ -12,5 +12,5 @@ data class GdxSetting(
     var windowsHeight: Int = 768,
     var buttonFontSize: Int = 30,
     var normalFontSize: Int = 24,
-    var bigFontSIze: Int = 28,
+    var bigFontSIze: Int = 40,
 )
