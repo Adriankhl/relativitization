@@ -76,6 +76,12 @@ open class TableScreen(val assets: Assets) : ScreenAdapter() {
         return button
     }
 
+    /**
+     * Create label to display text
+     *
+     * @param text text to display
+     * @param fontSize size of the font
+     */
     fun createLabel(text: String, fontSize: Int = 16): Label {
         val style = skin.get(LabelStyle::class.java)
         style.font = assets.getFont(fontSize)
@@ -84,8 +90,22 @@ open class TableScreen(val assets: Assets) : ScreenAdapter() {
         return Label(text, style)
     }
 
+    /**
+     * Create scroll pane for table
+     *
+     * @param table the table to add scroll pane
+     */
     fun createScrollPane(table: Table): ScrollPane = ScrollPane(table, skin)
 
+
+    /**
+     * Create select box
+     *
+     * @param itemList the list of item to be selected
+     * @param default the default value of the select box
+     * @param fontSize the font size of the select box
+     * @param function the function acted after the select box is changed
+     */
     inline fun <reified T> createSelectBox(
         itemList: List<T>,
         default: T = itemList[0],
