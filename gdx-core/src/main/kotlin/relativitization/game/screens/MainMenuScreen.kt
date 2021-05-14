@@ -19,7 +19,7 @@ class MainMenuScreen(val game: RelativitizationGame) : TableScreen(game.assets) 
         super.show()
 
         val newUniverseButton = createTextButton("New Universe", gdxSetting.buttonFontSize) {
-            game.setScreen(NewUniverseScreen(game))
+            game.screen = NewUniverseScreen(game)
             dispose()
         }
         root.add(newUniverseButton).prefSize(500f, 100f).space(20f)

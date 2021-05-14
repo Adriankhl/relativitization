@@ -26,6 +26,8 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
                 runBlocking {
                     game.universeClient.httpPostNewUniverse()
                 }
+                game.screen = ServerSettingsScreen(game)
+                dispose()
             } else {
                 generateFailLabel.setText("Generate universe fail, some setting is wrong")
             }
