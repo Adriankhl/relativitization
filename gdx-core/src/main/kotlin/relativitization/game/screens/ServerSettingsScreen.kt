@@ -10,9 +10,18 @@ class ServerSettingsScreen (val game: RelativitizationGame) : TableScreen(game.a
     override fun show() {
         super.show()
 
-        // Wait at the end of server
+        // do nothing now, til the end of the setting to submit this to the server
+        root.add(createLabel("Admin password (for admin access to server): ", gdxSetting.normalFontSize))
         val adminPasswordTextField = createTextField("", gdxSetting.normalFontSize)
         root.add(adminPasswordTextField)
+
+        root.row().space(10f)
+
+        root.add(createLabel("Password (for holding player id): ", gdxSetting.normalFontSize))
+        val passwordTextField = createTextField("", gdxSetting.normalFontSize) {
+            game.universeClient.universeClientSettings.password = it
+        }
+        root.add(passwordTextField)
 
         root.row().space(10f)
     }
