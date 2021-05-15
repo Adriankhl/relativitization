@@ -36,11 +36,19 @@ fun Route.runUniverseRouting(universeServerInternal: UniverseServerInternal) {
     route("/run/universe") {
         post {
             val runUniverseMessage: RunUniverseMessage = call.receive()
-            if (runUniverseMessage.adminPassword == universeServerInternal.universeServerSettings.adminPassword) {
-                universeServerInternal.runUniverse()
-                call.respondText("Run universe succeed", ContentType.Text.Plain, HttpStatusCode.OK)
+            if (!universeServerInternal.getUniverseStatusMessage().runningUniverse) {
+                if (runUniverseMessage.adminPassword == universeServerInternal.universeServerSettings.adminPassword) {
+                    universeServerInternal.runUniverse()
+                    call.respondText("Run universe succeed", ContentType.Text.Plain, HttpStatusCode.OK)
+                } else {
+                    call.respondText(
+                        "Can't run universe, please use the correct admin password",
+                        ContentType.Text.Plain,
+                        HttpStatusCode.Unauthorized
+                    )
+                }
             } else {
-                call.respondText("Can't run universe, please use the correct admin password", ContentType.Text.Plain, HttpStatusCode.Unauthorized)
+                call.respondText("Universe already running", ContentType.Text.Plain, HttpStatusCode.OK)
             }
         }
     }

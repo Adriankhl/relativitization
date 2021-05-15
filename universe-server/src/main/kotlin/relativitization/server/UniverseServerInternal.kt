@@ -27,17 +27,20 @@ class UniverseServerInternal(var universeServerSettings: UniverseServerSettings)
     private var currentUniverseTime: Int = 0
 
     // Whether there is already a universe
-    private var hasUniverse: CoroutineBoolean = CoroutineBoolean(false)
+    private val hasUniverse: CoroutineBoolean = CoroutineBoolean(false)
 
     // Whether the universe is running
-    private var runningUniverse: CoroutineBoolean = CoroutineBoolean(false)
+    private val runningUniverse: CoroutineBoolean = CoroutineBoolean(false)
 
     // is waiting input from human
     // client can only get data and post command list if this is true
-    private var waitingInput: CoroutineBoolean = CoroutineBoolean(false)
+    private val waitingInput: CoroutineBoolean = CoroutineBoolean(false)
+
+    // Whether the data process is done
+    private val doneProcess: CoroutineBoolean = CoroutineBoolean(false)
 
     // wait beginning time in milli second, used to calculate the time limit to stop waiting
-    private var waitBeginTime: CoroutineVar<Long> = CoroutineVar(System.currentTimeMillis())
+    private val waitBeginTime: CoroutineVar<Long> = CoroutineVar(System.currentTimeMillis())
 
     // map from registered player id to password
     private val humanIdPasswordMap: MutableMap<Int, String> = mutableMapOf()
@@ -70,7 +73,7 @@ class UniverseServerInternal(var universeServerSettings: UniverseServerSettings)
                     }
                 }
 
-                if (!waitingInput.isTrue()) {
+                if (!waitingInput.isTrue() && !doneProcess.isTrue()) {
                     // Post-process then pre-process since the universe accept input in the middle of game turn
                     universe.postProcessUniverse(humanCommandMap, aiCommandMap)
                     universe.preprocessUniverse()
@@ -86,8 +89,24 @@ class UniverseServerInternal(var universeServerSettings: UniverseServerSettings)
                         clearInactive()
                     }
 
-                    // Start waiting for human input and compute ai input
-                    humanAndAiInput()
+                    doneProcess.set(true)
+                }
+
+
+                // Compute ai commands after universe processing is done
+                if (doneProcess.isTrue()) {
+                    // Start to accept human input
+                    waitingInput.set(true)
+                    logger.debug("Start accepting new input")
+
+                    aiCommandMap.putAll(universe.computeAICommands())
+
+                    // Restart wait timer after ai command has been computed
+                    setTimeLeftTo(universeServerSettings.waitTimeLimit)
+
+                    logger.debug("AI done computation")
+
+                    doneProcess.set(false)
                 }
             }
         }
@@ -125,22 +144,6 @@ class UniverseServerInternal(var universeServerSettings: UniverseServerSettings)
         // Change available id
         availableIdList.addAll(universe.availablePlayers())
         availableHumanIdList.addAll(universe.availableHumanPLayers())
-    }
-
-    /**
-     * Start parallel computation of ai input and accept human input
-     */
-    private suspend fun humanAndAiInput() {
-        // Start to accept human input
-        waitingInput.set(true)
-        logger.debug("Start accepting new input")
-
-        aiCommandMap.putAll(universe.computeAICommands())
-
-        // Restart wait timer after ai command has been computed
-        setTimeLeftTo(universeServerSettings.waitTimeLimit)
-
-        logger.debug("AI done computation")
     }
 
     /**
@@ -274,7 +277,7 @@ class UniverseServerInternal(var universeServerSettings: UniverseServerSettings)
     /**
      * Get universe 3D view for player
      *
-     * @param playerId the id of the player getting the view
+     * @param universeData3DMessage contain the id of the player getting the view
      */
     suspend fun getUniverseData3D(universeData3DMessage: UniverseData3DMessage): UniverseData3DAtPlayer {
         mutex.withLock {
@@ -316,8 +319,10 @@ class UniverseServerInternal(var universeServerSettings: UniverseServerSettings)
             updateCommandMapAndIdList()
             waitingInput.set(true)
             runningUniverse.set(true)
+
+            // Skip universe process in the first round
+            doneProcess.set(true)
         }
-        humanAndAiInput()
     }
 
     companion object {
