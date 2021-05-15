@@ -10,7 +10,8 @@ data class GdxSetting(
     var soundEffectsVolume: Float = 0.5f,
     var windowsWidth: Int = 1360,
     var windowsHeight: Int = 768,
-    var buttonFontSize: Int = 30,
+    var smallFontSize: Int = 16,
     var normalFontSize: Int = 24,
-    var bigFontSIze: Int = 40,
+    var bigFontSize: Int = 30,
+    var hugeFontSIze: Int = 40,
 )

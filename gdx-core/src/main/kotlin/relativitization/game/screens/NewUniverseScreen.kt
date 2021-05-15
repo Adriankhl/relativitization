@@ -21,7 +21,7 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
 
         // Add Generate button
         val generateFailLabel = createLabel("", gdxSetting.normalFontSize)
-        val generateButton = createTextButton("Generate", gdxSetting.buttonFontSize) {
+        val generateButton = createTextButton("Generate", gdxSetting.bigFontSize) {
             if (GenerateUniverse.isSettingValid(game.universeClient.generateSettings)) {
                 logger.info("Generate settings: " + game.universeClient.generateSettings)
                 runBlocking {
@@ -49,7 +49,7 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
     private fun createGenerateSettingsScrollPane(): ScrollPane {
         val table = Table()
 
-        val generateSettingLabel = createLabel("Generate Universe Settings:", gdxSetting.bigFontSIze)
+        val generateSettingLabel = createLabel("Generate Universe Settings:", gdxSetting.hugeFontSIze)
 
         table.add(generateSettingLabel).colspan(2).space(20f)
         table.row().space(10f)

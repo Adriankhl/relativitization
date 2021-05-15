@@ -1,8 +1,6 @@
 package relativitization.game.screens
 
-import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.scenes.scene2d.ui.Image
-import com.badlogic.gdx.scenes.scene2d.ui.Label
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.TableScreen
 
@@ -18,19 +16,19 @@ class MainMenuScreen(val game: RelativitizationGame) : TableScreen(game.assets) 
 
         super.show()
 
-        val newUniverseButton = createTextButton("New Universe", gdxSetting.buttonFontSize) {
+        val newUniverseButton = createTextButton("New Universe", gdxSetting.bigFontSize) {
             game.screen = NewUniverseScreen(game)
             dispose()
         }
         root.add(newUniverseButton).prefSize(500f, 100f).space(20f)
         root.row()
-        val loadUniverseButton = createTextButton("Load Universe", gdxSetting.buttonFontSize)
+        val loadUniverseButton = createTextButton("Load Universe", gdxSetting.bigFontSize)
         root.add(loadUniverseButton).prefSize(500f, 100f).space(20f)
         root.row()
-        val joinUniverseButton = createTextButton("Join Universe", gdxSetting.buttonFontSize)
+        val joinUniverseButton = createTextButton("Join Universe", gdxSetting.bigFontSize)
         root.add(joinUniverseButton).prefSize(500f, 100f).space(20f)
         root.row()
-        val optionsButton = createTextButton("Options", gdxSetting.buttonFontSize)
+        val optionsButton = createTextButton("Options", gdxSetting.bigFontSize)
         root.add(optionsButton).prefSize(500f, 100f).space(20f)
     }
 }
