@@ -276,7 +276,7 @@ object Projections {
      *
      * @return functions for calculating the projection
      */
-    fun createData3DProjectionFunction(
+    private fun createData3DProjectionFunction(
         data3D: List<List<List<Map<Int, List<Int>>>>>,
         imageWidth: Int,
         imageHeight: Int,
@@ -387,19 +387,19 @@ object Projections {
     /**
      * Function for projecting data3D, with limited z dimension
      *
-     * @param data3D cropped universe 3d view data
+     * @param data3D universe 3d view data, should be a cuboid
      * @param center the Int3D coordinate which the z limit spans around
      * @param zLimit limit of z dimension
      * @param imageWidth height of the texture image
      * @param imageHeight width of the texture image
      * @param gridXSeparation the unscaled spacing in x axis between grid of different z coordinate
      * @param gridYSeparation the unscaled spacing in Y axis between grid of different z coordinate
-     * @param xOffSet offset in x coordinate
-     * @param yOffSet offset in y coordinate
+     * @param xPadding width padding around the whole projected plane
+     * @param yPadding height padding around the whole projected plane
      *
      * @return function for calculating the projection
      */
-    fun createData3DProjectionWithZLimitFunction(
+    fun createData3D2DProjection(
         data3D: List<List<List<Map<Int, List<Int>>>>>,
         center: Int3D,
         zLimit: Int,
@@ -407,11 +407,17 @@ object Projections {
         imageHeight: Int,
         gridXSeparation: Int,
         gridYSeparation: Int,
-        xOffSet: Int,
-        yOffSet: Int,
-    ): Data3DProjectionFunction {
+        xPadding: Int,
+        yPadding: Int,
+    ): Data3D2DProjection {
+        val xDim: Int = data3D.size
+        val yDim: Int = data3D[center.x].size
         val zDim: Int = data3D[center.x][center.y].size
 
+        val xBegin: Int = 0
+        val xEnd: Int = xDim - 1
+        val yBegin = 0
+        val yEnd = yDim - 1
         val zBegin: Int = max(0, center.z - zLimit / 2)
         val zEnd: Int = min(zDim - 1, zBegin + zLimit - 1)
 
@@ -427,8 +433,8 @@ object Projections {
             imageHeight,
             gridXSeparation,
             gridYSeparation,
-            xOffSet,
-            yOffSet,
+            xPadding,
+            yPadding,
         )
 
         val int3DToRectangle: (Int3D) -> IntRectangle = { int3D ->
@@ -450,9 +456,17 @@ object Projections {
             data3DProjectionFunction.positionToId(xPos, yPos)
         }
 
-        return Data3DProjectionFunction(
+        val lastInt3DRectangle: IntRectangle = int3DToRectangle(Int3D(xEnd, yEnd, zEnd))
+
+        return Data3D2DProjection(
+            xBegin = xBegin,
+            xEnd = xEnd,
+            yBegin = yBegin,
+            yEnd = yEnd,
             zBegin = zBegin,
             zEnd = zEnd,
+            width = lastInt3DRectangle.xPos + lastInt3DRectangle.width + 2 * xPadding,
+            height = lastInt3DRectangle.yPos + lastInt3DRectangle.height + 2 * yPadding,
             int3DToRectangle = int3DToRectangle,
             data3DToRectangle = data3DToRectangle,
             positionToInt3D = positionToInt3D,
@@ -465,7 +479,7 @@ object Projections {
 }
 
 /**
- * Store function related to data 3D projection
+ * Store function related to data 3D projection (and reverse projection)
  *
  * @property zBegin beginning of acceptable z coordinate
  * @property zEnd end of acceptable z coordinate
@@ -477,6 +491,37 @@ object Projections {
 data class Data3DProjectionFunction(
     val zBegin: Int,
     val zEnd: Int,
+    val int3DToRectangle: (Int3D) -> IntRectangle,
+    val data3DToRectangle: (Int3D, Int, Int) -> IntRectangle,
+    val positionToInt3D: (Int, Int) -> Int3D,
+    val positionToId: (Int, Int) -> Int,
+)
+
+/**
+ * The ultimate data class handling 3d to 2d projection
+ *
+ * @property xBegin beginning of acceptable x coordinate
+ * @property xEnd end of acceptable x coordinate
+ * @property yBegin beginning of acceptable y coordinate
+ * @property yEnd end of acceptable y coordinate
+ * @property zBegin beginning of acceptable z coordinate
+ * @property zEnd end of acceptable z coordinate
+ * @property width width of the whole projected 2d plane
+ * @property height height of the whole projected 2d plane
+ * @property int3DToRectangle from int3D to Rectangle of the grid
+ * @property data3DToRectangle from int3D, mapId, id to Rectangle of the object
+ * @property positionToInt3D from posX, posY to int3D of the grid
+ * @property positionToId from posX, posY to id of the object
+ */
+data class Data3D2DProjection(
+    val xBegin: Int,
+    val xEnd: Int,
+    val yBegin: Int,
+    val yEnd: Int,
+    val zBegin: Int,
+    val zEnd: Int,
+    val width: Int,
+    val height: Int,
     val int3DToRectangle: (Int3D) -> IntRectangle,
     val data3DToRectangle: (Int3D, Int, Int) -> IntRectangle,
     val positionToInt3D: (Int, Int) -> Int3D,
