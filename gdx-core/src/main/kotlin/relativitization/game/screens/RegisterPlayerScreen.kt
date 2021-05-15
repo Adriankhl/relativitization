@@ -1,6 +1,9 @@
 package relativitization.game.screens
 
+import com.badlogic.gdx.scenes.scene2d.Touchable
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.utils.Array
+import io.ktor.http.*
 import kotlinx.coroutines.runBlocking
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.TableScreen
@@ -28,7 +31,9 @@ class RegisterPlayerScreen(val game: RelativitizationGame) : TableScreen(game.as
             idList,
             idList.getOrElse(0) { -1 },
             gdxSetting.normalFontSize
-        )
+        ) {
+            game.universeClient.universeClientSettings.playerId = it
+        }
 
         val updateButton = createTextButton("Update") {
             when (getPlayerTypeSelectBox.selected) {
@@ -57,6 +62,31 @@ class RegisterPlayerScreen(val game: RelativitizationGame) : TableScreen(game.as
 
         root.add(createLabel("Pick your player id: ", gdxSetting.normalFontSize))
         root.add(playerIdSelectBox)
+
+        root.row().space(10f)
+
+        val registerStatusLabel = createLabel("", gdxSetting.normalFontSize)
+        // Use late init to allow disabling the button in the function
+        lateinit var registerPlayerButton: TextButton
+        registerPlayerButton = createTextButton("Register", gdxSetting.normalFontSize) {
+            runBlocking {
+                val httpCode = game.universeClient.httpPostRegisterPlayer()
+                if (httpCode == HttpStatusCode.OK) {
+                    registerPlayerButton.isDisabled = true
+                    registerPlayerButton.touchable = Touchable.disabled
+                    registerStatusLabel.setText("Player id: ${game.universeClient.universeClientSettings.playerId}")
+                } else {
+                    registerStatusLabel.setText("Register player fail, http code: $httpCode")
+                }
+            }
+        }
+
+        root.add(createLabel("Register player id, can only register once: ", gdxSetting.normalFontSize))
+        root.add(registerPlayerButton)
+
+        root.row().space(10f)
+
+        root.add(registerStatusLabel).colspan(2)
 
         root.row().space(10f)
     }
