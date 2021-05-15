@@ -1,5 +1,6 @@
 package relativitization.game.screens
 
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.scenes.scene2d.Touchable
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.utils.Array
@@ -70,8 +71,7 @@ class RegisterPlayerScreen(val game: RelativitizationGame) : TableScreen(game.as
             runBlocking {
                 val httpCode = game.universeClient.httpPostRegisterPlayer()
                 if (httpCode == HttpStatusCode.OK) {
-                    button.isDisabled = true
-                    button.touchable = Touchable.disabled
+                    disableActor(button)
                     registerStatusLabel.setText("Player id: ${game.universeClient.universeClientSettings.playerId}")
                 } else {
                     registerStatusLabel.setText("Register player fail, http code: $httpCode")
