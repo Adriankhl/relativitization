@@ -162,7 +162,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
             val adminPassword = universeClientSettings.adminPassword
             val response: HttpResponse = ktorClient.post("http://$serverAddress:$serverPort/run/update-server-settings") {
                 contentType(ContentType.Application.Json)
-                body = universeServerSettings
+                body = UniverseServerSettingsMessage(adminPassword, universeServerSettings)
                 timeout {
                     requestTimeoutMillis = 1000
                 }
