@@ -10,13 +10,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
 
-abstract class GameScreenComponent(val assets: Assets){
+abstract class GameScreenComponent<out T : Actor>(val assets: Assets){
     val skin: Skin = assets.getSkin()
 
     /**
-     * Get the table for adding it to game screen
+     * Get an actor from this class
      */
-    abstract fun getTable(): Table
+    abstract fun get(): T
 
     /**
      * Create scroll pane for table
