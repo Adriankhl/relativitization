@@ -63,12 +63,12 @@ open class TableScreen(val assets: Assets) : ScreenAdapter() {
      *
      * @param text the text in the button
      * @param fontSize size of the font
-     * @param function the function called when clicking this button
+     * @param function the function called when clicking this button, take this button as parameter
      */
     fun createTextButton(
         text: String,
         fontSize: Int = 30,
-        function: () -> Unit = {},
+        function: (TextButton) -> Unit = {},
     ): TextButton {
 
         val style = skin.get(TextButtonStyle::class.java)
@@ -79,7 +79,7 @@ open class TableScreen(val assets: Assets) : ScreenAdapter() {
 
         button.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent, actor: Actor) {
-                function()
+                function(button)
             }
         })
 
@@ -114,13 +114,13 @@ open class TableScreen(val assets: Assets) : ScreenAdapter() {
      * @param itemList the list of item to be selected
      * @param default the default value of the select box
      * @param fontSize the font size of the select box
-     * @param function the function acted after the select box is changed
+     * @param function the function acted after the select box is changed, take this select box as parameter
      */
     inline fun <reified T> createSelectBox(
         itemList: List<T>,
         default: T = itemList[0],
         fontSize: Int = 16,
-        crossinline function: (T) -> Unit = {},
+        crossinline function: (T, SelectBox<T>) -> Unit = { _, _ -> },
     ): SelectBox<T> {
         val style = skin.get(SelectBoxStyle::class.java)
         style.font = assets.getFont(fontSize)
@@ -133,7 +133,7 @@ open class TableScreen(val assets: Assets) : ScreenAdapter() {
 
         selectBox.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
-                function(selectBox.selected)
+                function(selectBox.selected, selectBox)
             }
         })
         return selectBox
@@ -141,13 +141,17 @@ open class TableScreen(val assets: Assets) : ScreenAdapter() {
 
 
     /**
-     * Create textfield
+     * Create text field
      *
      * @param default the default value of the text
      * @param fontSize the font size of the text
-     * @param function the function acted after the text field has changed
+     * @param function the function acted after the text field has changed, take this text field as parameter
      */
-    fun createTextField(default: String, fontSize: Int = 16, function: (String) -> Unit = {}): TextField {
+    fun createTextField(
+        default: String,
+        fontSize: Int = 16,
+        function: (String, TextField) -> Unit = { _, _ -> }
+    ): TextField {
         val style = skin.get(TextFieldStyle::class.java)
         style.font = assets.getFont(fontSize)
 
@@ -155,7 +159,7 @@ open class TableScreen(val assets: Assets) : ScreenAdapter() {
 
         textField.setTextFieldListener( object : TextFieldListener {
             override fun keyTyped(textField: TextField?, c: Char) {
-                function(textField?.text ?: "")
+                function(textField?.text ?: "", textField!!)
             }
         })
 
@@ -168,13 +172,13 @@ open class TableScreen(val assets: Assets) : ScreenAdapter() {
      * @param text Description of the option
      * @param default the default value of the text
      * @param fontSize the font size of the text
-     * @param function the function acted after the text field has changed
+     * @param function the function acted after the text field has changed, take this check box as parameter
      */
     fun createCheckBox(
         text: String,
         default: Boolean,
         fontSize: Int = 16,
-        function: (Boolean) -> Unit = {}
+        function: (Boolean, CheckBox) -> Unit = { _, _ -> }
     ): CheckBox {
         val style = skin.get(CheckBoxStyle::class.java)
         style.font = assets.getFont(fontSize)
@@ -185,7 +189,7 @@ open class TableScreen(val assets: Assets) : ScreenAdapter() {
 
         checkBox.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent, actor: Actor) {
-                function(checkBox.isChecked)
+                function(checkBox.isChecked, checkBox)
             }
         })
 
