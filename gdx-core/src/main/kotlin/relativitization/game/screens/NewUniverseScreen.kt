@@ -76,8 +76,8 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
             GenerateUniverse.generateMethodMap.keys.toList(),
             game.universeClient.generateSettings.generateMethod,
             gdxSetting.normalFontSize,
-        ) {
-            game.universeClient.generateSettings.generateMethod = it
+        ) { method, _ ->
+            game.universeClient.generateSettings.generateMethod = method
         }
         table.add(generateMethodSelectBox)
 
@@ -88,8 +88,8 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
             (1..1000).toList(),
             game.universeClient.generateSettings.numPlayer,
             gdxSetting.normalFontSize,
-        ) {
-            game.universeClient.generateSettings.numPlayer = it
+        ) { numPlayer, _ ->
+            game.universeClient.generateSettings.numPlayer = numPlayer
         }
         table.add(numPlayerSelectBox)
 
@@ -100,8 +100,8 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
             (1..1000).toList(),
             game.universeClient.generateSettings.numHumanPlayer,
             gdxSetting.normalFontSize,
-        ) {
-            game.universeClient.generateSettings.numHumanPlayer = it
+        ) { numHumanPlayer, _ ->
+            game.universeClient.generateSettings.numHumanPlayer = numHumanPlayer
         }
         table.add(numHumanPlayerSelectBox)
 
@@ -112,8 +112,8 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
             (1..1000).toList(),
             game.universeClient.generateSettings.numExtraStellarSystem,
             gdxSetting.normalFontSize,
-        ) {
-            game.universeClient.generateSettings.numExtraStellarSystem = it
+        ) { numExtraStellarSystem, _ ->
+            game.universeClient.generateSettings.numExtraStellarSystem = numExtraStellarSystem
         }
         table.add(numExtraStellarSystemSelectBox)
 
@@ -127,8 +127,8 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
         val universeNameTextField = createTextField(
             game.universeClient.generateSettings.universeSettings.universeName,
             gdxSetting.normalFontSize
-        ) {
-            game.universeClient.generateSettings.universeSettings.universeName = it
+        ) { name, _ ->
+            game.universeClient.generateSettings.universeSettings.universeName = name
         }
         table.add(universeNameTextField)
 
@@ -139,8 +139,8 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
             (1..10).toList(),
             game.universeClient.generateSettings.universeSettings.speedOfLight,
             gdxSetting.normalFontSize
-        ) {
-            game.universeClient.generateSettings.universeSettings.speedOfLight = it
+        ) { speed, _ ->
+            game.universeClient.generateSettings.universeSettings.speedOfLight = speed
         }
         table.add(speedOfLightSelectBox)
 
@@ -151,8 +151,8 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
             (1..50).toList(),
             game.universeClient.generateSettings.universeSettings.tDim,
             gdxSetting.normalFontSize
-        ) {
-            game.universeClient.generateSettings.universeSettings.tDim = it
+        ) { tDim, _ ->
+            game.universeClient.generateSettings.universeSettings.tDim = tDim
         }
         table.add(tDimSelectBox)
 
@@ -163,8 +163,8 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
             (1..50).toList(),
             game.universeClient.generateSettings.universeSettings.xDim,
             gdxSetting.normalFontSize
-        ) {
-            game.universeClient.generateSettings.universeSettings.xDim = it
+        ) { xDim, _ ->
+            game.universeClient.generateSettings.universeSettings.xDim = xDim
         }
         table.add(xDimSelectBox)
 
@@ -175,8 +175,8 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
             (1..50).toList(),
             game.universeClient.generateSettings.universeSettings.yDim,
             gdxSetting.normalFontSize
-        ) {
-            game.universeClient.generateSettings.universeSettings.yDim = it
+        ) { yDim, _ ->
+            game.universeClient.generateSettings.universeSettings.yDim = yDim
         }
         table.add(yDimSelectBox)
 
@@ -187,8 +187,8 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
             (1..50).toList(),
             game.universeClient.generateSettings.universeSettings.zDim,
             gdxSetting.normalFontSize
-        ) {
-            game.universeClient.generateSettings.universeSettings.zDim = it
+        ) { zDim, _ ->
+            game.universeClient.generateSettings.universeSettings.zDim = zDim
         }
         table.add(zDimSelectBox)
 
@@ -199,8 +199,8 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
             (4..10).toList(),
             game.universeClient.generateSettings.universeSettings.playerAfterImageDuration,
             gdxSetting.normalFontSize
-        ) {
-            game.universeClient.generateSettings.universeSettings.playerAfterImageDuration = it
+        ) { duration, _ ->
+            game.universeClient.generateSettings.universeSettings.playerAfterImageDuration = duration
         }
         table.add(playerAfterImageSelectBox)
 
@@ -216,8 +216,8 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
             (4..10).toList(),
             game.universeClient.generateSettings.universeSettings.playerHistoricalInt4DLength,
             gdxSetting.normalFontSize
-        ) {
-            game.universeClient.generateSettings.universeSettings.playerHistoricalInt4DLength = it
+        ) { length, _ ->
+            game.universeClient.generateSettings.universeSettings.playerHistoricalInt4DLength = length
         }
         table.add(playerHistoricalInt4DLengthSelectBox)
 

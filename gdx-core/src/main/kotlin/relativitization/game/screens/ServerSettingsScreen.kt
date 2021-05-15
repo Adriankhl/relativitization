@@ -58,8 +58,8 @@ class ServerSettingsScreen(val game: RelativitizationGame) : TableScreen(game.as
         val adminPasswordTextField = createTextField(
             game.universeClient.universeServerSettings.adminPassword,
             gdxSetting.normalFontSize
-        ) {
-            game.universeClient.universeServerSettings.adminPassword = it
+        ) { adminPassword, _ ->
+            game.universeClient.universeServerSettings.adminPassword = adminPassword
         }
         table.add(adminPasswordTextField)
 
@@ -70,8 +70,8 @@ class ServerSettingsScreen(val game: RelativitizationGame) : TableScreen(game.as
             "",
             game.universeClient.universeServerSettings.clearInactivePerTurn,
             gdxSetting.normalFontSize
-        ) {
-            game.universeClient.universeServerSettings.clearInactivePerTurn = it
+        ) { clearInactivePerTurn, _ ->
+            game.universeClient.universeServerSettings.clearInactivePerTurn = clearInactivePerTurn
         }
         table.add(clearInactivePerTurnCheckbox)
 
@@ -82,8 +82,8 @@ class ServerSettingsScreen(val game: RelativitizationGame) : TableScreen(game.as
             (10..3600).toList(),
             game.universeClient.universeServerSettings.waitTimeLimit,
             gdxSetting.normalFontSize,
-        ) {
-            game.universeClient.universeServerSettings.waitTimeLimit = it
+        ) { limit, _ ->
+            game.universeClient.universeServerSettings.waitTimeLimit = limit
         }
         table.add(waitTimeLimitSelectBox)
 
@@ -91,8 +91,8 @@ class ServerSettingsScreen(val game: RelativitizationGame) : TableScreen(game.as
 
         val scrollPane: ScrollPane = createScrollPane(table)
 
-        scrollPane.fadeScrollBars = false;
-        scrollPane.setFlickScroll(false);
+        scrollPane.fadeScrollBars = false
+        scrollPane.setFlickScroll(false)
 
         return scrollPane
     }

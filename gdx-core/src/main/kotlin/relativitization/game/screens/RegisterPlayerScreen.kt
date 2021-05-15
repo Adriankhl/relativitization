@@ -31,8 +31,8 @@ class RegisterPlayerScreen(val game: RelativitizationGame) : TableScreen(game.as
             idList,
             idList.getOrElse(0) { -1 },
             gdxSetting.normalFontSize
-        ) {
-            game.universeClient.universeClientSettings.playerId = it
+        ) { id, _ ->
+            game.universeClient.universeClientSettings.playerId = id
         }
 
         val updateButton = createTextButton("Update") {
@@ -66,14 +66,12 @@ class RegisterPlayerScreen(val game: RelativitizationGame) : TableScreen(game.as
         root.row().space(10f)
 
         val registerStatusLabel = createLabel("", gdxSetting.normalFontSize)
-        // Use late init to allow disabling the button in the function
-        lateinit var registerPlayerButton: TextButton
-        registerPlayerButton = createTextButton("Register", gdxSetting.normalFontSize) {
+        val registerPlayerButton: TextButton = createTextButton("Register", gdxSetting.normalFontSize) { button ->
             runBlocking {
                 val httpCode = game.universeClient.httpPostRegisterPlayer()
                 if (httpCode == HttpStatusCode.OK) {
-                    registerPlayerButton.isDisabled = true
-                    registerPlayerButton.touchable = Touchable.disabled
+                    button.isDisabled = true
+                    button.touchable = Touchable.disabled
                     registerStatusLabel.setText("Player id: ${game.universeClient.universeClientSettings.playerId}")
                 } else {
                     registerStatusLabel.setText("Register player fail, http code: $httpCode")
