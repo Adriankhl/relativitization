@@ -10,7 +10,7 @@ import relativitization.game.utils.TableScreen
 import relativitization.universe.generate.GenerateUniverse
 
 class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
-    val gdxSetting = game.gdxSetting
+    private val gdxSetting = game.gdxSetting
 
     override fun show() {
         super.show()
@@ -61,8 +61,8 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
 
         val scrollPane: ScrollPane = createScrollPane(table)
 
-        scrollPane.fadeScrollBars = false;
-        scrollPane.setFlickScroll(false);
+        scrollPane.fadeScrollBars = false
+        scrollPane.setFlickScroll(false)
 
         return scrollPane
     }

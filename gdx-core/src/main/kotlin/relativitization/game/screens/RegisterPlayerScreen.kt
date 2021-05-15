@@ -1,6 +1,5 @@
 package relativitization.game.screens
 
-import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.scenes.scene2d.Touchable
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.utils.Array
@@ -10,7 +9,7 @@ import relativitization.game.RelativitizationGame
 import relativitization.game.utils.TableScreen
 
 class RegisterPlayerScreen(val game: RelativitizationGame) : TableScreen(game.assets)  {
-    val gdxSetting = game.gdxSetting
+    private val gdxSetting = game.gdxSetting
 
     override fun show() {
         super.show()
@@ -55,7 +54,7 @@ class RegisterPlayerScreen(val game: RelativitizationGame) : TableScreen(game.as
                 }
             }
 
-            playerIdSelectBox.items = Array(idList.toTypedArray<Int>())
+            playerIdSelectBox.items = Array(idList.toTypedArray())
         }
         root.add(updateButton).colspan(2)
 

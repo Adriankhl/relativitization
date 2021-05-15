@@ -9,7 +9,7 @@ import relativitization.game.RelativitizationGame
 import relativitization.game.utils.TableScreen
 
 class ServerSettingsScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
-    val gdxSetting = game.gdxSetting
+    private val gdxSetting = game.gdxSetting
 
     override fun show() {
         super.show()
@@ -21,6 +21,7 @@ class ServerSettingsScreen(val game: RelativitizationGame) : TableScreen(game.as
         // Add apply setting button
         val applyFailLabel = createLabel("", gdxSetting.normalFontSize)
         val applyButton = createTextButton("Apply settings", gdxSetting.bigFontSize) {
+            logger.debug("Applying settings")
             runBlocking {
                 val httpCode = game.universeClient.httpPostUniverseServerSettings()
                 if (httpCode == HttpStatusCode.OK) {

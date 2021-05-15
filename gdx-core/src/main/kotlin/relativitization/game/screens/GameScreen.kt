@@ -5,7 +5,7 @@ import relativitization.game.RelativitizationGame
 import relativitization.game.utils.TableScreen
 
 class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
-    val background: Image = assets.getImage("background/universe-background")
+    private val background: Image = assets.getImage("background/universe-background")
     val gdxSetting = game.gdxSetting
 
     override fun show() {
