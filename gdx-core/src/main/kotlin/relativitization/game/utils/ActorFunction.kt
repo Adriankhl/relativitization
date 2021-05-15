@@ -1,11 +1,7 @@
 package relativitization.game.utils
 
-import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.ScreenAdapter
 import com.badlogic.gdx.graphics.Color
-import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.scenes.scene2d.Actor
-import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.Touchable
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox
 import com.badlogic.gdx.scenes.scene2d.ui.Label
@@ -15,49 +11,16 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
-import com.badlogic.gdx.utils.viewport.ScreenViewport
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
+import com.badlogic.gdx.utils.Array
 
-open class TableScreen(val assets: Assets) : ScreenAdapter() {
-    val skin: Skin = assets.getSkin()
-
-    protected val stage: Stage = Stage(ScreenViewport())
-    protected val root: Table = Table()
-
-
-    override fun show() {
-        root.setFillParent(true)
-        stage.addActor(root)
-        Gdx.input.inputProcessor = stage
-    }
-
-    override fun render(delta: Float) {
-        Gdx.gl.glClearColor(0f, 0f, 0.2f, 1f)
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
-
-        stage.act()
-        stage.draw()
-    }
-
-
-    override fun resize(width: Int, height: Int) {
-        stage.viewport.update(width, height, true)
-    }
-
-    override fun hide() {
-        stage.clear()
-    }
-
-    override fun dispose() {
-        stage.dispose()
-    }
-
-
+object ActorFunction {
     /**
      * Create scroll pane for table
      *
      * @param table the table to add scroll pane
      */
-    fun createScrollPane(table: Table): ScrollPane = ActorFunction.createScrollPane(skin, table)
+    fun createScrollPane(skin: Skin, table: Table): ScrollPane = ScrollPane(table, skin)
 
     /**
      * Create label to display text
@@ -65,7 +28,13 @@ open class TableScreen(val assets: Assets) : ScreenAdapter() {
      * @param text text to display
      * @param fontSize size of the font
      */
-    fun createLabel(text: String, fontSize: Int = 16): Label = ActorFunction.createLabel(skin, assets, text, fontSize)
+    fun createLabel(skin: Skin, assets: Assets, text: String, fontSize: Int = 16): Label {
+        val style = skin.get(Label.LabelStyle::class.java)
+        style.font = assets.getFont(fontSize)
+        style.fontColor = Color.WHITE
+
+        return Label(text, style)
+    }
 
     /**
      * Create a text button
@@ -75,10 +44,27 @@ open class TableScreen(val assets: Assets) : ScreenAdapter() {
      * @param function the function called when clicking this button, take this button as parameter
      */
     fun createTextButton(
+        skin: Skin,
+        assets: Assets,
         text: String,
         fontSize: Int = 30,
         function: (TextButton) -> Unit = {},
-    ): TextButton = ActorFunction.createTextButton(skin, assets, text, fontSize, function)
+    ): TextButton {
+
+        val style = skin.get(TextButton.TextButtonStyle::class.java)
+
+        style.font = assets.getFont(fontSize)
+
+        val button = TextButton(text, style)
+
+        button.addListener(object : ChangeListener() {
+            override fun changed(event: ChangeEvent, actor: Actor) {
+                function(button)
+            }
+        })
+
+        return button
+    }
 
     /**
      * Create check box
@@ -89,11 +75,28 @@ open class TableScreen(val assets: Assets) : ScreenAdapter() {
      * @param function the function acted after the text field has changed, take this check box as parameter
      */
     fun createCheckBox(
+        skin: Skin,
+        assets: Assets,
         text: String,
         default: Boolean,
         fontSize: Int = 16,
         function: (Boolean, CheckBox) -> Unit = { _, _ -> }
-    ): CheckBox = ActorFunction.createCheckBox(skin, assets, text, default, fontSize, function)
+    ): CheckBox {
+        val style = skin.get(CheckBox.CheckBoxStyle::class.java)
+        style.font = assets.getFont(fontSize)
+
+        val checkBox = CheckBox(text, style)
+
+        checkBox.isChecked = default
+
+        checkBox.addListener(object : ChangeListener() {
+            override fun changed(event: ChangeEvent, actor: Actor) {
+                function(checkBox.isChecked, checkBox)
+            }
+        })
+
+        return checkBox
+    }
 
     /**
      * Create select box
@@ -104,12 +107,29 @@ open class TableScreen(val assets: Assets) : ScreenAdapter() {
      * @param function the function acted after the select box is changed, take this select box as parameter
      */
     inline fun <reified T> createSelectBox(
+        skin: Skin,
+        assets: Assets,
         itemList: List<T>,
         default: T = itemList[0],
         fontSize: Int = 16,
         crossinline function: (T, SelectBox<T>) -> Unit = { _, _ -> },
-    ): SelectBox<T> = ActorFunction.createSelectBox(skin, assets, itemList, default, fontSize, function)
+    ): SelectBox<T> {
+        val style = skin.get(SelectBox.SelectBoxStyle::class.java)
+        style.font = assets.getFont(fontSize)
+        style.listStyle.font = assets.getFont(fontSize)
 
+        val selectBox: SelectBox<T> = SelectBox(style)
+        selectBox.items = Array(itemList.toTypedArray())
+
+        selectBox.selected = default
+
+        selectBox.addListener(object : ChangeListener() {
+            override fun changed(event: ChangeEvent?, actor: Actor?) {
+                function(selectBox.selected, selectBox)
+            }
+        })
+        return selectBox
+    }
 
     /**
      * Create text field
@@ -119,10 +139,25 @@ open class TableScreen(val assets: Assets) : ScreenAdapter() {
      * @param function the function acted after the text field has changed, take this text field as parameter
      */
     fun createTextField(
+        skin: Skin,
+        assets: Assets,
         default: String,
         fontSize: Int = 16,
         function: (String, TextField) -> Unit = { _, _ -> }
-    ): TextField = ActorFunction.createTextField(skin, assets, default, fontSize, function)
+    ): TextField {
+        val style = skin.get(TextField.TextFieldStyle::class.java)
+        style.font = assets.getFont(fontSize)
 
-    fun disableActor(actor: Actor) = ActorFunction.disableActor(actor)
+        val textField = TextField(default, style)
+
+        textField.setTextFieldListener { field, _ -> function(field?.text ?: "", field!!) }
+
+        return textField
+    }
+
+
+    fun disableActor(actor: Actor) {
+        actor.touchable = Touchable.disabled
+        actor.color = Color.GRAY
+    }
 }
