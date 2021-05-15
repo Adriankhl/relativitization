@@ -26,7 +26,7 @@ class ServerSettingsScreen(val game: RelativitizationGame) : TableScreen(game.as
                 if (httpCode == HttpStatusCode.OK) {
                     // Also modify client admin password after successfully modified the password at the server
                     game.universeClient.universeClientSettings.adminPassword = game.universeClient.universeServerSettings.adminPassword
-                    game.screen = TODO()
+                    game.screen = RegisterPlayerScreen(game)
                     dispose()
                 } else {
                     applyFailLabel.setText("Apply fail, http code: $httpCode")
