@@ -24,7 +24,7 @@ class UniverseServerInternal(var universeServerSettings: UniverseServerSettings)
     private var universe: Universe = Universe(GenerateUniverse.generate(GenerateSetting()))
 
     // Current universe time
-    private var currentUniverseTime: Int = 0
+    private var currentUniverseTime: Int = universe.getCurrentUniverseTime()
 
     // Whether there is already a universe
     private val hasUniverse: CoroutineBoolean = CoroutineBoolean(false)
