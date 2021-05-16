@@ -7,6 +7,7 @@ import io.ktor.http.*
 import kotlinx.coroutines.runBlocking
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.TableScreen
+import relativitization.universe.UniverseClientSettings
 
 class RegisterPlayerScreen(val game: RelativitizationGame) : TableScreen(game.assets)  {
     private val gdxSetting = game.gdxSetting
@@ -32,7 +33,12 @@ class RegisterPlayerScreen(val game: RelativitizationGame) : TableScreen(game.as
             idList.getOrElse(0) { -1 },
             gdxSetting.normalFontSize
         ) { id, _ ->
-            game.universeClient.universeClientSettings.playerId = id
+            val newUniverseClientSettings: UniverseClientSettings = game.universeClient.universeClientSettings.copy(
+                playerId = id
+            )
+            runBlocking {
+                game.universeClient.setUniverseClientSettings(newUniverseClientSettings)
+            }
         }
 
         val updateButton = createTextButton("Update") {
@@ -71,7 +77,12 @@ class RegisterPlayerScreen(val game: RelativitizationGame) : TableScreen(game.as
             game.universeClient.universeClientSettings.password,
             gdxSetting.normalFontSize
         ) { password, _ ->
-            game.universeClient.universeClientSettings.password = password
+            val newUniverseClientSetting: UniverseClientSettings = game.universeClient.universeClientSettings.copy(
+                password = password
+            )
+            runBlocking {
+                game.universeClient.setUniverseClientSettings(newUniverseClientSetting)
+            }
         }
         root.add(passwordTextField)
 

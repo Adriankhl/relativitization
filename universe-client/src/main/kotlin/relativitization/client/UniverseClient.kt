@@ -20,6 +20,7 @@ import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.generate.GenerateSetting
+import relativitization.universe.utils.CoroutineBoolean
 
 /**
  * @property universeClientSettings settings of the client
@@ -38,6 +39,12 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
 
     // store downloaded but not yet used universe data
     private var universeData3DCache: UniverseData3DAtPlayer = UniverseData3DAtPlayer()
+
+    // Store map of universe data from time to data
+    val universeData3DMap: MutableMap<Int, UniverseData3DAtPlayer> = mutableMapOf()
+
+    // whether the cache is ready to add to data map
+    val isCacheReady: CoroutineBoolean = CoroutineBoolean(false)
 
     // input command list
     val commandList: MutableList<Command> = mutableListOf()
