@@ -16,6 +16,7 @@ import relativitization.universe.UniverseClientSettings
 import relativitization.universe.UniverseServerSettings
 import relativitization.universe.communication.*
 import relativitization.universe.data.UniverseData3DAtPlayer
+import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.generate.GenerateSetting
@@ -49,8 +50,8 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
         adminPassword = universeClientSettings.adminPassword
     )
 
-    // Server status
-    private var serverStatus: UniverseServerStatusMessage = UniverseServerStatusMessage()
+    // Server status, use default universe name from server setting
+    private var serverStatus: UniverseServerStatusMessage = UniverseServerStatusMessage(UniverseSettings().universeName)
 
     /**
      * Start auto updating status and universeData3DCache
@@ -60,14 +61,20 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
             delay(2000)
             mutex.withLock {
                 serverStatus = httpGetUniverseServerStatus()
-                if (serverStatus.currentUniverseTime > universeData3DCache.center.t) {
+                if (shouldUpdateCache(serverStatus)) {
                     val universeData3DDownloaded =  httpGetUniverseData3D()
-                    if (universeData3DDownloaded.center.t > universeData3DCache.center.t) {
+                    if (universeData3DDownloaded.id != -1) {
                         universeData3DCache = universeData3DDownloaded
                     }
                 }
             }
         }
+    }
+
+    private fun shouldUpdateCache(universeServerStatusMessage: UniverseServerStatusMessage): Boolean {
+        val differentName = universeServerStatusMessage.universeName != universeData3DCache.universeSettings.universeName
+        val differentTime = universeServerStatusMessage.currentUniverseTime != universeData3DCache.center.t
+        return (universeServerStatusMessage.success && (differentName || differentTime))
     }
 
     /**
@@ -105,7 +112,8 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
                 }
             }
         } catch (cause: Throwable) {
-            UniverseServerStatusMessage()
+            // Server status with default universe name to prevent update
+            UniverseServerStatusMessage(UniverseSettings().universeName)
         }
     }
 

@@ -238,6 +238,7 @@ class UniverseServerInternal(var universeServerSettings: UniverseServerSettings)
     suspend fun getUniverseStatusMessage(): UniverseServerStatusMessage {
         mutex.withLock {
             return UniverseServerStatusMessage(
+                universeName = universe.getUniverseName(),
                 success = true,
                 hasUniverse = hasUniverse.isTrue(),
                 runningUniverse = runningUniverse.isTrue(),

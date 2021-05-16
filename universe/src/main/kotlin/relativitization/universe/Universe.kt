@@ -39,6 +39,13 @@ class Universe(private val universeData: UniverseData) {
     }
 
     /**
+     * Get universe name
+     */
+    fun getUniverseName(): String {
+        return universeData.universeSettings.universeName
+    }
+
+    /**
      * Get current universe time
      */
     fun getCurrentUniverseTime(): Int {
