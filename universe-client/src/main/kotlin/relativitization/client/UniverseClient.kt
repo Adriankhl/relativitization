@@ -23,7 +23,7 @@ import relativitization.universe.generate.GenerateSetting
 import relativitization.universe.utils.CoroutineBoolean
 
 /**
- * @property universeClientSettings settings of the client
+ * @property universeClientSettings settings of the client, should only be updated by setUniverseClientSettings()
  */
 class UniverseClient(var universeClientSettings: UniverseClientSettings) {
     private val mutex: Mutex = Mutex()
@@ -73,6 +73,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
                     // id == -1 means the data is invalid
                     if (universeData3DDownloaded.id != -1) {
                         universeData3DCache = universeData3DDownloaded
+                        isCacheReady.set(true)
                     }
                 }
             }
@@ -107,6 +108,24 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
     suspend fun stop() {
         universeClientRunJob.cancelAndJoin()
         ktorClient.close()
+    }
+
+    /**
+     * Update the universe data map
+     */
+    suspend fun updateUniverseData3DMap() {
+        mutex.withLock {
+            if (isCacheReady.isTrue()) {
+                val time: Int = universeData3DCache.center.t
+                if (universeData3DMap.keys.contains(time)) {
+                    logger.error("universeData3DMap already has data with time $time, update it anyway")
+                }
+                universeData3DMap[time] = universeData3DCache
+                isCacheReady.set(false)
+            } else {
+                logger.error("Cache is not ready")
+            }
+        }
     }
 
     suspend fun setUniverseClientSettings(newUniverseClientSettings: UniverseClientSettings) {
