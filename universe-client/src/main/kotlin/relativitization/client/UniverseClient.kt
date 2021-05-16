@@ -63,6 +63,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
                 serverStatus = httpGetUniverseServerStatus()
                 if (shouldUpdateCache(serverStatus)) {
                     val universeData3DDownloaded =  httpGetUniverseData3D()
+                    // id == -1 means the data is invalid
                     if (universeData3DDownloaded.id != -1) {
                         universeData3DCache = universeData3DDownloaded
                     }
@@ -71,10 +72,17 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
         }
     }
 
+    /**
+     * Whether the client should update the universe data cache
+     */
     private fun shouldUpdateCache(universeServerStatusMessage: UniverseServerStatusMessage): Boolean {
         val differentName = universeServerStatusMessage.universeName != universeData3DCache.universeSettings.universeName
         val differentTime = universeServerStatusMessage.currentUniverseTime != universeData3DCache.center.t
-        return (universeServerStatusMessage.success && (differentName || differentTime))
+        return (universeServerStatusMessage.success &&
+                universeServerStatusMessage.runningUniverse &&
+                universeServerStatusMessage.hasUniverse &&
+                universeServerStatusMessage.waitingInput &&
+                (differentName || differentTime))
     }
 
     /**
