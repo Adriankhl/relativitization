@@ -40,8 +40,11 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
     // store downloaded but not yet used universe data
     private var universeData3DCache: UniverseData3DAtPlayer = UniverseData3DAtPlayer()
 
+    // Current universe data 3d time
+    private var currentUniverseData3DTime: Int = -1
+
     // Store map of universe data from time to data
-    val universeData3DMap: MutableMap<Int, UniverseData3DAtPlayer> = mutableMapOf()
+    private val universeData3DMap: MutableMap<Int, UniverseData3DAtPlayer> = mutableMapOf()
 
     // whether the cache is ready to add to data map
     val isCacheReady: CoroutineBoolean = CoroutineBoolean(false)
@@ -111,7 +114,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
     }
 
     /**
-     * Update the universe data map
+     * Add data cache to universeData3DMap
      */
     suspend fun updateUniverseData3DMap() {
         mutex.withLock {
@@ -125,6 +128,46 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
             } else {
                 logger.error("Cache is not ready")
             }
+        }
+    }
+
+    /**
+     * Update current UniverseData3DTime to latest time available from universeData3DMap
+     */
+    fun updateToLatestUniverseData3D() {
+        runBlocking {
+            updateUniverseData3DMap()
+        }
+        currentUniverseData3DTime = universeData3DMap.keys.maxOrNull() ?: -1
+    }
+
+    /**
+     * Get universe data 3D at current time
+     */
+    fun getUniverseData3D(): UniverseData3DAtPlayer {
+        return if (currentUniverseData3DTime != -1) {
+            universeData3DMap.getValue(currentUniverseData3DTime)
+        } else {
+            logger.error("currentUniverseData3DTime $currentUniverseData3DTime invalid, returning empty data")
+            UniverseData3DAtPlayer()
+        }
+    }
+
+    /**
+     * Get all available time from map
+     */
+    fun getAvailableData3DTime(): List<Int> {
+        return universeData3DMap.keys.toList()
+    }
+
+    /**
+     * Set the time if available
+     */
+    fun setCurrentUniverseData3DTime(time: Int) {
+        if (getAvailableData3DTime().contains(time)) {
+            currentUniverseData3DTime = time
+        } else {
+            logger.error("Invalid setCurrentUniverseData3DTime, time = $time, available time = ${getAvailableData3DTime()}")
         }
     }
 

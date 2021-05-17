@@ -14,4 +14,6 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
 
         super.show()
     }
+
+    private fun wait
 }
