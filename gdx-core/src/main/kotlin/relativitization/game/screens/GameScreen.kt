@@ -30,7 +30,7 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
 
         super.show()
 
-        root.add(topBar.get())
+        root.add(topBar.get()).growX().expandY().top()
     }
 
     override fun hide() {

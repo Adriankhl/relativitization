@@ -42,7 +42,7 @@ class RegisterPlayerScreen(val game: RelativitizationGame) : TableScreen(game.as
             }
         }
 
-        val updateButton = createTextButton("Update") {
+        val updateButton = createTextButton("Update", gdxSetting.normalFontSize) {
             when (getPlayerTypeSelectBox.selected) {
                 "All" -> {
                     runBlocking {
