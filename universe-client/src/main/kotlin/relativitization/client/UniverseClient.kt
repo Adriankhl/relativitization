@@ -119,7 +119,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
     suspend fun clear() {
         currentUniverseData3DTime = -1
         universeData3DMap.clear()
-        isCacheReady.set(true)
+        isCacheReady.set(false)
         commandList.clear()
         generateSettings = GenerateSetting()
     }

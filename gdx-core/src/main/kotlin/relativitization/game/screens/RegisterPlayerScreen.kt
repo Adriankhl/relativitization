@@ -121,10 +121,12 @@ class RegisterPlayerScreen(val game: RelativitizationGame) : TableScreen(game.as
                 runBlocking {
                     if (game.universeClient.getServerStatus().runningUniverse) {
                         game.screen = GameScreen(game)
+                        dispose()
                     } else {
                         val httpCode = game.universeClient.httpPostRunUniverse()
                         if (httpCode == HttpStatusCode.OK) {
                             game.screen = GameScreen(game)
+                            dispose()
                         } else {
                             startStatusLabel.setText("Can't start universe")
                         }

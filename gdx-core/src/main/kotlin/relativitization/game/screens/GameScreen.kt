@@ -21,12 +21,11 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
     }
 
     private fun waitFirstData() {
-        root.clearChildren()
-        val waitLabel = createLabel("Waiting...", gdxSetting.hugeFontSIze)
-        root.add(waitLabel)
+        stage.clear()
 
         runBlocking {
-            while(game.universeClient.getAvailableData3DTime().size == 0) {
+            while(!game.universeClient.isCacheReady.isTrue()) {
+                println(game.universeClient.isCacheReady.isTrue())
                 delay(200)
             }
         }
