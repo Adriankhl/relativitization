@@ -10,7 +10,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.newSingleThreadContext
 import kotlinx.coroutines.runBlocking
+import org.apache.logging.log4j.Level
 import org.apache.logging.log4j.LogManager
+import org.apache.logging.log4j.core.config.Configurator
 import relativitization.client.UniverseClient
 import relativitization.game.RelativitizationGame
 import relativitization.server.UniverseServer
@@ -22,6 +24,9 @@ import kotlin.random.Random
 object DesktopLauncher {
     @JvmStatic
     fun main(arg: Array<String>) {
+
+        // Set log level
+        Configurator.setRootLevel(Level.DEBUG)
 
         // pack images to atlas
         packImages()
