@@ -22,7 +22,7 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
 
     private fun waitFirstData() {
         root.clearChildren()
-        val waitLabel = createLabel("Waiting...")
+        val waitLabel = createLabel("Waiting...", gdxSetting.hugeFontSIze)
         root.add(waitLabel)
 
         runBlocking {
