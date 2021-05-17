@@ -114,6 +114,17 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
     }
 
     /**
+     * Clear the client
+     */
+    suspend fun clear() {
+        currentUniverseData3DTime = -1
+        universeData3DMap.clear()
+        isCacheReady.set(true)
+        commandList.clear()
+        generateSettings = GenerateSetting()
+    }
+
+    /**
      * Add data cache to universeData3DMap
      */
     suspend fun updateUniverseData3DMap() {
