@@ -63,11 +63,14 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
     // Server status, use default universe name from server setting
     private var serverStatus: UniverseServerStatusMessage = UniverseServerStatusMessage(UniverseSettings().universeName)
 
+    val updatableByClient: MutableList<() -> Unit> = mutableListOf()
+
     /**
      * Start auto updating status and universeData3DCache
      */
     private suspend fun run() = coroutineScope {
         while (isActive) {
+            logger.debug("Client running")
             delay(2000)
             mutex.withLock {
                 serverStatus = httpGetUniverseServerStatus()
@@ -82,6 +85,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
                     }
                 }
             }
+            updatableByClient.forEach{ it() }
         }
     }
 
@@ -111,6 +115,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
      * Stop the client
      */
     suspend fun stop() {
+        clear()
         universeClientRunJob.cancelAndJoin()
         ktorClient.close()
     }
@@ -124,6 +129,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
         isCacheReady.set(false)
         commandList.clear()
         generateSettings = GenerateSetting()
+        updatableByClient.clear()
     }
 
     /**

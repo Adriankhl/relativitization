@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.glutils.HdpiMode
 import com.badlogic.gdx.tools.texturepacker.TexturePacker
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.newSingleThreadContext
 import kotlinx.coroutines.runBlocking
 import org.apache.logging.log4j.LogManager
 import relativitization.client.UniverseClient
@@ -38,16 +39,17 @@ object DesktopLauncher {
         runBlocking {
             val universeServer: UniverseServer = UniverseServer(universeServerSettings)
             val universeClient: UniverseClient = UniverseClient(universeClientSettings)
-            launch(Dispatchers.IO) {
-                universeServer.start()
-            }
-            launch {
-                universeClient.start()
-            }
 
             launch {
                 val game = RelativitizationGame(universeClient, universeServer)
                 Lwjgl3Application(game, config)
+            }
+
+            launch(Dispatchers.IO) {
+                universeServer.start()
+            }
+            launch(newSingleThreadContext("client")) {
+                universeClient.start()
             }
         }
     }

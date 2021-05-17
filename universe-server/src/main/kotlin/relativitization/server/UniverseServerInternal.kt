@@ -62,6 +62,7 @@ class UniverseServerInternal(var universeServerSettings: UniverseServerSettings)
      */
     suspend fun start() = coroutineScope {
         while (isActive) {
+            logger.debug("Server internal running")
             delay(1000)
 
             if (runningUniverse.isTrue()) {

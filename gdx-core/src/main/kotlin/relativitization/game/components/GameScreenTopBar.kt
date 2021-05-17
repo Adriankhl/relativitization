@@ -41,8 +41,8 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<Table>(
     }
 
     private fun updateServerStatusLabels() {
-        val serverStatus = game.universeClient.getServerStatus()
-        println(serverStatus)
+        // copy to prevent change
+        val serverStatus = game.universeClient.getServerStatus().copy()
         universeNameAndTimeLabel.setText("${serverStatus.universeName}: ${serverStatus.currentUniverseTime}")
         waitingInputAndTimeLeftLabel.setText("Waiting input: ${serverStatus.waitingInput}, time left: ${serverStatus.timeLeft / 1000} s")
     }
