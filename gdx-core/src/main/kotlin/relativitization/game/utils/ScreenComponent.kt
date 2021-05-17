@@ -13,7 +13,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField
 abstract class ScreenComponent<out T : Actor>(val assets: Assets){
     val skin: Skin = assets.getSkin()
 
+    /**
+     * Get the actor (e.g. table, group) of this component
+     */
     abstract fun get(): T
+
+    /**
+     * Update the component, trigger manually or by the render() function
+     */
+    abstract fun update()
 
     /**
      * Create scroll pane for table
