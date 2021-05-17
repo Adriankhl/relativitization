@@ -45,7 +45,7 @@ object DesktopLauncher {
             val universeServer: UniverseServer = UniverseServer(universeServerSettings)
             val universeClient: UniverseClient = UniverseClient(universeClientSettings)
 
-            launch {
+            launch(newSingleThreadContext("gdx")) {
                 val game = RelativitizationGame(universeClient, universeServer)
                 Lwjgl3Application(game, config)
             }
@@ -53,7 +53,7 @@ object DesktopLauncher {
             launch(Dispatchers.IO) {
                 universeServer.start()
             }
-            launch(newSingleThreadContext("client")) {
+            launch {
                 universeClient.start()
             }
         }
