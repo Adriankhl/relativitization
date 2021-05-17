@@ -20,11 +20,8 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<Table>(
     private val connectionSuccessLabel: Label = createLabel("", gdxSetting.smallFontSize)
 
     init {
-        val bgPixmap = Pixmap(1, 1, Pixmap.Format.RGB565)
-        bgPixmap.setColor(Color(0.2f, 0.3f, 0.5f, 1.0f))
-        bgPixmap.fill()
-        val textureRegionDrawableBg = TextureRegionDrawable(TextureRegion(Texture(bgPixmap)))
-        table.background = textureRegionDrawableBg
+        // Set background color to blue
+        table.background = assets.getBackGroundColor(0.2f, 0.3f, 0.5f, 1.0f)
 
         table.add(addServerStatusLabels())
     }

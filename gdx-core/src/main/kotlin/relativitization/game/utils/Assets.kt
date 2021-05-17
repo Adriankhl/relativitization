@@ -5,6 +5,7 @@ import com.badlogic.gdx.assets.loaders.FileHandleResolver
 import com.badlogic.gdx.assets.loaders.SkinLoader.SkinParameter
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver
 import com.badlogic.gdx.audio.Music
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion
@@ -14,6 +15,10 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader.FreeTypeFontLoaderParameter
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable
+import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable
+import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import org.apache.logging.log4j.LogManager
 
 
@@ -54,10 +59,18 @@ class Assets {
 
     fun getBackgroundMusic(): Music = manager.get("music/Alexander Ehlers - Warped.mp3")
 
+
     fun getImage(name: String): Image {
         val textureAtLas: TextureAtlas = manager.get("relativitization-asset.atlas")
         val region = textureMap.getOrPut(name) { textureAtLas.findRegion(name) }
         return Image(region)
+    }
+
+    fun getBackGroundColor(r: Float, g: Float, b: Float, a: Float): Drawable {
+        val textureAtLas: TextureAtlas = manager.get("relativitization-asset.atlas")
+        val region = textureMap.getOrPut("background/white-pixel") { textureAtLas.findRegion("background/white-pixel") }
+        val textureRegionDrawable = TextureRegionDrawable(region)
+        return textureRegionDrawable.tint(Color(r, g, b, a))
     }
 
     fun getFont(fontSize: Int): BitmapFont {
