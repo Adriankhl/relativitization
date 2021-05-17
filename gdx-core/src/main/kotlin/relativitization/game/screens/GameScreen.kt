@@ -5,11 +5,13 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import org.apache.logging.log4j.LogManager
 import relativitization.game.RelativitizationGame
+import relativitization.game.components.GameScreenTopBar
 import relativitization.game.utils.TableScreen
 
 class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
     private val background: Image = assets.getImage("background/universe-background")
     val gdxSetting = game.gdxSetting
+    private val topBar: GameScreenTopBar = GameScreenTopBar(game)
 
     override fun show() {
         // wait first universe data before showing anything
@@ -19,6 +21,14 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
         stage.addActor(background)
 
         super.show()
+
+        root.add(topBar.get())
+    }
+
+    override fun render(delta: Float) {
+        topBar.update()
+
+        super.render(delta)
     }
 
     private fun waitFirstData() {
