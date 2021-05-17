@@ -1,12 +1,7 @@
 package relativitization.game.components
 
-import com.badlogic.gdx.graphics.Color
-import com.badlogic.gdx.graphics.Pixmap
-import com.badlogic.gdx.graphics.Texture
-import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Table
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.ScreenComponent
 
@@ -16,7 +11,7 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<Table>(
     private val table: Table = Table()
 
     private val universeNameAndTimeLabel: Label = createLabel("", gdxSetting.smallFontSize)
-    private val waitingInputAndTimeLeftLabel: Label = createLabel("", gdxSetting.smallFontSize)
+    private val serverStatusLabel: Label = createLabel("", gdxSetting.smallFontSize)
     private val connectionSuccessLabel: Label = createLabel("", gdxSetting.smallFontSize)
 
     init {
@@ -40,11 +35,7 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<Table>(
 
         nestedTable.row()
 
-        nestedTable.add(waitingInputAndTimeLeftLabel)
-
-        nestedTable.row()
-
-        nestedTable.add(connectionSuccessLabel)
+        nestedTable.add(serverStatusLabel)
 
         return nestedTable
     }
@@ -52,8 +43,23 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<Table>(
     private fun updateServerStatusLabels() {
         // copy to prevent change
         val serverStatus = game.universeClient.getServerStatus().copy()
-        universeNameAndTimeLabel.setText("${serverStatus.universeName}, time ${serverStatus.currentUniverseTime}")
-        waitingInputAndTimeLeftLabel.setText("Waiting input: ${serverStatus.waitingInput}, input time left: ${serverStatus.timeLeft / 1000} s")
-        connectionSuccessLabel.setText("Connection: ${serverStatus.success}")
+
+        val connectionText = if (serverStatus.success) {
+            "connected"
+        } else {
+            "disconnected"
+        }
+
+        val timeLeftText = if (serverStatus.waitingInput) {
+            "${serverStatus.timeLeft / 1000} s"
+        } else {
+            "waiting data"
+        }
+
+        universeNameAndTimeLabel.setText("${serverStatus.universeName} ($connectionText) - ${serverStatus.currentUniverseTime}")
+
+        serverStatusLabel.setText(
+            "Time left: $timeLeftText"
+        )
     }
 }
