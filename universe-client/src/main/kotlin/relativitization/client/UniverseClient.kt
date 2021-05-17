@@ -77,6 +77,8 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
                     if (universeData3DDownloaded.id != -1) {
                         universeData3DCache = universeData3DDownloaded
                         isCacheReady.set(true)
+                    } else {
+                        logger.error("run(): Can't get universe")
                     }
                 }
             }
@@ -86,7 +88,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
     /**
      * Whether the client should update the universe data cache
      */
-    private fun shouldUpdateCache(universeServerStatusMessage: UniverseServerStatusMessage): Boolean {
+    fun shouldUpdateCache(universeServerStatusMessage: UniverseServerStatusMessage): Boolean {
         val differentName = universeServerStatusMessage.universeName != universeData3DCache.universeSettings.universeName
         val differentTime = universeServerStatusMessage.currentUniverseTime != universeData3DCache.center.t
         return (universeServerStatusMessage.success &&
@@ -247,6 +249,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
                 }
             }
         } catch (cause: Throwable) {
+            logger.error("httpGetUniverseData3D error, returning empty data")
             UniverseData3DAtPlayer()
         }
     }

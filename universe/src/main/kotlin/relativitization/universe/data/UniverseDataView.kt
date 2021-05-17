@@ -37,9 +37,9 @@ data class UniverseData3DAtGrid(
                     _, _, _ -> mutableListOf()
             }
             // Add id from the original playerId3D if it is not presented in the prioritizedPlayerDataMap
-            for (i in max(0, center.x - 1)..min(universeSettings.xDim, center.x + 1))
-                for (j in max(0, center.y - 1)..min(universeSettings.yDim, center.y + 1))
-                    for (k in max(0, center.z - 1)..min(universeSettings.zDim, center.z + 1))
+            for (i in max(0, center.x - 1)..min(universeSettings.xDim - 1, center.x + 1))
+                for (j in max(0, center.y - 1)..min(universeSettings.yDim - 1, center.y + 1))
+                    for (k in max(0, center.z - 1)..min(universeSettings.zDim - 1, center.z + 1))
                         for (id in playerId3D[i][j][k])
                             if (!prioritizedPlayerDataMap.containsKey(id))
                                 prioritizedPlayerId3D[i - center.x + 1][j - center.y + 1][k - center.z + 1].add(id)
@@ -50,7 +50,12 @@ data class UniverseData3DAtGrid(
                 yList.map { zList ->
                     zList.map { playerList ->
                         playerList.groupBy { playerId ->
-                            playerDataMap.getValue(playerId).attachedPlayerId }
+                            if (prioritizedPlayerDataMap.containsKey(playerId)) {
+                                prioritizedPlayerDataMap.getValue(playerId).attachedPlayerId
+                            } else {
+                                playerDataMap.getValue(playerId).attachedPlayerId
+                            }
+                        }
                     }
                 }
             }

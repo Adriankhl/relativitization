@@ -4,6 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.Touchable
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.utils.Array
 import io.ktor.http.*
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.TableScreen
@@ -120,11 +121,15 @@ class RegisterPlayerScreen(val game: RelativitizationGame) : TableScreen(game.as
             if (registerPlayerButton.touchable == Touchable.disabled) {
                 runBlocking {
                     if (game.universeClient.getServerStatus().runningUniverse) {
+                        // Not showing because it is too fast?
+                        startStatusLabel.setText("Universe already running, waiting universe data")
                         game.screen = GameScreen(game)
                         dispose()
                     } else {
                         val httpCode = game.universeClient.httpPostRunUniverse()
                         if (httpCode == HttpStatusCode.OK) {
+                            // Not showing because it is too fast?
+                            startStatusLabel.setText("Run universe success, waiting universe data")
                             game.screen = GameScreen(game)
                             dispose()
                         } else {

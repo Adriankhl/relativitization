@@ -3,6 +3,7 @@ package relativitization.game.screens
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
+import org.apache.logging.log4j.LogManager
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.TableScreen
 
@@ -25,10 +26,16 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
 
         runBlocking {
             while(!game.universeClient.isCacheReady.isTrue()) {
-                println(game.universeClient.isCacheReady.isTrue())
                 delay(200)
+                logger.debug("Waiting universe data")
             }
         }
         game.universeClient.updateToLatestUniverseData3D()
+    }
+
+
+
+    companion object {
+        private val logger = LogManager.getLogger()
     }
 }

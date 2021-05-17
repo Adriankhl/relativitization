@@ -290,6 +290,7 @@ class UniverseServerInternal(var universeServerSettings: UniverseServerSettings)
             ) {
                 universe.getUniverse3DViewAtPlayer(universeData3DMessage.id)
             } else {
+                logger.error("Server: getUniverseData3D error")
                 // Empty 3D view
                 UniverseData3DAtPlayer()
             }

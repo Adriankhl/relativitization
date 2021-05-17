@@ -79,8 +79,9 @@ class Universe(private val universeData: UniverseData) {
      * Get universe 3d view for (human) player
      * Should only return if canAccess is true
      */
-    suspend fun getUniverse3DViewAtPlayer(id: Int): UniverseData3DAtPlayer {
+    fun getUniverse3DViewAtPlayer(id: Int): UniverseData3DAtPlayer {
         val int4D: Int4D = playerCollection.getPlayerInt4D(id)
+        logger.debug("getUniverse3DViewAtPlayer - int4D: $int4D, player id: $id")
         return universeData.toUniverseData3DAtGrid(int4D).idToUniverseData3DAtPlayer().getValue(id)
     }
 
