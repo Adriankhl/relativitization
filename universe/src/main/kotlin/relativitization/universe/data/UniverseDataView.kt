@@ -5,8 +5,6 @@ import org.apache.logging.log4j.LogManager
 import relativitization.universe.data.physics.Int3D
 import relativitization.universe.data.physics.Int4D
 import relativitization.universe.maths.grid.Grids.create3DGrid
-import kotlin.math.max
-import kotlin.math.min
 
 @Serializable
 data class UniverseData3DAtGrid(
@@ -20,41 +18,30 @@ data class UniverseData3DAtGrid(
         // group by attached id
         val playerGroups: List<List<PlayerData>> = centerPlayerDataList.groupBy { it.attachedPlayerId }.values.toList()
 
-        // Group playerId in 3D grid by attachedPlayerId
-        val playerId3DMap: List<List<List<Map<Int, List<Int>>>>> = playerId3D.map { yList ->
-            yList.map { zList ->
-                zList.map { playerList ->
-                    playerList.groupBy { playerId ->
-                        playerDataMap.getValue(playerId).attachedPlayerId }
-                }
-            }
-        }
-
         return playerGroups.map { group ->
             val prioritizedPlayerDataMap: Map<Int, PlayerData> = group.associateBy { it2 -> it2.id }
 
-            val prioritizedPlayerId3D: List<List<List<MutableList<Int>>>> = create3DGrid(3, 3, 3) {
-                    _, _, _ -> mutableListOf()
+            val groupPlayerDataMap = (prioritizedPlayerDataMap +
+                    playerDataMap.filter { !prioritizedPlayerDataMap.containsKey(it.key) })
+
+            val groupPlayerId3D: List<List<List<MutableList<Int>>>> = create3DGrid(3, 3, 3) { _, _, _ ->
+                mutableListOf()
             }
-            // Add id from the original playerId3D if it is not presented in the prioritizedPlayerDataMap
-            for (i in max(0, center.x - 1)..min(universeSettings.xDim - 1, center.x + 1))
-                for (j in max(0, center.y - 1)..min(universeSettings.yDim - 1, center.y + 1))
-                    for (k in max(0, center.z - 1)..min(universeSettings.zDim - 1, center.z + 1))
-                        for (id in playerId3D[i][j][k])
-                            if (!prioritizedPlayerDataMap.containsKey(id))
-                                prioritizedPlayerId3D[i - center.x + 1][j - center.y + 1][k - center.z + 1].add(id)
 
-            prioritizedPlayerId3D[1][1][1].addAll(prioritizedPlayerDataMap.keys)
+            groupPlayerDataMap.map {
+                val id = it.value.id
+                val x = it.value.int4D.x
+                val y = it.value.int4D.y
+                val z = it.value.int4D.z
+                groupPlayerId3D[x][y][z].add(id)
+            }
 
-            val prioritizedPlayerId3DMap: List<List<List<Map<Int, List<Int>>>>> = prioritizedPlayerId3D.map { yList ->
+            // Group playerId in 3D grid by attachedPlayerId
+            val groupPlayerId3DMap: List<List<List<Map<Int, List<Int>>>>> = groupPlayerId3D.map { yList ->
                 yList.map { zList ->
                     zList.map { playerList ->
                         playerList.groupBy { playerId ->
-                            if (prioritizedPlayerDataMap.containsKey(playerId)) {
-                                prioritizedPlayerDataMap.getValue(playerId).attachedPlayerId
-                            } else {
-                                playerDataMap.getValue(playerId).attachedPlayerId
-                            }
+                            groupPlayerDataMap.getValue(playerId).attachedPlayerId
                         }
                     }
                 }
@@ -64,10 +51,8 @@ data class UniverseData3DAtGrid(
                 UniverseData3DAtPlayer(
                     playerData.id,
                     center,
-                    prioritizedPlayerDataMap,
-                    prioritizedPlayerId3DMap,
-                    playerDataMap,
-                    playerId3DMap,
+                    groupPlayerDataMap,
+                    groupPlayerId3DMap,
                     universeSettings
                 )
             }
@@ -79,10 +64,8 @@ data class UniverseData3DAtGrid(
 data class UniverseData3DAtPlayer(
     val id: Int = -1,
     val center: Int4D = Int4D(0, 0, 0, 0),
-    private val prioritizedPlayerDataMap: Map<Int, PlayerData> = mapOf(),
-    private val prioritizedPlayerId3DMap: List<List<List<Map<Int, List<Int>>>>> = listOf(),
-    private val playerDataMap: Map<Int, PlayerData> = mapOf(),
-    private val playerId3DMap: List<List<List<Map<Int, List<Int>>>>> = listOf(),
+    val playerDataMap: Map<Int, PlayerData> = mapOf(),
+    val playerId3DMap: List<List<List<Map<Int, List<Int>>>>> = listOf(),
     val universeSettings: UniverseSettings = UniverseSettings(),
 ) {
     /**
@@ -103,17 +86,9 @@ data class UniverseData3DAtPlayer(
      * Get player data by id
      */
     fun get(id: Int): PlayerData {
-        return when {
-            prioritizedPlayerDataMap.containsKey(id) -> {
-                prioritizedPlayerDataMap.getValue(id)
-            }
-            playerDataMap.containsKey(id) -> {
-                playerDataMap.getValue(id)
-            }
-            else -> {
-                logger.error("id $id not in playerDataMap or zeroDelayDataMap")
-                PlayerData(-1)
-            }
+        return playerDataMap.getOrElse(id) {
+            logger.error("id $id not in playerDataMap or zeroDelayDataMap")
+            PlayerData(-1)
         }
     }
 
@@ -122,14 +97,8 @@ data class UniverseData3DAtPlayer(
      */
     fun get(int3D: Int3D): Map<Int, List<PlayerData>> {
         return if (isInt3DValid(int3D)) {
-            if (center.toInt3D().isNearby(int3D)) {
-                prioritizedPlayerId3DMap[int3D.x - center.x + 1][int3D.y - center.y + 1][int3D.z - center.z + 1].mapValues { it1 ->
-                    it1.value.map { it2 -> get(it2) }
-                }
-            } else {
-                playerId3DMap[int3D.x][int3D.y][int3D.z].mapValues { it1 ->
-                    it1.value.map { it2 -> get(it2) }
-                }
+            playerId3DMap[int3D.x][int3D.y][int3D.z].mapValues { it1 ->
+                it1.value.map { it2 -> get(it2) }
             }
         } else {
             logger.error("$int3D is not a valid coordinate to get player")
@@ -142,11 +111,7 @@ data class UniverseData3DAtPlayer(
      */
     fun getIdMap(int3D: Int3D): Map<Int, List<Int>> {
         return if (isInt3DValid(int3D)) {
-            if (center.toInt3D().isNearby(int3D)) {
-                prioritizedPlayerId3DMap[int3D.x - center.x + 1][int3D.y - center.y + 1][int3D.z - center.z + 1]
-            } else {
-                playerId3DMap[int3D.x][int3D.y][int3D.z]
-            }
+            playerId3DMap[int3D.x][int3D.y][int3D.z]
         } else {
             logger.error("$int3D is not a valid coordinate to get player")
             mapOf()
@@ -154,10 +119,7 @@ data class UniverseData3DAtPlayer(
     }
 
 
-
     companion object {
-
         private val logger = LogManager.getLogger()
-
     }
 }
