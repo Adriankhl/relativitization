@@ -48,8 +48,9 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets){
     fun createTextButton(
         text: String,
         fontSize: Int = 30,
+        soundVolume: Float = 0.5f,
         function: (TextButton) -> Unit = {},
-    ): TextButton = ActorFunction.createTextButton(skin, assets, text, fontSize, function)
+    ): TextButton = ActorFunction.createTextButton(skin, assets, text, fontSize, soundVolume, function)
 
     /**
      * Create check box

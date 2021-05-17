@@ -42,7 +42,7 @@ class RegisterPlayerScreen(val game: RelativitizationGame) : TableScreen(game.as
             }
         }
 
-        val updateButton = createTextButton("Update", gdxSetting.normalFontSize) {
+        val updateButton = createTextButton("Update", gdxSetting.normalFontSize, gdxSetting.soundEffectsVolume) {
             when (getPlayerTypeSelectBox.selected) {
                 "All" -> {
                     runBlocking {
@@ -90,7 +90,7 @@ class RegisterPlayerScreen(val game: RelativitizationGame) : TableScreen(game.as
         root.row().space(10f)
 
         val registerStatusLabel = createLabel("", gdxSetting.normalFontSize)
-        val registerPlayerButton: TextButton = createTextButton("Register", gdxSetting.normalFontSize) { button ->
+        val registerPlayerButton: TextButton = createTextButton("Register", gdxSetting.normalFontSize, gdxSetting.soundEffectsVolume) { button ->
             if (game.universeClient.universeClientSettings.playerId >= 0) {
                 runBlocking {
                     val httpCode = game.universeClient.httpPostRegisterPlayer()
@@ -117,7 +117,7 @@ class RegisterPlayerScreen(val game: RelativitizationGame) : TableScreen(game.as
 
 
         val startStatusLabel = createLabel("", gdxSetting.normalFontSize)
-        val startButton: TextButton = createTextButton("Start", gdxSetting.normalFontSize) {
+        val startButton: TextButton = createTextButton("Start", gdxSetting.normalFontSize, gdxSetting.soundEffectsVolume) {
             if (registerPlayerButton.touchable == Touchable.disabled) {
                 runBlocking {
                     if (game.universeClient.getServerStatus().runningUniverse) {

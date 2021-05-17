@@ -48,6 +48,7 @@ object ActorFunction {
         assets: Assets,
         text: String,
         fontSize: Int = 30,
+        soundVolume: Float = 0.5f,
         function: (TextButton) -> Unit = {},
     ): TextButton {
 
@@ -59,6 +60,8 @@ object ActorFunction {
 
         button.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent, actor: Actor) {
+                val sound = assets.getSound("click1.ogg")
+                sound.play(soundVolume)
                 function(button)
             }
         })

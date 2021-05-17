@@ -20,7 +20,7 @@ class ServerSettingsScreen(val game: RelativitizationGame) : TableScreen(game.as
 
         // Add apply setting button
         val applyFailLabel = createLabel("", gdxSetting.normalFontSize)
-        val applyButton = createTextButton("Apply settings", gdxSetting.bigFontSize) {
+        val applyButton = createTextButton("Apply settings", gdxSetting.bigFontSize, gdxSetting.soundEffectsVolume) {
             logger.debug("Applying settings")
             runBlocking {
                 val httpCode = game.universeClient.httpPostUniverseServerSettings()

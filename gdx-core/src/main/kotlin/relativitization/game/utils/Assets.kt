@@ -5,6 +5,7 @@ import com.badlogic.gdx.assets.loaders.FileHandleResolver
 import com.badlogic.gdx.assets.loaders.SkinLoader.SkinParameter
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver
 import com.badlogic.gdx.audio.Music
+import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
@@ -41,6 +42,8 @@ class Assets {
 
         manager.load("relativitization-asset.atlas", TextureAtlas::class.java)
 
+        manager.load("sounds/click1.ogg", Sound::class.java)
+
         for (fontSize in 8..40) {
             val smallFont = FreeTypeFontLoaderParameter()
             smallFont.fontFileName = "fonts/nerd.ttf"
@@ -58,7 +61,6 @@ class Assets {
     fun getSkin(): Skin = manager.get("skin/flat-earth-ui.json")
 
     fun getBackgroundMusic(): Music = manager.get("music/Alexander Ehlers - Warped.mp3")
-
 
     fun getImage(name: String): Image {
         val textureAtLas: TextureAtlas = manager.get("relativitization-asset.atlas")
@@ -90,6 +92,8 @@ class Assets {
 
         return manager.get("nerd$actualSize.ttf")
     }
+
+    fun getSound(name: String): Sound = manager.get("sounds/$name")
 
     companion object {
         private val logger = LogManager.getLogger()
