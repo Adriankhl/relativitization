@@ -10,12 +10,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
 
-abstract class GameScreenComponent<out T : Actor>(val assets: Assets){
+abstract class ScreenComponent<out T : Actor>(val assets: Assets){
     val skin: Skin = assets.getSkin()
 
-    /**
-     * Get an actor from this class
-     */
     abstract fun get(): T
 
     /**

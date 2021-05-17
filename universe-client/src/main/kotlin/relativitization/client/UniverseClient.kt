@@ -139,7 +139,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
                 universeData3DMap[time] = universeData3DCache
                 isCacheReady.set(false)
             } else {
-                logger.error("Cache is not ready")
+                logger.debug("Cache is not ready")
             }
         }
     }
