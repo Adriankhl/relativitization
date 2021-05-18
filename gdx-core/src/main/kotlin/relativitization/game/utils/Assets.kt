@@ -62,15 +62,24 @@ class Assets {
 
     fun getBackgroundMusic(): Music = manager.get("music/Alexander Ehlers - Warped.mp3")
 
-    fun getImage(name: String): Image {
+    private fun getAtlasRegion(name: String): AtlasRegion {
         val textureAtLas: TextureAtlas = manager.get("relativitization-asset.atlas")
-        val region = textureMap.getOrPut(name) { textureAtLas.findRegion(name) }
+        return textureMap.getOrPut(name) { textureAtLas.findRegion(name) }
+    }
+
+    fun getImage(name: String): Image {
+        val region = getAtlasRegion(name)
         return Image(region)
     }
 
+    fun getImage(name: String, r: Float, g: Float, b: Float, a: Float): Image {
+        val region = getAtlasRegion(name)
+        val textureRegionDrawable = TextureRegionDrawable(region)
+        return Image(textureRegionDrawable.tint(Color(r, g, b, a)))
+    }
+
     fun getBackGroundColor(r: Float, g: Float, b: Float, a: Float): Drawable {
-        val textureAtLas: TextureAtlas = manager.get("relativitization-asset.atlas")
-        val region = textureMap.getOrPut("background/white-pixel") { textureAtLas.findRegion("background/white-pixel") }
+        val region = getAtlasRegion("background/white-pixel")
         val textureRegionDrawable = TextureRegionDrawable(region)
         return textureRegionDrawable.tint(Color(r, g, b, a))
     }
