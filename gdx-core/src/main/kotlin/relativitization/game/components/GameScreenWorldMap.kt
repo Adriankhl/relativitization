@@ -1,9 +1,6 @@
 package relativitization.game.components
 
-import com.badlogic.gdx.Input
 import com.badlogic.gdx.scenes.scene2d.Group
-import com.badlogic.gdx.scenes.scene2d.InputEvent
-import com.badlogic.gdx.scenes.scene2d.InputListener
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import org.apache.logging.log4j.LogManager
 import relativitization.game.RelativitizationGame
@@ -46,8 +43,8 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
             imageHeight = 512,
             gridXSeparation = 256,
             gridYSeparation = 128,
-            xPadding = 1024,
-            yPadding = 1024,
+            xPadding = 0,
+            yPadding = 0,
         )
     }
 
@@ -97,13 +94,23 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
     }
 
     fun zoomIn() {
+        val oldScrollX = scrollPane.scrollX
+        val oldScrollY = scrollPane.scrollY
         zoom *= 1.1f
         updateGroup()
+        scrollPane.scrollX = oldScrollX * 1.1f
+        scrollPane.scrollY = oldScrollY * 1.1f
+        scrollPane.updateVisualScroll()
     }
 
     fun zoomOut() {
+        val oldScrollX = scrollPane.scrollX
+        val oldScrollY = scrollPane.scrollY
         zoom /= 1.1f
         updateGroup()
+        scrollPane.scrollX = oldScrollX / 1.1f
+        scrollPane.scrollY = oldScrollY / 1.1f
+        scrollPane.updateVisualScroll()
     }
 
     companion object {
