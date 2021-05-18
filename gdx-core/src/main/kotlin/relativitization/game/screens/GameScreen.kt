@@ -38,10 +38,6 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
         game.universeClient.updatableByClient.clear()
     }
 
-    override fun render(delta: Float) {
-        super.render(delta)
-    }
-
     override fun dispose() {
         super.dispose()
         game.universeClient.updatableByClient.clear()

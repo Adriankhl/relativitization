@@ -9,6 +9,12 @@ class GameScreenInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPan
     private val gdxSetting = game.gdxSetting
     private val table: Table = Table()
 
+
+    init {
+        // Set background color
+        table.background = assets.getBackGroundColor(0.2f, 0.3f, 0.6f, 1.0f)
+    }
+
     override fun get(): ScrollPane {
         val scrollPane: ScrollPane = createScrollPane(table)
         scrollPane.fadeScrollBars = false

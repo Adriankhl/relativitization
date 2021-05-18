@@ -12,7 +12,6 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<Table>(
 
     private val universeNameAndTimeLabel: Label = createLabel("", gdxSetting.smallFontSize)
     private val serverStatusLabel: Label = createLabel("", gdxSetting.smallFontSize)
-    private val connectionSuccessLabel: Label = createLabel("", gdxSetting.smallFontSize)
 
     init {
         // Set background color to blue
