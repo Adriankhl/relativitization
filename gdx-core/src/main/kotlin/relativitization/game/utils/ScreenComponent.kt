@@ -26,9 +26,9 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets){
     /**
      * Create scroll pane for table
      *
-     * @param table the table to add scroll pane
+     * @param actor the table to add scroll pane
      */
-    fun createScrollPane(table: Table): ScrollPane = ActorFunction.createScrollPane(skin, table)
+    fun createScrollPane(actor: Actor): ScrollPane = ActorFunction.createScrollPane(skin, actor)
 
     /**
      * Create label to display text

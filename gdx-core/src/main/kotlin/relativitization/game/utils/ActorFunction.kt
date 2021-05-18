@@ -20,7 +20,7 @@ object ActorFunction {
      *
      * @param table the table to add scroll pane
      */
-    fun createScrollPane(skin: Skin, table: Table): ScrollPane = ScrollPane(table, skin)
+    fun createScrollPane(skin: Skin, actor: Actor): ScrollPane = ScrollPane(actor, skin)
 
     /**
      * Create label to display text
