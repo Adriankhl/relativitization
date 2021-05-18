@@ -20,6 +20,7 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
     }
 
     override fun update() {
+        data3D2DProjection = update3D2DProjection()
     }
 
     fun update3D2DProjection(): Data3D2DProjection {
