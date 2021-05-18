@@ -12,7 +12,7 @@ class GameScreenInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPan
 
     init {
         // Set background color
-        table.background = assets.getBackGroundColor(0.2f, 0.3f, 0.6f, 1.0f)
+        table.background = assets.getBackGroundColor(0.2f, 0.3f, 0.5f, 1.0f)
     }
 
     override fun get(): ScrollPane {

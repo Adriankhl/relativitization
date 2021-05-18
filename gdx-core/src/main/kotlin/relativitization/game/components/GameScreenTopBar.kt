@@ -15,7 +15,7 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<Table>(
 
     init {
         // Set background color to blue
-        table.background = assets.getBackGroundColor(0.2f, 0.3f, 0.5f, 1.0f)
+        table.background = assets.getBackGroundColor(0.1f, 0.1f, 0.1f, 1.0f)
 
         table.add(addServerStatusLabels())
     }
