@@ -341,14 +341,14 @@ object Projections {
 
 
         val int3DToRectangle: (Int3D) -> IntRectangle = { int3D ->
-            if (isInt3DValid(int3D, data3D)) {
+            if (!isInt3DValid(int3D, data3D)) {
                 logger.error("int3DToRectangle: Invalid int3D")
             }
             int3DRectangleData[int3D.x][int3D.y][int3D.z]
         }
 
         val data3DToRectangle: (Int3D, Int, Int) -> IntRectangle = { int3D: Int3D, mapId: Int, id:Int ->
-            if (isInt3DValid(int3D, data3D)) {
+            if (!isInt3DValid(int3D, data3D)) {
                 logger.error("data3DToRectangle: Invalid int3D")
             }
             data3DToRectangleFunction[int3D.x][int3D.y][int3D.z](mapId, id)
