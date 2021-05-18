@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
+import com.badlogic.gdx.scenes.scene2d.ui.SplitPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
@@ -18,9 +19,15 @@ object ActorFunction {
     /**
      * Create scroll pane for table
      *
-     * @param table the table to add scroll pane
+     * @param actor the actor in the scroll pane
      */
     fun createScrollPane(skin: Skin, actor: Actor): ScrollPane = ScrollPane(actor, skin)
+
+    /**
+     * Create split pane
+     */
+    fun createSplitPane(skin: Skin, actor1: Actor, actor2: Actor, vertical: Boolean) = SplitPane(actor1, actor2, vertical, skin)
+
 
     /**
      * Create label to display text

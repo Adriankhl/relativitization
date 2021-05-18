@@ -6,13 +6,18 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import org.apache.logging.log4j.LogManager
 import relativitization.game.RelativitizationGame
+import relativitization.game.components.GameScreenInfo
 import relativitization.game.components.GameScreenTopBar
+import relativitization.game.components.GameScreenWorldMap
 import relativitization.game.utils.TableScreen
 
 class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
     private val background: Image = assets.getImage("background/universe-background")
     val gdxSetting = game.gdxSetting
     private val topBar: GameScreenTopBar = GameScreenTopBar(game)
+    private val worldMap: GameScreenWorldMap = GameScreenWorldMap(game)
+    private val info: GameScreenInfo = GameScreenInfo(game)
+    private val worldMapAndInfo = createSplitPane(worldMap.get(), info.get(), false)
 
 
     init {
@@ -30,7 +35,11 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
 
         super.show()
 
-        root.add(topBar.get()).growX().expandY().top()
+        root.add(topBar.get()).growX().top()
+
+        root.row()
+
+        root.add(worldMapAndInfo).growX().growY()
     }
 
     override fun hide() {
