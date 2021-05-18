@@ -85,18 +85,18 @@ class Assets {
 
     fun getImage(
         name: String,
-        xPos: Int,
-        yPos: Int,
-        width: Int,
-        height: Int,
+        xPos: Float,
+        yPos: Float,
+        width: Float,
+        height: Float,
         r: Float,
         g: Float,
         b: Float,
         a: Float
     ): Image {
-        val image = getImage(name,r, g, b, a)
-        image.setPosition(xPos.toFloat(), yPos.toFloat())
-        image.setSize(width.toFloat(), height.toFloat())
+        val image = getImage(name, r, g, b, a)
+        image.setPosition(xPos, yPos)
+        image.setSize(width, height)
         return image
     }
 
@@ -108,18 +108,18 @@ class Assets {
     fun getImage(
         id: Int,
         name: String,
-        xPos: Int,
-        yPos: Int,
-        width: Int,
-        height: Int,
+        xPos: Float,
+        yPos: Float,
+        width: Float,
+        height: Float,
     ): Image {
         val random = Random(id)
         val r = random.nextFloat()
         val g = random.nextFloat()
         val b = random.nextFloat()
         val image = getImage(name,r, g, b, 1.0f)
-        image.setPosition(xPos.toFloat(), yPos.toFloat())
-        image.setSize(width.toFloat(), height.toFloat())
+        image.setPosition(xPos, yPos)
+        image.setSize(width, height)
         return image
     }
 
