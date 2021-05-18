@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.Touchable
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox
+import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox
@@ -27,6 +28,103 @@ object ActorFunction {
      * Create split pane
      */
     fun createSplitPane(skin: Skin, actor1: Actor, actor2: Actor, vertical: Boolean) = SplitPane(actor1, actor2, vertical, skin)
+
+
+    /**
+     * Create an Image
+     */
+    fun createImage(assets: Assets, name: String, soundVolume: Float = 0.5f, function: (Image) -> Unit = {}): Image {
+        val image = assets.getImage(name)
+        image.addListener(object : ChangeListener() {
+            override fun changed(event: ChangeEvent, actor: Actor) {
+                val sound = assets.getSound("click1.ogg")
+                sound.play(soundVolume)
+                function(image)
+            }
+        })
+
+        return image
+    }
+
+    /**
+     * Create an Image
+     */
+    fun createImage(
+        assets: Assets,
+        name: String,
+        r: Float,
+        g: Float,
+        b: Float,
+        a: Float,
+        soundVolume: Float = 0.5f,
+        function: (Image) -> Unit = {}
+    ): Image {
+        val image = assets.getImage(name, r, g, b, a)
+        image.addListener(object : ChangeListener() {
+            override fun changed(event: ChangeEvent, actor: Actor) {
+                val sound = assets.getSound("click1.ogg")
+                sound.play(soundVolume)
+                function(image)
+            }
+        })
+
+        return image
+    }
+
+    /**
+     * Create an Image
+     */
+    fun createImage(
+        assets: Assets,
+        name: String,
+        xPos: Float,
+        yPos: Float,
+        width: Float,
+        height: Float,
+        r: Float,
+        g: Float,
+        b: Float,
+        a: Float,
+        soundVolume: Float = 0.5f,
+        function: (Image) -> Unit = {}
+    ): Image {
+        val image = assets.getImage(name, xPos, yPos, width, height, r, g, b, a)
+        image.addListener(object : ChangeListener() {
+            override fun changed(event: ChangeEvent, actor: Actor) {
+                val sound = assets.getSound("click1.ogg")
+                sound.play(soundVolume)
+                function(image)
+            }
+        })
+
+        return image
+    }
+
+    /**
+     * Create an Image
+     */
+    fun createImage(
+        assets: Assets,
+        id: Int,
+        name: String,
+        xPos: Float,
+        yPos: Float,
+        width: Float,
+        height: Float,
+        soundVolume: Float = 0.5f,
+        function: (Image) -> Unit = {}
+    ): Image {
+        val image = assets.getImage(id, name, xPos, yPos, width, height)
+        image.addListener(object : ChangeListener() {
+            override fun changed(event: ChangeEvent, actor: Actor) {
+                val sound = assets.getSound("click1.ogg")
+                sound.play(soundVolume)
+                function(image)
+            }
+        })
+
+        return image
+    }
 
 
     /**
@@ -75,6 +173,7 @@ object ActorFunction {
 
         return button
     }
+
 
     /**
      * Create check box
