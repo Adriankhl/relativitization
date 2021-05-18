@@ -1,6 +1,9 @@
 package relativitization.game.screens
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Input
+import com.badlogic.gdx.scenes.scene2d.InputEvent
+import com.badlogic.gdx.scenes.scene2d.InputListener
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
@@ -43,6 +46,26 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
         root.row()
 
         root.add(worldMapAndInfo).growX().growY()
+
+        stage.addListener(object : InputListener() {
+            override fun keyDown(event: InputEvent?, keycode: Int): Boolean {
+                logger.debug("Key down code: $keycode")
+                return when (keycode) {
+                    Input.Keys.EQUALS -> {
+                        worldMap.zoomIn()
+                        true
+                    }
+                    Input.Keys.MINUS -> {
+                        worldMap.zoomOut()
+                        true
+                    }
+                    else -> {
+                        false
+                    }
+                }
+            }
+        })
+
     }
 
     override fun hide() {
