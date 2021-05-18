@@ -12,10 +12,15 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
     private val group: Group = Group()
     private var data3D2DProjection: Data3D2DProjection = update3D2DProjection()
 
+    init {
+        group.setSize(2000f, 2000f)
+        group.addActor(assets.getImage(0, "system/ship1", 1000, 1000, 800, 800))
+    }
+
     override fun get(): ScrollPane {
         val scrollPane: ScrollPane = createScrollPane(group)
         scrollPane.fadeScrollBars = false
-        scrollPane.setFlickScroll(false)
+        scrollPane.setFlickScroll(true)
         return scrollPane
     }
 

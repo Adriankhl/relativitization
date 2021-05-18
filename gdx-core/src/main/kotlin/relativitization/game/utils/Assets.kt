@@ -21,6 +21,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import org.apache.logging.log4j.LogManager
+import kotlin.random.Random
 
 
 class Assets {
@@ -73,9 +74,53 @@ class Assets {
     }
 
     fun getImage(name: String, r: Float, g: Float, b: Float, a: Float): Image {
-        val region = getAtlasRegion(name)
-        val textureRegionDrawable = TextureRegionDrawable(region)
-        return Image(textureRegionDrawable.tint(Color(r, g, b, a)))
+        // Use getImage directly
+        //val region = getAtlasRegion(name)
+        //val textureRegionDrawable = TextureRegionDrawable(region)
+        //return Image(textureRegionDrawable.tint(Color(r, g, b, a)))
+        val image = getImage(name)
+        image.setColor(r, g, b, a)
+        return image
+    }
+
+    fun getImage(
+        name: String,
+        xPos: Int,
+        yPos: Int,
+        width: Int,
+        height: Int,
+        r: Float,
+        g: Float,
+        b: Float,
+        a: Float
+    ): Image {
+        val image = getImage(name,r, g, b, a)
+        image.setPosition(xPos.toFloat(), yPos.toFloat())
+        image.setSize(width.toFloat(), height.toFloat())
+        return image
+    }
+
+    /**
+     * Generate deterministic color from id
+     *
+     * @id the id for generating color
+     */
+    fun getImage(
+        id: Int,
+        name: String,
+        xPos: Int,
+        yPos: Int,
+        width: Int,
+        height: Int,
+    ): Image {
+        val random = Random(id)
+        val r = random.nextFloat()
+        val g = random.nextFloat()
+        val b = random.nextFloat()
+        val image = getImage(name,r, g, b, 1.0f)
+        image.setPosition(xPos.toFloat(), yPos.toFloat())
+        image.setSize(width.toFloat(), height.toFloat())
+        return image
     }
 
     fun getBackGroundColor(r: Float, g: Float, b: Float, a: Float): Drawable {

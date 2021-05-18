@@ -14,6 +14,12 @@ import relativitization.game.utils.TableScreen
 class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
     private val background: Image = assets.getImage("background/universe-background")
     val gdxSetting = game.gdxSetting
+
+    init {
+        // wait first universe data before showing anything
+        waitFirstData()
+    }
+
     private val topBar: GameScreenTopBar = GameScreenTopBar(game)
     private val worldMap: GameScreenWorldMap = GameScreenWorldMap(game)
     private val info: GameScreenInfo = GameScreenInfo(game)
@@ -27,9 +33,6 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
     }
 
     override fun show() {
-        // wait first universe data before showing anything
-        waitFirstData()
-
         // Add background before adding root table from super.show()
         stage.addActor(background)
 
