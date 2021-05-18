@@ -2,6 +2,7 @@ package relativitization.game.utils
 
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox
+import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox
@@ -29,6 +30,39 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets){
      * @param actor the table to add scroll pane
      */
     fun createScrollPane(actor: Actor): ScrollPane = ActorFunction.createScrollPane(skin, actor)
+
+    /**
+     * Create image
+     */
+    fun createImage(
+        id: Int,
+        name: String,
+        xPos: Float,
+        yPos: Float,
+        width: Float,
+        height: Float,
+        soundVolume: Float = 0.5f,
+        function: (Image) -> Unit = {}
+    ): Image = ActorFunction.createImage(assets, id, name, xPos, yPos, width, height, soundVolume, function)
+
+
+    /**
+     * Create image
+     */
+    fun createImage(
+        name: String,
+        xPos: Float,
+        yPos: Float,
+        width: Float,
+        height: Float,
+        r: Float,
+        g: Float,
+        b: Float,
+        a: Float,
+        soundVolume: Float = 0.5f,
+        function: (Image) -> Unit = {}
+    ): Image = ActorFunction.createImage(assets, name, xPos, yPos, width, height, r, g, b, a, soundVolume, function)
+
 
     /**
      * Create label to display text
