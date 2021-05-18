@@ -40,7 +40,9 @@ data class Int3D(val x: Int, val y: Int, val z: Int) {
 }
 
 @Serializable
-data class MutableInt3D(var x: Int, var y: Int, var z: Int)
+data class MutableInt3D(var x: Int, var y: Int, var z: Int) {
+    fun toInt3D(): Int3D = Int3D(x, y, z)
+}
 
 @Serializable
 data class Double3D(val x: Double, val y: Double, val z: Double)
