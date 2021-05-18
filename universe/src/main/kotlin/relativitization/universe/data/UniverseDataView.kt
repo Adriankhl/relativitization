@@ -24,7 +24,11 @@ data class UniverseData3DAtGrid(
             val groupPlayerDataMap = (prioritizedPlayerDataMap +
                     playerDataMap.filter { !prioritizedPlayerDataMap.containsKey(it.key) })
 
-            val groupPlayerId3D: List<List<List<MutableList<Int>>>> = create3DGrid(3, 3, 3) { _, _, _ ->
+            val groupPlayerId3D: List<List<List<MutableList<Int>>>> = create3DGrid(
+                universeSettings.xDim,
+                universeSettings.yDim,
+                universeSettings.zDim
+            ) { _, _, _ ->
                 mutableListOf()
             }
 
