@@ -138,7 +138,7 @@ object Projections {
         val rectangleFunctionMap: Map<Int, (Int) -> IntRectangle> = gridMap.mapValues {
             val innerRectangle: IntRectangle = gridRectangleFunction(mapIdToIndex.getValue(it.key))
             indexToRectangleFunction(
-                numRequiredRectangle = numGridDivision * numGridDivision,
+                numRequiredRectangle = it.value.size,
                 imageWidth = imageWidth,
                 imageHeight = imageHeight,
                 groupWidth = innerRectangle.width,
@@ -217,7 +217,7 @@ object Projections {
         val positionFunctionMap = gridMap.mapValues {
             val innerRectangle: IntRectangle = gridRectangleFunction(mapIdToIndex.getValue(it.key))
             positionToIndexFunction(
-                numRequiredRectangle = numGridDivision * numGridDivision,
+                numRequiredRectangle = it.value.size,
                 imageWidth = imageWidth,
                 imageHeight = imageHeight,
                 groupWidth = innerRectangle.width,
