@@ -4,6 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.Group
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import org.apache.logging.log4j.LogManager
 import relativitization.game.RelativitizationGame
+import relativitization.game.utils.PlayerImage.getPlayerImages
 import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.physics.Int3D
 import relativitization.universe.maths.grid.Data3D2DProjection
@@ -43,8 +44,8 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
             imageHeight = 512,
             gridXSeparation = 256,
             gridYSeparation = 128,
-            xPadding = 0,
-            yPadding = 0,
+            xPadding = 1024,
+            yPadding = 1024,
         )
     }
 
@@ -78,16 +79,15 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
             val int3D: Int3D = game.universeClient.getUniverseData3D().get(id).int4D.toInt3D()
             val playerRectangle = data3D2DProjection.data3DToRectangle(int3D, attachedId, id)
             println("player rectangle: $playerRectangle")
-            group.addActor(
-                assets.getImage(
-                    id,
-                    "system/ship1",
-                    playerRectangle.xPos.toFloat() * zoom,
-                    playerRectangle.yPos.toFloat() * zoom,
-                    playerRectangle.width.toFloat() * zoom,
-                    playerRectangle.height.toFloat() * zoom,
-                )
-            )
+
+            getPlayerImages(
+                game.universeClient.getUniverseData3D().get(id),
+                assets,
+                playerRectangle.xPos.toFloat() * zoom,
+                playerRectangle.yPos.toFloat() * zoom,
+                playerRectangle.width.toFloat() * zoom,
+                playerRectangle.height.toFloat() * zoom,
+            ).forEach { group.addActor(it) }
         }
 
         scrollPane.actor = group
