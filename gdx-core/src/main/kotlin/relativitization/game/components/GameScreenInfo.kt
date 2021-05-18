@@ -8,17 +8,17 @@ import relativitization.game.utils.ScreenComponent
 class GameScreenInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.assets) {
     private val gdxSetting = game.gdxSetting
     private val table: Table = Table()
+    private val scrollPane: ScrollPane = createScrollPane(table)
 
 
     init {
         // Set background color
         table.background = assets.getBackGroundColor(0.2f, 0.3f, 0.5f, 1.0f)
+        scrollPane.fadeScrollBars = false
+        scrollPane.setFlickScroll(true)
     }
 
     override fun get(): ScrollPane {
-        val scrollPane: ScrollPane = createScrollPane(table)
-        scrollPane.fadeScrollBars = false
-        scrollPane.setFlickScroll(false)
         return scrollPane
     }
 

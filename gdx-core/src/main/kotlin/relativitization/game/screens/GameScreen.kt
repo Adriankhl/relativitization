@@ -59,6 +59,12 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
                         worldMap.zoomOut()
                         true
                     }
+                    Input.Keys.ESCAPE -> {
+                        if (worldMapAndInfo.splitAmount < worldMapAndInfo.maxSplitAmount) {
+                            worldMapAndInfo.splitAmount = worldMapAndInfo.maxSplitAmount
+                        }
+                        true
+                    }
                     else -> {
                         false
                     }

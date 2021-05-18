@@ -14,4 +14,5 @@ data class GdxSetting(
     var normalFontSize: Int = 24,
     var bigFontSize: Int = 30,
     var hugeFontSIze: Int = 40,
+    var zoomFactor: Float = 1.2f,
 )

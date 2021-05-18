@@ -17,7 +17,7 @@ object PlayerImage {
     ): List<Image> {
 
         val imageList: MutableList<Image> = mutableListOf()
-        
+
         val playerId = playerData.id
 
         val hasStellarSystem: Boolean = playerData.playerInternalData.popSystemicData.carrier.map {
