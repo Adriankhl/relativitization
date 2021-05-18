@@ -2,6 +2,7 @@ package relativitization.game.components
 
 import com.badlogic.gdx.scenes.scene2d.Group
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
+import org.apache.logging.log4j.LogManager
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.physics.Int3D
@@ -86,5 +87,9 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
                 )
             )
         }
+    }
+
+    companion object {
+        private val logger = LogManager.getLogger()
     }
 }
