@@ -58,7 +58,7 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
                     val gridRectangle = data3D2DProjection.int3DToRectangle(Int3D(x, y, z))
                     group.addActor(
                         assets.getImage(
-                            "background/white-pixel",
+                            "basic/white-pixel",
                             gridRectangle.xPos.toFloat() * zoom,
                             gridRectangle.yPos.toFloat() * zoom,
                             gridRectangle.width.toFloat() * zoom,

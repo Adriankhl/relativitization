@@ -124,7 +124,7 @@ class Assets {
     }
 
     fun getBackGroundColor(r: Float, g: Float, b: Float, a: Float): Drawable {
-        val region = getAtlasRegion("background/white-pixel")
+        val region = getAtlasRegion("basic/white-pixel")
         val textureRegionDrawable = TextureRegionDrawable(region)
         return textureRegionDrawable.tint(Color(r, g, b, a))
     }
