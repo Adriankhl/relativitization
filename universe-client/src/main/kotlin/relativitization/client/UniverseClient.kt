@@ -65,6 +65,10 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
 
     val updatableByClient: MutableList<() -> Unit> = mutableListOf()
 
+    // Gui related data
+    var firstSelectedPlayerId: Int = -1
+    var selectedPlayerIds: MutableList<Int> = mutableListOf()
+
     /**
      * Start auto updating status and universeData3DCache
      */

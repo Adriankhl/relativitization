@@ -20,7 +20,7 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
     private var data3D2DProjection: Data3D2DProjection = update3D2DProjection()
     private var zoom: Float = 1.0f
 
-    private var selectCircle: MutableList<Actor> = mutableListOf()
+    private var selectCircle: MutableMap<Int, Actor> = mutableMapOf()
 
     init {
         scrollPane.fadeScrollBars = false
@@ -126,27 +126,65 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
      * Select player by adding a circle on top of the player
      */
     fun selectPlayer(id: Int, image: Image) {
-        val circle = createImage(
-            "basic/white-ring",
-            image.x,
-            image.y,
-            image.width,
-            image.height,
-            1.0f,
-            0.0f,
-            0.0f,
-            1.0f,
-            gdxSetting.soundEffectsVolume
-        )
-        group.addActor(circle)
-        selectCircle.add(image)
+        // change the first selected player id if no stored selected player
+        // for selecting first player then select other without changing the first selected player
+        if (game.universeClient.selectedPlayerIds.isEmpty()) {
+            game.universeClient.firstSelectedPlayerId = id
+            game.universeClient.selectedPlayerIds.add(id)
+            // add green circle
+            val circle = createImage(
+                "basic/white-ring",
+                image.x,
+                image.y,
+                image.width,
+                image.height,
+                0.0f,
+                1.0f,
+                0.0f,
+                1.0f,
+                gdxSetting.soundEffectsVolume
+            )
+            group.addActorBefore(image, circle)
+            selectCircle[id] = circle
+        } else if (!game.universeClient.selectedPlayerIds.contains(id)) {
+            game.universeClient.selectedPlayerIds.add(id)
+            // add red circle
+            val circle = createImage(
+                "basic/white-ring",
+                image.x,
+                image.y,
+                image.width,
+                image.height,
+                1.0f,
+                0.0f,
+                0.0f,
+                1.0f,
+                gdxSetting.soundEffectsVolume
+            )
+            group.addActorBefore(image, circle)
+            selectCircle[id] = circle
+        } else {
+            clearSelectedPlayer(id)
+        }
     }
 
     /**
      * Clear selected player
      */
-    fun clearSelectedPlayer() {
-        selectCircle.forEach {group.removeActor(it)}
+    fun clearSelectedPlayer(id: Int) {
+        game.universeClient.selectedPlayerIds.remove(id)
+        if (selectCircle.containsKey(id)) {
+            group.removeActor(selectCircle[id])
+            selectCircle.remove(id)
+        }
+    }
+
+    /**
+     * Clear all selected player
+     */
+    fun clearAllSelectedPlayer() {
+        game.universeClient.selectedPlayerIds.clear()
+        selectCircle.forEach {group.removeActor(it.value)}
         selectCircle.clear()
     }
 
