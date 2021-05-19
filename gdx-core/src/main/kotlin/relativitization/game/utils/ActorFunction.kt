@@ -2,6 +2,7 @@ package relativitization.game.utils
 
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.scenes.scene2d.Actor
+import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Touchable
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox
 import com.badlogic.gdx.scenes.scene2d.ui.Image
@@ -14,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.Array
 
 object ActorFunction {
@@ -35,8 +37,8 @@ object ActorFunction {
      */
     fun createImage(assets: Assets, name: String, soundVolume: Float = 0.5f, function: (Image) -> Unit = {}): Image {
         val image = assets.getImage(name)
-        image.addListener(object : ChangeListener() {
-            override fun changed(event: ChangeEvent, actor: Actor) {
+        image.addListener(object : ClickListener() {
+            override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 val sound = assets.getSound("click1.ogg")
                 sound.play(soundVolume)
                 function(image)
@@ -60,14 +62,13 @@ object ActorFunction {
         function: (Image) -> Unit = {}
     ): Image {
         val image = assets.getImage(name, r, g, b, a)
-        image.addListener(object : ChangeListener() {
-            override fun changed(event: ChangeEvent, actor: Actor) {
+        image.addListener(object : ClickListener() {
+            override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 val sound = assets.getSound("click1.ogg")
                 sound.play(soundVolume)
                 function(image)
             }
         })
-
         return image
     }
 
@@ -89,14 +90,13 @@ object ActorFunction {
         function: (Image) -> Unit = {}
     ): Image {
         val image = assets.getImage(name, xPos, yPos, width, height, r, g, b, a)
-        image.addListener(object : ChangeListener() {
-            override fun changed(event: ChangeEvent, actor: Actor) {
+        image.addListener(object : ClickListener() {
+            override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 val sound = assets.getSound("click1.ogg")
                 sound.play(soundVolume)
                 function(image)
             }
         })
-
         return image
     }
 
@@ -115,14 +115,13 @@ object ActorFunction {
         function: (Image) -> Unit = {}
     ): Image {
         val image = assets.getImage(id, name, xPos, yPos, width, height)
-        image.addListener(object : ChangeListener() {
-            override fun changed(event: ChangeEvent, actor: Actor) {
+        image.addListener(object : ClickListener() {
+            override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 val sound = assets.getSound("click1.ogg")
                 sound.play(soundVolume)
                 function(image)
             }
         })
-
         return image
     }
 

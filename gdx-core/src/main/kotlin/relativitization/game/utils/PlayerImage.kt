@@ -14,6 +14,8 @@ object PlayerImage {
         yPos: Float,
         width: Float,
         height: Float,
+        soundVolume: Float,
+        function: (Image) -> Unit = {}
     ): List<Image> {
 
         val imageList: MutableList<Image> = mutableListOf()
@@ -25,14 +27,31 @@ object PlayerImage {
         }.contains(true)
 
         if (hasStellarSystem)  {
-            val stellarImage: Image = assets.getImage("system/sun")
-            stellarImage.setPosition(xPos, yPos)
-            stellarImage.setSize(width, height)
-            imageList.add(stellarImage)
+            if (playerData.playerType != PlayerType.NONE) {
+                val stellarImage: Image = ActorFunction.createImage(assets, "system/sun", soundVolume)
+                stellarImage.setPosition(xPos, yPos)
+                stellarImage.setSize(width, height)
+                imageList.add(stellarImage)
+            } else {
+                val stellarImage: Image = ActorFunction.createImage(assets, "system/sun", soundVolume, function)
+                stellarImage.setPosition(xPos, yPos)
+                stellarImage.setSize(width, height)
+                imageList.add(stellarImage)
+            }
         }
 
         if (playerData.playerType != PlayerType.NONE) {
-            val playerShipImage: Image = assets.getImage(playerId, "system/ship1", xPos, yPos, width, height)
+            val playerShipImage: Image = ActorFunction.createImage(
+                assets,
+                playerId,
+                "system/ship1",
+                xPos,
+                yPos,
+                width,
+                height,
+                soundVolume,
+                function
+            )
             imageList.add(playerShipImage)
         }
 

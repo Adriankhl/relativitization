@@ -1,6 +1,8 @@
 package relativitization.game.components
 
+import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.Group
+import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import org.apache.logging.log4j.LogManager
 import relativitization.game.RelativitizationGame
@@ -9,6 +11,7 @@ import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.physics.Int3D
 import relativitization.universe.maths.grid.Data3D2DProjection
 import relativitization.universe.maths.grid.Projections.createData3D2DProjection
+import java.awt.Color
 
 class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.assets) {
     private val gdxSetting = game.gdxSetting
@@ -16,6 +19,8 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
     private val scrollPane: ScrollPane = createScrollPane(group)
     private var data3D2DProjection: Data3D2DProjection = update3D2DProjection()
     private var zoom: Float = 1.0f
+
+    private var selectCircle: MutableList<Actor> = mutableListOf()
 
     init {
         scrollPane.fadeScrollBars = false
@@ -57,7 +62,7 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
                 for (z in data3D2DProjection.zBegin..data3D2DProjection.zEnd) {
                     val gridRectangle = data3D2DProjection.int3DToRectangle(Int3D(x, y, z))
                     group.addActor(
-                        assets.getImage(
+                        createImage(
                             "basic/white-pixel",
                             gridRectangle.xPos.toFloat() * zoom,
                             gridRectangle.yPos.toFloat() * zoom,
@@ -67,6 +72,7 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
                             1.0f,
                             1.0f,
                             0.4f,
+                            gdxSetting.soundEffectsVolume
                         )
                     )
                 }
@@ -87,7 +93,10 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
                 playerRectangle.yPos.toFloat() * zoom,
                 playerRectangle.width.toFloat() * zoom,
                 playerRectangle.height.toFloat() * zoom,
-            ).forEach { group.addActor(it) }
+                gdxSetting.soundEffectsVolume,
+            ) {
+                selectPlayer(id, it)
+            }.forEach { group.addActor(it) }
         }
 
         scrollPane.actor = group
@@ -111,6 +120,34 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
         scrollPane.scrollX = oldScrollX / gdxSetting.zoomFactor
         scrollPane.scrollY = oldScrollY / gdxSetting.zoomFactor
         scrollPane.updateVisualScroll()
+    }
+
+    /**
+     * Select player by adding a circle on top of the player
+     */
+    fun selectPlayer(id: Int, image: Image) {
+        val circle = createImage(
+            "basic/white-ring",
+            image.x,
+            image.y,
+            image.width,
+            image.height,
+            1.0f,
+            0.0f,
+            0.0f,
+            1.0f,
+            gdxSetting.soundEffectsVolume
+        )
+        group.addActor(circle)
+        selectCircle.add(image)
+    }
+
+    /**
+     * Clear selected player
+     */
+    fun clearSelectedPlayer() {
+        selectCircle.forEach {group.removeActor(it)}
+        selectCircle.clear()
     }
 
     companion object {
