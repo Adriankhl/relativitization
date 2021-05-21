@@ -1,11 +1,9 @@
 package relativitization.universe.mechanisms
 
 import org.apache.logging.log4j.LogManager
-import org.apache.logging.log4j.core.tools.picocli.CommandLine
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseData
 import relativitization.universe.data.UniverseData3DAtPlayer
-import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
 
 abstract class Mechanism {
@@ -29,12 +27,17 @@ object MechanismCollection {
 
     private val defaultMechanismList: List<Mechanism> = listOf()
 
-    fun mechanismProcess(
+    // list of all possible process collection name
+    val mechanismProcessNameList: List<String> = listOf(
+        "default"
+    )
+
+    fun processMechanismCollection(
         mutablePlayerData: MutablePlayerData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
         universeData: UniverseData,
     ): List<Command> {
-        return when (universeData.universeSettings.mechanismProcessName) {
+        return when (universeData.universeSettings.mechanismCollectionName) {
             "default" -> {
                 defaultMechanismList.map { mechanism ->
                     mechanism.process(mutablePlayerData, universeData3DAtPlayer, universeData)

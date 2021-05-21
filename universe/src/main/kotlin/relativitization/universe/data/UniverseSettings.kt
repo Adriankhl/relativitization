@@ -19,7 +19,7 @@ import relativitization.universe.maths.physics.Intervals.maxDelayAfterMove
 data class UniverseSettings(
     val universeName: String = "Test",
     val speedOfLight: Int = 1,
-    val mechanismProcessName: String = "default",
+    val mechanismCollectionName: String = "default",
     val tDim: Int = 8,
     val xDim: Int = 2,
     val yDim: Int = 2,
@@ -43,7 +43,7 @@ data class UniverseSettings(
 @Serializable
 data class MutableUniverseSettings(
     var universeName: String = "Test",
-    val mechanismProcessName: String = "default",
+    val mechanismCollectionName: String = "default",
     var speedOfLight: Int = 1,
     var tDim: Int = 8,
     var xDim: Int = 2,
