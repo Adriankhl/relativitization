@@ -32,7 +32,7 @@ sealed class Command {
      * Check if can send and have command
      */
     fun canSendAndHaveCommand(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean {
-        return Command.haveCommand(universeSettings) && canSend(playerData, universeSettings)
+        return Command.haveCommand(universeSettings, this) && canSend(playerData, universeSettings)
     }
 
 
@@ -45,7 +45,7 @@ sealed class Command {
      * Check if can execute and have command
      */
     fun canExecuteAndHaveCommand(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean {
-        return Command.haveCommand(universeSettings) && canExecute(playerData, universeSettings)
+        return Command.haveCommand(universeSettings, this) && canExecute(playerData, universeSettings)
     }
 
     /**
