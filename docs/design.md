@@ -26,6 +26,11 @@
 * From player, to player
 * Receive time: based on spacetime interval
 
+# Mechanism, ai, and data
+* Mechanism is global, pick by mechanism collection name
+* AI is individual, pick by aiName
+* No options for data
+
 # Event
 * Contains information and choices
 * Player send command to determine the choice, then the choice has a command to be executed
