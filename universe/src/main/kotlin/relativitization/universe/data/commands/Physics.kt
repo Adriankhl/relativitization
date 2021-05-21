@@ -20,6 +20,8 @@ data class ChangeVelocityCommand(
     val velocity: Velocity,
 ) : Command() {
 
+    override val name: String = "ChangeVelocity"
+
     override fun description(): String {
         return "Try to change velocity of player $toId to $Velocity"
     }

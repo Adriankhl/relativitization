@@ -29,7 +29,7 @@ object MechanismCollection {
 
     // list of all possible process collection name
     val mechanismProcessNameList: List<String> = listOf(
-        "Default"
+        "DefaultMechanism"
     )
 
     fun processMechanismCollection(
@@ -38,7 +38,7 @@ object MechanismCollection {
         universeData: UniverseData,
     ): List<Command> {
         return when (universeData.universeSettings.mechanismCollectionName) {
-            "Default" -> {
+            "DefaultMechanism" -> {
                 defaultMechanismList.map { mechanism ->
                     mechanism.process(mutablePlayerData, universeData3DAtPlayer, universeData)
                 }.flatten()

@@ -7,6 +7,7 @@ import kotlinx.coroutines.runBlocking
 import org.apache.logging.log4j.LogManager
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.TableScreen
+import relativitization.universe.data.commands.Command
 import relativitization.universe.generate.GenerateUniverse
 import relativitization.universe.mechanisms.MechanismCollection
 
@@ -95,6 +96,19 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
         table.add(mechanismSelectBox)
 
         table.row().space(10f)
+
+        table.add(createLabel("Pick available commands: ", gdxSetting.normalFontSize))
+        val commandSelectBox = createSelectBox(
+            Command.commandCollectionList,
+            game.universeClient.generateSettings.universeSettings.commandCollectionName,
+            gdxSetting.normalFontSize,
+        ) { commandCollectionName, _ ->
+            game.universeClient.generateSettings.universeSettings.commandCollectionName = commandCollectionName
+        }
+        table.add(commandSelectBox)
+
+        table.row().space(10f)
+
 
         table.add(createLabel("Total number of AI/human player: ", gdxSetting.normalFontSize))
         val numPlayerSelectBox = createSelectBox(

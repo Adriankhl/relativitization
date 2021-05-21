@@ -6,12 +6,17 @@ import org.apache.logging.log4j.LogManager
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.UniverseSettings
+import kotlin.reflect.KClass
 
 @Serializable
 sealed class Command {
     abstract val toId: Int
     abstract val fromId: Int
     abstract val fromInt4D: Int4D
+
+    // name of this command
+    // for haveCommand() function
+    abstract val name: String
 
     /**
      * Description of the command
@@ -61,5 +66,25 @@ sealed class Command {
 
     companion object {
         private val logger = LogManager.getLogger()
+
+        val defaultCommandList: List<String> = listOf(
+            "ChangeVelocity"
+        )
+
+        val commandCollectionList: List<String> = listOf(
+            "DefaultCommand"
+        )
+
+        fun haveCommand(universeSettings: UniverseSettings, command: Command): Boolean {
+            return when (universeSettings.commandCollectionName) {
+                "DefaultCommand" -> {
+                    defaultCommandList.contains(command.name)
+                }
+                else -> {
+                    logger.error("No command collection name: ${universeSettings.commandCollectionName} found")
+                    defaultCommandList.contains(command.name)
+                }
+            }
+        }
     }
 }
