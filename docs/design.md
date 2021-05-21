@@ -22,14 +22,15 @@
 * Universe server move player by their velocity, update int4D, also update attached id by their double4D position
 * Universe server convert mutable data to immutable data, save latest data, drop oldest data
 
-# Command
-* From player, to player
-* Receive time: based on spacetime interval
-
-# Mechanism, ai, and data
+# Command, Mechanism, AI, and Data
+* Command collection is global, pick by command collection name
 * Mechanism is global, pick by mechanism collection name
 * AI is individual, pick by aiName
 * No options for data
+
+# Command
+* From player, to player
+* Receive time: based on spacetime interval
 
 # Event
 * Contains information and choices
