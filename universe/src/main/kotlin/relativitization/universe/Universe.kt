@@ -2,7 +2,7 @@ package relativitization.universe
 
 import kotlinx.coroutines.*
 import org.apache.logging.log4j.LogManager
-import relativitization.universe.ai.PickAI
+import relativitization.universe.ai.AICollection
 import relativitization.universe.data.*
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.physics.Int3D
@@ -94,7 +94,7 @@ class Universe(private val universeData: UniverseData) {
         int3DList.pmap { int3D ->
                 val viewMap = universeData.toUniverseData3DAtGrid(Int4D(time, int3D)).idToUniverseData3DAtPlayer()
                 playerId3D[int3D.x][int3D.y][int3D.z].map { id ->
-                    id to PickAI.compute(viewMap.getValue(id))
+                    id to AICollection.compute(viewMap.getValue(id))
             }
         }.flatten().toMap()
     }
