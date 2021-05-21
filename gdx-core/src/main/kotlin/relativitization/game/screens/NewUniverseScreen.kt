@@ -8,6 +8,7 @@ import org.apache.logging.log4j.LogManager
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.TableScreen
 import relativitization.universe.generate.GenerateUniverse
+import relativitization.universe.mechanisms.MechanismCollection
 
 class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
     private val gdxSetting = game.gdxSetting
@@ -80,6 +81,18 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
             game.universeClient.generateSettings.generateMethod = method
         }
         table.add(generateMethodSelectBox)
+
+        table.row().space(10f)
+
+        table.add(createLabel("Pick game mechanisms: ", gdxSetting.normalFontSize))
+        val mechanismSelectBox = createSelectBox(
+            MechanismCollection.mechanismProcessNameList,
+            game.universeClient.generateSettings.universeSettings.mechanismCollectionName,
+            gdxSetting.normalFontSize,
+        ) { mechanismCollectionName, _ ->
+            game.universeClient.generateSettings.universeSettings.mechanismCollectionName = mechanismCollectionName
+        }
+        table.add(mechanismSelectBox)
 
         table.row().space(10f)
 

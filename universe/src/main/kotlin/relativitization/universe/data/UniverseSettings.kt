@@ -43,7 +43,7 @@ data class UniverseSettings(
 @Serializable
 data class MutableUniverseSettings(
     var universeName: String = "Test",
-    val mechanismCollectionName: String = "Default",
+    var mechanismCollectionName: String = "Default",
     var speedOfLight: Int = 1,
     var tDim: Int = 8,
     var xDim: Int = 2,
