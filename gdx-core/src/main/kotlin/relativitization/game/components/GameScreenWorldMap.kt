@@ -110,8 +110,6 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
         scrollPane.scrollX = oldScrollX * gdxSetting.zoomFactor
         scrollPane.scrollY = oldScrollY * gdxSetting.zoomFactor
         scrollPane.updateVisualScroll()
-
-        println("scroll pane width: ${scrollPane.width} ")
     }
 
     fun zoomOut() {
@@ -122,12 +120,9 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
         scrollPane.scrollX = oldScrollX / gdxSetting.zoomFactor
         scrollPane.scrollY = oldScrollY / gdxSetting.zoomFactor
         scrollPane.updateVisualScroll()
-
-        println("scroll pane width: ${scrollPane.width} ")
     }
 
     fun zoomToFullMap() {
-        println("scroll pane width: ${scrollPane.width} ")
         zoom = min(scrollPane.width / data3D2DProjection.width, scrollPane.height / data3D2DProjection.height)
         updateGroup()
     }
