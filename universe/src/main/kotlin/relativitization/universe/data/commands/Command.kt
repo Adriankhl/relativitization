@@ -29,9 +29,24 @@ sealed class Command {
     abstract fun canSend(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean
 
     /**
+     * Check if can send and have command
+     */
+    fun canSendAndHaveCommand(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean {
+        return Command.haveCommand(universeSettings) && canSend(playerData, universeSettings)
+    }
+
+
+    /**
      * Check if the player can receive the command
      */
     abstract fun canExecute(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean
+
+    /**
+     * Check if can execute and have command
+     */
+    fun canExecuteAndHaveCommand(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean {
+        return Command.haveCommand(universeSettings) && canExecute(playerData, universeSettings)
+    }
 
     /**
      * Check to see if id match
@@ -56,7 +71,7 @@ sealed class Command {
      * Check and execute
      */
     fun checkAndExecute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
-        return if (checkId(playerData) && canExecute(playerData, universeSettings)) {
+        return if (checkId(playerData) && canExecuteAndHaveCommand(playerData, universeSettings)) {
             execute(playerData, universeSettings)
         } else {
             val className = this::class.qualifiedName
