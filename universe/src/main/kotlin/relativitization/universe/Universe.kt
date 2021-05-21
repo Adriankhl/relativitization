@@ -11,7 +11,7 @@ import relativitization.universe.data.serializer.DataSerializer.encode
 import relativitization.universe.data.serializer.DataSerializer.decode
 import relativitization.universe.maths.grid.Grids.create3DGrid
 import relativitization.universe.maths.physics.Intervals.intDistance
-import relativitization.universe.mechanisms.MechanismCollection
+import relativitization.universe.mechanisms.MechanismCollection.mechanismProcess
 import relativitization.universe.utils.pmap
 
 import java.io.File
@@ -177,9 +177,12 @@ class Universe(private val universeData: UniverseData) {
             val commandListAtGrid: List<Command> = playerIdAtGrid.map { id ->
                 val universeData3DAtPlayer = viewMap.getValue(id)
 
-                val commandListFromPlayer: List<Command> = MechanismCollection.mechanismList.map { mechanism ->
-                    mechanism.process(playerCollection.getPlayer(id), universeData3DAtPlayer)
-                }.flatten()
+                val commandListFromPlayer: List<Command> = mechanismProcess(
+                    playerCollection.getPlayer(id),
+                    universeData3DAtPlayer,
+                    universeData
+                )
+
 
                 commandListFromPlayer
             }.flatten()

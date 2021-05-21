@@ -1,6 +1,7 @@
 package relativitization.universe.mechanisms.events
 
 import relativitization.universe.data.MutablePlayerData
+import relativitization.universe.data.UniverseData
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.events.AutoEvent
@@ -16,7 +17,8 @@ object AutoEventCollection : Mechanism() {
 
     override fun process(
         mutablePlayerData: MutablePlayerData,
-        universeData3DAtPlayer: UniverseData3DAtPlayer
+        universeData3DAtPlayer: UniverseData3DAtPlayer,
+        universeData: UniverseData
     ): List<Command> {
         for (autoEvent in autoEventList) {
             // TODO: set add self event and generate commands for non self event
