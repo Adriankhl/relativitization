@@ -11,7 +11,7 @@ import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.physics.Int3D
 import relativitization.universe.maths.grid.Data3D2DProjection
 import relativitization.universe.maths.grid.Projections.createData3D2DProjection
-import java.awt.Color
+import kotlin.math.min
 
 class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.assets) {
     private val gdxSetting = game.gdxSetting
@@ -110,6 +110,8 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
         scrollPane.scrollX = oldScrollX * gdxSetting.zoomFactor
         scrollPane.scrollY = oldScrollY * gdxSetting.zoomFactor
         scrollPane.updateVisualScroll()
+
+        println("scroll pane width: ${scrollPane.width} ")
     }
 
     fun zoomOut() {
@@ -120,6 +122,14 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
         scrollPane.scrollX = oldScrollX / gdxSetting.zoomFactor
         scrollPane.scrollY = oldScrollY / gdxSetting.zoomFactor
         scrollPane.updateVisualScroll()
+
+        println("scroll pane width: ${scrollPane.width} ")
+    }
+
+    fun zoomToFullMap() {
+        println("scroll pane width: ${scrollPane.width} ")
+        zoom = min(scrollPane.width / data3D2DProjection.width, scrollPane.height / data3D2DProjection.height)
+        updateGroup()
     }
 
     /**

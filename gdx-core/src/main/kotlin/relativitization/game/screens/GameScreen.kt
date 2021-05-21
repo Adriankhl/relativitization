@@ -48,17 +48,30 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
         root.add(worldMapAndInfo).growX().growY()
 
         stage.addListener(object : InputListener() {
-            override fun keyDown(event: InputEvent?, keycode: Int): Boolean {
-                logger.debug("Key down code: $keycode")
-                return when (keycode) {
-                    Input.Keys.EQUALS -> {
+            override fun keyTyped(event: InputEvent?, character: Char): Boolean {
+                logger.debug("Key typed: $character")
+                return when (character) {
+                    '+' -> {
                         worldMap.zoomIn()
                         true
                     }
-                    Input.Keys.MINUS -> {
+                    '-' -> {
                         worldMap.zoomOut()
                         true
                     }
+                    '0' -> {
+                        worldMap.zoomToFullMap()
+                        true
+                    }
+                    else -> {
+                        false
+                    }
+                }
+            }
+
+            override fun keyDown(event: InputEvent?, keycode: Int): Boolean {
+                logger.debug("Key down code: $keycode")
+                return when (keycode) {
                     Input.Keys.ESCAPE -> {
                         if (worldMapAndInfo.splitAmount < worldMapAndInfo.maxSplitAmount) {
                             worldMapAndInfo.splitAmount = worldMapAndInfo.maxSplitAmount
@@ -71,7 +84,6 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
                 }
             }
         })
-
     }
 
     override fun hide() {
