@@ -3,7 +3,6 @@ package relativitization.game.utils
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.PlayerType
-import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.popsystems.CarrierType
 
 object PlayerImage {
@@ -26,18 +25,11 @@ object PlayerImage {
             it.carrierType == CarrierType.STELLAR
         }.contains(true)
 
-        if (hasStellarSystem)  {
-            if (playerData.playerType != PlayerType.NONE) {
-                val stellarImage: Image = ActorFunction.createImage(assets, "system/sun", soundVolume)
-                stellarImage.setPosition(xPos, yPos)
-                stellarImage.setSize(width, height)
-                imageList.add(stellarImage)
-            } else {
-                val stellarImage: Image = ActorFunction.createImage(assets, "system/sun", soundVolume, function)
-                stellarImage.setPosition(xPos, yPos)
-                stellarImage.setSize(width, height)
-                imageList.add(stellarImage)
-            }
+        if (hasStellarSystem && playerData.playerType != PlayerType.NONE) {
+            val stellarImage: Image = ActorFunction.createImage(assets, "system/sun", soundVolume)
+            stellarImage.setPosition(xPos, yPos)
+            stellarImage.setSize(width, height)
+            imageList.add(stellarImage)
         }
 
         if (playerData.playerType != PlayerType.NONE) {
@@ -50,10 +42,26 @@ object PlayerImage {
                 width,
                 height,
                 soundVolume,
-                function
             )
             imageList.add(playerShipImage)
         }
+
+        // Add an transparent square on top for selecting player
+        val transparentSquare: Image = ActorFunction.createImage(
+            assets,
+            "basic/white-pixel",
+            xPos,
+            yPos,
+            width,
+            height,
+            0.0f,
+            0.0f,
+            0.0f,
+            0.0f,
+            soundVolume,
+            function
+        )
+        imageList.add(transparentSquare)
 
         return imageList
     }
