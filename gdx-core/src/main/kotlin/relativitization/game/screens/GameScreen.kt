@@ -100,12 +100,12 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
         stage.clear()
 
         runBlocking {
-            while (!game.universeClient.isCacheReady.isTrue()) {
+            while (!game.universeClient.isNewDataReady.isTrue()) {
                 delay(200)
                 logger.debug("Waiting universe data")
             }
+            game.universeClient.pickLatestUniverseData3D()
         }
-        game.universeClient.updateToLatestUniverseData3D()
     }
 
 

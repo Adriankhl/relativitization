@@ -44,7 +44,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
     val isNewDataReady: CoroutineBoolean = CoroutineBoolean(false)
 
     // Current universe data 3d time
-    private lateinit var currentUniverseData3DAtPlayer: UniverseData3DAtPlayer
+    private var currentUniverseData3DAtPlayer: UniverseData3DAtPlayer = UniverseData3DAtPlayer()
 
     // Store map of universe data from description to data
     private val universeData3DMap: MutableMap<String, UniverseData3DAtPlayer> = mutableMapOf()
@@ -83,7 +83,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
                     // id == -1 means the data is invalid
                     if (universeData3DDownloaded.id != -1) {
                         universeData3DCache = universeData3DDownloaded
-                        isNewDataReady.set(false)
+                        updateUniverseData3DMap()
                     } else {
                         logger.error("run(): Can't get universe")
                     }
@@ -137,7 +137,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
     /**
      * Generate name for new universe data to store in universeData3DMap recursively
      */
-    fun universeData3DName(
+    private fun universeData3DName(
         universeData3DAtPlayer: UniverseData3DAtPlayer,
         iterateNum: Int = 0
     ): String {
@@ -160,60 +160,46 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
     /**
      * Add data cache to universeData3DMap
      */
-    suspend fun updateUniverseData3DMap() {
-        mutex.withLock {
-            if (isCacheReady.isTrue()) {
-                val time: Int = universeData3DCache.center.t
-                if (universeData3DMap.keys.contains(time)) {
-                    logger.error("universeData3DMap already has data with time $time, update it anyway")
-                }
-                universeData3DMap[time] = universeData3DCache
-                isCacheReady.set(false)
-            } else {
-                logger.debug("Cache is not ready")
-            }
-        }
+    private suspend fun updateUniverseData3DMap() {
+        val name: String = universeData3DName(universeData3DCache)
+        universeData3DMap[name] = universeData3DCache
+        isNewDataReady.set(true)
     }
 
     /**
      * Update current UniverseData3DTime to latest time available from universeData3DMap
      */
-    fun updateToLatestUniverseData3D() {
-        runBlocking {
-            updateUniverseData3DMap()
+    suspend fun pickLatestUniverseData3D() {
+        currentUniverseData3DAtPlayer = universeData3DMap.values.last()
+        isNewDataReady.set(false)
+    }
+
+    /**
+     * Pick universe data from map
+     */
+    fun pickUniverseData3D(name: String) {
+        if (universeData3DMap.keys.contains(name)) {
+            currentUniverseData3DAtPlayer = universeData3DMap.getValue(name)
+        } else {
+            logger.error("Picking non existing universeData")
         }
-        currentUniverseData3DTime = universeData3DMap.keys.maxOrNull() ?: -1
+    }
+
+
+    /**
+     * Get all available time from map
+     */
+    fun getAvailableData3DName(): List<String> {
+        return universeData3DMap.keys.toList()
     }
 
     /**
      * Get universe data 3D at current time
      */
     fun getUniverseData3D(): UniverseData3DAtPlayer {
-        return if (currentUniverseData3DTime != -1) {
-            universeData3DMap.getValue(currentUniverseData3DTime)
-        } else {
-            logger.error("currentUniverseData3DTime $currentUniverseData3DTime invalid, returning empty data")
-            UniverseData3DAtPlayer()
-        }
+        return currentUniverseData3DAtPlayer
     }
 
-    /**
-     * Get all available time from map
-     */
-    fun getAvailableData3DTime(): List<Int> {
-        return universeData3DMap.keys.toList()
-    }
-
-    /**
-     * Set the time if available
-     */
-    fun setCurrentUniverseData3DTime(time: Int) {
-        if (getAvailableData3DTime().contains(time)) {
-            currentUniverseData3DTime = time
-        } else {
-            logger.error("Invalid setCurrentUniverseData3DTime, time = $time, available time = ${getAvailableData3DTime()}")
-        }
-    }
 
     suspend fun setUniverseClientSettings(newUniverseClientSettings: UniverseClientSettings) {
         mutex.withLock {
