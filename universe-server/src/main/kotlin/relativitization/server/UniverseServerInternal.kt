@@ -77,7 +77,7 @@ class UniverseServerInternal(var universeServerSettings: UniverseServerSettings)
                 if (!waitingInput.isTrue() && !doneProcess.isTrue()) {
                     // Post-process then pre-process since the universe accept input in the middle of game turn
                     universe.postProcessUniverse(humanCommandMap, aiCommandMap)
-                    universe.preprocessUniverse()
+                    universe.preProcessUniverse()
 
                     // Clear and update the command maps and player id list
                     updateCommandMapAndIdList()

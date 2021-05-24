@@ -327,7 +327,7 @@ class Universe(private val universeData: UniverseData) {
      * Preprocess after the beginning of the turn
      * Save the latest slice and other information of the universe after that
      */
-    suspend fun preprocessUniverse() {
+    suspend fun preProcessUniverse() {
         // beginning of the turn
         processMechanism()
         processCommandMap()
