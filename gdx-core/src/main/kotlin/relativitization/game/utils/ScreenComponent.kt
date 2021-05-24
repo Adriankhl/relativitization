@@ -31,6 +31,20 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets){
      */
     fun createScrollPane(actor: Actor): ScrollPane = ActorFunction.createScrollPane(skin, actor)
 
+
+    /**
+     * Create image
+     */
+    fun createImage(
+        name: String,
+        r: Float,
+        g: Float,
+        b: Float,
+        a: Float,
+        soundVolume: Float = 0.5f,
+        function: (Image) -> Unit = {}
+    ): Image = ActorFunction.createImage(assets, name, r, g, b, a, soundVolume, function)
+
     /**
      * Create image
      */

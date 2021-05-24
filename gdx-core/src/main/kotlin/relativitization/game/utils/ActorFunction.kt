@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Touchable
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox
 import com.badlogic.gdx.scenes.scene2d.ui.Image
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox
@@ -16,6 +17,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.badlogic.gdx.utils.Array
 
 object ActorFunction {
@@ -127,6 +130,46 @@ object ActorFunction {
 
 
     /**
+     * Create an image button
+     *
+     * @param name name of the image
+     * @param function the function called when clicking this button, take this button as parameter
+     */
+    fun createImageButton(
+        assets: Assets,
+        name: String,
+        rUp: Float,
+        gUp: Float,
+        bUp: Float,
+        aUp: Float,
+        rDown: Float,
+        gDown: Float,
+        bDown: Float,
+        aDown: Float,
+        soundVolume: Float = 0.5f,
+        function: (ImageButton) -> Unit = {},
+    ): ImageButton {
+
+        val rawTexture = TextureRegionDrawable(assets.getAtlasRegion(name))
+
+        val button = ImageButton(
+            rawTexture.tint(Color(rUp, gUp, bUp, aUp)),
+            rawTexture.tint(Color(rDown, gDown, bDown, aDown))
+        )
+
+        button.addListener(object : ChangeListener() {
+            override fun changed(event: ChangeEvent, actor: Actor) {
+                val sound = assets.getSound("click1.ogg")
+                sound.play(soundVolume)
+                function(button)
+            }
+        })
+
+        return button
+    }
+
+
+    /**
      * Create label to display text
      *
      * @param text text to display
@@ -172,6 +215,7 @@ object ActorFunction {
 
         return button
     }
+
 
 
     /**
