@@ -1,11 +1,9 @@
 package relativitization.game.components
 
-import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox
 import com.badlogic.gdx.scenes.scene2d.ui.Table
-import com.badlogic.gdx.utils.Scaling
 import kotlinx.coroutines.runBlocking
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.ScreenComponent
@@ -18,6 +16,9 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<Table>(
     private val serverStatusNameAndTimeLabel: Label = createLabel("", gdxSetting.smallFontSize)
     private val serverUniverseTimeLabel: Label = createLabel("", gdxSetting.smallFontSize)
     private val timeLeftLabel: Label = createLabel("", gdxSetting.smallFontSize)
+
+    private val serverStatusTable: Table = createServerStatusLabels()
+
     private val universeDataSelectBox: SelectBox<String> = createSelectBox(
         game.universeClient.getAvailableData3DName(),
         "",
@@ -71,12 +72,13 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<Table>(
         // Set background color to blue
         table.background = assets.getBackgroundColor(0.1f, 0.1f, 0.1f, 1.0f)
 
-        table.add(addServerStatusLabels())
+        updateServerStatusLabels()
 
-        table.add(updateButton)
+        table.add(serverStatusTable)
 
-        table.add(updateToLatestButton)
+        table.add(updateButton).size(50f, 50f)
 
+        table.add(updateToLatestButton).size(50f, 50f)
     }
 
     override fun get(): Table {
@@ -94,7 +96,7 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<Table>(
         updateServerStatusLabels()
     }
 
-    private fun addServerStatusLabels(): Table {
+    private fun createServerStatusLabels(): Table {
         val nestedTable: Table = Table()
         nestedTable.add(serverStatusNameAndTimeLabel)
 
