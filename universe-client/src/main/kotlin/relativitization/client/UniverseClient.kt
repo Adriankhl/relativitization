@@ -39,15 +39,15 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
 
     // store downloaded but not yet used universe data
     private var universeData3DCache: UniverseData3DAtPlayer = UniverseData3DAtPlayer()
+    
+    // is new universe data ready
+    val isNewDataReady: CoroutineBoolean = CoroutineBoolean(false)
 
     // Current universe data 3d time
-    private var currentUniverseData3DTime: Int = -1
+    private lateinit var currentUniverseData3DAtPlayer: UniverseData3DAtPlayer
 
-    // Store map of universe data from time to data
-    private val universeData3DMap: MutableMap<Int, UniverseData3DAtPlayer> = mutableMapOf()
-
-    // whether the cache is ready to add to data map
-    val isCacheReady: CoroutineBoolean = CoroutineBoolean(false)
+    // Store map of universe data from description to data
+    private val universeData3DMap: MutableMap<String, UniverseData3DAtPlayer> = mutableMapOf()
 
     // input command list
     val commandList: MutableList<Command> = mutableListOf()
@@ -83,7 +83,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
                     // id == -1 means the data is invalid
                     if (universeData3DDownloaded.id != -1) {
                         universeData3DCache = universeData3DDownloaded
-                        isCacheReady.set(true)
+                        isNewDataReady.set(false)
                     } else {
                         logger.error("run(): Can't get universe")
                     }
@@ -128,12 +128,33 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
      * Clear the client
      */
     suspend fun clear() {
-        currentUniverseData3DTime = -1
         universeData3DMap.clear()
-        isCacheReady.set(false)
         commandList.clear()
         generateSettings = GenerateSetting()
         updatableByClient.clear()
+    }
+
+    /**
+     * Generate name for new universe data to store in universeData3DMap recursively
+     */
+    fun universeData3DName(
+        universeData3DAtPlayer: UniverseData3DAtPlayer,
+        iterateNum: Int = 0
+    ): String {
+        val originalName: String = universeData3DAtPlayer.universeSettings.universeName +
+                " - " + universeData3DAtPlayer.center.t
+
+        val modifiedName: String = if (iterateNum == 0) {
+            originalName
+        } else {
+            "$originalName ($iterateNum)"
+        }
+
+        return if (universeData3DMap.keys.contains(modifiedName)) {
+            universeData3DName(universeData3DAtPlayer, iterateNum + 1)
+        } else {
+            modifiedName
+        }
     }
 
     /**
