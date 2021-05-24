@@ -79,6 +79,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
             mutex.withLock {
                 serverStatus = httpGetUniverseServerStatus()
                 if (shouldUpdateCache(serverStatus)) {
+                    logger.debug("Going to update cache")
                     val universeData3DDownloaded =  httpGetUniverseData3D()
                     // id == -1 means the data is invalid
                     if (universeData3DDownloaded.id != -1) {

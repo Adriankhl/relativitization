@@ -184,4 +184,6 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets){
     ): TextField = ActorFunction.createTextField(skin, assets, default, fontSize, function)
 
     fun disableActor(actor: Actor) = ActorFunction.disableActor(actor)
+
+    fun enableActor(actor: Actor) = ActorFunction.enableActor(actor)
 }

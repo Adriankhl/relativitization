@@ -294,7 +294,7 @@ class UniverseServerInternal(var universeServerSettings: UniverseServerSettings)
         mutex.withLock {
             return if (
                 isWaiting() &&
-                universe.availableHumanPLayers().contains(universeData3DMessage.id) &&
+                availableHumanIdList.contains(universeData3DMessage.id) &&
                 humanIdPasswordMap.keys.contains(universeData3DMessage.id) &&
                 humanIdPasswordMap.getValue(universeData3DMessage.id) == universeData3DMessage.password
             ) {

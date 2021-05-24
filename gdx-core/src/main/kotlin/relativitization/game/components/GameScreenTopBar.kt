@@ -89,6 +89,9 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<Table>(
 
     override fun update() {
         updateServerStatusLabels()
+        runBlocking {
+            updateUpdateToLatestButton()
+        }
         updatableByTopBar.forEach { it() }
     }
 
@@ -97,6 +100,9 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<Table>(
      */
     fun autoUpdate() {
         updateServerStatusLabels()
+        runBlocking {
+            updateUpdateToLatestButton()
+        }
     }
 
     private fun createServerStatusLabels(): Table {
@@ -140,6 +146,19 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<Table>(
         timeLeftLabel.setText(
             "Input time left: $timeLeftText"
         )
+    }
+
+    /**
+     * Set updateToLatestButton
+     */
+    private suspend fun updateUpdateToLatestButton() {
+        if (game.universeClient.isNewDataReady.isTrue()) {
+            enableActor(updateToLatestButton)
+            updateToLatestButton.setColor(1.0f, 1.0f, 1.0f, 1.0f)
+        } else {
+            disableActor(updateToLatestButton)
+            updateToLatestButton.setColor(1.0f, 1.0f, 1.0f, 0.5f)
+        }
     }
 
     /**

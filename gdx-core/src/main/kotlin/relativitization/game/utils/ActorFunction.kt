@@ -316,4 +316,10 @@ object ActorFunction {
         actor.touchable = Touchable.disabled
         actor.color = Color.GRAY
     }
+
+
+    fun enableActor(actor: Actor) {
+        actor.touchable = Touchable.enabled
+        actor.color = Color.WHITE
+    }
 }
