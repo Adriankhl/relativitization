@@ -3,6 +3,7 @@ package relativitization.game.utils
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox
 import com.badlogic.gdx.scenes.scene2d.ui.Image
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox
@@ -76,6 +77,44 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets){
         soundVolume: Float = 0.5f,
         function: (Image) -> Unit = {}
     ): Image = ActorFunction.createImage(assets, name, xPos, yPos, width, height, r, g, b, a, soundVolume, function)
+
+    /**
+     * Create image button
+     */
+    fun createImageButton(
+        name: String,
+        rUp: Float,
+        gUp: Float,
+        bUp: Float,
+        aUp: Float,
+        rDown: Float,
+        gDown: Float,
+        bDown: Float,
+        aDown: Float,
+        rChecked: Float,
+        gChecked: Float,
+        bChecked: Float,
+        aChecked: Float,
+        soundVolume: Float = 0.5f,
+        function: (ImageButton) -> Unit = {},
+    ): ImageButton = ActorFunction.createImageButton(
+        assets,
+        name,
+        rUp,
+        gUp,
+        bUp,
+        aUp,
+        rDown,
+        gDown,
+        bDown,
+        aDown,
+        rChecked,
+        gChecked,
+        bChecked,
+        aChecked,
+        soundVolume,
+        function
+    )
 
 
     /**

@@ -146,15 +146,19 @@ object ActorFunction {
         gDown: Float,
         bDown: Float,
         aDown: Float,
+        rChecked: Float,
+        gChecked: Float,
+        bChecked: Float,
+        aChecked: Float,
         soundVolume: Float = 0.5f,
         function: (ImageButton) -> Unit = {},
     ): ImageButton {
-
         val rawTexture = TextureRegionDrawable(assets.getAtlasRegion(name))
 
         val button = ImageButton(
             rawTexture.tint(Color(rUp, gUp, bUp, aUp)),
-            rawTexture.tint(Color(rDown, gDown, bDown, aDown))
+            rawTexture.tint(Color(rDown, gDown, bDown, aDown)),
+            rawTexture.tint(Color(rChecked, gChecked, bChecked, aChecked)),
         )
 
         button.addListener(object : ChangeListener() {

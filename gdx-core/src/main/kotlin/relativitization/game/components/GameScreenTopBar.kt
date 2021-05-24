@@ -1,6 +1,7 @@
 package relativitization.game.components
 
 import com.badlogic.gdx.scenes.scene2d.ui.Image
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox
 import com.badlogic.gdx.scenes.scene2d.ui.Table
@@ -22,7 +23,22 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<Table>(
     ) { name, _ ->
         game.universeClient.pickUniverseData3D(name)
     }
-    private val updateButton: Image = createImage("basic/white-circle-arrow", 0.0f, 0.0f, 0.0f, 1.0f) {
+    private val updateButton: ImageButton = createImageButton(
+        "basic/white-circle-arrow",
+        1.0f,
+        1.0f,
+        1.0f,
+        1.0f,
+        1.0f,
+        1.0f,
+        1.0f,
+        0.7f,
+        1.0f,
+        1.0f,
+        1.0f,
+        1.0f,
+        gdxSetting.soundEffectsVolume
+    ) {
         update()
     }
 
