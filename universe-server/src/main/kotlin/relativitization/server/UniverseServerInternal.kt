@@ -75,7 +75,7 @@ class UniverseServerInternal(var universeServerSettings: UniverseServerSettings)
                 }
 
                 if (!waitingInput.isTrue() && !doneProcess.isTrue()) {
-                    // Post-process then pre-process since the universe accept input in the middle of game turn
+                   // Post-process then pre-process since the universe accept input in the middle of game turn
                     universe.postProcessUniverse(humanCommandMap, aiCommandMap)
                     universe.preProcessUniverse()
 
@@ -85,9 +85,11 @@ class UniverseServerInternal(var universeServerSettings: UniverseServerSettings)
                     // Update current universe time
                     currentUniverseTime = universe.getCurrentUniverseTime()
 
-                    // Clear inactive (no input received) player
+                    // Clear inactive (no input received) player or add back inactive to wait for their input
                     if (universeServerSettings.clearInactivePerTurn) {
                         clearInactive()
+                    } else {
+                        addInactive()
                     }
 
                     doneProcess.set(true)
@@ -156,6 +158,13 @@ class UniverseServerInternal(var universeServerSettings: UniverseServerSettings)
         for (id in toRemoveIdList) {
             humanIdPasswordMap.remove(id)
         }
+    }
+
+    /**
+     * Add back inactive player to available human player if the player is available
+     */
+    private fun addInactive() {
+        availableHumanIdList.addAll(availableIdList.filter { humanIdPasswordMap.keys.contains(it) })
     }
 
     /**
