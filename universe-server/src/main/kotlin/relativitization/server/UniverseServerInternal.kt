@@ -316,6 +316,7 @@ class UniverseServerInternal(var universeServerSettings: UniverseServerSettings)
         mutex.withLock {
             return if (isWaiting() && !humanIdPasswordMap.keys.contains(registerPlayerMessage.id)) {
                 humanIdPasswordMap[registerPlayerMessage.id] = registerPlayerMessage.password
+                availableHumanIdList.add(registerPlayerMessage.id)
                 true
             } else {
                 false
