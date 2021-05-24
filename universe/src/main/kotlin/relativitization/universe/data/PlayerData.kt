@@ -37,7 +37,7 @@ data class PlayerData(
     val name: String = "Default Player",
     val playerType: PlayerType = PlayerType.AI,
     val int4D: Int4D = Int4D(0, 0, 0, 0),
-    val attachedPlayerId: Int = -1,
+    val attachedPlayerId: Int = id,
     val int4DHistory: List<Int4D> = listOf(),
     val playerInternalData: PlayerInternalData = PlayerInternalData(),
     val newPlayerList: List<PlayerInternalData> = listOf()
@@ -49,7 +49,7 @@ data class MutablePlayerData(
     var name: String = "Default Player",
     var playerType: PlayerType = PlayerType.AI,
     var int4D: MutableInt4D = MutableInt4D(0, 0, 0, 0),
-    var attachedPlayerId: Int = -1,
+    var attachedPlayerId: Int = id,
     val int4DHistory: MutableList<Int4D> = mutableListOf(),
     var playerInternalData: MutablePlayerInternalData = MutablePlayerInternalData(),
     val newPlayerList: MutableList<PlayerInternalData> = mutableListOf()
