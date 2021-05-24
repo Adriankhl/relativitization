@@ -5,6 +5,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox
 import com.badlogic.gdx.scenes.scene2d.ui.Table
+import com.badlogic.gdx.utils.Scaling
+import kotlinx.coroutines.runBlocking
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.ScreenComponent
 
@@ -23,6 +25,7 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<Table>(
     ) { name, _ ->
         game.universeClient.pickUniverseData3D(name)
     }
+
     private val updateButton: ImageButton = createImageButton(
         "basic/white-circle-arrow",
         1.0f,
@@ -42,6 +45,28 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<Table>(
         update()
     }
 
+    private val updateToLatestButton: ImageButton = createImageButton(
+        "basic/white-rightmost-arrow",
+        1.0f,
+        1.0f,
+        1.0f,
+        1.0f,
+        1.0f,
+        1.0f,
+        1.0f,
+        0.7f,
+        1.0f,
+        1.0f,
+        1.0f,
+        1.0f,
+        gdxSetting.soundEffectsVolume
+    ) {
+        runBlocking {
+            game.universeClient.pickLatestUniverseData3D()
+        }
+        update()
+    }
+
     init {
         // Set background color to blue
         table.background = assets.getBackgroundColor(0.1f, 0.1f, 0.1f, 1.0f)
@@ -49,6 +74,9 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<Table>(
         table.add(addServerStatusLabels())
 
         table.add(updateButton)
+
+        table.add(updateToLatestButton)
+
     }
 
     override fun get(): Table {
