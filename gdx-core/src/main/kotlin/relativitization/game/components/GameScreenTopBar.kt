@@ -13,6 +13,8 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<Table>(
     private val gdxSetting = game.gdxSetting
     private val table: Table = Table()
 
+    val updatableByTopBar: MutableList<() -> Unit> = mutableListOf()
+
     private val serverStatusNameAndTimeLabel: Label = createLabel("", gdxSetting.smallFontSize)
     private val serverUniverseTimeLabel: Label = createLabel("", gdxSetting.smallFontSize)
     private val timeLeftLabel: Label = createLabel("", gdxSetting.smallFontSize)
@@ -87,6 +89,7 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<Table>(
 
     override fun update() {
         updateServerStatusLabels()
+        updatableByTopBar.forEach { it() }
     }
 
     /**

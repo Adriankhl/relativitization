@@ -30,9 +30,12 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
 
 
     init {
-        // update top bar status label request render when client is updated
+        // update top bar status label and request render when client is updated
         game.universeClient.updatableByClient.add { topBar.autoUpdate() }
         game.universeClient.updatableByClient.add { Gdx.graphics.requestRendering() }
+
+        // Add updatable by top bar
+        topBar.updatableByTopBar.add { worldMap.update() }
     }
 
     override fun show() {
