@@ -149,7 +149,12 @@ class PlayerCollection(private val xDim: Int, private val yDim: Int, private val
      */
     fun addNewPlayerFromPlayerData(universeState: UniverseState) {
         playerMap.forEach { (_, playerData) ->
-            playerData.newPlayerList.forEach { newPlayerInternalData ->
+            playerData.newPlayerList.forEach { mutableNewPlayerInternalData ->
+
+                // Copy parent double4D to ensure same location
+                mutableNewPlayerInternalData.physicsData.double4D = copy(playerData.playerInternalData.physicsData.double4D)
+
+                val newPlayerInternalData: PlayerInternalData = copy(mutableNewPlayerInternalData)
                 val id = universeState.getNewId()
                 val name = randomPlayerName(newPlayerInternalData)
                 val newPlayerData: PlayerData = PlayerData(

@@ -278,6 +278,7 @@ data class MutableUniverseData4D(
         // Modified player data double 4D if it doesn't fit int4D
         val int4D = mutablePlayerData.int4D
         if (!mutablePlayerData.playerInternalData.physicsData.double4D.atInt4D(int4D)) {
+            logger.debug("Add player: force changing new player double4D")
             mutablePlayerData.playerInternalData.physicsData.double4D = int4D.toMutableDouble4D()
         }
 

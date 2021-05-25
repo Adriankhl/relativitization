@@ -23,6 +23,10 @@ data class MutableInt4D(var t: Int, var x: Int, var y: Int, var z: Int) {
 @Serializable
 data class Double4D(val t: Double, val x: Double, val y: Double, val z: Double) {
     fun toInt4D() = Int4D(t.toInt(), x.toInt(), y.toInt(), z.toInt())
+
+    fun atInt4D(int4D: Int4D): Boolean {
+        return (t.toInt() == int4D.t) && (x.toInt() == int4D.x) && (y.toInt() == int4D.y) && (z.toInt() == int4D.z)
+    }
 }
 
 @Serializable

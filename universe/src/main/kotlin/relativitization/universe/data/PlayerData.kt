@@ -52,7 +52,7 @@ data class MutablePlayerData(
     var attachedPlayerId: Int = id,
     val int4DHistory: MutableList<Int4D> = mutableListOf(),
     var playerInternalData: MutablePlayerInternalData = MutablePlayerInternalData(),
-    val newPlayerList: MutableList<PlayerInternalData> = mutableListOf()
+    val newPlayerList: MutableList<MutablePlayerInternalData> = mutableListOf()
 )
 
 /**
