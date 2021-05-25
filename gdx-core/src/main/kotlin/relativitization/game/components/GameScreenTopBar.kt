@@ -4,6 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox
 import com.badlogic.gdx.scenes.scene2d.ui.Table
+import com.badlogic.gdx.utils.Array
 import kotlinx.coroutines.runBlocking
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.ScreenComponent
@@ -19,11 +20,51 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<Table>(
     private val serverUniverseTimeLabel: Label = createLabel("", gdxSetting.smallFontSize)
     private val timeLeftLabel: Label = createLabel("", gdxSetting.smallFontSize)
 
-    private val serverStatusTable: Table = createServerStatusLabels()
+    private val serverStatusTable: Table = createServerStatusTable()
 
     private val currentUniverseDataLabel: Label = createLabel("", gdxSetting.smallFontSize)
 
+    // button to select previous time
+    private val previousButton: ImageButton = createImageButton(
+        "basic/white-left-arrow",
+        1.0f,
+        1.0f,
+        1.0f,
+        1.0f,
+        1.0f,
+        1.0f,
+        1.0f,
+        0.7f,
+        1.0f,
+        1.0f,
+        1.0f,
+        1.0f,
+        gdxSetting.soundEffectsVolume
+    ) {
+        game.universeClient.previousUniverseData3D()
+        update()
+    }
 
+    // button to select next time
+    private val nextButton: ImageButton = createImageButton(
+        "basic/white-right-arrow",
+        1.0f,
+        1.0f,
+        1.0f,
+        1.0f,
+        1.0f,
+        1.0f,
+        1.0f,
+        0.7f,
+        1.0f,
+        1.0f,
+        1.0f,
+        1.0f,
+        gdxSetting.soundEffectsVolume
+    ) {
+        game.universeClient.nextUniverseData3D()
+        update()
+    }
 
     private val universeDataSelectBox: SelectBox<String> = createSelectBox(
         game.universeClient.getAvailableData3DName(),
@@ -32,6 +73,8 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<Table>(
     ) { name, _ ->
         game.universeClient.pickUniverseData3D(name)
     }
+
+    private val currentUniverseDataTable: Table =  createCurrentUniverseDataTable()
 
     private val updateButton: ImageButton = createImageButton(
         "basic/white-circle-arrow",
@@ -82,6 +125,8 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<Table>(
 
         table.add(serverStatusTable)
 
+        table.add(currentUniverseDataTable)
+
         table.add(updateButton).size(50f * gdxSetting.imageScale, 50f * gdxSetting.imageScale)
 
         table.add(updateToLatestButton).size(50f * gdxSetting.imageScale, 50f * gdxSetting.imageScale)
@@ -93,9 +138,11 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<Table>(
 
     override fun update() {
         updateServerStatusLabels()
+        updateCurrentUniverseDataLabel()
         runBlocking {
             updateUpdateToLatestButton()
         }
+        updateUniverseDataSelectionBox()
         updatableByTopBar.forEach { it() }
     }
 
@@ -109,7 +156,10 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<Table>(
         }
     }
 
-    private fun createServerStatusLabels(): Table {
+    /**
+     * Create a table to display server status
+     */
+    private fun createServerStatusTable(): Table {
         val nestedTable: Table = Table()
         nestedTable.add(serverStatusNameAndTimeLabel)
 
@@ -122,6 +172,37 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<Table>(
         nestedTable.add(timeLeftLabel)
 
         return nestedTable
+    }
+
+    /**
+     * Create a table for controlling time slice
+     */
+    private fun createCurrentUniverseDataTable(): Table {
+        val nestedTable: Table = Table()
+
+        nestedTable.add(currentUniverseDataLabel)
+
+        nestedTable.row()
+
+        nestedTable.add(previousButton).size(50f * gdxSetting.imageScale, 50f * gdxSetting.imageScale)
+
+        nestedTable.add(nextButton).size(50f * gdxSetting.imageScale, 50f * gdxSetting.imageScale)
+
+        nestedTable.row()
+
+        nestedTable.add(universeDataSelectBox)
+
+        return nestedTable
+    }
+
+    /**
+     * Update the text label showing the current time slice
+     */
+    private fun updateCurrentUniverseDataLabel() {
+        val currentUniverseName: String = game.universeClient.getUniverseData3D().universeSettings.universeName
+        val currentUniverseTime: Int = game.universeClient.getUniverseData3D().center.t
+
+        currentUniverseDataLabel.setText("$currentUniverseName - $currentUniverseTime")
     }
 
     /**
@@ -168,5 +249,8 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<Table>(
     /**
      * Update universeDataSelection Box
      */
+    private fun updateUniverseDataSelectionBox() {
+        universeDataSelectBox.items = Array(game.universeClient.getAvailableData3DName().toTypedArray())
+    }
 
 }
