@@ -5,7 +5,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.ScreenComponent
 
-class GameScreenInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.assets) {
+class GameScreenInfo(
+    val game: RelativitizationGame,
+    val worldMap: GameScreenWorldMap
+) : ScreenComponent<ScrollPane>(game.assets) {
     private val gdxSetting = game.gdxSetting
     private val table: Table = Table()
     private val scrollPane: ScrollPane = createScrollPane(table)
@@ -23,5 +26,10 @@ class GameScreenInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPan
     }
 
     override fun update() {
+    }
+
+    fun updateAll() {
+        update()
+        worldMap.update()
     }
 }

@@ -15,6 +15,9 @@ import kotlin.math.min
 
 class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.assets) {
     private val gdxSetting = game.gdxSetting
+
+    lateinit var updateInfo: () -> Unit
+
     private val group: Group = Group()
     private val scrollPane: ScrollPane = createScrollPane(group)
     private var data3D2DProjection: Data3D2DProjection = update3D2DProjection()

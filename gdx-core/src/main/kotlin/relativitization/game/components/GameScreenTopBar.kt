@@ -10,11 +10,13 @@ import relativitization.game.RelativitizationGame
 import relativitization.game.utils.ScreenComponent
 
 
-class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<Table>(game.assets) {
+class GameScreenTopBar(
+    val game: RelativitizationGame,
+    val worldMap: GameScreenWorldMap,
+    val info: GameScreenInfo
+    ) : ScreenComponent<Table>(game.assets) {
     private val gdxSetting = game.gdxSetting
     private val table: Table = Table()
-
-    val updatableByTopBar: MutableList<() -> Unit> = mutableListOf()
 
     private val serverStatusNameAndTimeLabel: Label = createLabel("", gdxSetting.smallFontSize)
     private val serverUniverseTimeLabel: Label = createLabel("", gdxSetting.smallFontSize)
@@ -157,7 +159,8 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<Table>(
      */
     fun updateAll() {
         update()
-        updatableByTopBar.forEach { it() }
+        worldMap.update()
+        info.update()
     }
 
     /**
