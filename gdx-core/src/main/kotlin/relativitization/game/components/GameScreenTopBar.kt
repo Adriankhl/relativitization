@@ -72,6 +72,7 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<Table>(
         gdxSetting.smallFontSize
     ) { name, _ ->
         game.universeClient.pickUniverseData3D(name)
+        update()
     }
 
     private val currentUniverseDataTable: Table =  createCurrentUniverseDataTable()
@@ -123,9 +124,11 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<Table>(
 
         updateServerStatusLabels()
 
-        table.add(serverStatusTable)
+        updateCurrentUniverseDataLabel()
 
-        table.add(currentUniverseDataTable)
+        table.add(serverStatusTable).pad(10f)
+
+        table.add(currentUniverseDataTable).pad(10f)
 
         table.add(updateButton).size(50f * gdxSetting.imageScale, 50f * gdxSetting.imageScale)
 
@@ -180,17 +183,17 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<Table>(
     private fun createCurrentUniverseDataTable(): Table {
         val nestedTable: Table = Table()
 
-        nestedTable.add(currentUniverseDataLabel)
+        nestedTable.add(currentUniverseDataLabel).colspan(2)
 
         nestedTable.row()
 
-        nestedTable.add(previousButton).size(50f * gdxSetting.imageScale, 50f * gdxSetting.imageScale)
+        nestedTable.add(previousButton).size(25f * gdxSetting.imageScale, 25f * gdxSetting.imageScale)
 
-        nestedTable.add(nextButton).size(50f * gdxSetting.imageScale, 50f * gdxSetting.imageScale)
+        nestedTable.add(nextButton).size(25f * gdxSetting.imageScale, 25f * gdxSetting.imageScale)
 
         nestedTable.row()
 
-        nestedTable.add(universeDataSelectBox)
+        nestedTable.add(universeDataSelectBox).colspan(2)
 
         return nestedTable
     }
@@ -202,7 +205,7 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<Table>(
         val currentUniverseName: String = game.universeClient.getUniverseData3D().universeSettings.universeName
         val currentUniverseTime: Int = game.universeClient.getUniverseData3D().center.t
 
-        currentUniverseDataLabel.setText("$currentUniverseName - $currentUniverseTime")
+        currentUniverseDataLabel.setText("Current data: $currentUniverseName - $currentUniverseTime")
     }
 
     /**
