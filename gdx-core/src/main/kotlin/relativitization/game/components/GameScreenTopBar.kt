@@ -196,13 +196,13 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<Table>(
 
         nestedTable.add(currentUniverseDataLabel).colspan(3)
 
-        nestedTable.row()
+        nestedTable.row().space(10f)
 
-        nestedTable.add(previousButton).size(25f * gdxSetting.imageScale, 25f * gdxSetting.imageScale)
+        nestedTable.add(previousButton).size(30f * gdxSetting.imageScale, 30f * gdxSetting.imageScale)
 
         nestedTable.add(universeDataSelectBox)
 
-        nestedTable.add(nextButton).size(25f * gdxSetting.imageScale, 25f * gdxSetting.imageScale)
+        nestedTable.add(nextButton).size(30f * gdxSetting.imageScale, 30f * gdxSetting.imageScale)
 
         return nestedTable
     }
