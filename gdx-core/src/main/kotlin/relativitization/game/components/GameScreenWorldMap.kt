@@ -155,7 +155,28 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
             group.addActorBefore(image, square)
             selectSquare[int3D] = square
         } else {
-            clearAllSelectedInt3D()
+            // clear and select new int3D if no already selected
+            if (!selectSquare.containsKey(int3D)) {
+                clearAllSelectedInt3D()
+
+                game.universeClient.selectedInt3Ds.add(int3D)
+                val square = createImage(
+                    "basic/white-square-boundary",
+                    image.x,
+                    image.y,
+                    image.width,
+                    image.height,
+                    0.0f,
+                    0.0f,
+                    1.0f,
+                    1.0f,
+                    gdxSetting.soundEffectsVolume
+                )
+                group.addActorBefore(image, square)
+                selectSquare[int3D] = square
+            } else {
+                clearAllSelectedInt3D()
+            }
         }
     }
 
