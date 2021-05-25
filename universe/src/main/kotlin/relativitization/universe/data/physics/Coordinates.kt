@@ -16,6 +16,7 @@ data class MutableInt4D(var t: Int, var x: Int, var y: Int, var z: Int) {
     constructor(mutableInt4D: MutableInt4D) : this(mutableInt4D.t, mutableInt4D.x, mutableInt4D.y, mutableInt4D.z)
 
     fun toMutableInt3D() = MutableInt3D(x, y, z)
+    fun toMutableDouble4D() = MutableDouble4D(t.toDouble(), x.toDouble(), y.toDouble(), z.toDouble())
     fun toDouble4D() = Double4D(t.toDouble(), x.toDouble(), y.toDouble(), z.toDouble())
 }
 
@@ -27,6 +28,9 @@ data class Double4D(val t: Double, val x: Double, val y: Double, val z: Double) 
 @Serializable
 data class MutableDouble4D(var t: Double, var x: Double, var y: Double, var z: Double) {
     fun toMutableInt4D() = MutableInt4D(t.toInt(), x.toInt(), y.toInt(), z.toInt())
+    fun atInt4D(int4D: MutableInt4D): Boolean {
+        return (t.toInt() == int4D.t) && (x.toInt() == int4D.x) && (y.toInt() == int4D.y) && (z.toInt() == int4D.z)
+    }
 }
 
 @Serializable

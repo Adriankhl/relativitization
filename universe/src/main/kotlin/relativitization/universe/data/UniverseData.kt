@@ -275,6 +275,12 @@ data class MutableUniverseData4D(
     fun addPlayerData(mutablePlayerData: MutablePlayerData, currentTime: Int) {
         val tSize: Int = playerData4D.size
 
+        // Modified player data double 4D if it doesn't fit int4D
+        val int4D = mutablePlayerData.int4D
+        if (!mutablePlayerData.playerInternalData.physicsData.double4D.atInt4D(int4D)) {
+            mutablePlayerData.playerInternalData.physicsData.double4D = int4D.toMutableDouble4D()
+        }
+
         playerData4D.getOrElse(mutablePlayerData.int4D.t - currentTime + tSize - 1) {
             logger.error("Wrong int4D ${mutablePlayerData.int4D}")
             listOf()
