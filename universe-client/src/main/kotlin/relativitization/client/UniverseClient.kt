@@ -175,6 +175,32 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
         isNewDataReady.set(false)
     }
 
+    fun nextUniverseData3D() {
+        if (universeData3DMap.values.contains(currentUniverseData3DAtPlayer)) {
+            val currentIndex = universeData3DMap.values.indexOf(currentUniverseData3DAtPlayer)
+            if (universeData3DMap.values.indices.contains(currentIndex + 1)) {
+                currentUniverseData3DAtPlayer = universeData3DMap.values.elementAt(currentIndex + 1)
+            } else {
+                logger.debug("No next data")
+            }
+        } else {
+            logger.error("No data 3D index")
+        }
+    }
+
+    fun previousUniverseData3D() {
+        if (universeData3DMap.values.contains(currentUniverseData3DAtPlayer)) {
+            val currentIndex = universeData3DMap.values.indexOf(currentUniverseData3DAtPlayer)
+            if (universeData3DMap.values.indices.contains(currentIndex - 1)) {
+                currentUniverseData3DAtPlayer = universeData3DMap.values.elementAt(currentIndex - 1)
+            } else {
+                logger.debug("No previous data")
+            }
+        } else {
+            logger.error("No data 3D index")
+        }
+    }
+
     /**
      * Pick universe data from map
      */

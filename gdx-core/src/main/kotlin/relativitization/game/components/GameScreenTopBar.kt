@@ -21,6 +21,10 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<Table>(
 
     private val serverStatusTable: Table = createServerStatusLabels()
 
+    private val currentUniverseDataLabel: Label = createLabel("", gdxSetting.smallFontSize)
+
+
+
     private val universeDataSelectBox: SelectBox<String> = createSelectBox(
         game.universeClient.getAvailableData3DName(),
         "",
@@ -78,9 +82,9 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<Table>(
 
         table.add(serverStatusTable)
 
-        table.add(updateButton).size(50f, 50f)
+        table.add(updateButton).size(50f * gdxSetting.imageScale, 50f * gdxSetting.imageScale)
 
-        table.add(updateToLatestButton).size(50f, 50f)
+        table.add(updateToLatestButton).size(50f * gdxSetting.imageScale, 50f * gdxSetting.imageScale)
     }
 
     override fun get(): Table {
