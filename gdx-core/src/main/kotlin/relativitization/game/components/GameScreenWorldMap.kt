@@ -23,8 +23,11 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
     private var data3D2DProjection: Data3D2DProjection = update3D2DProjection()
     private var zoom: Float = 1.0f
 
-    private var selectCircle: MutableMap<Int, Actor> = mutableMapOf()
-    private var selectSquare: MutableMap<Int3D, Actor> = mutableMapOf()
+    private val selectCircle: MutableMap<Int, Actor> = mutableMapOf()
+    private val selectSquare: MutableMap<Int3D, Actor> = mutableMapOf()
+
+    private val playerSquareActorMap: MutableMap<Int, Actor> = mutableMapOf()
+    private val int3DActorMap: MutableMap<Int3D, Actor> = mutableMapOf()
 
     init {
         scrollPane.fadeScrollBars = false
@@ -43,6 +46,10 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
 
     fun clear() {
         group.clear()
+        selectSquare.clear()
+        selectCircle.clear()
+        playerSquareActorMap.clear()
+        int3DActorMap.clear()
     }
 
     fun update3D2DProjection(): Data3D2DProjection {
@@ -66,22 +73,22 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
             for (y in data3D2DProjection.yBegin..data3D2DProjection.yEnd) {
                 for (z in data3D2DProjection.zBegin..data3D2DProjection.zEnd) {
                     val gridRectangle = data3D2DProjection.int3DToRectangle(Int3D(x, y, z))
-                    group.addActor(
-                        createImage(
-                            "basic/white-pixel",
-                            gridRectangle.xPos.toFloat() * zoom,
-                            gridRectangle.yPos.toFloat() * zoom,
-                            gridRectangle.width.toFloat() * zoom,
-                            gridRectangle.height.toFloat() * zoom,
-                            1.0f,
-                            1.0f,
-                            1.0f,
-                            0.4f,
-                            gdxSetting.soundEffectsVolume
-                        ) {
-                            selectInt3D(Int3D(x, y, z), it)
-                        }
-                    )
+                    val image = createImage(
+                        "basic/white-pixel",
+                        gridRectangle.xPos.toFloat() * zoom,
+                        gridRectangle.yPos.toFloat() * zoom,
+                        gridRectangle.width.toFloat() * zoom,
+                        gridRectangle.height.toFloat() * zoom,
+                        1.0f,
+                        1.0f,
+                        1.0f,
+                        0.4f,
+                        gdxSetting.soundEffectsVolume
+                    ) {
+                        selectInt3D(Int3D(x, y, z), it)
+                    }
+                    group.addActor(image)
+                    int3DActorMap[Int3D(x, y, z)] = image
                 }
             }
         }
@@ -93,7 +100,7 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
             val playerRectangle = data3D2DProjection.data3DToRectangle(int3D, attachedId, id)
             println("player rectangle: $playerRectangle")
 
-            getPlayerImages(
+            val images = getPlayerImages(
                 game.universeClient.getUniverseData3D().get(id),
                 assets,
                 playerRectangle.xPos.toFloat() * zoom,
@@ -103,10 +110,15 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
                 gdxSetting.soundEffectsVolume,
             ) {
                 selectPlayer(id, it)
-            }.forEach { group.addActor(it) }
+            }
+
+            images.forEach { group.addActor(it) }
+            playerSquareActorMap[id] = images.last()
         }
 
         scrollPane.actor = group
+
+        drawSelected()
     }
 
     fun zoomIn() {
@@ -132,6 +144,71 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
     fun zoomToFullMap() {
         zoom = min(scrollPane.width / data3D2DProjection.width, scrollPane.height / data3D2DProjection.height)
         updateGroup()
+    }
+
+    /**
+     * Draw selected int3D and player
+     */
+    fun drawSelected() {
+        selectSquare.clear()
+        selectCircle.clear()
+        for (id in game.universeClient.selectedPlayerIds) {
+            if (playerSquareActorMap.containsKey(id)) {
+                if (id == game.universeClient.firstSelectedPlayerId) {
+                    val image = playerSquareActorMap.getValue(id)
+                    val circle = createImage(
+                        "basic/white-ring",
+                        image.x,
+                        image.y,
+                        image.width,
+                        image.height,
+                        0.0f,
+                        1.0f,
+                        0.0f,
+                        1.0f,
+                        gdxSetting.soundEffectsVolume
+                    )
+                    group.addActorBefore(image, circle)
+                    selectCircle[id] = circle
+                }
+            } else {
+                val image = playerSquareActorMap.getValue(id)
+                val circle = createImage(
+                    "basic/white-ring",
+                    image.x,
+                    image.y,
+                    image.width,
+                    image.height,
+                    1.0f,
+                    0.0f,
+                    0.0f,
+                    1.0f,
+                    gdxSetting.soundEffectsVolume
+                )
+                group.addActorBefore(image, circle)
+                selectCircle[id] = circle
+            }
+        }
+
+        for (int3D in game.universeClient.selectedInt3Ds) {
+            if (int3DActorMap.containsKey(int3D)) {
+                val image = int3DActorMap.getValue(int3D)
+                val square = createImage(
+                    "basic/white-square-boundary",
+                    image.x,
+                    image.y,
+                    image.width,
+                    image.height,
+                    0.0f,
+                    0.0f,
+                    1.0f,
+                    1.0f,
+                    gdxSetting.soundEffectsVolume
+                )
+                group.addActorBefore(image, square)
+                selectSquare[int3D] = square
+            }
+        }
     }
 
     /**
