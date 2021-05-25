@@ -160,6 +160,27 @@ class GameScreenTopBar(
         worldMap.zoomOut()
     }
 
+    private val uploadButton: ImageButton = createImageButton(
+        "basic/white-upload",
+        1.0f,
+        1.0f,
+        1.0f,
+        1.0f,
+        1.0f,
+        1.0f,
+        1.0f,
+        0.7f,
+        1.0f,
+        1.0f,
+        1.0f,
+        1.0f,
+        gdxSetting.soundEffectsVolume
+    ) {
+        runBlocking {
+            game.universeClient.httpPostHumanInput()
+        }
+    }
+
     init {
         // Set background color to blue
         table.background = assets.getBackgroundColor(0.1f, 0.1f, 0.1f, 1.0f)
@@ -177,6 +198,8 @@ class GameScreenTopBar(
         table.add(zoomInButton).size(50f * gdxSetting.imageScale, 50f * gdxSetting.imageScale)
 
         table.add(zoomOutButton).size(50f * gdxSetting.imageScale, 50f * gdxSetting.imageScale)
+
+        table.add(uploadButton).size(50f * gdxSetting.imageScale, 50f * gdxSetting.imageScale)
 
         table.add(serverStatusTable).pad(10f)
 
