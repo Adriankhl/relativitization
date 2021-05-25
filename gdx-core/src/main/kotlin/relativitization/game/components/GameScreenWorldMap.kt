@@ -135,7 +135,9 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
         // change the first selected player id if no stored selected player or first selected not stored
         // for selecting first player then select other without changing the first selected player
         if (game.universeClient.selectedPlayerIds.isEmpty() ||
-            !game.universeClient.selectedPlayerIds.contains(game.universeClient.firstSelectedPlayerId)) {
+            (!game.universeClient.selectedPlayerIds.contains(game.universeClient.firstSelectedPlayerId) &&
+             !game.universeClient.selectedPlayerIds.contains(id))
+        ) {
             game.universeClient.firstSelectedPlayerId = id
             game.universeClient.selectedPlayerIds.add(id)
             // add green circle
