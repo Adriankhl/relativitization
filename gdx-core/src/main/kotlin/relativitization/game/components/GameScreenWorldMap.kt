@@ -112,7 +112,7 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
     fun zoomIn() {
         val oldScrollX = scrollPane.scrollX
         val oldScrollY = scrollPane.scrollY
-        zoom *= 1.1f
+        zoom *= gdxSetting.zoomFactor
         updateGroup()
         scrollPane.scrollX = oldScrollX * gdxSetting.zoomFactor
         scrollPane.scrollY = oldScrollY * gdxSetting.zoomFactor
@@ -122,7 +122,7 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
     fun zoomOut() {
         val oldScrollX = scrollPane.scrollX
         val oldScrollY = scrollPane.scrollY
-        zoom /= 1.1f
+        zoom /= gdxSetting.zoomFactor
         updateGroup()
         scrollPane.scrollX = oldScrollX / gdxSetting.zoomFactor
         scrollPane.scrollY = oldScrollY / gdxSetting.zoomFactor
