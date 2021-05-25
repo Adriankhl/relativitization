@@ -122,6 +122,25 @@ class GameScreenTopBar(
         updateAll()
     }
 
+    private val restoreButton: ImageButton = createImageButton(
+        "basic/white-stop",
+        1.0f,
+        1.0f,
+        1.0f,
+        1.0f,
+        1.0f,
+        1.0f,
+        1.0f,
+        0.7f,
+        1.0f,
+        1.0f,
+        1.0f,
+        1.0f,
+        gdxSetting.soundEffectsVolume
+    ) {
+        restoreAll()
+    }
+
     private val zoomInButton: ImageButton = createImageButton(
         "basic/white-zoom-in",
         1.0f,
@@ -195,6 +214,8 @@ class GameScreenTopBar(
 
         table.add(updateToLatestButton).size(50f * gdxSetting.imageScale, 50f * gdxSetting.imageScale)
 
+        table.add(restoreButton).size(50f * gdxSetting.imageScale, 50f * gdxSetting.imageScale)
+
         table.add(zoomInButton).size(50f * gdxSetting.imageScale, 50f * gdxSetting.imageScale)
 
         table.add(zoomOutButton).size(50f * gdxSetting.imageScale, 50f * gdxSetting.imageScale)
@@ -228,6 +249,10 @@ class GameScreenTopBar(
         update()
         worldMap.update()
         info.update()
+    }
+
+    fun restoreAll() {
+        worldMap.restore()
     }
 
     /**

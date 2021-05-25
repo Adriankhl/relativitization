@@ -52,6 +52,16 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
         int3DActorMap.clear()
     }
 
+    fun restore() {
+        clearAllSelectedInt3D()
+        clearAllSelectedPlayer()
+        game.universeClient.selectedInt3Ds.clear()
+        game.universeClient.selectedPlayerIds.clear()
+        game.universeClient.firstSelectedPlayerId = game.universeClient.getUniverseData3D().id
+        game.universeClient.selectedPlayerIds.add(game.universeClient.firstSelectedPlayerId)
+        drawSelected()
+    }
+
     fun update3D2DProjection(): Data3D2DProjection {
         return createData3D2DProjection(
             data3D = game.universeClient.getUniverseData3D().playerId3DMap,
@@ -170,23 +180,23 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
                     )
                     group.addActorBefore(image, circle)
                     selectCircle[id] = circle
+                } else {
+                    val image = playerSquareActorMap.getValue(id)
+                    val circle = createImage(
+                        "basic/white-ring",
+                        image.x,
+                        image.y,
+                        image.width,
+                        image.height,
+                        1.0f,
+                        0.0f,
+                        0.0f,
+                        1.0f,
+                        gdxSetting.soundEffectsVolume
+                    )
+                    group.addActorBefore(image, circle)
+                    selectCircle[id] = circle
                 }
-            } else {
-                val image = playerSquareActorMap.getValue(id)
-                val circle = createImage(
-                    "basic/white-ring",
-                    image.x,
-                    image.y,
-                    image.width,
-                    image.height,
-                    1.0f,
-                    0.0f,
-                    0.0f,
-                    1.0f,
-                    gdxSetting.soundEffectsVolume
-                )
-                group.addActorBefore(image, circle)
-                selectCircle[id] = circle
             }
         }
 
