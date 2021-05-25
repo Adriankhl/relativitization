@@ -126,13 +126,14 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<Table>(
 
         updateCurrentUniverseDataLabel()
 
-        table.add(serverStatusTable).pad(10f)
-
         table.add(currentUniverseDataTable).pad(10f)
 
         table.add(updateButton).size(50f * gdxSetting.imageScale, 50f * gdxSetting.imageScale)
 
         table.add(updateToLatestButton).size(50f * gdxSetting.imageScale, 50f * gdxSetting.imageScale)
+
+        table.add(serverStatusTable).pad(10f)
+
     }
 
     override fun get(): Table {
@@ -183,17 +184,15 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<Table>(
     private fun createCurrentUniverseDataTable(): Table {
         val nestedTable: Table = Table()
 
-        nestedTable.add(currentUniverseDataLabel).colspan(2)
+        nestedTable.add(currentUniverseDataLabel).colspan(3)
 
         nestedTable.row()
 
         nestedTable.add(previousButton).size(25f * gdxSetting.imageScale, 25f * gdxSetting.imageScale)
 
+        nestedTable.add(universeDataSelectBox)
+
         nestedTable.add(nextButton).size(25f * gdxSetting.imageScale, 25f * gdxSetting.imageScale)
-
-        nestedTable.row()
-
-        nestedTable.add(universeDataSelectBox).colspan(2)
 
         return nestedTable
     }
