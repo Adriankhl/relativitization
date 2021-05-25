@@ -3,6 +3,7 @@ package relativitization.game.components
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox
+import com.badlogic.gdx.scenes.scene2d.ui.SplitPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.utils.Array
 import kotlinx.coroutines.runBlocking
@@ -13,7 +14,8 @@ import relativitization.game.utils.ScreenComponent
 class GameScreenTopBar(
     val game: RelativitizationGame,
     val worldMap: GameScreenWorldMap,
-    val info: GameScreenInfo
+    val info: GameScreenInfo,
+    val worldMapAndInfo: SplitPane
     ) : ScreenComponent<Table>(game.assets) {
     private val gdxSetting = game.gdxSetting
     private val table: Table = Table()
@@ -120,6 +122,44 @@ class GameScreenTopBar(
         updateAll()
     }
 
+    private val zoomInButton: ImageButton = createImageButton(
+        "basic/white-zoom-in",
+        1.0f,
+        1.0f,
+        1.0f,
+        1.0f,
+        1.0f,
+        1.0f,
+        1.0f,
+        0.7f,
+        1.0f,
+        1.0f,
+        1.0f,
+        1.0f,
+        gdxSetting.soundEffectsVolume
+    ) {
+        worldMap.zoomIn()
+    }
+
+    private val zoomOutButton: ImageButton = createImageButton(
+        "basic/white-zoom-out",
+        1.0f,
+        1.0f,
+        1.0f,
+        1.0f,
+        1.0f,
+        1.0f,
+        1.0f,
+        0.7f,
+        1.0f,
+        1.0f,
+        1.0f,
+        1.0f,
+        gdxSetting.soundEffectsVolume
+    ) {
+        worldMap.zoomOut()
+    }
+
     init {
         // Set background color to blue
         table.background = assets.getBackgroundColor(0.1f, 0.1f, 0.1f, 1.0f)
@@ -133,6 +173,10 @@ class GameScreenTopBar(
         table.add(updateButton).size(50f * gdxSetting.imageScale, 50f * gdxSetting.imageScale)
 
         table.add(updateToLatestButton).size(50f * gdxSetting.imageScale, 50f * gdxSetting.imageScale)
+
+        table.add(zoomInButton).size(50f * gdxSetting.imageScale, 50f * gdxSetting.imageScale)
+
+        table.add(zoomOutButton).size(50f * gdxSetting.imageScale, 50f * gdxSetting.imageScale)
 
         table.add(serverStatusTable).pad(10f)
 

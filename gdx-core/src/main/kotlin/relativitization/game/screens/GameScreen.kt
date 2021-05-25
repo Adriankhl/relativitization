@@ -25,8 +25,8 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
 
     private val worldMap: GameScreenWorldMap = GameScreenWorldMap(game)
     private val info: GameScreenInfo = GameScreenInfo(game, worldMap)
-    private val topBar: GameScreenTopBar = GameScreenTopBar(game, worldMap, info)
     private val worldMapAndInfo = createSplitPane(worldMap.get(), info.get(), false)
+    private val topBar: GameScreenTopBar = GameScreenTopBar(game, worldMap, info, worldMapAndInfo)
 
 
     init {
