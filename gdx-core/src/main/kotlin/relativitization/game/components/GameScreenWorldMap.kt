@@ -24,6 +24,7 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
     private var zoom: Float = 1.0f
 
     private var selectCircle: MutableMap<Int, Actor> = mutableMapOf()
+    private var selectSquare: MutableMap<Int3D, Actor> = mutableMapOf()
 
     init {
         scrollPane.fadeScrollBars = false
@@ -77,7 +78,9 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
                             1.0f,
                             0.4f,
                             gdxSetting.soundEffectsVolume
-                        )
+                        ) {
+                            selectInt3D(Int3D(x, y, z), it)
+                        }
                     )
                 }
             }
@@ -129,6 +132,40 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
     fun zoomToFullMap() {
         zoom = min(scrollPane.width / data3D2DProjection.width, scrollPane.height / data3D2DProjection.height)
         updateGroup()
+    }
+
+    /**
+     * Select int3d (grid) by adding a square boundary
+     */
+    fun selectInt3D(int3D: Int3D, image: Image) {
+        if (game.universeClient.selectedInt3Ds.isEmpty()) {
+            game.universeClient.selectedInt3Ds.add(int3D)
+            val square = createImage(
+                "basic/white-square-boundary",
+                image.x,
+                image.y,
+                image.width,
+                image.height,
+                0.0f,
+                0.0f,
+                1.0f,
+                1.0f,
+                gdxSetting.soundEffectsVolume
+            )
+            group.addActorBefore(image, square)
+            selectSquare[int3D] = square
+        } else {
+            clearAllSelectedInt3D()
+        }
+    }
+
+    /**
+     * Clear selected int3d
+     */
+    fun clearAllSelectedInt3D() {
+        game.universeClient.selectedInt3Ds.clear()
+        selectSquare.forEach { group.removeActor(it.value)  }
+        selectSquare.clear()
     }
 
     /**

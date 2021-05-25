@@ -69,7 +69,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
     // Gui related data
     var firstSelectedPlayerId: Int = -1
     var selectedPlayerIds: MutableList<Int> = mutableListOf()
-    var selectedInt3D = Int3D(0, 0, 0)
+    var selectedInt3Ds: MutableList<Int3D> = mutableListOf()
 
     /**
      * Start auto updating status and universeData3DCache
