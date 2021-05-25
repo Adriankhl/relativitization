@@ -42,7 +42,7 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<Table>(
         gdxSetting.soundEffectsVolume
     ) {
         game.universeClient.previousUniverseData3D()
-        update()
+        updateAll()
     }
 
     // button to select next time
@@ -63,7 +63,7 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<Table>(
         gdxSetting.soundEffectsVolume
     ) {
         game.universeClient.nextUniverseData3D()
-        update()
+        updateAll()
     }
 
     private val universeDataSelectBox: SelectBox<String> = createSelectBox(
@@ -72,7 +72,7 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<Table>(
         gdxSetting.smallFontSize
     ) { name, _ ->
         game.universeClient.pickUniverseData3D(name)
-        update()
+        updateAll()
     }
 
     private val currentUniverseDataTable: Table =  createCurrentUniverseDataTable()
@@ -93,7 +93,7 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<Table>(
         1.0f,
         gdxSetting.soundEffectsVolume
     ) {
-        update()
+        updateAll()
     }
 
     private val updateToLatestButton: ImageButton = createImageButton(
@@ -115,7 +115,7 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<Table>(
         runBlocking {
             game.universeClient.pickLatestUniverseData3D()
         }
-        update()
+        updateAll()
     }
 
     init {
@@ -140,6 +140,9 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<Table>(
         return table
     }
 
+    /**
+     * Only update actor in this class
+     */
     override fun update() {
         updateServerStatusLabels()
         updateCurrentUniverseDataLabel()
@@ -147,6 +150,13 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<Table>(
             updateUpdateToLatestButton()
         }
         updateUniverseDataSelectionBox()
+    }
+
+    /**
+     * Update this class and updatableByTopBar
+     */
+    fun updateAll() {
+        update()
         updatableByTopBar.forEach { it() }
     }
 
@@ -254,5 +264,4 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<Table>(
     private fun updateUniverseDataSelectionBox() {
         universeDataSelectBox.items = Array(game.universeClient.getAvailableData3DName().toTypedArray())
     }
-
 }
