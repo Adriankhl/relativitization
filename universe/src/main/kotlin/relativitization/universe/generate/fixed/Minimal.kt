@@ -17,7 +17,7 @@ class Minimal : GenerateUniverse() {
                 universeSettings.xDim,
                 universeSettings.yDim,
                 universeSettings.zDim
-            ) { _, _, _, _ -> mutableListOf()}
+            ) { _, _, _, _ -> mutableListOf() }
         )
         val playerData1 = MutablePlayerData(1)
         val playerData2 = MutablePlayerData(2)
