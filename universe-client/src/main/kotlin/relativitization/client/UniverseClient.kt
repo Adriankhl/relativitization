@@ -18,6 +18,7 @@ import relativitization.universe.communication.*
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
+import relativitization.universe.data.physics.Int3D
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.generate.GenerateSetting
 import relativitization.universe.utils.CoroutineBoolean
@@ -68,6 +69,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
     // Gui related data
     var firstSelectedPlayerId: Int = -1
     var selectedPlayerIds: MutableList<Int> = mutableListOf()
+    var selectedInt3D = Int3D(0, 0, 0)
 
     /**
      * Start auto updating status and universeData3DCache
