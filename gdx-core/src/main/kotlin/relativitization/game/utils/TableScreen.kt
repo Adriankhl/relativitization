@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
+import com.badlogic.gdx.scenes.scene2d.ui.Slider
 import com.badlogic.gdx.scenes.scene2d.ui.SplitPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
@@ -99,6 +100,21 @@ open class TableScreen(val assets: Assets) : ScreenAdapter() {
         fontSize: Int = 16,
         function: (Boolean, CheckBox) -> Unit = { _, _ -> }
     ): CheckBox = ActorFunction.createCheckBox(skin, assets, text, default, fontSize, function)
+
+
+    /**
+     * Create slider
+     *
+     * @param function the function acted after the text field has changed, take this check box as parameter
+     */
+    fun createSlider(
+        min: Float,
+        max: Float,
+        stepSize: Float,
+        vertical: Boolean = false,
+        function: (Float, Slider) -> Unit = { _, _ -> },
+    ): Slider = ActorFunction.createSlider(skin, min, max, stepSize, vertical, function)
+
 
     /**
      * Create select box

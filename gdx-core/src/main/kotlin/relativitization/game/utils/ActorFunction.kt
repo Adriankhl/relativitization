@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
+import com.badlogic.gdx.scenes.scene2d.ui.Slider
 import com.badlogic.gdx.scenes.scene2d.ui.SplitPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
@@ -252,6 +253,31 @@ object ActorFunction {
         })
 
         return checkBox
+    }
+
+    /**
+     * Create slider
+     *
+     * @param function the function acted after the select box is changed, take this select box as parameter
+     */
+    fun createSlider(
+        skin: Skin,
+        min: Float,
+        max: Float,
+        stepSize: Float,
+        vertical: Boolean = false,
+        function: (Float, Slider) -> Unit = { _, _ -> },
+    ): Slider {
+        val style = skin.get(Slider.SliderStyle::class.java)
+
+        val slider: Slider = Slider(min, max, stepSize, vertical, style)
+
+        slider.addListener(object : ChangeListener() {
+            override fun changed(event: ChangeEvent?, actor: Actor?) {
+                function(slider.value, slider)
+            }
+        })
+        return slider
     }
 
     /**
