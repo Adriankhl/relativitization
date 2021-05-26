@@ -19,8 +19,10 @@ import java.io.File
 /**
  * Main class representing the 4D universe
  * Main stepping function: preProcessUniverse and postProcessUniverse
+ *
+ * @param saveWhenInit save all when initializing the universe
  */
-class Universe(private val universeData: UniverseData) {
+class Universe(private val universeData: UniverseData, saveWhenInit: Boolean = true) {
 
     private val xDim = universeData.universeSettings.xDim
     private val yDim = universeData.universeSettings.yDim
@@ -37,8 +39,10 @@ class Universe(private val universeData: UniverseData) {
         // for each player data at the latest time slice, create player object and add to universe3D
         universeData.getLatestPlayerDataList().forEach { playerCollection.addPlayer(it) }
 
-        // save all at the last stage
-        saveAll()
+
+        if (saveWhenInit) {
+            saveAll()
+        }
     }
 
     /**

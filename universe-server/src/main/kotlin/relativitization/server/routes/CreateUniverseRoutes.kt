@@ -53,7 +53,7 @@ fun Route.createUniverseRouting(universeServerInternal: UniverseServerInternal) 
             if (loadUniverseMessage.adminPassword == universeServerInternal.universeServerSettings.adminPassword) {
                 val universeData: UniverseData = Universe.loadUniverseLatest(loadUniverseMessage.universeName)
                 if (universeData.isUniverseValid()) {
-                    universeServerInternal.setUniverse(Universe(universeData))
+                    universeServerInternal.setUniverse(Universe(universeData, false))
                     call.respondText("Loaded Universe", ContentType.Text.Plain, HttpStatusCode.OK)
                 } else {
                     call.respondText(
