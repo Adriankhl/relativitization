@@ -11,6 +11,7 @@ import relativitization.game.GdxSetting
 import relativitization.game.RelativitizationGame
 import relativitization.game.screens.GdxSettingsScreen
 import relativitization.game.utils.ScreenComponent
+import relativitization.universe.data.physics.Int3D
 import kotlin.math.min
 
 
@@ -458,5 +459,14 @@ class GameScreenTopBar(
      */
     private fun updateUniverseDataSelectionBox() {
         universeDataSelectBox.items = Array(game.universeClient.getAvailableData3DName().toTypedArray())
+    }
+
+    /**
+     * Update coordinates
+     */
+    fun updateCoordinates(int3D: Int3D) {
+        xCoordinateSelectBox.selected = int3D.x
+        yCoordinateSelectBox.selected = int3D.y
+        zCoordinateSelectBox.selected = int3D.z
     }
 }

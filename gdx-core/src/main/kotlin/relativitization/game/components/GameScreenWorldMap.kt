@@ -18,6 +18,9 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
 
     lateinit var updateInfo: () -> Unit
 
+    // Update coordinate in top bar
+    lateinit var updateCoordinate: (Int3D) -> Unit
+
     private val group: Group = Group()
     private val scrollPane: ScrollPane = createScrollPane(group)
     private var data3D2DProjection: Data3D2DProjection = update3D2DProjection()
@@ -95,6 +98,7 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
                         0.4f,
                         gdxSetting.soundEffectsVolume
                     ) {
+                        updateCoordinate(Int3D(x, y, z))
                         selectInt3D(Int3D(x, y, z), it)
                     }
                     group.addActor(image)

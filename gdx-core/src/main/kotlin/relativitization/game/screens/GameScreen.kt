@@ -44,6 +44,8 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
 
         worldMap.updateInfo = info::update
 
+        worldMap.updateCoordinate = topBar::updateCoordinates
+
         root.add(topBar.get()).growX().top()
 
         root.row()
