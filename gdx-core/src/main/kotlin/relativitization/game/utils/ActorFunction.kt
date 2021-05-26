@@ -265,10 +265,13 @@ object ActorFunction {
         min: Float,
         max: Float,
         stepSize: Float,
+        default: Float,
         vertical: Boolean = false,
         function: (Float, Slider) -> Unit = { _, _ -> },
     ): Slider {
         val slider: Slider = Slider(min, max, stepSize, vertical, skin)
+
+        slider.value = default
 
         slider.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {

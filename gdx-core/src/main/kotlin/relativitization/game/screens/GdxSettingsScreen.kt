@@ -101,6 +101,7 @@ class GdxSettingsScreen(val game: RelativitizationGame, val inGame: Boolean) : T
             0.0f,
             1.0f,
             0.01f,
+            gdxSetting.musicVolume,
             false
         ) { musicVolume, _ ->
             gdxSetting.musicVolume = musicVolume

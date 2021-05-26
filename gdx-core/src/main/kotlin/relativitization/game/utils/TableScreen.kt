@@ -111,9 +111,10 @@ open class TableScreen(val assets: Assets) : ScreenAdapter() {
         min: Float,
         max: Float,
         stepSize: Float,
+        default: Float,
         vertical: Boolean = false,
         function: (Float, Slider) -> Unit = { _, _ -> },
-    ): Slider = ActorFunction.createSlider(skin, min, max, stepSize, vertical, function)
+    ): Slider = ActorFunction.createSlider(skin, min, max, stepSize, default, vertical, function)
 
 
     /**
