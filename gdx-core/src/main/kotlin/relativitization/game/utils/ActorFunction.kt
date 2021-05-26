@@ -21,6 +21,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.badlogic.gdx.utils.Array
+import com.badlogic.gdx.scenes.scene2d.ui.List as GdxList
 
 object ActorFunction {
     /**
@@ -255,6 +256,8 @@ object ActorFunction {
         return checkBox
     }
 
+
+
     /**
      * Create slider
      *
@@ -279,6 +282,37 @@ object ActorFunction {
             }
         })
         return slider
+    }
+
+    /**
+     * Create list
+     *
+     * @param text Description of the option
+     * @param default the default value of the text
+     * @param fontSize the font size of the text
+     * @param function the function acted after the text field has changed, take this check box as parameter
+     */
+    inline fun <reified T> createList(
+        skin: Skin,
+        assets: Assets,
+        itemList: List<T>,
+        fontSize: Int = 16,
+        crossinline function: (T, GdxList<T>) -> Unit = { _, _ -> }
+    ): GdxList<T> {
+        val style = skin.get(GdxList.ListStyle::class.java)
+        style.font = assets.getFont(fontSize)
+
+        val gdxList: GdxList<T> = GdxList(style)
+
+        gdxList.setItems(Array(itemList.toTypedArray()))
+
+        gdxList.addListener(object : ChangeListener() {
+            override fun changed(event: ChangeEvent, actor: Actor) {
+                function(gdxList.selected, gdxList)
+            }
+        })
+
+        return gdxList
     }
 
     /**

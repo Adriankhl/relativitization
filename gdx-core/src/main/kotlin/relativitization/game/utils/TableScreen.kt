@@ -16,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.utils.viewport.ScreenViewport
+import com.badlogic.gdx.scenes.scene2d.ui.List as GdxList
 
 open class TableScreen(val assets: Assets) : ScreenAdapter() {
     val skin: Skin = assets.getSkin()
@@ -116,6 +117,20 @@ open class TableScreen(val assets: Assets) : ScreenAdapter() {
         function: (Float, Slider) -> Unit = { _, _ -> },
     ): Slider = ActorFunction.createSlider(skin, min, max, stepSize, default, vertical, function)
 
+
+    /**
+     * Create gdx list
+     *
+     * @param itemList the list of item to be selected
+     * @param default the default value of the select box
+     * @param fontSize the font size of the select box
+     * @param function the function acted after the select box is changed, take this select box as parameter
+     */
+    inline fun <reified T> createList(
+        itemList: List<T>,
+        fontSize: Int = 16,
+        crossinline function: (T, GdxList<T>) -> Unit = { _, _ -> },
+    ): GdxList<T> = ActorFunction.createList(skin, assets, itemList, fontSize, function)
 
     /**
      * Create select box
