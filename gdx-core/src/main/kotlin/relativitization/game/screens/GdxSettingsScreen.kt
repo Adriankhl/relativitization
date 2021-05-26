@@ -171,6 +171,36 @@ class GdxSettingsScreen(val game: RelativitizationGame, val inGame: Boolean) : T
             gdxSetting.hugeFontSize = hugeFontSize
         }
         table.add(hugeFontSizeSelectBox)
+
+        table.row().space(10f)
+
+        table.add(createLabel("Zoom factor: ", gdxSetting.normalFontSize))
+        val zoomFactorTextField = createTextField(
+            gdxSetting.zoomFactor.toString(),
+            gdxSetting.normalFontSize
+        ) { zoomFactor, _ ->
+            try {
+                gdxSetting.zoomFactor =  zoomFactor.toFloat()
+            } catch (e: NumberFormatException) {
+                logger.error("Invalid zoom factor")
+            }
+        }
+        table.add(zoomFactorTextField)
+
+        table.row().space(10f)
+
+        table.add(createLabel("Image scale: ", gdxSetting.normalFontSize))
+        val imageScaleTextField = createTextField(
+            gdxSetting.imageScale.toString(),
+            gdxSetting.normalFontSize
+        ) { imageScale, _ ->
+            try {
+                gdxSetting.imageScale =  imageScale.toFloat()
+            } catch (e: NumberFormatException) {
+                logger.error("Invalid image scale")
+            }
+        }
+        table.add(imageScaleTextField)
     }
 
     companion object {
