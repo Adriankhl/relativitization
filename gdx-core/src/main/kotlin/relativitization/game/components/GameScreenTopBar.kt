@@ -11,6 +11,7 @@ import relativitization.game.GdxSetting
 import relativitization.game.RelativitizationGame
 import relativitization.game.screens.GdxSettingsScreen
 import relativitization.game.utils.ScreenComponent
+import kotlin.math.min
 
 
 class GameScreenTopBar(
@@ -195,6 +196,51 @@ class GameScreenTopBar(
         }
     }
 
+    private val xCoordinateSelectBox: SelectBox<Int> = createSelectBox(
+        (0 until game.universeClient.getUniverseData3D().universeSettings.xDim).toList(),
+        game.universeClient.universeClientSettings.viewCenter.x
+    )
+
+    private val yCoordinateSelectBox: SelectBox<Int> = createSelectBox(
+        (0 until game.universeClient.getUniverseData3D().universeSettings.yDim).toList(),
+        game.universeClient.universeClientSettings.viewCenter.y
+    )
+
+    private val zCoordinateSelectBox: SelectBox<Int> = createSelectBox(
+        (0 until game.universeClient.getUniverseData3D().universeSettings.zDim).toList(),
+        game.universeClient.universeClientSettings.viewCenter.z
+    )
+
+    private val zLimitSelectBox: SelectBox<Int> = createSelectBox(
+        (1..game.universeClient.getUniverseData3D().universeSettings.zDim).toList(),
+        min(game.universeClient.universeClientSettings.zLimit, game.universeClient.getUniverseData3D().universeSettings.zDim)
+    ) { zLimit, _ ->
+        game.universeClient.universeClientSettings.zLimit = zLimit
+    }
+
+    private val confirmViewButton: ImageButton = createImageButton(
+        "basic/white-tick",
+        1.0f,
+        1.0f,
+        1.0f,
+        1.0f,
+        1.0f,
+        1.0f,
+        1.0f,
+        0.7f,
+        1.0f,
+        1.0f,
+        1.0f,
+        1.0f,
+        gdxSetting.soundEffectsVolume
+    ) {
+        game.universeClient.universeClientSettings.viewCenter.x  = xCoordinateSelectBox.selected
+        game.universeClient.universeClientSettings.viewCenter.y  = yCoordinateSelectBox.selected
+        game.universeClient.universeClientSettings.viewCenter.z  = zCoordinateSelectBox.selected
+        worldMap.update()
+    }
+
+
     private val viewControlTable: Table = createViewControlTable()
 
     private val currentUniverseDataTable: Table =  createCurrentUniverseDataTable()
@@ -289,14 +335,32 @@ class GameScreenTopBar(
     }
 
     /**
-     * Create table for controlling view and z limit
+     * Create table for controlling view int3D, z limit and zoom
      */
     private fun createViewControlTable(): Table {
         val nestedTable: Table = Table()
 
-        nestedTable.add(zoomInButton).size(40f * gdxSetting.imageScale, 40f * gdxSetting.imageScale)
+        val topTable: Table = Table()
+        val bottomTable: Table = Table()
 
-        nestedTable.add(zoomOutButton).size(40f * gdxSetting.imageScale, 40f * gdxSetting.imageScale)
+        topTable.add(createLabel("x:", gdxSetting.smallFontSize))
+        topTable.add(xCoordinateSelectBox).space(10f)
+        topTable.add(createLabel("y:", gdxSetting.smallFontSize))
+        topTable.add(yCoordinateSelectBox).space(10f)
+        topTable.add(createLabel("z:", gdxSetting.smallFontSize))
+        topTable.add(zCoordinateSelectBox).space(10f)
+
+        bottomTable.add(createLabel("z limit:", gdxSetting.smallFontSize))
+        bottomTable.add(zLimitSelectBox).space(10f)
+        bottomTable.add(confirmViewButton).size(40f * gdxSetting.imageScale, 40f * gdxSetting.imageScale)
+        bottomTable.add(zoomInButton).size(40f * gdxSetting.imageScale, 40f * gdxSetting.imageScale)
+        bottomTable.add(zoomOutButton).size(40f * gdxSetting.imageScale, 40f * gdxSetting.imageScale)
+
+        nestedTable.add(topTable)
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(bottomTable)
 
         return nestedTable
     }
