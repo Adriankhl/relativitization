@@ -39,6 +39,13 @@ fun Route.createUniverseRouting(universeServerInternal: UniverseServerInternal) 
         }
     }
 
+    // List saved universe
+    route("/create/list-saved") {
+        get {
+            call.respond(status = HttpStatusCode.OK, universeServerInternal.getSavedUniverse())
+        }
+    }
+
     // load universe from save
     route("/create/load") {
         post {

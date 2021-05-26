@@ -281,6 +281,21 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
         }
     }
 
+
+    suspend fun httpGetSavedUniverse(): List<String> {
+        return try {
+            val serverAddress = universeClientSettings.serverAddress
+            val serverPort = universeClientSettings.serverPort
+            ktorClient.get<List<String>>("http://$serverAddress:$serverPort/create/list-saved") {
+                timeout {
+                    requestTimeoutMillis = 1000
+                }
+            }
+        } catch (cause: Throwable) {
+            listOf()
+        }
+    }
+
     suspend fun httpGetUniverseData3D(): UniverseData3DAtPlayer {
         return try {
             val serverAddress = universeClientSettings.serverAddress

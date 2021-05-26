@@ -16,6 +16,7 @@ import relativitization.universe.generate.GenerateSetting
 import relativitization.universe.generate.GenerateUniverse
 import relativitization.universe.utils.CoroutineBoolean
 import relativitization.universe.utils.CoroutineVar
+import java.io.File
 
 class UniverseServerInternal(var universeServerSettings: UniverseServerSettings) {
     private val mutex: Mutex = Mutex()
@@ -256,6 +257,15 @@ class UniverseServerInternal(var universeServerSettings: UniverseServerSettings)
                 timeLeft = timeLeft(),
                 currentUniverseTime = currentUniverseTime
             )
+        }
+    }
+
+    /**
+     * Get saved universe name
+     */
+    suspend fun getSavedUniverse(): List<String> {
+        mutex.withLock {
+            return File("saves").list()?.toList() ?: listOf()
         }
     }
 
