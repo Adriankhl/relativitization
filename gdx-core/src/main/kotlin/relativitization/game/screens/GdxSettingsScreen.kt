@@ -39,7 +39,7 @@ class GdxSettingsScreen(val game: RelativitizationGame, val inGame: Boolean) : T
 
         val scrollPane: ScrollPane = createScrollPane(table)
 
-        val gdxSettingsLabel = createLabel("Gdx Settings:", gdxSetting.hugeFontSIze)
+        val gdxSettingsLabel = createLabel("Gdx Settings:", gdxSetting.hugeFontSize)
 
         table.add(gdxSettingsLabel).colspan(2).space(20f)
 
@@ -107,6 +107,70 @@ class GdxSettingsScreen(val game: RelativitizationGame, val inGame: Boolean) : T
             gdxSetting.musicVolume = musicVolume
         }
         table.add(musicVolumeSlider)
+
+
+        table.row().space(10f)
+
+        table.add(createLabel("Sound effect volume: ", gdxSetting.normalFontSize))
+        val soundEffectVolumeSlider = createSlider(
+            0.0f,
+            1.0f,
+            0.01f,
+            gdxSetting.soundEffectsVolume,
+            false
+        ) { soundEffectVolume, _ ->
+            gdxSetting.soundEffectsVolume = soundEffectVolume
+        }
+        table.add(soundEffectVolumeSlider)
+
+
+        table.row().space(10f)
+
+        table.add(createLabel("Small font size: ", gdxSetting.normalFontSize))
+        val smallFontSizeSelectBox = createSelectBox(
+            (8..80).toList(),
+            gdxSetting.smallFontSize,
+            gdxSetting.normalFontSize
+        ) { smallFontSize, _ ->
+            gdxSetting.smallFontSize = smallFontSize
+        }
+        table.add(smallFontSizeSelectBox)
+
+        table.row().space(10f)
+
+        table.add(createLabel("Normal font size: ", gdxSetting.normalFontSize))
+        val normalFontSizeSelectBox = createSelectBox(
+            (8..80).toList(),
+            gdxSetting.normalFontSize,
+            gdxSetting.normalFontSize
+        ) { normalFontSize, _ ->
+            gdxSetting.normalFontSize = normalFontSize
+        }
+        table.add(normalFontSizeSelectBox)
+
+        table.row().space(10f)
+
+        table.add(createLabel("Big font size: ", gdxSetting.normalFontSize))
+        val bigFontSizeSelectBox = createSelectBox(
+            (8..80).toList(),
+            gdxSetting.bigFontSize,
+            gdxSetting.normalFontSize
+        ) { bigFontSize, _ ->
+            gdxSetting.bigFontSize = bigFontSize
+        }
+        table.add(bigFontSizeSelectBox)
+
+        table.row().space(10f)
+
+        table.add(createLabel("Huge font size: ", gdxSetting.normalFontSize))
+        val hugeFontSizeSelectBox = createSelectBox(
+            (8..80).toList(),
+            gdxSetting.hugeFontSize,
+            gdxSetting.normalFontSize
+        ) { hugeFontSize, _ ->
+            gdxSetting.hugeFontSize = hugeFontSize
+        }
+        table.add(hugeFontSizeSelectBox)
     }
 
     companion object {

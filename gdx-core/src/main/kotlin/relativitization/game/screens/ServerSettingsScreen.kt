@@ -50,7 +50,7 @@ class ServerSettingsScreen(val game: RelativitizationGame) : TableScreen(game.as
     private fun createServerSettingsScrollPane(): ScrollPane {
         val table = Table()
 
-        table.add(createLabel("Server Settings :", gdxSetting.hugeFontSIze)).colspan(2)
+        table.add(createLabel("Server Settings :", gdxSetting.hugeFontSize)).colspan(2)
 
         table.row().space(20f)
 

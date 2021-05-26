@@ -51,7 +51,7 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
     private fun createGenerateSettingsScrollPane(): ScrollPane {
         val table = Table()
 
-        val generateSettingLabel = createLabel("Generate Universe Settings:", gdxSetting.hugeFontSIze)
+        val generateSettingLabel = createLabel("Generate Universe Settings:", gdxSetting.hugeFontSize)
 
         table.add(generateSettingLabel).colspan(2).space(20f)
         table.row().space(10f)
