@@ -27,6 +27,7 @@ class GdxSettingsScreen(val game: RelativitizationGame, val inGame: Boolean) : T
             } else {
                 game.screen = MainMenuScreen(game)
                 game.restoreSize()
+                game.restartMusic()
             }
         }
 
@@ -92,6 +93,19 @@ class GdxSettingsScreen(val game: RelativitizationGame, val inGame: Boolean) : T
             }
         }
         table.add(heightTextField)
+
+        table.row().space(10f)
+
+        table.add(createLabel("Music volume: ", gdxSetting.normalFontSize))
+        val musicVolumeSlider = createSlider(
+            0.0f,
+            1.0f,
+            0.01f,
+            false
+        ) { musicVolume, _ ->
+            gdxSetting.musicVolume = musicVolume
+        }
+        table.add(musicVolumeSlider)
     }
 
     companion object {

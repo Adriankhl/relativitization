@@ -51,6 +51,12 @@ class RelativitizationGame(val universeClient: UniverseClient, private val unive
         backgroundMusic.play()
     }
 
+    fun restartMusic() {
+        backgroundMusic.stop()
+        backgroundMusic.volume = 0.4f * gdxSetting.musicVolume
+        backgroundMusic.play()
+    }
+
     override fun dispose() {
         runBlocking {
             backgroundMusic.stop()

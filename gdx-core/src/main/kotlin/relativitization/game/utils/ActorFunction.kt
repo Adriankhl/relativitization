@@ -268,9 +268,7 @@ object ActorFunction {
         vertical: Boolean = false,
         function: (Float, Slider) -> Unit = { _, _ -> },
     ): Slider {
-        val style = skin.get(Slider.SliderStyle::class.java)
-
-        val slider: Slider = Slider(min, max, stepSize, vertical, style)
+        val slider: Slider = Slider(min, max, stepSize, vertical, skin)
 
         slider.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
