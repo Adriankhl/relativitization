@@ -22,12 +22,12 @@ class GdxSettingsScreen(val game: RelativitizationGame, val inGame: Boolean) : T
             gdxSetting.normalFontSize,
             gdxSetting.soundEffectsVolume,
         ) {
+            game.restoreSize()
+            game.restartMusic()
             if (inGame) {
-
+                game.screen = GameScreen(game)
             } else {
                 game.screen = MainMenuScreen(game)
-                game.restoreSize()
-                game.restartMusic()
             }
         }
 
