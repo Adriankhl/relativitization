@@ -45,7 +45,7 @@ class Assets {
 
         manager.load("sounds/click1.ogg", Sound::class.java)
 
-        for (fontSize in 8..40) {
+        for (fontSize in 8..80) {
             val smallFont = FreeTypeFontLoaderParameter()
             smallFont.fontFileName = "fonts/nerd.ttf"
             smallFont.fontParameters.size = fontSize
@@ -135,9 +135,9 @@ class Assets {
                 logger.debug("Font cannot be smaller than 8")
                 8
             }
-            fontSize > 40 -> {
+            fontSize > 80 -> {
                 logger.debug("Font cannot be larger than 40")
-                40
+                80
             }
             else -> {
                 fontSize

@@ -10,6 +10,8 @@ class GdxSettingsScreen(val game: RelativitizationGame, val inGame: Boolean) : T
 
     override fun show() {
         super.show()
+
+        root.add(createGdxSettingsScrollPane())
     }
 
     private fun createGdxSettingsScrollPane(): ScrollPane {
@@ -17,9 +19,17 @@ class GdxSettingsScreen(val game: RelativitizationGame, val inGame: Boolean) : T
 
         val scrollPane: ScrollPane = createScrollPane(table)
 
+        addGdxSettings(table)
+
         scrollPane.fadeScrollBars = false
         scrollPane.setFlickScroll(true)
 
         return scrollPane
+    }
+
+    private fun addGdxSettings(table: Table) {
+        val gdxSettingsLabel = createLabel("Gdx Settings:", gdxSetting.hugeFontSIze)
+
+        table.add(gdxSettingsLabel).colspan(2).space(20f)
     }
 }
