@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.SelectBox
 import com.badlogic.gdx.scenes.scene2d.ui.SplitPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.utils.Array
+import io.ktor.http.*
 import kotlinx.coroutines.runBlocking
 import relativitization.game.GdxSetting
 import relativitization.game.RelativitizationGame
@@ -193,7 +194,12 @@ class GameScreenTopBar(
         gdxSetting.soundEffectsVolume
     ) {
         runBlocking {
-            game.universeClient.httpPostHumanInput()
+            val httpCode = game.universeClient.httpPostHumanInput()
+            if (httpCode == HttpStatusCode.OK) {
+                it.image.setColor(0.0f, 1.0f, 0.0f, 1.0f)
+            } else {
+                it.image.setColor(1.0f, 0.0f, 0.0f, 1.0f)
+            }
         }
     }
 
