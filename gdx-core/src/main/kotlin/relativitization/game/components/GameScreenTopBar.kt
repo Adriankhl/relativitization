@@ -7,7 +7,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.SplitPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.utils.Array
 import kotlinx.coroutines.runBlocking
+import relativitization.game.GdxSetting
 import relativitization.game.RelativitizationGame
+import relativitization.game.screens.GdxSettingsScreen
 import relativitization.game.utils.ScreenComponent
 
 
@@ -200,6 +202,25 @@ class GameScreenTopBar(
         }
     }
 
+    private val settingButton: ImageButton = createImageButton(
+        "basic/white-setting",
+        1.0f,
+        1.0f,
+        1.0f,
+        1.0f,
+        1.0f,
+        1.0f,
+        1.0f,
+        0.7f,
+        1.0f,
+        1.0f,
+        1.0f,
+        1.0f,
+        gdxSetting.soundEffectsVolume
+    ) {
+        game.screen = GdxSettingsScreen(game, true)
+    }
+
     init {
         // Set background color to blue
         table.background = assets.getBackgroundColor(0.1f, 0.1f, 0.1f, 1.0f)
@@ -224,6 +245,7 @@ class GameScreenTopBar(
 
         table.add(serverStatusTable).pad(10f)
 
+        table.add(settingButton).size(50f * gdxSetting.imageScale, 50f * gdxSetting.imageScale)
     }
 
     override fun get(): Table {
