@@ -22,11 +22,6 @@ class GameScreenTopBar(
     private val gdxSetting = game.gdxSetting
     private val table: Table = Table()
 
-    private val serverStatusNameAndTimeLabel: Label = createLabel("", gdxSetting.smallFontSize)
-    private val serverUniverseTimeLabel: Label = createLabel("", gdxSetting.smallFontSize)
-    private val timeLeftLabel: Label = createLabel("", gdxSetting.smallFontSize)
-
-    private val serverStatusTable: Table = createServerStatusTable()
 
     private val currentUniverseDataLabel: Label = createLabel("", gdxSetting.smallFontSize)
 
@@ -80,8 +75,6 @@ class GameScreenTopBar(
         game.universeClient.pickUniverseData3D(name)
         updateAll()
     }
-
-    private val currentUniverseDataTable: Table =  createCurrentUniverseDataTable()
 
     private val updateButton: ImageButton = createImageButton(
         "basic/white-circle-arrow",
@@ -202,6 +195,16 @@ class GameScreenTopBar(
         }
     }
 
+    private val viewControlTable: Table = createViewControlTable()
+
+    private val currentUniverseDataTable: Table =  createCurrentUniverseDataTable()
+
+    private val serverStatusNameAndTimeLabel: Label = createLabel("", gdxSetting.smallFontSize)
+    private val serverUniverseTimeLabel: Label = createLabel("", gdxSetting.smallFontSize)
+    private val timeLeftLabel: Label = createLabel("", gdxSetting.smallFontSize)
+    private val serverStatusTable: Table = createServerStatusTable()
+
+
     private val settingButton: ImageButton = createImageButton(
         "basic/white-setting",
         1.0f,
@@ -229,6 +232,8 @@ class GameScreenTopBar(
 
         updateCurrentUniverseDataLabel()
 
+        table.add(viewControlTable).pad(10f)
+
         table.add(currentUniverseDataTable).pad(10f)
 
         table.add(updateButton).size(50f * gdxSetting.imageScale, 50f * gdxSetting.imageScale)
@@ -236,10 +241,6 @@ class GameScreenTopBar(
         table.add(updateToLatestButton).size(50f * gdxSetting.imageScale, 50f * gdxSetting.imageScale)
 
         table.add(restoreButton).size(50f * gdxSetting.imageScale, 50f * gdxSetting.imageScale)
-
-        table.add(zoomInButton).size(50f * gdxSetting.imageScale, 50f * gdxSetting.imageScale)
-
-        table.add(zoomOutButton).size(50f * gdxSetting.imageScale, 50f * gdxSetting.imageScale)
 
         table.add(uploadButton).size(50f * gdxSetting.imageScale, 50f * gdxSetting.imageScale)
 
@@ -285,6 +286,19 @@ class GameScreenTopBar(
         runBlocking {
             updateUpdateToLatestButton()
         }
+    }
+
+    /**
+     * Create table for controlling view and z limit
+     */
+    private fun createViewControlTable(): Table {
+        val nestedTable: Table = Table()
+
+        nestedTable.add(zoomInButton).size(40f * gdxSetting.imageScale, 40f * gdxSetting.imageScale)
+
+        nestedTable.add(zoomOutButton).size(40f * gdxSetting.imageScale, 40f * gdxSetting.imageScale)
+
+        return nestedTable
     }
 
     /**
