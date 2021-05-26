@@ -32,7 +32,7 @@ class RelativitizationGame(val universeClient: UniverseClient, private val unive
     }
 
 
-    private fun restoreSize() {
+    fun restoreSize() {
         if (Gdx.app.type == Application.ApplicationType.Desktop &&
             gdxSetting.windowsWidth > 39 &&
             gdxSetting.windowsHeight > 39

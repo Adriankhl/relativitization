@@ -1,7 +1,9 @@
 package relativitization.game.screens
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
+import org.apache.logging.log4j.LogManager
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.TableScreen
 
@@ -12,12 +14,35 @@ class GdxSettingsScreen(val game: RelativitizationGame, val inGame: Boolean) : T
         super.show()
 
         root.add(createGdxSettingsScrollPane())
+
+        root.row().space(10f)
+
+        val applyButton = createTextButton(
+            "Apply",
+            gdxSetting.normalFontSize,
+            gdxSetting.soundEffectsVolume,
+        ) {
+            if (inGame) {
+
+            } else {
+                game.screen = MainMenuScreen(game)
+                game.restoreSize()
+            }
+        }
+
+        root.add(applyButton)
     }
 
     private fun createGdxSettingsScrollPane(): ScrollPane {
         val table: Table = Table()
 
         val scrollPane: ScrollPane = createScrollPane(table)
+
+        val gdxSettingsLabel = createLabel("Gdx Settings:", gdxSetting.hugeFontSIze)
+
+        table.add(gdxSettingsLabel).colspan(2).space(20f)
+
+        table.row().space(10f)
 
         addGdxSettings(table)
 
@@ -28,8 +53,48 @@ class GdxSettingsScreen(val game: RelativitizationGame, val inGame: Boolean) : T
     }
 
     private fun addGdxSettings(table: Table) {
-        val gdxSettingsLabel = createLabel("Gdx Settings:", gdxSetting.hugeFontSIze)
+        table.add(createLabel("Continuous rendering: ", gdxSetting.normalFontSize))
+        val continuousRenderingCheckBox = createCheckBox(
+            "",
+            gdxSetting.continuousRendering,
+            gdxSetting.normalFontSize
+        ) { continuousRendering, _ ->
+            gdxSetting.continuousRendering = continuousRendering
+        }
+        table.add(continuousRenderingCheckBox)
 
-        table.add(gdxSettingsLabel).colspan(2).space(20f)
+        table.row().space(10f)
+
+        table.add(createLabel("Windows width: ", gdxSetting.normalFontSize))
+        val widthTextField = createTextField(
+            Gdx.graphics.width.toString(),
+            gdxSetting.normalFontSize
+        ) { width, _ ->
+            try {
+                gdxSetting.windowsWidth = width.toInt()
+            } catch (e: NumberFormatException) {
+                logger.error("Invalid windows width")
+            }
+        }
+        table.add(widthTextField)
+
+        table.row().space(10f)
+
+        table.add(createLabel("Windows height: ", gdxSetting.normalFontSize))
+        val heightTextField = createTextField(
+            Gdx.graphics.height.toString(),
+            gdxSetting.normalFontSize
+        ) { width, _ ->
+            try {
+                gdxSetting.windowsWidth = width.toInt()
+            } catch (e: NumberFormatException) {
+                logger.error("Invalid windows height")
+            }
+        }
+        table.add(heightTextField)
+    }
+
+    companion object {
+        private val logger = LogManager.getLogger()
     }
 }
