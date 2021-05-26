@@ -18,15 +18,21 @@ class LoadUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asse
         root.row().space(20f)
 
         runBlocking {
+            val savedUniverseList: List<String> = game.universeClient.httpGetSavedUniverse()
+
+            // Default load universe name to first element
+            if (!savedUniverseList.isEmpty()) {
+                loadUniverseName = savedUniverseList[0]
+            }
+
             val loadUniverseNameList = createList(
-                game.universeClient.httpGetSavedUniverse(),
+                savedUniverseList,
                 gdxSetting.normalFontSize
             ) { name, _ ->
                 loadUniverseName = name
             }
 
             root.add(loadUniverseNameList)
-
         }
 
         root.row().space(10f)
@@ -51,4 +57,5 @@ class LoadUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asse
         root.row().space(10f)
         root.add(loadFailLabel)
     }
+
 }
