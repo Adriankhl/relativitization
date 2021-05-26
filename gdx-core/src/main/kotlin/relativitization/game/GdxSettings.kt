@@ -4,12 +4,11 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class GdxSetting(
-    var resolution: String = "1360x765",
     var continuousRendering: Boolean = false,
-    var musicVolume: Float = 0.5f,
-    var soundEffectsVolume: Float = 0.5f,
     var windowsWidth: Int = 1360,
     var windowsHeight: Int = 768,
+    var musicVolume: Float = 0.5f,
+    var soundEffectsVolume: Float = 0.5f,
     var smallFontSize: Int = 16,
     var normalFontSize: Int = 24,
     var bigFontSize: Int = 30,

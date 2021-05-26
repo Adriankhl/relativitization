@@ -29,19 +29,17 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
     private val topBar: GameScreenTopBar = GameScreenTopBar(game, worldMap, info, worldMapAndInfo)
 
 
-    init {
-        // update top bar status label and request render when client is updated
-        game.universeClient.updatableByClient.add { topBar.autoUpdate() }
-        game.universeClient.updatableByClient.add { Gdx.graphics.requestRendering() }
-
-        worldMap.updateInfo = info::update
-    }
-
     override fun show() {
         // Add background before adding root table from super.show()
         stage.addActor(background)
 
         super.show()
+
+        // update top bar status label and request render when client is updated
+        game.universeClient.updatableByClient.add { topBar.autoUpdate() }
+        game.universeClient.updatableByClient.add { Gdx.graphics.requestRendering() }
+
+        worldMap.updateInfo = info::update
 
         root.add(topBar.get()).growX().top()
 

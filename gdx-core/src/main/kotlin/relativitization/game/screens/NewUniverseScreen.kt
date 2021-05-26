@@ -64,7 +64,7 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
         val scrollPane: ScrollPane = createScrollPane(table)
 
         scrollPane.fadeScrollBars = false
-        scrollPane.setFlickScroll(false)
+        scrollPane.setFlickScroll(true)
 
         return scrollPane
     }
