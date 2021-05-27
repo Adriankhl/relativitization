@@ -1,5 +1,6 @@
 package relativitization.universe.generate.abm
 
+import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.MutableUniverseData4D
 import relativitization.universe.data.UniverseData
 import relativitization.universe.data.UniverseSettings
@@ -8,6 +9,7 @@ import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.generate.GenerateSetting
 import relativitization.universe.generate.GenerateUniverse
 import relativitization.universe.maths.grid.Grids.create4DGrid
+import kotlin.random.Random
 
 class Flocking : GenerateUniverse() {
     override fun generate(setting: GenerateSetting): UniverseData {
@@ -26,6 +28,14 @@ class Flocking : GenerateUniverse() {
             currentTime = universeSettings.tDim - 1,
             maxPlayerId = setting.numPlayer,
         )
+
+        for (i in 1..setting.numPlayer) {
+            val playerData = MutablePlayerData(id = i)
+            playerData.int4D.x = Random.Default.nextInt(0, universeSettings.xDim)
+            playerData.int4D.y = Random.Default.nextInt(0, universeSettings.yDim)
+            playerData.int4D.z = Random.Default.nextInt(0, universeSettings.zDim)
+            data.addPlayerDataToLatest(playerData, universeState.getCurrentTime())
+        }
 
         return UniverseData(
             universeData4D = DataSerializer.copy(data),

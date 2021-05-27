@@ -19,6 +19,12 @@ class Minimal : GenerateUniverse() {
                 universeSettings.zDim
             ) { _, _, _, _ -> mutableListOf() }
         )
+
+        val universeState = UniverseState(
+            currentTime = universeSettings.tDim - 1,
+            maxPlayerId = 2,
+        )
+
         val playerData1 = MutablePlayerData(1)
         val playerData2 = MutablePlayerData(2)
 
@@ -28,13 +34,9 @@ class Minimal : GenerateUniverse() {
         playerData1.playerInternalData.popSystemicData.addRandomStellarSystem()
         playerData2.playerInternalData.popSystemicData.addRandomStellarSystem()
 
-        data.addPlayerDataToLatest(playerData1, universeSettings.tDim - 1)
-        data.addPlayerDataToLatest(playerData2, universeSettings.tDim - 1)
+        data.addPlayerDataToLatest(playerData1, universeState.getCurrentTime())
+        data.addPlayerDataToLatest(playerData2, universeState.getCurrentTime())
 
-        val universeState = UniverseState(
-            currentTime = universeSettings.tDim - 1,
-            maxPlayerId = 2,
-        )
 
         return UniverseData(
             universeData4D = copy(data),
