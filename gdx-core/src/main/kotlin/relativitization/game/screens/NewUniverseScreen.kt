@@ -162,14 +162,17 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
         table.row().space(10f)
 
         table.add(createLabel("Speed of light: ", gdxSetting.normalFontSize))
-        val speedOfLightSelectBox = createSelectBox(
-            (1..10).toList(),
-            game.universeClient.generateSettings.universeSettings.speedOfLight,
+        val speedOfLightTextField = createTextField(
+            game.universeClient.generateSettings.universeSettings.speedOfLight.toString(),
             gdxSetting.normalFontSize
-        ) { speed, _ ->
-            game.universeClient.generateSettings.universeSettings.speedOfLight = speed
+        ) { speedOfLight, _ ->
+            try {
+                game.universeClient.generateSettings.universeSettings.speedOfLight = speedOfLight.toDouble()
+            } catch (e: NumberFormatException) {
+                logger.error("Invalid speed of light")
+            }
         }
-        table.add(speedOfLightSelectBox)
+        table.add(speedOfLightTextField)
 
         table.row().space(10f)
 

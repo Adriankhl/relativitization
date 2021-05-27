@@ -62,21 +62,21 @@ object Intervals {
     /**
      * Compute light travel time by turn, round up
      */
-    fun intDelay(c1: Int3D, c2: Int3D, speedOfLight: Int): Int {
-        return (intDistance(c1, c2) - 1) / speedOfLight + 1
+    fun intDelay(c1: Int3D, c2: Int3D, speedOfLight: Double): Int {
+        return (intDistance(c1, c2) / speedOfLight).toInt() + 1
     }
 
     /**
      * Maximum time delay change when a player move to an adjacent grid
      */
-    fun maxDelayAfterMove(speedOfLight: Int): Int {
+    fun maxDelayAfterMove(speedOfLight: Double): Int {
         return intDelay(Int3D(0, 0, 0), Int3D(1, 1, 1), speedOfLight)
     }
 
     /**
      * Time after dilation
      */
-    fun dilatedTime(dt: Double, velocity: Velocity, speedOfLight: Int): Double {
+    fun dilatedTime(dt: Double, velocity: Velocity, speedOfLight: Double): Double {
         return dt / gamma(velocity, speedOfLight)
     }
 }

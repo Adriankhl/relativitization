@@ -35,7 +35,7 @@ data class ChangeVelocityCommand(
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings): Unit {
-        val speedOfLight: Int = universeSettings.speedOfLight
+        val speedOfLight: Double = universeSettings.speedOfLight
 
         val restMass: Double = playerData.playerInternalData.physicsData.restMass
         val efficiency: Double = playerData.playerInternalData.physicsData.moveEnergyEfficiency

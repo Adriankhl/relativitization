@@ -10,6 +10,7 @@ import relativitization.universe.data.physics.Int4D
 import relativitization.universe.data.serializer.DataSerializer.encode
 import relativitization.universe.data.serializer.DataSerializer.decode
 import relativitization.universe.maths.grid.Grids.create3DGrid
+import relativitization.universe.maths.physics.Intervals.intDelay
 import relativitization.universe.maths.physics.Intervals.intDistance
 import relativitization.universe.mechanisms.MechanismCollection.processMechanismCollection
 import relativitization.universe.utils.pmap
@@ -231,9 +232,9 @@ class Universe(private val universeData: UniverseData, saveWhenInit: Boolean = t
 
             // Determine the command to be executed by spacetime distance
             val commandExecuteList: List<Command> = commandList.filter {
-                val distance: Int = intDistance(it.fromInt4D, playerInt4D)
+                val timeDelay: Int = intDelay(it.fromInt4D.toInt3D(), playerInt4D.toInt3D(), universeData.universeSettings.speedOfLight)
                 val timeDiff: Int = playerInt4D.t - it.fromInt4D.t
-                distance - timeDiff * universeData.universeSettings.speedOfLight <= 0
+                timeDiff <= timeDelay
             }
 
             // Remove the command to be executed
