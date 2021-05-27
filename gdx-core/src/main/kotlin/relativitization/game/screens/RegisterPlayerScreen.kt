@@ -61,7 +61,7 @@ class RegisterPlayerScreen(val game: RelativitizationGame) : TableScreen(game.as
                 }
             }
 
-            playerIdSelectBox.items = Array(idList.toTypedArray())
+            playerIdSelectBox.items = Array(idList.sorted().toTypedArray())
         }
         root.add(updateButton).colspan(2)
 
