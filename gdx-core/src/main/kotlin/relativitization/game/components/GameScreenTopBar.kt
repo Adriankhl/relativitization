@@ -13,6 +13,7 @@ import relativitization.game.RelativitizationGame
 import relativitization.game.screens.GdxSettingsScreen
 import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.physics.Int3D
+import relativitization.universe.maths.physics.Intervals.intDelay
 import kotlin.math.min
 
 
@@ -203,20 +204,34 @@ class GameScreenTopBar(
         }
     }
 
+    private val tCoordinateLabel = createLabel(
+        "t: ${game.universeClient.getUniverseData3D().center.t}",
+        gdxSetting.smallFontSize
+    )
+
     private val xCoordinateSelectBox: SelectBox<Int> = createSelectBox(
         (0 until game.universeClient.getUniverseData3D().universeSettings.xDim).toList(),
-        game.universeClient.universeClientSettings.viewCenter.x
-    )
+        game.universeClient.universeClientSettings.viewCenter.x,
+        gdxSetting.smallFontSize
+    ) { x, _ ->
+        updateCoordinates(Int3D(x, yCoordinateSelectBox.selected, zCoordinateSelectBox.selected))
+    }
 
     private val yCoordinateSelectBox: SelectBox<Int> = createSelectBox(
         (0 until game.universeClient.getUniverseData3D().universeSettings.yDim).toList(),
-        game.universeClient.universeClientSettings.viewCenter.y
-    )
+        game.universeClient.universeClientSettings.viewCenter.y,
+        gdxSetting.smallFontSize
+    ) { y, _ ->
+        updateCoordinates(Int3D(xCoordinateSelectBox.selected, y, zCoordinateSelectBox.selected))
+    }
 
     private val zCoordinateSelectBox: SelectBox<Int> = createSelectBox(
         (0 until game.universeClient.getUniverseData3D().universeSettings.zDim).toList(),
-        game.universeClient.universeClientSettings.viewCenter.z
-    )
+        game.universeClient.universeClientSettings.viewCenter.z,
+        gdxSetting.smallFontSize
+    ) { z, _ ->
+        updateCoordinates(Int3D(xCoordinateSelectBox.selected, yCoordinateSelectBox.selected, z))
+    }
 
     private val zLimitSelectBox: SelectBox<Int> = createSelectBox(
         (1..game.universeClient.getUniverseData3D().universeSettings.zDim).toList(),
@@ -350,6 +365,7 @@ class GameScreenTopBar(
         val topTable: Table = Table()
         val bottomTable: Table = Table()
 
+        topTable.add(tCoordinateLabel).space(10f)
         topTable.add(createLabel("x:", gdxSetting.smallFontSize))
         topTable.add(xCoordinateSelectBox).space(10f)
         topTable.add(createLabel("y:", gdxSetting.smallFontSize))
@@ -474,5 +490,13 @@ class GameScreenTopBar(
         xCoordinateSelectBox.selected = int3D.x
         yCoordinateSelectBox.selected = int3D.y
         zCoordinateSelectBox.selected = int3D.z
+
+        val t: Int = game.universeClient.getUniverseData3D().center.t - intDelay(
+            int3D,
+            game.universeClient.getUniverseData3D().center.toInt3D(),
+            game.universeClient.getUniverseData3D().universeSettings.speedOfLight
+        )
+
+        tCoordinateLabel.setText("t: $t")
     }
 }
