@@ -3,6 +3,7 @@ package relativitization.universe.generate
 import kotlinx.serialization.Serializable
 import org.apache.logging.log4j.LogManager
 import relativitization.universe.data.*
+import relativitization.universe.generate.abm.Flocking
 import relativitization.universe.generate.fixed.Minimal
 
 @Serializable
@@ -24,7 +25,8 @@ abstract class GenerateUniverse {
 
         // Store all generate method
         val generateMethodMap: Map<String, GenerateUniverse> = mapOf(
-            "fixed-Minimal" to Minimal()
+            "fixed-Minimal" to Minimal(),
+            "flocking" to Flocking()
         )
 
         fun isSettingValid(setting: GenerateSetting): Boolean {
