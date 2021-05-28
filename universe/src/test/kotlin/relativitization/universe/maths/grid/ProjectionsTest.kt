@@ -54,8 +54,6 @@ internal class ProjectionsTest {
         )
 
         assert(iFunc(3, 1) == IntRectangle(xPos=2148, yPos=2248, width=1024, height=1024))
-
-        assert(iFunc(3, 1) == IntRectangle(xPos=3172, yPos=2248, width=1024, height=1024))
     }
 
 

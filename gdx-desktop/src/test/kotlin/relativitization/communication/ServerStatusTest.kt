@@ -1,5 +1,6 @@
 package relativitization.communication
 
+import io.ktor.http.*
 import kotlinx.coroutines.*
 import kotlin.test.Test
 import relativitization.client.UniverseClient
@@ -32,8 +33,9 @@ internal class ServerStatusTest {
             launch {
                 universeServer.start()
             }
-            delay(1000)
-            universeClient.httpPostNewUniverse()
+            while(universeClient.httpPostNewUniverse() != HttpStatusCode.OK) {
+                delay(1000)
+            }
             val status = universeClient.httpGetUniverseServerStatus()
             println(status)
             assert(status.hasUniverse == true)

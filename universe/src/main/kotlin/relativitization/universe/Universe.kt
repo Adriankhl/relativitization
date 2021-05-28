@@ -11,7 +11,6 @@ import relativitization.universe.data.serializer.DataSerializer.encode
 import relativitization.universe.data.serializer.DataSerializer.decode
 import relativitization.universe.maths.grid.Grids.create3DGrid
 import relativitization.universe.maths.physics.Intervals.intDelay
-import relativitization.universe.maths.physics.Intervals.intDistance
 import relativitization.universe.mechanisms.MechanismCollection.processMechanismCollection
 import relativitization.universe.utils.pmap
 
