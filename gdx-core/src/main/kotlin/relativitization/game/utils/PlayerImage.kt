@@ -25,7 +25,7 @@ object PlayerImage {
             it.carrierType == CarrierType.STELLAR
         }.contains(true)
 
-        if (hasStellarSystem && playerData.playerType != PlayerType.NONE) {
+        if (hasStellarSystem) {
             val stellarImage: Image = ActorFunction.createImage(assets, "system/sun", soundVolume)
             stellarImage.setPosition(xPos, yPos)
             stellarImage.setSize(width, height)
