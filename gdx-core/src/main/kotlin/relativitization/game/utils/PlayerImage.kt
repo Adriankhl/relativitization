@@ -1,6 +1,7 @@
 package relativitization.game.utils
 
 import com.badlogic.gdx.scenes.scene2d.ui.Image
+import com.badlogic.gdx.scenes.scene2d.ui.Stack
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.PlayerType
 import relativitization.universe.data.popsystems.CarrierType
@@ -64,5 +65,22 @@ object PlayerImage {
         imageList.add(transparentSquare)
 
         return imageList
+    }
+
+    fun getPlayerImageStack(
+        playerData: PlayerData,
+        assets: Assets,
+        width: Float,
+        height: Float,
+        soundVolume: Float,
+        function: (Image) -> Unit = {}
+    ): Stack {
+        val imageList = getPlayerImages(playerData, assets, 0f, 0f, width, height, soundVolume, function)
+        val stack = Stack()
+        for (image in imageList) {
+            stack.add(image)
+        }
+
+        return stack
     }
 }
