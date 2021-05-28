@@ -178,6 +178,25 @@ class GameScreenTopBar(
         worldMap.zoomOut()
     }
 
+    private val zoomToFullMapButton: ImageButton = createImageButton(
+        "basic/white-four-out-arrow",
+        1.0f,
+        1.0f,
+        1.0f,
+        1.0f,
+        1.0f,
+        1.0f,
+        1.0f,
+        0.7f,
+        1.0f,
+        1.0f,
+        1.0f,
+        1.0f,
+        gdxSetting.soundEffectsVolume
+    ) {
+        worldMap.zoomToFullMap()
+    }
+
     private val uploadButton: ImageButton = createImageButton(
         "basic/white-upload",
         1.0f,
@@ -378,6 +397,7 @@ class GameScreenTopBar(
         bottomTable.add(confirmViewButton).size(40f * gdxSetting.imageScale, 40f * gdxSetting.imageScale)
         bottomTable.add(zoomInButton).size(40f * gdxSetting.imageScale, 40f * gdxSetting.imageScale)
         bottomTable.add(zoomOutButton).size(40f * gdxSetting.imageScale, 40f * gdxSetting.imageScale)
+        bottomTable.add(zoomToFullMapButton).size(40f * gdxSetting.imageScale, 40f * gdxSetting.imageScale)
 
         nestedTable.add(topTable)
 
