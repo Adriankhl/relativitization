@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox
 import com.badlogic.gdx.scenes.scene2d.ui.SplitPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.utils.Array
 import io.ktor.http.*
 import kotlinx.coroutines.runBlocking
@@ -223,6 +224,12 @@ class GameScreenTopBar(
         }
     }
 
+    private val physicsInfoButton: TextButton = createTextButton(
+        "Physics",
+        gdxSetting.normalFontSize,
+        gdxSetting.soundEffectsVolume
+    )
+
     private val tCoordinateLabel = createLabel(
         "t: ${game.universeClient.getUniverseData3D().center.t}",
         gdxSetting.smallFontSize
@@ -330,6 +337,8 @@ class GameScreenTopBar(
         table.add(restoreButton).size(50f * gdxSetting.imageScale, 50f * gdxSetting.imageScale)
 
         table.add(uploadButton).size(50f * gdxSetting.imageScale, 50f * gdxSetting.imageScale)
+
+        table.add(physicsInfoButton).pad(10f)
 
         table.add(serverStatusTable).pad(10f)
 
