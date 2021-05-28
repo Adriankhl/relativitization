@@ -72,14 +72,12 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
                         worldMap.zoomToFullMap()
                         true
                     }
-                    '>' -> {
-                        game.universeClient.nextUniverseData3D()
-                        topBar.updateAll()
+                    '<' -> {
+                        topBar.previousUniverseData()
                         true
                     }
-                    '<' -> {
-                        game.universeClient.previousUniverseData3D()
-                        topBar.updateAll()
+                    '>' -> {
+                        topBar.nextUniverseData()
                         true
                     }
                     else -> {

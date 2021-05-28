@@ -48,8 +48,7 @@ class GameScreenTopBar(
         1.0f,
         gdxSetting.soundEffectsVolume
     ) {
-        game.universeClient.previousUniverseData3D()
-        updateAll()
+        previousUniverseData()
     }
 
     // button to select next time
@@ -69,8 +68,7 @@ class GameScreenTopBar(
         1.0f,
         gdxSetting.soundEffectsVolume
     ) {
-        game.universeClient.nextUniverseData3D()
-        updateAll()
+        nextUniverseData()
     }
 
     private val universeDataSelectBox: SelectBox<String> = createSelectBox(
@@ -520,5 +518,21 @@ class GameScreenTopBar(
         )
 
         tCoordinateLabel.setText("t: $t")
+    }
+
+    /**
+     * Go to previous universe data and update
+     */
+    fun previousUniverseData() {
+        game.universeClient.previousUniverseData3D()
+        updateAll()
+    }
+
+    /**
+     * Go to next universe data and update
+     */
+    fun nextUniverseData() {
+        game.universeClient.nextUniverseData3D()
+        updateAll()
     }
 }
