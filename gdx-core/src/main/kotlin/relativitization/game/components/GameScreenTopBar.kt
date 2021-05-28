@@ -361,8 +361,12 @@ class GameScreenTopBar(
         info.update()
     }
 
+    /**
+     * Restore selected player and clear command list
+     */
     fun restoreAll() {
         worldMap.restore()
+        game.universeClient.commandList.clear()
     }
 
     /**
