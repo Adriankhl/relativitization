@@ -38,6 +38,9 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
 
         super.show()
 
+        // Adjust split pane position from gdx setting
+        worldMapAndInfo.splitAmount = gdxSetting.worldMapAndInfoSplitAmount
+
         // update top bar status label and request render when client is updated
         game.universeClient.updatableByClient.add { topBar.autoUpdate() }
         game.universeClient.updatableByClient.add { Gdx.graphics.requestRendering() }
@@ -79,6 +82,7 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
                 return when (keycode) {
                     Input.Keys.ESCAPE -> {
                         if (worldMapAndInfo.splitAmount < worldMapAndInfo.maxSplitAmount) {
+                            gdxSetting.worldMapAndInfoSplitAmount = worldMapAndInfo.splitAmount
                             worldMapAndInfo.splitAmount = worldMapAndInfo.maxSplitAmount
                         }
                         true
