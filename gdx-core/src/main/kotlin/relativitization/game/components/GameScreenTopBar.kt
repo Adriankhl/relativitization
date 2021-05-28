@@ -2,6 +2,7 @@ package relativitization.game.components
 
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
 import com.badlogic.gdx.scenes.scene2d.ui.Label
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox
 import com.badlogic.gdx.scenes.scene2d.ui.SplitPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
@@ -22,9 +23,10 @@ class GameScreenTopBar(
     val worldMap: GameScreenWorldMap,
     val info: GameScreenInfo,
     val worldMapAndInfo: SplitPane
-    ) : ScreenComponent<Table>(game.assets) {
+    ) : ScreenComponent<ScrollPane>(game.assets) {
     private val gdxSetting = game.gdxSetting
     private val table: Table = Table()
+    private val scrollPane: ScrollPane = createScrollPane(table)
 
 
     private val currentUniverseDataLabel: Label = createLabel("", gdxSetting.smallFontSize)
@@ -336,8 +338,8 @@ class GameScreenTopBar(
         table.add(settingButton).size(50f * gdxSetting.imageScale, 50f * gdxSetting.imageScale)
     }
 
-    override fun get(): Table {
-        return table
+    override fun get(): ScrollPane {
+        return scrollPane
     }
 
     /**

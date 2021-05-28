@@ -49,7 +49,8 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
 
         worldMap.updateCoordinate = topBar::updateCoordinates
 
-        root.add(topBar.get()).growX().top()
+        // Fix minimal top Bar height to preferred height
+        root.add(topBar.get()).growX().top().minHeight(topBar.get().prefHeight)
 
         root.row()
 
