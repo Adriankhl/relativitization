@@ -385,6 +385,7 @@ class GameScreenTopBar(
     fun restoreAll() {
         worldMap.restore()
         game.universeClient.commandList.clear()
+        game.universeClient.commandWaitList.clear()
     }
 
     /**

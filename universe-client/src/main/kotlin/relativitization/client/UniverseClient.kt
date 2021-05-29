@@ -53,6 +53,9 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
     // input command list
     val commandList: MutableList<Command> = mutableListOf()
 
+    // command to be added to the command list
+    val commandWaitList: MutableList<Command> = mutableListOf()
+
     // for generate universe
     var generateSettings: GenerateSetting = GenerateSetting()
 
