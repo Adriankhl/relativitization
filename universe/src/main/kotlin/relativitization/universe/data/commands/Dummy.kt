@@ -8,7 +8,7 @@ import relativitization.universe.data.physics.Velocity
 
 
 @Serializable
-data class Dummy(
+data class DummyCommand(
     override val fromId: Int,
     override val toId: Int,
     override val fromInt4D: Int4D,
