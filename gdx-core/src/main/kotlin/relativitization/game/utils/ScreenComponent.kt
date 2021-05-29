@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
+import com.badlogic.gdx.scenes.scene2d.ui.SplitPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
@@ -31,6 +32,13 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets){
      * @param actor the table to add scroll pane
      */
     fun createScrollPane(actor: Actor): ScrollPane = ActorFunction.createScrollPane(skin, actor)
+
+
+    /**
+     * Create split pane
+     */
+    fun createSplitPane(actor1: Actor, actor2: Actor, vertical: Boolean): SplitPane = ActorFunction.createSplitPane(skin, actor1, actor2, vertical)
+
 
 
     /**

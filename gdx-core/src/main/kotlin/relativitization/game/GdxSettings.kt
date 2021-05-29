@@ -15,5 +15,6 @@ data class GdxSetting(
     var hugeFontSize: Int = 40,
     var zoomFactor: Float = 1.2f,
     var imageScale: Float = 1.0f,
-    var worldMapAndInfoSplitAmount: Float = 0.7f
+    var worldMapAndInfoSplitAmount: Float = 0.7f,
+    var infoAndCommandSplitAmount: Float = 0.8f,
 )
