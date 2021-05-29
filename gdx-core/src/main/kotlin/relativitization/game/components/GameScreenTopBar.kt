@@ -224,18 +224,30 @@ class GameScreenTopBar(
         }
     }
 
-    private val physicsInfoButton: TextButton = createTextButton(
-        "Physics",
-        gdxSetting.normalFontSize,
-        gdxSetting.soundEffectsVolume
-    )
 
     private val overviewInfoButton: TextButton = createTextButton(
         "Overview",
         gdxSetting.normalFontSize,
         gdxSetting.soundEffectsVolume
-    )
+    ) {
+        // If hiding, show the panel
+        if (info.showingInfo == ShowingInfo.HIDE) {
+            worldMapAndInfo.splitAmount = gdxSetting.worldMapAndInfoSplitAmount
+        }
+        info.switchShowingInfo(ShowingInfo.OVERVIEW)
 
+        // If the showing info state is hide, hide the panel
+        if (info.showingInfo == ShowingInfo.HIDE) {
+            gdxSetting.worldMapAndInfoSplitAmount = worldMapAndInfo.splitAmount
+            worldMapAndInfo.splitAmount = worldMapAndInfo.maxSplitAmount
+        }
+    }
+
+    private val physicsInfoButton: TextButton = createTextButton(
+        "Physics",
+        gdxSetting.normalFontSize,
+        gdxSetting.soundEffectsVolume
+    )
 
     private val tCoordinateLabel = createLabel(
         "t: ${game.universeClient.getUniverseData3D().center.t}",

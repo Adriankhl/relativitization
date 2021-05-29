@@ -12,6 +12,7 @@ import relativitization.game.RelativitizationGame
 import relativitization.game.components.GameScreenInfo
 import relativitization.game.components.GameScreenTopBar
 import relativitization.game.components.GameScreenWorldMap
+import relativitization.game.components.ShowingInfo
 import relativitization.game.utils.TableScreen
 
 class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
@@ -91,6 +92,8 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
                 return when (keycode) {
                     Input.Keys.ESCAPE -> {
                         if (worldMapAndInfo.splitAmount < worldMapAndInfo.maxSplitAmount) {
+                            // Hide showing info
+                            info.showingInfo = ShowingInfo.HIDE
                             gdxSetting.worldMapAndInfoSplitAmount = worldMapAndInfo.splitAmount
                             worldMapAndInfo.splitAmount = worldMapAndInfo.maxSplitAmount
                         }

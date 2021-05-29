@@ -20,10 +20,11 @@ class GameScreenInfo(
 
     private val infoAndCommand = createSplitPane(upperInfoScrollPane, bottomCommandInfo.get(), true)
 
-
     private val overviewInfo: OverviewInfo = OverviewInfo(game, worldMap, this)
     private val physicsInfo: PhysicsInfo = PhysicsInfo(game, worldMap, this)
     var showingInfo: ShowingInfo = ShowingInfo.OVERVIEW
+
+    var showingCommand: Boolean = true
 
 
     init {
@@ -47,15 +48,37 @@ class GameScreenInfo(
         worldMap.update()
     }
 
-    fun switchShowingInfo() {
-        when (showingInfo) {
-            ShowingInfo.OVERVIEW -> upperInfoScrollPane.actor = overviewInfo.get()
-            ShowingInfo.PHYSICS -> upperInfoScrollPane.actor = physicsInfo.get()
+    /**
+     * Switch information shown in the info scroll pane, hide info panel if the same showing info is requested
+     * for repeat pressing the same button
+     */
+    fun switchShowingInfo(newShowingInfo: ShowingInfo) {
+        if (newShowingInfo == showingInfo) {
+            showingInfo = ShowingInfo.HIDE
+        } else {
+            when (newShowingInfo) {
+                ShowingInfo.OVERVIEW -> upperInfoScrollPane.actor = overviewInfo.get()
+                ShowingInfo.PHYSICS -> upperInfoScrollPane.actor = physicsInfo.get()
+            }
+            showingInfo = newShowingInfo
+        }
+    }
+
+    /**
+     * Switch showing bottom command info or not
+     */
+    fun switchShowingCommand() {
+        showingCommand = !showingCommand
+        if (showingCommand) {
+            infoAndCommand.splitAmount = gdxSetting.infoAndCommandSplitAmount
+        } else {
+            gdxSetting.infoAndCommandSplitAmount = infoAndCommand.splitAmount
         }
     }
 }
 
 enum class ShowingInfo {
+    HIDE,
     OVERVIEW,
     PHYSICS
 }
