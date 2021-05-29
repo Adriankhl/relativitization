@@ -230,6 +230,13 @@ class GameScreenTopBar(
         gdxSetting.soundEffectsVolume
     )
 
+    private val overviewInfoButton: TextButton = createTextButton(
+        "Overview",
+        gdxSetting.normalFontSize,
+        gdxSetting.soundEffectsVolume
+    )
+
+
     private val tCoordinateLabel = createLabel(
         "t: ${game.universeClient.getUniverseData3D().center.t}",
         gdxSetting.smallFontSize
@@ -337,6 +344,8 @@ class GameScreenTopBar(
         table.add(restoreButton).size(50f * gdxSetting.imageScale, 50f * gdxSetting.imageScale)
 
         table.add(uploadButton).size(50f * gdxSetting.imageScale, 50f * gdxSetting.imageScale)
+
+        table.add(overviewInfoButton).pad(10f)
 
         table.add(physicsInfoButton).pad(10f)
 
