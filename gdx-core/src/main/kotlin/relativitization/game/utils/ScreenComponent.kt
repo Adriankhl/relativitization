@@ -21,7 +21,7 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets){
     abstract fun get(): T
 
     /**
-     * Update the component, trigger manually or by the render() function
+     * The function that should be called when client get updated
      */
     abstract fun update()
 
