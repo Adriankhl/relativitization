@@ -101,7 +101,7 @@ class GameScreenTopBar(
     }
 
     private val updateToLatestButton: ImageButton = createImageButton(
-        "basic/white-rightmost-arrow",
+        "basic/white-rightmost-triangle",
         1.0f,
         1.0f,
         1.0f,
