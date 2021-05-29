@@ -26,7 +26,7 @@ sealed class Command {
     /**
      * Check if the player (sender) can send the command
      */
-    abstract fun canSend(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean
+    protected abstract fun canSend(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean
 
     /**
      * Check if can send and have command
@@ -39,7 +39,7 @@ sealed class Command {
     /**
      * Check if the player can receive the command
      */
-    abstract fun canExecute(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean
+    protected abstract fun canExecute(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean
 
     /**
      * Check if can execute and have command
