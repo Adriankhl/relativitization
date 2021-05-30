@@ -18,7 +18,9 @@ import relativitization.universe.communication.*
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
+import relativitization.universe.data.commands.DummyCommand
 import relativitization.universe.data.physics.Int3D
+import relativitization.universe.data.physics.Int4D
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.generate.GenerateSetting
 import relativitization.universe.utils.CoroutineBoolean
@@ -53,8 +55,8 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
     // input command list
     val commandList: MutableList<Command> = mutableListOf()
 
-    // command to be added to the command list
-    val commandWaitList: MutableList<Command> = mutableListOf()
+    // command waiting to be confirmed (add to commandList) or cancel
+    val commandToBeConfirm: Command = DummyCommand(-1, -1, Int4D(0, 0, 0, 0))
 
     // for generate universe
     var generateSettings: GenerateSetting = GenerateSetting()
