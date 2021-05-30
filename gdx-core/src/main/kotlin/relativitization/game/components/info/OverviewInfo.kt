@@ -24,6 +24,12 @@ class OverviewInfo(
     }
 
     fun updateScrollPane() {
+        val id = if (game.universeClient.getUniverseData3D().playerDataMap.keys.contains(game.universeClient.firstSelectedPlayerId)) {
+            game.universeClient.firstSelectedPlayerId
+        } else {
+            game.universeClient.getUniverseData3D().id
+        }
 
+        val playerData = game.universeClient.getUniverseData3D().get(id)
     }
 }
