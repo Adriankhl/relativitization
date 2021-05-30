@@ -31,14 +31,14 @@ class UniverseServerInternal(var universeServerSettings: UniverseServerSettings)
     private val hasUniverse: CoroutineBoolean = CoroutineBoolean(false)
 
     // Whether the universe is running
-    private val runningUniverse: CoroutineBoolean = CoroutineBoolean(false)
+    private val isUniverseRunning: CoroutineBoolean = CoroutineBoolean(false)
 
     // is waiting input from human
     // client can only get data and post command list if this is true
-    private val waitingInput: CoroutineBoolean = CoroutineBoolean(false)
+    private val isServerWaitingInput: CoroutineBoolean = CoroutineBoolean(false)
 
     // Whether the data process is done
-    private val doneProcess: CoroutineBoolean = CoroutineBoolean(false)
+    private val isProcessDone: CoroutineBoolean = CoroutineBoolean(false)
 
     // wait beginning time in milli second, used to calculate the time limit to stop waiting
     private val waitBeginTime: CoroutineVar<Long> = CoroutineVar(System.currentTimeMillis())
@@ -66,16 +66,16 @@ class UniverseServerInternal(var universeServerSettings: UniverseServerSettings)
             logger.debug("Server internal running")
             delay(1000)
 
-            if (runningUniverse.isTrue()) {
+            if (isUniverseRunning.isTrue()) {
                 mutex.withLock {
-                    if (allHumanInputReady() || (!waitingInput.isTrue()) || exceedTimeLimit()) {
-                        waitingInput.set(false)
+                    if (allHumanInputReady() || (!isServerWaitingInput.isTrue()) || exceedTimeLimit()) {
+                        isServerWaitingInput.set(false)
                         setTimeLeftTo(0)
                         logger.debug("Not accepting new input")
                     }
                 }
 
-                if (!waitingInput.isTrue() && !doneProcess.isTrue()) {
+                if (!isServerWaitingInput.isTrue() && !isProcessDone.isTrue()) {
                    // Post-process then pre-process since the universe accept input in the middle of game turn
                     universe.postProcessUniverse(humanCommandMap, aiCommandMap)
                     universe.preProcessUniverse()
@@ -93,14 +93,14 @@ class UniverseServerInternal(var universeServerSettings: UniverseServerSettings)
                         addInactive()
                     }
 
-                    doneProcess.set(true)
+                    isProcessDone.set(true)
                 }
 
 
                 // Compute ai commands after universe processing is done
-                if (doneProcess.isTrue()) {
+                if (isProcessDone.isTrue()) {
                     // Start to accept human input
-                    waitingInput.set(true)
+                    isServerWaitingInput.set(true)
                     logger.debug("Start accepting new input")
 
                     aiCommandMap.putAll(universe.computeAICommands())
@@ -110,7 +110,7 @@ class UniverseServerInternal(var universeServerSettings: UniverseServerSettings)
 
                     logger.debug("AI done computation")
 
-                    doneProcess.set(false)
+                    isProcessDone.set(false)
                 }
             }
         }
@@ -122,7 +122,7 @@ class UniverseServerInternal(var universeServerSettings: UniverseServerSettings)
      * @param job the job running the start() function/
      */
     suspend fun stop(job: Job) {
-        runningUniverse.set(false)
+        isUniverseRunning.set(false)
         job.cancelAndJoin()
     }
 
@@ -130,8 +130,8 @@ class UniverseServerInternal(var universeServerSettings: UniverseServerSettings)
      * Is waiting for input or waiting to start
      */
     private suspend fun isWaiting(): Boolean {
-        return ((hasUniverse.isTrue() && !runningUniverse.isTrue()) ||
-                (runningUniverse.isTrue() && waitingInput.isTrue())
+        return ((hasUniverse.isTrue() && !isUniverseRunning.isTrue()) ||
+                (isUniverseRunning.isTrue() && isServerWaitingInput.isTrue())
                 )
     }
 
@@ -210,7 +210,7 @@ class UniverseServerInternal(var universeServerSettings: UniverseServerSettings)
             return if (
                 (humanIdPasswordMap.keys.contains(commandInputMessage.id)) &&
                 (humanIdPasswordMap.getValue(commandInputMessage.id) == commandInputMessage.password) &&
-                (waitingInput.isTrue())
+                (isServerWaitingInput.isTrue())
             ) {
                 humanCommandMap[commandInputMessage.id] = commandInputMessage.commandList
                 true
@@ -225,7 +225,7 @@ class UniverseServerInternal(var universeServerSettings: UniverseServerSettings)
      */
     suspend fun setUniverse(newUniverse: Universe) {
         mutex.withLock {
-            if (!runningUniverse.isTrue()) {
+            if (!isUniverseRunning.isTrue()) {
                 universe = newUniverse
                 updateCommandMapAndIdList()
                 currentUniverseTime = universe.getCurrentUniverseTime()
@@ -252,8 +252,8 @@ class UniverseServerInternal(var universeServerSettings: UniverseServerSettings)
                 universeName = universe.getUniverseName(),
                 success = true,
                 hasUniverse = hasUniverse.isTrue(),
-                runningUniverse = runningUniverse.isTrue(),
-                waitingInput = waitingInput.isTrue(),
+                isUniverseRunning = isUniverseRunning.isTrue(),
+                isServerWaitingInput = isServerWaitingInput.isTrue(),
                 timeLeft = timeLeft(),
                 currentUniverseTime = currentUniverseTime
             )
@@ -340,11 +340,11 @@ class UniverseServerInternal(var universeServerSettings: UniverseServerSettings)
     suspend fun runUniverse()  {
         mutex.withLock {
             updateCommandMapAndIdList()
-            waitingInput.set(true)
-            runningUniverse.set(true)
+            isServerWaitingInput.set(true)
+            isUniverseRunning.set(true)
 
             // Skip universe process in the first round
-            doneProcess.set(true)
+            isProcessDone.set(true)
         }
     }
 

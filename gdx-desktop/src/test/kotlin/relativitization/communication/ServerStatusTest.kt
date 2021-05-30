@@ -20,7 +20,7 @@ internal class ServerStatusTest {
             delay(1000)
             val status = universeClient.httpGetUniverseServerStatus()
             println(status)
-            assert(status.waitingInput == false)
+            assert(status.isServerWaitingInput == false)
             universeServer.stop()
         }
     }

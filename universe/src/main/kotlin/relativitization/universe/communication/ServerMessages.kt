@@ -12,8 +12,8 @@ data class UniverseServerStatusMessage(
     val universeName: String,
     val success: Boolean = false,
     val hasUniverse: Boolean = false,
-    val runningUniverse: Boolean = false,
-    val waitingInput: Boolean = false,
+    val isUniverseRunning: Boolean = false,
+    val isServerWaitingInput: Boolean = false,
     val timeLeft: Long = 0,
     val currentUniverseTime: Int = -1
 )

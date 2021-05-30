@@ -20,10 +20,10 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
     val gdxSetting = game.gdxSetting
 
     init {
-        if (!game.startedGame) {
+        if (!game.isGameStarted) {
             // wait first universe data before showing anything
             waitFirstData()
-            game.startedGame = true
+            game.isGameStarted = true
         }
     }
 

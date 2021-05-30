@@ -108,9 +108,9 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
         val differentName = universeServerStatusMessage.universeName != universeData3DCache.universeSettings.universeName
         val differentTime = universeServerStatusMessage.currentUniverseTime != universeData3DCache.center.t
         return (universeServerStatusMessage.success &&
-                universeServerStatusMessage.runningUniverse &&
+                universeServerStatusMessage.isUniverseRunning &&
                 universeServerStatusMessage.hasUniverse &&
-                universeServerStatusMessage.waitingInput &&
+                universeServerStatusMessage.isServerWaitingInput &&
                 (differentName || differentTime))
     }
 

@@ -19,7 +19,7 @@ class RelativitizationGame(val universeClient: UniverseClient, private val unive
 
     private lateinit var backgroundMusic: Music
 
-    var startedGame: Boolean = false
+    var isGameStarted: Boolean = false
 
     override fun create() {
         Gdx.input.setCatchKey(Input.Keys.BACK, true)

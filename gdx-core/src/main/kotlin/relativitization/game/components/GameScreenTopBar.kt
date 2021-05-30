@@ -10,7 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.utils.Array
 import io.ktor.http.*
 import kotlinx.coroutines.runBlocking
-import relativitization.game.GdxSetting
 import relativitization.game.RelativitizationGame
 import relativitization.game.screens.GdxSettingsScreen
 import relativitization.game.utils.ScreenComponent
@@ -526,7 +525,7 @@ class GameScreenTopBar(
             "disconnected"
         }
 
-        val timeLeftText = if (serverStatus.waitingInput) {
+        val timeLeftText = if (serverStatus.isServerWaitingInput) {
             "${serverStatus.timeLeft / 1000} s"
         } else {
             "waiting data"
