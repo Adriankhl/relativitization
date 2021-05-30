@@ -224,6 +224,28 @@ class GameScreenTopBar(
         }
     }
 
+    private val bottomCommandInfoButton: ImageButton = createImageButton(
+        "basic/white-wait-upload",
+        1.0f,
+        1.0f,
+        1.0f,
+        1.0f,
+        1.0f,
+        1.0f,
+        1.0f,
+        0.7f,
+        1.0f,
+        1.0f,
+        1.0f,
+        0.8f,
+        gdxSetting.soundEffectsVolume
+    ) {
+        if (it.isChecked) {
+            info.switchShowingCommand(true)
+        } else {
+            info.switchShowingCommand(false)
+        }
+    }
 
     private val overviewInfoButton: TextButton = createTextButton(
         "Overview",
@@ -356,6 +378,8 @@ class GameScreenTopBar(
         table.add(restoreButton).size(50f * gdxSetting.imageScale, 50f * gdxSetting.imageScale)
 
         table.add(uploadButton).size(50f * gdxSetting.imageScale, 50f * gdxSetting.imageScale)
+
+        table.add(bottomCommandInfoButton).size(50f * gdxSetting.imageScale, 50f * gdxSetting.imageScale)
 
         table.add(overviewInfoButton).pad(10f)
 

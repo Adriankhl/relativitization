@@ -67,12 +67,13 @@ class GameScreenInfo(
     /**
      * Switch showing bottom command info or not
      */
-    fun switchShowingCommand() {
-        showingCommand = !showingCommand
+    fun switchShowingCommand(newShowingCommand: Boolean) {
+        showingCommand = newShowingCommand
         if (showingCommand) {
             infoAndCommand.splitAmount = gdxSetting.infoAndCommandSplitAmount
         } else {
             gdxSetting.infoAndCommandSplitAmount = infoAndCommand.splitAmount
+            infoAndCommand.splitAmount = infoAndCommand.maxSplitAmount
         }
     }
 }
