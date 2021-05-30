@@ -56,7 +56,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
     val commandList: MutableList<Command> = mutableListOf()
 
     // command waiting to be confirmed (add to commandList) or cancel
-    val commandToBeConfirm: Command = DummyCommand(-1, -1, Int4D(0, 0, 0, 0))
+    var commandToBeConfirm: Command = DummyCommand(-1, -1, Int4D(0, 0, 0, 0))
 
     // for generate universe
     var generateSettings: GenerateSetting = GenerateSetting()
