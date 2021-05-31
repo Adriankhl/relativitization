@@ -301,7 +301,8 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
 
     private val zLimitSelectBox: SelectBox<Int> = createSelectBox(
         (1..game.universeClient.getUniverseData3D().universeSettings.zDim).toList(),
-        min(game.universeClient.universeClientSettings.zLimit, game.universeClient.getUniverseData3D().universeSettings.zDim)
+        min(game.universeClient.universeClientSettings.zLimit, game.universeClient.getUniverseData3D().universeSettings.zDim),
+        gdxSettings.smallFontSize
     ) { zLimit, _ ->
         game.universeClient.universeClientSettings.zLimit = zLimit
     }

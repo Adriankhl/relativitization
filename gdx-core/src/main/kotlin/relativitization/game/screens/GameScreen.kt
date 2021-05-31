@@ -33,12 +33,27 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
     private val worldMapAndInfo = createSplitPane(worldMap.getScreenComponent(), info.getScreenComponent(), false)
     private val topBar: GameScreenTopBar = GameScreenTopBar(game)
 
-    // Start button to trigger change gdx settings
-    private val startGameButton = createTextButton(
-        "Start Game",
-        gdxSettings.maxFontSize
+    // Button to trigger gdx settings change
+    private val helloUniverseButtonBackground = createImage(
+        "basic/white-pixel",
+        0f,
+        0f,
+        Gdx.graphics.width.toFloat(),
+        Gdx.graphics.height.toFloat(),
+        0.0f,
+        0.0f,
+        0.0f,
+        0.6f,
+        gdxSettings.soundEffectsVolume
+    )
+
+    private val helloUniverseButton = createTextButton(
+        "Hello Universe!",
+        gdxSettings.maxFontSize,
+        gdxSettings.soundEffectsVolume
     ) {
         it.remove()
+        helloUniverseButtonBackground.remove()
         game.changeGdxSettings()
     }
 
@@ -118,8 +133,9 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
         })
 
 
-        startGameButton.setPosition(Gdx.graphics.width / 2.0f - startGameButton.width / 2, Gdx.graphics.height / 2.0f - startGameButton.height / 2)
-        stage.addActor(startGameButton)
+        helloUniverseButton.setPosition(Gdx.graphics.width / 2.0f - helloUniverseButton.width / 2, Gdx.graphics.height / 2.0f - helloUniverseButton.height / 2)
+        stage.addActor(helloUniverseButtonBackground)
+        stage.addActor(helloUniverseButton)
     }
 
     override fun hide() {

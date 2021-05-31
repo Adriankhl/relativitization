@@ -105,7 +105,7 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets){
         g: Float,
         b: Float,
         a: Float,
-        soundVolume: Float = 0.5f,
+        soundVolume: Float,
         function: (Image) -> Unit = {}
     ): Image = ActorFunction.createImage(assets, name, r, g, b, a, soundVolume, function)
 
@@ -119,7 +119,7 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets){
         yPos: Float,
         width: Float,
         height: Float,
-        soundVolume: Float = 0.5f,
+        soundVolume: Float,
         function: (Image) -> Unit = {}
     ): Image = ActorFunction.createImage(assets, id, name, xPos, yPos, width, height, soundVolume, function)
 
@@ -137,7 +137,7 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets){
         g: Float,
         b: Float,
         a: Float,
-        soundVolume: Float = 0.5f,
+        soundVolume: Float,
         function: (Image) -> Unit = {}
     ): Image = ActorFunction.createImage(assets, name, xPos, yPos, width, height, r, g, b, a, soundVolume, function)
 
@@ -158,7 +158,7 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets){
         gChecked: Float,
         bChecked: Float,
         aChecked: Float,
-        soundVolume: Float = 0.5f,
+        soundVolume: Float,
         function: (ImageButton) -> Unit = {},
     ): ImageButton = ActorFunction.createImageButton(
         assets,
@@ -186,7 +186,7 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets){
      * @param text text to display
      * @param fontSize size of the font
      */
-    fun createLabel(text: String, fontSize: Int = 16): Label = ActorFunction.createLabel(skin, assets, text, fontSize)
+    fun createLabel(text: String, fontSize: Int): Label = ActorFunction.createLabel(skin, assets, text, fontSize)
 
     /**
      * Create a text button
@@ -197,8 +197,8 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets){
      */
     fun createTextButton(
         text: String,
-        fontSize: Int = 30,
-        soundVolume: Float = 0.5f,
+        fontSize: Int,
+        soundVolume: Float,
         function: (TextButton) -> Unit = {},
     ): TextButton = ActorFunction.createTextButton(skin, assets, text, fontSize, soundVolume, function)
 
@@ -213,7 +213,7 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets){
     fun createCheckBox(
         text: String,
         default: Boolean,
-        fontSize: Int = 16,
+        fontSize: Int,
         function: (Boolean, CheckBox) -> Unit = { _, _ -> }
     ): CheckBox = ActorFunction.createCheckBox(skin, assets, text, default, fontSize, function)
 
@@ -240,7 +240,7 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets){
      */
     inline fun <reified T> createList(
         itemList: List<T>,
-        fontSize: Int = 16,
+        fontSize: Int,
         crossinline function: (T, com.badlogic.gdx.scenes.scene2d.ui.List<T>) -> Unit = { _, _ -> },
     ): com.badlogic.gdx.scenes.scene2d.ui.List<T> = ActorFunction.createList(skin, assets, itemList, fontSize, function)
 
@@ -255,7 +255,7 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets){
     inline fun <reified T> createSelectBox(
         itemList: List<T>,
         default: T = itemList[0],
-        fontSize: Int = 16,
+        fontSize: Int,
         crossinline function: (T, SelectBox<T>) -> Unit = { _, _ -> },
     ): SelectBox<T> = ActorFunction.createSelectBox(skin, assets, itemList, default, fontSize, function)
 
@@ -269,7 +269,7 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets){
      */
     fun createTextField(
         default: String,
-        fontSize: Int = 16,
+        fontSize: Int,
         function: (String, TextField) -> Unit = { _, _ -> }
     ): TextField = ActorFunction.createTextField(skin, assets, default, fontSize, function)
 
