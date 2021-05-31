@@ -15,10 +15,10 @@ class GameScreenInfo(val game: RelativitizationGame) : ScreenComponent<SplitPane
     private val overviewInfo: OverviewInfo = OverviewInfo(game)
     private val physicsInfo: PhysicsInfo = PhysicsInfo(game)
 
-    private val upperInfoScrollPane: ScrollPane = createScrollPane(overviewInfo.getActor())
+    private val upperInfoScrollPane: ScrollPane = createScrollPane(overviewInfo.getScreenComponent())
     private val bottomCommandInfo: BottomCommandInfo = BottomCommandInfo(game)
 
-    private val infoAndCommand = createSplitPane(upperInfoScrollPane, bottomCommandInfo.getActor(), true)
+    private val infoAndCommand = createSplitPane(upperInfoScrollPane, bottomCommandInfo.getScreenComponent(), true)
 
 
     init {
@@ -34,15 +34,15 @@ class GameScreenInfo(val game: RelativitizationGame) : ScreenComponent<SplitPane
         infoAndCommand.splitAmount = gdxSettings.upperInfoAndBottomCommandSplitAmount
     }
 
-    override fun getActor(): SplitPane {
+    override fun getScreenComponent(): SplitPane {
         return infoAndCommand
     }
 
     override fun onGdxSettingsChange() {
         // Show info type based on setting
         when (gdxSettings.showingInfoType) {
-            ShowingInfoType.OVERVIEW -> upperInfoScrollPane.actor = overviewInfo.getActor()
-            ShowingInfoType.PHYSICS -> upperInfoScrollPane.actor = physicsInfo.getActor()
+            ShowingInfoType.OVERVIEW -> upperInfoScrollPane.actor = overviewInfo.getScreenComponent()
+            ShowingInfoType.PHYSICS -> upperInfoScrollPane.actor = physicsInfo.getScreenComponent()
         }
 
         // Show bottom command or not

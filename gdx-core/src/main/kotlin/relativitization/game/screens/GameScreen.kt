@@ -30,7 +30,7 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
 
     private val worldMap: GameScreenWorldMap = GameScreenWorldMap(game)
     private val info: GameScreenInfo = GameScreenInfo(game)
-    private val worldMapAndInfo = createSplitPane(worldMap.getActor(), info.getActor(), false)
+    private val worldMapAndInfo = createSplitPane(worldMap.getScreenComponent(), info.getScreenComponent(), false)
     private val topBar: GameScreenTopBar = GameScreenTopBar(game)
 
     // Start button to trigger change gdx settings
@@ -63,7 +63,7 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
         // Add all screen component to universe client
 
         // Fix minimal top Bar height to preferred height
-        root.add(topBar.getActor()).growX().top().minHeight(topBar.getActor().prefHeight)
+        root.add(topBar.getScreenComponent()).growX().top().minHeight(topBar.getScreenComponent().prefHeight)
 
         root.row()
 

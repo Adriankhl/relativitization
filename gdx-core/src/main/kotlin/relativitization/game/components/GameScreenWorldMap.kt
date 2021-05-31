@@ -34,7 +34,7 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
         updateGroup()
     }
 
-    override fun getActor(): ScrollPane {
+    override fun getScreenComponent(): ScrollPane {
         return scrollPane
     }
 

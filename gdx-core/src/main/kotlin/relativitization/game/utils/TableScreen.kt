@@ -12,7 +12,7 @@ open class TableScreen(assets: Assets) : ScreenComponent<Table>(assets), Screen 
     protected val stage: Stage = Stage(ScreenViewport())
     protected val root: Table = Table()
 
-    override fun getActor(): Table {
+    override fun getScreenComponent(): Table {
         return root
     }
 

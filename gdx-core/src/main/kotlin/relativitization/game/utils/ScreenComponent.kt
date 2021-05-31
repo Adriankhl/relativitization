@@ -23,7 +23,7 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets){
     /**
      * Get the actor (e.g. table, group) of this component
      */
-    abstract fun getActor(): T
+    abstract fun getScreenComponent(): T
 
     /**
      * Add all components of a child component to this

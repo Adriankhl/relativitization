@@ -389,7 +389,7 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         table.add(settingButton).size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
     }
 
-    override fun getActor(): ScrollPane {
+    override fun getScreenComponent(): ScrollPane {
         return scrollPane
     }
 
