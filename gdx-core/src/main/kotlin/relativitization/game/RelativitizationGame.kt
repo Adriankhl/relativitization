@@ -14,6 +14,10 @@ import relativitization.server.UniverseServer
 class RelativitizationGame(val universeClient: UniverseClient, private val universeServer: UniverseServer) : Game() {
 
     val gdxSetting: GdxSetting = GdxSetting()
+    val onGdxSettingsChangeFunctionList: MutableList<() -> Unit> = mutableListOf()
+    val changeGdxSetting: () -> Unit = {
+        onGdxSettingsChangeFunctionList.forEach { it() }
+    }
 
     val assets: Assets = Assets()
 
