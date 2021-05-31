@@ -34,7 +34,7 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
     private val topBar: GameScreenTopBar = GameScreenTopBar(game)
 
     // Start button to trigger change gdx settings
-    private val startButton = createTextButton(
+    private val startGameButton = createTextButton(
         "Start Game",
         gdxSettings.maxFontSize
     ) {
@@ -118,8 +118,8 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
         })
 
 
-        startButton.setPosition(Gdx.graphics.width / 2.0f - startButton.width / 2, Gdx.graphics.height / 2.0f - startButton.height / 2)
-        stage.addActor(startButton)
+        startGameButton.setPosition(Gdx.graphics.width / 2.0f - startGameButton.width / 2, Gdx.graphics.height / 2.0f - startGameButton.height / 2)
+        stage.addActor(startGameButton)
     }
 
     override fun hide() {
