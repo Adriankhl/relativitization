@@ -15,7 +15,7 @@ class OverviewInfo(
 
     private var scrollPane: ScrollPane = createScrollPane(Table())
 
-    override fun get(): ScrollPane {
+    override fun getActor(): ScrollPane {
         return scrollPane
     }
 
@@ -24,8 +24,8 @@ class OverviewInfo(
     }
 
     fun updateScrollPane() {
-        val id = if (game.universeClient.getUniverseData3D().playerDataMap.keys.contains(game.universeClient.firstSelectedPlayerId)) {
-            game.universeClient.firstSelectedPlayerId
+        val id = if (game.universeClient.getUniverseData3D().playerDataMap.keys.contains(game.universeClient.primarySelectedPlayerId)) {
+            game.universeClient.primarySelectedPlayerId
         } else {
             game.universeClient.getUniverseData3D().id
         }

@@ -18,7 +18,7 @@ class GameScreenInfo(
     private val upperInfoScrollPane: ScrollPane = createScrollPane(table)
     private val bottomCommandInfo: BottomCommandInfo = BottomCommandInfo(game, worldMap, this)
 
-    private val infoAndCommand = createSplitPane(upperInfoScrollPane, bottomCommandInfo.get(), true)
+    private val infoAndCommand = createSplitPane(upperInfoScrollPane, bottomCommandInfo.getActor(), true)
 
     private val overviewInfo: OverviewInfo = OverviewInfo(game, worldMap, this)
     private val physicsInfo: PhysicsInfo = PhysicsInfo(game, worldMap, this)
@@ -36,7 +36,7 @@ class GameScreenInfo(
         infoAndCommand.splitAmount = gdxSetting.infoAndCommandSplitAmount
     }
 
-    override fun get(): SplitPane {
+    override fun getActor(): SplitPane {
         return infoAndCommand
     }
 
@@ -57,8 +57,8 @@ class GameScreenInfo(
             showingInfo = ShowingInfo.HIDE
         } else {
             when (newShowingInfo) {
-                ShowingInfo.OVERVIEW -> upperInfoScrollPane.actor = overviewInfo.get()
-                ShowingInfo.PHYSICS -> upperInfoScrollPane.actor = physicsInfo.get()
+                ShowingInfo.OVERVIEW -> upperInfoScrollPane.actor = overviewInfo.getActor()
+                ShowingInfo.PHYSICS -> upperInfoScrollPane.actor = physicsInfo.getActor()
             }
             showingInfo = newShowingInfo
         }

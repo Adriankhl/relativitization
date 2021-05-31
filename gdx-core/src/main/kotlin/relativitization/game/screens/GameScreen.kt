@@ -29,7 +29,7 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
 
     private val worldMap: GameScreenWorldMap = GameScreenWorldMap(game)
     private val info: GameScreenInfo = GameScreenInfo(game, worldMap)
-    private val worldMapAndInfo = createSplitPane(worldMap.get(), info.get(), false)
+    private val worldMapAndInfo = createSplitPane(worldMap.getActor(), info.getActor(), false)
     private val topBar: GameScreenTopBar = GameScreenTopBar(game, worldMap, info, worldMapAndInfo)
 
 
@@ -43,15 +43,15 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
         worldMapAndInfo.splitAmount = gdxSetting.worldMapAndInfoSplitAmount
 
         // update top bar status label and request render when client is updated
-        game.universeClient.updatableByClient.add { topBar.autoUpdate() }
-        game.universeClient.updatableByClient.add { Gdx.graphics.requestRendering() }
+        game.universeClient.onServerStatusChangeFunctionList.add { topBar.autoUpdate() }
+        game.universeClient.onServerStatusChangeFunctionList.add { Gdx.graphics.requestRendering() }
 
         worldMap.updateInfo = info::update
 
         worldMap.updateCoordinate = topBar::updateCoordinates
 
         // Fix minimal top Bar height to preferred height
-        root.add(topBar.get()).growX().top().minHeight(topBar.get().prefHeight)
+        root.add(topBar.getActor()).growX().top().minHeight(topBar.getActor().prefHeight)
 
         root.row()
 
@@ -109,12 +109,12 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
 
     override fun hide() {
         super.hide()
-        game.universeClient.updatableByClient.clear()
+        game.universeClient.onServerStatusChangeFunctionList.clear()
     }
 
     override fun dispose() {
         super.dispose()
-        game.universeClient.updatableByClient.clear()
+        game.universeClient.onServerStatusChangeFunctionList.clear()
     }
 
     private fun waitFirstData() {

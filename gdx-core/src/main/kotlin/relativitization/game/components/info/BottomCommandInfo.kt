@@ -13,7 +13,7 @@ class BottomCommandInfo(
 ) : ScreenComponent<ScrollPane>(game.assets) {
 
 
-    override fun get(): ScrollPane {
+    override fun getActor(): ScrollPane {
         TODO("Not yet implemented")
     }
 

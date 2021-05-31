@@ -38,7 +38,7 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
         updateGroup()
     }
 
-    override fun get(): ScrollPane {
+    override fun getActor(): ScrollPane {
         return scrollPane
     }
 
@@ -60,8 +60,8 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
         clearAllSelectedPlayer()
         game.universeClient.selectedInt3Ds.clear()
         game.universeClient.selectedPlayerIds.clear()
-        game.universeClient.firstSelectedPlayerId = game.universeClient.getUniverseData3D().id
-        game.universeClient.selectedPlayerIds.add(game.universeClient.firstSelectedPlayerId)
+        game.universeClient.primarySelectedPlayerId = game.universeClient.getUniverseData3D().id
+        game.universeClient.selectedPlayerIds.add(game.universeClient.primarySelectedPlayerId)
         drawSelected()
     }
 
@@ -168,7 +168,7 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
         selectCircle.clear()
         for (id in game.universeClient.selectedPlayerIds) {
             if (playerSquareActorMap.containsKey(id)) {
-                if (id == game.universeClient.firstSelectedPlayerId) {
+                if (id == game.universeClient.primarySelectedPlayerId) {
                     val image = playerSquareActorMap.getValue(id)
                     val circle = createImage(
                         "basic/white-ring",
@@ -287,10 +287,10 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
         // change the first selected player id if no stored selected player or first selected not stored
         // for selecting first player then select other without changing the first selected player
         if (game.universeClient.selectedPlayerIds.isEmpty() ||
-            (!game.universeClient.selectedPlayerIds.contains(game.universeClient.firstSelectedPlayerId) &&
+            (!game.universeClient.selectedPlayerIds.contains(game.universeClient.primarySelectedPlayerId) &&
              !game.universeClient.selectedPlayerIds.contains(id))
         ) {
-            game.universeClient.firstSelectedPlayerId = id
+            game.universeClient.primarySelectedPlayerId = id
             game.universeClient.selectedPlayerIds.add(id)
             // add green circle
             val circle = createImage(

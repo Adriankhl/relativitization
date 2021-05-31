@@ -24,6 +24,7 @@ import relativitization.universe.data.physics.Int4D
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.generate.GenerateSetting
 import relativitization.universe.utils.CoroutineBoolean
+import kotlin.properties.Delegates
 
 /**
  * @property universeClientSettings settings of the client, should only be updated by setUniverseClientSettings()
@@ -40,24 +41,6 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
 
     private var universeClientRunJob: Job = Job()
 
-    // store downloaded but not yet used universe data
-    private var universeData3DCache: UniverseData3DAtPlayer = UniverseData3DAtPlayer()
-    
-    // is new universe data ready
-    val isNewDataReady: CoroutineBoolean = CoroutineBoolean(false)
-
-    // Current universe data 3d time
-    private var currentUniverseData3DAtPlayer: UniverseData3DAtPlayer = UniverseData3DAtPlayer()
-
-    // Store map of universe data from description to data
-    private val universeData3DMap: MutableMap<String, UniverseData3DAtPlayer> = mutableMapOf()
-
-    // input command list
-    val commandList: MutableList<Command> = mutableListOf()
-
-    // command waiting to be confirmed (add to commandList) or cancel
-    var commandToBeConfirm: Command = DummyCommand(-1, -1, Int4D(0, 0, 0, 0))
-
     // for generate universe
     var generateSettings: GenerateSetting = GenerateSetting()
 
@@ -67,14 +50,78 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
     )
 
     // Server status, use default universe name from server setting
-    private var serverStatus: UniverseServerStatusMessage = UniverseServerStatusMessage(UniverseSettings().universeName)
+    val onServerStatusChangeFunctionList: MutableList<() -> Unit> = mutableListOf()
+    private var serverStatus: UniverseServerStatusMessage by Delegates.observable(
+        UniverseServerStatusMessage(UniverseSettings().universeName)
+    ) { property, oldValue, newValue ->
+        onServerStatusChangeFunctionList.forEach { it() }
+    }
 
-    val updatableByClient: MutableList<() -> Unit> = mutableListOf()
+
+    // store downloaded but not yet used universe data
+    private var universeData3DCache: UniverseData3DAtPlayer = UniverseData3DAtPlayer()
+
+    // is new universe data ready
+    val isNewDataReady: CoroutineBoolean = CoroutineBoolean(false)
+
+    // Store map of universe data from description to data
+    private val universeData3DMap: MutableMap<String, UniverseData3DAtPlayer> = mutableMapOf()
+
+    // Current universe data 3d
+    val onUniverseData3DChangeFunctionList: MutableList<() -> Unit> = mutableListOf()
+    private var currentUniverseData3DAtPlayer: UniverseData3DAtPlayer by Delegates.observable(
+        UniverseData3DAtPlayer()
+    ) { property, oldValue, newValue ->
+        onUniverseData3DChangeFunctionList.forEach { it() }
+    }
+
+    // universe view int3D and z limit
+    val onUniverseDataViewChangeFunctionList: MutableList<() -> Unit> = mutableListOf()
+    var shouldUpdateUniverseDataView: Boolean by Delegates.observable(false) { property, oldValue, newValue ->
+        if ((oldValue == false) && (newValue == true)) {
+            if (!selectedInt3DList.isEmpty()) {
+                universeClientSettings.viewCenter.x = selectedInt3DList.last().x
+                universeClientSettings.viewCenter.y = selectedInt3DList.last().y
+                universeClientSettings.viewCenter.z = selectedInt3DList.last().z
+            }
+            onUniverseDataViewChangeFunctionList.forEach { it() }
+        }
+    }
+
+    // Primary selected player id
+    val onPrimarySelectedPlayerIdChangeFunctionList: MutableList<() -> Unit> = mutableListOf()
+    var primarySelectedPlayerId: Int by Delegates.observable(currentUniverseData3DAtPlayer.id) { property, oldValue, newValue ->
+        onPrimarySelectedPlayerIdChangeFunctionList.forEach { it() }
+    }
+
+    // All selected player id
+    val onSelectedPlayerIdListChangeFunctionList: MutableList<() -> Unit> = mutableListOf()
+    var allSelectedPlayerIdList: MutableList<Int> = mutableListOf()
+    var newSelectedPlayerId: Int by Delegates.observable(currentUniverseData3DAtPlayer.id) { property, oldValue, newValue ->
+        if (!allSelectedPlayerIdList.contains(newValue)) {
+            if (!allSelectedPlayerIdList.contains(primarySelectedPlayerId)) {
+                // Change primary selected player id if it is not stored in the all selected player id list
+                primarySelectedPlayerId = newValue
+            }
+            allSelectedPlayerIdList.add(newValue)
+        } else {
+            // Remove selected player id if it has already been selected
+            allSelectedPlayerIdList.remove(newValue)
+        }
+        onSelectedPlayerIdListChangeFunctionList.forEach { it() }
+    }
+
+    // All selected int3d
+    val onSelectedInt3DListChangeFunctionList: MutableList<() -> Unit> = mutableListOf()
+    var selectedInt3DList: MutableList<Int3D> = mutableListOf()
+
+    // input command list
+    val commandList: MutableList<Command> = mutableListOf()
+
+    // command waiting to be confirmed (add to commandList) or cancel
+    var commandToBeConfirm: Command = DummyCommand(-1, -1, Int4D(0, 0, 0, 0))
 
     // Gui related data
-    var firstSelectedPlayerId: Int = -1
-    var selectedPlayerIds: MutableList<Int> = mutableListOf()
-    var selectedInt3Ds: MutableList<Int3D> = mutableListOf()
 
     /**
      * Start auto updating status and universeData3DCache
@@ -84,7 +131,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
             logger.debug("Client running")
             delay(2000)
             mutex.withLock {
-                serverStatus = httpGetUniverseServerStatus()
+                val newServerStatus = httpGetUniverseServerStatus()
                 if (shouldUpdateCache(serverStatus)) {
                     logger.debug("Going to update cache")
                     val universeData3DDownloaded =  httpGetUniverseData3D()
@@ -96,15 +143,16 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
                         logger.error("run(): Can't get universe")
                     }
                 }
+                // Trigger onServerStatusChangeFunctions
+                serverStatus = newServerStatus
             }
-            updatableByClient.forEach{ it() }
         }
     }
 
     /**
      * Whether the client should update the universe data cache
      */
-    fun shouldUpdateCache(universeServerStatusMessage: UniverseServerStatusMessage): Boolean {
+    private fun shouldUpdateCache(universeServerStatusMessage: UniverseServerStatusMessage): Boolean {
         val differentName = universeServerStatusMessage.universeName != universeData3DCache.universeSettings.universeName
         val differentTime = universeServerStatusMessage.currentUniverseTime != universeData3DCache.center.t
         return (universeServerStatusMessage.success &&
@@ -139,7 +187,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
         universeData3DMap.clear()
         commandList.clear()
         generateSettings = GenerateSetting()
-        updatableByClient.clear()
+        onServerStatusChangeFunctionList.clear()
     }
 
     /**
@@ -240,8 +288,6 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
             universeClientSettings = newUniverseClientSettings
         }
     }
-
-    fun getServerStatus(): UniverseServerStatusMessage = serverStatus
 
     suspend fun httpGetUniverseServerStatus(): UniverseServerStatusMessage {
         return try {

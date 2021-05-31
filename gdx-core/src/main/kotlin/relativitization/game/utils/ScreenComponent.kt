@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
+import com.badlogic.gdx.scenes.scene2d.ui.Slider
 import com.badlogic.gdx.scenes.scene2d.ui.SplitPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
@@ -19,12 +20,42 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets){
     /**
      * Get the actor (e.g. table, group) of this component
      */
-    abstract fun get(): T
+    abstract fun getActor(): T
 
     /**
-     * The function that should be called when client get updated
+     * Call this function at each iteration of universe client
      */
-    abstract fun update()
+    open fun onServerStatusChange() {}
+
+    /**
+     * Call this function when switching to new universeData
+     */
+    open fun onUniverseData3DChange() {}
+
+    /**
+     * Call this function when changing view int3D and z limit
+     */
+    open fun onUniverseDataViewChange() {}
+
+    /**
+     * Call this function when changing first selected id
+     */
+    open fun onPrimarySelectedPlayerIdChange() {}
+
+    /**
+     * Call this function when changing selectedPlayerId
+     */
+    open fun onSelectedPlayerIdListChange() {}
+
+    /**
+     * Call this function when changing Int3D
+     */
+    open fun onSelectedInt3DListChange() {}
+
+    /**
+     * Call this function when command to be confirm change
+     */
+    open fun onCommandToBeConfirmChange() {}
 
     /**
      * Create scroll pane for table
@@ -161,6 +192,33 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets){
         fontSize: Int = 16,
         function: (Boolean, CheckBox) -> Unit = { _, _ -> }
     ): CheckBox = ActorFunction.createCheckBox(skin, assets, text, default, fontSize, function)
+
+    /**
+     * Create slider
+     *
+     * @param function the function acted after the text field has changed, take this check box as parameter
+     */
+    fun createSlider(
+        min: Float,
+        max: Float,
+        stepSize: Float,
+        default: Float,
+        vertical: Boolean = false,
+        function: (Float, Slider) -> Unit = { _, _ -> },
+    ): Slider = ActorFunction.createSlider(skin, min, max, stepSize, default, vertical, function)
+
+    /**
+     * Create gdx list
+     *
+     * @param itemList the list of item to be selected
+     * @param fontSize the font size of the select box
+     * @param function the function acted after the select box is changed, take this select box as parameter
+     */
+    inline fun <reified T> createList(
+        itemList: List<T>,
+        fontSize: Int = 16,
+        crossinline function: (T, com.badlogic.gdx.scenes.scene2d.ui.List<T>) -> Unit = { _, _ -> },
+    ): com.badlogic.gdx.scenes.scene2d.ui.List<T> = ActorFunction.createList(skin, assets, itemList, fontSize, function)
 
     /**
      * Create select box

@@ -389,35 +389,32 @@ class GameScreenTopBar(
         table.add(settingButton).size(50f * gdxSetting.imageScale, 50f * gdxSetting.imageScale)
     }
 
-    override fun get(): ScrollPane {
+    override fun getActor(): ScrollPane {
         return scrollPane
     }
 
-    /**
-     * Only update actor in this class
-     */
-    override fun update() {
+    override fun onUniverseData3DChange() {
         updateServerStatusLabels()
         updateCurrentUniverseDataLabel()
         runBlocking {
             updateUpdateToLatestButton()
         }
         updateUniverseDataSelectionBox()
+
+        worldMap.onUniverseData3DChange()
+        info.onUniverseData3DChange()
     }
 
-    /**
-     * Update this class and updatableByTopBar
-     */
-    fun updateAll() {
-        update()
-        worldMap.update()
-        info.update()
+
+    override fun onViewChange() {
+        worldMap.onViewChange()
     }
+
 
     /**
      * Restore selected player and clear command list
      */
-    fun restoreAll() {
+    private fun restore() {
         worldMap.restore()
         game.universeClient.commandList.clear()
     }
@@ -563,7 +560,7 @@ class GameScreenTopBar(
     /**
      * Update coordinates
      */
-    fun updateCoordinates(int3D: Int3D) {
+    private fun updateCoordinates(int3D: Int3D) {
         xCoordinateSelectBox.selected = int3D.x
         yCoordinateSelectBox.selected = int3D.y
         zCoordinateSelectBox.selected = int3D.z
@@ -582,7 +579,7 @@ class GameScreenTopBar(
      */
     fun previousUniverseData() {
         game.universeClient.previousUniverseData3D()
-        updateAll()
+        onUniverseData3DChange()
     }
 
     /**
@@ -590,6 +587,6 @@ class GameScreenTopBar(
      */
     fun nextUniverseData() {
         game.universeClient.nextUniverseData3D()
-        updateAll()
+        onUniverseData3DChange()
     }
 }
