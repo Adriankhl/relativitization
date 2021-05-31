@@ -413,11 +413,13 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
 
     override fun onPrimarySelectedInt3DChange() {
         // Update select box if different
-        if (game.universeClient.primarySelectedInt3D !=
-            Int3D(xCoordinateSelectBox.selected, yCoordinateSelectBox.selected, zCoordinateSelectBox.selected
-            )) {
+        if (game.universeClient.primarySelectedInt3D.x != xCoordinateSelectBox.selected) {
             xCoordinateSelectBox.selected = game.universeClient.primarySelectedInt3D.x
+        }
+        if (game.universeClient.primarySelectedInt3D.y != yCoordinateSelectBox.selected) {
             yCoordinateSelectBox.selected = game.universeClient.primarySelectedInt3D.y
+        }
+        if (game.universeClient.primarySelectedInt3D.z != zCoordinateSelectBox.selected) {
             zCoordinateSelectBox.selected = game.universeClient.primarySelectedInt3D.z
         }
 
