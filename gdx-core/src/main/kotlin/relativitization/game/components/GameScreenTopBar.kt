@@ -243,11 +243,12 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         gdxSettings.soundEffectsVolume
     ) {
         // If hiding, show the panel
-        if (!gdxSettings.showingInfo) {
-            gdxSettings.showingInfo = true
+        if ((gdxSettings.showingInfoType == ShowingInfoType.OVERVIEW) && gdxSettings.showingInfo) {
+            gdxSettings.showingInfo = false
             gdxSettings.showingInfoType = ShowingInfoType.OVERVIEW
         } else {
-            gdxSettings.showingInfo = false
+            gdxSettings.showingInfo = true
+            gdxSettings.showingInfoType = ShowingInfoType.OVERVIEW
         }
         game.changeGdxSetting()
     }
@@ -258,11 +259,12 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         gdxSettings.soundEffectsVolume
     ) {
         // If hiding, show the panel
-        if (!gdxSettings.showingInfo) {
-            gdxSettings.showingInfo = true
+        if ((gdxSettings.showingInfoType == ShowingInfoType.PHYSICS) && gdxSettings.showingInfo) {
+            gdxSettings.showingInfo = false
             gdxSettings.showingInfoType = ShowingInfoType.PHYSICS
         } else {
-            gdxSettings.showingInfo = false
+            gdxSettings.showingInfo = true
+            gdxSettings.showingInfoType = ShowingInfoType.PHYSICS
         }
         game.changeGdxSetting()
     }

@@ -4,6 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.SplitPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.RelativitizationGame
+import relativitization.game.ShowingInfoType
 import relativitization.game.components.info.BottomCommandInfo
 import relativitization.game.components.info.OverviewInfo
 import relativitization.game.components.info.PhysicsInfo
@@ -21,51 +22,35 @@ class GameScreenInfo(val game: RelativitizationGame) : ScreenComponent<SplitPane
     private val physicsInfo: PhysicsInfo = PhysicsInfo(game)
 
     init {
+        // Add child screen component
+        addChildScreenComponent(bottomCommandInfo)
+        addChildScreenComponent(overviewInfo)
+        addChildScreenComponent(physicsInfo)
+
         // Set background color
         table.background = assets.getBackgroundColor(0.2f, 0.3f, 0.5f, 1.0f)
         upperInfoScrollPane.fadeScrollBars = false
         upperInfoScrollPane.setFlickScroll(true)
 
-        infoAndCommand.splitAmount = gdxSettings
+        infoAndCommand.splitAmount = gdxSettings.upperInfoAndBottomCommandSplitAmount
     }
 
     override fun getActor(): SplitPane {
         return infoAndCommand
     }
 
-    override fun update() {
-    }
-
-    fun updateAll() {
-        update()
-        worldMap.update()
-    }
-
-    /**
-     * Switch information shown in the info scroll pane, hide info panel if the same showing info is requested
-     * for repeat pressing the same button
-     */
-    fun switchShowingInfo(newShowingInfo: ShowingInfo) {
-        if (newShowingInfo == showingInfo) {
-            showingInfo = ShowingInfo.HIDE
-        } else {
-            when (newShowingInfo) {
-                ShowingInfo.OVERVIEW -> upperInfoScrollPane.actor = overviewInfo.getActor()
-                ShowingInfo.PHYSICS -> upperInfoScrollPane.actor = physicsInfo.getActor()
-            }
-            showingInfo = newShowingInfo
+    override fun onGdxSettingsChange() {
+        // Show info type based on setting
+        when (gdxSettings.showingInfoType) {
+            ShowingInfoType.OVERVIEW -> upperInfoScrollPane.actor = overviewInfo.getActor()
+            ShowingInfoType.PHYSICS -> upperInfoScrollPane.actor = physicsInfo.getActor()
         }
-    }
 
-    /**
-     * Switch showing bottom command info or not
-     */
-    fun switchShowingCommand(newShowingCommand: Boolean) {
-        showingCommand = newShowingCommand
-        if (showingCommand) {
-            infoAndCommand.splitAmount = gdxSettings.infoAndCommandSplitAmount
+        // Show bottom command or not
+        if (gdxSettings.showingBottomCommand) {
+            infoAndCommand.splitAmount = gdxSettings.upperInfoAndBottomCommandSplitAmount
         } else {
-            gdxSettings.infoAndCommandSplitAmount = infoAndCommand.splitAmount
+            gdxSettings.upperInfoAndBottomCommandSplitAmount = infoAndCommand.splitAmount
             infoAndCommand.splitAmount = infoAndCommand.maxSplitAmount
         }
     }

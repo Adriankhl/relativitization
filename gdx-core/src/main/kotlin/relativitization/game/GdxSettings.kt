@@ -19,7 +19,7 @@ data class GdxSettings(
     var showingInfo: Boolean = true,
     var worldMapAndInfoSplitAmount: Float = 0.7f,
     var showingBottomCommand: Boolean = true,
-    var topInfoAndBottomCommandSplitAmount: Float = 0.8f,
+    var upperInfoAndBottomCommandSplitAmount: Float = 0.8f,
     var showingInfoType: ShowingInfoType = ShowingInfoType.OVERVIEW
 )
 
