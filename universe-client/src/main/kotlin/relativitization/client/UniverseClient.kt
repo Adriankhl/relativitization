@@ -8,13 +8,25 @@ import io.ktor.client.features.json.serializer.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancelAndJoin
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import org.apache.logging.log4j.LogManager
 import relativitization.universe.UniverseClientSettings
 import relativitization.universe.UniverseServerSettings
-import relativitization.universe.communication.*
+import relativitization.universe.communication.CommandInputMessage
+import relativitization.universe.communication.LoadUniverseMessage
+import relativitization.universe.communication.NewUniverseMessage
+import relativitization.universe.communication.RegisterPlayerMessage
+import relativitization.universe.communication.RunUniverseMessage
+import relativitization.universe.communication.UniverseData3DMessage
+import relativitization.universe.communication.UniverseServerSettingsMessage
+import relativitization.universe.communication.UniverseServerStatusMessage
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
@@ -55,6 +67,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
     ) { property, oldValue, newValue ->
         onServerStatusChangeFunctionList.forEach { it() }
     }
+
     fun getCurrentServerStatus() = serverStatus
 
 
@@ -77,13 +90,11 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
 
     // universe view int3D and z limit
     val onUniverseDataViewChangeFunctionList: MutableList<() -> Unit> = mutableListOf()
-    var shouldUpdateUniverseDataView: Boolean by Delegates.observable(false) { property, oldValue, newValue ->
-        if (newValue) {
-            universeClientSettings.viewCenter.x = primarySelectedInt3D.x
-            universeClientSettings.viewCenter.y = primarySelectedInt3D.y
-            universeClientSettings.viewCenter.z = primarySelectedInt3D.z
-            onUniverseDataViewChangeFunctionList.forEach { it() }
-        }
+    val changeUniverseDataView: () -> Unit = {
+        universeClientSettings.viewCenter.x = primarySelectedInt3D.x
+        universeClientSettings.viewCenter.y = primarySelectedInt3D.y
+        universeClientSettings.viewCenter.z = primarySelectedInt3D.z
+        onUniverseDataViewChangeFunctionList.forEach { it() }
     }
 
     // Primary selected player id
@@ -154,7 +165,8 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
      * Whether the client should update the universe data cache
      */
     private fun shouldUpdateCache(universeServerStatusMessage: UniverseServerStatusMessage): Boolean {
-        val differentName = universeServerStatusMessage.universeName != universeData3DCache.universeSettings.universeName
+        val differentName =
+            universeServerStatusMessage.universeName != universeData3DCache.universeSettings.universeName
         val differentTime = universeServerStatusMessage.currentUniverseTime != universeData3DCache.center.t
         return (universeServerStatusMessage.success &&
                 universeServerStatusMessage.isUniverseRunning &&
