@@ -14,7 +14,7 @@ import kotlin.math.abs
 import kotlin.math.min
 
 class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.assets) {
-    private val gdxSetting = game.gdxSetting
+    private val gdxSettings = game.gdxSettings
 
     private val group: Group = Group()
     private val scrollPane: ScrollPane = createScrollPane(group)
@@ -99,7 +99,7 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
 
     private fun actualZoom(): Float {
         val oneZoom = min(scrollPane.width / data3D2DProjection.width, scrollPane.height / data3D2DProjection.height)
-        return oneZoom * gdxSetting.mapZoomRelativeToFullMap
+        return oneZoom * gdxSettings.mapZoomRelativeToFullMap
     }
 
     private fun updateGroup() {
@@ -122,7 +122,7 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
                         1.0f,
                         1.0f,
                         0.4f,
-                        gdxSetting.soundEffectsVolume
+                        gdxSettings.soundEffectsVolume
                     ) {
                         game.universeClient.primarySelectedInt3D = Int3D(x, y, z)
                     }
@@ -146,7 +146,7 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
                 playerRectangle.yPos.toFloat() * actualZoom(),
                 playerRectangle.width.toFloat() * actualZoom(),
                 playerRectangle.height.toFloat() * actualZoom(),
-                gdxSetting.soundEffectsVolume,
+                gdxSettings.soundEffectsVolume,
             ) {
                 game.universeClient.newSelectedPlayerId = id
             }
@@ -182,7 +182,7 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
                 0.0f,
                 1.0f,
                 1.0f,
-                gdxSetting.soundEffectsVolume
+                gdxSettings.soundEffectsVolume
             )
             group.addActorBefore(image, square)
             selectSquare[int3D] = square
@@ -202,7 +202,7 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
                         1.0f,
                         0.0f,
                         1.0f,
-                        gdxSetting.soundEffectsVolume
+                        gdxSettings.soundEffectsVolume
                     )
                     group.addActorBefore(image, circle)
                     selectCircle[id] = circle
@@ -218,7 +218,7 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
                         0.0f,
                         0.0f,
                         1.0f,
-                        gdxSetting.soundEffectsVolume
+                        gdxSettings.soundEffectsVolume
                     )
                     group.addActorBefore(image, circle)
                     selectCircle[id] = circle

@@ -3,7 +3,7 @@ package relativitization.game
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class GdxSetting(
+data class GdxSettings(
     var continuousRendering: Boolean = false,
     var windowsWidth: Int = 1360,
     var windowsHeight: Int = 768,

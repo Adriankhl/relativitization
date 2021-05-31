@@ -1,6 +1,5 @@
 package relativitization.game.screens
 
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.InputListener
@@ -12,13 +11,11 @@ import relativitization.game.RelativitizationGame
 import relativitization.game.components.GameScreenInfo
 import relativitization.game.components.GameScreenTopBar
 import relativitization.game.components.GameScreenWorldMap
-import relativitization.game.components.ShowingInfo
-import relativitization.game.utils.ScreenComponent
 import relativitization.game.utils.TableScreen
 
 class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
     private val background: Image = assets.getImage("background/universe-background")
-    val gdxSetting = game.gdxSetting
+    val gdxSettings = game.gdxSettings
 
     init {
         // stage.clear()
@@ -51,7 +48,7 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
         super.show()
 
         // Adjust split pane position from gdx setting
-        worldMapAndInfo.splitAmount = gdxSetting.worldMapAndInfoSplitAmount
+        worldMapAndInfo.splitAmount = gdxSettings.worldMapAndInfoSplitAmount
 
         // Add all screen component to universe client
 
@@ -67,17 +64,17 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
                 logger.debug("Key typed: $character")
                 return when (character) {
                     '+' -> {
-                        gdxSetting.mapZoomRelativeToFullMap *= gdxSetting.mapZoomFactor
+                        gdxSettings.mapZoomRelativeToFullMap *= gdxSettings.mapZoomFactor
                         game.changeGdxSetting()
                         true
                     }
                     '-' -> {
-                        gdxSetting.mapZoomRelativeToFullMap /= gdxSetting.mapZoomFactor
+                        gdxSettings.mapZoomRelativeToFullMap /= gdxSettings.mapZoomFactor
                         game.changeGdxSetting()
                         true
                     }
                     '0' -> {
-                        gdxSetting.mapZoomRelativeToFullMap = 1.0f
+                        gdxSettings.mapZoomRelativeToFullMap = 1.0f
                         game.changeGdxSetting()
                         true
                     }
@@ -99,7 +96,7 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
                 logger.debug("Key down code: $keycode")
                 return when (keycode) {
                     Input.Keys.ESCAPE -> {
-                        gdxSetting.showingInfo = false
+                        gdxSettings.showingInfo = false
                         game.changeGdxSetting()
                         true
                     }
@@ -122,8 +119,8 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
     }
 
     override fun onGdxSettingsChange() {
-        if (gdxSetting.showingInfo) {
-            worldMapAndInfo.splitAmount = gdxSetting.worldMapAndInfoSplitAmount
+        if (gdxSettings.showingInfo) {
+            worldMapAndInfo.splitAmount = gdxSettings.worldMapAndInfoSplitAmount
         } else {
             worldMapAndInfo.splitAmount = 1.0f
         }

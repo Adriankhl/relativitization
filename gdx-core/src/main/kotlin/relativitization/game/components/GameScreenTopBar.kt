@@ -19,11 +19,11 @@ import kotlin.math.min
 
 
 class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.assets) {
-    private val gdxSetting = game.gdxSetting
+    private val gdxSettings = game.gdxSettings
     private val table: Table = Table()
     private val scrollPane: ScrollPane = createScrollPane(table)
 
-    private val currentUniverseDataLabel: Label = createLabel("", gdxSetting.smallFontSize)
+    private val currentUniverseDataLabel: Label = createLabel("", gdxSettings.smallFontSize)
 
     // button to select previous time
     private val previousButton: ImageButton = createImageButton(
@@ -40,7 +40,7 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         1.0f,
         1.0f,
         1.0f,
-        gdxSetting.soundEffectsVolume
+        gdxSettings.soundEffectsVolume
     ) {
         game.universeClient.previousUniverseData3D()
     }
@@ -60,7 +60,7 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         1.0f,
         1.0f,
         1.0f,
-        gdxSetting.soundEffectsVolume
+        gdxSettings.soundEffectsVolume
     ) {
         game.universeClient.nextUniverseData3D()
     }
@@ -68,7 +68,7 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
     private val universeDataSelectBox: SelectBox<String> = createSelectBox(
         game.universeClient.getAvailableData3DName(),
         "",
-        gdxSetting.smallFontSize
+        gdxSettings.smallFontSize
     ) { name, _ ->
         game.universeClient.pickUniverseData3D(name)
     }
@@ -87,7 +87,7 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         1.0f,
         1.0f,
         1.0f,
-        gdxSetting.soundEffectsVolume
+        gdxSettings.soundEffectsVolume
     ) {
         game.universeClient.clearSelected()
     }
@@ -106,7 +106,7 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         1.0f,
         1.0f,
         1.0f,
-        gdxSetting.soundEffectsVolume
+        gdxSettings.soundEffectsVolume
     ) {
         runBlocking {
             game.universeClient.pickLatestUniverseData3D()
@@ -127,7 +127,7 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         1.0f,
         1.0f,
         1.0f,
-        gdxSetting.soundEffectsVolume
+        gdxSettings.soundEffectsVolume
     ) {
         game.universeClient.clearCommandList()
     }
@@ -146,9 +146,9 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         1.0f,
         1.0f,
         1.0f,
-        gdxSetting.soundEffectsVolume
+        gdxSettings.soundEffectsVolume
     ) {
-        gdxSetting.mapZoomRelativeToFullMap *= gdxSetting.mapZoomFactor
+        gdxSettings.mapZoomRelativeToFullMap *= gdxSettings.mapZoomFactor
         game.changeGdxSetting()
     }
 
@@ -166,9 +166,9 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         1.0f,
         1.0f,
         1.0f,
-        gdxSetting.soundEffectsVolume
+        gdxSettings.soundEffectsVolume
     ) {
-        gdxSetting.mapZoomRelativeToFullMap /= gdxSetting.mapZoomFactor
+        gdxSettings.mapZoomRelativeToFullMap /= gdxSettings.mapZoomFactor
         game.changeGdxSetting()
     }
 
@@ -186,9 +186,9 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         1.0f,
         1.0f,
         1.0f,
-        gdxSetting.soundEffectsVolume
+        gdxSettings.soundEffectsVolume
     ) {
-        gdxSetting.mapZoomRelativeToFullMap = 1.0f
+        gdxSettings.mapZoomRelativeToFullMap = 1.0f
     }
 
     private val uploadButton: ImageButton = createImageButton(
@@ -205,7 +205,7 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         1.0f,
         1.0f,
         1.0f,
-        gdxSetting.soundEffectsVolume
+        gdxSettings.soundEffectsVolume
     ) {
         runBlocking {
             val httpCode = game.universeClient.httpPostHumanInput()
@@ -231,51 +231,51 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         1.0f,
         1.0f,
         0.8f,
-        gdxSetting.soundEffectsVolume
+        gdxSettings.soundEffectsVolume
     ) {
-        gdxSetting.showingBottomCommand = it.isChecked
+        gdxSettings.showingBottomCommand = it.isChecked
         game.changeGdxSetting()
     }
 
     private val overviewInfoButton: TextButton = createTextButton(
         "Overview",
-        gdxSetting.normalFontSize,
-        gdxSetting.soundEffectsVolume
+        gdxSettings.normalFontSize,
+        gdxSettings.soundEffectsVolume
     ) {
         // If hiding, show the panel
-        if (!gdxSetting.showingInfo) {
-            gdxSetting.showingInfo = true
-            gdxSetting.showingInfoType = ShowingInfoType.OVERVIEW
+        if (!gdxSettings.showingInfo) {
+            gdxSettings.showingInfo = true
+            gdxSettings.showingInfoType = ShowingInfoType.OVERVIEW
         } else {
-            gdxSetting.showingInfo = false
+            gdxSettings.showingInfo = false
         }
         game.changeGdxSetting()
     }
 
     private val physicsInfoButton: TextButton = createTextButton(
         "Physics",
-        gdxSetting.normalFontSize,
-        gdxSetting.soundEffectsVolume
+        gdxSettings.normalFontSize,
+        gdxSettings.soundEffectsVolume
     ) {
         // If hiding, show the panel
-        if (!gdxSetting.showingInfo) {
-            gdxSetting.showingInfo = true
-            gdxSetting.showingInfoType = ShowingInfoType.PHYSICS
+        if (!gdxSettings.showingInfo) {
+            gdxSettings.showingInfo = true
+            gdxSettings.showingInfoType = ShowingInfoType.PHYSICS
         } else {
-            gdxSetting.showingInfo = false
+            gdxSettings.showingInfo = false
         }
         game.changeGdxSetting()
     }
 
     private val tCoordinateLabel = createLabel(
         "t: ${game.universeClient.getUniverseData3D().center.t}",
-        gdxSetting.smallFontSize
+        gdxSettings.smallFontSize
     )
 
     private val xCoordinateSelectBox: SelectBox<Int> = createSelectBox(
         (0 until game.universeClient.getUniverseData3D().universeSettings.xDim).toList(),
         game.universeClient.universeClientSettings.viewCenter.x,
-        gdxSetting.smallFontSize
+        gdxSettings.smallFontSize
     ) { x, _ ->
         updateCoordinates(Int3D(x, yCoordinateSelectBox.selected, zCoordinateSelectBox.selected))
     }
@@ -283,7 +283,7 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
     private val yCoordinateSelectBox: SelectBox<Int> = createSelectBox(
         (0 until game.universeClient.getUniverseData3D().universeSettings.yDim).toList(),
         game.universeClient.universeClientSettings.viewCenter.y,
-        gdxSetting.smallFontSize
+        gdxSettings.smallFontSize
     ) { y, _ ->
         updateCoordinates(Int3D(xCoordinateSelectBox.selected, y, zCoordinateSelectBox.selected))
     }
@@ -291,7 +291,7 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
     private val zCoordinateSelectBox: SelectBox<Int> = createSelectBox(
         (0 until game.universeClient.getUniverseData3D().universeSettings.zDim).toList(),
         game.universeClient.universeClientSettings.viewCenter.z,
-        gdxSetting.smallFontSize
+        gdxSettings.smallFontSize
     ) { z, _ ->
         updateCoordinates(Int3D(xCoordinateSelectBox.selected, yCoordinateSelectBox.selected, z))
     }
@@ -317,7 +317,7 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         1.0f,
         1.0f,
         1.0f,
-        gdxSetting.soundEffectsVolume
+        gdxSettings.soundEffectsVolume
     ) {
         game.universeClient.universeClientSettings.viewCenter.x  = xCoordinateSelectBox.selected
         game.universeClient.universeClientSettings.viewCenter.y  = yCoordinateSelectBox.selected
@@ -330,9 +330,9 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
 
     private val currentUniverseDataTable: Table =  createCurrentUniverseDataTable()
 
-    private val serverStatusNameAndTimeLabel: Label = createLabel("", gdxSetting.smallFontSize)
-    private val serverUniverseTimeLabel: Label = createLabel("", gdxSetting.smallFontSize)
-    private val timeLeftLabel: Label = createLabel("", gdxSetting.smallFontSize)
+    private val serverStatusNameAndTimeLabel: Label = createLabel("", gdxSettings.smallFontSize)
+    private val serverUniverseTimeLabel: Label = createLabel("", gdxSettings.smallFontSize)
+    private val timeLeftLabel: Label = createLabel("", gdxSettings.smallFontSize)
     private val serverStatusTable: Table = createServerStatusTable()
 
 
@@ -350,7 +350,7 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         1.0f,
         1.0f,
         1.0f,
-        gdxSetting.soundEffectsVolume
+        gdxSettings.soundEffectsVolume
     ) {
         game.screen = GdxSettingsScreen(game, true)
     }
@@ -367,15 +367,15 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
 
         table.add(currentUniverseDataTable).pad(10f)
 
-        table.add(updateToLatestButton).size(50f * gdxSetting.imageScale, 50f * gdxSetting.imageScale)
+        table.add(updateToLatestButton).size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
 
-        table.add(clearSelectedButton).size(50f * gdxSetting.imageScale, 50f * gdxSetting.imageScale)
+        table.add(clearSelectedButton).size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
 
-        table.add(clearCommandListButton).size(50f * gdxSetting.imageScale, 50f * gdxSetting.imageScale)
+        table.add(clearCommandListButton).size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
 
-        table.add(uploadButton).size(50f * gdxSetting.imageScale, 50f * gdxSetting.imageScale)
+        table.add(uploadButton).size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
 
-        table.add(bottomCommandInfoButton).size(50f * gdxSetting.imageScale, 50f * gdxSetting.imageScale)
+        table.add(bottomCommandInfoButton).size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
 
         table.add(overviewInfoButton).pad(10f)
 
@@ -383,7 +383,7 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
 
         table.add(serverStatusTable).pad(10f)
 
-        table.add(settingButton).size(50f * gdxSetting.imageScale, 50f * gdxSetting.imageScale)
+        table.add(settingButton).size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
     }
 
     override fun getActor(): ScrollPane {
@@ -423,19 +423,19 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         val bottomTable: Table = Table()
 
         topTable.add(tCoordinateLabel).space(10f)
-        topTable.add(createLabel("x:", gdxSetting.smallFontSize))
+        topTable.add(createLabel("x:", gdxSettings.smallFontSize))
         topTable.add(xCoordinateSelectBox).space(10f)
-        topTable.add(createLabel("y:", gdxSetting.smallFontSize))
+        topTable.add(createLabel("y:", gdxSettings.smallFontSize))
         topTable.add(yCoordinateSelectBox).space(10f)
-        topTable.add(createLabel("z:", gdxSetting.smallFontSize))
+        topTable.add(createLabel("z:", gdxSettings.smallFontSize))
         topTable.add(zCoordinateSelectBox).space(10f)
 
-        bottomTable.add(createLabel("z limit:", gdxSetting.smallFontSize))
+        bottomTable.add(createLabel("z limit:", gdxSettings.smallFontSize))
         bottomTable.add(zLimitSelectBox).space(10f)
-        bottomTable.add(confirmViewButton).size(40f * gdxSetting.imageScale, 40f * gdxSetting.imageScale)
-        bottomTable.add(zoomInButton).size(40f * gdxSetting.imageScale, 40f * gdxSetting.imageScale)
-        bottomTable.add(zoomOutButton).size(40f * gdxSetting.imageScale, 40f * gdxSetting.imageScale)
-        bottomTable.add(zoomToFullMapButton).size(40f * gdxSetting.imageScale, 40f * gdxSetting.imageScale)
+        bottomTable.add(confirmViewButton).size(40f * gdxSettings.imageScale, 40f * gdxSettings.imageScale)
+        bottomTable.add(zoomInButton).size(40f * gdxSettings.imageScale, 40f * gdxSettings.imageScale)
+        bottomTable.add(zoomOutButton).size(40f * gdxSettings.imageScale, 40f * gdxSettings.imageScale)
+        bottomTable.add(zoomToFullMapButton).size(40f * gdxSettings.imageScale, 40f * gdxSettings.imageScale)
 
         nestedTable.add(topTable)
 
@@ -474,11 +474,11 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
 
         nestedTable.row().space(10f)
 
-        nestedTable.add(previousButton).size(30f * gdxSetting.imageScale, 30f * gdxSetting.imageScale)
+        nestedTable.add(previousButton).size(30f * gdxSettings.imageScale, 30f * gdxSettings.imageScale)
 
         nestedTable.add(universeDataSelectBox)
 
-        nestedTable.add(nextButton).size(30f * gdxSetting.imageScale, 30f * gdxSetting.imageScale)
+        nestedTable.add(nextButton).size(30f * gdxSettings.imageScale, 30f * gdxSettings.imageScale)
 
         return nestedTable
     }

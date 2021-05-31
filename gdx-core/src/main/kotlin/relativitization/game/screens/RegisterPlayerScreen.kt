@@ -10,18 +10,18 @@ import relativitization.game.utils.TableScreen
 import relativitization.universe.UniverseClientSettings
 
 class RegisterPlayerScreen(val game: RelativitizationGame) : TableScreen(game.assets)  {
-    private val gdxSetting = game.gdxSetting
+    private val gdxSettings = game.gdxSettings
 
     override fun show() {
         super.show()
 
         var idList: List<Int> = listOf()
 
-        root.add(createLabel("Type of available players: ", gdxSetting.normalFontSize))
+        root.add(createLabel("Type of available players: ", gdxSettings.normalFontSize))
         val getPlayerTypeSelectBox = createSelectBox(
             listOf("All", "Human only"),
             "All",
-            gdxSetting.normalFontSize
+            gdxSettings.normalFontSize
         )
         root.add(getPlayerTypeSelectBox)
 
@@ -31,7 +31,7 @@ class RegisterPlayerScreen(val game: RelativitizationGame) : TableScreen(game.as
         val playerIdSelectBox = createSelectBox(
             idList,
             idList.getOrElse(0) { -1 },
-            gdxSetting.normalFontSize
+            gdxSettings.normalFontSize
         ) { id, _ ->
             val newUniverseClientSettings: UniverseClientSettings = game.universeClient.universeClientSettings.copy(
                 playerId = id
@@ -41,7 +41,7 @@ class RegisterPlayerScreen(val game: RelativitizationGame) : TableScreen(game.as
             }
         }
 
-        val updateButton = createTextButton("Update", gdxSetting.normalFontSize, gdxSetting.soundEffectsVolume) {
+        val updateButton = createTextButton("Update", gdxSettings.normalFontSize, gdxSettings.soundEffectsVolume) {
             when (getPlayerTypeSelectBox.selected) {
                 "All" -> {
                     runBlocking {
@@ -66,16 +66,16 @@ class RegisterPlayerScreen(val game: RelativitizationGame) : TableScreen(game.as
 
         root.row().space(10f)
 
-        root.add(createLabel("Pick your player id: ", gdxSetting.normalFontSize))
+        root.add(createLabel("Pick your player id: ", gdxSettings.normalFontSize))
         root.add(playerIdSelectBox)
 
         root.row().space(10f)
 
 
-        root.add(createLabel("Password (for holding your player id): ", gdxSetting.normalFontSize))
+        root.add(createLabel("Password (for holding your player id): ", gdxSettings.normalFontSize))
         val passwordTextField = createTextField(
             game.universeClient.universeClientSettings.password,
-            gdxSetting.normalFontSize
+            gdxSettings.normalFontSize
         ) { password, _ ->
             val newUniverseClientSettings: UniverseClientSettings = game.universeClient.universeClientSettings.copy(
                 password = password
@@ -88,8 +88,8 @@ class RegisterPlayerScreen(val game: RelativitizationGame) : TableScreen(game.as
 
         root.row().space(10f)
 
-        val registerStatusLabel = createLabel("", gdxSetting.normalFontSize)
-        val registerPlayerButton: TextButton = createTextButton("Register", gdxSetting.normalFontSize, gdxSetting.soundEffectsVolume) { button ->
+        val registerStatusLabel = createLabel("", gdxSettings.normalFontSize)
+        val registerPlayerButton: TextButton = createTextButton("Register", gdxSettings.normalFontSize, gdxSettings.soundEffectsVolume) { button ->
             if (game.universeClient.universeClientSettings.playerId >= 0) {
                 runBlocking {
                     val httpCode = game.universeClient.httpPostRegisterPlayer()
@@ -105,7 +105,7 @@ class RegisterPlayerScreen(val game: RelativitizationGame) : TableScreen(game.as
             }
         }
 
-        root.add(createLabel("Register player id, can only register once: ", gdxSetting.normalFontSize))
+        root.add(createLabel("Register player id, can only register once: ", gdxSettings.normalFontSize))
         root.add(registerPlayerButton)
 
         root.row().space(10f)
@@ -115,8 +115,8 @@ class RegisterPlayerScreen(val game: RelativitizationGame) : TableScreen(game.as
         root.row().space(10f)
 
 
-        val startStatusLabel = createLabel("", gdxSetting.normalFontSize)
-        val startButton: TextButton = createTextButton("Start", gdxSetting.normalFontSize, gdxSetting.soundEffectsVolume) {
+        val startStatusLabel = createLabel("", gdxSettings.normalFontSize)
+        val startButton: TextButton = createTextButton("Start", gdxSettings.normalFontSize, gdxSettings.soundEffectsVolume) {
             if (registerPlayerButton.touchable == Touchable.disabled) {
                 runBlocking {
                     if (game.universeClient.getCurrentServerStatus().isUniverseRunning) {

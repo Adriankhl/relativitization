@@ -13,7 +13,7 @@ import relativitization.server.UniverseServer
 
 class RelativitizationGame(val universeClient: UniverseClient, private val universeServer: UniverseServer) : Game() {
 
-    val gdxSetting: GdxSetting = GdxSetting()
+    val gdxSettings: GdxSettings = GdxSettings()
     val onGdxSettingsChangeFunctionList: MutableList<() -> Unit> = mutableListOf()
 
     // call when gdx setting is changed
@@ -29,7 +29,7 @@ class RelativitizationGame(val universeClient: UniverseClient, private val unive
 
     override fun create() {
         Gdx.input.setCatchKey(Input.Keys.BACK, true)
-        Gdx.graphics.isContinuousRendering = gdxSetting.continuousRendering
+        Gdx.graphics.isContinuousRendering = gdxSettings.continuousRendering
 
         assets.loadAll()
 
@@ -53,26 +53,26 @@ class RelativitizationGame(val universeClient: UniverseClient, private val unive
 
     fun restoreSize() {
         if (Gdx.app.type == Application.ApplicationType.Desktop &&
-            gdxSetting.windowsWidth > 39 &&
-            gdxSetting.windowsHeight > 39
+            gdxSettings.windowsWidth > 39 &&
+            gdxSettings.windowsHeight > 39
         ) {
-            Gdx.graphics.setWindowedMode(gdxSetting.windowsWidth, gdxSetting.windowsHeight)
+            Gdx.graphics.setWindowedMode(gdxSettings.windowsWidth, gdxSettings.windowsHeight)
         }
     }
 
     private fun startMusic() {
-        if (gdxSetting.musicVolume < 0.01) return
+        if (gdxSettings.musicVolume < 0.01) return
 
         backgroundMusic = assets.getBackgroundMusic()
 
         backgroundMusic.isLooping = true
-        backgroundMusic.volume = 0.4f * gdxSetting.musicVolume
+        backgroundMusic.volume = 0.4f * gdxSettings.musicVolume
         backgroundMusic.play()
     }
 
     fun restartMusic() {
         backgroundMusic.stop()
-        backgroundMusic.volume = 0.4f * gdxSetting.musicVolume
+        backgroundMusic.volume = 0.4f * gdxSettings.musicVolume
         backgroundMusic.play()
     }
 

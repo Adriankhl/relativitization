@@ -8,7 +8,7 @@ import relativitization.game.RelativitizationGame
 import relativitization.game.utils.TableScreen
 
 class GdxSettingsScreen(val game: RelativitizationGame, val inGame: Boolean) : TableScreen(game.assets) {
-    private val gdxSetting = game.gdxSetting
+    private val gdxSettings = game.gdxSettings
 
     override fun show() {
         super.show()
@@ -19,8 +19,8 @@ class GdxSettingsScreen(val game: RelativitizationGame, val inGame: Boolean) : T
 
         val applyButton = createTextButton(
             "Apply",
-            gdxSetting.normalFontSize,
-            gdxSetting.soundEffectsVolume,
+            gdxSettings.normalFontSize,
+            gdxSettings.soundEffectsVolume,
         ) {
             game.restoreSize()
             game.restartMusic()
@@ -39,7 +39,7 @@ class GdxSettingsScreen(val game: RelativitizationGame, val inGame: Boolean) : T
 
         val scrollPane: ScrollPane = createScrollPane(table)
 
-        val gdxSettingsLabel = createLabel("Gdx Settings:", gdxSetting.hugeFontSize)
+        val gdxSettingsLabel = createLabel("Gdx Settings:", gdxSettings.hugeFontSize)
 
         table.add(gdxSettingsLabel).colspan(2).space(20f)
 
@@ -54,25 +54,25 @@ class GdxSettingsScreen(val game: RelativitizationGame, val inGame: Boolean) : T
     }
 
     private fun addGdxSettings(table: Table) {
-        table.add(createLabel("Continuous rendering: ", gdxSetting.normalFontSize))
+        table.add(createLabel("Continuous rendering: ", gdxSettings.normalFontSize))
         val continuousRenderingCheckBox = createCheckBox(
             "",
-            gdxSetting.continuousRendering,
-            gdxSetting.normalFontSize
+            gdxSettings.continuousRendering,
+            gdxSettings.normalFontSize
         ) { continuousRendering, _ ->
-            gdxSetting.continuousRendering = continuousRendering
+            gdxSettings.continuousRendering = continuousRendering
         }
         table.add(continuousRenderingCheckBox)
 
         table.row().space(10f)
 
-        table.add(createLabel("Windows width: ", gdxSetting.normalFontSize))
+        table.add(createLabel("Windows width: ", gdxSettings.normalFontSize))
         val widthTextField = createTextField(
             Gdx.graphics.width.toString(),
-            gdxSetting.normalFontSize
+            gdxSettings.normalFontSize
         ) { width, _ ->
             try {
-                gdxSetting.windowsWidth = width.toInt()
+                gdxSettings.windowsWidth = width.toInt()
             } catch (e: NumberFormatException) {
                 logger.error("Invalid windows width")
             }
@@ -81,13 +81,13 @@ class GdxSettingsScreen(val game: RelativitizationGame, val inGame: Boolean) : T
 
         table.row().space(10f)
 
-        table.add(createLabel("Windows height: ", gdxSetting.normalFontSize))
+        table.add(createLabel("Windows height: ", gdxSettings.normalFontSize))
         val heightTextField = createTextField(
             Gdx.graphics.height.toString(),
-            gdxSetting.normalFontSize
+            gdxSettings.normalFontSize
         ) { width, _ ->
             try {
-                gdxSetting.windowsWidth = width.toInt()
+                gdxSettings.windowsWidth = width.toInt()
             } catch (e: NumberFormatException) {
                 logger.error("Invalid windows height")
             }
@@ -96,106 +96,106 @@ class GdxSettingsScreen(val game: RelativitizationGame, val inGame: Boolean) : T
 
         table.row().space(10f)
 
-        table.add(createLabel("Music volume: ", gdxSetting.normalFontSize))
+        table.add(createLabel("Music volume: ", gdxSettings.normalFontSize))
         val musicVolumeSlider = createSlider(
             0.0f,
             1.0f,
             0.01f,
-            gdxSetting.musicVolume,
+            gdxSettings.musicVolume,
             false
         ) { musicVolume, _ ->
-            gdxSetting.musicVolume = musicVolume
+            gdxSettings.musicVolume = musicVolume
         }
         table.add(musicVolumeSlider)
 
 
         table.row().space(10f)
 
-        table.add(createLabel("Sound effect volume: ", gdxSetting.normalFontSize))
+        table.add(createLabel("Sound effect volume: ", gdxSettings.normalFontSize))
         val soundEffectVolumeSlider = createSlider(
             0.0f,
             1.0f,
             0.01f,
-            gdxSetting.soundEffectsVolume,
+            gdxSettings.soundEffectsVolume,
             false
         ) { soundEffectVolume, _ ->
-            gdxSetting.soundEffectsVolume = soundEffectVolume
+            gdxSettings.soundEffectsVolume = soundEffectVolume
         }
         table.add(soundEffectVolumeSlider)
 
 
         table.row().space(10f)
 
-        table.add(createLabel("Small font size: ", gdxSetting.normalFontSize))
+        table.add(createLabel("Small font size: ", gdxSettings.normalFontSize))
         val smallFontSizeSelectBox = createSelectBox(
             (8..80).toList(),
-            gdxSetting.smallFontSize,
-            gdxSetting.normalFontSize
+            gdxSettings.smallFontSize,
+            gdxSettings.normalFontSize
         ) { smallFontSize, _ ->
-            gdxSetting.smallFontSize = smallFontSize
+            gdxSettings.smallFontSize = smallFontSize
         }
         table.add(smallFontSizeSelectBox)
 
         table.row().space(10f)
 
-        table.add(createLabel("Normal font size: ", gdxSetting.normalFontSize))
+        table.add(createLabel("Normal font size: ", gdxSettings.normalFontSize))
         val normalFontSizeSelectBox = createSelectBox(
             (8..80).toList(),
-            gdxSetting.normalFontSize,
-            gdxSetting.normalFontSize
+            gdxSettings.normalFontSize,
+            gdxSettings.normalFontSize
         ) { normalFontSize, _ ->
-            gdxSetting.normalFontSize = normalFontSize
+            gdxSettings.normalFontSize = normalFontSize
         }
         table.add(normalFontSizeSelectBox)
 
         table.row().space(10f)
 
-        table.add(createLabel("Big font size: ", gdxSetting.normalFontSize))
+        table.add(createLabel("Big font size: ", gdxSettings.normalFontSize))
         val bigFontSizeSelectBox = createSelectBox(
             (8..80).toList(),
-            gdxSetting.bigFontSize,
-            gdxSetting.normalFontSize
+            gdxSettings.bigFontSize,
+            gdxSettings.normalFontSize
         ) { bigFontSize, _ ->
-            gdxSetting.bigFontSize = bigFontSize
+            gdxSettings.bigFontSize = bigFontSize
         }
         table.add(bigFontSizeSelectBox)
 
         table.row().space(10f)
 
-        table.add(createLabel("Huge font size: ", gdxSetting.normalFontSize))
+        table.add(createLabel("Huge font size: ", gdxSettings.normalFontSize))
         val hugeFontSizeSelectBox = createSelectBox(
             (8..80).toList(),
-            gdxSetting.hugeFontSize,
-            gdxSetting.normalFontSize
+            gdxSettings.hugeFontSize,
+            gdxSettings.normalFontSize
         ) { hugeFontSize, _ ->
-            gdxSetting.hugeFontSize = hugeFontSize
+            gdxSettings.hugeFontSize = hugeFontSize
         }
         table.add(hugeFontSizeSelectBox)
 
         table.row().space(10f)
 
-        table.add(createLabel("Zoom factor: ", gdxSetting.normalFontSize))
-        val zoomFactorTextField = createTextField(
-            gdxSetting.zoomFactor.toString(),
-            gdxSetting.normalFontSize
-        ) { zoomFactor, _ ->
+        table.add(createLabel("Map Zoom factor: ", gdxSettings.normalFontSize))
+        val mapZoomFactorTextField = createTextField(
+            gdxSettings.mapZoomFactor.toString(),
+            gdxSettings.normalFontSize
+        ) { mapZoomFactor, _ ->
             try {
-                gdxSetting.zoomFactor =  zoomFactor.toFloat()
+                gdxSettings.mapZoomFactor =  mapZoomFactor.toFloat()
             } catch (e: NumberFormatException) {
                 logger.error("Invalid zoom factor")
             }
         }
-        table.add(zoomFactorTextField)
+        table.add(mapZoomFactorTextField)
 
         table.row().space(10f)
 
-        table.add(createLabel("Image scale: ", gdxSetting.normalFontSize))
+        table.add(createLabel("Image scale: ", gdxSettings.normalFontSize))
         val imageScaleTextField = createTextField(
-            gdxSetting.imageScale.toString(),
-            gdxSetting.normalFontSize
+            gdxSettings.imageScale.toString(),
+            gdxSettings.normalFontSize
         ) { imageScale, _ ->
             try {
-                gdxSetting.imageScale =  imageScale.toFloat()
+                gdxSettings.imageScale =  imageScale.toFloat()
             } catch (e: NumberFormatException) {
                 logger.error("Invalid image scale")
             }

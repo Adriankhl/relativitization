@@ -9,7 +9,7 @@ import relativitization.game.RelativitizationGame
 import relativitization.game.utils.TableScreen
 
 class ServerSettingsScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
-    private val gdxSetting = game.gdxSetting
+    private val gdxSettings = game.gdxSettings
 
     override fun show() {
         super.show()
@@ -19,8 +19,8 @@ class ServerSettingsScreen(val game: RelativitizationGame) : TableScreen(game.as
         root.row().space(20f)
 
         // Add apply setting button
-        val applyFailLabel = createLabel("", gdxSetting.normalFontSize)
-        val applyButton = createTextButton("Apply settings", gdxSetting.bigFontSize, gdxSetting.soundEffectsVolume) {
+        val applyFailLabel = createLabel("", gdxSettings.normalFontSize)
+        val applyButton = createTextButton("Apply settings", gdxSettings.bigFontSize, gdxSettings.soundEffectsVolume) {
             logger.debug("Applying settings")
             runBlocking {
                 val httpCode = game.universeClient.httpPostUniverseServerSettings()
@@ -50,15 +50,15 @@ class ServerSettingsScreen(val game: RelativitizationGame) : TableScreen(game.as
     private fun createServerSettingsScrollPane(): ScrollPane {
         val table = Table()
 
-        table.add(createLabel("Server Settings :", gdxSetting.hugeFontSize)).colspan(2)
+        table.add(createLabel("Server Settings :", gdxSettings.hugeFontSize)).colspan(2)
 
         table.row().space(20f)
 
         // don't change admin password stored in the client now, do this after successfully updated server password
-        table.add(createLabel("Admin password (for admin access to server): ", gdxSetting.normalFontSize))
+        table.add(createLabel("Admin password (for admin access to server): ", gdxSettings.normalFontSize))
         val adminPasswordTextField = createTextField(
             game.universeClient.universeServerSettings.adminPassword,
-            gdxSetting.normalFontSize
+            gdxSettings.normalFontSize
         ) { adminPassword, _ ->
             game.universeClient.universeServerSettings.adminPassword = adminPassword
         }
@@ -66,11 +66,11 @@ class ServerSettingsScreen(val game: RelativitizationGame) : TableScreen(game.as
 
         table.row().space(10f)
 
-        table.add(createLabel("Clear inactive player per turn: ", gdxSetting.normalFontSize))
+        table.add(createLabel("Clear inactive player per turn: ", gdxSettings.normalFontSize))
         val clearInactivePerTurnCheckbox = createCheckBox(
             "",
             game.universeClient.universeServerSettings.clearInactivePerTurn,
-            gdxSetting.normalFontSize
+            gdxSettings.normalFontSize
         ) { clearInactivePerTurn, _ ->
             game.universeClient.universeServerSettings.clearInactivePerTurn = clearInactivePerTurn
         }
@@ -78,11 +78,11 @@ class ServerSettingsScreen(val game: RelativitizationGame) : TableScreen(game.as
 
         table.row().space(10f)
 
-        table.add(createLabel("Human input wait time limit (in seconds): ", gdxSetting.normalFontSize))
+        table.add(createLabel("Human input wait time limit (in seconds): ", gdxSettings.normalFontSize))
         val waitTimeLimitSelectBox = createSelectBox(
             (10..3600).toList(),
             game.universeClient.universeServerSettings.waitTimeLimit,
-            gdxSetting.normalFontSize,
+            gdxSettings.normalFontSize,
         ) { limit, _ ->
             game.universeClient.universeServerSettings.waitTimeLimit = limit
         }

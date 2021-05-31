@@ -6,14 +6,14 @@ import relativitization.game.RelativitizationGame
 import relativitization.game.utils.TableScreen
 
 class LoadUniverseScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
-    private val gdxSetting = game.gdxSetting
+    private val gdxSettings = game.gdxSettings
 
     override fun show() {
         super.show()
 
         var loadUniverseName: String = ""
 
-        root.add(createLabel("Saved universe: ", gdxSetting.hugeFontSize))
+        root.add(createLabel("Saved universe: ", gdxSettings.hugeFontSize))
 
         root.row().space(20f)
 
@@ -27,7 +27,7 @@ class LoadUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asse
 
             val loadUniverseNameList = createList(
                 savedUniverseList,
-                gdxSetting.normalFontSize
+                gdxSettings.normalFontSize
             ) { name, _ ->
                 loadUniverseName = name
             }
@@ -37,11 +37,11 @@ class LoadUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asse
 
         root.row().space(10f)
 
-        val loadFailLabel = createLabel("", gdxSetting.normalFontSize)
+        val loadFailLabel = createLabel("", gdxSettings.normalFontSize)
         val loadButton = createTextButton(
             "Load",
-            gdxSetting.normalFontSize,
-            gdxSetting.soundEffectsVolume
+            gdxSettings.normalFontSize,
+            gdxSettings.soundEffectsVolume
         ) {
             runBlocking {
                 val httpCode = game.universeClient.httpPostLoadUniverse(loadUniverseName)

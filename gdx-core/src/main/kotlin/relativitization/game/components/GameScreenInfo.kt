@@ -9,22 +9,16 @@ import relativitization.game.components.info.OverviewInfo
 import relativitization.game.components.info.PhysicsInfo
 import relativitization.game.utils.ScreenComponent
 
-class GameScreenInfo(
-    val game: RelativitizationGame,
-) : ScreenComponent<SplitPane>(game.assets) {
-    private val gdxSetting = game.gdxSetting
+class GameScreenInfo(val game: RelativitizationGame) : ScreenComponent<SplitPane>(game.assets) {
+    private val gdxSettings = game.gdxSettings
     private val table: Table = Table()
     private val upperInfoScrollPane: ScrollPane = createScrollPane(table)
-    private val bottomCommandInfo: BottomCommandInfo = BottomCommandInfo(game, worldMap, this)
+    private val bottomCommandInfo: BottomCommandInfo = BottomCommandInfo(game)
 
     private val infoAndCommand = createSplitPane(upperInfoScrollPane, bottomCommandInfo.getActor(), true)
 
-    private val overviewInfo: OverviewInfo = OverviewInfo(game, worldMap, this)
-    private val physicsInfo: PhysicsInfo = PhysicsInfo(game, worldMap, this)
-    var showingInfo: ShowingInfo = ShowingInfo.OVERVIEW
-
-    var showingCommand: Boolean = true
-
+    private val overviewInfo: OverviewInfo = OverviewInfo(game)
+    private val physicsInfo: PhysicsInfo = PhysicsInfo(game)
 
     init {
         // Set background color
@@ -32,7 +26,7 @@ class GameScreenInfo(
         upperInfoScrollPane.fadeScrollBars = false
         upperInfoScrollPane.setFlickScroll(true)
 
-        infoAndCommand.splitAmount = gdxSetting.infoAndCommandSplitAmount
+        infoAndCommand.splitAmount = gdxSettings
     }
 
     override fun getActor(): SplitPane {
@@ -69,9 +63,9 @@ class GameScreenInfo(
     fun switchShowingCommand(newShowingCommand: Boolean) {
         showingCommand = newShowingCommand
         if (showingCommand) {
-            infoAndCommand.splitAmount = gdxSetting.infoAndCommandSplitAmount
+            infoAndCommand.splitAmount = gdxSettings.infoAndCommandSplitAmount
         } else {
-            gdxSetting.infoAndCommandSplitAmount = infoAndCommand.splitAmount
+            gdxSettings.infoAndCommandSplitAmount = infoAndCommand.splitAmount
             infoAndCommand.splitAmount = infoAndCommand.maxSplitAmount
         }
     }
