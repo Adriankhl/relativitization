@@ -122,7 +122,8 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
         if (gdxSettings.showingInfo) {
             worldMapAndInfo.splitAmount = gdxSettings.worldMapAndInfoSplitAmount
         } else {
-            worldMapAndInfo.splitAmount = worldMapAndInfo.splitAmount
+            gdxSettings.worldMapAndInfoSplitAmount = worldMapAndInfo.splitAmount
+            worldMapAndInfo.splitAmount = worldMapAndInfo.maxSplitAmount
         }
     }
 
