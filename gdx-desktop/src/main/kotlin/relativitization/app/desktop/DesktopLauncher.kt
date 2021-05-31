@@ -47,7 +47,11 @@ object DesktopLauncher {
 
             launch(newSingleThreadContext("gdx")) {
                 val game = RelativitizationGame(universeClient, universeServer)
-                Lwjgl3Application(game, config)
+                try {
+                    Lwjgl3Application(game, config)
+                } finally {
+                    game.dispose()
+                }
             }
 
             launch(Dispatchers.IO) {
