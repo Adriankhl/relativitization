@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.SplitPane
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import relativitization.client.UniverseClient
+import relativitization.game.RelativitizationGame
 
 abstract class ScreenComponent<out T : Actor>(val assets: Assets){
     val skin: Skin = assets.getSkin()
@@ -37,7 +38,7 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets){
      * Get all screen component, including self and child components
      */
     fun getScreenComponentList(): List<ScreenComponent<Actor>> {
-        return listOf(this) + allChildScreenComponentList
+        return allChildScreenComponentList + listOf(this)
     }
 
     /**
@@ -275,7 +276,10 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets){
     fun enableActor(actor: Actor) = ActorFunction.enableActor(actor)
 
     companion object {
-        fun <T : Actor> addComponentToClient(universeClient: UniverseClient, component: ScreenComponent<T>) {
+        fun <T : Actor> addComponentToClient(game: RelativitizationGame, component: ScreenComponent<T>) {
+            game.onGdxSettingsChangeFunctionList.add(component::onGdxSettingsChange)
+
+            val universeClient = game.universeClient
             universeClient.onServerStatusChangeFunctionList.add(component::onServerStatusChange)
 
             universeClient.onUniverseData3DChangeFunctionList.add(component::onUniverseData3DChange)
@@ -289,8 +293,8 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets){
             universeClient.onCurrentCommandChangeFunctionList.add(component::onCurrentCommandChange)
         }
 
-        fun <T : Actor> addAllComponentToClient(universeClient: UniverseClient, component: ScreenComponent<T>) {
-            component.getScreenComponentList().forEach { addComponentToClient(universeClient, it) }
+        fun <T : Actor> addAllComponentToClient(game: RelativitizationGame, component: ScreenComponent<T>) {
+            component.getScreenComponentList().forEach { addComponentToClient(game, it) }
         }
     }
 }

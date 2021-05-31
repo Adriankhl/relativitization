@@ -194,12 +194,9 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
     }
 
     /**
-     * Clear the client
+     * Clear all on chang function list
      */
-    fun clear() {
-        universeData3DMap.clear()
-        commandList.clear()
-        generateSettings = GenerateSetting()
+    fun clearOnChangeFunctionList() {
         onServerStatusChangeFunctionList.clear()
         onPrimarySelectedInt3DChangeFunctionList.clear()
         onCurrentCommandChangeFunctionList.clear()
@@ -207,6 +204,16 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
         onSelectedPlayerIdListChangeFunctionList.clear()
         onUniverseData3DChangeFunctionList.clear()
         onUniverseDataViewChangeFunctionList.clear()
+    }
+
+    /**
+     * Clear the client
+     */
+    fun clear() {
+        clearOnChangeFunctionList()
+        universeData3DMap.clear()
+        commandList.clear()
+        generateSettings = GenerateSetting()
     }
 
     /**

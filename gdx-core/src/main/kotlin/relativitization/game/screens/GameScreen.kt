@@ -20,6 +20,8 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
     val gdxSetting = game.gdxSetting
 
     init {
+        // stage.clear()
+        game.clearOnChangeFunctionList()
         if (!game.isGameStarted) {
             // wait first universe data before showing anything
             waitFirstData()
@@ -103,17 +105,15 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
 
     override fun hide() {
         super.hide()
-        game.universeClient.onServerStatusChangeFunctionList.clear()
+        game.clearOnChangeFunctionList()
     }
 
     override fun dispose() {
         super.dispose()
-        game.universeClient.onServerStatusChangeFunctionList.clear()
+        game.clearOnChangeFunctionList()
     }
 
     private fun waitFirstData() {
-        stage.clear()
-
         runBlocking {
             while (!game.universeClient.isNewDataReady.isTrue()) {
                 delay(200)

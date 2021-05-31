@@ -74,8 +74,13 @@ class RelativitizationGame(val universeClient: UniverseClient, private val unive
         backgroundMusic.play()
     }
 
-    fun clear() {
+    fun clearOnChangeFunctionList() {
         onGdxSettingsChangeFunctionList.clear()
+        universeClient.clearOnChangeFunctionList()
+    }
+
+    fun clear() {
+        clearOnChangeFunctionList()
         universeClient.clear()
     }
 }
