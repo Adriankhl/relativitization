@@ -42,13 +42,7 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
         // Adjust split pane position from gdx setting
         worldMapAndInfo.splitAmount = gdxSetting.worldMapAndInfoSplitAmount
 
-        // update top bar status label and request render when client is updated
-        game.universeClient.onServerStatusChangeFunctionList.add { topBar.autoUpdate() }
-        game.universeClient.onServerStatusChangeFunctionList.add { Gdx.graphics.requestRendering() }
-
-        worldMap.updateInfo = info::update
-
-        worldMap.updateCoordinate = topBar::updateCoordinates
+        // Add all screen component to universe client
 
         // Fix minimal top Bar height to preferred height
         root.add(topBar.getActor()).growX().top().minHeight(topBar.getActor().prefHeight)
@@ -74,11 +68,11 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
                         true
                     }
                     '<' -> {
-                        topBar.previousUniverseData()
+                        game.universeClient.previousUniverseData3D()
                         true
                     }
                     '>' -> {
-                        topBar.nextUniverseData()
+                        game.universeClient.nextUniverseData3D()
                         true
                     }
                     else -> {

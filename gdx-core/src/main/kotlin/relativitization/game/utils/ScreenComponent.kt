@@ -17,10 +17,33 @@ import relativitization.client.UniverseClient
 abstract class ScreenComponent<out T : Actor>(val assets: Assets){
     val skin: Skin = assets.getSkin()
 
+    private val allChildScreenComponentList: MutableList<ScreenComponent<Actor>> = mutableListOf()
+
     /**
      * Get the actor (e.g. table, group) of this component
      */
     abstract fun getActor(): T
+
+    /**
+     * Add all components of a child component to this
+     *
+     * @param component a child component
+     */
+    fun addChildScreenComponent(component: ScreenComponent<Actor>) {
+        allChildScreenComponentList.addAll(component.getScreenComponentList())
+    }
+
+    /**
+     * Get all screen component, including self and child components
+     */
+    fun getScreenComponentList(): List<ScreenComponent<Actor>> {
+        return listOf(this) + allChildScreenComponentList
+    }
+
+    /**
+     * Call this function when gdx setting change
+     */
+    open fun onGdxSettingsChange() {}
 
     /**
      * Call this function at each iteration of universe client
@@ -68,7 +91,6 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets){
      * Create split pane
      */
     fun createSplitPane(actor1: Actor, actor2: Actor, vertical: Boolean): SplitPane = ActorFunction.createSplitPane(skin, actor1, actor2, vertical)
-
 
 
     /**
@@ -265,6 +287,10 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets){
             universeClient.onPrimarySelectedInt3DChangeFunctionList.add(component::onPrimarySelectedInt3DChange)
 
             universeClient.onCurrentCommandChangeFunctionList.add(component::onCurrentCommandChange)
+        }
+
+        fun <T : Actor> addAllComponentToClient(universeClient: UniverseClient, component: ScreenComponent<T>) {
+            component.getScreenComponentList().forEach { addComponentToClient(universeClient, it) }
         }
     }
 }
