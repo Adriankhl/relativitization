@@ -119,9 +119,9 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
     val commandList: MutableList<Command> = mutableListOf()
 
     // command that is showing, can be new command to be confirmed or old command to be cancelled
-    val onCommandToBeConfirmChangeFunctionList: MutableList<() -> Unit> = mutableListOf()
+    val onCurrentCommandChangeFunctionList: MutableList<() -> Unit> = mutableListOf()
     var currentCommand: Command by Delegates.observable(DummyCommand()) { property, oldValue, newValue ->
-        onCommandToBeConfirmChangeFunctionList.forEach { it() }
+        onCurrentCommandChangeFunctionList.forEach { it() }
     }
 
     /**
@@ -190,7 +190,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
         generateSettings = GenerateSetting()
         onServerStatusChangeFunctionList.clear()
         onPrimarySelectedInt3DChangeFunctionList.clear()
-        onCommandToBeConfirmChangeFunctionList.clear()
+        onCurrentCommandChangeFunctionList.clear()
         onPrimarySelectedPlayerIdChangeFunctionList.clear()
         onSelectedPlayerIdListChangeFunctionList.clear()
         onUniverseData3DChangeFunctionList.clear()

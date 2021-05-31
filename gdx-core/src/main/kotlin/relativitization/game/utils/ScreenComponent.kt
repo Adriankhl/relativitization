@@ -10,9 +10,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.SelectBox
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.Slider
 import com.badlogic.gdx.scenes.scene2d.ui.SplitPane
-import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
+import relativitization.client.UniverseClient
 
 abstract class ScreenComponent<out T : Actor>(val assets: Assets){
     val skin: Skin = assets.getSkin()
@@ -55,7 +55,7 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets){
     /**
      * Call this function when command to be confirm change
      */
-    open fun onCommandToBeConfirmChange() {}
+    open fun onCurrentCommandChange() {}
 
     /**
      * Create scroll pane for table
@@ -251,4 +251,20 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets){
     fun disableActor(actor: Actor) = ActorFunction.disableActor(actor)
 
     fun enableActor(actor: Actor) = ActorFunction.enableActor(actor)
+
+    companion object {
+        fun <T : Actor> addComponentToClient(universeClient: UniverseClient, component: ScreenComponent<T>) {
+            universeClient.onServerStatusChangeFunctionList.add(component::onServerStatusChange)
+
+            universeClient.onUniverseData3DChangeFunctionList.add(component::onUniverseData3DChange)
+
+            universeClient.onUniverseDataViewChangeFunctionList.add(component::onUniverseDataViewChange)
+
+            universeClient.onPrimarySelectedPlayerIdChangeFunctionList.add(component::onPrimarySelectedPlayerIdChange)
+            universeClient.onSelectedPlayerIdListChangeFunctionList.add(component::onSelectedPlayerIdListChange)
+            universeClient.onPrimarySelectedInt3DChangeFunctionList.add(component::onPrimarySelectedInt3DChange)
+
+            universeClient.onCurrentCommandChangeFunctionList.add(component::onCurrentCommandChange)
+        }
+    }
 }
