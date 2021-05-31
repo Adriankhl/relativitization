@@ -97,6 +97,12 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
         onUniverseDataViewChangeFunctionList.forEach { it() }
     }
 
+    // Primary selected int3D
+    val onPrimarySelectedInt3DChangeFunctionList: MutableList<() -> Unit> = mutableListOf()
+    var primarySelectedInt3D: Int3D by Delegates.observable(Int3D(0, 0, 0)) { property, oldValue, newValue ->
+        onPrimarySelectedInt3DChangeFunctionList.forEach { it() }
+    }
+
     // Primary selected player id
     val onPrimarySelectedPlayerIdChangeFunctionList: MutableList<() -> Unit> = mutableListOf()
     var primarySelectedPlayerId: Int by Delegates.observable(currentUniverseData3DAtPlayer.id) { property, oldValue, newValue ->
@@ -120,11 +126,6 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
         onSelectedPlayerIdListChangeFunctionList.forEach { it() }
     }
 
-    // All selected int3d
-    val onPrimarySelectedInt3DChangeFunctionList: MutableList<() -> Unit> = mutableListOf()
-    var primarySelectedInt3D: Int3D by Delegates.observable(Int3D(0, 0, 0)) { property, oldValue, newValue ->
-        onPrimarySelectedInt3DChangeFunctionList.forEach { it() }
-    }
 
     // store list of command for sending them to the universe server
     val commandList: MutableList<Command> = mutableListOf()

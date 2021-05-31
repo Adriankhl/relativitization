@@ -62,6 +62,12 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets){
     open fun onUniverseDataViewChange() {}
 
     /**
+     * Call this function when selecting different primary int3D
+     */
+    open fun onPrimarySelectedInt3DChange() {}
+
+
+    /**
      * Call this function when changing first selected id
      */
     open fun onPrimarySelectedPlayerIdChange() {}
@@ -71,10 +77,6 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets){
      */
     open fun onSelectedPlayerIdListChange() {}
 
-    /**
-     * Call this function when selecting different primary int3D
-     */
-    open fun onPrimarySelectedInt3DChange() {}
 
     /**
      * Call this function when command to be confirm change
