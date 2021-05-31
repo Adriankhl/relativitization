@@ -8,8 +8,6 @@ import relativitization.game.utils.ScreenComponent
 
 class PhysicsInfo(
     val game: RelativitizationGame,
-    val worldMap: GameScreenWorldMap,
-    val info: GameScreenInfo,
 ) : ScreenComponent<ScrollPane>(game.assets) {
 
 

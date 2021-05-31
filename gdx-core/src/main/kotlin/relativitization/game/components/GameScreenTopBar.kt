@@ -73,7 +73,7 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         game.universeClient.pickUniverseData3D(name)
     }
 
-    private val updateButton: ImageButton = createImageButton(
+    private val clearSelectedButton: ImageButton = createImageButton(
         "basic/white-circle-arrow",
         1.0f,
         1.0f,
@@ -88,7 +88,9 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         1.0f,
         1.0f,
         gdxSetting.soundEffectsVolume
-    )
+    ) {
+        game.universeClient.clearSelected()
+    }
 
     private val updateToLatestButton: ImageButton = createImageButton(
         "basic/white-rightmost-triangle",
@@ -111,7 +113,7 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         }
     }
 
-    private val restoreButton: ImageButton = createImageButton(
+    private val clearCommandListButton: ImageButton = createImageButton(
         "basic/white-stop",
         1.0f,
         1.0f,
@@ -126,7 +128,9 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         1.0f,
         1.0f,
         gdxSetting.soundEffectsVolume
-    )
+    ) {
+        game.universeClient.clearCommandList()
+    }
 
     private val zoomInButton: ImageButton = createImageButton(
         "basic/white-zoom-in",
@@ -363,11 +367,11 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
 
         table.add(currentUniverseDataTable).pad(10f)
 
-        table.add(updateButton).size(50f * gdxSetting.imageScale, 50f * gdxSetting.imageScale)
-
         table.add(updateToLatestButton).size(50f * gdxSetting.imageScale, 50f * gdxSetting.imageScale)
 
-        table.add(restoreButton).size(50f * gdxSetting.imageScale, 50f * gdxSetting.imageScale)
+        table.add(clearSelectedButton).size(50f * gdxSetting.imageScale, 50f * gdxSetting.imageScale)
+
+        table.add(clearCommandListButton).size(50f * gdxSetting.imageScale, 50f * gdxSetting.imageScale)
 
         table.add(uploadButton).size(50f * gdxSetting.imageScale, 50f * gdxSetting.imageScale)
 

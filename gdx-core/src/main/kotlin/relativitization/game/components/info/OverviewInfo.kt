@@ -9,8 +9,6 @@ import relativitization.game.utils.ScreenComponent
 
 class OverviewInfo(
     val game: RelativitizationGame,
-    val worldMap: GameScreenWorldMap,
-    val info: GameScreenInfo,
 ) : ScreenComponent<ScrollPane>(game.assets) {
 
     private var scrollPane: ScrollPane = createScrollPane(Table())

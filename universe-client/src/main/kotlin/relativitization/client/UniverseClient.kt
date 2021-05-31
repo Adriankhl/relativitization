@@ -111,17 +111,17 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
 
     // All selected player id
     val onSelectedPlayerIdListChangeFunctionList: MutableList<() -> Unit> = mutableListOf()
-    var allSelectedPlayerIdList: MutableList<Int> = mutableListOf()
+    var selectedPlayerIdList: MutableList<Int> = mutableListOf()
     var newSelectedPlayerId: Int by Delegates.observable(currentUniverseData3DAtPlayer.id) { property, oldValue, newValue ->
-        if (!allSelectedPlayerIdList.contains(newValue)) {
-            if (!allSelectedPlayerIdList.contains(primarySelectedPlayerId)) {
+        if (!selectedPlayerIdList.contains(newValue)) {
+            if (!selectedPlayerIdList.contains(primarySelectedPlayerId)) {
                 // Change primary selected player id if it is not stored in the all selected player id list
                 primarySelectedPlayerId = newValue
             }
-            allSelectedPlayerIdList.add(newValue)
+            selectedPlayerIdList.add(newValue)
         } else {
             // Remove selected player id if it has already been selected
-            allSelectedPlayerIdList.remove(newValue)
+            selectedPlayerIdList.remove(newValue)
         }
         onSelectedPlayerIdListChangeFunctionList.forEach { it() }
     }
@@ -195,6 +195,23 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
     }
 
     /**
+     * Clear selected player and int3D, use default value
+     */
+    fun clearSelected() {
+        selectedPlayerIdList.clear()
+        newSelectedPlayerId = getUniverseData3D().id
+        primarySelectedInt3D = getUniverseData3D().get(getUniverseData3D().id).int4D.toInt3D()
+    }
+
+    /**
+     * Clear command list
+     */
+    fun clearCommandList() {
+        commandList.clear()
+        currentCommand = DummyCommand()
+    }
+
+    /**
      * Clear all on chang function list
      */
     fun clearOnChangeFunctionList() {
@@ -211,9 +228,9 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
      * Clear the client
      */
     fun clear() {
+        clearCommandList()
         clearOnChangeFunctionList()
         universeData3DMap.clear()
-        commandList.clear()
         generateSettings = GenerateSetting()
     }
 

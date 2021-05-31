@@ -2,7 +2,6 @@ package relativitization.game.components
 
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.Group
-import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import org.apache.logging.log4j.LogManager
 import relativitization.game.RelativitizationGame
@@ -189,7 +188,7 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
             selectSquare[int3D] = square
         }
 
-        for (id in game.universeClient.allSelectedPlayerIdList) {
+        for (id in game.universeClient.selectedPlayerIdList) {
             if (playerSquareActorMap.containsKey(id)) {
                 if (id == game.universeClient.primarySelectedPlayerId) {
                     val image = playerSquareActorMap.getValue(id)
