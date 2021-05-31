@@ -11,7 +11,6 @@ import relativitization.game.utils.ScreenComponent
 
 class GameScreenInfo(
     val game: RelativitizationGame,
-    val worldMap: GameScreenWorldMap
 ) : ScreenComponent<SplitPane>(game.assets) {
     private val gdxSetting = game.gdxSetting
     private val table: Table = Table()
@@ -76,10 +75,4 @@ class GameScreenInfo(
             infoAndCommand.splitAmount = infoAndCommand.maxSplitAmount
         }
     }
-}
-
-enum class ShowingInfo {
-    HIDE,
-    OVERVIEW,
-    PHYSICS
 }

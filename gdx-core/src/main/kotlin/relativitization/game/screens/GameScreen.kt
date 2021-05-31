@@ -31,9 +31,9 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
     }
 
     private val worldMap: GameScreenWorldMap = GameScreenWorldMap(game)
-    private val info: GameScreenInfo = GameScreenInfo(game, worldMap)
+    private val info: GameScreenInfo = GameScreenInfo(game)
     private val worldMapAndInfo = createSplitPane(worldMap.getActor(), info.getActor(), false)
-    private val topBar: GameScreenTopBar = GameScreenTopBar(game, worldMap, info, worldMapAndInfo)
+    private val topBar: GameScreenTopBar = GameScreenTopBar(game)
 
     init {
         addChildScreenComponent(worldMap)
@@ -72,7 +72,7 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
                         true
                     }
                     '-' -> {
-                        gdxSetting.mapZoomRelativeToFullMap *= gdxSetting.mapZoomFactor
+                        gdxSetting.mapZoomRelativeToFullMap /= gdxSetting.mapZoomFactor
                         game.changeGdxSetting()
                         true
                     }

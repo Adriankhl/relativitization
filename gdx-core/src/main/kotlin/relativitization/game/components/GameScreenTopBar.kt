@@ -4,13 +4,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox
-import com.badlogic.gdx.scenes.scene2d.ui.SplitPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.utils.Array
 import io.ktor.http.*
 import kotlinx.coroutines.runBlocking
 import relativitization.game.RelativitizationGame
+import relativitization.game.ShowingInfoType
 import relativitization.game.screens.GdxSettingsScreen
 import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.physics.Int3D
@@ -18,16 +18,10 @@ import relativitization.universe.maths.physics.Intervals.intDelay
 import kotlin.math.min
 
 
-class GameScreenTopBar(
-    val game: RelativitizationGame,
-    val worldMap: GameScreenWorldMap,
-    val info: GameScreenInfo,
-    val worldMapAndInfo: SplitPane
-    ) : ScreenComponent<ScrollPane>(game.assets) {
+class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.assets) {
     private val gdxSetting = game.gdxSetting
     private val table: Table = Table()
     private val scrollPane: ScrollPane = createScrollPane(table)
-
 
     private val currentUniverseDataLabel: Label = createLabel("", gdxSetting.smallFontSize)
 
@@ -48,7 +42,7 @@ class GameScreenTopBar(
         1.0f,
         gdxSetting.soundEffectsVolume
     ) {
-        previousUniverseData()
+        game.universeClient.previousUniverseData3D()
     }
 
     // button to select next time
@@ -68,7 +62,7 @@ class GameScreenTopBar(
         1.0f,
         gdxSetting.soundEffectsVolume
     ) {
-        nextUniverseData()
+        game.universeClient.nextUniverseData3D()
     }
 
     private val universeDataSelectBox: SelectBox<String> = createSelectBox(
@@ -77,7 +71,6 @@ class GameScreenTopBar(
         gdxSetting.smallFontSize
     ) { name, _ ->
         game.universeClient.pickUniverseData3D(name)
-        updateAll()
     }
 
     private val updateButton: ImageButton = createImageButton(
@@ -95,9 +88,7 @@ class GameScreenTopBar(
         1.0f,
         1.0f,
         gdxSetting.soundEffectsVolume
-    ) {
-        updateAll()
-    }
+    )
 
     private val updateToLatestButton: ImageButton = createImageButton(
         "basic/white-rightmost-triangle",
@@ -118,7 +109,6 @@ class GameScreenTopBar(
         runBlocking {
             game.universeClient.pickLatestUniverseData3D()
         }
-        updateAll()
     }
 
     private val restoreButton: ImageButton = createImageButton(
@@ -136,9 +126,7 @@ class GameScreenTopBar(
         1.0f,
         1.0f,
         gdxSetting.soundEffectsVolume
-    ) {
-        restoreAll()
-    }
+    )
 
     private val zoomInButton: ImageButton = createImageButton(
         "basic/white-zoom-in",
@@ -156,7 +144,8 @@ class GameScreenTopBar(
         1.0f,
         gdxSetting.soundEffectsVolume
     ) {
-        worldMap.zoomIn()
+        gdxSetting.mapZoomRelativeToFullMap *= gdxSetting.mapZoomFactor
+        game.changeGdxSetting()
     }
 
     private val zoomOutButton: ImageButton = createImageButton(
@@ -175,7 +164,8 @@ class GameScreenTopBar(
         1.0f,
         gdxSetting.soundEffectsVolume
     ) {
-        worldMap.zoomOut()
+        gdxSetting.mapZoomRelativeToFullMap /= gdxSetting.mapZoomFactor
+        game.changeGdxSetting()
     }
 
     private val zoomToFullMapButton: ImageButton = createImageButton(
@@ -194,7 +184,7 @@ class GameScreenTopBar(
         1.0f,
         gdxSetting.soundEffectsVolume
     ) {
-        worldMap.zoomToFullMap()
+        gdxSetting.mapZoomRelativeToFullMap = 1.0f
     }
 
     private val uploadButton: ImageButton = createImageButton(
@@ -239,11 +229,8 @@ class GameScreenTopBar(
         0.8f,
         gdxSetting.soundEffectsVolume
     ) {
-        if (it.isChecked) {
-            info.switchShowingCommand(true)
-        } else {
-            info.switchShowingCommand(false)
-        }
+        gdxSetting.showingBottomCommand = it.isChecked
+        game.changeGdxSetting()
     }
 
     private val overviewInfoButton: TextButton = createTextButton(
@@ -252,23 +239,29 @@ class GameScreenTopBar(
         gdxSetting.soundEffectsVolume
     ) {
         // If hiding, show the panel
-        if (info.showingInfo == ShowingInfo.HIDE) {
-            worldMapAndInfo.splitAmount = gdxSetting.worldMapAndInfoSplitAmount
+        if (!gdxSetting.showingInfo) {
+            gdxSetting.showingInfo = true
+            gdxSetting.showingInfoType = ShowingInfoType.OVERVIEW
+        } else {
+            gdxSetting.showingInfo = false
         }
-        info.switchShowingInfo(ShowingInfo.OVERVIEW)
-
-        // If the showing info state is hide, hide the panel
-        if (info.showingInfo == ShowingInfo.HIDE) {
-            gdxSetting.worldMapAndInfoSplitAmount = worldMapAndInfo.splitAmount
-            worldMapAndInfo.splitAmount = worldMapAndInfo.maxSplitAmount
-        }
+        game.changeGdxSetting()
     }
 
     private val physicsInfoButton: TextButton = createTextButton(
         "Physics",
         gdxSetting.normalFontSize,
         gdxSetting.soundEffectsVolume
-    )
+    ) {
+        // If hiding, show the panel
+        if (!gdxSetting.showingInfo) {
+            gdxSetting.showingInfo = true
+            gdxSetting.showingInfoType = ShowingInfoType.PHYSICS
+        } else {
+            gdxSetting.showingInfo = false
+        }
+        game.changeGdxSetting()
+    }
 
     private val tCoordinateLabel = createLabel(
         "t: ${game.universeClient.getUniverseData3D().center.t}",
@@ -325,7 +318,7 @@ class GameScreenTopBar(
         game.universeClient.universeClientSettings.viewCenter.x  = xCoordinateSelectBox.selected
         game.universeClient.universeClientSettings.viewCenter.y  = yCoordinateSelectBox.selected
         game.universeClient.universeClientSettings.viewCenter.z  = zCoordinateSelectBox.selected
-        worldMap.update()
+        game.universeClient.changeUniverseDataView()
     }
 
 
@@ -400,34 +393,16 @@ class GameScreenTopBar(
             updateUpdateToLatestButton()
         }
         updateUniverseDataSelectionBox()
-
-        worldMap.onUniverseData3DChange()
-        info.onUniverseData3DChange()
     }
 
 
-    override fun onViewChange() {
-        worldMap.onViewChange()
-    }
-
-
-    /**
-     * Restore selected player and clear command list
-     */
-    private fun restore() {
-        worldMap.restore()
-        game.universeClient.commandList.clear()
-    }
-
-    /**
-     * Function that should be automatically call by universe client
-     */
-    fun autoUpdate() {
+    override fun onServerStatusChange() {
         updateServerStatusLabels()
         runBlocking {
             updateUpdateToLatestButton()
         }
     }
+
 
     /**
      * Create table for controlling view int3D, z limit and zoom
@@ -514,7 +489,7 @@ class GameScreenTopBar(
      */
     private fun updateServerStatusLabels() {
         // copy to prevent change
-        val serverStatus = game.universeClient.getServerStatus().copy()
+        val serverStatus = game.universeClient.getCurrentServerStatus().copy()
 
         val connectionText = if (serverStatus.success) {
             "connected"
@@ -572,21 +547,5 @@ class GameScreenTopBar(
         )
 
         tCoordinateLabel.setText("t: $t")
-    }
-
-    /**
-     * Go to previous universe data and update
-     */
-    fun previousUniverseData() {
-        game.universeClient.previousUniverseData3D()
-        onUniverseData3DChange()
-    }
-
-    /**
-     * Go to next universe data and update
-     */
-    fun nextUniverseData() {
-        game.universeClient.nextUniverseData3D()
-        onUniverseData3DChange()
     }
 }
