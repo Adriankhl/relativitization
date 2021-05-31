@@ -20,7 +20,6 @@ import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.commands.DummyCommand
 import relativitization.universe.data.physics.Int3D
-import relativitization.universe.data.physics.Int4D
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.generate.GenerateSetting
 import relativitization.universe.utils.CoroutineBoolean
@@ -56,6 +55,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
     ) { property, oldValue, newValue ->
         onServerStatusChangeFunctionList.forEach { it() }
     }
+    fun getCurrentServerStatus() = serverStatus
 
 
     // store downloaded but not yet used universe data
@@ -78,12 +78,10 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
     // universe view int3D and z limit
     val onUniverseDataViewChangeFunctionList: MutableList<() -> Unit> = mutableListOf()
     var shouldUpdateUniverseDataView: Boolean by Delegates.observable(false) { property, oldValue, newValue ->
-        if ((oldValue == false) && (newValue == true)) {
-            if (!selectedInt3DList.isEmpty()) {
-                universeClientSettings.viewCenter.x = selectedInt3DList.last().x
-                universeClientSettings.viewCenter.y = selectedInt3DList.last().y
-                universeClientSettings.viewCenter.z = selectedInt3DList.last().z
-            }
+        if (newValue) {
+            universeClientSettings.viewCenter.x = primarySelectedInt3D.x
+            universeClientSettings.viewCenter.y = primarySelectedInt3D.y
+            universeClientSettings.viewCenter.z = primarySelectedInt3D.z
             onUniverseDataViewChangeFunctionList.forEach { it() }
         }
     }
@@ -112,16 +110,19 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
     }
 
     // All selected int3d
-    val onSelectedInt3DListChangeFunctionList: MutableList<() -> Unit> = mutableListOf()
-    var selectedInt3DList: MutableList<Int3D> = mutableListOf()
+    val onPrimarySelectedInt3DChangeFunctionList: MutableList<() -> Unit> = mutableListOf()
+    var primarySelectedInt3D: Int3D by Delegates.observable(Int3D(0, 0, 0)) { property, oldValue, newValue ->
+        onPrimarySelectedInt3DChangeFunctionList.forEach { it() }
+    }
 
-    // input command list
+    // store list of command for sending them to the universe server
     val commandList: MutableList<Command> = mutableListOf()
 
-    // command waiting to be confirmed (add to commandList) or cancel
-    var commandToBeConfirm: Command = DummyCommand(-1, -1, Int4D(0, 0, 0, 0))
-
-    // Gui related data
+    // command that is showing, can be new command to be confirmed or old command to be cancelled
+    val onCommandToBeConfirmChangeFunctionList: MutableList<() -> Unit> = mutableListOf()
+    var currentCommand: Command by Delegates.observable(DummyCommand()) { property, oldValue, newValue ->
+        onCommandToBeConfirmChangeFunctionList.forEach { it() }
+    }
 
     /**
      * Start auto updating status and universeData3DCache
@@ -132,9 +133,9 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
             delay(2000)
             mutex.withLock {
                 val newServerStatus = httpGetUniverseServerStatus()
-                if (shouldUpdateCache(serverStatus)) {
+                if (shouldUpdateCache(newServerStatus)) {
                     logger.debug("Going to update cache")
-                    val universeData3DDownloaded =  httpGetUniverseData3D()
+                    val universeData3DDownloaded = httpGetUniverseData3D()
                     // id == -1 means the data is invalid
                     if (universeData3DDownloaded.id != -1) {
                         universeData3DCache = universeData3DDownloaded
@@ -188,6 +189,12 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
         commandList.clear()
         generateSettings = GenerateSetting()
         onServerStatusChangeFunctionList.clear()
+        onPrimarySelectedInt3DChangeFunctionList.clear()
+        onCommandToBeConfirmChangeFunctionList.clear()
+        onPrimarySelectedPlayerIdChangeFunctionList.clear()
+        onSelectedPlayerIdListChangeFunctionList.clear()
+        onUniverseData3DChangeFunctionList.clear()
+        onUniverseDataViewChangeFunctionList.clear()
     }
 
     /**
@@ -226,10 +233,33 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
      * Update current UniverseData3DTime to latest time available from universeData3DMap
      */
     suspend fun pickLatestUniverseData3D() {
-        currentUniverseData3DAtPlayer = universeData3DMap.values.last()
-        isNewDataReady.set(false)
+        if (universeData3DMap.isNotEmpty()) {
+            currentUniverseData3DAtPlayer = universeData3DMap.values.last()
+            isNewDataReady.set(false)
+        } else {
+            logger.error("Empty universe data map")
+        }
     }
 
+    /**
+     * Goto stored previous universe data
+     */
+    fun previousUniverseData3D() {
+        if (universeData3DMap.values.contains(currentUniverseData3DAtPlayer)) {
+            val currentIndex = universeData3DMap.values.indexOf(currentUniverseData3DAtPlayer)
+            if (universeData3DMap.values.indices.contains(currentIndex - 1)) {
+                currentUniverseData3DAtPlayer = universeData3DMap.values.elementAt(currentIndex - 1)
+            } else {
+                logger.debug("No previous data")
+            }
+        } else {
+            logger.error("No data 3D index")
+        }
+    }
+
+    /**
+     * Goto stored next universe data
+     */
     fun nextUniverseData3D() {
         if (universeData3DMap.values.contains(currentUniverseData3DAtPlayer)) {
             val currentIndex = universeData3DMap.values.indexOf(currentUniverseData3DAtPlayer)
@@ -243,18 +273,6 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
         }
     }
 
-    fun previousUniverseData3D() {
-        if (universeData3DMap.values.contains(currentUniverseData3DAtPlayer)) {
-            val currentIndex = universeData3DMap.values.indexOf(currentUniverseData3DAtPlayer)
-            if (universeData3DMap.values.indices.contains(currentIndex - 1)) {
-                currentUniverseData3DAtPlayer = universeData3DMap.values.elementAt(currentIndex - 1)
-            } else {
-                logger.debug("No previous data")
-            }
-        } else {
-            logger.error("No data 3D index")
-        }
-    }
 
     /**
      * Pick universe data from map
@@ -273,6 +291,88 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
      */
     fun getAvailableData3DName(): List<String> {
         return universeData3DMap.keys.toList()
+    }
+
+    /**
+     * Confirm commandToBeConfirm
+     */
+    fun confirmCurrentCommand() {
+        if (!isCurrentCommandStored()) {
+            commandList.add(currentCommand)
+            currentCommand = if (commandList.isEmpty()) {
+                DummyCommand()
+            } else {
+                commandList.last()
+            }
+        } else {
+            logger.error("Trying to confirm existing command")
+        }
+    }
+
+    /**
+     * Cancel commandToBeConfirm
+     */
+    fun cancelCurrentCommand() {
+        if (isCurrentCommandStored()) {
+            val index = commandList.indexOf(currentCommand)
+            commandList.remove(currentCommand)
+            currentCommand = when {
+                commandList.isEmpty() -> {
+                    DummyCommand()
+                }
+                index < commandList.size - 1 -> {
+                    commandList[index]
+                }
+                else -> {
+                    commandList.last()
+                }
+            }
+        } else {
+            logger.error("Trying to cancel non-existing command")
+        }
+    }
+
+    /**
+     * Is the current command stored in the command list
+     */
+    fun isCurrentCommandStored(): Boolean {
+        return commandList.contains(currentCommand)
+    }
+
+    /**
+     * Change to previous command
+     */
+    fun previousCommand() {
+        if (isCurrentCommandStored()) {
+            val index = commandList.indexOf(currentCommand)
+            if (index > 0) {
+                currentCommand = commandList[index - 1]
+            } else {
+                logger.debug("Can't goto previous command, already the earliest one")
+            }
+        } else {
+            if (commandList.isNotEmpty()) {
+                currentCommand = commandList.last()
+            } else {
+                logger.debug("Can't goto previous command, the command list is empty")
+            }
+        }
+    }
+
+    /**
+     * Change to next command
+     */
+    fun nextCommand() {
+        if (isCurrentCommandStored()) {
+            val index = commandList.indexOf(currentCommand)
+            if (index < commandList.size - 1) {
+                currentCommand = commandList[index + 1]
+            } else {
+                logger.debug("Can't goto next command, already the latest one")
+            }
+        } else {
+            logger.debug("Can't goto next command, the current command is not stored")
+        }
     }
 
     /**
@@ -371,13 +471,14 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
             val serverAddress = universeClientSettings.serverAddress
             val serverPort = universeClientSettings.serverPort
             val adminPassword = universeClientSettings.adminPassword
-            val response: HttpResponse = ktorClient.post("http://$serverAddress:$serverPort/run/update-server-settings") {
-                contentType(ContentType.Application.Json)
-                body = UniverseServerSettingsMessage(adminPassword, universeServerSettings)
-                timeout {
-                    requestTimeoutMillis = 1000
+            val response: HttpResponse =
+                ktorClient.post("http://$serverAddress:$serverPort/run/update-server-settings") {
+                    contentType(ContentType.Application.Json)
+                    body = UniverseServerSettingsMessage(adminPassword, universeServerSettings)
+                    timeout {
+                        requestTimeoutMillis = 1000
+                    }
                 }
-            }
             logger.debug("Update universe settings status: ${response.status}")
             response.status
         } catch (cause: ResponseException) {

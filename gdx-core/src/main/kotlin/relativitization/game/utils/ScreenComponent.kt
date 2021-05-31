@@ -48,9 +48,9 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets){
     open fun onSelectedPlayerIdListChange() {}
 
     /**
-     * Call this function when changing Int3D
+     * Call this function when selecting different primary int3D
      */
-    open fun onSelectedInt3DListChange() {}
+    open fun onPrimarySelectedInt3DChange() {}
 
     /**
      * Call this function when command to be confirm change
@@ -63,7 +63,6 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets){
      * @param actor the table to add scroll pane
      */
     fun createScrollPane(actor: Actor): ScrollPane = ActorFunction.createScrollPane(skin, actor)
-
 
     /**
      * Create split pane

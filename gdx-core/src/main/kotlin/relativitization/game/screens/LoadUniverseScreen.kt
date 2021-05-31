@@ -21,7 +21,7 @@ class LoadUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asse
             val savedUniverseList: List<String> = game.universeClient.httpGetSavedUniverse()
 
             // Default load universe name to first element
-            if (!savedUniverseList.isEmpty()) {
+            if (savedUniverseList.isNotEmpty()) {
                 loadUniverseName = savedUniverseList[0]
             }
 

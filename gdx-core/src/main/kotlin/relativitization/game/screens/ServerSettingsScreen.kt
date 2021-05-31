@@ -26,10 +26,10 @@ class ServerSettingsScreen(val game: RelativitizationGame) : TableScreen(game.as
                 val httpCode = game.universeClient.httpPostUniverseServerSettings()
                 if (httpCode == HttpStatusCode.OK) {
                     // Also modify client admin password after successfully modified the password at the serve
-                    val newUniverseClientSetting = game.universeClient.universeClientSettings.copy(
+                    val newUniverseClientSettings = game.universeClient.universeClientSettings.copy(
                         adminPassword = game.universeClient.universeServerSettings.adminPassword
                     )
-                    game.universeClient.setUniverseClientSettings(newUniverseClientSetting)
+                    game.universeClient.setUniverseClientSettings(newUniverseClientSettings)
                     game.screen = RegisterPlayerScreen(game)
                     dispose()
                 } else {

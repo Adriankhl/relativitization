@@ -9,9 +9,9 @@ import relativitization.universe.data.physics.Velocity
 
 @Serializable
 data class DummyCommand(
-    override val fromId: Int,
-    override val toId: Int,
-    override val fromInt4D: Int4D,
+    override val fromId: Int = -1,
+    override val toId: Int = -1,
+    override val fromInt4D: Int4D = Int4D(0, 0, 0, 0),
 ) : Command() {
     override val name: String = "Dummy"
 

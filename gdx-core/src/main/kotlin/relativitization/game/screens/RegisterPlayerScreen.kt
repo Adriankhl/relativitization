@@ -77,11 +77,11 @@ class RegisterPlayerScreen(val game: RelativitizationGame) : TableScreen(game.as
             game.universeClient.universeClientSettings.password,
             gdxSetting.normalFontSize
         ) { password, _ ->
-            val newUniverseClientSetting: UniverseClientSettings = game.universeClient.universeClientSettings.copy(
+            val newUniverseClientSettings: UniverseClientSettings = game.universeClient.universeClientSettings.copy(
                 password = password
             )
             runBlocking {
-                game.universeClient.setUniverseClientSettings(newUniverseClientSetting)
+                game.universeClient.setUniverseClientSettings(newUniverseClientSettings)
             }
         }
         root.add(passwordTextField)
@@ -119,7 +119,7 @@ class RegisterPlayerScreen(val game: RelativitizationGame) : TableScreen(game.as
         val startButton: TextButton = createTextButton("Start", gdxSetting.normalFontSize, gdxSetting.soundEffectsVolume) {
             if (registerPlayerButton.touchable == Touchable.disabled) {
                 runBlocking {
-                    if (game.universeClient.getServerStatus().isUniverseRunning) {
+                    if (game.universeClient.getCurrentServerStatus().isUniverseRunning) {
                         // Not showing because it is too fast?
                         startStatusLabel.setText("Universe already running, waiting universe data")
                         game.screen = GameScreen(game)

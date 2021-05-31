@@ -243,7 +243,7 @@ class PlayerCollection(private val xDim: Int, private val yDim: Int, private val
         // attach player if they are within the same cube of length 0.01
         getPlayerId3D().flatten().flatten().forEach { list ->
             val playerIdList = list.toMutableList()
-            while (!playerIdList.isEmpty()) {
+            while (playerIdList.isNotEmpty()) {
                 val playerId = playerIdList.first()
                 val sameCubePlayer: List<Int> = playerIdList.filter { id ->
                     sameCube(
