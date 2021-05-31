@@ -189,6 +189,7 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         gdxSettings.soundEffectsVolume
     ) {
         gdxSettings.mapZoomRelativeToFullMap = 1.0f
+        game.changeGdxSettings()
     }
 
     private val uploadButton: ImageButton = createImageButton(
@@ -230,10 +231,10 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         1.0f,
         1.0f,
         1.0f,
-        0.8f,
+        1.0f,
         gdxSettings.soundEffectsVolume
     ) {
-        gdxSettings.showingBottomCommand = it.isChecked
+        gdxSettings.showingBottomCommand = !gdxSettings.showingBottomCommand
         game.changeGdxSettings()
     }
 
