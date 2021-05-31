@@ -196,7 +196,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
     /**
      * Clear the client
      */
-    suspend fun clear() {
+    fun clear() {
         universeData3DMap.clear()
         commandList.clear()
         generateSettings = GenerateSetting()

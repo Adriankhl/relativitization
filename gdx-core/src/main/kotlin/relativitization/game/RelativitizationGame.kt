@@ -38,6 +38,17 @@ class RelativitizationGame(val universeClient: UniverseClient, private val unive
     }
 
 
+    override fun dispose() {
+        clear()
+        runBlocking {
+            backgroundMusic.stop()
+            assets.dispose()
+            universeClient.stop()
+            universeServer.stop()
+        }
+    }
+
+
     fun restoreSize() {
         if (Gdx.app.type == Application.ApplicationType.Desktop &&
             gdxSetting.windowsWidth > 39 &&
@@ -63,12 +74,8 @@ class RelativitizationGame(val universeClient: UniverseClient, private val unive
         backgroundMusic.play()
     }
 
-    override fun dispose() {
-        runBlocking {
-            backgroundMusic.stop()
-            assets.dispose()
-            universeClient.stop()
-            universeServer.stop()
-        }
+    fun clear() {
+        onGdxSettingsChangeFunctionList.clear()
+        universeClient.clear()
     }
 }
