@@ -43,15 +43,20 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
         if ((abs(actualZoom() - oldActualZoom) / oldActualZoom) > 0.1f) {
             val oldScrollX = scrollPane.scrollX
             val oldScrollY = scrollPane.scrollY
-            println("old zoom: ${scrollPane.scrollWidth}")
+
             updateGroup()
-            scrollPane.scrollX = oldScrollX * (actualZoom() / oldActualZoom)
-            scrollPane.scrollY = oldScrollY * (actualZoom() / oldActualZoom)
+
+            val zoomRatio = actualZoom() / oldActualZoom
+
+            // oldScrollX * zoomRatio: scroll to the correct lower left corner
+            // scrollPane.scrollWidth * (zoomRatio - 1.0f) / 2: scroll a bit more/less to compensate the
+            // moved center due to the scroll
+            scrollPane.scrollX = oldScrollX * zoomRatio + scrollPane.scrollWidth * (zoomRatio - 1.0f) / 2
+            scrollPane.scrollY = oldScrollY * zoomRatio + scrollPane.scrollHeight * (zoomRatio - 1.0f) / 2
 
             oldActualZoom = actualZoom()
 
             scrollPane.updateVisualScroll()
-            println("new zoom: ${scrollPane.scrollWidth}")
         }
     }
 
