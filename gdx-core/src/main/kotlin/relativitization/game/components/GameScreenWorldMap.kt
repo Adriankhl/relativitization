@@ -98,8 +98,9 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
     }
 
     private fun actualZoom(): Float {
-        val oneZoom = min(scrollPane.width / data3D2DProjection.width, scrollPane.height / data3D2DProjection.height)
-        return oneZoom * gdxSettings.mapZoomRelativeToFullMap
+        // Actual zoom when mapZoomRelativeToFullMap equals 1.0
+        val zoomOne = min(scrollPane.width / data3D2DProjection.width, scrollPane.height / data3D2DProjection.height)
+        return zoomOne * gdxSettings.mapZoomRelativeToFullMap
     }
 
     private fun updateGroup() {
