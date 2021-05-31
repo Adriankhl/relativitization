@@ -386,6 +386,14 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         return scrollPane
     }
 
+
+    override fun onServerStatusChange() {
+        updateServerStatusLabels()
+        runBlocking {
+            updateUpdateToLatestButton()
+        }
+    }
+
     override fun onUniverseData3DChange() {
         updateServerStatusLabels()
         updateCurrentUniverseDataLabel()
@@ -396,11 +404,8 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
     }
 
 
-    override fun onServerStatusChange() {
-        updateServerStatusLabels()
-        runBlocking {
-            updateUpdateToLatestButton()
-        }
+    override fun onUniverseDataViewChange() {
+        updateCoordinates(game.universeClient.primarySelectedInt3D)
     }
 
 
