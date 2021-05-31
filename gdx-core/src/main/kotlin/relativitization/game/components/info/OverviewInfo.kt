@@ -7,18 +7,17 @@ import relativitization.game.components.GameScreenInfo
 import relativitization.game.components.GameScreenWorldMap
 import relativitization.game.utils.ScreenComponent
 
-class OverviewInfo(
-    val game: RelativitizationGame,
-) : ScreenComponent<ScrollPane>(game.assets) {
+class OverviewInfo(val game: RelativitizationGame): ScreenComponent<ScrollPane>(game.assets) {
 
-    private var scrollPane: ScrollPane = createScrollPane(Table())
+    private var table: Table = Table()
+    private var scrollPane: ScrollPane = createScrollPane(table)
+
+    init {
+        table.background = assets.getBackgroundColor(0.2f, 0.3f, 0.5f, 1.0f)
+    }
 
     override fun getActor(): ScrollPane {
         return scrollPane
-    }
-
-    override fun update() {
-        TODO("Not yet implemented")
     }
 
     fun updateScrollPane() {

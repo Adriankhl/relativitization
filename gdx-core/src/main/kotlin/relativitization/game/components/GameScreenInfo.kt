@@ -2,7 +2,6 @@ package relativitization.game.components
 
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.SplitPane
-import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.RelativitizationGame
 import relativitization.game.ShowingInfoType
 import relativitization.game.components.info.BottomCommandInfo
@@ -12,14 +11,15 @@ import relativitization.game.utils.ScreenComponent
 
 class GameScreenInfo(val game: RelativitizationGame) : ScreenComponent<SplitPane>(game.assets) {
     private val gdxSettings = game.gdxSettings
-    private val table: Table = Table()
-    private val upperInfoScrollPane: ScrollPane = createScrollPane(table)
+
+    private val overviewInfo: OverviewInfo = OverviewInfo(game)
+    private val physicsInfo: PhysicsInfo = PhysicsInfo(game)
+
+    private val upperInfoScrollPane: ScrollPane = createScrollPane(overviewInfo.getActor())
     private val bottomCommandInfo: BottomCommandInfo = BottomCommandInfo(game)
 
     private val infoAndCommand = createSplitPane(upperInfoScrollPane, bottomCommandInfo.getActor(), true)
 
-    private val overviewInfo: OverviewInfo = OverviewInfo(game)
-    private val physicsInfo: PhysicsInfo = PhysicsInfo(game)
 
     init {
         // Add child screen component
@@ -28,7 +28,6 @@ class GameScreenInfo(val game: RelativitizationGame) : ScreenComponent<SplitPane
         addChildScreenComponent(physicsInfo)
 
         // Set background color
-        table.background = assets.getBackgroundColor(0.2f, 0.3f, 0.5f, 1.0f)
         upperInfoScrollPane.fadeScrollBars = false
         upperInfoScrollPane.setFlickScroll(true)
 
