@@ -13,6 +13,7 @@ import relativitization.game.components.GameScreenInfo
 import relativitization.game.components.GameScreenTopBar
 import relativitization.game.components.GameScreenWorldMap
 import relativitization.game.components.ShowingInfo
+import relativitization.game.utils.ScreenComponent
 import relativitization.game.utils.TableScreen
 
 class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
@@ -33,6 +34,14 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
     private val info: GameScreenInfo = GameScreenInfo(game, worldMap)
     private val worldMapAndInfo = createSplitPane(worldMap.getActor(), info.getActor(), false)
     private val topBar: GameScreenTopBar = GameScreenTopBar(game, worldMap, info, worldMapAndInfo)
+
+    init {
+        addChildScreenComponent(worldMap)
+        addChildScreenComponent(info)
+        addChildScreenComponent(topBar)
+
+        addAllComponentToClient(game, this)
+    }
 
 
     override fun show() {

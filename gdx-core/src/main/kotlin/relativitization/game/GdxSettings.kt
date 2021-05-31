@@ -15,6 +15,14 @@ data class GdxSetting(
     var hugeFontSize: Int = 40,
     var zoomFactor: Float = 1.2f,
     var imageScale: Float = 1.0f,
+    var showingInfo: Boolean = true,
     var worldMapAndInfoSplitAmount: Float = 0.7f,
-    var infoAndCommandSplitAmount: Float = 0.8f,
+    var showingBottomCommand: Boolean = true,
+    var topInfoAndBottomCommandSplitAmount: Float = 0.8f,
+    var showingInfoType: ShowingInfoType = ShowingInfoType.OVERVIEW
 )
+
+enum class ShowingInfoType {
+    OVERVIEW,
+    PHYSICS
+}
