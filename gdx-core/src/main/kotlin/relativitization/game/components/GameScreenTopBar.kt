@@ -231,10 +231,10 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         1.0f,
         1.0f,
         1.0f,
-        1.0f,
+        0.5f,
         gdxSettings.soundEffectsVolume
     ) {
-        gdxSettings.showingBottomCommand = !gdxSettings.showingBottomCommand
+        gdxSettings.showingBottomCommand = !it.isChecked
         game.changeGdxSettings()
     }
 
@@ -280,7 +280,7 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         game.universeClient.universeClientSettings.viewCenter.x,
         gdxSettings.smallFontSize
     ) { x, _ ->
-        updateCoordinates(Int3D(x, yCoordinateSelectBox.selected, zCoordinateSelectBox.selected))
+        game.universeClient.primarySelectedInt3D = game.universeClient.primarySelectedInt3D.copy(x = x)
     }
 
     private val yCoordinateSelectBox: SelectBox<Int> = createSelectBox(
@@ -288,7 +288,7 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         game.universeClient.universeClientSettings.viewCenter.y,
         gdxSettings.smallFontSize
     ) { y, _ ->
-        updateCoordinates(Int3D(xCoordinateSelectBox.selected, y, zCoordinateSelectBox.selected))
+        game.universeClient.primarySelectedInt3D = game.universeClient.primarySelectedInt3D.copy(y = y)
     }
 
     private val zCoordinateSelectBox: SelectBox<Int> = createSelectBox(
@@ -296,7 +296,7 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         game.universeClient.universeClientSettings.viewCenter.z,
         gdxSettings.smallFontSize
     ) { z, _ ->
-        updateCoordinates(Int3D(xCoordinateSelectBox.selected, yCoordinateSelectBox.selected, z))
+        game.universeClient.primarySelectedInt3D = game.universeClient.primarySelectedInt3D.copy(z = z)
     }
 
     private val zLimitSelectBox: SelectBox<Int> = createSelectBox(
@@ -412,7 +412,16 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
 
 
     override fun onPrimarySelectedInt3DChange() {
-        updateCoordinates(game.universeClient.primarySelectedInt3D)
+        // Update select box if different
+        if (game.universeClient.primarySelectedInt3D !=
+            Int3D(xCoordinateSelectBox.selected, yCoordinateSelectBox.selected, zCoordinateSelectBox.selected
+            )) {
+            xCoordinateSelectBox.selected = game.universeClient.primarySelectedInt3D.x
+            yCoordinateSelectBox.selected = game.universeClient.primarySelectedInt3D.y
+            zCoordinateSelectBox.selected = game.universeClient.primarySelectedInt3D.z
+        }
+
+        updateTCoordinate()
     }
 
 
@@ -547,13 +556,9 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
     /**
      * Update coordinates
      */
-    private fun updateCoordinates(int3D: Int3D) {
-        xCoordinateSelectBox.selected = int3D.x
-        yCoordinateSelectBox.selected = int3D.y
-        zCoordinateSelectBox.selected = int3D.z
-
+    private fun updateTCoordinate() {
         val t: Int = game.universeClient.getUniverseData3D().center.t - intDelay(
-            int3D,
+            game.universeClient.primarySelectedInt3D,
             game.universeClient.getUniverseData3D().center.toInt3D(),
             game.universeClient.getUniverseData3D().universeSettings.speedOfLight
         )
