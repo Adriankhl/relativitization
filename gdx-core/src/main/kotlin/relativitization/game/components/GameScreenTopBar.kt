@@ -411,7 +411,7 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
     }
 
 
-    override fun onUniverseDataViewChange() {
+    override fun onPrimarySelectedInt3DChange() {
         updateCoordinates(game.universeClient.primarySelectedInt3D)
     }
 
