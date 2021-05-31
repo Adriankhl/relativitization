@@ -15,6 +15,8 @@ class RelativitizationGame(val universeClient: UniverseClient, private val unive
 
     val gdxSetting: GdxSetting = GdxSetting()
     val onGdxSettingsChangeFunctionList: MutableList<() -> Unit> = mutableListOf()
+
+    // call when gdx setting is changed
     val changeGdxSetting: () -> Unit = {
         onGdxSettingsChangeFunctionList.forEach { it() }
     }

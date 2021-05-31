@@ -67,15 +67,18 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
                 logger.debug("Key typed: $character")
                 return when (character) {
                     '+' -> {
-                        worldMap.zoomIn()
+                        gdxSetting.mapZoomRelativeToFullMap *= gdxSetting.mapZoomFactor
+                        game.changeGdxSetting()
                         true
                     }
                     '-' -> {
-                        worldMap.zoomOut()
+                        gdxSetting.mapZoomRelativeToFullMap *= gdxSetting.mapZoomFactor
+                        game.changeGdxSetting()
                         true
                     }
                     '0' -> {
-                        worldMap.zoomToFullMap()
+                        gdxSetting.mapZoomRelativeToFullMap = 1.0f
+                        game.changeGdxSetting()
                         true
                     }
                     '<' -> {
@@ -96,12 +99,8 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
                 logger.debug("Key down code: $keycode")
                 return when (keycode) {
                     Input.Keys.ESCAPE -> {
-                        if (worldMapAndInfo.splitAmount < worldMapAndInfo.maxSplitAmount) {
-                            // Hide showing info
-                            info.showingInfo = ShowingInfo.HIDE
-                            gdxSetting.worldMapAndInfoSplitAmount = worldMapAndInfo.splitAmount
-                            worldMapAndInfo.splitAmount = worldMapAndInfo.maxSplitAmount
-                        }
+                        gdxSetting.showingInfo = false
+                        game.changeGdxSetting()
                         true
                     }
                     else -> {
@@ -120,6 +119,14 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
     override fun dispose() {
         super.dispose()
         game.clearOnChangeFunctionList()
+    }
+
+    override fun onGdxSettingsChange() {
+        if (gdxSetting.showingInfo) {
+            worldMapAndInfo.splitAmount = gdxSetting.worldMapAndInfoSplitAmount
+        } else {
+            worldMapAndInfo.splitAmount = 1.0f
+        }
     }
 
     private fun waitFirstData() {
