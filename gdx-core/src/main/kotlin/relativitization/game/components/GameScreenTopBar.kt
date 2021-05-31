@@ -149,7 +149,7 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         gdxSettings.soundEffectsVolume
     ) {
         gdxSettings.mapZoomRelativeToFullMap *= gdxSettings.mapZoomFactor
-        game.changeGdxSetting()
+        game.changeGdxSettings()
     }
 
     private val zoomOutButton: ImageButton = createImageButton(
@@ -169,7 +169,7 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         gdxSettings.soundEffectsVolume
     ) {
         gdxSettings.mapZoomRelativeToFullMap /= gdxSettings.mapZoomFactor
-        game.changeGdxSetting()
+        game.changeGdxSettings()
     }
 
     private val zoomToFullMapButton: ImageButton = createImageButton(
@@ -234,7 +234,7 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         gdxSettings.soundEffectsVolume
     ) {
         gdxSettings.showingBottomCommand = it.isChecked
-        game.changeGdxSetting()
+        game.changeGdxSettings()
     }
 
     private val overviewInfoButton: TextButton = createTextButton(
@@ -250,7 +250,7 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
             gdxSettings.showingInfo = true
             gdxSettings.showingInfoType = ShowingInfoType.OVERVIEW
         }
-        game.changeGdxSetting()
+        game.changeGdxSettings()
     }
 
     private val physicsInfoButton: TextButton = createTextButton(
@@ -266,7 +266,7 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
             gdxSettings.showingInfo = true
             gdxSettings.showingInfoType = ShowingInfoType.PHYSICS
         }
-        game.changeGdxSetting()
+        game.changeGdxSettings()
     }
 
     private val tCoordinateLabel = createLabel(

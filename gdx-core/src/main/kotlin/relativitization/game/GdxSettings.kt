@@ -13,6 +13,7 @@ data class GdxSettings(
     var normalFontSize: Int = 24,
     var bigFontSize: Int = 30,
     var hugeFontSize: Int = 40,
+    var maxFontSize: Int = 80,
     var mapZoomFactor: Float = 1.2f,
     var mapZoomRelativeToFullMap: Float = 1.0f,
     var imageScale: Float = 1.0f,

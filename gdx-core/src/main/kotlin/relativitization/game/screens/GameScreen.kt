@@ -1,5 +1,6 @@
 package relativitization.game.screens
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.InputListener
@@ -31,6 +32,15 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
     private val info: GameScreenInfo = GameScreenInfo(game)
     private val worldMapAndInfo = createSplitPane(worldMap.getActor(), info.getActor(), false)
     private val topBar: GameScreenTopBar = GameScreenTopBar(game)
+
+    // Start button to trigger change gdx settings
+    private val startButton = createTextButton(
+        "Start Game",
+        gdxSettings.maxFontSize
+    ) {
+        it.remove()
+        game.changeGdxSettings()
+    }
 
     init {
         addChildScreenComponent(worldMap)
@@ -65,17 +75,17 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
                 return when (character) {
                     '+' -> {
                         gdxSettings.mapZoomRelativeToFullMap *= gdxSettings.mapZoomFactor
-                        game.changeGdxSetting()
+                        game.changeGdxSettings()
                         true
                     }
                     '-' -> {
                         gdxSettings.mapZoomRelativeToFullMap /= gdxSettings.mapZoomFactor
-                        game.changeGdxSetting()
+                        game.changeGdxSettings()
                         true
                     }
                     '0' -> {
                         gdxSettings.mapZoomRelativeToFullMap = 1.0f
-                        game.changeGdxSetting()
+                        game.changeGdxSettings()
                         true
                     }
                     '<' -> {
@@ -97,7 +107,7 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
                 return when (keycode) {
                     Input.Keys.ESCAPE -> {
                         gdxSettings.showingInfo = false
-                        game.changeGdxSetting()
+                        game.changeGdxSettings()
                         true
                     }
                     else -> {
@@ -106,6 +116,10 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
                 }
             }
         })
+
+
+        startButton.setPosition(Gdx.graphics.width / 2.0f - startButton.width / 2, Gdx.graphics.height / 2.0f - startButton.height / 2)
+        stage.addActor(startButton)
     }
 
     override fun hide() {
