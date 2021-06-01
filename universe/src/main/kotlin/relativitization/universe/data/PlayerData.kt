@@ -53,7 +53,21 @@ data class MutablePlayerData(
     val int4DHistory: MutableList<Int4D> = mutableListOf(),
     var playerInternalData: MutablePlayerInternalData = MutablePlayerInternalData(),
     val newPlayerList: MutableList<MutablePlayerInternalData> = mutableListOf()
-)
+) {
+    /**
+     * @param toId whether this id is the player or one the subordinates of the player
+     */
+    fun isSubOrdinateOrSelf(toId: Int): Boolean {
+        return (toId == id) || playerInternalData.subordinateIdList.contains(toId)
+    }
+
+    /**
+     * @param toId whether this id is the player or one of the leaders of the player
+     */
+    fun isLeaderOrSelf(toId: Int): Boolean {
+        return (toId == id) || playerInternalData.leaderIdList.contains(toId)
+    }
+}
 
 /**
  * Type of player: AI, human, none (e.g. resource)

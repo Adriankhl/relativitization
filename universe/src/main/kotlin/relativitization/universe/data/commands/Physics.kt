@@ -27,11 +27,11 @@ data class ChangeVelocityCommand(
     }
 
     override fun canSend(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean {
-        return playerData.playerInternalData.subordinateIdList.contains(toId)
+        return playerData.isSubOrdinateOrSelf(playerData.id)
     }
 
     override fun canExecute(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean {
-        return playerData.playerInternalData.leaderIdList.contains(fromId)
+        return playerData.isLeaderOrSelf(playerData.id)
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings): Unit {
