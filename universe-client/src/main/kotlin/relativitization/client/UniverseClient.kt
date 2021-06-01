@@ -331,6 +331,13 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
     }
 
     /**
+     * Whether the universe data contains primary player id
+     */
+    fun isPrimarySelectedPlayerIdValid(): Boolean {
+        return getUniverseData3D().playerDataMap.keys.contains(primarySelectedPlayerId)
+    }
+
+    /**
      * Confirm commandToBeConfirm
      */
     fun confirmCurrentCommand() {
