@@ -5,6 +5,7 @@ import org.apache.logging.log4j.LogManager
 import relativitization.universe.data.physics.Int3D
 import relativitization.universe.data.physics.Int4D
 import relativitization.universe.maths.grid.Grids.create3DGrid
+import relativitization.universe.data.serializer.DataSerializer.copy
 
 @Serializable
 data class UniverseData3DAtGrid(
@@ -57,7 +58,8 @@ data class UniverseData3DAtGrid(
                     center,
                     groupPlayerDataMap,
                     groupPlayerId3DMap,
-                    universeSettings
+                    universeSettings,
+                    copy(playerData)
                 )
             }
         }.flatten().associateBy { it.id }
@@ -71,6 +73,7 @@ data class UniverseData3DAtPlayer(
     val playerDataMap: Map<Int, PlayerData> = mapOf(),
     val playerId3DMap: List<List<List<Map<Int, List<Int>>>>> = listOf(),
     val universeSettings: UniverseSettings = UniverseSettings(),
+    var mutablePlayerData: MutablePlayerData = MutablePlayerData(-1)
 ) {
     /**
      * Check int3D valid
