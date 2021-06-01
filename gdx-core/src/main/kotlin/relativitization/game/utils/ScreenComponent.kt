@@ -280,6 +280,10 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets){
 
     fun enableActor(actor: Actor) = ActorFunction.enableActor(actor)
 
+    fun disableTextButton(textButton: TextButton) = ActorFunction.disableTextButton(textButton)
+
+    fun enableTextButton(textButton: TextButton) = ActorFunction.enableTextButton(textButton)
+
     companion object {
         fun <T : Actor> addComponentToClient(game: RelativitizationGame, component: ScreenComponent<T>) {
             game.onGdxSettingsChangeFunctionList.add(component::onGdxSettingsChange)
