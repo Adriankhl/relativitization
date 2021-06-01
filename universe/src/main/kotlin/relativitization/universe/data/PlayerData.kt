@@ -41,7 +41,21 @@ data class PlayerData(
     val int4DHistory: List<Int4D> = listOf(),
     val playerInternalData: PlayerInternalData = PlayerInternalData(),
     val newPlayerList: List<PlayerInternalData> = listOf()
-)
+) {
+    /**
+     * @param toId whether this id is the player or one the subordinates of the player
+     */
+    fun isSubOrdinateOrSelf(toId: Int): Boolean {
+        return (toId == id) || playerInternalData.subordinateIdList.contains(toId)
+    }
+
+    /**
+     * @param toId whether this id is the player or one of the leaders of the player
+     */
+    fun isLeaderOrSelf(toId: Int): Boolean {
+        return (toId == id) || playerInternalData.leaderIdList.contains(toId)
+    }
+}
 
 @Serializable
 data class MutablePlayerData(

@@ -42,7 +42,7 @@ class PhysicsInfo(
             )
 
             val canSend: Boolean = changeVelocityCommand.canSendFromPlayer(
-                game.universeClient.getUniverseData3D().mutablePlayerData,
+                game.universeClient.getUniverseData3D().getCurrentPlayerData(),
                 game.universeClient.getUniverseData3D().universeSettings
             )
 

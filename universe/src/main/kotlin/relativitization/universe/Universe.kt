@@ -7,6 +7,7 @@ import relativitization.universe.data.*
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.physics.Int3D
 import relativitization.universe.data.physics.Int4D
+import relativitization.universe.data.serializer.DataSerializer.copy
 import relativitization.universe.data.serializer.DataSerializer.encode
 import relativitization.universe.data.serializer.DataSerializer.decode
 import relativitization.universe.maths.grid.Grids.create3DGrid
@@ -289,8 +290,9 @@ class Universe(private val universeData: UniverseData, saveWhenInit: Boolean = t
         val validCommand: Map<Int, List<Command>> = inputCommands.filter { (id, _) ->
             !noneTypePlayerIdList.contains(id)
         }.mapValues { (id, commandList) ->
+            val playerData: PlayerData = copy(playerCollection.getPlayer(id))
             commandList.filter { command ->
-                command.canSendFromPlayer(playerCollection.getPlayer(id), universeData.universeSettings)
+                command.canSendFromPlayer(playerData, universeData.universeSettings)
             }
         }
 

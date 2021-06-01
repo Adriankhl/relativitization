@@ -2,6 +2,7 @@ package relativitization.universe.data.commands
 
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.MutablePlayerData
+import relativitization.universe.data.PlayerData
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.physics.Int4D
 import relativitization.universe.data.physics.Velocity
@@ -19,7 +20,7 @@ data class DummyCommand(
         return "Do nothing"
     }
 
-    override fun canSend(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean {
+    override fun canSend(playerData: PlayerData, universeSettings: UniverseSettings): Boolean {
         return true
     }
 
@@ -46,7 +47,7 @@ data class CannotSendCommand(
         return "Cannot send this command"
     }
 
-    override fun canSend(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean {
+    override fun canSend(playerData: PlayerData, universeSettings: UniverseSettings): Boolean {
         return true
     }
 

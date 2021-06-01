@@ -4,6 +4,7 @@ import kotlinx.serialization.Serializable
 import relativitization.universe.data.physics.Int4D
 import org.apache.logging.log4j.LogManager
 import relativitization.universe.data.MutablePlayerData
+import relativitization.universe.data.PlayerData
 import relativitization.universe.data.UniverseSettings
 
 @Serializable
@@ -24,17 +25,17 @@ sealed class Command {
     /**
      * Check if the player (sender) can send the command
      */
-    protected abstract fun canSend(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean
+    protected abstract fun canSend(playerData: PlayerData, universeSettings: UniverseSettings): Boolean
 
     /**
      * Check if can send and have command
      *
      * @param playerData the player data to send this command
      */
-    fun canSendFromPlayer(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean {
+    fun canSendFromPlayer(playerData: PlayerData, universeSettings: UniverseSettings): Boolean {
         val hasCommand: Boolean = hasCommand(universeSettings, this)
         val canSend: Boolean =  canSend(playerData, universeSettings)
-        val isPlayerDataValid: Boolean = (playerData.int4D.toInt4D() == fromInt4D) && (playerData.id == fromId)
+        val isPlayerDataValid: Boolean = (playerData.int4D == fromInt4D) && (playerData.id == fromId)
         if (!hasCommand || !canSend || isPlayerDataValid) {
             val className = this::class.qualifiedName
             logger.error("${className}: cannot send command, hasCommand: $hasCommand, canSend: $canSend, isPlayerDataValid: $isPlayerDataValid")
