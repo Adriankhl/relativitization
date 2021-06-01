@@ -14,6 +14,16 @@ data class Velocity(val vx: Double, val vy: Double, val vz: Double) {
         val ratio = newVMag / vMag
         return Velocity(ratio * vx, ratio * vy, ratio * vz)
     }
+
+    fun maxComponent(): Pair<Char, Double> {
+        return if ((vx > vy) && (vx > vz)) {
+            Pair('x', vx)
+        } else if ((vy > vx) && (vy > vz)) {
+            Pair('y', vy)
+        } else {
+            Pair('z', vz)
+        }
+    }
 }
 
 @Serializable
