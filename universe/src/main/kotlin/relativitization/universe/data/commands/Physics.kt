@@ -26,12 +26,18 @@ data class ChangeVelocityCommand(
         return "Try to change velocity of player $toId to $velocity"
     }
 
+    /**
+     * Can only send to subordinate
+     */
     override fun canSend(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean {
-        return playerData.isSubOrdinateOrSelf(playerData.id)
+        return playerData.isSubOrdinateOrSelf(toId)
     }
 
+    /**
+     * Can execute only if it is from the leader
+     */
     override fun canExecute(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean {
-        return playerData.isLeaderOrSelf(playerData.id)
+        return playerData.isLeaderOrSelf(fromId)
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings): Unit {

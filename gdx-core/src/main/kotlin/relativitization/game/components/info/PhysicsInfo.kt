@@ -6,6 +6,7 @@ import org.apache.logging.log4j.LogManager
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.PlayerData
+import relativitization.universe.data.commands.CannotSendCommand
 import relativitization.universe.data.commands.ChangeVelocityCommand
 import relativitization.universe.data.physics.Double3D
 import relativitization.universe.data.physics.Int3D
@@ -40,7 +41,16 @@ class PhysicsInfo(
                 Velocity(vx, vy, vz)
             )
 
-            game.universeClient.currentCommand = changeVelocityCommand
+            val canSend: Boolean = changeVelocityCommand.canSendFromPlayer(
+                game.universeClient.getUniverseData3D().mutablePlayerData,
+                game.universeClient.getUniverseData3D().universeSettings
+            )
+
+            if (canSend) {
+                game.universeClient.currentCommand = changeVelocityCommand
+            } else {
+                game.universeClient.currentCommand = CannotSendCommand()
+            }
         } catch (e: NumberFormatException) {
             logger.error("Invalid target velocity")
         }

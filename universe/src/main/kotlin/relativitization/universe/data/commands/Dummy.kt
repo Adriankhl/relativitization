@@ -30,3 +30,30 @@ data class DummyCommand(
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
     }
 }
+
+/**
+ * For informing that the proposed command cannot be sent
+ */
+@Serializable
+data class CannotSendCommand(
+    override val fromId: Int = -1,
+    override val toId: Int = -1,
+    override val fromInt4D: Int4D = Int4D(0, 0, 0, 0),
+) : Command() {
+    override val name: String = "Cannot send"
+
+    override fun description(): String {
+        return "Cannot send this command"
+    }
+
+    override fun canSend(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean {
+        return true
+    }
+
+    override fun canExecute(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean {
+        return true
+    }
+
+    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+    }
+}
