@@ -48,7 +48,7 @@ class OverviewInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>
     private fun updateTable() {
         table.clear()
 
-        val headerLabel = createLabel("Overview: ${playerData.id}", gdxSettings.normalFontSize)
+        val headerLabel = createLabel("Overview: player ${playerData.id}", gdxSettings.normalFontSize)
 
         table.add(headerLabel)
 
