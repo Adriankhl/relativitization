@@ -17,7 +17,7 @@ class OverviewInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>
     private var playerData: PlayerData = PlayerData(-1)
 
     init {
-        table.background = assets.getBackgroundColor(0.2f, 0.3f, 0.5f, 1.0f)
+        table.background = assets.getBackgroundColor(0.2f, 0.2f, 0.2f, 1.0f)
         updatePlayerData()
         updateTable()
     }
@@ -48,7 +48,7 @@ class OverviewInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>
     private fun updateTable() {
         table.clear()
 
-        val headerLabel = createLabel("Overview: player ${playerData.id}", gdxSettings.normalFontSize)
+        val headerLabel = createLabel("Overview: player ${playerData.id}", gdxSettings.bigFontSize)
 
         table.add(headerLabel)
 

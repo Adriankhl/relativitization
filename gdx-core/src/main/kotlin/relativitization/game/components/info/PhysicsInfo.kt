@@ -4,7 +4,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import org.apache.logging.log4j.LogManager
 import relativitization.game.RelativitizationGame
-import relativitization.game.screens.NewUniverseScreen
 import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.commands.ChangeVelocityCommand
@@ -21,20 +20,9 @@ class PhysicsInfo(
 
     private var playerData: PlayerData = PlayerData(-1)
 
-    private val changeVelocityCommandButton = createImageButton(
-        "basic/white-tick",
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        0.7f,
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
+    private val changeVelocityCommandTextButton = createTextButton(
+        "Change Velocity Command",
+        gdxSettings.normalFontSize,
         gdxSettings.soundEffectsVolume
     ) {
         try {
@@ -71,7 +59,9 @@ class PhysicsInfo(
     )
 
     init {
-        table.background = assets.getBackgroundColor(0.2f, 0.3f, 0.5f, 1.0f)
+        table.background = assets.getBackgroundColor(0.2f, 0.2f, 0.2f, 1.0f)
+
+        scrollPane.setOverscroll(false, false)
 
         updatePlayerData()
         updateTable()
@@ -103,7 +93,7 @@ class PhysicsInfo(
     private fun updateTable() {
         table.clear()
 
-        val headerLabel = createLabel("Physics: player ${playerData.id}", gdxSettings.normalFontSize)
+        val headerLabel = createLabel("Physics: player ${playerData.id}", gdxSettings.bigFontSize)
 
         table.add(headerLabel)
 
@@ -150,6 +140,10 @@ class PhysicsInfo(
         table.row().space(10f)
 
         table.add(createVelocityTable())
+
+        table.row().space(20f)
+
+        table.add(createChangeVelocityTable())
     }
 
     private fun createDouble4DTable(): Table {
@@ -211,6 +205,33 @@ class PhysicsInfo(
         )
 
         nestedTable.add(velocityZLabel).space(10f)
+
+        return nestedTable
+    }
+
+    fun createChangeVelocityTable(): Table {
+        val nestedTable: Table = Table()
+
+        nestedTable.add(changeVelocityCommandTextButton).colspan(2)
+
+        nestedTable.row().space(10f)
+
+        val targetVelocityXLabel = createLabel("Target vx: ", gdxSettings.smallFontSize)
+        nestedTable.add(targetVelocityXLabel)
+        nestedTable.add(targetVelocityXTextField)
+
+        nestedTable.row().space(10f)
+
+        val targetVelocityYLabel = createLabel("Target vy: ", gdxSettings.smallFontSize)
+        nestedTable.add(targetVelocityYLabel)
+        nestedTable.add(targetVelocityYTextField)
+
+        nestedTable.row().space(10f)
+
+        val targetVelocityZLabel = createLabel("Target vz: ", gdxSettings.smallFontSize)
+        nestedTable.add(targetVelocityZLabel)
+        nestedTable.add(targetVelocityZTextField).space(10f)
+
 
         return nestedTable
     }

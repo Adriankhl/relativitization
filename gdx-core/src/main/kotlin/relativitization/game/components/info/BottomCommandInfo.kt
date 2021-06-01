@@ -11,7 +11,7 @@ class BottomCommandInfo(val game: RelativitizationGame) : ScreenComponent<Scroll
     private var scrollPane: ScrollPane = createScrollPane(table)
 
     init {
-        table.background = assets.getBackgroundColor(0.2f, 0.3f, 0.5f, 1.0f)
+        table.background = assets.getBackgroundColor(0.2f, 0.2f, 0.2f, 1.0f)
     }
 
     override fun getScreenComponent(): ScrollPane {
