@@ -31,9 +31,10 @@ data class UniverseData(
      * Check if the universe state is valid
      */
     private fun isStateValid(): Boolean {
-        val currentTimeCheck: Boolean = universeData4D.getTSizeList()[0] >= universeState.getCurrentTime()
+        // Not a valid test
+        // val currentTimeCheck: Boolean = universeData4D.getTSizeList()[0] >= universeState.getCurrentTime()
         val currentIdCheck: Boolean = getLatestPlayerDataList().maxOf { it.id } <= universeState.getCurrentMaxId()
-        return currentTimeCheck && currentIdCheck
+        return currentIdCheck
     }
 
     /**
@@ -49,6 +50,10 @@ data class UniverseData(
      * Check if the universe is valid
      */
     fun isUniverseValid(): Boolean {
+        logger.debug("Is setting valid: ${universeSettings.isSettingValid()}")
+        logger.debug("Is dimension valid: ${isDimensionValid()}")
+        logger.debug("Is state valid: ${isStateValid()}")
+        logger.debug("Is player data valid: ${isPlayerDataValid()}")
         return universeSettings.isSettingValid() && isDimensionValid() && isStateValid() && isPlayerDataValid()
     }
 
