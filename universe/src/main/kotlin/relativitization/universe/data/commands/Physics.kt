@@ -23,7 +23,7 @@ data class ChangeVelocityCommand(
     override val name: String = "ChangeVelocity"
 
     override fun description(): String {
-        return "Try to change velocity of player $toId to $Velocity"
+        return "Try to change velocity of player $toId to $velocity"
     }
 
     override fun canSend(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean {
