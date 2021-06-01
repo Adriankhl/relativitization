@@ -56,7 +56,7 @@ tasks {
 }
 
 application {
-    mainClass.set("relativitization.app.desktop.DesktopLauncher")
+    mainClass.set("relativitization.app.desktop.DesktopLauncherKt")
 }
 
 tasks.withType<JavaExec> {

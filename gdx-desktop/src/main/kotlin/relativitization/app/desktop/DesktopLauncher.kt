@@ -21,87 +21,84 @@ import relativitization.universe.UniverseServerSettings
 import java.io.File
 import kotlin.random.Random
 
-object DesktopLauncher {
-    @JvmStatic
-    fun main(arg: Array<String>) {
+private val logger = LogManager.getLogger()
 
-        // Set log level
-        Configurator.setRootLevel(Level.DEBUG)
+fun main(arg: Array<String>) {
 
-        // pack images to atlas
-        packImages()
+    // Set log level
+    Configurator.setRootLevel(Level.DEBUG)
 
-        val config = Lwjgl3ApplicationConfiguration()
-        config.setTitle("Relativitization")
-        config.setWindowIcon(Files.FileType.Internal, "images/normal/logo/logo.png")
-        config.setHdpiMode(HdpiMode.Logical)
+    // pack images to atlas
+    packImages()
 
-        val adminPassword: String = List(10) { Random.nextInt(0, 10) }.joinToString(separator = "")
+    val config = Lwjgl3ApplicationConfiguration()
+    config.setTitle("Relativitization")
+    config.setWindowIcon(Files.FileType.Internal, "images/normal/logo/logo.png")
+    config.setHdpiMode(HdpiMode.Logical)
 
-        val universeServerSettings = UniverseServerSettings(adminPassword = adminPassword)
-        val universeClientSettings = UniverseClientSettings(adminPassword = adminPassword)
+    val adminPassword: String = List(10) { Random.nextInt(0, 10) }.joinToString(separator = "")
 
-        runBlocking {
-            val universeServer: UniverseServer = UniverseServer(universeServerSettings)
-            val universeClient: UniverseClient = UniverseClient(universeClientSettings)
+    val universeServerSettings = UniverseServerSettings(adminPassword = adminPassword)
+    val universeClientSettings = UniverseClientSettings(adminPassword = adminPassword)
 
-            launch(newSingleThreadContext("gdx")) {
-                val game = RelativitizationGame(universeClient, universeServer)
-                try {
-                    Lwjgl3Application(game, config)
-                } finally {
-                    game.dispose()
-                }
-            }
+    runBlocking {
+        val universeServer: UniverseServer = UniverseServer(universeServerSettings)
+        val universeClient: UniverseClient = UniverseClient(universeClientSettings)
 
-            launch(Dispatchers.IO) {
-                universeServer.start()
-            }
-            launch {
-                universeClient.start()
+        launch(newSingleThreadContext("gdx")) {
+            val game = RelativitizationGame(universeClient, universeServer)
+            try {
+                Lwjgl3Application(game, config)
+            } finally {
+                game.dispose()
             }
         }
-    }
 
-    private fun packImages() {
-        val settings = TexturePacker.Settings()
-
-        settings.maxWidth = 4096
-        settings.maxHeight = 4096
-        settings.combineSubdirectories = true
-        settings.pot = true
-        settings.fast = true
-
-        // Prevent pixelated
-        settings.filterMag = Texture.TextureFilter.MipMapLinearLinear
-        settings.filterMin = Texture.TextureFilter.MipMapLinearLinear
-
-        // Pack if outdated
-        val atlasFileName: String = "relativitization-asset"
-        val atlasFile: File = File("$atlasFileName.atlas")
-        val input: String = "./images/pack"
-        if (!atlasFile.exists() || isAtlasOutdated(atlasFile, input)) {
-            logger.info("Pack atlas")
-            TexturePacker.process(settings, input, ".", atlasFileName)
+        launch(Dispatchers.IO) {
+            universeServer.start()
+        }
+        launch {
+            universeClient.start()
         }
     }
+}
 
-    /**
-     * Check if the atlas file needs to be updated
-     */
-    private fun isAtlasOutdated(atlasFile: File, path: String): Boolean {
-        val atlasFileLastModified: Long = atlasFile.lastModified()
+private fun packImages() {
+    val settings = TexturePacker.Settings()
 
-        val allFiles: Sequence<File> = File(path).walkTopDown()
+    settings.maxWidth = 4096
+    settings.maxHeight = 4096
+    settings.combineSubdirectories = true
+    settings.pot = true
+    settings.fast = true
 
-        return allFiles.map {
-            if (it.extension in listOf("png", "jpg", "jpeg")) {
-                it.lastModified() > atlasFileLastModified
-            } else {
-                false
-            }
-        }.contains(true)
+    // Prevent pixelated
+    settings.filterMag = Texture.TextureFilter.MipMapLinearLinear
+    settings.filterMin = Texture.TextureFilter.MipMapLinearLinear
+
+    // Pack if outdated
+    val atlasFileName: String = "relativitization-asset"
+    val atlasFile: File = File("$atlasFileName.atlas")
+    val input: String = "./images/pack"
+    if (!atlasFile.exists() || isAtlasOutdated(atlasFile, input)) {
+        logger.info("Pack atlas")
+        TexturePacker.process(settings, input, ".", atlasFileName)
     }
+}
 
-    private val logger = LogManager.getLogger()
+/**
+ * Check if the atlas file needs to be updated
+ */
+private fun isAtlasOutdated(atlasFile: File, path: String): Boolean {
+    val atlasFileLastModified: Long = atlasFile.lastModified()
+
+    val allFiles: Sequence<File> = File(path).walkTopDown()
+
+    return allFiles.map {
+        if (it.extension in listOf("png", "jpg", "jpeg")) {
+            it.lastModified() > atlasFileLastModified
+        } else {
+            false
+        }
+    }.contains(true)
 }
