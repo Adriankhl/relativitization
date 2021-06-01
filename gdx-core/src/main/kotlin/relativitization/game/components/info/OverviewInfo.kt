@@ -52,7 +52,7 @@ class OverviewInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>
 
         table.add(headerLabel)
 
-        table.row().space(10f)
+        table.row().space(20f)
 
         val playerImageStack = PlayerImage.getPlayerImageStack(
             playerData,

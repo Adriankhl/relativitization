@@ -54,7 +54,51 @@ class PhysicsInfo(
 
         table.add(headerLabel)
 
+        table.row().space(20f)
+
+        val massLabel = createLabel(
+            "Rest mass: ${playerData.playerInternalData.physicsData.restMass}",
+            gdxSettings.smallFontSize
+        )
+
+        table.add(massLabel)
+
         table.row().space(10f)
 
+        val energyLabel = createLabel(
+            "Energy: ${playerData.playerInternalData.physicsData.energy}",
+            gdxSettings.smallFontSize
+        )
+
+        table.add(energyLabel)
+
+        table.row().space(10f)
+
+        val moveEnergyEfficiencyLabel = createLabel(
+            "Movement energy efficiency: ${playerData.playerInternalData.physicsData.moveEnergyEfficiency}",
+            gdxSettings.smallFontSize
+        )
+
+        table.add(moveEnergyEfficiencyLabel)
+
+        table.row().space(10f)
+
+        val moveMaxPowerLabel = createLabel(
+            "Movement max. power: ${playerData.playerInternalData.physicsData.moveMaxPower}",
+            gdxSettings.smallFontSize
+        )
+
+        table.add(moveMaxPowerLabel)
+
+        table.row().space(10f)
+
+
+        table.add(createDouble4DTable())
+    }
+
+    private fun createDouble4DTable(): Table {
+        val nestedTable: Table = Table()
+
+        return nestedTable
     }
 }
