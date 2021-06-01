@@ -71,9 +71,27 @@ class BottomCommandInfo(val game: RelativitizationGame) : ScreenComponent<Scroll
 
     init {
         table.background = assets.getBackgroundColor(0.2f, 0.2f, 0.2f, 1.0f)
+
+        update()
     }
 
     override fun getScreenComponent(): ScrollPane {
         return scrollPane
+    }
+
+    override fun onCurrentCommandChange() {
+        update()
+    }
+
+    private fun update() {
+        commandNameLabel.setText(game.universeClient.currentCommand.name)
+        commandDescriptionLabel.setText(game.universeClient.currentCommand.description())
+        if (game.universeClient.isCurrentCommandStored()) {
+            disableTextButton(confirmCommandTextButton)
+            enableTextButton(cancelCommandTextButton)
+        } else {
+            enableTextButton(confirmCommandTextButton)
+            disableTextButton(cancelCommandTextButton)
+        }
     }
 }
