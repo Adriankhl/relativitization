@@ -383,14 +383,4 @@ object ActorFunction {
         actor.touchable = Touchable.enabled
         actor.color = Color.WHITE
     }
-
-    fun disableTextButton(textButton: TextButton) {
-        textButton.touchable = Touchable.disabled
-        textButton.color = Color.GRAY
-    }
-
-    fun enableTextButton(textButton: TextButton) {
-        textButton.touchable = Touchable.enabled
-        textButton.color = Color(0.2f, 0.3f, 0.5f, 1.0f)
-    }
 }

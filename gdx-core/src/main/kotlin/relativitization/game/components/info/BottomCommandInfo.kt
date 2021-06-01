@@ -5,12 +5,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.ScreenComponent
 
-class BottomCommandInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.assets) {
+class BottomCommandInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.assets) {
 
     private val gdxSettings = game.gdxSettings
 
     private var table: Table = Table()
-    private var scrollPane: ScrollPane = createScrollPane(table)
 
     private val commandNameLabel = createLabel("", gdxSettings.normalFontSize)
     private val commandDescriptionLabel = createLabel("", gdxSettings.smallFontSize)
@@ -85,8 +84,8 @@ class BottomCommandInfo(val game: RelativitizationGame) : ScreenComponent<Scroll
         table.add(createButtonTable())
     }
 
-    override fun getScreenComponent(): ScrollPane {
-        return scrollPane
+    override fun getScreenComponent(): Table {
+        return table
     }
 
     override fun onCurrentCommandChange() {
@@ -123,11 +122,11 @@ class BottomCommandInfo(val game: RelativitizationGame) : ScreenComponent<Scroll
         commandNameLabel.setText(game.universeClient.currentCommand.name)
         commandDescriptionLabel.setText(game.universeClient.currentCommand.description())
         if (game.universeClient.isCurrentCommandStored()) {
-            disableTextButton(confirmCommandTextButton)
-            enableTextButton(cancelCommandTextButton)
+            disableActor(confirmCommandTextButton)
+            enableActor(cancelCommandTextButton)
         } else {
-            enableTextButton(confirmCommandTextButton)
-            disableTextButton(cancelCommandTextButton)
+            enableActor(confirmCommandTextButton)
+            disableActor(cancelCommandTextButton)
         }
     }
 }
