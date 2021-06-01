@@ -4,13 +4,13 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Carrier(
-    val restMass: Double = 0.0,
+    val restMass: Double = 1.0,
     val carrierType: CarrierType = CarrierType.SPACESHIP,
 )
 
 @Serializable
 data class MutableCarrier(
-    var restMass: Double = 0.0,
+    var restMass: Double = 1.0,
     var carrierType: CarrierType = CarrierType.SPACESHIP,
 )
 
