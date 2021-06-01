@@ -73,6 +73,16 @@ class BottomCommandInfo(val game: RelativitizationGame) : ScreenComponent<Scroll
         table.background = assets.getBackgroundColor(0.2f, 0.2f, 0.2f, 1.0f)
 
         update()
+
+        table.add(createHeaderTable())
+
+        table.row().space(10f)
+
+        table.add(createDescriptionScrollPane())
+
+        table.row().space(10f)
+
+        table.add(createButtonTable())
     }
 
     override fun getScreenComponent(): ScrollPane {
@@ -81,6 +91,32 @@ class BottomCommandInfo(val game: RelativitizationGame) : ScreenComponent<Scroll
 
     override fun onCurrentCommandChange() {
         update()
+    }
+
+    private fun createHeaderTable(): Table {
+        val nestedTable: Table = Table()
+
+        nestedTable.add(previousCommandButton).size(40f * gdxSettings.imageScale, 40f * gdxSettings.imageScale)
+
+        nestedTable.add(commandNameLabel)
+
+        nestedTable.add(nextCommandButton).size(40f * gdxSettings.imageScale, 40f * gdxSettings.imageScale)
+
+        return nestedTable
+    }
+
+    private fun createDescriptionScrollPane(): ScrollPane {
+        return ScrollPane(commandDescriptionLabel)
+    }
+
+    private fun createButtonTable(): Table {
+        val nestedTable: Table = Table()
+
+        nestedTable.add(confirmCommandTextButton).space(10f)
+
+        nestedTable.add(cancelCommandTextButton)
+
+        return nestedTable
     }
 
     private fun update() {
