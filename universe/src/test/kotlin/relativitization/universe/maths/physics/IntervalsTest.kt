@@ -1,6 +1,5 @@
 package relativitization.universe.maths.physics
 
-import org.junit.jupiter.api.Assertions.*
 import kotlin.test.Test
 import relativitization.universe.data.physics.Int3D
 import relativitization.universe.maths.physics.Intervals.intDelay
