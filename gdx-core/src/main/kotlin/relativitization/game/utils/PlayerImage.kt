@@ -2,6 +2,7 @@ package relativitization.game.utils
 
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Stack
+import com.badlogic.gdx.utils.Align
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.PlayerType
 import relativitization.universe.data.popsystems.CarrierType
@@ -44,6 +45,8 @@ object PlayerImage {
                 height,
                 soundVolume,
             )
+            playerShipImage.setOrigin(Align.center)
+            playerShipImage.rotation = rotationByVelocity(playerData)
             imageList.add(playerShipImage)
         }
 
@@ -82,5 +85,11 @@ object PlayerImage {
         }
 
         return stack
+    }
+
+    fun rotationByVelocity(
+        playerData: PlayerData
+    ): Float {
+        return 360f - 90f
     }
 }
