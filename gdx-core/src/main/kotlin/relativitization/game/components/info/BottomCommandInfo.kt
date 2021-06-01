@@ -14,6 +14,8 @@ class BottomCommandInfo(val game: RelativitizationGame) : ScreenComponent<Table>
     private val commandNameLabel = createLabel("", gdxSettings.normalFontSize)
     private val commandDescriptionLabel = createLabel("", gdxSettings.smallFontSize)
 
+    private val commandTimeLabel = createLabel("", gdxSettings.smallFontSize)
+
     private val previousCommandButton = createImageButton(
         "basic/white-left-arrow",
         1.0f,
@@ -73,13 +75,15 @@ class BottomCommandInfo(val game: RelativitizationGame) : ScreenComponent<Table>
 
         update()
 
-        table.add(createHeaderTable()).pad(10f)
+        table.add(createHeaderTable()).spaceTop(10f)
+        table.row()
+        table.add(commandTimeLabel)
 
         table.row().space(10f)
 
         table.add(createDescriptionScrollPane()).growY()
 
-        table.row().space(10f)
+        table.row()
 
         table.add(createButtonTable()).pad(10f)
     }
@@ -121,6 +125,8 @@ class BottomCommandInfo(val game: RelativitizationGame) : ScreenComponent<Table>
     private fun update() {
         commandNameLabel.setText(game.universeClient.currentCommand.name)
         commandDescriptionLabel.setText(game.universeClient.currentCommand.description())
+        commandTimeLabel.setText("Time: ${game.universeClient.currentCommand.fromInt4D.t}")
+
         if (game.universeClient.isCurrentCommandStored()) {
             disableActor(confirmCommandTextButton)
             enableActor(cancelCommandTextButton)
