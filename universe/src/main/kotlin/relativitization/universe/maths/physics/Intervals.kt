@@ -114,10 +114,10 @@ object Intervals {
      *
      * @return target velocity at speed of light
      */
-    fun targetVelocity(from: Double3D, to: Double3D): Velocity {
+    fun targetVelocity(from: Double3D, to: Double3D, speedOfLight: Double): Velocity {
         val vx = to.x - from.x
         val vy = to.y - from.y
         val vz = to.z - from.z
-        return Velocity(vx, vy, vz).scaleVelocity(1.0)
+        return Velocity(vx, vy, vz).scaleVelocity(speedOfLight * 0.9)
     }
 }

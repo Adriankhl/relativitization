@@ -86,7 +86,11 @@ sealed class Command {
      */
     fun checkAndExecute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
         return if (checkId(playerData) && canExecuteOnPlayer(playerData, universeSettings)) {
-            execute(playerData, universeSettings)
+            try {
+                execute(playerData, universeSettings)
+            } catch (e: Throwable) {
+                logger.error("Execute fail, throwable $e")
+            }
         } else {
             val className = this::class.qualifiedName
             logger.info("$className cannot be executed on $toId")

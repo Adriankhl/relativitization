@@ -95,11 +95,15 @@ class PhysicsInfo(
     }
 
     override fun onPrimarySelectedInt3DChange() {
+
         val targetInt3D: Int3D = game.universeClient.primarySelectedInt3D
+
         val targetVelocity = targetVelocity(
             playerData.playerInternalData.physicsData.double4D.toDouble3D(),
-            targetInt3D.toDouble3DCenter()
+            targetInt3D.toDouble3DCenter(),
+            game.universeClient.getUniverseData3D().universeSettings.speedOfLight
         )
+        
         targetVelocityXTextField.text = targetVelocity.vx.toString()
         targetVelocityYTextField.text = targetVelocity.vy.toString()
         targetVelocityZTextField.text = targetVelocity.vz.toString()
@@ -107,13 +111,17 @@ class PhysicsInfo(
 
     override fun onSelectedPlayerIdListChange() {
         if (game.universeClient.newSelectedPlayerId != playerData.id) {
+
             val targetDouble3D: Double3D = game.universeClient.getUniverseData3D().get(
                 game.universeClient.newSelectedPlayerId
             ).playerInternalData.physicsData.double4D.toDouble3D()
+
             val targetVelocity = targetVelocity(
                 playerData.playerInternalData.physicsData.double4D.toDouble3D(),
-                targetDouble3D
+                targetDouble3D,
+                game.universeClient.getUniverseData3D().universeSettings.speedOfLight
             )
+
             targetVelocityXTextField.text = targetVelocity.vx.toString()
             targetVelocityYTextField.text = targetVelocity.vy.toString()
             targetVelocityZTextField.text = targetVelocity.vz.toString()
