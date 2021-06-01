@@ -2,9 +2,13 @@ package relativitization.game.components.info
 
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
+import org.apache.logging.log4j.LogManager
 import relativitization.game.RelativitizationGame
+import relativitization.game.screens.NewUniverseScreen
 import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.PlayerData
+import relativitization.universe.data.commands.ChangeVelocityCommand
+import relativitization.universe.data.physics.Velocity
 
 class PhysicsInfo(
     val game: RelativitizationGame,
@@ -16,6 +20,40 @@ class PhysicsInfo(
     private var scrollPane: ScrollPane = createScrollPane(table)
 
     private var playerData: PlayerData = PlayerData(-1)
+
+    private val changeVelocityCommandButton = createImageButton(
+        "basic/white-tick",
+        1.0f,
+        1.0f,
+        1.0f,
+        1.0f,
+        1.0f,
+        1.0f,
+        1.0f,
+        0.7f,
+        1.0f,
+        1.0f,
+        1.0f,
+        1.0f,
+        gdxSettings.soundEffectsVolume
+    ) {
+        try {
+            val vx = targetVelocityXTextField.text.toDouble()
+            val vy = targetVelocityYTextField.text.toDouble()
+            val vz = targetVelocityZTextField.text.toDouble()
+
+            val changeVelocityCommand: ChangeVelocityCommand = ChangeVelocityCommand(
+                game.universeClient.getUniverseData3D().getCurrentPlayerData().id,
+                playerData.id,
+                game.universeClient.getUniverseData3D().getCurrentPlayerData().int4D,
+                Velocity(vx, vy, vz)
+            )
+
+            game.universeClient.currentCommand = changeVelocityCommand
+        } catch (e: NumberFormatException) {
+            logger.error("Invalid target velocity")
+        }
+    }
 
     private val targetVelocityXTextField = createTextField(
         "${playerData.playerInternalData.physicsData.velocity.vx}",
@@ -175,5 +213,10 @@ class PhysicsInfo(
         nestedTable.add(velocityZLabel).space(10f)
 
         return nestedTable
+    }
+
+
+    companion object {
+        private val logger = LogManager.getLogger()
     }
 }
