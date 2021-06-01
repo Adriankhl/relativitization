@@ -3,6 +3,7 @@ package relativitization.game.components
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.Group
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
+import com.badlogic.gdx.utils.Align
 import org.apache.logging.log4j.LogManager
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.PlayerImage.getPlayerImages
@@ -40,7 +41,7 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
 
     override fun onGdxSettingsChange() {
         // Update zoom factor if the difference is great enough
-        if ((abs(actualZoom() - oldActualZoom) / oldActualZoom) > 0.1f) {
+        if ((abs(actualZoom() - oldActualZoom) / oldActualZoom) > gdxSettings.mapZoomFactor / 10) {
             val oldScrollX = scrollPane.scrollX
             val oldScrollY = scrollPane.scrollY
 
@@ -80,6 +81,10 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
 
     override fun onSelectedPlayerIdListChange() {
         drawSelected()
+    }
+
+    override fun onMapCenterPlayerIdChange() {
+        scrollTo(game.universeClient.mapCenterPlayerId)
     }
 
     private fun clear() {
@@ -250,6 +255,22 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
     private fun clearAllSelectedPlayer() {
         selectCircle.forEach { group.removeActor(it.value) }
         selectCircle.clear()
+    }
+
+    /**
+     * Scroll to center player
+     */
+    private fun scrollTo(id: Int) {
+        if (playerSquareActorMap.keys.contains(id)) {
+            val image = playerSquareActorMap.getValue(id)
+            val imageCenterX: Float = image.getX(Align.center)
+            val imageCenterY: Float = image.getY(Align.center)
+            scrollPane.scrollX = imageCenterX - scrollPane.scrollWidth / 2
+            // The y position of scroll bar is inverse to that in the projected coordinate
+            scrollPane.scrollY = data3D2DProjection.height - imageCenterY - scrollPane.scrollHeight / 2
+        } else {
+            logger.debug("Scroll fail, no player id: $id in world map")
+        }
     }
 
     companion object {
