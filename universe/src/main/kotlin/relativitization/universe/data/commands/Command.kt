@@ -36,7 +36,7 @@ sealed class Command {
         val hasCommand: Boolean = hasCommand(universeSettings, this)
         val canSend: Boolean =  canSend(playerData, universeSettings)
         val isPlayerDataValid: Boolean = (playerData.int4D == fromInt4D) && (playerData.id == fromId)
-        if (!hasCommand || !canSend || isPlayerDataValid) {
+        if (!hasCommand || !canSend || !isPlayerDataValid) {
             val className = this::class.qualifiedName
             logger.error("${className}: cannot send command, hasCommand: $hasCommand, canSend: $canSend, isPlayerDataValid: $isPlayerDataValid")
         }
