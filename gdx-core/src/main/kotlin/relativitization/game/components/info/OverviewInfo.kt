@@ -60,7 +60,9 @@ class OverviewInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>
             128f,
             128f,
             gdxSettings.soundEffectsVolume
-        )
+        ) {
+            game.universeClient.mapCenterPlayerId = playerData.id
+        }
 
         table.add(playerImageStack).size(128f * gdxSettings.imageScale, 128f * gdxSettings.imageScale)
     }

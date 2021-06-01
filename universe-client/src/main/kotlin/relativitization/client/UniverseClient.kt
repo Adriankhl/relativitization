@@ -126,6 +126,12 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
         onSelectedPlayerIdListChangeFunctionList.forEach { it() }
     }
 
+    // For scrolling the map to focus on this player id
+    val onMapCenterPlayerIdChangeFunctionList: MutableList<() -> Unit> = mutableListOf()
+    var mapCenterPlayerId: Int by Delegates.observable(currentUniverseData3DAtPlayer.id) { property, oldValue, newValue ->
+        onMapCenterPlayerIdChangeFunctionList.forEach { it() }
+    }
+
 
     // store list of command for sending them to the universe server
     val commandList: MutableList<Command> = mutableListOf()

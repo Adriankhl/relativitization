@@ -66,7 +66,6 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets){
      */
     open fun onPrimarySelectedInt3DChange() {}
 
-
     /**
      * Call this function when changing first selected id
      */
@@ -77,6 +76,10 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets){
      */
     open fun onSelectedPlayerIdListChange() {}
 
+    /**
+     * Call this function when changing mapCenterPlayerId
+     */
+    open fun onMapCenterPlayerIdChange() {}
 
     /**
      * Call this function when command to be confirm change
@@ -288,9 +291,11 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets){
 
             universeClient.onUniverseDataViewChangeFunctionList.add(component::onUniverseDataViewChange)
 
+            universeClient.onPrimarySelectedInt3DChangeFunctionList.add(component::onPrimarySelectedInt3DChange)
             universeClient.onPrimarySelectedPlayerIdChangeFunctionList.add(component::onPrimarySelectedPlayerIdChange)
             universeClient.onSelectedPlayerIdListChangeFunctionList.add(component::onSelectedPlayerIdListChange)
-            universeClient.onPrimarySelectedInt3DChangeFunctionList.add(component::onPrimarySelectedInt3DChange)
+
+            universeClient.onMapCenterPlayerIdChangeFunctionList.add(component::onMapCenterPlayerIdChange)
 
             universeClient.onCurrentCommandChangeFunctionList.add(component::onCurrentCommandChange)
         }
