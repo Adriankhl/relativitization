@@ -64,7 +64,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
     val onServerStatusChangeFunctionList: MutableList<() -> Unit> = mutableListOf()
     private var serverStatus: UniverseServerStatusMessage by Delegates.observable(
         UniverseServerStatusMessage(UniverseSettings().universeName)
-    ) { property, oldValue, newValue ->
+    ) { _, _, _ ->
         onServerStatusChangeFunctionList.forEach { it() }
     }
 
@@ -84,7 +84,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
     val onUniverseData3DChangeFunctionList: MutableList<() -> Unit> = mutableListOf()
     private var currentUniverseData3DAtPlayer: UniverseData3DAtPlayer by Delegates.observable(
         UniverseData3DAtPlayer()
-    ) { property, oldValue, newValue ->
+    ) { _, _, _ ->
         onUniverseData3DChangeFunctionList.forEach { it() }
     }
 
@@ -99,20 +99,20 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
 
     // Primary selected int3D
     val onPrimarySelectedInt3DChangeFunctionList: MutableList<() -> Unit> = mutableListOf()
-    var primarySelectedInt3D: Int3D by Delegates.observable(Int3D(0, 0, 0)) { property, oldValue, newValue ->
+    var primarySelectedInt3D: Int3D by Delegates.observable(Int3D(0, 0, 0)) { _, _, _ ->
         onPrimarySelectedInt3DChangeFunctionList.forEach { it() }
     }
 
     // Primary selected player id
     val onPrimarySelectedPlayerIdChangeFunctionList: MutableList<() -> Unit> = mutableListOf()
-    var primarySelectedPlayerId: Int by Delegates.observable(currentUniverseData3DAtPlayer.id) { property, oldValue, newValue ->
+    var primarySelectedPlayerId: Int by Delegates.observable(currentUniverseData3DAtPlayer.id) { _, _, _ ->
         onPrimarySelectedPlayerIdChangeFunctionList.forEach { it() }
     }
 
     // All selected player id
     val onSelectedPlayerIdListChangeFunctionList: MutableList<() -> Unit> = mutableListOf()
     var selectedPlayerIdList: MutableList<Int> = mutableListOf()
-    var newSelectedPlayerId: Int by Delegates.observable(currentUniverseData3DAtPlayer.id) { property, oldValue, newValue ->
+    var newSelectedPlayerId: Int by Delegates.observable(currentUniverseData3DAtPlayer.id) { _, _, newValue ->
         if (!selectedPlayerIdList.contains(newValue)) {
             if (!selectedPlayerIdList.contains(primarySelectedPlayerId)) {
                 // Change primary selected player id if it is not stored in the all selected player id list
@@ -128,7 +128,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
 
     // For scrolling the map to focus on this player id
     val onMapCenterPlayerIdChangeFunctionList: MutableList<() -> Unit> = mutableListOf()
-    var mapCenterPlayerId: Int by Delegates.observable(currentUniverseData3DAtPlayer.id) { property, oldValue, newValue ->
+    var mapCenterPlayerId: Int by Delegates.observable(currentUniverseData3DAtPlayer.id) { _, _, _ ->
         onMapCenterPlayerIdChangeFunctionList.forEach { it() }
     }
 
@@ -138,7 +138,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
 
     // command that is showing, can be new command to be confirmed or old command to be cancelled
     val onCurrentCommandChangeFunctionList: MutableList<() -> Unit> = mutableListOf()
-    var currentCommand: Command by Delegates.observable(DummyCommand()) { property, oldValue, newValue ->
+    var currentCommand: Command by Delegates.observable(DummyCommand()) { _, _, _ ->
         onCurrentCommandChangeFunctionList.forEach { it() }
     }
 
@@ -641,7 +641,6 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
             val serverPort = universeClientSettings.serverPort
             val playerId = universeClientSettings.playerId
             val password = universeClientSettings.password
-            val message = DataSerializer.encode(CommandInputMessage(playerId, password, commandList.toList()))
             val response: HttpResponse = ktorClient.post("http://$serverAddress:$serverPort/run/input") {
                 contentType(ContentType.Application.Json)
                 body = CommandInputMessage(playerId, password, commandList.toList())
