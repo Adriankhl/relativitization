@@ -290,7 +290,7 @@ class Universe(private val universeData: UniverseData, saveWhenInit: Boolean = t
             !noneTypePlayerIdList.contains(id)
         }.mapValues { (id, commandList) ->
             commandList.filter { command ->
-                command.canSendAndHaveCommand(playerCollection.getPlayer(id), universeData.universeSettings)
+                command.canSendFromPlayer(playerCollection.getPlayer(id), universeData.universeSettings)
             }
         }
 

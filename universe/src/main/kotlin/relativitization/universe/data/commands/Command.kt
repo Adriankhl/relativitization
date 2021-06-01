@@ -4,9 +4,7 @@ import kotlinx.serialization.Serializable
 import relativitization.universe.data.physics.Int4D
 import org.apache.logging.log4j.LogManager
 import relativitization.universe.data.MutablePlayerData
-import relativitization.universe.data.PlayerData
 import relativitization.universe.data.UniverseSettings
-import kotlin.reflect.KClass
 
 @Serializable
 sealed class Command {
@@ -30,9 +28,19 @@ sealed class Command {
 
     /**
      * Check if can send and have command
+     *
+     * @param playerData the player data to send this command
      */
-    fun canSendAndHaveCommand(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean {
-        return Command.haveCommand(universeSettings, this) && canSend(playerData, universeSettings)
+    fun canSendFromPlayer(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean {
+        val hasCommand: Boolean = hasCommand(universeSettings, this)
+        val canSend: Boolean =  canSend(playerData, universeSettings)
+        val isPlayerDataValid: Boolean = (playerData.int4D.toInt4D() == fromInt4D) && (playerData.id == fromId)
+        if (!hasCommand || !canSend || isPlayerDataValid) {
+            val className = this::class.qualifiedName
+            logger.error("${className}: cannot send command, hasCommand: $hasCommand, canSend: $canSend, isPlayerDataValid: $isPlayerDataValid")
+        }
+
+        return hasCommand && canSend && isPlayerDataValid
     }
 
 
@@ -43,9 +51,14 @@ sealed class Command {
 
     /**
      * Check if can execute and have command
+     *
+     * @param playerData the command execute on this player
+     * @param universeSettings universe setting, e.g., have
      */
-    fun canExecuteAndHaveCommand(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean {
-        return Command.haveCommand(universeSettings, this) && canExecute(playerData, universeSettings)
+    fun canExecuteOnPlayer(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean {
+        val hasCommand: Boolean = hasCommand(universeSettings, this)
+        val canExecute: Boolean = canExecute(playerData, universeSettings)
+        return hasCommand && canExecute
     }
 
     /**
@@ -71,7 +84,7 @@ sealed class Command {
      * Check and execute
      */
     fun checkAndExecute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
-        return if (checkId(playerData) && canExecuteAndHaveCommand(playerData, universeSettings)) {
+        return if (checkId(playerData) && canExecuteOnPlayer(playerData, universeSettings)) {
             execute(playerData, universeSettings)
         } else {
             val className = this::class.qualifiedName
@@ -90,7 +103,7 @@ sealed class Command {
             "DefaultCommand"
         )
 
-        fun haveCommand(universeSettings: UniverseSettings, command: Command): Boolean {
+        fun hasCommand(universeSettings: UniverseSettings, command: Command): Boolean {
             return when (universeSettings.commandCollectionName) {
                 "DefaultCommand" -> {
                     defaultCommandList.contains(command.name)
