@@ -641,9 +641,10 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
             val serverPort = universeClientSettings.serverPort
             val playerId = universeClientSettings.playerId
             val password = universeClientSettings.password
+            val message = DataSerializer.encode(CommandInputMessage(playerId, password, commandList.toList()))
             val response: HttpResponse = ktorClient.post("http://$serverAddress:$serverPort/run/input") {
                 contentType(ContentType.Application.Json)
-                body = CommandInputMessage(playerId, password, commandList)
+                body = CommandInputMessage(playerId, password, commandList.toList())
                 timeout {
                     requestTimeoutMillis = 1000
                 }
