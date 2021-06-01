@@ -89,7 +89,8 @@ sealed class Command {
             try {
                 execute(playerData, universeSettings)
             } catch (e: Throwable) {
-                logger.error("Execute fail, throwable $e")
+                logger.error("checkAndExecute fail, throwable $e")
+                throw e
             }
         } else {
             val className = this::class.qualifiedName

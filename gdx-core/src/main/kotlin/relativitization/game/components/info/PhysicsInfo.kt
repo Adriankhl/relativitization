@@ -103,7 +103,7 @@ class PhysicsInfo(
             targetInt3D.toDouble3DCenter(),
             game.universeClient.getUniverseData3D().universeSettings.speedOfLight
         )
-        
+
         targetVelocityXTextField.text = targetVelocity.vx.toString()
         targetVelocityYTextField.text = targetVelocity.vy.toString()
         targetVelocityZTextField.text = targetVelocity.vz.toString()
