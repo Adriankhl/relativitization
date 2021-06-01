@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("jvm")
+    application
 }
 
 kotlin {
@@ -52,4 +53,12 @@ tasks {
     test {
         useJUnitPlatform()
     }
+}
+
+application {
+    mainClass.set("relativitization.app.desktop.DesktopLauncher")
+}
+
+tasks.withType<JavaExec> {
+    workingDir = File("../../relativitization-art/assets")
 }
