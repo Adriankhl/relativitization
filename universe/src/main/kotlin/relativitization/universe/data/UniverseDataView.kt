@@ -114,6 +114,13 @@ data class UniverseData3DAtPlayer(
     }
 
     /**
+     * Get current player data
+     */
+    fun getCurrentPlayerData(): PlayerData {
+        return get(id)
+    }
+
+    /**
      * Get set of player id by Int3D
      */
     fun getIdMap(int3D: Int3D): Map<Int, List<Int>> {
