@@ -28,6 +28,10 @@ data class Double4D(val t: Double, val x: Double, val y: Double, val z: Double) 
     fun atInt4D(int4D: Int4D): Boolean {
         return (t.toInt() == int4D.t) && (x.toInt() == int4D.x) && (y.toInt() == int4D.y) && (z.toInt() == int4D.z)
     }
+
+    fun toDouble3D(): Double3D {
+        return Double3D(x, y, z)
+    }
 }
 
 @Serializable
@@ -45,6 +49,13 @@ data class Int3D(val x: Int, val y: Int, val z: Int) {
         val yDistance = abs(y - int3D.y)
         val zDistance = abs(z - int3D.z)
         return (xDistance <= 1) && (yDistance <= 1) && (zDistance <= 1)
+    }
+
+    /**
+     * @return a equivalent double sitting at the center of the grid
+     */
+    fun toDouble3DCenter(): Double3D {
+        return Double3D(x.toDouble() + 0.5, y.toDouble() + 0.5, z.toDouble() + 0.5)
     }
 }
 

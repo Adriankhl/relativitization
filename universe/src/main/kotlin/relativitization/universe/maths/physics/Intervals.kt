@@ -1,5 +1,6 @@
 package relativitization.universe.maths.physics
 
+import relativitization.universe.data.physics.Double3D
 import relativitization.universe.data.physics.Int3D
 import relativitization.universe.data.physics.Int4D
 import relativitization.universe.data.physics.MutableDouble4D
@@ -106,5 +107,17 @@ object Intervals {
      */
     fun dilatedTime(dt: Double, velocity: Velocity, speedOfLight: Double): Double {
         return dt / gamma(velocity, speedOfLight)
+    }
+
+    /**
+     * Calculate target velocity by position
+     *
+     * @return target velocity at speed of light
+     */
+    fun targetVelocity(from: Double3D, to: Double3D): Velocity {
+        val vx = to.x - from.x
+        val vy = to.y - from.y
+        val vz = to.z - from.z
+        return Velocity(vx, vy, vz).scaleVelocity(1.0)
     }
 }

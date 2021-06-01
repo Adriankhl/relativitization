@@ -7,7 +7,10 @@ import relativitization.game.RelativitizationGame
 import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.commands.ChangeVelocityCommand
+import relativitization.universe.data.physics.Double3D
+import relativitization.universe.data.physics.Int3D
 import relativitization.universe.data.physics.Velocity
+import relativitization.universe.maths.physics.Intervals.targetVelocity
 
 class PhysicsInfo(
     val game: RelativitizationGame,
@@ -79,6 +82,30 @@ class PhysicsInfo(
     override fun onPrimarySelectedPlayerIdChange() {
         updatePlayerData()
         updateTable()
+    }
+
+    override fun onPrimarySelectedInt3DChange() {
+        val targetInt3D: Int3D = game.universeClient.primarySelectedInt3D
+        val targetVelocity = targetVelocity(
+            playerData.playerInternalData.physicsData.double4D.toDouble3D(),
+            targetInt3D.toDouble3DCenter()
+        )
+        targetVelocityXTextField.text = targetVelocity.vx.toString()
+        targetVelocityYTextField.text = targetVelocity.vy.toString()
+        targetVelocityZTextField.text = targetVelocity.vz.toString()
+    }
+
+    override fun onSelectedPlayerIdListChange() {
+        val targetDouble3D: Double3D = game.universeClient.getUniverseData3D().get(
+            game.universeClient.newSelectedPlayerId
+        ).playerInternalData.physicsData.double4D.toDouble3D()
+        val targetVelocity = targetVelocity(
+            playerData.playerInternalData.physicsData.double4D.toDouble3D(),
+            targetDouble3D
+        )
+        targetVelocityXTextField.text = targetVelocity.vx.toString()
+        targetVelocityYTextField.text = targetVelocity.vy.toString()
+        targetVelocityZTextField.text = targetVelocity.vz.toString()
     }
 
 
@@ -235,7 +262,6 @@ class PhysicsInfo(
 
         return nestedTable
     }
-
 
     companion object {
         private val logger = LogManager.getLogger()
