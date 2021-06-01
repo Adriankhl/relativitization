@@ -73,15 +73,15 @@ class BottomCommandInfo(val game: RelativitizationGame) : ScreenComponent<Table>
 
         update()
 
-        table.add(createHeaderTable())
+        table.add(createHeaderTable()).pad(10f)
 
         table.row().space(10f)
 
-        table.add(createDescriptionScrollPane())
+        table.add(createDescriptionScrollPane()).growY()
 
         table.row().space(10f)
 
-        table.add(createButtonTable())
+        table.add(createButtonTable()).pad(10f)
     }
 
     override fun getScreenComponent(): Table {
@@ -105,7 +105,7 @@ class BottomCommandInfo(val game: RelativitizationGame) : ScreenComponent<Table>
     }
 
     private fun createDescriptionScrollPane(): ScrollPane {
-        return ScrollPane(commandDescriptionLabel)
+        return createScrollPane(commandDescriptionLabel)
     }
 
     private fun createButtonTable(): Table {
