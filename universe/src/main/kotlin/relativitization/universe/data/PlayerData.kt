@@ -55,6 +55,13 @@ data class PlayerData(
     fun isLeaderOrSelf(toId: Int): Boolean {
         return (toId == id) || playerInternalData.leaderIdList.contains(toId)
     }
+
+    fun isValid(currentTime: Int): Boolean {
+        val isTValid: Boolean = currentTime == int4D.t
+        val isRestMassValid: Boolean = playerInternalData.physicsData.restMass > 0.0
+
+        return isTValid && isRestMassValid
+    }
 }
 
 @Serializable

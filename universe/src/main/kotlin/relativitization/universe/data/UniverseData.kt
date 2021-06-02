@@ -42,7 +42,7 @@ data class UniverseData(
      */
     private fun isPlayerDataValid(): Boolean {
         val playerDataList: List<PlayerData> = getLatestPlayerDataList()
-        val playerDataCheckList: List<Boolean> = playerDataList.map { it.int4D.t == universeState.getCurrentTime() }
+        val playerDataCheckList: List<Boolean> = playerDataList.map { it.isValid(universeState.getCurrentTime()) }
         return !playerDataCheckList.contains(false)
     }
 
