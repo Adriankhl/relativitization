@@ -24,7 +24,7 @@ import kotlin.random.Random
 
 private val logger = LogManager.getLogger()
 
-fun main(arg: Array<String>) {
+fun main() {
 
     // Set log level
     Configurator.setRootLevel(Level.DEBUG)
