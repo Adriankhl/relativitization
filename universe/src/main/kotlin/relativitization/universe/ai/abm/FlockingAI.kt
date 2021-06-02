@@ -28,7 +28,11 @@ class FlockingAI : AI() {
 
         val weightedDouble3D = cohesionDouble3D * 1.0 + alignmentDouble3D * 1.0 + separationDouble3D * 2.0 + avoidBoundaryDouble3D * 10.0
 
-        val targetVelocity: Velocity = Velocity(weightedDouble3D.x, weightedDouble3D.y, weightedDouble3D.z).scaleVelocity(0.5)
+        val targetVelocity: Velocity = Velocity(
+            weightedDouble3D.x,
+            weightedDouble3D.y,
+            weightedDouble3D.z
+        ).scaleVelocity(universeData3DAtPlayer.universeSettings.speedOfLight / 2.0)
 
         val changeVelocityCommand = ChangeVelocityCommand(
             universeData3DAtPlayer.id,
