@@ -24,6 +24,7 @@ import relativitization.universe.communication.LoadUniverseMessage
 import relativitization.universe.communication.NewUniverseMessage
 import relativitization.universe.communication.RegisterPlayerMessage
 import relativitization.universe.communication.RunUniverseMessage
+import relativitization.universe.communication.StopWaitingMessage
 import relativitization.universe.communication.UniverseData3DMessage
 import relativitization.universe.communication.UniverseServerSettingsMessage
 import relativitization.universe.communication.UniverseServerStatusMessage
@@ -656,6 +657,29 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
             cause.response.status
         } catch (cause: Throwable) {
             logger.error("Human command input error: cannot find server")
+            HttpStatusCode.NotFound
+        }
+    }
+
+    suspend fun httpPostStopWaiting(): HttpStatusCode {
+        return try {
+            val serverAddress = universeClientSettings.serverAddress
+            val serverPort = universeClientSettings.serverPort
+            val adminPassword = universeClientSettings.adminPassword
+            val response: HttpResponse = ktorClient.post("http://$serverAddress:$serverPort/run/stop-waiting") {
+                contentType(ContentType.Application.Json)
+                body = StopWaitingMessage(adminPassword)
+                timeout {
+                    requestTimeoutMillis = 1000
+                }
+            }
+            logger.debug("Stop waiting: ${response.status}")
+            response.status
+        } catch (cause: ResponseException) {
+            logger.error("Stop waiting error: " + cause.response.status)
+            cause.response.status
+        } catch (cause: Throwable) {
+            logger.error("Stop waiting error: cannot find server")
             HttpStatusCode.NotFound
         }
     }

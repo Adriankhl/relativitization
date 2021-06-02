@@ -35,7 +35,7 @@ class UniverseServerInternal(var universeServerSettings: UniverseServerSettings)
 
     // is waiting input from human
     // client can only get data and post command list if this is true
-    private val isServerWaitingInput: CoroutineBoolean = CoroutineBoolean(false)
+    val isServerWaitingInput: CoroutineBoolean = CoroutineBoolean(false)
 
     // Whether the data process is done
     private val isProcessDone: CoroutineBoolean = CoroutineBoolean(false)

@@ -72,6 +72,19 @@ fun Route.runUniverseRouting(universeServerInternal: UniverseServerInternal) {
             call.respond(status = HttpStatusCode.OK, universeServerInternal.getUniverseData3D(universeData3DMessage))
         }
     }
+
+
+    route("/run/stop-waiting") {
+        post {
+            val stopWaitingMessage: StopWaitingMessage = call.receive()
+            if (stopWaitingMessage.adminPassword == universeServerInternal.universeServerSettings.adminPassword) {
+                universeServerInternal.isServerWaitingInput.set(false)
+                call.respondText("Stop waiting success", ContentType.Text.Plain, HttpStatusCode.OK)
+            } else {
+                call.respondText("Stop waiting fail, please use the correct admin password", ContentType.Text.Plain, HttpStatusCode.Unauthorized)
+            }
+        }
+    }
 }
 
 fun Application.registerRunUniverseRoutes(universeServerInternal: UniverseServerInternal) {

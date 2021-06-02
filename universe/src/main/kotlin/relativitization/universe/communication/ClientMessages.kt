@@ -47,3 +47,8 @@ data class UniverseServerSettingsMessage(
     val adminPassword: String,
     val universeServerSettings: UniverseServerSettings
 )
+
+@Serializable
+data class StopWaitingMessage(
+    val adminPassword: String
+)
