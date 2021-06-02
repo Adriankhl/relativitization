@@ -17,6 +17,7 @@ kotlin {
 
 
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.kotlinxSerializationVersion}")
+                implementation("org.jetbrains.kotlin:kotlin-reflect:${Versions.kotlinVersion}")
                 implementation("io.ktor:ktor-client-core:${Versions.ktorVersion}")
                 implementation("io.ktor:ktor-client-cio:${Versions.ktorVersion}")
                 implementation("io.ktor:ktor-server-core:${Versions.ktorVersion}")
