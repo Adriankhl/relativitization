@@ -18,6 +18,7 @@ data class GenerateSetting(
     var universeSettings: MutableUniverseSettings = MutableUniverseSettings(),
 ) {
     fun save() {
+        logger.debug("Saving generate setting to GenerateSetting.json")
         File("GenerateSetting.json").writeText(encode(this))
     }
 
