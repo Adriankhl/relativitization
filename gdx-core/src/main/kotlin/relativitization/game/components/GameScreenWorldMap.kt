@@ -1,5 +1,6 @@
 package relativitization.game.components
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.Group
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
@@ -48,6 +49,8 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
             logger.debug("zoom: old x = $oldScrollX, old y = $oldScrollY")
 
             updateGroup()
+
+            Gdx.graphics.requestRendering()
 
             val zoomRatio = actualZoom() / oldActualZoom
 
@@ -110,8 +113,8 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
             imageHeight = 512,
             gridXSeparation = 256,
             gridYSeparation = 128,
-            xPadding = 4096,
-            yPadding = 4096,
+            xPadding = 512,
+            yPadding = 512,
         )
     }
 

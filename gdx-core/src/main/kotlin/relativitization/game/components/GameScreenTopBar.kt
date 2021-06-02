@@ -1,5 +1,6 @@
 package relativitization.game.components
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
@@ -400,6 +401,7 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         runBlocking {
             updateUpdateToLatestButton()
         }
+        Gdx.graphics.requestRendering()
     }
 
     override fun onUniverseData3DChange() {
