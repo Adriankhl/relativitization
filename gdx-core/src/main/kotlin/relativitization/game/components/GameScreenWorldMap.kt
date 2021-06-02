@@ -45,6 +45,8 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
             val oldScrollX = scrollPane.scrollX
             val oldScrollY = scrollPane.scrollY
 
+            logger.debug("zoom: old x = $oldScrollX, old y = $oldScrollY")
+
             updateGroup()
 
             val zoomRatio = actualZoom() / oldActualZoom
@@ -54,6 +56,8 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
             // moved center due to the scroll
             scrollPane.scrollX = oldScrollX * zoomRatio + scrollPane.scrollWidth * (zoomRatio - 1.0f) / 2
             scrollPane.scrollY = oldScrollY * zoomRatio + scrollPane.scrollHeight * (zoomRatio - 1.0f) / 2
+
+            logger.debug("zoom: new x = ${scrollPane.scrollX}, new y = ${scrollPane.scrollY}")
 
             oldActualZoom = actualZoom()
 
@@ -268,6 +272,7 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
             scrollPane.scrollX = imageCenterX - scrollPane.scrollWidth / 2
             // The y position of scroll bar is inverse to that in the projected coordinate
             scrollPane.scrollY = group.height - imageCenterY - scrollPane.scrollHeight / 2
+            logger.debug("scroll to: x = ${scrollPane.scrollX}, y = ${scrollPane.scrollY}")
         } else {
             logger.debug("Scroll fail, no player id: $id in world map")
         }
