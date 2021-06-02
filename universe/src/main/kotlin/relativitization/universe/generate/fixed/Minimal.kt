@@ -31,8 +31,13 @@ class Minimal : GenerateUniverse() {
         playerData1.playerType = PlayerType.HUMAN
         playerData2.int4D = MutableInt4D(0, 0, 0, 1)
 
+        // Add one stellar to each player
         playerData1.playerInternalData.popSystemicData.addRandomStellarSystem()
         playerData2.playerInternalData.popSystemicData.addRandomStellarSystem()
+
+        // Add non zero energy
+        playerData1.playerInternalData.physicsData.energy = 100.0
+        playerData2.playerInternalData.physicsData.energy = 100.0
 
         data.addPlayerDataToLatest(playerData1, universeState.getCurrentTime())
         data.addPlayerDataToLatest(playerData2, universeState.getCurrentTime())
