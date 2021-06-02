@@ -105,4 +105,7 @@ data class IntRectangle(val xPos: Int, val yPos: Int, val width: Int, val height
     fun contains(x: Int, y: Int): Boolean {
         return (x >= xPos) && (x < xPos + width) && (y >= yPos) && (y < yPos + height)
     }
+
+    fun centerX(): Float = xPos.toFloat() + width.toFloat() / 2
+    fun centerY(): Float = yPos.toFloat() + height.toFloat() / 2
 }
