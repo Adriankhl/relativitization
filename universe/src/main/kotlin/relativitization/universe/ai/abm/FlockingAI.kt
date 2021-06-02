@@ -4,8 +4,10 @@ import org.apache.logging.log4j.LogManager
 import relativitization.universe.ai.AI
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.UniverseData3DAtPlayer
+import relativitization.universe.data.commands.ChangeVelocityCommand
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.physics.Double3D
+import relativitization.universe.data.physics.Velocity
 import relativitization.universe.maths.physics.Intervals.distance
 
 class FlockingAI : AI() {
@@ -22,7 +24,20 @@ class FlockingAI : AI() {
 
         val separationDouble3D = separation(universeData3DAtPlayer, desiredSeparation)
 
-        return listOf()
+        val avoidBoundaryDouble3D = avoidBoundary(universeData3DAtPlayer)
+
+        val weightedDouble3D = cohesionDouble3D * 1.0 + alignmentDouble3D * 1.0 + separationDouble3D * 2.0 + avoidBoundaryDouble3D * 10.0
+
+        val targetVelocity: Velocity = Velocity(weightedDouble3D.x, weightedDouble3D.y, weightedDouble3D.z).scaleVelocity(0.5)
+
+        val changeVelocityCommand = ChangeVelocityCommand(
+            universeData3DAtPlayer.id,
+            universeData3DAtPlayer.id,
+            universeData3DAtPlayer.getCurrentPlayerData().int4D,
+            targetVelocity
+        )
+
+        return listOf(changeVelocityCommand)
     }
 
     private fun cohesion(universeData3DAtPlayer: UniverseData3DAtPlayer, radius: Double): Double3D {
@@ -124,6 +139,49 @@ class FlockingAI : AI() {
 
             Double3D(avgX, avgY, avgZ)
         }
+    }
+
+    fun avoidBoundary(universeData3DAtPlayer: UniverseData3DAtPlayer): Double3D {
+        val selfDouble4D = universeData3DAtPlayer.getCurrentPlayerData().playerInternalData.physicsData.double4D
+
+        val xComp = when {
+            selfDouble4D.x < 0.1 -> {
+                1.0
+            }
+            universeData3DAtPlayer.universeSettings.xDim.toDouble() - selfDouble4D.x < 0.1 -> {
+                -1.0
+            }
+            else -> {
+                0.0
+            }
+        }
+
+        val yComp = when {
+            selfDouble4D.y < 0.1 -> {
+                1.0
+            }
+            universeData3DAtPlayer.universeSettings.yDim.toDouble() - selfDouble4D.y < 0.1 -> {
+                -1.0
+            }
+            else -> {
+                0.0
+            }
+        }
+
+
+        val zComp = when {
+            selfDouble4D.z < 0.1 -> {
+                1.0
+            }
+            universeData3DAtPlayer.universeSettings.zDim.toDouble() - selfDouble4D.z < 0.1 -> {
+                -1.0
+            }
+            else -> {
+                0.0
+            }
+        }
+
+        return Double3D(xComp, yComp, zComp)
     }
 
     companion object {

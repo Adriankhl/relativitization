@@ -67,7 +67,9 @@ data class MutableInt3D(var x: Int, var y: Int, var z: Int) {
 
 @Serializable
 data class Double3D(val x: Double, val y: Double, val z: Double) {
+
     fun squareMag(): Double = x * x + y * y + z * z
+
     fun normalize(): Double3D {
         val magnitude = sqrt(squareMag())
         return if (magnitude <= 0.0) {
@@ -76,6 +78,10 @@ data class Double3D(val x: Double, val y: Double, val z: Double) {
             Double3D(x / magnitude, y / magnitude, z / magnitude)
         }
     }
+
+    operator fun times(double: Double): Double3D = Double3D(x * double, y * double, z * double)
+
+    operator fun plus(double3D: Double3D): Double3D = Double3D(x + double3D.x, y + double3D.y, z + double3D.z)
 }
 
 @Serializable
