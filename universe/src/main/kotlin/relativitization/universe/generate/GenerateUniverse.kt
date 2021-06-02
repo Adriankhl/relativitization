@@ -22,7 +22,23 @@ data class GenerateSetting(
     }
 
     companion object {
-        fun load(): GenerateSetting
+        private val logger = LogManager.getLogger()
+
+        private fun load(): GenerateSetting {
+            val settingString: String = File("GenerateSetting.json").readText()
+            return decode(settingString)
+        }
+
+        fun loadOrDefault(): GenerateSetting {
+            return try {
+                logger.debug("Trying to load generate setting")
+                // This can fail due to having older version of setting or file doesn't exist
+                load()
+            } catch (e: Throwable) {
+                logger.debug("Load generate setting fail, use default setting")
+                GenerateSetting()
+            }
+        }
     }
 }
 

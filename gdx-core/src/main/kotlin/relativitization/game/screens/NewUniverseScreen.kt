@@ -29,6 +29,8 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
                 runBlocking {
                     val httpCode = game.universeClient.httpPostNewUniverse()
                     if (httpCode == HttpStatusCode.OK) {
+                        // Save generate setting for the next generation
+                        game.universeClient.generateSettings.save()
                         game.screen = ServerSettingsScreen(game)
                         dispose()
                     } else {
