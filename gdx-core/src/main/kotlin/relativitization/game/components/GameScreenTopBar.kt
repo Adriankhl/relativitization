@@ -215,6 +215,11 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
             val httpCode = game.universeClient.httpPostHumanInput()
             if (httpCode == HttpStatusCode.OK) {
                 it.image.setColor(0.0f, 1.0f, 0.0f, 1.0f)
+
+                // Ask server to stop waiting
+                if (stopWaitingSelectBox.selected == "After input") {
+                    game.universeClient.httpPostStopWaiting()
+                }
             } else {
                 it.image.setColor(1.0f, 0.0f, 0.0f, 1.0f)
             }
@@ -332,6 +337,12 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         game.universeClient.changeUniverseDataView()
     }
 
+    private val stopWaitingSelectBox: SelectBox<String> = createSelectBox(
+        listOf("No", "After input", "Always"),
+        "No",
+        gdxSettings.smallFontSize
+    )
+
 
     private val viewControlTable: Table = createViewControlTable()
 
@@ -341,6 +352,8 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
     private val serverUniverseTimeLabel: Label = createLabel("", gdxSettings.smallFontSize)
     private val timeLeftLabel: Label = createLabel("", gdxSettings.smallFontSize)
     private val serverStatusTable: Table = createServerStatusTable()
+
+    private val stopWaitingTable: Table = createStopWaitingTable()
 
 
     private val settingButton: ImageButton = createImageButton(
@@ -388,6 +401,8 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
 
         table.add(serverStatusTable).pad(10f)
 
+        table.add(stopWaitingTable).pad(10f)
+
         table.add(uploadButton).size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
 
         table.add(settingButton).size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
@@ -402,6 +417,11 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         updateServerStatusLabels()
         runBlocking {
             updateUpdateToLatestButton()
+
+            // Ask server to stop waiting
+            if (stopWaitingSelectBox.selected == "Always") {
+                game.universeClient.httpPostStopWaiting()
+            }
         }
         Gdx.graphics.requestRendering()
     }
@@ -429,6 +449,17 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         }
 
         updateTCoordinate()
+    }
+
+    /**
+     * Create table for controlling stop waiting
+     */
+    private fun createStopWaitingTable(): Table {
+        val nestedTable: Table = Table()
+        nestedTable.add(createLabel("Server stop waiting (admin): ", gdxSettings.smallFontSize))
+        nestedTable.row().space(10f)
+        nestedTable.add(stopWaitingSelectBox)
+        return nestedTable
     }
 
 
