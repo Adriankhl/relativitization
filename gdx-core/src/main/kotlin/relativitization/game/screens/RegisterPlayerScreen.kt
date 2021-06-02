@@ -60,6 +60,11 @@ class RegisterPlayerScreen(val game: RelativitizationGame) : TableScreen(game.as
                 }
             }
 
+            // Prevent null pointer exception at playerIdSelectBox
+            if (idList.isEmpty()) {
+                idList = listOf(-1)
+            }
+
             playerIdSelectBox.items = Array(idList.sorted().toTypedArray())
         }
         root.add(updateButton).colspan(2)
