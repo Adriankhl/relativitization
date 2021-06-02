@@ -3,8 +3,11 @@ package relativitization.universe.generate
 import kotlinx.serialization.Serializable
 import org.apache.logging.log4j.LogManager
 import relativitization.universe.data.*
+import relativitization.universe.data.serializer.DataSerializer.encode
+import relativitization.universe.data.serializer.DataSerializer.decode
 import relativitization.universe.generate.abm.Flocking
 import relativitization.universe.generate.fixed.Minimal
+import java.io.File
 
 @Serializable
 data class GenerateSetting(
@@ -13,7 +16,15 @@ data class GenerateSetting(
     var numHumanPlayer: Int = 2,
     var numExtraStellarSystem: Int = 3,
     var universeSettings: MutableUniverseSettings = MutableUniverseSettings(),
-)
+) {
+    fun save() {
+        File("GenerateSetting.json").writeText(encode(this))
+    }
+
+    companion object {
+        fun load(): GenerateSetting
+    }
+}
 
 @Serializable
 abstract class GenerateUniverse {

@@ -1,6 +1,8 @@
 package relativitization.universe.data
 
 import kotlinx.serialization.Serializable
+import relativitization.universe.data.physics.Int3D
+import relativitization.universe.maths.physics.Intervals.intDelay
 import relativitization.universe.maths.physics.Intervals.maxDelayAfterMove
 
 /**
@@ -28,6 +30,10 @@ data class UniverseSettings(
     val playerAfterImageDuration: Int = 4,
     val playerHistoricalInt4DLength: Int = 4,
 ) {
+    private fun isTDimBigEnough(): Boolean {
+        return tDim > intDelay(Int3D(0, 0,0), Int3D(xDim - 1, yDim - 1, zDim - 1), speedOfLight)
+    }
+
     private fun isPlayerAfterImageDurationValid(): Boolean {
         return (playerAfterImageDuration >= maxDelayAfterMove(speedOfLight)) && (playerAfterImageDuration < tDim)
     }
@@ -36,7 +42,7 @@ data class UniverseSettings(
     }
 
     fun isSettingValid(): Boolean {
-        return isPlayerAfterImageDurationValid() && isPlayerHistoricalInt4DLengthValid()
+        return isPlayerAfterImageDurationValid() && isPlayerHistoricalInt4DLengthValid() && isTDimBigEnough()
     }
 }
 
