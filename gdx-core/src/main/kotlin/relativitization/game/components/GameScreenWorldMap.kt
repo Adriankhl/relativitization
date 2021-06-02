@@ -50,14 +50,14 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
 
             updateGroup()
 
-            Gdx.graphics.requestRendering()
+            // Call layout() to modify maxX and maxY
+            scrollPane.layout()
 
             val zoomRatio = actualZoom() / oldActualZoom
 
             // oldScrollX * zoomRatio: scroll to the correct lower left corner
             // scrollPane.scrollWidth * (zoomRatio - 1.0f) / 2: scroll a bit more/less to compensate the
             // moved center due to the scroll
-            // Bug: If xPadding and yPadding is to small, this will bounce back
             scrollPane.scrollX = oldScrollX * zoomRatio + scrollPane.scrollWidth * (zoomRatio - 1.0f) / 2
             scrollPane.scrollY = oldScrollY * zoomRatio + scrollPane.scrollHeight * (zoomRatio - 1.0f) / 2
 
@@ -103,7 +103,6 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
         int3DActorMap.clear()
     }
 
-    // xPadding and yPadding sufficiently large to prevent zoom bounce back
     private fun update3D2DProjection(): Data3D2DProjection {
         return createData3D2DProjection(
             data3D = game.universeClient.getUniverseData3D().playerId3DMap,
