@@ -2,6 +2,7 @@ package relativitization.universe.data.physics
 
 import kotlinx.serialization.Serializable
 import kotlin.math.abs
+import kotlin.math.sqrt
 
 @Serializable
 data class Int4D(val t: Int, val x: Int, val y: Int, val z: Int) {
@@ -65,7 +66,17 @@ data class MutableInt3D(var x: Int, var y: Int, var z: Int) {
 }
 
 @Serializable
-data class Double3D(val x: Double, val y: Double, val z: Double)
+data class Double3D(val x: Double, val y: Double, val z: Double) {
+    fun squareMag(): Double = x * x + y * y + z * z
+    fun normalize(): Double3D {
+        val magnitude = sqrt(squareMag())
+        return if (magnitude <= 0.0) {
+            Double3D(0.0, 0.0, 0.0)
+        } else {
+            Double3D(x / magnitude, y / magnitude, z / magnitude)
+        }
+    }
+}
 
 @Serializable
 data class MutableDouble3D(var x: Double, var y: Double, var z: Double)
