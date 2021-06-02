@@ -22,7 +22,7 @@ class Minimal : GenerateUniverse() {
 
         val universeState = UniverseState(
             currentTime = universeSettings.tDim - 1,
-            maxPlayerId = 2,
+            maxPlayerId = 3,
         )
 
         val playerData1 = MutablePlayerData(1)
