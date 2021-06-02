@@ -10,6 +10,6 @@ Grand strategy game in 4D spacetime
 
 
 # Run desktop application
-Make sure `../relativitization-art/assets` exist, then:
+Make sure `../relativitization-art/assets` exists, then:
 
 `./gradlew :gdx-desktop:run`
