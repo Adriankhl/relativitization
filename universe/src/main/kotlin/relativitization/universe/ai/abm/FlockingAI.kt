@@ -9,14 +9,17 @@ import relativitization.universe.data.commands.Command
 import relativitization.universe.data.physics.Double3D
 import relativitization.universe.data.physics.Velocity
 import relativitization.universe.maths.physics.Intervals.distance
+import relativitization.universe.maths.physics.Relativistic.energy
+import relativitization.universe.maths.physics.Relativistic.energyToVelocityMag
 
 class FlockingAI : AI() {
     override fun compute(universeData3DAtPlayer: UniverseData3DAtPlayer): List<Command> {
         logger.debug("Computing with FlockingAI")
 
         val nearByRadius = 2.0
-
         val desiredSeparation = 0.5
+        val velocityMag = 0.5
+        val ratio = 0.8
 
         val cohesionDouble3D = cohesion(universeData3DAtPlayer, nearByRadius)
 
@@ -28,17 +31,22 @@ class FlockingAI : AI() {
 
         val weightedDouble3D = cohesionDouble3D * 1.0 + alignmentDouble3D * 1.0 + separationDouble3D * 2.0 + avoidBoundaryDouble3D * 10.0
 
+        val originalVelocity = universeData3DAtPlayer.getCurrentPlayerData().playerInternalData.physicsData.velocity
+
+        // Constant velocity 0.5
         val targetVelocity: Velocity = Velocity(
             weightedDouble3D.x,
             weightedDouble3D.y,
             weightedDouble3D.z
-        ).scaleVelocity(universeData3DAtPlayer.universeSettings.speedOfLight / 2.0)
+        ).scaleVelocity(velocityMag)
+
+        val weightedVelocity = originalVelocity * ratio + targetVelocity * ratio
 
         val changeVelocityCommand = ChangeVelocityCommand(
             universeData3DAtPlayer.id,
             universeData3DAtPlayer.id,
             universeData3DAtPlayer.getCurrentPlayerData().int4D,
-            targetVelocity
+            weightedVelocity
         )
 
         return listOf(changeVelocityCommand)
