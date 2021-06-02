@@ -11,8 +11,12 @@ data class Velocity(val vx: Double, val vy: Double, val vz: Double) {
 
     fun scaleVelocity(newVMag: Double): Velocity {
         val vMag = sqrt(squareMag())
-        val ratio = newVMag / vMag
-        return Velocity(ratio * vx, ratio * vy, ratio * vz)
+        return if (vMag <= 0.0) {
+            Velocity(0.0, 0.0, 0.0)
+        } else {
+            val ratio = newVMag / vMag
+            Velocity(ratio * vx, ratio * vy, ratio * vz)
+        }
     }
 
     fun maxComponent(): Pair<Char, Double> {

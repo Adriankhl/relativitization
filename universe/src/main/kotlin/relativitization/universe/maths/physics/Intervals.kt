@@ -1,6 +1,7 @@
 package relativitization.universe.maths.physics
 
 import relativitization.universe.data.physics.Double3D
+import relativitization.universe.data.physics.Double4D
 import relativitization.universe.data.physics.Int3D
 import relativitization.universe.data.physics.Int4D
 import relativitization.universe.data.physics.MutableDouble4D
@@ -13,6 +14,9 @@ import kotlin.math.sqrt
 object Intervals {
     fun distance(x1: Double, y1: Double, z1: Double, x2: Double, y2: Double, z2: Double): Double =
         sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1) + (z2 - z1) * (z2 - z1))
+
+    fun distance(d1: Double4D, d2: Double4D): Double =
+        distance(d1.x, d1.y, d1.z, d2.z, d2.y, d2.z)
 
     fun distance(d1: MutableDouble4D, d2: MutableDouble4D): Double =
         distance(d1.x, d1.y, d1.z, d2.z, d2.y, d2.z)
