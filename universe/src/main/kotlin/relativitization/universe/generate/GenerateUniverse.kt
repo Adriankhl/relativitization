@@ -5,7 +5,7 @@ import org.apache.logging.log4j.LogManager
 import relativitization.universe.data.*
 import relativitization.universe.data.serializer.DataSerializer.encode
 import relativitization.universe.data.serializer.DataSerializer.decode
-import relativitization.universe.generate.abm.Flocking
+import relativitization.universe.generate.abm.FlockingGenerate
 import relativitization.universe.generate.fixed.Minimal
 import java.io.File
 
@@ -54,7 +54,7 @@ abstract class GenerateUniverse {
         // Store all generate method
         val generateMethodMap: Map<String, GenerateUniverse> = mapOf(
             "FixedMinimal" to Minimal(),
-            "ABMFlocking" to Flocking()
+            "ABMFlocking" to FlockingGenerate()
         )
 
         fun isSettingValid(setting: GenerateSetting): Boolean {

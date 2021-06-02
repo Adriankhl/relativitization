@@ -11,7 +11,7 @@ import relativitization.universe.generate.GenerateUniverse
 import relativitization.universe.maths.grid.Grids.create4DGrid
 import kotlin.random.Random
 
-class Flocking : GenerateUniverse() {
+class FlockingGenerate : GenerateUniverse() {
     override fun generate(setting: GenerateSetting): UniverseData {
         val universeSettings: UniverseSettings = DataSerializer.copy(setting.universeSettings)
 
