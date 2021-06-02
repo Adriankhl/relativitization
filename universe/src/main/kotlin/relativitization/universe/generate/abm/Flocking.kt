@@ -34,6 +34,14 @@ class Flocking : GenerateUniverse() {
             playerData.int4D.x = Random.Default.nextInt(0, universeSettings.xDim)
             playerData.int4D.y = Random.Default.nextInt(0, universeSettings.yDim)
             playerData.int4D.z = Random.Default.nextInt(0, universeSettings.zDim)
+
+            playerData.playerInternalData.physicsData.energy = 1e6
+            playerData.playerInternalData.physicsData.moveMaxPower = 1.0
+
+            playerData.playerInternalData.physicsData.velocity.vx = Random.Default.nextDouble(0.0, universeSettings.speedOfLight)
+            playerData.playerInternalData.physicsData.velocity.vy = Random.Default.nextDouble(0.0, universeSettings.speedOfLight)
+            playerData.playerInternalData.physicsData.velocity.vz = Random.Default.nextDouble(0.0, universeSettings.speedOfLight)
+
             data.addPlayerDataToLatest(playerData, universeState.getCurrentTime())
         }
 
