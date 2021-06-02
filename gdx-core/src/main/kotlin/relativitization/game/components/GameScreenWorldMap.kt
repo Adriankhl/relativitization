@@ -267,7 +267,7 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
             val imageCenterY: Float = image.getY(Align.center)
             scrollPane.scrollX = imageCenterX - scrollPane.scrollWidth / 2
             // The y position of scroll bar is inverse to that in the projected coordinate
-            scrollPane.scrollY = data3D2DProjection.height - imageCenterY - scrollPane.scrollHeight / 2
+            scrollPane.scrollY = group.height - imageCenterY - scrollPane.scrollHeight / 2
         } else {
             logger.debug("Scroll fail, no player id: $id in world map")
         }
