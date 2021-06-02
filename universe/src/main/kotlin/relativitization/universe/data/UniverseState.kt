@@ -9,8 +9,6 @@ data class UniverseState(
     private var currentTime: Int,
     private var maxPlayerId: Int = 0,
 ) {
-    private val mutex: Mutex = Mutex()
-
     fun getCurrentTime(): Int = currentTime
 
     fun updateTime() = currentTime ++
@@ -18,9 +16,16 @@ data class UniverseState(
     fun getCurrentMaxId(): Int = maxPlayerId
 
     suspend fun getNewId(): Int {
-        mutex.withLock {
+        GetIdMutex.mutex.withLock {
             maxPlayerId++
             return maxPlayerId
         }
     }
+}
+
+/**
+ * Adding mutex in the universeState data class throws serialization error, so the mutex is stored in this object
+ */
+object GetIdMutex {
+    val mutex: Mutex = Mutex()
 }

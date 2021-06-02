@@ -1,5 +1,6 @@
 package relativitization.universe
 
+import kotlinx.coroutines.runBlocking
 import org.apache.logging.log4j.LogManager
 import relativitization.universe.data.*
 import relativitization.universe.data.physics.*
@@ -155,7 +156,9 @@ class PlayerCollection(private val xDim: Int, private val yDim: Int, private val
                 mutableNewPlayerInternalData.physicsData.double4D = copy(playerData.playerInternalData.physicsData.double4D)
 
                 val newPlayerInternalData: PlayerInternalData = copy(mutableNewPlayerInternalData)
-                val id = universeState.getNewId()
+                val id: Int = runBlocking {
+                    universeState.getNewId()
+                }
                 val name = randomPlayerName(newPlayerInternalData)
                 val newPlayerData: PlayerData = PlayerData(
                     id = id,
