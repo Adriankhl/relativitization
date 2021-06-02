@@ -27,20 +27,24 @@ class Minimal : GenerateUniverse() {
 
         val playerData1 = MutablePlayerData(1)
         val playerData2 = MutablePlayerData(2)
+        val playerData3 = MutablePlayerData(3)
 
         playerData1.playerType = PlayerType.HUMAN
-        playerData2.int4D = MutableInt4D(0, 0, 0, 1)
+        playerData3.int4D = MutableInt4D(0, 0, 0, 1)
 
         // Add one stellar to each player
         playerData1.playerInternalData.popSystemicData.addRandomStellarSystem()
         playerData2.playerInternalData.popSystemicData.addRandomStellarSystem()
+        playerData3.playerInternalData.popSystemicData.addRandomStellarSystem()
 
         // Add non zero energy
         playerData1.playerInternalData.physicsData.energy = 100.0
-        playerData2.playerInternalData.physicsData.energy = 100.0
+        playerData2.playerInternalData.physicsData.energy = 200.0
+        playerData3.playerInternalData.physicsData.energy = 300.0
 
         data.addPlayerDataToLatest(playerData1, universeState.getCurrentTime())
         data.addPlayerDataToLatest(playerData2, universeState.getCurrentTime())
+        data.addPlayerDataToLatest(playerData3, universeState.getCurrentTime())
 
 
         return UniverseData(
