@@ -25,8 +25,8 @@ abstract class GenerateUniverse {
 
         // Store all generate method
         val generateMethodMap: Map<String, GenerateUniverse> = mapOf(
-            "fixed-Minimal" to Minimal(),
-            "abm-flocking" to Flocking()
+            "FixedMinimal" to Minimal(),
+            "ABMFlocking" to Flocking()
         )
 
         fun isSettingValid(setting: GenerateSetting): Boolean {
