@@ -418,9 +418,11 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         runBlocking {
             updateUpdateToLatestButton()
 
-            // Ask server to stop waiting
-            if (stopWaitingSelectBox.selected == "Always") {
-                game.universeClient.httpPostStopWaiting()
+            if (game.universeClient.getCurrentServerStatus().isServerWaitingInput) {
+                // Ask server to stop waiting
+                if (stopWaitingSelectBox.selected == "Always") {
+                    game.universeClient.httpPostStopWaiting()
+                }
             }
         }
         Gdx.graphics.requestRendering()
