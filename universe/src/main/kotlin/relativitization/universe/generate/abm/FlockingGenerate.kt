@@ -42,6 +42,9 @@ class FlockingGenerate : GenerateUniverse() {
             playerData.playerInternalData.physicsData.velocity.vy = Random.Default.nextDouble(0.0, universeSettings.speedOfLight)
             playerData.playerInternalData.physicsData.velocity.vz = Random.Default.nextDouble(0.0, universeSettings.speedOfLight)
 
+            // Use flocking ai
+            playerData.playerInternalData.playerState.aiState.aiName = "FlockingAI"
+
             data.addPlayerDataToLatest(playerData, universeState.getCurrentTime())
         }
 
