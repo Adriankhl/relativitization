@@ -14,9 +14,9 @@ class FlockingAI : AI() {
     override fun compute(universeData3DAtPlayer: UniverseData3DAtPlayer): List<Command> {
         logger.debug("Computing with FlockingAI")
 
-        val nearByRadius = 5.0
+        val nearByRadius = 2.0
 
-        val desiredSeparation = 1.0
+        val desiredSeparation = 0.5
 
         val cohesionDouble3D = cohesion(universeData3DAtPlayer, nearByRadius)
 
