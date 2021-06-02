@@ -2,6 +2,7 @@ package relativitization.universe.generate.abm
 
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.MutableUniverseData4D
+import relativitization.universe.data.PlayerType
 import relativitization.universe.data.UniverseData
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.UniverseState
@@ -31,6 +32,12 @@ class FlockingGenerate : GenerateUniverse() {
 
         for (i in 1..setting.numPlayer) {
             val playerData = MutablePlayerData(id = i)
+
+            // Set human player for small i
+            if (i <= setting.numHumanPlayer) {
+                playerData.playerType = PlayerType.HUMAN
+            }
+
             playerData.int4D.x = Random.Default.nextInt(0, universeSettings.xDim)
             playerData.int4D.y = Random.Default.nextInt(0, universeSettings.yDim)
             playerData.int4D.z = Random.Default.nextInt(0, universeSettings.zDim)
