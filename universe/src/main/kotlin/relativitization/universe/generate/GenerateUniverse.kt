@@ -11,7 +11,7 @@ import java.io.File
 
 @Serializable
 data class GenerateSetting(
-    var generateMethod: String = "fixed-Minimal",
+    var generateMethod: String = "FixedMinimal",
     var numPlayer: Int = 4,
     var numHumanPlayer: Int = 2,
     var numExtraStellarSystem: Int = 3,
