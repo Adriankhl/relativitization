@@ -14,9 +14,9 @@ class FlockingAI : AI() {
     override fun compute(universeData3DAtPlayer: UniverseData3DAtPlayer): List<Command> {
         logger.debug("Computing with FlockingAI")
 
-        val nearByRadius: Double = 5.0
+        val nearByRadius = 5.0
 
-        val desiredSeparation: Double = 1.0
+        val desiredSeparation = 1.0
 
         val cohesionDouble3D = cohesion(universeData3DAtPlayer, nearByRadius)
 
@@ -70,7 +70,7 @@ class FlockingAI : AI() {
         }
     }
 
-    fun alignment(universeData3DAtPlayer: UniverseData3DAtPlayer, radius: Double): Double3D {
+    private fun alignment(universeData3DAtPlayer: UniverseData3DAtPlayer, radius: Double): Double3D {
         val selfDouble4D = universeData3DAtPlayer.getCurrentPlayerData().playerInternalData.physicsData.double4D
         val nearByPlayerData: List<PlayerData> = universeData3DAtPlayer.playerDataMap.values.filter {
             val otherDouble4D = it.playerInternalData.physicsData.double4D
@@ -97,7 +97,7 @@ class FlockingAI : AI() {
         }
     }
 
-    fun separation(universeData3DAtPlayer: UniverseData3DAtPlayer, desiredSeparation: Double): Double3D {
+    private fun separation(universeData3DAtPlayer: UniverseData3DAtPlayer, desiredSeparation: Double): Double3D {
         val selfDouble4D = universeData3DAtPlayer.getCurrentPlayerData().playerInternalData.physicsData.double4D
         val nearByPlayerData: List<PlayerData> = universeData3DAtPlayer.playerDataMap.values.filter {
             val otherDouble4D = it.playerInternalData.physicsData.double4D
@@ -145,7 +145,7 @@ class FlockingAI : AI() {
         }
     }
 
-    fun avoidBoundary(universeData3DAtPlayer: UniverseData3DAtPlayer): Double3D {
+    private fun avoidBoundary(universeData3DAtPlayer: UniverseData3DAtPlayer): Double3D {
         val selfDouble4D = universeData3DAtPlayer.getCurrentPlayerData().playerInternalData.physicsData.double4D
 
         val xComp = when {
