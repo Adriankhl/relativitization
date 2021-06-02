@@ -112,6 +112,8 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         runBlocking {
             game.universeClient.pickLatestUniverseData3D()
         }
+        // Also clear command list when updating to latest data
+        game.universeClient.clearCommandList()
     }
 
     private val clearCommandListButton: ImageButton = createImageButton(

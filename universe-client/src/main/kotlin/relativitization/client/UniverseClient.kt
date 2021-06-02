@@ -204,9 +204,10 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
      * Clear selected player and int3D, use default value
      */
     fun clearSelected() {
-        selectedPlayerIdList.clear()
         newSelectedPlayerId = getUniverseData3D().id
         primarySelectedInt3D = getUniverseData3D().get(getUniverseData3D().id).int4D.toInt3D()
+        // Clear after setting newSelectedPlayerId to unselect primary player id
+        selectedPlayerIdList.clear()
     }
 
     /**
