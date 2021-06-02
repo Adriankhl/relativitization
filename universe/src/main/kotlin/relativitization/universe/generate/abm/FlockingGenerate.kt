@@ -6,6 +6,8 @@ import relativitization.universe.data.PlayerType
 import relativitization.universe.data.UniverseData
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.UniverseState
+import relativitization.universe.data.physics.MutableVelocity
+import relativitization.universe.data.physics.Velocity
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.generate.GenerateSetting
 import relativitization.universe.generate.GenerateUniverse
@@ -45,9 +47,13 @@ class FlockingGenerate : GenerateUniverse() {
             playerData.playerInternalData.physicsData.energy = 1e6
             playerData.playerInternalData.physicsData.moveMaxPower = 1.0
 
-            playerData.playerInternalData.physicsData.velocity.vx = Random.Default.nextDouble(0.0, universeSettings.speedOfLight)
-            playerData.playerInternalData.physicsData.velocity.vy = Random.Default.nextDouble(0.0, universeSettings.speedOfLight)
-            playerData.playerInternalData.physicsData.velocity.vz = Random.Default.nextDouble(0.0, universeSettings.speedOfLight)
+
+            val vx = Random.Default.nextDouble(0.0, 1.0)
+            val vy = Random.Default.nextDouble(0.0, 1.0)
+            val vz = Random.Default.nextDouble(0.0, 1.0)
+            val vMag = Random.Default.nextDouble(0.0, setting.universeSettings.speedOfLight)
+
+            playerData.playerInternalData.physicsData.velocity = MutableVelocity(vx, vy, vz).scaleVelocity(vMag)
 
             // Use flocking ai
             playerData.playerInternalData.playerState.aiState.aiName = "FlockingAI"
