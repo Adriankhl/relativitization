@@ -20,17 +20,22 @@ data class Velocity(val vx: Double, val vy: Double, val vz: Double) {
         }
     }
 
+    /**
+     * Find the maximum component of the velocity
+     *
+     * @return a pair of the component name and the absolute value of the component
+     */
     fun maxComponent(): Pair<Char, Double> {
         val absX: Double = abs(vx)
         val absY: Double = abs(vy)
         val absZ: Double = abs(vz)
 
         return if ((absX > absY) && (absX > absZ)) {
-            Pair('x', vx)
+            Pair('x', absX)
         } else if ((absY > absX) && (absY > absZ)) {
-            Pair('y', vy)
+            Pair('y', absY)
         } else {
-            Pair('z', vz)
+            Pair('z', absZ)
         }
     }
 

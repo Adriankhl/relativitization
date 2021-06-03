@@ -106,38 +106,39 @@ object PlayerImage {
         playerData: PlayerData
     ): Float {
         val velocity = playerData.playerInternalData.physicsData.velocity
-        val maxComponent = velocity.maxComponent()
+        val maxComponent: Pair<Char, Double> = velocity.maxComponent()
+        val magMaxComponent: Double = maxComponent.second
 
         val degree: Float = if (maxComponent.second < 0.000001f) {
             0.0f
         } else if (maxComponent.first == 'x') {
-            if (maxComponent.second > 0) {
+            if (velocity.vx > 0) {
                 val primaryDirection: Float = 90f
-                val adjusted: Float = (- velocity.vy / velocity.vx * 15 - velocity.vz / velocity.vx * 5).toFloat()
+                val adjusted: Float = (- velocity.vy / magMaxComponent * 15 - velocity.vz / magMaxComponent * 5).toFloat()
                 primaryDirection + adjusted
             } else  {
                 val primaryDirection: Float = 270f
-                val adjusted: Float = (velocity.vy / abs(velocity.vx) * 15 + velocity.vz / abs(velocity.vx) * 5).toFloat()
+                val adjusted: Float = (velocity.vy / magMaxComponent * 15 + velocity.vz / magMaxComponent * 5).toFloat()
                 primaryDirection + adjusted
             }
         } else if (maxComponent.first == 'y') {
-            if (maxComponent.second > 0) {
+            if (velocity.vy > 0) {
                 val primaryDirection: Float = 0f
-                val adjusted: Float = (velocity.vx / velocity.vy * 15 + velocity.vz / velocity.vy * 5).toFloat()
+                val adjusted: Float = (velocity.vx / magMaxComponent * 15 + velocity.vz / magMaxComponent * 5).toFloat()
                 primaryDirection + adjusted
             } else  {
                 val primaryDirection: Float = 180f
-                val adjusted: Float = (- velocity.vx / abs(velocity.vy) * 15 - velocity.vz / abs(velocity.vy) * 5).toFloat()
+                val adjusted: Float = (- velocity.vx / magMaxComponent * 15 - velocity.vz / magMaxComponent * 5).toFloat()
                 primaryDirection + adjusted
             }
         } else if (maxComponent.first == 'z') {
-            if (maxComponent.second > 0) {
+            if (velocity.vz > 0) {
                 val primaryDirection: Float = 45f
-                val adjusted: Float = (velocity.vx / velocity.vz * 15 - velocity.vy / velocity.vz * 5).toFloat()
+                val adjusted: Float = (velocity.vx / magMaxComponent * 15 - velocity.vy / magMaxComponent * 5).toFloat()
                 primaryDirection + adjusted
             } else  {
                 val primaryDirection: Float = 225f
-                val adjusted: Float = (- velocity.vx / abs(velocity.vz) * 15 + velocity.vy / abs(velocity.vz) * 5).toFloat()
+                val adjusted: Float = (- velocity.vx / magMaxComponent * 15 + velocity.vy / magMaxComponent * 5).toFloat()
                 primaryDirection + adjusted
             }
         } else {
