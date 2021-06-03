@@ -1,5 +1,5 @@
 # Relativitization
-Grand strategy game and simulation in 4D spacetime
+Simulation / grand strategy game in 4D spacetime
 
 # Project layout
 * `universe` core stuffs for the universe simulation
