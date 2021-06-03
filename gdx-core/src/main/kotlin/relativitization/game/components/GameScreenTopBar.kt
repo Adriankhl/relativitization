@@ -553,7 +553,11 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         val serverStatus = game.universeClient.getCurrentServerStatus().copy()
 
         val connectionText = if (serverStatus.success) {
-            "connected"
+            if (serverStatus.isUniverseRunning) {
+                "running"
+            } else {
+                "stopped"
+            }
         } else {
             "disconnected"
         }
