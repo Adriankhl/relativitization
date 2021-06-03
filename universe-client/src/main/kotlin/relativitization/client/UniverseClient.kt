@@ -14,6 +14,7 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import org.apache.logging.log4j.LogManager
@@ -63,7 +64,8 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
     )
 
     // Server status, use default universe name from server setting
-    val onServerStatusChangeFunctionList: MutableList<() -> Unit> = mutableListOf()
+    // Set private because this should be updated with mutex
+    private val onServerStatusChangeFunctionList: MutableList<() -> Unit> = mutableListOf()
     private var serverStatus: UniverseServerStatusMessage by Delegates.observable(
         UniverseServerStatusMessage(UniverseSettings().universeName)
     ) { _, _, _ ->
@@ -224,8 +226,11 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
     /**
      * Clear all on chang function list
      */
-    fun clearOnChangeFunctionList() {
-        onServerStatusChangeFunctionList.clear()
+    suspend fun clearOnChangeFunctionList() {
+        // use mutex since it affect the run loop
+        mutex.withLock {
+            onServerStatusChangeFunctionList.clear()
+        }
         onPrimarySelectedInt3DChangeFunctionList.clear()
         onCurrentCommandChangeFunctionList.clear()
         onPrimarySelectedPlayerIdChangeFunctionList.clear()
@@ -239,7 +244,9 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
      */
     fun clear() {
         clearCommandList()
-        clearOnChangeFunctionList()
+        runBlocking {
+            clearOnChangeFunctionList()
+        }
         universeData3DMap.clear()
         generateSettings = GenerateSetting()
     }
@@ -443,7 +450,13 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
         }
     }
 
-    suspend fun httpGetUniverseServerStatus(): UniverseServerStatusMessage {
+    suspend fun addToOnServerStatusChangeFunctionList(function: () -> Unit) {
+        mutex.withLock {
+            onServerStatusChangeFunctionList.add(function)
+        }
+    }
+
+        suspend fun httpGetUniverseServerStatus(): UniverseServerStatusMessage {
         return try {
             val serverAddress = universeClientSettings.serverAddress
             val serverPort = universeClientSettings.serverPort

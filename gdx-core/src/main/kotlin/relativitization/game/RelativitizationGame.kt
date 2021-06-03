@@ -78,7 +78,9 @@ class RelativitizationGame(val universeClient: UniverseClient, private val unive
 
     fun clearOnChangeFunctionList() {
         onGdxSettingsChangeFunctionList.clear()
-        universeClient.clearOnChangeFunctionList()
+        runBlocking {
+            universeClient.clearOnChangeFunctionList()
+        }
     }
 
     fun clear() {

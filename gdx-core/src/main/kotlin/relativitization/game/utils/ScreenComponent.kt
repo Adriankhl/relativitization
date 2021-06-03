@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Slider
 import com.badlogic.gdx.scenes.scene2d.ui.SplitPane
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
+import kotlinx.coroutines.runBlocking
 import relativitization.client.UniverseClient
 import relativitization.game.RelativitizationGame
 
@@ -285,7 +286,9 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets){
             game.onGdxSettingsChangeFunctionList.add(component::onGdxSettingsChange)
 
             val universeClient = game.universeClient
-            universeClient.onServerStatusChangeFunctionList.add(component::onServerStatusChange)
+            runBlocking {
+                universeClient.addToOnServerStatusChangeFunctionList(component::onServerStatusChange)
+            }
 
             universeClient.onUniverseData3DChangeFunctionList.add(component::onUniverseData3DChange)
 
