@@ -343,19 +343,6 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         gdxSettings.smallFontSize
     )
 
-
-    private val viewControlTable: Table = createViewControlTable()
-
-    private val currentUniverseDataTable: Table =  createCurrentUniverseDataTable()
-
-    private val serverStatusNameAndTimeLabel: Label = createLabel("", gdxSettings.smallFontSize)
-    private val serverUniverseTimeLabel: Label = createLabel("", gdxSettings.smallFontSize)
-    private val timeLeftLabel: Label = createLabel("", gdxSettings.smallFontSize)
-    private val serverStatusTable: Table = createServerStatusTable()
-
-    private val stopWaitingTable: Table = createStopWaitingTable()
-
-
     private val settingButton: ImageButton = createImageButton(
         "basic/white-setting",
         1.0f,
@@ -374,6 +361,39 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
     ) {
         game.screen = GdxSettingsScreen(game, true)
     }
+
+    private val runUniverseButton = createTextButton(
+        "Run",
+        gdxSettings.smallFontSize,
+        gdxSettings.soundEffectsVolume
+    ) {
+        runBlocking {
+            game.universeClient.httpPostRunUniverse()
+        }
+    }
+
+    private val stopUniverseButton = createTextButton(
+        "Stop",
+        gdxSettings.smallFontSize,
+        gdxSettings.soundEffectsVolume
+    ) {
+        runBlocking {
+            game.universeClient.httpPostStopUniverse()
+        }
+    }
+
+    // About server status
+    private val serverStatusNameAndTimeLabel: Label = createLabel("", gdxSettings.smallFontSize)
+    private val serverUniverseTimeLabel: Label = createLabel("", gdxSettings.smallFontSize)
+    private val timeLeftLabel: Label = createLabel("", gdxSettings.smallFontSize)
+
+    // Tables
+    private val viewControlTable: Table = createViewControlTable()
+    private val currentUniverseDataTable: Table =  createCurrentUniverseDataTable()
+    private val serverStatusTable: Table = createServerStatusTable()
+    private val stopWaitingTable: Table = createStopWaitingTable()
+    private val runOrStopUniverseTable: Table = createRunStopUniverseTable()
+
 
     init {
         // Set background color to blue
@@ -403,6 +423,8 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
 
         table.add(stopWaitingTable).pad(10f)
 
+        table.add(runOrStopUniverseTable).pad(10f)
+
         table.add(uploadButton).size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
 
         table.add(settingButton).size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
@@ -415,6 +437,7 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
 
     override fun onServerStatusChange() {
         updateServerStatusLabels()
+        updateRunAndStopButton()
         runBlocking {
             updateUpdateToLatestButton()
 
@@ -536,6 +559,23 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
     }
 
     /**
+     * Create a table for running or stopping universe
+     */
+    private fun createRunStopUniverseTable(): Table {
+        val nestedTable: Table = Table()
+
+        nestedTable.add(createLabel("Run or stop server:", gdxSettings.smallFontSize)).colspan(2)
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(runUniverseButton).space(10f)
+
+        nestedTable.add(stopUniverseButton)
+
+        return nestedTable
+    }
+
+    /**
      * Update the text label showing the current time slice
      */
     private fun updateCurrentUniverseDataLabel() {
@@ -608,5 +648,18 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         )
 
         tCoordinateLabel.setText("t: $t")
+    }
+
+    /**
+     * Update run button and stop button
+     */
+    private fun updateRunAndStopButton() {
+        if (game.universeClient.getCurrentServerStatus().isUniverseRunning) {
+            disableActor(runUniverseButton)
+            enableActor(stopUniverseButton)
+        } else {
+            enableActor(runUniverseButton)
+            disableActor(stopUniverseButton)
+        }
     }
 }
