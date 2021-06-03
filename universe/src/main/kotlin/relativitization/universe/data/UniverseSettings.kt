@@ -16,6 +16,7 @@ import relativitization.universe.maths.physics.Intervals.maxDelayAfterMove
  * @property zDim z dimension of the universe
  * @property playerAfterImageDuration how long the player data should be stored after the player move
  * @property playerHistoricalInt4DLength how many int4D should be stored in PlayerData
+ * @property otherSettings a map from string to string, to add custom parameter for specific model/AI/process
  */
 @Serializable
 data class UniverseSettings(
@@ -29,6 +30,7 @@ data class UniverseSettings(
     val zDim: Int = 2,
     val playerAfterImageDuration: Int = 4,
     val playerHistoricalInt4DLength: Int = 4,
+    val otherSettings: Map<String, String> = mapOf(),
 ) {
     private fun isTDimBigEnough(): Boolean {
         return tDim > intDelay(Int3D(0, 0,0), Int3D(xDim - 1, yDim - 1, zDim - 1), speedOfLight)
@@ -59,4 +61,5 @@ data class MutableUniverseSettings(
     var zDim: Int = 2,
     var playerAfterImageDuration: Int = 4,
     var playerHistoricalInt4DLength: Int = 4,
+    var otherSettings: MutableMap<String, String> = mutableMapOf()
 )
