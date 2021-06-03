@@ -7,7 +7,6 @@ import org.apache.logging.log4j.LogManager
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.PlayerType
 import relativitization.universe.data.popsystems.CarrierType
-import kotlin.math.abs
 
 object PlayerImage {
     private val logger = LogManager.getLogger()
