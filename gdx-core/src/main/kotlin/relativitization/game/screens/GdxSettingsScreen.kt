@@ -3,6 +3,7 @@ package relativitization.game.screens
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
+import kotlinx.coroutines.runBlocking
 import org.apache.logging.log4j.LogManager
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.TableScreen
@@ -17,11 +18,13 @@ class GdxSettingsScreen(val game: RelativitizationGame, val inGame: Boolean) : T
 
         root.row().space(10f)
 
+        // Can't cancel, going to apply anyway
         val applyButton = createTextButton(
             "Apply",
             gdxSettings.normalFontSize,
             gdxSettings.soundEffectsVolume,
         ) {
+            game.changeGdxSettings()
             game.restoreSize()
             game.restartMusic()
             if (inGame) {
@@ -32,6 +35,54 @@ class GdxSettingsScreen(val game: RelativitizationGame, val inGame: Boolean) : T
         }
 
         root.add(applyButton)
+
+        root.row().space(10f)
+
+        root.add(createQuitTable())
+    }
+
+    private fun createQuitTable(): Table {
+        val nestedTable: Table = Table()
+
+        val confirmButton = createTextButton(
+            "Confirm",
+            gdxSettings.normalFontSize,
+            gdxSettings.soundEffectsVolume
+        ) {
+            runBlocking {
+                game.universeClient.addToOnServerStatusChangeFunctionList { Gdx.app.exit() }
+            }
+        }
+
+        val cancelButton = createTextButton(
+            "Cancel",
+            gdxSettings.normalFontSize,
+            gdxSettings.soundEffectsVolume
+        ) {
+            it.isVisible = false
+            confirmButton.isVisible = false
+        }
+
+        val quitGameButton = createTextButton(
+            "Quit game",
+            gdxSettings.normalFontSize,
+            gdxSettings.soundEffectsVolume
+        ) {
+            confirmButton.isVisible = true
+            cancelButton.isVisible = true
+        }
+
+        nestedTable.add(quitGameButton).colspan(2)
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(confirmButton).space(10f)
+        nestedTable.add(cancelButton)
+
+        confirmButton.isVisible = false
+        cancelButton.isVisible = false
+
+        return nestedTable
     }
 
     private fun createGdxSettingsScrollPane(): ScrollPane {
