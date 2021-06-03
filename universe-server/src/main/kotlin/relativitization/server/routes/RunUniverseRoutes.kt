@@ -33,7 +33,7 @@ fun Route.runUniverseRouting(universeServerInternal: UniverseServerInternal) {
         }
     }
 
-    route("/run/universe") {
+    route("/run/universe-run") {
         post {
             val runUniverseMessage: RunUniverseMessage = call.receive()
             if (!universeServerInternal.getUniverseStatusMessage().isUniverseRunning) {
@@ -49,6 +49,27 @@ fun Route.runUniverseRouting(universeServerInternal: UniverseServerInternal) {
                 }
             } else {
                 call.respondText("Universe already running", ContentType.Text.Plain, HttpStatusCode.OK)
+            }
+        }
+    }
+
+
+    route("/run/universe-stop") {
+        post {
+            val runUniverseMessage: StopUniverseMessage = call.receive()
+            if (universeServerInternal.getUniverseStatusMessage().isUniverseRunning) {
+                if (runUniverseMessage.adminPassword == universeServerInternal.universeServerSettings.adminPassword) {
+                    universeServerInternal.stopUniverse()
+                    call.respondText("Stop universe succeed", ContentType.Text.Plain, HttpStatusCode.OK)
+                } else {
+                    call.respondText(
+                        "Can't stop universe, please use the correct admin password",
+                        ContentType.Text.Plain,
+                        HttpStatusCode.Unauthorized
+                    )
+                }
+            } else {
+                call.respondText("Universe already stopped", ContentType.Text.Plain, HttpStatusCode.OK)
             }
         }
     }

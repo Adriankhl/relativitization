@@ -24,6 +24,7 @@ import relativitization.universe.communication.LoadUniverseMessage
 import relativitization.universe.communication.NewUniverseMessage
 import relativitization.universe.communication.RegisterPlayerMessage
 import relativitization.universe.communication.RunUniverseMessage
+import relativitization.universe.communication.StopUniverseMessage
 import relativitization.universe.communication.StopWaitingMessage
 import relativitization.universe.communication.UniverseData3DMessage
 import relativitization.universe.communication.UniverseServerSettingsMessage
@@ -620,7 +621,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
             val serverAddress = universeClientSettings.serverAddress
             val serverPort = universeClientSettings.serverPort
             val adminPassword = universeClientSettings.adminPassword
-            val response: HttpResponse = ktorClient.post("http://$serverAddress:$serverPort/run/universe") {
+            val response: HttpResponse = ktorClient.post("http://$serverAddress:$serverPort/run/universe-run") {
                 contentType(ContentType.Application.Json)
                 body = RunUniverseMessage(adminPassword)
                 timeout {
@@ -637,6 +638,31 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
             HttpStatusCode.NotFound
         }
     }
+
+
+    suspend fun httpPostStopUniverse(): HttpStatusCode {
+        return try {
+            val serverAddress = universeClientSettings.serverAddress
+            val serverPort = universeClientSettings.serverPort
+            val adminPassword = universeClientSettings.adminPassword
+            val response: HttpResponse = ktorClient.post("http://$serverAddress:$serverPort/run/universe-stop") {
+                contentType(ContentType.Application.Json)
+                body = StopUniverseMessage(adminPassword)
+                timeout {
+                    requestTimeoutMillis = 1000
+                }
+            }
+            logger.debug("Stop universe: ${response.status}")
+            response.status
+        } catch (cause: ResponseException) {
+            logger.error("Stop universe error: " + cause.response.status)
+            cause.response.status
+        } catch (cause: Throwable) {
+            logger.error("Stop universe error: cannot find server")
+            HttpStatusCode.NotFound
+        }
+    }
+
 
     suspend fun httpPostHumanInput(): HttpStatusCode {
         return try {

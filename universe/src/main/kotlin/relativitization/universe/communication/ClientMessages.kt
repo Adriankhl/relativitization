@@ -37,6 +37,11 @@ data class RunUniverseMessage(
 )
 
 @Serializable
+data class StopUniverseMessage(
+    val adminPassword: String,
+)
+
+@Serializable
 data class UniverseData3DMessage(
     val id: Int,
     val password: String,

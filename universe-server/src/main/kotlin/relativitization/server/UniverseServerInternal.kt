@@ -348,6 +348,15 @@ class UniverseServerInternal(var universeServerSettings: UniverseServerSettings)
         }
     }
 
+    /**
+     * Stop universe
+     */
+    suspend fun stopUniverse() {
+        mutex.withLock {
+            isUniverseRunning.set(false)
+        }
+    }
+
     companion object {
         private val logger = LogManager.getLogger()
     }
