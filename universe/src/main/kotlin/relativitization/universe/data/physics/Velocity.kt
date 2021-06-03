@@ -1,6 +1,7 @@
 package relativitization.universe.data.physics
 
 import kotlinx.serialization.Serializable
+import kotlin.math.abs
 import kotlin.math.sqrt
 
 @Serializable
@@ -20,9 +21,13 @@ data class Velocity(val vx: Double, val vy: Double, val vz: Double) {
     }
 
     fun maxComponent(): Pair<Char, Double> {
-        return if ((vx > vy) && (vx > vz)) {
+        val absX: Double = abs(vx)
+        val absY: Double = abs(vy)
+        val absZ: Double = abs(vz)
+
+        return if ((absX > absY) && (absX > absZ)) {
             Pair('x', vx)
-        } else if ((vy > vx) && (vy > vz)) {
+        } else if ((absY > absX) && (absY > absZ)) {
             Pair('y', vy)
         } else {
             Pair('z', vz)
