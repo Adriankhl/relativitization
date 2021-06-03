@@ -354,6 +354,7 @@ class UniverseServerInternal(var universeServerSettings: UniverseServerSettings)
     suspend fun stopUniverse() {
         mutex.withLock {
             isUniverseRunning.set(false)
+            isServerWaitingInput.set(false)
         }
     }
 
