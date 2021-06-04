@@ -14,7 +14,6 @@ import relativitization.game.RelativitizationGame
 import relativitization.game.ShowingInfoType
 import relativitization.game.screens.GdxSettingsScreen
 import relativitization.game.utils.ScreenComponent
-import relativitization.universe.data.physics.Int3D
 import relativitization.universe.maths.physics.Intervals.intDelay
 import kotlin.math.min
 
@@ -83,8 +82,8 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         }
     }
 
-    private val confirmUniverseDataSelectButton: ImageButton = createImageButton(
-        "basic/white-tick",
+    private val clearOldDataButton: ImageButton = createImageButton(
+        "basic/white-bin",
         1.0f,
         1.0f,
         1.0f,
@@ -100,7 +99,7 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         gdxSettings.soundEffectsVolume
     ) {
         runBlocking {
-            game.universeClient.pickUniverseData3D(universeDataSelectBox.selected)
+            game.universeClient.clearOldData3D()
         }
     }
 
@@ -585,7 +584,7 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
 
         topTable.add(nextButton).size(30f * gdxSettings.imageScale, 30f * gdxSettings.imageScale)
 
-        bottomTable.add(confirmUniverseDataSelectButton).size(30f * gdxSettings.imageScale, 30f * gdxSettings.imageScale)
+        bottomTable.add(clearOldDataButton).size(30f * gdxSettings.imageScale, 30f * gdxSettings.imageScale)
 
         nestedTable.add(topTable)
 
@@ -673,8 +672,8 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
      */
     private fun updateUniverseDataSelectionBox() {
         runBlocking {
-            universeDataSelectBox.selected = game.universeClient.getCurrentData3DName()
             universeDataSelectBox.items = Array(game.universeClient.getAvailableData3DName().toTypedArray())
+            universeDataSelectBox.selected = game.universeClient.getCurrentData3DName()
         }
     }
 

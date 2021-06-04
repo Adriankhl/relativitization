@@ -391,6 +391,19 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
     }
 
     /**
+     * Clear old data3D
+     */
+    suspend fun clearOldData3D() {
+        val currentName = getCurrentData3DName()
+        universeData3DMapMutex.withLock {
+            val index: Int = universeData3DMap.keys.indexOf(currentName)
+            universeData3DMap.keys.drop(index)
+        }
+        // trigger data change
+        currentUniverseData3DAtPlayer = currentUniverseData3DAtPlayer
+    }
+
+    /**
      * Whether the universe data contains primary player id
      */
     fun isPrimarySelectedPlayerIdValid(): Boolean {
