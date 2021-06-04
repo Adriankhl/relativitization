@@ -43,7 +43,9 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         1.0f,
         gdxSettings.soundEffectsVolume
     ) {
-        game.universeClient.previousUniverseData3D()
+        runBlocking {
+            game.universeClient.previousUniverseData3D()
+        }
     }
 
     // button to select next time
@@ -63,14 +65,23 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         1.0f,
         gdxSettings.soundEffectsVolume
     ) {
-        game.universeClient.nextUniverseData3D()
+        runBlocking {
+            game.universeClient.nextUniverseData3D()
+        }
     }
 
     private val universeDataSelectBox: SelectBox<String> = createSelectBox(
-        game.universeClient.getAvailableData3DName(),
+        runBlocking { game.universeClient.getAvailableData3DName() },
         "",
         gdxSettings.smallFontSize
-    )
+    ) { data3DName, _ ->
+        runBlocking {
+            // Only change this when the name is different to prevent infinite loop
+            if (game.universeClient.getCurrentData3DName() != data3DName) {
+                game.universeClient.pickUniverseData3D(data3DName)
+            }
+        }
+    }
 
     private val confirmUniverseDataSelectButton: ImageButton = createImageButton(
         "basic/white-tick",
@@ -88,7 +99,9 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         1.0f,
         gdxSettings.soundEffectsVolume
     ) {
-        game.universeClient.pickUniverseData3D(universeDataSelectBox.selected)
+        runBlocking {
+            game.universeClient.pickUniverseData3D(universeDataSelectBox.selected)
+        }
     }
 
     private val clearSelectedButton: ImageButton = createImageButton(
@@ -659,8 +672,10 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
      * Update universeDataSelection Box
      */
     private fun updateUniverseDataSelectionBox() {
-        universeDataSelectBox.selected = game.universeClient.getCurrentData3DName()
-        universeDataSelectBox.items = Array(game.universeClient.getAvailableData3DName().toTypedArray())
+        runBlocking {
+            universeDataSelectBox.selected = game.universeClient.getCurrentData3DName()
+            universeDataSelectBox.items = Array(game.universeClient.getAvailableData3DName().toTypedArray())
+        }
     }
 
     /**

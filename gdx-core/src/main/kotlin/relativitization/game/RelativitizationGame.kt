@@ -85,6 +85,8 @@ class RelativitizationGame(val universeClient: UniverseClient, private val unive
 
     fun clear() {
         clearOnChangeFunctionList()
-        universeClient.clear()
+        runBlocking {
+            universeClient.clear()
+        }
     }
 }

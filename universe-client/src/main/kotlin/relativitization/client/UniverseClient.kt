@@ -44,7 +44,11 @@ import kotlin.properties.Delegates
  * @property universeClientSettings settings of the client, should only be updated by setUniverseClientSettings()
  */
 class UniverseClient(var universeClientSettings: UniverseClientSettings) {
+    // The main mutex for serverStatus change
     private val mutex: Mutex = Mutex()
+
+    // Specifically for data3D Map
+    private val universeData3DMapMutex: Mutex = Mutex()
 
     val ktorClient = HttpClient(CIO) {
         install(HttpTimeout)
@@ -153,6 +157,8 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
         while (isActive) {
             logger.debug("Client running")
             delay(2000)
+
+            // Modify serverStatus and universeData3DMap, mutex and universeData3DMutex should take care of this
             mutex.withLock {
                 val newServerStatus = httpGetUniverseServerStatus()
                 if (shouldUpdateCache(newServerStatus)) {
@@ -242,12 +248,15 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
     /**
      * Clear the client
      */
-    fun clear() {
+    suspend fun clear() {
+        // Avoid conflicting with the main run loop when clearing universeData3DMap
         clearCommandList()
         runBlocking {
             clearOnChangeFunctionList()
         }
-        universeData3DMap.clear()
+        universeData3DMapMutex.withLock {
+            universeData3DMap.clear()
+        }
         generateSettings = GenerateSetting()
     }
 
@@ -256,6 +265,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
      */
     private fun universeData3DName(
         universeData3DAtPlayer: UniverseData3DAtPlayer,
+        nameList: List<String>,
         iterateNum: Int = 0
     ): String {
         val originalName: String = universeData3DAtPlayer.universeSettings.universeName +
@@ -267,8 +277,8 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
             "$originalName ($iterateNum)"
         }
 
-        return if (universeData3DMap.keys.contains(modifiedName)) {
-            universeData3DName(universeData3DAtPlayer, iterateNum + 1)
+        return if (nameList.contains(modifiedName)) {
+            universeData3DName(universeData3DAtPlayer, nameList, iterateNum + 1)
         } else {
             modifiedName
         }
@@ -278,52 +288,60 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
      * Add data cache to universeData3DMap
      */
     private suspend fun updateUniverseData3DMap() {
-        val name: String = universeData3DName(universeData3DCache)
-        universeData3DMap[name] = universeData3DCache
-        isNewDataReady.set(true)
+        universeData3DMapMutex.withLock {
+            val name: String = universeData3DName(universeData3DCache, universeData3DMap.keys.toList())
+            universeData3DMap[name] = universeData3DCache
+            isNewDataReady.set(true)
+        }
     }
 
     /**
      * Update current UniverseData3DTime to latest time available from universeData3DMap
      */
     suspend fun pickLatestUniverseData3D() {
-        if (universeData3DMap.isNotEmpty()) {
-            currentUniverseData3DAtPlayer = universeData3DMap.values.last()
-            isNewDataReady.set(false)
-        } else {
-            logger.error("Empty universe data map")
+        universeData3DMapMutex.withLock {
+            if (universeData3DMap.isNotEmpty()) {
+                currentUniverseData3DAtPlayer = universeData3DMap.values.last()
+                isNewDataReady.set(false)
+            } else {
+                logger.error("Empty universe data map")
+            }
         }
     }
 
     /**
      * Goto stored previous universe data
      */
-    fun previousUniverseData3D() {
-        if (universeData3DMap.values.contains(currentUniverseData3DAtPlayer)) {
-            val currentIndex = universeData3DMap.values.indexOf(currentUniverseData3DAtPlayer)
-            if (universeData3DMap.values.indices.contains(currentIndex - 1)) {
-                currentUniverseData3DAtPlayer = universeData3DMap.values.elementAt(currentIndex - 1)
+    suspend fun previousUniverseData3D() {
+        universeData3DMapMutex.withLock {
+            if (universeData3DMap.values.contains(currentUniverseData3DAtPlayer)) {
+                val currentIndex = universeData3DMap.values.indexOf(currentUniverseData3DAtPlayer)
+                if (universeData3DMap.values.indices.contains(currentIndex - 1)) {
+                    currentUniverseData3DAtPlayer = universeData3DMap.values.elementAt(currentIndex - 1)
+                } else {
+                    logger.debug("No previous data")
+                }
             } else {
-                logger.debug("No previous data")
+                logger.error("No data 3D index")
             }
-        } else {
-            logger.error("No data 3D index")
         }
     }
 
     /**
      * Goto stored next universe data
      */
-    fun nextUniverseData3D() {
-        if (universeData3DMap.values.contains(currentUniverseData3DAtPlayer)) {
-            val currentIndex = universeData3DMap.values.indexOf(currentUniverseData3DAtPlayer)
-            if (universeData3DMap.values.indices.contains(currentIndex + 1)) {
-                currentUniverseData3DAtPlayer = universeData3DMap.values.elementAt(currentIndex + 1)
+    suspend fun nextUniverseData3D() {
+        universeData3DMapMutex.withLock {
+            if (universeData3DMap.values.contains(currentUniverseData3DAtPlayer)) {
+                val currentIndex = universeData3DMap.values.indexOf(currentUniverseData3DAtPlayer)
+                if (universeData3DMap.values.indices.contains(currentIndex + 1)) {
+                    currentUniverseData3DAtPlayer = universeData3DMap.values.elementAt(currentIndex + 1)
+                } else {
+                    logger.debug("No next data")
+                }
             } else {
-                logger.debug("No next data")
+                logger.error("No data 3D index")
             }
-        } else {
-            logger.error("No data 3D index")
         }
     }
 
@@ -331,11 +349,13 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
     /**
      * Pick universe data from map
      */
-    fun pickUniverseData3D(name: String) {
-        if (universeData3DMap.keys.contains(name)) {
-            currentUniverseData3DAtPlayer = universeData3DMap.getValue(name)
-        } else {
-            logger.error("Picking non existing universeData")
+    suspend fun pickUniverseData3D(name: String) {
+        universeData3DMapMutex.withLock {
+            if (universeData3DMap.keys.contains(name)) {
+                currentUniverseData3DAtPlayer = universeData3DMap.getValue(name)
+            } else {
+                logger.error("Picking non existing universeData")
+            }
         }
     }
 
@@ -343,15 +363,19 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
     /**
      * Get all available time from map
      */
-    fun getAvailableData3DName(): List<String> {
-        return universeData3DMap.keys.toList()
+    suspend fun getAvailableData3DName(): List<String> {
+        universeData3DMapMutex.withLock {
+            return universeData3DMap.keys.toList()
+        }
     }
 
     /**
      * Get the key name of the current universe data
      */
-    fun getCurrentData3DName(): String {
-        return universeData3DMap.keys.elementAt(universeData3DMap.values.indexOf(currentUniverseData3DAtPlayer))
+    suspend fun getCurrentData3DName(): String {
+        universeData3DMapMutex.withLock {
+            return universeData3DMap.keys.elementAt(universeData3DMap.values.indexOf(currentUniverseData3DAtPlayer))
+        }
     }
 
     /**
@@ -463,7 +487,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
         }
     }
 
-        suspend fun httpGetUniverseServerStatus(): UniverseServerStatusMessage {
+    suspend fun httpGetUniverseServerStatus(): UniverseServerStatusMessage {
         return try {
             val serverAddress = universeClientSettings.serverAddress
             val serverPort = universeClientSettings.serverPort
