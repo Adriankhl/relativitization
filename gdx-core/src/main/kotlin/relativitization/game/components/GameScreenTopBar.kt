@@ -70,8 +70,25 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         game.universeClient.getAvailableData3DName(),
         "",
         gdxSettings.smallFontSize
-    ) { name, _ ->
-        game.universeClient.pickUniverseData3D(name)
+    )
+
+    private val confirmUniverseDataSelectButton: ImageButton = createImageButton(
+        "basic/white-tick",
+        1.0f,
+        1.0f,
+        1.0f,
+        1.0f,
+        1.0f,
+        1.0f,
+        1.0f,
+        0.7f,
+        1.0f,
+        1.0f,
+        1.0f,
+        1.0f,
+        gdxSettings.soundEffectsVolume
+    ) {
+        game.universeClient.pickUniverseData3D(universeDataSelectBox.selected)
     }
 
     private val clearSelectedButton: ImageButton = createImageButton(
@@ -545,15 +562,23 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
     private fun createCurrentUniverseDataTable(): Table {
         val nestedTable: Table = Table()
 
-        nestedTable.add(currentUniverseDataLabel).colspan(3)
+        val topTable: Table = Table()
+
+        val bottomTable: Table = Table()
+
+        topTable.add(previousButton).size(30f * gdxSettings.imageScale, 30f * gdxSettings.imageScale)
+
+        topTable.add(universeDataSelectBox)
+
+        topTable.add(nextButton).size(30f * gdxSettings.imageScale, 30f * gdxSettings.imageScale)
+
+        bottomTable.add(confirmUniverseDataSelectButton).size(30f * gdxSettings.imageScale, 30f * gdxSettings.imageScale)
+
+        nestedTable.add(topTable)
 
         nestedTable.row().space(10f)
 
-        nestedTable.add(previousButton).size(30f * gdxSettings.imageScale, 30f * gdxSettings.imageScale)
-
-        nestedTable.add(universeDataSelectBox)
-
-        nestedTable.add(nextButton).size(30f * gdxSettings.imageScale, 30f * gdxSettings.imageScale)
+        nestedTable.add(bottomTable)
 
         return nestedTable
     }
@@ -634,6 +659,7 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
      * Update universeDataSelection Box
      */
     private fun updateUniverseDataSelectionBox() {
+        universeDataSelectBox.selected = game.universeClient.getCurrentData3DName()
         universeDataSelectBox.items = Array(game.universeClient.getAvailableData3DName().toTypedArray())
     }
 

@@ -348,6 +348,13 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
     }
 
     /**
+     * Get the key name of the current universe data
+     */
+    fun getCurrentData3DName(): String {
+        return universeData3DMap.keys.elementAt(universeData3DMap.values.indexOf(currentUniverseData3DAtPlayer))
+    }
+
+    /**
      * Whether the universe data contains primary player id
      */
     fun isPrimarySelectedPlayerIdValid(): Boolean {
