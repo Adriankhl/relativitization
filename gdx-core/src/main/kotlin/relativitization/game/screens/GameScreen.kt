@@ -104,11 +104,15 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
                         true
                     }
                     '<' -> {
-                        game.universeClient.previousUniverseData3D()
+                        runBlocking {
+                            game.universeClient.previousUniverseData3D()
+                        }
                         true
                     }
                     '>' -> {
-                        game.universeClient.nextUniverseData3D()
+                        runBlocking {
+                            game.universeClient.nextUniverseData3D()
+                        }
                         true
                     }
                     else -> {

@@ -47,7 +47,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
     // The main mutex for serverStatus change
     private val mutex: Mutex = Mutex()
 
-    // Specifically for data3D Map
+    // Specifically for data3D Map, should prevent calling other observable withing the lock to prevent dead lock
     private val universeData3DMapMutex: Mutex = Mutex()
 
     val ktorClient = HttpClient(CIO) {
@@ -251,9 +251,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
     suspend fun clear() {
         // Avoid conflicting with the main run loop when clearing universeData3DMap
         clearCommandList()
-        runBlocking {
-            clearOnChangeFunctionList()
-        }
+        clearOnChangeFunctionList()
         universeData3DMapMutex.withLock {
             universeData3DMap.clear()
         }
@@ -299,50 +297,61 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
      * Update current UniverseData3DTime to latest time available from universeData3DMap
      */
     suspend fun pickLatestUniverseData3D() {
-        universeData3DMapMutex.withLock {
+        val currentData = universeData3DMapMutex.withLock {
             if (universeData3DMap.isNotEmpty()) {
-                currentUniverseData3DAtPlayer = universeData3DMap.values.last()
-                isNewDataReady.set(false)
+                universeData3DMap.values.last()
             } else {
                 logger.error("Empty universe data map")
+                currentUniverseData3DAtPlayer
             }
         }
+        // set the data outside of the lock to prevent dead lock
+        currentUniverseData3DAtPlayer = currentData
+        isNewDataReady.set(false)
     }
 
     /**
      * Goto stored previous universe data
      */
     suspend fun previousUniverseData3D() {
-        universeData3DMapMutex.withLock {
+        val currentData = universeData3DMapMutex.withLock {
             if (universeData3DMap.values.contains(currentUniverseData3DAtPlayer)) {
                 val currentIndex = universeData3DMap.values.indexOf(currentUniverseData3DAtPlayer)
                 if (universeData3DMap.values.indices.contains(currentIndex - 1)) {
-                    currentUniverseData3DAtPlayer = universeData3DMap.values.elementAt(currentIndex - 1)
+                    universeData3DMap.values.elementAt(currentIndex - 1)
                 } else {
                     logger.debug("No previous data")
+                    currentUniverseData3DAtPlayer
                 }
             } else {
                 logger.error("No data 3D index")
+                currentUniverseData3DAtPlayer
             }
         }
+        // set this outside of the lock to prevent dead lock
+        currentUniverseData3DAtPlayer = currentData
     }
 
     /**
      * Goto stored next universe data
      */
     suspend fun nextUniverseData3D() {
-        universeData3DMapMutex.withLock {
+        val currentData = universeData3DMapMutex.withLock {
             if (universeData3DMap.values.contains(currentUniverseData3DAtPlayer)) {
                 val currentIndex = universeData3DMap.values.indexOf(currentUniverseData3DAtPlayer)
                 if (universeData3DMap.values.indices.contains(currentIndex + 1)) {
-                    currentUniverseData3DAtPlayer = universeData3DMap.values.elementAt(currentIndex + 1)
+                    universeData3DMap.values.elementAt(currentIndex + 1)
                 } else {
                     logger.debug("No next data")
+                    currentUniverseData3DAtPlayer
                 }
             } else {
                 logger.error("No data 3D index")
+                currentUniverseData3DAtPlayer
             }
         }
+        // set this outside of lock to prevent deadlock
+        currentUniverseData3DAtPlayer = currentData
     }
 
 
@@ -350,13 +359,16 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
      * Pick universe data from map
      */
     suspend fun pickUniverseData3D(name: String) {
-        universeData3DMapMutex.withLock {
+        val currentData = universeData3DMapMutex.withLock {
             if (universeData3DMap.keys.contains(name)) {
-                currentUniverseData3DAtPlayer = universeData3DMap.getValue(name)
+                universeData3DMap.getValue(name)
             } else {
                 logger.error("Picking non existing universeData")
+                currentUniverseData3DAtPlayer
             }
         }
+        // Set this outside of lock to prevent dead lock
+        currentUniverseData3DAtPlayer = currentData
     }
 
 
