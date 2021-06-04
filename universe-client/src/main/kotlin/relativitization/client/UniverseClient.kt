@@ -397,7 +397,8 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
         val currentName = getCurrentData3DName()
         universeData3DMapMutex.withLock {
             val index: Int = universeData3DMap.keys.indexOf(currentName)
-            universeData3DMap.keys.drop(index)
+            val removeKeyList: List<String> = universeData3DMap.keys.take(index)
+            universeData3DMap.keys.removeAll { removeKeyList.contains(it) }
         }
         // trigger data change
         currentUniverseData3DAtPlayer = currentUniverseData3DAtPlayer
