@@ -6,9 +6,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import kotlinx.coroutines.runBlocking
 import org.apache.logging.log4j.LogManager
 import relativitization.game.RelativitizationGame
+import relativitization.game.ShowingInfoType
 import relativitization.game.utils.TableScreen
 
-class GdxSettingsScreen(val game: RelativitizationGame, val inGame: Boolean) : TableScreen(game.assets) {
+class GdxSettingsScreen(val game: RelativitizationGame, private val inGame: Boolean) : TableScreen(game.assets) {
     private val gdxSettings = game.gdxSettings
 
     override fun show() {
@@ -252,6 +253,76 @@ class GdxSettingsScreen(val game: RelativitizationGame, val inGame: Boolean) : T
             }
         }
         table.add(imageScaleTextField)
+
+
+        table.row().space(10f)
+
+        table.add(createLabel("Show info: ", gdxSettings.normalFontSize))
+        val showingInfoCheckBox = createCheckBox(
+            "",
+            gdxSettings.showingInfo,
+            gdxSettings.normalFontSize
+        ) { showingInfo, _ ->
+            gdxSettings.showingInfo = showingInfo
+        }
+        table.add(showingInfoCheckBox)
+
+        table.row().space(10f)
+
+        table.add(createLabel("WorldMap and Info split: ", gdxSettings.normalFontSize))
+        val worldMapAndInfoSplitAmountTextField = createTextField(
+            gdxSettings.worldMapAndInfoSplitAmount.toString(),
+            gdxSettings.normalFontSize
+        ) { worldMapAndInfoSplitAmount, _ ->
+            try {
+                gdxSettings.worldMapAndInfoSplitAmount =  worldMapAndInfoSplitAmount.toFloat()
+            } catch (e: NumberFormatException) {
+                logger.error("Invalid worldMapAndInfoSplitAmount")
+            }
+        }
+        table.add(worldMapAndInfoSplitAmountTextField)
+
+        table.row().space(10f)
+
+        table.add(createLabel("Show bottom command: ", gdxSettings.normalFontSize))
+        val showingBottomCommand = createCheckBox(
+            "",
+            gdxSettings.showingBottomCommand,
+            gdxSettings.normalFontSize
+        ) { showingBottomCommand, _ ->
+            gdxSettings.showingBottomCommand = showingBottomCommand
+        }
+        table.add(showingBottomCommand)
+
+        table.row().space(10f)
+
+        table.add(createLabel("Info and command split: ", gdxSettings.normalFontSize))
+        val upperInfoAndBottomCommandSplitAmountTextField = createTextField(
+            gdxSettings.upperInfoAndBottomCommandSplitAmount.toString(),
+            gdxSettings.normalFontSize
+        ) { upperInfoAndBottomCommandSplitAmount, _ ->
+            try {
+                gdxSettings.upperInfoAndBottomCommandSplitAmount =  upperInfoAndBottomCommandSplitAmount.toFloat()
+            } catch (e: NumberFormatException) {
+                logger.error("Invalid worldMapAndInfoSplitAmount")
+            }
+        }
+        table.add(upperInfoAndBottomCommandSplitAmountTextField)
+
+        table.row().space(10f)
+
+        table.add(createLabel("Showing info type: ", gdxSettings.normalFontSize))
+        val showingInfoTypeSelectBox = createSelectBox(
+            listOf(
+                ShowingInfoType.OVERVIEW,
+                ShowingInfoType.PHYSICS,
+            ),
+            gdxSettings.showingInfoType,
+            gdxSettings.normalFontSize
+        ) { showingInfoType, _ ->
+            gdxSettings.showingInfoType = showingInfoType
+        }
+        table.add(showingInfoTypeSelectBox)
     }
 
     companion object {
