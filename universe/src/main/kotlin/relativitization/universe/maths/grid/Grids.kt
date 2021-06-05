@@ -89,6 +89,28 @@ object Grids {
     }
 
     /**
+     * Number of edges in a cube when dividing a int4D cube into several cube to place double4D
+     */
+    fun numEdge(edgeLength: Double): Int = (1.0 / edgeLength).toInt() + 1
+
+    /**
+     * Compute the id of the cube the double4D belongs to
+     */
+    fun double4DToId(mutableDouble4D: MutableDouble4D, edgeLength: Double): Int {
+        val numEdge: Int = numEdge(edgeLength)
+
+        val xExtra: Double = mutableDouble4D.x - mutableDouble4D.x.toInt()
+        val yExtra: Double = mutableDouble4D.y - mutableDouble4D.y.toInt()
+        val zExtra: Double = mutableDouble4D.z - mutableDouble4D.z.toInt()
+
+        val xNum = (xExtra / edgeLength).toInt()
+        val yNum = (yExtra / edgeLength).toInt()
+        val zNum = (zExtra / edgeLength).toInt()
+
+        return xNum * numEdge * numEdge + yNum * numEdge + zNum
+    }
+
+    /**
      * Check if int3d is valid
      */
     fun <T> isInt3DValid(int3D: Int3D, data3D: List<List<List<T>>>): Boolean {

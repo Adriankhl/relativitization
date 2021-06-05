@@ -287,7 +287,10 @@ data class MutableUniverseData4D(
             mutablePlayerData.double4D = int4D.toMutableDouble4DCenter()
         }
 
-        playerData4D.getOrElse(mutablePlayerData.int4D.t - currentTime + tSize - 1) {
+        // get the player data list at the grid, or empty list if the coordinate is not correct
+        val playerDataList: MutableList<PlayerData> = playerData4D.getOrElse(
+            mutablePlayerData.int4D.t - currentTime + tSize - 1
+        ) {
             logger.error("Wrong int4D ${mutablePlayerData.int4D}")
             listOf()
         }.getOrElse(mutablePlayerData.int4D.x) {
@@ -299,7 +302,17 @@ data class MutableUniverseData4D(
         }.getOrElse(mutablePlayerData.int4D.z) {
             logger.error("Wrong int4D ${mutablePlayerData.int4D}")
             mutableListOf()
-        }.add(copy(mutablePlayerData))
+        }
+
+        // Default attached player id should be player id itself
+        if (mutablePlayerData.attachedPlayerId != mutablePlayerData.id) {
+            logger.debug("Default the attached player id to player id")
+        }
+
+        //
+
+        // Add player to the list
+        playerDataList.add(copy(mutablePlayerData))
     }
 
     /**
