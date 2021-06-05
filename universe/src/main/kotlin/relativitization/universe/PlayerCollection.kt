@@ -101,8 +101,8 @@ class PlayerCollection(private val xDim: Int, private val yDim: Int, private val
             // Also add afterimage
             player.int4DHistory.forEach { int4D ->
                 val oldData: PlayerData = universeData.getPlayerDataAt(int4D, player.id)
-                // change the attached id of old data to prevent attaching player with old data with recent player data
-                val modifiedOldData = oldData.copy(double4DId = oldData.id)
+                // change the group id of old data to prevent attaching player with old data with recent player data
+                val modifiedOldData = oldData.copy(groupId = oldData.id)
                 playerId3D[oldData.int4D.x] [oldData.int4D.y][oldData.int4D.z].add(modifiedOldData)
             }
         }
@@ -164,7 +164,7 @@ class PlayerCollection(private val xDim: Int, private val yDim: Int, private val
                     playerType= PlayerType.AI,
                     int4D = copy(playerData.int4D),
                     double4D = copy(playerData.double4D),
-                    double4DId = playerData.double4DId,
+                    groupId = playerData.groupId,
                     velocity = copy(playerData.velocity),
                     playerInternalData = newPlayerInternalData
                 )
@@ -243,7 +243,7 @@ class PlayerCollection(private val xDim: Int, private val yDim: Int, private val
             playerData.int4DHistory.removeAll { time - it.t > universeSettings.playerAfterImageDuration }
         }
 
-        // attach player if they are within the same cube of length 0.01
+        // group player if they are within the same cube of length 0.01
         getPlayerId3D().flatten().flatten().forEach { list ->
             val playerIdList = list.toMutableList()
             while (playerIdList.isNotEmpty()) {
@@ -255,8 +255,8 @@ class PlayerCollection(private val xDim: Int, private val yDim: Int, private val
                         0.01
                     )
                 }
-                getPlayer(playerId).double4DId = playerId
-                sameCubePlayer.forEach { id -> getPlayer(id).double4DId = playerId }
+                getPlayer(playerId).groupId = playerId
+                sameCubePlayer.forEach { id -> getPlayer(id).groupId = playerId }
                 playerIdList.remove(playerId)
                 playerIdList.removeAll { sameCubePlayer.contains(it) }
             }

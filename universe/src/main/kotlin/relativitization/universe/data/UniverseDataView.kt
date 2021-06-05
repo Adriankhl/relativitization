@@ -15,8 +15,8 @@ data class UniverseData3DAtGrid(
     val universeSettings: UniverseSettings,
 ) {
     fun idToUniverseData3DAtPlayer(): Map<Int, UniverseData3DAtPlayer> {
-        // group by attached id
-        val playerGroups: List<List<PlayerData>> = centerPlayerDataList.groupBy { it.double4DId }.values.toList()
+        // group by group id
+        val playerGroups: List<List<PlayerData>> = centerPlayerDataList.groupBy { it.groupId }.values.toList()
 
         return playerGroups.map { group ->
             val prioritizedPlayerDataMap: Map<Int, PlayerData> = group.associateBy { it2 -> it2.id }
@@ -32,7 +32,7 @@ data class UniverseData3DAtGrid(
                 mutableListOf()
             }
 
-            groupPlayerDataMap.map {
+            groupPlayerDataMap.forEach {
                 val id = it.value.id
                 val x = it.value.int4D.x
                 val y = it.value.int4D.y
@@ -40,12 +40,12 @@ data class UniverseData3DAtGrid(
                 groupPlayerId3D[x][y][z].add(id)
             }
 
-            // Group playerId in 3D grid by attachedPlayerId
+            // Group playerId in 3D grid by groupId
             val groupPlayerId3DMap: List<List<List<Map<Int, List<Int>>>>> = groupPlayerId3D.map { yList ->
                 yList.map { zList ->
                     zList.map { playerList ->
                         playerList.groupBy { playerId ->
-                            groupPlayerDataMap.getValue(playerId).double4DId
+                            groupPlayerDataMap.getValue(playerId).groupId
                         }
                     }
                 }

@@ -1,6 +1,6 @@
 # Game flow
 * (Parallel) Mechanism: Universe server modify players' data based on game mechanism, clean up eventData
-  the produced command should execute on self and attached neighbor
+  the produced command should execute on self and neighbor
 * (Parallel) Commands: universe server execute commands based on the space-time interval
 * Check: e.g. player dead, new player
 * Clean up newPlayerList stored in PlayerData
@@ -19,7 +19,7 @@
 * Can't access universe
 * Change player type based on whether it has human input
 * (Parallel) Universe server execute the self-command and neighbor-command, others are stored
-* Universe server move player by their velocity, update int4D, also update attached id by their double4D position
+* Universe server move player by their velocity, update int4D, also update group id by their double4D position
 * Universe server convert mutable data to immutable data, save latest data, drop oldest data
 
 # Command, Mechanism, AI, and Data

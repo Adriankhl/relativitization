@@ -154,9 +154,9 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
 
 
         for (id in data3D2DProjection.idList) {
-            val attachedId: Int = game.universeClient.getUniverseData3D().get(id).double4DId
+            val groupId: Int = game.universeClient.getUniverseData3D().get(id).groupId
             val int3D: Int3D = game.universeClient.getUniverseData3D().get(id).int4D.toInt3D()
-            val playerRectangle = data3D2DProjection.data3DToRectangle(int3D, attachedId, id)
+            val playerRectangle = data3D2DProjection.data3DToRectangle(int3D, groupId, id)
             println("player rectangle: $playerRectangle")
 
             val images = getPlayerImages(

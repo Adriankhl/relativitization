@@ -176,7 +176,7 @@ class Universe(private val universeData: UniverseData, saveWhenInit: Boolean = t
         val time: Int = universeData.universeState.getCurrentTime()
         val playerId3D: List<List<List<List<Int>>>> = playerCollection.getPlayerId3D()
 
-        // Mechanism process, execute produced commands on attached group, and return remaining command
+        // Mechanism process, execute produced commands on same group, and return remaining command
         val commandList: List<Command> = int3DList.pmap { int3D ->
             val viewMap = universeData.toUniverseData3DAtGrid(Int4D(time, int3D)).idToUniverseData3DAtPlayer()
 
@@ -195,14 +195,14 @@ class Universe(private val universeData: UniverseData, saveWhenInit: Boolean = t
                 commandListFromPlayer
             }.flatten()
 
-            // Differentiate the commands the should be executed immediately, e.g., self and attached player
+            // Differentiate the commands the should be executed immediately, e.g., self and same group player
             // or commands to be saved to command Map
             // In principle, this shouldn't contain self commands since they should be integrated in the mechanism process
             val (commandExecuteList, commandStoreList) = commandListAtGrid.partition {
                 val inGrid: Boolean = playerIdAtGrid.contains(it.toId)
-                val sameAttached: Boolean = (playerCollection.getPlayer(it.fromId).double4DId ==
-                        playerCollection.getPlayer(it.toId).double4DId)
-                inGrid && sameAttached
+                val sameGroup: Boolean = (playerCollection.getPlayer(it.fromId).groupId ==
+                        playerCollection.getPlayer(it.toId).groupId)
+                inGrid && sameGroup
             }
 
             // Check and execute immediate command
@@ -304,11 +304,11 @@ class Universe(private val universeData: UniverseData, saveWhenInit: Boolean = t
                 val commandFromPlayer: List<Command> = validCommand.getValue(fromId)
                 val (selfCommandList, otherCommandList) = commandFromPlayer.partition { it.toId == fromId }
 
-                val (sameAttachCommandList, commandStoreList) = otherCommandList.partition { command ->
+                val (sameGroupCommandList, commandStoreList) = otherCommandList.partition { command ->
                     val inGrid: Boolean = playerIdAtGrid.contains(command.toId)
-                    val sameAttach: Boolean = (playerCollection.getPlayer(fromId).double4DId ==
-                            playerCollection.getPlayer(command.toId).double4DId)
-                    inGrid && sameAttach
+                    val sameGroup: Boolean = (playerCollection.getPlayer(fromId).groupId ==
+                            playerCollection.getPlayer(command.toId).groupId)
+                    inGrid && sameGroup
                 }
 
                 // Execute self command
@@ -316,10 +316,10 @@ class Universe(private val universeData: UniverseData, saveWhenInit: Boolean = t
                     command.checkAndExecute(playerCollection.getPlayer(command.toId), universeData.universeSettings)
                 }
 
-                Pair(sameAttachCommandList, commandStoreList)
+                Pair(sameGroupCommandList, commandStoreList)
             }
 
-            // Execute command on attached neighbour and return remaining commands
+            // Execute command on neighbour (same group) and return remaining commands
             commandPairList.map { pair ->
                 pair.first.forEach { command ->
                     command.checkAndExecute(playerCollection.getPlayer(command.toId), universeData.universeSettings)

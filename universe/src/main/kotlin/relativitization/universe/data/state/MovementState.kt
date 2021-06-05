@@ -4,10 +4,10 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class MovementState(
-    val targetAttachId: Int = -1
+    val targetToPlayerId: Int = -1
 )
 
 @Serializable
 data class MutableMovementState(
-    var targetAttachId: Int = -1
+    var targettoPlayerId: Int = -1
 )
