@@ -254,6 +254,20 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
         table.add(playerHistoricalInt4DLengthSelectBox)
 
         table.row().space(10f)
+
+        table.add(createLabel("Group edge length", gdxSettings.normalFontSize))
+        val adminPasswordTextField = createTextField(
+            game.universeClient.generateSettings.universeSettings.groupEdgeLength.toString(),
+            gdxSettings.normalFontSize
+        ) { groupEdgeLength, _ ->
+            try {
+                game.universeClient.generateSettings.universeSettings.groupEdgeLength = groupEdgeLength.toDouble()
+            } catch (e: NumberFormatException) {
+                logger.error("Invalid group edge Length")
+            }
+        }
+
+        table.row().space(10f)
     }
 
     companion object {
