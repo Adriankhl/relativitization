@@ -102,7 +102,9 @@ class PlayerCollection(private val xDim: Int, private val yDim: Int, private val
             // Also add afterimage
             player.int4DHistory.forEach { int4D ->
                 val oldData: PlayerData = universeData.getPlayerDataAt(int4D, player.id)
-                playerId3D[oldData.int4D.x] [oldData.int4D.y][oldData.int4D.z].add(oldData)
+                // change the attached id of old data to prevent attaching player with old data with recent player data
+                val modifiedOldData = oldData.copy(attachedPlayerId = oldData.id)
+                playerId3D[oldData.int4D.x] [oldData.int4D.y][oldData.int4D.z].add(modifiedOldData)
             }
         }
 
