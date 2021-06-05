@@ -7,7 +7,6 @@ import relativitization.universe.data.UniverseData
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.UniverseState
 import relativitization.universe.data.physics.MutableVelocity
-import relativitization.universe.data.physics.Velocity
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.generate.GenerateSetting
 import relativitization.universe.generate.GenerateUniverse
@@ -58,7 +57,12 @@ class FlockingGenerate : GenerateUniverse() {
             // Use flocking ai
             playerData.playerInternalData.playerState.aiState.aiName = "FlockingAI"
 
-            data.addPlayerDataToLatest(playerData, universeState.getCurrentTime(), universeSettings.groupEdgeLength)
+            data.addPlayerDataToLatestWithAfterImage(
+                playerData,
+                universeState.getCurrentTime(),
+                universeSettings.groupEdgeLength,
+                universeSettings.playerAfterImageDuration
+            )
         }
 
         return UniverseData(

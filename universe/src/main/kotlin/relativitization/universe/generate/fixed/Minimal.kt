@@ -45,10 +45,24 @@ class Minimal : GenerateUniverse() {
         playerData2.playerInternalData.changeDirectLeaderId(playerData1.id)
         playerData1.playerInternalData.addDirectSubordinateId(playerData2.id)
 
-        data.addPlayerDataToLatest(playerData1, universeState.getCurrentTime(), universeSettings.groupEdgeLength)
-        data.addPlayerDataToLatest(playerData2, universeState.getCurrentTime(), universeSettings.groupEdgeLength)
-        data.addPlayerDataToLatest(playerData3, universeState.getCurrentTime(), universeSettings.groupEdgeLength)
-
+        data.addPlayerDataToLatestWithAfterImage(
+            playerData1,
+            universeState.getCurrentTime(),
+            universeSettings.groupEdgeLength,
+            universeSettings.playerAfterImageDuration
+        )
+        data.addPlayerDataToLatestWithAfterImage(
+            playerData2,
+            universeState.getCurrentTime(),
+            universeSettings.groupEdgeLength,
+            universeSettings.playerAfterImageDuration
+        )
+        data.addPlayerDataToLatestWithAfterImage(
+            playerData3,
+            universeState.getCurrentTime(),
+            universeSettings.groupEdgeLength,
+            universeSettings.playerAfterImageDuration
+        )
 
         return UniverseData(
             universeData4D = copy(data),

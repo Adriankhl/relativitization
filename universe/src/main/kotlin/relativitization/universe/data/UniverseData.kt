@@ -323,16 +323,22 @@ data class MutableUniverseData4D(
     }
 
     /**
-     * Add player data to data
-     * Output error log and don't do anything if the coordinate is out of bound
+     * Add player data to latest time slice, also add after image to prevent player disappearing after move
      *
      * @param mutablePlayerData the data of the player to be added
      * @param currentTime the current time of the universe, which the player data time will be changed to this time
      * @param edgeLength the length of the cube defining same group of players
      */
-    fun addPlayerDataToLatest(mutablePlayerData: MutablePlayerData, currentTime: Int, edgeLength: Double) {
-        mutablePlayerData.int4D.t = currentTime
-        addPlayerData(mutablePlayerData, currentTime, edgeLength)
+    fun addPlayerDataToLatestWithAfterImage(
+        mutablePlayerData: MutablePlayerData,
+        currentTime: Int,
+        edgeLength: Double,
+        playerAfterImageDuration: Int,
+    ) {
+        for (time in 0..playerAfterImageDuration) {
+            mutablePlayerData.int4D.t = currentTime - time
+            addPlayerData(mutablePlayerData, currentTime, edgeLength)
+        }
     }
 
 
