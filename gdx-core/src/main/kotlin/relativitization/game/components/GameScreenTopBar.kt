@@ -428,6 +428,9 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         // Set background color to blue
         table.background = assets.getBackgroundColor(0.1f, 0.1f, 0.1f, 1.0f)
 
+        scrollPane.fadeScrollBars = false
+        scrollPane.setScrollingDisabled(false, true)
+
         updateServerStatusLabels()
 
         updateCurrentUniverseDataLabel()
