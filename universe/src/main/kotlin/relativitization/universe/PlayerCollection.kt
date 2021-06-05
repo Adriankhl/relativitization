@@ -7,7 +7,6 @@ import relativitization.universe.data.physics.*
 import relativitization.universe.data.serializer.DataSerializer.copy
 import relativitization.universe.maths.grid.Grids.sameCube
 import relativitization.universe.maths.grid.Grids.create3DGrid
-import relativitization.universe.maths.physics.Intervals.distance
 import relativitization.universe.utils.RandomName.randomPlayerName
 
 class PlayerCollection(private val xDim: Int, private val yDim: Int, private val zDim: Int) {
@@ -103,7 +102,7 @@ class PlayerCollection(private val xDim: Int, private val yDim: Int, private val
             player.int4DHistory.forEach { int4D ->
                 val oldData: PlayerData = universeData.getPlayerDataAt(int4D, player.id)
                 // change the attached id of old data to prevent attaching player with old data with recent player data
-                val modifiedOldData = oldData.copy(attachedPlayerId = oldData.id)
+                val modifiedOldData = oldData.copy(double4DId = oldData.id)
                 playerId3D[oldData.int4D.x] [oldData.int4D.y][oldData.int4D.z].add(modifiedOldData)
             }
         }
@@ -164,7 +163,7 @@ class PlayerCollection(private val xDim: Int, private val yDim: Int, private val
                     name = name,
                     playerType= PlayerType.AI,
                     int4D = copy(playerData.int4D),
-                    attachedPlayerId = playerData.attachedPlayerId,
+                    double4DId = playerData.double4DId,
                     double4D = copy(playerData.double4D),
                     velocity = copy(playerData.velocity),
                     playerInternalData = newPlayerInternalData
@@ -256,8 +255,8 @@ class PlayerCollection(private val xDim: Int, private val yDim: Int, private val
                         0.01
                     )
                 }
-                getPlayer(playerId).attachedPlayerId = playerId
-                sameCubePlayer.forEach { id -> getPlayer(id).attachedPlayerId = playerId }
+                getPlayer(playerId).double4DId = playerId
+                sameCubePlayer.forEach { id -> getPlayer(id).double4DId = playerId }
                 playerIdList.remove(playerId)
                 playerIdList.removeAll { sameCubePlayer.contains(it) }
             }

@@ -200,8 +200,8 @@ class Universe(private val universeData: UniverseData, saveWhenInit: Boolean = t
             // In principle, this shouldn't contain self commands since they should be integrated in the mechanism process
             val (commandExecuteList, commandStoreList) = commandListAtGrid.partition {
                 val inGrid: Boolean = playerIdAtGrid.contains(it.toId)
-                val sameAttached: Boolean = (playerCollection.getPlayer(it.fromId).attachedPlayerId ==
-                        playerCollection.getPlayer(it.toId).attachedPlayerId)
+                val sameAttached: Boolean = (playerCollection.getPlayer(it.fromId).double4DId ==
+                        playerCollection.getPlayer(it.toId).double4DId)
                 inGrid && sameAttached
             }
 
@@ -306,8 +306,8 @@ class Universe(private val universeData: UniverseData, saveWhenInit: Boolean = t
 
                 val (sameAttachCommandList, commandStoreList) = otherCommandList.partition { command ->
                     val inGrid: Boolean = playerIdAtGrid.contains(command.toId)
-                    val sameAttach: Boolean = (playerCollection.getPlayer(fromId).attachedPlayerId ==
-                            playerCollection.getPlayer(command.toId).attachedPlayerId)
+                    val sameAttach: Boolean = (playerCollection.getPlayer(fromId).double4DId ==
+                            playerCollection.getPlayer(command.toId).double4DId)
                     inGrid && sameAttach
                 }
 

@@ -1,5 +1,6 @@
 package relativitization.universe.maths.grid
 
+import relativitization.universe.data.physics.Double4D
 import relativitization.universe.data.physics.Int3D
 import relativitization.universe.data.physics.MutableDouble4D
 
@@ -102,6 +103,23 @@ object Grids {
         val xExtra: Double = mutableDouble4D.x - mutableDouble4D.x.toInt()
         val yExtra: Double = mutableDouble4D.y - mutableDouble4D.y.toInt()
         val zExtra: Double = mutableDouble4D.z - mutableDouble4D.z.toInt()
+
+        val xNum = (xExtra / edgeLength).toInt()
+        val yNum = (yExtra / edgeLength).toInt()
+        val zNum = (zExtra / edgeLength).toInt()
+
+        return xNum * numEdge * numEdge + yNum * numEdge + zNum
+    }
+
+    /**
+     * Compute the id of the cube the double4D belongs to
+     */
+    fun double4DToId(double4D: Double4D, edgeLength: Double): Int {
+        val numEdge: Int = numEdge(edgeLength)
+
+        val xExtra: Double = double4D.x - double4D.x.toInt()
+        val yExtra: Double = double4D.y - double4D.y.toInt()
+        val zExtra: Double = double4D.z - double4D.z.toInt()
 
         val xNum = (xExtra / edgeLength).toInt()
         val yNum = (yExtra / edgeLength).toInt()

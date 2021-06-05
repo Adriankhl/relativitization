@@ -1,6 +1,5 @@
 package relativitization.game.components
 
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.Group
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
@@ -155,7 +154,7 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
 
 
         for (id in data3D2DProjection.idList) {
-            val attachedId: Int = game.universeClient.getUniverseData3D().get(id).attachedPlayerId
+            val attachedId: Int = game.universeClient.getUniverseData3D().get(id).double4DId
             val int3D: Int3D = game.universeClient.getUniverseData3D().get(id).int4D.toInt3D()
             val playerRectangle = data3D2DProjection.data3DToRectangle(int3D, attachedId, id)
             println("player rectangle: $playerRectangle")

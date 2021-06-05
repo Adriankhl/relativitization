@@ -305,7 +305,7 @@ data class MutableUniverseData4D(
         }
 
         // Default attached player id should be player id itself
-        if (mutablePlayerData.attachedPlayerId != mutablePlayerData.id) {
+        if (mutablePlayerData.double4DId != mutablePlayerData.id) {
             logger.debug("Default the attached player id to player id")
         }
 

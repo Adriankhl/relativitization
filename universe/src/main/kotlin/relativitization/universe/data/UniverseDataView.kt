@@ -16,7 +16,7 @@ data class UniverseData3DAtGrid(
 ) {
     fun idToUniverseData3DAtPlayer(): Map<Int, UniverseData3DAtPlayer> {
         // group by attached id
-        val playerGroups: List<List<PlayerData>> = centerPlayerDataList.groupBy { it.attachedPlayerId }.values.toList()
+        val playerGroups: List<List<PlayerData>> = centerPlayerDataList.groupBy { it.double4DId }.values.toList()
 
         return playerGroups.map { group ->
             val prioritizedPlayerDataMap: Map<Int, PlayerData> = group.associateBy { it2 -> it2.id }
@@ -45,7 +45,7 @@ data class UniverseData3DAtGrid(
                 yList.map { zList ->
                     zList.map { playerList ->
                         playerList.groupBy { playerId ->
-                            groupPlayerDataMap.getValue(playerId).attachedPlayerId
+                            groupPlayerDataMap.getValue(playerId).double4DId
                         }
                     }
                 }
