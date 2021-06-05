@@ -111,6 +111,14 @@ object Grids {
     }
 
     /**
+     * The maximum id of the double 4D
+     */
+    fun maxDouble4DtoId(edgeLength: Double): Int {
+        val numEdge = numEdge(edgeLength)
+        return numEdge * numEdge * numEdge - 1
+    }
+
+    /**
      * Check if int3d is valid
      */
     fun <T> isInt3DValid(int3D: Int3D, data3D: List<List<List<T>>>): Boolean {
