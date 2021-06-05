@@ -4,8 +4,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class PhysicsData(
-    val double4D: Double4D = Double4D(-1.0, -1.0, -1.0, -1.0),
-    val velocity: Velocity = Velocity(0.0, 0.0, 0.0),
     val restMass: Double = 1.0,
     val energy: Double = 1.0,
     val moveEnergyEfficiency: Double = 1.0,

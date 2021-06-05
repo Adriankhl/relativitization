@@ -7,10 +7,14 @@ import relativitization.universe.data.economy.EconomyData
 import relativitization.universe.data.economy.MutableEconomyData
 import relativitization.universe.data.events.EventData
 import relativitization.universe.data.events.MutableEventData
+import relativitization.universe.data.physics.Double4D
 import relativitization.universe.data.physics.Int4D
+import relativitization.universe.data.physics.MutableDouble4D
 import relativitization.universe.data.physics.MutableInt4D
 import relativitization.universe.data.physics.MutablePhysicsData
+import relativitization.universe.data.physics.MutableVelocity
 import relativitization.universe.data.physics.PhysicsData
+import relativitization.universe.data.physics.Velocity
 import relativitization.universe.data.politics.MutablePoliticsData
 import relativitization.universe.data.politics.PoliticsData
 import relativitization.universe.data.popsystems.MutablePopSystemicData
@@ -39,6 +43,8 @@ data class PlayerData(
     val int4D: Int4D = Int4D(0, 0, 0, 0),
     val attachedPlayerId: Int = id,
     val int4DHistory: List<Int4D> = listOf(),
+    val double4D: Double4D = Double4D(-1.0, -1.0, -1.0, -1.0),
+    val velocity: Velocity = Velocity(0.0, 0.0, 0.0),
     val playerInternalData: PlayerInternalData = PlayerInternalData(),
     val newPlayerList: List<PlayerInternalData> = listOf()
 ) {
@@ -72,6 +78,8 @@ data class MutablePlayerData(
     var int4D: MutableInt4D = MutableInt4D(0, 0, 0, 0),
     var attachedPlayerId: Int = id,
     val int4DHistory: MutableList<Int4D> = mutableListOf(),
+    var double4D: MutableDouble4D = MutableDouble4D(-1.0, -1.0, -1.0, -1.0),
+    var velocity: MutableVelocity = MutableVelocity(0.0, 0.0, 0.0),
     var playerInternalData: MutablePlayerInternalData = MutablePlayerInternalData(),
     val newPlayerList: MutableList<MutablePlayerInternalData> = mutableListOf()
 ) {

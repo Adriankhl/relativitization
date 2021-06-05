@@ -31,7 +31,7 @@ class FlockingAI : AI() {
 
         val weightedDouble3D = cohesionDouble3D * 1.0 + alignmentDouble3D * 1.0 + separationDouble3D * 2.0 + avoidBoundaryDouble3D * 10.0
 
-        val originalVelocity = universeData3DAtPlayer.getCurrentPlayerData().playerInternalData.physicsData.velocity
+        val originalVelocity = universeData3DAtPlayer.getCurrentPlayerData().velocity
 
         // Constant velocity 0.5
         val targetVelocity: Velocity = Velocity(
@@ -53,9 +53,9 @@ class FlockingAI : AI() {
     }
 
     private fun cohesion(universeData3DAtPlayer: UniverseData3DAtPlayer, radius: Double): Double3D {
-        val selfDouble4D = universeData3DAtPlayer.getCurrentPlayerData().playerInternalData.physicsData.double4D
+        val selfDouble4D = universeData3DAtPlayer.getCurrentPlayerData().double4D
         val nearByPlayerData: List<PlayerData> = universeData3DAtPlayer.playerDataMap.values.filter {
-            val otherDouble4D = it.playerInternalData.physicsData.double4D
+            val otherDouble4D = it.double4D
             distance(selfDouble4D, otherDouble4D) < radius && (it.id != universeData3DAtPlayer.getCurrentPlayerData().id)
         }
 
@@ -63,15 +63,15 @@ class FlockingAI : AI() {
             Double3D(0.0, 0.0, 0.0)
         } else {
             val avgX: Double = nearByPlayerData.fold(0.0) { acc, playerData ->
-                acc + playerData.playerInternalData.physicsData.double4D.x
+                acc + playerData.double4D.x
             } / nearByPlayerData.size.toDouble()
 
             val avgY: Double = nearByPlayerData.fold(0.0) { acc, playerData ->
-                acc + playerData.playerInternalData.physicsData.double4D.y
+                acc + playerData.double4D.y
             } / nearByPlayerData.size.toDouble()
 
             val avgZ: Double = nearByPlayerData.fold(0.0) { acc, playerData ->
-                acc + playerData.playerInternalData.physicsData.double4D.z
+                acc + playerData.double4D.z
             } / nearByPlayerData.size.toDouble()
 
             Double3D(avgX - selfDouble4D.x, avgY - selfDouble4D.y, avgZ - selfDouble4D.z)
@@ -79,9 +79,9 @@ class FlockingAI : AI() {
     }
 
     private fun alignment(universeData3DAtPlayer: UniverseData3DAtPlayer, radius: Double): Double3D {
-        val selfDouble4D = universeData3DAtPlayer.getCurrentPlayerData().playerInternalData.physicsData.double4D
+        val selfDouble4D = universeData3DAtPlayer.getCurrentPlayerData().double4D
         val nearByPlayerData: List<PlayerData> = universeData3DAtPlayer.playerDataMap.values.filter {
-            val otherDouble4D = it.playerInternalData.physicsData.double4D
+            val otherDouble4D = it.double4D
             distance(selfDouble4D, otherDouble4D) < radius && (it.id != universeData3DAtPlayer.getCurrentPlayerData().id)
         }
 
@@ -90,15 +90,15 @@ class FlockingAI : AI() {
             Double3D(0.0, 0.0, 0.0)
         } else {
             val avgX: Double = nearByPlayerData.fold(0.0) { acc, playerData ->
-                acc + playerData.playerInternalData.physicsData.velocity.vx
+                acc + playerData.velocity.vx
             } / nearByPlayerData.size.toDouble()
 
             val avgY: Double = nearByPlayerData.fold(0.0) { acc, playerData ->
-                acc + playerData.playerInternalData.physicsData.velocity.vy
+                acc + playerData.velocity.vy
             } / nearByPlayerData.size.toDouble()
 
             val avgZ: Double = nearByPlayerData.fold(0.0) { acc, playerData ->
-                acc + playerData.playerInternalData.physicsData.velocity.vz
+                acc + playerData.velocity.vz
             } / nearByPlayerData.size.toDouble()
 
             Double3D(avgX, avgY, avgZ)
@@ -106,9 +106,9 @@ class FlockingAI : AI() {
     }
 
     private fun separation(universeData3DAtPlayer: UniverseData3DAtPlayer, desiredSeparation: Double): Double3D {
-        val selfDouble4D = universeData3DAtPlayer.getCurrentPlayerData().playerInternalData.physicsData.double4D
+        val selfDouble4D = universeData3DAtPlayer.getCurrentPlayerData().double4D
         val nearByPlayerData: List<PlayerData> = universeData3DAtPlayer.playerDataMap.values.filter {
-            val otherDouble4D = it.playerInternalData.physicsData.double4D
+            val otherDouble4D = it.double4D
             val distance = distance(selfDouble4D, otherDouble4D)
             (distance < desiredSeparation) && (distance > 0.0) && (it.id != universeData3DAtPlayer.getCurrentPlayerData().id)
         }
@@ -117,7 +117,7 @@ class FlockingAI : AI() {
             Double3D(0.0, 0.0, 0.0)
         } else {
             val avgX: Double = nearByPlayerData.fold(0.0) { acc, playerData ->
-                val otherDouble4D = playerData.playerInternalData.physicsData.double4D
+                val otherDouble4D = playerData.double4D
                 val distance = distance(selfDouble4D, otherDouble4D)
                 val double3D = Double3D(
                     selfDouble4D.x - otherDouble4D.x,
@@ -128,7 +128,7 @@ class FlockingAI : AI() {
             } / nearByPlayerData.size.toDouble()
 
             val avgY: Double = nearByPlayerData.fold(0.0) { acc, playerData ->
-                val otherDouble4D = playerData.playerInternalData.physicsData.double4D
+                val otherDouble4D = playerData.double4D
                 val distance = distance(selfDouble4D, otherDouble4D)
                 val double3D = Double3D(
                     selfDouble4D.x - otherDouble4D.x,
@@ -139,7 +139,7 @@ class FlockingAI : AI() {
             } / nearByPlayerData.size.toDouble()
 
             val avgZ: Double = nearByPlayerData.fold(0.0) { acc, playerData ->
-                val otherDouble4D = playerData.playerInternalData.physicsData.double4D
+                val otherDouble4D = playerData.double4D
                 val distance = distance(selfDouble4D, otherDouble4D)
                 val double3D = Double3D(
                     selfDouble4D.x - otherDouble4D.x,
@@ -154,7 +154,7 @@ class FlockingAI : AI() {
     }
 
     private fun avoidBoundary(universeData3DAtPlayer: UniverseData3DAtPlayer): Double3D {
-        val selfDouble4D = universeData3DAtPlayer.getCurrentPlayerData().playerInternalData.physicsData.double4D
+        val selfDouble4D = universeData3DAtPlayer.getCurrentPlayerData().double4D
 
         val xComp = when {
             selfDouble4D.x < 0.1 -> {

@@ -104,7 +104,7 @@ object PlayerImage {
     private fun rotationByVelocity(
         playerData: PlayerData
     ): Float {
-        val velocity = playerData.playerInternalData.physicsData.velocity
+        val velocity = playerData.velocity
         val maxComponent: Pair<Char, Double> = velocity.maxComponent()
         val magMaxComponent: Double = maxComponent.second
 

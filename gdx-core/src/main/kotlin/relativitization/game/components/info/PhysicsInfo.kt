@@ -57,17 +57,17 @@ class PhysicsInfo(
     }
 
     private val targetVelocityXTextField = createTextField(
-        "${playerData.playerInternalData.physicsData.velocity.vx}".take(6),
+        "${playerData.velocity.vx}".take(6),
         gdxSettings.smallFontSize
     )
 
     private val targetVelocityYTextField = createTextField(
-        "${playerData.playerInternalData.physicsData.velocity.vy}".take(6),
+        "${playerData.velocity.vy}".take(6),
         gdxSettings.smallFontSize
     )
 
     private val targetVelocityZTextField = createTextField(
-        "${playerData.playerInternalData.physicsData.velocity.vz}".take(6),
+        "${playerData.velocity.vz}".take(6),
         gdxSettings.smallFontSize
     )
 
@@ -99,7 +99,7 @@ class PhysicsInfo(
         val targetInt3D: Int3D = game.universeClient.primarySelectedInt3D
 
         val targetVelocity = targetVelocity(
-            playerData.playerInternalData.physicsData.double4D.toDouble3D(),
+            playerData.double4D.toDouble3D(),
             targetInt3D.toDouble3DCenter(),
             game.universeClient.getUniverseData3D().universeSettings.speedOfLight
         )
@@ -114,10 +114,10 @@ class PhysicsInfo(
 
             val targetDouble3D: Double3D = game.universeClient.getUniverseData3D().get(
                 game.universeClient.newSelectedPlayerId
-            ).playerInternalData.physicsData.double4D.toDouble3D()
+            ).double4D.toDouble3D()
 
             val targetVelocity = targetVelocity(
-                playerData.playerInternalData.physicsData.double4D.toDouble3D(),
+                playerData.double4D.toDouble3D(),
                 targetDouble3D,
                 game.universeClient.getUniverseData3D().universeSettings.speedOfLight
             )
@@ -197,7 +197,7 @@ class PhysicsInfo(
         val nestedTable: Table = Table()
 
         val double4DTLabel = createLabel(
-            "t: ${playerData.playerInternalData.physicsData.double4D.t.toString().take(6)}",
+            "t: ${playerData.double4D.t.toString().take(6)}",
             gdxSettings.smallFontSize
         )
 
@@ -205,21 +205,21 @@ class PhysicsInfo(
 
 
         val double4DXLabel = createLabel(
-            "x: ${playerData.playerInternalData.physicsData.double4D.x.toString().take(6)}",
+            "x: ${playerData.double4D.x.toString().take(6)}",
             gdxSettings.smallFontSize
         )
 
         nestedTable.add(double4DXLabel).space(10f)
 
         val double4DYLabel = createLabel(
-            "y: ${playerData.playerInternalData.physicsData.double4D.y.toString().take(6)}",
+            "y: ${playerData.double4D.y.toString().take(6)}",
             gdxSettings.smallFontSize
         )
 
         nestedTable.add(double4DYLabel).space(10f)
 
         val double4DZLabel = createLabel(
-            "z: ${playerData.playerInternalData.physicsData.double4D.z.toString().take(6)}",
+            "z: ${playerData.double4D.z.toString().take(6)}",
             gdxSettings.smallFontSize
         )
 
@@ -232,7 +232,7 @@ class PhysicsInfo(
         val nestedTable: Table = Table()
 
         val velocityXLabel = createLabel(
-            "vx: ${playerData.playerInternalData.physicsData.velocity.vx.toString().take(6)}",
+            "vx: ${playerData.velocity.vx.toString().take(6)}",
             gdxSettings.smallFontSize
         )
 
@@ -240,14 +240,14 @@ class PhysicsInfo(
 
 
         val velocityYLabel = createLabel(
-            "vy: ${playerData.playerInternalData.physicsData.velocity.vy.toString().take(6)}",
+            "vy: ${playerData.velocity.vy.toString().take(6)}",
             gdxSettings.smallFontSize
         )
 
         nestedTable.add(velocityYLabel).space(10f)
 
         val velocityZLabel = createLabel(
-            "vz: ${playerData.playerInternalData.physicsData.velocity.vz.toString().take(6)}",
+            "vz: ${playerData.velocity.vz.toString().take(6)}",
             gdxSettings.smallFontSize
         )
 
