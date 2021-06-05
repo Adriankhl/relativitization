@@ -12,8 +12,6 @@ data class PhysicsData(
 
 @Serializable
 data class MutablePhysicsData(
-    var double4D: MutableDouble4D = MutableDouble4D(-1.0, -1.0, -1.0, -1.0),
-    var velocity: MutableVelocity = MutableVelocity(0.0, 0.0, 0.0),
     var restMass: Double = 1.0,
     var energy: Double = 1.0,
     var moveEnergyEfficiency: Double = 1.0,

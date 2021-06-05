@@ -53,7 +53,7 @@ class FlockingGenerate : GenerateUniverse() {
             val vz = Random.Default.nextDouble(-1.0, 1.0)
 
             // Constant velocity 0.5
-            playerData.playerInternalData.physicsData.velocity = MutableVelocity(vx, vy, vz).scaleVelocity(0.5)
+            playerData.velocity = MutableVelocity(vx, vy, vz).scaleVelocity(0.5)
 
             // Use flocking ai
             playerData.playerInternalData.playerState.aiState.aiName = "FlockingAI"

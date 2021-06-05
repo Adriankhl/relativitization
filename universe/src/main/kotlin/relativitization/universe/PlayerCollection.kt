@@ -152,9 +152,6 @@ class PlayerCollection(private val xDim: Int, private val yDim: Int, private val
         playerMap.forEach { (_, playerData) ->
             playerData.newPlayerList.forEach { mutableNewPlayerInternalData ->
 
-                // Copy parent double4D to ensure same location
-                mutableNewPlayerInternalData.physicsData.double4D = copy(playerData.playerInternalData.physicsData.double4D)
-
                 val newPlayerInternalData: PlayerInternalData = copy(mutableNewPlayerInternalData)
                 val id: Int = runBlocking {
                     universeState.getNewId()
@@ -166,6 +163,8 @@ class PlayerCollection(private val xDim: Int, private val yDim: Int, private val
                     playerType= PlayerType.AI,
                     int4D = copy(playerData.int4D),
                     attachedPlayerId = playerData.attachedPlayerId,
+                    double4D = copy(playerData.double4D),
+                    velocity = copy(playerData.velocity),
                     playerInternalData = newPlayerInternalData
                 )
                 addPlayer(newPlayerData)
@@ -189,40 +188,40 @@ class PlayerCollection(private val xDim: Int, private val yDim: Int, private val
 
         // Move player double4D by velocity
         for ((_, playerData) in playerMap) {
-            val velocity: MutableVelocity = playerData.playerInternalData.physicsData.velocity
-            playerData.playerInternalData.physicsData.double4D.t = timeDouble
-            playerData.playerInternalData.physicsData.double4D.x += velocity.vx
-            playerData.playerInternalData.physicsData.double4D.y += velocity.vy
-            playerData.playerInternalData.physicsData.double4D.z += velocity.vz
+            val velocity: MutableVelocity = playerData.velocity
+            playerData.double4D.t = timeDouble
+            playerData.double4D.x += velocity.vx
+            playerData.double4D.y += velocity.vy
+            playerData.double4D.z += velocity.vz
 
             // Check boundaries and ensure double 4D is within boundaries
-            if (playerData.playerInternalData.physicsData.double4D.x <= 0.0 ) {
-                playerData.playerInternalData.physicsData.double4D.x = 0.001
+            if (playerData.double4D.x <= 0.0 ) {
+                playerData.double4D.x = 0.001
             }
 
-            if (playerData.playerInternalData.physicsData.double4D.x >= universeSettings.xDim.toDouble() ) {
-                playerData.playerInternalData.physicsData.double4D.x = universeSettings.xDim.toDouble() - 0.001
+            if (playerData.double4D.x >= universeSettings.xDim.toDouble() ) {
+                playerData.double4D.x = universeSettings.xDim.toDouble() - 0.001
             }
 
-            if (playerData.playerInternalData.physicsData.double4D.y <= 0.0 ) {
-                playerData.playerInternalData.physicsData.double4D.y = 0.001
+            if (playerData.double4D.y <= 0.0 ) {
+                playerData.double4D.y = 0.001
             }
 
-            if (playerData.playerInternalData.physicsData.double4D.y >= universeSettings.yDim.toDouble() ) {
-                playerData.playerInternalData.physicsData.double4D.y = universeSettings.yDim.toDouble() - 0.001
+            if (playerData.double4D.y >= universeSettings.yDim.toDouble() ) {
+                playerData.double4D.y = universeSettings.yDim.toDouble() - 0.001
             }
 
-            if (playerData.playerInternalData.physicsData.double4D.z <= 0.0 ) {
-                playerData.playerInternalData.physicsData.double4D.z = 0.001
+            if (playerData.double4D.z <= 0.0 ) {
+                playerData.double4D.z = 0.001
             }
 
-            if (playerData.playerInternalData.physicsData.double4D.z >= universeSettings.zDim.toDouble() ) {
-                playerData.playerInternalData.physicsData.double4D.z = universeSettings.zDim.toDouble() - 0.001
+            if (playerData.double4D.z >= universeSettings.zDim.toDouble() ) {
+                playerData.double4D.z = universeSettings.zDim.toDouble() - 0.001
             }
         }
 
         for ((_, playerData) in playerMap) {
-            val double4D: MutableDouble4D = playerData.playerInternalData.physicsData.double4D
+            val double4D: MutableDouble4D = playerData.double4D
             val oldInt4D: Int4D = Int4D(playerData.int4D)
 
             // Move player int4D by double4D
@@ -250,8 +249,8 @@ class PlayerCollection(private val xDim: Int, private val yDim: Int, private val
                 val playerId = playerIdList.first()
                 val sameCubePlayer: List<Int> = playerIdList.filter { id ->
                     sameCube(
-                        getPlayer(playerId).playerInternalData.physicsData.double4D,
-                        getPlayer(id).playerInternalData.physicsData.double4D,
+                        getPlayer(playerId).double4D,
+                        getPlayer(id).double4D,
                         0.01
                     )
                 }
@@ -262,7 +261,6 @@ class PlayerCollection(private val xDim: Int, private val yDim: Int, private val
             }
         }
     }
-
 
     companion object {
         private val logger = LogManager.getLogger()
