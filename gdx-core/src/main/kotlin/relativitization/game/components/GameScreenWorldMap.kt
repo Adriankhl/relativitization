@@ -17,8 +17,8 @@ import kotlin.math.min
 class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.assets) {
     private val gdxSettings = game.gdxSettings
 
-    private val group: Group = Group()
-    private val scrollPane: ScrollPane = createScrollPane(group)
+    private val allImageGroup: Group = Group()
+    private val scrollPane: ScrollPane = createScrollPane(allImageGroup)
     private var data3D2DProjection: Data3D2DProjection = update3D2DProjection()
 
     private var oldActualZoom: Float = 1.0f
@@ -95,7 +95,7 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
     }
 
     private fun clear() {
-        group.clear()
+        allImageGroup.clear()
         selectSquare.clear()
         selectCircle.clear()
         playerSquareActorMap.clear()
@@ -124,7 +124,7 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
 
     private fun updateGroup() {
         clear()
-        group.setSize(
+        allImageGroup.setSize(
             data3D2DProjection.width.toFloat() * actualZoom(),
             data3D2DProjection.height.toFloat() * actualZoom()
         )
@@ -146,7 +146,7 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
                     ) {
                         game.universeClient.primarySelectedInt3D = Int3D(x, y, z)
                     }
-                    group.addActor(image)
+                    allImageGroup.addActor(image)
                     int3DActorMap[Int3D(x, y, z)] = image
                 }
             }
@@ -171,11 +171,11 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
                 game.universeClient.newSelectedPlayerId = id
             }
 
-            images.forEach { group.addActor(it) }
+            images.forEach { allImageGroup.addActor(it) }
             playerSquareActorMap[id] = images.last()
         }
 
-        scrollPane.actor = group
+        scrollPane.actor = allImageGroup
 
         drawSelected()
     }
@@ -204,7 +204,7 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
                 1.0f,
                 gdxSettings.soundEffectsVolume
             )
-            group.addActorBefore(image, square)
+            allImageGroup.addActorBefore(image, square)
             selectSquare[int3D] = square
         }
 
@@ -224,7 +224,7 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
                         1.0f,
                         gdxSettings.soundEffectsVolume
                     )
-                    group.addActorBefore(image, circle)
+                    allImageGroup.addActorBefore(image, circle)
                     selectCircle[id] = circle
                 } else {
                     val image = playerSquareActorMap.getValue(id)
@@ -240,7 +240,7 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
                         1.0f,
                         gdxSettings.soundEffectsVolume
                     )
-                    group.addActorBefore(image, circle)
+                    allImageGroup.addActorBefore(image, circle)
                     selectCircle[id] = circle
                 }
             }
@@ -251,7 +251,7 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
      * Clear selected int3d
      */
     private fun clearAllSelectedInt3D() {
-        selectSquare.forEach { group.removeActor(it.value) }
+        selectSquare.forEach { allImageGroup.removeActor(it.value) }
         selectSquare.clear()
     }
 
@@ -260,7 +260,7 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
      * Clear all selected player
      */
     private fun clearAllSelectedPlayer() {
-        selectCircle.forEach { group.removeActor(it.value) }
+        selectCircle.forEach { allImageGroup.removeActor(it.value) }
         selectCircle.clear()
     }
 
@@ -274,7 +274,7 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
             val imageCenterY: Float = image.getY(Align.center)
             scrollPane.scrollX = imageCenterX - scrollPane.scrollWidth / 2
             // The y position of scroll bar is inverse to that in the projected coordinate
-            scrollPane.scrollY = group.height - imageCenterY - scrollPane.scrollHeight / 2
+            scrollPane.scrollY = allImageGroup.height - imageCenterY - scrollPane.scrollHeight / 2
             logger.debug("scroll to: x = ${scrollPane.scrollX}, y = ${scrollPane.scrollY}")
         } else {
             logger.debug("Scroll fail, no player id: $id in world map")

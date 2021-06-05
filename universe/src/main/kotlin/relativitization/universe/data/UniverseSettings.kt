@@ -30,6 +30,7 @@ data class UniverseSettings(
     val zDim: Int = 2,
     val playerAfterImageDuration: Int = 4,
     val playerHistoricalInt4DLength: Int = 4,
+    val groupEdgeLength: Double = 0.010001,
     val otherSettings: Map<String, String> = mapOf(),
 ) {
     private fun isTDimBigEnough(): Boolean {
@@ -61,5 +62,6 @@ data class MutableUniverseSettings(
     var zDim: Int = 2,
     var playerAfterImageDuration: Int = 4,
     var playerHistoricalInt4DLength: Int = 4,
+    var groupEdgeLength: Double = 0.010001,
     var otherSettings: MutableMap<String, String> = mutableMapOf()
 )
