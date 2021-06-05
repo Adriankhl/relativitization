@@ -277,6 +277,10 @@ data class MutableUniverseData4D(
     /**
      * Add player data to data
      * Output error log and don't do anything if the coordinate is out of bound
+     *
+     * @param mutablePlayerData the player data to be added
+     * @param currentTime the current time of the universe, the player data is added to the grid relative to this time
+     * @param edgeLength the length of the cube defining same group of players
      */
     fun addPlayerData(mutablePlayerData: MutablePlayerData, currentTime: Int, edgeLength: Double) {
         val tSize: Int = playerData4D.size
@@ -320,6 +324,8 @@ data class MutableUniverseData4D(
      * Output error log and don't do anything if the coordinate is out of bound
      *
      * @param mutablePlayerData the data of the player to be added
+     * @param currentTime the current time of the universe, which the player data time will be changed to this time
+     * @param edgeLength the length of the cube defining same group of players
      */
     fun addPlayerDataToLatest(mutablePlayerData: MutablePlayerData, currentTime: Int, edgeLength: Double) {
         mutablePlayerData.int4D.t = currentTime
