@@ -43,7 +43,7 @@ data class PlayerData(
     val int4D: Int4D = Int4D(0, 0, 0, 0),
     val attachedPlayerId: Int = id,
     val int4DHistory: List<Int4D> = listOf(),
-    val double4D: Double4D = Double4D(-1.0, -1.0, -1.0, -1.0),
+    val double4D: Double4D = int4D.toDouble4D(),
     val velocity: Velocity = Velocity(0.0, 0.0, 0.0),
     val playerInternalData: PlayerInternalData = PlayerInternalData(),
     val newPlayerList: List<PlayerInternalData> = listOf()
@@ -78,7 +78,7 @@ data class MutablePlayerData(
     var int4D: MutableInt4D = MutableInt4D(0, 0, 0, 0),
     var attachedPlayerId: Int = id,
     val int4DHistory: MutableList<Int4D> = mutableListOf(),
-    var double4D: MutableDouble4D = MutableDouble4D(-1.0, -1.0, -1.0, -1.0),
+    var double4D: MutableDouble4D = int4D.toMutableDouble4D(),
     var velocity: MutableVelocity = MutableVelocity(0.0, 0.0, 0.0),
     var playerInternalData: MutablePlayerInternalData = MutablePlayerInternalData(),
     val newPlayerList: MutableList<MutablePlayerInternalData> = mutableListOf()
