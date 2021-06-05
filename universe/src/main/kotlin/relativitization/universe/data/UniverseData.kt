@@ -284,7 +284,7 @@ data class MutableUniverseData4D(
         val int4D = mutablePlayerData.int4D
         if (!mutablePlayerData.double4D.atInt4D(int4D)) {
             logger.debug("Add player: force changing new player double4D")
-            mutablePlayerData.double4D = int4D.toMutableDouble4D()
+            mutablePlayerData.double4D = int4D.toMutableDouble4DCenter()
         }
 
         playerData4D.getOrElse(mutablePlayerData.int4D.t - currentTime + tSize - 1) {
