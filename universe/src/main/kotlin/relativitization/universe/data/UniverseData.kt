@@ -318,6 +318,8 @@ data class MutableUniverseData4D(
     /**
      * Add player data to data
      * Output error log and don't do anything if the coordinate is out of bound
+     *
+     * @param mutablePlayerData the data of the player to be added
      */
     fun addPlayerDataToLatest(mutablePlayerData: MutablePlayerData, currentTime: Int, edgeLength: Double) {
         mutablePlayerData.int4D.t = currentTime

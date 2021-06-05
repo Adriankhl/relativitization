@@ -9,5 +9,5 @@ data class MovementState(
 
 @Serializable
 data class MutableMovementState(
-    var targettoPlayerId: Int = -1
+    var targetToPlayerId: Int = -1
 )
