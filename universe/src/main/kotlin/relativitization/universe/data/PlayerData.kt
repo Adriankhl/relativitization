@@ -163,4 +163,14 @@ data class MutablePlayerInternalData(
     var diplomacyData: MutableDiplomacyData = MutableDiplomacyData(),
     var economyData: MutableEconomyData = MutableEconomyData(),
     var playerState: MutablePlayerState = MutablePlayerState(),
-)
+) {
+    fun changeDirectLeaderId(id: Int) {
+        directLeaderId = id
+        leaderIdList.add(id)
+    }
+
+    fun addDirectSubordinateId(id: Int) {
+        directSubordinateIdList.add(id)
+        subordinateIdList.add(id)
+    }
+}

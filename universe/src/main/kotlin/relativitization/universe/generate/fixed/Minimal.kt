@@ -42,6 +42,8 @@ class Minimal : GenerateUniverse() {
         playerData3.playerInternalData.physicsData.energy = 300.0
 
         // player 1 is a leader of player 2
+        playerData2.playerInternalData.changeDirectLeaderId(playerData1.id)
+        playerData1.playerInternalData.addDirectSubordinateId(playerData2.id)
 
         data.addPlayerDataToLatest(playerData1, universeState.getCurrentTime(), universeSettings.groupEdgeLength)
         data.addPlayerDataToLatest(playerData2, universeState.getCurrentTime(), universeSettings.groupEdgeLength)
