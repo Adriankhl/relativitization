@@ -74,6 +74,8 @@ class BottomCommandInfo(val game: RelativitizationGame) : ScreenComponent<Scroll
     init {
         table.background = assets.getBackgroundColor(0.2f, 0.2f, 0.2f, 1.0f)
 
+        scrollPane.setScrollingDisabled(true, false)
+
         update()
 
         table.add(createHeaderTable()).spaceTop(10f)

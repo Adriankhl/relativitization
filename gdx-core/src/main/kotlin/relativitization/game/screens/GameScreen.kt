@@ -75,8 +75,6 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
         // Adjust split pane position from gdx setting
         worldMapAndInfo.splitAmount = gdxSettings.worldMapAndInfoSplitAmount
 
-        // Add all screen component to universe client
-
         // Fix minimal top Bar height to preferred height
         root.add(topBar.getScreenComponent()).growX().top().minHeight(topBar.getScreenComponent().prefHeight)
 
