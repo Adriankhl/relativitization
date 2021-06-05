@@ -198,27 +198,27 @@ class PlayerCollection(private val xDim: Int, private val yDim: Int, private val
 
             // Check boundaries and ensure double 4D is within boundaries
             if (playerData.double4D.x <= 0.0 ) {
-                playerData.double4D.x = 0.001
+                playerData.double4D.x = 0.000001
             }
 
             if (playerData.double4D.x >= universeSettings.xDim.toDouble() ) {
-                playerData.double4D.x = universeSettings.xDim.toDouble() - 0.001
+                playerData.double4D.x = universeSettings.xDim.toDouble() - 0.000001
             }
 
             if (playerData.double4D.y <= 0.0 ) {
-                playerData.double4D.y = 0.001
+                playerData.double4D.y = 0.000001
             }
 
             if (playerData.double4D.y >= universeSettings.yDim.toDouble() ) {
-                playerData.double4D.y = universeSettings.yDim.toDouble() - 0.001
+                playerData.double4D.y = universeSettings.yDim.toDouble() - 0.000001
             }
 
             if (playerData.double4D.z <= 0.0 ) {
-                playerData.double4D.z = 0.001
+                playerData.double4D.z = 0.000001
             }
 
             if (playerData.double4D.z >= universeSettings.zDim.toDouble() ) {
-                playerData.double4D.z = universeSettings.zDim.toDouble() - 0.001
+                playerData.double4D.z = universeSettings.zDim.toDouble() - 0.000001
             }
         }
 
