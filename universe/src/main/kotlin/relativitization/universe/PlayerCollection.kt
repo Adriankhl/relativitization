@@ -5,6 +5,7 @@ import org.apache.logging.log4j.LogManager
 import relativitization.universe.data.*
 import relativitization.universe.data.physics.*
 import relativitization.universe.data.serializer.DataSerializer.copy
+import relativitization.universe.maths.grid.Grids.maxDouble4DtoId
 import relativitization.universe.maths.grid.Grids.double4DToId
 import relativitization.universe.maths.grid.Grids.sameCube
 import relativitization.universe.maths.grid.Grids.create3DGrid
@@ -108,7 +109,7 @@ class PlayerCollection(
             player.int4DHistory.forEach { int4D ->
                 val oldData: PlayerData = universeData.getPlayerDataAt(int4D, player.id)
                 // change the group id of old data to prevent attaching player with old data with recent player data
-                val modifiedOldData = oldData.copy(groupId = oldData.id)
+                val modifiedOldData = oldData.copy(groupId = oldData.id + maxDouble4DtoId(edgeLength))
                 playerId3D[oldData.int4D.x] [oldData.int4D.y][oldData.int4D.z].add(modifiedOldData)
             }
         }
