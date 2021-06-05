@@ -430,6 +430,8 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
 
         scrollPane.fadeScrollBars = false
         scrollPane.setScrollingDisabled(false, true)
+        scrollPane.setClamp(true)
+        scrollPane.setOverscroll(false, false)
 
         updateServerStatusLabels()
 

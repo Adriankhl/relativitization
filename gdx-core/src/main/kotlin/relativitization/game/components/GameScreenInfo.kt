@@ -29,7 +29,8 @@ class GameScreenInfo(val game: RelativitizationGame) : ScreenComponent<SplitPane
 
         // Set background color
         upperInfoScrollPane.fadeScrollBars = false
-        upperInfoScrollPane.setFlickScroll(true)
+        upperInfoScrollPane.setClamp(true)
+        upperInfoScrollPane.setOverscroll(false, false)
 
         infoAndCommand.splitAmount = gdxSettings.upperInfoAndBottomCommandSplitAmount
     }

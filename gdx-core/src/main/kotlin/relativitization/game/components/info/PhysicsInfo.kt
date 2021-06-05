@@ -13,14 +13,11 @@ import relativitization.universe.data.physics.Int3D
 import relativitization.universe.data.physics.Velocity
 import relativitization.universe.maths.physics.Intervals.targetVelocity
 
-class PhysicsInfo(
-    val game: RelativitizationGame,
-) : ScreenComponent<ScrollPane>(game.assets) {
+class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.assets) {
 
     private val gdxSettings = game.gdxSettings
 
     private var table: Table = Table()
-    private var scrollPane: ScrollPane = createScrollPane(table)
 
     private var playerData: PlayerData = PlayerData(-1)
 
@@ -74,14 +71,13 @@ class PhysicsInfo(
     init {
         table.background = assets.getBackgroundColor(0.2f, 0.2f, 0.2f, 1.0f)
 
-        scrollPane.setOverscroll(false, false)
 
         updatePlayerData()
         updateTable()
     }
 
-    override fun getScreenComponent(): ScrollPane {
-        return scrollPane
+    override fun getScreenComponent(): Table {
+        return table
     }
 
     override fun onUniverseData3DChange() {

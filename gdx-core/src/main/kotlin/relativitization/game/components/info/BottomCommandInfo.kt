@@ -74,7 +74,10 @@ class BottomCommandInfo(val game: RelativitizationGame) : ScreenComponent<Scroll
     init {
         table.background = assets.getBackgroundColor(0.2f, 0.2f, 0.2f, 1.0f)
 
+        scrollPane.fadeScrollBars = false
         scrollPane.setScrollingDisabled(true, false)
+        scrollPane.setClamp(true)
+        scrollPane.setOverscroll(false, false)
 
         update()
 
