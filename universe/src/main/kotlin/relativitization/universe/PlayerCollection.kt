@@ -163,8 +163,8 @@ class PlayerCollection(private val xDim: Int, private val yDim: Int, private val
                     name = name,
                     playerType= PlayerType.AI,
                     int4D = copy(playerData.int4D),
-                    double4DId = playerData.double4DId,
                     double4D = copy(playerData.double4D),
+                    double4DId = playerData.double4DId,
                     velocity = copy(playerData.velocity),
                     playerInternalData = newPlayerInternalData
                 )
