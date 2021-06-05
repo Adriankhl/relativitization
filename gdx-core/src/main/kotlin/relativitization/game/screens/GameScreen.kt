@@ -98,7 +98,7 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
                         game.changeGdxSettings()
                         true
                     }
-                    '0' -> {
+                    ')' -> {
                         gdxSettings.mapZoomRelativeToFullMap = 1.0f
                         game.changeGdxSettings()
                         true
