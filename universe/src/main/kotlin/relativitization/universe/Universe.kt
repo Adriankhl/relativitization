@@ -34,7 +34,12 @@ class Universe(private val universeData: UniverseData, saveWhenInit: Boolean = t
         x, y, z -> Int3D(x, y, z)
     }.flatten().flatten()
 
-    private val playerCollection: PlayerCollection = PlayerCollection(xDim, yDim, zDim)
+    private val playerCollection: PlayerCollection = PlayerCollection(
+        xDim,
+        yDim,
+        zDim,
+        universeData.universeSettings.groupEdgeLength
+    )
 
     init {
         // for each player data at the latest time slice, create player object and add to universe3D
@@ -64,7 +69,7 @@ class Universe(private val universeData: UniverseData, saveWhenInit: Boolean = t
      * True if player is alive
      * Should only return if canAccess is true
      */
-    suspend fun isAlive(id: Int): Boolean {
+    fun isAlive(id: Int): Boolean {
         return playerCollection.hasPlayer(id)
     }
 

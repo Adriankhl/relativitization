@@ -5,6 +5,7 @@ import org.apache.logging.log4j.LogManager
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.physics.*
 import relativitization.universe.data.serializer.DataSerializer.copy
+import relativitization.universe.maths.grid.Grids.double4DToId
 import relativitization.universe.maths.grid.Grids.create3DGrid
 import relativitization.universe.maths.physics.Intervals.intDelay
 
@@ -277,7 +278,7 @@ data class MutableUniverseData4D(
      * Add player data to data
      * Output error log and don't do anything if the coordinate is out of bound
      */
-    fun addPlayerData(mutablePlayerData: MutablePlayerData, currentTime: Int) {
+    fun addPlayerData(mutablePlayerData: MutablePlayerData, currentTime: Int, edgeLength: Double) {
         val tSize: Int = playerData4D.size
 
         // Modified player data double 4D if it doesn't fit int4D
@@ -305,11 +306,10 @@ data class MutableUniverseData4D(
         }
 
         // Default group player id should be player id itself
-        if (mutablePlayerData.groupId != mutablePlayerData.id) {
+        if (mutablePlayerData.groupId != double4DToId(mutablePlayerData.double4D, edgeLength)) {
             logger.debug("Default the attached player id to player id")
+            mutablePlayerData.groupId = double4DToId(mutablePlayerData.double4D, edgeLength)
         }
-
-        //
 
         // Add player to the list
         playerDataList.add(copy(mutablePlayerData))
@@ -319,9 +319,9 @@ data class MutableUniverseData4D(
      * Add player data to data
      * Output error log and don't do anything if the coordinate is out of bound
      */
-    fun addPlayerDataToLatest(mutablePlayerData: MutablePlayerData, currentTime: Int) {
+    fun addPlayerDataToLatest(mutablePlayerData: MutablePlayerData, currentTime: Int, edgeLength: Double) {
         mutablePlayerData.int4D.t = currentTime
-        addPlayerData(mutablePlayerData, currentTime)
+        addPlayerData(mutablePlayerData, currentTime, edgeLength)
     }
 
 

@@ -58,7 +58,7 @@ class FlockingGenerate : GenerateUniverse() {
             // Use flocking ai
             playerData.playerInternalData.playerState.aiState.aiName = "FlockingAI"
 
-            data.addPlayerDataToLatest(playerData, universeState.getCurrentTime())
+            data.addPlayerDataToLatest(playerData, universeState.getCurrentTime(), universeSettings.groupEdgeLength)
         }
 
         return UniverseData(

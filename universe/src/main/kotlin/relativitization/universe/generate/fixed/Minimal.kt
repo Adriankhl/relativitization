@@ -42,9 +42,9 @@ class Minimal : GenerateUniverse() {
         playerData2.playerInternalData.physicsData.energy = 200.0
         playerData3.playerInternalData.physicsData.energy = 300.0
 
-        data.addPlayerDataToLatest(playerData1, universeState.getCurrentTime())
-        data.addPlayerDataToLatest(playerData2, universeState.getCurrentTime())
-        data.addPlayerDataToLatest(playerData3, universeState.getCurrentTime())
+        data.addPlayerDataToLatest(playerData1, universeState.getCurrentTime(), universeSettings.groupEdgeLength)
+        data.addPlayerDataToLatest(playerData2, universeState.getCurrentTime(), universeSettings.groupEdgeLength)
+        data.addPlayerDataToLatest(playerData3, universeState.getCurrentTime(), universeSettings.groupEdgeLength)
 
 
         return UniverseData(

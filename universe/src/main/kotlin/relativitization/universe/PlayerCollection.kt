@@ -5,11 +5,17 @@ import org.apache.logging.log4j.LogManager
 import relativitization.universe.data.*
 import relativitization.universe.data.physics.*
 import relativitization.universe.data.serializer.DataSerializer.copy
+import relativitization.universe.maths.grid.Grids.double4DToId
 import relativitization.universe.maths.grid.Grids.sameCube
 import relativitization.universe.maths.grid.Grids.create3DGrid
 import relativitization.universe.utils.RandomName.randomPlayerName
 
-class PlayerCollection(private val xDim: Int, private val yDim: Int, private val zDim: Int) {
+class PlayerCollection(
+    private val xDim: Int,
+    private val yDim: Int,
+    private val zDim: Int,
+    private val edgeLength: Double,
+) {
     private val playerMap: MutableMap<Int, MutablePlayerData> = mutableMapOf()
     private val deadIdList: MutableList<Int> = mutableListOf()
 
@@ -180,7 +186,7 @@ class PlayerCollection(private val xDim: Int, private val yDim: Int, private val
      * Does 4 things
      * 1. move player double4D position by his velocity, check the boundaries of the map
      * 2. move player int4D position by his double4D, add afterimage to int4DHistory if needed
-     * 3. attached player by their double4D, only one attach id for a group
+     * 3. change player groupId by their double4D
      */
     fun movePlayer(universeState: UniverseState, universeSettings: UniverseSettings) {
         // New time
@@ -241,25 +247,9 @@ class PlayerCollection(private val xDim: Int, private val yDim: Int, private val
 
             // Clean up unnecessary int4DHistory
             playerData.int4DHistory.removeAll { time - it.t > universeSettings.playerAfterImageDuration }
-        }
 
-        // group player if they are within the same cube of length 0.01
-        getPlayerId3D().flatten().flatten().forEach { list ->
-            val playerIdList = list.toMutableList()
-            while (playerIdList.isNotEmpty()) {
-                val playerId = playerIdList.first()
-                val sameCubePlayer: List<Int> = playerIdList.filter { id ->
-                    sameCube(
-                        getPlayer(playerId).double4D,
-                        getPlayer(id).double4D,
-                        0.01
-                    )
-                }
-                getPlayer(playerId).groupId = playerId
-                sameCubePlayer.forEach { id -> getPlayer(id).groupId = playerId }
-                playerIdList.remove(playerId)
-                playerIdList.removeAll { sameCubePlayer.contains(it) }
-            }
+            // Change group id
+            playerData.groupId = double4DToId(playerData.double4D, edgeLength)
         }
     }
 
