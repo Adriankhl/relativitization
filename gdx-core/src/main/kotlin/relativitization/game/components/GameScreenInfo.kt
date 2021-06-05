@@ -47,10 +47,10 @@ class GameScreenInfo(val game: RelativitizationGame) : ScreenComponent<SplitPane
 
         // Show bottom command or not
         if (gdxSettings.showingBottomCommand) {
-            infoAndCommand.isVisible = true
+            infoAndCommand.splitAmount = gdxSettings.upperInfoAndBottomCommandSplitAmount
         } else {
             gdxSettings.upperInfoAndBottomCommandSplitAmount = infoAndCommand.splitAmount
-            infoAndCommand.isVisible = false
+            infoAndCommand.splitAmount = infoAndCommand.maxSplitAmount
         }
     }
 }

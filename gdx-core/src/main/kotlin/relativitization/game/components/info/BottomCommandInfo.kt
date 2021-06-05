@@ -5,11 +5,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.ScreenComponent
 
-class BottomCommandInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.assets) {
+class BottomCommandInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.assets) {
 
     private val gdxSettings = game.gdxSettings
 
     private var table: Table = Table()
+    private val scrollPane: ScrollPane = createScrollPane(table)
 
     private val commandNameLabel = createLabel("", gdxSettings.normalFontSize)
     private val commandDescriptionLabel = createLabel("", gdxSettings.smallFontSize)
@@ -88,8 +89,8 @@ class BottomCommandInfo(val game: RelativitizationGame) : ScreenComponent<Table>
         table.add(createButtonTable()).pad(10f)
     }
 
-    override fun getScreenComponent(): Table {
-        return table
+    override fun getScreenComponent(): ScrollPane {
+        return scrollPane
     }
 
     override fun onCurrentCommandChange() {
