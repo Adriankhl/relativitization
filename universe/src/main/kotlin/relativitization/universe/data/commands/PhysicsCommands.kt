@@ -8,7 +8,6 @@ import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.physics.Int4D
 import relativitization.universe.data.physics.Velocity
 import relativitization.universe.data.serializer.DataSerializer
-import relativitization.universe.data.serializer.DataSerializer.copy
 import relativitization.universe.maths.physics.Relativistic
 import relativitization.universe.maths.physics.Relativistic.toActualEnergyUnit
 import relativitization.universe.maths.physics.Relativistic.toStandardEnergyUnit
@@ -49,7 +48,7 @@ data class ChangeVelocityCommand(
         if (targetVelocity.squareMag() <= speedOfLight * speedOfLight) {
             val restMass: Double = playerData.playerInternalData.physicsData.restMass
             val efficiency: Double = playerData.playerInternalData.physicsData.moveEnergyEfficiency
-            val originalVelocity: Velocity = copy(playerData.velocity)
+            val originalVelocity: Velocity = DataSerializer.copy(playerData.velocity)
             val originalEnergy: Double = Relativistic.energy(restMass, originalVelocity, speedOfLight)
 
             // max power of remaining energy
