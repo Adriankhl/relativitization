@@ -2,8 +2,10 @@ package relativitization.universe.data.events
 
 import kotlinx.serialization.Serializable
 import org.apache.logging.log4j.LogManager
+import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.UniverseData3DAtPlayer
+import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
 
 @Serializable
@@ -18,11 +20,17 @@ sealed class Event {
     // Available choice description
     abstract val choiceDescription: Map<Int, String>
 
+    // how many turns will this event stay in the player data
+    abstract val stayTime: Int
+
     // Generate default choice if no choice is given to help ai decision
     abstract fun defaultChoice(universeData3DAtPlayer: UniverseData3DAtPlayer): Int
 
-    // how many turns will this event stay in the player data
-    abstract val stayTime: Int
+    // Whether the player can send this event to other player
+    abstract fun canSend(playerData: PlayerData, universeSettings: UniverseSettings): Boolean
+
+    // Whether this event can be added to the player
+    abstract fun canExecute(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean
 
     // generate commands
     // call once per turn

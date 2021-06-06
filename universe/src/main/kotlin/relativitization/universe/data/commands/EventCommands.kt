@@ -20,13 +20,20 @@ data class AddEventCommand(
         return "Add event ${event.name}to player $toId from $fromId."
     }
 
-    override fun canExecute(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean {
-        return true
+    /**
+     * Whether this player can send the event depends on the event
+     */
+    override fun canSend(playerData: PlayerData, universeSettings: UniverseSettings): Boolean {
+        return event.canSend(playerData, universeSettings)
     }
 
-    override fun canSend(playerData: PlayerData, universeSettings: UniverseSettings): Boolean {
-       return true
+    /**
+     * Whether the event can be added to the player depends on the event
+     */
+    override fun canExecute(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean {
+        return event.canExecute(playerData, universeSettings)
     }
+
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
         TODO("Not yet implemented")
