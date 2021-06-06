@@ -21,9 +21,6 @@ object AutoEventCollection : Mechanism() {
         universeData3DAtPlayer: UniverseData3DAtPlayer,
         universeData: UniverseData
     ): List<Command> {
-        for (autoEvent in autoEventList) {
-            val event = autoEvent.generateEventList(universeData3DAtPlayer)
-        }
         return autoEventList.map { autoEvent ->
             val eventList = autoEvent.generateEventList(universeData3DAtPlayer)
             eventList.map { event ->
