@@ -14,7 +14,7 @@ data class AddEventCommand(
     override val fromInt4D: Int4D,
     val event: Event
 ) : Command() {
-    override val name: String = "Add ${event.name}"
+    override val name: String = "Add Event"
 
     override fun description(): String {
         return "Add event ${event.name}to player $toId from $fromId."

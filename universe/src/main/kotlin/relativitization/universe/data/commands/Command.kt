@@ -102,16 +102,17 @@ sealed class Command {
         private val logger = LogManager.getLogger()
 
         val defaultCommandList: List<String> = listOf(
-            "ChangeVelocity"
+            "Add Event",
+            "Change Velocity",
         )
 
         val commandCollectionList: List<String> = listOf(
-            "DefaultCommand"
+            "DefaultCommands"
         )
 
         fun hasCommand(universeSettings: UniverseSettings, command: Command): Boolean {
             return when (universeSettings.commandCollectionName) {
-                "DefaultCommand" -> {
+                "DefaultCommands" -> {
                     defaultCommandList.contains(command.name)
                 }
                 else -> {
