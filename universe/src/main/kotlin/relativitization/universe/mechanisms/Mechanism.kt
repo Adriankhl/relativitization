@@ -6,6 +6,7 @@ import relativitization.universe.data.UniverseData
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.commands.Command
 import relativitization.universe.mechanisms.events.AutoEventCollection
+import relativitization.universe.mechanisms.events.ProcessEvents
 
 abstract class Mechanism {
 
@@ -28,6 +29,7 @@ object MechanismCollection {
 
     private val defaultMechanismList: List<Mechanism> = listOf(
         AutoEventCollection,
+        ProcessEvents,
     )
 
     // list of all possible process collection name
