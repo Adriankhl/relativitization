@@ -3,6 +3,7 @@ package relativitization.universe.mechanisms.events
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseData
 import relativitization.universe.data.UniverseData3DAtPlayer
+import relativitization.universe.data.commands.AddEventCommand
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.events.AutoEvent
 import relativitization.universe.mechanisms.Mechanism
@@ -21,8 +22,17 @@ object AutoEventCollection : Mechanism() {
         universeData: UniverseData
     ): List<Command> {
         for (autoEvent in autoEventList) {
-            val commandList = autoEvent.generateEventList(universeData3DAtPlayer)
+            val event = autoEvent.generateEventList(universeData3DAtPlayer)
         }
-        return listOf()
+        return autoEventList.map { autoEvent ->
+            val eventList = autoEvent.generateEventList(universeData3DAtPlayer)
+            eventList.map { event ->
+                AddEventCommand(
+                    event = event,
+                    fromId = mutablePlayerData.id,
+                    fromInt4D = mutablePlayerData.int4D.toInt4D()
+                )
+            }
+        }.flatten()
     }
 }
