@@ -5,7 +5,7 @@ import relativitization.universe.data.serializer.DataSerializer.copy
 
 internal class UniverseSettingsTest {
     @Test
-    fun serialization() {
+    fun serializationTest() {
         val mutableUniverseSettings = MutableUniverseSettings()
         val universeSettings: UniverseSettings = copy(mutableUniverseSettings)
         val m2: MutableUniverseSettings = copy(universeSettings)
