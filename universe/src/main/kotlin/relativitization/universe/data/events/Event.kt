@@ -26,6 +26,12 @@ sealed class Event {
     // how many turns will this event stay in the player data
     abstract val stayTime: Int
 
+    // Whether this event should be cancel, such as the player made a choice or some condition has been met
+    abstract fun shouldCancelThisEvent(
+        mutableEventData: MutableEventData,
+        universeData3DAtPlayer: UniverseData3DAtPlayer
+    ): Boolean
+
     // Generate default choice if no choice is given to help ai decision
     abstract fun defaultChoice(universeData3DAtPlayer: UniverseData3DAtPlayer): Int
 

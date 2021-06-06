@@ -4,6 +4,7 @@ import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseData
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.commands.Command
+import relativitization.universe.data.events.MutableEventData
 import relativitization.universe.mechanisms.Mechanism
 
 object ProcessEvents : Mechanism() {
@@ -27,6 +28,12 @@ object ProcessEvents : Mechanism() {
                 )
             }
         }.flatten()
+
+        // Remove if the even should be canceled
+        val cancelEventList: List<MutableEventData> = mutablePlayerData.playerInternalData.eventDataList.filter { mutableEventData ->
+            mutableEventData.event.shouldCancelThisEvent(mutableEventData, universeData3DAtPlayer)
+        }
+        mutablePlayerData.playerInternalData.eventDataList.removeAll(cancelEventList)
 
         // Increase stayCounter for each event
         mutablePlayerData.playerInternalData.eventDataList.forEach { mutableEventData ->
