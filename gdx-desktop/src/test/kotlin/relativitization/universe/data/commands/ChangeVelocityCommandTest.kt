@@ -16,7 +16,12 @@ internal class ChangeVelocityCommandTest {
         val view7: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
         assert(view7.get(2).int4D == Int4D(7, 0, 0, 0))
 
-        val command = ChangeVelocityCommand(1, 2, Int4D(7, 0, 0, 0), Velocity(0.1, 0.0, 0.0))
+        val command = ChangeVelocityCommand(
+            Velocity(0.1, 0.0, 0.0),
+            1,
+            Int4D(7, 0, 0, 0),
+            2,
+        )
 
         runBlocking {
             universe.postProcessUniverse(mapOf(1 to listOf(command)), mapOf(2 to listOf(), 3 to listOf()))

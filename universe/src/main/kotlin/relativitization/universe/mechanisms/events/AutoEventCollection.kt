@@ -21,7 +21,7 @@ object AutoEventCollection : Mechanism() {
         universeData: UniverseData
     ): List<Command> {
         for (autoEvent in autoEventList) {
-            // TODO: set add self event and generate commands for non self event
+            val commandList = autoEvent.generateEventList(universeData3DAtPlayer)
         }
         return listOf()
     }

@@ -10,10 +10,10 @@ import relativitization.universe.data.physics.Int4D
 
 @Serializable
 data class AddEventCommand(
+    val event: Event,
     override val fromId: Int,
-    override val toId: Int,
     override val fromInt4D: Int4D,
-    val event: Event
+    override val toId: Int = event.playerId,
 ) : Command() {
     override val name: String = "Add Event"
 

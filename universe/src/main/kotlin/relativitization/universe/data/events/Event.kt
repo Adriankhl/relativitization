@@ -14,6 +14,9 @@ sealed class Event {
     // Name of the event
     abstract val name: String
 
+    // The event belongs (or will belong) to this player
+    abstract val playerId: Int
+
     // Description of the event
     abstract val description: String
 

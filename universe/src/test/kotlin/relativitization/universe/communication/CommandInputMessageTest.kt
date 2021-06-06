@@ -13,7 +13,12 @@ internal class CommandInputMessageTest {
         val message = CommandInputMessage(
             1,
             "abc",
-            listOf(ChangeVelocityCommand(1, 1, Int4D(0,0,0,0),Velocity(0.3, 0.3, 0.3)))
+            listOf(ChangeVelocityCommand(
+                Velocity(0.3, 0.3, 0.3),
+                1,
+                Int4D(0,0,0,0),
+                1,
+            ))
         )
 
         val message2: CommandInputMessage= DataSerializer.copy(message)

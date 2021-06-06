@@ -16,10 +16,10 @@ import kotlin.math.max
 
 @Serializable
 data class ChangeVelocityCommand(
-    override val fromId: Int,
-    override val toId: Int,
-    override val fromInt4D: Int4D,
     val targetVelocity: Velocity,
+    override val fromId: Int,
+    override val fromInt4D: Int4D,
+    override val toId: Int,
 ) : Command() {
 
     override val name: String = "Change Velocity"
