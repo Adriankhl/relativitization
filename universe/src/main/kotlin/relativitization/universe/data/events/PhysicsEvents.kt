@@ -5,8 +5,11 @@ import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
+import relativitization.universe.data.commands.ChangeVelocityCommand
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.physics.Int4D
+import relativitization.universe.data.physics.Velocity
+import relativitization.universe.maths.physics.Intervals.targetVelocity
 
 @Serializable
 data class MoveToPlayerEvent(
@@ -33,7 +36,23 @@ data class MoveToPlayerEvent(
     )
 
     override fun generateCommands(choice: Int, universeData3DAtPlayer: UniverseData3DAtPlayer): List<Command> {
-        TODO("Not yet implemented")
+
+        return if (choice == 0) {
+            val targetVelocity: Velocity = targetVelocity(
+                universeData3DAtPlayer.get(playerId).double4D.toDouble3D(),
+                universeData3DAtPlayer.get(targetPlayerId).double4D.toDouble3D(),
+                universeData3DAtPlayer.universeSettings.speedOfLight
+            )
+            val changeVelocityCommand = ChangeVelocityCommand(
+                targetVelocity = targetVelocity,
+                fromId = playerId,
+                toId = playerId,
+                fromInt4D = universeData3DAtPlayer.get(playerId).int4D
+            )
+            listOf(changeVelocityCommand)
+        } else {
+            listOf()
+        }
     }
 
 
