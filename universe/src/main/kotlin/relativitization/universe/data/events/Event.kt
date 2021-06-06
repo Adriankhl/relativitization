@@ -60,6 +60,6 @@ data class MutableEventData(
 /**
  * Given the universe data 3D view, some events should be generated probabilistically if certain condition is satisfied
  */
-abstract class AutoEvent {
-    abstract fun generateEventList(universeData3DAtPlayer: UniverseData3DAtPlayer): List<Event>
+interface AutoEvent {
+    fun generateEventList(universeData3DAtPlayer: UniverseData3DAtPlayer): List<Event>
 }
