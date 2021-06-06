@@ -7,6 +7,7 @@ import relativitization.universe.data.PlayerData
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.physics.Int4D
 import relativitization.universe.data.physics.Velocity
+import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.data.serializer.DataSerializer.copy
 import relativitization.universe.maths.physics.Relativistic
 import relativitization.universe.maths.physics.Relativistic.toActualEnergyUnit
@@ -85,7 +86,7 @@ data class ChangeVelocityCommand(
 
             val energyUsed = abs(Relativistic.energy(restMass, newVelocity, speedOfLight) - originalEnergy) / efficiency
 
-            playerData.velocity = copy(newVelocity)
+            playerData.velocity = DataSerializer.copy(newVelocity)
             playerData.playerInternalData.physicsData.energy -= energyUsed.toStandardEnergyUnit(speedOfLight)
         } else {
             logger.error("Target velocity larger than the speed of light")
