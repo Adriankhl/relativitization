@@ -61,7 +61,7 @@ data class EventData(
 data class MutableEventData(
     val event: Event,
     var hasChoice: Boolean = false,
-    var choice: Int = -1,
+    var choice: Int = 0,
     var stayCounter: Int = 0
 )
 

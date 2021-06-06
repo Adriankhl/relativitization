@@ -5,6 +5,7 @@ import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.events.Event
+import relativitization.universe.data.events.MutableEventData
 import relativitization.universe.data.physics.Int4D
 
 @Serializable
@@ -35,7 +36,11 @@ data class AddEventCommand(
     }
 
 
+    /**
+     * Add event data to player data
+     */
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
-        TODO("Not yet implemented")
+        val eventData: MutableEventData = MutableEventData(event)
+        playerData.playerInternalData.eventDataList.add(eventData)
     }
 }
