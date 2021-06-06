@@ -3,13 +3,13 @@ package relativitization.universe.generate.fixed
 import relativitization.universe.data.*
 import relativitization.universe.data.physics.MutableInt4D
 import relativitization.universe.data.serializer.DataSerializer.copy
-import relativitization.universe.generate.GenerateSetting
+import relativitization.universe.generate.GenerateSettings
 import relativitization.universe.generate.GenerateUniverse
 import relativitization.universe.maths.grid.Grids.create4DGrid
 
 class Minimal : GenerateUniverse() {
-    override fun generate(setting: GenerateSetting): UniverseData {
-        val universeSettings: UniverseSettings = copy(setting.universeSettings)
+    override fun generate(settings: GenerateSettings): UniverseData {
+        val universeSettings: UniverseSettings = copy(settings.universeSettings)
 
         val data = MutableUniverseData4D(
             create4DGrid(

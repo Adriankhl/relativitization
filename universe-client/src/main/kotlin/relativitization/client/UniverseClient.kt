@@ -36,7 +36,7 @@ import relativitization.universe.data.commands.Command
 import relativitization.universe.data.commands.DummyCommand
 import relativitization.universe.data.physics.Int3D
 import relativitization.universe.data.serializer.DataSerializer
-import relativitization.universe.generate.GenerateSetting
+import relativitization.universe.generate.GenerateSettings
 import relativitization.universe.utils.CoroutineBoolean
 import kotlin.properties.Delegates
 
@@ -60,7 +60,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
     private var universeClientRunJob: Job = Job()
 
     // for generate universe
-    var generateSettings: GenerateSetting = GenerateSetting.loadOrDefault()
+    var generateSettings: GenerateSettings = GenerateSettings.loadOrDefault()
 
     // For changing server setting
     var universeServerSettings: UniverseServerSettings = UniverseServerSettings(
@@ -255,7 +255,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
         universeData3DMapMutex.withLock {
             universeData3DMap.clear()
         }
-        generateSettings = GenerateSetting()
+        generateSettings = GenerateSettings()
     }
 
     /**

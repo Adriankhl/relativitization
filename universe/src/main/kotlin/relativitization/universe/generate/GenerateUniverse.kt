@@ -10,7 +10,7 @@ import relativitization.universe.generate.fixed.Minimal
 import java.io.File
 
 @Serializable
-data class GenerateSetting(
+data class GenerateSettings(
     var generateMethod: String = "FixedMinimal",
     var numPlayer: Int = 4,
     var numHumanPlayer: Int = 2,
@@ -25,19 +25,19 @@ data class GenerateSetting(
     companion object {
         private val logger = LogManager.getLogger()
 
-        private fun load(): GenerateSetting {
+        private fun load(): GenerateSettings {
             val settingString: String = File("GenerateSetting.json").readText()
             return decode(settingString)
         }
 
-        fun loadOrDefault(): GenerateSetting {
+        fun loadOrDefault(): GenerateSettings {
             return try {
                 logger.debug("Trying to load generate setting")
                 // This can fail due to having older version of setting or file doesn't exist
                 load()
             } catch (e: Throwable) {
                 logger.debug("Load generate setting fail, use default setting")
-                GenerateSetting()
+                GenerateSettings()
             }
         }
     }
@@ -45,7 +45,7 @@ data class GenerateSetting(
 
 @Serializable
 abstract class GenerateUniverse {
-    abstract fun generate(setting: GenerateSetting): UniverseData
+    abstract fun generate(settings: GenerateSettings): UniverseData
 
 
     companion object {
@@ -57,8 +57,8 @@ abstract class GenerateUniverse {
             "ABMFlocking" to FlockingGenerate()
         )
 
-        fun isSettingValid(setting: GenerateSetting): Boolean {
-            val generateData = generate(setting)
+        fun isSettingValid(settings: GenerateSettings): Boolean {
+            val generateData = generate(settings)
             return if (generateData.isUniverseValid()) {
                 true
             } else {
@@ -68,12 +68,12 @@ abstract class GenerateUniverse {
             }
         }
 
-        fun generate(setting: GenerateSetting): UniverseData {
-            return if(generateMethodMap.keys.contains(setting.generateMethod)) {
-                generateMethodMap.getValue(setting.generateMethod).generate(setting)
+        fun generate(settings: GenerateSettings): UniverseData {
+            return if(generateMethodMap.keys.contains(settings.generateMethod)) {
+                generateMethodMap.getValue(settings.generateMethod).generate(settings)
             } else {
                 logger.error("Generate method doesn't exist, using default method")
-                Minimal().generate(setting)
+                Minimal().generate(settings)
             }
         }
     }

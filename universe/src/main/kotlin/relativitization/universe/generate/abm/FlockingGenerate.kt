@@ -8,14 +8,14 @@ import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.UniverseState
 import relativitization.universe.data.physics.MutableVelocity
 import relativitization.universe.data.serializer.DataSerializer
-import relativitization.universe.generate.GenerateSetting
+import relativitization.universe.generate.GenerateSettings
 import relativitization.universe.generate.GenerateUniverse
 import relativitization.universe.maths.grid.Grids.create4DGrid
 import kotlin.random.Random
 
 class FlockingGenerate : GenerateUniverse() {
-    override fun generate(setting: GenerateSetting): UniverseData {
-        val universeSettings: UniverseSettings = DataSerializer.copy(setting.universeSettings)
+    override fun generate(settings: GenerateSettings): UniverseData {
+        val universeSettings: UniverseSettings = DataSerializer.copy(settings.universeSettings)
 
         val data = MutableUniverseData4D(
             create4DGrid(
@@ -28,14 +28,14 @@ class FlockingGenerate : GenerateUniverse() {
 
         val universeState = UniverseState(
             currentTime = universeSettings.tDim - 1,
-            maxPlayerId = setting.numPlayer,
+            maxPlayerId = settings.numPlayer,
         )
 
-        for (i in 1..setting.numPlayer) {
+        for (i in 1..settings.numPlayer) {
             val playerData = MutablePlayerData(id = i)
 
             // Set human player for small i
-            if (i <= setting.numHumanPlayer) {
+            if (i <= settings.numHumanPlayer) {
                 playerData.playerType = PlayerType.HUMAN
             }
 

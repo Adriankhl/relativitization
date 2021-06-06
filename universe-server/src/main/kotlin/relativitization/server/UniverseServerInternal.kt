@@ -12,7 +12,7 @@ import relativitization.universe.communication.UniverseServerStatusMessage
 import relativitization.universe.communication.UniverseData3DMessage
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.commands.Command
-import relativitization.universe.generate.GenerateSetting
+import relativitization.universe.generate.GenerateSettings
 import relativitization.universe.generate.GenerateUniverse
 import relativitization.universe.utils.CoroutineBoolean
 import relativitization.universe.utils.CoroutineVar
@@ -22,7 +22,7 @@ class UniverseServerInternal(var universeServerSettings: UniverseServerSettings)
     private val mutex: Mutex = Mutex()
 
     // Data of universe
-    private var universe: Universe = Universe(GenerateUniverse.generate(GenerateSetting()))
+    private var universe: Universe = Universe(GenerateUniverse.generate(GenerateSettings()))
 
     // Current universe time
     private var currentUniverseTime: Int = universe.getCurrentUniverseTime()

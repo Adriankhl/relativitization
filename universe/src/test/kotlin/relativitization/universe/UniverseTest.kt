@@ -2,13 +2,13 @@ package relativitization.universe
 
 import kotlin.test.Test
 import relativitization.universe.data.MutableUniverseSettings
-import relativitization.universe.generate.GenerateSetting
+import relativitization.universe.generate.GenerateSettings
 import relativitization.universe.generate.GenerateUniverse
 
 internal class UniverseTest {
     @Test
     fun saveLoadTest() {
-        val generateSetting = GenerateSetting(
+        val generateSetting = GenerateSettings(
             generateMethod = "fixed-Minimal",
             numPlayer = 4,
             numHumanPlayer = 2,
