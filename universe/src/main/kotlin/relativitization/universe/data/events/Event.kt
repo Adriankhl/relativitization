@@ -26,7 +26,12 @@ sealed class Event {
     // how many turns will this event stay in the player data
     abstract val stayTime: Int
 
-    // Whether this event should be cancel, such as the player made a choice or some condition has been met
+    /**
+     * Whether this event should be cancel, such as the player made a choice or some condition has been met
+     *
+     * @param mutableEventData the event data of this event
+     * @param universeData3DAtPlayer the universe data view by the player having this event
+     */
     abstract fun shouldCancelThisEvent(
         mutableEventData: MutableEventData,
         universeData3DAtPlayer: UniverseData3DAtPlayer
