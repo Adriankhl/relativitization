@@ -5,6 +5,7 @@ import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseData
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.commands.Command
+import relativitization.universe.mechanisms.events.AutoEventCollection
 
 abstract class Mechanism {
 
@@ -25,7 +26,9 @@ abstract class Mechanism {
 object MechanismCollection {
     private val logger = LogManager.getLogger()
 
-    private val defaultMechanismList: List<Mechanism> = listOf()
+    private val defaultMechanismList: List<Mechanism> = listOf(
+        AutoEventCollection,
+    )
 
     // list of all possible process collection name
     val mechanismProcessNameList: List<String> = listOf(
