@@ -12,10 +12,9 @@ data class MoveToPlayerEvent(
     override val playerId: Int,
     val targetPlayerId: Int,
 ) : Event() {
-    override val name: String = "Player $playerId moving to $targetPlayerId"
+    override val name: String = "Move to player"
 
-    override val description: String
-        get() = TODO("Not yet implemented")
+    override val description: String = "Player $playerId moving to $targetPlayerId"
 
     override val choiceDescription: Map<Int, String>
         get() = TODO("Not yet implemented")
