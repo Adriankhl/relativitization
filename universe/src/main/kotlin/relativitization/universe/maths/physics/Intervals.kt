@@ -162,6 +162,13 @@ object Intervals {
 
     /**
      * Time (rounded up) required to travel a certain distance under constant acceleration
+     *
+     * @param currentSpeed speed of the object
+     * @param restMass rest mass of the object
+     * @param power power to increase the speed
+     * @param distance the travel distance
+     * @param speedOfLight speed of light
+     * @param timeAcc time value for recursion
      */
     fun timeConstantAcceleration(
         currentSpeed: Double,
