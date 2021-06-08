@@ -117,7 +117,14 @@ object Intervals {
     }
 
     /**
-     * Distant travel with constant acceleration
+     * Distant travel with constant acceleration by recursion
+     *
+     * @param currentSpeed speed of the object
+     * @param restMass rest mass of the object
+     * @param power power to increase the speed
+     * @param duration time to apply constant acceleration
+     * @param speedOfLight speed of light
+     * @param distanceAcc distance value for recursion calculation
      */
     fun distanceTravel(
         currentSpeed: Double,
