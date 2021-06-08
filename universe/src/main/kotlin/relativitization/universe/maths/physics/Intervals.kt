@@ -126,7 +126,7 @@ object Intervals {
      * @param speedOfLight speed of light
      * @param distanceAcc distance value for recursion calculation
      */
-    fun distanceTravel(
+    fun distanceConstantAcceleration(
         currentSpeed: Double,
         restMass: Double,
         power: Double,
@@ -149,13 +149,49 @@ object Intervals {
                 speedOfLight = speedOfLight
             )
 
-            distanceTravel(
+            distanceConstantAcceleration(
                 currentSpeed = newSpeed,
                 restMass = restMass,
                 power = power,
                 duration = duration - 1,
                 speedOfLight = speedOfLight,
                 distanceAcc = distanceAcc + newSpeed * 1.0
+            )
+        }
+    }
+
+    /**
+     * Time (rounded up) required to travel a certain distance under constant acceleration
+     */
+    fun timeConstantAcceleration(
+        currentSpeed: Double,
+        restMass: Double,
+        power: Double,
+        distance: Double,
+        speedOfLight: Double,
+        timeAcc: Int = 0,
+    ): Int {
+        return if (distance <= 0) {
+            timeAcc
+        } else {
+            val oldEnergy: Double =  speedToEnergy(
+                restMass = restMass,
+                speed = currentSpeed,
+                speedOfLight = speedOfLight
+            )
+
+            val newSpeed: Double = energyToSpeed(
+                restMass = restMass,
+                energy = oldEnergy + power * 1.0,
+                speedOfLight = speedOfLight
+            )
+            timeConstantAcceleration(
+                currentSpeed = newSpeed,
+                restMass = restMass,
+                power = power,
+                distance = distance - newSpeed * 1.0,
+                speedOfLight = speedOfLight,
+                timeAcc = timeAcc + 1
             )
         }
     }
