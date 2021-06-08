@@ -10,6 +10,7 @@ import relativitization.universe.data.physics.Velocity
 import relativitization.universe.maths.physics.Relativistic.energyToSpeed
 import relativitization.universe.maths.physics.Relativistic.velocityToEnergy
 import relativitization.universe.maths.physics.Relativistic.gamma
+import relativitization.universe.maths.physics.Relativistic.speedToEnergy
 import kotlin.math.abs
 import kotlin.math.sqrt
 
@@ -118,11 +119,37 @@ object Intervals {
     /**
      * Distant travel with constant acceleration
      */
-    fun distanceTravel(currentSpeed: Double, power: Double, duration: Int, distanceAcc: Double = 0.0): Double {
+    fun distanceTravel(
+        currentSpeed: Double,
+        restMass: Double,
+        power: Double,
+        duration: Int,
+        speedOfLight: Double,
+        distanceAcc: Double = 0.0
+    ): Double {
         return if (duration <= 0) {
             distanceAcc
         } else {
-            newVelo
+            val oldEnergy: Double =  speedToEnergy(
+                restMass = restMass,
+                speed = currentSpeed,
+                speedOfLight = speedOfLight
+            )
+
+            val newSpeed: Double = energyToSpeed(
+                restMass = restMass,
+                energy = oldEnergy + power * 1.0,
+                speedOfLight = speedOfLight
+            )
+
+            distanceTravel(
+                currentSpeed = newSpeed,
+                restMass = restMass,
+                power = power,
+                duration = duration - 1,
+                speedOfLight = speedOfLight,
+                distanceAcc = distanceAcc + newSpeed * 1.0
+            )
         }
     }
 
@@ -147,7 +174,7 @@ object Intervals {
         restMass: Double,
         currentVelocity: Velocity,
         maxAccelerateTime: Double,
-        maxPower: Double,
+        power: Double,
         speedOfLight: Double,
     ): Velocity {
         val dx = to.x - from.x
@@ -156,9 +183,9 @@ object Intervals {
 
         val currentEnergy: Double = velocityToEnergy(restMass, currentVelocity, speedOfLight)
 
-        val maxTargetSpeed: Double = energyToSpeed(restMass, maxAccelerateTime * maxPower, speedOfLight)
+        val maxTargetSpeed: Double = energyToSpeed(restMass, maxAccelerateTime * power, speedOfLight)
 
-        return if (currentEnergy > maxAccelerateTime * maxPower) {
+        return if (currentEnergy > maxAccelerateTime * power) {
             Velocity(vx = dx, vy = dy, vz = dz).scaleVelocity(maxTargetSpeed)
         } else {
             Velocity(vx = 0.0, vy = 0.0, vz = 0.0)
