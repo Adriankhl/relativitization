@@ -9,8 +9,6 @@ import relativitization.universe.data.commands.Command
 import relativitization.universe.data.physics.Double3D
 import relativitization.universe.data.physics.Velocity
 import relativitization.universe.maths.physics.Intervals.distance
-import relativitization.universe.maths.physics.Relativistic.energy
-import relativitization.universe.maths.physics.Relativistic.energyToVelocityMag
 
 class FlockingAI : AI() {
     override fun compute(universeData3DAtPlayer: UniverseData3DAtPlayer): List<Command> {

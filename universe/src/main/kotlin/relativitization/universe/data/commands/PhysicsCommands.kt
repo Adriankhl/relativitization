@@ -49,7 +49,7 @@ data class ChangeVelocityCommand(
             val restMass: Double = playerData.playerInternalData.physicsData.restMass
             val efficiency: Double = playerData.playerInternalData.physicsData.moveEnergyEfficiency
             val originalVelocity: Velocity = DataSerializer.copy(playerData.velocity)
-            val originalEnergy: Double = Relativistic.energy(restMass, originalVelocity, speedOfLight)
+            val originalEnergy: Double = Relativistic.velocityToEnergy(restMass, originalVelocity, speedOfLight)
 
             // max power of remaining energy
             val energyAvailable = max(
@@ -58,15 +58,15 @@ data class ChangeVelocityCommand(
             )
 
             // same energy for acceleration and deceleration
-            val required = abs(Relativistic.energy(restMass, targetVelocity, speedOfLight) - originalEnergy)
-            val isAcceleration: Boolean = Relativistic.energy(restMass, targetVelocity, speedOfLight) > originalEnergy
+            val required = abs(Relativistic.velocityToEnergy(restMass, targetVelocity, speedOfLight) - originalEnergy)
+            val isAcceleration: Boolean = Relativistic.velocityToEnergy(restMass, targetVelocity, speedOfLight) > originalEnergy
 
             val newVelocity: Velocity = when {
                 required < energyAvailable * efficiency -> {
                     targetVelocity
                 }
                 isAcceleration -> {
-                    val vMag = Relativistic.energyToVelocityMag(
+                    val vMag = Relativistic.energyToSpeed(
                         restMass,
                         energyAvailable * efficiency + originalEnergy,
                         speedOfLight
@@ -74,7 +74,7 @@ data class ChangeVelocityCommand(
                     targetVelocity.scaleVelocity(vMag)
                 }
                 else -> {
-                    val vMag = Relativistic.energyToVelocityMag(
+                    val vMag = Relativistic.energyToSpeed(
                         restMass,
                         originalEnergy - energyAvailable * efficiency,
                         speedOfLight
@@ -83,7 +83,7 @@ data class ChangeVelocityCommand(
                 }
             }
 
-            val energyUsed = abs(Relativistic.energy(restMass, newVelocity, speedOfLight) - originalEnergy) / efficiency
+            val energyUsed = abs(Relativistic.velocityToEnergy(restMass, newVelocity, speedOfLight) - originalEnergy) / efficiency
 
             playerData.velocity = DataSerializer.copy(newVelocity)
             playerData.playerInternalData.physicsData.energy -= energyUsed.toStandardEnergyUnit(speedOfLight)

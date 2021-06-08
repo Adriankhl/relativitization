@@ -4,8 +4,26 @@ import relativitization.universe.data.physics.Velocity
 import kotlin.math.sqrt
 
 object Relativistic {
+    fun gamma(speed: Double, speedOfLight: Double): Double {
+        return 1.0 / sqrt(1.0 - speed * speed / speedOfLight / speedOfLight)
+    }
+
     fun gamma(velocity: Velocity, speedOfLight: Double): Double {
         return 1.0 / sqrt(1.0 - velocity.squareMag() / speedOfLight / speedOfLight)
+    }
+
+    /**
+     * Compute the relativistic energy of this object
+     *
+     * @param restMass the rest mass of the object
+     * @param speed the velocity of the object
+     * @param speedOfLight speed of light
+     *
+     *
+     * @return energy in actual unit
+     */
+    fun speedToEnergy(restMass: Double, speed: Double, speedOfLight: Double): Double {
+        return gamma(speed, speedOfLight) * restMass * (speedOfLight * speedOfLight)
     }
 
     /**
@@ -18,7 +36,7 @@ object Relativistic {
      *
      * @return energy in actual unit
      */
-    fun energy(restMass: Double, velocity: Velocity, speedOfLight: Double): Double {
+    fun velocityToEnergy(restMass: Double, velocity: Velocity, speedOfLight: Double): Double {
         return gamma(velocity, speedOfLight) * restMass * (speedOfLight * speedOfLight)
     }
 
@@ -32,7 +50,7 @@ object Relativistic {
      *
      * @return the magnitude of the velocity
      */
-    fun energyToVelocityMag(restMass: Double, energy: Double, speedOfLight: Double): Double {
+    fun energyToSpeed(restMass: Double, energy: Double, speedOfLight: Double): Double {
         val gamaInv = restMass * (speedOfLight * speedOfLight) / energy
         val v2 = (1.0 - gamaInv * gamaInv) * (speedOfLight * speedOfLight)
         return sqrt(v2)
