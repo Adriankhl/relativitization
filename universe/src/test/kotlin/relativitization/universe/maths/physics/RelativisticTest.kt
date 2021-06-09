@@ -95,5 +95,15 @@ internal class RelativisticTest {
         )
 
         assert(v2.mag() - s2 < 0.01)
+
+        val v3: Velocity = targetVelocityByPhotonRocket(
+            initialRestMass = 1.0,
+            deltaRestMass = 0.6,
+            initialVelocity = Velocity(vx = 0.4, vy = 0.4, vz = 0.4),
+            targetDirection = Velocity(vx = -0.4, vy = -0.4, vz = -0.4),
+            accelerate = true,
+            speedOfLight = 1.0
+        )
+        println(v3)
     }
 }
