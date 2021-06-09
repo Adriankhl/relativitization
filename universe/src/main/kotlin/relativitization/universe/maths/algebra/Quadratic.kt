@@ -2,6 +2,7 @@ package relativitization.universe.maths.algebra
 
 import kotlin.math.max
 import kotlin.math.min
+import kotlin.math.sqrt
 
 object Quadratic {
     fun discriminant(a: Double, b: Double, c: Double): Double {
@@ -13,8 +14,8 @@ object Quadratic {
         return if (d < 0) {
             QuadraticSolutions(false, 0, 0.0, 0.0)
         } else {
-            val sol1: Double = (-b + d) / 2.0 / a
-            val sol2: Double = (-b - d) / 2.0 / a
+            val sol1: Double = (-b + sqrt(d)) / 2.0 / a
+            val sol2: Double = (-b - sqrt(d)) / 2.0 / a
 
             val x1: Double = max(sol1, sol2)
             val x2: Double = min(sol1, sol2)
