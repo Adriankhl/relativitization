@@ -77,7 +77,7 @@ object Relativistic {
         return sqrt(v2)
     }
 
-    fun canTargetDirectionByPhotonRocket(
+    fun canTargetVelocityAtDirectionByPhotonRocket(
         initialRestMass: Double,
         deltaRestMass: Double,
         initialVelocity: Velocity,
@@ -103,7 +103,7 @@ object Relativistic {
         return discriminant(a, b, c) >= 0
     }
 
-    fun targetDirectionByPhotonRocket(
+    fun targetVelocityAtDirectionPhotonRocket(
         initialRestMass: Double,
         deltaRestMass: Double,
         initialVelocity: Velocity,
@@ -193,7 +193,32 @@ object Relativistic {
             initialRestMass - solution.x1
         } else {
             logger.error("Wrong delta mass computed")
-            -1.0
+            // Return initial rest mass in case if the returned value is used for further computation
+            // The returned value should be checked to see if it is smaller than the initial rest mass or not
+            initialRestMass
+        }
+    }
+
+
+    fun targetVelocityByPhotonRocket(
+        initialRestMass: Double,
+        maxDeltaRestMass: Double,
+        initialVelocity: Velocity,
+        targetVelocity: Velocity,
+        accelerate: Boolean,
+        speedOfLight: Double,
+    ): VelocityChange {
+        val requiredDeltaMass: Double = deltaMassByPhotonRocket(
+            initialRestMass = 0.0,
+            initialVelocity = initialVelocity,
+            targetVelocity = targetVelocity,
+            speedOfLight = speedOfLight,
+        )
+
+        return if (requiredDeltaMass <= maxDeltaRestMass) {
+            VelocityChange(true, targetVelocity, requiredDeltaMass)
+        } else {
+
         }
     }
 }
