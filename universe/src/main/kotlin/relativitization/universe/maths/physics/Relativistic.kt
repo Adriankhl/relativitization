@@ -190,3 +190,9 @@ object Relativistic {
         }
     }
 }
+
+data class VelocityChange(
+    val success: Boolean,
+    val newVelocity: Velocity,
+    val deltaRestMass: Double,
+)
