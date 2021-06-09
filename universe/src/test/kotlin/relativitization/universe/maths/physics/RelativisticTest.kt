@@ -46,5 +46,15 @@ internal class RelativisticTest {
         )
 
         assert(b4)
+
+        val b5: Boolean = canChangeVelocityByPhotonRocket(
+            initialRestMass = 1.0,
+            deltaRestMass = 0.1,
+            initialVelocity = Velocity(vx = 0.3, vy = 0.3, vz = 0.3),
+            targetDirection = Velocity(vx = 0.4, vy = 0.3, vz = 0.4),
+            speedOfLight = 1.0
+        )
+
+        assert(b5)
     }
 }
