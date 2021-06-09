@@ -13,8 +13,8 @@ object Quadratic {
         return if (d < 0) {
             QuadraticSolutions(false, 0, 0.0, 0.0)
         } else {
-            val sol1: Double = (-b + d) / 4.0 / a / c
-            val sol2: Double = (-b - d) / 4.0 / a / c
+            val sol1: Double = (-b + d) / 2.0 / a
+            val sol2: Double = (-b - d) / 2.0 / a
 
             val x1: Double = max(sol1, sol2)
             val x2: Double = min(sol1, sol2)
