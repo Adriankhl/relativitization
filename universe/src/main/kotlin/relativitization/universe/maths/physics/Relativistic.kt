@@ -1,5 +1,6 @@
 package relativitization.universe.maths.physics
 
+import org.apache.logging.log4j.LogManager
 import relativitization.universe.data.physics.Velocity
 import relativitization.universe.maths.algebra.Quadratic.discriminant
 import relativitization.universe.maths.algebra.Quadratic.solveQuadratic
@@ -7,6 +8,8 @@ import relativitization.universe.maths.algebra.QuadraticSolutions
 import kotlin.math.sqrt
 
 object Relativistic {
+    private val logger = LogManager.getLogger()
+
     // E = m * c^2
     // Unit of energy change when c != 1
     // if energy value data is stored as if c=1, scaling is required when c != 1
@@ -151,5 +154,31 @@ object Relativistic {
         val finalMass: Double = initialRestMass - deltaRestMass
         val ratio: Double = initialRestMass / finalMass
         return speedOfLight * (ratio * ratio - 1) / (ratio * ratio + 1)
+    }
+
+    fun deltaMassByPhotonRocket(
+        initialRestMass: Double,
+        initialVelocity: Velocity,
+        targetVelocity: Velocity,
+        speedOfLight: Double,
+    ): Double {
+        val speedOfLight2 = speedOfLight * speedOfLight
+        val initialGamma: Double = gamma(initialVelocity, speedOfLight)
+        val finalGamma: Double = gamma(targetVelocity, speedOfLight)
+        val a: Double = speedOfLight2
+        val b: Double = -2.0 * initialGamma * finalGamma * initialRestMass * (speedOfLight2 - initialVelocity.dot(targetVelocity))
+        val c: Double = initialRestMass * initialRestMass * speedOfLight2
+
+        // Solution of final rest mass
+        val solution: QuadraticSolutions = solveQuadratic(a, b, c)
+
+        return if ((solution.x2 <= initialRestMass) && (solution.x2 >= 0)) {
+            initialRestMass - solution.x2
+        } else if ((solution.x1 <= initialRestMass) && (solution.x1 >= 0)) {
+            initialRestMass - solution.x1
+        } else {
+            logger.error("Wrong delta mass computed")
+            -1.0
+        }
     }
 }

@@ -2,6 +2,7 @@ package relativitization.universe.maths.physics
 
 import relativitization.universe.data.physics.Velocity
 import relativitization.universe.maths.physics.Relativistic.canTargetDirectionByPhotonRocket
+import relativitization.universe.maths.physics.Relativistic.deltaMassByPhotonRocket
 import relativitization.universe.maths.physics.Relativistic.speedByPhotonRocket
 import relativitization.universe.maths.physics.Relativistic.targetDirectionByPhotonRocket
 import kotlin.test.Test
@@ -105,5 +106,16 @@ internal class RelativisticTest {
             speedOfLight = 1.0
         )
         println(v3)
+    }
+
+    @Test
+    fun deltaMassByPhotonRocketTest() {
+        val d1 = deltaMassByPhotonRocket(
+            initialRestMass = 1.0,
+            initialVelocity = Velocity(0.4, 0.4, 0.4),
+            targetVelocity = Velocity(0.999, 0.0, 0.0),
+            speedOfLight = 1.0
+        )
+        assert(d1 > 0.97)
     }
 }
