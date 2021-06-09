@@ -156,6 +156,14 @@ object Relativistic {
         return speedOfLight * (ratio * ratio - 1) / (ratio * ratio + 1)
     }
 
+    /**
+     * Given the parameters, compute the change of mass needed to change to target velocity
+     *
+     * @param initialRestMass initial reset mass of the object
+     * @param initialVelocity initial velocity of the object
+     * @param targetVelocity target velocity
+     * @param speedOfLight speed of light
+     */
     fun deltaMassByPhotonRocket(
         initialRestMass: Double,
         initialVelocity: Velocity,
