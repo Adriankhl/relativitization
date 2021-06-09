@@ -39,3 +39,8 @@ saves*
 
 # Ignore assets
 assets*
+
+# Latex
+*.log
+*.aux
+*.pdf
