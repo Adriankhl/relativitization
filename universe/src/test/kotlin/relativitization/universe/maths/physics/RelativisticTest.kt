@@ -64,17 +64,6 @@ internal class RelativisticTest {
     fun targetVelocityTest() {
         val v1: Velocity = targetVelocityByPhotonRocket(
             initialRestMass = 1.0,
-            deltaRestMass = 0.6,
-            initialVelocity = Velocity(vx = 0.3, vy = 0.3, vz = 0.3),
-            targetDirection = Velocity(vx = -0.4, vy = -0.4, vz = -0.4),
-            accelerate = true,
-            speedOfLight = 1.0
-        )
-
-        println(v1)
-
-        val v2: Velocity = targetVelocityByPhotonRocket(
-            initialRestMass = 1.0,
             deltaRestMass = 0.1,
             initialVelocity = Velocity(vx = 0.0, vy = 0.0, vz = 0.0),
             targetDirection = Velocity(vx = 0.3, vy = 0.3, vz = 0.3),
@@ -82,14 +71,29 @@ internal class RelativisticTest {
             speedOfLight = 1.0
         )
 
-        println(v2.mag())
-
         val s1: Double = speedByPhotonRocket(
             initialRestMass = 1.0,
             deltaRestMass = 0.1,
             speedOfLight = 1.0
         )
 
-        println(s1)
+        assert(v1.mag() - s1 < 0.01)
+
+        val v2: Velocity = targetVelocityByPhotonRocket(
+            initialRestMass = 1.0,
+            deltaRestMass = 0.9,
+            initialVelocity = Velocity(vx = 0.0, vy = 0.0, vz = 0.0),
+            targetDirection = Velocity(vx = 0.3, vy = 0.3, vz = 0.3),
+            accelerate = true,
+            speedOfLight = 1.0
+        )
+
+        val s2: Double = speedByPhotonRocket(
+            initialRestMass = 1.0,
+            deltaRestMass = 0.9,
+            speedOfLight = 1.0
+        )
+
+        assert(v2.mag() - s2 < 0.01)
     }
 }

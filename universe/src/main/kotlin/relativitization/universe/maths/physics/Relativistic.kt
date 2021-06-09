@@ -112,9 +112,6 @@ object Relativistic {
         val initialGamma: Double = gamma(initialVelocity, speedOfLight)
         val dotProduct: Double = initialVelocity.dotUnitVelocity(targetDirection)
 
-        println("initial gamma: $initialGamma")
-        println("dotProduct: $dotProduct")
-
         val speedOfLight2 = speedOfLight * speedOfLight
 
         val speedOfLight4 = speedOfLight2 * speedOfLight2
@@ -123,15 +120,11 @@ object Relativistic {
                 2.0 / initialGamma / initialRestMass / finalRestMass)
         val tmp2: Double = tmp1 * tmp1
 
-        println("tmp2: $tmp2")
-
         val a: Double = dotProduct * dotProduct + tmp2 * speedOfLight2
         val b: Double = -2.0 * speedOfLight2 * dotProduct
         val c: Double = speedOfLight4 * (1 - tmp2)
 
         val solution: QuadraticSolutions = solveQuadratic(a, b, c)
-
-        println(solution)
 
         return if (solution.isRealSolutionExist) {
             when (solution.numPositiveSolution) {
