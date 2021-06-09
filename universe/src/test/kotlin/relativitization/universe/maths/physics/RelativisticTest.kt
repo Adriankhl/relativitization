@@ -1,5 +1,6 @@
 package relativitization.universe.maths.physics
 
+import relativitization.universe.data.commands.ChangeVelocityCommand
 import relativitization.universe.data.physics.Velocity
 import relativitization.universe.maths.physics.Relativistic.canTargetVelocityAtDirectionByPhotonRocket
 import relativitization.universe.maths.physics.Relativistic.deltaMassByPhotonRocket
@@ -63,7 +64,7 @@ internal class RelativisticTest {
 
     @Test
     fun targetVelocityAtDirectionTest() {
-        val v1: Velocity = targetVelocityAtDirectionPhotonRocket(
+        val v1: VelocityChangeData = targetVelocityAtDirectionPhotonRocket(
             initialRestMass = 1.0,
             deltaRestMass = 0.1,
             initialVelocity = Velocity(vx = 0.0, vy = 0.0, vz = 0.0),
@@ -78,9 +79,9 @@ internal class RelativisticTest {
             speedOfLight = 1.0
         )
 
-        assert(v1.mag() - s1 < 0.01)
+        assert(v1.newVelocity.mag() - s1 < 0.01)
 
-        val v2: Velocity = targetVelocityAtDirectionPhotonRocket(
+        val v2: VelocityChangeData = targetVelocityAtDirectionPhotonRocket(
             initialRestMass = 1.0,
             deltaRestMass = 0.9,
             initialVelocity = Velocity(vx = 0.0, vy = 0.0, vz = 0.0),
@@ -95,9 +96,9 @@ internal class RelativisticTest {
             speedOfLight = 1.0
         )
 
-        assert(v2.mag() - s2 < 0.01)
+        assert(v2.newVelocity.mag() - s2 < 0.01)
 
-        val v3: Velocity = targetVelocityAtDirectionPhotonRocket(
+        val v3: VelocityChangeData = targetVelocityAtDirectionPhotonRocket(
             initialRestMass = 1.0,
             deltaRestMass = 0.6,
             initialVelocity = Velocity(vx = 0.4, vy = 0.4, vz = 0.4),
