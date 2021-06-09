@@ -146,6 +146,13 @@ object Relativistic {
         }
     }
 
+    /**
+     * Compute speed change by photon rocket when initial velocity is zero
+     *
+     * @param initialRestMass initial rest mass
+     * @param deltaRestMass change of rest mass
+     * @param speedOfLight speed of light
+     */
     fun speedByPhotonRocket(
         initialRestMass: Double,
         deltaRestMass: Double,
