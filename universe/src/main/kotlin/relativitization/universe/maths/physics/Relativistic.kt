@@ -2,6 +2,8 @@ package relativitization.universe.maths.physics
 
 import relativitization.universe.data.physics.Velocity
 import relativitization.universe.maths.algebra.Quadratic.discriminant
+import relativitization.universe.maths.algebra.Quadratic.solveQuadratic
+import relativitization.universe.maths.algebra.QuadraticSolutions
 import kotlin.math.pow
 import kotlin.math.sqrt
 
@@ -73,7 +75,7 @@ object Relativistic {
         return sqrt(v2)
     }
 
-    fun canChangeVelocityByPhotonRocket(
+    fun canTargetVelocityByPhotonRocket(
         initialRestMass: Double,
         deltaRestMass: Double,
         initialVelocity: Velocity,
@@ -99,15 +101,46 @@ object Relativistic {
         return discriminant(a, b, c) >= 0
     }
 
-    fun changeVelocityByPhotonRocket(
+    fun targetVelocityByPhotonRocket(
         initialRestMass: Double,
         deltaRestMass: Double,
         initialVelocity: Velocity,
         targetDirection: Velocity,
+        accelerate: Boolean,
         speedOfLight: Double,
-    ) {
+    ): Velocity {
         val finalRestMass: Double = initialRestMass - deltaRestMass
         val initialGamma: Double = gamma(initialVelocity, speedOfLight)
         val dotProduct: Double = initialVelocity.dotUnitVelocity(targetDirection)
+
+        val speedOfLight2 = speedOfLight * speedOfLight
+
+        val speedOfLight4 = speedOfLight2 * speedOfLight2
+
+        val tmp1: Double = ((initialRestMass * initialRestMass + finalRestMass * finalRestMass) /
+                2.0 / initialGamma / initialRestMass / finalRestMass)
+        val tmp2: Double = tmp1 * tmp1
+
+        val a: Double = dotProduct * dotProduct + tmp2 * speedOfLight2
+        val b: Double = -2.0 * speedOfLight2 * dotProduct
+        val c: Double = speedOfLight4 * (1 - tmp2)
+
+        val solution: QuadraticSolutions = solveQuadratic(a, b, c)
+
+        return if (solution.isRealSolutionExist) {
+            when (solution.numPositiveSolution) {
+                0 -> Velocity(0.0, 0.0, 0.0)
+                1 -> targetDirection.scaleVelocity(solution.x1)
+                2 -> if (accelerate) {
+                    targetDirection.scaleVelocity(solution.x1)
+                } else {
+                    targetDirection.scaleVelocity(solution.x2)
+                }
+                // Shouldn't involve else
+                else -> Velocity(0.0, 0.0, 0.0)
+            }
+        } else {
+            Velocity(0.0, 0.0, 0.0)
+        }
     }
 }

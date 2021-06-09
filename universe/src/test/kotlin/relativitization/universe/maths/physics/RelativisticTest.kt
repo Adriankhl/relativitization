@@ -1,13 +1,13 @@
 package relativitization.universe.maths.physics
 
 import relativitization.universe.data.physics.Velocity
-import relativitization.universe.maths.physics.Relativistic.canChangeVelocityByPhotonRocket
+import relativitization.universe.maths.physics.Relativistic.canTargetVelocityByPhotonRocket
 import kotlin.test.Test
 
 internal class RelativisticTest {
     @Test
     fun canChangeVelocityTest() {
-        val b1: Boolean = canChangeVelocityByPhotonRocket(
+        val b1: Boolean = canTargetVelocityByPhotonRocket(
             initialRestMass = 1.0,
             deltaRestMass = 0.1,
             initialVelocity = Velocity(vx = 0.3, vy = 0.3, vz = 0.3),
@@ -17,7 +17,7 @@ internal class RelativisticTest {
 
         assert(b1)
 
-        val b2: Boolean = canChangeVelocityByPhotonRocket(
+        val b2: Boolean = canTargetVelocityByPhotonRocket(
             initialRestMass = 1.0,
             deltaRestMass = 0.1,
             initialVelocity = Velocity(vx = 0.3, vy = 0.3, vz = 0.3),
@@ -27,7 +27,7 @@ internal class RelativisticTest {
 
         assert(!b2)
 
-        val b3: Boolean = canChangeVelocityByPhotonRocket(
+        val b3: Boolean = canTargetVelocityByPhotonRocket(
             initialRestMass = 1.0,
             deltaRestMass = 0.1,
             initialVelocity = Velocity(vx = 0.0, vy = 0.0, vz = 0.0),
@@ -37,7 +37,7 @@ internal class RelativisticTest {
 
         assert(b3)
 
-        val b4: Boolean = canChangeVelocityByPhotonRocket(
+        val b4: Boolean = canTargetVelocityByPhotonRocket(
             initialRestMass = 1.0,
             deltaRestMass = 0.5,
             initialVelocity = Velocity(vx = 0.3, vy = 0.3, vz = 0.3),
@@ -47,7 +47,7 @@ internal class RelativisticTest {
 
         assert(b4)
 
-        val b5: Boolean = canChangeVelocityByPhotonRocket(
+        val b5: Boolean = canTargetVelocityByPhotonRocket(
             initialRestMass = 1.0,
             deltaRestMass = 0.1,
             initialVelocity = Velocity(vx = 0.3, vy = 0.3, vz = 0.3),
