@@ -149,4 +149,14 @@ object Relativistic {
             Velocity(0.0, 0.0, 0.0)
         }
     }
+
+    fun speedByPhotonRocket(
+        initialRestMass: Double,
+        deltaRestMass: Double,
+        speedOfLight: Double,
+    ): Double {
+        val finalMass: Double = initialRestMass - deltaRestMass
+        val ratio: Double = initialRestMass / finalMass
+        return speedOfLight * (ratio * ratio - 1) / (ratio * ratio + 1)
+    }
 }

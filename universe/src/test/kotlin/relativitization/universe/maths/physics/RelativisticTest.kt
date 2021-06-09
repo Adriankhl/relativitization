@@ -75,7 +75,7 @@ internal class RelativisticTest {
         val v2: Velocity = targetVelocityByPhotonRocket(
             initialRestMass = 1.0,
             deltaRestMass = 0.6,
-            initialVelocity = Velocity(vx = 0.3, vy = 0.3, vz = 0.3),
+            initialVelocity = Velocity(vx = 0.0, vy = 0.0, vz = 0.0),
             targetDirection = Velocity(vx = 0.3, vy = 0.3, vz = 0.3),
             accelerate = true,
             speedOfLight = 1.0
