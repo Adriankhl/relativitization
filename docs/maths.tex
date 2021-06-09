@@ -3,6 +3,7 @@
 
 \documentclass[12pt, letterpaper]{article}
 \usepackage[utf8]{inputenc}
+\usepackage{amsmath}
 
 
 \title{Relativitization}
@@ -17,5 +18,22 @@
 \end{titlepage}
 
 \section{Photon rocket}
+
+Photon 4-momentum: $P_{ph}$, object initial 4-momentum $P_i = (\gamma_i m_i c, \gamma_i m_i \overrightarrow{v}) $,
+object final 4-momentum $P_f = (\gamma_f m_f c, \gamma_f m_f \alpha \hat{u})$. Let $m_f = m_i - \Delta m$.
+
+\begin{align*}
+  P_{ph} &= P_i - P_f \\
+  P_{ph}^2 &= P_i^2 + P_f^2 - 2 P_i \cdot P_f \\
+  0 &= (m_i c)^2 + (m_f c)^2 - 2 \gamma_i \gamma_f m_i m_f ( c^2 - \alpha \overrightarrow{v} \cdot \hat{u}) \\
+  (m_i c)^2 + (m_f c)^2 &= \frac{2 \gamma_i m_i m_f}{\sqrt{1 - \alpha^2 / c^2}} ( c^2 - \alpha \overrightarrow{v} \cdot \hat{u}) \\
+  \left(\frac{(m_i c)^2 + (m_f c)^2}{2 \gamma_i m_i m_f}\right)^2 &= \frac{(c^2 - \alpha \overrightarrow{v} \cdot \hat{u})^2}{1 - \alpha^2 / c^2} \\
+  \left(\frac{(m_i c)^2 + (m_f c)^2}{2 \gamma_i m_i m_f}\right)^2 (1 - \alpha^2 / c^2) &= c^4 - 2 c^2 \alpha \overrightarrow{v} \cdot \hat{u} + \alpha^2 (\overrightarrow{v} \cdot \hat{u})^2 \\
+\end{align*}
+
+\begin{equation*}
+  ((\overrightarrow{v} \cdot \hat{u})^2 + \left(\frac{(m_i c)^2 + (m_f c)^2}{2 c \gamma_i m_i m_f}\right)^2) \alpha ^2 + (- 2 c^2 \overrightarrow{v} \cdot \hat{u}) \alpha + \left(c^4 - \left(\frac{(m_i c)^2 + (m_f c)^2}{2 \gamma_i m_i m_f}\right)^2 \right) = 0
+\end{equation*}
+
 
 \end{document}
