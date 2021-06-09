@@ -1,6 +1,8 @@
 package relativitization.universe.maths.physics
 
 import relativitization.universe.data.physics.Velocity
+import relativitization.universe.maths.algebra.Quadratic.discriminant
+import kotlin.math.pow
 import kotlin.math.sqrt
 
 object Relativistic {
@@ -71,9 +73,41 @@ object Relativistic {
         return sqrt(v2)
     }
 
+    fun canChangeVelocityByPhotonRocket(
+        initialRestMass: Double,
+        deltaRestMass: Double,
+        initialVelocity: Velocity,
+        targetDirection: Velocity,
+        speedOfLight: Double,
+    ): Boolean {
+        val finalRestMass: Double = initialRestMass - deltaRestMass
+        val initialGamma: Double = gamma(initialVelocity, speedOfLight)
+        val dotProduct: Double = initialVelocity.dotUnitVelocity(targetDirection)
+
+        val speedOfLight2 = speedOfLight * speedOfLight
+
+        val speedOfLight4 = speedOfLight2 * speedOfLight2
+
+        val tmp1: Double = ((initialRestMass * initialRestMass + finalRestMass * finalRestMass) /
+                2.0 / initialGamma / initialRestMass / finalRestMass)
+        val tmp2: Double = tmp1 * tmp1
+
+        val a: Double = dotProduct * dotProduct + tmp2 * speedOfLight2
+        val b: Double = -2.0 * speedOfLight2 * dotProduct
+        val c: Double = speedOfLight4 * (1 - tmp2)
+
+        return discriminant(a, b, c) >= 0
+    }
+
     fun changeVelocityByPhotonRocket(
-
+        initialRestMass: Double,
+        deltaRestMass: Double,
+        initialVelocity: Velocity,
+        targetDirection: Velocity,
+        speedOfLight: Double,
     ) {
-
+        val finalRestMass: Double = initialRestMass - deltaRestMass
+        val initialGamma: Double = gamma(initialVelocity, speedOfLight)
+        val dotProduct: Double = initialVelocity.dotUnitVelocity(targetDirection)
     }
 }
