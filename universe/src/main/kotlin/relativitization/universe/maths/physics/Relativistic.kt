@@ -33,6 +33,14 @@ object Relativistic {
         return 1.0 / sqrt(1.0 - velocity.squareMag() / speedOfLight / speedOfLight)
     }
 
+
+    /**
+     * Time after dilation
+     */
+    fun dilatedTime(dt: Double, velocity: Velocity, speedOfLight: Double): Double {
+        return dt / gamma(velocity, speedOfLight)
+    }
+
     /**
      * Compute the relativistic energy of this object
      *

@@ -9,7 +9,7 @@ import relativitization.universe.data.commands.ChangeVelocityCommand
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.physics.Int4D
 import relativitization.universe.data.physics.Velocity
-import relativitization.universe.maths.physics.Intervals.targetVelocity
+import relativitization.universe.maths.physics.Intervals.coordinatesToVelocity
 
 @Serializable
 data class MoveToPlayerEvent(
@@ -38,7 +38,7 @@ data class MoveToPlayerEvent(
     override fun generateCommands(choice: Int, universeData3DAtPlayer: UniverseData3DAtPlayer): List<Command> {
 
         return if (choice == 0) {
-            val targetVelocity: Velocity = targetVelocity(
+            val targetVelocity: Velocity = coordinatesToVelocity(
                 universeData3DAtPlayer.get(playerId).double4D.toDouble3D(),
                 universeData3DAtPlayer.get(targetPlayerId).double4D.toDouble3D(),
                 universeData3DAtPlayer.universeSettings.speedOfLight
