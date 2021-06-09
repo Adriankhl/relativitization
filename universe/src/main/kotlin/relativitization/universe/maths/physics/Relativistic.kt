@@ -74,7 +74,7 @@ object Relativistic {
         return sqrt(v2)
     }
 
-    fun canTargetVelocityByPhotonRocket(
+    fun canTargetDirectionByPhotonRocket(
         initialRestMass: Double,
         deltaRestMass: Double,
         initialVelocity: Velocity,
@@ -100,7 +100,7 @@ object Relativistic {
         return discriminant(a, b, c) >= 0
     }
 
-    fun targetVelocityByPhotonRocket(
+    fun targetDirectionByPhotonRocket(
         initialRestMass: Double,
         deltaRestMass: Double,
         initialVelocity: Velocity,
