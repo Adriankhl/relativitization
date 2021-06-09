@@ -4,6 +4,21 @@ import relativitization.universe.data.physics.Velocity
 import kotlin.math.sqrt
 
 object Relativistic {
+    // E = m * c^2
+    // Unit of energy change when c != 1
+    // if energy value data is stored as if c=1, scaling is required when c != 1
+    // Consider the amount of energy required to accelerate something to 0.5c
+    // c = 2 needs 4 times more energy then c = 1, but this the amount of energy
+    // should be the same regardless of c, so the energy value should be amplified by 4 times
+    fun Double.toActualEnergyUnit(speedOfLight: Double): Double {
+        return this * (speedOfLight * speedOfLight)
+    }
+
+    // E = m * c^2, m = 1 kg, c = 1
+    fun Double.toStandardEnergyUnit(speedOfLight: Double): Double {
+        return this / (speedOfLight * speedOfLight)
+    }
+
     fun gamma(speed: Double, speedOfLight: Double): Double {
         return 1.0 / sqrt(1.0 - speed * speed / speedOfLight / speedOfLight)
     }
@@ -56,18 +71,9 @@ object Relativistic {
         return sqrt(v2)
     }
 
-    // E = m * c^2
-    // Unit of energy change when c != 1
-    // if energy value data is stored as if c=1, scaling is required when c != 1
-    // Consider the amount of energy required to accelerate something to 0.5c
-    // c = 2 needs 4 times more energy then c = 1, but this the amount of energy
-    // should be the same regardless of c, so the energy value should be amplified by 4 times
-    fun Double.toActualEnergyUnit(speedOfLight: Double): Double {
-        return this * (speedOfLight * speedOfLight)
-    }
+    fun changeVelocityByPhotonRocket(
 
-    // E = m * c^2, m = 1 kg, c = 1
-    fun Double.toStandardEnergyUnit(speedOfLight: Double): Double {
-        return this / (speedOfLight * speedOfLight)
+    ) {
+
     }
 }

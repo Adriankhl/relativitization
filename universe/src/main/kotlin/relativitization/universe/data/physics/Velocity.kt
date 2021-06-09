@@ -10,8 +10,10 @@ data class Velocity(val vx: Double, val vy: Double, val vz: Double) {
         return vx * vx + vy * vy + vz * vz
     }
 
+    fun mag(): Double = sqrt(squareMag())
+
     fun scaleVelocity(newVMag: Double): Velocity {
-        val vMag = sqrt(squareMag())
+        val vMag = mag()
         return if (vMag <= 0.0) {
             Velocity(0.0, 0.0, 0.0)
         } else {
@@ -39,6 +41,15 @@ data class Velocity(val vx: Double, val vy: Double, val vz: Double) {
         }
     }
 
+    fun dot(velocity: Velocity): Double {
+        return vx * velocity.vx + vy * velocity.vy + vz * velocity.vz
+    }
+
+    fun dotUnitVelocity(velocity: Velocity): Double {
+        val unitVelocity: Velocity = velocity.scaleVelocity(1.0)
+        return dot(unitVelocity)
+    }
+
     operator fun times(double: Double) = Velocity(vx * double, vy * double, vz * double)
 
     operator fun plus(velocity: Velocity) = Velocity(velocity.vx + vx, velocity.vy + vy, velocity.vz + vz)
@@ -49,6 +60,8 @@ data class MutableVelocity(var vx: Double, var vy: Double, var vz: Double) {
     fun squareMag(): Double {
         return vx * vx + vy * vy + vz * vz
     }
+
+    fun mag(): Double = sqrt(squareMag())
 
     fun scaleVelocity(newVMag: Double): MutableVelocity {
         val vMag = sqrt(squareMag())
