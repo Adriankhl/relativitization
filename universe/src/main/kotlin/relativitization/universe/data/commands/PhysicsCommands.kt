@@ -8,11 +8,13 @@ import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.physics.Int4D
 import relativitization.universe.data.physics.Velocity
 import relativitization.universe.data.serializer.DataSerializer
-import relativitization.universe.maths.physics.Relativistic
+import relativitization.universe.maths.physics.Relativistic.targetVelocityByPhotonRocket
 import relativitization.universe.maths.physics.Relativistic.toActualEnergyUnit
 import relativitization.universe.maths.physics.Relativistic.toStandardEnergyUnit
+import relativitization.universe.maths.physics.TargetVelocityData
 import kotlin.math.abs
 import kotlin.math.max
+import kotlin.math.min
 
 @Serializable
 data class ChangeVelocityCommand(
@@ -46,6 +48,24 @@ data class ChangeVelocityCommand(
         val speedOfLight: Double = universeSettings.speedOfLight
 
         if (targetVelocity.mag() < speedOfLight) {
+            val maxDeltaRestMass: Double = min(
+                playerData.playerInternalData.physicsData.maxDeltaFuelRestMass,
+                playerData.playerInternalData.physicsData.fuelRestMass
+            )
+
+            val targetVelocityData: TargetVelocityData = targetVelocityByPhotonRocket(
+                initialRestMass = playerData.playerInternalData.physicsData.totalRestMass(),
+                maxDeltaRestMass = maxDeltaRestMass,
+                initialVelocity = playerData.velocity.toVelocity(),
+                targetVelocity = targetVelocity,
+                speedOfLight = universeSettings.speedOfLight
+            )
+
+            playerData.velocity.vx = targetVelocityData.newVelocity.vx
+            playerData.velocity.vy = targetVelocityData.newVelocity.vy
+            playerData.velocity.vz = targetVelocityData.newVelocity.vz
+
+            playerData.playerInternalData.physicsData.fuelRestMass -= targetVelocityData.deltaRestMass
         } else {
             logger.error("Target velocity larger than the speed of light")
         }

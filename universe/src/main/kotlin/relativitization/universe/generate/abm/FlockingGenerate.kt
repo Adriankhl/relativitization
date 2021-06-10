@@ -44,7 +44,7 @@ class FlockingGenerate : GenerateUniverse() {
             playerData.int4D.z = Random.Default.nextInt(0, universeSettings.zDim)
 
             playerData.playerInternalData.physicsData.fuelRestMass = 1e6
-            playerData.playerInternalData.physicsData.moveMaxPower = 1.0
+            playerData.playerInternalData.physicsData.maxDeltaFuelRestMass = 1.0
 
 
             val vx = Random.Default.nextDouble(-1.0, 1.0)

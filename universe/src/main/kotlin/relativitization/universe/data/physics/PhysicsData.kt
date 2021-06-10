@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 data class PhysicsData(
     val coreRestMass: Double = 1.0,
     val fuelRestMass: Double = 1.0,
-    val moveMaxPower: Double = 0.0,
+    val maxDeltaFuelRestMass: Double = 0.0,
 ) {
     fun totalRestMass() = coreRestMass + fuelRestMass
 }
@@ -15,7 +15,7 @@ data class PhysicsData(
 data class MutablePhysicsData(
     var coreRestMass: Double = 1.0,
     var fuelRestMass: Double = 1.0,
-    var moveMaxPower: Double = 0.0,
+    var maxDeltaFuelRestMass: Double = 0.0,
 ) {
     fun totalRestMass() = coreRestMass + fuelRestMass
 }

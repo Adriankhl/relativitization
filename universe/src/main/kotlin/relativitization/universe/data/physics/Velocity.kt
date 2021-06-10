@@ -22,6 +22,8 @@ data class Velocity(val vx: Double, val vy: Double, val vz: Double) {
         }
     }
 
+    fun toMutableVelocity() = MutableVelocity(vx, vy, vz)
+
     /**
      * Find the maximum component of the velocity
      *
@@ -78,4 +80,6 @@ data class MutableVelocity(var vx: Double, var vy: Double, var vz: Double) {
         val ratio = newVMag / vMag
         return MutableVelocity(ratio * vx, ratio * vy, ratio * vz)
     }
+
+    fun toVelocity(): Velocity = Velocity(vx, vy, vz)
 }
