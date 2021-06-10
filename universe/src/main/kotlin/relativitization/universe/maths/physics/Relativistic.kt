@@ -138,7 +138,13 @@ object Relativistic {
     ): TargetVelocityData {
         val finalRestMass: Double = initialRestMass - deltaRestMass
         val initialGamma: Double = gamma(initialVelocity, speedOfLight)
-        val dotProduct: Double = initialVelocity.dotUnitVelocity(targetDirection)
+
+        val dotProduct: Double = if (targetDirection.squareMag() > 0.0) {
+            logger.error("Target direction is zero vector")
+            initialVelocity.dotUnitVelocity(targetDirection)
+        } else {
+            initialVelocity.dotUnitVelocity(initialVelocity)
+        }
 
         val speedOfLight2 = speedOfLight * speedOfLight
 
