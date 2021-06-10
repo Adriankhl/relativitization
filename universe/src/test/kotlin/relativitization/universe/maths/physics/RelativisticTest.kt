@@ -125,7 +125,7 @@ internal class RelativisticTest {
                 speedOfLight = 1.0
             )
 
-            assert(v1.success)
+            assert(v1.targetVelocityType != TargetVelocityType.FAIL)
         }
     }
 

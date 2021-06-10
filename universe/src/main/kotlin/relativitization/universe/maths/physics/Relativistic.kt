@@ -155,33 +155,53 @@ object Relativistic {
         val solution: QuadraticSolutions = solveQuadratic(a, b, c)
 
         // Return this if anything is wrong
-        val failTargetVelocityData: TargetVelocityData = TargetVelocityData(false, Velocity(0.0, 0.0, 0.0), 0.0)
+        val failTargetVelocityData: TargetVelocityData = TargetVelocityData(
+            TargetVelocityType.FAIL,
+            Velocity(0.0, 0.0, 0.0),
+            0.0
+        )
 
         return if (solution.isRealSolutionExist) {
             when (solution.numPositiveSolution) {
                 0 -> failTargetVelocityData
                 1 -> if (accelerate) {
                     if (solution.x1 >= initialVelocity.mag()) {
-                        TargetVelocityData(true, targetDirection.scaleVelocity(solution.x1), deltaRestMass)
+                        TargetVelocityData(
+                            TargetVelocityType.CHANGE_DIRECTION,
+                            targetDirection.scaleVelocity(solution.x1),
+                            deltaRestMass
+                        )
                     } else {
                         failTargetVelocityData
                     }
                 } else {
                     if (solution.x1 <= initialVelocity.mag()) {
-                        TargetVelocityData(true, targetDirection.scaleVelocity(solution.x1), deltaRestMass)
+                        TargetVelocityData(
+                            TargetVelocityType.CHANGE_DIRECTION,
+                            targetDirection.scaleVelocity(solution.x1),
+                            deltaRestMass
+                        )
                     } else {
                         failTargetVelocityData
                     }
                 }
                 2 -> if (accelerate) {
                     if (solution.x1 >= initialVelocity.mag()) {
-                        TargetVelocityData(true, targetDirection.scaleVelocity(solution.x1), deltaRestMass)
+                        TargetVelocityData(
+                            TargetVelocityType.CHANGE_DIRECTION,
+                            targetDirection.scaleVelocity(solution.x1),
+                            deltaRestMass
+                        )
                     } else {
                         failTargetVelocityData
                     }
                 } else {
                     if (solution.x2 <= initialVelocity.mag()) {
-                        TargetVelocityData(true, targetDirection.scaleVelocity(solution.x2), deltaRestMass)
+                        TargetVelocityData(
+                            TargetVelocityType.CHANGE_DIRECTION,
+                            targetDirection.scaleVelocity(solution.x2),
+                            deltaRestMass
+                        )
                     } else {
                         failTargetVelocityData
                     }
@@ -270,9 +290,13 @@ object Relativistic {
         )
 
         return if (zeroVelocityDeltaRestMass <= maxDeltaRestMass) {
-            TargetVelocityData(true, Velocity(0.0, 0.0, 0.0), zeroVelocityDeltaRestMass)
+            TargetVelocityData(
+                TargetVelocityType.DECELERATE,
+                Velocity(0.0, 0.0, 0.0),
+                zeroVelocityDeltaRestMass
+            )
         } else {
-            val targetDataTarget: TargetVelocityData = targetVelocityAtDirectionPhotonRocket(
+            val originalTargetVelocityData: TargetVelocityData = targetVelocityAtDirectionPhotonRocket(
                 initialRestMass = initialRestMass,
                 deltaRestMass = maxDeltaRestMass,
                 initialVelocity = initialVelocity,
@@ -281,11 +305,15 @@ object Relativistic {
                 speedOfLight = speedOfLight
             )
 
-            if (!targetDataTarget.success) {
+            if (originalTargetVelocityData.targetVelocityType == TargetVelocityType.FAIL) {
                 logger.error("decelerateByPhotonRocket fail, something is wrong")
             }
 
-            targetDataTarget
+            TargetVelocityData(
+                TargetVelocityType.DECELERATE,
+                originalTargetVelocityData.newVelocity,
+                originalTargetVelocityData.deltaRestMass
+            )
         }
     }
 
@@ -317,10 +345,14 @@ object Relativistic {
         )
 
         return if (requiredDeltaMass <= maxDeltaRestMass) {
-            TargetVelocityData(true, targetVelocity, requiredDeltaMass)
+            TargetVelocityData(
+                TargetVelocityType.SUCCESS,
+                targetVelocity,
+                requiredDeltaMass
+            )
         } else {
             // Try to change to the correct direction and accelerate / decelerate
-            val toDirectionDataTarget: TargetVelocityData = targetVelocityAtDirectionPhotonRocket(
+            val toDirectionTargetVelocityData: TargetVelocityData = targetVelocityAtDirectionPhotonRocket(
                 initialRestMass = initialRestMass,
                 deltaRestMass = maxDeltaRestMass,
                 initialVelocity = initialVelocity,
@@ -328,8 +360,8 @@ object Relativistic {
                 accelerate = initialVelocity.squareMag() < targetVelocity.squareMag(),
                 speedOfLight = speedOfLight
             )
-            if (toDirectionDataTarget.success) {
-                toDirectionDataTarget
+            if (toDirectionTargetVelocityData.targetVelocityType == TargetVelocityType.CHANGE_DIRECTION) {
+                toDirectionTargetVelocityData
             } else {
                 decelerateByPhotonRocket(
                     initialRestMass = initialRestMass,
@@ -343,7 +375,7 @@ object Relativistic {
 }
 
 data class TargetVelocityData(
-    val success: Boolean,
+    val targetVelocityType: TargetVelocityType,
     val newVelocity: Velocity,
     val deltaRestMass: Double,
 )
