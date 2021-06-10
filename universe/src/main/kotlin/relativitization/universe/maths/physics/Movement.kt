@@ -3,6 +3,7 @@ package relativitization.universe.maths.physics
 import org.apache.logging.log4j.LogManager
 import relativitization.universe.data.physics.Double3D
 import relativitization.universe.data.physics.Velocity
+import relativitization.universe.maths.physics.Relativistic.decelerateByPhotonRocket
 import relativitization.universe.maths.physics.Relativistic.targetVelocityAtDirectionPhotonRocket
 import relativitization.universe.maths.physics.Relativistic.targetVelocityByPhotonRocket
 
@@ -32,6 +33,35 @@ object Movement {
     fun isSameDirection(velocity: Velocity, double3D: Double3D): Boolean {
         val dotProduct: Double = velocity.scaleVelocity(1.0).dot(double3D.normalize())
         return (dotProduct > 0.999999) && (dotProduct < 1.000001)
+    }
+
+    /**
+     * Distance needed to stop an object
+     */
+    fun stopDistance(
+        initialRestMass: Double,
+        maxDeltaRestMass: Double,
+        initialVelocity: Velocity,
+        speedOfLight: Double,
+    ): Double {
+        var currentDistance: Double = 0.0
+        var currentVelocity: Velocity = initialVelocity
+        var currentRestMass: Double = initialRestMass
+
+        while (currentVelocity.squareMag() > 0) {
+            val velocityData: TargetVelocityData = decelerateByPhotonRocket(
+                initialRestMass = currentRestMass,
+                maxDeltaRestMass = maxDeltaRestMass,
+                initialVelocity = currentVelocity,
+                speedOfLight = speedOfLight
+            )
+
+            currentVelocity = velocityData.newVelocity
+            currentRestMass -= velocityData.deltaRestMass
+            currentDistance += currentVelocity.mag()
+        }
+
+        return currentDistance
     }
 
     /**
