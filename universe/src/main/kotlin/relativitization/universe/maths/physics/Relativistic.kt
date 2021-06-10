@@ -181,7 +181,7 @@ object Relativistic {
                     }
                 } else {
                     if (solution.x2 <= initialVelocity.mag()) {
-                        VelocityChangeData(true, targetDirection.scaleVelocity(solution.x1), deltaRestMass)
+                        VelocityChangeData(true, targetDirection.scaleVelocity(solution.x2), deltaRestMass)
                     } else {
                         failVelocityChangeData
                     }
