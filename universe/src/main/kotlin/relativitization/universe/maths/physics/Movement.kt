@@ -38,7 +38,7 @@ object Movement {
     /**
      * Distance needed to stop an object
      */
-    fun stopDistance(
+    fun stoppingDistanceByPhotonRocket(
         initialRestMass: Double,
         maxDeltaRestMass: Double,
         initialVelocity: Velocity,
