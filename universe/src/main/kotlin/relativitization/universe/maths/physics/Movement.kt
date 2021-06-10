@@ -133,19 +133,29 @@ object Movement {
             originalTargetVelocity
         }
 
+        val requiredDeltaMass: Double = Relativistic.deltaMassByPhotonRocket(
+            initialRestMass = initialRestMass,
+            initialVelocity = initialVelocity,
+            targetVelocity = targetVelocity,
+            speedOfLight = speedOfLight,
+        )
+
         return if (initialDouble3D == targetDouble3D) {
-            TargetVelocityData(
-                TargetVelocityType.SUCCESS,
-                Velocity(0.0, 0.0, 0.0),
-                0.0
-            )
+            if (requiredDeltaMass <= maxDeltaRestMass && (targetVelocity == originalTargetVelocity)) {
+                TargetVelocityData(
+                    TargetVelocityType.SUCCESS,
+                    targetVelocity,
+                    requiredDeltaMass
+                )
+            } else {
+                decelerateByPhotonRocket(
+                    initialRestMass = initialRestMass,
+                    maxDeltaRestMass = maxDeltaRestMass,
+                    initialVelocity = initialVelocity,
+                    speedOfLight = speedOfLight
+                )
+            }
         } else {
-            val requiredDeltaMass: Double = Relativistic.deltaMassByPhotonRocket(
-                initialRestMass = initialRestMass,
-                initialVelocity = initialVelocity,
-                targetVelocity = targetVelocity,
-                speedOfLight = speedOfLight,
-            )
 
             if ((requiredDeltaMass <= maxDeltaRestMass) && (targetVelocity == originalTargetVelocity)) {
                 TargetVelocityData(

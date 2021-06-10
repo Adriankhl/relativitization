@@ -1,6 +1,5 @@
 package relativitization.universe.maths.physics
 
-import org.junit.jupiter.api.TestFactory
 import relativitization.universe.data.physics.Double3D
 import relativitization.universe.data.physics.Velocity
 import relativitization.universe.maths.physics.Movement.isSameDirection
@@ -55,16 +54,106 @@ internal class MovementTest {
 
     @Test
     fun targetDouble3DTest() {
-        val v1: TargetVelocityData = targetDouble3DByPhotonRocket(
-            initialRestMass = 1.0,
-            maxDeltaRestMass = 0.1,
-            initialVelocity = Velocity(0.0, 0.0, 0.0),
-            maxSpeed = 0.2,
-            initialDouble3D = Double3D(0.0, 0.0, 0.0),
-            targetDouble3D = Double3D(1.0, 0.0, 0.0),
-            speedOfLight = 0.0
-        )
 
-        println(v1)
+        var currentRestMass1 = 1.0
+        var currentDouble3D1 = Double3D(0.0, 0.0, 0.0)
+        var currentVelocity1 = Velocity(0.0, 0.0, 0.0)
+
+        val l1 = (1..10).toList().map {
+            val v1: TargetVelocityData = targetDouble3DByPhotonRocket(
+                initialRestMass = currentRestMass1,
+                maxDeltaRestMass = 0.1,
+                initialVelocity = currentVelocity1,
+                maxSpeed = 0.2,
+                initialDouble3D = currentDouble3D1,
+                targetDouble3D = Double3D(1.0, 0.0, 0.0),
+                speedOfLight = 1.0
+            )
+            currentRestMass1 -= v1.deltaRestMass
+            currentVelocity1 = v1.newVelocity
+            currentDouble3D1 += v1.newVelocity.displacement(1)
+
+            println("Velocity 1: $currentVelocity1")
+            println("Double3D 1: $currentDouble3D1")
+            println("Rest mass 1: $currentRestMass1")
+        }
+
+        assert(currentDouble3D1 == Double3D(1.0, 0.0, 0.0))
+
+        var currentRestMass2 = 1.0
+        var currentDouble3D2 = Double3D(0.0, 0.0, 0.0)
+        var currentVelocity2 = Velocity(0.0, -0.3, 0.0)
+
+        val l2 = (1..10).toList().map {
+            val v2: TargetVelocityData = targetDouble3DByPhotonRocket(
+                initialRestMass = currentRestMass2,
+                maxDeltaRestMass = 0.1,
+                initialVelocity = currentVelocity2,
+                maxSpeed = 0.2,
+                initialDouble3D = currentDouble3D2,
+                targetDouble3D = Double3D(1.0, 0.0, 0.0),
+                speedOfLight = 1.0
+            )
+            currentRestMass2 -= v2.deltaRestMass
+            currentVelocity2 = v2.newVelocity
+            currentDouble3D2 += v2.newVelocity.displacement(1)
+
+            println("Velocity 2: $currentVelocity2")
+            println("Double3D 2: $currentDouble3D2")
+            println("Rest mass 2: $currentRestMass2")
+        }
+
+        assert(currentDouble3D2 == Double3D(1.0, 0.0, 0.0))
+
+        var currentRestMass3 = 1.0
+        var currentDouble3D3 = Double3D(0.0, 0.0, 0.0)
+        var currentVelocity3 = Velocity(0.5, 0.0, 0.0)
+
+        val l6 = (1..30).toList().map {
+            val v3: TargetVelocityData = targetDouble3DByPhotonRocket(
+                initialRestMass = currentRestMass3,
+                maxDeltaRestMass = 0.05,
+                initialVelocity = currentVelocity3,
+                maxSpeed = 0.2,
+                initialDouble3D = currentDouble3D3,
+                targetDouble3D = Double3D(1.0, 0.0, 0.0),
+                speedOfLight = 1.0
+            )
+            currentRestMass3 -= v3.deltaRestMass
+            currentVelocity3 = v3.newVelocity
+            currentDouble3D3 += v3.newVelocity.displacement(1)
+
+            println("Velocity 3: $currentVelocity3")
+            println("Double3D 3: $currentDouble3D3")
+            println("Rest mass 3: $currentRestMass3")
+        }
+
+        assert(currentDouble3D3 == Double3D(1.0, 0.0, 0.0))
+
+        var currentRestMass4 = 1.0
+        var currentDouble3D4 = Double3D(1.0, 0.0, 0.0)
+        var currentVelocity4 = Velocity(0.6, 0.0, 0.0)
+
+        val l4 = (1..30).toList().map {
+            val v4: TargetVelocityData = targetDouble3DByPhotonRocket(
+                initialRestMass = currentRestMass4,
+                maxDeltaRestMass = 0.1,
+                initialVelocity = currentVelocity4,
+                maxSpeed = 0.2,
+                initialDouble3D = currentDouble3D4,
+                targetDouble3D = Double3D(1.0, 0.0, 0.0),
+                speedOfLight = 1.0
+            )
+            currentRestMass4 -= v4.deltaRestMass
+            currentVelocity4 = v4.newVelocity
+            currentDouble3D4 += v4.newVelocity.displacement(1)
+
+            println("Velocity 4: $currentVelocity4")
+            println("Double3D 4: $currentDouble3D4")
+            println("Rest mass 4: $currentRestMass4")
+        }
+
+        assert(currentDouble3D4 == Double3D(1.0, 0.0, 0.0))
+
     }
 }
