@@ -16,6 +16,17 @@ object Movement {
         return Velocity(dx, dy, dz).scaleVelocity(speedOfLight * 0.9)
     }
 
+    fun shouldDecelerate(
+        initialRestMass: Double,
+        maxDeltaRestMass: Double,
+        initialVelocity: Velocity,
+        initialPosition: Double3D,
+        targetPosition: Double3D,
+        speedOfLight: Double,
+    ) {
+
+    }
+
     fun targetPositionByPhotonRocket(
         initialRestMass: Double,
         maxDeltaRestMass: Double,
