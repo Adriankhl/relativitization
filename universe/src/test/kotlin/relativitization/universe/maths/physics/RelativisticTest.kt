@@ -65,7 +65,7 @@ internal class RelativisticTest {
 
     @Test
     fun targetVelocityAtDirectionTest() {
-        val v1: VelocityChangeData = targetVelocityAtDirectionPhotonRocket(
+        val v1: TargetVelocityData = targetVelocityAtDirectionPhotonRocket(
             initialRestMass = 1.0,
             deltaRestMass = 0.1,
             initialVelocity = Velocity(vx = 0.0, vy = 0.0, vz = 0.0),
@@ -82,7 +82,7 @@ internal class RelativisticTest {
 
         assert(v1.newVelocity.mag() - s1 < 0.01)
 
-        val v2: VelocityChangeData = targetVelocityAtDirectionPhotonRocket(
+        val v2: TargetVelocityData = targetVelocityAtDirectionPhotonRocket(
             initialRestMass = 1.0,
             deltaRestMass = 0.9,
             initialVelocity = Velocity(vx = 0.0, vy = 0.0, vz = 0.0),
@@ -118,7 +118,7 @@ internal class RelativisticTest {
         val speedList = listOf(0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9)
 
         speedList.forEach {
-            val v1: VelocityChangeData = decelerateByPhotonRocket(
+            val v1: TargetVelocityData = decelerateByPhotonRocket(
                 initialRestMass = 1.0,
                 maxDeltaRestMass = 0.1,
                 initialVelocity = Velocity(vx = 0.4, vy = 0.4, vz = 0.4).scaleVelocity(it),
@@ -131,7 +131,7 @@ internal class RelativisticTest {
 
     @Test
     fun targetVelocityTest() {
-        val v1: VelocityChangeData = targetVelocityByPhotonRocket(
+        val v1: TargetVelocityData = targetVelocityByPhotonRocket(
             initialRestMass = 1.0,
             maxDeltaRestMass = 0.1,
             initialVelocity = Velocity(vx = 0.0, vy = 0.0, vz = 0.0),
@@ -141,7 +141,7 @@ internal class RelativisticTest {
 
         assert(v1.newVelocity.vx > 0.104 && v1.newVelocity.vx < 0.105)
 
-        val v2: VelocityChangeData = targetVelocityByPhotonRocket(
+        val v2: TargetVelocityData = targetVelocityByPhotonRocket(
             initialRestMass = 1.0,
             maxDeltaRestMass = 0.5,
             initialVelocity = Velocity(vx = 0.0, vy = 0.0, vz = 0.0),
@@ -151,7 +151,7 @@ internal class RelativisticTest {
 
         assert(v2.deltaRestMass > 0.18 && v2.deltaRestMass < 0.19)
 
-        val v3: VelocityChangeData = targetVelocityByPhotonRocket(
+        val v3: TargetVelocityData = targetVelocityByPhotonRocket(
             initialRestMass = 1.0,
             maxDeltaRestMass = 0.3,
             initialVelocity = Velocity(vx = 0.2, vy = 0.0, vz = 0.0),
@@ -161,7 +161,7 @@ internal class RelativisticTest {
 
         assert(v3.newVelocity.vy == 0.2 && v3.deltaRestMass > 0.24 && v3.deltaRestMass < 0.26)
 
-        val v4: VelocityChangeData = targetVelocityByPhotonRocket(
+        val v4: TargetVelocityData = targetVelocityByPhotonRocket(
             initialRestMass = 1.0,
             maxDeltaRestMass = 0.06,
             initialVelocity = Velocity(vx = 0.2, vy = 0.0, vz = 0.0),
@@ -171,7 +171,7 @@ internal class RelativisticTest {
 
         assert(v4.newVelocity.vx > 0.13 && v4.newVelocity.vx < 0.15)
 
-        val v5: VelocityChangeData = targetVelocityByPhotonRocket(
+        val v5: TargetVelocityData = targetVelocityByPhotonRocket(
             initialRestMass = 1.0 - v4.deltaRestMass,
             maxDeltaRestMass = 0.06,
             initialVelocity = v4.newVelocity,
@@ -179,7 +179,7 @@ internal class RelativisticTest {
             speedOfLight = 1.0
         )
 
-        val v6: VelocityChangeData = targetVelocityByPhotonRocket(
+        val v6: TargetVelocityData = targetVelocityByPhotonRocket(
             initialRestMass = 1.0 - v4.deltaRestMass - v5.deltaRestMass,
             maxDeltaRestMass = 0.06,
             initialVelocity = v5.newVelocity,
@@ -187,7 +187,7 @@ internal class RelativisticTest {
             speedOfLight = 1.0
         )
 
-        val v7: VelocityChangeData = targetVelocityByPhotonRocket(
+        val v7: TargetVelocityData = targetVelocityByPhotonRocket(
             initialRestMass = 1.0 - v4.deltaRestMass - v5.deltaRestMass - v6.deltaRestMass,
             maxDeltaRestMass = 0.06,
             initialVelocity = v6.newVelocity,

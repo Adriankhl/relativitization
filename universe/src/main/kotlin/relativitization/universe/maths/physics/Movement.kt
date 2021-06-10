@@ -15,4 +15,15 @@ object Movement {
         val dz = to.z - from.z
         return Velocity(dx, dy, dz).scaleVelocity(speedOfLight * 0.9)
     }
+
+    fun targetPositionByPhotonRocket(
+        initialRestMass: Double,
+        maxDeltaRestMass: Double,
+        initialVelocity: Velocity,
+        targetPosition: Double3D,
+        maxSpeed: Double,
+        speedOfLight: Double,
+    ) {
+
+    }
 }
