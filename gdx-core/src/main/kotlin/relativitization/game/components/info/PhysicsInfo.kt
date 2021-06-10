@@ -10,7 +10,7 @@ import relativitization.universe.data.commands.ChangeVelocityCommand
 import relativitization.universe.data.physics.Double3D
 import relativitization.universe.data.physics.Int3D
 import relativitization.universe.data.physics.Velocity
-import relativitization.universe.maths.physics.Intervals.coordinatesToVelocity
+import relativitization.universe.maths.physics.Intervals.displacementToVelocity
 
 class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.assets) {
 
@@ -93,7 +93,7 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
 
         val targetInt3D: Int3D = game.universeClient.primarySelectedInt3D
 
-        val targetVelocity = coordinatesToVelocity(
+        val targetVelocity = displacementToVelocity(
             playerData.double4D.toDouble3D(),
             targetInt3D.toDouble3DCenter(),
             game.universeClient.getUniverseData3D().universeSettings.speedOfLight
@@ -111,7 +111,7 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
                 game.universeClient.newSelectedPlayerId
             ).double4D.toDouble3D()
 
-            val targetVelocity = coordinatesToVelocity(
+            val targetVelocity = displacementToVelocity(
                 playerData.double4D.toDouble3D(),
                 targetDouble3D,
                 game.universeClient.getUniverseData3D().universeSettings.speedOfLight

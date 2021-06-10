@@ -115,7 +115,7 @@ object Intervals {
      *
      * @return target velocity at 0.9 speed of light
      */
-    fun coordinatesToVelocity(from: Double3D, to: Double3D, speedOfLight: Double): Velocity {
+    fun displacementToVelocity(from: Double3D, to: Double3D, speedOfLight: Double): Velocity {
         val dx = to.x - from.x
         val dy = to.y - from.y
         val dz = to.z - from.z
