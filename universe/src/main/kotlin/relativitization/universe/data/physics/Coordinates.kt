@@ -84,6 +84,8 @@ data class Double3D(val x: Double, val y: Double, val z: Double) {
     operator fun times(double: Double): Double3D = Double3D(x * double, y * double, z * double)
 
     operator fun plus(double3D: Double3D): Double3D = Double3D(x + double3D.x, y + double3D.y, z + double3D.z)
+
+    operator fun minus(double3D: Double3D): Double3D = Double3D(x - double3D.x, y - double3D.y, z - double3D.z)
 }
 
 @Serializable

@@ -24,7 +24,12 @@ object Movement {
         targetPosition: Double3D,
         speedOfLight: Double,
     ) {
+        var tempDouble3D: Double3D = initialPosition
+        var tempVelocity: Velocity = initialVelocity
+        var velocityDotDisplacement: Double = initialVelocity.dot(targetPosition - tempDouble3D)
 
+        // Maintain this velocity for one turn, then decelerate
+        tempDouble3D += tempVelocity.displacement(1)
     }
 
     fun targetPositionByPhotonRocket(
@@ -55,5 +60,7 @@ object Movement {
             targetVelocity = targetVelocity,
             speedOfLight = 0.0
         )
+
+        return targetVelocityData
     }
 }
