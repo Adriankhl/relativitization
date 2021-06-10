@@ -65,6 +65,38 @@ object Movement {
     }
 
     /**
+     * Fastest speed allowed to stop at a certain distance
+     */
+    fun maxSpeedToStopByPhotonRocket(
+        initialRestMass: Double,
+        maxDeltaRestMass: Double,
+        distance: Double,
+        speedOfLight: Double,
+        numIteration: Int = 10,
+    ): Double {
+        var intervalMin: Double = 0.0
+        var intervalMax: Double = speedOfLight
+
+        for (i in 1..numIteration) {
+            val testSpeed: Double = 0.5 * intervalMin + 0.5 * intervalMax
+            val stoppingDistance: Double = stoppingDistanceByPhotonRocket(
+                initialRestMass = initialRestMass,
+                maxDeltaRestMass = maxDeltaRestMass,
+                initialVelocity = Velocity(testSpeed, 0.0, 0.0),
+                speedOfLight = speedOfLight
+            )
+
+            if (stoppingDistance < distance) {
+                intervalMin = testSpeed
+            } else {
+                intervalMax = testSpeed
+            }
+        }
+
+        return intervalMin
+    }
+
+    /**
      * Given that the initialVelocity and the double3D pointing from initialPosition to targetPosition are pointing
      * at the same direction, whether the object should decelerate now to stop at target position
      */

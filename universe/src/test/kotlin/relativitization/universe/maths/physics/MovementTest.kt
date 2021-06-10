@@ -4,6 +4,7 @@ import org.junit.jupiter.api.TestFactory
 import relativitization.universe.data.physics.Double3D
 import relativitization.universe.data.physics.Velocity
 import relativitization.universe.maths.physics.Movement.isSameDirection
+import relativitization.universe.maths.physics.Movement.maxSpeedToStopByPhotonRocket
 import relativitization.universe.maths.physics.Movement.stoppingDistanceByPhotonRocket
 import relativitization.universe.maths.physics.Relativistic.targetVelocityByPhotonRocket
 import kotlin.test.Test
@@ -37,5 +38,17 @@ internal class MovementTest {
         )
 
         assert(d1 > 6.4 && d1 < 6.5)
+    }
+
+    @Test
+    fun maxSpeedTest() {
+        val d1: Double = maxSpeedToStopByPhotonRocket(
+            initialRestMass = 1.0,
+            maxDeltaRestMass = 0.1,
+            distance = 2.0,
+            speedOfLight = 1.0
+        )
+
+        assert(d1 > 0.67 && d1 < 0.68)
     }
 }
