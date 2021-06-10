@@ -1,16 +1,10 @@
 package relativitization.universe.maths.physics
 
-import relativitization.universe.data.physics.Double3D
 import relativitization.universe.data.physics.Double4D
 import relativitization.universe.data.physics.Int3D
 import relativitization.universe.data.physics.Int4D
 import relativitization.universe.data.physics.MutableDouble4D
 import relativitization.universe.data.physics.MutableInt4D
-import relativitization.universe.data.physics.Velocity
-import relativitization.universe.maths.physics.Relativistic.energyToSpeed
-import relativitization.universe.maths.physics.Relativistic.velocityToEnergy
-import relativitization.universe.maths.physics.Relativistic.gamma
-import relativitization.universe.maths.physics.Relativistic.speedToEnergy
 import kotlin.math.abs
 import kotlin.math.sqrt
 
