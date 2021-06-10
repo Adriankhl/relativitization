@@ -36,10 +36,10 @@ class Minimal : GenerateUniverse() {
         playerData1.playerInternalData.popSystemicData.addRandomStellarSystem()
         playerData3.playerInternalData.popSystemicData.addRandomStellarSystem()
 
-        // Add non zero energy
-        playerData1.playerInternalData.physicsData.energy = 100.0
-        playerData2.playerInternalData.physicsData.energy = 200.0
-        playerData3.playerInternalData.physicsData.energy = 300.0
+        // Add non zero fuel rest mass
+        playerData1.playerInternalData.physicsData.fuelRestMass = 100.0
+        playerData2.playerInternalData.physicsData.fuelRestMass = 200.0
+        playerData3.playerInternalData.physicsData.fuelRestMass = 300.0
 
         // player 1 is a leader of player 2
         playerData2.playerInternalData.changeDirectLeaderId(playerData1.id)

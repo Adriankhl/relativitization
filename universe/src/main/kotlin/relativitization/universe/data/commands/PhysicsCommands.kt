@@ -45,48 +45,7 @@ data class ChangeVelocityCommand(
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings): Unit {
         val speedOfLight: Double = universeSettings.speedOfLight
 
-        if (targetVelocity.squareMag() <= speedOfLight * speedOfLight) {
-            val restMass: Double = playerData.playerInternalData.physicsData.restMass
-            val efficiency: Double = playerData.playerInternalData.physicsData.moveEnergyEfficiency
-            val originalVelocity: Velocity = DataSerializer.copy(playerData.velocity)
-            val originalEnergy: Double = Relativistic.velocityToEnergy(restMass, originalVelocity, speedOfLight)
-
-            // max power of remaining energy
-            val energyAvailable = max(
-                playerData.playerInternalData.physicsData.energy.toActualEnergyUnit(speedOfLight),
-                playerData.playerInternalData.physicsData.moveMaxPower.toActualEnergyUnit(speedOfLight)
-            )
-
-            // same energy for acceleration and deceleration
-            val required = abs(Relativistic.velocityToEnergy(restMass, targetVelocity, speedOfLight) - originalEnergy)
-            val isAcceleration: Boolean = Relativistic.velocityToEnergy(restMass, targetVelocity, speedOfLight) > originalEnergy
-
-            val newVelocity: Velocity = when {
-                required < energyAvailable * efficiency -> {
-                    targetVelocity
-                }
-                isAcceleration -> {
-                    val vMag = Relativistic.energyToSpeed(
-                        restMass,
-                        energyAvailable * efficiency + originalEnergy,
-                        speedOfLight
-                    )
-                    targetVelocity.scaleVelocity(vMag)
-                }
-                else -> {
-                    val vMag = Relativistic.energyToSpeed(
-                        restMass,
-                        originalEnergy - energyAvailable * efficiency,
-                        speedOfLight
-                    )
-                    targetVelocity.scaleVelocity(vMag)
-                }
-            }
-
-            val energyUsed = abs(Relativistic.velocityToEnergy(restMass, newVelocity, speedOfLight) - originalEnergy) / efficiency
-
-            playerData.velocity = DataSerializer.copy(newVelocity)
-            playerData.playerInternalData.physicsData.energy -= energyUsed.toStandardEnergyUnit(speedOfLight)
+        if (targetVelocity.mag() < speedOfLight) {
         } else {
             logger.error("Target velocity larger than the speed of light")
         }

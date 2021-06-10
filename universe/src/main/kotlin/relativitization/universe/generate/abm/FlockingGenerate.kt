@@ -43,7 +43,7 @@ class FlockingGenerate : GenerateUniverse() {
             playerData.int4D.y = Random.Default.nextInt(0, universeSettings.yDim)
             playerData.int4D.z = Random.Default.nextInt(0, universeSettings.zDim)
 
-            playerData.playerInternalData.physicsData.energy = 1e6
+            playerData.playerInternalData.physicsData.fuelRestMass = 1e6
             playerData.playerInternalData.physicsData.moveMaxPower = 1.0
 
 

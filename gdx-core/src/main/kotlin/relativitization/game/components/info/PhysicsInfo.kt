@@ -142,7 +142,7 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
         table.row().space(20f)
 
         val massLabel = createLabel(
-            "Rest mass: ${playerData.playerInternalData.physicsData.restMass}",
+            "Core rest mass: ${playerData.playerInternalData.physicsData.coreRestMass}",
             gdxSettings.smallFontSize
         )
 
@@ -151,20 +151,11 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
         table.row().space(10f)
 
         val energyLabel = createLabel(
-            "Energy: ${playerData.playerInternalData.physicsData.energy.toString().take(6)}",
+            "Fuel rest mass: ${playerData.playerInternalData.physicsData.fuelRestMass.toString().take(6)}",
             gdxSettings.smallFontSize
         )
 
         table.add(energyLabel)
-
-        table.row().space(10f)
-
-        val moveEnergyEfficiencyLabel = createLabel(
-            "Movement energy efficiency: ${playerData.playerInternalData.physicsData.moveEnergyEfficiency.toString().take(6)}",
-            gdxSettings.smallFontSize
-        )
-
-        table.add(moveEnergyEfficiencyLabel)
 
         table.row().space(10f)
 

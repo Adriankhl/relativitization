@@ -69,7 +69,8 @@ data class PlayerData(
 
     fun isValid(currentTime: Int): Boolean {
         val isTValid: Boolean = currentTime == int4D.t
-        val isRestMassValid: Boolean = playerInternalData.physicsData.restMass > 0.0
+        val isRestMassValid: Boolean = (playerInternalData.physicsData.coreRestMass > 0.0) &&
+                (playerInternalData.physicsData.fuelRestMass >= 0.0)
 
         return isTValid && isRestMassValid
     }
