@@ -1,25 +1,31 @@
 package relativitization.universe.data.events
 
 import kotlinx.serialization.Serializable
+import org.apache.logging.log4j.LogManager
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.ChangeVelocityCommand
 import relativitization.universe.data.commands.Command
+import relativitization.universe.data.physics.Double3D
 import relativitization.universe.data.physics.Int4D
 import relativitization.universe.data.physics.Velocity
 import relativitization.universe.maths.physics.Movement.displacementToVelocity
+import relativitization.universe.maths.physics.Movement.targetDouble3DByPhotonRocket
+import relativitization.universe.maths.physics.TargetVelocityData
+import kotlin.math.min
 
 @Serializable
-data class MoveToPlayerEvent(
+data class MoveToDouble3DEvent(
     override val playerId: Int,
-    val targetPlayerId: Int,
+    val targetDouble3D: Double3D,
+    val maxSpeed: Double,
     override val stayTime: Int,
 ) : Event() {
     override val name: String = "Move to player"
 
-    override val description: String = "Player $playerId moving to $targetPlayerId"
+    override val description: String = "Player $playerId moving to $targetDouble3D"
 
 
     override fun canSend(playerData: PlayerData, toId: Int, universeSettings: UniverseSettings): Boolean {
@@ -31,20 +37,30 @@ data class MoveToPlayerEvent(
     }
 
     override val choiceDescription: Map<Int, String> = mapOf(
-        0 to "Moving to player $targetPlayerId",
+        0 to "Moving to position $targetDouble3D",
         1 to "Cancel this command"
     )
 
     override fun generateCommands(choice: Int, universeData3DAtPlayer: UniverseData3DAtPlayer): List<Command> {
+        val playerData: PlayerData = universeData3DAtPlayer.getCurrentPlayerData()
+
+        if (maxSpeed > universeData3DAtPlayer.universeSettings.speedOfLight) {
+            logger.error("maxSpeed greater than the speed of light")
+        }
 
         return if (choice == 0) {
-            val targetVelocity: Velocity = displacementToVelocity(
-                universeData3DAtPlayer.get(playerId).double4D.toDouble3D(),
-                universeData3DAtPlayer.get(targetPlayerId).double4D.toDouble3D(),
-                universeData3DAtPlayer.universeSettings.speedOfLight
+            val targetVelocityData: TargetVelocityData = targetDouble3DByPhotonRocket(
+                initialRestMass = playerData.playerInternalData.physicsData.totalRestMass(),
+                maxDeltaRestMass = playerData.playerInternalData.physicsData.maxDeltaRestMass(),
+                initialVelocity = playerData.velocity,
+                maxSpeed = min(maxSpeed, universeData3DAtPlayer.universeSettings.speedOfLight),
+                initialDouble3D = playerData.double4D.toDouble3D(),
+                targetDouble3D = targetDouble3D,
+                speedOfLight = universeData3DAtPlayer.universeSettings.speedOfLight
             )
+
             val changeVelocityCommand = ChangeVelocityCommand(
-                targetVelocity = targetVelocity,
+                targetVelocity = targetVelocityData.newVelocity,
                 fromId = playerId,
                 toId = playerId,
                 fromInt4D = universeData3DAtPlayer.get(playerId).int4D
@@ -67,12 +83,14 @@ data class MoveToPlayerEvent(
         return if (mutableEventData.choice == 1) {
             true
         } else {
-            val selfInt4D: Int4D = universeData3DAtPlayer.get(playerId).int4D
-            val selfGroupId: Int = universeData3DAtPlayer.get(playerId).groupId
-            val targetInt4D: Int4D = universeData3DAtPlayer.get(targetPlayerId).int4D
-            val targetGroupId: Int = universeData3DAtPlayer.get(targetPlayerId).groupId
+            val sameDouble3D: Boolean = universeData3DAtPlayer.getCurrentPlayerData().double4D.toDouble3D() == targetDouble3D
+            val zeroVelocity: Boolean = universeData3DAtPlayer.getCurrentPlayerData().velocity.mag() <= 0.0
 
-            (selfInt4D == targetInt4D) && (selfGroupId == targetGroupId)
+            sameDouble3D && zeroVelocity
         }
+    }
+
+    companion object {
+        private val logger = LogManager.getLogger()
     }
 }

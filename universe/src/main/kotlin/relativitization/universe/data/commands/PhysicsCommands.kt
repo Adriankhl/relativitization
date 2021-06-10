@@ -48,14 +48,10 @@ data class ChangeVelocityCommand(
         val speedOfLight: Double = universeSettings.speedOfLight
 
         if (targetVelocity.mag() < speedOfLight) {
-            val maxDeltaRestMass: Double = min(
-                playerData.playerInternalData.physicsData.maxDeltaFuelRestMass,
-                playerData.playerInternalData.physicsData.fuelRestMass
-            )
 
             val targetVelocityData: TargetVelocityData = targetVelocityByPhotonRocket(
                 initialRestMass = playerData.playerInternalData.physicsData.totalRestMass(),
-                maxDeltaRestMass = maxDeltaRestMass,
+                maxDeltaRestMass = playerData.playerInternalData.physicsData.maxDeltaRestMass(),
                 initialVelocity = playerData.velocity.toVelocity(),
                 targetVelocity = targetVelocity,
                 speedOfLight = universeSettings.speedOfLight
