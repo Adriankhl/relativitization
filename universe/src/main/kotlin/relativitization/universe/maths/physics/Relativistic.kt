@@ -140,9 +140,9 @@ object Relativistic {
         val initialGamma: Double = gamma(initialVelocity, speedOfLight)
 
         val dotProduct: Double = if (targetDirection.squareMag() > 0.0) {
-            logger.error("Target direction is zero vector")
             initialVelocity.dotUnitVelocity(targetDirection)
         } else {
+            logger.error("Target direction is zero vector")
             initialVelocity.dotUnitVelocity(initialVelocity)
         }
 
