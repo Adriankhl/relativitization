@@ -10,7 +10,7 @@ import relativitization.universe.data.commands.ChangeVelocityCommand
 import relativitization.universe.data.physics.Double3D
 import relativitization.universe.data.physics.Int3D
 import relativitization.universe.data.physics.Velocity
-import relativitization.universe.maths.physics.Intervals.displacementToVelocity
+import relativitization.universe.maths.physics.Movement.displacementToVelocity
 
 class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.assets) {
 
