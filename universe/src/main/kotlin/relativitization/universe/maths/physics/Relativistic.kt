@@ -347,3 +347,10 @@ data class TargetVelocityData(
     val newVelocity: Velocity,
     val deltaRestMass: Double,
 )
+
+enum class TargetVelocityType {
+    FAIL,
+    SUCCESS,
+    CHANGE_DIRECTION,
+    DECELERATE,
+}
