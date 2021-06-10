@@ -292,6 +292,9 @@ object Relativistic {
 
     /**
      * Try to change to the target velocity
+     * If it is possible to change the velocity to target velocity immediate, do it
+     * Else try to change to the target direction
+     * Else decelerate
      *
      * @param initialRestMass initial rest mass
      * @param maxDeltaRestMass the maximal possible change of rest mass
