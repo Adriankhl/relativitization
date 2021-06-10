@@ -16,6 +16,11 @@ object Movement {
         return Velocity(dx, dy, dz).scaleVelocity(speedOfLight * 0.9)
     }
 
+    fun isSameDirection(velocity: Velocity, double3D: Double3D): Boolean {
+        val dotProduct: Double = velocity.scaleVelocity(1.0).dot(double3D.normalize())
+        return (dotProduct > 0.999999) && (dotProduct < 1.000001)
+    }
+
     fun shouldDecelerate(
         initialRestMass: Double,
         maxDeltaRestMass: Double,
