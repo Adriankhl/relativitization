@@ -1,13 +1,12 @@
 package relativitization.universe.maths.physics
 
-import org.junit.jupiter.api.TestFactory
-import relativitization.universe.data.commands.ChangeVelocityCommand
 import relativitization.universe.data.physics.Velocity
 import relativitization.universe.maths.physics.Relativistic.canTargetVelocityAtDirectionByPhotonRocket
 import relativitization.universe.maths.physics.Relativistic.decelerateByPhotonRocket
 import relativitization.universe.maths.physics.Relativistic.deltaMassByPhotonRocket
 import relativitization.universe.maths.physics.Relativistic.speedByPhotonRocket
 import relativitization.universe.maths.physics.Relativistic.targetVelocityAtDirectionPhotonRocket
+import relativitization.universe.maths.physics.Relativistic.targetVelocityByPhotonRocket
 import kotlin.test.Test
 
 internal class RelativisticTest {
@@ -128,5 +127,48 @@ internal class RelativisticTest {
 
             assert(v1.success)
         }
+    }
+
+    @Test
+    fun targetVelocityTest() {
+        val v1: VelocityChangeData = targetVelocityByPhotonRocket(
+            initialRestMass = 1.0,
+            maxDeltaRestMass = 0.1,
+            initialVelocity = Velocity(vx = 0.0, vy = 0.0, vz = 0.0),
+            targetVelocity = Velocity(vx = 0.2, vy = 0.0, vz = 0.0),
+            speedOfLight = 1.0
+        )
+
+        assert(v1.newVelocity.vx > 0.104 && v1.newVelocity.vx < 0.105)
+
+        val v2: VelocityChangeData = targetVelocityByPhotonRocket(
+            initialRestMass = 1.0,
+            maxDeltaRestMass = 0.5,
+            initialVelocity = Velocity(vx = 0.0, vy = 0.0, vz = 0.0),
+            targetVelocity = Velocity(vx = 0.2, vy = 0.0, vz = 0.0),
+            speedOfLight = 1.0
+        )
+
+        assert(v2.deltaRestMass > 0.18 && v2.deltaRestMass < 0.19)
+
+        val v3: VelocityChangeData = targetVelocityByPhotonRocket(
+            initialRestMass = 1.0,
+            maxDeltaRestMass = 0.3,
+            initialVelocity = Velocity(vx = 0.2, vy = 0.0, vz = 0.0),
+            targetVelocity = Velocity(vx = 0.0, vy = 0.2, vz = 0.0),
+            speedOfLight = 1.0
+        )
+
+        assert(v3.newVelocity.vy == 0.2 && v3.deltaRestMass > 0.24 && v3.deltaRestMass < 0.26)
+
+        val v4: VelocityChangeData = targetVelocityByPhotonRocket(
+            initialRestMass = 1.0,
+            maxDeltaRestMass = 0.06,
+            initialVelocity = Velocity(vx = 0.2, vy = 0.0, vz = 0.0),
+            targetVelocity = Velocity(vx = 0.2, vy = 0.1, vz = 0.0),
+            speedOfLight = 1.0
+        )
+
+        println(v4)
     }
 }

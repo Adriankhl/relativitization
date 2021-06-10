@@ -263,10 +263,10 @@ object Relativistic {
         speedOfLight: Double,
     ): VelocityChangeData {
         val zeroVelocityDeltaRestMass: Double = deltaMassByPhotonRocket(
-            initialRestMass = 0.0,
+            initialRestMass = initialRestMass,
             initialVelocity = initialVelocity,
             targetVelocity = Velocity(0.0, 0.0, 0.0),
-            speedOfLight = 0.0
+            speedOfLight = speedOfLight
         )
 
         return if (zeroVelocityDeltaRestMass <= maxDeltaRestMass) {
@@ -307,7 +307,7 @@ object Relativistic {
         speedOfLight: Double,
     ): VelocityChangeData {
         val requiredDeltaMass: Double = deltaMassByPhotonRocket(
-            initialRestMass = 0.0,
+            initialRestMass = initialRestMass,
             initialVelocity = initialVelocity,
             targetVelocity = targetVelocity,
             speedOfLight = speedOfLight,
