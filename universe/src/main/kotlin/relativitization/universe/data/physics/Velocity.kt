@@ -45,6 +45,10 @@ data class Velocity(val vx: Double, val vy: Double, val vz: Double) {
         return vx * velocity.vx + vy * velocity.vy + vz * velocity.vz
     }
 
+    fun dot(double3D: Double3D): Double {
+        return vx * double3D.x + vy * double3D.y + vz * double3D.z
+    }
+
     fun dotUnitVelocity(velocity: Velocity): Double {
         val unitVelocity: Velocity = velocity.scaleVelocity(1.0)
         return dot(unitVelocity)
