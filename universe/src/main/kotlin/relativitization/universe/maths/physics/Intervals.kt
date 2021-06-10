@@ -17,7 +17,7 @@ object Intervals {
         distance(d1.x, d1.y, d1.z, d2.z, d2.y, d2.z)
 
     fun distance(d1: Double3D, d2: Double3D): Double =
-        distance(d1.x, d1.y, d1.z, d2.z, d2.y, d2.z)
+        distance(d1.x, d1.y, d1.z, d2.x, d2.y, d2.z)
 
     fun distance(d1: MutableDouble4D, d2: MutableDouble4D): Double =
         distance(d1.x, d1.y, d1.z, d2.z, d2.y, d2.z)
