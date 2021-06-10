@@ -169,6 +169,32 @@ internal class RelativisticTest {
             speedOfLight = 1.0
         )
 
-        println(v4)
+        assert(v4.newVelocity.vx > 0.13 && v4.newVelocity.vx < 0.15)
+
+        val v5: VelocityChangeData = targetVelocityByPhotonRocket(
+            initialRestMass = 1.0 - v4.deltaRestMass,
+            maxDeltaRestMass = 0.06,
+            initialVelocity = v4.newVelocity,
+            targetVelocity = Velocity(vx = 0.2, vy = 0.1, vz = 0.0),
+            speedOfLight = 1.0
+        )
+
+        val v6: VelocityChangeData = targetVelocityByPhotonRocket(
+            initialRestMass = 1.0 - v4.deltaRestMass - v5.deltaRestMass,
+            maxDeltaRestMass = 0.06,
+            initialVelocity = v5.newVelocity,
+            targetVelocity = Velocity(vx = 0.2, vy = 0.1, vz = 0.0),
+            speedOfLight = 1.0
+        )
+
+        val v7: VelocityChangeData = targetVelocityByPhotonRocket(
+            initialRestMass = 1.0 - v4.deltaRestMass - v5.deltaRestMass - v6.deltaRestMass,
+            maxDeltaRestMass = 0.06,
+            initialVelocity = v6.newVelocity,
+            targetVelocity = Velocity(vx = 0.2, vy = 0.1, vz = 0.0),
+            speedOfLight = 1.0
+        )
+
+        assert(v7.newVelocity.vx == 0.2 && v7.newVelocity.vy == 0.1)
     }
 }
