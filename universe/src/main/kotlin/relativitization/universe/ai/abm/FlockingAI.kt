@@ -122,7 +122,12 @@ class FlockingAI : AI() {
                     selfDouble4D.y - otherDouble4D.y,
                     selfDouble4D.z - otherDouble4D.z
                 )
-                acc + double3D.normalize().x / distance
+
+                if (distance > 0.0) {
+                    acc + double3D.normalize().x / distance
+                } else {
+                    acc + 100.0
+                }
             } / nearByPlayerData.size.toDouble()
 
             val avgY: Double = nearByPlayerData.fold(0.0) { acc, playerData ->
@@ -133,7 +138,12 @@ class FlockingAI : AI() {
                     selfDouble4D.y - otherDouble4D.y,
                     selfDouble4D.z - otherDouble4D.z
                 )
-                acc + double3D.normalize().y / distance
+
+                if (distance > 0.0) {
+                    acc + double3D.normalize().y / distance
+                } else {
+                    acc + 100.0
+                }
             } / nearByPlayerData.size.toDouble()
 
             val avgZ: Double = nearByPlayerData.fold(0.0) { acc, playerData ->
@@ -144,7 +154,12 @@ class FlockingAI : AI() {
                     selfDouble4D.y - otherDouble4D.y,
                     selfDouble4D.z - otherDouble4D.z
                 )
-                acc + double3D.normalize().z / distance
+
+                if (distance > 0.0) {
+                    acc + double3D.normalize().z / distance
+                } else {
+                    acc + 100.0
+                }
             } / nearByPlayerData.size.toDouble()
 
             Double3D(avgX, avgY, avgZ)
