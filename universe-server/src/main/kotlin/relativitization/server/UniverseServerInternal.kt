@@ -353,7 +353,9 @@ class UniverseServerInternal(var universeServerSettings: UniverseServerSettings)
             // Skip universe process in the first round
             isProcessDone.set(true)
 
-            updateCommandMapAndIdList()
+            // Don't update this to prevent clearing registered player, this has already been run when setUniverse
+            //updateCommandMapAndIdList()
+
             isServerWaitingInput.set(true)
             isUniverseRunning.set(true)
         }
