@@ -104,6 +104,7 @@ sealed class Command {
         val defaultCommandList: List<String> = listOf(
             "Add Event",
             "Change Velocity",
+            "Disable Fuel Production"
         )
 
         val commandCollectionList: List<String> = listOf(
