@@ -16,6 +16,10 @@ import relativitization.universe.maths.physics.Movement.targetDouble3DByPhotonRo
 import relativitization.universe.maths.physics.TargetVelocityData
 import kotlin.math.min
 
+/**
+ * Automatically change player velocity to move to a location
+ * The player should not increase their fuel mass to calculate acceleration correctly
+ */
 @Serializable
 data class MoveToDouble3DEvent(
     override val playerId: Int,

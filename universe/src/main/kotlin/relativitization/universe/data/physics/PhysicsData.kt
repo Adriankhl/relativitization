@@ -3,6 +3,13 @@ package relativitization.universe.data.physics
 import kotlinx.serialization.Serializable
 import kotlin.math.min
 
+/**
+ * Player data related to physics
+ *
+ * @property coreRestMass the core rest mass of the player, cannot be converted to energy
+ * @property fuelRestMass the rest mass of the fuel, can be converted to energy to change velocity
+ * @property maxDeltaFuelRestMass maximum change of fuel mass per turn
+ */
 @Serializable
 data class PhysicsData(
     val coreRestMass: Double = 1.0,

@@ -47,7 +47,12 @@ object Movement {
     }
 
     /**
-     * Distance needed to stop an object
+     * Given a initial speed, the distance needed to stop the object by photon rocket
+     *
+     * @param initialRestMass initial rest mass of the object
+     * @param maxDeltaRestMass maximum change of rest mass to photon to stop the object
+     * @param initialVelocity initial velocity
+     * @param speedOfLight speed of light
      */
     fun stoppingDistanceByPhotonRocket(
         initialRestMass: Double,
@@ -76,7 +81,13 @@ object Movement {
     }
 
     /**
-     * Fastest speed allowed to stop at a certain distance
+     * Requiring the object to stop at a certain distance, compute the maximum initial speed
+     *
+     * @param initialRestMass initial rest mass of the object
+     * @param maxDeltaRestMass maximum change of rest mass to photon to stop the object
+     * @param distance the object should stop within this distance
+     * @param speedOfLight speed of light
+     * @param numIteration number of iteration to compute the speed, more iterations gives a more accurate answer
      */
     fun maxSpeedToStopByPhotonRocket(
         initialRestMass: Double,
@@ -108,6 +119,17 @@ object Movement {
     }
 
 
+    /**
+     * Compute the velocity the object should reached to move to a target double3D position
+     *
+     * @param initialRestMass initial rest mass of the object
+     * @param maxDeltaRestMass maximum change of rest mass to photon to stop the object
+     * @param initialVelocity initial velocity
+     * @param maxSpeed the maximum speed limit of the object, to prevent using too much rest mass as fuel
+     * @param initialDouble3D initial double3D position
+     * @param targetDouble3D target double3D position
+     * @param speedOfLight speed of light
+     */
     fun targetDouble3DByPhotonRocket(
         initialRestMass: Double,
         maxDeltaRestMass: Double,
