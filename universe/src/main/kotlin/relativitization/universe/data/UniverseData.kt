@@ -4,6 +4,7 @@ import kotlinx.serialization.Serializable
 import org.apache.logging.log4j.LogManager
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.physics.*
+import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.data.serializer.DataSerializer.copy
 import relativitization.universe.maths.grid.Grids.double4DToId
 import relativitization.universe.maths.grid.Grids.create3DGrid
@@ -319,7 +320,7 @@ data class MutableUniverseData4D(
         }
 
         // Add player to the list
-        playerDataList.add(copy(mutablePlayerData))
+        playerDataList.add(DataSerializer.copy(mutablePlayerData))
     }
 
     /**
