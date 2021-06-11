@@ -175,7 +175,6 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
                         universeData3DCache = universeData3DDownloaded
                         updateUniverseData3DMap()
                     } else {
-                        // dead player also cant get player data
                         isPlayerDead = httpGetCheckIsPlayerDead()
 
                         if (!isPlayerDead) {

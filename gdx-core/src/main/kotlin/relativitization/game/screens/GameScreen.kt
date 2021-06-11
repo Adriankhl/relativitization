@@ -57,6 +57,29 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
         game.changeGdxSettings()
     }
 
+    // Button to trigger gdx settings change
+    private val playerDeadBackground = createImage(
+        "basic/white-pixel",
+        0f,
+        0f,
+        Gdx.graphics.width.toFloat(),
+        Gdx.graphics.height.toFloat(),
+        0.0f,
+        0.0f,
+        0.0f,
+        0.6f,
+        gdxSettings.soundEffectsVolume
+    )
+
+    private val playerDeadButton = createTextButton(
+        "You are dead!",
+        gdxSettings.maxFontSize,
+        gdxSettings.soundEffectsVolume
+    ) {
+        dispose()
+        game.screen = DeadScreen(game)
+    }
+
     init {
         addChildScreenComponent(worldMap)
         addChildScreenComponent(info)
@@ -156,6 +179,14 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
         } else {
             gdxSettings.worldMapAndInfoSplitAmount = worldMapAndInfo.splitAmount
             worldMapAndInfo.splitAmount = worldMapAndInfo.maxSplitAmount
+        }
+    }
+
+    override fun onIsPlayerDeadChange() {
+        if (game.universeClient.isPlayerDead) {
+            playerDeadButton.setPosition(Gdx.graphics.width / 2.0f - playerDeadButton.width / 2, Gdx.graphics.height / 2.0f - playerDeadButton.height / 2)
+            stage.addActor(playerDeadBackground)
+            stage.addActor(playerDeadButton)
         }
     }
 
