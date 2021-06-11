@@ -6,6 +6,7 @@ import relativitization.universe.data.physics.Velocity
 import relativitization.universe.maths.physics.Intervals.distance
 import relativitization.universe.maths.physics.Relativistic.decelerateByPhotonRocket
 import relativitization.universe.maths.physics.Relativistic.targetVelocityAtDirectionPhotonRocket
+import relativitization.universe.maths.physics.Relativistic.deltaMassByPhotonRocket
 import relativitization.universe.maths.physics.Relativistic.targetVelocityByPhotonRocket
 import kotlin.math.min
 
@@ -155,7 +156,7 @@ object Movement {
             originalTargetVelocity
         }
 
-        val requiredDeltaMass: Double = Relativistic.deltaMassByPhotonRocket(
+        val requiredDeltaMass: Double = deltaMassByPhotonRocket(
             initialRestMass = initialRestMass,
             initialVelocity = initialVelocity,
             targetVelocity = targetVelocity,
@@ -195,5 +196,42 @@ object Movement {
                 )
             }
         }
+    }
+
+    /**
+     * Estimate the required mass to move to the target position
+     *
+     * @param initialRestMass initial rest mass of the object
+     * @param initialVelocity initial velocity
+     * @param maxSpeed the maximum speed limit of the object, to prevent using too much rest mass as fuel
+     * @param initialDouble3D initial double3D position
+     * @param targetDouble3D target double3D position
+     * @param speedOfLight speed of light
+     */
+    fun estimateRequiredMass(
+        initialRestMass: Double,
+        initialVelocity: Velocity,
+        maxSpeed: Double,
+        initialDouble3D: Double3D,
+        targetDouble3D: Double3D,
+        speedOfLight: Double,
+    ): Double {
+
+        val maxVelocity: Velocity = displacementToVelocity(initialDouble3D, targetDouble3D, speedOfLight).scaleVelocity(maxSpeed)
+        val requiredDeltaMass1: Double = deltaMassByPhotonRocket(
+            initialRestMass = initialRestMass,
+            initialVelocity = initialVelocity,
+            targetVelocity = maxVelocity,
+            speedOfLight = speedOfLight,
+        )
+
+        val requiredDeltaMass2: Double = deltaMassByPhotonRocket(
+            initialRestMass = initialRestMass - requiredDeltaMass1,
+            initialVelocity = maxVelocity,
+            targetVelocity = Velocity(0.0, 0.0, 0.0),
+            speedOfLight = speedOfLight,
+        )
+
+        return requiredDeltaMass1 + requiredDeltaMass2
     }
 }
