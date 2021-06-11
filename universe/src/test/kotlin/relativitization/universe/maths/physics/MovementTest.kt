@@ -2,11 +2,14 @@ package relativitization.universe.maths.physics
 
 import relativitization.universe.data.physics.Double3D
 import relativitization.universe.data.physics.Velocity
+import relativitization.universe.maths.physics.Movement.deltaMassTargetDouble3DByPhotonRocket
+import relativitization.universe.maths.physics.Movement.estimateRequiredDeltaMass
 import relativitization.universe.maths.physics.Movement.isSameDirection
 import relativitization.universe.maths.physics.Movement.maxSpeedToStopByPhotonRocket
 import relativitization.universe.maths.physics.Movement.stoppingDistanceByPhotonRocket
 import relativitization.universe.maths.physics.Movement.targetDouble3DByPhotonRocket
 import relativitization.universe.maths.physics.Relativistic.targetVelocityByPhotonRocket
+import kotlin.math.abs
 import kotlin.test.Test
 
 internal class MovementTest {
@@ -155,5 +158,103 @@ internal class MovementTest {
 
         assert(currentDouble3D4 == Double3D(1.0, 0.0, 0.0))
 
+    }
+
+    @Test
+    fun estimateRequiredDeltaMassTest() {
+        var currentRestMass1 = 1.0
+        var currentDouble3D1 = Double3D(0.0, 0.0, 0.0)
+        var currentVelocity1 = Velocity(0.0, 0.0, 0.0)
+
+        val l1 = (1..10).toList().map {
+            val v1: TargetVelocityData = targetDouble3DByPhotonRocket(
+                initialRestMass = currentRestMass1,
+                maxDeltaRestMass = 0.1,
+                initialVelocity = currentVelocity1,
+                maxSpeed = 0.2,
+                initialDouble3D = currentDouble3D1,
+                targetDouble3D = Double3D(1.0, 0.0, 0.0),
+                speedOfLight = 1.0
+            )
+            currentRestMass1 -= v1.deltaRestMass
+            currentVelocity1 = v1.newVelocity
+            currentDouble3D1 += v1.newVelocity.displacement(1)
+
+            println("Velocity 1: $currentVelocity1")
+            println("Double3D 1: $currentDouble3D1")
+            println("Rest mass 1: $currentRestMass1")
+        }
+
+        val e1: Double = estimateRequiredDeltaMass(
+            initialRestMass = 1.0,
+            initialVelocity = Velocity(0.0, 0.0, 0.0),
+            maxSpeed = 0.2,
+            initialDouble3D = Double3D(0.0, 0.0, 0.0),
+            targetDouble3D =  Double3D(1.0, 0.0, 0.0),
+            speedOfLight = 1.0
+        )
+
+        assert(abs(e1 - (1.0 - currentRestMass1)) < 0.001)
+
+
+        var currentRestMass2 = 1.0
+        var currentDouble3D2 = Double3D(0.0, 0.0, 0.0)
+        var currentVelocity2 = Velocity(0.0, -0.3, 0.0)
+
+        val l2 = (1..10).toList().map {
+            val v2: TargetVelocityData = targetDouble3DByPhotonRocket(
+                initialRestMass = currentRestMass2,
+                maxDeltaRestMass = 0.1,
+                initialVelocity = currentVelocity2,
+                maxSpeed = 0.2,
+                initialDouble3D = currentDouble3D2,
+                targetDouble3D = Double3D(1.0, 0.0, 0.0),
+                speedOfLight = 1.0
+            )
+            currentRestMass2 -= v2.deltaRestMass
+            currentVelocity2 = v2.newVelocity
+            currentDouble3D2 += v2.newVelocity.displacement(1)
+
+            println("Velocity 2: $currentVelocity2")
+            println("Double3D 2: $currentDouble3D2")
+            println("Rest mass 2: $currentRestMass2")
+        }
+
+        val e2: Double = estimateRequiredDeltaMass(
+            initialRestMass = 1.0,
+            initialVelocity = Velocity(0.0, -0.3, 0.0),
+            maxSpeed = 0.2,
+            initialDouble3D = Double3D(0.0, 0.0, 0.0),
+            targetDouble3D =  Double3D(1.0, 0.0, 0.0),
+            speedOfLight = 1.0
+        )
+
+        assert(abs(e2 - (1.0 - currentRestMass2)) < 0.1)
+    }
+
+    @Test
+    fun deltaMassTest() {
+        val d1: Double = deltaMassTargetDouble3DByPhotonRocket(
+            initialRestMass = 1.0,
+            maxDeltaRestMass = 0.1,
+            initialVelocity = Velocity(0.0, 0.0, 0.0),
+            maxSpeed = 0.2,
+            initialDouble3D = Double3D(0.0, 0.0, 0.0),
+            targetDouble3D = Double3D(1.0, 0.0, 0.0),
+            speedOfLight = 1.0
+        )
+        assert(d1 > 0.26 && d1 < 0.27)
+
+        val d2: Double = deltaMassTargetDouble3DByPhotonRocket(
+            initialRestMass = 1.0,
+            maxDeltaRestMass = 0.1,
+            initialVelocity = Velocity(0.4, 0.2, -0.1),
+            maxSpeed = 0.2,
+            initialDouble3D = Double3D(0.0, 0.0, 0.0),
+            targetDouble3D = Double3D(-0.23, 0.12, 0.45),
+            speedOfLight = 1.0
+        )
+
+        assert(d2 > 0.53 && d2 < 0.54)
     }
 }

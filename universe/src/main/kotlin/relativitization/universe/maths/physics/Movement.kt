@@ -199,7 +199,7 @@ object Movement {
     }
 
     /**
-     * Estimate the required mass to move to the target position
+     * Estimate the required mass to move to the target position, not full accurate
      *
      * @param initialRestMass initial rest mass of the object
      * @param initialVelocity initial velocity
@@ -208,7 +208,7 @@ object Movement {
      * @param targetDouble3D target double3D position
      * @param speedOfLight speed of light
      */
-    fun estimateRequiredMass(
+    fun estimateRequiredDeltaMass(
         initialRestMass: Double,
         initialVelocity: Velocity,
         maxSpeed: Double,
@@ -233,5 +233,49 @@ object Movement {
         )
 
         return requiredDeltaMass1 + requiredDeltaMass2
+    }
+
+    /**
+     * Compute the overall delta mass required to move to a target double3D position
+     *
+     * @param initialRestMass initial rest mass of the object
+     * @param maxDeltaRestMass maximum change of rest mass to photon to stop the object
+     * @param initialVelocity initial velocity
+     * @param maxSpeed the maximum speed limit of the object, to prevent using too much rest mass as fuel
+     * @param initialDouble3D initial double3D position
+     * @param targetDouble3D target double3D position
+     * @param speedOfLight speed of light
+     */
+    fun deltaMassTargetDouble3DByPhotonRocket(
+        initialRestMass: Double,
+        maxDeltaRestMass: Double,
+        initialVelocity: Velocity,
+        maxSpeed: Double,
+        initialDouble3D: Double3D,
+        targetDouble3D: Double3D,
+        speedOfLight: Double,
+    ): Double {
+
+        var currentRestMass = initialRestMass
+        var currentDouble3D = initialDouble3D
+        var currentVelocity = initialVelocity
+
+        while (currentDouble3D != targetDouble3D) {
+            val targetVelocityData: TargetVelocityData = targetDouble3DByPhotonRocket(
+                initialRestMass = currentRestMass,
+                maxDeltaRestMass = maxDeltaRestMass,
+                initialVelocity = currentVelocity,
+                maxSpeed = maxSpeed,
+                initialDouble3D = currentDouble3D,
+                targetDouble3D = targetDouble3D,
+                speedOfLight = speedOfLight
+            )
+
+            currentRestMass -= targetVelocityData.deltaRestMass
+            currentVelocity = targetVelocityData.newVelocity
+            currentDouble3D += targetVelocityData.newVelocity.displacement(1)
+        }
+
+        return initialRestMass - currentRestMass
     }
 }
