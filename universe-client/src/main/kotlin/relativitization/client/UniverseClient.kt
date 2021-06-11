@@ -143,10 +143,16 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
     // store list of command for sending them to the universe server
     val commandList: MutableList<Command> = mutableListOf()
 
-    // command that is showing, can be new command to be confirmed or old command to be cancelled
+    // command showing on GUI, can be new command to be confirmed or old command to be cancelled
     val onCurrentCommandChangeFunctionList: MutableList<() -> Unit> = mutableListOf()
     var currentCommand: Command by Delegates.observable(DummyCommand()) { _, _, _ ->
         onCurrentCommandChangeFunctionList.forEach { it() }
+    }
+
+    // is this player dead
+    val onIsPlayerDeadChangeFunctionList: MutableList<() -> Unit> = mutableListOf()
+    var isPlayerDead: Boolean by Delegates.observable(false) { _, _, _ ->
+        onIsPlayerDeadChangeFunctionList.forEach { it() }
     }
 
     /**

@@ -106,6 +106,14 @@ fun Route.runUniverseRouting(universeServerInternal: UniverseServerInternal) {
             }
         }
     }
+
+
+    route("/run/dead") {
+        get {
+            val checkIsPlayerDeadMessage: CheckIsPlayerDeadMessage = call.receive()
+            call.respond(status = HttpStatusCode.OK, universeServerInternal.isPlayerDead(checkIsPlayerDeadMessage))
+        }
+    }
 }
 
 fun Application.registerRunUniverseRoutes(universeServerInternal: UniverseServerInternal) {

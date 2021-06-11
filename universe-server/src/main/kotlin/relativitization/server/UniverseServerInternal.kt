@@ -6,6 +6,7 @@ import kotlinx.coroutines.sync.withLock
 import org.apache.logging.log4j.LogManager
 import relativitization.universe.Universe
 import relativitization.universe.UniverseServerSettings
+import relativitization.universe.communication.CheckIsPlayerDeadMessage
 import relativitization.universe.communication.CommandInputMessage
 import relativitization.universe.communication.RegisterPlayerMessage
 import relativitization.universe.communication.UniverseServerStatusMessage
@@ -164,7 +165,9 @@ class UniverseServerInternal(var universeServerSettings: UniverseServerSettings)
      */
     private fun clearInactive() {
         val oldIdList = humanIdPasswordMap.keys.toList()
-        val toRemoveIdList = oldIdList.filter { id -> !availableHumanIdList.contains(id) }
+
+        // Don't clear dead player
+        val toRemoveIdList = oldIdList.filter { id -> !availableHumanIdList.contains(id) && !deadIdList.contains(id)}
         for (id in toRemoveIdList) {
             humanIdPasswordMap.remove(id)
         }
@@ -300,6 +303,22 @@ class UniverseServerInternal(var universeServerSettings: UniverseServerSettings)
                 availableHumanIdList.filter { !humanIdPasswordMap.keys.contains(it) }
             } else {
                 listOf()
+            }
+        }
+    }
+
+    /**
+     * Get dead id list
+     */
+    suspend fun isPlayerDead(checkIsPlayerDeadMessage: CheckIsPlayerDeadMessage): Boolean {
+        mutex.withLock {
+            return if (isWaiting() &&
+                humanIdPasswordMap.keys.contains(checkIsPlayerDeadMessage.id) &&
+                humanIdPasswordMap.getValue(checkIsPlayerDeadMessage.id) == checkIsPlayerDeadMessage.password
+            ) {
+                deadIdList.contains(checkIsPlayerDeadMessage.id)
+            } else {
+                false
             }
         }
     }

@@ -48,6 +48,12 @@ data class UniverseData3DMessage(
 )
 
 @Serializable
+data class CheckIsPlayerDeadMessage(
+    val id: Int,
+    val password: String,
+)
+
+@Serializable
 data class UniverseServerSettingsMessage(
     val adminPassword: String,
     val universeServerSettings: UniverseServerSettings
