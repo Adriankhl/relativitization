@@ -88,6 +88,11 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets){
     open fun onCurrentCommandChange() {}
 
     /**
+     * Call this when isPlayerDead is changed
+     */
+    open fun onIsPlayerDeadChange() {}
+
+    /**
      * Create scroll pane for table
      *
      * @param actor the table to add scroll pane
@@ -301,6 +306,8 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets){
             universeClient.onMapCenterPlayerIdChangeFunctionList.add(component::onMapCenterPlayerIdChange)
 
             universeClient.onCurrentCommandChangeFunctionList.add(component::onCurrentCommandChange)
+
+            universeClient.onIsPlayerDeadChangeFunctionList.add(component::onIsPlayerDeadChange)
         }
 
         fun <T : Actor> addAllComponentToClient(game: RelativitizationGame, component: ScreenComponent<T>) {
