@@ -31,6 +31,10 @@ data class MoveToDouble3DEvent(
 
     override val description: String = "Player $playerId moving to $targetDouble3D"
 
+    override val choiceDescription: Map<Int, String> = mapOf(
+        0 to "Moving to position $targetDouble3D",
+        1 to "Cancel this command"
+    )
 
     override fun canSend(playerData: PlayerData, toId: Int, universeSettings: UniverseSettings): Boolean {
         return playerData.isSubOrdinateOrSelf(toId)
@@ -39,11 +43,6 @@ data class MoveToDouble3DEvent(
     override fun canExecute(playerData: MutablePlayerData, fromId: Int, universeSettings: UniverseSettings): Boolean {
         return playerData.isLeaderOrSelf(fromId)
     }
-
-    override val choiceDescription: Map<Int, String> = mapOf(
-        0 to "Moving to position $targetDouble3D",
-        1 to "Cancel this command"
-    )
 
     override fun generateCommands(choice: Int, universeData3DAtPlayer: UniverseData3DAtPlayer): List<Command> {
         val playerData: PlayerData = universeData3DAtPlayer.getCurrentPlayerData()

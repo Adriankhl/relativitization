@@ -5,11 +5,11 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class PlayerState(
     val aiState: AIState = AIState(),
-    val movementState: MovementState = MovementState()
+    val temporaryState: TemporaryState = TemporaryState(),
 )
 
 @Serializable
 data class MutablePlayerState(
     val aiState: MutableAIState = MutableAIState(),
-    val movementState: MutableMovementState = MutableMovementState()
+    val temporaryState: MutableTemporaryState = MutableTemporaryState(),
 )
