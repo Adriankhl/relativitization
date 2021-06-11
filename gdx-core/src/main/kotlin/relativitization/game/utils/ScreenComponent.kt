@@ -49,6 +49,8 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets){
 
     /**
      * Call this function at each iteration of universe client
+     * To ensure thread safety, don't modify any libgdx-related function here.
+     * Instead, call Gdx.graphics.requestRendering() and modify libgdx things in the render method
      */
     open fun onServerStatusChange() {}
 
@@ -88,7 +90,9 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets){
     open fun onCurrentCommandChange() {}
 
     /**
-     * Call this when isPlayerDead is changed
+     * Call this when isPlayerDead is changed, may get called at each iteration of universe client
+     * To ensure thread safety, don't modify any libgdx-related function here.
+     * Instead, call Gdx.graphics.requestRendering() and modify libgdx things in the render method
      */
     open fun onIsPlayerDeadChange() {}
 
