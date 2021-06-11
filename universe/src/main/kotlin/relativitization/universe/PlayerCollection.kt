@@ -38,6 +38,13 @@ class PlayerCollection(
     }
 
     /**
+     * Get dead id list
+     */
+    fun getDeadIdList(): List<Int> {
+        return deadIdList
+    }
+
+    /**
      * Get player
      */
     fun getPlayer(id: Int): MutablePlayerData {

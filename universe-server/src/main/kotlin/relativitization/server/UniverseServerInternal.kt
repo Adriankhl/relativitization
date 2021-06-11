@@ -52,6 +52,9 @@ class UniverseServerInternal(var universeServerSettings: UniverseServerSettings)
     // Available (suggested) human id list
     private val availableHumanIdList: MutableList<Int> = mutableListOf()
 
+    // Dead id list
+    private val deadIdList: MutableList<Int> = mutableListOf()
+
     // command Map for human input
     private val humanCommandMap: MutableMap<Int, List<Command>> = mutableMapOf()
 
@@ -145,9 +148,15 @@ class UniverseServerInternal(var universeServerSettings: UniverseServerSettings)
         availableIdList.clear()
         availableHumanIdList.clear()
 
+        // Also clear deadIdList
+        deadIdList.clear()
+
         // Change available id
         availableIdList.addAll(universe.availablePlayers())
         availableHumanIdList.addAll(universe.availableHumanPLayers())
+
+        // Get new dead id list
+        deadIdList.addAll(universe.getDeadIdList())
     }
 
     /**
@@ -255,7 +264,7 @@ class UniverseServerInternal(var universeServerSettings: UniverseServerSettings)
                 isUniverseRunning = isUniverseRunning.isTrue(),
                 isServerWaitingInput = isServerWaitingInput.isTrue(),
                 timeLeft = timeLeft(),
-                currentUniverseTime = currentUniverseTime
+                currentUniverseTime = currentUniverseTime,
             )
         }
     }

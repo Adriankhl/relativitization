@@ -15,5 +15,5 @@ data class UniverseServerStatusMessage(
     val isUniverseRunning: Boolean = false,
     val isServerWaitingInput: Boolean = false,
     val timeLeft: Long = 0,
-    val currentUniverseTime: Int = -1
+    val currentUniverseTime: Int = -1,
 )

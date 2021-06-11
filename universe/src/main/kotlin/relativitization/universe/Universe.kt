@@ -66,6 +66,13 @@ class Universe(private val universeData: UniverseData, saveWhenInit: Boolean = t
     }
 
     /**
+     * Get dead id list
+     */
+    fun getDeadIdList(): List<Int> {
+        return playerCollection.getDeadIdList()
+    }
+
+    /**
      * True if player is alive
      * Should only return if canAccess is true
      */
