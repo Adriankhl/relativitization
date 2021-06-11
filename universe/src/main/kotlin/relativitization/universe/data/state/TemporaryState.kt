@@ -12,4 +12,22 @@ data class TemporaryState(
 @Serializable
 data class MutableTemporaryState(
     val disableFuelProductionStateList: MutableList<MutableDisableFuelProductionState> = mutableListOf()
-)
+) {
+    /**
+     * Decrease remaining time for temporary state by 1
+     */
+    fun updateTimeRemain() {
+        disableFuelProductionStateList.forEach {
+            it.timeRemain -= 1
+        }
+    }
+
+    /**
+     * Clear old temporary state
+     */
+    fun clearOld() {
+        disableFuelProductionStateList.removeAll {
+            it.timeRemain <= 0
+        }
+    }
+}
