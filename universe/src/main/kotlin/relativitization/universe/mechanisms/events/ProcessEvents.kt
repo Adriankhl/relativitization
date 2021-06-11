@@ -37,11 +37,19 @@ object ProcessEvents : Mechanism() {
         }.flatten()
 
         // Separate self commands and other commands
+        val (selfCommandList, otherCommandList) = commandList.partition {
+            it.toId == mutablePlayerData.id
+        }
+
+        // Execute self commands
+        selfCommandList.forEach {
+            it.checkAndExecute(mutablePlayerData, universeData3DAtPlayer.universeSettings)
+        }
 
         // Increase stayCounter for each event
         mutablePlayerData.playerInternalData.eventDataList.forEach { mutableEventData ->
             mutableEventData.stayCounter ++
         }
-        return commandList
+        return otherCommandList
     }
 }
