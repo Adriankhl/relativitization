@@ -159,6 +159,12 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
         }
     }
 
+    override fun onUniverseData3DChange() {
+        if (game.universeClient.getUniverseData3D().isPlayerDead) {
+            game.screen = DeadScreen(game)
+        }
+    }
+
     private fun waitFirstData() {
         runBlocking {
             while (!game.universeClient.isNewDataReady.isTrue()) {
