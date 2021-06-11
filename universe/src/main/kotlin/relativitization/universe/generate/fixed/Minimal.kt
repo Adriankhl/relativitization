@@ -22,12 +22,13 @@ class Minimal : GenerateUniverse() {
 
         val universeState = UniverseState(
             currentTime = universeSettings.tDim - 1,
-            maxPlayerId = 3,
+            maxPlayerId = 4,
         )
 
         val playerData1 = MutablePlayerData(1)
         val playerData2 = MutablePlayerData(2)
         val playerData3 = MutablePlayerData(3)
+        val playerData4 = MutablePlayerData(4)
 
         playerData1.playerType = PlayerType.HUMAN
         playerData3.int4D = MutableInt4D(0, 0, 0, 1)
@@ -51,6 +52,9 @@ class Minimal : GenerateUniverse() {
         playerData2.playerInternalData.changeDirectLeaderId(playerData1.id)
         playerData1.playerInternalData.addDirectSubordinateId(playerData2.id)
 
+        // player 4 is a dead player
+        playerData4.playerInternalData.isAlive = false
+
         data.addPlayerDataToLatestWithAfterImage(
             playerData1,
             universeState.getCurrentTime(),
@@ -65,6 +69,12 @@ class Minimal : GenerateUniverse() {
         )
         data.addPlayerDataToLatestWithAfterImage(
             playerData3,
+            universeState.getCurrentTime(),
+            universeSettings.groupEdgeLength,
+            universeSettings.playerAfterImageDuration
+        )
+        data.addPlayerDataToLatestWithAfterImage(
+            playerData4,
             universeState.getCurrentTime(),
             universeSettings.groupEdgeLength,
             universeSettings.playerAfterImageDuration
