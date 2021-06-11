@@ -311,9 +311,7 @@ class UniverseServerInternal(var universeServerSettings: UniverseServerSettings)
      */
     suspend fun getUniverseData3D(universeData3DMessage: UniverseData3DMessage): UniverseData3DAtPlayer {
         mutex.withLock {
-            return if(deadIdList.contains(universeData3DMessage.id)) {
-                UniverseData3DAtPlayer(id = universeData3DMessage.id, isPlayerDead = true)
-            } else if (
+            return if (
                 isWaiting() &&
                 availableHumanIdList.contains(universeData3DMessage.id) &&
                 humanIdPasswordMap.keys.contains(universeData3DMessage.id) &&

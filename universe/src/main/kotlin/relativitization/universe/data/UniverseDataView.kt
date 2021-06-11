@@ -71,7 +71,6 @@ data class UniverseData3DAtPlayer(
     val playerDataMap: Map<Int, PlayerData> = mapOf(),
     val playerId3DMap: List<List<List<Map<Int, List<Int>>>>> = listOf(),
     val universeSettings: UniverseSettings = UniverseSettings(),
-    val isPlayerDead: Boolean = false
 ) {
     /**
      * Check int3D valid
