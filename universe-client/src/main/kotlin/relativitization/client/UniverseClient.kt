@@ -19,6 +19,7 @@ import kotlinx.coroutines.sync.withLock
 import org.apache.logging.log4j.LogManager
 import relativitization.universe.UniverseClientSettings
 import relativitization.universe.UniverseServerSettings
+import relativitization.universe.communication.CheckIsPlayerDeadMessage
 import relativitization.universe.communication.CommandInputMessage
 import relativitization.universe.communication.LoadUniverseMessage
 import relativitization.universe.communication.NewUniverseMessage
@@ -174,7 +175,12 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
                         universeData3DCache = universeData3DDownloaded
                         updateUniverseData3DMap()
                     } else {
-                        logger.error("run(): Can't get universe")
+                        // dead player also cant get player data
+                        isPlayerDead = httpGetCheckIsPlayerDead()
+
+                        if (!isPlayerDead) {
+                            logger.error("run(): Can't get universe")
+                        }
                     }
                 }
                 // Trigger onServerStatusChangeFunctions
@@ -573,6 +579,24 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
             }
         } catch (cause: Throwable) {
             listOf()
+        }
+    }
+
+    suspend fun httpGetCheckIsPlayerDead(): Boolean {
+        return try {
+            val serverAddress = universeClientSettings.serverAddress
+            val serverPort = universeClientSettings.serverPort
+            val playerId = universeClientSettings.playerId
+            val password = universeClientSettings.password
+            ktorClient.get<Boolean>("http://$serverAddress:$serverPort/run/dead") {
+                timeout {
+                    contentType(ContentType.Application.Json)
+                    body = CheckIsPlayerDeadMessage(playerId, password)
+                    requestTimeoutMillis = 1000
+                }
+            }
+        } catch (cause: Throwable) {
+            false
         }
     }
 
