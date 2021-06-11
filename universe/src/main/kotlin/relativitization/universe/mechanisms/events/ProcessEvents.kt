@@ -18,12 +18,13 @@ object ProcessEvents : Mechanism() {
             mutableEventData.stayCounter > mutableEventData.event.stayTime
         }
 
-        // Remove if the even should be canceled
+        // Remove if the event should be canceled
         val cancelEventList: List<MutableEventData> = mutablePlayerData.playerInternalData.eventDataList.filter { mutableEventData ->
             mutableEventData.event.shouldCancelThisEvent(mutableEventData, universeData3DAtPlayer)
         }
         mutablePlayerData.playerInternalData.eventDataList.removeAll(cancelEventList)
 
+        // Get the command list
         val commandList: List<Command> = mutablePlayerData.playerInternalData.eventDataList.map { mutableEventData ->
             if (mutableEventData.hasChoice) {
                 mutableEventData.event.generateCommands(mutableEventData.choice, universeData3DAtPlayer)
@@ -34,6 +35,8 @@ object ProcessEvents : Mechanism() {
                 )
             }
         }.flatten()
+
+        // Separate self commands and other commands
 
         // Increase stayCounter for each event
         mutablePlayerData.playerInternalData.eventDataList.forEach { mutableEventData ->

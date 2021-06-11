@@ -11,6 +11,7 @@ import relativitization.universe.data.commands.Command
 import relativitization.universe.data.physics.Double3D
 import relativitization.universe.data.physics.Int4D
 import relativitization.universe.data.physics.Velocity
+import relativitization.universe.data.state.temporary.DisableFuelProductionState
 import relativitization.universe.maths.physics.Movement.displacementToVelocity
 import relativitization.universe.maths.physics.Movement.targetDouble3DByPhotonRocket
 import relativitization.universe.maths.physics.TargetVelocityData
@@ -52,6 +53,12 @@ data class MoveToDouble3DEvent(
         }
 
         return if (choice == 0) {
+            // disable fuel production by one turn
+            val disableFuelProductionState = DisableFuelProductionState(
+                reason = "MoveToDouble3DEvent",
+                timeRemain = 1
+            )
+
             val targetVelocityData: TargetVelocityData = targetDouble3DByPhotonRocket(
                 initialRestMass = playerData.playerInternalData.physicsData.totalRestMass(),
                 maxDeltaRestMass = playerData.playerInternalData.physicsData.maxDeltaRestMass(),
