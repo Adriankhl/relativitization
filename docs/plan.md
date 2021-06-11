@@ -1,5 +1,4 @@
 # TODO list
-* Add dead screen and message
 * Add info for commands
 * Add info for events
 * Basic pop system
