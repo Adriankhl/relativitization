@@ -8,6 +8,7 @@ import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.ChangeVelocityCommand
 import relativitization.universe.data.commands.Command
+import relativitization.universe.data.commands.DisableFuelProductionCommand
 import relativitization.universe.data.physics.Double3D
 import relativitization.universe.data.physics.Int4D
 import relativitization.universe.data.physics.Velocity
@@ -59,6 +60,13 @@ data class MoveToDouble3DEvent(
                 timeRemain = 1
             )
 
+            val disableFuelProductionCommand = DisableFuelProductionCommand(
+                disableFuelProductionState,
+                playerData.id,
+                playerData.int4D,
+                playerData.id
+            )
+
             val targetVelocityData: TargetVelocityData = targetDouble3DByPhotonRocket(
                 initialRestMass = playerData.playerInternalData.physicsData.totalRestMass(),
                 maxDeltaRestMass = playerData.playerInternalData.physicsData.maxDeltaRestMass(),
@@ -75,7 +83,7 @@ data class MoveToDouble3DEvent(
                 toId = playerId,
                 fromInt4D = universeData3DAtPlayer.get(playerId).int4D
             )
-            listOf(changeVelocityCommand)
+            listOf(changeVelocityCommand, disableFuelProductionCommand)
         } else {
             listOf()
         }
