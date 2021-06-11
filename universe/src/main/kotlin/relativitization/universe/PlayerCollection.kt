@@ -259,17 +259,20 @@ class PlayerCollection(
         }
     }
 
+    /**
+     * Change player velocity component to zero
+     */
     private fun velocityComponentToZero(
         component: Char,
         playerData: MutablePlayerData,
         speedOfLight: Double,
     ) {
         val targetVelocity: Velocity = if (component == 'x') {
-            playerData.velocity.toVelocity().copy(vx = 0)
+            playerData.velocity.toVelocity().copy(vx = 0.0)
         } else if (component == 'y') {
-            playerData.velocity.toVelocity().copy(vy = 0)
+            playerData.velocity.toVelocity().copy(vy = 0.0)
         } else if (component == 'z') {
-            playerData.velocity.toVelocity().copy(vz = 0)
+            playerData.velocity.toVelocity().copy(vz = 0.0)
         } else {
             logger.error("Component doesn't exist")
             playerData.velocity.toVelocity()
