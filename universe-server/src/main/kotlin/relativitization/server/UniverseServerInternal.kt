@@ -350,12 +350,12 @@ class UniverseServerInternal(var universeServerSettings: UniverseServerSettings)
      */
     suspend fun runUniverse()  {
         mutex.withLock {
+            // Skip universe process in the first round
+            isProcessDone.set(true)
+
             updateCommandMapAndIdList()
             isServerWaitingInput.set(true)
             isUniverseRunning.set(true)
-
-            // Skip universe process in the first round
-            isProcessDone.set(true)
         }
     }
 
