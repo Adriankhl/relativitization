@@ -1,6 +1,5 @@
 # TODO list
 * Add dead screen and message
-* Document order of mechanism
 * Add info for commands
 * Add info for events
 * Basic pop system
