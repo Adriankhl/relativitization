@@ -163,6 +163,17 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
         stage.addActor(helloUniverseButton)
     }
 
+    override fun render(delta: Float) {
+        super.render(delta)
+        topBar.render()
+
+        if (game.universeClient.isPlayerDead) {
+            playerDeadButton.setPosition(Gdx.graphics.width / 2.0f - playerDeadButton.width / 2, Gdx.graphics.height / 2.0f - playerDeadButton.height / 2)
+            stage.addActor(playerDeadBackground)
+            stage.addActor(playerDeadButton)
+        }
+    }
+
     override fun hide() {
         super.hide()
         game.clearOnChangeFunctionList()
@@ -183,11 +194,7 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
     }
 
     override fun onIsPlayerDeadChange() {
-        if (game.universeClient.isPlayerDead) {
-            playerDeadButton.setPosition(Gdx.graphics.width / 2.0f - playerDeadButton.width / 2, Gdx.graphics.height / 2.0f - playerDeadButton.height / 2)
-            stage.addActor(playerDeadBackground)
-            stage.addActor(playerDeadButton)
-        }
+        Gdx.graphics.requestRendering()
     }
 
     private fun waitFirstData() {

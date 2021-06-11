@@ -471,13 +471,17 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         return scrollPane
     }
 
-
-    override fun onServerStatusChange() {
+    /**
+     * Put these functions here to ensure thread safe
+     */
+    fun render() {
         updateServerStatusLabels()
         updateRunAndStopButton()
-        runBlocking {
-            updateUpdateToLatestButton()
+        updateUpdateToLatestButton()
+    }
 
+    override fun onServerStatusChange() {
+        runBlocking {
             if (game.universeClient.getCurrentServerStatus().isServerWaitingInput) {
                 // Ask server to stop waiting
                 if (stopWaitingSelectBox.selected == "Always") {
@@ -491,9 +495,7 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
     override fun onUniverseData3DChange() {
         updateServerStatusLabels()
         updateCurrentUniverseDataLabel()
-        runBlocking {
-            updateUpdateToLatestButton()
-        }
+        updateUpdateToLatestButton()
         updateUniverseDataSelectionBox()
     }
 
@@ -512,6 +514,7 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
 
         updateTCoordinate()
     }
+
 
     /**
      * Create table for controlling stop waiting
@@ -665,8 +668,8 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
     /**
      * Set updateToLatestButton
      */
-    private suspend fun updateUpdateToLatestButton() {
-        if (game.universeClient.isNewDataReady.isTrue()) {
+    private fun updateUpdateToLatestButton() {
+        if (runBlocking { game.universeClient.isNewDataReady.isTrue() }) {
             enableActor(updateToLatestButton)
             updateToLatestButton.setColor(1.0f, 1.0f, 1.0f, 1.0f)
         } else {
