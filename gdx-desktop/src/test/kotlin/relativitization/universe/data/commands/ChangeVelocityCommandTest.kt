@@ -24,7 +24,14 @@ internal class ChangeVelocityCommandTest {
         )
 
         runBlocking {
-            universe.postProcessUniverse(mapOf(1 to listOf(command)), mapOf(2 to listOf(), 3 to listOf()))
+            universe.postProcessUniverse(mapOf(
+                1 to listOf(command)),
+                mapOf(
+                    2 to listOf(),
+                    3 to listOf(),
+                    4 to listOf()
+                )
+            )
             universe.preProcessUniverse()
         }
 
