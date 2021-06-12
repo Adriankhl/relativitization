@@ -315,6 +315,7 @@ class GdxSettingsScreen(val game: RelativitizationGame, private val inGame: Bool
         val showingInfoTypeSelectBox = createSelectBox(
             listOf(
                 ShowingInfoType.OVERVIEW,
+                ShowingInfoType.PLAYERS,
                 ShowingInfoType.PHYSICS,
             ),
             gdxSettings.showingInfoType,
