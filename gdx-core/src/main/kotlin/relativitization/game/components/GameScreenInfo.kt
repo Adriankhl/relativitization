@@ -7,12 +7,14 @@ import relativitization.game.ShowingInfoType
 import relativitization.game.components.info.BottomCommandInfo
 import relativitization.game.components.info.OverviewInfo
 import relativitization.game.components.info.PhysicsInfo
+import relativitization.game.components.info.PlayersInfo
 import relativitization.game.utils.ScreenComponent
 
 class GameScreenInfo(val game: RelativitizationGame) : ScreenComponent<SplitPane>(game.assets) {
     private val gdxSettings = game.gdxSettings
 
     private val overviewInfo: OverviewInfo = OverviewInfo(game)
+    private val playersInfo: PlayersInfo = PlayersInfo(game)
     private val physicsInfo: PhysicsInfo = PhysicsInfo(game)
 
     private val upperInfoScrollPane: ScrollPane = createScrollPane(overviewInfo.getScreenComponent())
@@ -43,6 +45,7 @@ class GameScreenInfo(val game: RelativitizationGame) : ScreenComponent<SplitPane
         // Show info type based on setting
         when (gdxSettings.showingInfoType) {
             ShowingInfoType.OVERVIEW -> upperInfoScrollPane.actor = overviewInfo.getScreenComponent()
+            ShowingInfoType.PLAYERS -> upperInfoScrollPane.actor = playersInfo.getScreenComponent()
             ShowingInfoType.PHYSICS -> upperInfoScrollPane.actor = physicsInfo.getScreenComponent()
         }
 
