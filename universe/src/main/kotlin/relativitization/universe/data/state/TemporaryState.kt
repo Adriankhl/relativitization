@@ -14,12 +14,28 @@ data class MutableTemporaryState(
     val disableFuelProductionStateList: MutableList<MutableDisableFuelProductionState> = mutableListOf()
 ) {
     /**
-     * Decrease remaining time for temporary state by 1
+     * Decrease remaining time
      */
-    fun updateTimeRemain() {
+    fun updateTimeRemain(gamma: Double) {
+        updateByUniverseTime()
+        updateByProperTime(gamma)
+    }
+
+    /**
+     * Update the time by universe time
+     */
+    private fun updateByUniverseTime() {
         disableFuelProductionStateList.forEach {
             it.timeRemain -= 1
         }
+    }
+
+
+    /**
+     * Update the time by proper (dilated) time of the player
+     */
+    private fun updateByProperTime(gamma: Double) {
+
     }
 
     /**
