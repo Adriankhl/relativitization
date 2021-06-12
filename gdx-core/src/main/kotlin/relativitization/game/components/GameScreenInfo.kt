@@ -27,6 +27,7 @@ class GameScreenInfo(val game: RelativitizationGame) : ScreenComponent<SplitPane
         // Add child screen component
         addChildScreenComponent(bottomCommandInfo)
         addChildScreenComponent(overviewInfo)
+        addChildScreenComponent(playersInfo)
         addChildScreenComponent(physicsInfo)
 
         // Set background color
