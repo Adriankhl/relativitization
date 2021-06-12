@@ -1,4 +1,5 @@
 # TODO list
+* Add info for players, convenient selection of leaders, subordinates, enemies
 * Add info for commands
 * Add info for events
 * Basic pop system
