@@ -1,14 +1,14 @@
 package relativitization.universe.maths.physics
 
-import org.apache.logging.log4j.LogManager
 import relativitization.universe.data.physics.Velocity
 import relativitization.universe.maths.algebra.Quadratic.discriminant
 import relativitization.universe.maths.algebra.Quadratic.solveQuadratic
 import relativitization.universe.maths.algebra.QuadraticSolutions
+import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.math.sqrt
 
 object Relativistic {
-    private val logger = LogManager.getLogger()
+    private val logger = RelativitizationLogManager.getLogger()
 
     // E = m * c^2
     // Unit of energy change when c != 1

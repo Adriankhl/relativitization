@@ -1,20 +1,14 @@
 package relativitization.universe.data.commands
 
 import kotlinx.serialization.Serializable
-import org.apache.logging.log4j.LogManager
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.physics.Int4D
 import relativitization.universe.data.physics.Velocity
-import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.maths.physics.Relativistic.targetVelocityByPhotonRocket
-import relativitization.universe.maths.physics.Relativistic.toActualEnergyUnit
-import relativitization.universe.maths.physics.Relativistic.toStandardEnergyUnit
 import relativitization.universe.maths.physics.TargetVelocityData
-import kotlin.math.abs
-import kotlin.math.max
-import kotlin.math.min
+import relativitization.universe.utils.RelativitizationLogManager
 
 @Serializable
 data class ChangeVelocityCommand(
@@ -68,6 +62,6 @@ data class ChangeVelocityCommand(
     }
 
     companion object {
-        private val logger = LogManager.getLogger()
+        private val logger = RelativitizationLogManager.getLogger()
     }
 }

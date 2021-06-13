@@ -1,14 +1,13 @@
 package relativitization.universe.data
 
 import kotlinx.serialization.Serializable
-import org.apache.logging.log4j.LogManager
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.physics.*
 import relativitization.universe.data.serializer.DataSerializer
-import relativitization.universe.data.serializer.DataSerializer.copy
-import relativitization.universe.maths.grid.Grids.double4DToId
 import relativitization.universe.maths.grid.Grids.create3DGrid
+import relativitization.universe.maths.grid.Grids.double4DToId
 import relativitization.universe.maths.physics.Intervals.intDelay
+import relativitization.universe.utils.RelativitizationLogManager
 
 @Serializable
 data class UniverseData(
@@ -202,7 +201,7 @@ data class UniverseData(
     }
 
     companion object {
-        private val logger = LogManager.getLogger()
+        private val logger = RelativitizationLogManager.getLogger()
     }
 }
 
@@ -344,6 +343,6 @@ data class MutableUniverseData4D(
 
 
     companion object {
-        private val logger = LogManager.getLogger()
+        private val logger = RelativitizationLogManager.getLogger()
     }
 }

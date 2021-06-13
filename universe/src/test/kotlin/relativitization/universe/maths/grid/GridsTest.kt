@@ -1,8 +1,8 @@
 package relativitization.universe.maths.grid
 
-import kotlin.test.Test
 import relativitization.universe.data.physics.Int3D
 import relativitization.universe.data.physics.MutableDouble4D
+import kotlin.test.Test
 
 internal class GridsTest {
     @Test

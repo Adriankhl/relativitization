@@ -1,12 +1,14 @@
 package relativitization.communication
 
 import io.ktor.http.*
-import kotlinx.coroutines.*
-import kotlin.test.Test
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import relativitization.client.UniverseClient
 import relativitization.server.UniverseServer
 import relativitization.universe.UniverseClientSettings
 import relativitization.universe.UniverseServerSettings
+import kotlin.test.Test
 
 internal class ServerStatusTest {
     @Test

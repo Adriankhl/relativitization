@@ -1,11 +1,10 @@
 package relativitization.universe.maths.grid
 
-import kotlin.test.Test
-import relativitization.universe.data.physics.Int2D
 import relativitization.universe.maths.grid.Projections.idAtGridToRectangleFunction
 import relativitization.universe.maths.grid.Projections.indexToRectangleFunction
 import relativitization.universe.maths.grid.Projections.positionToIdAtGridFunction
 import relativitization.universe.maths.grid.Projections.positionToIndexFunction
+import kotlin.test.Test
 
 internal class ProjectionsTest {
     @Test

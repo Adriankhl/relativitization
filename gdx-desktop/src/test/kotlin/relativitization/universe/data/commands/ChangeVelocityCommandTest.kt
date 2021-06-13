@@ -1,13 +1,13 @@
 package relativitization.universe.data.commands
 
 import kotlinx.coroutines.runBlocking
-import kotlin.test.Test
 import relativitization.universe.Universe
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.physics.Int4D
 import relativitization.universe.data.physics.Velocity
 import relativitization.universe.generate.GenerateSettings
 import relativitization.universe.generate.GenerateUniverse
+import kotlin.test.Test
 
 internal class ChangeVelocityCommandTest {
     @Test

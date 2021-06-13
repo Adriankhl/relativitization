@@ -17,10 +17,8 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader.FreeTypeFontLoa
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable
-import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable
-import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
-import org.apache.logging.log4j.LogManager
+import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.random.Random
 
 
@@ -150,6 +148,6 @@ class Assets {
     fun getSound(name: String): Sound = manager.get("sounds/$name")
 
     companion object {
-        private val logger = LogManager.getLogger()
+        private val logger = RelativitizationLogManager.getLogger()
     }
 }

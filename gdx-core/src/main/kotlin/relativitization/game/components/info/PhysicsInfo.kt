@@ -1,7 +1,6 @@
 package relativitization.game.components.info
 
 import com.badlogic.gdx.scenes.scene2d.ui.Table
-import org.apache.logging.log4j.LogManager
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.PlayerData
@@ -11,6 +10,7 @@ import relativitization.universe.data.physics.Double3D
 import relativitization.universe.data.physics.Int3D
 import relativitization.universe.data.physics.Velocity
 import relativitization.universe.maths.physics.Movement.displacementToVelocity
+import relativitization.universe.utils.RelativitizationLogManager
 
 class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.assets) {
 
@@ -270,6 +270,6 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
     }
 
     companion object {
-        private val logger = LogManager.getLogger()
+        private val logger = RelativitizationLogManager.getLogger()
     }
 }

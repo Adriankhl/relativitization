@@ -7,10 +7,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import org.apache.logging.log4j.Level
-import org.apache.logging.log4j.Level.OFF
-import org.apache.logging.log4j.LogManager
-import org.apache.logging.log4j.core.config.Configurator
 import relativitization.client.UniverseClient
 import relativitization.game.RelativitizationGame
 import relativitization.server.UniverseServer
@@ -21,6 +17,10 @@ import java.util.concurrent.Executors
 import kotlin.random.Random
 
 class AndroidLauncher : AndroidApplication() {
+
+    init {
+        RelativitizationLogManager.isAndroid = true
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,12 +58,5 @@ class AndroidLauncher : AndroidApplication() {
         }
 
         gdxExecutorService.shutdown()
-    }
-
-    companion object {
-        init {
-            RelativitizationLogManager.isAndroid = true
-        }
-        private val logger = RelativitizationLogManager.getLogger()
     }
 }

@@ -11,18 +11,18 @@ import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.apache.logging.log4j.Level
-import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.core.config.Configurator
 import relativitization.client.UniverseClient
 import relativitization.game.RelativitizationGame
 import relativitization.server.UniverseServer
 import relativitization.universe.UniverseClientSettings
 import relativitization.universe.UniverseServerSettings
+import relativitization.universe.utils.RelativitizationLogManager
 import java.io.File
 import java.util.concurrent.Executors
 import kotlin.random.Random
 
-private val logger = LogManager.getLogger()
+private val logger = RelativitizationLogManager.getLogger()
 
 fun main() {
 

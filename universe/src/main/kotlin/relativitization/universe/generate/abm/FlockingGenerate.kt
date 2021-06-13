@@ -1,11 +1,6 @@
 package relativitization.universe.generate.abm
 
-import relativitization.universe.data.MutablePlayerData
-import relativitization.universe.data.MutableUniverseData4D
-import relativitization.universe.data.PlayerType
-import relativitization.universe.data.UniverseData
-import relativitization.universe.data.UniverseSettings
-import relativitization.universe.data.UniverseState
+import relativitization.universe.data.*
 import relativitization.universe.data.physics.MutableVelocity
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.generate.GenerateSettings

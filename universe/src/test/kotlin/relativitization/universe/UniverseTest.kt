@@ -1,9 +1,9 @@
 package relativitization.universe
 
-import kotlin.test.Test
 import relativitization.universe.data.MutableUniverseSettings
 import relativitization.universe.generate.GenerateSettings
 import relativitization.universe.generate.GenerateUniverse
+import kotlin.test.Test
 
 internal class UniverseTest {
     @Test

@@ -1,12 +1,12 @@
 package relativitization.universe.generate
 
 import kotlinx.serialization.Serializable
-import org.apache.logging.log4j.LogManager
 import relativitization.universe.data.*
-import relativitization.universe.data.serializer.DataSerializer.encode
 import relativitization.universe.data.serializer.DataSerializer.decode
+import relativitization.universe.data.serializer.DataSerializer.encode
 import relativitization.universe.generate.abm.FlockingGenerate
 import relativitization.universe.generate.fixed.Minimal
+import relativitization.universe.utils.RelativitizationLogManager
 import java.io.File
 
 @Serializable
@@ -23,7 +23,7 @@ data class GenerateSettings(
     }
 
     companion object {
-        private val logger = LogManager.getLogger()
+        private val logger = RelativitizationLogManager.getLogger()
 
         private fun load(): GenerateSettings {
             val settingString: String = File("GenerateSetting.json").readText()
@@ -49,7 +49,7 @@ abstract class GenerateUniverse {
 
 
     companion object {
-        private val logger = LogManager.getLogger()
+        private val logger = RelativitizationLogManager.getLogger()
 
         // Store all generate method
         val generateMethodMap: Map<String, GenerateUniverse> = mapOf(

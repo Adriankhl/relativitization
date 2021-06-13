@@ -7,12 +7,12 @@ import com.badlogic.gdx.scenes.scene2d.InputListener
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
-import org.apache.logging.log4j.LogManager
 import relativitization.game.RelativitizationGame
 import relativitization.game.components.GameScreenInfo
 import relativitization.game.components.GameScreenTopBar
 import relativitization.game.components.GameScreenWorldMap
 import relativitization.game.utils.TableScreen
+import relativitization.universe.utils.RelativitizationLogManager
 
 class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
     private val background: Image = assets.getImage("background/universe-background")
@@ -209,6 +209,6 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
 
 
     companion object {
-        private val logger = LogManager.getLogger()
+        private val logger = RelativitizationLogManager.getLogger()
     }
 }

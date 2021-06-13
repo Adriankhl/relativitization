@@ -1,6 +1,5 @@
 package relativitization.universe.mechanisms
 
-import org.apache.logging.log4j.LogManager
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseData
 import relativitization.universe.data.UniverseData3DAtPlayer
@@ -8,6 +7,7 @@ import relativitization.universe.data.commands.Command
 import relativitization.universe.mechanisms.events.AutoEventCollection
 import relativitization.universe.mechanisms.events.ProcessEvents
 import relativitization.universe.mechanisms.state.UpdateTemporaryState
+import relativitization.universe.utils.RelativitizationLogManager
 
 abstract class Mechanism {
 
@@ -26,7 +26,7 @@ abstract class Mechanism {
 }
 
 object MechanismCollection {
-    private val logger = LogManager.getLogger()
+    private val logger = RelativitizationLogManager.getLogger()
 
     private val defaultMechanismList: List<Mechanism> = listOf(
         AutoEventCollection,

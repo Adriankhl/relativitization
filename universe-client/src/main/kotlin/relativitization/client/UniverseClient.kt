@@ -8,28 +8,12 @@ import io.ktor.client.features.json.serializer.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.cancelAndJoin
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.isActive
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import org.apache.logging.log4j.LogManager
 import relativitization.universe.UniverseClientSettings
 import relativitization.universe.UniverseServerSettings
-import relativitization.universe.communication.CheckIsPlayerDeadMessage
-import relativitization.universe.communication.CommandInputMessage
-import relativitization.universe.communication.LoadUniverseMessage
-import relativitization.universe.communication.NewUniverseMessage
-import relativitization.universe.communication.RegisterPlayerMessage
-import relativitization.universe.communication.RunUniverseMessage
-import relativitization.universe.communication.StopUniverseMessage
-import relativitization.universe.communication.StopWaitingMessage
-import relativitization.universe.communication.UniverseData3DMessage
-import relativitization.universe.communication.UniverseServerSettingsMessage
-import relativitization.universe.communication.UniverseServerStatusMessage
+import relativitization.universe.communication.*
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
@@ -38,6 +22,7 @@ import relativitization.universe.data.physics.Int3D
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.generate.GenerateSettings
 import relativitization.universe.utils.CoroutineBoolean
+import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.properties.Delegates
 
 /**
@@ -810,6 +795,6 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
     }
 
     companion object {
-        private val logger = LogManager.getLogger()
+        private val logger = RelativitizationLogManager.getLogger()
     }
 }

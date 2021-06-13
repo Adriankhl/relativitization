@@ -1,12 +1,12 @@
 package relativitization.universe.data.events
 
 import kotlinx.serialization.Serializable
-import org.apache.logging.log4j.LogManager
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
+import relativitization.universe.utils.RelativitizationLogManager
 
 @Serializable
 sealed class Event {
@@ -51,7 +51,7 @@ sealed class Event {
     abstract fun generateCommands(choice: Int, universeData3DAtPlayer: UniverseData3DAtPlayer): List<Command>
 
     companion object {
-        private val logger = LogManager.getLogger()
+        private val logger = RelativitizationLogManager.getLogger()
     }
 }
 

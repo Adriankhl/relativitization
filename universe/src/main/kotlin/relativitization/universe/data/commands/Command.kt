@@ -1,11 +1,11 @@
 package relativitization.universe.data.commands
 
 import kotlinx.serialization.Serializable
-import relativitization.universe.data.physics.Int4D
-import org.apache.logging.log4j.LogManager
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.UniverseSettings
+import relativitization.universe.data.physics.Int4D
+import relativitization.universe.utils.RelativitizationLogManager
 
 @Serializable
 sealed class Command {
@@ -99,7 +99,7 @@ sealed class Command {
     }
 
     companion object {
-        private val logger = LogManager.getLogger()
+        private val logger = RelativitizationLogManager.getLogger()
 
         val defaultCommandList: List<String> = listOf(
             "Add Event",

@@ -1,14 +1,14 @@
 package relativitization.universe
 
 import kotlinx.coroutines.runBlocking
-import org.apache.logging.log4j.LogManager
 import relativitization.universe.data.*
 import relativitization.universe.data.physics.*
 import relativitization.universe.data.serializer.DataSerializer.copy
-import relativitization.universe.maths.grid.Grids.double4DToId
 import relativitization.universe.maths.grid.Grids.create3DGrid
+import relativitization.universe.maths.grid.Grids.double4DToId
 import relativitization.universe.maths.physics.Relativistic.deltaMassByPhotonRocket
 import relativitization.universe.utils.RandomName.randomPlayerName
+import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.math.min
 
 class PlayerCollection(
@@ -299,6 +299,6 @@ class PlayerCollection(
     }
 
     companion object {
-        private val logger = LogManager.getLogger()
+        private val logger = RelativitizationLogManager.getLogger()
     }
 }

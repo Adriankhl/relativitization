@@ -5,7 +5,6 @@ import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.physics.Int4D
-import relativitization.universe.data.physics.Velocity
 
 
 @Serializable

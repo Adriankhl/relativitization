@@ -4,14 +4,17 @@ import io.ktor.client.features.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import org.apache.logging.log4j.Level
 import org.apache.logging.log4j.core.config.Configurator
-import kotlin.test.Test
 import relativitization.client.UniverseClient
 import relativitization.server.UniverseServer
 import relativitization.universe.UniverseClientSettings
 import relativitization.universe.UniverseServerSettings
+import kotlin.test.Test
 
 internal class CoroutineTest {
     @Test

@@ -1,7 +1,7 @@
 package relativitization.universe.data
 
-import kotlin.test.Test
 import relativitization.universe.data.serializer.DataSerializer.copy
+import kotlin.test.Test
 
 internal class UniverseSettingsTest {
     @Test

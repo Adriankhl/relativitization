@@ -1,7 +1,6 @@
 package relativitization.universe
 
 import kotlinx.serialization.Serializable
-import relativitization.universe.data.physics.Int3D
 import relativitization.universe.data.physics.MutableInt3D
 
 /**

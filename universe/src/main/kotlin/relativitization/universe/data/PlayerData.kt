@@ -7,14 +7,7 @@ import relativitization.universe.data.economy.EconomyData
 import relativitization.universe.data.economy.MutableEconomyData
 import relativitization.universe.data.events.EventData
 import relativitization.universe.data.events.MutableEventData
-import relativitization.universe.data.physics.Double4D
-import relativitization.universe.data.physics.Int4D
-import relativitization.universe.data.physics.MutableDouble4D
-import relativitization.universe.data.physics.MutableInt4D
-import relativitization.universe.data.physics.MutablePhysicsData
-import relativitization.universe.data.physics.MutableVelocity
-import relativitization.universe.data.physics.PhysicsData
-import relativitization.universe.data.physics.Velocity
+import relativitization.universe.data.physics.*
 import relativitization.universe.data.politics.MutablePoliticsData
 import relativitization.universe.data.politics.PoliticsData
 import relativitization.universe.data.popsystems.MutablePopSystemicData

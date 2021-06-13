@@ -4,12 +4,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import io.ktor.http.*
 import kotlinx.coroutines.runBlocking
-import org.apache.logging.log4j.LogManager
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.TableScreen
 import relativitization.universe.data.commands.Command
 import relativitization.universe.generate.GenerateUniverse
 import relativitization.universe.mechanisms.MechanismCollection
+import relativitization.universe.utils.RelativitizationLogManager
 
 class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
     private val gdxSettings = game.gdxSettings
@@ -273,6 +273,6 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
     }
 
     companion object {
-        private val logger = LogManager.getLogger()
+        private val logger = RelativitizationLogManager.getLogger()
     }
 }

@@ -1,8 +1,8 @@
 package relativitization.universe.maths.grid
 
-import org.apache.logging.log4j.LogManager
 import relativitization.universe.data.physics.Int3D
 import relativitization.universe.maths.grid.Grids.isInt3DValid
+import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.math.max
 import kotlin.math.min
 
@@ -476,7 +476,7 @@ object Projections {
     }
 
 
-    private val logger = LogManager.getLogger()
+    private val logger = RelativitizationLogManager.getLogger()
 }
 
 /**

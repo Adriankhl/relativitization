@@ -1,17 +1,16 @@
 package relativitization.universe.maths.physics
 
-import org.apache.logging.log4j.LogManager
 import relativitization.universe.data.physics.Double3D
 import relativitization.universe.data.physics.Velocity
 import relativitization.universe.maths.physics.Intervals.distance
 import relativitization.universe.maths.physics.Relativistic.decelerateByPhotonRocket
-import relativitization.universe.maths.physics.Relativistic.targetVelocityAtDirectionPhotonRocket
 import relativitization.universe.maths.physics.Relativistic.deltaMassByPhotonRocket
 import relativitization.universe.maths.physics.Relativistic.targetVelocityByPhotonRocket
+import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.math.min
 
 object Movement {
-    private val logger = LogManager.getLogger()
+    private val logger = RelativitizationLogManager.getLogger()
 
     /**
      * Calculate target velocity by position, moving to that direction and target at 0.9c speed

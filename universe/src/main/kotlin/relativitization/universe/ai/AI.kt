@@ -1,18 +1,17 @@
 package relativitization.universe.ai
 
-import org.apache.logging.log4j.LogManager
 import relativitization.universe.ai.abm.FlockingAI
 import relativitization.universe.ai.emptyAI.EmptyAI
-import relativitization.universe.data.PlayerData
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.commands.Command
+import relativitization.universe.utils.RelativitizationLogManager
 
 abstract class AI {
     abstract fun compute(universeData3DAtPlayer: UniverseData3DAtPlayer): List<Command>
 }
 
 object AICollection {
-    private val logger = LogManager.getLogger()
+    private val logger = RelativitizationLogManager.getLogger()
 
     val aiNameList: List<String> = listOf(
         "EmptyAI",

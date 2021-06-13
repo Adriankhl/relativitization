@@ -3,20 +3,16 @@ package relativitization.server
 import kotlinx.coroutines.*
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import org.apache.logging.log4j.LogManager
 import relativitization.universe.Universe
 import relativitization.universe.UniverseServerSettings
-import relativitization.universe.communication.CheckIsPlayerDeadMessage
-import relativitization.universe.communication.CommandInputMessage
-import relativitization.universe.communication.RegisterPlayerMessage
-import relativitization.universe.communication.UniverseServerStatusMessage
-import relativitization.universe.communication.UniverseData3DMessage
+import relativitization.universe.communication.*
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.commands.Command
 import relativitization.universe.generate.GenerateSettings
 import relativitization.universe.generate.GenerateUniverse
 import relativitization.universe.utils.CoroutineBoolean
 import relativitization.universe.utils.CoroutineVar
+import relativitization.universe.utils.RelativitizationLogManager
 import java.io.File
 
 class UniverseServerInternal(var universeServerSettings: UniverseServerSettings) {
@@ -389,6 +385,6 @@ class UniverseServerInternal(var universeServerSettings: UniverseServerSettings)
     }
 
     companion object {
-        private val logger = LogManager.getLogger()
+        private val logger = RelativitizationLogManager.getLogger()
     }
 }

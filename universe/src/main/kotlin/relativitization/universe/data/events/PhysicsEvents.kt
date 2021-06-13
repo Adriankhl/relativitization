@@ -1,7 +1,6 @@
 package relativitization.universe.data.events
 
 import kotlinx.serialization.Serializable
-import org.apache.logging.log4j.LogManager
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.UniverseData3DAtPlayer
@@ -10,12 +9,10 @@ import relativitization.universe.data.commands.ChangeVelocityCommand
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.commands.DisableFuelProductionCommand
 import relativitization.universe.data.physics.Double3D
-import relativitization.universe.data.physics.Int4D
-import relativitization.universe.data.physics.Velocity
 import relativitization.universe.data.state.temporary.DisableFuelProductionState
-import relativitization.universe.maths.physics.Movement.displacementToVelocity
 import relativitization.universe.maths.physics.Movement.targetDouble3DByPhotonRocket
 import relativitization.universe.maths.physics.TargetVelocityData
+import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.math.min
 
 /**
@@ -109,6 +106,6 @@ data class MoveToDouble3DEvent(
     }
 
     companion object {
-        private val logger = LogManager.getLogger()
+        private val logger = RelativitizationLogManager.getLogger()
     }
 }

@@ -1,21 +1,21 @@
 package relativitization.server
 
-import relativitization.universe.data.serializer.DataSerializer
 import io.ktor.application.*
 import io.ktor.features.*
 import io.ktor.http.*
 import io.ktor.response.*
-import io.ktor.server.engine.*
-import io.ktor.server.cio.*
 import io.ktor.serialization.*
+import io.ktor.server.cio.*
+import io.ktor.server.engine.*
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
-import org.apache.logging.log4j.LogManager
 import relativitization.server.routes.registerCreateUniverseRoutes
 import relativitization.server.routes.registerRunUniverseRoutes
 import relativitization.server.routes.registerUniverseStatusRoutes
 import relativitization.universe.UniverseServerSettings
+import relativitization.universe.data.serializer.DataSerializer
+import relativitization.universe.utils.RelativitizationLogManager
 
 
 class UniverseServer(universeServerSettings: UniverseServerSettings) {
@@ -69,7 +69,7 @@ class UniverseServer(universeServerSettings: UniverseServerSettings) {
 
 
     companion object {
-        private val logger = LogManager.getLogger()
+        private val logger = RelativitizationLogManager.getLogger()
     }
 
 }

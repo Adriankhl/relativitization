@@ -1,10 +1,10 @@
 package relativitization.universe.data
 
 import kotlinx.serialization.Serializable
-import org.apache.logging.log4j.LogManager
 import relativitization.universe.data.physics.Int3D
 import relativitization.universe.data.physics.Int4D
 import relativitization.universe.maths.grid.Grids.create3DGrid
+import relativitization.universe.utils.RelativitizationLogManager
 
 @Serializable
 data class UniverseData3DAtGrid(
@@ -131,6 +131,6 @@ data class UniverseData3DAtPlayer(
 
 
     companion object {
-        private val logger = LogManager.getLogger()
+        private val logger = RelativitizationLogManager.getLogger()
     }
 }

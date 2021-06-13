@@ -1,19 +1,8 @@
 package relativitization.game.utils
 
 import com.badlogic.gdx.scenes.scene2d.Actor
-import com.badlogic.gdx.scenes.scene2d.ui.CheckBox
-import com.badlogic.gdx.scenes.scene2d.ui.Image
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
-import com.badlogic.gdx.scenes.scene2d.ui.Label
-import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
-import com.badlogic.gdx.scenes.scene2d.ui.SelectBox
-import com.badlogic.gdx.scenes.scene2d.ui.Skin
-import com.badlogic.gdx.scenes.scene2d.ui.Slider
-import com.badlogic.gdx.scenes.scene2d.ui.SplitPane
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton
-import com.badlogic.gdx.scenes.scene2d.ui.TextField
+import com.badlogic.gdx.scenes.scene2d.ui.*
 import kotlinx.coroutines.runBlocking
-import relativitization.client.UniverseClient
 import relativitization.game.RelativitizationGame
 
 abstract class ScreenComponent<out T : Actor>(val assets: Assets){

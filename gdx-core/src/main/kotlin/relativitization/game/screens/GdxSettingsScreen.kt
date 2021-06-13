@@ -4,10 +4,10 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import kotlinx.coroutines.runBlocking
-import org.apache.logging.log4j.LogManager
 import relativitization.game.RelativitizationGame
 import relativitization.game.ShowingInfoType
 import relativitization.game.utils.TableScreen
+import relativitization.universe.utils.RelativitizationLogManager
 
 class GdxSettingsScreen(val game: RelativitizationGame, private val inGame: Boolean) : TableScreen(game.assets) {
     private val gdxSettings = game.gdxSettings
@@ -327,6 +327,6 @@ class GdxSettingsScreen(val game: RelativitizationGame, private val inGame: Bool
     }
 
     companion object {
-        private val logger = LogManager.getLogger()
+        private val logger = RelativitizationLogManager.getLogger()
     }
 }

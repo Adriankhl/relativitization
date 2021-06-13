@@ -3,13 +3,13 @@ package relativitization.game.utils
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Stack
 import com.badlogic.gdx.utils.Align
-import org.apache.logging.log4j.LogManager
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.PlayerType
 import relativitization.universe.data.popsystems.CarrierType
+import relativitization.universe.utils.RelativitizationLogManager
 
 object PlayerImage {
-    private val logger = LogManager.getLogger()
+    private val logger = RelativitizationLogManager.getLogger()
 
     fun getPlayerImages(
         playerData: PlayerData,

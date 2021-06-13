@@ -1,11 +1,6 @@
 package relativitization.universe.maths.physics
 
-import relativitization.universe.data.physics.Double3D
-import relativitization.universe.data.physics.Double4D
-import relativitization.universe.data.physics.Int3D
-import relativitization.universe.data.physics.Int4D
-import relativitization.universe.data.physics.MutableDouble4D
-import relativitization.universe.data.physics.MutableInt4D
+import relativitization.universe.data.physics.*
 import kotlin.math.abs
 import kotlin.math.sqrt
 

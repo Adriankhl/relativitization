@@ -4,9 +4,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import io.ktor.http.*
 import kotlinx.coroutines.runBlocking
-import org.apache.logging.log4j.LogManager
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.TableScreen
+import relativitization.universe.utils.RelativitizationLogManager
 
 class ServerSettingsScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
     private val gdxSettings = game.gdxSettings
@@ -99,6 +99,6 @@ class ServerSettingsScreen(val game: RelativitizationGame) : TableScreen(game.as
     }
 
     companion object {
-        private val logger = LogManager.getLogger()
+        private val logger = RelativitizationLogManager.getLogger()
     }
 }

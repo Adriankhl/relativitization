@@ -4,13 +4,13 @@ import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.Group
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.utils.Align
-import org.apache.logging.log4j.LogManager
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.PlayerImage.getPlayerImages
 import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.physics.Int3D
 import relativitization.universe.maths.grid.Data3D2DProjection
 import relativitization.universe.maths.grid.Projections.createData3D2DProjection
+import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.math.abs
 import kotlin.math.min
 
@@ -282,6 +282,6 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
     }
 
     companion object {
-        private val logger = LogManager.getLogger()
+        private val logger = RelativitizationLogManager.getLogger()
     }
 }

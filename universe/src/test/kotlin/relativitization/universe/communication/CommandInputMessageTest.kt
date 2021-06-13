@@ -1,7 +1,6 @@
 package relativitization.universe.communication
 
 import relativitization.universe.data.commands.ChangeVelocityCommand
-import relativitization.universe.data.commands.Command
 import relativitization.universe.data.physics.Int4D
 import relativitization.universe.data.physics.Velocity
 import relativitization.universe.data.serializer.DataSerializer

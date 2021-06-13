@@ -1,8 +1,8 @@
 package relativitization.universe.maths.physics
 
-import kotlin.test.Test
 import relativitization.universe.data.physics.Int3D
 import relativitization.universe.maths.physics.Intervals.intDelay
+import kotlin.test.Test
 
 internal class IntervalsTest {
     @Test

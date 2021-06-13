@@ -1,12 +1,13 @@
 package playground
 
 import io.ktor.client.*
-import io.ktor.client.features.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.server.cio.*
 import io.ktor.server.engine.*
-import kotlinx.coroutines.*
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlin.test.Test
 
 internal class KtorBugTest {
