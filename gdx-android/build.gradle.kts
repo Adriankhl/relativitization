@@ -94,8 +94,6 @@ android {
 // the natives configuration, and extracts them to the proper libs/ folders
 // so they get packed with the APK.
 task("copyAndroidNatives") {
-    val natives: Configuration by configurations
-
     doFirst {
         file("libs/armeabi/").mkdirs()
         file("libs/armeabi-v7a/").mkdirs()

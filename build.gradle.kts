@@ -1,6 +1,5 @@
 plugins {
     kotlin("jvm") version "${Versions.kotlinVersion}"
-
     kotlin("plugin.serialization") version "${Versions.kotlinVersion}"
 }
 
