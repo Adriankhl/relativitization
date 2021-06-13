@@ -1,6 +1,17 @@
 plugins {
     kotlin("jvm") version "${Versions.kotlinVersion}"
+    kotlin("android") version "${Versions.kotlinVersion}"
+
     kotlin("plugin.serialization") version "${Versions.kotlinVersion}"
+}
+
+buildscript {
+    repositories {
+        google()
+    }
+    dependencies {
+        classpath("com.android.tools.build:gradle:${Versions.androidGradlePluginVersion}")
+    }
 }
 
 allprojects {

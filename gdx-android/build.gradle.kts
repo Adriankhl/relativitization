@@ -80,10 +80,6 @@ android {
     }
 }
 
-dependencies {
-    implementation("com.android.tools.build:gradle:${Versions.androidGradlePluginVersion}")
-}
-
 
 // called every time gradle gets executed, takes the native dependencies of
 // the natives configuration, and extracts them to the proper libs/ folders
