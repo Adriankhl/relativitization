@@ -2,6 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 
 plugins {
+    kotlin("android")
     id("com.android.application")
 }
 
@@ -10,6 +11,15 @@ android {
 
     sourceSets {
         val main by getting {
+ 
+            manifest.srcFile("AndroidManifest.xml")
+            res.srcDirs("res")
+            aidl.srcDirs("src/main/kotlin")
+            renderscript.srcDirs("src/main/kotlin")
+            java.srcDir("src/main/kotlin")
+            assets.srcDirs("../../relativitization-art/assets")
+            jniLibs.srcDirs("libs")
+
             dependencies {
                 implementation(project(":gdx-core"))
                 implementation(project(":universe-server"))
