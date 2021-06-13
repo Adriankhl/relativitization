@@ -18,10 +18,13 @@ kotlin {
 
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.kotlinxSerializationVersion}")
                 implementation("org.jetbrains.kotlin:kotlin-reflect:${Versions.kotlinVersion}")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.kotlinxCoroutineVersion}")
                 implementation("io.ktor:ktor-client-core:${Versions.ktorVersion}")
                 implementation("io.ktor:ktor-client-cio:${Versions.ktorVersion}")
                 implementation("io.ktor:ktor-server-core:${Versions.ktorVersion}")
                 implementation("io.ktor:ktor-server-cio:${Versions.ktorVersion}")
+
+                implementation("org.apache.logging.log4j:log4j-core:${Versions.log4jVersion}")
 
                 implementation("com.badlogicgames.gdx:gdx-backend-lwjgl3:${Versions.gdxVersion}")
                 implementation("com.badlogicgames.gdx:gdx-platform:${Versions.gdxVersion}:natives-desktop")
@@ -31,10 +34,6 @@ kotlin {
                 implementation("com.badlogicgames.gdx:gdx-tools:${Versions.gdxVersion}") {
                     exclude(group = "com.badlogicgames.gdx", module = "gdx-backend-lwjgl")
                 }
-
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.kotlinxCoroutineVersion}")
-
-                implementation("org.apache.logging.log4j:log4j-core:${Versions.log4jVersion}")
             }
         }
 
