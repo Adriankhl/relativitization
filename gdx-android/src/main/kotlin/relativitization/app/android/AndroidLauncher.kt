@@ -1,4 +1,4 @@
-package relativitization.app.desktop
+package relativitization.app.android
 
 import android.os.Bundle;
 
