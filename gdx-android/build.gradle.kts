@@ -53,6 +53,18 @@ android {
         }
     }
 
+    packagingOptions {
+        // Excluding unnecessary meta-data:
+        exclude("META-INF/DEPENDENCIES")
+        exclude("META-INF/DEPENDENCIES.txt")
+        exclude("META-INF/dependencies.txt")
+        exclude("META-INF/NOTICE")
+        exclude("META-INF/LICENSE")
+        exclude("META-INF/LICENSE.txt")
+        exclude("META-INF/NOTICE.txt")
+        exclude("META-INF/robovm/ios/robovm.xml")
+    }
+
     defaultConfig {
         applicationId = "relativitization.app.android"
         minSdkVersion(30)
