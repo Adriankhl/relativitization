@@ -54,7 +54,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "relativitization"
+        applicationId = "relativitization.app.android"
         minSdkVersion(30)
         targetSdkVersion(30)
         versionCode = Versions.appCodeNumber
