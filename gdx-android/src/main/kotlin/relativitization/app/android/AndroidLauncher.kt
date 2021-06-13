@@ -1,6 +1,7 @@
 package relativitization.app.android
 
 import android.os.Bundle
+import android.os.Environment
 import com.badlogic.gdx.backends.android.AndroidApplication
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration
 import kotlinx.coroutines.Dispatchers
@@ -30,6 +31,7 @@ class AndroidLauncher : AndroidApplication() {
 
 
         val adminPassword: String = List(10) { Random.nextInt(0, 10) }.joinToString(separator = "")
+
 
         val universeServerSettings = UniverseServerSettings(adminPassword = adminPassword)
         val universeClientSettings = UniverseClientSettings(adminPassword = adminPassword)
