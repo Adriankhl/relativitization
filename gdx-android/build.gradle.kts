@@ -61,7 +61,7 @@ android {
       jvmTarget = "11"
     }
 
-    
+ 
     buildTypes {
         getByName("release") {
             isMinifyEnabled = false
