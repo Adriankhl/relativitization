@@ -17,9 +17,9 @@ data class GenerateSettings(
     var numExtraStellarSystem: Int = 3,
     var universeSettings: MutableUniverseSettings = MutableUniverseSettings(),
 ) {
-    fun save() {
+    fun save(saveDirPath: String = ".") {
         logger.debug("Saving generate setting to GenerateSetting.json")
-        File("GenerateSetting.json").writeText(encode(this))
+        File("$saveDirPath/GenerateSetting.json").writeText(encode(this))
     }
 
     companion object {
