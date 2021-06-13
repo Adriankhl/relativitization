@@ -16,6 +16,7 @@ import relativitization.game.RelativitizationGame
 import relativitization.server.UniverseServer
 import relativitization.universe.UniverseClientSettings
 import relativitization.universe.UniverseServerSettings
+import relativitization.universe.utils.RelativitizationLogManager
 import java.util.concurrent.Executors
 import kotlin.random.Random
 
@@ -61,8 +62,8 @@ class AndroidLauncher : AndroidApplication() {
 
     companion object {
         init {
-            Configurator.setRootLevel(OFF)
+            RelativitizationLogManager.isAndroid = true
         }
-        private val logger = LogManager.getLogger()
+        private val logger = RelativitizationLogManager.getLogger()
     }
 }
