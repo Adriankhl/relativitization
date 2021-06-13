@@ -2,15 +2,17 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 
 plugins {
-    kotlin("android")
     id("com.android.application")
+    kotlin("android")
 }
+
+val natives by configurations.creating
 
 android {
     compileSdkVersion(30)
 
     sourceSets {
-        val main by getting {
+        getByName("main").apply {
  
             manifest.srcFile("AndroidManifest.xml")
             res.srcDirs("res")
@@ -66,11 +68,6 @@ android {
       sourceCompatibility(JavaVersion.VERSION_11)
       targetCompatibility(JavaVersion.VERSION_11)
     }
-
-    kotlinOptions {
-      jvmTarget = "11"
-    }
-
  
     buildTypes {
         getByName("release") {
@@ -117,4 +114,8 @@ tasks.whenTaskAdded {
     if ("package" in name) {
         dependsOn("copyAndroidNatives")
     }
+}
+
+tasks.withType<KotlinCompile>().configureEach {
+    kotlinOptions.jvmTarget = "11"
 }
