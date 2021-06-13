@@ -33,6 +33,7 @@ build
 .idea/*
 !.idea/dictionaries/developer.xml
 !.idea/codeStyles/codeStyleConfig.xml
+local.properties
 
 # Ignore save game
 saves*
