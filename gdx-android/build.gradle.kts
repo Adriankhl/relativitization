@@ -12,15 +12,15 @@ android {
     compileSdkVersion(30)
 
     sourceSets {
-        getByName("main").apply {
+        getByName("main") {
  
             manifest.srcFile("AndroidManifest.xml")
-            res.srcDirs("res")
-            aidl.srcDirs("src/main/kotlin")
-            renderscript.srcDirs("src/main/kotlin")
+            res.srcDir("res")
+            aidl.srcDir("src/main/kotlin")
+            renderscript.srcDir("src/main/kotlin")
             java.srcDir("src/main/kotlin")
-            assets.srcDirs("../../relativitization-art/assets")
-            jniLibs.srcDirs("libs")
+            assets.srcDir("../../relativitization-art/assets")
+            jniLibs.srcDir("libs")
 
             dependencies {
                 implementation(project(":gdx-core"))
