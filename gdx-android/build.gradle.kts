@@ -8,18 +8,6 @@ plugins {
 android {
     compileSdkVersion(30)
 
-    compileOptions {
-      sourceCompatibility(JavaVersion.VERSION_11)
-      targetCompatibility(JavaVersion.VERSION_11)
-    }
-
-    kotlinOptions {
-      jvmTarget = "11"
-    }
-}
-
-
-kotlin {
     sourceSets {
         val main by getting {
             dependencies {
@@ -53,5 +41,15 @@ kotlin {
                 natives("com.badlogicgames.gdx:gdx-freetype-platform:${Versions.gdxVersion}:natives-x86_64")
             }
         }
+    }
+
+
+    compileOptions {
+      sourceCompatibility(JavaVersion.VERSION_11)
+      targetCompatibility(JavaVersion.VERSION_11)
+    }
+
+    kotlinOptions {
+      jvmTarget = "11"
     }
 }
