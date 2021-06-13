@@ -1,5 +1,6 @@
 object Versions {
     const val appName = "Relativitization"
+    const val appCodeNumber = 1
     const val appVersion = "0.1"
 
     const val kotlinVersion = "1.5.10"

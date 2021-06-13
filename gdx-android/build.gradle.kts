@@ -27,8 +27,6 @@ android {
 
                 implementation("org.apache.logging.log4j:log4j-core:${Versions.log4jVersion}")
 
-                implementation("com.android.tools.build:gradle:${Versions.androidGradlePluginVersion}")
-
                 implementation("com.badlogicgames.gdx:gdx-backend-android:${Versions.gdxVersion}")
 
                 natives("com.badlogicgames.gdx:gdx-platform:${Versions.gdxVersion}:natives-armeabi-v7a")
@@ -43,6 +41,16 @@ android {
         }
     }
 
+    defaultConfig {
+        applicationId = "relativitization"
+        minSdkVersion(30)
+        targetSdkVersion(30)
+        versionCode = Versions.appCodeNumber
+        versionName = Versions.appVersion
+
+        base.archivesBaseName = "relativitization"
+    }
+
 
     compileOptions {
       sourceCompatibility(JavaVersion.VERSION_11)
@@ -52,4 +60,16 @@ android {
     kotlinOptions {
       jvmTarget = "11"
     }
+
+    
+    buildTypes {
+        getByName("release") {
+            isMinifyEnabled = false
+            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
+        }
+    }
+}
+
+dependencies {
+    implementation("com.android.tools.build:gradle:${Versions.androidGradlePluginVersion}")
 }
