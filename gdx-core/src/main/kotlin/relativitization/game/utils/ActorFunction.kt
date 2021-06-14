@@ -1,5 +1,7 @@
 package relativitization.game.utils
 
+import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.InputEvent
@@ -9,9 +11,13 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.badlogic.gdx.utils.Array
+import relativitization.universe.utils.RelativitizationLogManager
 import com.badlogic.gdx.scenes.scene2d.ui.List as GdxList
 
 object ActorFunction {
+
+    private val logger = RelativitizationLogManager.getLogger()
+
     /**
      * Create scroll pane for table
      *
@@ -275,8 +281,7 @@ object ActorFunction {
     /**
      * Create list
      *
-     * @param text Description of the option
-     * @param default the default value of the text
+     * @param itemList list of the items
      * @param fontSize the font size of the text
      * @param function the function acted after the text field has changed, take this check box as parameter
      */
@@ -356,6 +361,18 @@ object ActorFunction {
         val textField = TextField(default, style)
 
         textField.setTextFieldListener { field, _ -> function(field?.text ?: "", field!!) }
+
+        textField.onscreenKeyboard = TextField.OnscreenKeyboard {
+            Gdx.input.getTextInput(object : Input.TextInputListener {
+                override fun input(text: String?) {
+                    textField.text = text
+                }
+
+                override fun canceled() {
+                    logger.debug("Cancelled text input")
+                }
+            }, "", textField.text, "")
+        }
 
         return textField
     }
