@@ -42,7 +42,6 @@ class AndroidLauncher : FragmentActivity(), AndroidFragmentApplication.Callbacks
         val universeServer: UniverseServer = UniverseServer(universeServerSettings)
         val universeClient: UniverseClient = UniverseClient(universeClientSettings)
 
-
         val relativitizationGameFragment = RelativitizationGameFragment(universeClient, universeServer)
 
         val trans: FragmentTransaction = supportFragmentManager.beginTransaction()
@@ -74,8 +73,6 @@ class RelativitizationGameFragment(
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
 
         return initializeForView(RelativitizationGame(universeClient, universeServer))
     }
