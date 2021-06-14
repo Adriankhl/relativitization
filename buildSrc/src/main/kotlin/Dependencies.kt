@@ -14,6 +14,7 @@ object Versions {
 
     const val androidGradlePluginVersion = "7.0.0-beta03"
     const val androidLifeCycleKtxVersion = "2.3.1"
+    const val androidFragmentKtxVersion = "1.3.4"
 
     const val logbackVersion = "1.2.3"
 }

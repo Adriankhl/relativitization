@@ -41,6 +41,8 @@ android {
                 implementation("org.apache.logging.log4j:log4j-core:${Versions.log4jVersion}")
 
                 implementation("androidx.lifecycle:lifecycle-runtime-ktx:${Versions.androidLifeCycleKtxVersion}")
+                implementation("androidx.fragment:fragment-ktx:${Versions.androidFragmentKtxVersion}")
+
 
                 implementation("com.badlogicgames.gdx:gdx-backend-android:${Versions.gdxVersion}")
 
