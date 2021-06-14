@@ -5,6 +5,7 @@ import android.os.PersistableBundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.coroutineScope
@@ -73,6 +74,8 @@ class RelativitizationGameFragment(
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
 
         return initializeForView(RelativitizationGame(universeClient, universeServer))
     }
