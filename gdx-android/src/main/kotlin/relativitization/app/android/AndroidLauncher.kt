@@ -7,7 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.coroutineScope
 import com.badlogic.gdx.backends.android.AndroidFragmentApplication
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import relativitization.client.UniverseClient
 import relativitization.game.RelativitizationGame
 import relativitization.server.UniverseServer
@@ -46,6 +49,14 @@ class AndroidLauncher : FragmentActivity(), AndroidFragmentApplication.Callbacks
         trans.replace(android.R.id.content, relativitizationGameFragment)
 
         trans.commit()
+
+        lifecycle.coroutineScope.launch(Dispatchers.IO) {
+            universeServer.start()
+        }
+
+        lifecycle.coroutineScope.launch(Dispatchers.IO) {
+            universeClient.start()
+        }
     }
 
     override fun exit() {
