@@ -1,13 +1,13 @@
 package relativitization.app.android
 
 import android.os.Bundle
-import androidx.lifecycle.*
-import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.backends.android.AndroidApplication
-import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import android.os.PersistableBundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentTransaction
+import com.badlogic.gdx.backends.android.AndroidFragmentApplication
 import relativitization.client.UniverseClient
 import relativitization.game.RelativitizationGame
 import relativitization.server.UniverseServer
@@ -17,29 +17,24 @@ import relativitization.universe.utils.AndroidLogger
 import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.random.Random
 
-class AndroidLauncher : AndroidApplication() {
+class AndroidLauncher : FragmentActivity(), AndroidFragmentApplication.Callbacks {
+    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
+        super.onCreate(savedInstanceState, persistentState)
 
-    private lateinit var relativitizationGame: RelativitizationGame
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        // Determine print logger or not
         RelativitizationLogManager.isAndroid = true
         AndroidLogger.showLog = true
 
         super.onCreate(savedInstanceState)
 
-        val config = AndroidApplicationConfiguration()
-        config.useImmersiveMode = true
-
 
         val adminPassword: String = List(10) { Random.nextInt(0, 10) }.joinToString(separator = "")
 
         val universeServerSettings = UniverseServerSettings(
-            programDir = context.filesDir.toString(),
+            programDir = applicationContext.filesDir.toString(),
             adminPassword = adminPassword
         )
         val universeClientSettings = UniverseClientSettings(
-            programDir = context.filesDir.toString(),
+            programDir = applicationContext.filesDir.toString(),
             adminPassword = adminPassword
         )
 
@@ -47,25 +42,30 @@ class AndroidLauncher : AndroidApplication() {
         val universeClient: UniverseClient = UniverseClient(universeClientSettings)
 
 
-        relativitizationGame = RelativitizationGame(universeClient, universeServer)
+        val relativitizationGameFragment = RelativitizationGameFragment(universeClient, universeServer)
 
-        initialize(relativitizationGame, config)
+        val trans: FragmentTransaction = supportFragmentManager.beginTransaction()
+
+        trans.replace(android.R.id.content, relativitizationGameFragment)
+
+        trans.commit()
     }
 
-    override fun onStart() {
-        super.onStart()
+    override fun exit() {
+    }
+}
 
-        /*
-        runBlocking {
-            launch(Dispatchers.IO) {
-                relativitizationGame.universeServer.start()
-            }
+class RelativitizationGameFragment(
+    private val universeClient: UniverseClient,
+    private val universeServer: UniverseServer,
+) : AndroidFragmentApplication() {
 
-            launch(Dispatchers.IO) {
-                relativitizationGame.universeClient.start()
-            }
-        }
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
 
-         */
+        return initializeForView(RelativitizationGame(universeClient, universeServer))
     }
 }
