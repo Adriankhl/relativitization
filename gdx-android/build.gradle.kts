@@ -6,10 +6,10 @@ plugins {
     kotlin("android")
 }
 
-val natives by configurations.creating
+val natives: Configuration by configurations.creating
 
 android {
-    compileSdkVersion(30)
+    compileSdk = 30
 
     sourceSets {
         getByName("main") {
@@ -55,20 +55,20 @@ android {
 
     packagingOptions {
         // Excluding unnecessary meta-data:
-        exclude("META-INF/DEPENDENCIES")
-        exclude("META-INF/DEPENDENCIES.txt")
-        exclude("META-INF/dependencies.txt")
-        exclude("META-INF/NOTICE")
-        exclude("META-INF/LICENSE")
-        exclude("META-INF/LICENSE.txt")
-        exclude("META-INF/NOTICE.txt")
-        exclude("META-INF/robovm/ios/robovm.xml")
+        resources.excludes.add("META-INF/DEPENDENCIES")
+        resources.excludes.add("META-INF/DEPENDENCIES.txt")
+        resources.excludes.add("META-INF/dependencies.txt")
+        resources.excludes.add("META-INF/NOTICE")
+        resources.excludes.add("META-INF/LICENSE")
+        resources.excludes.add("META-INF/LICENSE.txt")
+        resources.excludes.add("META-INF/NOTICE.txt")
+        resources.excludes.add("META-INF/robovm/ios/robovm.xml")
     }
 
     defaultConfig {
         applicationId = "relativitization.app.android"
-        minSdkVersion(30)
-        targetSdkVersion(30)
+        minSdk =30
+        targetSdk =30
         versionCode = Versions.appCodeNumber
         versionName = Versions.appVersion
 
