@@ -13,6 +13,7 @@ object Versions {
     const val kotlinFakerVersion = "1.7.1"
 
     const val androidGradlePluginVersion = "7.0.0-beta03"
+    const val androidLifeCycleKtxVersion = "2.3.1"
 
     const val logbackVersion = "1.2.3"
 }
