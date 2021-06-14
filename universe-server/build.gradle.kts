@@ -19,7 +19,7 @@ kotlin {
                 implementation("io.ktor:ktor-serialization:${Versions.ktorVersion}")
                 implementation("org.apache.logging.log4j:log4j-api:${Versions.log4jVersion}")
                 implementation("org.apache.logging.log4j:log4j-core:${Versions.log4jVersion}")
-                implementation("org.apache.logging.log4j:log4j-slf4j18-impl:${Versions.log4jVersion}")
+                implementation("ch.qos.logback:logback-classic:${Versions.logbackVersion}")
             }
         }
     }
