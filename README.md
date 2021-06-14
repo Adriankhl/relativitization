@@ -13,3 +13,8 @@ Simulation / grand strategy game in 4D spacetime
 Make sure `../relativitization-art/assets` exists, then:
 
 `./gradlew :gdx-desktop:run`
+
+# Build Android (debug) apk
+Make sure `../relativitization-art/assets` exists, then:
+
+`./gradlew :gdx-android:assembleDebug`
