@@ -277,7 +277,7 @@ class UniverseServerInternal(var universeServerSettings: UniverseServerSettings)
      */
     suspend fun getSavedUniverse(): List<String> {
         mutex.withLock {
-            return File("saves").list()?.toList() ?: listOf()
+            return File("${universeServerSettings.programDir}/saves").list()?.toList() ?: listOf()
         }
     }
 
