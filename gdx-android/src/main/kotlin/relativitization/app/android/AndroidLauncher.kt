@@ -16,9 +16,24 @@ import kotlin.random.Random
 class AndroidLauncher : AndroidApplication() {
 
     init {
+        // Determine print logger or not
         RelativitizationLogManager.isAndroid = true
         AndroidLogger.showLog = true
     }
+
+    private val adminPassword: String = List(10) { Random.nextInt(0, 10) }.joinToString(separator = "")
+
+    private val universeServerSettings = UniverseServerSettings(
+        programDir = context.filesDir.toString(),
+        adminPassword = adminPassword
+    )
+    private val universeClientSettings = UniverseClientSettings(
+        programDir = context.filesDir.toString(),
+        adminPassword = adminPassword
+    )
+
+    private val universeServer: UniverseServer = UniverseServer(universeServerSettings)
+    private val universeClient: UniverseClient = UniverseClient(universeClientSettings)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,26 +41,8 @@ class AndroidLauncher : AndroidApplication() {
         val config = AndroidApplicationConfiguration()
         config.useImmersiveMode = true
 
-
-        val adminPassword: String = List(10) { Random.nextInt(0, 10) }.joinToString(separator = "")
-
-
-        val universeServerSettings = UniverseServerSettings(
-            programDir = context.filesDir.toString(),
-            adminPassword = adminPassword
-        )
-        val universeClientSettings = UniverseClientSettings(
-            programDir = context.filesDir.toString(),
-            adminPassword = adminPassword
-        )
-
-        val gdxExecutorService = Executors.newSingleThreadExecutor()
-
-            val universeServer: UniverseServer = UniverseServer(universeServerSettings)
-            val universeClient: UniverseClient = UniverseClient(universeClientSettings)
-
-            val game = RelativitizationGame(universeClient, universeServer)
-            initialize(game, config)
+        val game = RelativitizationGame(universeClient, universeServer)
+        initialize(game, config)
 /*
             launch(Dispatchers.IO) {
                 universeServer.start()
@@ -55,7 +52,5 @@ class AndroidLauncher : AndroidApplication() {
                 universeClient.start()
             }
  */
-
-        gdxExecutorService.shutdown()
     }
 }
