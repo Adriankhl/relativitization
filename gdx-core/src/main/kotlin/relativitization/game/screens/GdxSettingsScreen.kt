@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import kotlinx.coroutines.runBlocking
 import relativitization.game.RelativitizationGame
 import relativitization.game.ShowingInfoType
+import relativitization.game.utils.Assets
 import relativitization.game.utils.TableScreen
 import relativitization.universe.utils.RelativitizationLogManager
 
@@ -180,7 +181,7 @@ class GdxSettingsScreen(val game: RelativitizationGame, private val inGame: Bool
 
         table.add(createLabel("Small font size: ", gdxSettings.normalFontSize))
         val smallFontSizeSelectBox = createSelectBox(
-            (8..80).toList(),
+            Assets.fontSizeList,
             gdxSettings.smallFontSize,
             gdxSettings.normalFontSize
         ) { smallFontSize, _ ->
@@ -192,7 +193,7 @@ class GdxSettingsScreen(val game: RelativitizationGame, private val inGame: Bool
 
         table.add(createLabel("Normal font size: ", gdxSettings.normalFontSize))
         val normalFontSizeSelectBox = createSelectBox(
-            (8..80).toList(),
+            Assets.fontSizeList,
             gdxSettings.normalFontSize,
             gdxSettings.normalFontSize
         ) { normalFontSize, _ ->
@@ -204,7 +205,7 @@ class GdxSettingsScreen(val game: RelativitizationGame, private val inGame: Bool
 
         table.add(createLabel("Big font size: ", gdxSettings.normalFontSize))
         val bigFontSizeSelectBox = createSelectBox(
-            (8..80).toList(),
+            Assets.fontSizeList,
             gdxSettings.bigFontSize,
             gdxSettings.normalFontSize
         ) { bigFontSize, _ ->
@@ -216,7 +217,7 @@ class GdxSettingsScreen(val game: RelativitizationGame, private val inGame: Bool
 
         table.add(createLabel("Huge font size: ", gdxSettings.normalFontSize))
         val hugeFontSizeSelectBox = createSelectBox(
-            (8..80).toList(),
+            Assets.fontSizeList,
             gdxSettings.hugeFontSize,
             gdxSettings.normalFontSize
         ) { hugeFontSize, _ ->

@@ -43,11 +43,11 @@ class Assets {
 
         manager.load("sounds/click1.ogg", Sound::class.java)
 
-        for (fontSize in 8..80) {
-            val smallFont = FreeTypeFontLoaderParameter()
-            smallFont.fontFileName = "fonts/nerd.ttf"
-            smallFont.fontParameters.size = fontSize
-            manager.load("nerd$fontSize.ttf", BitmapFont::class.java, smallFont)
+        for (fontSize in fontSizeList) {
+            val fontLoader = FreeTypeFontLoaderParameter()
+            fontLoader.fontFileName = "fonts/nerd.ttf"
+            fontLoader.fontParameters.size = fontSize
+            manager.load("nerd$fontSize.ttf", BitmapFont::class.java, fontLoader)
         }
 
         manager.finishLoading()
@@ -149,5 +149,7 @@ class Assets {
 
     companion object {
         private val logger = RelativitizationLogManager.getLogger()
+
+        val fontSizeList: List<Int> = (8..64 step 8).toList()
     }
 }
