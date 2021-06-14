@@ -1,18 +1,14 @@
 package relativitization.app.android
 
 import android.os.Bundle
-import android.os.Environment
 import com.badlogic.gdx.backends.android.AndroidApplication
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.asCoroutineDispatcher
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import relativitization.client.UniverseClient
 import relativitization.game.RelativitizationGame
 import relativitization.server.UniverseServer
 import relativitization.universe.UniverseClientSettings
 import relativitization.universe.UniverseServerSettings
+import relativitization.universe.utils.AndroidLogger
 import relativitization.universe.utils.RelativitizationLogManager
 import java.util.concurrent.Executors
 import kotlin.random.Random
@@ -21,6 +17,7 @@ class AndroidLauncher : AndroidApplication() {
 
     init {
         RelativitizationLogManager.isAndroid = true
+        AndroidLogger.showLog = true
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,36 +31,30 @@ class AndroidLauncher : AndroidApplication() {
 
 
         val universeServerSettings = UniverseServerSettings(
-            saveDirPath = context.filesDir.toString(),
+            programDir = context.filesDir.toString(),
             adminPassword = adminPassword
         )
         val universeClientSettings = UniverseClientSettings(
-            saveDirPath = context.filesDir.toString(),
+            programDir = context.filesDir.toString(),
             adminPassword = adminPassword
         )
 
         val gdxExecutorService = Executors.newSingleThreadExecutor()
 
-        runBlocking {
             val universeServer: UniverseServer = UniverseServer(universeServerSettings)
             val universeClient: UniverseClient = UniverseClient(universeClientSettings)
 
-            launch(gdxExecutorService.asCoroutineDispatcher()) {
-                val game = RelativitizationGame(universeClient, universeServer)
-                try {
-                    initialize(game, config)
-                } finally {
-                    game.dispose()
-                }
-            }
-
+            val game = RelativitizationGame(universeClient, universeServer)
+            initialize(game, config)
+/*
             launch(Dispatchers.IO) {
                 universeServer.start()
             }
+
             launch {
                 universeClient.start()
             }
-        }
+ */
 
         gdxExecutorService.shutdown()
     }

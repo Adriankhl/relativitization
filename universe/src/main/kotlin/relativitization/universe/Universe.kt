@@ -21,12 +21,12 @@ import java.io.File
  * Main stepping function: preProcessUniverse and postProcessUniverse
  *
  * @param universeData the core data of the universe
- * @param saveDirPath the location of the save directories, "." for desktop and context.filesDir for android
+ * @param programDir the location of the program directories, "." for desktop and context.filesDir for android
  * @param saveWhenInit save all when initializing the universe
  */
 class Universe(
     private val universeData: UniverseData,
-    private val saveDirPath: String,
+    private val programDir: String,
     saveWhenInit: Boolean = true
 ) {
 
@@ -128,7 +128,7 @@ class Universe(
      * Save Latest universe data
      */
     private fun saveLatest() {
-        val saveDir = "$saveDirPath/saves/${universeData.universeSettings.universeName}"
+        val saveDir = "$programDir/saves/${universeData.universeSettings.universeName}"
         val latestTime: Int = universeData.universeState.getCurrentTime()
 
         // Make Directory
@@ -164,7 +164,7 @@ class Universe(
      * Save the whole universe
      */
     fun saveAll() {
-        val saveDir = "$saveDirPath/saves/${universeData.universeSettings.universeName}"
+        val saveDir = "$programDir/saves/${universeData.universeSettings.universeName}"
         val latestTime: Int = universeData.universeState.getCurrentTime()
         val oldestTime: Int = latestTime - universeData.universeSettings.tDim + 1
         val oldUniverseData4D =  universeData.universeData4D.getAllExcludeLatest()
@@ -386,8 +386,8 @@ class Universe(
         /**
          * Load saved universe by name
          */
-        fun loadUniverseLatest(universeName: String, saveDirPath: String): UniverseData {
-            val saveDir = "$saveDirPath/saves/$universeName"
+        fun loadUniverseLatest(universeName: String, programDir: String): UniverseData {
+            val saveDir = "$programDir/saves/$universeName"
 
             // save settings, setting should be immutable, so only one save is enough
             val universeSettings: UniverseSettings = decode(File("${saveDir}/universeSetting.json").readText())

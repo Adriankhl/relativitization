@@ -21,7 +21,7 @@ fun Route.createUniverseRouting(universeServerInternal: UniverseServerInternal) 
                 val universeData: UniverseData = GenerateUniverse.generate(newUniverseMessage.generateSettings)
                 if (universeData.isUniverseValid()) {
                     universeServerInternal.setUniverse(Universe(
-                        universeData, universeServerInternal.universeServerSettings.saveDirPath
+                        universeData, universeServerInternal.universeServerSettings.programDir
                     ))
                     call.respondText("Created Universe", ContentType.Text.Plain, HttpStatusCode.OK)
                 } else {
@@ -55,12 +55,12 @@ fun Route.createUniverseRouting(universeServerInternal: UniverseServerInternal) 
             if (loadUniverseMessage.adminPassword == universeServerInternal.universeServerSettings.adminPassword) {
                 val universeData: UniverseData = Universe.loadUniverseLatest(
                     universeName = loadUniverseMessage.universeName,
-                    saveDirPath = universeServerInternal.universeServerSettings.saveDirPath,
+                    programDir = universeServerInternal.universeServerSettings.programDir,
                 )
                 if (universeData.isUniverseValid()) {
                     universeServerInternal.setUniverse(Universe(
                         universeData = universeData,
-                        saveDirPath = universeServerInternal.universeServerSettings.saveDirPath,
+                        programDir = universeServerInternal.universeServerSettings.programDir,
                         saveWhenInit = false,
                     ))
                     call.respondText("Loaded Universe", ContentType.Text.Plain, HttpStatusCode.OK)

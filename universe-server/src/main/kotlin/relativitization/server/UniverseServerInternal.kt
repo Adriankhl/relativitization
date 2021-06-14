@@ -21,7 +21,7 @@ class UniverseServerInternal(var universeServerSettings: UniverseServerSettings)
     // Data of universe
     private var universe: Universe = Universe(
         universeData = GenerateUniverse.generate(GenerateSettings()),
-        saveDirPath = universeServerSettings.saveDirPath,
+        programDir = universeServerSettings.programDir,
         saveWhenInit = false,
     )
 

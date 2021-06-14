@@ -25,6 +25,29 @@ object RelativitizationLogManager {
  * Log4j2 LogManager doesn't work for android
  */
 object AndroidLogger : Logger {
+    var showLog: Boolean = false
+
+    override fun debug(message: String?) {
+        if (showLog) {
+            println(message)
+        }
+    }
+
+    override fun error(message: String?) {
+        if (showLog) {
+            println(message)
+        }
+    }
+
+
+    override fun info(message: String?) {
+        if (showLog) {
+            println(message)
+        }
+    }
+
+
+
     override fun catching(level: Level?, throwable: Throwable?) {
     }
 
@@ -97,8 +120,6 @@ object AndroidLogger : Logger {
     override fun debug(message: Any?, throwable: Throwable?) {
     }
 
-    override fun debug(message: String?) {
-    }
 
     override fun debug(message: String?, vararg params: Any?) {
     }
@@ -358,9 +379,6 @@ object AndroidLogger : Logger {
     }
 
     override fun error(message: Any?, throwable: Throwable?) {
-    }
-
-    override fun error(message: String?) {
     }
 
     override fun error(message: String?, vararg params: Any?) {
@@ -891,9 +909,6 @@ object AndroidLogger : Logger {
     }
 
     override fun info(message: Any?, throwable: Throwable?) {
-    }
-
-    override fun info(message: String?) {
     }
 
     override fun info(message: String?, vararg params: Any?) {
