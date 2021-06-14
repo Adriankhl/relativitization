@@ -29,7 +29,7 @@ data class GdxSettings(
 ) {
     fun save(programDir: String) {
         logger.debug("Saving gdx settings to GdxSettings.json")
-        File("$programDir/GdxSetting.json").writeText(DataSerializer.encode(this))
+        File("$programDir/GdxSettings.json").writeText(DataSerializer.encode(this))
     }
 
     companion object {
