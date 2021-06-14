@@ -6,6 +6,7 @@ import relativitization.universe.data.physics.MutableInt3D
 /**
  * Client settings
  *
+ * @property saveDirPath the location of the save directories, "." for desktop and context.filesDir for android
  * @property adminPassword admin password for accessing server
  * @property playerId id of the player
  * @property password player password, for input commands to server
@@ -15,6 +16,7 @@ import relativitization.universe.data.physics.MutableInt3D
  */
 @Serializable
 data class UniverseClientSettings(
+    val saveDirPath: String = ".",
     var adminPassword: String,
     var playerId: Int = -1,
     var password: String = "player password",

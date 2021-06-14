@@ -19,7 +19,11 @@ class UniverseServerInternal(var universeServerSettings: UniverseServerSettings)
     private val mutex: Mutex = Mutex()
 
     // Data of universe
-    private var universe: Universe = Universe(GenerateUniverse.generate(GenerateSettings()))
+    private var universe: Universe = Universe(
+        universeData = GenerateUniverse.generate(GenerateSettings()),
+        saveDirPath = universeServerSettings.saveDirPath,
+        saveWhenInit = false,
+    )
 
     // Current universe time
     private var currentUniverseTime: Int = universe.getCurrentUniverseTime()

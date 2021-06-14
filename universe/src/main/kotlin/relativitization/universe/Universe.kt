@@ -26,7 +26,7 @@ import java.io.File
  */
 class Universe(
     private val universeData: UniverseData,
-    private val saveDirPath: String = ".",
+    private val saveDirPath: String,
     saveWhenInit: Boolean = true
 ) {
 
@@ -386,7 +386,7 @@ class Universe(
         /**
          * Load saved universe by name
          */
-        fun loadUniverseLatest(universeName: String, saveDirPath: String = "."): UniverseData {
+        fun loadUniverseLatest(universeName: String, saveDirPath: String): UniverseData {
             val saveDir = "$saveDirPath/saves/$universeName"
 
             // save settings, setting should be immutable, so only one save is enough

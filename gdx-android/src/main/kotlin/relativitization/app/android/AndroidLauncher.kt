@@ -33,8 +33,14 @@ class AndroidLauncher : AndroidApplication() {
         val adminPassword: String = List(10) { Random.nextInt(0, 10) }.joinToString(separator = "")
 
 
-        val universeServerSettings = UniverseServerSettings(adminPassword = adminPassword)
-        val universeClientSettings = UniverseClientSettings(adminPassword = adminPassword)
+        val universeServerSettings = UniverseServerSettings(
+            saveDirPath = context.filesDir.toString(),
+            adminPassword = adminPassword
+        )
+        val universeClientSettings = UniverseClientSettings(
+            saveDirPath = context.filesDir.toString(),
+            adminPassword = adminPassword
+        )
 
         val gdxExecutorService = Executors.newSingleThreadExecutor()
 

@@ -20,7 +20,9 @@ fun Route.createUniverseRouting(universeServerInternal: UniverseServerInternal) 
             if (newUniverseMessage.adminPassword == universeServerInternal.universeServerSettings.adminPassword) {
                 val universeData: UniverseData = GenerateUniverse.generate(newUniverseMessage.generateSettings)
                 if (universeData.isUniverseValid()) {
-                    universeServerInternal.setUniverse(Universe(universeData))
+                    universeServerInternal.setUniverse(Universe(
+                        universeData, universeServerInternal.universeServerSettings.saveDirPath
+                    ))
                     call.respondText("Created Universe", ContentType.Text.Plain, HttpStatusCode.OK)
                 } else {
                     call.respondText(
@@ -51,9 +53,16 @@ fun Route.createUniverseRouting(universeServerInternal: UniverseServerInternal) 
         post {
             val loadUniverseMessage: LoadUniverseMessage = call.receive()
             if (loadUniverseMessage.adminPassword == universeServerInternal.universeServerSettings.adminPassword) {
-                val universeData: UniverseData = Universe.loadUniverseLatest(loadUniverseMessage.universeName)
+                val universeData: UniverseData = Universe.loadUniverseLatest(
+                    universeName = loadUniverseMessage.universeName,
+                    saveDirPath = universeServerInternal.universeServerSettings.saveDirPath,
+                )
                 if (universeData.isUniverseValid()) {
-                    universeServerInternal.setUniverse(Universe(universeData, false))
+                    universeServerInternal.setUniverse(Universe(
+                        universeData = universeData,
+                        saveDirPath = universeServerInternal.universeServerSettings.saveDirPath,
+                        saveWhenInit = false,
+                    ))
                     call.respondText("Loaded Universe", ContentType.Text.Plain, HttpStatusCode.OK)
                 } else {
                     call.respondText(
