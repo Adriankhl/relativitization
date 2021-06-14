@@ -18,14 +18,11 @@ import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.random.Random
 
 class AndroidLauncher : FragmentActivity(), AndroidFragmentApplication.Callbacks {
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onCreate(savedInstanceState, persistentState)
-
+    override fun onCreate(savedInstanceState: Bundle?) {
         RelativitizationLogManager.isAndroid = true
         AndroidLogger.showLog = true
 
         super.onCreate(savedInstanceState)
-
 
         val adminPassword: String = List(10) { Random.nextInt(0, 10) }.joinToString(separator = "")
 
