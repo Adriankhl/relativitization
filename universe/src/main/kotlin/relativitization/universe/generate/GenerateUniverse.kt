@@ -18,25 +18,25 @@ data class GenerateSettings(
     var universeSettings: MutableUniverseSettings = MutableUniverseSettings(),
 ) {
     fun save(programDir: String) {
-        logger.debug("Saving generate setting to GenerateSetting.json")
-        File("$programDir/GenerateSetting.json").writeText(encode(this))
+        logger.debug("Saving generate setting to GenerateSettings.json")
+        File("$programDir/GenerateSettings.json").writeText(encode(this))
     }
 
     companion object {
         private val logger = RelativitizationLogManager.getLogger()
 
-        private fun load(): GenerateSettings {
-            val settingString: String = File("GenerateSetting.json").readText()
+        private fun load(programDir: String): GenerateSettings {
+            val settingString: String = File("$programDir/GenerateSettings.json").readText()
             return decode(settingString)
         }
 
-        fun loadOrDefault(): GenerateSettings {
+        fun loadOrDefault(programDir: String): GenerateSettings {
             return try {
-                logger.debug("Trying to load generate setting")
+                logger.debug("Trying to load generate settings")
                 // This can fail due to having older version of setting or file doesn't exist
-                load()
+                load(programDir)
             } catch (e: Throwable) {
-                logger.debug("Load generate setting fail, use default setting")
+                logger.debug("Load generate settings fail, use default settings")
                 GenerateSettings()
             }
         }

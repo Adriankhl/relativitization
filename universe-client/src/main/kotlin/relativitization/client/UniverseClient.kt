@@ -45,7 +45,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
     private var universeClientRunJob: Job = Job()
 
     // for generate universe
-    var generateSettings: GenerateSettings = GenerateSettings.loadOrDefault()
+    var generateSettings: GenerateSettings = GenerateSettings.loadOrDefault(universeClientSettings.programDir)
 
     // For changing server setting
     var universeServerSettings: UniverseServerSettings = UniverseServerSettings(

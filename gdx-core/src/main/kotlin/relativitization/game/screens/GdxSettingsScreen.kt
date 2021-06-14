@@ -26,6 +26,7 @@ class GdxSettingsScreen(val game: RelativitizationGame, private val inGame: Bool
             gdxSettings.normalFontSize,
             gdxSettings.soundEffectsVolume,
         ) {
+            game.gdxSettings.save(game.universeClient.universeClientSettings.programDir)
             game.changeGdxSettings()
             game.restoreSize()
             game.restartMusic()

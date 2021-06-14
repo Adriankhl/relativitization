@@ -13,7 +13,7 @@ import relativitization.server.UniverseServer
 
 class RelativitizationGame(val universeClient: UniverseClient, private val universeServer: UniverseServer) : Game() {
 
-    val gdxSettings: GdxSettings = GdxSettings()
+    val gdxSettings: GdxSettings = GdxSettings.loadOrDefault(universeClient.universeClientSettings.programDir)
     val onGdxSettingsChangeFunctionList: MutableList<() -> Unit> = mutableListOf()
 
     // call when gdx setting is changed

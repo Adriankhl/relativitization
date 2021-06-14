@@ -1,6 +1,10 @@
 package relativitization.game
 
 import kotlinx.serialization.Serializable
+import relativitization.universe.data.serializer.DataSerializer
+import relativitization.universe.generate.GenerateSettings
+import relativitization.universe.utils.RelativitizationLogManager
+import java.io.File
 
 @Serializable
 data class GdxSettings(
@@ -22,7 +26,32 @@ data class GdxSettings(
     var showingBottomCommand: Boolean = true,
     var upperInfoAndBottomCommandSplitAmount: Float = 0.8f,
     var showingInfoType: ShowingInfoType = ShowingInfoType.OVERVIEW
-)
+) {
+    fun save(programDir: String) {
+        logger.debug("Saving gdx settings to GdxSettings.json")
+        File("$programDir/GdxSetting.json").writeText(DataSerializer.encode(this))
+    }
+
+    companion object {
+        private val logger = RelativitizationLogManager.getLogger()
+
+        private fun load(programDir: String): GdxSettings {
+            val settingString: String = File("$programDir/GdxSettings.json").readText()
+            return DataSerializer.decode(settingString)
+        }
+
+        fun loadOrDefault(programDir: String): GdxSettings {
+            return try {
+                logger.debug("Trying to load gdx settings")
+                // This can fail due to having older version of setting or file doesn't exist
+                load(programDir)
+            } catch (e: Throwable) {
+                logger.debug("Load gdx settings fail, use default settings")
+                GdxSettings()
+            }
+        }
+    }
+}
 
 enum class ShowingInfoType {
     OVERVIEW,
