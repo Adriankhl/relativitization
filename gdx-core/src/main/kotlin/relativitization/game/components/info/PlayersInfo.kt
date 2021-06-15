@@ -9,6 +9,9 @@ class PlayersInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
 
     private var table: Table = Table()
 
+    init {
+        table.background = assets.getBackgroundColor(0.2f, 0.2f, 0.2f, 1.0f)
+    }
 
     override fun getScreenComponent(): Table {
         return table

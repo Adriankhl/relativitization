@@ -13,8 +13,8 @@ import relativitization.game.utils.ScreenComponent
 class GameScreenInfo(val game: RelativitizationGame) : ScreenComponent<SplitPane>(game.assets) {
     private val gdxSettings = game.gdxSettings
 
-    private val overviewInfo: OverviewInfo = OverviewInfo(game)
     private val playersInfo: PlayersInfo = PlayersInfo(game)
+    private val overviewInfo: OverviewInfo = OverviewInfo(game)
     private val physicsInfo: PhysicsInfo = PhysicsInfo(game)
 
     private val upperInfoScrollPane: ScrollPane = createScrollPane(overviewInfo.getScreenComponent())
@@ -26,8 +26,8 @@ class GameScreenInfo(val game: RelativitizationGame) : ScreenComponent<SplitPane
     init {
         // Add child screen component
         addChildScreenComponent(bottomCommandInfo)
-        addChildScreenComponent(overviewInfo)
         addChildScreenComponent(playersInfo)
+        addChildScreenComponent(overviewInfo)
         addChildScreenComponent(physicsInfo)
 
         // Set background color
@@ -45,8 +45,8 @@ class GameScreenInfo(val game: RelativitizationGame) : ScreenComponent<SplitPane
     override fun onGdxSettingsChange() {
         // Show info type based on setting
         when (gdxSettings.showingInfoType) {
-            ShowingInfoType.OVERVIEW -> upperInfoScrollPane.actor = overviewInfo.getScreenComponent()
             ShowingInfoType.PLAYERS -> upperInfoScrollPane.actor = playersInfo.getScreenComponent()
+            ShowingInfoType.OVERVIEW -> upperInfoScrollPane.actor = overviewInfo.getScreenComponent()
             ShowingInfoType.PHYSICS -> upperInfoScrollPane.actor = physicsInfo.getScreenComponent()
         }
 

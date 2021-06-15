@@ -273,22 +273,6 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         game.changeGdxSettings()
     }
 
-    private val overviewInfoButton: TextButton = createTextButton(
-        "Overview",
-        gdxSettings.normalFontSize,
-        gdxSettings.soundEffectsVolume
-    ) {
-        // If hiding, show the panel
-        if ((gdxSettings.showingInfoType == ShowingInfoType.OVERVIEW) && gdxSettings.showingInfo) {
-            gdxSettings.showingInfo = false
-            gdxSettings.showingInfoType = ShowingInfoType.OVERVIEW
-        } else {
-            gdxSettings.showingInfo = true
-            gdxSettings.showingInfoType = ShowingInfoType.OVERVIEW
-        }
-        game.changeGdxSettings()
-    }
-
     private val playersInfoButton: TextButton = createTextButton(
         "Players",
         gdxSettings.normalFontSize,
@@ -301,6 +285,22 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         } else {
             gdxSettings.showingInfo = true
             gdxSettings.showingInfoType = ShowingInfoType.PLAYERS
+        }
+        game.changeGdxSettings()
+    }
+
+    private val overviewInfoButton: TextButton = createTextButton(
+        "Overview",
+        gdxSettings.normalFontSize,
+        gdxSettings.soundEffectsVolume
+    ) {
+        // If hiding, show the panel
+        if ((gdxSettings.showingInfoType == ShowingInfoType.OVERVIEW) && gdxSettings.showingInfo) {
+            gdxSettings.showingInfo = false
+            gdxSettings.showingInfoType = ShowingInfoType.OVERVIEW
+        } else {
+            gdxSettings.showingInfo = true
+            gdxSettings.showingInfoType = ShowingInfoType.OVERVIEW
         }
         game.changeGdxSettings()
     }
@@ -461,9 +461,9 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
 
         table.add(clearCommandListButton).size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
 
-        table.add(overviewInfoButton).pad(10f)
-
         table.add(playersInfoButton).pad(10f)
+
+        table.add(overviewInfoButton).pad(10f)
 
         table.add(physicsInfoButton).pad(10f)
 
