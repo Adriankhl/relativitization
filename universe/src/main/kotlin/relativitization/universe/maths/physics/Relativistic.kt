@@ -261,7 +261,10 @@ object Relativistic {
         // Solution of final rest mass
         val solution: QuadraticSolutions = solveQuadratic(a, b, c)
 
-        return if ((solution.x2 <= initialRestMass) && (solution.x2 >= 0)) {
+        return if (targetVelocity.squareMag() >= speedOfLight * speedOfLight) {
+            // Return max value if the target velocity is greator than the speed of light
+            Double.MAX_VALUE
+        } else if ((solution.x2 <= initialRestMass) && (solution.x2 >= 0)) {
             initialRestMass - solution.x2
         } else if ((solution.x1 <= initialRestMass) && (solution.x1 >= 0)) {
             initialRestMass - solution.x1
