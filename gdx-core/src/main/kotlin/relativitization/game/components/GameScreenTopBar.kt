@@ -22,20 +22,20 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
 
     // button to select previous time
     private val previousButton: ImageButton = createImageButton(
-        "basic/white-left-arrow",
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        0.7f,
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        gdxSettings.soundEffectsVolume
+        name = "basic/white-left-arrow",
+        rUp = 1.0f,
+        gUp = 1.0f,
+        bUp = 1.0f,
+        aUp = 1.0f,
+        rDown = 1.0f,
+        gDown = 1.0f,
+        bDown = 1.0f,
+        aDown = 0.7f,
+        rChecked = 1.0f,
+        gChecked = 1.0f,
+        bChecked = 1.0f,
+        aChecked = 1.0f,
+        soundVolume = gdxSettings.soundEffectsVolume
     ) {
         runBlocking {
             game.universeClient.previousUniverseData3D()
@@ -44,20 +44,20 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
 
     // button to select next time
     private val nextButton: ImageButton = createImageButton(
-        "basic/white-right-arrow",
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        0.7f,
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        gdxSettings.soundEffectsVolume
+        name = "basic/white-right-arrow",
+        rUp = 1.0f,
+        gUp = 1.0f,
+        bUp = 1.0f,
+        aUp = 1.0f,
+        rDown = 1.0f,
+        gDown = 1.0f,
+        bDown = 1.0f,
+        aDown = 0.7f,
+        rChecked = 1.0f,
+        gChecked = 1.0f,
+        bChecked = 1.0f,
+        aChecked = 1.0f,
+        soundVolume = gdxSettings.soundEffectsVolume
     ) {
         runBlocking {
             game.universeClient.nextUniverseData3D()
@@ -65,9 +65,9 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
     }
 
     private val universeDataSelectBox: SelectBox<String> = createSelectBox(
-        runBlocking { game.universeClient.getAvailableData3DName() },
-        "",
-        gdxSettings.smallFontSize
+        itemList = runBlocking { game.universeClient.getAvailableData3DName() },
+        default = "",
+        fontSize = gdxSettings.smallFontSize
     ) { data3DName, _ ->
         runBlocking {
             // Only change this when the name is different to prevent infinite loop
@@ -78,20 +78,20 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
     }
 
     private val clearOldDataButton: ImageButton = createImageButton(
-        "basic/white-bin",
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        0.7f,
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        gdxSettings.soundEffectsVolume
+        name = "basic/white-bin",
+        rUp = 1.0f,
+        gUp = 1.0f,
+        bUp = 1.0f,
+        aUp = 1.0f,
+        rDown = 1.0f,
+        gDown = 1.0f,
+        bDown = 1.0f,
+        aDown = 0.7f,
+        rChecked = 1.0f,
+        gChecked = 1.0f,
+        bChecked = 1.0f,
+        aChecked = 1.0f,
+        soundVolume = gdxSettings.soundEffectsVolume
     ) {
         runBlocking {
             game.universeClient.clearOldData3D()
@@ -99,39 +99,39 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
     }
 
     private val clearSelectedButton: ImageButton = createImageButton(
-        "basic/white-circle-arrow",
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        0.7f,
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        gdxSettings.soundEffectsVolume
+        name = "basic/white-circle-arrow",
+        rUp = 1.0f,
+        gUp = 1.0f,
+        bUp = 1.0f,
+        aUp = 1.0f,
+        rDown = 1.0f,
+        gDown = 1.0f,
+        bDown = 1.0f,
+        aDown = 0.7f,
+        rChecked = 1.0f,
+        gChecked = 1.0f,
+        bChecked = 1.0f,
+        aChecked = 1.0f,
+        soundVolume = gdxSettings.soundEffectsVolume
     ) {
         game.universeClient.clearSelected()
     }
 
     private val updateToLatestButton: ImageButton = createImageButton(
-        "basic/white-rightmost-triangle",
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        0.7f,
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        gdxSettings.soundEffectsVolume
+        name = "basic/white-rightmost-triangle",
+        rUp = 1.0f,
+        gUp = 1.0f,
+        bUp = 1.0f,
+        aUp = 1.0f,
+        rDown = 1.0f,
+        gDown = 1.0f,
+        bDown = 1.0f,
+        aDown = 0.7f,
+        rChecked = 1.0f,
+        gChecked = 1.0f,
+        bChecked = 1.0f,
+        aChecked = 1.0f,
+        soundVolume = gdxSettings.soundEffectsVolume
     ) {
         runBlocking {
             game.universeClient.pickLatestUniverseData3D()
@@ -144,99 +144,99 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
     }
 
     private val clearCommandListButton: ImageButton = createImageButton(
-        "basic/white-stop",
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        0.7f,
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        gdxSettings.soundEffectsVolume
+        name = "basic/white-stop",
+        rUp = 1.0f,
+        gUp = 1.0f,
+        bUp = 1.0f,
+        aUp = 1.0f,
+        rDown = 1.0f,
+        gDown = 1.0f,
+        bDown = 1.0f,
+        aDown = 0.7f,
+        rChecked = 1.0f,
+        gChecked = 1.0f,
+        bChecked = 1.0f,
+        aChecked = 1.0f,
+        soundVolume = gdxSettings.soundEffectsVolume
     ) {
         game.universeClient.clearCommandList()
     }
 
     private val zoomInButton: ImageButton = createImageButton(
-        "basic/white-zoom-in",
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        0.7f,
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        gdxSettings.soundEffectsVolume
+        name = "basic/white-zoom-in",
+        rUp = 1.0f,
+        gUp = 1.0f,
+        bUp = 1.0f,
+        aUp = 1.0f,
+        rDown = 1.0f,
+        gDown = 1.0f,
+        bDown = 1.0f,
+        aDown = 0.7f,
+        rChecked = 1.0f,
+        gChecked = 1.0f,
+        bChecked = 1.0f,
+        aChecked = 1.0f,
+        soundVolume = gdxSettings.soundEffectsVolume
     ) {
         gdxSettings.mapZoomRelativeToFullMap *= gdxSettings.mapZoomFactor
         game.changeGdxSettings()
     }
 
     private val zoomOutButton: ImageButton = createImageButton(
-        "basic/white-zoom-out",
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        0.7f,
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        gdxSettings.soundEffectsVolume
+        name = "basic/white-zoom-out",
+        rUp = 1.0f,
+        gUp = 1.0f,
+        bUp = 1.0f,
+        aUp = 1.0f,
+        rDown = 1.0f,
+        gDown = 1.0f,
+        bDown = 1.0f,
+        aDown = 0.7f,
+        rChecked = 1.0f,
+        gChecked = 1.0f,
+        bChecked = 1.0f,
+        aChecked = 1.0f,
+        soundVolume = gdxSettings.soundEffectsVolume
     ) {
         gdxSettings.mapZoomRelativeToFullMap /= gdxSettings.mapZoomFactor
         game.changeGdxSettings()
     }
 
     private val zoomToFullMapButton: ImageButton = createImageButton(
-        "basic/white-four-out-arrow",
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        0.7f,
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        gdxSettings.soundEffectsVolume
+        name = "basic/white-four-out-arrow",
+        rUp = 1.0f,
+        gUp = 1.0f,
+        bUp = 1.0f,
+        aUp = 1.0f,
+        rDown = 1.0f,
+        gDown = 1.0f,
+        bDown = 1.0f,
+        aDown = 0.7f,
+        rChecked = 1.0f,
+        gChecked = 1.0f,
+        bChecked = 1.0f,
+        aChecked = 1.0f,
+        soundVolume = gdxSettings.soundEffectsVolume
     ) {
         gdxSettings.mapZoomRelativeToFullMap = 1.0f
         game.changeGdxSettings()
     }
 
     private val uploadButton: ImageButton = createImageButton(
-        "basic/white-upload",
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        0.7f,
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        gdxSettings.soundEffectsVolume
+        name = "basic/white-upload",
+        rUp = 1.0f,
+        gUp = 1.0f,
+        bUp = 1.0f,
+        aUp = 1.0f,
+        rDown = 1.0f,
+        gDown = 1.0f,
+        bDown = 1.0f,
+        aDown = 0.7f,
+        rChecked = 1.0f,
+        gChecked = 1.0f,
+        bChecked = 1.0f,
+        aChecked = 1.0f,
+        soundVolume = gdxSettings.soundEffectsVolume
     ) {
         runBlocking {
             val httpCode = game.universeClient.httpPostHumanInput()
@@ -254,29 +254,29 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
     }
 
     private val bottomCommandInfoButton: ImageButton = createImageButton(
-        "basic/white-wait-upload",
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        0.7f,
-        1.0f,
-        1.0f,
-        1.0f,
-        0.5f,
-        gdxSettings.soundEffectsVolume
+        name = "basic/white-wait-upload",
+        rUp = 1.0f,
+        gUp = 1.0f,
+        bUp = 1.0f,
+        aUp = 1.0f,
+        rDown = 1.0f,
+        gDown = 1.0f,
+        bDown = 1.0f,
+        aDown = 0.7f,
+        rChecked = 1.0f,
+        gChecked = 1.0f,
+        bChecked = 1.0f,
+        aChecked = 0.5f,
+        soundVolume = gdxSettings.soundEffectsVolume
     ) {
         gdxSettings.showingBottomCommand = !it.isChecked
         game.changeGdxSettings()
     }
 
     private val playersInfoButton: TextButton = createTextButton(
-        "Players",
-        gdxSettings.normalFontSize,
-        gdxSettings.soundEffectsVolume
+        text = "Players",
+        fontSize = gdxSettings.normalFontSize,
+        soundVolume = gdxSettings.soundEffectsVolume
     ) {
         // If hiding, show the panel
         if ((gdxSettings.showingInfoType == ShowingInfoType.PLAYERS) && gdxSettings.showingInfo) {
@@ -290,9 +290,9 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
     }
 
     private val overviewInfoButton: TextButton = createTextButton(
-        "Overview",
-        gdxSettings.normalFontSize,
-        gdxSettings.soundEffectsVolume
+        text = "Overview",
+        fontSize = gdxSettings.normalFontSize,
+        soundVolume = gdxSettings.soundEffectsVolume
     ) {
         // If hiding, show the panel
         if ((gdxSettings.showingInfoType == ShowingInfoType.OVERVIEW) && gdxSettings.showingInfo) {
@@ -306,9 +306,9 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
     }
 
     private val physicsInfoButton: TextButton = createTextButton(
-        "Physics",
-        gdxSettings.normalFontSize,
-        gdxSettings.soundEffectsVolume
+        text = "Physics",
+        fontSize = gdxSettings.normalFontSize,
+        soundVolume = gdxSettings.soundEffectsVolume
     ) {
         // If hiding, show the panel
         if ((gdxSettings.showingInfoType == ShowingInfoType.PHYSICS) && gdxSettings.showingInfo) {
@@ -322,57 +322,57 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
     }
 
     private val tCoordinateLabel = createLabel(
-        "t: ${game.universeClient.getUniverseData3D().center.t}",
-        gdxSettings.smallFontSize
+        text = "t: ${game.universeClient.getUniverseData3D().center.t}",
+        fontSize = gdxSettings.smallFontSize
     )
 
     private val xCoordinateSelectBox: SelectBox<Int> = createSelectBox(
-        (0 until game.universeClient.getUniverseData3D().universeSettings.xDim).toList(),
-        game.universeClient.universeClientSettings.viewCenter.x,
-        gdxSettings.smallFontSize
+        itemList = (0 until game.universeClient.getUniverseData3D().universeSettings.xDim).toList(),
+        default = game.universeClient.universeClientSettings.viewCenter.x,
+        fontSize = gdxSettings.smallFontSize
     ) { x, _ ->
         game.universeClient.primarySelectedInt3D = game.universeClient.primarySelectedInt3D.copy(x = x)
     }
 
     private val yCoordinateSelectBox: SelectBox<Int> = createSelectBox(
-        (0 until game.universeClient.getUniverseData3D().universeSettings.yDim).toList(),
-        game.universeClient.universeClientSettings.viewCenter.y,
-        gdxSettings.smallFontSize
+        itemList = (0 until game.universeClient.getUniverseData3D().universeSettings.yDim).toList(),
+        default = game.universeClient.universeClientSettings.viewCenter.y,
+        fontSize = gdxSettings.smallFontSize
     ) { y, _ ->
         game.universeClient.primarySelectedInt3D = game.universeClient.primarySelectedInt3D.copy(y = y)
     }
 
     private val zCoordinateSelectBox: SelectBox<Int> = createSelectBox(
-        (0 until game.universeClient.getUniverseData3D().universeSettings.zDim).toList(),
-        game.universeClient.universeClientSettings.viewCenter.z,
-        gdxSettings.smallFontSize
+        itemList = (0 until game.universeClient.getUniverseData3D().universeSettings.zDim).toList(),
+        default = game.universeClient.universeClientSettings.viewCenter.z,
+        fontSize = gdxSettings.smallFontSize
     ) { z, _ ->
         game.universeClient.primarySelectedInt3D = game.universeClient.primarySelectedInt3D.copy(z = z)
     }
 
     private val zLimitSelectBox: SelectBox<Int> = createSelectBox(
-        (1..game.universeClient.getUniverseData3D().universeSettings.zDim).toList(),
-        min(game.universeClient.universeClientSettings.zLimit, game.universeClient.getUniverseData3D().universeSettings.zDim),
-        gdxSettings.smallFontSize
+        itemList = (1..game.universeClient.getUniverseData3D().universeSettings.zDim).toList(),
+        default = min(game.universeClient.universeClientSettings.zLimit, game.universeClient.getUniverseData3D().universeSettings.zDim),
+        fontSize = gdxSettings.smallFontSize
     ) { zLimit, _ ->
         game.universeClient.universeClientSettings.zLimit = zLimit
     }
 
     private val confirmViewButton: ImageButton = createImageButton(
-        "basic/white-tick",
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        0.7f,
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        gdxSettings.soundEffectsVolume
+        name = "basic/white-tick",
+        rUp = 1.0f,
+        gUp = 1.0f,
+        bUp = 1.0f,
+        aUp = 1.0f,
+        rDown = 1.0f,
+        gDown = 1.0f,
+        bDown = 1.0f,
+        aDown = 0.7f,
+        rChecked = 1.0f,
+        gChecked = 1.0f,
+        bChecked = 1.0f,
+        aChecked = 1.0f,
+        soundVolume = gdxSettings.soundEffectsVolume
     ) {
         game.universeClient.universeClientSettings.viewCenter.x  = xCoordinateSelectBox.selected
         game.universeClient.universeClientSettings.viewCenter.y  = yCoordinateSelectBox.selected
@@ -381,34 +381,34 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
     }
 
     private val stopWaitingSelectBox: SelectBox<String> = createSelectBox(
-        listOf("No", "After input", "Always"),
-        "No",
-        gdxSettings.smallFontSize
+        itemList = listOf("No", "After input", "Always"),
+        default = "No",
+        fontSize = gdxSettings.smallFontSize
     )
 
     private val settingButton: ImageButton = createImageButton(
-        "basic/white-setting",
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        0.7f,
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        gdxSettings.soundEffectsVolume
+        name = "basic/white-setting",
+        rUp = 1.0f,
+        gUp = 1.0f,
+        bUp = 1.0f,
+        aUp = 1.0f,
+        rDown = 1.0f,
+        gDown = 1.0f,
+        bDown = 1.0f,
+        aDown = 0.7f,
+        rChecked = 1.0f,
+        gChecked = 1.0f,
+        bChecked = 1.0f,
+        aChecked = 1.0f,
+        soundVolume = gdxSettings.soundEffectsVolume
     ) {
         game.screen = GdxSettingsScreen(game, true)
     }
 
     private val runUniverseButton = createTextButton(
-        "Run",
-        gdxSettings.smallFontSize,
-        gdxSettings.soundEffectsVolume
+        text = "Run",
+        fontSize = gdxSettings.smallFontSize,
+        soundVolume = gdxSettings.soundEffectsVolume
     ) {
         runBlocking {
             game.universeClient.httpPostRunUniverse()
@@ -416,9 +416,9 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
     }
 
     private val stopUniverseButton = createTextButton(
-        "Stop",
-        gdxSettings.smallFontSize,
-        gdxSettings.soundEffectsVolume
+        text = "Stop",
+        fontSize = gdxSettings.smallFontSize,
+        soundVolume = gdxSettings.soundEffectsVolume
     ) {
         runBlocking {
             game.universeClient.httpPostStopUniverse()
