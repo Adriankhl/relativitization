@@ -54,11 +54,11 @@ class OverviewInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game
         table.row().space(20f)
 
         val playerImageStack = PlayerImage.getPlayerImageStack(
-            playerData,
-            assets,
-            128f,
-            128f,
-            gdxSettings.soundEffectsVolume
+            playerData = playerData,
+            assets = assets,
+            width = 128f,
+            height = 128f,
+            soundVolume = gdxSettings.soundEffectsVolume
         ) {
             game.universeClient.mapCenterPlayerId = playerData.id
         }

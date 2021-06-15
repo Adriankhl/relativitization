@@ -18,55 +18,55 @@ class BottomCommandInfo(val game: RelativitizationGame) : ScreenComponent<Scroll
     private val commandTimeLabel = createLabel("", gdxSettings.smallFontSize)
 
     private val previousCommandButton = createImageButton(
-        "basic/white-left-arrow",
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        0.7f,
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        gdxSettings.soundEffectsVolume
+        name = "basic/white-left-arrow",
+        rUp = 1.0f,
+        gUp = 1.0f,
+        bUp = 1.0f,
+        aUp = 1.0f,
+        rDown = 1.0f,
+        gDown = 1.0f,
+        bDown = 1.0f,
+        aDown = 0.7f,
+        rChecked = 1.0f,
+        gChecked = 1.0f,
+        bChecked = 1.0f,
+        aChecked = 1.0f,
+        soundVolume = gdxSettings.soundEffectsVolume
     ) {
         game.universeClient.previousCommand()
     }
 
     private val nextCommandButton = createImageButton(
-        "basic/white-right-arrow",
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        0.7f,
-        1.0f,
-        1.0f,
-        1.0f,
-        1.0f,
-        gdxSettings.soundEffectsVolume
+        name = "basic/white-right-arrow",
+        rUp = 1.0f,
+        gUp = 1.0f,
+        bUp = 1.0f,
+        aUp = 1.0f,
+        rDown = 1.0f,
+        gDown = 1.0f,
+        bDown = 1.0f,
+        aDown = 0.7f,
+        rChecked = 1.0f,
+        gChecked = 1.0f,
+        bChecked = 1.0f,
+        aChecked = 1.0f,
+        soundVolume = gdxSettings.soundEffectsVolume
     ) {
         game.universeClient.nextCommand()
     }
 
     private val confirmCommandTextButton = createTextButton(
-        "Confirm",
-        gdxSettings.normalFontSize,
-        gdxSettings.soundEffectsVolume
+        text = "Confirm",
+        fontSize = gdxSettings.normalFontSize,
+        soundVolume = gdxSettings.soundEffectsVolume
     ) {
         game.universeClient.confirmCurrentCommand()
     }
 
     private val cancelCommandTextButton = createTextButton(
-        "Cancel",
-        gdxSettings.normalFontSize,
-        gdxSettings.soundEffectsVolume
+        text = "Cancel",
+        fontSize = gdxSettings.normalFontSize,
+        soundVolume = gdxSettings.soundEffectsVolume
     ) {
         game.universeClient.cancelCurrentCommand()
     }

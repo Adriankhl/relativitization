@@ -21,9 +21,9 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
     private var playerData: PlayerData = PlayerData(-1)
 
     private val changeVelocityCommandTextButton = createTextButton(
-        "Change Velocity Command",
-        gdxSettings.normalFontSize,
-        gdxSettings.soundEffectsVolume
+        text = "Change Velocity Command",
+        fontSize = gdxSettings.normalFontSize,
+        soundVolume = gdxSettings.soundEffectsVolume
     ) {
         try {
             val vx = targetVelocityXTextField.text.toDouble()
@@ -53,18 +53,18 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
     }
 
     private val targetVelocityXTextField = createTextField(
-        "${playerData.velocity.vx}".take(6),
-        gdxSettings.smallFontSize
+        default = "${playerData.velocity.vx}".take(6),
+        fontSize = gdxSettings.smallFontSize
     )
 
     private val targetVelocityYTextField = createTextField(
-        "${playerData.velocity.vy}".take(6),
-        gdxSettings.smallFontSize
+        default = "${playerData.velocity.vy}".take(6),
+        fontSize = gdxSettings.smallFontSize
     )
 
     private val targetVelocityZTextField = createTextField(
-        "${playerData.velocity.vz}".take(6),
-        gdxSettings.smallFontSize
+        default = "${playerData.velocity.vz}".take(6),
+        fontSize = gdxSettings.smallFontSize
     )
 
     init {
