@@ -44,6 +44,20 @@ class PlayersInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
         updateTable()
     }
 
+    private fun previousPlayerId() {
+        if (viewingIdIndex >= 1) {
+            viewingIdIndex--
+            game.universeClient.primarySelectedPlayerId = viewedPlayerIdList[viewingIdIndex]
+        }
+    }
+
+    private fun nextPlayerId() {
+        if (viewingIdIndex <= viewedPlayerIdList.size - 2) {
+            viewingIdIndex++
+            game.universeClient.primarySelectedPlayerId = viewedPlayerIdList[viewingIdIndex]
+        }
+    }
+
 
     private fun updatePlayerDataAndIdList() {
         playerData = if (game.universeClient.isPrimarySelectedPlayerIdValid()) {
@@ -53,7 +67,7 @@ class PlayersInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
         }
 
         // If this id has not been stored, clear later index and add this id
-        if (viewingIdIndex < viewedPlayerIdList.size) {
+        if (viewingIdIndex <= viewedPlayerIdList.size - 2) {
             if (viewedPlayerIdList[viewingIdIndex] != playerData.id) {
                 viewingIdIndex++
                 viewedPlayerIdList.subList(viewingIdIndex, viewedPlayerIdList.size).clear()
@@ -75,18 +89,7 @@ class PlayersInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
 
         table.row().space(20f)
 
-        val playerImageStack = PlayerImage.getPlayerImageStack(
-            playerData = playerData,
-            assets = assets,
-            width = 128f,
-            height = 128f,
-            soundVolume = gdxSettings.soundEffectsVolume
-        ) {
-            game.universeClient.mapCenterPlayerId = playerData.id
-        }
-
-        table.add(playerImageStack)
-            .size(128f * gdxSettings.imageScale, 128f * gdxSettings.imageScale)
+        table.add(createPlayerImageAndButtonTable())
 
         table.row().space(10f)
 
@@ -97,6 +100,67 @@ class PlayersInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
         table.add(createDirectLeaderIdTable())
 
         table.row().space(10f)
+    }
+
+    private fun createPlayerImageAndButtonTable(): Table {
+        val nestedTable = Table()
+
+        val previousPlayerIdButton = createImageButton(
+            name = "basic/white-left-arrow",
+            rUp = 1.0f,
+            gUp = 1.0f,
+            bUp = 1.0f,
+            aUp = 1.0f,
+            rDown = 1.0f,
+            gDown = 1.0f,
+            bDown = 1.0f,
+            aDown = 0.7f,
+            rChecked = 1.0f,
+            gChecked = 1.0f,
+            bChecked = 1.0f,
+            aChecked = 1.0f,
+            soundVolume = gdxSettings.soundEffectsVolume
+        ) {
+            previousPlayerId()
+        }
+
+        val nextPlayerIdButton = createImageButton(
+            name = "basic/white-right-arrow",
+            rUp = 1.0f,
+            gUp = 1.0f,
+            bUp = 1.0f,
+            aUp = 1.0f,
+            rDown = 1.0f,
+            gDown = 1.0f,
+            bDown = 1.0f,
+            aDown = 0.7f,
+            rChecked = 1.0f,
+            gChecked = 1.0f,
+            bChecked = 1.0f,
+            aChecked = 1.0f,
+            soundVolume = gdxSettings.soundEffectsVolume
+        ) {
+            nextPlayerId()
+        }
+
+
+        val playerImageStack = PlayerImage.getPlayerImageStack(
+            playerData = playerData,
+            assets = assets,
+            width = 128f,
+            height = 128f,
+            soundVolume = gdxSettings.soundEffectsVolume
+        ) {
+            game.universeClient.mapCenterPlayerId = playerData.id
+        }
+
+        nestedTable.add(previousPlayerIdButton).size(40f * gdxSettings.imageScale, 40f * gdxSettings.imageScale)
+
+        nestedTable.add(playerImageStack).size(128f * gdxSettings.imageScale, 128f * gdxSettings.imageScale)
+
+        nestedTable.add(nextPlayerIdButton).size(40f * gdxSettings.imageScale, 40f * gdxSettings.imageScale)
+
+        return nestedTable
     }
 
     private fun createAllPlayerIdTable(): Table {
