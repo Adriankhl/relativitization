@@ -22,11 +22,28 @@ class PlayersInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
 
     init {
         table.background = assets.getBackgroundColor(0.2f, 0.2f, 0.2f, 1.0f)
+
+        viewedPlayerIdList.clear()
+        updatePlayerDataAndIdList()
+        updateTable()
     }
 
     override fun getScreenComponent(): Table {
         return table
     }
+
+    override fun onUniverseData3DChange() {
+        // Clear data list when change data
+        viewedPlayerIdList.clear()
+        updatePlayerDataAndIdList()
+        updateTable()
+    }
+
+    override fun onPrimarySelectedPlayerIdChange() {
+        updatePlayerDataAndIdList()
+        updateTable()
+    }
+
 
     private fun updatePlayerDataAndIdList() {
         playerData = if (game.universeClient.isPrimarySelectedPlayerIdValid()) {
@@ -38,7 +55,7 @@ class PlayersInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
         // If this id has not been stored, clear later index and add this id
         if (viewingIdIndex < viewedPlayerIdList.size) {
             if (viewedPlayerIdList[viewingIdIndex] != playerData.id) {
-                viewingIdIndex ++
+                viewingIdIndex++
                 viewedPlayerIdList.subList(viewingIdIndex, viewedPlayerIdList.size).clear()
                 viewedPlayerIdList.add(playerData.id)
             }
@@ -67,6 +84,8 @@ class PlayersInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
         ) {
             game.universeClient.mapCenterPlayerId = playerData.id
         }
+
+        table.add(playerImageStack).size(128f * gdxSettings.imageScale, 128f * gdxSettings.imageScale)
 
         table.row().space(10f)
 
