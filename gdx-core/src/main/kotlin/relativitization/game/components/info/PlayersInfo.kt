@@ -85,11 +85,16 @@ class PlayersInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
             game.universeClient.mapCenterPlayerId = playerData.id
         }
 
-        table.add(playerImageStack).size(128f * gdxSettings.imageScale, 128f * gdxSettings.imageScale)
+        table.add(playerImageStack)
+            .size(128f * gdxSettings.imageScale, 128f * gdxSettings.imageScale)
 
         table.row().space(10f)
 
         table.add(createAllPlayerIdTable())
+
+        table.row().space(10f)
+
+        table.add(createDirectLeaderIdTable())
 
         table.row().space(10f)
     }
@@ -109,6 +114,25 @@ class PlayersInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
 
         nestedTable.add(allPlayerIdLabel)
         nestedTable.add(allPlayerIdSelectBox)
+
+        return nestedTable
+    }
+
+    private fun createDirectLeaderIdTable(): Table {
+        val nestedTable = Table()
+
+        val directLeaderIdLabel = createLabel("DirectLeader Id: ", gdxSettings.smallFontSize)
+
+        val directLeaderButton = createTextButton(
+            text = playerData.playerInternalData.directLeaderId.toString(),
+            fontSize = gdxSettings.smallFontSize,
+            soundVolume = gdxSettings.soundEffectsVolume,
+        ) {
+            game.universeClient.primarySelectedPlayerId = playerData.playerInternalData.directLeaderId
+        }
+
+        nestedTable.add(directLeaderIdLabel)
+        nestedTable.add(directLeaderButton)
 
         return nestedTable
     }
