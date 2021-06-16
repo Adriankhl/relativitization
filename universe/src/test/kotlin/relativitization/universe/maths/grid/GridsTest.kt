@@ -27,12 +27,12 @@ internal class GridsTest {
 
     @Test
     fun double4DToIdTest() {
-        val id1 = Grids.maxDouble4DtoId(0.01000001)
-        val id2 = Grids.double4DToId(MutableDouble4D(0.999, 0.999, 0.999, 0.999), 0.01000001)
-
-        println(id1)
-        println(id2)
+        val id1 = Grids.maxDouble4DtoId(0.01)
+        val id2 = Grids.double4DToId(MutableDouble4D(0.999, 0.999, 0.999, 0.999), 0.01)
 
         assert(id1 == id2)
+
+        val id3 = Grids.double4DToId(MutableDouble4D(1.0, 0.0, 0.1, 0.0), 0.01)
+        assert(id3 == 1000)
     }
 }

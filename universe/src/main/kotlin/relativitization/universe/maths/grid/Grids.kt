@@ -92,7 +92,14 @@ object Grids {
     /**
      * Number of edges in a cube when dividing a int4D cube into several cube to place double4D
      */
-    fun numEdge(edgeLength: Double): Int = (1.0 / edgeLength).toInt() + 1
+    fun numEdge(edgeLength: Double): Int {
+        val num: Double = (1.0 / edgeLength)
+        return if (num % 1.0 == 0.0) {
+            num.toInt()
+        } else {
+            num.toInt() + 1
+        }
+    }
 
     /**
      * Compute the id of the cube the double4D belongs to
