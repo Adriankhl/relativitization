@@ -13,6 +13,7 @@ class GameScreenInfo(val game: RelativitizationGame) : ScreenComponent<SplitPane
     private val playersInfo: PlayersInfo = PlayersInfo(game)
     private val overviewInfo: OverviewInfo = OverviewInfo(game)
     private val physicsInfo: PhysicsInfo = PhysicsInfo(game)
+    private val eventsInfo: EventsInfo = EventsInfo(game)
     private val commandsInfo: CommandsInfo = CommandsInfo(game)
 
     private val upperInfoScrollPane: ScrollPane = createScrollPane(overviewInfo.getScreenComponent())
@@ -46,6 +47,7 @@ class GameScreenInfo(val game: RelativitizationGame) : ScreenComponent<SplitPane
             ShowingInfoType.PLAYERS -> upperInfoScrollPane.actor = playersInfo.getScreenComponent()
             ShowingInfoType.OVERVIEW -> upperInfoScrollPane.actor = overviewInfo.getScreenComponent()
             ShowingInfoType.PHYSICS -> upperInfoScrollPane.actor = physicsInfo.getScreenComponent()
+            ShowingInfoType.EVENTS -> upperInfoScrollPane.actor = eventsInfo.getScreenComponent()
             ShowingInfoType.COMMANDS -> upperInfoScrollPane.actor = commandsInfo.getScreenComponent()
         }
 

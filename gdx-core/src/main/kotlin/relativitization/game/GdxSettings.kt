@@ -57,5 +57,6 @@ enum class ShowingInfoType {
     PLAYERS,
     OVERVIEW,
     PHYSICS,
+    EVENTS,
     COMMANDS,
 }
