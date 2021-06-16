@@ -100,7 +100,7 @@ class PlayersInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
         val allPlayerIdLabel = createLabel("Available Player Id: ", gdxSettings.smallFontSize)
 
         val allPlayerIdSelectBox = createSelectBox(
-            itemList = game.universeClient.getUniverseData3D().playerDataMap.keys.toList(),
+            itemList = game.universeClient.getUniverseData3D().playerDataMap.keys.toList().sorted(),
             default = playerData.id,
             fontSize = gdxSettings.smallFontSize,
         ) { selectedId, _ ->
