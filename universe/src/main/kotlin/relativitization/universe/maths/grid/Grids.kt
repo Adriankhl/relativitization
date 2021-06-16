@@ -90,7 +90,7 @@ object Grids {
     }
 
     /**
-     * Number of edges in a cube when dividing a int4D cube into several cube to place double4D
+     * Number of edges (rounded up) in a cube when dividing a int4D cube into several cube to place double4D
      */
     fun numEdge(edgeLength: Double): Int {
         val num: Double = (1.0 / edgeLength)
