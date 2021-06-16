@@ -12,6 +12,7 @@
         android:icon="@drawable/android_logo"
         android:isGame="true"
         android:label="@string/app_name"
+        android:usesCleartextTraffic="true"
         android:theme="@style/GdxTheme">
         <activity
             android:name="relativitization.app.android.AndroidLauncher"
