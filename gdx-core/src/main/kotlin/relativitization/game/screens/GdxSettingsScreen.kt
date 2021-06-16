@@ -315,11 +315,7 @@ class GdxSettingsScreen(val game: RelativitizationGame, private val inGame: Bool
 
         table.add(createLabel("Showing info type: ", gdxSettings.normalFontSize))
         val showingInfoTypeSelectBox = createSelectBox(
-            listOf(
-                ShowingInfoType.PLAYERS,
-                ShowingInfoType.OVERVIEW,
-                ShowingInfoType.PHYSICS,
-            ),
+            ShowingInfoType.values().toList(),
             gdxSettings.showingInfoType,
             gdxSettings.normalFontSize
         ) { showingInfoType, _ ->

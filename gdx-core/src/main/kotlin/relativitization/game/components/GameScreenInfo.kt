@@ -4,10 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.SplitPane
 import relativitization.game.RelativitizationGame
 import relativitization.game.ShowingInfoType
-import relativitization.game.components.info.BottomCommandInfo
-import relativitization.game.components.info.OverviewInfo
-import relativitization.game.components.info.PhysicsInfo
-import relativitization.game.components.info.PlayersInfo
+import relativitization.game.components.info.*
 import relativitization.game.utils.ScreenComponent
 
 class GameScreenInfo(val game: RelativitizationGame) : ScreenComponent<SplitPane>(game.assets) {
@@ -16,6 +13,7 @@ class GameScreenInfo(val game: RelativitizationGame) : ScreenComponent<SplitPane
     private val playersInfo: PlayersInfo = PlayersInfo(game)
     private val overviewInfo: OverviewInfo = OverviewInfo(game)
     private val physicsInfo: PhysicsInfo = PhysicsInfo(game)
+    private val commandsInfo: CommandsInfo = CommandsInfo(game)
 
     private val upperInfoScrollPane: ScrollPane = createScrollPane(overviewInfo.getScreenComponent())
     private val bottomCommandInfo: BottomCommandInfo = BottomCommandInfo(game)
@@ -48,6 +46,7 @@ class GameScreenInfo(val game: RelativitizationGame) : ScreenComponent<SplitPane
             ShowingInfoType.PLAYERS -> upperInfoScrollPane.actor = playersInfo.getScreenComponent()
             ShowingInfoType.OVERVIEW -> upperInfoScrollPane.actor = overviewInfo.getScreenComponent()
             ShowingInfoType.PHYSICS -> upperInfoScrollPane.actor = physicsInfo.getScreenComponent()
+            ShowingInfoType.COMMANDS -> upperInfoScrollPane.actor = commandsInfo.getScreenComponent()
         }
 
         // Show bottom command or not
