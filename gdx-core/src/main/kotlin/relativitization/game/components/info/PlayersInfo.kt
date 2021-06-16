@@ -219,7 +219,7 @@ class PlayersInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
         val directSubordinateIdLabel = createLabel("Direct subordinate Id: ", gdxSettings.smallFontSize)
 
         val directSubordinateIdSelectBox = createSelectBox(
-            itemList = game.universeClient.getUniverseData3D().getCurrentPlayerData().playerInternalData.directSubordinateIdList,
+            itemList = playerData.playerInternalData.directSubordinateIdList,
             default = playerData.id,
             fontSize = gdxSettings.smallFontSize,
         ) { selectedId, _ ->
@@ -238,7 +238,7 @@ class PlayersInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
         val leaderIdLabel = createLabel("Leader Id: ", gdxSettings.smallFontSize)
 
         val leaderIdSelectBox = createSelectBox(
-            itemList = game.universeClient.getUniverseData3D().getCurrentPlayerData().playerInternalData.leaderIdList,
+            itemList = playerData.playerInternalData.leaderIdList,
             default = playerData.id,
             fontSize = gdxSettings.smallFontSize,
         ) { selectedId, _ ->
@@ -257,7 +257,7 @@ class PlayersInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
         val subordinateIdLabel = createLabel("Subordinate Id: ", gdxSettings.smallFontSize)
 
         val subordinateIdSelectBox = createSelectBox(
-            itemList = game.universeClient.getUniverseData3D().getCurrentPlayerData().playerInternalData.subordinateIdList,
+            itemList = playerData.playerInternalData.subordinateIdList,
             default = playerData.id,
             fontSize = gdxSettings.smallFontSize,
         ) { selectedId, _ ->
@@ -269,5 +269,4 @@ class PlayersInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
 
         return nestedTable
     }
-
 }
