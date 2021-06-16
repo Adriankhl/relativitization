@@ -128,7 +128,7 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
         playerData = if (game.universeClient.isPrimarySelectedPlayerIdValid()) {
             game.universeClient.getUniverseData3D().get(game.universeClient.primarySelectedPlayerId)
         } else {
-            game.universeClient.getUniverseData3D().get(game.universeClient.getUniverseData3D().id)
+            game.universeClient.getUniverseData3D().getCurrentPlayerData()
         }
     }
 
@@ -242,7 +242,7 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
         return nestedTable
     }
 
-    fun createChangeVelocityTable(): Table {
+    private fun createChangeVelocityTable(): Table {
         val nestedTable: Table = Table()
 
         nestedTable.add(changeVelocityCommandTextButton).colspan(2)

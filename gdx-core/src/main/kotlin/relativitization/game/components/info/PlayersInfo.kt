@@ -10,6 +10,13 @@ class PlayersInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
 
     private var table: Table = Table()
 
+    // Viewed history of player in Id
+    private val viewedPlayerIdList: MutableList<Int> = mutableListOf(-1)
+
+    // Id of currently viewing player
+    private var viewingIdIndex: Int = 0
+
+    // the currently viewing player data
     private var playerData: PlayerData = PlayerData(-1)
 
     init {
@@ -20,11 +27,23 @@ class PlayersInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
         return table
     }
 
-    private fun updatePlayerData() {
+    private fun updatePlayerDataAndIdList() {
         playerData = if (game.universeClient.isPrimarySelectedPlayerIdValid()) {
             game.universeClient.getUniverseData3D().get(game.universeClient.primarySelectedPlayerId)
         } else {
-            game.universeClient.getUniverseData3D().get(game.universeClient.getUniverseData3D().id)
+            game.universeClient.getUniverseData3D().getCurrentPlayerData()
+        }
+
+        // If this id has not been stored, clear later index and add this id
+        if (viewingIdIndex < viewedPlayerIdList.size) {
+            if (viewedPlayerIdList[viewingIdIndex] != playerData.id) {
+                viewingIdIndex ++
+                viewedPlayerIdList.subList(viewingIdIndex, viewedPlayerIdList.size).clear()
+                viewedPlayerIdList.add(playerData.id)
+            }
+        } else {
+            viewingIdIndex = viewedPlayerIdList.size
+            viewedPlayerIdList.add(playerData.id)
         }
     }
 

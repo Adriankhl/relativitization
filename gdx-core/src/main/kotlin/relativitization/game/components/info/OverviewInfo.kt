@@ -40,7 +40,7 @@ class OverviewInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game
         playerData = if (game.universeClient.isPrimarySelectedPlayerIdValid()) {
             game.universeClient.getUniverseData3D().get(game.universeClient.primarySelectedPlayerId)
         } else {
-            game.universeClient.getUniverseData3D().get(game.universeClient.getUniverseData3D().id)
+            game.universeClient.getUniverseData3D().getCurrentPlayerData()
         }
     }
 
