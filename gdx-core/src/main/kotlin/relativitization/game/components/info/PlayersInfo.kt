@@ -100,6 +100,18 @@ class PlayersInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
         table.add(createDirectLeaderIdTable())
 
         table.row().space(10f)
+
+        table.add(createDirectSubordinateIdTable())
+
+        table.row().space(10f)
+
+        table.add(createLeaderIdTable())
+
+        table.row().space(10f)
+
+        table.add(createSubordinateIdTable())
+
+        table.row().space(10f)
     }
 
     private fun createPlayerImageAndButtonTable(): Table {
@@ -200,4 +212,62 @@ class PlayersInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
 
         return nestedTable
     }
+
+    private fun createDirectSubordinateIdTable(): Table {
+        val nestedTable = Table()
+
+        val directSubordinateIdLabel = createLabel("Direct subordinate Id: ", gdxSettings.smallFontSize)
+
+        val directSubordinateIdSelectBox = createSelectBox(
+            itemList = game.universeClient.getUniverseData3D().getCurrentPlayerData().playerInternalData.directSubordinateIdList,
+            default = playerData.id,
+            fontSize = gdxSettings.smallFontSize,
+        ) { selectedId, _ ->
+            game.universeClient.primarySelectedPlayerId = selectedId
+        }
+
+        nestedTable.add(directSubordinateIdLabel)
+        nestedTable.add(directSubordinateIdSelectBox)
+
+        return nestedTable
+    }
+
+    private fun createLeaderIdTable(): Table {
+        val nestedTable = Table()
+
+        val leaderIdLabel = createLabel("Leader Id: ", gdxSettings.smallFontSize)
+
+        val leaderIdSelectBox = createSelectBox(
+            itemList = game.universeClient.getUniverseData3D().getCurrentPlayerData().playerInternalData.leaderIdList,
+            default = playerData.id,
+            fontSize = gdxSettings.smallFontSize,
+        ) { selectedId, _ ->
+            game.universeClient.primarySelectedPlayerId = selectedId
+        }
+
+        nestedTable.add(leaderIdLabel)
+        nestedTable.add(leaderIdSelectBox)
+
+        return nestedTable
+    }
+
+    private fun createSubordinateIdTable(): Table {
+        val nestedTable = Table()
+
+        val subordinateIdLabel = createLabel("Subordinate Id: ", gdxSettings.smallFontSize)
+
+        val subordinateIdSelectBox = createSelectBox(
+            itemList = game.universeClient.getUniverseData3D().getCurrentPlayerData().playerInternalData.subordinateIdList,
+            default = playerData.id,
+            fontSize = gdxSettings.smallFontSize,
+        ) { selectedId, _ ->
+            game.universeClient.primarySelectedPlayerId = selectedId
+        }
+
+        nestedTable.add(subordinateIdLabel)
+        nestedTable.add(subordinateIdSelectBox)
+
+        return nestedTable
+    }
+
 }
