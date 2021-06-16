@@ -13,8 +13,8 @@ import kotlin.test.Test
 internal class ServerStatusTest {
     @Test
     fun newServerStatus() {
-        val universeServer = UniverseServer(UniverseServerSettings("pwd"))
-        val universeClient = UniverseClient(UniverseClientSettings("pwd"))
+        val universeServer = UniverseServer(UniverseServerSettings(adminPassword = "pwd"))
+        val universeClient = UniverseClient(UniverseClientSettings(adminPassword = "pwd"))
         runBlocking {
             launch {
                 universeServer.start()
@@ -29,8 +29,8 @@ internal class ServerStatusTest {
 
     @Test
     fun newUniverseStatus() {
-        val universeServer = UniverseServer(UniverseServerSettings("pwd"))
-        val universeClient = UniverseClient(UniverseClientSettings("pwd"))
+        val universeServer = UniverseServer(UniverseServerSettings(adminPassword = "pwd"))
+        val universeClient = UniverseClient(UniverseClientSettings(adminPassword = "pwd"))
         runBlocking {
             launch {
                 universeServer.start()

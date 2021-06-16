@@ -49,6 +49,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
 
     // For changing server setting
     var universeServerSettings: UniverseServerSettings = UniverseServerSettings(
+        programDir = universeClientSettings.programDir,
         adminPassword = universeClientSettings.adminPassword
     )
 

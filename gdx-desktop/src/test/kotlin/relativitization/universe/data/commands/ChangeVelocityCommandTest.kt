@@ -12,7 +12,7 @@ import kotlin.test.Test
 internal class ChangeVelocityCommandTest {
     @Test
     fun fixMinimalTest() {
-        val universe = Universe(GenerateUniverse.generate(GenerateSettings()))
+        val universe = Universe(GenerateUniverse.generate(GenerateSettings()), ".")
         val view7: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
         assert(view7.get(2).int4D == Int4D(7, 0, 0, 0))
 

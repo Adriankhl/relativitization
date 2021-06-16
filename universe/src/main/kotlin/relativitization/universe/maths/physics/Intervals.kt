@@ -92,7 +92,12 @@ object Intervals {
      * Compute light travel time by turn, round up
      */
     fun intDelay(c1: Int3D, c2: Int3D, speedOfLight: Double): Int {
-        return (doubleDistance(c1, c2) / speedOfLight - 0.000001).toInt() + 1
+        val doubleDelay: Double = doubleDistance(c1, c2) / speedOfLight
+        return if (doubleDelay % 1.0 == 0.0) {
+            doubleDelay.toInt()
+        } else {
+            doubleDelay.toInt() + 1
+        }
     }
 
     /**
