@@ -2,6 +2,7 @@ package relativitization.game.components.info
 
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.RelativitizationGame
+import relativitization.game.utils.PlayerImage
 import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.PlayerData
 
@@ -56,5 +57,40 @@ class PlayersInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
         table.add(headerLabel)
 
         table.row().space(20f)
+
+        val playerImageStack = PlayerImage.getPlayerImageStack(
+            playerData = playerData,
+            assets = assets,
+            width = 128f,
+            height = 128f,
+            soundVolume = gdxSettings.soundEffectsVolume
+        ) {
+            game.universeClient.mapCenterPlayerId = playerData.id
+        }
+
+        table.row().space(10f)
+
+        table.add(createAllPlayerIdTable())
+
+        table.row().space(10f)
+    }
+
+    private fun createAllPlayerIdTable(): Table {
+        val nestedTable = Table()
+
+        val allPlayerIdLabel = createLabel("Available Player Id: ", gdxSettings.smallFontSize)
+
+        val allPlayerIdSelectBox = createSelectBox(
+            itemList = game.universeClient.getUniverseData3D().playerDataMap.keys.toList(),
+            default = playerData.id,
+            fontSize = gdxSettings.smallFontSize,
+        ) { selectedId, _ ->
+            game.universeClient.primarySelectedPlayerId = selectedId
+        }
+
+        nestedTable.add(allPlayerIdLabel)
+        nestedTable.add(allPlayerIdSelectBox)
+
+        return nestedTable
     }
 }
