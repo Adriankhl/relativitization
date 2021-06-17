@@ -131,7 +131,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
     // store list of command for sending them to the universe server
     // private val and any function changing command list should call onCommandListChangeFunctionList
     val onCommandListChangeFunctionList: MutableList<() -> Unit> = mutableListOf()
-    private val commandList: ObservableList<Command> = ObservableList(mutableListOf()) {
+    val commandList: ObservableList<Command> = ObservableList(mutableListOf()) {
         onCommandListChangeFunctionList.forEach { it() }
     }
 
