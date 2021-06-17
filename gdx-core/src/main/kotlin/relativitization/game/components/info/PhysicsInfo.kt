@@ -10,7 +10,6 @@ import relativitization.universe.data.commands.ChangeVelocityCommand
 import relativitization.universe.data.events.MoveToDouble3DEvent
 import relativitization.universe.data.physics.Double3D
 import relativitization.universe.data.physics.Int3D
-import relativitization.universe.data.physics.Int4D
 import relativitization.universe.data.physics.Velocity
 import relativitization.universe.maths.physics.Movement.displacementToVelocity
 import relativitization.universe.utils.RelativitizationLogManager
@@ -181,7 +180,7 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
 
             val targetDouble3D: Double3D = game.universeClient.getUniverseData3D().get(
                 game.universeClient.newSelectedPlayerId
-            ).double4D.toDouble3D()
+            ).groupCenterDouble3D(game.universeClient.getUniverseData3D().universeSettings.groupEdgeLength)
 
             val targetVelocity = displacementToVelocity(
                 playerData.double4D.toDouble3D(),
@@ -255,6 +254,10 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
         table.row().space(20f)
 
         table.add(createChangeVelocityTable())
+
+        table.row().space(20f)
+
+        table.add(createMoveToDouble3DTable())
     }
 
     private fun createDouble4DTable(): Table {
@@ -346,6 +349,34 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
 
         return nestedTable
     }
+
+    private fun createMoveToDouble3DTable(): Table {
+        val nestedTable: Table = Table()
+
+        nestedTable.add(moveToDouble3DEventCommandTextButton).colspan(2)
+
+        nestedTable.row().space(10f)
+
+        val targetXLabel = createLabel("Target x: ", gdxSettings.smallFontSize)
+        nestedTable.add(targetXLabel)
+        nestedTable.add(targetXTextField)
+
+        nestedTable.row().space(10f)
+
+        val targetYLabel = createLabel("Target y: ", gdxSettings.smallFontSize)
+        nestedTable.add(targetYLabel)
+        nestedTable.add(targetYTextField)
+
+        nestedTable.row().space(10f)
+
+        val targetZLabel = createLabel("Target z: ", gdxSettings.smallFontSize)
+        nestedTable.add(targetZLabel)
+        nestedTable.add(targetZTextField).space(10f)
+
+
+        return nestedTable
+    }
+
 
     companion object {
         private val logger = RelativitizationLogManager.getLogger()
