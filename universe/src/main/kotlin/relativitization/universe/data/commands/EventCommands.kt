@@ -22,7 +22,7 @@ data class AddEventCommand(
     override val name: String = "Add Event"
 
     override fun description(): String {
-        return "Add event ${event.name}to player $toId from $fromId."
+        return "Add event (${event.name}) to player $toId from player $fromId."
     }
 
     /**

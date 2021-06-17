@@ -371,8 +371,13 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
 
         val targetZLabel = createLabel("Target z: ", gdxSettings.smallFontSize)
         nestedTable.add(targetZLabel)
-        nestedTable.add(targetZTextField).space(10f)
+        nestedTable.add(targetZTextField)
 
+        nestedTable.row().space(10f)
+
+        val maxSpeedLabel = createLabel("Max. speed: ", gdxSettings.smallFontSize)
+        nestedTable.add(maxSpeedLabel)
+        nestedTable.add(maxSpeedTextField)
 
         return nestedTable
     }
