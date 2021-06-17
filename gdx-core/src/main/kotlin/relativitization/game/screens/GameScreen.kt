@@ -102,7 +102,7 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
         worldMapAndInfo.splitAmount = gdxSettings.worldMapAndInfoSplitAmount
 
         // Fix minimal top Bar height to preferred height
-        root.add(topBar.getScreenComponent()).growX().top().minHeight(topBar.getScreenComponent().prefHeight)
+        root.add(topBar.getScreenComponent()).growX().top().minHeight(topBar.getScreenComponent().prefHeight).maxHeight(topBar.getScreenComponent().prefHeight)
 
         root.row()
 
