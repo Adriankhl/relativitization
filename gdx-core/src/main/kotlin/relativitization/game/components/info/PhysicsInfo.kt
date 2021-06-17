@@ -23,17 +23,17 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
     private var playerData: PlayerData = PlayerData(-1)
 
     private val targetVelocityXTextField = createTextField(
-        default = "${playerData.velocity.vx}".take(6),
+        default = "${playerData.velocity.vx}",
         fontSize = gdxSettings.smallFontSize
     )
 
     private val targetVelocityYTextField = createTextField(
-        default = "${playerData.velocity.vy}".take(6),
+        default = "${playerData.velocity.vy}",
         fontSize = gdxSettings.smallFontSize
     )
 
     private val targetVelocityZTextField = createTextField(
-        default = "${playerData.velocity.vz}".take(6),
+        default = "${playerData.velocity.vz}",
         fontSize = gdxSettings.smallFontSize
     )
 
@@ -71,17 +71,17 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
 
 
     private val targetXTextField = createTextField(
-        default = "${playerData.double4D.x}".take(6),
+        default = "${playerData.double4D.x}",
         fontSize = gdxSettings.smallFontSize
     )
 
     private val targetYTextField = createTextField(
-        default = "${playerData.double4D.y}".take(6),
+        default = "${playerData.double4D.y}",
         fontSize = gdxSettings.smallFontSize
     )
 
     private val targetZTextField = createTextField(
-        default = "${playerData.double4D.z}".take(6),
+        default = "${playerData.double4D.z}",
         fontSize = gdxSettings.smallFontSize
     )
 
@@ -165,9 +165,9 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
         )
 
         // Change target velocity text
-        targetVelocityXTextField.text = targetVelocity.vx.toString().take(6)
-        targetVelocityYTextField.text = targetVelocity.vy.toString().take(6)
-        targetVelocityZTextField.text = targetVelocity.vz.toString().take(6)
+        targetVelocityXTextField.text = targetVelocity.vx.toString()
+        targetVelocityYTextField.text = targetVelocity.vy.toString()
+        targetVelocityZTextField.text = targetVelocity.vz.toString()
 
         // Change target position text
         targetXTextField.text = targetDouble3D.x.toString()
@@ -189,9 +189,9 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
             )
 
             // Change target velocity text
-            targetVelocityXTextField.text = targetVelocity.vx.toString().take(6)
-            targetVelocityYTextField.text = targetVelocity.vy.toString().take(6)
-            targetVelocityZTextField.text = targetVelocity.vz.toString().take(6)
+            targetVelocityXTextField.text = targetVelocity.vx.toString()
+            targetVelocityYTextField.text = targetVelocity.vy.toString()
+            targetVelocityZTextField.text = targetVelocity.vz.toString()
 
             // Change target position text
             targetXTextField.text = targetDouble3D.x.toString()
@@ -228,7 +228,7 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
         table.row().space(10f)
 
         val energyLabel = createLabel(
-            "Fuel rest mass: ${playerData.playerInternalData.physicsData.fuelRestMass.toString().take(6)}",
+            "Fuel rest mass: ${playerData.playerInternalData.physicsData.fuelRestMass.toString()}",
             gdxSettings.smallFontSize
         )
 
@@ -237,7 +237,7 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
         table.row().space(10f)
 
         val moveMaxPowerLabel = createLabel(
-            "Max. fuel rest mass change: ${playerData.playerInternalData.physicsData.maxDeltaFuelRestMass.toString().take(6)}",
+            "Max. fuel rest mass change: ${playerData.playerInternalData.physicsData.maxDeltaFuelRestMass.toString()}",
             gdxSettings.smallFontSize
         )
 
@@ -264,7 +264,7 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
         val nestedTable: Table = Table()
 
         val double4DTLabel = createLabel(
-            "t: ${playerData.double4D.t.toString().take(6)}",
+            "t: ${playerData.double4D.t.toString()}",
             gdxSettings.smallFontSize
         )
 
@@ -272,21 +272,21 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
 
 
         val double4DXLabel = createLabel(
-            "x: ${playerData.double4D.x.toString().take(6)}",
+            "x: ${playerData.double4D.x.toString()}",
             gdxSettings.smallFontSize
         )
 
         nestedTable.add(double4DXLabel).space(10f)
 
         val double4DYLabel = createLabel(
-            "y: ${playerData.double4D.y.toString().take(6)}",
+            "y: ${playerData.double4D.y.toString()}",
             gdxSettings.smallFontSize
         )
 
         nestedTable.add(double4DYLabel).space(10f)
 
         val double4DZLabel = createLabel(
-            "z: ${playerData.double4D.z.toString().take(6)}",
+            "z: ${playerData.double4D.z.toString()}",
             gdxSettings.smallFontSize
         )
 
@@ -299,7 +299,7 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
         val nestedTable: Table = Table()
 
         val velocityXLabel = createLabel(
-            "vx: ${playerData.velocity.vx.toString().take(6)}",
+            "vx: ${playerData.velocity.vx.toString()}",
             gdxSettings.smallFontSize
         )
 
@@ -307,14 +307,14 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
 
 
         val velocityYLabel = createLabel(
-            "vy: ${playerData.velocity.vy.toString().take(6)}",
+            "vy: ${playerData.velocity.vy.toString()}",
             gdxSettings.smallFontSize
         )
 
         nestedTable.add(velocityYLabel).space(10f)
 
         val velocityZLabel = createLabel(
-            "vz: ${playerData.velocity.vz.toString().take(6)}",
+            "vz: ${playerData.velocity.vz.toString()}",
             gdxSettings.smallFontSize
         )
 
