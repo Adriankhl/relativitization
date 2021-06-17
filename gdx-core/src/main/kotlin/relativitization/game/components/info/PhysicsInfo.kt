@@ -180,7 +180,8 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
 
             val targetDouble3D: Double3D = game.universeClient.getUniverseData3D().get(
                 game.universeClient.newSelectedPlayerId
-            ).groupCenterDouble3D(game.universeClient.getUniverseData3D().universeSettings.groupEdgeLength)
+            )
+                .groupCenterDouble3D(game.universeClient.getUniverseData3D().universeSettings.groupEdgeLength)
 
             val targetVelocity = displacementToVelocity(
                 playerData.double4D.toDouble3D(),
@@ -263,34 +264,40 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
     private fun createDouble4DTable(): Table {
         val nestedTable: Table = Table()
 
+        val double4DHeaderLabel = createLabel("Coordinates: ", gdxSettings.smallFontSize)
+        nestedTable.add(double4DHeaderLabel)
+
+        nestedTable.row().space(10f)
+
         val double4DTLabel = createLabel(
             "t: ${playerData.double4D.t.toString()}",
             gdxSettings.smallFontSize
         )
+        nestedTable.add(double4DTLabel)
 
-        nestedTable.add(double4DTLabel).space(10f)
-
+        nestedTable.row().space(10f)
 
         val double4DXLabel = createLabel(
             "x: ${playerData.double4D.x.toString()}",
             gdxSettings.smallFontSize
         )
+        nestedTable.add(double4DXLabel)
 
-        nestedTable.add(double4DXLabel).space(10f)
+        nestedTable.row().space(10f)
 
         val double4DYLabel = createLabel(
             "y: ${playerData.double4D.y.toString()}",
             gdxSettings.smallFontSize
         )
+        nestedTable.add(double4DYLabel)
 
-        nestedTable.add(double4DYLabel).space(10f)
+        nestedTable.row().space(10f)
 
         val double4DZLabel = createLabel(
             "z: ${playerData.double4D.z.toString()}",
             gdxSettings.smallFontSize
         )
-
-        nestedTable.add(double4DZLabel).space(10f)
+        nestedTable.add(double4DZLabel)
 
         return nestedTable
     }
@@ -298,27 +305,32 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
     private fun createVelocityTable(): Table {
         val nestedTable: Table = Table()
 
+        val velocityHeaderLabel = createLabel("Velocity: ", gdxSettings.smallFontSize)
+        nestedTable.add(velocityHeaderLabel)
+
+        nestedTable.row().space(10f)
+
         val velocityXLabel = createLabel(
             "vx: ${playerData.velocity.vx.toString()}",
             gdxSettings.smallFontSize
         )
+        nestedTable.add(velocityXLabel)
 
-        nestedTable.add(velocityXLabel).space(10f)
-
+        nestedTable.row().space(10f)
 
         val velocityYLabel = createLabel(
             "vy: ${playerData.velocity.vy.toString()}",
             gdxSettings.smallFontSize
         )
+        nestedTable.add(velocityYLabel)
 
-        nestedTable.add(velocityYLabel).space(10f)
+        nestedTable.row().space(10f)
 
         val velocityZLabel = createLabel(
             "vz: ${playerData.velocity.vz.toString()}",
             gdxSettings.smallFontSize
         )
-
-        nestedTable.add(velocityZLabel).space(10f)
+        nestedTable.add(velocityZLabel)
 
         return nestedTable
     }
