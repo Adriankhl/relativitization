@@ -60,6 +60,8 @@ data class Int3D(val x: Int, val y: Int, val z: Int) {
     fun toDouble3DCenter(): Double3D {
         return Double3D(x.toDouble() + 0.5, y.toDouble() + 0.5, z.toDouble() + 0.5)
     }
+
+    operator fun plus(double3D: Double3D): Double3D = Double3D(x + double3D.x, y + double3D.y, z + double3D.z)
 }
 
 @Serializable

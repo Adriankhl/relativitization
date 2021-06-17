@@ -16,7 +16,9 @@ import relativitization.universe.data.science.MutableScienceData
 import relativitization.universe.data.science.ScienceData
 import relativitization.universe.data.state.MutablePlayerState
 import relativitization.universe.data.state.PlayerState
+import relativitization.universe.maths.grid.Grids
 import relativitization.universe.maths.grid.Grids.double4DToGroupId
+import relativitization.universe.maths.grid.Grids.groupIdToCenterDouble3D
 
 /**
  * Data of the basic unit (player)
@@ -66,6 +68,16 @@ data class PlayerData(
                 (playerInternalData.physicsData.fuelRestMass >= 0.0)
 
         return isTValid && isRestMassValid
+    }
+
+    /**
+     * The center position of the group
+     */
+    fun groupCenterDouble3D(edgeLength: Double): Double3D {
+        return int4D.toInt3D() + groupIdToCenterDouble3D(
+            double4DToGroupId(double4D, edgeLength),
+            edgeLength
+        )
     }
 }
 
