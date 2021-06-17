@@ -15,6 +15,13 @@ class EventsInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.a
 
     private var playerData: PlayerData = PlayerData(-1)
 
+    init {
+        table.background = assets.getBackgroundColor(0.2f, 0.2f, 0.2f, 1.0f)
+
+        updatePlayerData()
+        updateTable(
+    }
+
     override fun getScreenComponent(): Table {
         return table
     }
