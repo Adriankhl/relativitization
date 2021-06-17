@@ -43,9 +43,9 @@ class Minimal : GenerateUniverse() {
         playerData3.playerInternalData.physicsData.fuelRestMass = 300.0
 
         // Allow player to use fuel
-        playerData1.playerInternalData.physicsData.maxDeltaFuelRestMass = 0.1
-        playerData2.playerInternalData.physicsData.maxDeltaFuelRestMass = 0.2
-        playerData3.playerInternalData.physicsData.maxDeltaFuelRestMass = 0.3
+        playerData1.playerInternalData.physicsData.maxDeltaFuelRestMass = 50.0
+        playerData2.playerInternalData.physicsData.maxDeltaFuelRestMass = 100.0
+        playerData3.playerInternalData.physicsData.maxDeltaFuelRestMass = 150.0
 
 
         // player 1 is a leader of player 2
