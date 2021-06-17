@@ -19,6 +19,8 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
     private val background: Image = assets.getImage("background/universe-background")
     val gdxSettings = game.gdxSettings
 
+    private var originalZoom = 1.0f
+
     init {
         // stage.clear()
         game.clearOnChangeFunctionList()
@@ -156,11 +158,23 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
                     }
                 }
             }
+
+            override fun touchDown(
+                event: InputEvent?,
+                x: Float,
+                y: Float,
+                pointer: Int,
+                button: Int
+            ): Boolean {
+                // Store original value for zooming by gesture
+                originalZoom = gdxSettings.mapZoomRelativeToFullMap
+                return false
+            }
         })
 
         stage.addListener(object : ActorGestureListener() {
             override fun zoom(event: InputEvent?, initialDistance: Float, distance: Float) {
-                gdxSettings.mapZoomRelativeToFullMap *= (distance / initialDistance)
+                gdxSettings.mapZoomRelativeToFullMap = (distance / initialDistance) * originalZoom
                 game.changeGdxSettings()
             }
         })

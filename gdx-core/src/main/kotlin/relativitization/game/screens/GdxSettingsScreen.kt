@@ -16,7 +16,7 @@ class GdxSettingsScreen(val game: RelativitizationGame, private val inGame: Bool
     override fun show() {
         super.show()
 
-        root.add(createGdxSettingsScrollPane())
+        root.add(createGdxSettingsScrollPane()).grow()
 
         root.row().space(10f)
 
