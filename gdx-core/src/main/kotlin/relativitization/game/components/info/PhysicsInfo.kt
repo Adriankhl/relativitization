@@ -4,10 +4,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.PlayerData
+import relativitization.universe.data.commands.AddEventCommand
 import relativitization.universe.data.commands.CannotSendCommand
 import relativitization.universe.data.commands.ChangeVelocityCommand
+import relativitization.universe.data.events.MoveToDouble3DEvent
 import relativitization.universe.data.physics.Double3D
 import relativitization.universe.data.physics.Int3D
+import relativitization.universe.data.physics.Int4D
 import relativitization.universe.data.physics.Velocity
 import relativitization.universe.maths.physics.Movement.displacementToVelocity
 import relativitization.universe.utils.RelativitizationLogManager
@@ -19,6 +22,21 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
     private var table: Table = Table()
 
     private var playerData: PlayerData = PlayerData(-1)
+
+    private val targetVelocityXTextField = createTextField(
+        default = "${playerData.velocity.vx}".take(6),
+        fontSize = gdxSettings.smallFontSize
+    )
+
+    private val targetVelocityYTextField = createTextField(
+        default = "${playerData.velocity.vy}".take(6),
+        fontSize = gdxSettings.smallFontSize
+    )
+
+    private val targetVelocityZTextField = createTextField(
+        default = "${playerData.velocity.vz}".take(6),
+        fontSize = gdxSettings.smallFontSize
+    )
 
     private val changeVelocityCommandTextButton = createTextButton(
         text = "Change Velocity Command",
@@ -52,20 +70,67 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
         }
     }
 
-    private val targetVelocityXTextField = createTextField(
-        default = "${playerData.velocity.vx}".take(6),
+
+    private val targetXTextField = createTextField(
+        default = "${playerData.double4D.x}".take(6),
         fontSize = gdxSettings.smallFontSize
     )
 
-    private val targetVelocityYTextField = createTextField(
-        default = "${playerData.velocity.vy}".take(6),
+    private val targetYTextField = createTextField(
+        default = "${playerData.double4D.y}".take(6),
         fontSize = gdxSettings.smallFontSize
     )
 
-    private val targetVelocityZTextField = createTextField(
-        default = "${playerData.velocity.vz}".take(6),
+    private val targetZTextField = createTextField(
+        default = "${playerData.double4D.z}".take(6),
         fontSize = gdxSettings.smallFontSize
     )
+
+    private val maxSpeedTextField = createTextField(
+        default = "0.0",
+        fontSize = gdxSettings.smallFontSize
+    )
+
+    private val moveToDouble3DEventCommandTextButton = createTextButton(
+        text = "Move to location",
+        fontSize = gdxSettings.normalFontSize,
+        soundVolume = gdxSettings.soundEffectsVolume
+    ) {
+        try {
+            val x = targetXTextField.text.toDouble()
+            val y = targetYTextField.text.toDouble()
+            val z = targetZTextField.text.toDouble()
+            val maxSpeed = maxSpeedTextField.text.toDouble()
+
+            val moveToDouble3DEvent = MoveToDouble3DEvent(
+                playerId = playerData.id,
+                targetDouble3D = Double3D(x, y, z),
+                maxSpeed = maxSpeed,
+                stayTime = 999,
+            )
+
+            val addEventCommand = AddEventCommand(
+                event = moveToDouble3DEvent,
+                fromId = game.universeClient.getUniverseData3D().getCurrentPlayerData().id,
+                fromInt4D = game.universeClient.getUniverseData3D().getCurrentPlayerData().int4D,
+                toId = playerData.id
+
+            )
+
+            val canSend: Boolean = addEventCommand.canSendFromPlayer(
+                game.universeClient.getUniverseData3D().getCurrentPlayerData(),
+                game.universeClient.getUniverseData3D().universeSettings
+            )
+
+            if (canSend) {
+                game.universeClient.currentCommand = addEventCommand
+            } else {
+                game.universeClient.currentCommand = CannotSendCommand()
+            }
+        } catch (e: NumberFormatException) {
+            logger.error("Invalid target velocity")
+        }
+    }
 
     init {
         table.background = assets.getBackgroundColor(0.2f, 0.2f, 0.2f, 1.0f)
