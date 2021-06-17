@@ -153,10 +153,7 @@ data class UniverseData(
             }
         }
 
-        // Filter out after image of player
-        val centerPlayerDataList: List<PlayerData> = getPlayerDataListAt(center).filter {
-            it.int4D.t == universeState.getCurrentTime()
-        }
+        val centerPlayerDataList: List<PlayerData> = getPlayerDataListAt(center)
 
         return UniverseData3DAtGrid(
             center,

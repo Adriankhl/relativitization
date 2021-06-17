@@ -37,7 +37,7 @@ internal class ChangeVelocityCommandTest {
 
         val view8: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
 
-        // Since player 2 left player 1, player 1 can only see the historical image which is at t = 6
-        assert(view8.get(2).int4D == Int4D(6, 0, 0, 0))
+        // Since player 2 left player 1, player 1 can only see the after image which is at t = 7
+        assert(view8.get(2).int4D == Int4D(7, 0, 0, 0))
     }
 }

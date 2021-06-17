@@ -243,6 +243,7 @@ class PlayerCollection(
         for ((_, playerData) in playerMap) {
             val double4D: MutableDouble4D = playerData.double4D
             val oldInt4D: Int4D = Int4D(playerData.int4D)
+            val oldGroupId: Int = playerData.groupId
 
             // Move player int4D by double4D
             playerData.int4D.t = time
@@ -250,19 +251,20 @@ class PlayerCollection(
             playerData.int4D.y = double4D.y.toInt()
             playerData.int4D.z = double4D.z.toInt()
 
-            // Add old coordinate to int4DHistory if change
+            // Change player group id
+            playerData.groupId = double4DToGroupId(playerData.double4D, edgeLength)
+
+            // Add old coordinate to int4DHistory if int4D position change or groupid change
             if ((oldInt4D.x != playerData.int4D.x) ||
                 (oldInt4D.y != playerData.int4D.y) ||
-                (oldInt4D.z != playerData.int4D.z)
+                (oldInt4D.z != playerData.int4D.z) ||
+                (oldGroupId != playerData.groupId)
             ) {
                 playerData.int4DHistory.add(oldInt4D)
             }
 
             // Clean up unnecessary int4DHistory
             playerData.int4DHistory.removeAll { time - it.t > universeSettings.playerAfterImageDuration }
-
-            // Change group id
-            playerData.groupId = double4DToGroupId(playerData.double4D, edgeLength)
         }
     }
 
