@@ -21,7 +21,8 @@ internal class MoveToDouble3DEventTest {
 
         val event = MoveToDouble3DEvent(
             playerId = 2,
-            targetDouble3D = view7.get(3).groupCenterDouble3D(view7.universeSettings.groupEdgeLength),
+            targetDouble3D = view7.get(3)
+                .groupCenterDouble3D(view7.universeSettings.groupEdgeLength),
             maxSpeed = 0.2,
             stayTime = 999
 
@@ -35,15 +36,29 @@ internal class MoveToDouble3DEventTest {
         )
 
         runBlocking {
+            universe.postProcessUniverse(
+                mapOf(
+                    1 to listOf(command)
+                ),
+                mapOf(
+                    2 to listOf(),
+                    3 to listOf(),
+                    4 to listOf()
+                )
+            )
+            universe.preProcessUniverse()
+        }
+
+
+        runBlocking {
             for (i in 1..20) {
                 universe.postProcessUniverse(
                     mapOf(
-                        1 to listOf(command)
+                        1 to listOf()
                     ),
                     mapOf(
                         2 to listOf(),
                         3 to listOf(),
-                        4 to listOf()
                     )
                 )
                 universe.preProcessUniverse()
@@ -51,5 +66,6 @@ internal class MoveToDouble3DEventTest {
         }
 
         val view: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
+        assert(view.get(2).double4D.toDouble3D() == view.get(3).groupCenterDouble3D(view.universeSettings.groupEdgeLength))
     }
 }

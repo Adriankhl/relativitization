@@ -63,7 +63,10 @@ data class UniverseData3DAtGrid(
                 }
             }
 
-            group.map { playerData ->
+            group.filter {
+                // Pevent turning after image to UniverseData3DAtPlayer
+                it.int4D.t == center.t
+            }.map { playerData ->
                 UniverseData3DAtPlayer(
                     playerData.id,
                     center,
