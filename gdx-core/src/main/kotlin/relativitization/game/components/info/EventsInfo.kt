@@ -109,6 +109,7 @@ class EventsInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.a
             nestedTable.row().space(10f)
 
             val choiceDescriptionLabel = createLabel(choice.value, gdxSettings.smallFontSize)
+            choiceDescriptionLabel.wrap = true
             nestedTable.add(choiceDescriptionLabel)
         }
 
