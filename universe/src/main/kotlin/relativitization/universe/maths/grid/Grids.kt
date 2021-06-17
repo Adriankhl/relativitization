@@ -1,5 +1,6 @@
 package relativitization.universe.maths.grid
 
+import relativitization.universe.data.physics.Double3D
 import relativitization.universe.data.physics.Double4D
 import relativitization.universe.data.physics.Int3D
 import relativitization.universe.data.physics.MutableDouble4D
@@ -102,7 +103,7 @@ object Grids {
     }
 
     /**
-     * Compute the id of the cube the double4D belongs to
+     * Compute the id of the cube the double4D belongs to group id
      */
     fun double4DToGroupId(mutableDouble4D: MutableDouble4D, edgeLength: Double): Int {
         val numEdge: Int = numEdge(edgeLength)
@@ -119,7 +120,7 @@ object Grids {
     }
 
     /**
-     * Compute the id of the cube the double4D belongs to
+     * Compute the id of the cube the double4D belongs to group id
      */
     fun double4DToGroupId(double4D: Double4D, edgeLength: Double): Int {
         val numEdge: Int = numEdge(edgeLength)
@@ -136,9 +137,17 @@ object Grids {
     }
 
     /**
-     * Compute the center of double 4D from id
+     * Compute the center of double 3D from group id
      */
-    fun idToCenterDouble4D()
+    fun groupIdToCenterDouble3D(groupId: Int, edgeLength: Double): Double3D {
+        val numEdge: Int = numEdge(edgeLength)
+
+        val x: Double = (groupId / numEdge / numEdge).toDouble() + edgeLength * 0.5
+        val y: Double = ((groupId % (numEdge * numEdge)) / numEdge ).toDouble() + edgeLength * 0.5
+        val z: Double = groupId % numEdge + edgeLength * 0.5
+
+        return Double3D(x, y, z)
+    }
 
     /**
      * The maximum id of the double 4D
