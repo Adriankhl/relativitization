@@ -75,9 +75,9 @@ class EventsInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.a
         eventDescriptionLabel.wrap = true
         nestedTable.add(eventDescriptionLabel)
 
-        for (choice in eventData.event.choiceDescription) {
-            nestedTable.row().space(10f)
+        nestedTable.row().space(10f)
 
+        for (choice in eventData.event.choiceDescription) {
             val selectChoiceButton = createTextButton(
                 "Select choice ${choice.key}",
                 gdxSettings.smallFontSize,
@@ -111,6 +111,8 @@ class EventsInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.a
             val choiceDescriptionLabel = createLabel(choice.value, gdxSettings.smallFontSize)
             choiceDescriptionLabel.wrap = true
             nestedTable.add(choiceDescriptionLabel)
+
+            nestedTable.row().space(10f)
         }
 
         return nestedTable
