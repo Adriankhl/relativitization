@@ -1,5 +1,6 @@
 package relativitization.universe.maths.grid
 
+import relativitization.universe.data.physics.Double3D
 import relativitization.universe.data.physics.Int3D
 import relativitization.universe.data.physics.MutableDouble4D
 import kotlin.test.Test
@@ -34,5 +35,13 @@ internal class GridsTest {
 
         val id3 = Grids.double4DToGroupId(MutableDouble4D(1.0, 0.0, 0.1, 0.0), 0.01)
         assert(id3 == 1000)
+    }
+
+    @Test
+    fun idToDouble3DTest() {
+        val id1 = Grids.double4DToGroupId(MutableDouble4D(1.0, 0.121, 0.459, 0.872), 0.01)
+        val do1 = Grids.groupIdToCenterDouble3D(id1, 0.01)
+
+        assert(do1 == Double3D(0.125, 0.455, 0.875))
     }
 }

@@ -138,13 +138,16 @@ object Grids {
 
     /**
      * Compute the center of double 3D from group id
+     *
+     * @return the double3D is within the square (1.0, 1.0, 1.0), so extra vector has to be added to point to
+     * the actual position
      */
     fun groupIdToCenterDouble3D(groupId: Int, edgeLength: Double): Double3D {
         val numEdge: Int = numEdge(edgeLength)
 
-        val x: Double = (groupId / numEdge / numEdge).toDouble() + edgeLength * 0.5
-        val y: Double = ((groupId % (numEdge * numEdge)) / numEdge ).toDouble() + edgeLength * 0.5
-        val z: Double = groupId % numEdge + edgeLength * 0.5
+        val x: Double = (groupId / numEdge / numEdge).toDouble() * edgeLength + edgeLength * 0.5
+        val y: Double = ((groupId % (numEdge * numEdge)) / numEdge ).toDouble() * edgeLength + edgeLength * 0.5
+        val z: Double = groupId % numEdge * edgeLength + edgeLength * 0.5
 
         return Double3D(x, y, z)
     }
