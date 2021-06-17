@@ -74,6 +74,11 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets){
     open fun onMapCenterPlayerIdChange() {}
 
     /**
+     * Call this function when changing commandList
+     */
+    open fun onCommandListChange() {}
+
+    /**
      * Call this function when command to be confirm change
      */
     open fun onCurrentCommandChange() {}
@@ -298,6 +303,7 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets){
 
             universeClient.onMapCenterPlayerIdChangeFunctionList.add(component::onMapCenterPlayerIdChange)
 
+            universeClient.onCommandListChangeFunctionList.add(component::onCommandListChange)
             universeClient.onCurrentCommandChangeFunctionList.add(component::onCurrentCommandChange)
 
             universeClient.onIsPlayerDeadChangeFunctionList.add(component::onIsPlayerDeadChange)
