@@ -55,7 +55,7 @@ class EventsInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.a
 
         for (eventData in playerData.playerInternalData.eventDataList) {
             val eventDataTable = createEventTable(eventData)
-            table.add(eventDataTable)
+            table.add(eventDataTable).growX()
 
             table.row().space(20f)
         }
@@ -73,9 +73,9 @@ class EventsInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.a
 
         val eventDescriptionLabel = createLabel(eventData.event.description, gdxSettings.smallFontSize)
         eventDescriptionLabel.wrap = true
-        nestedTable.add(eventDescriptionLabel)
+        nestedTable.add(eventDescriptionLabel).growX()
 
-        nestedTable.row().space(10f)
+        nestedTable.row().space(30f)
 
         for (choice in eventData.event.choiceDescription) {
             val selectChoiceButton = createTextButton(
@@ -110,7 +110,7 @@ class EventsInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.a
 
             val choiceDescriptionLabel = createLabel(choice.value, gdxSettings.smallFontSize)
             choiceDescriptionLabel.wrap = true
-            nestedTable.add(choiceDescriptionLabel)
+            nestedTable.add(choiceDescriptionLabel).growX()
 
             nestedTable.row().space(10f)
         }
