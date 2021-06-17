@@ -46,7 +46,7 @@ class CommandsInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game
         }
     }
 
-    fun createCommandTable(command: Command): Table {
+    private fun createCommandTable(command: Command): Table {
         val nestedTable = Table()
 
         nestedTable.background = assets.getBackgroundColor(0.25f, 0.25f, 0.25f, 1.0f)
