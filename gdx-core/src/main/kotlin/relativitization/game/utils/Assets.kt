@@ -150,6 +150,6 @@ class Assets {
     companion object {
         private val logger = RelativitizationLogManager.getLogger()
 
-        val fontSizeList: List<Int> = (8..72 step 8).toList()
+        val fontSizeList: List<Int> = (8..72 step 4).toList()
     }
 }
