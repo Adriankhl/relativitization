@@ -5,7 +5,7 @@ import relativitization.universe.data.commands.Command
 import relativitization.universe.data.physics.*
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.maths.grid.Grids.create3DGrid
-import relativitization.universe.maths.grid.Grids.double4DToId
+import relativitization.universe.maths.grid.Grids.double4DToGroupId
 import relativitization.universe.maths.physics.Intervals.intDelay
 import relativitization.universe.utils.RelativitizationLogManager
 
@@ -313,9 +313,9 @@ data class MutableUniverseData4D(
         }
 
         // Default group player id should be player id itself
-        if (mutablePlayerData.groupId != double4DToId(mutablePlayerData.double4D, edgeLength)) {
+        if (mutablePlayerData.groupId != double4DToGroupId(mutablePlayerData.double4D, edgeLength)) {
             logger.debug("Default the attached player id to player id")
-            mutablePlayerData.groupId = double4DToId(mutablePlayerData.double4D, edgeLength)
+            mutablePlayerData.groupId = double4DToGroupId(mutablePlayerData.double4D, edgeLength)
         }
 
         // Add player to the list

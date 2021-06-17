@@ -5,7 +5,7 @@ import relativitization.universe.data.*
 import relativitization.universe.data.physics.*
 import relativitization.universe.data.serializer.DataSerializer.copy
 import relativitization.universe.maths.grid.Grids.create3DGrid
-import relativitization.universe.maths.grid.Grids.double4DToId
+import relativitization.universe.maths.grid.Grids.double4DToGroupId
 import relativitization.universe.maths.physics.Relativistic.deltaMassByPhotonRocket
 import relativitization.universe.utils.RandomName.randomPlayerName
 import relativitization.universe.utils.RelativitizationLogManager
@@ -262,7 +262,7 @@ class PlayerCollection(
             playerData.int4DHistory.removeAll { time - it.t > universeSettings.playerAfterImageDuration }
 
             // Change group id
-            playerData.groupId = double4DToId(playerData.double4D, edgeLength)
+            playerData.groupId = double4DToGroupId(playerData.double4D, edgeLength)
         }
     }
 

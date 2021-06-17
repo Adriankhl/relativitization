@@ -87,7 +87,7 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
     )
 
     private val maxSpeedTextField = createTextField(
-        default = "0.0",
+        default = "0.2",
         fontSize = gdxSettings.smallFontSize
     )
 
@@ -157,16 +157,23 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
     override fun onPrimarySelectedInt3DChange() {
 
         val targetInt3D: Int3D = game.universeClient.primarySelectedInt3D
+        val targetDouble3D: Double3D = targetInt3D.toDouble3DCenter()
 
         val targetVelocity = displacementToVelocity(
             playerData.double4D.toDouble3D(),
-            targetInt3D.toDouble3DCenter(),
+            targetDouble3D,
             game.universeClient.getUniverseData3D().universeSettings.speedOfLight
         )
 
+        // Change target velocity text
         targetVelocityXTextField.text = targetVelocity.vx.toString().take(6)
         targetVelocityYTextField.text = targetVelocity.vy.toString().take(6)
         targetVelocityZTextField.text = targetVelocity.vz.toString().take(6)
+
+        // Change target position text
+        targetXTextField.text = targetDouble3D.x.toString()
+        targetYTextField.text = targetDouble3D.y.toString()
+        targetZTextField.text = targetDouble3D.z.toString()
     }
 
     override fun onSelectedPlayerIdListChange() {
@@ -182,9 +189,15 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
                 game.universeClient.getUniverseData3D().universeSettings.speedOfLight
             )
 
+            // Change target velocity text
             targetVelocityXTextField.text = targetVelocity.vx.toString().take(6)
             targetVelocityYTextField.text = targetVelocity.vy.toString().take(6)
             targetVelocityZTextField.text = targetVelocity.vz.toString().take(6)
+
+            // Change target position text
+            targetXTextField.text = targetDouble3D.x.toString()
+            targetYTextField.text = targetDouble3D.y.toString()
+            targetZTextField.text = targetDouble3D.z.toString()
         }
     }
 

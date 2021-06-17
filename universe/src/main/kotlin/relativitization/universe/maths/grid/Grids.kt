@@ -104,7 +104,7 @@ object Grids {
     /**
      * Compute the id of the cube the double4D belongs to
      */
-    fun double4DToId(mutableDouble4D: MutableDouble4D, edgeLength: Double): Int {
+    fun double4DToGroupId(mutableDouble4D: MutableDouble4D, edgeLength: Double): Int {
         val numEdge: Int = numEdge(edgeLength)
 
         val xExtra: Double = mutableDouble4D.x - mutableDouble4D.x.toInt()
@@ -121,7 +121,7 @@ object Grids {
     /**
      * Compute the id of the cube the double4D belongs to
      */
-    fun double4DToId(double4D: Double4D, edgeLength: Double): Int {
+    fun double4DToGroupId(double4D: Double4D, edgeLength: Double): Int {
         val numEdge: Int = numEdge(edgeLength)
 
         val xExtra: Double = double4D.x - double4D.x.toInt()
@@ -134,6 +134,11 @@ object Grids {
 
         return xNum * numEdge * numEdge + yNum * numEdge + zNum
     }
+
+    /**
+     * Compute the center of double 4D from id
+     */
+    fun idToCenterDouble4D()
 
     /**
      * The maximum id of the double 4D
