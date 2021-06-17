@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.InputListener
 import com.badlogic.gdx.scenes.scene2d.ui.Image
+import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import relativitization.game.RelativitizationGame
@@ -154,6 +155,13 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
                         false
                     }
                 }
+            }
+        })
+
+        stage.addListener(object : ActorGestureListener() {
+            override fun zoom(event: InputEvent?, initialDistance: Float, distance: Float) {
+                gdxSettings.mapZoomRelativeToFullMap *= (distance / initialDistance)
+                game.changeGdxSettings()
             }
         })
 
