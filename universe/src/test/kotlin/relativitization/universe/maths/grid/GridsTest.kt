@@ -43,5 +43,10 @@ internal class GridsTest {
         val do1 = Grids.groupIdToCenterDouble3D(id1, 0.01)
 
         assert(do1 == Double3D(0.125, 0.455, 0.875))
+
+        val id2 = Grids.double4DToGroupId(MutableDouble4D(1.0, 1.0, 0.0, 0.0), 0.01)
+        val do2 = Grids.groupIdToCenterDouble3D(id2, 0.01)
+
+        assert(do2 == Double3D(0.005, 0.005, 0.005))
     }
 }
