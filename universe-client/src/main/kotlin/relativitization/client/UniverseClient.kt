@@ -22,6 +22,7 @@ import relativitization.universe.data.physics.Int3D
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.generate.GenerateSettings
 import relativitization.universe.utils.CoroutineBoolean
+import relativitization.universe.utils.ObservableList
 import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.properties.Delegates
 
@@ -128,7 +129,11 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
 
 
     // store list of command for sending them to the universe server
-    val commandList: MutableList<Command> = mutableListOf()
+    // private val and any function changing command list should call onCommandListChangeFunctionList
+    val onCommandListChangeFunctionList: MutableList<() -> Unit> = mutableListOf()
+    private val commandList: ObservableList<Command> = ObservableList(mutableListOf()) {
+        onCommandListChangeFunctionList.forEach { it() }
+    }
 
     // command showing on GUI, can be new command to be confirmed or old command to be cancelled
     val onCurrentCommandChangeFunctionList: MutableList<() -> Unit> = mutableListOf()
@@ -434,7 +439,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
                 commandList.isEmpty() -> {
                     DummyCommand()
                 }
-                index < commandList.size - 1 -> {
+                index < commandList.size() - 1 -> {
                     commandList[index]
                 }
                 else -> {
@@ -479,7 +484,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
     fun nextCommand() {
         if (isCurrentCommandStored()) {
             val index = commandList.indexOf(currentCommand)
-            if (index < commandList.size - 1) {
+            if (index < commandList.size() - 1) {
                 currentCommand = commandList[index + 1]
             } else {
                 logger.debug("Can't goto next command, already the latest one")
@@ -756,7 +761,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
             val password = universeClientSettings.password
             val response: HttpResponse = ktorClient.post("http://$serverAddress:$serverPort/run/input") {
                 contentType(ContentType.Application.Json)
-                body = CommandInputMessage(playerId, password, commandList.toList())
+                body = CommandInputMessage(playerId, password, commandList.getList())
                 timeout {
                     requestTimeoutMillis = 1000
                 }
