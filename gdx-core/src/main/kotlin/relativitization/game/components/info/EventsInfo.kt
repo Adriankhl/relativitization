@@ -4,6 +4,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.PlayerData
+import relativitization.universe.data.commands.CannotSendCommand
+import relativitization.universe.data.commands.SelectEventChoiceCommand
 import relativitization.universe.data.events.EventData
 
 class EventsInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.assets) {
@@ -41,6 +43,15 @@ class EventsInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.a
         val headerLabel = createLabel("Event list: player ${playerData.id}", gdxSettings.bigFontSize)
 
         table.add(headerLabel)
+
+        table.row().space(20f)
+
+        for (eventData in playerData.playerInternalData.eventDataList) {
+            val eventDataTable = createEventTable(eventData)
+            table.add(eventDataTable)
+
+            table.row().space(20f)
+        }
     }
 
     private fun createEventTable(eventData: EventData): Table {
@@ -57,7 +68,42 @@ class EventsInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.a
         eventDescriptionLabel.wrap = true
         nestedTable.add(eventDescriptionLabel)
 
-        nestedTable.row().space(10f)
+        for (choice in eventData.event.choiceDescription) {
+            nestedTable.row().space(10f)
+
+            val selectChoiceButton = createTextButton(
+                "Select choice ${choice.key}",
+                gdxSettings.smallFontSize,
+                gdxSettings.soundEffectsVolume
+            ) {
+                val selectEventDataCommand = SelectEventChoiceCommand(
+                    eventIndex = playerData.playerInternalData.eventDataList.indexOf(eventData),
+                    eventName = eventData.event.name,
+                    choice = choice.key,
+                    fromId = game.universeClient.getUniverseData3D().id,
+                    fromInt4D = game.universeClient.getUniverseData3D().getCurrentPlayerData().int4D,
+                    toId = playerData.id
+                )
+
+                val canSend = selectEventDataCommand.canSendFromPlayer(
+                    game.universeClient.getUniverseData3D().getCurrentPlayerData(),
+                    game.universeClient.getUniverseData3D().universeSettings
+                )
+
+                if (canSend) {
+                    game.universeClient.currentCommand = selectEventDataCommand
+                } else {
+                    game.universeClient.currentCommand = CannotSendCommand()
+                }
+            }
+
+            nestedTable.add(selectChoiceButton)
+
+            nestedTable.row().space(10f)
+
+            val choiceDescriptionLabel = createLabel(choice.value, gdxSettings.smallFontSize)
+            nestedTable.add(choiceDescriptionLabel)
+        }
 
         return nestedTable
     }
