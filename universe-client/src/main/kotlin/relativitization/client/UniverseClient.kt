@@ -239,6 +239,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
             onServerStatusChangeFunctionList.clear()
         }
         onPrimarySelectedInt3DChangeFunctionList.clear()
+        onCommandListChangeFunctionList.clear()
         onCurrentCommandChangeFunctionList.clear()
         onPrimarySelectedPlayerIdChangeFunctionList.clear()
         onSelectedPlayerIdListChangeFunctionList.clear()

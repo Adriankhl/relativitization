@@ -28,6 +28,8 @@ class GameScreenInfo(val game: RelativitizationGame) : ScreenComponent<SplitPane
         addChildScreenComponent(playersInfo)
         addChildScreenComponent(overviewInfo)
         addChildScreenComponent(physicsInfo)
+        addChildScreenComponent(eventsInfo)
+        addChildScreenComponent(commandsInfo)
 
         // Set background color
         upperInfoScrollPane.fadeScrollBars = false
