@@ -362,6 +362,10 @@ object ActorFunction {
 
         textField.setTextFieldListener { field, _ -> function(field?.text ?: "", field!!) }
 
+        // This adds a pop up text box to help text field input in Android
+        // Disadvantage: ugly, need to click ok twice
+        // Comment this out and and empty space at the bottom of scroll pane instead
+        /*
         textField.onscreenKeyboard = TextField.OnscreenKeyboard {
             Gdx.input.getTextInput(object : Input.TextInputListener {
                 override fun input(text: String?) {
@@ -373,6 +377,7 @@ object ActorFunction {
                 }
             }, "", textField.text, "")
         }
+        */
 
         return textField
     }
