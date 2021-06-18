@@ -1,5 +1,6 @@
 package relativitization.game.components.info
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.ScreenComponent
@@ -215,7 +216,7 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
 
         val headerLabel = createLabel("Physics: player ${playerData.id}", gdxSettings.bigFontSize)
 
-        table.add(headerLabel)
+        table.add(headerLabel).pad(20f)
 
         table.row().space(20f)
 
@@ -259,6 +260,13 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
         table.row().space(20f)
 
         table.add(createMoveToDouble3DTable())
+
+        table.row().space(10f)
+
+        // Add empty space for Android keyboard input
+        val emptyLabel = createLabel("", gdxSettings.smallFontSize)
+        emptyLabel.height = Gdx.graphics.height.toFloat()
+        table.add(emptyLabel).minHeight(Gdx.graphics.height.toFloat())
     }
 
     private fun createDouble4DTable(): Table {

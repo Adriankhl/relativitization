@@ -101,8 +101,17 @@ class GdxSettingsScreen(val game: RelativitizationGame, private val inGame: Bool
 
         addGdxSettings(table)
 
+        table.row().space(10f)
+
+        // Add empty space for Android keyboard input
+        val emptyLabel = createLabel("", gdxSettings.smallFontSize)
+        emptyLabel.height = Gdx.graphics.height.toFloat()
+        table.add(emptyLabel).minHeight(Gdx.graphics.height.toFloat())
+
+
         scrollPane.fadeScrollBars = false
-        scrollPane.setFlickScroll(true)
+        scrollPane.setClamp(true)
+        scrollPane.setOverscroll(false, false)
 
         return scrollPane
     }

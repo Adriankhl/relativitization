@@ -1,6 +1,9 @@
 package relativitization.game.screens
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.Touchable
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
+import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.utils.Array
 import io.ktor.http.*
@@ -12,20 +15,83 @@ import relativitization.universe.UniverseClientSettings
 class RegisterPlayerScreen(val game: RelativitizationGame) : TableScreen(game.assets)  {
     private val gdxSettings = game.gdxSettings
 
+    private val registerPlayerButton: TextButton = createTextButton("Register", gdxSettings.normalFontSize, gdxSettings.soundEffectsVolume) { button ->
+        if (game.universeClient.universeClientSettings.playerId >= 0) {
+            runBlocking {
+                val httpCode = game.universeClient.httpPostRegisterPlayer()
+                if (httpCode == HttpStatusCode.OK) {
+                    disableActor(button)
+                    registerStatusLabel.setText("Player id: ${game.universeClient.universeClientSettings.playerId}")
+                } else {
+                    registerStatusLabel.setText("Register player fail, http code: $httpCode")
+                }
+            }
+        } else {
+            registerStatusLabel.setText("Player id smaller than 0, please pick a valid id")
+        }
+    }
+
+    private val registerStatusLabel = createLabel("", gdxSettings.normalFontSize)
+
     override fun show() {
         super.show()
 
+        root.add(createRegisterPlayerScrollPane()).pad(20f).growX()
+
+        root.row().space(10f)
+
+
+        val startStatusLabel = createLabel("", gdxSettings.normalFontSize)
+        val startButton: TextButton = createTextButton("Start", gdxSettings.normalFontSize, gdxSettings.soundEffectsVolume) {
+            if (registerPlayerButton.touchable == Touchable.disabled) {
+                runBlocking {
+                    if (game.universeClient.getCurrentServerStatus().isUniverseRunning) {
+                        // Not showing because it is too fast?
+                        startStatusLabel.setText("Universe already running, waiting universe data")
+                        game.screen = GameScreen(game)
+                        dispose()
+                    } else {
+                        val httpCode = game.universeClient.httpPostRunUniverse()
+                        if (httpCode == HttpStatusCode.OK) {
+                            // Not showing because it is too fast?
+                            startStatusLabel.setText("Run universe success, waiting universe data")
+                            game.screen = GameScreen(game)
+                            dispose()
+                        } else {
+                            startStatusLabel.setText("Can't start universe")
+                        }
+                    }
+                }
+            } else {
+                startStatusLabel.setText("Please register a player id")
+            }
+        }
+
+        root.add(startButton)
+
+        root.row().space(10f)
+
+        root.add(startStatusLabel)
+    }
+
+    private fun createRegisterPlayerScrollPane(): ScrollPane {
+        val table = Table()
+
+        table.add(createLabel("Register player Settings :", gdxSettings.hugeFontSize)).colspan(2)
+
+        table.row().space(20f)
+
         var idList: List<Int> = listOf()
 
-        root.add(createLabel("Type of available players: ", gdxSettings.normalFontSize))
+        table.add(createLabel("Type of available players: ", gdxSettings.normalFontSize))
         val getPlayerTypeSelectBox = createSelectBox(
             listOf("All", "Human only"),
             "All",
             gdxSettings.normalFontSize
         )
-        root.add(getPlayerTypeSelectBox)
+        table.add(getPlayerTypeSelectBox)
 
-        root.row().space(10f)
+        table.row().space(10f)
 
         // Define before update button but show after update button
         val playerIdSelectBox = createSelectBox(
@@ -67,17 +133,17 @@ class RegisterPlayerScreen(val game: RelativitizationGame) : TableScreen(game.as
 
             playerIdSelectBox.items = Array(idList.sorted().toTypedArray())
         }
-        root.add(updateButton).colspan(2)
+        table.add(updateButton).colspan(2)
 
-        root.row().space(10f)
+        table.row().space(10f)
 
-        root.add(createLabel("Pick your player id: ", gdxSettings.normalFontSize))
-        root.add(playerIdSelectBox)
+        table.add(createLabel("Pick your player id: ", gdxSettings.normalFontSize))
+        table.add(playerIdSelectBox)
 
-        root.row().space(10f)
+        table.row().space(10f)
 
 
-        root.add(createLabel("Password (for holding your player id): ", gdxSettings.normalFontSize))
+        table.add(createLabel("Password (for holding your player id): ", gdxSettings.normalFontSize))
         val passwordTextField = createTextField(
             game.universeClient.universeClientSettings.password,
             gdxSettings.normalFontSize
@@ -89,67 +155,31 @@ class RegisterPlayerScreen(val game: RelativitizationGame) : TableScreen(game.as
                 game.universeClient.setUniverseClientSettings(newUniverseClientSettings)
             }
         }
-        root.add(passwordTextField)
+        table.add(passwordTextField)
 
-        root.row().space(10f)
-
-        val registerStatusLabel = createLabel("", gdxSettings.normalFontSize)
-        val registerPlayerButton: TextButton = createTextButton("Register", gdxSettings.normalFontSize, gdxSettings.soundEffectsVolume) { button ->
-            if (game.universeClient.universeClientSettings.playerId >= 0) {
-                runBlocking {
-                    val httpCode = game.universeClient.httpPostRegisterPlayer()
-                    if (httpCode == HttpStatusCode.OK) {
-                        disableActor(button)
-                        registerStatusLabel.setText("Player id: ${game.universeClient.universeClientSettings.playerId}")
-                    } else {
-                        registerStatusLabel.setText("Register player fail, http code: $httpCode")
-                    }
-                }
-            } else {
-                registerStatusLabel.setText("Player id smaller than 0, please pick a valid id")
-            }
-        }
-
-        root.add(createLabel("Register player id, can only register once: ", gdxSettings.normalFontSize))
-        root.add(registerPlayerButton)
-
-        root.row().space(10f)
-
-        root.add(registerStatusLabel).colspan(2)
-
-        root.row().space(10f)
+        table.row().space(10f)
 
 
-        val startStatusLabel = createLabel("", gdxSettings.normalFontSize)
-        val startButton: TextButton = createTextButton("Start", gdxSettings.normalFontSize, gdxSettings.soundEffectsVolume) {
-            if (registerPlayerButton.touchable == Touchable.disabled) {
-                runBlocking {
-                    if (game.universeClient.getCurrentServerStatus().isUniverseRunning) {
-                        // Not showing because it is too fast?
-                        startStatusLabel.setText("Universe already running, waiting universe data")
-                        game.screen = GameScreen(game)
-                        dispose()
-                    } else {
-                        val httpCode = game.universeClient.httpPostRunUniverse()
-                        if (httpCode == HttpStatusCode.OK) {
-                            // Not showing because it is too fast?
-                            startStatusLabel.setText("Run universe success, waiting universe data")
-                            game.screen = GameScreen(game)
-                            dispose()
-                        } else {
-                            startStatusLabel.setText("Can't start universe")
-                        }
-                    }
-                }
-            } else {
-                startStatusLabel.setText("Please register a player id")
-            }
-        }
+        table.add(createLabel("Register player id, can only register once: ", gdxSettings.normalFontSize))
+        table.add(registerPlayerButton)
 
-        root.add(startButton).colspan(2)
+        table.row().space(10f)
 
-        root.row().space(10f)
+        table.add(registerStatusLabel).colspan(2)
 
-        root.add(startStatusLabel).colspan(2)
+        table.row().space(10f)
+
+        // Add empty space for Android keyboard input
+        val emptyLabel = createLabel("", gdxSettings.smallFontSize)
+        emptyLabel.height = Gdx.graphics.height.toFloat()
+        table.add(emptyLabel).minHeight(Gdx.graphics.height.toFloat())
+
+        val scrollPane: ScrollPane = createScrollPane(table)
+
+        scrollPane.fadeScrollBars = false
+        scrollPane.setClamp(true)
+        scrollPane.setOverscroll(false, false)
+
+        return scrollPane
     }
 }

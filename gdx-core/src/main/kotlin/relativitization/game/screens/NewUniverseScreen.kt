@@ -73,13 +73,14 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
         // Add empty space for Android keyboard input
         val emptyLabel = createLabel("", gdxSettings.smallFontSize)
         emptyLabel.height = Gdx.graphics.height.toFloat()
-        table.add(emptyLabel).minHeight(Gdx.graphics.height.toFloat() * 0.5f)
+        table.add(emptyLabel).minHeight(Gdx.graphics.height.toFloat())
 
 
         val scrollPane: ScrollPane = createScrollPane(table)
 
         scrollPane.fadeScrollBars = false
-        scrollPane.setFlickScroll(true)
+        scrollPane.setClamp(true)
+        scrollPane.setOverscroll(false, false)
 
         return scrollPane
     }
