@@ -35,8 +35,8 @@ class Universe(
     private val zDim = universeData.universeSettings.zDim
 
     // For iteration
-    private val int3DList: List<Int3D> = create3DGrid(xDim, yDim, zDim) {
-        x, y, z -> Int3D(x, y, z)
+    private val int3DList: List<Int3D> = create3DGrid(xDim, yDim, zDim) { x, y, z ->
+        Int3D(x, y, z)
     }.flatten().flatten()
 
     private val playerCollection: PlayerCollection = PlayerCollection(
@@ -117,9 +117,10 @@ class Universe(
         val time: Int = universeData.universeState.getCurrentTime()
         val playerId3D: List<List<List<List<Int>>>> = playerCollection.getPlayerId3D()
         int3DList.pmap { int3D ->
-                val viewMap = universeData.toUniverseData3DAtGrid(Int4D(time, int3D)).idToUniverseData3DAtPlayer()
-                playerId3D[int3D.x][int3D.y][int3D.z].map { id ->
-                    id to AICollection.compute(viewMap.getValue(id))
+            val viewMap =
+                universeData.toUniverseData3DAtGrid(Int4D(time, int3D)).idToUniverseData3DAtPlayer()
+            playerId3D[int3D.x][int3D.y][int3D.z].map { id ->
+                id to AICollection.compute(viewMap.getValue(id))
             }
         }.flatten().toMap()
     }
@@ -167,7 +168,7 @@ class Universe(
         val saveDir = "$programDir/saves/${universeData.universeSettings.universeName}"
         val latestTime: Int = universeData.universeState.getCurrentTime()
         val oldestTime: Int = latestTime - universeData.universeSettings.tDim + 1
-        val oldUniverseData4D =  universeData.universeData4D.getAllExcludeLatest()
+        val oldUniverseData4D = universeData.universeData4D.getAllExcludeLatest()
 
         File(saveDir).mkdirs()
 
@@ -195,7 +196,8 @@ class Universe(
 
         // Mechanism process, execute produced commands on same group, and return remaining command
         val commandList: List<Command> = int3DList.pmap { int3D ->
-            val viewMap = universeData.toUniverseData3DAtGrid(Int4D(time, int3D)).idToUniverseData3DAtPlayer()
+            val viewMap =
+                universeData.toUniverseData3DAtGrid(Int4D(time, int3D)).idToUniverseData3DAtPlayer()
 
             val playerIdAtGrid: List<Int> = playerId3D[int3D.x][int3D.y][int3D.z]
 
@@ -224,7 +226,10 @@ class Universe(
 
             // Check and execute immediate command
             for (command in commandExecuteList) {
-                command.checkAndExecute(playerCollection.getPlayer(command.toId), universeData.universeSettings)
+                command.checkAndExecute(
+                    playerCollection.getPlayer(command.toId),
+                    universeData.universeSettings
+                )
             }
 
             commandStoreList
@@ -236,9 +241,10 @@ class Universe(
     /**
      * Execute commands in parallel
      */
-    private suspend fun processCommandMap() = coroutineScope{
+    private suspend fun processCommandMap() = coroutineScope {
         // Remove non existing player from the command map
-        val noIdList: List<Int> = universeData.commandMap.keys.filter { !playerCollection.hasPlayer(it) }
+        val noIdList: List<Int> =
+            universeData.commandMap.keys.filter { !playerCollection.hasPlayer(it) }
 
         for (id in noIdList) {
             universeData.commandMap.remove(id)
@@ -249,7 +255,11 @@ class Universe(
 
             // Determine the command to be executed by spacetime distance
             val commandExecuteList: List<Command> = commandList.filter {
-                val timeDelay: Int = intDelay(it.fromInt4D.toInt3D(), playerInt4D.toInt3D(), universeData.universeSettings.speedOfLight)
+                val timeDelay: Int = intDelay(
+                    it.fromInt4D.toInt3D(),
+                    playerInt4D.toInt3D(),
+                    universeData.universeSettings.speedOfLight
+                )
                 val timeDiff: Int = playerInt4D.t - it.fromInt4D.t
                 timeDiff <= timeDelay
             }
@@ -259,7 +269,10 @@ class Universe(
 
             // Check and execute command
             for (command in commandExecuteList) {
-                command.checkAndExecute(playerCollection.getPlayer(command.toId), universeData.universeSettings)
+                command.checkAndExecute(
+                    playerCollection.getPlayer(command.toId),
+                    universeData.universeSettings
+                )
             }
         }
     }
@@ -275,28 +288,36 @@ class Universe(
     /**
      * Process human and ai command input
      *
-     * @param humanInputCommands map from player id to the command list from this player
-     * @param aiInputCommands map from player id to the command list computed by ai
+     * @param originalHumanInputCommands map from player id to the command list from this player
+     * @param originalAiInputCommands map from player id to the command list computed by ai
      */
     private suspend fun processCommandInput(
-        humanInputCommands: Map<Int, List<Command>>,
-        aiInputCommands: Map<Int, List<Command>>
+        originalHumanInputCommands: Map<Int, List<Command>>,
+        originalAiInputCommands: Map<Int, List<Command>>
     ) {
+        // Filter out non existing player
+        val humanInputCommands = originalHumanInputCommands.filter {
+            playerCollection.hasPlayer(it.key)
+        }
+        val aiInputCommands = originalAiInputCommands.filter {
+            playerCollection.hasPlayer(it.key)
+        }
+
         // Add two input command map, prefer human input commands
-        val inputCommands: Map<Int, List<Command>> = aiInputCommands.filter {
-                (id, _) -> !humanInputCommands.containsKey(id)
+        val inputCommands: Map<Int, List<Command>> = aiInputCommands.filter { (id, _) ->
+            !humanInputCommands.containsKey(id)
         } + humanInputCommands
 
         // Default all player type to Ai
         for ((id, _) in aiInputCommands) {
-            if (playerCollection.getPlayer(id).playerType != PlayerType.NONE ) {
+            if (playerCollection.getPlayer(id).playerType != PlayerType.NONE) {
                 playerCollection.getPlayer(id).playerType = PlayerType.AI
             }
         }
 
         // Then change the player type to human if there is human input
         for ((id, _) in humanInputCommands) {
-            if (playerCollection.getPlayer(id).playerType != PlayerType.NONE ) {
+            if (playerCollection.getPlayer(id).playerType != PlayerType.NONE) {
                 playerCollection.getPlayer(id).playerType = PlayerType.HUMAN
             }
         }
@@ -304,7 +325,7 @@ class Universe(
         val noneTypePlayerIdList: List<Int> = playerCollection.getNoneIdList()
 
         // Filter out none type player, Check whether the command is valid
-        val validCommand: Map<Int, List<Command>> = inputCommands.filter { (id, _) ->
+        val validCommands: Map<Int, List<Command>> = inputCommands.filter { (id, _) ->
             !noneTypePlayerIdList.contains(id)
         }.mapValues { (id, commandList) ->
             val playerData: PlayerData = copy(playerCollection.getPlayer(id))
@@ -317,29 +338,36 @@ class Universe(
 
         val commandList: List<Command> = int3DList.pmap { int3D ->
             val playerIdAtGrid: List<Int> = playerId3D[int3D.x][int3D.y][int3D.z]
-            val commandPairList: List<Pair<List<Command>,List<Command>>> = playerIdAtGrid.map { fromId ->
-                val commandFromPlayer: List<Command> = validCommand.getValue(fromId)
-                val (selfCommandList, otherCommandList) = commandFromPlayer.partition { it.toId == fromId }
+            val commandPairList: List<Pair<List<Command>, List<Command>>> =
+                playerIdAtGrid.map { fromId ->
+                    val commandFromPlayer: List<Command> = validCommands.getValue(fromId)
+                    val (selfCommandList, otherCommandList) = commandFromPlayer.partition { it.toId == fromId }
 
-                val (sameGroupCommandList, commandStoreList) = otherCommandList.partition { command ->
-                    val inGrid: Boolean = playerIdAtGrid.contains(command.toId)
-                    val sameGroup: Boolean = (playerCollection.getPlayer(fromId).groupId ==
-                            playerCollection.getPlayer(command.toId).groupId)
-                    inGrid && sameGroup
+                    val (sameGroupCommandList, commandStoreList) = otherCommandList.partition { command ->
+                        val inGrid: Boolean = playerIdAtGrid.contains(command.toId)
+                        val sameGroup: Boolean = (playerCollection.getPlayer(fromId).groupId ==
+                                playerCollection.getPlayer(command.toId).groupId)
+                        inGrid && sameGroup
+                    }
+
+                    // Execute self command
+                    for (command in selfCommandList) {
+                        command.checkAndExecute(
+                            playerCollection.getPlayer(command.toId),
+                            universeData.universeSettings
+                        )
+                    }
+
+                    Pair(sameGroupCommandList, commandStoreList)
                 }
-
-                // Execute self command
-                for (command in selfCommandList) {
-                    command.checkAndExecute(playerCollection.getPlayer(command.toId), universeData.universeSettings)
-                }
-
-                Pair(sameGroupCommandList, commandStoreList)
-            }
 
             // Execute command on neighbour (same group) and return remaining commands
             commandPairList.map { pair ->
                 pair.first.forEach { command ->
-                    command.checkAndExecute(playerCollection.getPlayer(command.toId), universeData.universeSettings)
+                    command.checkAndExecute(
+                        playerCollection.getPlayer(command.toId),
+                        universeData.universeSettings
+                    )
                 }
                 pair.second
             }.flatten()
@@ -390,10 +418,12 @@ class Universe(
             val saveDir = "$programDir/saves/$universeName"
 
             // save settings, setting should be immutable, so only one save is enough
-            val universeSettings: UniverseSettings = decode(File("${saveDir}/universeSetting.json").readText())
+            val universeSettings: UniverseSettings =
+                decode(File("${saveDir}/universeSetting.json").readText())
 
             // load latest universe state
-            val universeState: UniverseState = decode(File("${saveDir}/latestState.json").readText())
+            val universeState: UniverseState =
+                decode(File("${saveDir}/latestState.json").readText())
 
             val latestTime: Int = universeState.getCurrentTime()
             val oldestTime: Int = latestTime - universeSettings.tDim + 1
@@ -420,9 +450,14 @@ class Universe(
         /**
          * Transform and add command list to commandMap
          */
-        fun addToCommandMap(commandMap: MutableMap<Int, MutableList<Command>>, commandList: List<Command>) {
+        fun addToCommandMap(
+            commandMap: MutableMap<Int, MutableList<Command>>,
+            commandList: List<Command>
+        ) {
             val listGroup: Map<Int, List<Command>> = commandList.groupBy { it.toId }
-            listGroup.map { (id, commands) -> commandMap.getOrDefault(id, mutableListOf()).addAll(commands)}
+            listGroup.map { (id, commands) ->
+                commandMap.getOrDefault(id, mutableListOf()).addAll(commands)
+            }
         }
     }
 

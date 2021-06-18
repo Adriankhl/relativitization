@@ -68,6 +68,7 @@ internal class SelectEventChoiceCommandTest {
                 mapOf(
                     2 to listOf(selectEventChoiceCommand),
                     3 to listOf(),
+                    4 to listOf()
                 )
             )
             universe.preProcessUniverse()
