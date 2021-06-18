@@ -67,19 +67,19 @@ class EventsInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.a
         nestedTable.background = assets.getBackgroundColor(0.25f, 0.25f, 0.25f, 1.0f)
 
         val eventNameLabel = createLabel(eventData.event.name, gdxSettings.normalFontSize)
-        nestedTable.add(eventNameLabel)
+        nestedTable.add(eventNameLabel).colspan(2)
 
         nestedTable.row().space(10f)
 
         val eventDescriptionLabel = createLabel(eventData.event.description, gdxSettings.smallFontSize)
         eventDescriptionLabel.wrap = true
-        nestedTable.add(eventDescriptionLabel).growX()
+        nestedTable.add(eventDescriptionLabel).colspan(2).growX()
 
         nestedTable.row().space(30f)
 
         for (choice in eventData.event.choiceDescription) {
             val selectChoiceButton = createTextButton(
-                "Select choice ${choice.key}",
+                "${choice.key}",
                 gdxSettings.smallFontSize,
                 gdxSettings.soundEffectsVolume
             ) {
@@ -105,8 +105,6 @@ class EventsInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.a
             }
 
             nestedTable.add(selectChoiceButton)
-
-            nestedTable.row().space(10f)
 
             val choiceDescriptionLabel = createLabel(choice.value, gdxSettings.smallFontSize)
             choiceDescriptionLabel.wrap = true
