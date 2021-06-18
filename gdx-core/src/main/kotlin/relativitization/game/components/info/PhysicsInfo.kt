@@ -181,8 +181,9 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
 
             val targetDouble3D: Double3D = game.universeClient.getUniverseData3D().get(
                 game.universeClient.newSelectedPlayerId
+            ).groupCenterDouble3D(
+                game.universeClient.getUniverseData3D().universeSettings.groupEdgeLength
             )
-                .groupCenterDouble3D(game.universeClient.getUniverseData3D().universeSettings.groupEdgeLength)
 
             val targetVelocity = displacementToVelocity(
                 playerData.double4D.toDouble3D(),

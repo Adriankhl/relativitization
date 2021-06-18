@@ -75,7 +75,16 @@ class EventsInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.a
         eventDescriptionLabel.wrap = true
         nestedTable.add(eventDescriptionLabel).colspan(2).growX()
 
-        nestedTable.row().space(30f)
+        nestedTable.row().space(10f)
+
+        val selectedChoiceLabel = if (eventData.hasChoice) {
+            createLabel("Selected choice: ${eventData.choice}", gdxSettings.smallFontSize)
+        } else {
+            createLabel("Selected choice: default", gdxSettings.smallFontSize)
+        }
+        nestedTable.add(selectedChoiceLabel).colspan(2)
+
+        nestedTable.row().space(10f)
 
         for (choice in eventData.event.choiceDescription) {
             val selectChoiceButton = createTextButton(

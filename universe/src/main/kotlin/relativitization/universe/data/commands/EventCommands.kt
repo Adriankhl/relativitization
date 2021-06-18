@@ -83,7 +83,7 @@ data class SelectEventChoiceCommand(
         val eventDataList: MutableList<MutableEventData> = playerData.playerInternalData.eventDataList
 
         // Check if eventIndex is in range
-        if (eventDataList.size < eventIndex) {
+        if (eventIndex < eventDataList.size ) {
             if (eventDataList[eventIndex].event.name == eventName) {
                 eventDataList[eventIndex].hasChoice = true
                 eventDataList[eventIndex].choice = choice
