@@ -1,5 +1,6 @@
 package relativitization.game.screens
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import io.ktor.http.*
@@ -14,7 +15,7 @@ class ServerSettingsScreen(val game: RelativitizationGame) : TableScreen(game.as
     override fun show() {
         super.show()
 
-        root.add(createServerSettingsScrollPane()).colspan(2)
+        root.add(createServerSettingsScrollPane()).pad(20f).growX()
 
         root.row().space(20f)
 
@@ -38,9 +39,9 @@ class ServerSettingsScreen(val game: RelativitizationGame) : TableScreen(game.as
             }
         }
 
-        root.add(applyButton).colspan(2)
+        root.add(applyButton)
         root.row().space(10f)
-        root.add(applyFailLabel).colspan(2)
+        root.add(applyFailLabel)
     }
 
 
@@ -89,6 +90,11 @@ class ServerSettingsScreen(val game: RelativitizationGame) : TableScreen(game.as
         table.add(waitTimeLimitSelectBox)
 
         table.row().space(10f)
+
+        // Add empty space for Android keyboard input
+        val emptyLabel = createLabel("", gdxSettings.smallFontSize)
+        emptyLabel.height = Gdx.graphics.height.toFloat()
+        table.add(emptyLabel).minHeight(Gdx.graphics.height.toFloat() * 0.5f)
 
         val scrollPane: ScrollPane = createScrollPane(table)
 

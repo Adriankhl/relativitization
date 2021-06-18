@@ -1,5 +1,6 @@
 package relativitization.game.screens
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import io.ktor.http.*
@@ -17,7 +18,7 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
     override fun show() {
         super.show()
 
-        root.add(createGenerateSettingsScrollPane())
+        root.add(createGenerateSettingsScrollPane()).pad(20f).growX()
 
         root.row().space(20f)
 
@@ -58,12 +59,22 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
         val generateSettingLabel = createLabel("Generate Universe Settings:", gdxSettings.hugeFontSize)
 
         table.add(generateSettingLabel).colspan(2).space(20f)
+
         table.row().space(10f)
 
         addGenerateSettings(table)
+
         table.row().space(10f)
 
         addUniverseSettings(table)
+
+        table.row().space(10f)
+
+        // Add empty space for Android keyboard input
+        val emptyLabel = createLabel("", gdxSettings.smallFontSize)
+        emptyLabel.height = Gdx.graphics.height.toFloat()
+        table.add(emptyLabel).minHeight(Gdx.graphics.height.toFloat() * 0.5f)
+
 
         val scrollPane: ScrollPane = createScrollPane(table)
 
