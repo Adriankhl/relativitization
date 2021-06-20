@@ -7,3 +7,7 @@ import relativitization.universe.data.commands.Command
 abstract class AI {
     abstract fun compute(universeData3DAtPlayer: UniverseData3DAtPlayer): List<Command>
 }
+
+object MultiAI {
+    fun compute(aiName: String)
+}
