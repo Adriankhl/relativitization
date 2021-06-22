@@ -106,7 +106,7 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
                 playerId = playerData.id,
                 targetDouble3D = Double3D(x, y, z),
                 maxSpeed = maxSpeed,
-                stayTime = 999,
+                stayTime = Int.MAX_VALUE,
             )
 
             val addEventCommand = AddEventCommand(
