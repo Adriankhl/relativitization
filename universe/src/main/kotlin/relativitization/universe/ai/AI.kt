@@ -25,7 +25,7 @@ object AICollection {
             "EmptyAI" -> EmptyAI.compute(universeData3DAtPlayer)
             else -> {
                 logger.error("No ai name: ${aiName}, using default (empty) ai")
-                EmptyAI().compute(universeData3DAtPlayer)
+                EmptyAI.compute(universeData3DAtPlayer)
             }
         }
     }
