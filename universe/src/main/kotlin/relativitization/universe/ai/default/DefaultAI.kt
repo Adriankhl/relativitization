@@ -1,6 +1,8 @@
 package relativitization.universe.ai.default
 
 import relativitization.universe.ai.AI
+import relativitization.universe.ai.default.event.EventReasoner
+import relativitization.universe.ai.default.event.EventReasonerOption
 import relativitization.universe.ai.default.utils.DecisionData
 import relativitization.universe.ai.default.utils.Option
 import relativitization.universe.ai.default.utils.SequenceReasoner
@@ -21,5 +23,7 @@ class RootReasoner(universeData3DAtPlayer: UniverseData3DAtPlayer) : SequenceRea
 
     val decisionData = DecisionData(universeData3DAtPlayer)
 
-    override val optionList: List<Option> = listOf()
+    override val optionList: List<Option> = listOf(
+        EventReasonerOption(decisionData),
+    )
 }
