@@ -21,8 +21,8 @@ object AICollection {
     fun compute(universeData3DAtPlayer: UniverseData3DAtPlayer): List<Command> {
         val aiName: String = universeData3DAtPlayer.get(universeData3DAtPlayer.id).playerInternalData.playerState.aiState.aiName
         return when(aiName) {
-            "FlockingAI" -> FlockingAI().compute(universeData3DAtPlayer)
-            "EmptyAI" -> EmptyAI().compute(universeData3DAtPlayer)
+            "FlockingAI" -> FlockingAI.compute(universeData3DAtPlayer)
+            "EmptyAI" -> EmptyAI.compute(universeData3DAtPlayer)
             else -> {
                 logger.error("No ai name: ${aiName}, using default (empty) ai")
                 EmptyAI().compute(universeData3DAtPlayer)

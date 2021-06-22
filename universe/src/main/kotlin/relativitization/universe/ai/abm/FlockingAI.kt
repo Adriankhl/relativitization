@@ -10,7 +10,10 @@ import relativitization.universe.data.physics.Velocity
 import relativitization.universe.maths.physics.Intervals.distance
 import relativitization.universe.utils.RelativitizationLogManager
 
-class FlockingAI : AI() {
+object FlockingAI : AI() {
+
+    private val logger = RelativitizationLogManager.getLogger()
+
     override fun compute(universeData3DAtPlayer: UniverseData3DAtPlayer): List<Command> {
         logger.debug("Computing with FlockingAI")
 
@@ -207,9 +210,5 @@ class FlockingAI : AI() {
         }
 
         return Double3D(xComp, yComp, zComp)
-    }
-
-    companion object {
-        private val logger = RelativitizationLogManager.getLogger()
     }
 }
