@@ -64,7 +64,7 @@ data class UniverseData3DAtGrid(
             }
 
             group.filter {
-                // Pevent turning after image to UniverseData3DAtPlayer
+                // Prevent turning after image to UniverseData3DAtPlayer
                 it.int4D.t == center.t
             }.map { playerData ->
                 UniverseData3DAtPlayer(
@@ -129,6 +129,77 @@ data class UniverseData3DAtPlayer(
      * Get current player data
      */
     fun getCurrentPlayerData(): PlayerData {
+        return get(id)
+    }
+
+    /**
+     * Get set of player id by Int3D
+     */
+    fun getIdMap(int3D: Int3D): Map<Int, List<Int>> {
+        return if (isInt3DValid(int3D)) {
+            playerId3DMap[int3D.x][int3D.y][int3D.z]
+        } else {
+            logger.error("$int3D is not a valid coordinate to get player")
+            mapOf()
+        }
+    }
+
+
+    companion object {
+        private val logger = RelativitizationLogManager.getLogger()
+    }
+}
+
+@Serializable
+data class MutableUniverseData3DAtPlayer(
+    val id: Int = -1,
+    val center: Int4D = Int4D(0, 0, 0, 0),
+    val playerDataMap: Map<Int, MutablePlayerData> = mapOf(),
+    val playerId3DMap: List<List<List<Map<Int, List<Int>>>>> = listOf(),
+    val universeSettings: UniverseSettings = UniverseSettings(),
+) {
+    /**
+     * Check int3D valid
+     */
+    fun isInt3DValid(int3D: Int3D): Boolean {
+        val xLower: Boolean = int3D.x >= 0
+        val xUpper: Boolean = int3D.x < universeSettings.xDim
+        val yLower: Boolean = int3D.y >= 0
+        val yUpper: Boolean = int3D.y < universeSettings.yDim
+        val zLower: Boolean = int3D.z >= 0
+        val zUpper: Boolean = int3D.z < universeSettings.zDim
+
+        return xLower && xUpper && yLower && yUpper && zLower && zUpper
+    }
+
+    /**
+     * Get player data by id
+     */
+    fun get(id: Int): MutablePlayerData {
+        return playerDataMap.getOrElse(id) {
+            logger.error("id $id not in playerDataMap or zeroDelayDataMap")
+            MutablePlayerData(-1)
+        }
+    }
+
+    /**
+     * Get set of player data by Int3D
+     */
+    fun get(int3D: Int3D): Map<Int, List<MutablePlayerData>> {
+        return if (isInt3DValid(int3D)) {
+            playerId3DMap[int3D.x][int3D.y][int3D.z].mapValues { it1 ->
+                it1.value.map { it2 -> get(it2) }
+            }
+        } else {
+            logger.error("$int3D is not a valid coordinate to get player")
+            mapOf()
+        }
+    }
+
+    /**
+     * Get current player data
+     */
+    fun getCurrentPlayerData(): MutablePlayerData {
         return get(id)
     }
 
