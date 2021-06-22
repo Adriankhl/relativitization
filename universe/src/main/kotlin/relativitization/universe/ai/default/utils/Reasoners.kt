@@ -17,25 +17,31 @@ abstract class SequenceReasoner : Reasoner {
 
 abstract class DualUtilityReasoner : Reasoner {
     override fun getCommandList(): List<Command> {
-        return if (optionList.isEmpty()) {
+        val optionWeightMap: Map<Option, Double> = optionList.associateWith { it.getWeight() }
+        val validOptionWeightMap: Map<Option, Double> = optionWeightMap.filterValues { it > 0.0 }
+
+        return if (validOptionWeightMap.isEmpty()) {
             listOf()
         } else {
 
-            val rankMap: Map<Option, Int> = optionList.associateWith { it.getRank() }
+            val optionRankMap: Map<Option, Int> = validOptionWeightMap.keys.associateWith { it.getRank() }
 
-            val maxRank: Int = rankMap.values.maxOrNull()!!
+            val maxRank: Int = optionRankMap.values.maxOrNull()!!
 
-            val optionWaitList: List<Option> = rankMap.filterValues { it == maxRank }.keys.toList()
-            val weightList: List<Double> = optionWaitList.map { it.getWeight() }
+            val maxRankOptionList: Set<Option> = optionRankMap.filterValues { it == maxRank }.keys
+
+            val maxRankOptionWeightMap: Map<Option, Double> = optionWeightMap.filterKeys {
+                maxRankOptionList.contains(it)
+            }
 
             // Iterate to select option by weight
-            var selectedOption: Option = optionWaitList[0]
-            val totalWeight: Double = weightList.sum()
+            var selectedOption: Option = maxRankOptionWeightMap.keys.first()
+            val totalWeight: Double = maxRankOptionWeightMap.values.sum()
             var optionRand: Double = Random.Default.nextDouble() * totalWeight
-            for (i in (0 until weightList.size)) {
-                optionRand -= weightList[i]
+            for ((option, weight) in maxRankOptionWeightMap) {
+                optionRand -= weight
                 if (optionRand <= 0.0) {
-                    selectedOption = optionWaitList[i]
+                    selectedOption = option
                     break
                 }
             }
