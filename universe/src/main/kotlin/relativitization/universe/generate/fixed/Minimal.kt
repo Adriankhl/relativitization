@@ -55,6 +55,12 @@ class Minimal : GenerateUniverse() {
         // player 4 is a dead player
         playerData4.playerInternalData.isAlive = false
 
+        // Change AI to EmptyAI
+        playerData1.playerInternalData.playerState.aiState.aiName = "EmptyAI"
+        playerData2.playerInternalData.playerState.aiState.aiName = "EmptyAI"
+        playerData3.playerInternalData.playerState.aiState.aiName = "EmptyAI"
+        playerData4.playerInternalData.playerState.aiState.aiName = "EmptyAI"
+
         data.addPlayerDataToLatestWithAfterImage(
             playerData1,
             universeState.getCurrentTime(),
