@@ -1,13 +1,35 @@
 package relativitization.universe.ai.default.event
 
 import relativitization.universe.ai.default.consideration.RelationConsideration
-import relativitization.universe.ai.default.utils.CommandListOption
-import relativitization.universe.ai.default.utils.Consideration
-import relativitization.universe.ai.default.utils.DecisionData
+import relativitization.universe.ai.default.utils.*
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.commands.SelectEventChoiceCommand
-import relativitization.universe.data.diplomacy.DiplomacyData
 import relativitization.universe.data.events.EventData
+
+class PickMoveToDouble3DEventReasoner(
+    private val decisionData: DecisionData
+) : DualUtilityReasoner() {
+
+    private val movementEventIndexList: List<Int> = decisionData.universeData3DAtPlayer.
+    getCurrentPlayerData().playerInternalData.eventDataList.filter {
+        // Filter out MoveToDouble3DEvent
+        it.event.name == "Move to double3D"
+    }.mapIndexed { index, _ ->
+        index
+    }
+
+
+    override fun getOptionList(): List<Option> {
+        return movementEventIndexList.map {
+            PickMoveToDouble3DEventOption(
+                decisionData,
+                it,
+            )
+        }
+    }
+
+    override fun getConsiderationList(): List<Consideration> = listOf()
+}
 
 /**
  * Cancel all MoveToDouble3D beside event at keepEventIndex
