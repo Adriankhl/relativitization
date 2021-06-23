@@ -3,7 +3,8 @@ package relativitization.universe.data.diplomacy
 import kotlinx.serialization.Serializable
 
 /**
- * @property relation map from id to relation as integer
+ * @property relation map from player id to relation (in integer) between this player and
+ * the player of that id
  */
 @Serializable
 data class DiplomacyData(
