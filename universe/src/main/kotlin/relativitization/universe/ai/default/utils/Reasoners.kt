@@ -3,17 +3,19 @@ package relativitization.universe.ai.default.utils
 import kotlin.random.Random
 
 abstract class Reasoner : Option {
-    abstract val optionList: List<Option>
+    abstract fun getOptionList(): List<Option>
 }
 
 abstract class SequenceReasoner() : Reasoner() {
     override fun updateData() {
+        val optionList = getOptionList()
         optionList.forEach { it.updateData() }
     }
 }
 
 abstract class DualUtilityReasoner(): Reasoner() {
     override fun updateData() {
+        val optionList = getOptionList()
         val optionWeightMap: Map<Option, Double> = optionList.associateWith { it.getWeight() }
         val validOptionWeightMap: Map<Option, Double> = optionWeightMap.filterValues { it > 0.0 }
 
@@ -53,6 +55,7 @@ abstract class RepeatUntilReasoner(): Reasoner() {
 
     override fun updateData() {
         while (shouldContinue()) {
+            val optionList = getOptionList()
             for (option in optionList) {
                 if (shouldContinue()) {
                     option.updateData()
