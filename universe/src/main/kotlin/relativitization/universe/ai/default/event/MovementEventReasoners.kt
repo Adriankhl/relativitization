@@ -10,7 +10,7 @@ import relativitization.universe.data.diplomacy.DiplomacyData
 import relativitization.universe.data.events.EventData
 
 /**
- * Cancel all MoveToDouble3D beside one
+ * Cancel all MoveToDouble3D beside event at keepEventIndex
  */
 class MoveToDouble3DEventOption(
     private val decisionData: DecisionData,
@@ -40,17 +40,13 @@ class MoveToDouble3DEventOption(
 
     override fun getConsiderationList(): List<Consideration> {
         return if (movementEventMap.containsKey(keepEventIndex)) {
-           RelationConsideration(
-               playerId = movementEventMap.getValue(keepEventIndex).,
-               diplomacyData = DiplomacyData(
-                   seen1 = 0,
-                   relation = mapOf(),
-                   serializationConstructorMarker = null
-               ),
-               rank = 0,
-               multiplier = 0.0,
-               normalizeRelation = 0.0
-           )
+            listOf(
+                RelationConsideration(
+                    playerId = movementEventMap.getValue(keepEventIndex).event.fromId,
+                    diplomacyData = decisionData.universeData3DAtPlayer.
+                    getCurrentPlayerData().playerInternalData.diplomacyData,
+                )
+            )
         } else {
             listOf()
         }
