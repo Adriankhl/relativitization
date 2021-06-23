@@ -2,7 +2,7 @@ package relativitization.universe.ai.default
 
 import relativitization.universe.ai.AI
 import relativitization.universe.ai.default.event.EventReasoner
-import relativitization.universe.ai.default.event.EventReasonerOption
+import relativitization.universe.ai.default.utils.Consideration
 import relativitization.universe.ai.default.utils.DecisionData
 import relativitization.universe.ai.default.utils.Option
 import relativitization.universe.ai.default.utils.SequenceReasoner
@@ -15,15 +15,22 @@ object DefaultAI : AI() {
 
     override fun compute(universeData3DAtPlayer: UniverseData3DAtPlayer): List<Command> {
         logger.debug("Computing player ${universeData3DAtPlayer.id} with DefaultAI")
-        return RootReasoner(universeData3DAtPlayer).getCommandList()
+        return RootReasoner(universeData3DAtPlayer).computeCommandList()
     }
 }
 
-class RootReasoner(universeData3DAtPlayer: UniverseData3DAtPlayer) : SequenceReasoner() {
+class RootReasoner(
+    universeData3DAtPlayer: UniverseData3DAtPlayer
+) : SequenceReasoner(DecisionData(universeData3DAtPlayer)) {
 
-    private val decisionData = DecisionData(universeData3DAtPlayer)
+    override val considerationList: List<Consideration> = listOf()
 
     override val optionList: List<Option> = listOf(
-        EventReasonerOption(decisionData),
+        EventReasoner(decisionData),
     )
+
+    fun computeCommandList(): List<Command> {
+        updateData()
+        return decisionData.commandList
+    }
 }

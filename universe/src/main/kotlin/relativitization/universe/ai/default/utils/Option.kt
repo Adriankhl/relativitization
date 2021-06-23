@@ -34,12 +34,13 @@ interface Option {
         }
     }
 
-    fun getCommandList(): List<Command>
+    fun updateData()
 }
 
-abstract class LeafOption(private val decisionData: DecisionData) : Option {
-    fun getAndAddCommand() {
-        val commandList: List<Command> = getCommandList()
+abstract class CommandListOption(private val decisionData: DecisionData) : Option {
+    protected abstract val commandList: List<Command>
+
+    override fun updateData() {
         decisionData.addCommands(commandList)
     }
 }

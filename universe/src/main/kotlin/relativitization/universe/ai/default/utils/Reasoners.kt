@@ -3,26 +3,22 @@ package relativitization.universe.ai.default.utils
 import relativitization.universe.data.commands.Command
 import kotlin.random.Random
 
-interface Reasoner {
-    val optionList: List<Option>
-
-    fun getCommandList(): List<Command>
+abstract class Reasoner : Option {
+    abstract val optionList: List<Option>
 }
 
-abstract class SequenceReasoner : Reasoner {
-    override fun getCommandList(): List<Command> {
-        return optionList.flatMap { it.getCommandList() }
+abstract class SequenceReasoner(protected val decisionData: DecisionData) : Reasoner() {
+    override fun updateData() {
+        optionList.forEach { it.updateData() }
     }
 }
 
-abstract class DualUtilityReasoner : Reasoner {
-    override fun getCommandList(): List<Command> {
+abstract class DualUtilityReasoner(val decisionData: DecisionData): Reasoner() {
+    override fun updateData() {
         val optionWeightMap: Map<Option, Double> = optionList.associateWith { it.getWeight() }
         val validOptionWeightMap: Map<Option, Double> = optionWeightMap.filterValues { it > 0.0 }
 
-        return if (validOptionWeightMap.isEmpty()) {
-            listOf()
-        } else {
+        if (validOptionWeightMap.isNotEmpty()) {
 
             val optionRankMap: Map<Option, Int> = validOptionWeightMap.keys.associateWith { it.getRank() }
 
@@ -34,19 +30,16 @@ abstract class DualUtilityReasoner : Reasoner {
                 maxRankOptionList.contains(it)
             }
 
-            // Iterate to select option by weight
-            var selectedOption: Option = maxRankOptionWeightMap.keys.first()
+            // Iterate to select one option by weight
             val totalWeight: Double = maxRankOptionWeightMap.values.sum()
             var optionRand: Double = Random.Default.nextDouble() * totalWeight
             for ((option, weight) in maxRankOptionWeightMap) {
                 optionRand -= weight
                 if (optionRand <= 0.0) {
-                    selectedOption = option
+                    option.updateData()
                     break
                 }
             }
-
-            selectedOption.getCommandList()
         }
     }
 }
