@@ -21,7 +21,9 @@ object DefaultAI : AI() {
 
 class RootReasoner(
     universeData3DAtPlayer: UniverseData3DAtPlayer
-) : SequenceReasoner(DecisionData(universeData3DAtPlayer)) {
+) : SequenceReasoner() {
+
+    val decisionData = DecisionData(universeData3DAtPlayer)
 
     override val considerationList: List<Consideration> = listOf()
 

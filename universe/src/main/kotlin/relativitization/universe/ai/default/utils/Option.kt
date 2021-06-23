@@ -40,7 +40,11 @@ interface Option {
 abstract class CommandListOption(private val decisionData: DecisionData) : Option {
     protected abstract val commandList: List<Command>
 
+    // Extra step to update Decision Data beside adding command
+    protected abstract fun updateDecisionData()
+
     override fun updateData() {
         decisionData.addCommands(commandList)
+        updateDecisionData()
     }
 }
