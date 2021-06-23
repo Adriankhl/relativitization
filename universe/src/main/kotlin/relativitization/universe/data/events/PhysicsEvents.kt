@@ -21,25 +21,26 @@ import kotlin.math.min
  */
 @Serializable
 data class MoveToDouble3DEvent(
-    override val playerId: Int,
+    override val toId: Int,
+    override val fromId: Int,
     val targetDouble3D: Double3D,
     val maxSpeed: Double,
     override val stayTime: Int,
 ) : Event() {
-    override val name: String = "Move to player"
+    override val name: String = "Move to double3D"
 
-    override val description: String = "Player $playerId moving to $targetDouble3D"
+    override val description: String = "Player $toId moving to $targetDouble3D"
 
     override val choiceDescription: Map<Int, String> = mapOf(
         0 to "Moving to position $targetDouble3D",
         1 to "Cancel this command"
     )
 
-    override fun canSend(playerData: PlayerData, toId: Int, universeSettings: UniverseSettings): Boolean {
+    override fun canSend(playerData: PlayerData, universeSettings: UniverseSettings): Boolean {
         return playerData.isSubOrdinateOrSelf(toId)
     }
 
-    override fun canExecute(playerData: MutablePlayerData, fromId: Int, universeSettings: UniverseSettings): Boolean {
+    override fun canExecute(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean {
         return playerData.isLeaderOrSelf(fromId)
     }
 
@@ -76,9 +77,9 @@ data class MoveToDouble3DEvent(
 
             val changeVelocityCommand = ChangeVelocityCommand(
                 targetVelocity = targetVelocityData.newVelocity,
-                fromId = playerId,
-                toId = playerId,
-                fromInt4D = universeData3DAtPlayer.get(playerId).int4D
+                fromId = toId,
+                toId = toId,
+                fromInt4D = universeData3DAtPlayer.get(toId).int4D
             )
             listOf(changeVelocityCommand, disableFuelProductionCommand)
         } else {

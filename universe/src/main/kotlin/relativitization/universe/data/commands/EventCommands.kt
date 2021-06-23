@@ -17,7 +17,7 @@ data class AddEventCommand(
     val event: Event,
     override val fromId: Int,
     override val fromInt4D: Int4D,
-    override val toId: Int = event.playerId,
+    override val toId: Int = event.toId,
 ) : Command() {
     override val name: String = "Add Event"
 
@@ -29,14 +29,14 @@ data class AddEventCommand(
      * Whether this player can send the event depends on the event
      */
     override fun canSend(playerData: PlayerData, universeSettings: UniverseSettings): Boolean {
-        return event.canSend(playerData, toId, universeSettings)
+        return validEventPlayerId() && event.canSend(playerData, universeSettings)
     }
 
     /**
      * Whether the event can be added to the player depends on the event
      */
     override fun canExecute(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean {
-        return event.canExecute(playerData, fromId, universeSettings)
+        return event.canExecute(playerData, universeSettings)
     }
 
 
@@ -47,6 +47,11 @@ data class AddEventCommand(
         val eventData: MutableEventData = MutableEventData(event)
         playerData.playerInternalData.eventDataList.add(eventData)
     }
+
+    /**
+     * Check whether the fromId and toId in the event is equal to those in the command
+     */
+    fun validEventPlayerId(): Boolean = (fromId == event.fromId) && (toId == event.toId)
 }
 
 /**

@@ -103,7 +103,8 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
             val maxSpeed = maxSpeedTextField.text.toDouble()
 
             val moveToDouble3DEvent = MoveToDouble3DEvent(
-                playerId = playerData.id,
+                toId = playerData.id,
+                fromId = game.universeClient.getUniverseData3D().getCurrentPlayerData().id,
                 targetDouble3D = Double3D(x, y, z),
                 maxSpeed = maxSpeed,
                 stayTime = Int.MAX_VALUE,
@@ -114,7 +115,6 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
                 fromId = game.universeClient.getUniverseData3D().getCurrentPlayerData().id,
                 fromInt4D = game.universeClient.getUniverseData3D().getCurrentPlayerData().int4D,
                 toId = playerData.id
-
             )
 
             val canSend: Boolean = addEventCommand.canSendFromPlayer(

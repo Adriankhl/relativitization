@@ -15,7 +15,10 @@ sealed class Event {
     abstract val name: String
 
     // The event belongs (or will belong) to this player
-    abstract val playerId: Int
+    abstract val toId: Int
+
+    // The event sent from this player id, -1 if this is an auto-event
+    abstract val fromId: Int
 
     // Description of the event
     abstract val description: String
@@ -41,10 +44,10 @@ sealed class Event {
     abstract fun defaultChoice(universeData3DAtPlayer: UniverseData3DAtPlayer): Int
 
     // Whether the player can send this event to other player
-    abstract fun canSend(playerData: PlayerData, toId: Int, universeSettings: UniverseSettings): Boolean
+    abstract fun canSend(playerData: PlayerData, universeSettings: UniverseSettings): Boolean
 
     // Whether this event can be added to the player
-    abstract fun canExecute(playerData: MutablePlayerData, fromId: Int, universeSettings: UniverseSettings): Boolean
+    abstract fun canExecute(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean
 
     // generate commands
     // call once per turn

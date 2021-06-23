@@ -43,7 +43,7 @@ abstract class CommandListOption(private val decisionData: DecisionData) : Optio
     protected abstract fun getCommandList(): List<Command>
 
     // Extra step to update Decision Data beside adding command
-    protected abstract fun extraUpdateDecisionData()
+    protected open fun extraUpdateDecisionData() {}
 
     override fun updateData() {
         val commandList = getCommandList()

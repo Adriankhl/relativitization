@@ -4,7 +4,6 @@ import kotlinx.coroutines.runBlocking
 import relativitization.universe.Universe
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.events.MoveToDouble3DEvent
-import relativitization.universe.data.physics.Int3D
 import relativitization.universe.data.physics.Int4D
 import relativitization.universe.generate.GenerateSettings
 import relativitization.universe.generate.GenerateUniverse
@@ -18,7 +17,8 @@ internal class SelectEventChoiceCommandTest {
         assert(view7.get(2).int4D == Int4D(7, 0, 0, 0))
 
         val event = MoveToDouble3DEvent(
-            playerId = 2,
+            toId = 2,
+            fromId = 2,
             targetDouble3D = view7.get(3)
                 .groupCenterDouble3D(view7.universeSettings.groupEdgeLength),
             maxSpeed = 0.2,
