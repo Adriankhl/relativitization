@@ -6,6 +6,9 @@ import relativitization.universe.data.commands.Command
 import relativitization.universe.data.commands.SelectEventChoiceCommand
 import relativitization.universe.data.events.EventData
 
+/**
+ * Reasoner to pick only one MoveToDouble3D event
+ */
 class PickMoveToDouble3DEventReasoner(
     private val decisionData: DecisionData
 ) : DualUtilityReasoner() {
