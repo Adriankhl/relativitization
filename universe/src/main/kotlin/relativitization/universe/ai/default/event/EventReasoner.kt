@@ -7,7 +7,9 @@ import relativitization.universe.ai.default.utils.SequenceReasoner
 import relativitization.universe.data.commands.Command
 
 class EventReasoner(private val decisionData: DecisionData) : SequenceReasoner() {
-    override val considerationList: List<Consideration> = listOf()
+    override fun getOptionList(): List<Option> {
+        return listOf()
+    }
 
-    override val optionList: List<Option> = listOf()
+    override fun getConsiderationList(): List<Consideration> = listOf()
 }

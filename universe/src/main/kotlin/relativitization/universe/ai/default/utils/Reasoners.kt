@@ -6,14 +6,14 @@ abstract class Reasoner : Option {
     abstract fun getOptionList(): List<Option>
 }
 
-abstract class SequenceReasoner() : Reasoner() {
+abstract class SequenceReasoner : Reasoner() {
     override fun updateData() {
         val optionList = getOptionList()
         optionList.forEach { it.updateData() }
     }
 }
 
-abstract class DualUtilityReasoner(): Reasoner() {
+abstract class DualUtilityReasoner : Reasoner() {
     override fun updateData() {
         val optionList = getOptionList()
         val optionWeightMap: Map<Option, Double> = optionList.associateWith { it.getWeight() }
@@ -45,7 +45,7 @@ abstract class DualUtilityReasoner(): Reasoner() {
     }
 }
 
-abstract class RepeatUntilReasoner(): Reasoner() {
+abstract class RepeatUntilReasoner : Reasoner() {
 
     // Whether the reasoner should continue looping
     abstract fun shouldContinue(): Boolean

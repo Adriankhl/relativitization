@@ -23,16 +23,19 @@ class RootReasoner(
     universeData3DAtPlayer: UniverseData3DAtPlayer
 ) : SequenceReasoner() {
 
-    val decisionData = DecisionData(universeData3DAtPlayer)
+    private val decisionData = DecisionData(universeData3DAtPlayer)
 
-    override val considerationList: List<Consideration> = listOf()
-
-    override val optionList: List<Option> = listOf(
-        EventReasoner(decisionData),
-    )
 
     fun computeCommandList(): List<Command> {
         updateData()
         return decisionData.commandList
     }
+
+    override fun getOptionList(): List<Option> {
+        return listOf(
+            EventReasoner(decisionData),
+        )
+    }
+
+    override fun getConsiderationList(): List<Consideration> = listOf()
 }
