@@ -1,6 +1,5 @@
 package relativitization.universe.ai.default.utils
 
-import relativitization.universe.data.commands.Command
 import kotlin.random.Random
 
 abstract class Reasoner : Option {
@@ -13,7 +12,7 @@ abstract class SequenceReasoner(protected val decisionData: DecisionData) : Reas
     }
 }
 
-abstract class DualUtilityReasoner(val decisionData: DecisionData): Reasoner() {
+abstract class DualUtilityReasoner(protected val decisionData: DecisionData): Reasoner() {
     override fun updateData() {
         val optionWeightMap: Map<Option, Double> = optionList.associateWith { it.getWeight() }
         val validOptionWeightMap: Map<Option, Double> = optionWeightMap.filterValues { it > 0.0 }
@@ -37,6 +36,28 @@ abstract class DualUtilityReasoner(val decisionData: DecisionData): Reasoner() {
                 optionRand -= weight
                 if (optionRand <= 0.0) {
                     option.updateData()
+                    break
+                }
+            }
+        }
+    }
+}
+
+abstract class RepeatUntilReasoner(protected val decisionData: DecisionData): Reasoner() {
+
+    // Whether the reasoner should continue looping
+    abstract fun shouldContinue(): Boolean
+
+    // Tick after each updateData()
+    abstract fun tick(option: Option)
+
+    override fun updateData() {
+        while (shouldContinue()) {
+            for (option in optionList) {
+                if (shouldContinue()) {
+                    option.updateData()
+                    tick(option)
+                } else {
                     break
                 }
             }
