@@ -18,10 +18,10 @@ internal class ChangeVelocityCommandTest {
         assert(view7.get(2).int4D == Int4D(7, 0, 0, 0))
 
         val command = ChangeVelocityCommand(
-            Velocity(0.1, 0.0, 0.0),
-            1,
-            Int4D(7, 0, 0, 0),
-            2,
+            targetVelocity = Velocity(0.1, 0.0, 0.0),
+            toId = 1,
+            fromId = 2,
+            fromInt4D = Int4D(7, 0, 0, 0),
         )
 
         runBlocking {

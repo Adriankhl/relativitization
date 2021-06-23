@@ -9,8 +9,8 @@ import relativitization.universe.data.physics.Int4D
 
 @Serializable
 data class DummyCommand(
-    override val fromId: Int = -1,
     override val toId: Int = -1,
+    override val fromId: Int = -1,
     override val fromInt4D: Int4D = Int4D(0, 0, 0, 0),
 ) : Command() {
     override val name: String = "Dummy"
@@ -36,8 +36,8 @@ data class DummyCommand(
  */
 @Serializable
 data class CannotSendCommand(
-    override val fromId: Int = -1,
     override val toId: Int = -1,
+    override val fromId: Int = -1,
     override val fromInt4D: Int4D = Int4D(0, 0, 0, 0),
 ) : Command() {
     override val name: String = "Cannot send"

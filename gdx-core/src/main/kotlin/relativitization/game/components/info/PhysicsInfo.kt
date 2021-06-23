@@ -50,9 +50,9 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
 
             val changeVelocityCommand: ChangeVelocityCommand = ChangeVelocityCommand(
                 targetVelocity = Velocity(vx, vy, vz),
+                toId = playerData.id,
                 fromId = game.universeClient.getUniverseData3D().getCurrentPlayerData().id,
                 fromInt4D = game.universeClient.getUniverseData3D().getCurrentPlayerData().int4D,
-                toId = playerData.id,
             )
 
             val canSend: Boolean = changeVelocityCommand.canSendFromPlayer(
@@ -112,9 +112,7 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
 
             val addEventCommand = AddEventCommand(
                 event = moveToDouble3DEvent,
-                fromId = game.universeClient.getUniverseData3D().getCurrentPlayerData().id,
                 fromInt4D = game.universeClient.getUniverseData3D().getCurrentPlayerData().int4D,
-                toId = playerData.id
             )
 
             val canSend: Boolean = addEventCommand.canSendFromPlayer(

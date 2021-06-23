@@ -28,9 +28,7 @@ internal class MoveToDouble3DEventTest {
 
         val command = AddEventCommand(
             event,
-            1,
             Int4D(7, 0, 0, 0),
-            2,
         )
 
         runBlocking {

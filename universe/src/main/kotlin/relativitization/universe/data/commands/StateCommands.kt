@@ -11,9 +11,9 @@ import relativitization.universe.data.state.temporary.DisableFuelProductionState
 @Serializable
 data class DisableFuelProductionCommand(
     val disableFuelProductionState: DisableFuelProductionState,
+    override val toId: Int,
     override val fromId: Int,
     override val fromInt4D: Int4D,
-    override val toId: Int,
 ) : Command() {
 
     override val name: String = "Disable Fuel Production"

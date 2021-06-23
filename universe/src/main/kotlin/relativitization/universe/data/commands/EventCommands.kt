@@ -15,10 +15,13 @@ import relativitization.universe.utils.RelativitizationLogManager
 @Serializable
 data class AddEventCommand(
     val event: Event,
-    override val fromId: Int,
     override val fromInt4D: Int4D,
-    override val toId: Int = event.toId,
 ) : Command() {
+
+
+    override val toId: Int = event.toId
+    override val fromId: Int = event.fromId
+
     override val name: String = "Add Event"
 
     override fun description(): String {

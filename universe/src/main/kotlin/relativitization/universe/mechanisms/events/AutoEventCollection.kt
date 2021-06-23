@@ -13,7 +13,7 @@ import relativitization.universe.mechanisms.Mechanism
  * Object to store all the generator of events
  */
 object AutoEventCollection : Mechanism() {
-    val autoEventList: List<AutoEvent> = listOf(
+    private val autoEventList: List<AutoEvent> = listOf(
     )
 
     override fun process(
@@ -26,7 +26,6 @@ object AutoEventCollection : Mechanism() {
             eventList.map { event ->
                 AddEventCommand(
                     event = event,
-                    fromId = mutablePlayerData.id,
                     fromInt4D = mutablePlayerData.int4D.toInt4D()
                 )
             }

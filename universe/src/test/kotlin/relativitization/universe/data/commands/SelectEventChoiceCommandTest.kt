@@ -28,9 +28,7 @@ internal class SelectEventChoiceCommandTest {
 
         val addEventCommand = AddEventCommand(
             event,
-            2,
             Int4D(7, 0, 0, 0),
-            2,
         )
 
         // Add Command

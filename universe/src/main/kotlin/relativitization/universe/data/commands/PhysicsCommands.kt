@@ -13,9 +13,9 @@ import relativitization.universe.utils.RelativitizationLogManager
 @Serializable
 data class ChangeVelocityCommand(
     val targetVelocity: Velocity,
+    override val toId: Int,
     override val fromId: Int,
     override val fromInt4D: Int4D,
-    override val toId: Int,
 ) : Command() {
 
     override val name: String = "Change Velocity"

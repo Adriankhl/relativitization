@@ -13,10 +13,10 @@ internal class CommandInputMessageTest {
             1,
             "abc",
             listOf(ChangeVelocityCommand(
-                Velocity(0.3, 0.3, 0.3),
-                1,
-                Int4D(0,0,0,0),
-                1,
+                targetVelocity = Velocity(0.3, 0.3, 0.3),
+                toId = 1,
+                fromId = 1,
+                fromInt4D = Int4D(0,0,0,0),
             ))
         )
 

@@ -45,9 +45,9 @@ object FlockingAI : AI() {
 
         val changeVelocityCommand = ChangeVelocityCommand(
             targetVelocity = weightedVelocity,
+            toId = universeData3DAtPlayer.id,
             fromId = universeData3DAtPlayer.id,
             fromInt4D = universeData3DAtPlayer.getCurrentPlayerData().int4D,
-            toId = universeData3DAtPlayer.id,
         )
 
         return listOf(changeVelocityCommand)

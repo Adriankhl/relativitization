@@ -59,10 +59,10 @@ data class MoveToDouble3DEvent(
             )
 
             val disableFuelProductionCommand = DisableFuelProductionCommand(
-                disableFuelProductionState,
-                playerData.id,
-                playerData.int4D,
-                playerData.id
+                disableFuelProductionState = disableFuelProductionState,
+                toId = playerData.id,
+                fromId = playerData.id,
+                fromInt4D = playerData.int4D,
             )
 
             val targetVelocityData: TargetVelocityData = targetDouble3DByPhotonRocket(
@@ -77,8 +77,8 @@ data class MoveToDouble3DEvent(
 
             val changeVelocityCommand = ChangeVelocityCommand(
                 targetVelocity = targetVelocityData.newVelocity,
-                fromId = toId,
                 toId = toId,
+                fromId = toId,
                 fromInt4D = universeData3DAtPlayer.get(toId).int4D
             )
             listOf(changeVelocityCommand, disableFuelProductionCommand)
