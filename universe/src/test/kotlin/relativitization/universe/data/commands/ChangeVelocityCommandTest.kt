@@ -19,8 +19,8 @@ internal class ChangeVelocityCommandTest {
 
         val command = ChangeVelocityCommand(
             targetVelocity = Velocity(0.1, 0.0, 0.0),
-            toId = 1,
-            fromId = 2,
+            toId = 2,
+            fromId = 1,
             fromInt4D = Int4D(7, 0, 0, 0),
         )
 

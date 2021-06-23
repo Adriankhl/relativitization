@@ -12,7 +12,7 @@ import relativitization.universe.data.events.EventData
 /**
  * Cancel all MoveToDouble3D beside event at keepEventIndex
  */
-class MoveToDouble3DEventOption(
+class PickMoveToDouble3DEventOption(
     private val decisionData: DecisionData,
     private val keepEventIndex: Int,
 ) : CommandListOption(decisionData) {
