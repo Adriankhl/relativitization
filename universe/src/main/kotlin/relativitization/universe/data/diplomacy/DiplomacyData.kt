@@ -9,7 +9,15 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class DiplomacyData(
     val relation: Map<Int, Int> = mapOf()
-)
+) {
+    fun getRelation(id: Int): Int {
+        return if (relation.containsKey(id)) {
+            relation.getValue(id)
+        } else {
+            0
+        }
+    }
+}
 
 @Serializable
 data class MutableDiplomacyData(
