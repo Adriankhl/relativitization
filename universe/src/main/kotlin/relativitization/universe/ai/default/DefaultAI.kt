@@ -27,6 +27,7 @@ class RootReasoner(
 
 
     fun computeCommandList(): List<Command> {
+        logger.debug("Root reasoner computing commandList")
         updateData()
         return decisionData.commandList
     }
@@ -38,4 +39,8 @@ class RootReasoner(
     }
 
     override fun getConsiderationList(): List<Consideration> = listOf()
+
+    companion object {
+        private val logger = RelativitizationLogManager.getLogger()
+    }
 }

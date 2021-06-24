@@ -1,5 +1,6 @@
 package relativitization.universe.ai.default.utils
 
+import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.random.Random
 
 abstract class Reasoner : Option {
@@ -8,13 +9,25 @@ abstract class Reasoner : Option {
 
 abstract class SequenceReasoner : Reasoner() {
     override fun updateData() {
+        val className = this::class.qualifiedName
+
+        logger.debug("$className (SequenceReasoner) updating data")
+
         val optionList = getOptionList()
         optionList.forEach { it.updateData() }
+    }
+
+    companion object {
+        private val logger = RelativitizationLogManager.getLogger()
     }
 }
 
 abstract class DualUtilityReasoner : Reasoner() {
     override fun updateData() {
+        val className = this::class.qualifiedName
+
+        logger.debug("$className (DualUtilityReasoner) updating data")
+
         val optionList = getOptionList()
         val optionWeightMap: Map<Option, Double> = optionList.associateWith { it.getWeight() }
         val validOptionWeightMap: Map<Option, Double> = optionWeightMap.filterValues { it > 0.0 }
@@ -43,6 +56,10 @@ abstract class DualUtilityReasoner : Reasoner() {
             }
         }
     }
+
+    companion object {
+        private val logger = RelativitizationLogManager.getLogger()
+    }
 }
 
 abstract class RepeatUntilReasoner : Reasoner() {
@@ -50,11 +67,16 @@ abstract class RepeatUntilReasoner : Reasoner() {
     // Whether the reasoner should continue looping
     abstract fun shouldContinue(): Boolean
 
-    // Tick after each updateData()
+    // Tick after each updateData() in option
     abstract fun tick(option: Option)
 
     override fun updateData() {
+        val className = this::class.qualifiedName
+
+        logger.debug("$className (RepeatUntilReasoner) updating data")
+
         while (shouldContinue()) {
+            logger.debug("$className (RepeatUntilReasoner) repeating")
             val optionList = getOptionList()
             for (option in optionList) {
                 if (shouldContinue()) {
@@ -65,5 +87,9 @@ abstract class RepeatUntilReasoner : Reasoner() {
                 }
             }
         }
+    }
+
+    companion object {
+        private val logger = RelativitizationLogManager.getLogger()
     }
 }

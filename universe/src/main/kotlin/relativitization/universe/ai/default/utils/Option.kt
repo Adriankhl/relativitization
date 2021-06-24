@@ -1,6 +1,7 @@
 package relativitization.universe.ai.default.utils
 
 import relativitization.universe.data.commands.Command
+import relativitization.universe.utils.RelativitizationLogManager
 
 interface Option {
     fun getConsiderationList(): List<Consideration>
@@ -46,8 +47,16 @@ abstract class CommandListOption(private val decisionData: DecisionData) : Optio
     protected open fun extraUpdateDecisionData() {}
 
     override fun updateData() {
+        val className = this::class.qualifiedName
+
+        logger.debug("$className (CommandListOption) updating data")
+
         val commandList = getCommandList()
         decisionData.addCommands(commandList)
         extraUpdateDecisionData()
+    }
+
+    companion object {
+        private val logger = RelativitizationLogManager.getLogger()
     }
 }
