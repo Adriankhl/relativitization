@@ -2,7 +2,6 @@ package relativitization.game.components.info
 
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
 import com.badlogic.gdx.scenes.scene2d.ui.Table
-import kotlinx.coroutines.runBlocking
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.commands.Command
@@ -51,7 +50,7 @@ class CommandsInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game
 
         nestedTable.background = assets.getBackgroundColor(0.25f, 0.25f, 0.25f, 1.0f)
 
-        val commandNameLabel = createLabel(command.name, gdxSettings.normalFontSize)
+        val commandNameLabel = createLabel(command.name.toString(), gdxSettings.normalFontSize)
 
         val commandDescriptionLabel = createLabel(command.description(), gdxSettings.smallFontSize)
         commandDescriptionLabel.wrap = true
