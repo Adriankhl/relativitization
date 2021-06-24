@@ -5,6 +5,7 @@ import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.events.Event
+import relativitization.universe.data.events.EventName
 import relativitization.universe.data.events.MutableEventData
 import relativitization.universe.data.physics.Int4D
 import relativitization.universe.utils.RelativitizationLogManager
@@ -67,7 +68,7 @@ data class AddEventCommand(
 @Serializable
 data class SelectEventChoiceCommand(
     val eventIndex: Int,
-    val eventName: String,
+    val eventName: EventName,
     val choice: Int,
     override val fromId: Int,
     override val fromInt4D: Int4D,
