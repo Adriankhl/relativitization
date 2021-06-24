@@ -18,7 +18,7 @@ data class ChangeVelocityCommand(
     override val fromInt4D: Int4D,
 ) : Command() {
 
-    override val name: String = "Change Velocity"
+    override val name: CommandName = CommandName.CHANGE_VELOCITY
 
     override fun description(): String {
         return "Try to change velocity of player $toId to $targetVelocity"

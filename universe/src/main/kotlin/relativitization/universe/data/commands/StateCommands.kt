@@ -16,7 +16,7 @@ data class DisableFuelProductionCommand(
     override val fromInt4D: Int4D,
 ) : Command() {
 
-    override val name: String = "Disable Fuel Production"
+    override val name: CommandName = CommandName.DISABLE_FUEL_PRODUCTION
 
     override fun description(): String {
         return "Disable fuel production for ${disableFuelProductionState.timeRemain} turn"

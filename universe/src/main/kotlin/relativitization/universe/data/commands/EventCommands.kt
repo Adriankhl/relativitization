@@ -23,7 +23,7 @@ data class AddEventCommand(
     override val toId: Int = event.toId
     override val fromId: Int = event.fromId
 
-    override val name: String = "Add Event"
+    override val name: CommandName = CommandName.ADD_EVENT
 
     override fun description(): String {
         return "Add event (${event.name}) to player $toId from player $fromId."
@@ -74,7 +74,7 @@ data class SelectEventChoiceCommand(
     override val fromInt4D: Int4D,
     override val toId: Int,
 ) : Command() {
-    override val name: String = "Select Event Choice"
+    override val name: CommandName = CommandName.SELECT_EVENT_CHOICE
 
     override fun description(): String {
         return "Select choice $choice for event $eventIndex ($eventName)"

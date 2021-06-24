@@ -15,7 +15,7 @@ sealed class Command {
 
     // name of this command
     // for haveCommand() function
-    abstract val name: String
+    abstract val name: CommandName
 
     /**
      * Description of the command
@@ -101,12 +101,7 @@ sealed class Command {
     companion object {
         private val logger = RelativitizationLogManager.getLogger()
 
-        val defaultCommandList: List<String> = listOf(
-            "Add Event",
-            "Change Velocity",
-            "Disable Fuel Production",
-            "Select Event Choice"
-        )
+        val defaultCommandList: List<CommandName> = CommandName.values().toList()
 
         val commandCollectionList: List<String> = listOf(
             "DefaultCommands"
