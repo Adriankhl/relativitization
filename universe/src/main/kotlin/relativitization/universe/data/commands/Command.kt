@@ -125,3 +125,17 @@ sealed class Command {
         }
     }
 }
+
+enum class CommandName(val value: String) {
+    ADD_EVENT("Add event"),
+    CHANGE_VELOCITY("Change velocity"),
+    CANNOT_SEND("Cannot send"),
+    DISABLE_FUEL_PRODUCTION("Disable fuel production"),
+    DUMMY("Dummy"),
+    SELECT_EVENT_CHOICE("Select event choice")
+    ;
+
+    override fun toString(): String {
+        return value
+    }
+}
