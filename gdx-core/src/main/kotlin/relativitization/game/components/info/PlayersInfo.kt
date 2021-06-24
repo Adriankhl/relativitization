@@ -197,7 +197,7 @@ class PlayersInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
     private fun createDirectLeaderIdTable(): Table {
         val nestedTable = Table()
 
-        val directLeaderIdLabel = createLabel("DirectLeader Id: ", gdxSettings.smallFontSize)
+        val directLeaderIdLabel = createLabel("Direct leader Id: ", gdxSettings.smallFontSize)
 
         val directLeaderButton = createTextButton(
             text = playerData.playerInternalData.directLeaderId.toString(),
