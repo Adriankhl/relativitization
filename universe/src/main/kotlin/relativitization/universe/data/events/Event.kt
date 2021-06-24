@@ -56,8 +56,12 @@ sealed class Event {
     companion object {
         private val logger = RelativitizationLogManager.getLogger()
 
+        // For canAddEvent
         val defaultAddEventList: List<EventName> = EventName.values().toList()
 
+        /**
+         * Whether player can add this event to other player, used by AddEventCommand
+         */
         fun canAddEvent(universeSettings: UniverseSettings, event: Event): Boolean {
             return when (universeSettings.commandCollectionName) {
                 "DefaultCommands" -> {

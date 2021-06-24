@@ -33,14 +33,17 @@ data class AddEventCommand(
      * Whether this player can send the event depends on the event
      */
     override fun canSend(playerData: PlayerData, universeSettings: UniverseSettings): Boolean {
-        return validEventPlayerId() && event.canSend(playerData, universeSettings)
+        return validEventPlayerId() &&
+                Event.canAddEvent(universeSettings, event) &&
+                event.canSend(playerData, universeSettings)
     }
 
     /**
      * Whether the event can be added to the player depends on the event
      */
     override fun canExecute(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean {
-        return event.canExecute(playerData, universeSettings)
+        return Event.canAddEvent(universeSettings, event) &&
+                event.canExecute(playerData, universeSettings)
     }
 
 
@@ -55,7 +58,7 @@ data class AddEventCommand(
     /**
      * Check whether the fromId and toId in the event is equal to those in the command
      */
-    fun validEventPlayerId(): Boolean = (fromId == event.fromId) && (toId == event.toId)
+    private fun validEventPlayerId(): Boolean = (fromId == event.fromId) && (toId == event.toId)
 }
 
 /**
