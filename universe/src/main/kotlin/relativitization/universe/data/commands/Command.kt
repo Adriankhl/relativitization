@@ -126,6 +126,9 @@ sealed class Command {
     }
 }
 
+/**
+ * Names of command, aid command comparison and grouping
+ */
 enum class CommandName(val value: String) {
     ADD_EVENT("Add event"),
     CHANGE_VELOCITY("Change velocity"),

@@ -27,7 +27,7 @@ data class MoveToDouble3DEvent(
     val maxSpeed: Double,
     override val stayTime: Int,
 ) : Event() {
-    override val name: String = "Move to double3D"
+    override val name: EventName = EventName.MOVE_TO_DOUBLE3D
 
     override val description: String = "Player $toId moving to $targetDouble3D"
 

@@ -66,7 +66,7 @@ class EventsInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.a
 
         nestedTable.background = assets.getBackgroundColor(0.25f, 0.25f, 0.25f, 1.0f)
 
-        val eventNameLabel = createLabel(eventData.event.name, gdxSettings.normalFontSize)
+        val eventNameLabel = createLabel(eventData.event.name.toString(), gdxSettings.normalFontSize)
         nestedTable.add(eventNameLabel).colspan(2)
 
         nestedTable.row().space(10f)

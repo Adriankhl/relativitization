@@ -12,7 +12,7 @@ import relativitization.universe.utils.RelativitizationLogManager
 sealed class Event {
 
     // Name of the event
-    abstract val name: String
+    abstract val name: EventName
 
     // The event belongs (or will belong) to this player
     abstract val toId: Int
@@ -55,6 +55,33 @@ sealed class Event {
 
     companion object {
         private val logger = RelativitizationLogManager.getLogger()
+
+        val defaultAddEventList: List<EventName> = EventName.values().toList()
+
+        fun canAddEvent(universeSettings: UniverseSettings, event: Event): Boolean {
+            return when (universeSettings.commandCollectionName) {
+                "DefaultCommands" -> {
+                    defaultAddEventList.contains(event.name)
+                }
+                else -> {
+                    logger.error("No add event command collection name: ${universeSettings.commandCollectionName} found")
+                    defaultAddEventList.contains(event.name)
+                }
+            }
+        }
+    }
+}
+
+
+/**
+ * Names of event, aid event comparison and grouping
+ */
+enum class EventName(val value: String) {
+    MOVE_TO_DOUBLE3D("Move to double3D")
+    ;
+
+    override fun toString(): String {
+        return value
     }
 }
 
