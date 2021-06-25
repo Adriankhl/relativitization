@@ -1,4 +1,4 @@
-package relativitization.universe.data.popsystems
+package relativitization.universe.data.popsystem
 
 import kotlinx.serialization.Serializable
 import kotlin.random.Random

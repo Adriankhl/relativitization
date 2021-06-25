@@ -10,13 +10,12 @@ import relativitization.universe.data.events.MutableEventData
 import relativitization.universe.data.physics.*
 import relativitization.universe.data.politics.MutablePoliticsData
 import relativitization.universe.data.politics.PoliticsData
-import relativitization.universe.data.popsystems.MutablePopSystemicData
-import relativitization.universe.data.popsystems.PopSystemicData
+import relativitization.universe.data.popsystem.MutablePopSystemicData
+import relativitization.universe.data.popsystem.PopSystemicData
 import relativitization.universe.data.science.MutableScienceData
 import relativitization.universe.data.science.ScienceData
 import relativitization.universe.data.state.MutablePlayerState
 import relativitization.universe.data.state.PlayerState
-import relativitization.universe.maths.grid.Grids
 import relativitization.universe.maths.grid.Grids.double4DToGroupId
 import relativitization.universe.maths.grid.Grids.groupIdToCenterDouble3D
 
