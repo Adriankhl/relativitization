@@ -8,6 +8,10 @@ data class AllPopData(
     val engineerPopData: EngineerPopData = EngineerPopData(),
     val scholarPopData: ScholarPopData = ScholarPopData(),
     val educatorPopData: EducatorPopData = EducatorPopData(),
+    val medicPopData: MedicPopData = MedicPopData(),
+    val serviceWorkerPopData: ServiceWorkerPopData = ServiceWorkerPopData(),
+    val entertainerPopData: EntertainerPopData = EntertainerPopData(),
+    val soldierPopData: SoldierPopData = SoldierPopData(),
 )
 
 @Serializable
@@ -16,6 +20,10 @@ data class MutableAllPopData(
     var engineerPopData: MutableEngineerPopData = MutableEngineerPopData(),
     var scholarPopData: MutableScholarPopData = MutableScholarPopData(),
     var educatorPopData: MutableEducatorPopData = MutableEducatorPopData(),
+    var medicPopData: MutableMedicPopData = MutableMedicPopData(),
+    var serviceWorkerPopData: MutableServiceWorkerPopData = MutableServiceWorkerPopData(),
+    var entertainerPopData: MutableEntertainerPopData = MutableEntertainerPopData(),
+    var soldierPopData: MutableSoldierPopData = MutableSoldierPopData(),
 )
 
 @Serializable
@@ -23,6 +31,7 @@ data class CommonPopData(
     val childPopulation: Double = 20.0,
     val adultPopulation: Double = 100.0,
     val elderlyPopulation: Double = 20.0,
+    val unemploymentRate: Double = 0.0,
     val satisfaction: Double = 0.0,
     val fuelRestMassSaving: Double = 0.0,
 )
@@ -32,6 +41,7 @@ data class MutableCommonPopData(
     var childPopulation: Double = 20.0,
     var adultPopulation: Double = 100.0,
     var elderlyPopulation: Double = 20.0,
+    var unemploymentRate: Double = 0.0,
     var satisfaction: Double = 0.0,
     var fuelRestMassSaving: Double = 0.0,
 )
@@ -67,11 +77,52 @@ data class MutableScholarPopData(
 )
 
 @Serializable
+data class MedicPopData(
+    val commonPopData: CommonPopData = CommonPopData()
+)
+
+@Serializable
+data class MutableMedicPopData(
+    var commonPopData: MutableCommonPopData = MutableCommonPopData()
+)
+
+
+@Serializable
 data class EducatorPopData(
     val commonPopData: CommonPopData = CommonPopData()
 )
 
 @Serializable
 data class MutableEducatorPopData(
+    var commonPopData: MutableCommonPopData = MutableCommonPopData()
+)
+
+@Serializable
+data class ServiceWorkerPopData(
+    val commonPopData: CommonPopData = CommonPopData()
+)
+
+@Serializable
+data class MutableServiceWorkerPopData(
+    var commonPopData: MutableCommonPopData = MutableCommonPopData()
+)
+
+@Serializable
+data class EntertainerPopData(
+    val commonPopData: CommonPopData = CommonPopData()
+)
+
+@Serializable
+data class MutableEntertainerPopData(
+    var commonPopData: MutableCommonPopData = MutableCommonPopData()
+)
+
+@Serializable
+data class SoldierPopData(
+    val commonPopData: CommonPopData = CommonPopData()
+)
+
+@Serializable
+data class MutableSoldierPopData(
     var commonPopData: MutableCommonPopData = MutableCommonPopData()
 )
