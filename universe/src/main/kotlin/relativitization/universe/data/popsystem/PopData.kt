@@ -24,6 +24,7 @@ data class CommonPopData(
     val adultPopulation: Double = 100.0,
     val elderlyPopulation: Double = 20.0,
     val satisfaction: Double = 0.0,
+    val fuelRestMassSaving: Double = 0.0,
 )
 
 @Serializable
@@ -32,6 +33,7 @@ data class MutableCommonPopData(
     var adultPopulation: Double = 100.0,
     var elderlyPopulation: Double = 20.0,
     var satisfaction: Double = 0.0,
+    var fuelRestMassSaving: Double = 0.0,
 )
 
 @Serializable
