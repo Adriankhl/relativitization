@@ -12,8 +12,8 @@ import relativitization.universe.data.politics.MutablePoliticsData
 import relativitization.universe.data.politics.PoliticsData
 import relativitization.universe.data.popsystem.MutablePopSystemicData
 import relativitization.universe.data.popsystem.PopSystemicData
-import relativitization.universe.data.science.MutableScienceData
-import relativitization.universe.data.science.ScienceData
+import relativitization.universe.data.science.MutablePlayerScienceData
+import relativitization.universe.data.science.PlayerScienceData
 import relativitization.universe.data.state.MutablePlayerState
 import relativitization.universe.data.state.PlayerState
 import relativitization.universe.maths.grid.Grids.double4DToGroupId
@@ -130,7 +130,7 @@ enum class PlayerType {
  * @property eventDataList list of current event on this player
  * @property physicsData physics-related data
  * @property popSystemicData population system related data
- * @property scienceData research related data
+ * @property playerScienceData research related data
  * @property politicsData political related data
  * @property diplomacyData diplomatic relation data
  * @property economyData economy related data
@@ -146,7 +146,7 @@ data class PlayerInternalData(
     val eventDataList: List<EventData> = listOf(),
     val physicsData: PhysicsData = PhysicsData(),
     val popSystemicData: PopSystemicData = PopSystemicData(),
-    val scienceData: ScienceData = ScienceData(),
+    val playerScienceData: PlayerScienceData = PlayerScienceData(),
     val politicsData: PoliticsData = PoliticsData(),
     val diplomacyData: DiplomacyData = DiplomacyData(),
     val economyData: EconomyData = EconomyData(),
@@ -163,7 +163,7 @@ data class MutablePlayerInternalData(
     var eventDataList: MutableList<MutableEventData> = mutableListOf(),
     var physicsData: MutablePhysicsData = MutablePhysicsData(),
     var popSystemicData: MutablePopSystemicData = MutablePopSystemicData(),
-    var scienceData: MutableScienceData = MutableScienceData(),
+    var playerScienceData: MutablePlayerScienceData = MutablePlayerScienceData(),
     var politicsData: MutablePoliticsData = MutablePoliticsData(),
     var diplomacyData: MutableDiplomacyData = MutableDiplomacyData(),
     var economyData: MutableEconomyData = MutableEconomyData(),
