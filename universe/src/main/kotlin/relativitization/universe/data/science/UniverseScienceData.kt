@@ -50,10 +50,11 @@ object ProcessUniverseScienceData {
         return DataSerializer.copy(mutableUniverseScienceData)
     }
 
-    fun defaultUniverseScienceDataProcess(
+    private fun defaultUniverseScienceDataProcess(
         universeData: UniverseData,
         mutableUniverseScienceData: MutableUniverseScienceData
     ) {
-
+        universeData.universeData4D
+        mutableUniverseScienceData.allKnowledgeDataList
     }
 }
