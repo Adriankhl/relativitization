@@ -6,6 +6,7 @@ import relativitization.universe.data.*
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.physics.Int3D
 import relativitization.universe.data.physics.Int4D
+import relativitization.universe.data.science.ProcessUniverseScienceData
 import relativitization.universe.data.science.UniverseScienceData
 import relativitization.universe.data.serializer.DataSerializer.copy
 import relativitization.universe.data.serializer.DataSerializer.decode
@@ -395,6 +396,13 @@ class Universe(
 
         val universeSlice = playerCollection.getUniverseSlice(universeData)
         universeData.updateUniverseReplaceLatest(universeSlice)
+
+        // Update universe science data after updating player data in latest slice
+        val newUniverseScienceData: UniverseScienceData = ProcessUniverseScienceData.newUniverseScienceData(
+            universeData
+        )
+        universeData.universeScienceData = newUniverseScienceData
+
         saveLatest()
     }
 
