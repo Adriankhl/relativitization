@@ -1,6 +1,8 @@
 package relativitization.universe.data.science
 
 import kotlinx.serialization.Serializable
+import relativitization.universe.data.science.knowledge.KnowledgeData
+import relativitization.universe.data.science.technology.TechnologyData
 
 @Serializable
 data class PlayerScienceData(
