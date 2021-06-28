@@ -3,6 +3,7 @@ package relativitization.universe.data
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.physics.*
+import relativitization.universe.data.science.UniverseScienceData
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.maths.grid.Grids.create3DGrid
 import relativitization.universe.maths.grid.Grids.double4DToGroupId
@@ -14,7 +15,8 @@ data class UniverseData(
     val universeData4D: UniverseData4D,
     val universeSettings: UniverseSettings,
     val universeState: UniverseState,
-    val commandMap: MutableMap<Int, MutableList<Command>>
+    val commandMap: MutableMap<Int, MutableList<Command>>,
+    var universeScienceData: UniverseScienceData,
 ) {
     /**
      * Check whether the universeData4D has the correct dimension specified in the setting

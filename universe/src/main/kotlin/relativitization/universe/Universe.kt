@@ -6,6 +6,7 @@ import relativitization.universe.data.*
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.physics.Int3D
 import relativitization.universe.data.physics.Int4D
+import relativitization.universe.data.science.UniverseScienceData
 import relativitization.universe.data.serializer.DataSerializer.copy
 import relativitization.universe.data.serializer.DataSerializer.decode
 import relativitization.universe.data.serializer.DataSerializer.encode
@@ -153,6 +154,11 @@ class Universe(
         // save commands
         File("${saveDir}/commandMap-${latestTime}.json").writeText(
             encode(universeData.commandMap)
+        )
+
+        // save science data
+        File("${saveDir}/universeScienceData-${latestTime}.json").writeText(
+            encode(universeData.universeScienceData)
         )
 
         // Additionally save state to latestState.json for loading
@@ -432,6 +438,10 @@ class Universe(
                 File("${saveDir}/commandMap-${latestTime}.json").readText()
             )
 
+            val universeScienceData: UniverseScienceData = decode(
+                File("${saveDir}/universeScienceData-${latestTime}.json").readText()
+            )
+
             val playerData4D: MutableList<List<List<List<List<PlayerData>>>>> = mutableListOf()
             for (time in oldestTime..latestTime) {
                 playerData4D.add(decode(File("${saveDir}/universeData4DSlice-${time}.json").readText()))
@@ -440,10 +450,11 @@ class Universe(
             val universeData4D = UniverseData4D(playerData4D)
 
             return UniverseData(
-                universeData4D,
-                universeSettings,
-                universeState,
-                commandMap
+                universeData4D = universeData4D,
+                universeSettings = universeSettings,
+                universeState = universeState,
+                commandMap = commandMap,
+                universeScienceData = universeScienceData
             )
         }
 

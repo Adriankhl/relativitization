@@ -2,6 +2,7 @@ package relativitization.universe.generate.fixed
 
 import relativitization.universe.data.*
 import relativitization.universe.data.physics.MutableInt4D
+import relativitization.universe.data.science.UniverseScienceData
 import relativitization.universe.data.serializer.DataSerializer.copy
 import relativitization.universe.generate.GenerateSettings
 import relativitization.universe.generate.GenerateUniverse
@@ -91,6 +92,7 @@ class Minimal : GenerateUniverse() {
             universeSettings = universeSettings,
             universeState = universeState,
             commandMap = mutableMapOf(),
+            universeScienceData = UniverseScienceData(),
         )
     }
 }

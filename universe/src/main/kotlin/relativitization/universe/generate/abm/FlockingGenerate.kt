@@ -2,6 +2,7 @@ package relativitization.universe.generate.abm
 
 import relativitization.universe.data.*
 import relativitization.universe.data.physics.MutableVelocity
+import relativitization.universe.data.science.UniverseScienceData
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.generate.GenerateSettings
 import relativitization.universe.generate.GenerateUniverse
@@ -65,6 +66,7 @@ class FlockingGenerate : GenerateUniverse() {
             universeSettings = universeSettings,
             universeState = universeState,
             commandMap = mutableMapOf(),
+            universeScienceData = UniverseScienceData()
         )
     }
 }
