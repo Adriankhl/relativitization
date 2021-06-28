@@ -23,7 +23,7 @@ data class UniverseSettings(
     val universeName: String = "Test",
     val mechanismCollectionName: String = "DefaultMechanism",
     val commandCollectionName: String = "DefaultCommand",
-    val universeScienceDataProcessName: String = "UniverseScienceDataProcess",
+    val universeScienceDataProcessName: String = "DefaultUniverseScienceDataProcess",
     val speedOfLight: Double = 1.0,
     val tDim: Int = 8,
     val xDim: Int = 2,
