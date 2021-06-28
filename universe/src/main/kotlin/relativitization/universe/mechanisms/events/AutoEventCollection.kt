@@ -1,11 +1,12 @@
 package relativitization.universe.mechanisms.events
 
 import relativitization.universe.data.MutablePlayerData
-import relativitization.universe.data.UniverseData
 import relativitization.universe.data.UniverseData3DAtPlayer
+import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.AddEventCommand
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.events.AutoEvent
+import relativitization.universe.data.science.UniverseScienceData
 import relativitization.universe.mechanisms.Mechanism
 
 
@@ -19,7 +20,8 @@ object AutoEventCollection : Mechanism() {
     override fun process(
         mutablePlayerData: MutablePlayerData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
-        universeData: UniverseData
+        universeSettings: UniverseSettings,
+        universeScienceData: UniverseScienceData
     ): List<Command> {
         return autoEventList.map { autoEvent ->
             val eventList = autoEvent.generateEventList(universeData3DAtPlayer)

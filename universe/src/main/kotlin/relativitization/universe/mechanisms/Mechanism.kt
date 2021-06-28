@@ -3,7 +3,9 @@ package relativitization.universe.mechanisms
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseData
 import relativitization.universe.data.UniverseData3DAtPlayer
+import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
+import relativitization.universe.data.science.UniverseScienceData
 import relativitization.universe.mechanisms.events.AutoEventCollection
 import relativitization.universe.mechanisms.events.ProcessEvents
 import relativitization.universe.mechanisms.state.UpdateTemporaryState
@@ -16,12 +18,13 @@ abstract class Mechanism {
      *
      * @param mutablePlayerData the player data to be changed
      * @param universeData3DAtPlayer the universe data visible to the player
-     * @param universeData contains some general data like the knowledge network and universe settings
+     * @param universeSettings contains some general data like the knowledge network and universe settings
      */
     abstract fun process(
         mutablePlayerData: MutablePlayerData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
-        universeData: UniverseData
+        universeSettings: UniverseSettings,
+        universeScienceData: UniverseScienceData
     ): List<Command>
 }
 
@@ -48,7 +51,12 @@ object MechanismCollection {
         return when (universeData.universeSettings.mechanismCollectionName) {
             "DefaultMechanism" -> {
                 defaultMechanismList.map { mechanism ->
-                    mechanism.process(mutablePlayerData, universeData3DAtPlayer, universeData)
+                    mechanism.process(
+                        mutablePlayerData,
+                        universeData3DAtPlayer,
+                        universeData.universeSettings,
+                        universeData.universeScienceData
+                    )
                 }.flatten()
             }
             "Empty" -> {
