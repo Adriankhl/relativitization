@@ -8,6 +8,7 @@ import kotlinx.coroutines.runBlocking
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.TableScreen
 import relativitization.universe.data.commands.Command
+import relativitization.universe.data.science.ProcessUniverseScienceData
 import relativitization.universe.generate.GenerateUniverse
 import relativitization.universe.mechanisms.MechanismCollection
 import relativitization.universe.utils.RelativitizationLogManager
@@ -124,6 +125,19 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
         table.add(commandSelectBox)
 
         table.row().space(10f)
+
+        table.add(createLabel("Pick universe science data process: ", gdxSettings.normalFontSize))
+        val universeScienceDataProcessSelectBox = createSelectBox(
+            ProcessUniverseScienceData.universeScienceDataProcessNameList,
+            game.universeClient.generateSettings.universeSettings.universeScienceDataProcessName,
+            gdxSettings.normalFontSize,
+        ) { universeScienceDataProcessName, _ ->
+            game.universeClient.generateSettings.universeSettings.universeScienceDataProcessName = universeScienceDataProcessName
+        }
+        table.add(universeScienceDataProcessSelectBox)
+
+        table.row().space(10f)
+
 
 
         table.add(createLabel("Total number of AI/human player: ", gdxSettings.normalFontSize))

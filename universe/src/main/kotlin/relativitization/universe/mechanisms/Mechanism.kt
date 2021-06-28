@@ -40,7 +40,7 @@ object MechanismCollection {
     // list of all possible process collection name
     val mechanismProcessNameList: List<String> = listOf(
         "DefaultMechanism",
-        "Empty"
+        "EmptyMechanism"
     )
 
     fun processMechanismCollection(
@@ -59,7 +59,7 @@ object MechanismCollection {
                     )
                 }.flatten()
             }
-            "Empty" -> {
+            "EmptyMechanism" -> {
                 listOf()
             }
             else -> {
