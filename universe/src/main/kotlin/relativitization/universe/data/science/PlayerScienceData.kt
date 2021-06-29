@@ -22,8 +22,8 @@ data class PlayerScienceData(
 data class MutablePlayerScienceData(
     val singleKnowledgeDataList: MutableList<SingleKnowledgeData> = mutableListOf(),
     val singleTechnologyDataList: MutableList<SingleTechnologyData> = mutableListOf(),
-    val commonSenseKnowledgeData: MutableKnowledgeData = MutableKnowledgeData(),
-    val commonSenseTechnologyData: MutableTechnologyData = MutableTechnologyData(),
-    val playerKnowledgeData: MutableKnowledgeData = MutableKnowledgeData(),
-    val playerTechnologyData: MutableTechnologyData = MutableTechnologyData(),
+    var commonSenseKnowledgeData: MutableKnowledgeData = MutableKnowledgeData(),
+    var commonSenseTechnologyData: MutableTechnologyData = MutableTechnologyData(),
+    var playerKnowledgeData: MutableKnowledgeData = MutableKnowledgeData(),
+    var playerTechnologyData: MutableTechnologyData = MutableTechnologyData(),
 )

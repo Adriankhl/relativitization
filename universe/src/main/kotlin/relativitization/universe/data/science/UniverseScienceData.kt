@@ -23,8 +23,8 @@ data class UniverseScienceData(
 data class MutableUniverseScienceData(
     val allSingleKnowledgeDataList: MutableList<SingleKnowledgeData> = mutableListOf(),
     val allSingleTechnologyDataList: MutableList<SingleTechnologyData> = mutableListOf(),
-    val commonSenseKnowledgeData: MutableKnowledgeData = MutableKnowledgeData(),
-    val commonSenseTechnologyData: MutableTechnologyData = MutableTechnologyData(),
+    var commonSenseKnowledgeData: MutableKnowledgeData = MutableKnowledgeData(),
+    var commonSenseTechnologyData: MutableTechnologyData = MutableTechnologyData(),
 )
 
 object ProcessUniverseScienceData {
