@@ -6,6 +6,9 @@ import kotlinx.serialization.Serializable
 abstract class SingleKnowledgeData {
     abstract val knowledgeId: Int
 
+    abstract val referenceKnowledgeIdList: List<Int>
+    abstract val referenceTechnologyIdList: List<Int>
+
     abstract fun updateKnowledgeData(mutableKnowledgeData: MutableKnowledgeData)
 }
 
