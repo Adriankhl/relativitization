@@ -2,21 +2,21 @@ package relativitization.universe.data.science
 
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.UniverseData
-import relativitization.universe.data.science.knowledge.KnowledgeData
-import relativitization.universe.data.science.technology.TechnologyData
+import relativitization.universe.data.science.knowledge.SingleKnowledgeData
+import relativitization.universe.data.science.technology.SingleTechnologyData
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.utils.RelativitizationLogManager
 
 @Serializable
 data class UniverseScienceData(
-    val allKnowledgeDataList: List<KnowledgeData> = listOf(),
-    val allTechnologyDataList: List<TechnologyData> = listOf(),
+    val allSingleKnowledgeDataList: List<SingleKnowledgeData> = listOf(),
+    val allSingleTechnologyDataList: List<SingleTechnologyData> = listOf(),
 )
 
 @Serializable
 data class MutableUniverseScienceData(
-    val allKnowledgeDataList: MutableList<KnowledgeData> = mutableListOf(),
-    val allTechnologyDataList: MutableList<TechnologyData> = mutableListOf(),
+    val allSingleKnowledgeDataList: MutableList<SingleKnowledgeData> = mutableListOf(),
+    val allSingleTechnologyDataList: MutableList<SingleTechnologyData> = mutableListOf(),
 )
 
 object ProcessUniverseScienceData {
@@ -57,6 +57,6 @@ object ProcessUniverseScienceData {
         mutableUniverseScienceData: MutableUniverseScienceData
     ) {
         universeData.universeData4D
-        mutableUniverseScienceData.allKnowledgeDataList
+        mutableUniverseScienceData.allSingleKnowledgeDataList
     }
 }

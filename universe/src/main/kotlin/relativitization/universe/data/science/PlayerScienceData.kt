@@ -1,17 +1,17 @@
 package relativitization.universe.data.science
 
 import kotlinx.serialization.Serializable
-import relativitization.universe.data.science.knowledge.KnowledgeData
-import relativitization.universe.data.science.technology.TechnologyData
+import relativitization.universe.data.science.knowledge.SingleKnowledgeData
+import relativitization.universe.data.science.technology.SingleTechnologyData
 
 @Serializable
 data class PlayerScienceData(
-    val knowledgeDataList: List<KnowledgeData> = listOf(),
-    val technologyDataList: List<TechnologyData> = listOf(),
+    val singleKnowledgeDataList: List<SingleKnowledgeData> = listOf(),
+    val singleTechnologyDataList: List<SingleTechnologyData> = listOf(),
 )
 
 @Serializable
 data class MutablePlayerScienceData(
-    val knowledgeDataList: MutableList<KnowledgeData> = mutableListOf(),
-    val technologyDataList: MutableList<TechnologyData> = mutableListOf(),
+    val singleKnowledgeDataList: MutableList<SingleKnowledgeData> = mutableListOf(),
+    val singleTechnologyDataList: MutableList<SingleTechnologyData> = mutableListOf(),
 )
