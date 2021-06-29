@@ -5,14 +5,18 @@ import kotlinx.serialization.Serializable
 @Serializable
 abstract class SingleTechnologyData {
     abstract val technologyId: Int
+
+    abstract fun updateTechnologyData(mutableTechnologyData: MutableTechnologyData)
 }
 
 @Serializable
 data class TechnologyData(
-    val maxKnowledgeId: Int = 0,
+    val minKnowledgeId: Int = 0,
+    val technologyIdList: List<Int> = listOf(),
 )
 
 @Serializable
 data class MutableTechnologyData(
-    var maxKnowledgeId: Int = 0,
+    var minKnowledgeId: Int = 0,
+    val technologyIdList: MutableList<Int> = mutableListOf(),
 )
