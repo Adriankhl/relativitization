@@ -5,15 +5,34 @@ import kotlin.random.Random
 
 @Serializable
 data class PopSystemicData(
-    val carrier: List<Carrier> = listOf()
-)
+    val carrierList: List<Carrier> = listOf()
+) {
+    fun totalCoreRestMass(): Double {
+        return carrierList.sumOf { it.coreRestMass }
+    }
+
+    fun totalFuelRestMass(): Double {
+        return carrierList.sumOf { it.fuelRestMass }
+    }
+}
 
 @Serializable
 data class MutablePopSystemicData(
-    val carrier: MutableList<MutableCarrier> = mutableListOf()
+    val carrierList: MutableList<MutableCarrier> = mutableListOf()
 ) {
     fun addRandomStellarSystem() {
         val restMass = Random.nextDouble(1.0e30, 2.5e30)
-        carrier.add(MutableCarrier(restMass, CarrierType.STELLAR))
+        carrierList.add(MutableCarrier(
+            coreRestMass = restMass,
+            carrierType = CarrierType.STELLAR
+        ))
+    }
+
+    fun totalCoreRestMass(): Double {
+        return carrierList.sumOf { it.coreRestMass }
+    }
+
+    fun totalFuelRestMass(): Double {
+        return carrierList.sumOf { it.fuelRestMass }
     }
 }

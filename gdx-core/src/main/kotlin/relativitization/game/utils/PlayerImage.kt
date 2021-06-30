@@ -26,7 +26,7 @@ object PlayerImage {
 
         val playerId = playerData.id
 
-        val hasStellarSystem: Boolean = playerData.playerInternalData.popSystemicData.carrier.map {
+        val hasStellarSystem: Boolean = playerData.playerInternalData.popSystemicData.carrierList.map {
             it.carrierType == CarrierType.STELLAR
         }.contains(true)
 

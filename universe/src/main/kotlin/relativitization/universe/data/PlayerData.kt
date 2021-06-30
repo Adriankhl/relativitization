@@ -98,6 +98,14 @@ data class MutablePlayerData(
     val newPlayerList: MutableList<MutablePlayerInternalData> = mutableListOf()
 ) {
     /**
+     * Synchronize different data component to ensure consistency
+     */
+    fun syncDataComponent() {
+        playerInternalData.physicsData.coreRestMass = playerInternalData.popSystemicData.totalCoreRestMass()
+        playerInternalData.physicsData.fuelRestMass = playerInternalData.popSystemicData.totalFuelRestMass()
+    }
+
+    /**
      * @param toId whether this id is the player or one the subordinates of the player
      */
     fun isSubOrdinateOrSelf(toId: Int): Boolean {
@@ -174,11 +182,19 @@ data class MutablePlayerInternalData(
     var economyData: MutableEconomyData = MutableEconomyData(),
     var modifierData: MutableModifierData = MutableModifierData(),
 ) {
+
+
+    /**
+     * Change direct leader id without removing the old direct leader as one of the leader
+     */
     fun changeDirectLeaderId(id: Int) {
         directLeaderId = id
         leaderIdList.add(id)
     }
 
+    /**
+     * Add subordinate to this player
+     */
     fun addDirectSubordinateId(id: Int) {
         directSubordinateIdList.add(id)
         subordinateIdList.add(id)
