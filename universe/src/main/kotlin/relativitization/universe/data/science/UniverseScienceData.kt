@@ -64,7 +64,5 @@ object ProcessUniverseScienceData {
         universeData: UniverseData,
         mutableUniverseScienceData: MutableUniverseScienceData
     ) {
-        universeData.universeData4D
-        mutableUniverseScienceData.allSingleKnowledgeDataList
     }
 }
