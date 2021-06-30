@@ -42,6 +42,7 @@ class Minimal : GenerateUniverse() {
         playerData1.playerInternalData.popSystemicData.addSpaceShip(1.0, 100.0, 100.0)
         playerData2.playerInternalData.popSystemicData.addSpaceShip(1.0, 100.0, 100.0)
         playerData3.playerInternalData.popSystemicData.addSpaceShip(1.0, 100.0, 100.0)
+        playerData4.playerInternalData.popSystemicData.addSpaceShip(1.0, 100.0, 100.0)
 
 
         // player 1 is a leader of player 2
