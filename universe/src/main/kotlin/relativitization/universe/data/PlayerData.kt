@@ -18,8 +18,6 @@ import relativitization.universe.data.popsystem.MutablePopSystemicData
 import relativitization.universe.data.popsystem.PopSystemicData
 import relativitization.universe.data.science.MutablePlayerScienceData
 import relativitization.universe.data.science.PlayerScienceData
-import relativitization.universe.data.state.MutablePlayerState
-import relativitization.universe.data.state.PlayerState
 import relativitization.universe.maths.grid.Grids.double4DToGroupId
 import relativitization.universe.maths.grid.Grids.groupIdToCenterDouble3D
 
