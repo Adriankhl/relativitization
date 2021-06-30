@@ -1,13 +1,13 @@
-package relativitization.universe.data.state
+package relativitization.universe.data.ai
 
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class AIState(
+data class AIData(
     val aiName: String = "DefaultAI"
 )
 
 @Serializable
-data class MutableAIState(
+data class MutableAIData(
     var aiName: String = "DefaultAI"
 )

@@ -23,7 +23,7 @@ object AICollection {
     fun compute(universeData3DAtPlayer: UniverseData3DAtPlayer): List<Command> {
         val aiName: String = universeData3DAtPlayer.get(
             universeData3DAtPlayer.id
-        ).playerInternalData.playerState.aiState.aiName
+        ).playerInternalData.aiData.aiName
 
         return when(aiName) {
             "DefaultAI" -> DefaultAI.compute(universeData3DAtPlayer)

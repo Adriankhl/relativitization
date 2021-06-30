@@ -8,7 +8,7 @@ import relativitization.universe.data.science.UniverseScienceData
 import relativitization.universe.maths.physics.Relativistic.gamma
 import relativitization.universe.mechanisms.Mechanism
 
-object UpdateTemporaryState : Mechanism() {
+object UpdateModifier : Mechanism() {
     override fun process(
         mutablePlayerData: MutablePlayerData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
@@ -20,7 +20,7 @@ object UpdateTemporaryState : Mechanism() {
             universeData3DAtPlayer.universeSettings.speedOfLight
         )
 
-        mutablePlayerData.playerInternalData.playerState.temporaryState.updateTimeRemain(gamma)
+        mutablePlayerData.playerInternalData.modifierData.updateModifierTime(gamma)
 
         return listOf()
     }

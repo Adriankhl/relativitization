@@ -5,12 +5,10 @@ import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.physics.Int4D
-import relativitization.universe.data.serializer.DataSerializer
-import relativitization.universe.data.state.temporary.DisableFuelProductionState
 
 @Serializable
 data class DisableFuelProductionCommand(
-    val disableFuelProductionState: DisableFuelProductionState,
+    val disableFuelProductionTimeLimit: Int,
     override val toId: Int,
     override val fromId: Int,
     override val fromInt4D: Int4D,
@@ -19,7 +17,7 @@ data class DisableFuelProductionCommand(
     override val name: CommandName = CommandName.DISABLE_FUEL_PRODUCTION
 
     override fun description(): String {
-        return "Disable fuel production for ${disableFuelProductionState.timeRemain} turn"
+        return "Disable fuel production for $disableFuelProductionTimeLimit turn"
     }
 
     override fun canSend(playerData: PlayerData, universeSettings: UniverseSettings): Boolean {
@@ -31,8 +29,8 @@ data class DisableFuelProductionCommand(
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
-        playerData.playerInternalData.playerState.temporaryState.disableFuelProductionStateList.add(
-            DataSerializer.copy(disableFuelProductionState)
+        playerData.playerInternalData.modifierData.physicsModifierData.disableFuelProductionByTime(
+            disableFuelProductionTimeLimit
         )
     }
 }

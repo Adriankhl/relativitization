@@ -1,12 +1,16 @@
 package relativitization.universe.data
 
 import kotlinx.serialization.Serializable
+import relativitization.universe.data.ai.AIData
+import relativitization.universe.data.ai.MutableAIData
 import relativitization.universe.data.diplomacy.DiplomacyData
 import relativitization.universe.data.diplomacy.MutableDiplomacyData
 import relativitization.universe.data.economy.EconomyData
 import relativitization.universe.data.economy.MutableEconomyData
 import relativitization.universe.data.events.EventData
 import relativitization.universe.data.events.MutableEventData
+import relativitization.universe.data.modifier.ModifierData
+import relativitization.universe.data.modifier.MutableModifierData
 import relativitization.universe.data.physics.*
 import relativitization.universe.data.politics.MutablePoliticsData
 import relativitization.universe.data.politics.PoliticsData
@@ -127,6 +131,7 @@ enum class PlayerType {
  * @property leaderIdList list of player ids of leader, leader of leader, etc., from -1 to direct leader
  * @property subordinateIdList list of player ids of the subordinates of this player
  * @property isAlive whether the player is alive or dead
+ * @property aiData data for ai computation, e.g. name, cool down
  * @property eventDataList list of current event on this player
  * @property physicsData physics-related data
  * @property popSystemicData population system related data
@@ -134,7 +139,7 @@ enum class PlayerType {
  * @property politicsData political related data
  * @property diplomacyData diplomatic relation data
  * @property economyData economy related data
- * @property playerState state of the player, including ai, modifier, cool down, etc.
+ * @property modifierData player modifier, e.g. disable certain action for a time limit
  */
 @Serializable
 data class PlayerInternalData(
@@ -143,6 +148,7 @@ data class PlayerInternalData(
     val directSubordinateIdList: List<Int> = listOf(),
     val subordinateIdList: List<Int> = listOf(),
     val isAlive: Boolean = true,
+    val aiData: AIData = AIData(),
     val eventDataList: List<EventData> = listOf(),
     val physicsData: PhysicsData = PhysicsData(),
     val popSystemicData: PopSystemicData = PopSystemicData(),
@@ -150,7 +156,7 @@ data class PlayerInternalData(
     val politicsData: PoliticsData = PoliticsData(),
     val diplomacyData: DiplomacyData = DiplomacyData(),
     val economyData: EconomyData = EconomyData(),
-    val playerState: PlayerState = PlayerState(),
+    val modifierData: ModifierData = ModifierData(),
 )
 
 @Serializable
@@ -160,6 +166,7 @@ data class MutablePlayerInternalData(
     var directSubordinateIdList: MutableList<Int> = mutableListOf(),
     var subordinateIdList: MutableList<Int> = mutableListOf(),
     var isAlive: Boolean = true,
+    var aiData: MutableAIData = MutableAIData(),
     var eventDataList: MutableList<MutableEventData> = mutableListOf(),
     var physicsData: MutablePhysicsData = MutablePhysicsData(),
     var popSystemicData: MutablePopSystemicData = MutablePopSystemicData(),
@@ -167,7 +174,7 @@ data class MutablePlayerInternalData(
     var politicsData: MutablePoliticsData = MutablePoliticsData(),
     var diplomacyData: MutableDiplomacyData = MutableDiplomacyData(),
     var economyData: MutableEconomyData = MutableEconomyData(),
-    var playerState: MutablePlayerState = MutablePlayerState(),
+    var modifierData: MutableModifierData = MutableModifierData(),
 ) {
     fun changeDirectLeaderId(id: Int) {
         directLeaderId = id

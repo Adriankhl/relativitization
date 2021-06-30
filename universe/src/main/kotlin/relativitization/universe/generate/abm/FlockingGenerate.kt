@@ -51,7 +51,7 @@ class FlockingGenerate : GenerateUniverse() {
             playerData.velocity = MutableVelocity(vx, vy, vz).scaleVelocity(0.5)
 
             // Use flocking ai
-            playerData.playerInternalData.playerState.aiState.aiName = "FlockingAI"
+            playerData.playerInternalData.aiData.aiName = "FlockingAI"
 
             data.addPlayerDataToLatestWithAfterImage(
                 playerData,

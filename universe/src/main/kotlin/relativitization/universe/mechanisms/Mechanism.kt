@@ -8,7 +8,7 @@ import relativitization.universe.data.commands.Command
 import relativitization.universe.data.science.UniverseScienceData
 import relativitization.universe.mechanisms.events.AutoEventCollection
 import relativitization.universe.mechanisms.events.ProcessEvents
-import relativitization.universe.mechanisms.state.UpdateTemporaryState
+import relativitization.universe.mechanisms.state.UpdateModifier
 import relativitization.universe.utils.RelativitizationLogManager
 
 abstract class Mechanism {
@@ -34,7 +34,7 @@ object MechanismCollection {
     private val defaultMechanismList: List<Mechanism> = listOf(
         AutoEventCollection,
         ProcessEvents,
-        UpdateTemporaryState
+        UpdateModifier
     )
 
     // list of all possible process collection name
