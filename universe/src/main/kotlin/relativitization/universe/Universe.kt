@@ -394,6 +394,9 @@ class Universe(
         processCommandMap()
         processDeadAndNewPlayer()
 
+        // Sync all data component to ensure consistency before universe data update
+        playerCollection.syncAllPlayerDataComponent()
+
         val universeSlice = playerCollection.getUniverseSlice(universeData)
         universeData.updateUniverseReplaceLatest(universeSlice)
 
@@ -402,9 +405,6 @@ class Universe(
             universeData
         )
         universeData.universeScienceData = newUniverseScienceData
-
-        // Sync all data component to ensure consistency
-        playerCollection.syncAllPlayerDataComponent()
 
         saveLatest()
     }
@@ -422,7 +422,7 @@ class Universe(
         // Now the end of the turn
         playerCollection.movePlayer(universeData.universeState, universeData.universeSettings)
 
-        // Sync all data component to ensure consistency
+        // Sync all data component to ensure consistency before universe data update
         playerCollection.syncAllPlayerDataComponent()
 
         val universeSlice = playerCollection.getUniverseSlice(universeData)
