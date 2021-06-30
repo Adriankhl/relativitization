@@ -403,6 +403,9 @@ class Universe(
         )
         universeData.universeScienceData = newUniverseScienceData
 
+        // Sync all data component to ensure consistency
+        playerCollection.syncAllPlayerDataComponent()
+
         saveLatest()
     }
 
@@ -418,6 +421,10 @@ class Universe(
 
         // Now the end of the turn
         playerCollection.movePlayer(universeData.universeState, universeData.universeSettings)
+
+        // Sync all data component to ensure consistency
+        playerCollection.syncAllPlayerDataComponent()
+
         val universeSlice = playerCollection.getUniverseSlice(universeData)
         universeData.updateUniverseDropOldest(universeSlice)
     }

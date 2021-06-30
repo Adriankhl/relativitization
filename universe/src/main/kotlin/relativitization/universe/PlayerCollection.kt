@@ -300,6 +300,10 @@ class PlayerCollection(
         playerData.playerInternalData.physicsData.fuelRestMass -= min(fuelRestMass, deltaRestMass)
     }
 
+    fun syncAllPlayerDataComponent() {
+        playerMap.values.forEach { it.syncDataComponent() }
+    }
+
     companion object {
         private val logger = RelativitizationLogManager.getLogger()
     }
