@@ -38,15 +38,10 @@ class Minimal : GenerateUniverse() {
         playerData1.playerInternalData.popSystemicData.addRandomStellarSystem()
         playerData3.playerInternalData.popSystemicData.addRandomStellarSystem()
 
-        // Add non zero fuel rest mass
-        playerData1.playerInternalData.physicsData.fuelRestMass = 100.0
-        playerData2.playerInternalData.physicsData.fuelRestMass = 200.0
-        playerData3.playerInternalData.physicsData.fuelRestMass = 300.0
-
-        // Allow player to use fuel
-        playerData1.playerInternalData.physicsData.maxDeltaFuelRestMass = 50.0
-        playerData2.playerInternalData.physicsData.maxDeltaFuelRestMass = 100.0
-        playerData3.playerInternalData.physicsData.maxDeltaFuelRestMass = 150.0
+        // Add spaceShip
+        playerData1.playerInternalData.popSystemicData.addSpaceShip(1.0, 100.0, 100.0)
+        playerData2.playerInternalData.popSystemicData.addSpaceShip(1.0, 100.0, 100.0)
+        playerData3.playerInternalData.popSystemicData.addSpaceShip(1.0, 100.0, 100.0)
 
 
         // player 1 is a leader of player 2

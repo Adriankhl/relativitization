@@ -20,6 +20,7 @@ import relativitization.universe.data.science.MutablePlayerScienceData
 import relativitization.universe.data.science.PlayerScienceData
 import relativitization.universe.maths.grid.Grids.double4DToGroupId
 import relativitization.universe.maths.grid.Grids.groupIdToCenterDouble3D
+import relativitization.universe.utils.RelativitizationLogManager
 
 /**
  * Data of the basic unit (player)
@@ -101,8 +102,20 @@ data class MutablePlayerData(
      * Synchronize different data component to ensure consistency
      */
     fun syncDataComponent() {
-        playerInternalData.physicsData.coreRestMass = playerInternalData.popSystemicData.totalCoreRestMass()
-        playerInternalData.physicsData.fuelRestMass = playerInternalData.popSystemicData.totalFuelRestMass()
+        if (playerInternalData.physicsData.coreRestMass != playerInternalData.popSystemicData.totalCoreRestMass()) {
+            logger.debug("Sync data component, change core mass")
+            playerInternalData.physicsData.coreRestMass = playerInternalData.popSystemicData.totalCoreRestMass()
+        }
+
+        if (playerInternalData.physicsData.fuelRestMass != playerInternalData.popSystemicData.totalFuelRestMass()) {
+            logger.debug("Sync data component, change fuel mass")
+            playerInternalData.physicsData.fuelRestMass = playerInternalData.popSystemicData.totalFuelRestMass()
+        }
+
+        if (playerInternalData.physicsData.maxDeltaFuelRestMass != playerInternalData.popSystemicData.totalMaxDeltaFuelRestMass()) {
+            logger.debug("Sync data component, change max delta fuel rest mass")
+            playerInternalData.physicsData.maxDeltaFuelRestMass = playerInternalData.popSystemicData.totalMaxDeltaFuelRestMass()
+        }
     }
 
     /**
@@ -117,6 +130,10 @@ data class MutablePlayerData(
      */
     fun isLeaderOrSelf(toId: Int): Boolean {
         return (toId == id) || playerInternalData.leaderIdList.contains(toId)
+    }
+
+    companion object {
+        private val logger = RelativitizationLogManager.getLogger()
     }
 }
 

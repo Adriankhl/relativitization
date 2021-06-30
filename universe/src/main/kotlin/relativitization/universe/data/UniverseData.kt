@@ -287,6 +287,9 @@ data class MutableUniverseData4D(
     fun addPlayerData(mutablePlayerData: MutablePlayerData, currentTime: Int, edgeLength: Double) {
         val tSize: Int = playerData4D.size
 
+        // Sync data component
+        mutablePlayerData.syncDataComponent()
+
         // Modified player data double 4D if it doesn't fit int4D
         val int4D = mutablePlayerData.int4D
         if (!mutablePlayerData.double4D.atInt4D(int4D)) {
@@ -323,6 +326,7 @@ data class MutableUniverseData4D(
 
     /**
      * Add player data to latest time slice, also add after image to prevent player disappearing after move
+     * Also sync data component
      *
      * @param mutablePlayerData the data of the player to be added
      * @param currentTime the current time of the universe, which the player data time will be changed to this time
