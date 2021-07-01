@@ -6,6 +6,8 @@ import kotlinx.serialization.Serializable
 abstract class SingleKnowledgeData {
     abstract val knowledgeId: Int
 
+    abstract val difficulty: Double
+
     abstract val referenceKnowledgeIdList: List<Int>
     abstract val referenceTechnologyIdList: List<Int>
 
