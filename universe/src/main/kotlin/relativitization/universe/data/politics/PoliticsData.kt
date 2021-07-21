@@ -6,8 +6,16 @@ import kotlinx.serialization.Serializable
 data class PoliticsData(
     val governmentType: GovernmentType = GovernmentType.DICTATORSHIP
 ) {
+    /**
+     * Compute the ideology distance between player to represent how different between the two
+     */
     fun ideologyDistance(politicsData: PoliticsData): Double {
-        return 0.0
+        val governmentTypeDistance: Double = if (governmentType == politicsData.governmentType) {
+            0.0
+        } else {
+            1.0
+        }
+        return governmentTypeDistance
     }
 }
 
