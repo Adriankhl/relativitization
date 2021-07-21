@@ -6,6 +6,10 @@ import kotlinx.serialization.Serializable
 abstract class SingleTechnologyData {
     abstract val technologyId: Int
 
+    // x and y coordinate in the knowledge space
+    abstract val xCor: Double
+    abstract val yCor: Double
+
     abstract val difficulty: Double
 
     abstract val referenceKnowledgeIdList: List<Int>
