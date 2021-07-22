@@ -3,9 +3,7 @@ package relativitization.universe.data.science
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.UniverseData
 import relativitization.universe.data.science.knowledge.*
-import relativitization.universe.data.science.technology.MutableTechnologyData
-import relativitization.universe.data.science.technology.SingleTechnologyData
-import relativitization.universe.data.science.technology.TechnologyData
+import relativitization.universe.data.science.technology.*
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.utils.RelativitizationLogManager
 
@@ -16,6 +14,7 @@ data class UniverseScienceData(
     val commonSenseKnowledgeData: KnowledgeData = KnowledgeData(),
     val commonSenseTechnologyData: TechnologyData = TechnologyData(),
     val knowledgeGenerationData: KnowledgeGenerationData = KnowledgeGenerationData(),
+    val technologyGenerationData: TechnologyGenerationData = TechnologyGenerationData(),
 )
 
 @Serializable
@@ -25,6 +24,7 @@ data class MutableUniverseScienceData(
     var commonSenseKnowledgeData: MutableKnowledgeData = MutableKnowledgeData(),
     var commonSenseTechnologyData: MutableTechnologyData = MutableTechnologyData(),
     var knowledgeGenerationData: MutableKnowledgeGenerationData = MutableKnowledgeGenerationData(),
+    var technologyGenerationData: MutableTechnologyGenerationData = MutableTechnologyGenerationData(),
 )
 
 object ProcessUniverseScienceData {

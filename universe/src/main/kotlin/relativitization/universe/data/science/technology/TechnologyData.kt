@@ -64,3 +64,15 @@ data class MutableTechnologyFieldGenerationData(
     var centerY: Double = 0.0,
     var range: Double = 1.0
 )
+
+@Serializable
+data class TechnologyGenerationData(
+    val maxShipRestMassTechnologyGenerationData: TechnologyFieldGenerationData = TechnologyFieldGenerationData(),
+    val maxShipEngineDeltaFuelRestMass: TechnologyFieldGenerationData = TechnologyFieldGenerationData(),
+)
+
+@Serializable
+data class MutableTechnologyGenerationData(
+    var maxShipRestMassTechnologyGenerationData: MutableTechnologyFieldGenerationData = MutableTechnologyFieldGenerationData(),
+    var maxShipEngineDeltaFuelRestMass: MutableTechnologyFieldGenerationData = MutableTechnologyFieldGenerationData(),
+)
