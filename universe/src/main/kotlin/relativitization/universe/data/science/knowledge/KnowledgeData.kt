@@ -15,6 +15,8 @@ abstract class SingleKnowledgeData {
     abstract val referenceKnowledgeIdList: List<Int>
     abstract val referenceTechnologyIdList: List<Int>
 
+    abstract val description: String
+
     abstract fun updateKnowledgeData(mutableKnowledgeData: MutableKnowledgeData)
 }
 

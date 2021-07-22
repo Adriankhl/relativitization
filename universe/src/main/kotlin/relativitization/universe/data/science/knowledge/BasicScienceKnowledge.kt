@@ -12,6 +12,8 @@ data class MathematicsKnowledge(
     override val referenceKnowledgeIdList: List<Int>,
     override val referenceTechnologyIdList: List<Int>,
 ) : SingleKnowledgeData() {
+    override val description: String = "Increase mathematics knowledge level by $importance"
+
     override fun updateKnowledgeData(mutableKnowledgeData: MutableKnowledgeData) {
         mutableKnowledgeData.mathematicsResearchLevel += importance
     }
@@ -27,6 +29,8 @@ data class PhysicsKnowledge(
     override val referenceKnowledgeIdList: List<Int>,
     override val referenceTechnologyIdList: List<Int>,
 ) : SingleKnowledgeData() {
+    override val description: String = "Increase physics knowledge level by $importance"
+
     override fun updateKnowledgeData(mutableKnowledgeData: MutableKnowledgeData) {
         mutableKnowledgeData.physicsResearchLevel += importance
     }
@@ -42,6 +46,8 @@ data class MaterialKnowledge(
     override val referenceKnowledgeIdList: List<Int>,
     override val referenceTechnologyIdList: List<Int>,
 ) : SingleKnowledgeData() {
+    override val description: String = "Increase material knowledge level by $importance"
+
     override fun updateKnowledgeData(mutableKnowledgeData: MutableKnowledgeData) {
         mutableKnowledgeData.materialResearchLevel += importance
     }
@@ -57,6 +63,8 @@ data class ComputerKnowledge(
     override val referenceKnowledgeIdList: List<Int>,
     override val referenceTechnologyIdList: List<Int>,
 ) : SingleKnowledgeData() {
+    override val description: String = "Increase computer knowledge level by $importance"
+
     override fun updateKnowledgeData(mutableKnowledgeData: MutableKnowledgeData) {
         mutableKnowledgeData.computerResearchLevel += importance
     }
@@ -72,6 +80,8 @@ data class MechanicsKnowledge(
     override val referenceKnowledgeIdList: List<Int>,
     override val referenceTechnologyIdList: List<Int>,
 ) : SingleKnowledgeData() {
+    override val description: String = "Increase mechanics knowledge level by $importance"
+
     override fun updateKnowledgeData(mutableKnowledgeData: MutableKnowledgeData) {
         mutableKnowledgeData.mechanicsResearchLevel += importance
     }
@@ -87,6 +97,8 @@ data class MedicineKnowledge(
     override val referenceKnowledgeIdList: List<Int>,
     override val referenceTechnologyIdList: List<Int>,
 ) : SingleKnowledgeData() {
+    override val description: String = "Increase medicine knowledge level by $importance"
+
     override fun updateKnowledgeData(mutableKnowledgeData: MutableKnowledgeData) {
         mutableKnowledgeData.medicineResearchLevel += importance
     }
@@ -102,6 +114,8 @@ data class EconomyKnowledge(
     override val referenceKnowledgeIdList: List<Int>,
     override val referenceTechnologyIdList: List<Int>,
 ) : SingleKnowledgeData() {
+    override val description: String = "Increase economy knowledge level by $importance"
+
     override fun updateKnowledgeData(mutableKnowledgeData: MutableKnowledgeData) {
         mutableKnowledgeData.economyResearchLevel += importance
     }
@@ -117,6 +131,8 @@ data class PoliticsKnowledge(
     override val referenceKnowledgeIdList: List<Int>,
     override val referenceTechnologyIdList: List<Int>,
 ) : SingleKnowledgeData() {
+    override val description: String = "Increase politics knowledge level by $importance"
+
     override fun updateKnowledgeData(mutableKnowledgeData: MutableKnowledgeData) {
         mutableKnowledgeData.politicsResearchLevel += importance
     }
@@ -132,6 +148,8 @@ data class SociologyKnowledge(
     override val referenceKnowledgeIdList: List<Int>,
     override val referenceTechnologyIdList: List<Int>,
 ) : SingleKnowledgeData() {
+    override val description: String = "Increase sociology knowledge level by $importance"
+
     override fun updateKnowledgeData(mutableKnowledgeData: MutableKnowledgeData) {
         mutableKnowledgeData.sociologyResearchLevel += importance
     }
@@ -147,6 +165,8 @@ data class PsychologyKnowledge(
     override val referenceKnowledgeIdList: List<Int>,
     override val referenceTechnologyIdList: List<Int>,
 ) : SingleKnowledgeData() {
+    override val description: String = "Increase psychology knowledge level by $importance"
+
     override fun updateKnowledgeData(mutableKnowledgeData: MutableKnowledgeData) {
         mutableKnowledgeData.psychologyResearchLevel += importance
     }
