@@ -58,6 +58,27 @@ data class MutableKnowledgeData(
     var psychologyResearchLevel: Double = 0.0,
 )
 
+/**
+ * For generating a single knowledge data in a field
+ *
+ * @property centerX the x coordinate of the center of the field in the knowledge plane
+ * @property centerY the y coordinate of the center of the field in the knowledge plane
+ * @property range the dispersion of this field
+ */
+@Serializable
+data class KnowledgeFieldGenerationData(
+    val centerX: Double = 0.0,
+    val centerY: Double = 0.0,
+    val range: Double = 1.0,
+)
+
+@Serializable
+data class MutableKnowledgeFieldGenerationData(
+    var centerX: Double = 0.0,
+    var centerY: Double = 0.0,
+    var range: Double = 1.0,
+)
+
 @Serializable
 data class KnowledgeGenerationData(
     val mathematicsKnowledgeGenerateData: KnowledgeFieldGenerationData = KnowledgeFieldGenerationData(),
@@ -84,18 +105,4 @@ data class MutableKnowledgeGenerationData(
     var politicsKnowledgeGenerateData: MutableKnowledgeFieldGenerationData = MutableKnowledgeFieldGenerationData(),
     var sociologyKnowledgeGenerateData: MutableKnowledgeFieldGenerationData = MutableKnowledgeFieldGenerationData(),
     var psychologyKnowledgeGenerateData: MutableKnowledgeFieldGenerationData = MutableKnowledgeFieldGenerationData(),
-)
-
-@Serializable
-data class KnowledgeFieldGenerationData(
-    val centerX: Double = 0.0,
-    val centerY: Double = 0.0,
-    val range: Double = 1.0,
-)
-
-@Serializable
-data class MutableKnowledgeFieldGenerationData(
-    var centerX: Double = 0.0,
-    var centerY: Double = 0.0,
-    var range: Double = 1.0,
 )

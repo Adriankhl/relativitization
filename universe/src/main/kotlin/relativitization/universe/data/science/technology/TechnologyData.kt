@@ -43,3 +43,24 @@ data class MutableTechnologyData(
     var maxShipRestMass: Double = 10000.0,
     var maxShipEngineDeltaFuelRestMass: Double = 1.0,
 )
+
+/**
+ * For generating a single technology data in a field
+ *
+ * @property centerX the x coordinate of the center of the field in the knowledge plane
+ * @property centerY the y coordinate of the center of the field in the knowledge plane
+ * @property range the dispersion of this field
+ */
+@Serializable
+data class TechnologyFieldGenerationData(
+    val centerX: Double = 0.0,
+    val centerY: Double = 0.0,
+    val range: Double = 1.0
+)
+
+@Serializable
+data class MutableTechnologyFieldGenerationData(
+    var centerX: Double = 0.0,
+    var centerY: Double = 0.0,
+    var range: Double = 1.0
+)
