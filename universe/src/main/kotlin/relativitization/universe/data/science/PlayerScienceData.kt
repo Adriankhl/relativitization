@@ -47,4 +47,20 @@ data class MutablePlayerScienceData(
             it.updateTechnologyData(playerTechnologyData)
         }
     }
+
+    /**
+     * Add Single knowledge data
+     */
+    fun addSingleKnowledgeData(singleKnowledgeData: SingleKnowledgeData) {
+        singleKnowledgeDataList.add(singleKnowledgeData)
+        singleKnowledgeData.updateKnowledgeData(playerKnowledgeData)
+    }
+
+    /**
+     * Add single technology data
+     */
+    fun addSingleTechnologyData(singleTechnologyData: SingleTechnologyData) {
+        singleTechnologyDataList.add(singleTechnologyData)
+        singleTechnologyData.updateTechnologyData(playerTechnologyData)
+    }
 }
