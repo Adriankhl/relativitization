@@ -57,3 +57,45 @@ data class MutableKnowledgeData(
     var sociologyResearchLevel: Double = 0.0,
     var psychologyResearchLevel: Double = 0.0,
 )
+
+@Serializable
+data class KnowledgeGenerationData(
+    val mathematicsKnowledgeGenerateData: KnowledgeFieldGenerationData = KnowledgeFieldGenerationData(),
+    val physicsKnowledgeGenerateData: KnowledgeFieldGenerationData = KnowledgeFieldGenerationData(),
+    val materialKnowledgeGenerateData: KnowledgeFieldGenerationData = KnowledgeFieldGenerationData(),
+    val computerKnowledgeGenerateData: KnowledgeFieldGenerationData = KnowledgeFieldGenerationData(),
+    val mechanicsKnowledgeGenerateData: KnowledgeFieldGenerationData = KnowledgeFieldGenerationData(),
+    val medicineKnowledgeGenerateData: KnowledgeFieldGenerationData = KnowledgeFieldGenerationData(),
+    val economyKnowledgeGenerateData: KnowledgeFieldGenerationData = KnowledgeFieldGenerationData(),
+    val politicsKnowledgeGenerateData: KnowledgeFieldGenerationData = KnowledgeFieldGenerationData(),
+    val sociologyKnowledgeGenerateData: KnowledgeFieldGenerationData = KnowledgeFieldGenerationData(),
+    val psychologyKnowledgeGenerateData: KnowledgeFieldGenerationData = KnowledgeFieldGenerationData(),
+)
+
+@Serializable
+data class MutableKnowledgeGenerationData(
+    var mathematicsKnowledgeGenerateData: MutableKnowledgeFieldGenerationData = MutableKnowledgeFieldGenerationData(),
+    var physicsKnowledgeGenerateData: MutableKnowledgeFieldGenerationData = MutableKnowledgeFieldGenerationData(),
+    var materialKnowledgeGenerateData: MutableKnowledgeFieldGenerationData = MutableKnowledgeFieldGenerationData(),
+    var computerKnowledgeGenerateData: MutableKnowledgeFieldGenerationData = MutableKnowledgeFieldGenerationData(),
+    var mechanicsKnowledgeGenerateData: MutableKnowledgeFieldGenerationData = MutableKnowledgeFieldGenerationData(),
+    var medicineKnowledgeGenerateData: MutableKnowledgeFieldGenerationData = MutableKnowledgeFieldGenerationData(),
+    var economyKnowledgeGenerateData: MutableKnowledgeFieldGenerationData = MutableKnowledgeFieldGenerationData(),
+    var politicsKnowledgeGenerateData: MutableKnowledgeFieldGenerationData = MutableKnowledgeFieldGenerationData(),
+    var sociologyKnowledgeGenerateData: MutableKnowledgeFieldGenerationData = MutableKnowledgeFieldGenerationData(),
+    var psychologyKnowledgeGenerateData: MutableKnowledgeFieldGenerationData = MutableKnowledgeFieldGenerationData(),
+)
+
+@Serializable
+data class KnowledgeFieldGenerationData(
+    val centerX: Double = 0.0,
+    val centerY: Double = 0.0,
+    val range: Double = 1.0,
+)
+
+@Serializable
+data class MutableKnowledgeFieldGenerationData(
+    var centerX: Double = 0.0,
+    var centerY: Double = 0.0,
+    var range: Double = 1.0,
+)
