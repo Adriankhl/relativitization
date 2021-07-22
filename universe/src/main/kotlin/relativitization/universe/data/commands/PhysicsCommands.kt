@@ -20,9 +20,7 @@ data class ChangeVelocityCommand(
 
     override val name: CommandName = CommandName.CHANGE_VELOCITY
 
-    override fun description(): String {
-        return "Try to change velocity of player $toId to $targetVelocity"
-    }
+    override val description: String = "Try to change velocity of player $toId to $targetVelocity"
 
     /**
      * Can only send to subordinate

@@ -20,7 +20,7 @@ sealed class Command {
     /**
      * Description of the command
      */
-    abstract fun description(): String
+    abstract val description: String
 
     /**
      * Check if the player (sender) can send the command

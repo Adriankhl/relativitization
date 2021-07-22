@@ -15,9 +15,7 @@ data class DummyCommand(
 ) : Command() {
     override val name: CommandName = CommandName.DUMMY
 
-    override fun description(): String {
-        return "Do nothing"
-    }
+    override val description = "Do nothing"
 
     override fun canSend(playerData: PlayerData, universeSettings: UniverseSettings): Boolean {
         return true
@@ -42,9 +40,7 @@ data class CannotSendCommand(
 ) : Command() {
     override val name: CommandName = CommandName.CANNOT_SEND
 
-    override fun description(): String {
-        return "Cannot send this command"
-    }
+    override val description: String = "Cannot send this command"
 
     override fun canSend(playerData: PlayerData, universeSettings: UniverseSettings): Boolean {
         return true

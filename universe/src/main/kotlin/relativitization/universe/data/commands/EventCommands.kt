@@ -25,9 +25,7 @@ data class AddEventCommand(
 
     override val name: CommandName = CommandName.ADD_EVENT
 
-    override fun description(): String {
-        return "Add event (${event.name}) to player $toId from player $fromId."
-    }
+    override val description: String = "Add event (${event.name}) to player $toId from player $fromId."
 
     /**
      * Whether this player can send the event depends on the event
@@ -79,9 +77,7 @@ data class SelectEventChoiceCommand(
 ) : Command() {
     override val name: CommandName = CommandName.SELECT_EVENT_CHOICE
 
-    override fun description(): String {
-        return "Select choice $choice for event $eventIndex ($eventName)"
-    }
+    override val description: String = "Select choice $choice for event $eventIndex ($eventName)"
 
     override fun canSend(playerData: PlayerData, universeSettings: UniverseSettings): Boolean {
         return playerData.id == toId

@@ -16,9 +16,7 @@ data class DisableFuelProductionCommand(
 
     override val name: CommandName = CommandName.DISABLE_FUEL_PRODUCTION
 
-    override fun description(): String {
-        return "Disable fuel production for $disableFuelProductionTimeLimit turn"
-    }
+    override val description: String = "Disable fuel production for $disableFuelProductionTimeLimit turn"
 
     override fun canSend(playerData: PlayerData, universeSettings: UniverseSettings): Boolean {
         return playerData.id == toId
