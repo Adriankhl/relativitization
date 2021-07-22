@@ -11,7 +11,9 @@ object GenerateUniverseScienceData {
 
     fun generate(universeData: UniverseData): UniverseScienceData {
         val universeScienceData: UniverseScienceData = universeData.universeScienceData
-        val mutableUniverseScienceData: MutableUniverseScienceData = DataSerializer.copy(universeData)
+        val mutableUniverseScienceData: MutableUniverseScienceData = DataSerializer.copy(
+            universeScienceData
+        )
         return DataSerializer.copy(mutableUniverseScienceData)
     }
 }
