@@ -15,6 +15,8 @@ abstract class SingleTechnologyData {
     abstract val referenceKnowledgeIdList: List<Int>
     abstract val referenceTechnologyIdList: List<Int>
 
+    abstract val description: String
+
     abstract fun updateTechnologyData(mutableTechnologyData: MutableTechnologyData)
 }
 
@@ -24,14 +26,14 @@ abstract class SingleTechnologyData {
  * @property minTechnologyId technologies with id lower than this value are all included
  * @property technologyIdList included technologies with id higher than the minTechnologyId
  * @property maxShipRestMass maximum rest mass of a ship to manufacture
- * @property shipEngineTechnology related to the maximum delta fuel mass of a ship
+ * @property maxShipEngineDeltaFuelRestMass related to the maximum delta fuel mass of a ship
  */
 @Serializable
 data class TechnologyData(
     val minTechnologyId: Int = 0,
     val technologyIdList: List<Int> = listOf(),
     val maxShipRestMass: Double = 10000.0,
-    val shipEngineTechnology: Double = 1.0,
+    val maxShipEngineDeltaFuelRestMass: Double = 1.0,
 )
 
 @Serializable
@@ -39,5 +41,5 @@ data class MutableTechnologyData(
     var minTechnologyId: Int = 0,
     val technologyIdList: MutableList<Int> = mutableListOf(),
     var maxShipRestMass: Double = 10000.0,
-    var shipEngineTechnology: Double = 1.0,
+    var maxShipEngineDeltaFuelRestMass: Double = 1.0,
 )
