@@ -81,28 +81,28 @@ data class MutableKnowledgeFieldGenerationData(
 
 @Serializable
 data class KnowledgeGenerationData(
-    val mathematicsKnowledgeGenerateData: KnowledgeFieldGenerationData = KnowledgeFieldGenerationData(),
-    val physicsKnowledgeGenerateData: KnowledgeFieldGenerationData = KnowledgeFieldGenerationData(),
-    val materialKnowledgeGenerateData: KnowledgeFieldGenerationData = KnowledgeFieldGenerationData(),
-    val computerKnowledgeGenerateData: KnowledgeFieldGenerationData = KnowledgeFieldGenerationData(),
-    val mechanicsKnowledgeGenerateData: KnowledgeFieldGenerationData = KnowledgeFieldGenerationData(),
-    val medicineKnowledgeGenerateData: KnowledgeFieldGenerationData = KnowledgeFieldGenerationData(),
-    val economyKnowledgeGenerateData: KnowledgeFieldGenerationData = KnowledgeFieldGenerationData(),
-    val politicsKnowledgeGenerateData: KnowledgeFieldGenerationData = KnowledgeFieldGenerationData(),
-    val sociologyKnowledgeGenerateData: KnowledgeFieldGenerationData = KnowledgeFieldGenerationData(),
-    val psychologyKnowledgeGenerateData: KnowledgeFieldGenerationData = KnowledgeFieldGenerationData(),
+    val mathematicsKnowledgeGenerationData: KnowledgeFieldGenerationData = KnowledgeFieldGenerationData(),
+    val physicsKnowledgeGenerationData: KnowledgeFieldGenerationData = KnowledgeFieldGenerationData(),
+    val materialKnowledgeGenerationData: KnowledgeFieldGenerationData = KnowledgeFieldGenerationData(),
+    val computerKnowledgeGenerationData: KnowledgeFieldGenerationData = KnowledgeFieldGenerationData(),
+    val mechanicsKnowledgeGenerationData: KnowledgeFieldGenerationData = KnowledgeFieldGenerationData(),
+    val medicineKnowledgeGenerationData: KnowledgeFieldGenerationData = KnowledgeFieldGenerationData(),
+    val economyKnowledgeGenerationData: KnowledgeFieldGenerationData = KnowledgeFieldGenerationData(),
+    val politicsKnowledgeGenerationData: KnowledgeFieldGenerationData = KnowledgeFieldGenerationData(),
+    val sociologyKnowledgeGenerationData: KnowledgeFieldGenerationData = KnowledgeFieldGenerationData(),
+    val psychologyKnowledgeGenerationData: KnowledgeFieldGenerationData = KnowledgeFieldGenerationData(),
 )
 
 @Serializable
 data class MutableKnowledgeGenerationData(
-    var mathematicsKnowledgeGenerateData: MutableKnowledgeFieldGenerationData = MutableKnowledgeFieldGenerationData(),
-    var physicsKnowledgeGenerateData: MutableKnowledgeFieldGenerationData = MutableKnowledgeFieldGenerationData(),
-    var materialKnowledgeGenerateData: MutableKnowledgeFieldGenerationData = MutableKnowledgeFieldGenerationData(),
-    var computerKnowledgeGenerateData: MutableKnowledgeFieldGenerationData = MutableKnowledgeFieldGenerationData(),
-    var mechanicsKnowledgeGenerateData: MutableKnowledgeFieldGenerationData = MutableKnowledgeFieldGenerationData(),
-    var medicineKnowledgeGenerateData: MutableKnowledgeFieldGenerationData = MutableKnowledgeFieldGenerationData(),
-    var economyKnowledgeGenerateData: MutableKnowledgeFieldGenerationData = MutableKnowledgeFieldGenerationData(),
-    var politicsKnowledgeGenerateData: MutableKnowledgeFieldGenerationData = MutableKnowledgeFieldGenerationData(),
-    var sociologyKnowledgeGenerateData: MutableKnowledgeFieldGenerationData = MutableKnowledgeFieldGenerationData(),
-    var psychologyKnowledgeGenerateData: MutableKnowledgeFieldGenerationData = MutableKnowledgeFieldGenerationData(),
+    var mathematicsKnowledgeGenerationData: MutableKnowledgeFieldGenerationData = MutableKnowledgeFieldGenerationData(),
+    var physicsKnowledgeGenerationData: MutableKnowledgeFieldGenerationData = MutableKnowledgeFieldGenerationData(),
+    var materialKnowledgeGenerationData: MutableKnowledgeFieldGenerationData = MutableKnowledgeFieldGenerationData(),
+    var computerKnowledgeGenerationData: MutableKnowledgeFieldGenerationData = MutableKnowledgeFieldGenerationData(),
+    var mechanicsKnowledgeGenerationData: MutableKnowledgeFieldGenerationData = MutableKnowledgeFieldGenerationData(),
+    var medicineKnowledgeGenerationData: MutableKnowledgeFieldGenerationData = MutableKnowledgeFieldGenerationData(),
+    var economyKnowledgeGenerationData: MutableKnowledgeFieldGenerationData = MutableKnowledgeFieldGenerationData(),
+    var politicsKnowledgeGenerationData: MutableKnowledgeFieldGenerationData = MutableKnowledgeFieldGenerationData(),
+    var sociologyKnowledgeGenerationData: MutableKnowledgeFieldGenerationData = MutableKnowledgeFieldGenerationData(),
+    var psychologyKnowledgeGenerationData: MutableKnowledgeFieldGenerationData = MutableKnowledgeFieldGenerationData(),
 )

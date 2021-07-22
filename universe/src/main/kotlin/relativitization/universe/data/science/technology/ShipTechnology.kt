@@ -17,7 +17,7 @@ data class MaxShipRestMassTechnology(
             "$maxShipRestMassIncrease"
 
     override fun updateTechnologyData(mutableTechnologyData: MutableTechnologyData) {
-        mutableTechnologyData.maxShipEngineDeltaFuelRestMass += maxShipRestMassIncrease
+        mutableTechnologyData.shipEngineLevel += maxShipRestMassIncrease
     }
 }
 
@@ -35,6 +35,6 @@ data class MaxShipEngineDeltaFuelRestMassTechnology(
             "$maxShipEngineDeltaFuelRestMassIncrease"
 
     override fun updateTechnologyData(mutableTechnologyData: MutableTechnologyData) {
-        mutableTechnologyData.maxShipEngineDeltaFuelRestMass += maxShipEngineDeltaFuelRestMassIncrease
+        mutableTechnologyData.shipEngineLevel += maxShipEngineDeltaFuelRestMassIncrease
     }
 }

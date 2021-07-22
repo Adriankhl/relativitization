@@ -26,14 +26,15 @@ abstract class SingleTechnologyData {
  * @property minTechnologyId technologies with id lower than this value are all included
  * @property technologyIdList included technologies with id higher than the minTechnologyId
  * @property maxShipRestMass maximum rest mass of a ship to manufacture
- * @property maxShipEngineDeltaFuelRestMass related to the maximum delta fuel mass of a ship
+ * @property shipEngineLevel related to the maximum delta fuel mass of a ship, should depend on the
+ * total rest mass of the ship
  */
 @Serializable
 data class TechnologyData(
     val minTechnologyId: Int = 0,
     val technologyIdList: List<Int> = listOf(),
     val maxShipRestMass: Double = 10000.0,
-    val maxShipEngineDeltaFuelRestMass: Double = 1.0,
+    val shipEngineLevel: Double = 1.0,
 )
 
 @Serializable
@@ -41,7 +42,7 @@ data class MutableTechnologyData(
     var minTechnologyId: Int = 0,
     val technologyIdList: MutableList<Int> = mutableListOf(),
     var maxShipRestMass: Double = 10000.0,
-    var maxShipEngineDeltaFuelRestMass: Double = 1.0,
+    var shipEngineLevel: Double = 1.0,
 )
 
 /**
@@ -68,11 +69,11 @@ data class MutableTechnologyFieldGenerationData(
 @Serializable
 data class TechnologyGenerationData(
     val maxShipRestMassTechnologyGenerationData: TechnologyFieldGenerationData = TechnologyFieldGenerationData(),
-    val maxShipEngineDeltaFuelRestMass: TechnologyFieldGenerationData = TechnologyFieldGenerationData(),
+    val shipEngineTechnologyGenerationData: TechnologyFieldGenerationData = TechnologyFieldGenerationData(),
 )
 
 @Serializable
 data class MutableTechnologyGenerationData(
     var maxShipRestMassTechnologyGenerationData: MutableTechnologyFieldGenerationData = MutableTechnologyFieldGenerationData(),
-    var maxShipEngineDeltaFuelRestMass: MutableTechnologyFieldGenerationData = MutableTechnologyFieldGenerationData(),
+    var shipEngineTechnologyGenerationData: MutableTechnologyFieldGenerationData = MutableTechnologyFieldGenerationData(),
 )
