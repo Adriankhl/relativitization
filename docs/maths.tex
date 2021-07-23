@@ -1,55 +1,75 @@
 % arara: pdflatex
 
-
 \documentclass[12pt, letterpaper]{article}
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
 
-
 \title{Relativitization}
 
-\author{Adriankhl}
+\author{Adrian}
 
 
 \begin{document}
 
-\begin{titlepage}
-\maketitle
-\end{titlepage}
+    \begin{titlepage}
+        \maketitle
+    \end{titlepage}
 
-\section{Photon rocket}
 
-Photon 4-momentum: $P_{ph}$, object initial 4-momentum $P_i = (\gamma_i m_i c, \gamma_i m_i \overrightarrow{v}) $,
-object final 4-momentum $P_f = (\gamma_f m_f c, \gamma_f m_f \alpha \hat{u})$. Let $m_f = m_i - \Delta m$.
+    \section{Photon rocket}\label{sec:photon-rocket}
 
-\begin{align*}
-  P_{ph} &= P_i - P_f \\
-  P_{ph}^2 &= P_i^2 + P_f^2 - 2 P_i \cdot P_f \\
-  0 &= (m_i c)^2 + (m_f c)^2 - 2 \gamma_i \gamma_f m_i m_f ( c^2 - \alpha \overrightarrow{v} \cdot \hat{u}) \\
-  (m_i c)^2 + (m_f c)^2 &= \frac{2 \gamma_i m_i m_f}{\sqrt{1 - \alpha^2 / c^2}} ( c^2 - \alpha \overrightarrow{v} \cdot \hat{u}) \\
-  \left(\frac{(m_i c)^2 + (m_f c)^2}{2 \gamma_i m_i m_f}\right)^2 &= \frac{(c^2 - \alpha \overrightarrow{v} \cdot \hat{u})^2}{1 - \alpha^2 / c^2} \\
-  \left(\frac{(m_i c)^2 + (m_f c)^2}{2 \gamma_i m_i m_f}\right)^2 (1 - \alpha^2 / c^2) &= c^4 - 2 c^2 \alpha \overrightarrow{v} \cdot \hat{u} + \alpha^2 (\overrightarrow{v} \cdot \hat{u})^2 \\
-\end{align*}
+    Photon 4-momentum: $P_{ph}$, object initial 4-momentum $P_i = (\gamma_i m_i c, \gamma_i m_i \overrightarrow{v}) $,
+    object final 4-momentum $P_f = (\gamma_f m_f c, \gamma_f m_f \alpha \hat{u})$. Let $m_f = m_i - \Delta m$.
 
-\begin{equation*}
-  ((\overrightarrow{v} \cdot \hat{u})^2 + \left(\frac{(m_i)^2 + (m_f)^2}{2 \gamma_i m_i m_f}\right)^2 c^2) \alpha ^2 + (- 2 c^2 \overrightarrow{v} \cdot \hat{u}) \alpha + c^4 \left(1 - \left(\frac{(m_i)^2 + (m_f)^2}{2 \gamma_i m_i m_f}\right)^2 \right) = 0
-\end{equation*}
+    \begin{align*}
+        P_{ph} &= P_i - P_f \\
+        P_{ph}^2 &= P_i^2 + P_f^2 - 2 P_i \cdot P_f \\
+        0 &= (m_i c)^2 + (m_f c)^2 - 2 \gamma_i \gamma_f m_i m_f ( c^2 - \alpha \overrightarrow{v} \cdot \hat{u}) \\
+        (m_i c)^2 + (m_f c)^2 &= \frac{2 \gamma_i m_i m_f}{\sqrt{1 - \alpha^2 / c^2}} ( c^2 - \alpha \overrightarrow{v} \cdot \hat{u}) \\
+        \left(\frac{(m_i c)^2 + (m_f c)^2}{2 \gamma_i m_i m_f}\right)^2 &= \frac{(c^2 - \alpha \overrightarrow{v} \cdot \hat{u})^2}{1 - \alpha^2 / c^2} \\
+        \left(\frac{(m_i c)^2 + (m_f c)^2}{2 \gamma_i m_i m_f}\right)^2 (1 - \alpha^2 / c^2) &= c^4 - 2 c^2 \alpha \overrightarrow{v} \cdot \hat{u} + \alpha^2 (\overrightarrow{v} \cdot \hat{u})^2 \\
+    \end{align*}
 
-If $|\overrightarrow{v}| = 0$
+    \begin{equation*}
+        ((\overrightarrow{v} \cdot \hat{u})^2 + \left(\frac{(m_i)^2 + (m_f)^2}{2 \gamma_i m_i m_f}\right)^2 c^2) \alpha ^2 + (- 2 c^2 \overrightarrow{v} \cdot \hat{u}) \alpha + c^4 \left(1 - \left(\frac{(m_i)^2 + (m_f)^2}{2 \gamma_i m_i m_f}\right)^2 \right) = 0
+    \end{equation*}
 
-\begin{align*}
-  (\left(\frac{(m_i)^2 + (m_f)^2}{2 m_i m_f}\right)^2 c^2) \alpha^2 + c^4 \left(1 - \left(\frac{(m_i)^2 + (m_f)^2}{2 m_i m_f}\right)^2 \right) &= 0 \\
-  ((m_i)^2 + (m_f)^2)^2 \alpha^2 + c^2 ((2 m_i m_f)^2 - (m_i)^4 - 2 (m_i)^2 (m_f)^2 - (m_f)^4) &= 0 \\
-  ((m_i)^2 + (m_f)^2)^2 \alpha^2 - c^2 ((m_i)^4 - 2 (m_i)^2 (m_f)^2 + (m_f)^4) &= 0 \\
-  ((m_i)^2 + (m_f)^2)^2 \alpha^2 - c^2 ((m_i)^2 - (m_f)^2)^2 &= 0
-\end{align*}
+    If $|\overrightarrow{v}| = 0$
 
-To compute change in mass given final velocity $\overrightarrow{u}$
-\begin{align*}
-  P_{ph} &= P_i - P_f \\
-  P_{ph}^2 &= P_i^2 + P_f^2 - 2 P_i \cdot P_f \\
-  0 &= (m_i c)^2 + (m_f c)^2 - 2 \gamma_i \gamma_f m_i m_f ( c^2 - \overrightarrow{v} \cdot \overrightarrow{u}) \\
-  0 &= c^2 m_f^2 + (- 2 \gamma_i \gamma_f m_i ( c^2 - \overrightarrow{v} \cdot \overrightarrow{u})) m_f + (m_i c)^2
-\end{align*}
+    \begin{align*}
+    (\left(\frac{(m_i)^2 + (m_f)^2}{2 m_i m_f}\right)^2 c^2)
+        \alpha^2 + c^4 \left(1 - \left(\frac{(m_i)^2 + (m_f)^2}{2 m_i m_f}\right)^2 \right) &= 0 \\
+        ((m_i)^2 + (m_f)^2)^2 \alpha^2 + c^2 ((2 m_i m_f)^2 - (m_i)^4 - 2 (m_i)^2 (m_f)^2 - (m_f)^4) &= 0 \\
+        ((m_i)^2 + (m_f)^2)^2 \alpha^2 - c^2 ((m_i)^4 - 2 (m_i)^2 (m_f)^2 + (m_f)^4) &= 0 \\
+        ((m_i)^2 + (m_f)^2)^2 \alpha^2 - c^2 ((m_i)^2 - (m_f)^2)^2 &= 0
+    \end{align*}
+
+    To compute change in mass given final velocity $\overrightarrow{u}$
+    \begin{align*}
+        P_{ph} &= P_i - P_f \\
+        P_{ph}^2 &= P_i^2 + P_f^2 - 2 P_i \cdot P_f \\
+        0 &= (m_i c)^2 + (m_f c)^2 - 2 \gamma_i \gamma_f m_i m_f ( c^2 - \overrightarrow{v} \cdot \overrightarrow{u}) \\
+        0 &= c^2 m_f^2 + (- 2 \gamma_i \gamma_f m_i ( c^2 - \overrightarrow{v} \cdot \overrightarrow{u})) m_f + (m_i c)^2
+    \end{align*}
+
+
+    \section{Knowledge and technology network}\label{sec:knowledge-and-technology-network}
+
+    \subsection{Latent space model}\label{subsec:latent-space-model}
+    Generic formulation of latent space model:
+    \begin{equation}
+        \label{eq:equation}
+        \textrm{logit}(p) = \alpha + \gamma^T x'_i + \gamma'^T x'_j + \beta^T x_{ij} + g(x'_i, x'_j) + f(z_i, z_j)
+    \end{equation}
+    where $p$ is the probability of $i$ and $j$ having edge, $x'_i$ represents individual properties,
+    $x_{ij}$ represents the intrinsic
+    relation of $i$ and $j$, $z_i$ and $z_j$ are the location of $i$ and $j$ in the latent space.
+
+    \subsection{Applying to knowledge and technology}\label{subsec:applying-to-knowledge-and-technology}
+    Properties characterising knowledge:
+    \begin{itemize}
+        \item $x$ and $y$ coordinates
+        \item importance
+    \end{itemize}
 
 \end{document}
