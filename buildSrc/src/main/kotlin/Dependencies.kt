@@ -12,7 +12,7 @@ object Versions {
     const val log4jVersion = "2.14.1"
     const val kotlinFakerVersion = "1.7.1"
 
-    const val androidGradlePluginVersion = "7.0.0-beta05"
+    const val androidGradlePluginVersion = "7.0.0-rc01"
     const val androidLifeCycleKtxVersion = "2.4.0-alpha02"
     const val androidFragmentKtxVersion = "1.3.5"
 
