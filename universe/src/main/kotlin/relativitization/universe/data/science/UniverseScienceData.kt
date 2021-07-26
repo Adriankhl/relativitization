@@ -9,20 +9,20 @@ import relativitization.universe.utils.RelativitizationLogManager
 
 @Serializable
 data class UniverseScienceData(
-    val allSingleKnowledgeDataList: List<SingleKnowledgeData> = listOf(),
-    val allSingleTechnologyDataList: List<SingleTechnologyData> = listOf(),
     val commonSenseKnowledgeData: KnowledgeData = KnowledgeData(),
     val commonSenseTechnologyData: TechnologyData = TechnologyData(),
+    val allSingleKnowledgeDataMap: Map<Int, SingleKnowledgeData> = mapOf(),
+    val allSingleTechnologyDataMap: Map<Int, SingleTechnologyData> = mapOf(),
     val knowledgeGenerationData: KnowledgeGenerationData = KnowledgeGenerationData(),
     val technologyGenerationData: TechnologyGenerationData = TechnologyGenerationData(),
 )
 
 @Serializable
 data class MutableUniverseScienceData(
-    val allSingleKnowledgeDataList: MutableList<SingleKnowledgeData> = mutableListOf(),
-    val allSingleTechnologyDataList: MutableList<SingleTechnologyData> = mutableListOf(),
     var commonSenseKnowledgeData: MutableKnowledgeData = MutableKnowledgeData(),
     var commonSenseTechnologyData: MutableTechnologyData = MutableTechnologyData(),
+    val allSingleKnowledgeDataMap: MutableMap<Int, SingleKnowledgeData> = mutableMapOf(),
+    val allSingleTechnologyDataMap: MutableMap<Int, SingleTechnologyData> = mutableMapOf(),
     var knowledgeGenerationData: MutableKnowledgeGenerationData = MutableKnowledgeGenerationData(),
     var technologyGenerationData: MutableTechnologyGenerationData = MutableTechnologyGenerationData(),
 )

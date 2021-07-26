@@ -23,7 +23,7 @@ abstract class SingleTechnologyData {
 /**
  * Represent the effect of a combination of SingleTechnologyData
  *
- * @property minTechnologyId technologies with id lower than this value are all included
+ * @property startFromTechnologyId technologies with id lower than this value are all included
  * @property technologyIdList included technologies with id higher than the minTechnologyId
  * @property maxShipRestMass maximum rest mass of a ship to manufacture
  * @property shipEngineLevel related to the maximum delta fuel mass of a ship, should depend on the
@@ -31,7 +31,7 @@ abstract class SingleTechnologyData {
  */
 @Serializable
 data class TechnologyData(
-    val minTechnologyId: Int = 0,
+    val startFromTechnologyId: Int = 0,
     val technologyIdList: List<Int> = listOf(),
     val maxShipRestMass: Double = 10000.0,
     val shipEngineLevel: Double = 1.0,
@@ -39,7 +39,7 @@ data class TechnologyData(
 
 @Serializable
 data class MutableTechnologyData(
-    var minTechnologyId: Int = 0,
+    var startFromTechnologyId: Int = 0,
     val technologyIdList: MutableList<Int> = mutableListOf(),
     var maxShipRestMass: Double = 10000.0,
     var shipEngineLevel: Double = 1.0,

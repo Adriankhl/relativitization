@@ -11,20 +11,20 @@ import relativitization.universe.data.serializer.DataSerializer
 
 @Serializable
 data class PlayerScienceData(
-    val singleKnowledgeDataList: List<SingleKnowledgeData> = listOf(),
-    val singleTechnologyDataList: List<SingleTechnologyData> = listOf(),
     val commonSenseKnowledgeData: KnowledgeData = KnowledgeData(),
     val commonSenseTechnologyData: TechnologyData = TechnologyData(),
+    val singleKnowledgeDataList: List<SingleKnowledgeData> = listOf(),
+    val singleTechnologyDataList: List<SingleTechnologyData> = listOf(),
     val playerKnowledgeData: KnowledgeData = KnowledgeData(),
     val playerTechnologyData: TechnologyData = TechnologyData(),
 )
 
 @Serializable
 data class MutablePlayerScienceData(
-    val singleKnowledgeDataList: MutableList<SingleKnowledgeData> = mutableListOf(),
-    val singleTechnologyDataList: MutableList<SingleTechnologyData> = mutableListOf(),
     var commonSenseKnowledgeData: MutableKnowledgeData = MutableKnowledgeData(),
     var commonSenseTechnologyData: MutableTechnologyData = MutableTechnologyData(),
+    val singleKnowledgeDataList: MutableList<SingleKnowledgeData> = mutableListOf(),
+    val singleTechnologyDataList: MutableList<SingleTechnologyData> = mutableListOf(),
     var playerKnowledgeData: MutableKnowledgeData = MutableKnowledgeData(),
     var playerTechnologyData: MutableTechnologyData = MutableTechnologyData(),
 ) {

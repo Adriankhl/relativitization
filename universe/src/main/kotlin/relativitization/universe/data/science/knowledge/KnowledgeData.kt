@@ -23,12 +23,12 @@ abstract class SingleKnowledgeData {
 /**
  * Represent the effect of a combination of SingleKnowledgeData
  *
- * @property minKnowledgeId knowledge with id lower than this value are all included
+ * @property startFromKnowledgeId knowledge with id lower than this value are all included
  * @property knowledgeIdList include knowledge with id higher than the minTechnologyId
  */
 @Serializable
 data class KnowledgeData(
-    val minKnowledgeId: Int = 0,
+    val startFromKnowledgeId: Int = 0,
     val knowledgeIdList: List<Int> = listOf(),
     val mathematicsResearchLevel: Double = 0.0,
     val physicsResearchLevel: Double = 0.0,
@@ -44,7 +44,7 @@ data class KnowledgeData(
 
 @Serializable
 data class MutableKnowledgeData(
-    var minKnowledgeId: Int = 0,
+    var startFromKnowledgeId: Int = 0,
     val knowledgeIdList: MutableList<Int> = mutableListOf(),
     var mathematicsResearchLevel: Double = 0.0,
     var physicsResearchLevel: Double = 0.0,
