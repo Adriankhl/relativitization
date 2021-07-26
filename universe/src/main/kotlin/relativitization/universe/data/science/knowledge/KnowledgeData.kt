@@ -86,30 +86,34 @@ data class MutableKnowledgeFieldGenerationData(
 
 @Serializable
 data class KnowledgeGenerationData(
-    val mathematicsKnowledgeGenerationData: KnowledgeFieldGenerationData = KnowledgeFieldGenerationData(),
-    val physicsKnowledgeGenerationData: KnowledgeFieldGenerationData = KnowledgeFieldGenerationData(),
-    val materialKnowledgeGenerationData: KnowledgeFieldGenerationData = KnowledgeFieldGenerationData(),
-    val computerKnowledgeGenerationData: KnowledgeFieldGenerationData = KnowledgeFieldGenerationData(),
-    val mechanicsKnowledgeGenerationData: KnowledgeFieldGenerationData = KnowledgeFieldGenerationData(),
-    val medicineKnowledgeGenerationData: KnowledgeFieldGenerationData = KnowledgeFieldGenerationData(),
-    val economyKnowledgeGenerationData: KnowledgeFieldGenerationData = KnowledgeFieldGenerationData(),
-    val politicsKnowledgeGenerationData: KnowledgeFieldGenerationData = KnowledgeFieldGenerationData(),
-    val sociologyKnowledgeGenerationData: KnowledgeFieldGenerationData = KnowledgeFieldGenerationData(),
-    val psychologyKnowledgeGenerationData: KnowledgeFieldGenerationData = KnowledgeFieldGenerationData(),
+    val knowledgeGenerationDataMap: Map<KnowledgeField, KnowledgeGenerationData> = mapOf(
+        KnowledgeField.MATHEMATICS to KnowledgeGenerationData(),
+        KnowledgeField.PHYSICS to KnowledgeGenerationData(),
+        KnowledgeField.MATERIAL to KnowledgeGenerationData(),
+        KnowledgeField.COMPUTER to KnowledgeGenerationData(),
+        KnowledgeField.MECHANICS to KnowledgeGenerationData(),
+        KnowledgeField.MEDICINE to KnowledgeGenerationData(),
+        KnowledgeField.ECONOMY to KnowledgeGenerationData(),
+        KnowledgeField.POLITICS to KnowledgeGenerationData(),
+        KnowledgeField.SOCIOLOGY to KnowledgeGenerationData(),
+        KnowledgeField.PSYCHOLOGY to KnowledgeGenerationData(),
+    )
 )
 
 @Serializable
 data class MutableKnowledgeGenerationData(
-    var mathematicsKnowledgeGenerationData: MutableKnowledgeFieldGenerationData = MutableKnowledgeFieldGenerationData(),
-    var physicsKnowledgeGenerationData: MutableKnowledgeFieldGenerationData = MutableKnowledgeFieldGenerationData(),
-    var materialKnowledgeGenerationData: MutableKnowledgeFieldGenerationData = MutableKnowledgeFieldGenerationData(),
-    var computerKnowledgeGenerationData: MutableKnowledgeFieldGenerationData = MutableKnowledgeFieldGenerationData(),
-    var mechanicsKnowledgeGenerationData: MutableKnowledgeFieldGenerationData = MutableKnowledgeFieldGenerationData(),
-    var medicineKnowledgeGenerationData: MutableKnowledgeFieldGenerationData = MutableKnowledgeFieldGenerationData(),
-    var economyKnowledgeGenerationData: MutableKnowledgeFieldGenerationData = MutableKnowledgeFieldGenerationData(),
-    var politicsKnowledgeGenerationData: MutableKnowledgeFieldGenerationData = MutableKnowledgeFieldGenerationData(),
-    var sociologyKnowledgeGenerationData: MutableKnowledgeFieldGenerationData = MutableKnowledgeFieldGenerationData(),
-    var psychologyKnowledgeGenerationData: MutableKnowledgeFieldGenerationData = MutableKnowledgeFieldGenerationData(),
+    val knowledgeGenerationDataMap: Map<KnowledgeField, MutableKnowledgeGenerationData> = mapOf(
+        KnowledgeField.MATHEMATICS to MutableKnowledgeGenerationData(),
+        KnowledgeField.PHYSICS to MutableKnowledgeGenerationData(),
+        KnowledgeField.MATERIAL to MutableKnowledgeGenerationData(),
+        KnowledgeField.COMPUTER to MutableKnowledgeGenerationData(),
+        KnowledgeField.MECHANICS to MutableKnowledgeGenerationData(),
+        KnowledgeField.MEDICINE to MutableKnowledgeGenerationData(),
+        KnowledgeField.ECONOMY to MutableKnowledgeGenerationData(),
+        KnowledgeField.POLITICS to MutableKnowledgeGenerationData(),
+        KnowledgeField.SOCIOLOGY to MutableKnowledgeGenerationData(),
+        KnowledgeField.PSYCHOLOGY to MutableKnowledgeGenerationData(),
+    )
 )
 
 enum class KnowledgeField(val value: String) {
