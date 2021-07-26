@@ -13,11 +13,19 @@ object DefaultGenerateUniverseScienceData {
     private val logger = RelativitizationLogManager.getLogger()
 
     fun generate(universeData: UniverseData): UniverseScienceData {
+        val numGeneration: Int = 100
+
         val universeScienceData: UniverseScienceData = universeData.universeScienceData
-        val universeSettings: UniverseSettings = universeData.universeSettings
         val mutableUniverseScienceData: MutableUniverseScienceData = DataSerializer.copy(
             universeScienceData
         )
+
+        for (i in 1..numGeneration) {
+            val newKnowledgeData: SingleKnowledgeData = generateSingleKnowledgeData(
+                mutableUniverseScienceData
+            )
+        }
+
         return DataSerializer.copy(mutableUniverseScienceData)
     }
 

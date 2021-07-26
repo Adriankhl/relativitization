@@ -25,7 +25,28 @@ data class MutableUniverseScienceData(
     val allSingleTechnologyDataMap: MutableMap<Int, SingleTechnologyData> = mutableMapOf(),
     var knowledgeGenerationData: MutableKnowledgeGenerationData = MutableKnowledgeGenerationData(),
     var technologyGenerationData: MutableTechnologyGenerationData = MutableTechnologyGenerationData(),
-)
+) {
+    fun addSingleKnowledgeData(singleKnowledgeData: SingleKnowledgeData) {
+        when {
+            allSingleKnowledgeDataMap.containsKey(singleKnowledgeData.knowledgeId) -> {
+                logger.error("new single knowledge data has duplicate id, ignore the new data")
+            }
+            allSingleKnowledgeDataMap.keys.maxOrNull() ?: -1 >= singleKnowledgeData.knowledgeId -> {
+                logger.error("new single knowledge data has id smaller than the maximum id")
+
+                // Still add the knowledge data as long as there is no duplication
+                allSingleKnowledgeDataMap[singleKnowledgeData.knowledgeId] = singleKnowledgeData
+            }
+            else -> {
+                allSingleKnowledgeDataMap[singleKnowledgeData.knowledgeId] = singleKnowledgeData
+            }
+        }
+    }
+
+    companion object {
+        private val logger = RelativitizationLogManager.getLogger()
+    }
+}
 
 object ProcessUniverseScienceData {
 
