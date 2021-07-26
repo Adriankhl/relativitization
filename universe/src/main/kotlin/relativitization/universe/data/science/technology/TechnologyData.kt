@@ -51,19 +51,22 @@ data class MutableTechnologyData(
  * @property centerX the x coordinate of the center of the field in the knowledge plane
  * @property centerY the y coordinate of the center of the field in the knowledge plane
  * @property range the dispersion of this field
+ * @property weight the likelihood that a new technology is in this field
  */
 @Serializable
 data class TechnologyFieldGenerationData(
     val centerX: Double = 0.0,
     val centerY: Double = 0.0,
-    val range: Double = 1.0
+    val range: Double = 1.0,
+    val weight: Double = 1.0,
 )
 
 @Serializable
 data class MutableTechnologyFieldGenerationData(
     var centerX: Double = 0.0,
     var centerY: Double = 0.0,
-    var range: Double = 1.0
+    var range: Double = 1.0,
+    var weight: Double = 1.0,
 )
 
 @Serializable

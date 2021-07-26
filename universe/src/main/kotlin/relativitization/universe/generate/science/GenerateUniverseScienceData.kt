@@ -24,12 +24,10 @@ object DefaultGenerateUniverseScienceData {
     /**
      * Generate Single knowledge data
      *
-     * @param universeScienceData universe science data
-     * @param numNewSingleKnowledgeData number of new single knowledge data
+     * @param mutableUniverseScienceData universe science data
      */
     private fun generateSingleKnowledgeData(
-        universeScienceData: UniverseScienceData,
-        numNewSingleKnowledgeData: Int,
+        mutableUniverseScienceData: MutableUniverseScienceData,
     ): SingleKnowledgeData {
         TODO()
     }
@@ -37,12 +35,10 @@ object DefaultGenerateUniverseScienceData {
     /**
      * Generate single technology data
      *
-     * @param universeScienceData universe science data
-     * @param numNewSingleTechnologyData number of new single knowledge data
+     * @param mutableUniverseScienceData universe science data
      */
     private fun generateSingleTechnologyData(
-        universeScienceData: UniverseScienceData,
-        numNewSingleTechnologyData: Int,
+        mutableUniverseScienceData: MutableUniverseScienceData,
     ): SingleTechnologyData {
         TODO()
     }
