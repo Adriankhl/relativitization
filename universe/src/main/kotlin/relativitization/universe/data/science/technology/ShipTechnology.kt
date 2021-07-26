@@ -13,6 +13,8 @@ data class MaxShipRestMassTechnology(
     override val referenceKnowledgeIdList: List<Int>,
     override val referenceTechnologyIdList: List<Int>,
 ) : SingleTechnologyData() {
+    override val technologyField: TechnologyField = TechnologyField.MAX_SHIP_REST_MASS
+
     override val description: String = "Increase max ship rest mass by" +
             "$maxShipRestMassIncrease"
 
@@ -22,19 +24,21 @@ data class MaxShipRestMassTechnology(
 }
 
 @Serializable
-data class MaxShipEngineDeltaFuelRestMassTechnology(
+data class ShipEngineLevelTechnology(
     override val technologyId: Int,
-    val maxShipEngineDeltaFuelRestMassIncrease: Double,
+    val shipEngineLevelIncrease: Double,
     override val xCor: Double,
     override val yCor: Double,
     override val difficulty: Double,
     override val referenceKnowledgeIdList: List<Int>,
     override val referenceTechnologyIdList: List<Int>,
 ) : SingleTechnologyData() {
+    override val technologyField: TechnologyField = TechnologyField.SHIP_ENGINE_LEVEL
+
     override val description: String = "Increase max ship engine delta fuel rest mass by" +
-            "$maxShipEngineDeltaFuelRestMassIncrease"
+            "$shipEngineLevelIncrease"
 
     override fun updateTechnologyData(mutableTechnologyData: MutableTechnologyData) {
-        mutableTechnologyData.shipEngineLevel += maxShipEngineDeltaFuelRestMassIncrease
+        mutableTechnologyData.shipEngineLevel += shipEngineLevelIncrease
     }
 }

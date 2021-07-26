@@ -3,8 +3,10 @@ package relativitization.universe.data.science.technology
 import kotlinx.serialization.Serializable
 
 @Serializable
-abstract class SingleTechnologyData {
+sealed class SingleTechnologyData {
     abstract val technologyId: Int
+
+    abstract val technologyField: TechnologyField
 
     // x and y coordinate in the knowledge space
     abstract val xCor: Double
@@ -71,12 +73,26 @@ data class MutableTechnologyFieldGenerationData(
 
 @Serializable
 data class TechnologyGenerationData(
-    val maxShipRestMassTechnologyGenerationData: TechnologyFieldGenerationData = TechnologyFieldGenerationData(),
-    val shipEngineTechnologyGenerationData: TechnologyFieldGenerationData = TechnologyFieldGenerationData(),
+    val generationDataMap: Map<TechnologyField, TechnologyFieldGenerationData> = mapOf(
+        TechnologyField.MAX_SHIP_REST_MASS to TechnologyFieldGenerationData(),
+        TechnologyField.SHIP_ENGINE_LEVEL to TechnologyFieldGenerationData(),
+    )
 )
 
 @Serializable
 data class MutableTechnologyGenerationData(
-    var maxShipRestMassTechnologyGenerationData: MutableTechnologyFieldGenerationData = MutableTechnologyFieldGenerationData(),
-    var shipEngineTechnologyGenerationData: MutableTechnologyFieldGenerationData = MutableTechnologyFieldGenerationData(),
+    val generationDataMap: Map<TechnologyField, MutableTechnologyFieldGenerationData> = mapOf(
+        TechnologyField.MAX_SHIP_REST_MASS to MutableTechnologyFieldGenerationData(),
+        TechnologyField.SHIP_ENGINE_LEVEL to MutableTechnologyFieldGenerationData(),
+    )
 )
+
+enum class TechnologyField(val value: String){
+    MAX_SHIP_REST_MASS("Max. ship rest mass"),
+    SHIP_ENGINE_LEVEL("Ship engine level"),
+    ;
+
+    override fun toString(): String {
+        return value
+    }
+}
