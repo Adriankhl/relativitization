@@ -86,7 +86,7 @@ data class MutableKnowledgeFieldGenerationData(
 
 @Serializable
 data class KnowledgeGenerationData(
-    val knowledgeGenerationDataMap: Map<KnowledgeField, KnowledgeFieldGenerationData> = mapOf(
+    val generationDataMap: Map<KnowledgeField, KnowledgeFieldGenerationData> = mapOf(
         KnowledgeField.MATHEMATICS to KnowledgeFieldGenerationData(),
         KnowledgeField.PHYSICS to KnowledgeFieldGenerationData(),
         KnowledgeField.MATERIAL to KnowledgeFieldGenerationData(),
@@ -102,7 +102,7 @@ data class KnowledgeGenerationData(
 
 @Serializable
 data class MutableKnowledgeGenerationData(
-    val knowledgeGenerationDataMap: Map<KnowledgeField, MutableKnowledgeFieldGenerationData> = mapOf(
+    val generationDataMap: Map<KnowledgeField, MutableKnowledgeFieldGenerationData> = mapOf(
         KnowledgeField.MATHEMATICS to MutableKnowledgeFieldGenerationData(),
         KnowledgeField.PHYSICS to MutableKnowledgeFieldGenerationData(),
         KnowledgeField.MATERIAL to MutableKnowledgeFieldGenerationData(),

@@ -4,7 +4,10 @@ import relativitization.universe.data.UniverseData
 import relativitization.universe.data.science.MutableUniverseScienceData
 import relativitization.universe.data.science.UniverseScienceData
 import relativitization.universe.data.science.knowledge.*
+import relativitization.universe.data.science.technology.MaxShipRestMassTechnology
+import relativitization.universe.data.science.technology.MutableTechnologyFieldGenerationData
 import relativitization.universe.data.science.technology.SingleTechnologyData
+import relativitization.universe.data.science.technology.TechnologyField
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.maths.physics.Intervals
 import relativitization.universe.maths.sampling.WeightedReservoir
@@ -78,9 +81,9 @@ object DefaultGenerateUniverseScienceData {
     ): SingleKnowledgeData {
         val knowledgeFieldGenerate: KnowledgeField = WeightedReservoir.aRes(
             numItem = 1,
-            itemList = mutableUniverseScienceData.knowledgeGenerationData.knowledgeGenerationDataMap.keys.toList(),
+            itemList = mutableUniverseScienceData.knowledgeGenerationData.generationDataMap.keys.toList(),
         ) {
-            mutableUniverseScienceData.knowledgeGenerationData.knowledgeGenerationDataMap.getValue(
+            mutableUniverseScienceData.knowledgeGenerationData.generationDataMap.getValue(
                 it
             ).weight
         }.first()
@@ -116,7 +119,7 @@ object DefaultGenerateUniverseScienceData {
         logger.debug("Generating Mathematics knowledge")
 
         val generationData: MutableKnowledgeFieldGenerationData =
-            mutableUniverseScienceData.knowledgeGenerationData.knowledgeGenerationDataMap.getValue(
+            mutableUniverseScienceData.knowledgeGenerationData.generationDataMap.getValue(
                 KnowledgeField.MATHEMATICS
             )
 
@@ -155,6 +158,57 @@ object DefaultGenerateUniverseScienceData {
             difficulty = Random.Default.nextDouble(0.0, 1.0),
             referenceKnowledgeIdList = referenceKnowledgeIdList,
             referenceTechnologyIdList = referenceTechnologyIdList
+        )
+    }
+
+    /**
+     * Generate max rest mass ship technology
+     */
+    fun generateMaxShipRestMassTechnology(
+        mutableUniverseScienceData: MutableUniverseScienceData,
+    ): MaxShipRestMassTechnology {
+        logger.debug("Generating max rest mass ship technology")
+
+        val generationData: MutableTechnologyFieldGenerationData =
+            mutableUniverseScienceData.technologyGenerationData.generationDataMap.getValue(
+                TechnologyField.MAX_SHIP_REST_MASS
+            )
+
+        val angle: Double = Random.Default.nextDouble(0.0, PI)
+        val radialDistance: Double = Random.Default.nextDouble(0.0, generationData.range)
+
+        val xCor: Double = generationData.centerX + radialDistance * cos(angle)
+        val yCor: Double = generationData.centerY + radialDistance * sin(angle)
+
+        val numReferenceKnowledge: Int = Random.Default.nextInt(1, 10)
+        val numReferenceTechnology: Int = Random.Default.nextInt(1, 10)
+
+        val referenceKnowledgeIdList: List<Int> = WeightedReservoir.aRes(
+            numItem = numReferenceKnowledge,
+            itemList = mutableUniverseScienceData.allSingleKnowledgeDataMap.keys.toList(),
+        ) {
+            val knowledgeData: SingleKnowledgeData = mutableUniverseScienceData.allSingleKnowledgeDataMap.getValue(it)
+            val distance: Double = Intervals.distance(xCor, yCor, knowledgeData.xCor, knowledgeData.yCor)
+            0.1 + 1.0 / distance
+        }
+
+        val referenceTechnologyIdList: List<Int> = WeightedReservoir.aRes(
+            numItem = numReferenceTechnology,
+            itemList = mutableUniverseScienceData.allSingleTechnologyDataMap.keys.toList(),
+        ) {
+            val technologyData: SingleTechnologyData = mutableUniverseScienceData.allSingleTechnologyDataMap.getValue(it)
+            val distance: Double = Intervals.distance(xCor, yCor, technologyData.xCor, technologyData.yCor)
+            0.1 + 1.0 / distance
+        }
+
+        return MaxShipRestMassTechnology(
+            technologyId = mutableUniverseScienceData.getNewTechnologyId(),
+            maxShipRestMassIncrease = Random.Default.nextDouble(0.2E6, 1.0E6),
+            xCor = xCor,
+            yCor = yCor,
+            difficulty = Random.Default.nextDouble(0.0, 1.0),
+            referenceKnowledgeIdList = referenceKnowledgeIdList,
+            referenceTechnologyIdList = referenceTechnologyIdList,
         )
     }
 }
