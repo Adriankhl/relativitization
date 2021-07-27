@@ -30,6 +30,25 @@ object DefaultGenerateUniverseScienceData {
                 mutableUniverseScienceData
             )
             mutableUniverseScienceData.addSingleKnowledgeData(newKnowledgeData)
+
+            val newTechnologyData: SingleTechnologyData = generateSingleTechnologyData(
+                mutableUniverseScienceData
+            )
+            mutableUniverseScienceData.addSingleTechnologyData(newTechnologyData)
+        }
+
+        if (numKnowledgeGenerate > numTechnologyGenerate) {
+            for (i in 1..(numKnowledgeGenerate - minGenerate)) {
+                val newKnowledgeData: SingleKnowledgeData = generateSingleKnowledgeData(
+                    mutableUniverseScienceData
+                )
+                mutableUniverseScienceData.addSingleKnowledgeData(newKnowledgeData)
+            }
+        } else if (numTechnologyGenerate > numKnowledgeGenerate) {
+            val newTechnologyData: SingleTechnologyData = generateSingleTechnologyData(
+                mutableUniverseScienceData
+            )
+            mutableUniverseScienceData.addSingleTechnologyData(newTechnologyData)
         }
 
         return DataSerializer.copy(mutableUniverseScienceData)
