@@ -106,7 +106,24 @@ object DefaultGenerateUniverseScienceData {
     private fun generateSingleTechnologyData(
         mutableUniverseScienceData: MutableUniverseScienceData,
     ): SingleTechnologyData {
-        TODO()
+        val technologyFieldGenerate: TechnologyField = WeightedReservoir.aRes(
+            numItem = 1,
+            itemList = mutableUniverseScienceData.technologyGenerationData.generationDataMap.keys.toList(),
+        ) {
+            mutableUniverseScienceData.technologyGenerationData.generationDataMap.getValue(
+                it
+            ).weight
+        }.first()
+
+
+        return when(technologyFieldGenerate) {
+            TechnologyField.MAX_SHIP_REST_MASS -> generateMaxShipRestMassTechnology(mutableUniverseScienceData)
+            else -> {
+                logger.error("Can't generate knowledge field ${technologyFieldGenerate}, " +
+                        "default to max ship rest mass")
+                generateMaxShipRestMassTechnology(mutableUniverseScienceData)
+            }
+        }
     }
 
     /**
