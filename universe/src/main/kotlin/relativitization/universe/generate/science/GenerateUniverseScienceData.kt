@@ -76,7 +76,23 @@ object DefaultGenerateUniverseScienceData {
     private fun generateSingleKnowledgeData(
         mutableUniverseScienceData: MutableUniverseScienceData,
     ): SingleKnowledgeData {
-        TODO()
+        val knowledgeFieldGenerate: KnowledgeField = WeightedReservoir.aRes(
+            numItem = 1,
+            itemList = mutableUniverseScienceData.knowledgeGenerationData.knowledgeGenerationDataMap.keys.toList(),
+        ) {
+            mutableUniverseScienceData.knowledgeGenerationData.knowledgeGenerationDataMap.getValue(
+                it
+            ).weight
+        }.first()
+
+        return when(knowledgeFieldGenerate) {
+            KnowledgeField.MATHEMATICS -> generateMathematicsKnowledge(mutableUniverseScienceData)
+            else -> {
+                logger.error("Can't generate knowledge field ${knowledgeFieldGenerate}, " +
+                        "default to mathematics")
+                generateMathematicsKnowledge(mutableUniverseScienceData)
+            }
+        }
     }
 
     /**
