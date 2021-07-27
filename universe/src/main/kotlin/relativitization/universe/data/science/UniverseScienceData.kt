@@ -34,7 +34,7 @@ data class MutableUniverseScienceData(
             allSingleKnowledgeDataMap.containsKey(singleKnowledgeData.knowledgeId) -> {
                 logger.error("new single knowledge data has duplicate id, ignore the new data")
             }
-            allSingleKnowledgeDataMap.keys.maxOrNull() ?: -1 >= singleKnowledgeData.knowledgeId -> {
+            (allSingleKnowledgeDataMap.keys.maxOrNull() ?: -1) >= singleKnowledgeData.knowledgeId -> {
                 logger.error("new single knowledge data has id smaller than the maximum id")
 
                 // Still add the knowledge data as long as there is no duplication
@@ -54,7 +54,7 @@ data class MutableUniverseScienceData(
             allSingleTechnologyDataMap.containsKey(singleTechnologyData.technologyId) -> {
                 logger.error("new single technology data has duplicate id, ignore the new data")
             }
-            allSingleTechnologyDataMap.keys.maxOrNull() ?: -1 >= singleTechnologyData.technologyId -> {
+            (allSingleTechnologyDataMap.keys.maxOrNull() ?: -1) >= singleTechnologyData.technologyId -> {
                 logger.error("new single knowledge data has id smaller than the maximum id")
 
                 // Still add the knowledge data as long as there is no duplication
