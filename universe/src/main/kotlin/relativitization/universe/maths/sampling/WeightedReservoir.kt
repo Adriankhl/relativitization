@@ -23,26 +23,28 @@ object WeightedReservoir {
         itemList: List<T>,
         weightFunction: (T) -> Double,
     ): List<T> {
-        if (itemList.size < numItem) {
-            logger.error("number of items smaller then the size of the list to be sampled")
-        }
 
-        val pairList: List<Pair<T, Double>> = itemList.map {
-            val weight: Double = weightFunction(it)
-            val random: Double = Random.Default.nextDouble()
+        return if (itemList.size < numItem) {
+            logger.debug("number of items smaller then the size of the list to be sampled")
+            itemList
+        } else {
+            val pairList: List<Pair<T, Double>> = itemList.map {
+                val weight: Double = weightFunction(it)
+                val random: Double = Random.Default.nextDouble()
 
-            if (weight <= 0.0) {
-                logger.error("Weight smaller than 0.0, setting weightto 1E-9")
-                it to random.pow(1.0 / 1E-9)
-            } else {
-                it to random.pow(1.0 / weight)
+                if (weight <= 0.0) {
+                    logger.error("Weight smaller than 0.0, setting weightto 1E-9")
+                    it to random.pow(1.0 / 1E-9)
+                } else {
+                    it to random.pow(1.0 / weight)
+                }
             }
-        }
 
-        val sortedList: List<Pair<T, Double>> = pairList.sortedBy {
-            it.second
-        }
+            val sortedList: List<Pair<T, Double>> = pairList.sortedBy {
+                it.second
+            }
 
-        return sortedList.takeLast(numItem).map { it.first }
+            sortedList.takeLast(numItem).map { it.first }
+        }
     }
 }
