@@ -13,6 +13,9 @@ import kotlin.math.min
 object DefaultGenerateUniverseScienceData {
     private val logger = RelativitizationLogManager.getLogger()
 
+    /**
+     * Generate new universe science data based on the current universe data
+     */
     fun generate(
         universeData: UniverseData,
         numKnowledgeGenerate: Int,

@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 import relativitization.universe.data.UniverseData
 import relativitization.universe.data.science.knowledge.*
 import relativitization.universe.data.science.technology.*
-import relativitization.universe.data.serializer.DataSerializer
+import relativitization.universe.generate.science.DefaultGenerateUniverseScienceData
 import relativitization.universe.utils.RelativitizationLogManager
 
 @Serializable
@@ -82,31 +82,32 @@ object ProcessUniverseScienceData {
     )
 
     fun newUniverseScienceData(universeData: UniverseData): UniverseScienceData {
-        val mutableUniverseScienceData: MutableUniverseScienceData = DataSerializer.copy(
-            universeData.universeScienceData
-        )
 
-        when (universeData.universeSettings.universeScienceDataProcessName) {
+        return when (
+            universeData.universeSettings.universeScienceDataProcessName
+        ) {
             "DefaultUniverseScienceDataProcess" -> defaultUniverseScienceDataProcess(
                 universeData,
-                mutableUniverseScienceData
             )
-            "EmptyUniverseScienceDataProcess" -> {}
+            "EmptyUniverseScienceDataProcess" -> {
+                UniverseScienceData()
+            }
             else -> {
                 logger.error("Invalid universeScienceDataProcessName, use default process")
                 defaultUniverseScienceDataProcess(
                     universeData,
-                    mutableUniverseScienceData
                 )
             }
         }
-
-        return DataSerializer.copy(mutableUniverseScienceData)
     }
 
     private fun defaultUniverseScienceDataProcess(
         universeData: UniverseData,
-        mutableUniverseScienceData: MutableUniverseScienceData
-    ) {
+    ): UniverseScienceData {
+        return DefaultGenerateUniverseScienceData.generate(
+            universeData,
+            100,
+            100
+        )
     }
 }
