@@ -66,6 +66,10 @@ data class MutableUniverseScienceData(
         }
     }
 
+    fun getNewKnowledgeId(): Int = allSingleKnowledgeDataMap.keys.maxOrNull() ?: 0
+
+    fun getTechnologyId(): Int = allSingleTechnologyDataMap.keys.maxOrNull() ?: 0
+
     companion object {
         private val logger = RelativitizationLogManager.getLogger()
     }

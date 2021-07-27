@@ -30,7 +30,13 @@ object WeightedReservoir {
         val pairList: List<Pair<T, Double>> = itemList.map {
             val weight: Double = weightFunction(it)
             val random: Double = Random.Default.nextDouble()
-            it to random.pow(1.0 / weight)
+
+            if (weight <= 0.0) {
+                logger.error("Weight smaller than 0.0, setting weightto 1E-9")
+                it to random.pow(1.0 / 1E-9)
+            } else {
+                it to random.pow(1.0 / weight)
+            }
         }
 
         val sortedList: List<Pair<T, Double>> = pairList.sortedBy {

@@ -86,33 +86,33 @@ data class MutableKnowledgeFieldGenerationData(
 
 @Serializable
 data class KnowledgeGenerationData(
-    val knowledgeGenerationDataMap: Map<KnowledgeField, KnowledgeGenerationData> = mapOf(
-        KnowledgeField.MATHEMATICS to KnowledgeGenerationData(),
-        KnowledgeField.PHYSICS to KnowledgeGenerationData(),
-        KnowledgeField.MATERIAL to KnowledgeGenerationData(),
-        KnowledgeField.COMPUTER to KnowledgeGenerationData(),
-        KnowledgeField.MECHANICS to KnowledgeGenerationData(),
-        KnowledgeField.MEDICINE to KnowledgeGenerationData(),
-        KnowledgeField.ECONOMY to KnowledgeGenerationData(),
-        KnowledgeField.POLITICS to KnowledgeGenerationData(),
-        KnowledgeField.SOCIOLOGY to KnowledgeGenerationData(),
-        KnowledgeField.PSYCHOLOGY to KnowledgeGenerationData(),
+    val knowledgeGenerationDataMap: Map<KnowledgeField, KnowledgeFieldGenerationData> = mapOf(
+        KnowledgeField.MATHEMATICS to KnowledgeFieldGenerationData(),
+        KnowledgeField.PHYSICS to KnowledgeFieldGenerationData(),
+        KnowledgeField.MATERIAL to KnowledgeFieldGenerationData(),
+        KnowledgeField.COMPUTER to KnowledgeFieldGenerationData(),
+        KnowledgeField.MECHANICS to KnowledgeFieldGenerationData(),
+        KnowledgeField.MEDICINE to KnowledgeFieldGenerationData(),
+        KnowledgeField.ECONOMY to KnowledgeFieldGenerationData(),
+        KnowledgeField.POLITICS to KnowledgeFieldGenerationData(),
+        KnowledgeField.SOCIOLOGY to KnowledgeFieldGenerationData(),
+        KnowledgeField.PSYCHOLOGY to KnowledgeFieldGenerationData(),
     )
 )
 
 @Serializable
 data class MutableKnowledgeGenerationData(
-    val knowledgeGenerationDataMap: Map<KnowledgeField, MutableKnowledgeGenerationData> = mapOf(
-        KnowledgeField.MATHEMATICS to MutableKnowledgeGenerationData(),
-        KnowledgeField.PHYSICS to MutableKnowledgeGenerationData(),
-        KnowledgeField.MATERIAL to MutableKnowledgeGenerationData(),
-        KnowledgeField.COMPUTER to MutableKnowledgeGenerationData(),
-        KnowledgeField.MECHANICS to MutableKnowledgeGenerationData(),
-        KnowledgeField.MEDICINE to MutableKnowledgeGenerationData(),
-        KnowledgeField.ECONOMY to MutableKnowledgeGenerationData(),
-        KnowledgeField.POLITICS to MutableKnowledgeGenerationData(),
-        KnowledgeField.SOCIOLOGY to MutableKnowledgeGenerationData(),
-        KnowledgeField.PSYCHOLOGY to MutableKnowledgeGenerationData(),
+    val knowledgeGenerationDataMap: Map<KnowledgeField, MutableKnowledgeFieldGenerationData> = mapOf(
+        KnowledgeField.MATHEMATICS to MutableKnowledgeFieldGenerationData(),
+        KnowledgeField.PHYSICS to MutableKnowledgeFieldGenerationData(),
+        KnowledgeField.MATERIAL to MutableKnowledgeFieldGenerationData(),
+        KnowledgeField.COMPUTER to MutableKnowledgeFieldGenerationData(),
+        KnowledgeField.MECHANICS to MutableKnowledgeFieldGenerationData(),
+        KnowledgeField.MEDICINE to MutableKnowledgeFieldGenerationData(),
+        KnowledgeField.ECONOMY to MutableKnowledgeFieldGenerationData(),
+        KnowledgeField.POLITICS to MutableKnowledgeFieldGenerationData(),
+        KnowledgeField.SOCIOLOGY to MutableKnowledgeFieldGenerationData(),
+        KnowledgeField.PSYCHOLOGY to MutableKnowledgeFieldGenerationData(),
     )
 )
 
