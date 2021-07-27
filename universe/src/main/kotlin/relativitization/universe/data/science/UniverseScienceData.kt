@@ -26,6 +26,9 @@ data class MutableUniverseScienceData(
     var knowledgeGenerationData: MutableKnowledgeGenerationData = MutableKnowledgeGenerationData(),
     var technologyGenerationData: MutableTechnologyGenerationData = MutableTechnologyGenerationData(),
 ) {
+    /**
+     * Check the validity and add single knowledge data
+     */
     fun addSingleKnowledgeData(singleKnowledgeData: SingleKnowledgeData) {
         when {
             allSingleKnowledgeDataMap.containsKey(singleKnowledgeData.knowledgeId) -> {
@@ -39,6 +42,26 @@ data class MutableUniverseScienceData(
             }
             else -> {
                 allSingleKnowledgeDataMap[singleKnowledgeData.knowledgeId] = singleKnowledgeData
+            }
+        }
+    }
+
+    /**
+     * Check the validity and add single technology data
+     */
+    fun addSingleTechnologyData(singleTechnologyData: SingleTechnologyData) {
+        when {
+            allSingleTechnologyDataMap.containsKey(singleTechnologyData.technologyId) -> {
+                logger.error("new single technology data has duplicate id, ignore the new data")
+            }
+            allSingleTechnologyDataMap.keys.maxOrNull() ?: -1 >= singleTechnologyData.technologyId -> {
+                logger.error("new single knowledge data has id smaller than the maximum id")
+
+                // Still add the knowledge data as long as there is no duplication
+                allSingleTechnologyDataMap[singleTechnologyData.technologyId] = singleTechnologyData
+            }
+            else -> {
+                allSingleTechnologyDataMap[singleTechnologyData.technologyId] = singleTechnologyData
             }
         }
     }
