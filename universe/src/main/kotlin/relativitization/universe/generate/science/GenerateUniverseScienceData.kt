@@ -1,7 +1,6 @@
 package relativitization.universe.generate.science
 
 import relativitization.universe.data.UniverseData
-import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.science.MutableUniverseScienceData
 import relativitization.universe.data.science.UniverseScienceData
 import relativitization.universe.data.science.knowledge.SingleKnowledgeData
@@ -29,6 +28,8 @@ object DefaultGenerateUniverseScienceData {
         val minGenerate: Int = min(numKnowledgeGenerate, numTechnologyGenerate)
 
         for (i in 1..minGenerate) {
+            logger.debug("Generating new knowledge and technology .. $i")
+
             val newKnowledgeData: SingleKnowledgeData = generateSingleKnowledgeData(
                 mutableUniverseScienceData
             )
@@ -42,16 +43,20 @@ object DefaultGenerateUniverseScienceData {
 
         if (numKnowledgeGenerate > numTechnologyGenerate) {
             for (i in 1..(numKnowledgeGenerate - minGenerate)) {
+                logger.debug("Generating new knowledge .. $i")
                 val newKnowledgeData: SingleKnowledgeData = generateSingleKnowledgeData(
                     mutableUniverseScienceData
                 )
                 mutableUniverseScienceData.addSingleKnowledgeData(newKnowledgeData)
             }
         } else if (numTechnologyGenerate > numKnowledgeGenerate) {
-            val newTechnologyData: SingleTechnologyData = generateSingleTechnologyData(
-                mutableUniverseScienceData
-            )
-            mutableUniverseScienceData.addSingleTechnologyData(newTechnologyData)
+            for (i in 1..(numTechnologyGenerate - minGenerate)) {
+                logger.debug("Generating new technology .. $i")
+                val newTechnologyData: SingleTechnologyData = generateSingleTechnologyData(
+                    mutableUniverseScienceData
+                )
+                mutableUniverseScienceData.addSingleTechnologyData(newTechnologyData)
+            }
         }
 
         return DataSerializer.copy(mutableUniverseScienceData)
