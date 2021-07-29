@@ -134,7 +134,7 @@ object DefaultGenerateUniverseScienceData {
         mutableUniverseScienceData: MutableUniverseScienceData,
     ): MathematicsKnowledge {
 
-        logger.debug("Generating Mathematics knowledge")
+        logger.debug("Generating mathematics knowledge")
 
         val generationData: MutableKnowledgeFieldGenerationData =
             mutableUniverseScienceData.knowledgeGenerationData.generationDataMap.getValue(
@@ -179,15 +179,14 @@ object DefaultGenerateUniverseScienceData {
         )
     }
 
-
     /**
-     * Generate mathematics knowledge
+     * Generate physics knowledge
      */
     private fun generatePhysicsKnowledge(
         mutableUniverseScienceData: MutableUniverseScienceData,
     ): PhysicsKnowledge {
 
-        logger.debug("Generating Physics knowledge")
+        logger.debug("Generating physics knowledge")
 
         val generationData: MutableKnowledgeFieldGenerationData =
             mutableUniverseScienceData.knowledgeGenerationData.generationDataMap.getValue(
@@ -222,6 +221,58 @@ object DefaultGenerateUniverseScienceData {
         }
 
         return PhysicsKnowledge(
+            knowledgeId = mutableUniverseScienceData.getNewKnowledgeId(),
+            importance = Random.Default.nextDouble(0.0, 1.0),
+            xCor = xCor,
+            yCor = yCor,
+            difficulty = Random.Default.nextDouble(0.0, 1.0),
+            referenceKnowledgeIdList = referenceKnowledgeIdList,
+            referenceTechnologyIdList = referenceTechnologyIdList
+        )
+    }
+
+    /**
+     * Generate material knowledge
+     */
+    private fun generateMaterialKnowledge(
+        mutableUniverseScienceData: MutableUniverseScienceData,
+    ): MaterialKnowledge {
+
+        logger.debug("Generating material knowledge")
+
+        val generationData: MutableKnowledgeFieldGenerationData =
+            mutableUniverseScienceData.knowledgeGenerationData.generationDataMap.getValue(
+                KnowledgeField.MATERIAL
+            )
+
+        val angle: Double = Random.Default.nextDouble(0.0, PI)
+        val radialDistance: Double = Random.Default.nextDouble(0.0, generationData.range)
+
+        val xCor: Double = generationData.centerX + radialDistance * cos(angle)
+        val yCor: Double = generationData.centerY + radialDistance * sin(angle)
+
+        val numReferenceKnowledge: Int = Random.Default.nextInt(1, 10)
+        val numReferenceTechnology: Int = Random.Default.nextInt(1, 10)
+
+        val referenceKnowledgeIdList: List<Int> = WeightedReservoir.aRes(
+            numItem = numReferenceKnowledge,
+            itemList = mutableUniverseScienceData.allSingleKnowledgeDataMap.keys.toList(),
+        ) {
+            val knowledgeData: SingleKnowledgeData = mutableUniverseScienceData.allSingleKnowledgeDataMap.getValue(it)
+            val distance: Double = Intervals.distance(xCor, yCor, knowledgeData.xCor, knowledgeData.yCor)
+            0.1 + 1.0 / distance
+        }
+
+        val referenceTechnologyIdList: List<Int> = WeightedReservoir.aRes(
+            numItem = numReferenceTechnology,
+            itemList = mutableUniverseScienceData.allSingleTechnologyDataMap.keys.toList(),
+        ) {
+            val technologyData: SingleTechnologyData = mutableUniverseScienceData.allSingleTechnologyDataMap.getValue(it)
+            val distance: Double = Intervals.distance(xCor, yCor, technologyData.xCor, technologyData.yCor)
+            0.1 + 1.0 / distance
+        }
+
+        return MaterialKnowledge(
             knowledgeId = mutableUniverseScienceData.getNewKnowledgeId(),
             importance = Random.Default.nextDouble(0.0, 1.0),
             xCor = xCor,
