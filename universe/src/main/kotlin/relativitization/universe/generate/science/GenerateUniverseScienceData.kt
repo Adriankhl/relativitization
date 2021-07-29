@@ -178,6 +178,59 @@ object DefaultGenerateUniverseScienceData {
         )
     }
 
+
+    /**
+     * Generate mathematics knowledge
+     */
+    private fun generatePhysicssKnowledge(
+        mutableUniverseScienceData: MutableUniverseScienceData,
+    ): PhysicsKnowledge {
+
+        logger.debug("Generating Physics knowledge")
+
+        val generationData: MutableKnowledgeFieldGenerationData =
+            mutableUniverseScienceData.knowledgeGenerationData.generationDataMap.getValue(
+                KnowledgeField.PHYSICS
+            )
+
+        val angle: Double = Random.Default.nextDouble(0.0, PI)
+        val radialDistance: Double = Random.Default.nextDouble(0.0, generationData.range)
+
+        val xCor: Double = generationData.centerX + radialDistance * cos(angle)
+        val yCor: Double = generationData.centerY + radialDistance * sin(angle)
+
+        val numReferenceKnowledge: Int = Random.Default.nextInt(1, 10)
+        val numReferenceTechnology: Int = Random.Default.nextInt(1, 10)
+
+        val referenceKnowledgeIdList: List<Int> = WeightedReservoir.aRes(
+            numItem = numReferenceKnowledge,
+            itemList = mutableUniverseScienceData.allSingleKnowledgeDataMap.keys.toList(),
+        ) {
+            val knowledgeData: SingleKnowledgeData = mutableUniverseScienceData.allSingleKnowledgeDataMap.getValue(it)
+            val distance: Double = Intervals.distance(xCor, yCor, knowledgeData.xCor, knowledgeData.yCor)
+            0.1 + 1.0 / distance
+        }
+
+        val referenceTechnologyIdList: List<Int> = WeightedReservoir.aRes(
+            numItem = numReferenceTechnology,
+            itemList = mutableUniverseScienceData.allSingleTechnologyDataMap.keys.toList(),
+        ) {
+            val technologyData: SingleTechnologyData = mutableUniverseScienceData.allSingleTechnologyDataMap.getValue(it)
+            val distance: Double = Intervals.distance(xCor, yCor, technologyData.xCor, technologyData.yCor)
+            0.1 + 1.0 / distance
+        }
+
+        return PhysicsKnowledge(
+            knowledgeId = mutableUniverseScienceData.getNewKnowledgeId(),
+            importance = Random.Default.nextDouble(0.0, 1.0),
+            xCor = xCor,
+            yCor = yCor,
+            difficulty = Random.Default.nextDouble(0.0, 1.0),
+            referenceKnowledgeIdList = referenceKnowledgeIdList,
+            referenceTechnologyIdList = referenceTechnologyIdList
+        )
+    }
+
     /**
      * Generate max rest mass ship technology
      */
