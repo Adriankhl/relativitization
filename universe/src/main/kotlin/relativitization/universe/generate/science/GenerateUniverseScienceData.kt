@@ -90,6 +90,7 @@ object DefaultGenerateUniverseScienceData {
 
         return when(knowledgeFieldGenerate) {
             KnowledgeField.MATHEMATICS -> generateMathematicsKnowledge(mutableUniverseScienceData)
+            KnowledgeField.PHYSICS -> generatePhysicsKnowledge(mutableUniverseScienceData)
             else -> {
                 logger.error("Can't generate knowledge field ${knowledgeFieldGenerate}, " +
                         "default to mathematics")
@@ -182,7 +183,7 @@ object DefaultGenerateUniverseScienceData {
     /**
      * Generate mathematics knowledge
      */
-    private fun generatePhysicssKnowledge(
+    private fun generatePhysicsKnowledge(
         mutableUniverseScienceData: MutableUniverseScienceData,
     ): PhysicsKnowledge {
 
