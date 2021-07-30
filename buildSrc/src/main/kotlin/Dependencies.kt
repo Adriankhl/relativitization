@@ -6,7 +6,7 @@ object Versions {
     const val kotlinVersion = "1.5.21"
     const val kotlinxCoroutineVersion = "1.5.1"
     const val kotlinxSerializationVersion = "1.2.2"
-    const val ktorVersion = "1.6.1"
+    const val ktorVersion = "1.6.2"
 
     const val gdxVersion = "1.10.0"
     const val log4jVersion = "2.14.1"
@@ -14,7 +14,7 @@ object Versions {
 
     const val androidGradlePluginVersion = "7.0.0-rc01"
     const val androidLifeCycleKtxVersion = "2.4.0-alpha02"
-    const val androidFragmentKtxVersion = "1.3.5"
+    const val androidFragmentKtxVersion = "1.3.6"
 
-    const val logbackVersion = "1.2.3"
+    const val logbackVersion = "1.2.5"
 }
