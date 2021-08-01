@@ -3,7 +3,7 @@ package relativitization.universe.data.science.knowledge
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class BasicScienceData(
+data class AppliedScienceData(
     val basicScienceId: Int,
     val basicScienceField: BasicScienceField,
     val xCor: Double,
@@ -13,7 +13,7 @@ data class BasicScienceData(
     val referenceTechnologyIdList: List<Int>,
 )
 
-enum class BasicScienceField(val value: String) {
+enum class AppliedScienceField(val value: String) {
     MATHEMATICS("Mathematics"),
     PHYSICS("Physics"),
     COMPUTER_SCIENCE("Computer science"),
