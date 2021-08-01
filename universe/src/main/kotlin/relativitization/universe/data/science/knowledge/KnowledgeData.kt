@@ -2,26 +2,6 @@ package relativitization.universe.data.science.knowledge
 
 import kotlinx.serialization.Serializable
 
-@Serializable
-sealed class SingleKnowledgeData {
-    abstract val knowledgeId: Int
-
-    abstract val knowledgeField: KnowledgeField
-
-    // x and y coordinate in the knowledge space
-    abstract val xCor: Double
-    abstract val yCor: Double
-
-    abstract val difficulty: Double
-
-    abstract val referenceKnowledgeIdList: List<Int>
-    abstract val referenceTechnologyIdList: List<Int>
-
-    abstract val description: String
-
-    abstract fun updateKnowledgeData(mutableKnowledgeData: MutableKnowledgeData)
-}
-
 /**
  * Represent the effect of a combination of SingleKnowledgeData
  *
@@ -115,21 +95,3 @@ data class MutableKnowledgeGenerationData(
         KnowledgeField.PSYCHOLOGY to MutableKnowledgeFieldGenerationData(),
     )
 )
-
-enum class KnowledgeField(val value: String) {
-    MATHEMATICS("Mathematics"),
-    PHYSICS("Physics"),
-    MATERIAL("Material"),
-    COMPUTER("Computer"),
-    MECHANICS("Mechanics"),
-    MEDICINE("Medicine"),
-    ECONOMY("Economy"),
-    POLITICS("Politics"),
-    SOCIOLOGY("Sociology"),
-    PSYCHOLOGY("Psychology"),
-    ;
-
-    override fun toString(): String {
-        return value
-    }
-}
