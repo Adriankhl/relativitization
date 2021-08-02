@@ -1,6 +1,7 @@
 package relativitization.universe.data.science.knowledge
 
 import kotlinx.serialization.Serializable
+import relativitization.universe.utils.RelativitizationLogManager
 
 /**
  * Represent the effect of a set of research project
@@ -34,4 +35,37 @@ data class MutableKnowledgeData(
     var startFromAppliedResearchId: Int = -1,
     val appliedResearchIdList: MutableList<Int> = mutableListOf(),
     var appliedResearchData: MutableAppliedResearchData = MutableAppliedResearchData(),
-)
+) {
+    fun addBasicResearchProjectData(
+        basicResearchProjectData: BasicResearchProjectData,
+        function: (BasicResearchProjectData, MutableBasicResearchData) -> Unit
+    ) {
+        if (basicResearchIdList.contains(basicResearchProjectData.basicResearchId) ||
+            basicResearchProjectData.basicResearchId < startFromAppliedResearchId
+        ) {
+            logger.error("Duplicate basic research id ${basicResearchProjectData.basicResearchId}, skip this")
+        } else {
+            function(basicResearchProjectData, basicResearchData)
+            basicResearchIdList.add(basicResearchProjectData.basicResearchId)
+        }
+    }
+
+    fun addAppliedResearchProjectData(
+        appliedResearchProjectData: AppliedResearchProjectData,
+        function: (AppliedResearchProjectData, MutableAppliedResearchData) -> Unit
+    ) {
+        if (appliedResearchIdList.contains(appliedResearchProjectData.appliedResearchId) ||
+            appliedResearchProjectData.appliedResearchId < startFromAppliedResearchId
+        ) {
+            logger.error("Duplicate applied research id ${appliedResearchProjectData.appliedResearchId}, skip this")
+        } else {
+            function(appliedResearchProjectData, appliedResearchData)
+            appliedResearchIdList.add(appliedResearchProjectData.appliedResearchId)
+        }
+    }
+
+
+    companion object {
+        private val logger = RelativitizationLogManager.getLogger()
+    }
+}

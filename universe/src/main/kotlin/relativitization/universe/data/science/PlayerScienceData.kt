@@ -45,22 +45,19 @@ data class MutablePlayerScienceData(
     /**
      * Compute player knowledge data by common sense and knowledge data list
      */
-    fun computePlayerKnowledgeData() {
+    fun computePlayerKnowledgeData(
+        basicProjectFunction: (BasicResearchProjectData, MutableKnowledgeData) -> MutableKnowledgeData,
+        appliedProjectFunction: (AppliedResearchProjectData, MutableKnowledgeData) -> MutableKnowledgeData,
+    ) {
         playerKnowledgeData = DataSerializer.copy(commonSenseKnowledgeData)
+        doneBasicResearchProjectList.forEach {
+            basicProjectFunction(it, playerKnowledgeData)
+        }
         singleKnowledgeDataList.forEach {
             it.updateKnowledgeData(playerKnowledgeData)
         }
     }
 
-    /**
-     * Compute player technology data by common sense and technology data list
-     */
-    fun computePlayerTechnologyData() {
-        playerTechnologyData = DataSerializer.copy(commonSenseTechnologyData)
-        singleTechnologyDataList.forEach {
-            it.updateTechnologyData(playerTechnologyData)
-        }
-    }
 
     /**
      * Add Single knowledge data
