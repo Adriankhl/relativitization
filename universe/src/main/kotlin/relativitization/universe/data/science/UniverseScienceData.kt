@@ -10,65 +10,61 @@ import relativitization.universe.utils.RelativitizationLogManager
 @Serializable
 data class UniverseScienceData(
     val commonSenseKnowledgeData: KnowledgeData = KnowledgeData(),
-    val commonSenseTechnologyData: TechnologyData = TechnologyData(),
-    val allSingleKnowledgeDataMap: Map<Int, SingleKnowledgeData> = mapOf(),
-    val allSingleTechnologyDataMap: Map<Int, SingleTechnologyData> = mapOf(),
-    val knowledgeGenerationData: KnowledgeGenerationData = KnowledgeGenerationData(),
-    val technologyGenerationData: TechnologyGenerationData = TechnologyGenerationData(),
+    val basicResearchProjectDataMap: Map<Int, BasicResearchProjectData> = mapOf(),
+    val appliedResearchProjectDataMap: Map<Int, AppliedResearchProjectData> = mapOf(),
+    val universeProjectGenerationData: UniverseProjectGenerationData = UniverseProjectGenerationData(),
 )
 
 @Serializable
 data class MutableUniverseScienceData(
     var commonSenseKnowledgeData: MutableKnowledgeData = MutableKnowledgeData(),
-    var commonSenseTechnologyData: MutableTechnologyData = MutableTechnologyData(),
-    val allSingleKnowledgeDataMap: MutableMap<Int, SingleKnowledgeData> = mutableMapOf(),
-    val allSingleTechnologyDataMap: MutableMap<Int, SingleTechnologyData> = mutableMapOf(),
-    var knowledgeGenerationData: MutableKnowledgeGenerationData = MutableKnowledgeGenerationData(),
-    var technologyGenerationData: MutableTechnologyGenerationData = MutableTechnologyGenerationData(),
+    val basicResearchProjectDataMap: MutableMap<Int, BasicResearchProjectData> = mutableMapOf(),
+    val appliedResearchProjectDataMap: MutableMap<Int, AppliedResearchProjectData> = mutableMapOf(),
+    var universeProjectGenerationData: MutableUniverseProjectGenerationData = MutableUniverseProjectGenerationData(),
 ) {
     /**
-     * Check the validity and add single knowledge data
+     * Check the validity and add basic research project
      */
-    fun addSingleKnowledgeData(singleKnowledgeData: SingleKnowledgeData) {
+    fun addBasicResearchProjectData(basicResearchProjectData: BasicResearchProjectData) {
         when {
-            allSingleKnowledgeDataMap.containsKey(singleKnowledgeData.knowledgeId) -> {
-                logger.error("new single knowledge data has duplicate id, ignore the new data")
+            basicResearchProjectDataMap.containsKey(basicResearchProjectData.basicResearchId) -> {
+                logger.error("new basic research project has duplicate id, ignore the new data")
             }
-            (allSingleKnowledgeDataMap.keys.maxOrNull() ?: -1) >= singleKnowledgeData.knowledgeId -> {
-                logger.error("new single knowledge data has id smaller than the maximum id")
+            (basicResearchProjectDataMap.keys.maxOrNull() ?: -1) >= basicResearchProjectData.basicResearchId -> {
+                logger.error("new basic research project has id smaller than the maximum id")
 
-                // Still add the knowledge data as long as there is no duplication
-                allSingleKnowledgeDataMap[singleKnowledgeData.knowledgeId] = singleKnowledgeData
+                // Still add the data as long as there is no duplication
+                basicResearchProjectDataMap[basicResearchProjectData.basicResearchId] = basicResearchProjectData
             }
             else -> {
-                allSingleKnowledgeDataMap[singleKnowledgeData.knowledgeId] = singleKnowledgeData
+                basicResearchProjectDataMap[basicResearchProjectData.basicResearchId] = basicResearchProjectData
             }
         }
     }
 
     /**
-     * Check the validity and add single technology data
+     * Check the validity and add applied research project
      */
-    fun addSingleTechnologyData(singleTechnologyData: SingleTechnologyData) {
+    fun addAppliedResearchProjectData(appliedResearchProjectData: AppliedResearchProjectData) {
         when {
-            allSingleTechnologyDataMap.containsKey(singleTechnologyData.technologyId) -> {
-                logger.error("new single technology data has duplicate id, ignore the new data")
+            appliedResearchProjectDataMap.containsKey(appliedResearchProjectData.appliedResearchId) -> {
+                logger.error("new applied research project has duplicate id, ignore the new data")
             }
-            (allSingleTechnologyDataMap.keys.maxOrNull() ?: -1) >= singleTechnologyData.technologyId -> {
-                logger.error("new single knowledge data has id smaller than the maximum id")
+            (appliedResearchProjectDataMap.keys.maxOrNull() ?: -1) >= appliedResearchProjectData.appliedResearchId -> {
+                logger.error("new applied research project has id smaller than the maximum id")
 
-                // Still add the knowledge data as long as there is no duplication
-                allSingleTechnologyDataMap[singleTechnologyData.technologyId] = singleTechnologyData
+                // Still add the data as long as there is no duplication
+                appliedResearchProjectDataMap[appliedResearchProjectData.appliedResearchId] = appliedResearchProjectData
             }
             else -> {
-                allSingleTechnologyDataMap[singleTechnologyData.technologyId] = singleTechnologyData
+                appliedResearchProjectDataMap[appliedResearchProjectData.appliedResearchId] = appliedResearchProjectData
             }
         }
     }
 
-    fun getNewKnowledgeId(): Int = (allSingleKnowledgeDataMap.keys.maxOrNull() ?: -1) + 1
+    fun getNewBasicResearchId(): Int = (basicResearchProjectDataMap.keys.maxOrNull() ?: -1) + 1
 
-    fun getNewTechnologyId(): Int = (allSingleTechnologyDataMap.keys.maxOrNull() ?: -1) + 1
+    fun getNewAppliedResearchId(): Int = (appliedResearchProjectDataMap.keys.maxOrNull() ?: -1) + 1
 
     companion object {
         private val logger = RelativitizationLogManager.getLogger()
