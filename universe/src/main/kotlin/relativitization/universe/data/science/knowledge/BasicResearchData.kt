@@ -35,24 +35,6 @@ data class BasicResearchProjectData(
 )
 
 /**
- * For generating basic research project
- */
-@Serializable
-data class BasicResearchProjectGenerationData(
-    val basicResearchField: BasicResearchField,
-    val projectGenerationData: ProjectGenerationData,
-)
-
-/**
- * For generating basic research project
- */
-@Serializable
-data class MutableBasicResearchProjectGenerationData(
-    var basicResearchField: BasicResearchField,
-    var projectGenerationData: ProjectGenerationData,
-)
-
-/**
  * Level of applied research
  */
 @Serializable

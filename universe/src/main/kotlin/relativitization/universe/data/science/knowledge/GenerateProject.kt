@@ -18,3 +18,36 @@ data class ProjectGenerationData(
     val range: Double = 1.0,
     val weight: Double = 1.0,
 )
+
+/**
+ * For generating applied research project
+ */
+@Serializable
+data class AppliedResearchProjectGenerationData(
+    val appliedResearchField: AppliedResearchField,
+    val projectGenerationData: ProjectGenerationData,
+)
+
+@Serializable
+data class MutableAppliedResearchProjectGenerationData(
+    var appliedResearchField: AppliedResearchField,
+    var projectGenerationData: ProjectGenerationData,
+)
+
+/**
+ * For generating basic research project
+ */
+@Serializable
+data class BasicResearchProjectGenerationData(
+    val basicResearchField: BasicResearchField,
+    val projectGenerationData: ProjectGenerationData,
+)
+
+/**
+ * For generating basic research project
+ */
+@Serializable
+data class MutableBasicResearchProjectGenerationData(
+    var basicResearchField: BasicResearchField,
+    var projectGenerationData: ProjectGenerationData,
+)

@@ -40,21 +40,6 @@ data class AppliedResearchProjectData(
 )
 
 /**
- * For generating applied research project
- */
-@Serializable
-data class AppliedResearchProjectGenerationData(
-    val appliedResearchField: AppliedResearchField,
-    val projectGenerationData: ProjectGenerationData,
-)
-
-@Serializable
-data class MutableAppliedResearchProjectGenerationData(
-    var appliedResearchField: AppliedResearchField,
-    var projectGenerationData: ProjectGenerationData,
-)
-
-/**
  * Level of applied research
  */
 @Serializable
