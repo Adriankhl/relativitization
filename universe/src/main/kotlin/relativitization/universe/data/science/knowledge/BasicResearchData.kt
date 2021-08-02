@@ -20,20 +20,6 @@ enum class BasicResearchField(val value: String) {
 }
 
 /**
- * Level of applied research
- */
-@Serializable
-data class BasicResearchData(
-    val mathematicsLevel: Double = 0.0,
-    val physicsLevel: Double = 0.0,
-    val computerScienceLevel: Double = 0.0,
-    val lifeScienceLevel: Double = 0.0,
-    val socialScienceLevel: Double = 0.0,
-    val humanityLevel: Double = 0.0,
-)
-
-
-/**
  * A single basic research project
  */
 @Serializable
@@ -46,4 +32,27 @@ data class BasicResearchProjectData(
     val significance: Double,
     val referenceBasicResearchIdList: List<Int>,
     val referenceAppliedResearchIdList: List<Int>,
+)
+
+/**
+ * Level of applied research
+ */
+@Serializable
+data class BasicResearchData(
+    val mathematicsLevel: Double = 0.0,
+    val physicsLevel: Double = 0.0,
+    val computerScienceLevel: Double = 0.0,
+    val lifeScienceLevel: Double = 0.0,
+    val socialScienceLevel: Double = 0.0,
+    val humanityLevel: Double = 0.0,
+)
+
+@Serializable
+data class MutableBasicResearchData(
+    var mathematicsLevel: Double = 0.0,
+    var physicsLevel: Double = 0.0,
+    var computerScienceLevel: Double = 0.0,
+    var lifeScienceLevel: Double = 0.0,
+    var socialScienceLevel: Double = 0.0,
+    var humanityLevel: Double = 0.0,
 )

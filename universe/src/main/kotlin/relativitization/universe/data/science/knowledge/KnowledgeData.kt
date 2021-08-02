@@ -10,18 +10,8 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class KnowledgeData(
-    val startFromKnowledgeId: Int = 0,
-    val knowledgeIdList: List<Int> = listOf(),
-    val mathematicsResearchLevel: Double = 0.0,
-    val physicsResearchLevel: Double = 0.0,
-    val materialResearchLevel: Double = 0.0,
-    val computerResearchLevel: Double = 0.0,
-    val mechanicsResearchLevel: Double = 0.0,
-    val medicineResearchLevel: Double = 0.0,
-    val economyResearchLevel: Double = 0.0,
-    val politicsResearchLevel: Double = 0.0,
-    val sociologyResearchLevel: Double = 0.0,
-    val psychologyResearchLevel: Double = 0.0,
+    val basicResearchData: BasicResearchData = BasicResearchData(),
+    val appliedResearchData: AppliedResearchData = AppliedResearchData(),
 )
 
 @Serializable

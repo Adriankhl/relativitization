@@ -25,6 +25,21 @@ enum class AppliedResearchField(val value: String) {
 }
 
 /**
+ * A single applied research project
+ */
+@Serializable
+data class AppliedResearchProjectData(
+    val appliedResearchId: Int,
+    val appliedResearchField: AppliedResearchField,
+    val xCor: Double,
+    val yCor: Double,
+    val difficulty: Double,
+    val significance: Double,
+    val referenceBasicResearchIdList: List<Int>,
+    val referenceAppliedResearchIdList: List<Int>
+)
+
+/**
  * Level of applied research
  */
 @Serializable
@@ -42,17 +57,17 @@ data class AppliedResearchData(
     val militaryTechnologyLevel: Double = 0.0,
 )
 
-/**
- * A single applied research project
- */
 @Serializable
-data class AppliedResearchProjectData(
-    val appliedResearchId: Int,
-    val appliedResearchField: AppliedResearchField,
-    val xCor: Double,
-    val yCor: Double,
-    val difficulty: Double,
-    val significance: Double,
-    val referenceBasicResearchIdList: List<Int>,
-    val referenceAppliedResearchIdList: List<Int>
+data class MutableAppliedResearchData(
+    var foodTechnologyLevel: Double = 0.0,
+    var biomedicalTechnologyLevel: Double = 0.0,
+    var chemicalTechnologyLevel: Double = 0.0,
+    var environmentalTechnologyLevel: Double = 0.0,
+    var architectureTechnologyLevel: Double = 0.0,
+    var machineryTechnologyLevel: Double = 0.0,
+    var materialTechnologyLevel: Double = 0.0,
+    var energyTechnologyLevel: Double = 0.0,
+    var informationTechnologyLevel: Double = 0.0,
+    var artTechnologyLevel: Double = 0.0,
+    var militaryTechnologyLevel: Double = 0.0,
 )
