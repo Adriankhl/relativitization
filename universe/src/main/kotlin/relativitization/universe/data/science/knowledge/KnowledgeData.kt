@@ -64,7 +64,6 @@ data class MutableKnowledgeData(
         }
     }
 
-
     companion object {
         private val logger = RelativitizationLogManager.getLogger()
     }

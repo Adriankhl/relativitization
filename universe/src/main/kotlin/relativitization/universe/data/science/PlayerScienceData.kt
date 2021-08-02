@@ -5,6 +5,7 @@ import relativitization.universe.data.science.knowledge.*
 import relativitization.universe.data.science.product.MutableScienceProductData
 import relativitization.universe.data.science.product.ScienceProductData
 import relativitization.universe.data.serializer.DataSerializer
+import relativitization.universe.utils.RelativitizationLogManager
 
 /**
  * Science data of a player
@@ -69,8 +70,14 @@ data class MutablePlayerScienceData(
         basicResearchProjectData: BasicResearchProjectData,
         function: (BasicResearchProjectData, MutableBasicResearchData) -> Unit
     ) {
-        doneBasicResearchProjectList.add(basicResearchProjectData)
-        playerKnowledgeData.addBasicResearchProjectData(basicResearchProjectData, function)
+        if (doneBasicResearchProjectList.any {
+                it.basicResearchId == basicResearchProjectData.basicResearchId
+        }) {
+            logger.error("Duplicate done basic research id: ${basicResearchProjectData.basicResearchId}, skipping")
+        } else {
+            doneBasicResearchProjectList.add(basicResearchProjectData)
+            playerKnowledgeData.addBasicResearchProjectData(basicResearchProjectData, function)
+        }
     }
 
     /**
@@ -80,7 +87,17 @@ data class MutablePlayerScienceData(
         appliedResearchProjectData: AppliedResearchProjectData,
         function: (AppliedResearchProjectData, MutableAppliedResearchData) -> Unit
     ) {
-        doneAppliedResearchProjectList.add(appliedResearchProjectData)
-        playerKnowledgeData.addAppliedResearchProjectData(appliedResearchProjectData, function)
+        if (doneAppliedResearchProjectList.any {
+                it.appliedResearchId == appliedResearchProjectData.appliedResearchId
+            }) {
+            logger.error("Duplicate done applied research id: ${appliedResearchProjectData.appliedResearchId}, skipping")
+        } else {
+            doneAppliedResearchProjectList.add(appliedResearchProjectData)
+            playerKnowledgeData.addAppliedResearchProjectData(appliedResearchProjectData, function)
+        }
+    }
+
+    companion object {
+        private val logger = RelativitizationLogManager.getLogger()
     }
 }
