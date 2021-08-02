@@ -1,10 +1,7 @@
 package relativitization.universe.data.science
 
 import kotlinx.serialization.Serializable
-import relativitization.universe.data.science.knowledge.AppliedResearchProjectData
-import relativitization.universe.data.science.knowledge.BasicResearchProjectData
-import relativitization.universe.data.science.knowledge.KnowledgeData
-import relativitization.universe.data.science.knowledge.MutableKnowledgeData
+import relativitization.universe.data.science.knowledge.*
 import relativitization.universe.data.science.product.MutableScienceProductData
 import relativitization.universe.data.science.product.ScienceProductData
 import relativitization.universe.data.serializer.DataSerializer
@@ -46,32 +43,44 @@ data class MutablePlayerScienceData(
      * Compute player knowledge data by common sense and knowledge data list
      */
     fun computePlayerKnowledgeData(
-        basicProjectFunction: (BasicResearchProjectData, MutableKnowledgeData) -> MutableKnowledgeData,
-        appliedProjectFunction: (AppliedResearchProjectData, MutableKnowledgeData) -> MutableKnowledgeData,
+        basicProjectFunction: (BasicResearchProjectData, MutableBasicResearchData) -> Unit,
+        appliedProjectFunction: (AppliedResearchProjectData, MutableAppliedResearchData) -> Unit,
     ) {
         playerKnowledgeData = DataSerializer.copy(commonSenseKnowledgeData)
         doneBasicResearchProjectList.forEach {
-            basicProjectFunction(it, playerKnowledgeData)
+            playerKnowledgeData.addBasicResearchProjectData(
+                it,
+                basicProjectFunction
+            )
         }
-        singleKnowledgeDataList.forEach {
-            it.updateKnowledgeData(playerKnowledgeData)
+
+        doneAppliedResearchProjectList.forEach {
+            playerKnowledgeData.addAppliedResearchProjectData(
+                it,
+                appliedProjectFunction
+            )
         }
     }
 
-
     /**
-     * Add Single knowledge data
+     * Done basic research project
      */
-    fun addSingleKnowledgeData(singleKnowledgeData: SingleKnowledgeData) {
-        singleKnowledgeDataList.add(singleKnowledgeData)
-        singleKnowledgeData.updateKnowledgeData(playerKnowledgeData)
+    fun doneBasicResearchProject(
+        basicResearchProjectData: BasicResearchProjectData,
+        function: (BasicResearchProjectData, MutableBasicResearchData) -> Unit
+    ) {
+        doneBasicResearchProjectList.add(basicResearchProjectData)
+        playerKnowledgeData.addBasicResearchProjectData(basicResearchProjectData, function)
     }
 
     /**
-     * Add single technology data
+     * Done applied research project
      */
-    fun addSingleTechnologyData(singleTechnologyData: SingleTechnologyData) {
-        singleTechnologyDataList.add(singleTechnologyData)
-        singleTechnologyData.updateTechnologyData(playerTechnologyData)
+    fun doneAppliedResearchProject(
+        appliedResearchProjectData: AppliedResearchProjectData,
+        function: (AppliedResearchProjectData, MutableAppliedResearchData) -> Unit
+    ) {
+        doneAppliedResearchProjectList.add(appliedResearchProjectData)
+        playerKnowledgeData.addAppliedResearchProjectData(appliedResearchProjectData, function)
     }
 }
