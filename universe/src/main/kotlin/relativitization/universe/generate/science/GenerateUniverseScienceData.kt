@@ -22,49 +22,136 @@ object DefaultGenerateUniverseScienceData {
      */
     fun generate(
         universeData: UniverseData,
-        numKnowledgeGenerate: Int,
-        numTechnologyGenerate: Int,
+        numBasicResarchProjectGenerate: Int,
+        numAppliedResearchProjectGenerate: Int,
     ): UniverseScienceData {
         val universeScienceData: UniverseScienceData = universeData.universeScienceData
         val mutableUniverseScienceData: MutableUniverseScienceData = DataSerializer.copy(
             universeScienceData
         )
 
-        val minGenerate: Int = min(numKnowledgeGenerate, numTechnologyGenerate)
+        val minGenerate: Int = min(numBasicResarchProjectGenerate, numAppliedResearchProjectGenerate)
 
         for (i in 1..minGenerate) {
-            logger.debug("Generating new knowledge and technology .. $i")
+            logger.debug("Generating new basic and applied research project  .. $i")
 
-            val newKnowledgeData: SingleKnowledgeData = generateSingleKnowledgeData(
+            val newBasic: BasicResearchProjectData = generateBasicResearchProjectData(
                 mutableUniverseScienceData
             )
-            mutableUniverseScienceData.addSingleKnowledgeData(newKnowledgeData)
+            mutableUniverseScienceData.addBasicResearchProjectData(newBasic)
 
-            val newTechnologyData: SingleTechnologyData = generateSingleTechnologyData(
+            val newApplied: AppliedResearchProjectData = generateAppliedResearchProjectData(
                 mutableUniverseScienceData
             )
-            mutableUniverseScienceData.addSingleTechnologyData(newTechnologyData)
+            mutableUniverseScienceData.addAppliedResearchProjectData(newApplied)
         }
 
-        if (numKnowledgeGenerate > numTechnologyGenerate) {
-            for (i in 1..(numKnowledgeGenerate - minGenerate)) {
-                logger.debug("Generating new knowledge .. $i")
-                val newKnowledgeData: SingleKnowledgeData = generateSingleKnowledgeData(
+        if (numBasicResarchProjectGenerate > numAppliedResearchProjectGenerate) {
+            for (i in 1..(numBasicResarchProjectGenerate - minGenerate)) {
+                logger.debug("Generating new basic research project .. $i")
+
+                val newBasic: BasicResearchProjectData = generateBasicResearchProjectData(
                     mutableUniverseScienceData
                 )
-                mutableUniverseScienceData.addSingleKnowledgeData(newKnowledgeData)
+                mutableUniverseScienceData.addBasicResearchProjectData(newBasic)
             }
-        } else if (numTechnologyGenerate > numKnowledgeGenerate) {
-            for (i in 1..(numTechnologyGenerate - minGenerate)) {
-                logger.debug("Generating new technology .. $i")
-                val newTechnologyData: SingleTechnologyData = generateSingleTechnologyData(
+        } else if (numAppliedResearchProjectGenerate > numBasicResarchProjectGenerate) {
+            for (i in 1..(numAppliedResearchProjectGenerate - minGenerate)) {
+                logger.debug("Generating new applied research project .. $i")
+
+                val newApplied: AppliedResearchProjectData = generateAppliedResearchProjectData(
                     mutableUniverseScienceData
                 )
-                mutableUniverseScienceData.addSingleTechnologyData(newTechnologyData)
+                mutableUniverseScienceData.addAppliedResearchProjectData(newApplied)
             }
         }
 
         return DataSerializer.copy(mutableUniverseScienceData)
+    }
+
+
+    /**
+     * Generate basic research project
+     *
+     * @param mutableUniverseScienceData universe science data
+     */
+    private fun generateBasicResearchProjectData(
+        mutableUniverseScienceData: MutableUniverseScienceData,
+    ): BasicResearchProjectData {
+        val generationDataList: List<MutableBasicResearchProjectGenerationData> =
+            mutableUniverseScienceData.universeProjectGenerationData.basicResearchProjectGenerationDataList
+
+        val generationData: MutableBasicResearchProjectGenerationData = if (
+            generationDataList.isNotEmpty()
+        ) {
+            WeightedReservoir.aRes(
+                1,
+                generationDataList
+            ) {
+                it.projectGenerationData.weight
+            }.first()
+        } else {
+            logger.error("Empty basic research generation data list, default to mathematics")
+            MutableBasicResearchProjectGenerationData(
+                BasicResearchField.MATHEMATICS,
+                MutableProjectGenerationData()
+            )
+        }
+
+        val angle: Double = Random.Default.nextDouble(0.0, PI)
+        val radialDistance: Double = Random.Default.nextDouble(
+            0.0,
+            generationData.projectGenerationData.range
+        )
+
+        val xCor: Double = generationData.projectGenerationData.centerX + radialDistance * cos(angle)
+        val yCor: Double = generationData.projectGenerationData.centerY + radialDistance * sin(angle)
+
+        val numReferenceBasicResearch: Int = Random.Default.nextInt(1, 10)
+        val numReferenceAppliedResearch: Int = Random.Default.nextInt(1, 10)
+
+        val referenceBasicResearchIdList: List<Int> = WeightedReservoir.aRes(
+            numItem = numReferenceBasicResearch,
+            itemList = mutableUniverseScienceData.basicResearchProjectDataMap.keys.toList(),
+        ) {
+            val basicData: BasicResearchProjectData = mutableUniverseScienceData.basicResearchProjectDataMap.getValue(it)
+            val distance: Double = Intervals.distance(xCor, yCor, basicData.xCor, basicData.yCor)
+            0.1 + 1.0 / distance
+        }
+
+
+        val referenceAppliedResearchIdList: List<Int> = WeightedReservoir.aRes(
+            numItem = numReferenceAppliedResearch,
+            itemList = mutableUniverseScienceData.appliedResearchProjectDataMap.keys.toList(),
+        ) {
+            val appliedData: AppliedResearchProjectData = mutableUniverseScienceData.appliedResearchProjectDataMap.getValue(it)
+            val distance: Double = Intervals.distance(xCor, yCor, appliedData.xCor, appliedData.yCor)
+            0.1 + 1.0 / distance
+        }
+
+        return BasicResearchProjectData(
+            basicResearchId = mutableUniverseScienceData.getNewBasicResearchId(),
+            basicResearchField = generationData.basicResearchField,
+            xCor = xCor,
+            yCor = yCor,
+            difficulty = Random.Default.nextDouble(0.0, 1.0),
+            significance = Random.Default.nextDouble(0.0, 1.0),
+            referenceBasicResearchIdList = referenceBasicResearchIdList,
+            referenceAppliedResearchIdList = referenceAppliedResearchIdList,
+
+        )
+    }
+
+
+    /**
+     * Generate applied research project
+     *
+     * @param mutableUniverseScienceData universe science data
+     */
+    private fun generateAppliedResearchProjectData(
+        mutableUniverseScienceData: MutableUniverseScienceData,
+    ): AppliedResearchProjectData {
+        TODO()
     }
 
     /**
