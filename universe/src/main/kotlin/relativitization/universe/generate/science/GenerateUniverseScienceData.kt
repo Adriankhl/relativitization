@@ -4,10 +4,6 @@ import relativitization.universe.data.UniverseData
 import relativitization.universe.data.science.MutableUniverseScienceData
 import relativitization.universe.data.science.UniverseScienceData
 import relativitization.universe.data.science.knowledge.*
-import relativitization.universe.data.science.technology.MaxShipRestMassTechnology
-import relativitization.universe.data.science.technology.MutableTechnologyFieldGenerationData
-import relativitization.universe.data.science.technology.SingleTechnologyData
-import relativitization.universe.data.science.technology.TechnologyField
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.maths.physics.Intervals
 import relativitization.universe.maths.sampling.WeightedReservoir
