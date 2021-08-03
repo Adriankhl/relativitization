@@ -29,14 +29,17 @@ data class MutableUniverseScienceData(
             basicResearchProjectDataMap.containsKey(basicResearchProjectData.basicResearchId) -> {
                 logger.error("new basic research project has duplicate id, ignore the new data")
             }
-            (basicResearchProjectDataMap.keys.maxOrNull() ?: -1) >= basicResearchProjectData.basicResearchId -> {
+            (basicResearchProjectDataMap.keys.maxOrNull()
+                ?: -1) >= basicResearchProjectData.basicResearchId -> {
                 logger.error("new basic research project has id smaller than the maximum id")
 
                 // Still add the data as long as there is no duplication
-                basicResearchProjectDataMap[basicResearchProjectData.basicResearchId] = basicResearchProjectData
+                basicResearchProjectDataMap[basicResearchProjectData.basicResearchId] =
+                    basicResearchProjectData
             }
             else -> {
-                basicResearchProjectDataMap[basicResearchProjectData.basicResearchId] = basicResearchProjectData
+                basicResearchProjectDataMap[basicResearchProjectData.basicResearchId] =
+                    basicResearchProjectData
             }
         }
     }
@@ -49,14 +52,17 @@ data class MutableUniverseScienceData(
             appliedResearchProjectDataMap.containsKey(appliedResearchProjectData.appliedResearchId) -> {
                 logger.error("new applied research project has duplicate id, ignore the new data")
             }
-            (appliedResearchProjectDataMap.keys.maxOrNull() ?: -1) >= appliedResearchProjectData.appliedResearchId -> {
+            (appliedResearchProjectDataMap.keys.maxOrNull()
+                ?: -1) >= appliedResearchProjectData.appliedResearchId -> {
                 logger.error("new applied research project has id smaller than the maximum id")
 
                 // Still add the data as long as there is no duplication
-                appliedResearchProjectDataMap[appliedResearchProjectData.appliedResearchId] = appliedResearchProjectData
+                appliedResearchProjectDataMap[appliedResearchProjectData.appliedResearchId] =
+                    appliedResearchProjectData
             }
             else -> {
-                appliedResearchProjectDataMap[appliedResearchProjectData.appliedResearchId] = appliedResearchProjectData
+                appliedResearchProjectDataMap[appliedResearchProjectData.appliedResearchId] =
+                    appliedResearchProjectData
             }
         }
     }
@@ -80,6 +86,12 @@ object ProcessUniverseScienceData {
         "EmptyUniverseScienceDataProcess"
     )
 
+    /**
+     * Generate new universe science data per turn
+     *
+     * @param universeData the current universe data
+     * @return the new universe science data
+     */
     fun newUniverseScienceData(universeData: UniverseData): UniverseScienceData {
 
         return when (
@@ -103,10 +115,21 @@ object ProcessUniverseScienceData {
     private fun defaultUniverseScienceDataProcess(
         universeData: UniverseData,
     ): UniverseScienceData {
-        return DefaultGenerateUniverseScienceData.generate(
-            universeData,
-            30,
-            30
-        )
+
+        val numBasicResearchProject: Int = universeData.universeScienceData.basicResearchProjectDataMap.size
+        val numAppliedResearchProject: Int = universeData.universeScienceData.appliedResearchProjectDataMap.size
+
+        // Generate new projects only if there are too few remaining projects
+        val shouldGenerate: Boolean = (numBasicResearchProject < 10) || (numAppliedResearchProject < 10)
+
+        return if (shouldGenerate) {
+            DefaultGenerateUniverseScienceData.generate(
+                universeData,
+                30 - numBasicResearchProject,
+                30 - numAppliedResearchProject,
+            )
+        } else {
+            universeData.universeScienceData
+        }
     }
 }
