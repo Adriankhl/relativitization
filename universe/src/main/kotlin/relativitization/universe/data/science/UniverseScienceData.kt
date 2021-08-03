@@ -3,7 +3,6 @@ package relativitization.universe.data.science
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.UniverseData
 import relativitization.universe.data.science.knowledge.*
-import relativitization.universe.data.science.technology.*
 import relativitization.universe.generate.science.DefaultGenerateUniverseScienceData
 import relativitization.universe.utils.RelativitizationLogManager
 
@@ -90,7 +89,7 @@ object ProcessUniverseScienceData {
                 universeData,
             )
             "EmptyUniverseScienceDataProcess" -> {
-                UniverseScienceData()
+                universeData.universeScienceData
             }
             else -> {
                 logger.error("Invalid universeScienceDataProcessName, use default process")
@@ -106,8 +105,8 @@ object ProcessUniverseScienceData {
     ): UniverseScienceData {
         return DefaultGenerateUniverseScienceData.generate(
             universeData,
-            100,
-            100
+            30,
+            30
         )
     }
 }
