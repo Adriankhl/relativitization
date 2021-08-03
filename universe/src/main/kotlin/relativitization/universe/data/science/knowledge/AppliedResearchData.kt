@@ -6,6 +6,7 @@ import kotlinx.serialization.Serializable
  * Classification of applied research field
  */
 enum class AppliedResearchField(val value: String) {
+    ENERGY_TECHNOLOGY("Energy technology"),
     FOOD_TECHNOLOGY("Food technology"),
     BIOMEDICAL_TECHNOLOGY("Biomedical technology"),
     CHEMICAL_TECHNOLOGY("Chemical technology"),
@@ -13,7 +14,6 @@ enum class AppliedResearchField(val value: String) {
     ARCHITECTURE_TECHNOLOGY("Architecture technology"),
     MACHINERY_TECHNOLOGY("Machinery technology"),
     MATERIAL_TECHNOLOGY("Material technology"),
-    ENERGY_TECHNOLOGY("Energy technology"),
     INFORMATION_TECHNOLOGY("Information technology"),
     ART_TECHNOLOGY("Art technology"),
     MILITARY_TECHNOLOGY("Military technology"),
@@ -44,6 +44,7 @@ data class AppliedResearchProjectData(
  */
 @Serializable
 data class AppliedResearchData(
+    val energyTechnologyLevel: Double = 0.0,
     val foodTechnologyLevel: Double = 0.0,
     val biomedicalTechnologyLevel: Double = 0.0,
     val chemicalTechnologyLevel: Double = 0.0,
@@ -51,7 +52,6 @@ data class AppliedResearchData(
     val architectureTechnologyLevel: Double = 0.0,
     val machineryTechnologyLevel: Double = 0.0,
     val materialTechnologyLevel: Double = 0.0,
-    val energyTechnologyLevel: Double = 0.0,
     val informationTechnologyLevel: Double = 0.0,
     val artTechnologyLevel: Double = 0.0,
     val militaryTechnologyLevel: Double = 0.0,
@@ -59,6 +59,7 @@ data class AppliedResearchData(
 
 @Serializable
 data class MutableAppliedResearchData(
+    var energyTechnologyLevel: Double = 0.0,
     var foodTechnologyLevel: Double = 0.0,
     var biomedicalTechnologyLevel: Double = 0.0,
     var chemicalTechnologyLevel: Double = 0.0,
@@ -66,7 +67,6 @@ data class MutableAppliedResearchData(
     var architectureTechnologyLevel: Double = 0.0,
     var machineryTechnologyLevel: Double = 0.0,
     var materialTechnologyLevel: Double = 0.0,
-    var energyTechnologyLevel: Double = 0.0,
     var informationTechnologyLevel: Double = 0.0,
     var artTechnologyLevel: Double = 0.0,
     var militaryTechnologyLevel: Double = 0.0,
