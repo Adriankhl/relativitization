@@ -36,7 +36,8 @@ data class UniverseData(
     private fun isStateValid(): Boolean {
         // Not a valid test
         // val currentTimeCheck: Boolean = universeData4D.getTSizeList()[0] >= universeState.getCurrentTime()
-        val currentIdCheck: Boolean = getLatestPlayerDataList().maxOf { it.id } <= universeState.getCurrentMaxId()
+        val currentIdCheck: Boolean = (getLatestPlayerDataList().maxOfOrNull { it.id } ?: 0) <=
+                universeState.getCurrentMaxId()
         return currentIdCheck
     }
 

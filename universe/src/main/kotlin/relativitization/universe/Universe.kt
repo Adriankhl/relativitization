@@ -6,6 +6,7 @@ import relativitization.universe.data.*
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.physics.Int3D
 import relativitization.universe.data.physics.Int4D
+import relativitization.universe.data.science.MutableUniverseScienceData
 import relativitization.universe.data.science.ProcessUniverseScienceData
 import relativitization.universe.data.science.UniverseScienceData
 import relativitization.universe.data.serializer.DataSerializer.copy
@@ -387,12 +388,27 @@ class Universe(
      * Process science data of universe and players
      */
     private fun processScienceData() {
-        // Generate new projects and compute new common sense
-        val newUniverseScienceData: UniverseScienceData = ProcessUniverseScienceData.newUniverseScienceData(
-            universeData
+        val mutableUniverseScienceData: MutableUniverseScienceData = copy(
+            universeData.universeScienceData
         )
 
+        val allVisiblePlayerData: List<PlayerData> = universeData.getAllVisiblePlayerData()
 
+        val newStartFromBasicResearchId: Int = allVisiblePlayerData.minOfOrNull {
+            it.playerInternalData.playerScienceData.playerKnowledgeData.startFromBasicResearchId
+        } ?: 0
+
+        val newStartFromAppliedResearchId: Int = allVisiblePlayerData.minOfOrNull {
+            it.playerInternalData.playerScienceData.playerKnowledgeData.startFromAppliedResearchId
+        } ?: 0
+
+
+
+        // Generate new projects and compute new common sense
+        val newUniverseScienceData: UniverseScienceData = ProcessUniverseScienceData.newUniverseScienceData(
+            copy(mutableUniverseScienceData),
+            universeData.universeSettings
+        )
 
         // Modify the universe science data
         universeData.universeScienceData = newUniverseScienceData

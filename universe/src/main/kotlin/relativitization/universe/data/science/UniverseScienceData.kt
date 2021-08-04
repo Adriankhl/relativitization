@@ -161,28 +161,30 @@ object ProcessUniverseScienceData {
      * Generate new universe science data per turn
      * Should generate new projects and new common sense
      *
-     * @param universeData the current universe data
+     * @param universeScienceData the universe science data to be processed
+     * @param universeSettings the settings of the universe
      * @return the new universe science data
      */
-    fun newUniverseScienceData(universeData: UniverseData): UniverseScienceData {
-
-        val universeSettings: UniverseSettings = universeData.universeSettings
+    fun newUniverseScienceData(
+        universeScienceData: UniverseScienceData,
+        universeSettings: UniverseSettings,
+    ): UniverseScienceData {
         return when (
             universeSettings.universeScienceDataProcessName
         ) {
             "DefaultUniverseScienceDataProcess" -> {
                 DefaultProcessUniverseScienceData.newUniverseScienceData(
-                    universeData,
+                    universeScienceData,
                 )
             }
             "EmptyUniverseScienceDataProcess" -> {
-                universeData.universeScienceData
+                universeScienceData
             }
             else -> {
                 logger.error("Invalid universeScienceDataProcessName:" +
                         " ${universeSettings.universeScienceDataProcessName}, use default process")
                 DefaultProcessUniverseScienceData.newUniverseScienceData(
-                    universeData,
+                    universeScienceData,
                 )
             }
         }
@@ -262,23 +264,23 @@ object DefaultProcessUniverseScienceData {
     }
 
     fun newUniverseScienceData(
-        universeData: UniverseData,
+        universeScienceData: UniverseScienceData,
     ): UniverseScienceData {
 
-        val numBasicResearchProject: Int = universeData.universeScienceData.basicResearchProjectDataMap.size
-        val numAppliedResearchProject: Int = universeData.universeScienceData.appliedResearchProjectDataMap.size
+        val numBasicResearchProject: Int = universeScienceData.basicResearchProjectDataMap.size
+        val numAppliedResearchProject: Int = universeScienceData.appliedResearchProjectDataMap.size
 
         // Generate new projects only if there are too few remaining projects
         val shouldGenerate: Boolean = (numBasicResearchProject < 10) || (numAppliedResearchProject < 10)
 
         return if (shouldGenerate) {
             DefaultGenerateUniverseScienceData.generate(
-                universeData,
+                universeScienceData,
                 min(30 - numBasicResearchProject, 0),
                 min(30 - numAppliedResearchProject, 0),
             )
         } else {
-            universeData.universeScienceData
+            universeScienceData
         }
     }
 }

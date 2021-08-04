@@ -18,7 +18,7 @@ object DefaultGenerateUniverseScienceData {
      * Generate new universe science data based on the current universe data
      */
     fun generate(
-        universeData: UniverseData,
+        universeScienceData: UniverseScienceData,
         numBasicResearchProjectGenerate: Int,
         numAppliedResearchProjectGenerate: Int,
     ): UniverseScienceData {
@@ -28,7 +28,6 @@ object DefaultGenerateUniverseScienceData {
                     " numAppliedResearchProjectGenerate (${numAppliedResearchProjectGenerate})")
         }
 
-        val universeScienceData: UniverseScienceData = universeData.universeScienceData
         val mutableUniverseScienceData: MutableUniverseScienceData = DataSerializer.copy(
             universeScienceData
         )
