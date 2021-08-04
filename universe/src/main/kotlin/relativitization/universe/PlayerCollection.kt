@@ -3,6 +3,7 @@ package relativitization.universe
 import kotlinx.coroutines.runBlocking
 import relativitization.universe.data.*
 import relativitization.universe.data.physics.*
+import relativitization.universe.data.science.knowledge.*
 import relativitization.universe.data.serializer.DataSerializer.copy
 import relativitization.universe.maths.grid.Grids.create3DGrid
 import relativitization.universe.maths.grid.Grids.double4DToGroupId
@@ -189,6 +190,23 @@ class PlayerCollection(
     }
 
     /**
+     * Update player common sense
+     */
+    fun updateCommonSenseData(
+        newCommonSenseKnowledgeData: MutableKnowledgeData,
+        basicProjectFunction: (BasicResearchProjectData, MutableBasicResearchData) -> Unit,
+        appliedProjectFunction: (AppliedResearchProjectData, MutableAppliedResearchData) -> Unit,
+    ) {
+        playerMap.values.forEach {
+            it.playerInternalData.playerScienceData.updateCommonSenseData(
+                newCommonSenseKnowledgeData,
+                basicProjectFunction,
+                appliedProjectFunction
+            )
+        }
+    }
+
+    /**
      * Does 4 things
      * 1. move player double4D position by his velocity, check the boundaries of the map
      * 2. move player int4D position by his double4D, add afterimage to int4DHistory if needed
@@ -254,7 +272,7 @@ class PlayerCollection(
             // Change player group id
             playerData.groupId = double4DToGroupId(playerData.double4D, edgeLength)
 
-            // Add old coordinate to int4DHistory if int4D position change or groupid change
+            // Add old coordinate to int4DHistory if int4D position change or groupId change
             if ((oldInt4D.x != playerData.int4D.x) ||
                 (oldInt4D.y != playerData.int4D.y) ||
                 (oldInt4D.z != playerData.int4D.z) ||
@@ -276,15 +294,20 @@ class PlayerCollection(
         playerData: MutablePlayerData,
         speedOfLight: Double,
     ) {
-        val targetVelocity: Velocity = if (component == 'x') {
-            playerData.velocity.toVelocity().copy(vx = 0.0)
-        } else if (component == 'y') {
-            playerData.velocity.toVelocity().copy(vy = 0.0)
-        } else if (component == 'z') {
-            playerData.velocity.toVelocity().copy(vz = 0.0)
-        } else {
-            logger.error("Component doesn't exist")
-            playerData.velocity.toVelocity()
+        val targetVelocity: Velocity = when (component) {
+            'x' -> {
+                playerData.velocity.toVelocity().copy(vx = 0.0)
+            }
+            'y' -> {
+                playerData.velocity.toVelocity().copy(vy = 0.0)
+            }
+            'z' -> {
+                playerData.velocity.toVelocity().copy(vz = 0.0)
+            }
+            else -> {
+                logger.error("Component doesn't exist")
+                playerData.velocity.toVelocity()
+            }
         }
 
         val deltaRestMass: Double = deltaMassByPhotonRocket(
