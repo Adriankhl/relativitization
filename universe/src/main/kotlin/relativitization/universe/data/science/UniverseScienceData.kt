@@ -1,7 +1,6 @@
 package relativitization.universe.data.science
 
 import kotlinx.serialization.Serializable
-import relativitization.universe.data.UniverseData
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.science.knowledge.*
 import relativitization.universe.generate.science.DefaultGenerateUniverseScienceData
@@ -69,6 +68,38 @@ data class MutableUniverseScienceData(
         }
     }
 
+    /**
+     * Update common sense to new common sense
+     *
+     * @param newStartFromBasicResearchId new beginning basic research id of the new common sense
+     * @param newStartFromAppliedResearchId new beginning applied research id of the new common sense
+     * @param basicProjectFunction the function encoding the effect of basic research projects
+     * @param appliedProjectFunction  the function encoding the effect of applied research projects
+     */
+    fun updateCommonSenseData(
+        newStartFromBasicResearchId: Int,
+        newStartFromAppliedResearchId: Int,
+        basicProjectFunction: (BasicResearchProjectData, MutableBasicResearchData) -> Unit,
+        appliedProjectFunction: (AppliedResearchProjectData, MutableAppliedResearchData) -> Unit,
+    ) {
+        basicResearchProjectDataMap.filter { it.key <= newStartFromBasicResearchId }.forEach {
+            basicProjectFunction(it.value, commonSenseKnowledgeData.basicResearchData)
+        }
+
+        appliedResearchProjectDataMap.filter { it.key <= newStartFromAppliedResearchId }.forEach {
+            appliedProjectFunction(it.value, commonSenseKnowledgeData.appliedResearchData)
+        }
+
+        // Clear old projects
+        basicResearchProjectDataMap.keys.filter { it <= newStartFromBasicResearchId  }.forEach {
+            basicResearchProjectDataMap.remove(it)
+        }
+        appliedResearchProjectDataMap.keys.filter { it <= newStartFromAppliedResearchId  }.forEach {
+            appliedResearchProjectDataMap.remove(it)
+        }
+
+    }
+
     fun getNewBasicResearchId(): Int = (basicResearchProjectDataMap.keys.maxOrNull() ?: -1) + 1
 
     fun getNewAppliedResearchId(): Int = (appliedResearchProjectDataMap.keys.maxOrNull() ?: -1) + 1
@@ -89,69 +120,57 @@ object ProcessUniverseScienceData {
     )
 
     /**
-     * Obtain a function of the effect of basic research project
+     * Obtain a function encoding the effect of basic research project
      *
-     * @param basicResearchProjectData the data of the project
      * @param universeSettings the settings, for universeScienceDataProcessName
      * @return a function transforming MutableBasicResearchData
      */
     fun basicResearchProjectFunction(
-        basicResearchProjectData: BasicResearchProjectData,
         universeSettings: UniverseSettings,
-    ): (MutableBasicResearchData) -> Unit {
+    ): (BasicResearchProjectData, MutableBasicResearchData) -> Unit {
 
         return when (
             universeSettings.universeScienceDataProcessName
         ) {
             "DefaultUniverseScienceDataProcess" -> {
-                DefaultProcessUniverseScienceData.basicResearchProjectFunction(
-                    basicResearchProjectData
-                )
+                DefaultProcessUniverseScienceData.basicResearchProjectFunction()
             }
             "EmptyUniverseScienceDataProcess" -> {
-                {}
+                { _, _ ->}
             }
             else -> {
                 logger.error("Invalid universeScienceDataProcessName:" +
                         " ${universeSettings.universeScienceDataProcessName}, use default process")
 
-                DefaultProcessUniverseScienceData.basicResearchProjectFunction(
-                    basicResearchProjectData
-                )
+                DefaultProcessUniverseScienceData.basicResearchProjectFunction()
             }
         }
     }
 
     /**
-     * Obtain a function of the effect of applied research project
+     * Obtain a function encoding the effect of applied research project
      *
-     * @param appliedResearchProjectData the data of the project
      * @param universeSettings the settings, for universeScienceDataProcessName
      * @return a function transforming MutableBasicResearchData
      */
     fun appliedResearchProjectFunction(
-        appliedResearchProjectData: AppliedResearchProjectData,
         universeSettings: UniverseSettings,
-    ): (MutableAppliedResearchData) -> Unit {
+    ): (AppliedResearchProjectData, MutableAppliedResearchData) -> Unit {
 
         return when (
             universeSettings.universeScienceDataProcessName
         ) {
             "DefaultUniverseScienceDataProcess" -> {
-                DefaultProcessUniverseScienceData.appliedResearchProjectFunction(
-                    appliedResearchProjectData
-                )
+                DefaultProcessUniverseScienceData.appliedResearchProjectFunction()
             }
             "EmptyUniverseScienceDataProcess" -> {
-                {}
+                { _, _ -> }
             }
             else -> {
                 logger.error("Invalid universeScienceDataProcessName:" +
                         " ${universeSettings.universeScienceDataProcessName}, use default process")
 
-                DefaultProcessUniverseScienceData.appliedResearchProjectFunction(
-                    appliedResearchProjectData
-                )
+                DefaultProcessUniverseScienceData.appliedResearchProjectFunction()
             }
         }
     }
@@ -194,70 +213,66 @@ object ProcessUniverseScienceData {
 object DefaultProcessUniverseScienceData {
     private val logger = RelativitizationLogManager.getLogger()
 
-    fun basicResearchProjectFunction(
-        basicResearchProjectData: BasicResearchProjectData
-    ): (MutableBasicResearchData) -> Unit {
-        return {
+    fun basicResearchProjectFunction(): (BasicResearchProjectData, MutableBasicResearchData) -> Unit {
+        return { basicResearchProjectData, mutableBasicResearchData ->
             when (basicResearchProjectData.basicResearchField) {
                 BasicResearchField.MATHEMATICS -> {
-                    it.mathematicsLevel += basicResearchProjectData.significance
+                    mutableBasicResearchData.mathematicsLevel += basicResearchProjectData.significance
                 }
                 BasicResearchField.PHYSICS -> {
-                    it.physicsLevel += basicResearchProjectData.significance
+                    mutableBasicResearchData.physicsLevel += basicResearchProjectData.significance
                 }
                 BasicResearchField.COMPUTER_SCIENCE -> {
-                    it.computerScienceLevel += basicResearchProjectData.significance
+                    mutableBasicResearchData.computerScienceLevel += basicResearchProjectData.significance
                 }
                 BasicResearchField.LIFE_SCIENCE -> {
-                    it.lifeScienceLevel += basicResearchProjectData.significance
+                    mutableBasicResearchData.lifeScienceLevel += basicResearchProjectData.significance
                 }
                 BasicResearchField.SOCIAL_SCIENCE -> {
-                    it.socialScienceLevel += basicResearchProjectData.significance
+                    mutableBasicResearchData.socialScienceLevel += basicResearchProjectData.significance
                 }
                 BasicResearchField.HUMANITY -> {
-                    it.humanityLevel += basicResearchProjectData.significance
+                    mutableBasicResearchData.humanityLevel += basicResearchProjectData.significance
                 }
             }
         }
     }
 
-    fun appliedResearchProjectFunction(
-        appliedResearchProjectData: AppliedResearchProjectData
-    ): (MutableAppliedResearchData) -> Unit {
-        return {
+    fun appliedResearchProjectFunction(): (AppliedResearchProjectData, MutableAppliedResearchData) -> Unit {
+        return { appliedResearchProjectData, mutableAppliedResearchData ->
             when (appliedResearchProjectData.appliedResearchField) {
                 AppliedResearchField.ENERGY_TECHNOLOGY -> {
-                    it.energyTechnologyLevel += appliedResearchProjectData.significance
+                    mutableAppliedResearchData.energyTechnologyLevel += appliedResearchProjectData.significance
                 }
                 AppliedResearchField.FOOD_TECHNOLOGY -> {
-                    it.foodTechnologyLevel += appliedResearchProjectData.significance
+                    mutableAppliedResearchData.foodTechnologyLevel += appliedResearchProjectData.significance
                 }
                 AppliedResearchField.BIOMEDICAL_TECHNOLOGY -> {
-                    it.biomedicalTechnologyLevel += appliedResearchProjectData.significance
+                    mutableAppliedResearchData.biomedicalTechnologyLevel += appliedResearchProjectData.significance
                 }
                 AppliedResearchField.CHEMICAL_TECHNOLOGY -> {
-                    it.chemicalTechnologyLevel += appliedResearchProjectData.significance
+                    mutableAppliedResearchData.chemicalTechnologyLevel += appliedResearchProjectData.significance
                 }
                 AppliedResearchField.ENVIRONMENTAL_TECHNOLOGY -> {
-                    it.energyTechnologyLevel += appliedResearchProjectData.significance
+                    mutableAppliedResearchData.energyTechnologyLevel += appliedResearchProjectData.significance
                 }
                 AppliedResearchField.ARCHITECTURE_TECHNOLOGY -> {
-                    it.architectureTechnologyLevel += appliedResearchProjectData.significance
+                    mutableAppliedResearchData.architectureTechnologyLevel += appliedResearchProjectData.significance
                 }
                 AppliedResearchField.MACHINERY_TECHNOLOGY -> {
-                    it.machineryTechnologyLevel += appliedResearchProjectData.significance
+                    mutableAppliedResearchData.machineryTechnologyLevel += appliedResearchProjectData.significance
                 }
                 AppliedResearchField.MATERIAL_TECHNOLOGY -> {
-                    it.machineryTechnologyLevel += appliedResearchProjectData.significance
+                    mutableAppliedResearchData.machineryTechnologyLevel += appliedResearchProjectData.significance
                 }
                 AppliedResearchField.INFORMATION_TECHNOLOGY -> {
-                    it.informationTechnologyLevel += appliedResearchProjectData.significance
+                    mutableAppliedResearchData.informationTechnologyLevel += appliedResearchProjectData.significance
                 }
                 AppliedResearchField.ART_TECHNOLOGY -> {
-                    it.artTechnologyLevel += appliedResearchProjectData.significance
+                    mutableAppliedResearchData.artTechnologyLevel += appliedResearchProjectData.significance
                 }
                 AppliedResearchField.MILITARY_TECHNOLOGY -> {
-                    it.militaryTechnologyLevel += appliedResearchProjectData.significance
+                    mutableAppliedResearchData.militaryTechnologyLevel += appliedResearchProjectData.significance
                 }
             }
         }

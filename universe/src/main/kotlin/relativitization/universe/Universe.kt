@@ -402,7 +402,13 @@ class Universe(
             it.playerInternalData.playerScienceData.playerKnowledgeData.startFromAppliedResearchId
         } ?: 0
 
+        mutableUniverseScienceData.updateCommonSenseData(
+            newStartFromBasicResearchId = newStartFromBasicResearchId,
+            newStartFromAppliedResearchId = newStartFromAppliedResearchId,
+            basicProjectFunction = ProcessUniverseScienceData.basicResearchProjectFunction(universeData.universeSettings),
+            appliedProjectFunction = ProcessUniverseScienceData.appliedResearchProjectFunction(universeData.universeSettings)
 
+        )
 
         // Generate new projects and compute new common sense
         val newUniverseScienceData: UniverseScienceData = ProcessUniverseScienceData.newUniverseScienceData(
