@@ -2,6 +2,7 @@ package relativitization.universe.data.science
 
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.UniverseData
+import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.science.knowledge.*
 import relativitization.universe.generate.science.DefaultGenerateUniverseScienceData
 import relativitization.universe.utils.RelativitizationLogManager
@@ -87,6 +88,75 @@ object ProcessUniverseScienceData {
     )
 
     /**
+     * Obtain a function of the effect of basic research project
+     *
+     * @param basicResearchProjectData the data of the project
+     * @param universeSettings the settings, for universeScienceDataProcessName
+     * @return a function transforming MutableBasicResearchData
+     */
+    fun basicResearchProjectFunction(
+        basicResearchProjectData: BasicResearchProjectData,
+        universeSettings: UniverseSettings,
+    ): (MutableBasicResearchData) -> Unit {
+
+        return when (
+            universeSettings.universeScienceDataProcessName
+        ) {
+            "DefaultUniverseScienceDataProcess" -> {
+                DefaultProcessUniverseScienceData.basicResearchProjectFunction(
+                    basicResearchProjectData
+                )
+            }
+            "EmptyUniverseScienceDataProcess" -> {
+                {}
+            }
+            else -> {
+                logger.error("Invalid universeScienceDataProcessName:" +
+                        " ${universeSettings.universeScienceDataProcessName}, use default process")
+
+                DefaultProcessUniverseScienceData.basicResearchProjectFunction(
+                    basicResearchProjectData
+                )
+            }
+        }
+    }
+
+    /**
+     * Obtain a function of the effect of applied research project
+     *
+     * @param appliedResearchProjectData the data of the project
+     * @param universeSettings the settings, for universeScienceDataProcessName
+     * @return a function transforming MutableBasicResearchData
+     */
+    fun appliedResearchProjectFunction(
+        appliedResearchProjectData: AppliedResearchProjectData,
+        universeSettings: UniverseSettings,
+    ): (MutableAppliedResearchData) -> Unit {
+
+        return when (
+            universeSettings.universeScienceDataProcessName
+        ) {
+            "DefaultUniverseScienceDataProcess" -> {
+                DefaultProcessUniverseScienceData.appliedResearchProjectFunction(
+                    appliedResearchProjectData
+                )
+            }
+            "EmptyUniverseScienceDataProcess" -> {
+                {}
+            }
+            else -> {
+                logger.error("Invalid universeScienceDataProcessName:" +
+                        " ${universeSettings.universeScienceDataProcessName}, use default process")
+
+                DefaultProcessUniverseScienceData.appliedResearchProjectFunction(
+                    appliedResearchProjectData
+                )
+            }
+        }
+    }
+
+
+    /**
      * Generate new universe science data per turn
      * Should generate new projects and new common sense
      *
@@ -95,8 +165,9 @@ object ProcessUniverseScienceData {
      */
     fun newUniverseScienceData(universeData: UniverseData): UniverseScienceData {
 
+        val universeSettings: UniverseSettings = universeData.universeSettings
         return when (
-            universeData.universeSettings.universeScienceDataProcessName
+            universeSettings.universeScienceDataProcessName
         ) {
             "DefaultUniverseScienceDataProcess" -> {
                 DefaultProcessUniverseScienceData.newUniverseScienceData(
@@ -107,7 +178,8 @@ object ProcessUniverseScienceData {
                 universeData.universeScienceData
             }
             else -> {
-                logger.error("Invalid universeScienceDataProcessName, use default process")
+                logger.error("Invalid universeScienceDataProcessName:" +
+                        " ${universeSettings.universeScienceDataProcessName}, use default process")
                 DefaultProcessUniverseScienceData.newUniverseScienceData(
                     universeData,
                 )
