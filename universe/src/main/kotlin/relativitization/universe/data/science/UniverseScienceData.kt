@@ -119,6 +119,33 @@ object ProcessUniverseScienceData {
 object DefaultProcessUniverseScienceData {
     private val logger = RelativitizationLogManager.getLogger()
 
+    fun basicResearchProjectFunction(
+        basicResearchProjectData: BasicResearchProjectData
+    ): (MutableBasicResearchData) -> Unit {
+        return {
+            when (basicResearchProjectData.basicResearchField) {
+                BasicResearchField.MATHEMATICS -> {
+                    it.mathematicsLevel += basicResearchProjectData.significance
+                }
+                BasicResearchField.PHYSICS -> {
+                    it.physicsLevel += basicResearchProjectData.significance
+                }
+                BasicResearchField.COMPUTER_SCIENCE -> {
+                    it.computerScienceLevel += basicResearchProjectData.significance
+                }
+                BasicResearchField.LIFE_SCIENCE -> {
+                    it.lifeScienceLevel += basicResearchProjectData.significance
+                }
+                BasicResearchField.SOCIAL_SCIENCE -> {
+                    it.socialScienceLevel += basicResearchProjectData.significance
+                }
+                BasicResearchField.HUMANITY -> {
+                    it.humanityLevel += basicResearchProjectData.significance
+                }
+            }
+        }
+    }
+
     fun appliedResearchProjectFunction(
         appliedResearchProjectData: AppliedResearchProjectData
     ): (MutableAppliedResearchData) -> Unit {
