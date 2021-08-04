@@ -384,6 +384,17 @@ class Universe(
     }
 
     /**
+     * Process universe science data
+     */
+    private fun processUniverseScienceData() {
+        // Generate new projects and compute new common sense
+        val newUniverseScienceData: UniverseScienceData = ProcessUniverseScienceData.newUniverseScienceData(
+            universeData
+        )
+        universeData.universeScienceData = newUniverseScienceData
+    }
+
+    /**
      * First part of the main step
      * Preprocess after the beginning of the turn
      * Save the latest slice and other information of the universe after that
@@ -393,18 +404,13 @@ class Universe(
         processMechanism()
         processCommandMap()
         processDeadAndNewPlayer()
+        processUniverseScienceData()
 
         // Sync all data component to ensure consistency before universe data update
         playerCollection.syncAllPlayerDataComponent()
 
         val universeSlice = playerCollection.getUniverseSlice(universeData)
         universeData.updateUniverseReplaceLatest(universeSlice)
-
-        // Update universe science data after updating player data in latest slice
-        val newUniverseScienceData: UniverseScienceData = ProcessUniverseScienceData.newUniverseScienceData(
-            universeData
-        )
-        universeData.universeScienceData = newUniverseScienceData
 
         saveLatest()
     }

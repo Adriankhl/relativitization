@@ -88,6 +88,7 @@ object ProcessUniverseScienceData {
 
     /**
      * Generate new universe science data per turn
+     * Should generate new projects and new common sense
      *
      * @param universeData the current universe data
      * @return the new universe science data
@@ -97,22 +98,29 @@ object ProcessUniverseScienceData {
         return when (
             universeData.universeSettings.universeScienceDataProcessName
         ) {
-            "DefaultUniverseScienceDataProcess" -> defaultUniverseScienceDataProcess(
-                universeData,
-            )
+            "DefaultUniverseScienceDataProcess" -> {
+                DefaultProcessUniverseScienceData.newUniverseScienceData(
+                    universeData,
+                )
+            }
             "EmptyUniverseScienceDataProcess" -> {
                 universeData.universeScienceData
             }
             else -> {
                 logger.error("Invalid universeScienceDataProcessName, use default process")
-                defaultUniverseScienceDataProcess(
+                DefaultProcessUniverseScienceData.newUniverseScienceData(
                     universeData,
                 )
             }
         }
     }
+}
 
-    private fun defaultUniverseScienceDataProcess(
+object DefaultProcessUniverseScienceData {
+    private val logger = RelativitizationLogManager.getLogger()
+
+
+    fun newUniverseScienceData(
         universeData: UniverseData,
     ): UniverseScienceData {
 
