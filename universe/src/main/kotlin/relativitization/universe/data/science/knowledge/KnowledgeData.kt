@@ -47,7 +47,21 @@ data class MutableKnowledgeData(
         } else {
             function(basicResearchProjectData, basicResearchData)
             basicResearchIdList.add(basicResearchProjectData.basicResearchId)
+            computeStartFromBasicResearchId()
         }
+    }
+
+    /**
+     * Compute and modify the startFromBasicResearchId
+     */
+    private fun computeStartFromBasicResearchId() {
+        var i: Int = startFromBasicResearchId + 1
+        while (basicResearchIdList.contains(i)) {
+            basicResearchIdList.removeAll { it == i }
+            i++
+        }
+
+        startFromBasicResearchId = i - 1
     }
 
     fun addAppliedResearchProjectData(
@@ -61,7 +75,22 @@ data class MutableKnowledgeData(
         } else {
             function(appliedResearchProjectData, appliedResearchData)
             appliedResearchIdList.add(appliedResearchProjectData.appliedResearchId)
+            computeStartFromAppliedResearchId()
         }
+    }
+
+
+    /**
+     * Compute and modify the startFromAppliedResearchId
+     */
+    private fun computeStartFromAppliedResearchId() {
+        var i: Int = startFromAppliedResearchId + 1
+        while (appliedResearchIdList.contains(i)) {
+            appliedResearchIdList.removeAll { it == i }
+            i++
+        }
+
+        startFromAppliedResearchId = i - 1
     }
 
     companion object {
