@@ -143,8 +143,6 @@ data class UniverseData(
                                     playerId3D[i][j][k].add(id)
                                     playerDataMap[id] = playerData
                                 }
-                            } else {
-                                // Do nothing
                             }
                         } else {
                             playerId3D[i][j][k].add(id)
@@ -226,6 +224,17 @@ data class UniverseData4D(
         playerData4D.last()
 
     /**
+     * Get latest 4D slice
+     */
+    fun takeLast(tSize: Int): List<List<List<List<List<PlayerData>>>>> {
+        if (tSize > playerData4D.size) {
+            logger.error("tSize is larger than the dimension of the universe")
+        }
+
+        return playerData4D.takeLast(tSize)
+    }
+
+    /**
      * Get all slice excluding latest
      */
     fun getAllExcludeLatest(): List<List<List<List<List<PlayerData>>>>> =
@@ -266,6 +275,10 @@ data class UniverseData4D(
      * Get the z dimension of playerData4D as list
      */
     internal fun getZSizeList(): List<Int> = playerData4D.flatten().flatten().map{ it.size }
+
+    companion object {
+        private val logger = RelativitizationLogManager.getLogger()
+    }
 }
 
 /**
