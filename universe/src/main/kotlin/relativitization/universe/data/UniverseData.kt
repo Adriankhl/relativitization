@@ -104,6 +104,21 @@ data class UniverseData(
         }
     }
 
+    /**
+     * Get all player data which is within the view of current player
+     */
+    fun getAllVisiblePlayerData(): List<PlayerData> {
+        val tSize: Int =  intDelay(
+            Int3D(0, 0,0),
+            Int3D(universeSettings.xDim - 1, universeSettings.yDim - 1, universeSettings.zDim - 1),
+            universeSettings.speedOfLight
+        )
+
+        val data4D: List<List<List<List<List<PlayerData>>>>> = universeData4D.takeLast(tSize)
+
+        return data4D.flatten().flatten().flatten().flatten()
+    }
+
     fun toUniverseData3DAtGrid(center: Int4D): UniverseData3DAtGrid {
         val playerId3D: List<List<List<MutableList<Int>>>> =
             create3DGrid(
