@@ -97,6 +97,39 @@ data class MutablePlayerScienceData(
         }
     }
 
+    /**
+     * update common sense data
+     *
+     * @param newCommonSenseKnowledgeData new common sense
+     * @param basicProjectFunction function of the effect of basic research projects
+     * @param appliedProjectFunction function of the effect of applied research projects
+     */
+    fun updateCommonSenseData(
+        newCommonSenseKnowledgeData: MutableKnowledgeData,
+        basicProjectFunction: (BasicResearchProjectData, MutableBasicResearchData) -> Unit,
+        appliedProjectFunction: (AppliedResearchProjectData, MutableAppliedResearchData) -> Unit,
+    ) {
+        // Clear done projects
+        doneBasicResearchProjectList.removeAll {
+            it.basicResearchId <= newCommonSenseKnowledgeData.startFromBasicResearchId
+        }
+        doneAppliedResearchProjectList.removeAll {
+            it.appliedResearchId <= newCommonSenseKnowledgeData.startFromAppliedResearchId
+        }
+
+        // Clear known projects
+        knownBasicResearchProjectList.removeAll {
+            it.basicResearchId <= newCommonSenseKnowledgeData.startFromBasicResearchId
+        }
+        knownAppliedResearchProjectList.removeAll {
+            it.appliedResearchId <= newCommonSenseKnowledgeData.startFromAppliedResearchId
+        }
+
+        commonSenseKnowledgeData = newCommonSenseKnowledgeData
+
+        computePlayerKnowledgeData(basicProjectFunction, appliedProjectFunction)
+    }
+
     companion object {
         private val logger = RelativitizationLogManager.getLogger()
     }
