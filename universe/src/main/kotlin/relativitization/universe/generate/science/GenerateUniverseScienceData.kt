@@ -8,10 +8,7 @@ import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.maths.physics.Intervals
 import relativitization.universe.maths.sampling.WeightedReservoir
 import relativitization.universe.utils.RelativitizationLogManager
-import kotlin.math.PI
-import kotlin.math.cos
-import kotlin.math.min
-import kotlin.math.sin
+import kotlin.math.*
 import kotlin.random.Random
 
 object DefaultGenerateUniverseScienceData {
@@ -25,6 +22,12 @@ object DefaultGenerateUniverseScienceData {
         numBasicResearchProjectGenerate: Int,
         numAppliedResearchProjectGenerate: Int,
     ): UniverseScienceData {
+
+        if (numBasicResearchProjectGenerate < 0 || numAppliedResearchProjectGenerate < 0) {
+            logger.error("Negative numBasicResearchProjectGenerate (${numBasicResearchProjectGenerate}) or" +
+                    " numAppliedResearchProjectGenerate (${numAppliedResearchProjectGenerate})")
+        }
+
         val universeScienceData: UniverseScienceData = universeData.universeScienceData
         val mutableUniverseScienceData: MutableUniverseScienceData = DataSerializer.copy(
             universeScienceData
@@ -33,21 +36,23 @@ object DefaultGenerateUniverseScienceData {
         val minGenerate: Int =
             min(numBasicResearchProjectGenerate, numAppliedResearchProjectGenerate)
 
-        for (i in 1..minGenerate) {
-            logger.debug("Generating new basic and applied research project  .. $i")
+        if (minGenerate > 0) {
+            for (i in 1..minGenerate) {
+                logger.debug("Generating new basic and applied research project  .. $i")
 
-            val newBasic: BasicResearchProjectData = generateBasicResearchProjectData(
-                mutableUniverseScienceData
-            )
-            mutableUniverseScienceData.addBasicResearchProjectData(newBasic)
+                val newBasic: BasicResearchProjectData = generateBasicResearchProjectData(
+                    mutableUniverseScienceData
+                )
+                mutableUniverseScienceData.addBasicResearchProjectData(newBasic)
 
-            val newApplied: AppliedResearchProjectData = generateAppliedResearchProjectData(
-                mutableUniverseScienceData
-            )
-            mutableUniverseScienceData.addAppliedResearchProjectData(newApplied)
+                val newApplied: AppliedResearchProjectData = generateAppliedResearchProjectData(
+                    mutableUniverseScienceData
+                )
+                mutableUniverseScienceData.addAppliedResearchProjectData(newApplied)
+            }
         }
 
-        if (numBasicResearchProjectGenerate > numAppliedResearchProjectGenerate) {
+        if (numBasicResearchProjectGenerate > max(numAppliedResearchProjectGenerate, 0)) {
             for (i in 1..(numBasicResearchProjectGenerate - minGenerate)) {
                 logger.debug("Generating new basic research project .. $i")
 
@@ -56,7 +61,7 @@ object DefaultGenerateUniverseScienceData {
                 )
                 mutableUniverseScienceData.addBasicResearchProjectData(newBasic)
             }
-        } else if (numAppliedResearchProjectGenerate > numBasicResearchProjectGenerate) {
+        } else if (numAppliedResearchProjectGenerate > max(numBasicResearchProjectGenerate, 0)) {
             for (i in 1..(numAppliedResearchProjectGenerate - minGenerate)) {
                 logger.debug("Generating new applied research project .. $i")
 

@@ -6,6 +6,7 @@ import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.science.knowledge.*
 import relativitization.universe.generate.science.DefaultGenerateUniverseScienceData
 import relativitization.universe.utils.RelativitizationLogManager
+import kotlin.math.min
 
 @Serializable
 data class UniverseScienceData(
@@ -273,8 +274,8 @@ object DefaultProcessUniverseScienceData {
         return if (shouldGenerate) {
             DefaultGenerateUniverseScienceData.generate(
                 universeData,
-                30 - numBasicResearchProject,
-                30 - numAppliedResearchProject,
+                min(30 - numBasicResearchProject, 0),
+                min(30 - numAppliedResearchProject, 0),
             )
         } else {
             universeData.universeScienceData

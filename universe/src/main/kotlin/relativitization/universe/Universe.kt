@@ -384,13 +384,17 @@ class Universe(
     }
 
     /**
-     * Process universe science data
+     * Process science data of universe and players
      */
-    private fun processUniverseScienceData() {
+    private fun processScienceData() {
         // Generate new projects and compute new common sense
         val newUniverseScienceData: UniverseScienceData = ProcessUniverseScienceData.newUniverseScienceData(
             universeData
         )
+
+
+
+        // Modify the universe science data
         universeData.universeScienceData = newUniverseScienceData
     }
 
@@ -404,7 +408,7 @@ class Universe(
         processMechanism()
         processCommandMap()
         processDeadAndNewPlayer()
-        processUniverseScienceData()
+        processScienceData()
 
         // Sync all data component to ensure consistency before universe data update
         playerCollection.syncAllPlayerDataComponent()
