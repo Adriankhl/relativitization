@@ -119,6 +119,47 @@ object ProcessUniverseScienceData {
 object DefaultProcessUniverseScienceData {
     private val logger = RelativitizationLogManager.getLogger()
 
+    fun appliedResearchProjectFunction(
+        appliedResearchProjectData: AppliedResearchProjectData
+    ): (MutableAppliedResearchData) -> Unit {
+        return {
+            when (appliedResearchProjectData.appliedResearchField) {
+                AppliedResearchField.ENERGY_TECHNOLOGY -> {
+                    it.energyTechnologyLevel += appliedResearchProjectData.significance
+                }
+                AppliedResearchField.FOOD_TECHNOLOGY -> {
+                    it.foodTechnologyLevel += appliedResearchProjectData.significance
+                }
+                AppliedResearchField.BIOMEDICAL_TECHNOLOGY -> {
+                    it.biomedicalTechnologyLevel += appliedResearchProjectData.significance
+                }
+                AppliedResearchField.CHEMICAL_TECHNOLOGY -> {
+                    it.chemicalTechnologyLevel += appliedResearchProjectData.significance
+                }
+                AppliedResearchField.ENVIRONMENTAL_TECHNOLOGY -> {
+                    it.energyTechnologyLevel += appliedResearchProjectData.significance
+                }
+                AppliedResearchField.ARCHITECTURE_TECHNOLOGY -> {
+                    it.architectureTechnologyLevel += appliedResearchProjectData.significance
+                }
+                AppliedResearchField.MACHINERY_TECHNOLOGY -> {
+                    it.machineryTechnologyLevel += appliedResearchProjectData.significance
+                }
+                AppliedResearchField.MATERIAL_TECHNOLOGY -> {
+                    it.machineryTechnologyLevel += appliedResearchProjectData.significance
+                }
+                AppliedResearchField.INFORMATION_TECHNOLOGY -> {
+                    it.informationTechnologyLevel += appliedResearchProjectData.significance
+                }
+                AppliedResearchField.ART_TECHNOLOGY -> {
+                    it.artTechnologyLevel += appliedResearchProjectData.significance
+                }
+                AppliedResearchField.MILITARY_TECHNOLOGY -> {
+                    it.militaryTechnologyLevel += appliedResearchProjectData.significance
+                }
+            }
+        }
+    }
 
     fun newUniverseScienceData(
         universeData: UniverseData,
