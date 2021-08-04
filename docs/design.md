@@ -22,7 +22,10 @@
 * Universe server move player by their velocity, update int4D, also update group id by their double4D position
 * Universe server convert mutable data to immutable data, save latest data, drop oldest data
 
-# Command, Mechanism, AI, and Data
+# Command, Event, Mechanism, AI, and Data
+* Commands and events are more definite, their behaviours should be defined in their class,
+  where other data can have different mechanisms (i.e. mod), those data are handle externally and
+  should not be defined within the class, except some universal utils function
 * Command collection is global, pick by command collection name
 * Mechanism is global, pick by mechanism collection name
 * AI is individual, pick by aiName
