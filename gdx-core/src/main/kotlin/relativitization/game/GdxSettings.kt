@@ -20,6 +20,8 @@ data class GdxSettings(
     var maxFontSize: Int = 72,
     var mapZoomFactor: Float = 1.2f,
     var mapZoomRelativeToFullMap: Float = 1.0f,
+    var knowledgeMapZoomRelativeToFullMap: Float = 1.0f,
+    var knowledgeMapProjectIconZoom: Float = 1.0f,
     var imageScale: Float = 1.0f,
     var showingInfo: Boolean = true,
     var worldMapAndInfoSplitAmount: Float = 0.7f,
@@ -59,4 +61,5 @@ enum class ShowingInfoType {
     PHYSICS,
     EVENTS,
     COMMANDS,
+    SCIENCE,
 }
