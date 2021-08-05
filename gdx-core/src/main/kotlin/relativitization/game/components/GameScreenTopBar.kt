@@ -353,6 +353,22 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         game.changeGdxSettings()
     }
 
+    private val scienceInfoButton: TextButton = createTextButton(
+        text = "Science",
+        fontSize = gdxSettings.normalFontSize,
+        soundVolume = gdxSettings.soundEffectsVolume
+    ) {
+        // If hiding, show the panel
+        if ((gdxSettings.showingInfoType == ShowingInfoType.SCIENCE) && gdxSettings.showingInfo) {
+            gdxSettings.showingInfo = false
+            gdxSettings.showingInfoType = ShowingInfoType.SCIENCE
+        } else {
+            gdxSettings.showingInfo = true
+            gdxSettings.showingInfoType = ShowingInfoType.SCIENCE
+        }
+        game.changeGdxSettings()
+    }
+
     private val tCoordinateLabel = createLabel(
         text = "t: ${game.universeClient.getUniverseData3D().center.t}",
         fontSize = gdxSettings.smallFontSize
@@ -502,6 +518,8 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         table.add(eventsInfoButton).pad(10f)
 
         table.add(commandsInfoButton).pad(10f)
+
+        table.add(scienceInfoButton).pad(10f)
 
         table.add(bottomCommandInfoButton).size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
 
