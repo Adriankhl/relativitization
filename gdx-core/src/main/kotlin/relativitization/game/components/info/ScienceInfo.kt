@@ -17,9 +17,7 @@ class ScienceInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
 
     private val knowledgeGroup: Group = Group()
 
-    private val knowledgeGroupScrollPane: ScrollPane = createScrollPane(
-        Container<Actor>(knowledgeGroup)
-    )
+    private val knowledgeGroupScrollPane: ScrollPane = createScrollPane(knowledgeGroup)
 
     private val table: Table = Table()
 
