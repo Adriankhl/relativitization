@@ -1,6 +1,8 @@
 package relativitization.game.components.info
 
+import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.Group
+import com.badlogic.gdx.scenes.scene2d.ui.Container
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.SplitPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
@@ -15,7 +17,9 @@ class ScienceInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
 
     private val knowledgeGroup: Group = Group()
 
-    private val knowledgeMap: ScrollPane = createScrollPane(knowledgeGroup)
+    private val knowledgeGroupScrollPane: ScrollPane = createScrollPane(
+        Container<Actor>(knowledgeGroup)
+    )
 
     private val table: Table = Table()
 
@@ -49,10 +53,36 @@ class ScienceInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
     private fun updateTable() {
         table.clear()
 
+        updateKnowledgeBar()
+
+        updateKnowledgeGroup()
+
         table.add(knowledgeBar)
 
         table.row().space(20f)
 
-        table.add(knowledgeMap)
+        table.add(knowledgeGroupScrollPane)
+
+        table.row().space(20f)
+    }
+
+    private fun updateKnowledgeBar() {
+        knowledgeBar.clear()
+
+        val headerLabel = createLabel("Science: player ${playerData.id}", gdxSettings.bigFontSize)
+
+        knowledgeBar.add(headerLabel)
+    }
+
+    private fun updateKnowledgeGroup() {
+        knowledgeGroup.clear()
+        knowledgeGroup.setSize(1000f, 1000f)
+        for (i in 1..50) {
+            val testLabel = createLabel("test$i", gdxSettings.bigFontSize)
+
+            testLabel.y = i * 50f
+
+            knowledgeGroup.addActor(testLabel)
+        }
     }
 }
