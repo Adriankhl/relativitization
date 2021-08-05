@@ -18,6 +18,7 @@ import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.commands.DummyCommand
+import relativitization.universe.data.physics.Double2D
 import relativitization.universe.data.physics.Int3D
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.generate.GenerateSettings
@@ -145,6 +146,12 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
     val onIsPlayerDeadChangeFunctionList: MutableList<() -> Unit> = mutableListOf()
     var isPlayerDead: Boolean by Delegates.observable(false) { _, _, _ ->
         onIsPlayerDeadChangeFunctionList.forEach { it() }
+    }
+
+    // the selected point at the knowledge plane
+    val onSelectedKnowledgeDouble2D: MutableList<() -> Unit> = mutableListOf()
+    var selectedKnowledgeDouble2D: Double2D by Delegates.observable(Double2D(0.0, 0.0)) { _, _, _ ->
+        onSelectedKnowledgeDouble2D.forEach { it() }
     }
 
     /**

@@ -91,6 +91,11 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets){
     open fun onIsPlayerDeadChange() {}
 
     /**
+     * Call this when the selected point at the knowledge plane is changed
+     */
+    open fun onSelectedKnowledgeDouble2DChange() {}
+
+    /**
      * Create scroll pane for table
      *
      * @param actor the table to add scroll pane
@@ -307,6 +312,8 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets){
             universeClient.onCurrentCommandChangeFunctionList.add(component::onCurrentCommandChange)
 
             universeClient.onIsPlayerDeadChangeFunctionList.add(component::onIsPlayerDeadChange)
+
+            universeClient.onSelectedKnowledgeDouble2D.add(component::onSelectedKnowledgeDouble2DChange)
         }
 
         fun <T : Actor> addAllComponentToClient(game: RelativitizationGame, component: ScreenComponent<T>) {
