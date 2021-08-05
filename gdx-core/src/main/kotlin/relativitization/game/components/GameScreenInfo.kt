@@ -1,5 +1,7 @@
 package relativitization.game.components
 
+import com.badlogic.gdx.scenes.scene2d.Actor
+import com.badlogic.gdx.scenes.scene2d.ui.Container
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.SplitPane
 import relativitization.game.RelativitizationGame
@@ -17,10 +19,14 @@ class GameScreenInfo(val game: RelativitizationGame) : ScreenComponent<SplitPane
     private val commandsInfo: CommandsInfo = CommandsInfo(game)
     private val scienceInfo: ScienceInfo = ScienceInfo(game)
 
-    private val upperInfoScrollPane: ScrollPane = createScrollPane(overviewInfo.getScreenComponent())
+    private val upperInfoContainer: Container<Actor> = Container(overviewInfo.getScreenComponent())
     private val bottomCommandInfo: BottomCommandInfo = BottomCommandInfo(game)
 
-    private val infoAndCommand = createSplitPane(upperInfoScrollPane, bottomCommandInfo.getScreenComponent(), true)
+    private val infoAndCommand = createSplitPane(
+        upperInfoContainer,
+        bottomCommandInfo.getScreenComponent(),
+        true
+    )
 
 
     init {
@@ -33,10 +39,7 @@ class GameScreenInfo(val game: RelativitizationGame) : ScreenComponent<SplitPane
         addChildScreenComponent(commandsInfo)
         addChildScreenComponent(scienceInfo)
 
-        // Set background color
-        upperInfoScrollPane.fadeScrollBars = false
-        upperInfoScrollPane.setClamp(true)
-        upperInfoScrollPane.setOverscroll(false, false)
+        upperInfoContainer.fill()
 
         infoAndCommand.splitAmount = gdxSettings.upperInfoAndBottomCommandSplitAmount
     }
@@ -48,12 +51,12 @@ class GameScreenInfo(val game: RelativitizationGame) : ScreenComponent<SplitPane
     override fun onGdxSettingsChange() {
         // Show info type based on setting
         when (gdxSettings.showingInfoType) {
-            ShowingInfoType.PLAYERS -> upperInfoScrollPane.actor = playersInfo.getScreenComponent()
-            ShowingInfoType.OVERVIEW -> upperInfoScrollPane.actor = overviewInfo.getScreenComponent()
-            ShowingInfoType.PHYSICS -> upperInfoScrollPane.actor = physicsInfo.getScreenComponent()
-            ShowingInfoType.EVENTS -> upperInfoScrollPane.actor = eventsInfo.getScreenComponent()
-            ShowingInfoType.COMMANDS -> upperInfoScrollPane.actor = commandsInfo.getScreenComponent()
-            ShowingInfoType.SCIENCE -> upperInfoScrollPane.actor = scienceInfo.getScreenComponent()
+            ShowingInfoType.PLAYERS -> upperInfoContainer.actor = playersInfo.getScreenComponent()
+            ShowingInfoType.OVERVIEW -> upperInfoContainer.actor = overviewInfo.getScreenComponent()
+            ShowingInfoType.PHYSICS -> upperInfoContainer.actor = physicsInfo.getScreenComponent()
+            ShowingInfoType.EVENTS -> upperInfoContainer.actor = eventsInfo.getScreenComponent()
+            ShowingInfoType.COMMANDS -> upperInfoContainer.actor = commandsInfo.getScreenComponent()
+            ShowingInfoType.SCIENCE -> upperInfoContainer.actor = scienceInfo.getScreenComponent()
         }
 
         // Show bottom command or not
