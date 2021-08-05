@@ -9,7 +9,7 @@ import relativitization.universe.data.PlayerData
 class PlayersInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.assets) {
     private val gdxSettings = game.gdxSettings
 
-    private var table: Table = Table()
+    private val table: Table = Table()
 
     // Viewed history of player in Id
     private val viewedPlayerIdList: MutableList<Int> = mutableListOf(-1)

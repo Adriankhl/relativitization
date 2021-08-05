@@ -1,5 +1,8 @@
 package relativitization.game.components.info
 
+import com.badlogic.gdx.scenes.scene2d.Group
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
+import com.badlogic.gdx.scenes.scene2d.ui.SplitPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.ScreenComponent
@@ -7,6 +10,12 @@ import relativitization.universe.data.PlayerData
 
 class ScienceInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.assets) {
     private val gdxSettings = game.gdxSettings
+
+    private val knowledgeBar: Table = Table()
+
+    private val knowledgeGroup: Group = Group()
+
+    private val knowledgeMap: ScrollPane = createScrollPane(knowledgeGroup)
 
     private val table: Table = Table()
 
@@ -17,6 +26,7 @@ class ScienceInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
         table.background = assets.getBackgroundColor(0.2f, 0.2f, 0.2f, 1.0f)
 
         updatePlayerData()
+        updateTable()
     }
 
     override fun getScreenComponent(): Table {
@@ -25,6 +35,7 @@ class ScienceInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
 
     override fun onPrimarySelectedPlayerIdChange() {
         updatePlayerData()
+        updateTable()
     }
 
     private fun updatePlayerData() {
@@ -33,5 +44,15 @@ class ScienceInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
         } else {
             game.universeClient.getUniverseData3D().getCurrentPlayerData()
         }
+    }
+
+    private fun updateTable() {
+        table.clear()
+
+        table.add(knowledgeBar)
+
+        table.row().space(20f)
+
+        table.add(knowledgeMap)
     }
 }
