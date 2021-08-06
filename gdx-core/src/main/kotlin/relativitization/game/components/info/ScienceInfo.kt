@@ -9,6 +9,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.PlayerData
+import kotlin.math.max
+import kotlin.math.min
 
 class ScienceInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.assets) {
     private val gdxSettings = game.gdxSettings
@@ -74,7 +76,12 @@ class ScienceInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
 
     private fun updateKnowledgeGroup() {
         knowledgeGroup.clear()
-        knowledgeGroup.setSize(1000f, 1000f)
+
+        knowledgeGroup.setSize(
+            knowledgeMapWidth().toFloat() * actualZoom(),
+            knowledgeMapHeight().toFloat() * actualZoom()
+        )
+
         for (i in 1..50) {
             val testLabel = createLabel("test$i", gdxSettings.bigFontSize)
 
@@ -82,5 +89,59 @@ class ScienceInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
 
             knowledgeGroup.addActor(testLabel)
         }
+    }
+
+    /**
+     * Compute the width of the knowledge map
+     */
+    private fun knowledgeMapWidth(): Double {
+
+        // Compute the dimension of knowledge map
+        val minBasicX: Double = playerData.playerInternalData.playerScienceData.doneBasicResearchProjectList.minOfOrNull {
+            it.xCor
+        } ?: -1.0
+        val minAppliedX: Double = playerData.playerInternalData.playerScienceData.doneBasicResearchProjectList.minOfOrNull {
+            it.xCor
+        } ?: -1.0
+        val maxBasicX: Double = playerData.playerInternalData.playerScienceData.doneBasicResearchProjectList.maxOfOrNull {
+            it.xCor
+        } ?: 1.0
+        val maxAppliedX: Double = playerData.playerInternalData.playerScienceData.doneBasicResearchProjectList.maxOfOrNull {
+            it.xCor
+        } ?: 1.0
+
+        return max(maxBasicX, maxAppliedX) - min(minBasicX, minAppliedX)
+    }
+
+
+    /**
+     * Compute the height of the knowledge map
+     */
+    private fun knowledgeMapHeight(): Double {
+
+        // Compute the dimension of knowledge map
+        val minBasicY: Double = playerData.playerInternalData.playerScienceData.doneBasicResearchProjectList.minOfOrNull {
+            it.yCor
+        } ?: -1.0
+        val minAppliedY: Double = playerData.playerInternalData.playerScienceData.doneBasicResearchProjectList.minOfOrNull {
+            it.yCor
+        } ?: -1.0
+        val maxBasicY: Double = playerData.playerInternalData.playerScienceData.doneBasicResearchProjectList.maxOfOrNull {
+            it.yCor
+        } ?: 1.0
+        val maxAppliedY: Double = playerData.playerInternalData.playerScienceData.doneBasicResearchProjectList.maxOfOrNull {
+            it.yCor
+        } ?: 1.0
+
+        return max(maxBasicY, maxAppliedY) - min(minBasicY, minAppliedY)
+    }
+
+    private fun actualZoom(): Float {
+        // Actual zoom when mapZoomRelativeToFullMap equals 1.0
+        val zoomOne = min(
+            knowledgeGroupScrollPane.width / knowledgeMapWidth().toFloat(),
+            knowledgeGroupScrollPane.height / knowledgeMapHeight().toFloat()
+        )
+        return zoomOne * gdxSettings.knowledgeMapZoomRelativeToFullMap
     }
 }
