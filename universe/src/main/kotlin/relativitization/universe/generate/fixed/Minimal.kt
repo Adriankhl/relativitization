@@ -80,7 +80,7 @@ class Minimal : GenerateUniverse() {
                 appliedResearchId = 0,
                 appliedResearchField = AppliedResearchField.ENERGY_TECHNOLOGY,
                 xCor = -1.0,
-                yCor = -1.9,
+                yCor = -1.0,
                 difficulty = 1.0,
                 significance = 1.0,
                 referenceBasicResearchIdList = listOf(),
