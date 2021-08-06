@@ -49,7 +49,7 @@ class ScienceInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
     }
 
     override fun onGdxSettingsChange() {
-
+        updateKnowledgeGroup()
     }
 
     private fun updatePlayerData() {
@@ -92,12 +92,14 @@ class ScienceInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
             knowledgeMapHeight().toFloat() * actualZoom()
         )
 
-        for (i in 1..50) {
-            val testLabel = createLabel("test$i", gdxSettings.bigFontSize)
+        playerData.playerInternalData.playerScienceData.doneBasicResearchProjectList.forEach {
+            val image: Image = createBasicProjectImage(it)
+            knowledgeGroup.addActor(image)
+        }
 
-            testLabel.y = i * 50f
-
-            knowledgeGroup.addActor(testLabel)
+        playerData.playerInternalData.playerScienceData.doneAppliedResearchProjectList.forEach {
+            val image: Image = createAppliedProjectImage(it)
+            knowledgeGroup.addActor(image)
         }
     }
 
