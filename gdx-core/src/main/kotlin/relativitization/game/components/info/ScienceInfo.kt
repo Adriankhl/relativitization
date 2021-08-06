@@ -11,6 +11,8 @@ import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.physics.Double3D
 import relativitization.universe.data.physics.Int3D
+import relativitization.universe.data.science.knowledge.AppliedResearchField
+import relativitization.universe.data.science.knowledge.AppliedResearchProjectData
 import relativitization.universe.data.science.knowledge.BasicResearchField
 import relativitization.universe.data.science.knowledge.BasicResearchProjectData
 import kotlin.math.max
@@ -115,6 +117,40 @@ class ScienceInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
 
         return createImage(
             name = "science/book1",
+            xPos = (project.xCor * actualZoom() - projectImageDimension() * 0.5).toFloat(),
+            yPos = (project.yCor * actualZoom() - projectImageDimension() * 0.5).toFloat(),
+            width = projectImageDimension().toFloat(),
+            height = projectImageDimension().toFloat(),
+            r = rgb.r,
+            g = rgb.g,
+            b = rgb.b,
+            a = 1.0f,
+            soundVolume = gdxSettings.soundEffectsVolume
+        ) {}
+    }
+
+
+    /**
+     * Create image of a basic research project
+     */
+    private fun createAppliedProjectImage(project: AppliedResearchProjectData): Image {
+
+        val rgb: Color = when (project.appliedResearchField) {
+            AppliedResearchField.ENERGY_TECHNOLOGY -> Color.BLUE
+            AppliedResearchField.FOOD_TECHNOLOGY -> Color.PINK
+            AppliedResearchField.BIOMEDICAL_TECHNOLOGY -> Color.YELLOW
+            AppliedResearchField.CHEMICAL_TECHNOLOGY -> Color.ORANGE
+            AppliedResearchField.ENVIRONMENTAL_TECHNOLOGY -> Color.GREEN
+            AppliedResearchField.ARCHITECTURE_TECHNOLOGY -> Color.GRAY
+            AppliedResearchField.MACHINERY_TECHNOLOGY -> Color.BROWN
+            AppliedResearchField.MATERIAL_TECHNOLOGY -> Color.GOLD
+            AppliedResearchField.INFORMATION_TECHNOLOGY -> Color.FOREST
+            AppliedResearchField.ART_TECHNOLOGY -> Color.RED
+            AppliedResearchField.MILITARY_TECHNOLOGY -> Color.NAVY
+        }
+
+        return createImage(
+            name = "science/wrench1",
             xPos = (project.xCor * actualZoom() - projectImageDimension() * 0.5).toFloat(),
             yPos = (project.yCor * actualZoom() - projectImageDimension() * 0.5).toFloat(),
             width = projectImageDimension().toFloat(),
