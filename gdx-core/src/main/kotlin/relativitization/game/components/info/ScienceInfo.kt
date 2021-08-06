@@ -92,6 +92,16 @@ class ScienceInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
     }
 
     /**
+     * The dimension of the icon of a knowledge project
+     */
+    private fun projectImageDimension(): Double = 128.0 * gdxSettings.knowledgeMapProjectIconZoom
+
+    /**
+     * The margin around the knowledge map
+     */
+    private fun knowledgeMapMargin(): Double = projectImageDimension() * 2
+
+    /**
      * Compute the width of the knowledge map
      */
     private fun knowledgeMapWidth(): Double {
@@ -110,7 +120,7 @@ class ScienceInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
             it.xCor
         } ?: 1.0
 
-        return max(maxBasicX, maxAppliedX) - min(minBasicX, minAppliedX)
+        return max(maxBasicX, maxAppliedX) - min(minBasicX, minAppliedX) + knowledgeMapMargin() * 2
     }
 
 
@@ -133,7 +143,7 @@ class ScienceInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
             it.yCor
         } ?: 1.0
 
-        return max(maxBasicY, maxAppliedY) - min(minBasicY, minAppliedY)
+        return max(maxBasicY, maxAppliedY) - min(minBasicY, minAppliedY) + knowledgeMapMargin() * 2
     }
 
     private fun actualZoom(): Float {
