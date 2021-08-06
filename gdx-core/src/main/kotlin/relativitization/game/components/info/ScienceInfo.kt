@@ -1,15 +1,18 @@
 package relativitization.game.components.info
 
+import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.graphics.Colors
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.Group
-import com.badlogic.gdx.scenes.scene2d.ui.Container
-import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
-import com.badlogic.gdx.scenes.scene2d.ui.SplitPane
-import com.badlogic.gdx.scenes.scene2d.ui.Table
+import com.badlogic.gdx.scenes.scene2d.ui.*
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.ActorFunction
 import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.PlayerData
+import relativitization.universe.data.physics.Double3D
+import relativitization.universe.data.physics.Int3D
+import relativitization.universe.data.science.knowledge.BasicResearchField
+import relativitization.universe.data.science.knowledge.BasicResearchProjectData
 import kotlin.math.max
 import kotlin.math.min
 
@@ -41,6 +44,10 @@ class ScienceInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
     override fun onPrimarySelectedPlayerIdChange() {
         updatePlayerData()
         updateTable()
+    }
+
+    override fun onGdxSettingsChange() {
+
     }
 
     private fun updatePlayerData() {
@@ -91,6 +98,35 @@ class ScienceInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
             knowledgeGroup.addActor(testLabel)
         }
     }
+
+    /**
+     * Create image of a basic research project
+     */
+    private fun createBasicProjectImage(project: BasicResearchProjectData): Image {
+
+        val rgb: Color = when (project.basicResearchField) {
+            BasicResearchField.MATHEMATICS -> Color.GREEN
+            BasicResearchField.PHYSICS -> Color.BLUE
+            BasicResearchField.COMPUTER_SCIENCE -> Color.CYAN
+            BasicResearchField.LIFE_SCIENCE -> Color.YELLOW
+            BasicResearchField.SOCIAL_SCIENCE -> Color.BROWN
+            BasicResearchField.HUMANITY -> Color.RED
+        }
+
+        return createImage(
+            name = "science/book1",
+            xPos = (project.xCor * actualZoom() - projectImageDimension() * 0.5).toFloat(),
+            yPos = (project.yCor * actualZoom() - projectImageDimension() * 0.5).toFloat(),
+            width = projectImageDimension().toFloat(),
+            height = projectImageDimension().toFloat(),
+            r = rgb.r,
+            g = rgb.g,
+            b = rgb.b,
+            a = 1.0f,
+            soundVolume = gdxSettings.soundEffectsVolume
+        ) {}
+    }
+
 
     /**
      * The dimension of the icon of a knowledge project

@@ -133,16 +133,16 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
                 for (z in data3D2DProjection.zBegin..data3D2DProjection.zEnd) {
                     val gridRectangle = data3D2DProjection.int3DToRectangle(Int3D(x, y, z))
                     val image = createImage(
-                        "basic/white-pixel",
-                        gridRectangle.xPos.toFloat() * actualZoom(),
-                        gridRectangle.yPos.toFloat() * actualZoom(),
-                        gridRectangle.width.toFloat() * actualZoom(),
-                        gridRectangle.height.toFloat() * actualZoom(),
-                        1.0f,
-                        1.0f,
-                        1.0f,
-                        0.4f,
-                        gdxSettings.soundEffectsVolume
+                        name = "basic/white-pixel",
+                        xPos = gridRectangle.xPos.toFloat() * actualZoom(),
+                        yPos = gridRectangle.yPos.toFloat() * actualZoom(),
+                        width = gridRectangle.width.toFloat() * actualZoom(),
+                        height = gridRectangle.height.toFloat() * actualZoom(),
+                        r = 1.0f,
+                        g = 1.0f,
+                        b = 1.0f,
+                        a = 0.4f,
+                        soundVolume = gdxSettings.soundEffectsVolume
                     ) {
                         game.universeClient.primarySelectedInt3D = Int3D(x, y, z)
                     }
