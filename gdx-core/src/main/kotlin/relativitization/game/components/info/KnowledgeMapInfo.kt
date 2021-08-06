@@ -181,10 +181,9 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
     private fun knowledgeMapMargin(): Double = projectImageDimension() * 2
 
     /**
-     * Compute the width of the knowledge map
+     * Min x coordinate of the knowledge map
      */
-    private fun knowledgeMapWidth(): Double {
-
+    private fun knowledgeMapMinX(): Double {
         // Compute the dimension of knowledge map
         val minBasicX: Double = playerData.playerInternalData.playerScienceData.doneBasicResearchProjectList.minOfOrNull {
             it.xCor
@@ -192,6 +191,15 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
         val minAppliedX: Double = playerData.playerInternalData.playerScienceData.doneBasicResearchProjectList.minOfOrNull {
             it.xCor
         } ?: -1.0
+
+        return min(minBasicX, minAppliedX) - knowledgeMapMargin()
+    }
+
+    /**
+     * Max x coordinate of the knowledge map
+     */
+    private fun knowledgeMapMaxX(): Double {
+        // Compute the dimension of knowledge map
         val maxBasicX: Double = playerData.playerInternalData.playerScienceData.doneBasicResearchProjectList.maxOfOrNull {
             it.xCor
         } ?: 1.0
@@ -199,15 +207,13 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
             it.xCor
         } ?: 1.0
 
-        return max(maxBasicX, maxAppliedX) - min(minBasicX, minAppliedX) + knowledgeMapMargin() * 2
+        return max(maxBasicX, maxAppliedX) + knowledgeMapMargin()
     }
 
-
     /**
-     * Compute the height of the knowledge map
+     * Min y coordinate of the knowledge map
      */
-    private fun knowledgeMapHeight(): Double {
-
+    private fun knowledgeMapMinY(): Double {
         // Compute the dimension of knowledge map
         val minBasicY: Double = playerData.playerInternalData.playerScienceData.doneBasicResearchProjectList.minOfOrNull {
             it.yCor
@@ -215,6 +221,16 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
         val minAppliedY: Double = playerData.playerInternalData.playerScienceData.doneBasicResearchProjectList.minOfOrNull {
             it.yCor
         } ?: -1.0
+
+        return min(minBasicY, minAppliedY) - knowledgeMapMargin()
+    }
+
+
+    /**
+     * Max y coordinate of the knowledge map
+     */
+    private fun knowledgeMapMaxY(): Double {
+        // Compute the dimension of knowledge map
         val maxBasicY: Double = playerData.playerInternalData.playerScienceData.doneBasicResearchProjectList.maxOfOrNull {
             it.yCor
         } ?: 1.0
@@ -222,8 +238,19 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
             it.yCor
         } ?: 1.0
 
-        return max(maxBasicY, maxAppliedY) - min(minBasicY, minAppliedY) + knowledgeMapMargin() * 2
+        return max(maxBasicY, maxAppliedY) + knowledgeMapMargin()
     }
+
+    /**
+     * Compute the width of the knowledge map
+     */
+    private fun knowledgeMapWidth(): Double = knowledgeMapMaxX() - knowledgeMapMinX()
+
+
+    /**
+     * Compute the height of the knowledge map
+     */
+    private fun knowledgeMapHeight(): Double = knowledgeMapMaxY() - knowledgeMapMinY()
 
     private fun actualZoom(): Float {
         // Actual zoom when mapZoomRelativeToFullMap equals 1.0
