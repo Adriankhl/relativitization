@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.SplitPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.RelativitizationGame
+import relativitization.game.utils.ActorFunction
 import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.PlayerData
 import kotlin.math.max
@@ -94,7 +95,11 @@ class ScienceInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.
     /**
      * The dimension of the icon of a knowledge project
      */
-    private fun projectImageDimension(): Double = 128.0 * gdxSettings.knowledgeMapProjectIconZoom
+    private fun projectImageDimension(): Double {
+        val image = ActorFunction.createImage(assets, "science/book1", 0.0f)
+        val dim: Double = max(image.width, image.height).toDouble()
+        return dim * gdxSettings.knowledgeMapProjectIconZoom
+    }
 
     /**
      * The margin around the knowledge map
