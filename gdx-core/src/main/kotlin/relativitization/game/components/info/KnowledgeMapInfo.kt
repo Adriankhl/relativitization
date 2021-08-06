@@ -18,7 +18,7 @@ import relativitization.universe.data.science.knowledge.BasicResearchProjectData
 import kotlin.math.max
 import kotlin.math.min
 
-class ScienceInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.assets) {
+class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.assets) {
     private val gdxSettings = game.gdxSettings
 
     private val knowledgeBar: Table = Table()

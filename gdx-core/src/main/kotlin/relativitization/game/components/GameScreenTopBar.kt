@@ -353,18 +353,18 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         game.changeGdxSettings()
     }
 
-    private val scienceInfoButton: TextButton = createTextButton(
-        text = "Science",
+    private val knowledgeMapInfoButton: TextButton = createTextButton(
+        text = "Knowledge Map",
         fontSize = gdxSettings.normalFontSize,
         soundVolume = gdxSettings.soundEffectsVolume
     ) {
         // If hiding, show the panel
-        if ((gdxSettings.showingInfoType == ShowingInfoType.SCIENCE) && gdxSettings.showingInfo) {
+        if ((gdxSettings.showingInfoType == ShowingInfoType.KNOWLEDGE_MAP) && gdxSettings.showingInfo) {
             gdxSettings.showingInfo = false
-            gdxSettings.showingInfoType = ShowingInfoType.SCIENCE
+            gdxSettings.showingInfoType = ShowingInfoType.KNOWLEDGE_MAP
         } else {
             gdxSettings.showingInfo = true
-            gdxSettings.showingInfoType = ShowingInfoType.SCIENCE
+            gdxSettings.showingInfoType = ShowingInfoType.KNOWLEDGE_MAP
         }
         game.changeGdxSettings()
     }
@@ -519,7 +519,7 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
 
         table.add(commandsInfoButton).pad(10f)
 
-        table.add(scienceInfoButton).pad(10f)
+        table.add(knowledgeMapInfoButton).pad(10f)
 
         table.add(bottomCommandInfoButton).size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
 

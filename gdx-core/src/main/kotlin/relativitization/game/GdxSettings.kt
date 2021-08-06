@@ -61,5 +61,5 @@ enum class ShowingInfoType {
     PHYSICS,
     EVENTS,
     COMMANDS,
-    SCIENCE,
+    KNOWLEDGE_MAP,
 }
