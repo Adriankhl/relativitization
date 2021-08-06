@@ -3,6 +3,10 @@ package relativitization.universe.generate.fixed
 import relativitization.universe.data.*
 import relativitization.universe.data.physics.MutableInt4D
 import relativitization.universe.data.science.UniverseScienceData
+import relativitization.universe.data.science.knowledge.AppliedResearchField
+import relativitization.universe.data.science.knowledge.AppliedResearchProjectData
+import relativitization.universe.data.science.knowledge.BasicResearchField
+import relativitization.universe.data.science.knowledge.BasicResearchProjectData
 import relativitization.universe.data.serializer.DataSerializer.copy
 import relativitization.universe.generate.GenerateSettings
 import relativitization.universe.generate.GenerateUniverse
@@ -57,6 +61,32 @@ class Minimal : GenerateUniverse() {
         playerData2.playerInternalData.aiData.aiName = "EmptyAI"
         playerData3.playerInternalData.aiData.aiName = "EmptyAI"
         playerData4.playerInternalData.aiData.aiName = "EmptyAI"
+
+        // Add mathematics and energy project
+        playerData1.playerInternalData.playerScienceData.doneBasicResearchProjectList.add(
+            BasicResearchProjectData(
+                basicResearchId = 0,
+                basicResearchField = BasicResearchField.MATHEMATICS,
+                xCor = 1.0,
+                yCor = 1.0,
+                difficulty = 1.0,
+                significance = 1.0,
+                referenceBasicResearchIdList = listOf(),
+                referenceAppliedResearchIdList = listOf()
+            )
+        )
+        playerData1.playerInternalData.playerScienceData.doneAppliedResearchProjectList.add(
+            AppliedResearchProjectData(
+                appliedResearchId = 0,
+                appliedResearchField = AppliedResearchField.ENERGY_TECHNOLOGY,
+                xCor = -1.0,
+                yCor = -1.9,
+                difficulty = 1.0,
+                significance = 1.0,
+                referenceBasicResearchIdList = listOf(),
+                referenceAppliedResearchIdList = listOf()
+            )
+        )
 
         data.addPlayerDataToLatestWithAfterImage(
             playerData1,
