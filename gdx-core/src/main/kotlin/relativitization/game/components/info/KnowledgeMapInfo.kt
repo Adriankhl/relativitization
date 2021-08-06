@@ -15,6 +15,7 @@ import relativitization.universe.data.science.knowledge.AppliedResearchField
 import relativitization.universe.data.science.knowledge.AppliedResearchProjectData
 import relativitization.universe.data.science.knowledge.BasicResearchField
 import relativitization.universe.data.science.knowledge.BasicResearchProjectData
+import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.math.max
 import kotlin.math.min
 
@@ -34,6 +35,11 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
 
     init {
         table.background = assets.getBackgroundColor(0.2f, 0.2f, 0.2f, 1.0f)
+
+        // Configure scroll pane
+        knowledgeGroupScrollPane.fadeScrollBars = false
+        knowledgeGroupScrollPane.setClamp(true)
+        knowledgeGroupScrollPane.setOverscroll(false, false)
 
         updatePlayerData()
         updateTable()
@@ -71,7 +77,7 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
 
         table.row().space(20f)
 
-        table.add(knowledgeGroupScrollPane)
+        table.add(knowledgeGroupScrollPane).fill()
 
         table.row().space(20f)
     }
@@ -88,17 +94,23 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
         knowledgeGroup.clear()
 
         knowledgeGroup.setSize(
-            knowledgeMapWidth().toFloat() * actualZoom(),
-            knowledgeMapHeight().toFloat() * actualZoom()
+            knowledgeMapWidth().toFloat() * actualZoom() + 2 * displayMargin(),
+            knowledgeMapHeight().toFloat() * actualZoom() + 2 * displayMargin()
         )
 
         playerData.playerInternalData.playerScienceData.doneBasicResearchProjectList.forEach {
             val image: Image = createBasicProjectImage(it)
+
+            logger.debug("Add basic research image to (${image.x}, ${image.y})")
+
             knowledgeGroup.addActor(image)
         }
 
         playerData.playerInternalData.playerScienceData.doneAppliedResearchProjectList.forEach {
             val image: Image = createAppliedProjectImage(it)
+
+            logger.debug("Add applied research image to (${image.x}, ${image.y})")
+
             knowledgeGroup.addActor(image)
         }
     }
@@ -119,8 +131,12 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
 
         return createImage(
             name = "science/book1",
-            xPos = (project.xCor * actualZoom() - projectImageDimension() * 0.5).toFloat(),
-            yPos = (project.yCor * actualZoom() - projectImageDimension() * 0.5).toFloat(),
+            xPos = ((project.xCor - knowledgeMapMinX()) * actualZoom() -
+                    projectImageDimension() * 0.5 + displayMargin()
+                    ).toFloat(),
+            yPos = ((project.yCor - knowledgeMapMinY()) * actualZoom() -
+                    projectImageDimension() * 0.5 + displayMargin()
+                    ).toFloat(),
             width = projectImageDimension().toFloat(),
             height = projectImageDimension().toFloat(),
             r = rgb.r,
@@ -153,8 +169,12 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
 
         return createImage(
             name = "science/wrench1",
-            xPos = (project.xCor * actualZoom() - projectImageDimension() * 0.5).toFloat(),
-            yPos = (project.yCor * actualZoom() - projectImageDimension() * 0.5).toFloat(),
+            xPos = ((project.xCor - knowledgeMapMinX()) * actualZoom() -
+                    projectImageDimension() * 0.5 + displayMargin()
+                    ).toFloat(),
+            yPos = ((project.yCor - knowledgeMapMinY()) * actualZoom() -
+                    projectImageDimension() * 0.5 + displayMargin()
+                    ).toFloat(),
             width = projectImageDimension().toFloat(),
             height = projectImageDimension().toFloat(),
             r = rgb.r,
@@ -178,7 +198,7 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
     /**
      * The margin around the knowledge map
      */
-    private fun knowledgeMapMargin(): Double = projectImageDimension() * 2
+    private fun displayMargin(): Float = (projectImageDimension()).toFloat()
 
     /**
      * Min x coordinate of the knowledge map
@@ -188,11 +208,11 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
         val minBasicX: Double = playerData.playerInternalData.playerScienceData.doneBasicResearchProjectList.minOfOrNull {
             it.xCor
         } ?: -1.0
-        val minAppliedX: Double = playerData.playerInternalData.playerScienceData.doneBasicResearchProjectList.minOfOrNull {
+        val minAppliedX: Double = playerData.playerInternalData.playerScienceData.doneAppliedResearchProjectList.minOfOrNull {
             it.xCor
         } ?: -1.0
 
-        return min(minBasicX, minAppliedX) - knowledgeMapMargin()
+        return min(minBasicX, minAppliedX)
     }
 
     /**
@@ -203,11 +223,11 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
         val maxBasicX: Double = playerData.playerInternalData.playerScienceData.doneBasicResearchProjectList.maxOfOrNull {
             it.xCor
         } ?: 1.0
-        val maxAppliedX: Double = playerData.playerInternalData.playerScienceData.doneBasicResearchProjectList.maxOfOrNull {
+        val maxAppliedX: Double = playerData.playerInternalData.playerScienceData.doneAppliedResearchProjectList.maxOfOrNull {
             it.xCor
         } ?: 1.0
 
-        return max(maxBasicX, maxAppliedX) + knowledgeMapMargin()
+        return max(maxBasicX, maxAppliedX)
     }
 
     /**
@@ -218,11 +238,11 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
         val minBasicY: Double = playerData.playerInternalData.playerScienceData.doneBasicResearchProjectList.minOfOrNull {
             it.yCor
         } ?: -1.0
-        val minAppliedY: Double = playerData.playerInternalData.playerScienceData.doneBasicResearchProjectList.minOfOrNull {
+        val minAppliedY: Double = playerData.playerInternalData.playerScienceData.doneAppliedResearchProjectList.minOfOrNull {
             it.yCor
         } ?: -1.0
 
-        return min(minBasicY, minAppliedY) - knowledgeMapMargin()
+        return min(minBasicY, minAppliedY)
     }
 
 
@@ -234,23 +254,41 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
         val maxBasicY: Double = playerData.playerInternalData.playerScienceData.doneBasicResearchProjectList.maxOfOrNull {
             it.yCor
         } ?: 1.0
-        val maxAppliedY: Double = playerData.playerInternalData.playerScienceData.doneBasicResearchProjectList.maxOfOrNull {
+        val maxAppliedY: Double = playerData.playerInternalData.playerScienceData.doneAppliedResearchProjectList.maxOfOrNull {
             it.yCor
         } ?: 1.0
 
-        return max(maxBasicY, maxAppliedY) + knowledgeMapMargin()
+        return max(maxBasicY, maxAppliedY)
     }
 
     /**
      * Compute the width of the knowledge map
      */
-    private fun knowledgeMapWidth(): Double = knowledgeMapMaxX() - knowledgeMapMinX()
+    private fun knowledgeMapWidth(): Double {
+        val width = knowledgeMapMaxX() - knowledgeMapMinX()
+
+        return if (width > 0.0) {
+            width
+        } else {
+            logger.debug("width: $width, default to 1.0")
+            1.0
+        }
+    }
 
 
     /**
      * Compute the height of the knowledge map
      */
-    private fun knowledgeMapHeight(): Double = knowledgeMapMaxY() - knowledgeMapMinY()
+    private fun knowledgeMapHeight(): Double {
+        val height = knowledgeMapMaxY() - knowledgeMapMinY()
+
+        return if (height > 0.0) {
+            height
+        } else {
+            logger.debug("height: $height, default to 1.0")
+            1.0
+        }
+    }
 
     private fun actualZoom(): Float {
         // Actual zoom when mapZoomRelativeToFullMap equals 1.0
@@ -259,5 +297,9 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
             knowledgeGroupScrollPane.height / knowledgeMapHeight().toFloat()
         )
         return zoomOne * gdxSettings.knowledgeMapZoomRelativeToFullMap
+    }
+
+    companion object {
+        private val logger = RelativitizationLogManager.getLogger()
     }
 }
