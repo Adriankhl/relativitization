@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import relativitization.game.RelativitizationGame
+import relativitization.game.ShowingInfoType
 import relativitization.game.components.GameScreenInfo
 import relativitization.game.components.GameScreenTopBar
 import relativitization.game.components.GameScreenWorldMap
@@ -57,6 +58,9 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
     ) {
         it.remove()
         helloUniverseButtonBackground.remove()
+
+        // Default to overview
+        gdxSettings.showingInfoType = ShowingInfoType.OVERVIEW
         game.changeGdxSettings()
     }
 
@@ -179,6 +183,9 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
             }
         })
 
+        // To correct the layout of knowledge map by pressing the helloUniverseButton
+        gdxSettings.showingInfoType = ShowingInfoType.KNOWLEDGE_MAP
+        game.changeGdxSettings()
 
         helloUniverseButton.setPosition(Gdx.graphics.width / 2.0f - helloUniverseButton.width / 2, Gdx.graphics.height / 2.0f - helloUniverseButton.height / 2)
         stage.addActor(helloUniverseButtonBackground)
