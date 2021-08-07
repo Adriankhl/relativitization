@@ -56,6 +56,7 @@ data class MutableKnowledgeData(
      */
     private fun computeStartFromBasicResearchId() {
         var i: Int = startFromBasicResearchId
+        //TODO: optimize by sorted
         while (basicResearchIdList.contains(i)) {
             basicResearchIdList.removeAll { it == i }
             i++
@@ -85,6 +86,7 @@ data class MutableKnowledgeData(
      */
     private fun computeStartFromAppliedResearchId() {
         var i: Int = startFromAppliedResearchId
+        //TODO: optimize by sorted
         while (appliedResearchIdList.contains(i)) {
             appliedResearchIdList.removeAll { it == i }
             i++
