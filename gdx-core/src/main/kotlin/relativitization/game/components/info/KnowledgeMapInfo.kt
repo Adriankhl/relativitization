@@ -1,16 +1,12 @@
 package relativitization.game.components.info
 
 import com.badlogic.gdx.graphics.Color
-import com.badlogic.gdx.graphics.Colors
-import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.Group
 import com.badlogic.gdx.scenes.scene2d.ui.*
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.ActorFunction
 import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.PlayerData
-import relativitization.universe.data.physics.Double3D
-import relativitization.universe.data.physics.Int3D
 import relativitization.universe.data.science.knowledge.AppliedResearchField
 import relativitization.universe.data.science.knowledge.AppliedResearchProjectData
 import relativitization.universe.data.science.knowledge.BasicResearchField
@@ -33,6 +29,50 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
     // the currently viewing player data
     private var playerData: PlayerData = PlayerData(-1)
 
+    // zoom in knowledge map, fix icon size
+    private val zoomInButton: ImageButton = createImageButton(
+        name = "basic/white-zoom-in",
+        rUp = 1.0f,
+        gUp = 1.0f,
+        bUp = 1.0f,
+        aUp = 1.0f,
+        rDown = 1.0f,
+        gDown = 1.0f,
+        bDown = 1.0f,
+        aDown = 0.7f,
+        rChecked = 1.0f,
+        gChecked = 1.0f,
+        bChecked = 1.0f,
+        aChecked = 1.0f,
+        soundVolume = gdxSettings.soundEffectsVolume
+    ) {
+        gdxSettings.knowledgeMapZoomRelativeToFullMap *= gdxSettings.mapZoomFactor
+        game.changeGdxSettings()
+    }
+
+    // zoom in knowledge map, fix icon size
+    private val zoomOutButton: ImageButton = createImageButton(
+        name = "basic/white-zoom-out",
+        rUp = 1.0f,
+        gUp = 1.0f,
+        bUp = 1.0f,
+        aUp = 1.0f,
+        rDown = 1.0f,
+        gDown = 1.0f,
+        bDown = 1.0f,
+        aDown = 0.7f,
+        rChecked = 1.0f,
+        gChecked = 1.0f,
+        bChecked = 1.0f,
+        aChecked = 1.0f,
+        soundVolume = gdxSettings.soundEffectsVolume
+    ) {
+        gdxSettings.knowledgeMapZoomRelativeToFullMap /= gdxSettings.mapZoomFactor
+        game.changeGdxSettings()
+    }
+
+
+
     init {
         table.background = assets.getBackgroundColor(0.2f, 0.2f, 0.2f, 1.0f)
 
@@ -51,7 +91,8 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
 
     override fun onPrimarySelectedPlayerIdChange() {
         updatePlayerData()
-        updateTable()
+        // No need to update full table, which includes the knowledge bar
+        updateKnowledgeGroup()
     }
 
     override fun onGdxSettingsChange() {
@@ -77,7 +118,7 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
 
         table.row().space(20f)
 
-        table.add(knowledgeGroupScrollPane).fill()
+        table.add(knowledgeGroupScrollPane).expand()
 
         table.row().space(20f)
     }
@@ -87,7 +128,19 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
 
         val headerLabel = createLabel("Science: player ${playerData.id}", gdxSettings.bigFontSize)
 
+        val controlTable: Table = Table()
+
+        val controlScrollPane: ScrollPane = createScrollPane(controlTable)
+
+        controlTable.add(zoomInButton).size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
+
+        controlTable.add(zoomOutButton).size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
+
         knowledgeBar.add(headerLabel)
+
+        knowledgeBar.row().space(20f)
+
+        knowledgeBar.add(controlScrollPane).minHeight(controlTable.prefHeight)
     }
 
     private fun updateKnowledgeGroup() {
@@ -113,6 +166,8 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
 
             knowledgeGroup.addActor(image)
         }
+
+        knowledgeGroupScrollPane.actor = knowledgeGroup
     }
 
     /**
