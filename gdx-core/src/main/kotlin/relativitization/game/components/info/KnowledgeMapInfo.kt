@@ -159,7 +159,7 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
 
         table.row().space(20f)
 
-        table.add(knowledgeGroupScrollPane).expand()
+        table.add(knowledgeGroupScrollPane).grow()
 
         table.row().space(20f)
     }

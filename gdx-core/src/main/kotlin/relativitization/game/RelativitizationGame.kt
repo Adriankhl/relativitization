@@ -10,6 +10,7 @@ import relativitization.client.UniverseClient
 import relativitization.game.screens.MainMenuScreen
 import relativitization.game.utils.Assets
 import relativitization.server.UniverseServer
+import relativitization.universe.utils.RelativitizationLogManager
 
 class RelativitizationGame(val universeClient: UniverseClient, private val universeServer: UniverseServer) : Game() {
 
@@ -57,6 +58,20 @@ class RelativitizationGame(val universeClient: UniverseClient, private val unive
             gdxSettings.windowsHeight > 39
         ) {
             Gdx.graphics.setWindowedMode(gdxSettings.windowsWidth, gdxSettings.windowsHeight)
+
+            if (Gdx.graphics.width != gdxSettings.windowsWidth ||
+                Gdx.graphics.height != gdxSettings.windowsHeight) {
+                logger.debug("Cannot adjust the width and height to the value in settings," +
+                        "store the current value")
+
+                // Set graphics height
+                gdxSettings.windowsWidth = Gdx.app.graphics.width
+                gdxSettings.windowsHeight = Gdx.app.graphics.height
+
+                // Set the windows size again in case if the size is enforced by the os
+                // e.g. Sway wm
+                Gdx.graphics.setWindowedMode(gdxSettings.windowsWidth, gdxSettings.windowsHeight)
+            }
         }
     }
 
@@ -88,5 +103,9 @@ class RelativitizationGame(val universeClient: UniverseClient, private val unive
         runBlocking {
             universeClient.clear()
         }
+    }
+
+    companion object {
+        private val logger = RelativitizationLogManager.getLogger()
     }
 }
