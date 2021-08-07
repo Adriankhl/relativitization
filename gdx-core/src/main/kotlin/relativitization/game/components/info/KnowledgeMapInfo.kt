@@ -32,6 +32,31 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
     // the currently viewing player data
     private var playerData: PlayerData = PlayerData(-1)
 
+    // If true, the latest selected project is basic project, otherwise it is applied project
+    private var isLatestSelectedBasic: Boolean = true
+
+    private var selectedBasicResearchProjectData: BasicResearchProjectData = BasicResearchProjectData(
+        basicResearchId = 0,
+        basicResearchField = BasicResearchField.MATHEMATICS,
+        xCor = 0.0,
+        yCor = 0.0,
+        difficulty = 0.0,
+        significance = 0.0,
+        referenceBasicResearchIdList = listOf(),
+        referenceAppliedResearchIdList = listOf()
+    )
+
+    private var selectedAppliedResearchProjectData: AppliedResearchProjectData = AppliedResearchProjectData(
+        appliedResearchId = 0,
+        appliedResearchField = AppliedResearchField.ENERGY_TECHNOLOGY,
+        xCor = 0.0,
+        yCor = 0.0,
+        difficulty = 0.0,
+        significance = 0.0,
+        referenceBasicResearchIdList = listOf(),
+        referenceAppliedResearchIdList = listOf()
+    )
+
     // zoom in knowledge map, fix icon size
     private val zoomInButton: ImageButton = createImageButton(
         name = "basic/white-zoom-in",
@@ -208,12 +233,45 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
 
     private fun updateKnowledgeProjectTable() {
         knowledgeProjectTable.clear()
+
+        val knowledgeMapPosition: Double2D = convertKnowledgeGroupPosition(
+            game.universeClient.selectedKnowledgeDouble2D
+        )
+
         val selectedKnowledgeMapDouble2D: Label = createLabel("Position: (" +
-                "${game.universeClient.selectedKnowledgeDouble2D.x}, " +
-                "${game.universeClient.selectedKnowledgeDouble2D.y})",
+                "%.2f, %.2f)".format(knowledgeMapPosition.x, knowledgeMapPosition.y),
             gdxSettings.normalFontSize
         )
-        knowledgeProjectTable.add(selectedKnowledgeMapDouble2D)
+
+        val selectedProjectIdLabel: Label = if (isLatestSelectedBasic) {
+            createLabel(
+                "Basic Project Id: ${selectedBasicResearchProjectData.basicResearchId}",
+                gdxSettings.normalFontSize
+            )
+        } else {
+            createLabel(
+                "Applied Project Id: ${selectedAppliedResearchProjectData.appliedResearchId}",
+                gdxSettings.normalFontSize
+            )
+        }
+
+        val selectedProjectSignificanceLabel: Label = if (isLatestSelectedBasic) {
+            createLabel(
+                "Significance: %.2f".format(selectedBasicResearchProjectData.significance),
+                gdxSettings.normalFontSize
+            )
+        } else {
+            createLabel(
+                "Significance: %.2f".format(selectedAppliedResearchProjectData.significance),
+                gdxSettings.normalFontSize
+            )
+        }
+
+        knowledgeProjectTable.add(selectedKnowledgeMapDouble2D).pad(10f)
+
+        knowledgeProjectTable.add(selectedProjectIdLabel).pad(20f)
+
+        knowledgeProjectTable.add(selectedProjectSignificanceLabel).pad(20f)
     }
 
     private fun updateKnowledgeGroup() {
@@ -281,7 +339,11 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
             b = rgb.b,
             a = 1.0f,
             soundVolume = gdxSettings.soundEffectsVolume
-        ) {}
+        ) {
+            selectedBasicResearchProjectData = project
+            isLatestSelectedBasic = true
+            updateKnowledgeProjectTable()
+        }
     }
 
 
@@ -319,7 +381,11 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
             b = rgb.b,
             a = 1.0f,
             soundVolume = gdxSettings.soundEffectsVolume
-        ) {}
+        ) {
+            selectedAppliedResearchProjectData = project
+            isLatestSelectedBasic = false
+            updateKnowledgeProjectTable()
+        }
     }
 
 
@@ -440,6 +506,9 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
     private fun knowledgeMapHeightWithMargin(): Double = knowledgeMapHeight() + 2 * knowledgeMapMargin()
 
 
+    /**
+     * Translate knowledgeMapZoomRelativeToFullMap to actual zoom
+     */
     private fun actualZoom(): Float {
         // Actual zoom when mapZoomRelativeToFullMap equals 1.0
         val zoomOne = min(
@@ -447,6 +516,16 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
             knowledgeGroupScrollPane.height / knowledgeMapHeightWithMargin().toFloat()
         )
         return zoomOne * gdxSettings.knowledgeMapZoomRelativeToFullMap
+    }
+
+    /**
+     * Translate position of the knowledge group to position in knowledge map
+     */
+    private fun convertKnowledgeGroupPosition(pos: Double2D): Double2D {
+        val x: Double = pos.x / actualZoom() + knowledgeMapMinX() - knowledgeMapMargin()
+        val y: Double = pos.y / actualZoom() + knowledgeMapMinY() - knowledgeMapMargin()
+
+        return Double2D(x, y)
     }
 
     companion object {
