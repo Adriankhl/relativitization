@@ -130,6 +130,53 @@ data class MutablePlayerScienceData(
         computePlayerKnowledgeData(basicProjectFunction, appliedProjectFunction)
     }
 
+    /**
+     * Sync project data from universe science data
+     */
+    fun syncProjectData(
+        universeScienceData: UniverseScienceData,
+        basicProjectFunction: (BasicResearchProjectData, MutableBasicResearchData) -> Unit,
+        appliedProjectFunction: (AppliedResearchProjectData, MutableAppliedResearchData) -> Unit,
+    ) {
+        val syncDoneBasicResearchProjectList = doneBasicResearchProjectList.map {
+            universeScienceData.basicResearchProjectDataMap.getOrElse(it.basicResearchId) {
+                logger.error("Cannot find basic project ${it.basicResearchId} in universe data")
+                it
+            }
+        }
+        doneBasicResearchProjectList.clear()
+        doneBasicResearchProjectList.addAll(syncDoneBasicResearchProjectList)
+
+        val syncDoneAppliedResearchProjectList = doneAppliedResearchProjectList.map {
+            universeScienceData.appliedResearchProjectDataMap.getOrElse(it.appliedResearchId) {
+                logger.error("Cannot find applied project ${it.appliedResearchId} in universe data")
+                it
+            }
+        }
+        doneAppliedResearchProjectList.clear()
+        doneAppliedResearchProjectList.addAll(syncDoneAppliedResearchProjectList)
+
+        val syncKnownBasicResearchProjectList = knownBasicResearchProjectList.map {
+            universeScienceData.basicResearchProjectDataMap.getOrElse(it.basicResearchId) {
+                logger.error("Cannot find basic project ${it.basicResearchId} in universe data")
+                it
+            }
+        }
+        knownBasicResearchProjectList.clear()
+        knownBasicResearchProjectList.addAll(syncKnownBasicResearchProjectList)
+
+        val syncKnownAppliedResearchProjectList = knownAppliedResearchProjectList.map {
+            universeScienceData.appliedResearchProjectDataMap.getOrElse(it.appliedResearchId) {
+                logger.error("Cannot find applied project ${it.appliedResearchId} in universe data")
+                it
+            }
+        }
+        knownAppliedResearchProjectList.clear()
+        knownAppliedResearchProjectList.addAll(syncKnownAppliedResearchProjectList)
+
+        computePlayerKnowledgeData(basicProjectFunction, appliedProjectFunction)
+    }
+
     companion object {
         private val logger = RelativitizationLogManager.getLogger()
     }

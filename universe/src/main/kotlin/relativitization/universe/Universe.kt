@@ -412,7 +412,8 @@ class Universe(
         )
 
         // Update player common sense
-        playerCollection.updateCommonSenseData(
+        playerCollection.syncProjectAndUpdateCommonSense(
+            universeScienceData = universeData.universeScienceData,
             newCommonSenseKnowledgeData = mutableUniverseScienceData.commonSenseKnowledgeData,
             basicProjectFunction = ProcessUniverseScienceData.basicResearchProjectFunction(universeData.universeSettings),
             appliedProjectFunction = ProcessUniverseScienceData.appliedResearchProjectFunction(universeData.universeSettings)

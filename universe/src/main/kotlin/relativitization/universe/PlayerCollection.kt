@@ -3,6 +3,7 @@ package relativitization.universe
 import kotlinx.coroutines.runBlocking
 import relativitization.universe.data.*
 import relativitization.universe.data.physics.*
+import relativitization.universe.data.science.UniverseScienceData
 import relativitization.universe.data.science.knowledge.*
 import relativitization.universe.data.serializer.DataSerializer.copy
 import relativitization.universe.maths.grid.Grids.create3DGrid
@@ -190,13 +191,22 @@ class PlayerCollection(
     }
 
     /**
-     * Update player common sense
+     * Sync player project and update player common sense
      */
-    fun updateCommonSenseData(
+    fun syncProjectAndUpdateCommonSense(
+        universeScienceData: UniverseScienceData,
         newCommonSenseKnowledgeData: MutableKnowledgeData,
         basicProjectFunction: (BasicResearchProjectData, MutableBasicResearchData) -> Unit,
         appliedProjectFunction: (AppliedResearchProjectData, MutableAppliedResearchData) -> Unit,
     ) {
+        playerMap.values.forEach {
+            it.playerInternalData.playerScienceData.syncProjectData(
+                universeScienceData,
+                basicProjectFunction,
+                appliedProjectFunction
+            )
+        }
+
         playerMap.values.forEach {
             it.playerInternalData.playerScienceData.updateCommonSenseData(
                 newCommonSenseKnowledgeData,
