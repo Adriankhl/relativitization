@@ -91,18 +91,20 @@ data class MutableUniverseScienceData(
         }
 
         // Clear old projects
-        basicResearchProjectDataMap.keys.filter { it <= newStartFromBasicResearchId  }.forEach {
+        basicResearchProjectDataMap.keys.filter { it <= newStartFromBasicResearchId }.forEach {
             basicResearchProjectDataMap.remove(it)
         }
-        appliedResearchProjectDataMap.keys.filter { it <= newStartFromAppliedResearchId  }.forEach {
+        appliedResearchProjectDataMap.keys.filter { it <= newStartFromAppliedResearchId }.forEach {
             appliedResearchProjectDataMap.remove(it)
         }
 
     }
 
-    fun getNewBasicResearchId(): Int = (basicResearchProjectDataMap.keys.maxOrNull() ?: -1) + 1
+    fun getNewBasicResearchId(): Int = (basicResearchProjectDataMap.keys.maxOrNull()
+        ?: (commonSenseKnowledgeData.startFromBasicResearchId - 1)) + 1
 
-    fun getNewAppliedResearchId(): Int = (appliedResearchProjectDataMap.keys.maxOrNull() ?: -1) + 1
+    fun getNewAppliedResearchId(): Int = (appliedResearchProjectDataMap.keys.maxOrNull()
+        ?: (commonSenseKnowledgeData.startFromAppliedResearchId - 1)) + 1
 
     companion object {
         private val logger = RelativitizationLogManager.getLogger()
@@ -136,11 +138,13 @@ object ProcessUniverseScienceData {
                 DefaultProcessUniverseScienceData.basicResearchProjectFunction()
             }
             "EmptyUniverseScienceDataProcess" -> {
-                { _, _ ->}
+                { _, _ -> }
             }
             else -> {
-                logger.error("Invalid universeScienceDataProcessName:" +
-                        " ${universeSettings.universeScienceDataProcessName}, use default process")
+                logger.error(
+                    "Invalid universeScienceDataProcessName:" +
+                            " ${universeSettings.universeScienceDataProcessName}, use default process"
+                )
 
                 DefaultProcessUniverseScienceData.basicResearchProjectFunction()
             }
@@ -167,8 +171,10 @@ object ProcessUniverseScienceData {
                 { _, _ -> }
             }
             else -> {
-                logger.error("Invalid universeScienceDataProcessName:" +
-                        " ${universeSettings.universeScienceDataProcessName}, use default process")
+                logger.error(
+                    "Invalid universeScienceDataProcessName:" +
+                            " ${universeSettings.universeScienceDataProcessName}, use default process"
+                )
 
                 DefaultProcessUniverseScienceData.appliedResearchProjectFunction()
             }
@@ -200,8 +206,10 @@ object ProcessUniverseScienceData {
                 universeScienceData
             }
             else -> {
-                logger.error("Invalid universeScienceDataProcessName:" +
-                        " ${universeSettings.universeScienceDataProcessName}, use default process")
+                logger.error(
+                    "Invalid universeScienceDataProcessName:" +
+                            " ${universeSettings.universeScienceDataProcessName}, use default process"
+                )
                 DefaultProcessUniverseScienceData.newUniverseScienceData(
                     universeScienceData,
                 )
@@ -286,7 +294,8 @@ object DefaultProcessUniverseScienceData {
         val numAppliedResearchProject: Int = universeScienceData.appliedResearchProjectDataMap.size
 
         // Generate new projects only if there are too few remaining projects
-        val shouldGenerate: Boolean = (numBasicResearchProject < 10) || (numAppliedResearchProject < 10)
+        val shouldGenerate: Boolean =
+            (numBasicResearchProject < 10) || (numAppliedResearchProject < 10)
 
         return if (shouldGenerate) {
             DefaultGenerateUniverseScienceData.generate(

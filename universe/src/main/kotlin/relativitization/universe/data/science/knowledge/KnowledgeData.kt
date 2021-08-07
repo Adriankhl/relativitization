@@ -19,20 +19,20 @@ import relativitization.universe.utils.RelativitizationLogManager
  */
 @Serializable
 data class KnowledgeData(
-    val startFromBasicResearchId: Int = -1,
+    val startFromBasicResearchId: Int = 0,
     val basicResearchIdList: List<Int> = listOf(),
     val basicResearchData: BasicResearchData = BasicResearchData(),
-    val startFromAppliedResearchId: Int = -1,
+    val startFromAppliedResearchId: Int = 0,
     val appliedResearchIdList: List<Int> = listOf(),
     val appliedResearchData: AppliedResearchData = AppliedResearchData(),
 )
 
 @Serializable
 data class MutableKnowledgeData(
-    var startFromBasicResearchId: Int = -1,
+    var startFromBasicResearchId: Int = 0,
     val basicResearchIdList: MutableList<Int> = mutableListOf(),
     var basicResearchData: MutableBasicResearchData = MutableBasicResearchData(),
-    var startFromAppliedResearchId: Int = -1,
+    var startFromAppliedResearchId: Int = 0,
     val appliedResearchIdList: MutableList<Int> = mutableListOf(),
     var appliedResearchData: MutableAppliedResearchData = MutableAppliedResearchData(),
 ) {
