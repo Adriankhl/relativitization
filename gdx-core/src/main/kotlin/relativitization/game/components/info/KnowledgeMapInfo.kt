@@ -389,7 +389,7 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
     /**
      * The margin around the knowledge map
      */
-    private fun knowledgeMapMargin(): Double = max(knowledgeMapWidth(), knowledgeMapHeight()) * 0.2
+    private fun knowledgeMapMargin(): Double = max(knowledgeMapWidth(), knowledgeMapHeight()) * 0.5
 
 
     /**
