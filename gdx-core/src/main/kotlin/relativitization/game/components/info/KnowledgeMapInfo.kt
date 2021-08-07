@@ -130,6 +130,11 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
         return table
     }
 
+    override fun onUniverseData3DChange() {
+        updatePlayerData()
+        updateKnowledgeGroup()
+    }
+
     override fun onPrimarySelectedPlayerIdChange() {
         updatePlayerData()
         // No need to update full table, which includes the knowledge bar
