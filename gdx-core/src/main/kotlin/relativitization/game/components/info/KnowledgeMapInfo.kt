@@ -50,7 +50,7 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
         game.changeGdxSettings()
     }
 
-    // zoom in knowledge map, fix icon size
+    // zoom out knowledge map, fix icon size
     private val zoomOutButton: ImageButton = createImageButton(
         name = "basic/white-zoom-out",
         rUp = 1.0f,
@@ -71,6 +71,47 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
         game.changeGdxSettings()
     }
 
+    // increase knowledge project icon size
+    private val plusButton: ImageButton = createImageButton(
+        name = "basic/white-plus",
+        rUp = 1.0f,
+        gUp = 1.0f,
+        bUp = 1.0f,
+        aUp = 1.0f,
+        rDown = 1.0f,
+        gDown = 1.0f,
+        bDown = 1.0f,
+        aDown = 0.7f,
+        rChecked = 1.0f,
+        gChecked = 1.0f,
+        bChecked = 1.0f,
+        aChecked = 1.0f,
+        soundVolume = gdxSettings.soundEffectsVolume
+    ) {
+        gdxSettings.knowledgeMapProjectIconZoom *= gdxSettings.mapZoomFactor
+        game.changeGdxSettings()
+    }
+
+    // decrease knowledge project icon size
+    private val minusButton: ImageButton = createImageButton(
+        name = "basic/white-minus",
+        rUp = 1.0f,
+        gUp = 1.0f,
+        bUp = 1.0f,
+        aUp = 1.0f,
+        rDown = 1.0f,
+        gDown = 1.0f,
+        bDown = 1.0f,
+        aDown = 0.7f,
+        rChecked = 1.0f,
+        gChecked = 1.0f,
+        bChecked = 1.0f,
+        aChecked = 1.0f,
+        soundVolume = gdxSettings.soundEffectsVolume
+    ) {
+        gdxSettings.knowledgeMapProjectIconZoom /= gdxSettings.mapZoomFactor
+        game.changeGdxSettings()
+    }
 
 
     init {
@@ -135,6 +176,10 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
         controlTable.add(zoomInButton).size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
 
         controlTable.add(zoomOutButton).size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
+
+        controlTable.add(plusButton).size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
+
+        controlTable.add(minusButton).size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
 
         knowledgeBar.add(headerLabel)
 
