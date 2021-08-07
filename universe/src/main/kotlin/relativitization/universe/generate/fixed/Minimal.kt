@@ -2,6 +2,7 @@ package relativitization.universe.generate.fixed
 
 import relativitization.universe.data.*
 import relativitization.universe.data.physics.MutableInt4D
+import relativitization.universe.data.science.DefaultProcessUniverseScienceData
 import relativitization.universe.data.science.UniverseScienceData
 import relativitization.universe.data.science.knowledge.AppliedResearchField
 import relativitization.universe.data.science.knowledge.AppliedResearchProjectData
@@ -63,7 +64,7 @@ class Minimal : GenerateUniverse() {
         playerData4.playerInternalData.aiData.aiName = "EmptyAI"
 
         // Add mathematics and energy project
-        playerData1.playerInternalData.playerScienceData.doneBasicResearchProjectList.add(
+        playerData1.playerInternalData.playerScienceData.doneBasicResearchProject(
             BasicResearchProjectData(
                 basicResearchId = 0,
                 basicResearchField = BasicResearchField.MATHEMATICS,
@@ -73,9 +74,10 @@ class Minimal : GenerateUniverse() {
                 significance = 1.0,
                 referenceBasicResearchIdList = listOf(),
                 referenceAppliedResearchIdList = listOf()
-            )
+            ),
+            DefaultProcessUniverseScienceData.basicResearchProjectFunction()
         )
-        playerData1.playerInternalData.playerScienceData.doneAppliedResearchProjectList.add(
+        playerData1.playerInternalData.playerScienceData.doneAppliedResearchProject(
             AppliedResearchProjectData(
                 appliedResearchId = 0,
                 appliedResearchField = AppliedResearchField.ENERGY_TECHNOLOGY,
@@ -85,7 +87,8 @@ class Minimal : GenerateUniverse() {
                 significance = 1.0,
                 referenceBasicResearchIdList = listOf(),
                 referenceAppliedResearchIdList = listOf()
-            )
+            ),
+            DefaultProcessUniverseScienceData.appliedResearchProjectFunction()
         )
 
         data.addPlayerDataToLatestWithAfterImage(

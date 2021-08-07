@@ -111,18 +111,18 @@ data class MutablePlayerScienceData(
     ) {
         // Clear done projects
         doneBasicResearchProjectList.removeAll {
-            it.basicResearchId <= newCommonSenseKnowledgeData.startFromBasicResearchId
+            it.basicResearchId < newCommonSenseKnowledgeData.startFromBasicResearchId
         }
         doneAppliedResearchProjectList.removeAll {
-            it.appliedResearchId <= newCommonSenseKnowledgeData.startFromAppliedResearchId
+            it.appliedResearchId < newCommonSenseKnowledgeData.startFromAppliedResearchId
         }
 
         // Clear known projects
         knownBasicResearchProjectList.removeAll {
-            it.basicResearchId <= newCommonSenseKnowledgeData.startFromBasicResearchId
+            it.basicResearchId < newCommonSenseKnowledgeData.startFromBasicResearchId
         }
         knownAppliedResearchProjectList.removeAll {
-            it.appliedResearchId <= newCommonSenseKnowledgeData.startFromAppliedResearchId
+            it.appliedResearchId < newCommonSenseKnowledgeData.startFromAppliedResearchId
         }
 
         commonSenseKnowledgeData = newCommonSenseKnowledgeData

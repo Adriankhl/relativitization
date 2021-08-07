@@ -55,13 +55,13 @@ data class MutableKnowledgeData(
      * Compute and modify the startFromBasicResearchId
      */
     private fun computeStartFromBasicResearchId() {
-        var i: Int = startFromBasicResearchId + 1
+        var i: Int = startFromBasicResearchId
         while (basicResearchIdList.contains(i)) {
             basicResearchIdList.removeAll { it == i }
             i++
         }
 
-        startFromBasicResearchId = i - 1
+        startFromBasicResearchId = i
     }
 
     fun addAppliedResearchProjectData(
@@ -84,13 +84,13 @@ data class MutableKnowledgeData(
      * Compute and modify the startFromAppliedResearchId
      */
     private fun computeStartFromAppliedResearchId() {
-        var i: Int = startFromAppliedResearchId + 1
+        var i: Int = startFromAppliedResearchId
         while (appliedResearchIdList.contains(i)) {
             appliedResearchIdList.removeAll { it == i }
             i++
         }
 
-        startFromAppliedResearchId = i - 1
+        startFromAppliedResearchId = i
     }
 
     companion object {
