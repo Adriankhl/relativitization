@@ -63,7 +63,9 @@ class Minimal : GenerateUniverse() {
         playerData3.playerInternalData.aiData.aiName = "EmptyAI"
         playerData4.playerInternalData.aiData.aiName = "EmptyAI"
 
-        // Add mathematics and energy project
+        // Add mathematics and energy project to player
+        // Should sync to universe project at turn 3 since this has not been added to universe
+        // science data
         playerData1.playerInternalData.playerScienceData.doneBasicResearchProject(
             BasicResearchProjectData(
                 basicResearchId = 0,
