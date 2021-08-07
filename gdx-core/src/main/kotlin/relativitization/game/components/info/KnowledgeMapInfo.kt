@@ -2,11 +2,14 @@ package relativitization.game.components.info
 
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.scenes.scene2d.Group
+import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.ui.*
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.ActorFunction
 import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.PlayerData
+import relativitization.universe.data.physics.Double2D
 import relativitization.universe.data.science.knowledge.AppliedResearchField
 import relativitization.universe.data.science.knowledge.AppliedResearchProjectData
 import relativitization.universe.data.science.knowledge.BasicResearchField
@@ -113,6 +116,7 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
         game.changeGdxSettings()
     }
 
+    private val knowledgeProjectTable: Table = Table()
 
     init {
         table.background = assets.getBackgroundColor(0.2f, 0.2f, 0.2f, 1.0f)
@@ -145,6 +149,10 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
         updateKnowledgeGroup()
     }
 
+    override fun onSelectedKnowledgeDouble2DChange() {
+        updateKnowledgeProjectTable()
+    }
+
     private fun updatePlayerData() {
         playerData = if (game.universeClient.isPrimarySelectedPlayerIdValid()) {
             game.universeClient.getUniverseData3D().get(game.universeClient.primarySelectedPlayerId)
@@ -155,6 +163,8 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
 
     private fun updateTable() {
         table.clear()
+
+        updateKnowledgeProjectTable()
 
         updateKnowledgeBar()
 
@@ -176,21 +186,34 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
 
         val controlTable: Table = Table()
 
+        controlTable.add(zoomInButton).size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
+        controlTable.add(zoomOutButton).size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
+        controlTable.add(plusButton).size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
+        controlTable.add(minusButton).size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
+        controlTable.add(knowledgeProjectTable).pad(20f)
+
         val controlScrollPane: ScrollPane = createScrollPane(controlTable)
 
-        controlTable.add(zoomInButton).size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
-
-        controlTable.add(zoomOutButton).size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
-
-        controlTable.add(plusButton).size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
-
-        controlTable.add(minusButton).size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
+        // Configure scroll pane
+        controlScrollPane.fadeScrollBars = false
+        controlScrollPane.setClamp(true)
+        controlScrollPane.setOverscroll(false, false)
 
         knowledgeBar.add(headerLabel)
 
         knowledgeBar.row().space(20f)
 
         knowledgeBar.add(controlScrollPane).minHeight(controlTable.prefHeight)
+    }
+
+    private fun updateKnowledgeProjectTable() {
+        knowledgeProjectTable.clear()
+        val selectedKnowledgeMapDouble2D: Label = createLabel("Position: (" +
+                "${game.universeClient.selectedKnowledgeDouble2D.x}, " +
+                "${game.universeClient.selectedKnowledgeDouble2D.y})",
+            gdxSettings.normalFontSize
+        )
+        knowledgeProjectTable.add(selectedKnowledgeMapDouble2D)
     }
 
     private fun updateKnowledgeGroup() {
@@ -216,6 +239,15 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
 
             knowledgeGroup.addActor(image)
         }
+
+        knowledgeGroup.addListener((object : ClickListener() {
+            override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                val sound = assets.getSound("click1.ogg")
+                sound.play(gdxSettings.soundEffectsVolume)
+
+                game.universeClient.selectedKnowledgeDouble2D = Double2D(x.toDouble(), y.toDouble())
+            }
+        }))
 
         knowledgeGroupScrollPane.actor = knowledgeGroup
     }
