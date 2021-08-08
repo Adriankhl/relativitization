@@ -124,6 +124,35 @@ object ActorFunction {
         return image
     }
 
+    /**
+     * Create an Image
+     */
+    fun createNinePatchImage(
+        assets: Assets,
+        name: String,
+        xPos: Float,
+        yPos: Float,
+        width: Float,
+        height: Float,
+        rotation: Float,
+        r: Float,
+        g: Float,
+        b: Float,
+        a: Float,
+        soundVolume: Float = 0.5f,
+        function: (Image) -> Unit = {}
+    ): Image {
+        val image = assets.getNinePatchImage(name, xPos, yPos, width, height, rotation, r, g, b, a)
+        image.addListener(object : ClickListener() {
+            override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                val sound = assets.getSound("click1.ogg")
+                sound.play(soundVolume)
+                function(image)
+            }
+        })
+        return image
+    }
+
 
     /**
      * Create an image button
