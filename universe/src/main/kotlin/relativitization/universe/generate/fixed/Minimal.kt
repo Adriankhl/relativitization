@@ -92,6 +92,33 @@ class Minimal : GenerateUniverse() {
             ),
             DefaultProcessUniverseScienceData.appliedResearchProjectFunction()
         )
+        playerData1.playerInternalData.playerScienceData.doneBasicResearchProject(
+            BasicResearchProjectData(
+                basicResearchId = 1,
+                basicResearchField = BasicResearchField.MATHEMATICS,
+                xCor = -1.0,
+                yCor = 1.0,
+                difficulty = 1.0,
+                significance = 1.0,
+                referenceBasicResearchIdList = listOf(0),
+                referenceAppliedResearchIdList = listOf(0)
+            ),
+            DefaultProcessUniverseScienceData.basicResearchProjectFunction()
+        )
+        playerData1.playerInternalData.playerScienceData.doneAppliedResearchProject(
+            AppliedResearchProjectData(
+                appliedResearchId = 1,
+                appliedResearchField = AppliedResearchField.ENERGY_TECHNOLOGY,
+                xCor = -1.0,
+                yCor = 1.0,
+                difficulty = 1.0,
+                significance = 1.0,
+                referenceBasicResearchIdList = listOf(0, 1),
+                referenceAppliedResearchIdList = listOf(0)
+            ),
+            DefaultProcessUniverseScienceData.appliedResearchProjectFunction()
+        )
+
 
         data.addPlayerDataToLatestWithAfterImage(
             playerData1,
