@@ -7,7 +7,6 @@ import relativitization.game.RelativitizationGame
 import relativitization.universe.data.physics.Double2D
 import relativitization.universe.maths.physics.Intervals
 import kotlin.math.PI
-import kotlin.math.atan
 import kotlin.math.atan2
 
 abstract class ScreenComponent<out T : Actor>(val assets: Assets){
@@ -292,29 +291,31 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets){
 
     /**
      * Create an arrow
+     *
+     * @param arrowWidth the width of the arrow, which is the height of the image
      */
     fun createArrow(
-       from: Double2D,
-       to: Double2D,
-       width: Float,
-       r: Float,
-       g: Float,
-       b: Float,
-       a: Float,
-       soundVolume: Float,
-       function: (Image) -> Unit
+        from: Double2D,
+        to: Double2D,
+        arrowWidth: Float,
+        r: Float,
+        g: Float,
+        b: Float,
+        a: Float,
+        soundVolume: Float,
+        function: (Image) -> Unit
     ): Image {
-        val height: Double = Intervals.distance(from, to)
+        val arrowHeight: Double = Intervals.distance(from, to)
 
         val rotation: Double = -atan2( to.y - from.y, to.x - from.x) * 0.5 / PI * 360
 
         return ActorFunction.createNinePatchImage(
             assets = assets,
-            name = "white-right-arrow-tight",
+            name = "basic/white-right-arrow-tight",
             xPos = from.x.toFloat(),
             yPos = from.y.toFloat(),
-            width = width,
-            height = height.toFloat(),
+            width = arrowHeight.toFloat(),
+            height = arrowWidth,
             rotation = rotation.toFloat(),
             r = r,
             g = g,
