@@ -282,6 +282,7 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
             knowledgeMapHeightWithMargin().toFloat() * actualZoom()
         )
 
+        // Add basic research project image
         playerData.playerInternalData.playerScienceData.doneBasicResearchProjectList.forEach {
             val image: Image = createBasicProjectImage(it)
 
@@ -290,6 +291,7 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
             knowledgeGroup.addActor(image)
         }
 
+        // Add applied research project image
         playerData.playerInternalData.playerScienceData.doneAppliedResearchProjectList.forEach {
             val image: Image = createAppliedProjectImage(it)
 
@@ -297,6 +299,47 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
 
             knowledgeGroup.addActor(image)
         }
+
+        // Add basic research project reference arrows
+        playerData.playerInternalData.playerScienceData.doneBasicResearchProjectList.forEach { projectData ->
+            projectData.referenceBasicResearchIdList.forEach { id ->
+                playerData.playerInternalData.playerScienceData.doneBasicResearchProjectList.forEach {
+                    if (it.basicResearchId == id) {
+                        val image: Image = createReferenceArrow(it, projectData)
+                        knowledgeGroup.addActor(image)
+                    }
+                }
+            }
+            projectData.referenceAppliedResearchIdList.forEach { id ->
+                playerData.playerInternalData.playerScienceData.doneAppliedResearchProjectList.forEach {
+                    if (it.appliedResearchId == id) {
+                        val image: Image = createReferenceArrow(it, projectData)
+                        knowledgeGroup.addActor(image)
+                    }
+                }
+            }
+        }
+
+        // Add basic research project reference arrows
+        playerData.playerInternalData.playerScienceData.doneAppliedResearchProjectList.forEach { projectData ->
+            projectData.referenceBasicResearchIdList.forEach { id ->
+                playerData.playerInternalData.playerScienceData.doneBasicResearchProjectList.forEach {
+                    if (it.basicResearchId == id) {
+                        val image: Image = createReferenceArrow(it, projectData)
+                        knowledgeGroup.addActor(image)
+                    }
+                }
+            }
+            projectData.referenceAppliedResearchIdList.forEach { id ->
+                playerData.playerInternalData.playerScienceData.doneAppliedResearchProjectList.forEach {
+                    if (it.appliedResearchId == id) {
+                        val image: Image = createReferenceArrow(it, projectData)
+                        knowledgeGroup.addActor(image)
+                    }
+                }
+            }
+        }
+
 
         knowledgeGroup.addListener((object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
@@ -386,6 +429,119 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
             isLatestSelectedBasic = false
             updateKnowledgeProjectTable()
         }
+    }
+
+    /**
+     * Create arrow from basic research project to basic research project
+     */
+    private fun createReferenceArrow(
+        from: BasicResearchProjectData,
+        to: BasicResearchProjectData
+    ): Image {
+        val color: Color = Color.WHITE
+        val fromDouble2D: Double2D = Double2D(
+            (from.xCor - knowledgeMapMinX() + knowledgeMapMargin()) * actualZoom(),
+            (from.yCor - knowledgeMapMinY() + knowledgeMapMargin()) * actualZoom()
+        )
+        val toDouble2D: Double2D = Double2D(
+            (to.xCor - knowledgeMapMinX() + knowledgeMapMargin()) * actualZoom(),
+            (to.yCor - knowledgeMapMinY() + knowledgeMapMargin()) * actualZoom()
+        )
+        return createArrow(
+            from = fromDouble2D,
+            to = toDouble2D,
+            width = 5.0f,
+            r = color.r,
+            g = color.g,
+            b = color.b,
+            a = color.a,
+            soundVolume = gdxSettings.soundEffectsVolume,
+        ) {}
+    }
+
+    /**
+     * Create arrow from basic research project to applied research project
+     */
+    private fun createReferenceArrow(
+        from: BasicResearchProjectData,
+        to: AppliedResearchProjectData
+    ): Image {
+        val color: Color = Color.WHITE
+        val fromDouble2D: Double2D = Double2D(
+            (from.xCor - knowledgeMapMinX() + knowledgeMapMargin()) * actualZoom(),
+            (from.yCor - knowledgeMapMinY() + knowledgeMapMargin()) * actualZoom()
+        )
+        val toDouble2D: Double2D = Double2D(
+            (to.xCor - knowledgeMapMinX() + knowledgeMapMargin()) * actualZoom(),
+            (to.yCor - knowledgeMapMinY() + knowledgeMapMargin()) * actualZoom()
+        )
+
+        return createArrow(
+            from = fromDouble2D,
+            to = toDouble2D,
+            width = 5.0f,
+            r = color.r,
+            g = color.g,
+            b = color.b,
+            a = color.a,
+            soundVolume = gdxSettings.soundEffectsVolume,
+        ) {}
+    }
+
+    /**
+     * Create arrow from applied research project to basic research project
+     */
+    private fun createReferenceArrow(
+        from: AppliedResearchProjectData,
+        to: BasicResearchProjectData
+    ): Image {
+        val color: Color = Color.WHITE
+        val fromDouble2D: Double2D = Double2D(
+            (from.xCor - knowledgeMapMinX() + knowledgeMapMargin()) * actualZoom(),
+            (from.yCor - knowledgeMapMinY() + knowledgeMapMargin()) * actualZoom()
+        )
+        val toDouble2D: Double2D = Double2D(
+            (to.xCor - knowledgeMapMinX() + knowledgeMapMargin()) * actualZoom(),
+            (to.yCor - knowledgeMapMinY() + knowledgeMapMargin()) * actualZoom()
+        )
+        return createArrow(
+            from = fromDouble2D,
+            to = toDouble2D,
+            width = 5.0f,
+            r = color.r,
+            g = color.g,
+            b = color.b,
+            a = color.a,
+            soundVolume = gdxSettings.soundEffectsVolume,
+        ) {}
+    }
+
+    /**
+     * Create arrow from applied research project to applied research project
+     */
+    private fun createReferenceArrow(
+        from: AppliedResearchProjectData,
+        to: AppliedResearchProjectData
+    ): Image {
+        val color: Color = Color.WHITE
+        val fromDouble2D: Double2D = Double2D(
+            (from.xCor - knowledgeMapMinX() + knowledgeMapMargin()) * actualZoom(),
+            (from.yCor - knowledgeMapMinY() + knowledgeMapMargin()) * actualZoom()
+        )
+        val toDouble2D: Double2D = Double2D(
+            (to.xCor - knowledgeMapMinX() + knowledgeMapMargin()) * actualZoom(),
+            (to.yCor - knowledgeMapMinY() + knowledgeMapMargin()) * actualZoom()
+        )
+        return createArrow(
+            from = fromDouble2D,
+            to = toDouble2D,
+            width = 5.0f,
+            r = color.r,
+            g = color.g,
+            b = color.b,
+            a = color.a,
+            soundVolume = gdxSettings.soundEffectsVolume,
+        ) {}
     }
 
 
