@@ -282,18 +282,36 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
             knowledgeMapHeightWithMargin().toFloat() * actualZoom()
         )
 
-        // Add basic research project image
+        // Add done basic research project image
         playerData.playerInternalData.playerScienceData.doneBasicResearchProjectList.forEach {
-            val image: Image = createBasicProjectImage(it)
+            val image: Image = createBasicProjectImage(it, true)
 
             logger.debug("Add basic research image to (${image.x}, ${image.y})")
 
             knowledgeGroup.addActor(image)
         }
 
-        // Add applied research project image
+        // Add done applied research project image
         playerData.playerInternalData.playerScienceData.doneAppliedResearchProjectList.forEach {
-            val image: Image = createAppliedProjectImage(it)
+            val image: Image = createAppliedProjectImage(it, true)
+
+            logger.debug("Add applied research image to (${image.x}, ${image.y})")
+
+            knowledgeGroup.addActor(image)
+        }
+
+        // Add known basic research project image
+        playerData.playerInternalData.playerScienceData.knownBasicResearchProjectList.forEach {
+            val image: Image = createBasicProjectImage(it, false)
+
+            logger.debug("Add basic research image to (${image.x}, ${image.y})")
+
+            knowledgeGroup.addActor(image)
+        }
+
+        // Add done applied research project image
+        playerData.playerInternalData.playerScienceData.knownAppliedResearchProjectList.forEach {
+            val image: Image = createAppliedProjectImage(it, false)
 
             logger.debug("Add applied research image to (${image.x}, ${image.y})")
 
@@ -355,8 +373,14 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
 
     /**
      * Create image of a basic research project
+     *
+     * @param project the basic research project data
+     * @param isProjectDone is this a done project or a known project
      */
-    private fun createBasicProjectImage(project: BasicResearchProjectData): Image {
+    private fun createBasicProjectImage(
+        project: BasicResearchProjectData,
+        isProjectDone: Boolean
+    ): Image {
 
         val rgb: Color = when (project.basicResearchField) {
             BasicResearchField.MATHEMATICS -> Color.GREEN
@@ -380,7 +404,7 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
             r = rgb.r,
             g = rgb.g,
             b = rgb.b,
-            a = 1.0f,
+            a = if (isProjectDone) 1.0f else 0.5f,
             soundVolume = gdxSettings.soundEffectsVolume
         ) {
             selectedBasicResearchProjectData = project
@@ -391,9 +415,15 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
 
 
     /**
-     * Create image of a basic research project
+     * Create image of a applied research project
+     *
+     * @param project the basic research project data
+     * @param isProjectDone is this a done project or a known project
      */
-    private fun createAppliedProjectImage(project: AppliedResearchProjectData): Image {
+    private fun createAppliedProjectImage(
+        project: AppliedResearchProjectData,
+        isProjectDone: Boolean
+    ): Image {
 
         val rgb: Color = when (project.appliedResearchField) {
             AppliedResearchField.ENERGY_TECHNOLOGY -> Color.BLUE
@@ -422,7 +452,7 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
             r = rgb.r,
             g = rgb.g,
             b = rgb.b,
-            a = 1.0f,
+            a = if (isProjectDone) 1.0f else 0.5f,
             soundVolume = gdxSettings.soundEffectsVolume
         ) {
             selectedAppliedResearchProjectData = project
