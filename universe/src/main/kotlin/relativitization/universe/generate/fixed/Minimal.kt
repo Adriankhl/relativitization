@@ -70,8 +70,8 @@ class Minimal : GenerateUniverse() {
             BasicResearchProjectData(
                 basicResearchId = 0,
                 basicResearchField = BasicResearchField.MATHEMATICS,
-                xCor = 1.0,
-                yCor = 1.0,
+                xCor = -1.0,
+                yCor = -1.0,
                 difficulty = 1.0,
                 significance = 1.0,
                 referenceBasicResearchIdList = listOf(),
@@ -83,7 +83,7 @@ class Minimal : GenerateUniverse() {
             AppliedResearchProjectData(
                 appliedResearchId = 0,
                 appliedResearchField = AppliedResearchField.ENERGY_TECHNOLOGY,
-                xCor = -1.0,
+                xCor = 1.0,
                 yCor = -1.0,
                 difficulty = 1.0,
                 significance = 1.0,
@@ -96,8 +96,8 @@ class Minimal : GenerateUniverse() {
             BasicResearchProjectData(
                 basicResearchId = 1,
                 basicResearchField = BasicResearchField.MATHEMATICS,
-                xCor = 1.0,
-                yCor = -1.0,
+                xCor = -1.0,
+                yCor = 1.0,
                 difficulty = 1.0,
                 significance = 1.0,
                 referenceBasicResearchIdList = listOf(0),
@@ -109,7 +109,7 @@ class Minimal : GenerateUniverse() {
             AppliedResearchProjectData(
                 appliedResearchId = 1,
                 appliedResearchField = AppliedResearchField.ENERGY_TECHNOLOGY,
-                xCor = -1.0,
+                xCor = 1.0,
                 yCor = 1.0,
                 difficulty = 1.0,
                 significance = 1.0,
