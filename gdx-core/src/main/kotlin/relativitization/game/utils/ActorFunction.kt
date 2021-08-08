@@ -3,6 +3,7 @@ package relativitization.game.utils
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.graphics.g2d.NinePatch
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Touchable
@@ -125,7 +126,7 @@ object ActorFunction {
     }
 
     /**
-     * Create an Image
+     * Create an nine patch image
      */
     fun createNinePatchImage(
         assets: Assets,
