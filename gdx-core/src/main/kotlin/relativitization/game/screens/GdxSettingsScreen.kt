@@ -237,7 +237,7 @@ class GdxSettingsScreen(val game: RelativitizationGame, private val inGame: Bool
 
         table.row().space(10f)
 
-        table.add(createLabel("Map Zoom factor: ", gdxSettings.normalFontSize))
+        table.add(createLabel("Map zoom factor: ", gdxSettings.normalFontSize))
         val mapZoomFactorTextField = createTextField(
             gdxSettings.mapZoomFactor.toString(),
             gdxSettings.normalFontSize
@@ -265,6 +265,36 @@ class GdxSettingsScreen(val game: RelativitizationGame, private val inGame: Bool
         }
         table.add(imageScaleTextField)
 
+
+        table.row().space(10f)
+
+        table.add(createLabel("Knowledge map zoom factor: ", gdxSettings.normalFontSize))
+        val knowledgeMapZoomTextField = createTextField(
+            gdxSettings.mapZoomFactor.toString(),
+            gdxSettings.normalFontSize
+        ) { knowledgeMapZoomFactor, _ ->
+            try {
+                gdxSettings.knowledgeMapZoomRelativeToFullMap =  knowledgeMapZoomFactor.toFloat()
+            } catch (e: NumberFormatException) {
+                logger.error("Invalid knowledge map zoom")
+            }
+        }
+        table.add(knowledgeMapZoomTextField)
+
+        table.row().space(10f)
+
+        table.add(createLabel("Knowledge map icon zoom: ", gdxSettings.normalFontSize))
+        val knowledgeMapIconZoomTextField = createTextField(
+            gdxSettings.imageScale.toString(),
+            gdxSettings.normalFontSize
+        ) { knowledgeMapIconZoom, _ ->
+            try {
+                gdxSettings.knowledgeMapProjectIconZoom =  knowledgeMapIconZoom.toFloat()
+            } catch (e: NumberFormatException) {
+                logger.error("Invalid knowledge map icon zoom")
+            }
+        }
+        table.add(knowledgeMapIconZoomTextField)
 
         table.row().space(10f)
 
