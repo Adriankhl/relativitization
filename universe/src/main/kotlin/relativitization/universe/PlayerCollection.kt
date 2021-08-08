@@ -193,23 +193,23 @@ class PlayerCollection(
     /**
      * Sync player project and update player common sense
      */
-    fun syncProjectAndUpdateCommonSense(
-        universeScienceData: UniverseScienceData,
+    fun updateCommonSenseAndSyncProjectData(
+        newUniverseScienceData: UniverseScienceData,
         newCommonSenseKnowledgeData: MutableKnowledgeData,
         basicProjectFunction: (BasicResearchProjectData, MutableBasicResearchData) -> Unit,
         appliedProjectFunction: (AppliedResearchProjectData, MutableAppliedResearchData) -> Unit,
     ) {
         playerMap.values.forEach {
-            it.playerInternalData.playerScienceData.syncProjectData(
-                universeScienceData,
+            it.playerInternalData.playerScienceData.updateCommonSenseData(
+                newCommonSenseKnowledgeData,
                 basicProjectFunction,
                 appliedProjectFunction
             )
         }
 
         playerMap.values.forEach {
-            it.playerInternalData.playerScienceData.updateCommonSenseData(
-                newCommonSenseKnowledgeData,
+            it.playerInternalData.playerScienceData.syncProjectData(
+                newUniverseScienceData,
                 basicProjectFunction,
                 appliedProjectFunction
             )

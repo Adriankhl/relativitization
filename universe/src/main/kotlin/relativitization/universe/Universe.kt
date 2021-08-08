@@ -411,18 +411,18 @@ class Universe(
             appliedProjectFunction = ProcessUniverseScienceData.appliedResearchProjectFunction(universeData.universeSettings)
         )
 
-        // Update player common sense
-        playerCollection.syncProjectAndUpdateCommonSense(
-            universeScienceData = universeData.universeScienceData,
-            newCommonSenseKnowledgeData = mutableUniverseScienceData.commonSenseKnowledgeData,
-            basicProjectFunction = ProcessUniverseScienceData.basicResearchProjectFunction(universeData.universeSettings),
-            appliedProjectFunction = ProcessUniverseScienceData.appliedResearchProjectFunction(universeData.universeSettings)
-        )
-
         // Generate new projects
         val newUniverseScienceData: UniverseScienceData = ProcessUniverseScienceData.newUniverseScienceData(
             copy(mutableUniverseScienceData),
             universeData.universeSettings
+        )
+
+        // Update player common sense
+        playerCollection.updateCommonSenseAndSyncProjectData(
+            newUniverseScienceData = newUniverseScienceData,
+            newCommonSenseKnowledgeData = mutableUniverseScienceData.commonSenseKnowledgeData,
+            basicProjectFunction = ProcessUniverseScienceData.basicResearchProjectFunction(universeData.universeSettings),
+            appliedProjectFunction = ProcessUniverseScienceData.appliedResearchProjectFunction(universeData.universeSettings)
         )
 
         // Modify the universe science data
