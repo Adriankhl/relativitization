@@ -1,7 +1,11 @@
 package relativitization.game.utils
 
+import com.badlogic.gdx.graphics.g2d.NinePatch
 import com.badlogic.gdx.scenes.scene2d.Actor
+import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.ui.*
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
+import com.badlogic.gdx.utils.Align
 import kotlinx.coroutines.runBlocking
 import relativitization.game.RelativitizationGame
 import relativitization.universe.data.physics.Double2D
@@ -305,25 +309,43 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets){
         soundVolume: Float,
         function: (Image) -> Unit
     ): Image {
+        val arrowNinePatch: NinePatch = assets.getNinePatch("basic/white-right-arrow-tight")
+
         val arrowHeight: Double = Intervals.distance(from, to)
+
+        val xScale: Float = arrowHeight.toFloat() / arrowNinePatch.totalWidth
+
+        val yScale: Float = arrowWidth / arrowNinePatch.totalHeight
+
+        arrowNinePatch.scale(xScale, yScale)
+
+        val image: Image = Image(arrowNinePatch)
 
         val rotation: Double = atan2( to.y - from.y, to.x - from.x) * 0.5 / PI * 360
 
-        return ActorFunction.createNinePatchImage(
-            assets = assets,
-            name = "basic/white-right-arrow-tight",
-            xPos = from.x.toFloat(),
-            yPos = from.y.toFloat(),
-            width = arrowHeight.toFloat(),
-            height = arrowWidth,
-            rotation = rotation.toFloat(),
-            r = r,
-            g = g,
-            b = b,
-            a = a,
-            soundVolume = soundVolume,
-            function = function
-        )
+        val xCenter: Float = ((from.x + to.x) * 0.5).toFloat()
+
+        val yCenter: Float = ((from.y + to.y) * 0.5).toFloat()
+
+        image.setOrigin(Align.center)
+
+        image.setPosition(xCenter, yCenter, Align.center)
+
+        image.rotation = rotation.toFloat()
+
+        //image.setPosition(from.x.toFloat(), from.y.toFloat())
+
+        image.setColor(r, g, b, a)
+
+        image.addListener(object : ClickListener() {
+            override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                val sound = assets.getSound("click1.ogg")
+                sound.play(soundVolume)
+                function(image)
+            }
+        })
+
+        return image
     }
 
     fun disableActor(actor: Actor) = ActorFunction.disableActor(actor)
