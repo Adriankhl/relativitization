@@ -307,7 +307,7 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets){
     ): Image {
         val arrowHeight: Double = Intervals.distance(from, to)
 
-        val rotation: Double = -atan2( to.y - from.y, to.x - from.x) * 0.5 / PI * 360
+        val rotation: Double = atan2( to.y - from.y, to.x - from.x) * 0.5 / PI * 360
 
         return ActorFunction.createNinePatchImage(
             assets = assets,
