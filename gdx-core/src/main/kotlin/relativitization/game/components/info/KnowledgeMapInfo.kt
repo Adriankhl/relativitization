@@ -318,10 +318,86 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
             knowledgeGroup.addActor(image)
         }
 
-        // Add basic research project reference arrows
+        // Add done basic research project reference arrows
         playerData.playerInternalData.playerScienceData.doneBasicResearchProjectList.forEach { projectData ->
             projectData.referenceBasicResearchIdList.forEach { id ->
                 playerData.playerInternalData.playerScienceData.doneBasicResearchProjectList.forEach {
+                    if (it.basicResearchId == id) {
+                        val image: Image = createReferenceArrow(it, projectData)
+                        knowledgeGroup.addActor(image)
+                    }
+                }
+
+                playerData.playerInternalData.playerScienceData.knownBasicResearchProjectList.forEach {
+                    if (it.basicResearchId == id) {
+                        val image: Image = createReferenceArrow(it, projectData)
+                        knowledgeGroup.addActor(image)
+                    }
+                }
+            }
+
+            projectData.referenceAppliedResearchIdList.forEach { id ->
+                playerData.playerInternalData.playerScienceData.doneAppliedResearchProjectList.forEach {
+                    if (it.appliedResearchId == id) {
+                        val image: Image = createReferenceArrow(it, projectData)
+                        knowledgeGroup.addActor(image)
+                    }
+                }
+
+                playerData.playerInternalData.playerScienceData.knownAppliedResearchProjectList.forEach {
+                    if (it.appliedResearchId == id) {
+                        val image: Image = createReferenceArrow(it, projectData)
+                        knowledgeGroup.addActor(image)
+                    }
+                }
+            }
+        }
+
+        // Add known basic research project reference arrows
+        playerData.playerInternalData.playerScienceData.knownBasicResearchProjectList.forEach { projectData ->
+            projectData.referenceBasicResearchIdList.forEach { id ->
+                playerData.playerInternalData.playerScienceData.doneBasicResearchProjectList.forEach {
+                    if (it.basicResearchId == id) {
+                        val image: Image = createReferenceArrow(it, projectData)
+                        knowledgeGroup.addActor(image)
+                    }
+                }
+
+                playerData.playerInternalData.playerScienceData.knownBasicResearchProjectList.forEach {
+                    if (it.basicResearchId == id) {
+                        val image: Image = createReferenceArrow(it, projectData)
+                        knowledgeGroup.addActor(image)
+                    }
+                }
+            }
+
+            projectData.referenceAppliedResearchIdList.forEach { id ->
+                playerData.playerInternalData.playerScienceData.doneAppliedResearchProjectList.forEach {
+                    if (it.appliedResearchId == id) {
+                        val image: Image = createReferenceArrow(it, projectData)
+                        knowledgeGroup.addActor(image)
+                    }
+                }
+
+                playerData.playerInternalData.playerScienceData.knownAppliedResearchProjectList.forEach {
+                    if (it.appliedResearchId == id) {
+                        val image: Image = createReferenceArrow(it, projectData)
+                        knowledgeGroup.addActor(image)
+                    }
+                }
+            }
+        }
+
+        // Add known applied research project reference arrows
+        playerData.playerInternalData.playerScienceData.doneAppliedResearchProjectList.forEach { projectData ->
+            projectData.referenceBasicResearchIdList.forEach { id ->
+                playerData.playerInternalData.playerScienceData.doneBasicResearchProjectList.forEach {
+                    if (it.basicResearchId == id) {
+                        val image: Image = createReferenceArrow(it, projectData)
+                        knowledgeGroup.addActor(image)
+                    }
+                }
+                playerData.playerInternalData.playerScienceData.knownBasicResearchProjectList.forEach {
                     if (it.basicResearchId == id) {
                         val image: Image = createReferenceArrow(it, projectData)
                         knowledgeGroup.addActor(image)
@@ -335,13 +411,26 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
                         knowledgeGroup.addActor(image)
                     }
                 }
+
+                playerData.playerInternalData.playerScienceData.knownAppliedResearchProjectList.forEach {
+                    if (it.appliedResearchId == id) {
+                        val image: Image = createReferenceArrow(it, projectData)
+                        knowledgeGroup.addActor(image)
+                    }
+                }
             }
         }
 
-        // Add basic research project reference arrows
-        playerData.playerInternalData.playerScienceData.doneAppliedResearchProjectList.forEach { projectData ->
+        // Add known applied research project reference arrows
+        playerData.playerInternalData.playerScienceData.knownAppliedResearchProjectList.forEach { projectData ->
             projectData.referenceBasicResearchIdList.forEach { id ->
                 playerData.playerInternalData.playerScienceData.doneBasicResearchProjectList.forEach {
+                    if (it.basicResearchId == id) {
+                        val image: Image = createReferenceArrow(it, projectData)
+                        knowledgeGroup.addActor(image)
+                    }
+                }
+                playerData.playerInternalData.playerScienceData.knownBasicResearchProjectList.forEach {
                     if (it.basicResearchId == id) {
                         val image: Image = createReferenceArrow(it, projectData)
                         knowledgeGroup.addActor(image)
@@ -350,6 +439,13 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
             }
             projectData.referenceAppliedResearchIdList.forEach { id ->
                 playerData.playerInternalData.playerScienceData.doneAppliedResearchProjectList.forEach {
+                    if (it.appliedResearchId == id) {
+                        val image: Image = createReferenceArrow(it, projectData)
+                        knowledgeGroup.addActor(image)
+                    }
+                }
+
+                playerData.playerInternalData.playerScienceData.knownAppliedResearchProjectList.forEach {
                     if (it.appliedResearchId == id) {
                         val image: Image = createReferenceArrow(it, projectData)
                         knowledgeGroup.addActor(image)
