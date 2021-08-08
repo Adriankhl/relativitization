@@ -172,6 +172,31 @@ class Assets {
 
 
     /**
+     * Get image by nine patch
+     *
+     * @param rotation rotation in degree
+     */
+    fun getNinePatchImage(
+        name: String,
+        xPos: Float,
+        yPos: Float,
+        width: Float,
+        height: Float,
+        rotation: Float,
+        r: Float,
+        g: Float,
+        b: Float,
+        a: Float
+    ): Image {
+        val image = getNinePatchImage(name, r, g, b, a)
+        image.setPosition(xPos, yPos)
+        image.setSize(width, height)
+        image.rotation = rotation
+        return image
+    }
+
+
+    /**
      * Get image by nine patch then scale
      */
 
