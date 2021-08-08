@@ -98,6 +98,36 @@ data class MutablePlayerScienceData(
     }
 
     /**
+     * Known basic research project
+     */
+    fun knownBasicResearchProject(
+        basicResearchProjectData: BasicResearchProjectData,
+    ) {
+        if ((doneBasicResearchProjectList + knownBasicResearchProjectList).any {
+                it.basicResearchId == basicResearchProjectData.basicResearchId
+            }) {
+            logger.error("Duplicate known basic research id: ${basicResearchProjectData.basicResearchId}, skipping")
+        } else {
+            knownBasicResearchProjectList.add(basicResearchProjectData)
+        }
+    }
+
+    /**
+     * Known applied research project
+     */
+    fun knownAppliedResearchProject(
+        appliedResearchProjectData: AppliedResearchProjectData,
+    ) {
+        if ((doneAppliedResearchProjectList + knownAppliedResearchProjectList).any {
+                it.appliedResearchId == appliedResearchProjectData.appliedResearchId
+            }) {
+            logger.error("Duplicate known applied research id: ${appliedResearchProjectData.appliedResearchId}, skipping")
+        } else {
+            knownAppliedResearchProjectList.add(appliedResearchProjectData)
+        }
+    }
+
+    /**
      * update common sense data
      *
      * @param newCommonSenseKnowledgeData new common sense
@@ -161,6 +191,8 @@ data class MutablePlayerScienceData(
                 logger.error("Cannot find basic project ${it.basicResearchId} in universe data")
                 it
             }
+        }.filter { known ->
+            !doneBasicResearchProjectList.any { known.basicResearchId == it.basicResearchId }
         }
         knownBasicResearchProjectList.clear()
         knownBasicResearchProjectList.addAll(syncKnownBasicResearchProjectList)
@@ -170,6 +202,8 @@ data class MutablePlayerScienceData(
                 logger.error("Cannot find applied project ${it.appliedResearchId} in universe data")
                 it
             }
+        }.filter { known ->
+            !doneAppliedResearchProjectList.any { known.appliedResearchId == it.appliedResearchId }
         }
         knownAppliedResearchProjectList.clear()
         knownAppliedResearchProjectList.addAll(syncKnownAppliedResearchProjectList)
