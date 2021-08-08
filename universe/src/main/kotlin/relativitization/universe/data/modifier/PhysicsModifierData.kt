@@ -5,12 +5,12 @@ import kotlin.math.max
 
 @Serializable
 data class PhysicsModifierData(
-    val disableFuelProductionTimeLimit: Int = 0,
+    val disableFuelIncreaseTimeLimit: Int = 0,
 )
 
 @Serializable
 data class MutablePhysicsModifierData(
-    var disableFuelProductionTimeLimit: Int = 0,
+    var disableFuelIncreaseTimeLimit: Int = 0,
 ) {
 
 
@@ -18,8 +18,8 @@ data class MutablePhysicsModifierData(
      * Update the time by universe time
      */
     fun updateByUniverseTime() {
-        if (disableFuelProductionTimeLimit > 0) {
-            disableFuelProductionTimeLimit -= 1
+        if (disableFuelIncreaseTimeLimit > 0) {
+            disableFuelIncreaseTimeLimit -= 1
         }
     }
 
@@ -32,11 +32,11 @@ data class MutablePhysicsModifierData(
     }
 
     /**
-     * Disable fuel production by time
+     * Disable fuel increase (e.g., production, transfering) by time
      *
      * @param time the minimum time to disable fuel production
      */
-    fun disableFuelProductionByTime(time: Int) {
-        disableFuelProductionTimeLimit = max(disableFuelProductionTimeLimit, time)
+    fun disableFuelIncreaseByTime(time: Int) {
+        disableFuelIncreaseTimeLimit = max(disableFuelIncreaseTimeLimit, time)
     }
 }

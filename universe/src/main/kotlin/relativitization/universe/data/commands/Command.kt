@@ -128,7 +128,7 @@ enum class CommandName(val value: String) {
     ADD_EVENT("Add event"),
     CHANGE_VELOCITY("Change velocity"),
     CANNOT_SEND("Cannot send"),
-    DISABLE_FUEL_PRODUCTION("Disable fuel production"),
+    DISABLE_FUEL_INCREASE("Disable fuel production"),
     DUMMY("Dummy"),
     SELECT_EVENT_CHOICE("Select event choice")
     ;
