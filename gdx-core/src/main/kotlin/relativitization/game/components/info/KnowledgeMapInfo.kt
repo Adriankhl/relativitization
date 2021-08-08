@@ -685,10 +685,14 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
      */
     private fun knowledgeMapMinX(): Double {
         // Compute the dimension of knowledge map
-        val minBasicX: Double = playerData.playerInternalData.playerScienceData.doneBasicResearchProjectList.minOfOrNull {
+       val allBasicProject = playerData.playerInternalData.playerScienceData.doneBasicResearchProjectList +
+               playerData.playerInternalData.playerScienceData.knownBasicResearchProjectList
+       val allAppliedProject = playerData.playerInternalData.playerScienceData.doneAppliedResearchProjectList +
+               playerData.playerInternalData.playerScienceData.knownAppliedResearchProjectList
+        val minBasicX: Double = allBasicProject.minOfOrNull {
             it.xCor
         } ?: -1.0
-        val minAppliedX: Double = playerData.playerInternalData.playerScienceData.doneAppliedResearchProjectList.minOfOrNull {
+        val minAppliedX: Double = allAppliedProject.minOfOrNull {
             it.xCor
         } ?: -1.0
 
@@ -700,10 +704,14 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
      */
     private fun knowledgeMapMaxX(): Double {
         // Compute the dimension of knowledge map
-        val maxBasicX: Double = playerData.playerInternalData.playerScienceData.doneBasicResearchProjectList.maxOfOrNull {
+        val allBasicProject = playerData.playerInternalData.playerScienceData.doneBasicResearchProjectList +
+                playerData.playerInternalData.playerScienceData.knownBasicResearchProjectList
+        val allAppliedProject = playerData.playerInternalData.playerScienceData.doneAppliedResearchProjectList +
+                playerData.playerInternalData.playerScienceData.knownAppliedResearchProjectList
+        val maxBasicX: Double = allBasicProject.maxOfOrNull {
             it.xCor
         } ?: 1.0
-        val maxAppliedX: Double = playerData.playerInternalData.playerScienceData.doneAppliedResearchProjectList.maxOfOrNull {
+        val maxAppliedX: Double = allAppliedProject.maxOfOrNull {
             it.xCor
         } ?: 1.0
 
@@ -715,10 +723,14 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
      */
     private fun knowledgeMapMinY(): Double {
         // Compute the dimension of knowledge map
-        val minBasicY: Double = playerData.playerInternalData.playerScienceData.doneBasicResearchProjectList.minOfOrNull {
+        val allBasicProject = playerData.playerInternalData.playerScienceData.doneBasicResearchProjectList +
+                playerData.playerInternalData.playerScienceData.knownBasicResearchProjectList
+        val allAppliedProject = playerData.playerInternalData.playerScienceData.doneAppliedResearchProjectList +
+                playerData.playerInternalData.playerScienceData.knownAppliedResearchProjectList
+        val minBasicY: Double = allBasicProject.minOfOrNull {
             it.yCor
         } ?: -1.0
-        val minAppliedY: Double = playerData.playerInternalData.playerScienceData.doneAppliedResearchProjectList.minOfOrNull {
+        val minAppliedY: Double = allAppliedProject.minOfOrNull {
             it.yCor
         } ?: -1.0
 
@@ -731,10 +743,14 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
      */
     private fun knowledgeMapMaxY(): Double {
         // Compute the dimension of knowledge map
-        val maxBasicY: Double = playerData.playerInternalData.playerScienceData.doneBasicResearchProjectList.maxOfOrNull {
+        val allBasicProject = playerData.playerInternalData.playerScienceData.doneBasicResearchProjectList +
+                playerData.playerInternalData.playerScienceData.knownBasicResearchProjectList
+        val allAppliedProject = playerData.playerInternalData.playerScienceData.doneAppliedResearchProjectList +
+                playerData.playerInternalData.playerScienceData.knownAppliedResearchProjectList
+        val maxBasicY: Double = allBasicProject.maxOfOrNull {
             it.yCor
         } ?: 1.0
-        val maxAppliedY: Double = playerData.playerInternalData.playerScienceData.doneAppliedResearchProjectList.maxOfOrNull {
+        val maxAppliedY: Double = allAppliedProject.maxOfOrNull {
             it.yCor
         } ?: 1.0
 
