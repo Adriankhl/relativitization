@@ -450,7 +450,7 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
         return createArrow(
             from = fromDouble2D,
             to = toDouble2D,
-            arrowWidth = 20.0f,
+            arrowWidth = 20.0f * gdxSettings.knowledgeMapProjectIconZoom,
             r = color.r,
             g = color.g,
             b = color.b,
@@ -479,7 +479,7 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
         return createArrow(
             from = fromDouble2D,
             to = toDouble2D,
-            arrowWidth = 20.0f,
+            arrowWidth = 20.0f * gdxSettings.knowledgeMapProjectIconZoom,
             r = color.r,
             g = color.g,
             b = color.b,
@@ -507,7 +507,7 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
         return createArrow(
             from = fromDouble2D,
             to = toDouble2D,
-            arrowWidth = 20.0f,
+            arrowWidth = 20.0f * gdxSettings.knowledgeMapProjectIconZoom,
             r = color.r,
             g = color.g,
             b = color.b,
@@ -535,7 +535,7 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
         return createArrow(
             from = fromDouble2D,
             to = toDouble2D,
-            arrowWidth = 20.0f,
+            arrowWidth = 20.0f * gdxSettings.knowledgeMapProjectIconZoom,
             r = color.r,
             g = color.g,
             b = color.b,
