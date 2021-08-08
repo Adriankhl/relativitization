@@ -309,31 +309,27 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets){
         soundVolume: Float,
         function: (Image) -> Unit
     ): Image {
-        val arrowNinePatch: NinePatch = assets.getNinePatch("basic/white-right-arrow-tight")
+        // Create new nine patch and edit this
+        val arrowNinePatch: NinePatch = NinePatch(assets.getNinePatch("basic/white-right-arrow-tight"))
 
-        val arrowHeight: Double = Intervals.distance(from, to)
+        // arrow length depends on the end point
+        val arrowLength: Float = Intervals.distance(from, to).toFloat()
 
-        val xScale: Float = arrowHeight.toFloat() / arrowNinePatch.totalWidth
-
+        // Scale the arrow
+        val xScale: Float = arrowLength / arrowNinePatch.totalWidth
         val yScale: Float = arrowWidth / arrowNinePatch.totalHeight
-
         arrowNinePatch.scale(xScale, yScale)
 
+        // Create the image from the arrow nine patch
         val image: Image = Image(arrowNinePatch)
 
+        // Rotate and set position by the center of the image
         val rotation: Double = atan2( to.y - from.y, to.x - from.x) * 0.5 / PI * 360
-
         val xCenter: Float = ((from.x + to.x) * 0.5).toFloat()
-
         val yCenter: Float = ((from.y + to.y) * 0.5).toFloat()
-
         image.setOrigin(Align.center)
-
         image.setPosition(xCenter, yCenter, Align.center)
-
         image.rotation = rotation.toFloat()
-
-        //image.setPosition(from.x.toFloat(), from.y.toFloat())
 
         image.setColor(r, g, b, a)
 
