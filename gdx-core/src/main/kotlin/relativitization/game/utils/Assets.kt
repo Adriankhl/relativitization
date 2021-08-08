@@ -8,6 +8,7 @@ import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.BitmapFont
+import com.badlogic.gdx.graphics.g2d.NinePatch
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
@@ -28,6 +29,8 @@ class Assets {
     private val resolver: FileHandleResolver = InternalFileHandleResolver()
 
     private val textureMap: MutableMap<String, AtlasRegion> = mutableMapOf()
+
+    private val ninePatchMap: MutableMap<String, NinePatch> = mutableMapOf()
 
     fun loadAll() {
         // https://stackoverflow.com/questions/46619234/libgdx-asset-manager-load-true-type-font
@@ -62,8 +65,10 @@ class Assets {
     fun getBackgroundMusic(): Music = manager.get("music/Alexander Ehlers - Warped.mp3")
 
     fun getAtlasRegion(name: String): AtlasRegion {
-        val textureAtLas: TextureAtlas = manager.get("relativitization-asset.atlas")
-        return textureMap.getOrPut(name) { textureAtLas.findRegion(name) }
+        return textureMap.getOrPut(name) {
+            val textureAtLas: TextureAtlas = manager.get("relativitization-asset.atlas")
+            textureAtLas.findRegion(name)
+        }
     }
 
     fun getImage(name: String): Image {
@@ -126,6 +131,49 @@ class Assets {
         val textureRegionDrawable = TextureRegionDrawable(region)
         return textureRegionDrawable.tint(Color(r, g, b, a))
     }
+
+    /**
+     * Get nine patch from map or atlas
+     */
+    fun getNinePatch(
+        name: String
+    ): NinePatch {
+        return ninePatchMap.getOrPut(name) {
+            val textureAtLas: TextureAtlas = manager.get("relativitization-asset.atlas")
+            textureAtLas.createPatch(name)
+        }
+    }
+
+    /**
+     * Get image by nine patch
+     */
+    fun getNinePatchImage(
+        name: String
+    ): Image {
+        val ninePatch: NinePatch = getNinePatch(name)
+        return Image(ninePatch)
+    }
+
+    /**
+     * Get image by nine patch
+     */
+    fun getNinePatchImage(
+        name: String,
+        r: Float,
+        g: Float,
+        b: Float,
+        a: Float
+    ): Image {
+        val ninePatch: NinePatch = getNinePatch(name)
+        val image = getImage(name)
+        image.setColor(r, g, b, a)
+        return Image(ninePatch)
+    }
+
+
+    /**
+     * Get image by nine patch then scale
+     */
 
     fun getFont(fontSize: Int): BitmapFont {
         val actualSize = when {
