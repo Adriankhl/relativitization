@@ -5,6 +5,7 @@ import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.events.Event
+import relativitization.universe.data.events.EventCollection
 import relativitization.universe.data.events.EventName
 import relativitization.universe.data.events.MutableEventData
 import relativitization.universe.data.physics.Int4D
@@ -32,7 +33,7 @@ data class AddEventCommand(
      */
     override fun canSend(playerData: PlayerData, universeSettings: UniverseSettings): Boolean {
         return validEventPlayerId() &&
-                Event.canAddEvent(universeSettings, event) &&
+                EventCollection.canAddEvent(universeSettings, event) &&
                 event.canSend(playerData, universeSettings)
     }
 
@@ -40,7 +41,7 @@ data class AddEventCommand(
      * Whether the event can be added to the player depends on the event
      */
     override fun canExecute(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean {
-        return Event.canAddEvent(universeSettings, event) &&
+        return EventCollection.canAddEvent(universeSettings, event) &&
                 event.canExecute(playerData, universeSettings)
     }
 

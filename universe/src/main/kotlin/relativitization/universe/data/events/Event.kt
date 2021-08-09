@@ -55,30 +55,33 @@ sealed class Event {
 
     companion object {
         private val logger = RelativitizationLogManager.getLogger()
-
-        // For canAddEvent command
-        val defaultAddEventList: List<EventName> = EventName.values().toList()
-
-        val addEventNameMap: Map<String, List<EventName>> = mapOf(
-            "DefaultCommands" to defaultAddEventList,
-        )
-
-        /**
-         * Whether player can add this event to other player, used by AddEventCommand
-         */
-        fun canAddEvent(universeSettings: UniverseSettings, event: Event): Boolean {
-            val addEventList: List<EventName> = addEventNameMap.getOrElse(
-                universeSettings.commandCollectionName
-            ) {
-                logger.error("No add event command collection name: ${universeSettings.commandCollectionName} found")
-                defaultAddEventList
-            }
-
-            return addEventList.contains(event.name)
-        }
     }
 }
 
+object EventCollection {
+    private val logger = RelativitizationLogManager.getLogger()
+
+    // For canAddEvent command
+    val defaultEventList: List<EventName> = EventName.values().toList()
+
+    val eventListNameMap: Map<String, List<EventName>> = mapOf(
+        "DefaultCommands" to defaultEventList,
+    )
+
+    /**
+     * Whether player can add this event to other player, used by AddEventCommand
+     */
+    fun canAddEvent(universeSettings: UniverseSettings, event: Event): Boolean {
+        val addEventList: List<EventName> = eventListNameMap.getOrElse(
+            universeSettings.commandCollectionName
+        ) {
+            logger.error("No add event command collection name: ${universeSettings.commandCollectionName} found")
+            defaultEventList
+        }
+
+        return addEventList.contains(event.name)
+    }
+}
 
 /**
  * Names of event, aid event comparison and grouping
