@@ -33,7 +33,7 @@ sealed class Command {
      * @param playerData the player data to send this command
      */
     fun canSendFromPlayer(playerData: PlayerData, universeSettings: UniverseSettings): Boolean {
-        val hasCommand: Boolean = hasCommand(universeSettings, this)
+        val hasCommand: Boolean = CommandCollection.hasCommand(universeSettings, this)
         val canSend: Boolean =  canSend(playerData, universeSettings)
         val isPlayerDataValid: Boolean = (playerData.int4D == fromInt4D) && (playerData.id == fromId)
         if (!hasCommand || !canSend || !isPlayerDataValid) {
@@ -57,7 +57,7 @@ sealed class Command {
      * @param universeSettings universe setting, e.g., have
      */
     fun canExecuteOnPlayer(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean {
-        val hasCommand: Boolean = hasCommand(universeSettings, this)
+        val hasCommand: Boolean = CommandCollection.hasCommand(universeSettings, this)
         val canExecute: Boolean = canExecute(playerData, universeSettings)
         return hasCommand && canExecute
     }
@@ -100,23 +100,27 @@ sealed class Command {
 
     companion object {
         private val logger = RelativitizationLogManager.getLogger()
+    }
+}
 
-        val defaultCommandList: List<CommandName> = CommandName.values().toList()
+object CommandCollection {
+    private val logger = RelativitizationLogManager.getLogger()
 
-        val commandCollectionNameMap: Map<String, List<CommandName>> = mapOf(
-            "DefaultCommands" to defaultCommandList
-        )
+    val defaultCommandList: List<CommandName> = CommandName.values().toList()
 
-        fun hasCommand(universeSettings: UniverseSettings, command: Command): Boolean {
-            val commandCollection: List<CommandName> = commandCollectionNameMap.getOrElse(
-                universeSettings.commandCollectionName
-            ) {
-                logger.error("No command collection name: ${universeSettings.commandCollectionName} found")
-                defaultCommandList
-            }
+    val commandListNameMap: Map<String, List<CommandName>> = mapOf(
+        "DefaultCommands" to defaultCommandList
+    )
 
-            return commandCollection.contains(command.name)
+    fun hasCommand(universeSettings: UniverseSettings, command: Command): Boolean {
+        val commandCollection: List<CommandName> = commandListNameMap.getOrElse(
+            universeSettings.commandCollectionName
+        ) {
+            logger.error("No command collection name: ${universeSettings.commandCollectionName} found")
+            defaultCommandList
         }
+
+        return commandCollection.contains(command.name)
     }
 }
 

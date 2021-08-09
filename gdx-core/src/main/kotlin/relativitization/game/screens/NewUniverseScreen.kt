@@ -8,6 +8,7 @@ import kotlinx.coroutines.runBlocking
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.TableScreen
 import relativitization.universe.data.commands.Command
+import relativitization.universe.data.commands.CommandCollection
 import relativitization.universe.data.science.ProcessUniverseScienceData
 import relativitization.universe.generate.GenerateUniverse
 import relativitization.universe.mechanisms.MechanismCollection
@@ -116,7 +117,7 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
 
         table.add(createLabel("Pick available commands: ", gdxSettings.normalFontSize))
         val commandSelectBox = createSelectBox(
-            Command.commandCollectionNameMap.keys.toList(),
+            CommandCollection.commandListNameMap.keys.toList(),
             game.universeClient.generateSettings.universeSettings.commandCollectionName,
             gdxSettings.normalFontSize,
         ) { commandCollectionName, _ ->
