@@ -5,6 +5,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.PlayerData
+import relativitization.universe.data.science.knowledge.AppliedResearchData
+import relativitization.universe.data.science.knowledge.BasicResearchData
 
 class ScienceInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.assets) {
 
@@ -60,5 +62,162 @@ class ScienceInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         table.add(headerLabel)
 
         table.row().space(20f)
+    }
+
+    /**
+     * Create a table displaying basic research data
+     *
+     * @param basicResearchData the data to be displayed
+     */
+    private fun createBasicResearchDataTable(basicResearchData: BasicResearchData): Table {
+        val nestedTable: Table = Table()
+
+        val mathematicsLevelLabel = createLabel(
+            "Mathematics Level: ${basicResearchData.mathematicsLevel}",
+            gdxSettings.smallFontSize
+        )
+        nestedTable.add(mathematicsLevelLabel)
+
+        nestedTable.row().space(10f)
+
+        val physicsLevelLabel = createLabel(
+            "Physics Level: ${basicResearchData.physicsLevel}",
+            gdxSettings.smallFontSize
+        )
+        nestedTable.add(physicsLevelLabel)
+
+        nestedTable.row().space(10f)
+
+        val computerScienceLevelLabel = createLabel(
+            "Computer Science Level: ${basicResearchData.computerScienceLevel}",
+            gdxSettings.smallFontSize
+        )
+        nestedTable.add(computerScienceLevelLabel)
+
+        nestedTable.row().space(10f)
+
+        val lifeScienceLevelLabel = createLabel(
+            "Life Science Level: ${basicResearchData.lifeScienceLevel}",
+            gdxSettings.smallFontSize
+        )
+        nestedTable.add(lifeScienceLevelLabel)
+
+        nestedTable.row().space(10f)
+
+        val socialScienceLevelLabel = createLabel(
+            "Social Science Level: ${basicResearchData.socialScienceLevel}",
+            gdxSettings.smallFontSize
+        )
+        nestedTable.add(socialScienceLevelLabel)
+
+        nestedTable.row().space(10f)
+
+        val humanityLevelLabel = createLabel(
+            "Humanity level: ${basicResearchData.humanityLevel}",
+            gdxSettings.smallFontSize
+        )
+        nestedTable.add(humanityLevelLabel)
+
+        return nestedTable
+    }
+
+
+    /**
+     * Create a table displaying applied research data
+     *
+     * @param appliedResearchData the data to be displayed
+     */
+    private fun createAppliedResearchDataTable(appliedResearchData: AppliedResearchData): Table {
+        val nestedTable: Table = Table()
+
+        val energyTechnologyLevelLabel = createLabel(
+            "Energy Technology level: ${appliedResearchData.energyTechnologyLevel}",
+            gdxSettings.smallFontSize
+        )
+        nestedTable.add(energyTechnologyLevelLabel)
+
+        nestedTable.row().space(10f)
+
+        val foodTechnologyLevelLabel = createLabel(
+            "Food Technology level: ${appliedResearchData.foodTechnologyLevel}",
+            gdxSettings.smallFontSize
+        )
+        nestedTable.add(foodTechnologyLevelLabel)
+
+        nestedTable.row().space(10f)
+
+        val biomedicalTechnologyLevelLabel = createLabel(
+            "Biomedical Technology level: ${appliedResearchData.biomedicalTechnologyLevel}",
+            gdxSettings.smallFontSize
+        )
+        nestedTable.add(biomedicalTechnologyLevelLabel)
+
+        nestedTable.row().space(10f)
+
+        val chemicalTechnologyLevelLabel = createLabel(
+            "Chemical Technology level: ${appliedResearchData.chemicalTechnologyLevel}",
+            gdxSettings.smallFontSize
+        )
+        nestedTable.add(chemicalTechnologyLevelLabel)
+
+        nestedTable.row().space(10f)
+
+        val environmentalTechnologyLevelLabel = createLabel(
+            "Environmental Technology level: ${appliedResearchData.environmentalTechnologyLevel}",
+            gdxSettings.smallFontSize
+        )
+        nestedTable.add(environmentalTechnologyLevelLabel)
+
+        nestedTable.row().space(10f)
+
+        val architectureTechnologyLevelLabel = createLabel(
+            "Architecture Technology level: ${appliedResearchData.architectureTechnologyLevel}",
+            gdxSettings.smallFontSize
+        )
+        nestedTable.add(architectureTechnologyLevelLabel)
+
+        nestedTable.row().space(10f)
+
+        val machineryTechnologyLevelLabel = createLabel(
+            "Machinery Technology level: ${appliedResearchData.machineryTechnologyLevel}",
+            gdxSettings.smallFontSize
+        )
+        nestedTable.add(machineryTechnologyLevelLabel)
+
+        nestedTable.row().space(10f)
+
+        val materialTechnologyLevelLabel = createLabel(
+            "Material Technology level: ${appliedResearchData.materialTechnologyLevel}",
+            gdxSettings.smallFontSize
+        )
+        nestedTable.add(materialTechnologyLevelLabel)
+
+        nestedTable.row().space(10f)
+
+        val informationTechnologyLevelLabel = createLabel(
+            "Information Technology level: ${appliedResearchData.informationTechnologyLevel}",
+            gdxSettings.smallFontSize
+        )
+        nestedTable.add(informationTechnologyLevelLabel)
+
+        nestedTable.row().space(10f)
+
+        val artTechnologyLevelLabel = createLabel(
+            "Art Technology level: ${appliedResearchData.artTechnologyLevel}",
+            gdxSettings.smallFontSize
+        )
+        nestedTable.add(artTechnologyLevelLabel)
+
+        nestedTable.row().space(10f)
+
+        val militaryTechnologyLevelLabel = createLabel(
+            "Military Technology level: ${appliedResearchData.militaryTechnologyLevel}",
+            gdxSettings.smallFontSize
+        )
+        nestedTable.add(militaryTechnologyLevelLabel)
+
+        nestedTable.row().space(10f)
+        
+        return nestedTable
     }
 }
