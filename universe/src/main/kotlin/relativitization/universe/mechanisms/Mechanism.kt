@@ -42,9 +42,9 @@ object MechanismCollection {
     )
 
     // list of all possible process collection name
-    val mechanismProcessNameList: List<String> = listOf(
-        "DefaultMechanism",
-        "EmptyMechanism"
+    val mechanismProcessNameMap: Map<String, List<Mechanism>> = mapOf(
+        "DefaultMechanism" to defaultMechanismList,
+        "EmptyMechanism" to listOf(),
     )
 
     fun processMechanismCollection(
@@ -52,24 +52,17 @@ object MechanismCollection {
         universeData3DAtPlayer: UniverseData3DAtPlayer,
         universeData: UniverseData,
     ): List<Command> {
-        return when (universeData.universeSettings.mechanismCollectionName) {
-            "DefaultMechanism" -> {
-                defaultMechanismList.map { mechanism ->
-                    mechanism.process(
-                        mutablePlayerData,
-                        universeData3DAtPlayer,
-                        universeData.universeSettings,
-                        universeData.universeScienceData
-                    )
-                }.flatten()
-            }
-            "EmptyMechanism" -> {
-                listOf()
-            }
-            else -> {
-                logger.error("No mechanism name matched, use default mechanism")
-                listOf()
-            }
-        }
+
+        return mechanismProcessNameMap.getOrElse(universeData.universeSettings.mechanismCollectionName) {
+            logger.error("No mechanism name matched, use default mechanism")
+            listOf()
+        }.map { mechanism ->
+            mechanism.process(
+                mutablePlayerData,
+                universeData3DAtPlayer,
+                universeData.universeSettings,
+                universeData.universeScienceData
+            )
+        }.flatten()
     }
 }
