@@ -42,7 +42,7 @@ object MechanismCollection {
     )
 
     // list of all possible process collection name
-    val mechanismProcessNameMap: Map<String, List<Mechanism>> = mapOf(
+    val mechanismListNameMap: Map<String, List<Mechanism>> = mapOf(
         "DefaultMechanism" to defaultMechanismList,
         "EmptyMechanism" to listOf(),
     )
@@ -53,7 +53,7 @@ object MechanismCollection {
         universeData: UniverseData,
     ): List<Command> {
 
-        return mechanismProcessNameMap.getOrElse(universeData.universeSettings.mechanismCollectionName) {
+        return mechanismListNameMap.getOrElse(universeData.universeSettings.mechanismCollectionName) {
             logger.error("No mechanism name matched, use default mechanism")
             listOf()
         }.map { mechanism ->

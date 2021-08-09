@@ -104,7 +104,7 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
 
         table.add(createLabel("Pick game mechanisms: ", gdxSettings.normalFontSize))
         val mechanismSelectBox = createSelectBox(
-            MechanismCollection.mechanismProcessNameMap.keys.toList(),
+            MechanismCollection.mechanismListNameMap.keys.toList(),
             game.universeClient.generateSettings.universeSettings.mechanismCollectionName,
             gdxSettings.normalFontSize,
         ) { mechanismCollectionName, _ ->
