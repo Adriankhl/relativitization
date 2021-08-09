@@ -7,6 +7,7 @@ import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.science.knowledge.AppliedResearchData
 import relativitization.universe.data.science.knowledge.BasicResearchData
+import relativitization.universe.data.science.knowledge.KnowledgeData
 
 class ScienceInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.assets) {
 
@@ -62,6 +63,34 @@ class ScienceInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         table.add(headerLabel)
 
         table.row().space(20f)
+
+        val playerKnowledgeDataLabel = createLabel("Common Sense", gdxSettings.normalFontSize)
+        table.add(playerKnowledgeDataLabel)
+
+        table.row().space(10f)
+
+        table.add(createKnowledgeDataTable(playerData.playerInternalData.playerScienceData.playerKnowledgeData))
+
+        table.row().space(20f)
+
+        val commonSenseLabel = createLabel("Common Sense", gdxSettings.normalFontSize)
+        table.add(commonSenseLabel)
+
+        table.row().space(10f)
+
+        table.add(createKnowledgeDataTable(playerData.playerInternalData.playerScienceData.commonSenseKnowledgeData))
+    }
+
+    private fun createKnowledgeDataTable(knowledgeData: KnowledgeData): Table {
+        val nestedTable: Table = Table()
+
+        nestedTable.add(createBasicResearchDataTable(knowledgeData.basicResearchData))
+
+        nestedTable.row().space(20f)
+
+        nestedTable.add(createAppliedResearchDataTable(knowledgeData.appliedResearchData))
+
+        return nestedTable
     }
 
     /**
@@ -71,6 +100,11 @@ class ScienceInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
      */
     private fun createBasicResearchDataTable(basicResearchData: BasicResearchData): Table {
         val nestedTable: Table = Table()
+
+        val headerLabel = createLabel("Basic Research", gdxSettings.normalFontSize)
+        nestedTable.add(headerLabel)
+
+        nestedTable.row().space(10f)
 
         val mathematicsLevelLabel = createLabel(
             "Mathematics Level: ${basicResearchData.mathematicsLevel}",
@@ -129,6 +163,11 @@ class ScienceInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
      */
     private fun createAppliedResearchDataTable(appliedResearchData: AppliedResearchData): Table {
         val nestedTable: Table = Table()
+
+        val headerLabel = createLabel("Applied Research", gdxSettings.normalFontSize)
+        nestedTable.add(headerLabel)
+
+        nestedTable.row().space(10f)
 
         val energyTechnologyLevelLabel = createLabel(
             "Energy Technology level: ${appliedResearchData.energyTechnologyLevel}",
@@ -217,7 +256,7 @@ class ScienceInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         nestedTable.add(militaryTechnologyLevelLabel)
 
         nestedTable.row().space(10f)
-        
+
         return nestedTable
     }
 }
