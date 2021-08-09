@@ -69,12 +69,12 @@ abstract class GenerateUniverse {
         }
 
         fun generate(settings: GenerateSettings): UniverseData {
-            return if(generateMethodMap.keys.contains(settings.generateMethod)) {
-                generateMethodMap.getValue(settings.generateMethod).generate(settings)
-            } else {
+            val generateMethod: GenerateUniverse =  generateMethodMap.getOrElse(settings.generateMethod) {
                 logger.error("Generate method doesn't exist, using default method")
-                Minimal().generate(settings)
+                Minimal()
             }
+
+            return generateMethod.generate(settings)
         }
     }
 }
