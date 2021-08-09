@@ -1,4 +1,5 @@
 # Game flow
+* Universe update science data: update common sense and generate new projects
 * (Parallel) Mechanism: Universe server modify players' data based on game mechanism, clean up eventData
   the produced command should execute on self and neighbor
 * (Parallel) Commands: universe server execute commands based on the space-time interval
@@ -6,7 +7,7 @@
 * Clean up newPlayerList stored in PlayerData
 * Universe server update the universe data by replacing the latest slice 
 * Universe server is ready after save  
-* Can access  universe
+* Enable universe access by client
 * (Parallel) AI: Universe server run the ai to determine command list
 * Universe client check if the universe server is ready, if ready, download 3D view
 * Universe client render the gui based on the 3D View
@@ -16,15 +17,16 @@
   * If all human player sent command list, continue
   * If some players join, add human player and prioritize them over ai generated command
   * If some/all players haven't sent back their command list within the time limit, use ai generated command
-* Can't access universe
+* Disable universe by client
 * Change player type based on whether it has human input
 * (Parallel) Universe server execute the self-command and neighbor-command, others are stored
 * Universe server move player by their velocity, update int4D, also update group id by their double4D position
 * Universe server convert mutable data to immutable data, save latest data, drop oldest data
 
 # Command, Event, Mechanism, AI, and Data
-* Commands and events are more definite, their behaviours should be defined in their class,
-  where other data can have different mechanisms (i.e. mod), those data are handle externally and
+* Commands and events are more definite, having only one possible implementation
+  , their behaviours should be defined in their class,
+  where other data can have different mechanisms (i.e. mods), those data are handle externally and
   should not be defined within the class, except some universal utils function
 * Command collection is global, pick by command collection name
 * Mechanism is global, pick by mechanism collection name
