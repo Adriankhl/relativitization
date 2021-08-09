@@ -14,10 +14,10 @@ abstract class AI {
 object AICollection {
     private val logger = RelativitizationLogManager.getLogger()
 
-    val aiNameList: List<String> = listOf(
-        "DefaultAI",
-        "EmptyAI",
-        "FlockingAI",
+    val aiNameMap: Map<String, AI> = mapOf(
+        "DefaultAI" to DefaultAI,
+        "EmptyAI" to EmptyAI,
+        "FlockingAI" to FlockingAI,
     )
 
     fun compute(universeData3DAtPlayer: UniverseData3DAtPlayer): List<Command> {
@@ -25,14 +25,11 @@ object AICollection {
             universeData3DAtPlayer.id
         ).playerInternalData.aiData.aiName
 
-        return when(aiName) {
-            "DefaultAI" -> DefaultAI.compute(universeData3DAtPlayer)
-            "EmptyAI" -> EmptyAI.compute(universeData3DAtPlayer)
-            "FlockingAI" -> FlockingAI.compute(universeData3DAtPlayer)
-            else -> {
-                logger.error("No ai name: ${aiName}, using default (empty) ai")
-                EmptyAI.compute(universeData3DAtPlayer)
-            }
+        val ai: AI = aiNameMap.getOrElse(aiName) {
+            logger.error("No ai name: ${aiName}, using default (empty) ai")
+            EmptyAI
         }
+
+        return ai.compute(universeData3DAtPlayer)
     }
 }
