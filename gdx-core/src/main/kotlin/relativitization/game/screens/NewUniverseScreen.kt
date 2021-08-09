@@ -7,7 +7,6 @@ import io.ktor.http.*
 import kotlinx.coroutines.runBlocking
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.TableScreen
-import relativitization.universe.data.commands.Command
 import relativitization.universe.data.commands.CommandCollection
 import relativitization.universe.generate.GenerateUniverse
 import relativitization.universe.mechanisms.MechanismCollection
@@ -130,10 +129,10 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
         table.add(createLabel("Pick universe science data process: ", gdxSettings.normalFontSize))
         val universeScienceDataProcessSelectBox = createSelectBox(
             UniverseScienceDataProcessCollection.universeScienceDataProcessNameMap.keys.toList(),
-            game.universeClient.generateSettings.universeSettings.universeScienceDataProcessName,
+            game.universeClient.generateSettings.universeSettings.universeScienceDataProcessCollectionName,
             gdxSettings.normalFontSize,
         ) { universeScienceDataProcessName, _ ->
-            game.universeClient.generateSettings.universeSettings.universeScienceDataProcessName = universeScienceDataProcessName
+            game.universeClient.generateSettings.universeSettings.universeScienceDataProcessCollectionName = universeScienceDataProcessName
         }
         table.add(universeScienceDataProcessSelectBox)
 

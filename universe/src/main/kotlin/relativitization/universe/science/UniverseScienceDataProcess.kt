@@ -1,6 +1,5 @@
 package relativitization.universe.science
 
-import relativitization.universe.ai.AICollection
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.science.UniverseScienceData
 import relativitization.universe.data.science.knowledge.AppliedResearchProjectData
@@ -52,9 +51,9 @@ object UniverseScienceDataProcessCollection {
 
     fun getProcess(universeSettings: UniverseSettings): UniverseScienceDataProcess {
         return universeScienceDataProcessNameMap.getOrElse(
-            universeSettings.universeScienceDataProcessName
+            universeSettings.universeScienceDataProcessCollectionName
         ) {
-            logger.error("No universe science process name: ${universeSettings.universeScienceDataProcessName}," +
+            logger.error("No universe science process name: ${universeSettings.universeScienceDataProcessCollectionName}," +
                     " using default universe science data process")
             DefaultUniverseScienceDataProcess
         }
