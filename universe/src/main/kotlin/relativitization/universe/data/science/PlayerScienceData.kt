@@ -135,7 +135,7 @@ data class MutablePlayerScienceData(
      * @param appliedProjectFunction function of the effect of applied research projects
      */
     fun updateCommonSenseData(
-        newCommonSenseKnowledgeData: MutableKnowledgeData,
+        newCommonSenseKnowledgeData: KnowledgeData,
         basicProjectFunction: (BasicResearchProjectData, MutableBasicResearchData) -> Unit,
         appliedProjectFunction: (AppliedResearchProjectData, MutableAppliedResearchData) -> Unit,
     ) {
@@ -155,7 +155,7 @@ data class MutablePlayerScienceData(
             it.appliedResearchId < newCommonSenseKnowledgeData.startFromAppliedResearchId
         }
 
-        commonSenseKnowledgeData = newCommonSenseKnowledgeData
+        commonSenseKnowledgeData = DataSerializer.copy(newCommonSenseKnowledgeData)
 
         computePlayerKnowledgeData(basicProjectFunction, appliedProjectFunction)
     }

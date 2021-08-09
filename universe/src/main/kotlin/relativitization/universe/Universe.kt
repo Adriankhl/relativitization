@@ -385,9 +385,9 @@ class Universe(
     }
 
     /**
-     * Process science data of universe and players
+     * Process science data of universe, update common sense and generate new projects
      */
-    private fun processScienceData() {
+    private fun processUniverseScienceData() {
 
         // Update universe common sense
         val mutableUniverseScienceData: MutableUniverseScienceData = copy(
@@ -417,14 +417,6 @@ class Universe(
             universeData.universeSettings
         )
 
-        // Update player common sense
-        playerCollection.updateCommonSenseAndSyncProjectData(
-            newUniverseScienceData = newUniverseScienceData,
-            newCommonSenseKnowledgeData = mutableUniverseScienceData.commonSenseKnowledgeData,
-            basicProjectFunction = ProcessUniverseScienceData.basicResearchProjectFunction(universeData.universeSettings),
-            appliedProjectFunction = ProcessUniverseScienceData.appliedResearchProjectFunction(universeData.universeSettings)
-        )
-
         // Modify the universe science data
         universeData.universeScienceData = newUniverseScienceData
     }
@@ -436,10 +428,10 @@ class Universe(
      */
     suspend fun preProcessUniverse() {
         // beginning of the turn
+        processUniverseScienceData()
         processMechanism()
         processCommandMap()
         processDeadAndNewPlayer()
-        processScienceData()
 
         // Sync all data component to ensure consistency before universe data update
         playerCollection.syncAllPlayerDataComponent()
