@@ -17,6 +17,7 @@ class GameScreenInfo(val game: RelativitizationGame) : ScreenComponent<SplitPane
     private val eventsInfo: EventsInfo = EventsInfo(game)
     private val commandsInfo: CommandsInfo = CommandsInfo(game)
     private val knowledgeMapInfo: KnowledgeMapInfo = KnowledgeMapInfo(game)
+    private val scienceInfo: ScienceInfo = ScienceInfo(game)
 
     private val upperInfoContainer: Container<Actor> = Container(overviewInfo.getScreenComponent())
     private val bottomCommandInfo: BottomCommandInfo = BottomCommandInfo(game)
@@ -37,6 +38,7 @@ class GameScreenInfo(val game: RelativitizationGame) : ScreenComponent<SplitPane
         addChildScreenComponent(eventsInfo)
         addChildScreenComponent(commandsInfo)
         addChildScreenComponent(knowledgeMapInfo)
+        addChildScreenComponent(scienceInfo)
 
         upperInfoContainer.fill()
 
@@ -56,6 +58,7 @@ class GameScreenInfo(val game: RelativitizationGame) : ScreenComponent<SplitPane
             ShowingInfoType.EVENTS -> upperInfoContainer.actor = eventsInfo.getScreenComponent()
             ShowingInfoType.COMMANDS -> upperInfoContainer.actor = commandsInfo.getScreenComponent()
             ShowingInfoType.KNOWLEDGE_MAP -> upperInfoContainer.actor = knowledgeMapInfo.getScreenComponent()
+            ShowingInfoType.SCIENCE -> upperInfoContainer.actor = scienceInfo.getScreenComponent()
         }
 
         // Show bottom command or not
