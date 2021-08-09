@@ -8,9 +8,7 @@ import relativitization.universe.science.UniverseScienceDataProcess
 import kotlin.math.max
 
 object DefaultUniverseScienceDataProcess : UniverseScienceDataProcess() {
-    override fun basicResearchProjectFunction(
-        universeSettings: UniverseSettings
-    ): (BasicResearchProjectData, MutableBasicResearchData) -> Unit {
+    override fun basicResearchProjectFunction(): (BasicResearchProjectData, MutableBasicResearchData) -> Unit {
         return { basicResearchProjectData, mutableBasicResearchData ->
             when (basicResearchProjectData.basicResearchField) {
                 BasicResearchField.MATHEMATICS -> {
@@ -35,9 +33,7 @@ object DefaultUniverseScienceDataProcess : UniverseScienceDataProcess() {
         }
     }
 
-    override fun appliedResearchProjectFunction(
-        universeSettings: UniverseSettings
-    ): (AppliedResearchProjectData, MutableAppliedResearchData) -> Unit {
+    override fun appliedResearchProjectFunction(): (AppliedResearchProjectData, MutableAppliedResearchData) -> Unit {
         return { appliedResearchProjectData, mutableAppliedResearchData ->
             when (appliedResearchProjectData.appliedResearchField) {
                 AppliedResearchField.ENERGY_TECHNOLOGY -> {

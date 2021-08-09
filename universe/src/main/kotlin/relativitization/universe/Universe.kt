@@ -7,7 +7,6 @@ import relativitization.universe.data.commands.Command
 import relativitization.universe.data.physics.Int3D
 import relativitization.universe.data.physics.Int4D
 import relativitization.universe.data.science.MutableUniverseScienceData
-import relativitization.universe.data.science.ProcessUniverseScienceData
 import relativitization.universe.data.science.UniverseScienceData
 import relativitization.universe.data.serializer.DataSerializer.copy
 import relativitization.universe.data.serializer.DataSerializer.decode
@@ -15,6 +14,7 @@ import relativitization.universe.data.serializer.DataSerializer.encode
 import relativitization.universe.maths.grid.Grids.create3DGrid
 import relativitization.universe.maths.physics.Intervals.intDelay
 import relativitization.universe.mechanisms.MechanismCollection.processMechanismCollection
+import relativitization.universe.science.UniverseScienceDataProcessCollection
 import relativitization.universe.utils.RelativitizationLogManager
 import relativitization.universe.utils.pmap
 import java.io.File
@@ -407,12 +407,18 @@ class Universe(
         mutableUniverseScienceData.updateCommonSenseData(
             newStartFromBasicResearchId = newStartFromBasicResearchId,
             newStartFromAppliedResearchId = newStartFromAppliedResearchId,
-            basicProjectFunction = ProcessUniverseScienceData.basicResearchProjectFunction(universeData.universeSettings),
-            appliedProjectFunction = ProcessUniverseScienceData.appliedResearchProjectFunction(universeData.universeSettings)
+            basicProjectFunction = UniverseScienceDataProcessCollection.getProcess(
+                universeData.universeSettings
+            ).basicResearchProjectFunction(),
+            appliedProjectFunction = UniverseScienceDataProcessCollection.getProcess(
+                universeData.universeSettings
+            ).appliedResearchProjectFunction(),
         )
 
         // Generate new projects
-        val newUniverseScienceData: UniverseScienceData = ProcessUniverseScienceData.newUniverseScienceData(
+        val newUniverseScienceData: UniverseScienceData = UniverseScienceDataProcessCollection.getProcess(
+            universeData.universeSettings
+        ).newUniverseScienceData(
             copy(mutableUniverseScienceData),
             universeData.universeSettings
         )

@@ -2,7 +2,6 @@ package relativitization.universe.generate.fixed
 
 import relativitization.universe.data.*
 import relativitization.universe.data.physics.MutableInt4D
-import relativitization.universe.data.science.DefaultProcessUniverseScienceData
 import relativitization.universe.data.science.UniverseScienceData
 import relativitization.universe.data.science.knowledge.AppliedResearchField
 import relativitization.universe.data.science.knowledge.AppliedResearchProjectData
@@ -12,6 +11,7 @@ import relativitization.universe.data.serializer.DataSerializer.copy
 import relativitization.universe.generate.GenerateSettings
 import relativitization.universe.generate.GenerateUniverse
 import relativitization.universe.maths.grid.Grids.create4DGrid
+import relativitization.universe.science.default.DefaultUniverseScienceDataProcess
 
 class Minimal : GenerateUniverse() {
     override fun generate(settings: GenerateSettings): UniverseData {
@@ -77,7 +77,7 @@ class Minimal : GenerateUniverse() {
                 referenceBasicResearchIdList = listOf(),
                 referenceAppliedResearchIdList = listOf()
             ),
-            DefaultProcessUniverseScienceData.basicResearchProjectFunction()
+            DefaultUniverseScienceDataProcess.basicResearchProjectFunction()
         )
         playerData1.playerInternalData.playerScienceData.doneAppliedResearchProject(
             AppliedResearchProjectData(
@@ -90,7 +90,7 @@ class Minimal : GenerateUniverse() {
                 referenceBasicResearchIdList = listOf(),
                 referenceAppliedResearchIdList = listOf()
             ),
-            DefaultProcessUniverseScienceData.appliedResearchProjectFunction()
+            DefaultUniverseScienceDataProcess.appliedResearchProjectFunction()
         )
         playerData1.playerInternalData.playerScienceData.doneBasicResearchProject(
             BasicResearchProjectData(
@@ -103,7 +103,7 @@ class Minimal : GenerateUniverse() {
                 referenceBasicResearchIdList = listOf(0),
                 referenceAppliedResearchIdList = listOf(0)
             ),
-            DefaultProcessUniverseScienceData.basicResearchProjectFunction()
+            DefaultUniverseScienceDataProcess.basicResearchProjectFunction()
         )
         playerData1.playerInternalData.playerScienceData.doneAppliedResearchProject(
             AppliedResearchProjectData(
@@ -116,7 +116,7 @@ class Minimal : GenerateUniverse() {
                 referenceBasicResearchIdList = listOf(0, 1),
                 referenceAppliedResearchIdList = listOf(0)
             ),
-            DefaultProcessUniverseScienceData.appliedResearchProjectFunction()
+            DefaultUniverseScienceDataProcess.appliedResearchProjectFunction()
         )
         playerData1.playerInternalData.playerScienceData.knownBasicResearchProject(
             BasicResearchProjectData(

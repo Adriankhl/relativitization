@@ -15,23 +15,17 @@ abstract class UniverseScienceDataProcess {
     /**
      * Obtain a function encoding the effect of basic research project
      *
-     * @param universeSettings the settings, for universeScienceDataProcessName
      * @return a function transforming MutableBasicResearchData
      */
-    abstract fun basicResearchProjectFunction(
-        universeSettings: UniverseSettings,
-    ): (BasicResearchProjectData, MutableBasicResearchData) -> Unit
+    abstract fun basicResearchProjectFunction(): (BasicResearchProjectData, MutableBasicResearchData) -> Unit
 
 
     /**
      * Obtain a function encoding the effect of applied research project
      *
-     * @param universeSettings the settings, for universeScienceDataProcessName
      * @return a function transforming MutableBasicResearchData
      */
-    abstract fun appliedResearchProjectFunction(
-        universeSettings: UniverseSettings,
-    ): (AppliedResearchProjectData, MutableAppliedResearchData) -> Unit
+    abstract fun appliedResearchProjectFunction(): (AppliedResearchProjectData, MutableAppliedResearchData) -> Unit
 
     /**
      * Generate new universe science data per turn

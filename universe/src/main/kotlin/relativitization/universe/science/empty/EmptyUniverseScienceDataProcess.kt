@@ -9,15 +9,11 @@ import relativitization.universe.data.science.knowledge.MutableBasicResearchData
 import relativitization.universe.science.UniverseScienceDataProcess
 
 object EmptyUniverseScienceDataProcess : UniverseScienceDataProcess() {
-    override fun basicResearchProjectFunction(
-        universeSettings: UniverseSettings
-    ): (BasicResearchProjectData, MutableBasicResearchData) -> Unit {
+    override fun basicResearchProjectFunction(): (BasicResearchProjectData, MutableBasicResearchData) -> Unit {
         return { _, _ -> }
     }
 
-    override fun appliedResearchProjectFunction(
-        universeSettings: UniverseSettings
-    ): (AppliedResearchProjectData, MutableAppliedResearchData) -> Unit {
+    override fun appliedResearchProjectFunction(): (AppliedResearchProjectData, MutableAppliedResearchData) -> Unit {
         return { _, _ -> }
     }
 

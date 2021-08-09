@@ -9,9 +9,9 @@ import relativitization.game.RelativitizationGame
 import relativitization.game.utils.TableScreen
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.commands.CommandCollection
-import relativitization.universe.data.science.ProcessUniverseScienceData
 import relativitization.universe.generate.GenerateUniverse
 import relativitization.universe.mechanisms.MechanismCollection
+import relativitization.universe.science.UniverseScienceDataProcessCollection
 import relativitization.universe.utils.RelativitizationLogManager
 
 class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
@@ -129,7 +129,7 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
 
         table.add(createLabel("Pick universe science data process: ", gdxSettings.normalFontSize))
         val universeScienceDataProcessSelectBox = createSelectBox(
-            ProcessUniverseScienceData.universeScienceDataProcessNameList,
+            UniverseScienceDataProcessCollection.universeScienceDataProcessNameMap.keys.toList(),
             game.universeClient.generateSettings.universeSettings.universeScienceDataProcessName,
             gdxSettings.normalFontSize,
         ) { universeScienceDataProcessName, _ ->
