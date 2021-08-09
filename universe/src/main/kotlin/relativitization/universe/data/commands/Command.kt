@@ -103,20 +103,19 @@ sealed class Command {
 
         val defaultCommandList: List<CommandName> = CommandName.values().toList()
 
-        val commandCollectionList: List<String> = listOf(
-            "DefaultCommands"
+        val commandCollectionNameMap: Map<String, List<CommandName>> = mapOf(
+            "DefaultCommands" to defaultCommandList
         )
 
         fun hasCommand(universeSettings: UniverseSettings, command: Command): Boolean {
-            return when (universeSettings.commandCollectionName) {
-                "DefaultCommands" -> {
-                    defaultCommandList.contains(command.name)
-                }
-                else -> {
-                    logger.error("No command collection name: ${universeSettings.commandCollectionName} found")
-                    defaultCommandList.contains(command.name)
-                }
+            val commandCollection: List<CommandName> = commandCollectionNameMap.getOrElse(
+                universeSettings.commandCollectionName
+            ) {
+                logger.error("No command collection name: ${universeSettings.commandCollectionName} found")
+                defaultCommandList
             }
+
+            return commandCollection.contains(command.name)
         }
     }
 }
