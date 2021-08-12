@@ -63,16 +63,14 @@ data class MutableResourceStockData(
 
 
 @Serializable
-data class ResourceMarketData(
-    val allClassResourceStockData: ResourceStockData = ResourceStockData(),
+data class ResourcePriceData(
     val firstClassFuelRestMassPrice: Double = 1.0,
     val secondClassFuelRestMassPrice: Double = 1.0,
     val thirdClassFuelRestMassPrice: Double = 1.0,
 )
 
 @Serializable
-data class MutableResourceMarketData(
-    var allClassResourceStockData: MutableResourceStockData = MutableResourceStockData(),
+data class MutableResourcePriceData(
     var firstClassFuelRestMassPrice: Double = 1.0,
     var secondClassFuelRestMassPrice: Double = 1.0,
     var thirdClassFuelRestMassPrice: Double = 1.0,

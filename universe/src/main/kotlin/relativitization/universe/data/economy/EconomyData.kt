@@ -9,12 +9,12 @@ import kotlinx.serialization.Serializable
 data class EconomyData(
     val taxRateData: TaxRateData = TaxRateData(),
     val resourceStockMap: Map<ResourceType, ResourceStockData> = mapOf(),
-    val resourceMarketMap: Map<ResourceType, ResourceMarketData> = mapOf(),
+    val resourcePriceMap: Map<ResourceType, ResourcePriceData> = mapOf(),
 )
 
 @Serializable
 data class MutableEconomyData(
     var taxRateData: MutableTaxRateData = MutableTaxRateData(),
     var resourceStockMap: MutableMap<ResourceType, MutableResourceStockData> = mutableMapOf(),
-    var resourceMarketMap: Map<ResourceType, MutableResourceMarketData> = mutableMapOf(),
+    var resourcePriceMap: Map<ResourceType, MutableResourcePriceData> = mutableMapOf(),
 )
