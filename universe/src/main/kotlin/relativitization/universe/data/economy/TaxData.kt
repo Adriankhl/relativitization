@@ -1,7 +1,6 @@
 package relativitization.universe.data.economy
 
 import kotlinx.serialization.Serializable
-import relativitization.universe.data.economy.resource.ResourceType
 
 /**
  * Tax rate data
