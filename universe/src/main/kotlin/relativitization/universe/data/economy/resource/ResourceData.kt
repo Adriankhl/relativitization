@@ -3,21 +3,21 @@ package relativitization.universe.data.economy.resource
 import kotlinx.serialization.Serializable
 
 enum class ResourceType(val value: String) {
-    PLANT("Plant"),
+    PLANT("Plant"), // Raw material
     ANIMAL("Animal"),
     METAL("Metal"),
-    FOOD("Food"),
+    ELECTRONIC("Electrical equipment"), // Intermediate material
+    MACHINE_ELEMENT("Machine element"),
+    CONSTRUCTION_MATERIAL("Construction material"),
+    OPTICAL_ELEMENT("Optical element"),
+    FOOD("Food"), // Final product
     CLOTH("Cloth"),
     HOUSEHOLD_GOOD("Household good"),
     ENTERTAINMENT("Entertainment"),
     SOFTWARE("Software"),
-    ELECTRONIC("Electrical equipment"),
-    CONSTRUCTION_MATERIAL("Construction material"),
-    MACHINE_ELEMENT("Machine element"),
-    OPTICAL_ELEMENT("Optical element"),
     RESEARCH_EQUIPMENT("Research equipment"),
     MEDICINE("Medicine"),
-    TRANSPORT("Transport"),
+    TRANSPORTATION("Transportation"),
     AMMUNITION("Ammunition"),
     LASER("Laser"),
     ROBOT("Robot"),
