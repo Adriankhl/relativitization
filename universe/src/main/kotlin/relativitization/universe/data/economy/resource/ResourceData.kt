@@ -31,27 +31,25 @@ enum class ResourceType(val value: String) {
 @Serializable
 data class ResourceData(
     val type: ResourceType = ResourceType.PLANT,
-    val amount: Double = 0.0,
-    val resourceProperty: ResourcePropertyData = ResourcePropertyData()
+    val property: ResourceQualityData = ResourceQualityData()
 )
 
 @Serializable
 data class MutableResourceData(
     var type: ResourceType = ResourceType.PLANT,
-    var amount: Double = 0.0,
-    var resourceProperty: MutableResourcePropertyData = MutableResourcePropertyData()
+    var property: MutableResourceQualityData = MutableResourceQualityData()
 )
 
 @Serializable
-data class ResourcePropertyData(
-    val property1: Double = 0.0,
-    val property2: Double = 0.0,
-    val property3: Double = 0.0,
+data class ResourceQualityData(
+    val quality1: Double = 0.0,
+    val quality2: Double = 0.0,
+    val quality3: Double = 0.0,
 )
 
 @Serializable
-data class MutableResourcePropertyData(
-    var property1: Double = 0.0,
-    var property2: Double = 0.0,
-    var property3: Double = 0.0,
+data class MutableResourceQualityData(
+    var quality1: Double = 0.0,
+    var quality2: Double = 0.0,
+    var quality3: Double = 0.0,
 )
