@@ -3,23 +3,25 @@ package relativitization.universe.data.diplomacy
 import kotlinx.serialization.Serializable
 
 /**
- * @property relation map from player id to relation (in integer) between this player and
- * the player of that id
+ * @property relationMap map from other player id to the relation (in integer) between self and
+ * that player
+ * @property allyList list of ally
+ * @property enemyList list of enemy
  */
 @Serializable
 data class DiplomacyData(
-    val relation: Map<Int, Int> = mapOf()
+    val relationMap: Map<Int, Int> = mapOf(),
+    val allyList: List<Int> = listOf(),
+    val enemyList: List<Int> = listOf(),
 ) {
     fun getRelation(id: Int): Int {
-        return if (relation.containsKey(id)) {
-            relation.getValue(id)
-        } else {
-            0
-        }
+        return relationMap.getOrDefault(id, 0)
     }
 }
 
 @Serializable
 data class MutableDiplomacyData(
-    var relation: MutableMap<Int, Int> = mutableMapOf()
+    var relationMap: MutableMap<Int, Int> = mutableMapOf(),
+    var allyList: MutableList<Int> = mutableListOf(),
+    var enemyList: MutableList<Int> = mutableListOf(),
 )
