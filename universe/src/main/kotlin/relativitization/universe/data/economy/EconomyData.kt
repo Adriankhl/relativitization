@@ -3,14 +3,14 @@ package relativitization.universe.data.economy
 import kotlinx.serialization.Serializable
 
 /**
- * @property taxRateMap map from type of population to tax rate
+ * @property taxRateData data about the tax rate of various stuff
  */
 @Serializable
 data class EconomyData(
-    val taxRateMap: Map<String, Double> = mapOf()
+    val taxRateData: TaxRateData = TaxRateData(),
 )
 
 @Serializable
 data class MutableEconomyData(
-    var taxRateMap: MutableMap<String, Double> = mutableMapOf()
+    var taxRateData: MutableTaxRateData = MutableTaxRateData(),
 )
