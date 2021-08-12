@@ -3,8 +3,24 @@ package relativitization.universe.data.economy.resource
 import kotlinx.serialization.Serializable
 
 enum class ResourceType(val value: String) {
+    PLANT("Plant"),
+    ANIMAL("Animal"),
+    METAL("Metal"),
     FOOD("Food"),
-    RESEARCH_EQUIPMENT("Research equipment")
+    CLOTH("Cloth"),
+    HOUSEHOLD_GOOD("Household good"),
+    ENTERTAINMENT("Entertainment"),
+    SOFTWARE("Software"),
+    ELECTRONIC("Electrical equipment"),
+    CONSTRUCTION_MATERIAL("Construction material"),
+    MACHINE_ELEMENT("Machine element"),
+    OPTICAL_ELEMENT("Optical element"),
+    RESEARCH_EQUIPMENT("Research equipment"),
+    MEDICINE("Medicine"),
+    TRANSPORT("Transport"),
+    AMMUNITION("Ammunition"),
+    LASER("Laser"),
+    ROBOT("Robot"),
     ;
 
     override fun toString(): String {
@@ -14,12 +30,16 @@ enum class ResourceType(val value: String) {
 
 @Serializable
 data class ResourceData(
+    val type: ResourceType = ResourceType.PLANT,
+    val amount: Double = 0.0,
     val resourceProperty: ResourcePropertyData = ResourcePropertyData()
 )
 
 @Serializable
 data class MutableResourceData(
-    val resourceProperty: MutableResourcePropertyData = MutableResourcePropertyData()
+    var type: ResourceType = ResourceType.PLANT,
+    var amount: Double = 0.0,
+    var resourceProperty: MutableResourcePropertyData = MutableResourcePropertyData()
 )
 
 @Serializable
