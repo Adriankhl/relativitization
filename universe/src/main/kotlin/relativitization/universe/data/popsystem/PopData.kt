@@ -2,6 +2,25 @@ package relativitization.universe.data.popsystem
 
 import kotlinx.serialization.Serializable
 
+/**
+ * For events and commands specifically for a given type of pop
+ */
+enum class PopType(val value: String) {
+    LABOURER("Labourer"),
+    ENGINEER("Engineer"),
+    SCHOLAR("Scholar"),
+    EDUCATOR("Educator"),
+    MEDIC("Medic"),
+    SERVICE_WORKER("Service worker"),
+    ENTERTAINER("Entertainer"),
+    SOLDIER("Soldier"),
+    ;
+
+    override fun toString(): String {
+        return value
+    }
+}
+
 @Serializable
 data class AllPopData(
     val labourerPopData: LabourerPopData = LabourerPopData(),

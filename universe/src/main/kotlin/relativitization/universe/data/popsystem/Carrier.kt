@@ -4,6 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Carrier(
+    val carrierId: Int = -1,
     val coreRestMass: Double = 1.0,
     val fuelRestMass: Double = 0.0,
     val maxDeltaFuelRestMass: Double = 0.0,
@@ -13,6 +14,7 @@ data class Carrier(
 
 @Serializable
 data class MutableCarrier(
+    var carrierId: Int = -1,
     var coreRestMass: Double = 1.0,
     var fuelRestMass: Double = 0.0,
     var maxDeltaFuelRestMass: Double = 0.0,

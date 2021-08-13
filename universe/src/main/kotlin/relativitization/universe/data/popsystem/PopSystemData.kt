@@ -32,16 +32,21 @@ data class MutablePopSystemicData(
         return carrierList.sumOf { it.fuelRestMass }
     }
 
-    fun totalMaxDeltaFuelRestMass(): Double{
+    fun totalMaxDeltaFuelRestMass(): Double {
         return carrierList.sumOf { it.maxDeltaFuelRestMass }
     }
 
+    fun newCarrierId(): Int = carrierList.maxOf { it.carrierId } + 1
+
     fun addRandomStellarSystem() {
         val restMass = Random.nextDouble(1.0e30, 2.5e30)
-        carrierList.add(MutableCarrier(
-            coreRestMass = restMass,
-            carrierType = CarrierType.STELLAR
-        ))
+        carrierList.add(
+            MutableCarrier(
+                carrierId = newCarrierId(),
+                coreRestMass = restMass,
+                carrierType = CarrierType.STELLAR
+            )
+        )
     }
 
     fun addSpaceShip(
@@ -51,10 +56,12 @@ data class MutablePopSystemicData(
     ) {
         carrierList.add(
             MutableCarrier(
-            coreRestMass = coreRestMass,
-            fuelRestMass = fuelRestMass,
-            maxDeltaFuelRestMass = maxDeltaFuelRestMass,
-            carrierType = CarrierType.SPACESHIP
-        ))
+                carrierId = newCarrierId(),
+                coreRestMass = coreRestMass,
+                fuelRestMass = fuelRestMass,
+                maxDeltaFuelRestMass = maxDeltaFuelRestMass,
+                carrierType = CarrierType.SPACESHIP
+            )
+        )
     }
 }
