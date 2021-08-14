@@ -36,7 +36,19 @@ data class MutablePopSystemicData(
         return carrierList.sumOf { it.maxDeltaFuelRestMass }
     }
 
-    fun newCarrierId(): Int = carrierList.maxOf { it.carrierId } + 1
+    /**
+     * Find the smallest non-negative carrier id which is not in the carrier list
+     */
+    fun newCarrierId(): Int {
+        val sortedList: List<MutableCarrier> = carrierList.sortedBy { it.carrierId }
+        return sortedList.fold(0) { index, carrier ->
+            if (index == carrier.carrierId) {
+                index + 1
+            } else {
+                index
+            }
+        }
+    }
 
     fun addRandomStellarSystem() {
         val restMass = Random.nextDouble(1.0e30, 2.5e30)
