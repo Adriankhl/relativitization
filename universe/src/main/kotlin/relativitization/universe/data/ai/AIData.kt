@@ -24,6 +24,7 @@ data class MutableAIData(
 
 enum class AITask(val value: String) {
     DEFAULT("Default"),
+    EMPTY("Empty"),
     LOGISTIC("Logistic"),
     BUY_RESOURCE("Buy resource"),
     ;
