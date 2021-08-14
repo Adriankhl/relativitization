@@ -2,15 +2,15 @@ package relativitization.universe.data.ai
 
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.ai.task.BuyResourceTask
-import relativitization.universe.data.ai.task.LogisticTaskData
+import relativitization.universe.data.ai.task.LogisticsTaskData
 import relativitization.universe.data.ai.task.MutableBuyResourceTask
-import relativitization.universe.data.ai.task.MutableLogisticTaskData
+import relativitization.universe.data.ai.task.MutableLogisticsTaskData
 
 @Serializable
 data class AIData(
     val aiName: String = "DefaultAI",
     val aiTask: AITask = AITask.DEFAULT,
-    val logisticTaskData: LogisticTaskData = LogisticTaskData(),
+    val logisticsTaskData: LogisticsTaskData = LogisticsTaskData(),
     val buyResourceTask: BuyResourceTask = BuyResourceTask(),
 )
 
@@ -18,14 +18,14 @@ data class AIData(
 data class MutableAIData(
     var aiName: String = "DefaultAI",
     var aiTask: AITask = AITask.DEFAULT,
-    var logisticTaskData: MutableLogisticTaskData = MutableLogisticTaskData(),
+    var logisticsTaskData: MutableLogisticsTaskData = MutableLogisticsTaskData(),
     var buyResourceTask: MutableBuyResourceTask = MutableBuyResourceTask(),
 )
 
 enum class AITask(val value: String) {
     DEFAULT("Default"),
     EMPTY("Empty"),
-    LOGISTIC("Logistic"),
+    LOGISTICS("Logistics"),
     BUY_RESOURCE("Buy resource"),
     ;
 

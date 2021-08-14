@@ -3,11 +3,11 @@ package relativitization.universe.data.ai.task
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class LogisticTaskData(
+data class LogisticsTaskData(
     val targetPlayerId: Int = -1,
 )
 
 @Serializable
-data class MutableLogisticTaskData(
+data class MutableLogisticsTaskData(
     var targetPlayerId: Int = -1,
 )
