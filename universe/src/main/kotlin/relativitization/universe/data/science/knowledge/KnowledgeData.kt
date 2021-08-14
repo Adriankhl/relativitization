@@ -55,14 +55,15 @@ data class MutableKnowledgeData(
      * Compute and modify the startFromBasicResearchId
      */
     private fun computeStartFromBasicResearchId() {
-        var i: Int = startFromBasicResearchId
-        //TODO: optimize by sorted
-        while (basicResearchIdList.contains(i)) {
-            basicResearchIdList.removeAll { it == i }
-            i++
+        val sortedList: List<Int> = basicResearchIdList.sorted()
+        startFromBasicResearchId = sortedList.fold(startFromBasicResearchId) { newStart, id ->
+            if ((newStart + 1) == id) {
+                newStart + 1
+            } else {
+                newStart
+            }
         }
-
-        startFromBasicResearchId = i
+        basicResearchIdList.removeAll { it < startFromBasicResearchId }
     }
 
     fun addAppliedResearchProjectData(
@@ -85,14 +86,15 @@ data class MutableKnowledgeData(
      * Compute and modify the startFromAppliedResearchId
      */
     private fun computeStartFromAppliedResearchId() {
-        var i: Int = startFromAppliedResearchId
-        //TODO: optimize by sorted
-        while (appliedResearchIdList.contains(i)) {
-            appliedResearchIdList.removeAll { it == i }
-            i++
+        val sortedList: List<Int> = appliedResearchIdList.sorted()
+        startFromAppliedResearchId = sortedList.fold(startFromAppliedResearchId) { newStart, id ->
+            if ((newStart + 1) == id) {
+                newStart + 1
+            } else {
+                newStart
+            }
         }
-
-        startFromAppliedResearchId = i
+        appliedResearchIdList.removeAll { it < startFromAppliedResearchId }
     }
 
     companion object {
