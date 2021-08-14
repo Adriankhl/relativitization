@@ -133,6 +133,17 @@ data class UniverseData3DAtPlayer(
     }
 
     /**
+     * Get neighbour of current player
+     */
+    fun getNeighbour(): List<PlayerData> {
+        val currentPlayer: PlayerData = getCurrentPlayerData()
+        return get(currentPlayer.int4D.toInt3D()).getValue(currentPlayer.groupId).filter {
+            // Filter out afterimage player data, which have different t coordinate
+            it.int4D.t == currentPlayer.int4D.t
+        }
+    }
+
+    /**
      * Get set of player id by Int3D
      */
     fun getIdMap(int3D: Int3D): Map<Int, List<Int>> {
