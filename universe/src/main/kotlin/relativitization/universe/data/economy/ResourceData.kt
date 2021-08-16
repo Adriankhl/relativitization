@@ -42,14 +42,100 @@ data class ResourceData(
     val resourceQualityMap: Map<ResourceType, Map<ResourceQualityClass, ResourceQualityData>> = mapOf(),
     val resourceAmountMap: Map<ResourceType, Map<ResourceQualityClass, Double>> = mapOf(),
     val resourcePriceMap: Map<ResourceType, Map<ResourceQualityClass, Double>> = mapOf(),
-)
+) {
+    /**
+     * Get resource quality, default to ResourceQualityData() if the resource doesn't exist
+     */
+    fun getResourceQuality(
+        resourceType: ResourceType,
+        resourceQualityClass: ResourceQualityClass
+    ): ResourceQualityData {
+        return resourceQualityMap.getOrDefault(
+            resourceType, mapOf()
+        ).getOrDefault(
+            resourceQualityClass, ResourceQualityData()
+        )
+    }
+
+
+    /**
+     * Get resource amount, default to 0.0 if the resource doesn't exist
+     */
+    fun getResourceAmount(
+        resourceType: ResourceType,
+        resourceQualityClass: ResourceQualityClass
+    ): Double {
+        return resourceAmountMap.getOrDefault(
+            resourceType, mapOf()
+        ).getOrDefault(
+            resourceQualityClass, 0.0
+        )
+    }
+
+    /**
+     * Get resource price, default to Double.MAX_VALUE if the resource doesn't exist
+     */
+    fun getResourcePrice(
+        resourceType: ResourceType,
+        resourceQualityClass: ResourceQualityClass
+    ): Double {
+        return resourceAmountMap.getOrDefault(
+            resourceType, mapOf()
+        ).getOrDefault(
+            resourceQualityClass, Double.MAX_VALUE
+        )
+    }
+}
 
 @Serializable
 data class MutableResourceData(
     var resourceQualityMap: MutableMap<ResourceType, MutableMap<ResourceQualityClass, MutableResourceQualityData>> = mutableMapOf(),
     var resourceAmountMap: MutableMap<ResourceType, MutableMap<ResourceQualityClass, Double>> = mutableMapOf(),
     var resourcePriceMap: MutableMap<ResourceType, MutableMap<ResourceQualityClass, Double>> = mutableMapOf(),
-)
+) {
+    /**
+     * Get resource quality, default to ResourceQualityData() if the resource doesn't exist
+     */
+    fun getResourceQuality(
+        resourceType: ResourceType,
+        resourceQualityClass: ResourceQualityClass
+    ): MutableResourceQualityData {
+        return resourceQualityMap.getOrDefault(
+            resourceType, mutableMapOf()
+        ).getOrDefault(
+            resourceQualityClass, MutableResourceQualityData()
+        )
+    }
+
+
+    /**
+     * Get resource amount, default to 0.0 if the resource doesn't exist
+     */
+    fun getResourceAmount(
+        resourceType: ResourceType,
+        resourceQualityClass: ResourceQualityClass
+    ): Double {
+        return resourceAmountMap.getOrDefault(
+            resourceType, mutableMapOf()
+        ).getOrDefault(
+            resourceQualityClass, 0.0
+        )
+    }
+
+    /**
+     * Get resource price, default to Double.MAX_VALUE if the resource doesn't exist
+     */
+    fun getResourcePrice(
+        resourceType: ResourceType,
+        resourceQualityClass: ResourceQualityClass
+    ): Double {
+        return resourceAmountMap.getOrDefault(
+            resourceType, mutableMapOf()
+        ).getOrDefault(
+            resourceQualityClass, Double.MAX_VALUE
+        )
+    }
+}
 
 @Serializable
 data class ResourceQualityData(
