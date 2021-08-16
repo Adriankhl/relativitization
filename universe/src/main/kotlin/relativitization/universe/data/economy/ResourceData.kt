@@ -149,4 +149,17 @@ data class MutableResourceQualityData(
     var quality1: Double = 0.0,
     var quality2: Double = 0.0,
     var quality3: Double = 0.0,
-)
+) {
+    fun updateQuality(
+        originalAmount: Double,
+        newAmount: Double,
+        newData: MutableResourceQualityData
+    ) {
+        quality1 = (originalAmount * quality1 + newAmount * newData.quality1) /
+                (originalAmount + newAmount)
+        quality2 = (originalAmount * quality2 + newAmount * newData.quality2) /
+                (originalAmount + newAmount)
+        quality3 = (originalAmount * quality3 + newAmount * newData.quality3) /
+                (originalAmount + newAmount)
+    }
+}
