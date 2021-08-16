@@ -50,11 +50,11 @@ data class ResourceData(
         resourceType: ResourceType,
         resourceQualityClass: ResourceQualityClass
     ): ResourceQualityData {
-        return resourceQualityMap.getOrDefault(
-            resourceType, mapOf()
-        ).getOrDefault(
-            resourceQualityClass, ResourceQualityData()
-        )
+        return resourceQualityMap.get(
+            resourceType
+        )?.get(
+            resourceQualityClass
+        ) ?: ResourceQualityData()
     }
 
 
@@ -65,11 +65,11 @@ data class ResourceData(
         resourceType: ResourceType,
         resourceQualityClass: ResourceQualityClass
     ): Double {
-        return resourceAmountMap.getOrDefault(
-            resourceType, mapOf()
-        ).getOrDefault(
-            resourceQualityClass, 0.0
-        )
+        return resourceAmountMap.get(
+            resourceType
+        )?.get(
+            resourceQualityClass
+        ) ?: 0.0
     }
 
     /**
@@ -79,11 +79,11 @@ data class ResourceData(
         resourceType: ResourceType,
         resourceQualityClass: ResourceQualityClass
     ): Double {
-        return resourceAmountMap.getOrDefault(
-            resourceType, mapOf()
-        ).getOrDefault(
-            resourceQualityClass, Double.MAX_VALUE
-        )
+        return resourceAmountMap.get(
+            resourceType
+        )?.get(
+            resourceQualityClass
+        ) ?: Double.MAX_VALUE
     }
 }
 
@@ -100,11 +100,11 @@ data class MutableResourceData(
         resourceType: ResourceType,
         resourceQualityClass: ResourceQualityClass
     ): MutableResourceQualityData {
-        return resourceQualityMap.getOrDefault(
-            resourceType, mutableMapOf()
-        ).getOrDefault(
-            resourceQualityClass, MutableResourceQualityData()
-        )
+        return resourceQualityMap.get(
+            resourceType
+        )?.get(
+            resourceQualityClass
+        ) ?: MutableResourceQualityData()
     }
 
 
@@ -115,11 +115,11 @@ data class MutableResourceData(
         resourceType: ResourceType,
         resourceQualityClass: ResourceQualityClass
     ): Double {
-        return resourceAmountMap.getOrDefault(
-            resourceType, mutableMapOf()
-        ).getOrDefault(
-            resourceQualityClass, 0.0
-        )
+        return resourceAmountMap.get(
+            resourceType
+        )?.get(
+            resourceQualityClass
+        ) ?: 0.0
     }
 
     /**
@@ -129,11 +129,11 @@ data class MutableResourceData(
         resourceType: ResourceType,
         resourceQualityClass: ResourceQualityClass
     ): Double {
-        return resourceAmountMap.getOrDefault(
-            resourceType, mutableMapOf()
-        ).getOrDefault(
-            resourceQualityClass, Double.MAX_VALUE
-        )
+        return resourceAmountMap.get(
+            resourceType
+        )?.get(
+            resourceQualityClass
+        ) ?: Double.MAX_VALUE
     }
 }
 
