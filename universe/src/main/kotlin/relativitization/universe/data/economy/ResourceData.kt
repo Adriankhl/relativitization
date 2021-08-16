@@ -39,16 +39,16 @@ enum class ResourceQualityClass {
 
 @Serializable
 data class ResourceData(
-    val resourceQualityMap: Map<ResourceQualityClass, ResourceQualityData> = mapOf(),
-    val resourceAmountMap: Map<ResourceQualityClass, Double> = mapOf(),
-    val resourcePriceMap: Map<ResourceQualityClass, Double> = mapOf(),
+    val resourceQualityMap: Map<ResourceType, Map<ResourceQualityClass, ResourceQualityData>> = mapOf(),
+    val resourceAmountMap: Map<ResourceType, Map<ResourceQualityClass, Double>> = mapOf(),
+    val resourcePriceMap: Map<ResourceType, Map<ResourceQualityClass, Double>> = mapOf(),
 )
 
 @Serializable
 data class MutableResourceData(
-    var resourceQualityMap: MutableMap<ResourceQualityClass, MutableResourceQualityData> = mutableMapOf(),
-    var resourceAmountMap: MutableMap<ResourceQualityClass, Double> = mutableMapOf(),
-    var resourcePriceMap: MutableMap<ResourceQualityClass, Double> = mutableMapOf(),
+    var resourceQualityMap: MutableMap<ResourceType, MutableMap<ResourceQualityClass, MutableResourceQualityData>> = mutableMapOf(),
+    var resourceAmountMap: MutableMap<ResourceType, MutableMap<ResourceQualityClass, Double>> = mutableMapOf(),
+    var resourcePriceMap: MutableMap<ResourceType, MutableMap<ResourceQualityClass, Double>> = mutableMapOf(),
 )
 
 @Serializable
