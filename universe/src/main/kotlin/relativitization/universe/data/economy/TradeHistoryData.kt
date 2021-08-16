@@ -16,6 +16,7 @@ data class TradeHistoryData(
     ): TradeRecordData {
         return historyMap.get(time)?.get(resourceType)?.get(resourceQualityClass) ?: TradeRecordData()
     }
+
 }
 
 @Serializable
@@ -29,6 +30,22 @@ data class MutableTradeHistoryData(
         resourceQualityClass: ResourceQualityClass
     ): MutableTradeRecordData {
         return historyMap.get(time)?.get(resourceType)?.get(resourceQualityClass) ?: MutableTradeRecordData()
+    }
+
+
+    fun insertTradeRecord(
+        time: Int,
+        resourceType: ResourceType,
+        resourceQualityClass: ResourceQualityClass,
+        mutableTradeRecordData: MutableTradeRecordData,
+    ) {
+        historyMap.getOrPut(time) {
+            mutableMapOf()
+        }.getOrPut(resourceType) {
+            mutableMapOf()
+        }.getOrPut(resourceQualityClass) {
+            MutableTradeRecordData()
+        }.addTradeRecord(mutableTradeRecordData)
     }
 }
 
