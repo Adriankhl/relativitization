@@ -28,6 +28,29 @@ enum class ResourceType(val value: String) {
     }
 }
 
+/**
+ * For aggregating resources of player into several classes
+ */
+enum class ResourceQualityClass {
+    FIRST,
+    SECOND,
+    THIRD,
+}
+
+@Serializable
+data class ResourceData(
+    val resourceQualityMap: Map<ResourceQualityClass, ResourceQualityData> = mapOf(),
+    val resourceAmountMap: Map<ResourceQualityClass, Double> = mapOf(),
+    val resourcePriceMap: Map<ResourceQualityClass, Double> = mapOf(),
+)
+
+@Serializable
+data class MutableResourceData(
+    var resourceQualityMap: MutableMap<ResourceQualityClass, MutableResourceQualityData> = mutableMapOf(),
+    var resourceAmountMap: MutableMap<ResourceQualityClass, Double> = mutableMapOf(),
+    var resourcePriceMap: MutableMap<ResourceQualityClass, Double> = mutableMapOf(),
+)
+
 @Serializable
 data class ResourceQualityData(
     val quality1: Double = 0.0,
@@ -40,38 +63,4 @@ data class MutableResourceQualityData(
     var quality1: Double = 0.0,
     var quality2: Double = 0.0,
     var quality3: Double = 0.0,
-)
-
-@Serializable
-data class ResourceStockData(
-    val firstClassQuality: ResourceQualityData = ResourceQualityData(),
-    val firstClassAmount: Double = 0.0,
-    val secondClassQuality: ResourceQualityData = ResourceQualityData(),
-    val secondClassAmount: Double = 0.0,
-    val thirdClassQuality: ResourceQualityData = ResourceQualityData(),
-    val thirdClassAmount: Double = 0.0,
-)
-
-@Serializable
-data class MutableResourceStockData(
-    var firstClassQuality: MutableResourceQualityData = MutableResourceQualityData(),
-    var firstClassAmount: Double = 0.0,
-    var secondClassQuality: MutableResourceQualityData = MutableResourceQualityData(), var secondClassAmount: Double = 0.0,
-    var thirdClassQuality: MutableResourceQualityData = MutableResourceQualityData(),
-    var thirdClassAmount: Double = 0.0,
-)
-
-
-@Serializable
-data class ResourcePriceData(
-    val firstClassFuelRestMassPrice: Double = 1.0,
-    val secondClassFuelRestMassPrice: Double = 1.0,
-    val thirdClassFuelRestMassPrice: Double = 1.0,
-)
-
-@Serializable
-data class MutableResourcePriceData(
-    var firstClassFuelRestMassPrice: Double = 1.0,
-    var secondClassFuelRestMassPrice: Double = 1.0,
-    var thirdClassFuelRestMassPrice: Double = 1.0,
 )

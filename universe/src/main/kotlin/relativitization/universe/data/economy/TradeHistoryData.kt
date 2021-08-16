@@ -7,16 +7,12 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class TradeHistoryData(
-    val firstClassHistoryMap: Map<Int, Map<ResourceType, SellRecordData>> = mapOf(),
-    val secondClassHistoryMap: Map<Int, Map<ResourceType, SellRecordData>> = mapOf(),
-    val thirdClassHistoryMap: Map<Int, Map<ResourceType, SellRecordData>> = mapOf(),
+    val historyMap: Map<Int, Map<ResourceType, Map<ResourceQualityClass, SellRecordData>>> = mapOf(),
 )
 
 @Serializable
 data class MutableTradeHistoryData(
-    val firstClassHistoryMap: MutableMap<Int, Map<ResourceType, MutableSellRecordData>> = mutableMapOf(),
-    val secondClassHistoryMap: MutableMap<Int, Map<ResourceType, MutableSellRecordData>> = mutableMapOf(),
-    val thirdClassHistoryMap: MutableMap<Int, Map<ResourceType, MutableSellRecordData>> = mutableMapOf(),
+    val historyMap: MutableMap<Int, MutableMap<ResourceType, MutableMap<ResourceQualityClass, MutableSellRecordData>>> = mutableMapOf(),
 )
 
 /**
