@@ -1,6 +1,9 @@
 package relativitization.universe.data.popsystem
 
 import kotlinx.serialization.Serializable
+import relativitization.universe.data.economy.MutableResourceQualityData
+import relativitization.universe.data.economy.ResourceQualityData
+import relativitization.universe.data.economy.ResourceType
 
 /**
  * For events and commands specifically for a given type of pop
@@ -53,6 +56,7 @@ data class CommonPopData(
     val unemploymentRate: Double = 0.0,
     val satisfaction: Double = 0.0,
     val fuelRestMassSaving: Double = 0.0,
+    val desireResourceMap: Map<ResourceType, ResourceQualityData> = mapOf(),
 )
 
 @Serializable
@@ -63,6 +67,19 @@ data class MutableCommonPopData(
     var unemploymentRate: Double = 0.0,
     var satisfaction: Double = 0.0,
     var fuelRestMassSaving: Double = 0.0,
+    var desireResourceMap: MutableMap<ResourceType, MutableResourceQualityData> = mutableMapOf(),
+)
+
+@Serializable
+data class ResourceDesireData(
+    val desireAmount: Double = 0.0,
+    val desireQuality: ResourceQualityData = ResourceQualityData(),
+)
+
+@Serializable
+data class MutableResourceDesireData(
+    var desireAmount: Double = 0.0,
+    var desireQuality: MutableResourceQualityData = MutableResourceQualityData(),
 )
 
 @Serializable
