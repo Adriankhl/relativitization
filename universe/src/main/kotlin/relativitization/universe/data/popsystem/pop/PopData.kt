@@ -75,7 +75,7 @@ data class MutableAllPopData(
  * @property elderlyPopulation amount of elderly population
  * @property unemploymentRate rate of unemployed adult
  * @property satisfaction how satisfy is the population
- * @property salary the total amount of salary per turn of the population
+ * @property salary the total amount of salary per turn of the employed population
  * @property saving saving of the population in fuel rest mass
  * @property desireResourceMap the desire resources of the population
  */
