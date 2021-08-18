@@ -1,6 +1,8 @@
 package relativitization.universe.data.popsystem
 
 import kotlinx.serialization.Serializable
+import relativitization.universe.data.popsystem.pop.AllPopData
+import relativitization.universe.data.popsystem.pop.MutableAllPopData
 
 @Serializable
 data class Carrier(
