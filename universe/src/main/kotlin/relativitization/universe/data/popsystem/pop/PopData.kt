@@ -40,6 +40,9 @@ enum class PopType(val value: String) {
     }
 }
 
+/**
+ * Store all pop data in carrier
+ */
 @Serializable
 data class AllPopData(
     val labourerPopData: LabourerPopData = LabourerPopData(),
@@ -64,6 +67,18 @@ data class MutableAllPopData(
     var soldierPopData: MutableSoldierPopData = MutableSoldierPopData(),
 )
 
+/**
+ * Common data for pop
+ *
+ * @property childPopulation amount of child population
+ * @property adultPopulation amount of adult population
+ * @property elderlyPopulation amount of elderly population
+ * @property unemploymentRate rate of unemployed adult
+ * @property satisfaction how satisfy is the population
+ * @property salary the total amount of salary per turn of the population
+ * @property saving saving of the population in fuel rest mass
+ * @property desireResourceMap the desire resources of the population
+ */
 @Serializable
 data class CommonPopData(
     val childPopulation: Double = 20.0,
@@ -71,7 +86,8 @@ data class CommonPopData(
     val elderlyPopulation: Double = 20.0,
     val unemploymentRate: Double = 0.0,
     val satisfaction: Double = 0.0,
-    val fuelRestMassSaving: Double = 0.0,
+    val salary: Double = 0.0,
+    val saving: Double = 1.0,
     val desireResourceMap: Map<ResourceType, ResourceQualityData> = mapOf(),
 )
 
@@ -82,10 +98,17 @@ data class MutableCommonPopData(
     var elderlyPopulation: Double = 20.0,
     var unemploymentRate: Double = 0.0,
     var satisfaction: Double = 0.0,
-    var fuelRestMassSaving: Double = 0.0,
+    var salary: Double = 0.0,
+    var saving: Double = 0.0,
     var desireResourceMap: MutableMap<ResourceType, MutableResourceQualityData> = mutableMapOf(),
 )
 
+/**
+ * A single desired resource of a pop
+ *
+ * @property desireAmount the amount desired in one turn
+ * @property desireQuality the desired quality of the resource
+ */
 @Serializable
 data class ResourceDesireData(
     val desireAmount: Double = 0.0,
