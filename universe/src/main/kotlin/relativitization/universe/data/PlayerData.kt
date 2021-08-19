@@ -18,6 +18,7 @@ import relativitization.universe.data.popsystem.MutablePopSystemicData
 import relativitization.universe.data.popsystem.PopSystemicData
 import relativitization.universe.data.science.MutablePlayerScienceData
 import relativitization.universe.data.science.PlayerScienceData
+import relativitization.universe.maths.collection.ListFind
 import relativitization.universe.maths.grid.Grids.double4DToGroupId
 import relativitization.universe.maths.grid.Grids.groupIdToCenterDouble3D
 import relativitization.universe.utils.RelativitizationLogManager
@@ -221,7 +222,7 @@ data class MutablePlayerInternalData(
      * Add an event to event map
      */
     fun addEventData(eventData: MutableEventData) {
-        val maxKey: Int = eventDataMap.maxOfOrNull { it.key } ?: -1
-        eventDataMap[maxKey + 1] = eventData
+        val newKey: Int = ListFind.minMissing(eventDataMap.keys.toList(), 0)
+        eventDataMap[newKey] = eventData
     }
 }
