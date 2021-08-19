@@ -1,2 +1,6 @@
 # All id in game
-* playerId: identify player
+* playerId
+* carrier map key
+* eventData map key
+* basicResearchId
+* appliedResearchId
