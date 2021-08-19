@@ -172,7 +172,7 @@ data class PlayerInternalData(
     val subordinateIdList: List<Int> = listOf(),
     val isAlive: Boolean = true,
     val aiData: AIData = AIData(),
-    val eventDataList: List<EventData> = listOf(),
+    val eventDataMap: Map<Int, EventData> = mapOf(),
     val physicsData: PhysicsData = PhysicsData(),
     val popSystemicData: PopSystemicData = PopSystemicData(),
     val playerScienceData: PlayerScienceData = PlayerScienceData(),
@@ -190,7 +190,7 @@ data class MutablePlayerInternalData(
     var subordinateIdList: MutableList<Int> = mutableListOf(),
     var isAlive: Boolean = true,
     var aiData: MutableAIData = MutableAIData(),
-    var eventDataList: MutableList<MutableEventData> = mutableListOf(),
+    var eventDataMap: MutableMap<Int, MutableEventData> = mutableMapOf(),
     var physicsData: MutablePhysicsData = MutablePhysicsData(),
     var popSystemicData: MutablePopSystemicData = MutablePopSystemicData(),
     var playerScienceData: MutablePlayerScienceData = MutablePlayerScienceData(),
@@ -215,5 +215,13 @@ data class MutablePlayerInternalData(
     fun addDirectSubordinateId(id: Int) {
         directSubordinateIdList.add(id)
         subordinateIdList.add(id)
+    }
+
+    /**
+     * Add an event to event map
+     */
+    fun addEventData(eventData: MutableEventData) {
+        val maxKey: Int = eventDataMap.maxOfOrNull { it.key } ?: -1
+        eventDataMap[maxKey + 1] = eventData
     }
 }

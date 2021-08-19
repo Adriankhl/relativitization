@@ -61,15 +61,17 @@ class EventsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(g
 
         table.row().space(20f)
 
-        for (eventData in playerData.playerInternalData.eventDataList) {
-            val eventDataTable = createEventTable(eventData)
+        for (eventKey in playerData.playerInternalData.eventDataMap.keys) {
+            val eventDataTable = createEventTable(eventKey)
             table.add(eventDataTable).growX()
 
             table.row().space(20f)
         }
     }
 
-    private fun createEventTable(eventData: EventData): Table {
+    private fun createEventTable(eventKey: Int): Table {
+        val eventData: EventData = playerData.playerInternalData.eventDataMap.getValue(eventKey)
+
         val nestedTable = Table()
 
         nestedTable.background = assets.getBackgroundColor(0.25f, 0.25f, 0.25f, 1.0f)
@@ -101,7 +103,7 @@ class EventsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(g
                 gdxSettings.soundEffectsVolume
             ) {
                 val selectEventDataCommand = SelectEventChoiceCommand(
-                    eventIndex = playerData.playerInternalData.eventDataList.indexOf(eventData),
+                    eventKey = eventKey,
                     eventName = eventData.event.name,
                     choice = choice.key,
                     fromId = game.universeClient.getUniverseData3D().id,

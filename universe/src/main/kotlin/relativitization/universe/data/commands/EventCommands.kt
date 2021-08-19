@@ -51,7 +51,7 @@ data class AddEventCommand(
      */
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
         val eventData: MutableEventData = MutableEventData(event)
-        playerData.playerInternalData.eventDataList.add(eventData)
+        playerData.playerInternalData.addEventData(eventData)
     }
 
     /**
@@ -63,13 +63,13 @@ data class AddEventCommand(
 /**
  * Select event choice, can only apply to player himself
  *
- * @property eventIndex the index of the event in eventDataList
+ * @property eventKey the index of the event in eventDataList
  * @property eventName name of the event, for ensuring the command acts on the correct event
  * @property choice the player choice on the event
  */
 @Serializable
 data class SelectEventChoiceCommand(
-    val eventIndex: Int,
+    val eventKey: Int,
     val eventName: EventName,
     val choice: Int,
     override val fromId: Int,
@@ -78,7 +78,7 @@ data class SelectEventChoiceCommand(
 ) : Command() {
     override val name: CommandName = CommandName.SELECT_EVENT_CHOICE
 
-    override val description: String = "Select choice $choice for event $eventIndex ($eventName)"
+    override val description: String = "Select choice $choice for event $eventKey ($eventName)"
 
     override fun canSend(playerData: PlayerData, universeSettings: UniverseSettings): Boolean {
         return playerData.id == toId
@@ -89,13 +89,14 @@ data class SelectEventChoiceCommand(
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
-        val eventDataList: MutableList<MutableEventData> = playerData.playerInternalData.eventDataList
+        val eventDataMap: MutableMap<Int, MutableEventData> = playerData.playerInternalData.eventDataMap
 
         // Check if eventIndex is in range
-        if (eventIndex < eventDataList.size ) {
-            if (eventDataList[eventIndex].event.name == eventName) {
-                eventDataList[eventIndex].hasChoice = true
-                eventDataList[eventIndex].choice = choice
+        if (eventDataMap.containsKey(eventKey)) {
+            val eventData: MutableEventData = eventDataMap.getValue(eventKey)
+            if (eventData.event.name == eventName) {
+                eventData.hasChoice = true
+                eventData.choice = choice
             } else {
                 logger.error("Can't select event choice, wrong event name")
             }
