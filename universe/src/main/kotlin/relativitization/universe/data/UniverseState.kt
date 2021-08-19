@@ -15,7 +15,7 @@ data class UniverseState(
 
     fun getCurrentMaxId(): Int = maxPlayerId
 
-    suspend fun getNewId(): Int {
+    suspend fun getNewPlayerId(): Int {
         GetIdMutex.mutex.withLock {
             maxPlayerId++
             return maxPlayerId

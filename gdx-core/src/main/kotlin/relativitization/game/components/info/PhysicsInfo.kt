@@ -53,8 +53,8 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
 
             val changeVelocityCommand: ChangeVelocityCommand = ChangeVelocityCommand(
                 targetVelocity = Velocity(vx, vy, vz),
-                toId = playerData.id,
-                fromId = game.universeClient.getUniverseData3D().getCurrentPlayerData().id,
+                toId = playerData.playerId,
+                fromId = game.universeClient.getUniverseData3D().getCurrentPlayerData().playerId,
                 fromInt4D = game.universeClient.getUniverseData3D().getCurrentPlayerData().int4D,
             )
 
@@ -106,8 +106,8 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
             val maxSpeed = maxSpeedTextField.text.toDouble()
 
             val moveToDouble3DEvent = MoveToDouble3DEvent(
-                toId = playerData.id,
-                fromId = game.universeClient.getUniverseData3D().getCurrentPlayerData().id,
+                toId = playerData.playerId,
+                fromId = game.universeClient.getUniverseData3D().getCurrentPlayerData().playerId,
                 targetDouble3D = Double3D(x, y, z),
                 maxSpeed = maxSpeed,
                 stayTime = Int.MAX_VALUE,
@@ -186,7 +186,7 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
     }
 
     override fun onSelectedPlayerIdListChange() {
-        if (game.universeClient.newSelectedPlayerId != playerData.id) {
+        if (game.universeClient.newSelectedPlayerId != playerData.playerId) {
 
             val targetDouble3D: Double3D = game.universeClient.getUniverseData3D().get(
                 game.universeClient.newSelectedPlayerId
@@ -224,7 +224,7 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
     private fun updateTable() {
         table.clear()
 
-        val headerLabel = createLabel("Physics: player ${playerData.id}", gdxSettings.bigFontSize)
+        val headerLabel = createLabel("Physics: player ${playerData.playerId}", gdxSettings.bigFontSize)
 
         table.add(headerLabel).pad(20f)
 

@@ -76,14 +76,14 @@ class PlayersInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
 
         // If this id has not been stored, clear later index and add this id
         if (viewingIdIndex <= viewedPlayerIdList.size - 2) {
-            if (viewedPlayerIdList[viewingIdIndex] != playerData.id) {
+            if (viewedPlayerIdList[viewingIdIndex] != playerData.playerId) {
                 viewingIdIndex++
                 viewedPlayerIdList.subList(viewingIdIndex, viewedPlayerIdList.size).clear()
-                viewedPlayerIdList.add(playerData.id)
+                viewedPlayerIdList.add(playerData.playerId)
             }
         } else {
             viewingIdIndex = viewedPlayerIdList.size
-            viewedPlayerIdList.add(playerData.id)
+            viewedPlayerIdList.add(playerData.playerId)
         }
     }
 
@@ -91,7 +91,7 @@ class PlayersInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
     private fun updateTable() {
         table.clear()
 
-        val headerLabel = createLabel("Selected: player ${playerData.id}", gdxSettings.bigFontSize)
+        val headerLabel = createLabel("Selected: player ${playerData.playerId}", gdxSettings.bigFontSize)
 
         table.add(headerLabel)
 
@@ -171,7 +171,7 @@ class PlayersInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
             height = 128f,
             soundVolume = gdxSettings.soundEffectsVolume
         ) {
-            game.universeClient.mapCenterPlayerId = playerData.id
+            game.universeClient.mapCenterPlayerId = playerData.playerId
         }
 
         nestedTable.add(previousPlayerIdButton).size(40f * gdxSettings.imageScale, 40f * gdxSettings.imageScale)
@@ -190,7 +190,7 @@ class PlayersInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
 
         val allPlayerIdSelectBox = createSelectBox(
             itemList = game.universeClient.getUniverseData3D().playerDataMap.keys.toList().sorted(),
-            default = playerData.id,
+            default = playerData.playerId,
             fontSize = gdxSettings.smallFontSize,
         ) { selectedId, _ ->
             game.universeClient.primarySelectedPlayerId = selectedId
@@ -228,7 +228,7 @@ class PlayersInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
 
         val directSubordinateIdSelectBox = createSelectBox(
             itemList = playerData.playerInternalData.directSubordinateIdList,
-            default = playerData.id,
+            default = playerData.playerId,
             fontSize = gdxSettings.smallFontSize,
         ) { selectedId, _ ->
             game.universeClient.primarySelectedPlayerId = selectedId
@@ -247,7 +247,7 @@ class PlayersInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
 
         val leaderIdSelectBox = createSelectBox(
             itemList = playerData.playerInternalData.leaderIdList,
-            default = playerData.id,
+            default = playerData.playerId,
             fontSize = gdxSettings.smallFontSize,
         ) { selectedId, _ ->
             game.universeClient.primarySelectedPlayerId = selectedId
@@ -266,7 +266,7 @@ class PlayersInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
 
         val subordinateIdSelectBox = createSelectBox(
             itemList = playerData.playerInternalData.subordinateIdList,
-            default = playerData.id,
+            default = playerData.playerId,
             fontSize = gdxSettings.smallFontSize,
         ) { selectedId, _ ->
             game.universeClient.primarySelectedPlayerId = selectedId

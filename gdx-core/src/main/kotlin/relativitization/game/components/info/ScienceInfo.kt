@@ -58,7 +58,7 @@ class ScienceInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         table.clear()
 
         val headerLabel =
-            createLabel("Science: player ${playerData.id}", gdxSettings.bigFontSize)
+            createLabel("Science: player ${playerData.playerId}", gdxSettings.bigFontSize)
 
         table.add(headerLabel)
 

@@ -3,8 +3,6 @@ package relativitization.universe
 import kotlinx.coroutines.runBlocking
 import relativitization.universe.data.*
 import relativitization.universe.data.physics.*
-import relativitization.universe.data.science.UniverseScienceData
-import relativitization.universe.data.science.knowledge.*
 import relativitization.universe.data.serializer.DataSerializer.copy
 import relativitization.universe.maths.grid.Grids.create3DGrid
 import relativitization.universe.maths.grid.Grids.double4DToGroupId
@@ -98,7 +96,7 @@ class PlayerCollection(
                 _, _, _ -> mutableListOf()
         }
 
-        playerMap.forEach { (_, player) -> playerId3D[player.int4D.x] [player.int4D.y][player.int4D.z].add(player.id) }
+        playerMap.forEach { (_, player) -> playerId3D[player.int4D.x] [player.int4D.y][player.int4D.z].add(player.playerId) }
 
         return playerId3D
     }
@@ -116,7 +114,7 @@ class PlayerCollection(
 
             // Also add afterimage
             player.int4DHistory.forEach { int4D ->
-                val oldData: PlayerData = universeData.getPlayerDataAt(int4D, player.id)
+                val oldData: PlayerData = universeData.getPlayerDataAt(int4D, player.playerId)
                 playerId3D[oldData.int4D.x] [oldData.int4D.y][oldData.int4D.z].add(oldData)
             }
         }
@@ -139,15 +137,15 @@ class PlayerCollection(
      * Add player if he does not exist or if the data is newer
      */
     fun addPlayer(playerData: PlayerData) {
-        if (hasPlayer(playerData.id)) {
-            if (playerData.int4D.t > playerMap.getValue(playerData.id).int4D.t) {
-                removePlayer(playerData.id)
-                playerMap[playerData.id] = copy(playerData)
+        if (hasPlayer(playerData.playerId)) {
+            if (playerData.int4D.t > playerMap.getValue(playerData.playerId).int4D.t) {
+                removePlayer(playerData.playerId)
+                playerMap[playerData.playerId] = copy(playerData)
             } else {
-                logger.debug("Not going to add player ${playerData.id}")
+                logger.debug("Not going to add player ${playerData.playerId}")
             }
         } else {
-            playerMap[playerData.id] = copy(playerData)
+            playerMap[playerData.playerId] = copy(playerData)
         }
     }
 
@@ -155,7 +153,7 @@ class PlayerCollection(
      * Remove player and add id to deadIdList if player is dead
      */
     fun cleanDeadPlayer() {
-        val dead: List<Int> = playerMap.values.filter { !it.playerInternalData.isAlive }.map { it.id }
+        val dead: List<Int> = playerMap.values.filter { !it.playerInternalData.isAlive }.map { it.playerId }
         dead.map { removePlayer(it) }
         deadIdList.addAll(dead)
     }
@@ -168,12 +166,12 @@ class PlayerCollection(
             playerData.newPlayerList.forEach { mutableNewPlayerInternalData ->
 
                 val newPlayerInternalData: PlayerInternalData = copy(mutableNewPlayerInternalData)
-                val id: Int = runBlocking {
-                    universeState.getNewId()
+                val playerId: Int = runBlocking {
+                    universeState.getNewPlayerId()
                 }
                 val name = randomPlayerName(newPlayerInternalData)
                 val newPlayerData: PlayerData = PlayerData(
-                    id = id,
+                    playerId = playerId,
                     name = name,
                     playerType= PlayerType.AI,
                     int4D = copy(playerData.int4D),

@@ -28,7 +28,7 @@ class FlockingGenerate : GenerateUniverse() {
         )
 
         for (i in 1..settings.numPlayer) {
-            val playerData = MutablePlayerData(id = i)
+            val playerData = MutablePlayerData(playerId = i)
 
             // Set human player for small i
             if (i <= settings.numHumanPlayer) {

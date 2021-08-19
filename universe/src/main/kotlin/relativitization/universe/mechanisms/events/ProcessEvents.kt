@@ -46,7 +46,7 @@ object ProcessEvents : Mechanism() {
 
         // Separate self commands and other commands
         val (selfCommandList, otherCommandList) = commandList.partition {
-            it.toId == mutablePlayerData.id
+            it.toId == mutablePlayerData.playerId
         }
 
         // Execute self commands

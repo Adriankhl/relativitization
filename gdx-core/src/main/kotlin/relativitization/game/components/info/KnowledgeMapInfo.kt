@@ -207,7 +207,7 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
     private fun updateKnowledgeBar() {
         knowledgeBar.clear()
 
-        val headerLabel = createLabel("Science: player ${playerData.id}", gdxSettings.bigFontSize)
+        val headerLabel = createLabel("Science: player ${playerData.playerId}", gdxSettings.bigFontSize)
 
         val controlTable: Table = Table()
 

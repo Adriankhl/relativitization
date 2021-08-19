@@ -51,8 +51,8 @@ class Minimal : GenerateUniverse() {
 
 
         // player 1 is a leader of player 2
-        playerData2.playerInternalData.changeDirectLeaderId(playerData1.id)
-        playerData1.playerInternalData.addDirectSubordinateId(playerData2.id)
+        playerData2.playerInternalData.changeDirectLeaderId(playerData1.playerId)
+        playerData1.playerInternalData.addDirectSubordinateId(playerData2.playerId)
 
         // player 4 is a dead player
         playerData4.playerInternalData.isAlive = false

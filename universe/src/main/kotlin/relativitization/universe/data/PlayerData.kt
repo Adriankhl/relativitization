@@ -25,7 +25,7 @@ import relativitization.universe.utils.RelativitizationLogManager
 /**
  * Data of the basic unit (player)
  *
- * @property id playerId
+ * @property playerId playerId
  * @property playerType ai / human / none (e.g. resource)
  * @property int4D 4D coordinate of the player
  * @property int4DHistory historical coordinate of the player
@@ -37,7 +37,7 @@ import relativitization.universe.utils.RelativitizationLogManager
  */
 @Serializable
 data class PlayerData(
-    val id: Int,
+    val playerId: Int,
     val name: String = "Default Player",
     val playerType: PlayerType = PlayerType.AI,
     val int4D: Int4D = Int4D(0, 0, 0, 0),
@@ -46,7 +46,7 @@ data class PlayerData(
     val groupId: Int = double4DToGroupId(double4D, 0.01),
     val velocity: Velocity = Velocity(0.0, 0.0, 0.0),
     val playerInternalData: PlayerInternalData = PlayerInternalData(
-        directLeaderId = id, leaderIdList = listOf(id)
+        directLeaderId = playerId, leaderIdList = listOf(playerId)
     ),
     val newPlayerList: List<PlayerInternalData> = listOf()
 ) {
@@ -54,14 +54,14 @@ data class PlayerData(
      * @param toId whether this id is the player or one the subordinates of the player
      */
     fun isSubOrdinateOrSelf(toId: Int): Boolean {
-        return (toId == id) || playerInternalData.subordinateIdList.contains(toId)
+        return (toId == playerId) || playerInternalData.subordinateIdList.contains(toId)
     }
 
     /**
      * @param toId whether this id is the player or one of the leaders of the player
      */
     fun isLeaderOrSelf(toId: Int): Boolean {
-        return (toId == id) || playerInternalData.leaderIdList.contains(toId)
+        return (toId == playerId) || playerInternalData.leaderIdList.contains(toId)
     }
 
     fun isValid(currentTime: Int): Boolean {
@@ -85,7 +85,7 @@ data class PlayerData(
 
 @Serializable
 data class MutablePlayerData(
-    val id: Int,
+    val playerId: Int,
     var name: String = "Default Player",
     var playerType: PlayerType = PlayerType.AI,
     var int4D: MutableInt4D = MutableInt4D(0, 0, 0, 0),
@@ -94,7 +94,7 @@ data class MutablePlayerData(
     var groupId: Int = double4DToGroupId(double4D, 0.01),
     var velocity: MutableVelocity = MutableVelocity(0.0, 0.0, 0.0),
     var playerInternalData: MutablePlayerInternalData = MutablePlayerInternalData(
-        directLeaderId = id, leaderIdList = mutableListOf(id)
+        directLeaderId = playerId, leaderIdList = mutableListOf(playerId)
     ),
     val newPlayerList: MutableList<MutablePlayerInternalData> = mutableListOf()
 ) {
@@ -122,14 +122,14 @@ data class MutablePlayerData(
      * @param toId whether this id is the player or one the subordinates of the player
      */
     fun isSubOrdinateOrSelf(toId: Int): Boolean {
-        return (toId == id) || playerInternalData.subordinateIdList.contains(toId)
+        return (toId == playerId) || playerInternalData.subordinateIdList.contains(toId)
     }
 
     /**
      * @param toId whether this id is the player or one of the leaders of the player
      */
     fun isLeaderOrSelf(toId: Int): Boolean {
-        return (toId == id) || playerInternalData.leaderIdList.contains(toId)
+        return (toId == playerId) || playerInternalData.leaderIdList.contains(toId)
     }
 
     companion object {
@@ -204,17 +204,17 @@ data class MutablePlayerInternalData(
     /**
      * Change direct leader id without removing the old direct leader as one of the leader
      */
-    fun changeDirectLeaderId(id: Int) {
-        directLeaderId = id
-        leaderIdList.add(id)
+    fun changeDirectLeaderId(playerId: Int) {
+        directLeaderId = playerId
+        leaderIdList.add(playerId)
     }
 
     /**
      * Add subordinate to this player
      */
-    fun addDirectSubordinateId(id: Int) {
-        directSubordinateIdList.add(id)
-        subordinateIdList.add(id)
+    fun addDirectSubordinateId(playerId: Int) {
+        directSubordinateIdList.add(playerId)
+        subordinateIdList.add(playerId)
     }
 
     /**

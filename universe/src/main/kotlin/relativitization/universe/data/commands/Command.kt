@@ -35,7 +35,7 @@ sealed class Command {
     fun canSendFromPlayer(playerData: PlayerData, universeSettings: UniverseSettings): Boolean {
         val hasCommand: Boolean = CommandCollection.hasCommand(universeSettings, this)
         val canSend: Boolean =  canSend(playerData, universeSettings)
-        val isPlayerDataValid: Boolean = (playerData.int4D == fromInt4D) && (playerData.id == fromId)
+        val isPlayerDataValid: Boolean = (playerData.int4D == fromInt4D) && (playerData.playerId == fromId)
         if (!hasCommand || !canSend || !isPlayerDataValid) {
             val className = this::class.qualifiedName
             logger.error("${className}: cannot send command, hasCommand: $hasCommand, canSend: $canSend, isPlayerDataValid: $isPlayerDataValid")
@@ -66,7 +66,7 @@ sealed class Command {
      * Check to see if id match
      */
     private fun checkId(playerData: MutablePlayerData): Boolean {
-        return if (playerData.id == toId) {
+        return if (playerData.playerId == toId) {
             true
         } else {
             val className = this::class.qualifiedName

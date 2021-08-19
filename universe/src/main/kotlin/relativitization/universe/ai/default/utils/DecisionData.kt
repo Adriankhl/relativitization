@@ -15,7 +15,7 @@ data class DecisionData(
         commandList.addAll(newCommandList)
         for (command in newCommandList) {
             val playerData = mutableUniverseData3DAtPlayer.get(command.toId)
-            if (playerData.id == -1) {
+            if (playerData.playerId == -1) {
                 logger.error("resetMutableData error: Player id -1")
             }
             command.checkAndExecute(playerData, universeData3DAtPlayer.universeSettings)
@@ -31,7 +31,7 @@ data class DecisionData(
         mutableUniverseData3DAtPlayer = DataSerializer.copy(universeData3DAtPlayer)
         for (command in commandList) {
             val playerData = mutableUniverseData3DAtPlayer.get(command.toId)
-            if (playerData.id == -1) {
+            if (playerData.playerId == -1) {
                 logger.error("resetMutableData error: Player id -1")
             }
             command.checkAndExecute(playerData, universeData3DAtPlayer.universeSettings)

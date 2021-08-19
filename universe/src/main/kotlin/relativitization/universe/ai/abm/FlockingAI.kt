@@ -57,7 +57,7 @@ object FlockingAI : AI() {
         val selfDouble4D = universeData3DAtPlayer.getCurrentPlayerData().double4D
         val nearByPlayerData: List<PlayerData> = universeData3DAtPlayer.playerDataMap.values.filter {
             val otherDouble4D = it.double4D
-            distance(selfDouble4D, otherDouble4D) < radius && (it.id != universeData3DAtPlayer.getCurrentPlayerData().id)
+            distance(selfDouble4D, otherDouble4D) < radius && (it.playerId != universeData3DAtPlayer.getCurrentPlayerData().playerId)
         }
 
         return if (nearByPlayerData.isEmpty()) {
@@ -83,7 +83,7 @@ object FlockingAI : AI() {
         val selfDouble4D = universeData3DAtPlayer.getCurrentPlayerData().double4D
         val nearByPlayerData: List<PlayerData> = universeData3DAtPlayer.playerDataMap.values.filter {
             val otherDouble4D = it.double4D
-            distance(selfDouble4D, otherDouble4D) < radius && (it.id != universeData3DAtPlayer.getCurrentPlayerData().id)
+            distance(selfDouble4D, otherDouble4D) < radius && (it.playerId != universeData3DAtPlayer.getCurrentPlayerData().playerId)
         }
 
 
@@ -111,7 +111,7 @@ object FlockingAI : AI() {
         val nearByPlayerData: List<PlayerData> = universeData3DAtPlayer.playerDataMap.values.filter {
             val otherDouble4D = it.double4D
             val distance = distance(selfDouble4D, otherDouble4D)
-            (distance < desiredSeparation) && (distance > 0.0) && (it.id != universeData3DAtPlayer.getCurrentPlayerData().id)
+            (distance < desiredSeparation) && (distance > 0.0) && (it.playerId != universeData3DAtPlayer.getCurrentPlayerData().playerId)
         }
 
         return if (nearByPlayerData.isEmpty()) {

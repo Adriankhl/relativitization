@@ -81,11 +81,11 @@ data class SelectEventChoiceCommand(
     override val description: String = "Select choice $choice for event $eventKey ($eventName)"
 
     override fun canSend(playerData: PlayerData, universeSettings: UniverseSettings): Boolean {
-        return playerData.id == toId
+        return playerData.playerId == toId
     }
 
     override fun canExecute(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean {
-        return playerData.id == fromId
+        return playerData.playerId == fromId
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {

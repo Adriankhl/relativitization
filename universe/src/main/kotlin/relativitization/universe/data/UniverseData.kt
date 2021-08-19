@@ -36,7 +36,7 @@ data class UniverseData(
     private fun isStateValid(): Boolean {
         // Not a valid test
         // val currentTimeCheck: Boolean = universeData4D.getTSizeList()[0] >= universeState.getCurrentTime()
-        val currentIdCheck: Boolean = (getLatestPlayerDataList().maxOfOrNull { it.id } ?: 0) <=
+        val currentIdCheck: Boolean = (getLatestPlayerDataList().maxOfOrNull { it.playerId } ?: 0) <=
                 universeState.getCurrentMaxId()
         return currentIdCheck
     }
@@ -101,7 +101,7 @@ data class UniverseData(
     fun getPlayerDataAt(int4D: Int4D, playerId: Int): PlayerData {
         val playerDataList: List<PlayerData> = getPlayerDataListAt(int4D)
         return playerDataList.first {
-            (it.id == playerId) && (it.int4D == int4D)
+            (it.playerId == playerId) && (it.int4D == int4D)
         }
     }
 
@@ -140,8 +140,8 @@ data class UniverseData(
 
                     // Check repeated playerData due to movement and time delay
                     for (playerData in playerDataList) {
-                        val id = playerData.id
-                        if (playerDataMap.containsKey(playerData.id)) {
+                        val id = playerData.playerId
+                        if (playerDataMap.containsKey(playerData.playerId)) {
                             // Two duplicate possibility:
                             // 1. time difference -> take the latest one
                             // 2. same time, different space -> take the one with the correct space coordinate
@@ -187,7 +187,7 @@ data class UniverseData(
      */
     fun getLatestPlayerDataList(): List<PlayerData> {
         val playerDataList: List<PlayerData> = universeData4D.getLatest().flatten().flatten().flatten()
-        return playerDataList.groupBy { it.id }.map { (_, v) -> v.maxByOrNull { it.int4D.t } }.filterNotNull()
+        return playerDataList.groupBy { it.playerId }.map { (_, v) -> v.maxByOrNull { it.int4D.t } }.filterNotNull()
     }
 
     /**

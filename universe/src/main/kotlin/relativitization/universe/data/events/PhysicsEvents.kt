@@ -54,8 +54,8 @@ data class MoveToDouble3DEvent(
             // disable fuel production by one turn
             val disableFuelIncreaseCommand = DisableFuelIncreaseCommand(
                 disableFuelIncreaseTimeLimit = 1,
-                toId = playerData.id,
-                fromId = playerData.id,
+                toId = playerData.playerId,
+                fromId = playerData.playerId,
                 fromInt4D = playerData.int4D,
             )
 
