@@ -42,14 +42,6 @@ data class MutablePopSystemicData(
      */
     fun newCarrierId(): Int {
         return ListFind.minMissing(carrierList.map { it.carrierId }, 0)
-        val sortedList: List<MutableCarrier> = carrierList.sortedBy { it.carrierId }
-        return sortedList.fold(0) { index, carrier ->
-            if (index == carrier.carrierId) {
-                index + 1
-            } else {
-                index
-            }
-        }
     }
 
     fun addRandomStellarSystem() {
