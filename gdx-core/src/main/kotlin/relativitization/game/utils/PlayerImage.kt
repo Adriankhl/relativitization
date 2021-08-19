@@ -26,9 +26,9 @@ object PlayerImage {
 
         val playerId = playerData.id
 
-        val hasStellarSystem: Boolean = playerData.playerInternalData.popSystemicData.carrierList.map {
-            it.carrierType == CarrierType.STELLAR
-        }.contains(true)
+        val hasStellarSystem: Boolean = playerData.playerInternalData.popSystemicData.carrierMap.any {
+            it.value.carrierType == CarrierType.STELLAR
+        }
 
         if (hasStellarSystem) {
             val stellarImage: Image = ActorFunction.createImage(assets, "system/sun", soundVolume)

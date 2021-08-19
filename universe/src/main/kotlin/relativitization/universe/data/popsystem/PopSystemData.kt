@@ -6,53 +6,52 @@ import kotlin.random.Random
 
 @Serializable
 data class PopSystemicData(
-    val carrierList: List<Carrier> = listOf()
+    val carrierMap: Map<Int, Carrier> = mapOf()
 ) {
     fun totalCoreRestMass(): Double {
-        return carrierList.sumOf { it.coreRestMass }
+        return carrierMap.values.sumOf { it.coreRestMass }
     }
 
     fun totalFuelRestMass(): Double {
-        return carrierList.sumOf { it.fuelRestMass }
+        return carrierMap.values.sumOf { it.fuelRestMass }
     }
 
     fun totalMaxDeltaFuelRestMass(): Double {
-        return carrierList.sumOf { it.maxDeltaFuelRestMass }
+        return carrierMap.values.sumOf { it.maxDeltaFuelRestMass }
     }
 }
 
 @Serializable
 data class MutablePopSystemicData(
-    val carrierList: MutableList<MutableCarrier> = mutableListOf()
+    val carrierMap: MutableMap<Int, MutableCarrier> = mutableMapOf()
 ) {
     fun totalCoreRestMass(): Double {
-        return carrierList.sumOf { it.coreRestMass }
+        return carrierMap.values.sumOf { it.coreRestMass }
     }
 
     fun totalFuelRestMass(): Double {
-        return carrierList.sumOf { it.fuelRestMass }
+        return carrierMap.values.sumOf { it.fuelRestMass }
     }
 
     fun totalMaxDeltaFuelRestMass(): Double {
-        return carrierList.sumOf { it.maxDeltaFuelRestMass }
+        return carrierMap.values.sumOf { it.maxDeltaFuelRestMass }
     }
 
     /**
      * Find the smallest non-negative carrier id which is not in the carrier list
      */
     fun newCarrierId(): Int {
-        return ListFind.minMissing(carrierList.map { it.carrierId }, 0)
+        return ListFind.minMissing(carrierMap.keys.toList(), 0)
     }
 
     fun addRandomStellarSystem() {
         val restMass = Random.nextDouble(1.0e30, 2.5e30)
-        carrierList.add(
-            MutableCarrier(
-                carrierId = newCarrierId(),
-                coreRestMass = restMass,
-                carrierType = CarrierType.STELLAR
-            )
+        val newCarrier = MutableCarrier(
+            coreRestMass = restMass,
+            carrierType = CarrierType.STELLAR
         )
+        carrierMap[newCarrierId()] = newCarrier
+
     }
 
     fun addSpaceShip(
@@ -60,14 +59,12 @@ data class MutablePopSystemicData(
         fuelRestMass: Double,
         maxDeltaFuelRestMass: Double
     ) {
-        carrierList.add(
-            MutableCarrier(
-                carrierId = newCarrierId(),
-                coreRestMass = coreRestMass,
-                fuelRestMass = fuelRestMass,
-                maxDeltaFuelRestMass = maxDeltaFuelRestMass,
-                carrierType = CarrierType.SPACESHIP
-            )
+        val newCarrier = MutableCarrier(
+            coreRestMass = coreRestMass,
+            fuelRestMass = fuelRestMass,
+            maxDeltaFuelRestMass = maxDeltaFuelRestMass,
+            carrierType = CarrierType.SPACESHIP
         )
+        carrierMap[newCarrierId()] = newCarrier
     }
 }
