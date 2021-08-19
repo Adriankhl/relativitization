@@ -1,6 +1,7 @@
 package relativitization.universe.data.science.knowledge
 
 import kotlinx.serialization.Serializable
+import relativitization.universe.maths.collection.ListFind
 import relativitization.universe.utils.RelativitizationLogManager
 
 /**
@@ -55,14 +56,7 @@ data class MutableKnowledgeData(
      * Compute and modify the startFromBasicResearchId
      */
     private fun computeStartFromBasicResearchId() {
-        val sortedList: List<Int> = basicResearchIdList.sorted()
-        startFromBasicResearchId = sortedList.fold(startFromBasicResearchId) { newStart, id ->
-            if ((newStart + 1) == id) {
-                newStart + 1
-            } else {
-                newStart
-            }
-        }
+        startFromBasicResearchId = ListFind.minMissing(basicResearchIdList, startFromBasicResearchId)
         basicResearchIdList.removeAll { it < startFromBasicResearchId }
     }
 
@@ -86,14 +80,7 @@ data class MutableKnowledgeData(
      * Compute and modify the startFromAppliedResearchId
      */
     private fun computeStartFromAppliedResearchId() {
-        val sortedList: List<Int> = appliedResearchIdList.sorted()
-        startFromAppliedResearchId = sortedList.fold(startFromAppliedResearchId) { newStart, id ->
-            if ((newStart + 1) == id) {
-                newStart + 1
-            } else {
-                newStart
-            }
-        }
+        startFromAppliedResearchId = ListFind.minMissing(appliedResearchIdList, startFromAppliedResearchId)
         appliedResearchIdList.removeAll { it < startFromAppliedResearchId }
     }
 
