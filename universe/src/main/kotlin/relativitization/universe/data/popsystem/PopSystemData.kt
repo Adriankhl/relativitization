@@ -1,6 +1,7 @@
 package relativitization.universe.data.popsystem
 
 import kotlinx.serialization.Serializable
+import relativitization.universe.maths.collection.ListFind
 import kotlin.random.Random
 
 @Serializable
@@ -40,6 +41,7 @@ data class MutablePopSystemicData(
      * Find the smallest non-negative carrier id which is not in the carrier list
      */
     fun newCarrierId(): Int {
+        return ListFind.minMissing(carrierList.map { it.carrierId }, 0)
         val sortedList: List<MutableCarrier> = carrierList.sortedBy { it.carrierId }
         return sortedList.fold(0) { index, carrier ->
             if (index == carrier.carrierId) {
