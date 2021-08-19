@@ -14,7 +14,7 @@ data class TaxRateData(
 @Serializable
 data class MutableTaxRateData(
     var tariff: MutableTariffData = MutableTariffData(),
-    var incomeTaxData: MutableIncomeTaxData = MutableIncomeTaxData(),
+    var incomeTax: MutableIncomeTaxData = MutableIncomeTaxData(),
 )
 
 @Serializable
