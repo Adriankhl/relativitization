@@ -41,6 +41,8 @@ enum class ResourceQualityClass {
 data class ResourceData(
     val resourceQualityMap: Map<ResourceType, Map<ResourceQualityClass, ResourceQualityData>> = mapOf(),
     val resourceAmountMap: Map<ResourceType, Map<ResourceQualityClass, Double>> = mapOf(),
+    val resourceTradeFractionMap: Map<ResourceType, Map<ResourceQualityClass, Double>> = mapOf(),
+    val resourceProductionFractionMap: Map<ResourceType, Map<ResourceQualityClass, Double>> = mapOf(),
     val resourcePriceMap: Map<ResourceType, Map<ResourceQualityClass, Double>> = mapOf(),
 ) {
     /**
@@ -70,6 +72,36 @@ data class ResourceData(
         ) ?: 0.0
     }
 
+
+    /**
+     * Get resource amount available for trading
+     */
+    fun getTradeResourceAmount(
+        resourceType: ResourceType,
+        resourceQualityClass: ResourceQualityClass
+    ): Double {
+        val amount: Double = getResourceAmount(resourceType, resourceQualityClass)
+        val fraction: Double = resourceTradeFractionMap[resourceType]?.get(
+            resourceQualityClass
+        ) ?: 0.0
+        return amount * fraction
+    }
+
+    /**
+     * Get resource amount available for trading
+     */
+    fun getProductionResourceAmount(
+        resourceType: ResourceType,
+        resourceQualityClass: ResourceQualityClass
+    ): Double {
+        val amount: Double = getResourceAmount(resourceType, resourceQualityClass)
+        val fraction: Double = resourceProductionFractionMap[resourceType]?.get(
+            resourceQualityClass
+        ) ?: 0.0
+        return amount * fraction
+    }
+
+
     /**
      * Get resource price, default to Double.MAX_VALUE if the resource doesn't exist
      */
@@ -87,6 +119,8 @@ data class ResourceData(
 data class MutableResourceData(
     var resourceQualityMap: MutableMap<ResourceType, MutableMap<ResourceQualityClass, MutableResourceQualityData>> = mutableMapOf(),
     var resourceAmountMap: MutableMap<ResourceType, MutableMap<ResourceQualityClass, Double>> = mutableMapOf(),
+    var resourceTradeFractionMap: MutableMap<ResourceType, MutableMap<ResourceQualityClass, Double>> = mutableMapOf(),
+    var resourceProductionFractionMap: MutableMap<ResourceType, MutableMap<ResourceQualityClass, Double>> = mutableMapOf(),
     var resourcePriceMap: MutableMap<ResourceType, MutableMap<ResourceQualityClass, Double>> = mutableMapOf(),
 ) {
     /**
@@ -112,6 +146,35 @@ data class MutableResourceData(
         return resourceAmountMap[resourceType]?.get(
             resourceQualityClass
         ) ?: 0.0
+    }
+
+
+    /**
+     * Get resource amount available for trading
+     */
+    fun getTradeResourceAmount(
+        resourceType: ResourceType,
+        resourceQualityClass: ResourceQualityClass
+    ): Double {
+        val amount: Double = getResourceAmount(resourceType, resourceQualityClass)
+        val fraction: Double = resourceTradeFractionMap[resourceType]?.get(
+            resourceQualityClass
+        ) ?: 0.0
+        return amount * fraction
+    }
+
+    /**
+     * Get resource amount available for trading
+     */
+    fun getProductionResourceAmount(
+        resourceType: ResourceType,
+        resourceQualityClass: ResourceQualityClass
+    ): Double {
+        val amount: Double = getResourceAmount(resourceType, resourceQualityClass)
+        val fraction: Double = resourceProductionFractionMap[resourceType]?.get(
+            resourceQualityClass
+        ) ?: 0.0
+        return amount * fraction
     }
 
     /**
