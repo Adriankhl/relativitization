@@ -65,9 +65,7 @@ data class ResourceData(
         resourceType: ResourceType,
         resourceQualityClass: ResourceQualityClass
     ): Double {
-        return resourceAmountMap.get(
-            resourceType
-        )?.get(
+        return resourceAmountMap[resourceType]?.get(
             resourceQualityClass
         ) ?: 0.0
     }
@@ -79,9 +77,7 @@ data class ResourceData(
         resourceType: ResourceType,
         resourceQualityClass: ResourceQualityClass
     ): Double {
-        return resourceAmountMap.get(
-            resourceType
-        )?.get(
+        return resourceAmountMap[resourceType]?.get(
             resourceQualityClass
         ) ?: Double.MAX_VALUE
     }
@@ -100,9 +96,7 @@ data class MutableResourceData(
         resourceType: ResourceType,
         resourceQualityClass: ResourceQualityClass
     ): MutableResourceQualityData {
-        return resourceQualityMap.get(
-            resourceType
-        )?.get(
+        return resourceQualityMap[resourceType]?.get(
             resourceQualityClass
         ) ?: MutableResourceQualityData()
     }
@@ -115,9 +109,7 @@ data class MutableResourceData(
         resourceType: ResourceType,
         resourceQualityClass: ResourceQualityClass
     ): Double {
-        return resourceAmountMap.get(
-            resourceType
-        )?.get(
+        return resourceAmountMap[resourceType]?.get(
             resourceQualityClass
         ) ?: 0.0
     }
@@ -129,9 +121,7 @@ data class MutableResourceData(
         resourceType: ResourceType,
         resourceQualityClass: ResourceQualityClass
     ): Double {
-        return resourceAmountMap.get(
-            resourceType
-        )?.get(
+        return resourceAmountMap[resourceType]?.get(
             resourceQualityClass
         ) ?: Double.MAX_VALUE
     }
