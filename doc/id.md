@@ -4,3 +4,4 @@
 * eventData map key
 * basicResearchId
 * appliedResearchId
+* factory map key
