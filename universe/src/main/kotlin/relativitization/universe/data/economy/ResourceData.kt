@@ -37,6 +37,18 @@ enum class ResourceQualityClass {
     THIRD,
 }
 
+/**
+ * Resource data, a resource of a player has ResourceType and ResourceQualityClass
+ *
+ * @property resourceQualityMap map from ResourceType and ResourceQualityClass to resource quality
+ * @property resourceAmountMap map from ResourceType and ResourceQualityClass to resource amount
+ * @property resourceTradeFractionMap map from ResourceType and ResourceQualityClass to the fraction
+ * of resource available for trade
+ * @property resourceProductionFractionMap map from ResourceType and ResourceQualityClass to the fraction
+ * of resource available for production
+ * @property resourcePriceMap map from ResourceType and ResourceQualityClass to resource price in
+ * fuel rest mass
+ */
 @Serializable
 data class ResourceData(
     val resourceQualityMap: Map<ResourceType, Map<ResourceQualityClass, ResourceQualityData>> = mapOf(),
