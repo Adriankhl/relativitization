@@ -22,6 +22,6 @@ data class BuildFactoryData(
 @Serializable
 data class MutableBuildFactoryData(
     var outputResource: ResourceType = ResourceType.PLANT,
-    var targetQualityData: MutableResourceQualityData = MutableResourceQualityData()
+    var targetQualityData: MutableResourceQualityData = MutableResourceQualityData(),
     var progress: Double = 0.0,
 )
