@@ -46,7 +46,7 @@ enum class ResourceQualityClass {
  * of resource available for trade
  * @property resourceProductionFractionMap map from ResourceType and ResourceQualityClass to the fraction
  * of resource available for production
- * @property resourcePriceMap map from ResourceType and ResourceQualityClass to resource price in
+ * @property resourcePriceMap map from ResourceType and ResourceQualityClass to resource price to
  * fuel rest mass
  */
 @Serializable
