@@ -1,30 +1,31 @@
 package relativitization.universe.data.politics
 
 import kotlinx.serialization.Serializable
+import kotlin.math.abs
 
 @Serializable
 data class PoliticsData(
-    val governmentType: GovernmentType = GovernmentType.DICTATORSHIP
+    val centralizationLevel: Int = 0,
+    val allowSubordinateBuildFactory: Boolean = false,
 ) {
     /**
      * Compute the ideology distance between player to represent how different between the two
      */
     fun ideologyDistance(politicsData: PoliticsData): Double {
-        val governmentTypeDistance: Double = if (governmentType == politicsData.governmentType) {
-            0.0
-        } else {
-            1.0
-        }
-        return governmentTypeDistance
+        val centralizationDistance: Double =
+            abs(centralizationLevel - politicsData.centralizationLevel).toDouble()
+        val allowSubordinateBuildFactoryDistance =
+            if (allowSubordinateBuildFactory == politicsData.allowSubordinateBuildFactory) {
+                0.0
+            } else {
+                1.0
+            }
+        return centralizationDistance + allowSubordinateBuildFactoryDistance
     }
 }
 
 @Serializable
 data class MutablePoliticsData(
-    var governmentType: GovernmentType = GovernmentType.DICTATORSHIP
+    var centralizationLevel: Int = 0,
+    val allowSubordinateBuildFactory: Boolean = false,
 )
-
-enum class GovernmentType {
-    DEMOCRACY,
-    DICTATORSHIP,
-}
