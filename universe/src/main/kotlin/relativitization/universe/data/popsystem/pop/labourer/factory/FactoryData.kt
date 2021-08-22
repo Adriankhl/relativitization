@@ -14,6 +14,9 @@ import relativitization.universe.data.economy.ResourceType
  * @property lastOutputAmount the output amount in the latest turn
  * @property inputResourceMap map the input resource type to the input-related data
  * @property fuelRestMassConsumptionRate fuel consumption rate
+ * @property maxNumEmployee max number of employee
+ * @property lastNumEmployee number of employee in the last turn
+ * @property size the size of this factory
  */
 @Serializable
 data class FactoryData(
@@ -23,6 +26,9 @@ data class FactoryData(
     val lastOutputAmount: Double = 0.0,
     val inputResourceMap: Map<ResourceType, InputResourceData> = mapOf(),
     val fuelRestMassConsumptionRate: Double = 0.0,
+    val maxNumEmployee: Double = 0.0,
+    val lastNumEmployee: Double = 0.0,
+    val size: Double = 0.0,
 ) {
     fun maxInputAmount(resourceType: ResourceType): Double {
         val amountPerUnit: Double = inputResourceMap[resourceType]?.amountPerOutputUnit ?: 0.0
@@ -38,6 +44,9 @@ data class MutableFactoryData(
     var lastOutputAmount: Double = 0.0,
     var inputResourceMap: MutableMap<ResourceType, InputResourceData> = mutableMapOf(),
     var fuelRestMassConsumptionRate: Double = 0.0,
+    var maxNumEmployee: Double = 0.0,
+    var lastNumEmployee: Double = 0.0,
+    var size: Double = 0.0,
 ) {
     fun maxInputAmount(resourceType: ResourceType): Double {
         val amountPerUnit: Double = inputResourceMap[resourceType]?.amountPerOutputUnit ?: 0.0
