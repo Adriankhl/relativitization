@@ -1,8 +1,8 @@
 package relativitization.universe.communication
 
 import relativitization.universe.data.commands.ChangeVelocityCommand
-import relativitization.universe.data.physics.Int4D
-import relativitization.universe.data.physics.Velocity
+import relativitization.universe.data.subsystem.physics.Int4D
+import relativitization.universe.data.subsystem.physics.Velocity
 import relativitization.universe.data.serializer.DataSerializer
 import kotlin.test.Test
 

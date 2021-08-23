@@ -1,9 +1,8 @@
 package relativitization.universe.generate.science
 
-import relativitization.universe.data.UniverseData
-import relativitization.universe.data.science.MutableUniverseScienceData
-import relativitization.universe.data.science.UniverseScienceData
-import relativitization.universe.data.science.knowledge.*
+import relativitization.universe.data.subsystem.science.MutableUniverseScienceData
+import relativitization.universe.data.subsystem.science.UniverseScienceData
+import relativitization.universe.data.subsystem.science.knowledge.*
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.maths.physics.Intervals
 import relativitization.universe.maths.sampling.WeightedReservoir

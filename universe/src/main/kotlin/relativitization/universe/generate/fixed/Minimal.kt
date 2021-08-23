@@ -1,12 +1,12 @@
 package relativitization.universe.generate.fixed
 
 import relativitization.universe.data.*
-import relativitization.universe.data.physics.MutableInt4D
-import relativitization.universe.data.science.UniverseScienceData
-import relativitization.universe.data.science.knowledge.AppliedResearchField
-import relativitization.universe.data.science.knowledge.AppliedResearchProjectData
-import relativitization.universe.data.science.knowledge.BasicResearchField
-import relativitization.universe.data.science.knowledge.BasicResearchProjectData
+import relativitization.universe.data.subsystem.physics.MutableInt4D
+import relativitization.universe.data.subsystem.science.UniverseScienceData
+import relativitization.universe.data.subsystem.science.knowledge.AppliedResearchField
+import relativitization.universe.data.subsystem.science.knowledge.AppliedResearchProjectData
+import relativitization.universe.data.subsystem.science.knowledge.BasicResearchField
+import relativitization.universe.data.subsystem.science.knowledge.BasicResearchProjectData
 import relativitization.universe.data.serializer.DataSerializer.copy
 import relativitization.universe.generate.GenerateSettings
 import relativitization.universe.generate.GenerateUniverse

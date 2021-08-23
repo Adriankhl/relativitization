@@ -4,8 +4,8 @@ import kotlinx.serialization.Serializable
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.UniverseSettings
-import relativitization.universe.data.physics.Int4D
-import relativitization.universe.data.physics.Velocity
+import relativitization.universe.data.subsystem.physics.Int4D
+import relativitization.universe.data.subsystem.physics.Velocity
 import relativitization.universe.maths.physics.Relativistic.targetVelocityByPhotonRocket
 import relativitization.universe.maths.physics.TargetVelocityData
 import relativitization.universe.utils.RelativitizationLogManager

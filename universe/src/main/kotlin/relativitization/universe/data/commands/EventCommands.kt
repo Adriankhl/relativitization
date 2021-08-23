@@ -8,7 +8,7 @@ import relativitization.universe.data.events.Event
 import relativitization.universe.data.events.EventCollection
 import relativitization.universe.data.events.EventName
 import relativitization.universe.data.events.MutableEventData
-import relativitization.universe.data.physics.Int4D
+import relativitization.universe.data.subsystem.physics.Int4D
 import relativitization.universe.utils.RelativitizationLogManager
 
 /**

@@ -8,7 +8,7 @@ import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.ChangeVelocityCommand
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.commands.DisableFuelIncreaseCommand
-import relativitization.universe.data.physics.Double3D
+import relativitization.universe.data.subsystem.physics.Double3D
 import relativitization.universe.maths.physics.Movement.targetDouble3DByPhotonRocket
 import relativitization.universe.maths.physics.TargetVelocityData
 import relativitization.universe.utils.RelativitizationLogManager

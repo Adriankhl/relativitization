@@ -2,7 +2,7 @@ package relativitization.universe
 
 import kotlinx.coroutines.runBlocking
 import relativitization.universe.data.*
-import relativitization.universe.data.physics.*
+import relativitization.universe.data.subsystem.physics.*
 import relativitization.universe.data.serializer.DataSerializer.copy
 import relativitization.universe.maths.grid.Grids.create3DGrid
 import relativitization.universe.maths.grid.Grids.double4DToGroupId

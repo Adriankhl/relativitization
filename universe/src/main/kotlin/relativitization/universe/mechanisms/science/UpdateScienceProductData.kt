@@ -4,9 +4,9 @@ import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
-import relativitization.universe.data.science.MutablePlayerScienceData
-import relativitization.universe.data.science.UniverseScienceData
-import relativitization.universe.data.science.knowledge.MutableKnowledgeData
+import relativitization.universe.data.subsystem.science.MutablePlayerScienceData
+import relativitization.universe.data.subsystem.science.UniverseScienceData
+import relativitization.universe.data.subsystem.science.knowledge.MutableKnowledgeData
 import relativitization.universe.mechanisms.Mechanism
 import kotlin.math.exp
 

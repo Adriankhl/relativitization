@@ -9,11 +9,11 @@ import relativitization.game.RelativitizationGame
 import relativitization.game.utils.ActorFunction
 import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.PlayerData
-import relativitization.universe.data.physics.Double2D
-import relativitization.universe.data.science.knowledge.AppliedResearchField
-import relativitization.universe.data.science.knowledge.AppliedResearchProjectData
-import relativitization.universe.data.science.knowledge.BasicResearchField
-import relativitization.universe.data.science.knowledge.BasicResearchProjectData
+import relativitization.universe.data.subsystem.physics.Double2D
+import relativitization.universe.data.subsystem.science.knowledge.AppliedResearchField
+import relativitization.universe.data.subsystem.science.knowledge.AppliedResearchProjectData
+import relativitization.universe.data.subsystem.science.knowledge.BasicResearchField
+import relativitization.universe.data.subsystem.science.knowledge.BasicResearchProjectData
 import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.math.max
 import kotlin.math.min

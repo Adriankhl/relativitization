@@ -5,7 +5,7 @@ import relativitization.universe.data.UniverseData
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
-import relativitization.universe.data.science.UniverseScienceData
+import relativitization.universe.data.subsystem.science.UniverseScienceData
 import relativitization.universe.mechanisms.events.AutoEventCollection
 import relativitization.universe.mechanisms.events.ProcessEvents
 import relativitization.universe.mechanisms.modifier.UpdateModifierTime

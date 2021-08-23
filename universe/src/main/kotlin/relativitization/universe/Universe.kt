@@ -4,10 +4,10 @@ import kotlinx.coroutines.*
 import relativitization.universe.ai.AICollection
 import relativitization.universe.data.*
 import relativitization.universe.data.commands.Command
-import relativitization.universe.data.physics.Int3D
-import relativitization.universe.data.physics.Int4D
-import relativitization.universe.data.science.MutableUniverseScienceData
-import relativitization.universe.data.science.UniverseScienceData
+import relativitization.universe.data.subsystem.physics.Int3D
+import relativitization.universe.data.subsystem.physics.Int4D
+import relativitization.universe.data.subsystem.science.MutableUniverseScienceData
+import relativitization.universe.data.subsystem.science.UniverseScienceData
 import relativitization.universe.data.serializer.DataSerializer.copy
 import relativitization.universe.data.serializer.DataSerializer.decode
 import relativitization.universe.data.serializer.DataSerializer.encode

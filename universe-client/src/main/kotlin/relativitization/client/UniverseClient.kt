@@ -18,8 +18,8 @@ import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.commands.DummyCommand
-import relativitization.universe.data.physics.Double2D
-import relativitization.universe.data.physics.Int3D
+import relativitization.universe.data.subsystem.physics.Double2D
+import relativitization.universe.data.subsystem.physics.Int3D
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.generate.GenerateSettings
 import relativitization.universe.utils.CoroutineBoolean
