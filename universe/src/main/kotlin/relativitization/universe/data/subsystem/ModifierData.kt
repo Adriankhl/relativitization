@@ -1,18 +1,21 @@
 package relativitization.universe.data.subsystem
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.subsystem.modifier.MutablePhysicsModifierData
 import relativitization.universe.data.subsystem.modifier.PhysicsModifierData
 
 @Serializable
+@SerialName("ModifierData")
 data class ModifierData(
     val physicsModifierData: PhysicsModifierData = PhysicsModifierData()
-) : PlayerSubsystemData
+) : PlayerSubsystemData()
 
 @Serializable
+@SerialName("ModifierData")
 data class MutableModifierData(
     val physicsModifierData: MutablePhysicsModifierData = MutablePhysicsModifierData()
-) : MutablePlayerSubsystemData {
+) : MutablePlayerSubsystemData() {
     /**
      * Decrease time of modifiers
      */

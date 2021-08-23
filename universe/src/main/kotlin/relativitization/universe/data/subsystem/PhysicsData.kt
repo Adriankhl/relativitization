@@ -1,5 +1,6 @@
 package relativitization.universe.data.subsystem
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlin.math.min
 
@@ -11,21 +12,23 @@ import kotlin.math.min
  * @property maxDeltaFuelRestMass maximum change of fuel mass per turn
  */
 @Serializable
+@SerialName("PhysicsData")
 data class PhysicsData(
     val coreRestMass: Double = 1.0,
     val fuelRestMass: Double = 1.0,
     val maxDeltaFuelRestMass: Double = 0.0,
-) : PlayerSubsystemData {
+) : PlayerSubsystemData() {
     fun totalRestMass() = coreRestMass + fuelRestMass
     fun maxDeltaRestMass() = min(fuelRestMass, maxDeltaFuelRestMass)
 }
 
 @Serializable
+@SerialName("PhysicsData")
 data class MutablePhysicsData(
     var coreRestMass: Double = 1.0,
     var fuelRestMass: Double = 1.0,
     var maxDeltaFuelRestMass: Double = 0.0,
-) : MutablePlayerSubsystemData {
+) : MutablePlayerSubsystemData() {
     fun totalRestMass() = coreRestMass + fuelRestMass
     fun maxDeltaRestMass() = min(fuelRestMass, maxDeltaFuelRestMass)
 }

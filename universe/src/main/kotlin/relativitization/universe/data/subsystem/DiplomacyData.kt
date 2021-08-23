@@ -1,5 +1,6 @@
 package relativitization.universe.data.subsystem
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
@@ -9,19 +10,21 @@ import kotlinx.serialization.Serializable
  * @property enemyList list of enemy
  */
 @Serializable
+@SerialName("DiplomacyData")
 data class DiplomacyData(
     val relationMap: Map<Int, Int> = mapOf(),
     val allyList: List<Int> = listOf(),
     val enemyList: List<Int> = listOf(),
-) : PlayerSubsystemData {
+) : PlayerSubsystemData() {
     fun getRelation(id: Int): Int {
         return relationMap.getOrDefault(id, 0)
     }
 }
 
 @Serializable
+@SerialName("DiplomacyData")
 data class MutableDiplomacyData(
     var relationMap: MutableMap<Int, Int> = mutableMapOf(),
     var allyList: MutableList<Int> = mutableListOf(),
     var enemyList: MutableList<Int> = mutableListOf(),
-) : MutablePlayerSubsystemData
+) : MutablePlayerSubsystemData()

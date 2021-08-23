@@ -40,14 +40,14 @@ class Minimal : GenerateUniverse() {
         playerData3.int4D = MutableInt4D(0, 0, 0, 1)
 
         // Add one stellar to players
-        playerData1.playerInternalData.popSystemicData.addRandomStellarSystem()
-        playerData3.playerInternalData.popSystemicData.addRandomStellarSystem()
+        playerData1.playerInternalData.popSystemData.addRandomStellarSystem()
+        playerData3.playerInternalData.popSystemData.addRandomStellarSystem()
 
         // Add spaceShip
-        playerData1.playerInternalData.popSystemicData.addSpaceShip(1.0, 100.0, 100.0)
-        playerData2.playerInternalData.popSystemicData.addSpaceShip(1.0, 100.0, 100.0)
-        playerData3.playerInternalData.popSystemicData.addSpaceShip(1.0, 100.0, 100.0)
-        playerData4.playerInternalData.popSystemicData.addSpaceShip(1.0, 100.0, 100.0)
+        playerData1.playerInternalData.popSystemData.addSpaceShip(1.0, 100.0, 100.0)
+        playerData2.playerInternalData.popSystemData.addSpaceShip(1.0, 100.0, 100.0)
+        playerData3.playerInternalData.popSystemData.addSpaceShip(1.0, 100.0, 100.0)
+        playerData4.playerInternalData.popSystemData.addSpaceShip(1.0, 100.0, 100.0)
 
 
         // player 1 is a leader of player 2

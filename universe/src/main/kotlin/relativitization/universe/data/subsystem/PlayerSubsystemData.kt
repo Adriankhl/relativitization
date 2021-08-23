@@ -1,5 +1,9 @@
 package relativitization.universe.data.subsystem
 
-sealed interface PlayerSubsystemData
+import kotlinx.serialization.Serializable
 
-sealed interface MutablePlayerSubsystemData
+@Serializable
+sealed class PlayerSubsystemData
+
+@Serializable
+sealed class MutablePlayerSubsystemData

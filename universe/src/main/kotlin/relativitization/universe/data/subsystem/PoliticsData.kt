@@ -1,13 +1,15 @@
 package relativitization.universe.data.subsystem
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlin.math.abs
 
 @Serializable
+@SerialName("PoliticsData")
 data class PoliticsData(
     val centralizationLevel: Int = 0,
     val allowSubordinateBuildFactory: Boolean = false,
-) : PlayerSubsystemData {
+) : MutablePlayerSubsystemData() {
     /**
      * Compute the ideology distance between player to represent how different between the two
      */
@@ -25,7 +27,8 @@ data class PoliticsData(
 }
 
 @Serializable
+@SerialName("PoliticsData")
 data class MutablePoliticsData(
     var centralizationLevel: Int = 0,
     val allowSubordinateBuildFactory: Boolean = false,
-) : MutablePlayerSubsystemData
+) : PlayerSubsystemData()

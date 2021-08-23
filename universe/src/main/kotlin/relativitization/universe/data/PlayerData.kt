@@ -7,8 +7,8 @@ import relativitization.universe.data.subsystem.*
 import relativitization.universe.data.subsystem.physics.*
 import relativitization.universe.data.subsystem.MutablePoliticsData
 import relativitization.universe.data.subsystem.PoliticsData
-import relativitization.universe.data.subsystem.MutablePopSystemicData
-import relativitization.universe.data.subsystem.PopSystemicData
+import relativitization.universe.data.subsystem.MutablePopSystemData
+import relativitization.universe.data.subsystem.PopSystemData
 import relativitization.universe.data.subsystem.MutablePlayerScienceData
 import relativitization.universe.data.subsystem.PlayerScienceData
 import relativitization.universe.maths.collection.ListFind
@@ -96,19 +96,19 @@ data class MutablePlayerData(
      * Synchronize different data component to ensure consistency
      */
     fun syncDataComponent() {
-        if (playerInternalData.physicsData.coreRestMass != playerInternalData.popSystemicData.totalCoreRestMass()) {
+        if (playerInternalData.physicsData.coreRestMass != playerInternalData.popSystemData.totalCoreRestMass()) {
             logger.debug("Sync data component, change core mass")
-            playerInternalData.physicsData.coreRestMass = playerInternalData.popSystemicData.totalCoreRestMass()
+            playerInternalData.physicsData.coreRestMass = playerInternalData.popSystemData.totalCoreRestMass()
         }
 
-        if (playerInternalData.physicsData.fuelRestMass != playerInternalData.popSystemicData.totalFuelRestMass()) {
+        if (playerInternalData.physicsData.fuelRestMass != playerInternalData.popSystemData.totalFuelRestMass()) {
             logger.debug("Sync data component, change fuel mass")
-            playerInternalData.physicsData.fuelRestMass = playerInternalData.popSystemicData.totalFuelRestMass()
+            playerInternalData.physicsData.fuelRestMass = playerInternalData.popSystemData.totalFuelRestMass()
         }
 
-        if (playerInternalData.physicsData.maxDeltaFuelRestMass != playerInternalData.popSystemicData.totalMaxDeltaFuelRestMass()) {
+        if (playerInternalData.physicsData.maxDeltaFuelRestMass != playerInternalData.popSystemData.totalMaxDeltaFuelRestMass()) {
             logger.debug("Sync data component, change max delta fuel rest mass")
-            playerInternalData.physicsData.maxDeltaFuelRestMass = playerInternalData.popSystemicData.totalMaxDeltaFuelRestMass()
+            playerInternalData.physicsData.maxDeltaFuelRestMass = playerInternalData.popSystemData.totalMaxDeltaFuelRestMass()
         }
     }
 
@@ -151,7 +151,7 @@ enum class PlayerType {
  * @property aiData data for ai computation, e.g. name, cool down
  * @property eventDataList list of current event on this player
  * @property physicsData physics-related data
- * @property popSystemicData population system related data
+ * @property popSystemData population system related data
  * @property playerScienceData research related data
  * @property politicsData political related data
  * @property diplomacyData diplomatic relation data
@@ -168,7 +168,7 @@ data class PlayerInternalData(
     val aiData: AIData = AIData(),
     val eventDataMap: Map<Int, EventData> = mapOf(),
     val physicsData: PhysicsData = PhysicsData(),
-    val popSystemicData: PopSystemicData = PopSystemicData(),
+    val popSystemData: PopSystemData = PopSystemData(),
     val playerScienceData: PlayerScienceData = PlayerScienceData(),
     val politicsData: PoliticsData = PoliticsData(),
     val diplomacyData: DiplomacyData = DiplomacyData(),
@@ -186,7 +186,7 @@ data class MutablePlayerInternalData(
     var aiData: MutableAIData = MutableAIData(),
     var eventDataMap: MutableMap<Int, MutableEventData> = mutableMapOf(),
     var physicsData: MutablePhysicsData = MutablePhysicsData(),
-    var popSystemicData: MutablePopSystemicData = MutablePopSystemicData(),
+    var popSystemData: MutablePopSystemData = MutablePopSystemData(),
     var playerScienceData: MutablePlayerScienceData = MutablePlayerScienceData(),
     var politicsData: MutablePoliticsData = MutablePoliticsData(),
     var diplomacyData: MutableDiplomacyData = MutableDiplomacyData(),

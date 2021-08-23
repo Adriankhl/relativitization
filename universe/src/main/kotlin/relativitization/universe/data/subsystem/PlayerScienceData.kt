@@ -1,5 +1,6 @@
 package relativitization.universe.data.subsystem
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.subsystem.science.knowledge.*
 import relativitization.universe.data.subsystem.science.product.MutableScienceProductData
@@ -21,6 +22,7 @@ import relativitization.universe.utils.RelativitizationLogManager
  * @property playerScienceProductData the science product data of the player, based on playerKnowledgeData
  */
 @Serializable
+@SerialName("PlayerScienceData")
 data class PlayerScienceData(
     val commonSenseKnowledgeData: KnowledgeData = KnowledgeData(),
     val doneBasicResearchProjectList: List<BasicResearchProjectData> = listOf(),
@@ -29,9 +31,10 @@ data class PlayerScienceData(
     val knownAppliedResearchProjectList: List<AppliedResearchProjectData> = listOf(),
     val playerKnowledgeData: KnowledgeData = KnowledgeData(),
     val playerScienceProductData: ScienceProductData = ScienceProductData(),
-) : PlayerSubsystemData
+) : PlayerSubsystemData()
 
 @Serializable
+@SerialName("PlayerScienceData")
 data class MutablePlayerScienceData(
     var commonSenseKnowledgeData: MutableKnowledgeData = MutableKnowledgeData(),
     val doneBasicResearchProjectList: MutableList<BasicResearchProjectData> = mutableListOf(),
@@ -40,7 +43,7 @@ data class MutablePlayerScienceData(
     val knownAppliedResearchProjectList: MutableList<AppliedResearchProjectData> = mutableListOf(),
     var playerKnowledgeData: MutableKnowledgeData = MutableKnowledgeData(),
     var playerScienceProductData: MutableScienceProductData = MutableScienceProductData(),
-) : MutablePlayerSubsystemData {
+) : MutablePlayerSubsystemData() {
     /**
      * Compute player knowledge data by common sense and knowledge data list
      */
