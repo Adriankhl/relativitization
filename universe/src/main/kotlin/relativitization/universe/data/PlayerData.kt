@@ -283,12 +283,26 @@ data class MutablePlayerInternalData(
         MutableAIData()
     }) as MutableAIData
 
+    fun aiData(newAIData: MutableAIData) {
+        subsystemDataList.removeAll {
+            it is MutableAIData
+        }
+        subsystemDataList.add(newAIData)
+    }
+
     fun diplomacyData(): MutableDiplomacyData = (subsystemDataList.lastOrNull {
         it is MutableDiplomacyData
     } ?: run {
         logger.error("DiplomacyData not found, use default initialization")
         MutableDiplomacyData()
     }) as MutableDiplomacyData
+
+    fun diplomacyData(newDiplomacyData: MutableDiplomacyData) {
+        subsystemDataList.removeAll {
+            it is MutableDiplomacyData
+        }
+        subsystemDataList.add(newDiplomacyData)
+    }
 
     fun economyData(): MutableEconomyData = (subsystemDataList.lastOrNull {
         it is MutableEconomyData
@@ -297,12 +311,26 @@ data class MutablePlayerInternalData(
         MutableEconomyData()
     }) as MutableEconomyData
 
+    fun economyData(newEconomyData: MutableEconomyData) {
+        subsystemDataList.removeAll {
+            it is MutableEconomyData
+        }
+        subsystemDataList.add(newEconomyData)
+    }
+
     fun physicsData(): MutablePhysicsData = (subsystemDataList.lastOrNull {
         it is MutablePhysicsData
     } ?: run {
         logger.error("PhysicsData not found, use default initialization")
         MutablePhysicsData()
     }) as MutablePhysicsData
+
+    fun physicsData(newPhysicsData: MutablePhysicsData) {
+        subsystemDataList.removeAll {
+            it is MutablePhysicsData
+        }
+        subsystemDataList.add(newPhysicsData)
+    }
 
     fun playerScienceData(): MutablePlayerScienceData = (subsystemDataList.lastOrNull {
         it is MutablePlayerScienceData
@@ -311,12 +339,26 @@ data class MutablePlayerInternalData(
         MutablePlayerScienceData()
     }) as MutablePlayerScienceData
 
+    fun playerScienceData(newPlayerScienceData: MutablePlayerScienceData) {
+        subsystemDataList.removeAll {
+            it is MutablePlayerScienceData
+        }
+        subsystemDataList.add(newPlayerScienceData)
+    }
+
     fun politicsData(): MutablePoliticsData = (subsystemDataList.lastOrNull {
         it is MutablePoliticsData
     } ?: run {
         logger.error("PoliticalData not found, use default initialization")
         MutablePoliticsData()
     }) as MutablePoliticsData
+
+    fun politicsData(newPoliticsData: MutablePoliticsData) {
+        subsystemDataList.removeAll {
+            it is MutablePoliticsData
+        }
+        subsystemDataList.add(newPoliticsData)
+    }
 
     fun popSystemData(): MutablePopSystemData = (subsystemDataList.lastOrNull {
         it is MutablePopSystemData
@@ -325,6 +367,13 @@ data class MutablePlayerInternalData(
         MutablePopSystemData()
     }) as MutablePopSystemData
 
+    fun popSystemData(newPopSystemData: MutablePopSystemData) {
+        subsystemDataList.removeAll {
+            it is MutablePopSystemData
+        }
+        subsystemDataList.add(newPopSystemData)
+    }
+
     fun modifierData(): MutableModifierData = (subsystemDataList.lastOrNull {
         it is MutableModifierData
     } ?: run {
@@ -332,11 +381,11 @@ data class MutablePlayerInternalData(
         MutableModifierData()
     }) as MutableModifierData
 
-    fun aiData(aiData: MutableAIData) {
+    fun modifierData(newModifierData: MutableModifierData) {
         subsystemDataList.removeAll {
-            it is MutableAIData
+            it is MutableModifierData
         }
-        subsystemDataList.add(aiData)
+        subsystemDataList.add(newModifierData)
     }
 
 
