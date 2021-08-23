@@ -114,7 +114,7 @@ internal class CoroutineTest {
                     body = "sdfsdf"
                     timeout {
                         requestTimeoutMillis = 1000
-                        connectTimeoutMillis = 1000
+                        connectTimeoutMillis = universeClientSettings.httpConnectTimeout
                         socketTimeoutMillis = 1000
                     }
                 }

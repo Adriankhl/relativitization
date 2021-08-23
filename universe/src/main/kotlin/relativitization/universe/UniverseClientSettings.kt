@@ -26,6 +26,6 @@ data class UniverseClientSettings(
     var serverPort: String = "29979",
     var viewCenter: MutableInt3D = MutableInt3D(0, 0, 0),
     var zLimit:Int = 10,
-    var httpRequestTimeout: Int = 10000,
-    var httpConnectTimeout: Int = 1000,
+    var httpRequestTimeout: Long = 10000,
+    var httpConnectTimeout: Long = 1000,
 )

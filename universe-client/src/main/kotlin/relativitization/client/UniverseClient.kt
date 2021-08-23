@@ -528,8 +528,8 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
             val serverPort = universeClientSettings.serverPort
             ktorClient.get<UniverseServerStatusMessage>("http://$serverAddress:$serverPort/status") {
                 timeout {
-                    connectTimeoutMillis = 1000
-                    requestTimeoutMillis = 10000
+                    connectTimeoutMillis = universeClientSettings.httpConnectTimeout
+                    connectTimeoutMillis = universeClientSettings.httpRequestTimeout
                 }
             }
         } catch (cause: Throwable) {
@@ -544,8 +544,8 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
             val serverPort = universeClientSettings.serverPort
             ktorClient.get<List<Int>>("http://$serverAddress:$serverPort/status/ids") {
                 timeout {
-                    connectTimeoutMillis = 1000
-                    requestTimeoutMillis = 10000
+                    connectTimeoutMillis = universeClientSettings.httpConnectTimeout
+                    connectTimeoutMillis = universeClientSettings.httpRequestTimeout
                 }
             }
         } catch (cause: Throwable) {
@@ -559,8 +559,8 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
             val serverPort = universeClientSettings.serverPort
             ktorClient.get<List<Int>>("http://$serverAddress:$serverPort/status/human-ids") {
                 timeout {
-                    connectTimeoutMillis = 1000
-                    requestTimeoutMillis = 10000
+                    connectTimeoutMillis = universeClientSettings.httpConnectTimeout
+                    connectTimeoutMillis = universeClientSettings.httpRequestTimeout
                 }
             }
         } catch (cause: Throwable) {
@@ -575,8 +575,8 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
             val serverPort = universeClientSettings.serverPort
             ktorClient.get<List<String>>("http://$serverAddress:$serverPort/create/list-saved") {
                 timeout {
-                    connectTimeoutMillis = 1000
-                    requestTimeoutMillis = 10000
+                    connectTimeoutMillis = universeClientSettings.httpConnectTimeout
+                    connectTimeoutMillis = universeClientSettings.httpRequestTimeout
                 }
             }
         } catch (cause: Throwable) {
@@ -594,8 +594,8 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
                 contentType(ContentType.Application.Json)
                 body = CheckIsPlayerDeadMessage(playerId, password)
                 timeout {
-                    connectTimeoutMillis = 1000
-                    requestTimeoutMillis = 10000
+                    connectTimeoutMillis = universeClientSettings.httpConnectTimeout
+                    connectTimeoutMillis = universeClientSettings.httpRequestTimeout
                 }
             }
         } catch (cause: Throwable) {
@@ -613,8 +613,8 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
                 contentType(ContentType.Application.Json)
                 body = UniverseData3DMessage(playerId, password)
                 timeout {
-                    connectTimeoutMillis = 1000
-                    requestTimeoutMillis = 10000
+                    connectTimeoutMillis = universeClientSettings.httpConnectTimeout
+                    connectTimeoutMillis = universeClientSettings.httpRequestTimeout
                 }
             }
         } catch (cause: Throwable) {
@@ -633,8 +633,8 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
                     contentType(ContentType.Application.Json)
                     body = UniverseServerSettingsMessage(adminPassword, universeServerSettings)
                     timeout {
-                        connectTimeoutMillis = 1000
-                        requestTimeoutMillis = 10000
+                        connectTimeoutMillis = universeClientSettings.httpConnectTimeout
+                        connectTimeoutMillis = universeClientSettings.httpRequestTimeout
                     }
                 }
             logger.debug("Update universe settings status: ${response.status}")
@@ -657,8 +657,8 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
                 contentType(ContentType.Application.Json)
                 body = NewUniverseMessage(adminPassword, generateSettings)
                 timeout {
-                    connectTimeoutMillis = 1000
-                    requestTimeoutMillis = 10000
+                    connectTimeoutMillis = universeClientSettings.httpConnectTimeout
+                    connectTimeoutMillis = universeClientSettings.httpRequestTimeout
                 }
             }
             logger.debug("Create new universe status: ${response.status}")
@@ -681,8 +681,8 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
                 contentType(ContentType.Application.Json)
                 body = LoadUniverseMessage(adminPassword, universeName)
                 timeout {
-                    connectTimeoutMillis = 1000
-                    requestTimeoutMillis = 10000
+                    connectTimeoutMillis = universeClientSettings.httpConnectTimeout
+                    connectTimeoutMillis = universeClientSettings.httpRequestTimeout
                 }
             }
 
@@ -707,8 +707,8 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
                 contentType(ContentType.Application.Json)
                 body = RegisterPlayerMessage(playerId, password)
                 timeout {
-                    connectTimeoutMillis = 1000
-                    requestTimeoutMillis = 10000
+                    connectTimeoutMillis = universeClientSettings.httpConnectTimeout
+                    connectTimeoutMillis = universeClientSettings.httpRequestTimeout
                 }
             }
 
@@ -732,8 +732,8 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
                 contentType(ContentType.Application.Json)
                 body = RunUniverseMessage(adminPassword)
                 timeout {
-                    connectTimeoutMillis = 1000
-                    requestTimeoutMillis = 10000
+                    connectTimeoutMillis = universeClientSettings.httpConnectTimeout
+                    connectTimeoutMillis = universeClientSettings.httpRequestTimeout
                 }
             }
             logger.debug("Run universe: ${response.status}")
@@ -757,8 +757,8 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
                 contentType(ContentType.Application.Json)
                 body = StopUniverseMessage(adminPassword)
                 timeout {
-                    connectTimeoutMillis = 1000
-                    requestTimeoutMillis = 10000
+                    connectTimeoutMillis = universeClientSettings.httpConnectTimeout
+                    connectTimeoutMillis = universeClientSettings.httpRequestTimeout
                 }
             }
             logger.debug("Stop universe: ${response.status}")
@@ -783,8 +783,8 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
                 contentType(ContentType.Application.Json)
                 body = CommandInputMessage(playerId, password, commandList.getList())
                 timeout {
-                    connectTimeoutMillis = 1000
-                    requestTimeoutMillis = 10000
+                    connectTimeoutMillis = universeClientSettings.httpConnectTimeout
+                    connectTimeoutMillis = universeClientSettings.httpRequestTimeout
                 }
             }
             logger.debug("Human command input: ${response.status}")
@@ -807,8 +807,8 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
                 contentType(ContentType.Application.Json)
                 body = StopWaitingMessage(adminPassword)
                 timeout {
-                    connectTimeoutMillis = 1000
-                    requestTimeoutMillis = 10000
+                    connectTimeoutMillis = universeClientSettings.httpConnectTimeout
+                    connectTimeoutMillis = universeClientSettings.httpRequestTimeout
                 }
             }
             logger.debug("Stop waiting: ${response.status}")
