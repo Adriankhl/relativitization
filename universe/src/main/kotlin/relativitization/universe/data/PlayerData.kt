@@ -184,7 +184,12 @@ data class PlayerInternalData(
     val diplomacyData: DiplomacyData = DiplomacyData(),
     val economyData: EconomyData = EconomyData(),
     val modifierData: ModifierData = ModifierData(),
-)
+) {
+    fun aiData(): AIData = (subsystemDataList.lastOrNull {
+        it is AIData
+    } ?: AIData() ) as AIData
+
+}
 
 @Serializable
 data class MutablePlayerInternalData(
@@ -213,6 +218,17 @@ data class MutablePlayerInternalData(
     var economyData: MutableEconomyData = MutableEconomyData(),
     var modifierData: MutableModifierData = MutableModifierData(),
 ) {
+
+    fun aiData(): MutableAIData = (subsystemDataList.lastOrNull {
+        it is MutableAIData
+    } ?: MutableAIData() ) as MutableAIData
+
+    fun aiData(aiData: MutableAIData) {
+        subsystemDataList.removeAll {
+            it is MutableAIData
+        }
+        subsystemDataList.add(aiData)
+    }
 
 
     /**
