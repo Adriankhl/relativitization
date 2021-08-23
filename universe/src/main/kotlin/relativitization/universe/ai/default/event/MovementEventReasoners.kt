@@ -66,7 +66,7 @@ class PickMoveToDouble3DEventOption(
             listOf(
                 RelationConsideration(
                     playerId = movementEventMap.getValue(keepEventIndex).event.fromId,
-                    diplomacyData = decisionData.universeData3DAtPlayer.getCurrentPlayerData().playerInternalData.diplomacyData,
+                    diplomacyData = decisionData.universeData3DAtPlayer.getCurrentPlayerData().playerInternalData.diplomacyData(),
                 )
             )
         } else {

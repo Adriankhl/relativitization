@@ -397,11 +397,11 @@ class Universe(
         val allVisiblePlayerData: List<PlayerData> = universeData.getAllVisiblePlayerData()
 
         val newStartFromBasicResearchId: Int = allVisiblePlayerData.minOfOrNull {
-            it.playerInternalData.playerScienceData.playerKnowledgeData.startFromBasicResearchId
+            it.playerInternalData.playerScienceData().playerKnowledgeData.startFromBasicResearchId
         } ?: 0
 
         val newStartFromAppliedResearchId: Int = allVisiblePlayerData.minOfOrNull {
-            it.playerInternalData.playerScienceData.playerKnowledgeData.startFromAppliedResearchId
+            it.playerInternalData.playerScienceData().playerKnowledgeData.startFromAppliedResearchId
         } ?: 0
 
         mutableUniverseScienceData.updateCommonSenseData(

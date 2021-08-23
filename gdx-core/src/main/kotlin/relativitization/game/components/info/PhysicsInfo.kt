@@ -231,7 +231,7 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         table.row().space(20f)
 
         val massLabel = createLabel(
-            "Core rest mass: ${playerData.playerInternalData.physicsData.coreRestMass}",
+            "Core rest mass: ${playerData.playerInternalData.physicsData().coreRestMass}",
             gdxSettings.smallFontSize
         )
 
@@ -240,7 +240,7 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         table.row().space(10f)
 
         val energyLabel = createLabel(
-            "Fuel rest mass: ${playerData.playerInternalData.physicsData.fuelRestMass.toString()}",
+            "Fuel rest mass: ${playerData.playerInternalData.physicsData().fuelRestMass.toString()}",
             gdxSettings.smallFontSize
         )
 
@@ -249,7 +249,7 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         table.row().space(10f)
 
         val moveMaxPowerLabel = createLabel(
-            "Max. fuel rest mass change: ${playerData.playerInternalData.physicsData.maxDeltaFuelRestMass.toString()}",
+            "Max. fuel rest mass change: ${playerData.playerInternalData.physicsData().maxDeltaFuelRestMass.toString()}",
             gdxSettings.smallFontSize
         )
 

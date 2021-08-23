@@ -27,7 +27,7 @@ data class DisableFuelIncreaseCommand(
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
-        playerData.playerInternalData.modifierData.physicsModifierData.disableFuelIncreaseByTime(
+        playerData.playerInternalData.modifierData().physicsModifierData.disableFuelIncreaseByTime(
             disableFuelIncreaseTimeLimit
         )
     }

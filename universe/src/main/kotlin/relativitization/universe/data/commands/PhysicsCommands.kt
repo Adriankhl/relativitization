@@ -42,8 +42,8 @@ data class ChangeVelocityCommand(
         if (targetVelocity.mag() < speedOfLight) {
 
             val targetVelocityData: TargetVelocityData = targetVelocityByPhotonRocket(
-                initialRestMass = playerData.playerInternalData.physicsData.totalRestMass(),
-                maxDeltaRestMass = playerData.playerInternalData.physicsData.maxDeltaRestMass(),
+                initialRestMass = playerData.playerInternalData.physicsData().totalRestMass(),
+                maxDeltaRestMass = playerData.playerInternalData.physicsData().maxDeltaRestMass(),
                 initialVelocity = playerData.velocity.toVelocity(),
                 targetVelocity = targetVelocity,
                 speedOfLight = universeSettings.speedOfLight
@@ -53,7 +53,7 @@ data class ChangeVelocityCommand(
             playerData.velocity.vy = targetVelocityData.newVelocity.vy
             playerData.velocity.vz = targetVelocityData.newVelocity.vz
 
-            playerData.playerInternalData.physicsData.fuelRestMass -= targetVelocityData.deltaRestMass
+            playerData.playerInternalData.physicsData().fuelRestMass -= targetVelocityData.deltaRestMass
         } else {
             logger.error("Target velocity larger than the speed of light")
         }

@@ -69,7 +69,7 @@ class ScienceInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
 
         table.row().space(10f)
 
-        table.add(createKnowledgeDataTable(playerData.playerInternalData.playerScienceData.playerKnowledgeData))
+        table.add(createKnowledgeDataTable(playerData.playerInternalData.playerScienceData().playerKnowledgeData))
 
         table.row().space(20f)
 
@@ -78,7 +78,7 @@ class ScienceInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
 
         table.row().space(10f)
 
-        table.add(createKnowledgeDataTable(playerData.playerInternalData.playerScienceData.commonSenseKnowledgeData))
+        table.add(createKnowledgeDataTable(playerData.playerInternalData.playerScienceData().commonSenseKnowledgeData))
     }
 
     private fun createKnowledgeDataTable(knowledgeData: KnowledgeData): Table {

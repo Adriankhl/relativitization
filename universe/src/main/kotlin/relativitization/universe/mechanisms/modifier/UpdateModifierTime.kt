@@ -20,7 +20,7 @@ object UpdateModifierTime : Mechanism() {
             universeData3DAtPlayer.universeSettings.speedOfLight
         )
 
-        mutablePlayerData.playerInternalData.modifierData.updateModifierTime(gamma)
+        mutablePlayerData.playerInternalData.modifierData().updateModifierTime(gamma)
 
         return listOf()
     }

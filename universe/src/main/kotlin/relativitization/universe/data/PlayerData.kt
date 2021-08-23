@@ -60,8 +60,8 @@ data class PlayerData(
 
     fun isValid(currentTime: Int): Boolean {
         val isTValid: Boolean = currentTime == int4D.t
-        val isRestMassValid: Boolean = (playerInternalData.physicsData.coreRestMass > 0.0) &&
-                (playerInternalData.physicsData.fuelRestMass >= 0.0)
+        val isRestMassValid: Boolean = (playerInternalData.physicsData().coreRestMass > 0.0) &&
+                (playerInternalData.physicsData().fuelRestMass >= 0.0)
 
         return isTValid && isRestMassValid
     }
@@ -96,22 +96,22 @@ data class MutablePlayerData(
      * Synchronize different data component to ensure consistency
      */
     fun syncDataComponent() {
-        if (playerInternalData.physicsData.coreRestMass != playerInternalData.popSystemData.totalCoreRestMass()) {
+        if (playerInternalData.physicsData().coreRestMass != playerInternalData.popSystemData().totalCoreRestMass()) {
             logger.debug("Sync data component, change core mass")
-            playerInternalData.physicsData.coreRestMass =
-                playerInternalData.popSystemData.totalCoreRestMass()
+            playerInternalData.physicsData().coreRestMass =
+                playerInternalData.popSystemData().totalCoreRestMass()
         }
 
-        if (playerInternalData.physicsData.fuelRestMass != playerInternalData.popSystemData.totalFuelRestMass()) {
+        if (playerInternalData.physicsData().fuelRestMass != playerInternalData.popSystemData().totalFuelRestMass()) {
             logger.debug("Sync data component, change fuel mass")
-            playerInternalData.physicsData.fuelRestMass =
-                playerInternalData.popSystemData.totalFuelRestMass()
+            playerInternalData.physicsData().fuelRestMass =
+                playerInternalData.popSystemData().totalFuelRestMass()
         }
 
-        if (playerInternalData.physicsData.maxDeltaFuelRestMass != playerInternalData.popSystemData.totalMaxDeltaFuelRestMass()) {
+        if (playerInternalData.physicsData().maxDeltaFuelRestMass != playerInternalData.popSystemData().totalMaxDeltaFuelRestMass()) {
             logger.debug("Sync data component, change max delta fuel rest mass")
-            playerInternalData.physicsData.maxDeltaFuelRestMass =
-                playerInternalData.popSystemData.totalMaxDeltaFuelRestMass()
+            playerInternalData.physicsData().maxDeltaFuelRestMass =
+                playerInternalData.popSystemData().totalMaxDeltaFuelRestMass()
         }
     }
 
@@ -179,14 +179,6 @@ data class PlayerInternalData(
         PopSystemData(),
         ModifierData(),
     ),
-    val aiData: AIData = AIData(),
-    val physicsData: PhysicsData = PhysicsData(),
-    val popSystemData: PopSystemData = PopSystemData(),
-    val playerScienceData: PlayerScienceData = PlayerScienceData(),
-    val politicsData: PoliticsData = PoliticsData(),
-    val diplomacyData: DiplomacyData = DiplomacyData(),
-    val economyData: EconomyData = EconomyData(),
-    val modifierData: ModifierData = ModifierData(),
 ) {
     fun aiData(): AIData = (subsystemDataList.lastOrNull {
         it is AIData
@@ -267,14 +259,6 @@ data class MutablePlayerInternalData(
         MutablePopSystemData(),
         MutableModifierData(),
     ),
-    var aiData: MutableAIData = MutableAIData(),
-    var physicsData: MutablePhysicsData = MutablePhysicsData(),
-    var popSystemData: MutablePopSystemData = MutablePopSystemData(),
-    var playerScienceData: MutablePlayerScienceData = MutablePlayerScienceData(),
-    var politicsData: MutablePoliticsData = MutablePoliticsData(),
-    var diplomacyData: MutableDiplomacyData = MutableDiplomacyData(),
-    var economyData: MutableEconomyData = MutableEconomyData(),
-    var modifierData: MutableModifierData = MutableModifierData(),
 ) {
     fun aiData(): MutableAIData = (subsystemDataList.lastOrNull {
         it is MutableAIData

@@ -294,16 +294,16 @@ class PlayerCollection(
         }
 
         val deltaRestMass: Double = deltaMassByPhotonRocket(
-            initialRestMass = playerData.playerInternalData.physicsData.totalRestMass(),
+            initialRestMass = playerData.playerInternalData.physicsData().totalRestMass(),
             initialVelocity = playerData.velocity.toVelocity(),
             targetVelocity = targetVelocity,
             speedOfLight = speedOfLight
         )
 
-        val fuelRestMass: Double = playerData.playerInternalData.physicsData.fuelRestMass
+        val fuelRestMass: Double = playerData.playerInternalData.physicsData().fuelRestMass
 
         playerData.velocity = targetVelocity.toMutableVelocity()
-        playerData.playerInternalData.physicsData.fuelRestMass -= min(fuelRestMass, deltaRestMass)
+        playerData.playerInternalData.physicsData().fuelRestMass -= min(fuelRestMass, deltaRestMass)
     }
 
     fun syncAllPlayerDataComponent() {

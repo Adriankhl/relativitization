@@ -20,7 +20,7 @@ object SyncPlayerScienceData : Mechanism() {
     ): List<Command> {
 
         // update player common sense
-        mutablePlayerData.playerInternalData.playerScienceData.updateCommonSenseData(
+        mutablePlayerData.playerInternalData.playerScienceData().updateCommonSenseData(
             universeScienceData.commonSenseKnowledgeData,
             UniverseScienceDataProcessCollection.getProcess(
                 universeSettings
@@ -31,7 +31,7 @@ object SyncPlayerScienceData : Mechanism() {
         )
 
         // sync research project data
-        mutablePlayerData.playerInternalData.playerScienceData.syncProjectData(
+        mutablePlayerData.playerInternalData.playerScienceData().syncProjectData(
             universeScienceData,
             UniverseScienceDataProcessCollection.getProcess(
                 universeSettings

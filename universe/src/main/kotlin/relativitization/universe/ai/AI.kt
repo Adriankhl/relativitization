@@ -23,7 +23,7 @@ object AICollection {
     fun compute(universeData3DAtPlayer: UniverseData3DAtPlayer): List<Command> {
         val aiName: String = universeData3DAtPlayer.get(
             universeData3DAtPlayer.id
-        ).playerInternalData.aiData.aiName
+        ).playerInternalData.aiData().aiName
 
         val ai: AI = aiNameMap.getOrElse(aiName) {
             logger.error("No ai name: ${aiName}, using default (empty) ai")

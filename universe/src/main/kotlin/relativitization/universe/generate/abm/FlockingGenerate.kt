@@ -39,7 +39,7 @@ class FlockingGenerate : GenerateUniverse() {
             playerData.int4D.y = Random.Default.nextInt(0, universeSettings.yDim)
             playerData.int4D.z = Random.Default.nextInt(0, universeSettings.zDim)
 
-            playerData.playerInternalData.popSystemData.addSpaceShip(
+            playerData.playerInternalData.popSystemData().addSpaceShip(
                 1.0, 1e6, 1e5
             )
 
@@ -52,7 +52,7 @@ class FlockingGenerate : GenerateUniverse() {
             playerData.velocity = MutableVelocity(vx, vy, vz).scaleVelocity(0.5)
 
             // Use flocking ai
-            playerData.playerInternalData.aiData.aiName = "FlockingAI"
+            playerData.playerInternalData.aiData().aiName = "FlockingAI"
 
             data.addPlayerDataToLatestWithAfterImage(
                 playerData,

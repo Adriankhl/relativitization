@@ -40,14 +40,14 @@ class Minimal : GenerateUniverse() {
         playerData3.int4D = MutableInt4D(0, 0, 0, 1)
 
         // Add one stellar to players
-        playerData1.playerInternalData.popSystemData.addRandomStellarSystem()
-        playerData3.playerInternalData.popSystemData.addRandomStellarSystem()
+        playerData1.playerInternalData.popSystemData().addRandomStellarSystem()
+        playerData3.playerInternalData.popSystemData().addRandomStellarSystem()
 
         // Add spaceShip
-        playerData1.playerInternalData.popSystemData.addSpaceShip(1.0, 100.0, 100.0)
-        playerData2.playerInternalData.popSystemData.addSpaceShip(1.0, 100.0, 100.0)
-        playerData3.playerInternalData.popSystemData.addSpaceShip(1.0, 100.0, 100.0)
-        playerData4.playerInternalData.popSystemData.addSpaceShip(1.0, 100.0, 100.0)
+        playerData1.playerInternalData.popSystemData().addSpaceShip(1.0, 100.0, 100.0)
+        playerData2.playerInternalData.popSystemData().addSpaceShip(1.0, 100.0, 100.0)
+        playerData3.playerInternalData.popSystemData().addSpaceShip(1.0, 100.0, 100.0)
+        playerData4.playerInternalData.popSystemData().addSpaceShip(1.0, 100.0, 100.0)
 
 
         // player 1 is a leader of player 2
@@ -58,15 +58,15 @@ class Minimal : GenerateUniverse() {
         playerData4.playerInternalData.isAlive = false
 
         // Change AI to EmptyAI
-        playerData1.playerInternalData.aiData.aiName = "EmptyAI"
-        playerData2.playerInternalData.aiData.aiName = "EmptyAI"
-        playerData3.playerInternalData.aiData.aiName = "EmptyAI"
-        playerData4.playerInternalData.aiData.aiName = "EmptyAI"
+        playerData1.playerInternalData.aiData().aiName = "EmptyAI"
+        playerData2.playerInternalData.aiData().aiName = "EmptyAI"
+        playerData3.playerInternalData.aiData().aiName = "EmptyAI"
+        playerData4.playerInternalData.aiData().aiName = "EmptyAI"
 
         // Add mathematics and energy project to player
         // Should sync to universe project at turn 3 since this has not been added to universe
         // science data
-        playerData1.playerInternalData.playerScienceData.doneBasicResearchProject(
+        playerData1.playerInternalData.playerScienceData().doneBasicResearchProject(
             BasicResearchProjectData(
                 basicResearchId = 0,
                 basicResearchField = BasicResearchField.MATHEMATICS,
@@ -79,7 +79,7 @@ class Minimal : GenerateUniverse() {
             ),
             DefaultUniverseScienceDataProcess.basicResearchProjectFunction()
         )
-        playerData1.playerInternalData.playerScienceData.doneAppliedResearchProject(
+        playerData1.playerInternalData.playerScienceData().doneAppliedResearchProject(
             AppliedResearchProjectData(
                 appliedResearchId = 0,
                 appliedResearchField = AppliedResearchField.ENERGY_TECHNOLOGY,
@@ -92,7 +92,7 @@ class Minimal : GenerateUniverse() {
             ),
             DefaultUniverseScienceDataProcess.appliedResearchProjectFunction()
         )
-        playerData1.playerInternalData.playerScienceData.doneBasicResearchProject(
+        playerData1.playerInternalData.playerScienceData().doneBasicResearchProject(
             BasicResearchProjectData(
                 basicResearchId = 1,
                 basicResearchField = BasicResearchField.MATHEMATICS,
@@ -105,7 +105,7 @@ class Minimal : GenerateUniverse() {
             ),
             DefaultUniverseScienceDataProcess.basicResearchProjectFunction()
         )
-        playerData1.playerInternalData.playerScienceData.doneAppliedResearchProject(
+        playerData1.playerInternalData.playerScienceData().doneAppliedResearchProject(
             AppliedResearchProjectData(
                 appliedResearchId = 1,
                 appliedResearchField = AppliedResearchField.ENERGY_TECHNOLOGY,
@@ -118,7 +118,7 @@ class Minimal : GenerateUniverse() {
             ),
             DefaultUniverseScienceDataProcess.appliedResearchProjectFunction()
         )
-        playerData1.playerInternalData.playerScienceData.knownBasicResearchProject(
+        playerData1.playerInternalData.playerScienceData().knownBasicResearchProject(
             BasicResearchProjectData(
                 basicResearchId = 2,
                 basicResearchField = BasicResearchField.MATHEMATICS,
@@ -130,7 +130,7 @@ class Minimal : GenerateUniverse() {
                 referenceAppliedResearchIdList = listOf(0, 1)
             )
         )
-        playerData1.playerInternalData.playerScienceData.knownAppliedResearchProject(
+        playerData1.playerInternalData.playerScienceData().knownAppliedResearchProject(
             AppliedResearchProjectData(
                 appliedResearchId = 2,
                 appliedResearchField = AppliedResearchField.ENERGY_TECHNOLOGY,

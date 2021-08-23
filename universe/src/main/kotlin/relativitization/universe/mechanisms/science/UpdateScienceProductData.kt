@@ -18,7 +18,7 @@ object UpdateScienceProductData : Mechanism() {
         universeScienceData: UniverseScienceData
     ): List<Command> {
 
-        val scienceData: MutablePlayerScienceData = mutablePlayerData.playerInternalData.playerScienceData
+        val scienceData: MutablePlayerScienceData = mutablePlayerData.playerInternalData.playerScienceData()
 
         scienceData.playerScienceProductData.maxShipRestMass =
             maxRestShipMass(scienceData.playerKnowledgeData)

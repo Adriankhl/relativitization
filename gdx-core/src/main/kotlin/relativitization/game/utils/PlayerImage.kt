@@ -26,7 +26,7 @@ object PlayerImage {
 
         val playerId = playerData.playerId
 
-        val hasStellarSystem: Boolean = playerData.playerInternalData.popSystemData.carrierMap.any {
+        val hasStellarSystem: Boolean = playerData.playerInternalData.popSystemData().carrierMap.any {
             it.value.carrierType == CarrierType.STELLAR
         }
 
