@@ -9,7 +9,7 @@ import kotlin.math.abs
 data class PoliticsData(
     val centralizationLevel: Int = 0,
     val allowSubordinateBuildFactory: Boolean = false,
-) : MutablePlayerSubsystemData() {
+) : PlayerSubsystemData() {
     /**
      * Compute the ideology distance between player to represent how different between the two
      */
@@ -31,4 +31,4 @@ data class PoliticsData(
 data class MutablePoliticsData(
     var centralizationLevel: Int = 0,
     val allowSubordinateBuildFactory: Boolean = false,
-) : PlayerSubsystemData()
+) : MutablePlayerSubsystemData()
