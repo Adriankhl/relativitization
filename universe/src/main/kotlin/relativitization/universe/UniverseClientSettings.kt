@@ -13,6 +13,8 @@ import relativitization.universe.data.subsystem.physics.MutableInt3D
  * @property serverAddress the url of server
  * @property serverPort port of the server
  * @property zLimit the z dimension limit of projected 2d universe data
+ * @property httpRequestTimeout http request return from server time limit
+ * @property httpConnectTimeout http find server time limit
  */
 @Serializable
 data class UniverseClientSettings(
@@ -24,4 +26,6 @@ data class UniverseClientSettings(
     var serverPort: String = "29979",
     var viewCenter: MutableInt3D = MutableInt3D(0, 0, 0),
     var zLimit:Int = 10,
+    var httpRequestTimeout: Int = 10000,
+    var httpConnectTimeout: Int = 1000,
 )
