@@ -31,8 +31,8 @@ class MainMenuScreen(val game: RelativitizationGame) : TableScreen(game.assets) 
         val joinUniverseButton = createTextButton("Join Universe", gdxSetting.bigFontSize, gdxSetting.soundEffectsVolume)
         root.add(joinUniverseButton).prefSize(500f, 100f).space(20f)
         root.row()
-        val gdxSettingsButton = createTextButton("Gdx Settings", gdxSetting.bigFontSize, gdxSetting.soundEffectsVolume) {
-            game.screen = GdxSettingsScreen(game, false)
+        val gdxSettingsButton = createTextButton("Client Settings", gdxSetting.bigFontSize, gdxSetting.soundEffectsVolume) {
+            game.screen = ClientSettingsScreen(game, false)
             dispose()
         }
         root.add(gdxSettingsButton).prefSize(500f, 100f).space(20f)

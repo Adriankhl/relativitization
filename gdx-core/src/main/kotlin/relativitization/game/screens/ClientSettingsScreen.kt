@@ -10,13 +10,14 @@ import relativitization.game.utils.Assets
 import relativitization.game.utils.TableScreen
 import relativitization.universe.utils.RelativitizationLogManager
 
-class GdxSettingsScreen(val game: RelativitizationGame, private val inGame: Boolean) : TableScreen(game.assets) {
+class ClientSettingsScreen(val game: RelativitizationGame, private val inGame: Boolean) : TableScreen(game.assets) {
     private val gdxSettings = game.gdxSettings
+    private val universeClientSettings = game.universeClient.universeClientSettings
 
     override fun show() {
         super.show()
 
-        root.add(createGdxSettingsScrollPane()).grow()
+        root.add(createClientSettingsScrollPane()).grow()
 
         root.row().space(10f)
 
@@ -88,7 +89,7 @@ class GdxSettingsScreen(val game: RelativitizationGame, private val inGame: Bool
         return nestedTable
     }
 
-    private fun createGdxSettingsScrollPane(): ScrollPane {
+    private fun createClientSettingsScrollPane(): ScrollPane {
         val table: Table = Table()
 
         val scrollPane: ScrollPane = createScrollPane(table)
@@ -102,6 +103,10 @@ class GdxSettingsScreen(val game: RelativitizationGame, private val inGame: Bool
         addGdxSettings(table)
 
         table.row().space(10f)
+
+        val universeClientSettingsLabel = createLabel("Universe Client Settings:", gdxSettings.hugeFontSize)
+
+        table.add(universeClientSettingsLabel).colspan(2).space(20f)
 
         // Add empty space for Android keyboard input
         val emptyLabel = createLabel("", gdxSettings.smallFontSize)
@@ -361,6 +366,34 @@ class GdxSettingsScreen(val game: RelativitizationGame, private val inGame: Bool
             gdxSettings.showingInfoType = showingInfoType
         }
         table.add(showingInfoTypeSelectBox)
+    }
+
+    private fun addUniverseClientSettings(table: Table) {
+        table.add(createLabel("Http request timeout (in ms)", gdxSettings.normalFontSize))
+        val httpRequestTimeoutTextField = createTextField(
+            universeClientSettings.httpRequestTimeout.toString(),
+            gdxSettings.normalFontSize
+        ) { httpRequestTimeOut, _ ->
+            try {
+                universeClientSettings.httpRequestTimeout = httpRequestTimeOut.toLong()
+            } catch (e: NumberFormatException) {
+                logger.error("Invalid httpRequestTimeout")
+            }
+        }
+        table.add(httpRequestTimeoutTextField)
+
+        table.add(createLabel("Http connect timeout (in ms)", gdxSettings.normalFontSize))
+        val httpConnectTimeoutTextField = createTextField(
+            universeClientSettings.httpConnectTimeout.toString(),
+            gdxSettings.normalFontSize
+        ) { httpConnectTimeOut, _ ->
+            try {
+                universeClientSettings.httpConnectTimeout = httpConnectTimeOut.toLong()
+            } catch (e: NumberFormatException) {
+                logger.error("Invalid httpConnectTimeout")
+            }
+        }
+        table.add(httpConnectTimeoutTextField)
     }
 
     companion object {

@@ -7,7 +7,7 @@ import io.ktor.http.*
 import kotlinx.coroutines.runBlocking
 import relativitization.game.RelativitizationGame
 import relativitization.game.ShowingInfoType
-import relativitization.game.screens.GdxSettingsScreen
+import relativitization.game.screens.ClientSettingsScreen
 import relativitization.game.utils.ScreenComponent
 import relativitization.universe.maths.physics.Intervals.intDelay
 import kotlin.math.min
@@ -466,7 +466,7 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         aChecked = 1.0f,
         soundVolume = gdxSettings.soundEffectsVolume
     ) {
-        game.screen = GdxSettingsScreen(game, true)
+        game.screen = ClientSettingsScreen(game, true)
     }
 
     private val runUniverseButton = createTextButton(
