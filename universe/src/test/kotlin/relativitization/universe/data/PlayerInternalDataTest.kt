@@ -19,5 +19,8 @@ internal class PlayerInternalDataTest {
 
         val l5: List<MutablePlayerSubsystemData> = DataSerializer.copy(l2)
         assert(l3 == l5)
+
+        val l6: List<PlayerSubsystemData> = DataSerializer.copy(l3)
+        assert(l1 == l6)
     }
 }
