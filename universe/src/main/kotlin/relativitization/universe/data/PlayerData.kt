@@ -98,17 +98,20 @@ data class MutablePlayerData(
     fun syncDataComponent() {
         if (playerInternalData.physicsData.coreRestMass != playerInternalData.popSystemData.totalCoreRestMass()) {
             logger.debug("Sync data component, change core mass")
-            playerInternalData.physicsData.coreRestMass = playerInternalData.popSystemData.totalCoreRestMass()
+            playerInternalData.physicsData.coreRestMass =
+                playerInternalData.popSystemData.totalCoreRestMass()
         }
 
         if (playerInternalData.physicsData.fuelRestMass != playerInternalData.popSystemData.totalFuelRestMass()) {
             logger.debug("Sync data component, change fuel mass")
-            playerInternalData.physicsData.fuelRestMass = playerInternalData.popSystemData.totalFuelRestMass()
+            playerInternalData.physicsData.fuelRestMass =
+                playerInternalData.popSystemData.totalFuelRestMass()
         }
 
         if (playerInternalData.physicsData.maxDeltaFuelRestMass != playerInternalData.popSystemData.totalMaxDeltaFuelRestMass()) {
             logger.debug("Sync data component, change max delta fuel rest mass")
-            playerInternalData.physicsData.maxDeltaFuelRestMass = playerInternalData.popSystemData.totalMaxDeltaFuelRestMass()
+            playerInternalData.physicsData.maxDeltaFuelRestMass =
+                playerInternalData.popSystemData.totalMaxDeltaFuelRestMass()
         }
     }
 
@@ -168,12 +171,12 @@ data class PlayerInternalData(
     val eventDataMap: Map<Int, EventData> = mapOf(),
     val subsystemDataList: List<PlayerSubsystemData> = listOf(
         AIData(),
-        PhysicsData(),
-        PopSystemData(),
-        PlayerScienceData(),
-        PoliticsData(),
         DiplomacyData(),
         EconomyData(),
+        PhysicsData(),
+        PlayerScienceData(),
+        PoliticsData(),
+        PopSystemData(),
         ModifierData(),
     ),
     val aiData: AIData = AIData(),
@@ -187,8 +190,30 @@ data class PlayerInternalData(
 ) {
     fun aiData(): AIData = (subsystemDataList.lastOrNull {
         it is AIData
-    } ?: AIData() ) as AIData
+    } ?: {
+        logger.error("AIData not found")
+        AIData()
+    }) as AIData
 
+
+    fun physicsData(): PhysicsData = (subsystemDataList.lastOrNull {
+        it is PhysicsData
+    } ?: {
+        logger.error("PhysicsData not found")
+        PhysicsData
+    }) as PhysicsData
+
+    fun playerScienceData(): PlayerScienceData = (subsystemDataList.lastOrNull {
+        it is PlayerScienceData
+    } ?: PlayerScienceData) as PlayerScienceData
+
+    fun politicsData(): PoliticsData = (subsystemDataList.lastOrNull {
+        it is PoliticsData
+    } ?: PoliticsData()) as PoliticsData
+
+    companion object {
+        private val logger = RelativitizationLogManager.getLogger()
+    }
 }
 
 @Serializable
@@ -201,12 +226,12 @@ data class MutablePlayerInternalData(
     var eventDataMap: MutableMap<Int, MutableEventData> = mutableMapOf(),
     var subsystemDataList: MutableList<MutablePlayerSubsystemData> = mutableListOf(
         MutableAIData(),
-        MutablePhysicsData(),
-        MutablePopSystemData(),
-        MutablePlayerScienceData(),
-        MutablePoliticsData(),
         MutableDiplomacyData(),
         MutableEconomyData(),
+        MutablePhysicsData(),
+        MutablePlayerScienceData(),
+        MutablePoliticsData(),
+        MutablePopSystemData(),
         MutableModifierData(),
     ),
     var aiData: MutableAIData = MutableAIData(),
@@ -221,7 +246,7 @@ data class MutablePlayerInternalData(
 
     fun aiData(): MutableAIData = (subsystemDataList.lastOrNull {
         it is MutableAIData
-    } ?: MutableAIData() ) as MutableAIData
+    } ?: MutableAIData()) as MutableAIData
 
     fun aiData(aiData: MutableAIData) {
         subsystemDataList.removeAll {
