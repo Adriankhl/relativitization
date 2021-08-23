@@ -152,7 +152,7 @@ enum class PlayerType {
  * @property subordinateIdList list of player ids of the subordinates of this player
  * @property isAlive whether the player is alive or dead
  * @property aiData data for ai computation, e.g. name, cool down
- * @property eventDataList list of current event on this player
+ * @property eventDataMap list of current event on this player
  * @property physicsData physics-related data
  * @property popSystemData population system related data
  * @property playerScienceData research related data
@@ -190,26 +190,59 @@ data class PlayerInternalData(
 ) {
     fun aiData(): AIData = (subsystemDataList.lastOrNull {
         it is AIData
-    } ?: {
-        logger.error("AIData not found")
+    } ?: run {
+        logger.error("AIData not found, use default initialization")
         AIData()
     }) as AIData
 
+    fun diplomacyData(): DiplomacyData = (subsystemDataList.lastOrNull {
+        it is DiplomacyData
+    } ?: run {
+        logger.error("DiplomacyData not found, use default initialization")
+        DiplomacyData()
+    }) as DiplomacyData
+
+    fun economyData(): EconomyData = (subsystemDataList.lastOrNull {
+        it is EconomyData
+    } ?: run {
+        logger.error("EconomyData not found, use default initialization")
+        EconomyData()
+    }) as EconomyData
 
     fun physicsData(): PhysicsData = (subsystemDataList.lastOrNull {
         it is PhysicsData
-    } ?: {
-        logger.error("PhysicsData not found")
-        PhysicsData
+    } ?: run {
+        logger.error("PhysicsData not found, use default initialization")
+        PhysicsData()
     }) as PhysicsData
 
     fun playerScienceData(): PlayerScienceData = (subsystemDataList.lastOrNull {
         it is PlayerScienceData
-    } ?: PlayerScienceData) as PlayerScienceData
+    } ?: run {
+        logger.error("PlayerScienceData not found, use default initialization")
+        PlayerScienceData()
+    }) as PlayerScienceData
 
     fun politicsData(): PoliticsData = (subsystemDataList.lastOrNull {
         it is PoliticsData
-    } ?: PoliticsData()) as PoliticsData
+    } ?: run {
+        logger.error("PoliticalData not found, use default initialization")
+        PoliticsData()
+    }) as PoliticsData
+
+    fun popSystemData(): PopSystemData = (subsystemDataList.lastOrNull {
+        it is PopSystemData
+    } ?: run {
+        logger.error("PopSystemData not found, use default initialization")
+        PopSystemData()
+    }) as PopSystemData
+
+    fun modifierData(): ModifierData = (subsystemDataList.lastOrNull {
+        it is ModifierData
+    } ?: run {
+        logger.error("ModifierData not found, use default initialization")
+        ModifierData()
+    }) as ModifierData
 
     companion object {
         private val logger = RelativitizationLogManager.getLogger()
