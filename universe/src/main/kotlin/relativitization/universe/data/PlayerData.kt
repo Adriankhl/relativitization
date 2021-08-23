@@ -276,10 +276,61 @@ data class MutablePlayerInternalData(
     var economyData: MutableEconomyData = MutableEconomyData(),
     var modifierData: MutableModifierData = MutableModifierData(),
 ) {
-
     fun aiData(): MutableAIData = (subsystemDataList.lastOrNull {
         it is MutableAIData
-    } ?: MutableAIData()) as MutableAIData
+    } ?: run {
+        logger.error("AIData not found, use default initialization")
+        MutableAIData()
+    }) as MutableAIData
+
+    fun diplomacyData(): MutableDiplomacyData = (subsystemDataList.lastOrNull {
+        it is MutableDiplomacyData
+    } ?: run {
+        logger.error("DiplomacyData not found, use default initialization")
+        MutableDiplomacyData()
+    }) as MutableDiplomacyData
+
+    fun economyData(): MutableEconomyData = (subsystemDataList.lastOrNull {
+        it is MutableEconomyData
+    } ?: run {
+        logger.error("EconomyData not found, use default initialization")
+        MutableEconomyData()
+    }) as MutableEconomyData
+
+    fun physicsData(): MutablePhysicsData = (subsystemDataList.lastOrNull {
+        it is MutablePhysicsData
+    } ?: run {
+        logger.error("PhysicsData not found, use default initialization")
+        MutablePhysicsData()
+    }) as MutablePhysicsData
+
+    fun playerScienceData(): MutablePlayerScienceData = (subsystemDataList.lastOrNull {
+        it is MutablePlayerScienceData
+    } ?: run {
+        logger.error("PlayerScienceData not found, use default initialization")
+        MutablePlayerScienceData()
+    }) as MutablePlayerScienceData
+
+    fun politicsData(): MutablePoliticsData = (subsystemDataList.lastOrNull {
+        it is MutablePoliticsData
+    } ?: run {
+        logger.error("PoliticalData not found, use default initialization")
+        MutablePoliticsData()
+    }) as MutablePoliticsData
+
+    fun popSystemData(): MutablePopSystemData = (subsystemDataList.lastOrNull {
+        it is MutablePopSystemData
+    } ?: run {
+        logger.error("PopSystemData not found, use default initialization")
+        MutablePopSystemData()
+    }) as MutablePopSystemData
+
+    fun modifierData(): MutableModifierData = (subsystemDataList.lastOrNull {
+        it is MutableModifierData
+    } ?: run {
+        logger.error("ModifierData not found, use default initialization")
+        MutableModifierData()
+    }) as MutableModifierData
 
     fun aiData(aiData: MutableAIData) {
         subsystemDataList.removeAll {
@@ -311,5 +362,9 @@ data class MutablePlayerInternalData(
     fun addEventData(eventData: MutableEventData) {
         val newKey: Int = ListFind.minMissing(eventDataMap.keys.toList(), 0)
         eventDataMap[newKey] = eventData
+    }
+
+    companion object {
+        private val logger = RelativitizationLogManager.getLogger()
     }
 }
