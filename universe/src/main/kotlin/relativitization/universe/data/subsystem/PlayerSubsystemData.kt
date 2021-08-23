@@ -1,0 +1,5 @@
+package relativitization.universe.data.subsystem
+
+sealed interface PlayerSubsystemData
+
+sealed interface MutablePlayerSubsystemData

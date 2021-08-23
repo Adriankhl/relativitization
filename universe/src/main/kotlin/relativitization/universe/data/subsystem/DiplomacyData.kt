@@ -1,4 +1,4 @@
-package relativitization.universe.data.subsystem.diplomacy
+package relativitization.universe.data.subsystem
 
 import kotlinx.serialization.Serializable
 
@@ -13,7 +13,7 @@ data class DiplomacyData(
     val relationMap: Map<Int, Int> = mapOf(),
     val allyList: List<Int> = listOf(),
     val enemyList: List<Int> = listOf(),
-) {
+) : PlayerSubsystemData {
     fun getRelation(id: Int): Int {
         return relationMap.getOrDefault(id, 0)
     }
@@ -24,4 +24,4 @@ data class MutableDiplomacyData(
     var relationMap: MutableMap<Int, Int> = mutableMapOf(),
     var allyList: MutableList<Int> = mutableListOf(),
     var enemyList: MutableList<Int> = mutableListOf(),
-)
+) : MutablePlayerSubsystemData

@@ -1,4 +1,4 @@
-package relativitization.universe.data.subsystem.ai
+package relativitization.universe.data.subsystem
 
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.subsystem.ai.task.BuyResourceTask
@@ -12,7 +12,7 @@ data class AIData(
     val aiTask: AITask = AITask.DEFAULT,
     val logisticsTaskData: LogisticsTaskData = LogisticsTaskData(),
     val buyResourceTask: BuyResourceTask = BuyResourceTask(),
-)
+) : PlayerSubsystemData
 
 @Serializable
 data class MutableAIData(
@@ -20,7 +20,7 @@ data class MutableAIData(
     var aiTask: AITask = AITask.DEFAULT,
     var logisticsTaskData: MutableLogisticsTaskData = MutableLogisticsTaskData(),
     var buyResourceTask: MutableBuyResourceTask = MutableBuyResourceTask(),
-)
+) : MutablePlayerSubsystemData
 
 enum class AITask(val value: String) {
     DEFAULT("Default"),

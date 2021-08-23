@@ -1,13 +1,16 @@
-package relativitization.universe.data.subsystem.popsystem
+package relativitization.universe.data.subsystem
 
 import kotlinx.serialization.Serializable
+import relativitization.universe.data.subsystem.popsystem.Carrier
+import relativitization.universe.data.subsystem.popsystem.CarrierType
+import relativitization.universe.data.subsystem.popsystem.MutableCarrier
 import relativitization.universe.maths.collection.ListFind
 import kotlin.random.Random
 
 @Serializable
 data class PopSystemicData(
     val carrierMap: Map<Int, Carrier> = mapOf()
-) {
+) : PlayerSubsystemData {
     fun totalCoreRestMass(): Double {
         return carrierMap.values.sumOf { it.coreRestMass }
     }
@@ -24,7 +27,7 @@ data class PopSystemicData(
 @Serializable
 data class MutablePopSystemicData(
     val carrierMap: MutableMap<Int, MutableCarrier> = mutableMapOf()
-) {
+) : MutablePlayerSubsystemData {
     fun totalCoreRestMass(): Double {
         return carrierMap.values.sumOf { it.coreRestMass }
     }
