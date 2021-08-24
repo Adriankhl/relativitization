@@ -1,9 +1,11 @@
 package relativitization.universe.data.serializer
 
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
+@OptIn(ExperimentalSerializationApi::class)
 object DataSerializer {
 
     val format = Json {
