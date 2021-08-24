@@ -48,7 +48,7 @@ data class MutableDataComponentMap(
         }.toMap().toMutableMap()
     )
 
-    inline fun <reified T : MutablePlayerDataComponent> getOrDefault(
+    internal inline fun <reified T : MutablePlayerDataComponent> getOrDefault(
         key: KClass<T>,
         defaultValue: T
     ): T {
@@ -56,6 +56,7 @@ data class MutableDataComponentMap(
         return if (data is T) {
             data
         } else {
+            logger.error("Cannot find component in data map, use default value")
             defaultValue
         }
     }

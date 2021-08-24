@@ -96,19 +96,25 @@ data class MutablePlayerData(
      * Synchronize different data component to ensure consistency
      */
     fun syncDataComponent() {
-        if (playerInternalData.physicsData().coreRestMass != playerInternalData.popSystemData().totalCoreRestMass()) {
+        if (playerInternalData.physicsData().coreRestMass != playerInternalData.popSystemData()
+                .totalCoreRestMass()
+        ) {
             logger.debug("Sync data component, change core mass")
             playerInternalData.physicsData().coreRestMass =
                 playerInternalData.popSystemData().totalCoreRestMass()
         }
 
-        if (playerInternalData.physicsData().fuelRestMass != playerInternalData.popSystemData().totalFuelRestMass()) {
+        if (playerInternalData.physicsData().fuelRestMass != playerInternalData.popSystemData()
+                .totalFuelRestMass()
+        ) {
             logger.debug("Sync data component, change fuel mass")
             playerInternalData.physicsData().fuelRestMass =
                 playerInternalData.popSystemData().totalFuelRestMass()
         }
 
-        if (playerInternalData.physicsData().maxDeltaFuelRestMass != playerInternalData.popSystemData().totalMaxDeltaFuelRestMass()) {
+        if (playerInternalData.physicsData().maxDeltaFuelRestMass != playerInternalData.popSystemData()
+                .totalMaxDeltaFuelRestMass()
+        ) {
             logger.debug("Sync data component, change max delta fuel rest mass")
             playerInternalData.physicsData().maxDeltaFuelRestMass =
                 playerInternalData.popSystemData().totalMaxDeltaFuelRestMass()
@@ -169,72 +175,41 @@ data class PlayerInternalData(
     val subordinateIdList: List<Int> = listOf(),
     val isAlive: Boolean = true,
     val eventDataMap: Map<Int, EventData> = mapOf(),
-    val dataComponentList: List<PlayerDataComponent> = listOf(
-        AIData(),
-        DiplomacyData(),
-        EconomyData(),
-        PhysicsData(),
-        PlayerScienceData(),
-        PoliticsData(),
-        PopSystemData(),
-        ModifierData(),
+    val dataComponentMap: DataComponentMap = DataComponentMap(
+        listOf(
+            AIData(),
+            DiplomacyData(),
+            EconomyData(),
+            PhysicsData(),
+            PlayerScienceData(),
+            PoliticsData(),
+            PopSystemData(),
+            ModifierData(),
+        )
     ),
 ) {
-    fun aiData(): AIData = (dataComponentList.lastOrNull {
-        it is AIData
-    } ?: run {
-        logger.error("AIData not found, use default initialization")
-        AIData()
-    }) as AIData
+    fun aiData(): AIData = dataComponentMap.getOrDefault(AIData::class, AIData())
 
-    fun diplomacyData(): DiplomacyData = (dataComponentList.lastOrNull {
-        it is DiplomacyData
-    } ?: run {
-        logger.error("DiplomacyData not found, use default initialization")
-        DiplomacyData()
-    }) as DiplomacyData
+    fun diplomacyData(): DiplomacyData =
+        dataComponentMap.getOrDefault(DiplomacyData::class, DiplomacyData())
 
-    fun economyData(): EconomyData = (dataComponentList.lastOrNull {
-        it is EconomyData
-    } ?: run {
-        logger.error("EconomyData not found, use default initialization")
-        EconomyData()
-    }) as EconomyData
+    fun economyData(): EconomyData =
+        dataComponentMap.getOrDefault(EconomyData::class, EconomyData())
 
-    fun physicsData(): PhysicsData = (dataComponentList.lastOrNull {
-        it is PhysicsData
-    } ?: run {
-        logger.error("PhysicsData not found, use default initialization")
-        PhysicsData()
-    }) as PhysicsData
+    fun physicsData(): PhysicsData =
+        dataComponentMap.getOrDefault(PhysicsData::class, PhysicsData())
 
-    fun playerScienceData(): PlayerScienceData = (dataComponentList.lastOrNull {
-        it is PlayerScienceData
-    } ?: run {
-        logger.error("PlayerScienceData not found, use default initialization")
-        PlayerScienceData()
-    }) as PlayerScienceData
+    fun playerScienceData(): PlayerScienceData =
+        dataComponentMap.getOrDefault(PlayerScienceData::class, PlayerScienceData())
 
-    fun politicsData(): PoliticsData = (dataComponentList.lastOrNull {
-        it is PoliticsData
-    } ?: run {
-        logger.error("PoliticalData not found, use default initialization")
-        PoliticsData()
-    }) as PoliticsData
+    fun politicsData(): PoliticsData =
+        dataComponentMap.getOrDefault(PoliticsData::class, PoliticsData())
 
-    fun popSystemData(): PopSystemData = (dataComponentList.lastOrNull {
-        it is PopSystemData
-    } ?: run {
-        logger.error("PopSystemData not found, use default initialization")
-        PopSystemData()
-    }) as PopSystemData
+    fun popSystemData(): PopSystemData =
+        dataComponentMap.getOrDefault(PopSystemData::class, PopSystemData())
 
-    fun modifierData(): ModifierData = (dataComponentList.lastOrNull {
-        it is ModifierData
-    } ?: run {
-        logger.error("ModifierData not found, use default initialization")
-        ModifierData()
-    }) as ModifierData
+    fun modifierData(): ModifierData =
+        dataComponentMap.getOrDefault(ModifierData::class, ModifierData())
 
     companion object {
         private val logger = RelativitizationLogManager.getLogger()
@@ -249,128 +224,61 @@ data class MutablePlayerInternalData(
     var subordinateIdList: MutableList<Int> = mutableListOf(),
     var isAlive: Boolean = true,
     var eventDataMap: MutableMap<Int, MutableEventData> = mutableMapOf(),
-    var dataComponentList: MutableList<MutablePlayerDataComponent> = mutableListOf(
-        MutableAIData(),
-        MutableDiplomacyData(),
-        MutableEconomyData(),
-        MutablePhysicsData(),
-        MutablePlayerScienceData(),
-        MutablePoliticsData(),
-        MutablePopSystemData(),
-        MutableModifierData(),
+    var dataComponentMap: MutableDataComponentMap = MutableDataComponentMap(
+        listOf(
+            MutableAIData(),
+            MutableDiplomacyData(),
+            MutableEconomyData(),
+            MutablePhysicsData(),
+            MutablePlayerScienceData(),
+            MutablePoliticsData(),
+            MutablePopSystemData(),
+            MutableModifierData(),
+        )
     ),
 ) {
-    fun aiData(): MutableAIData = (dataComponentList.lastOrNull {
-        it is MutableAIData
-    } ?: run {
-        logger.error("AIData not found, use default initialization")
-        MutableAIData()
-    }) as MutableAIData
+    fun aiData(): MutableAIData =
+        dataComponentMap.getOrDefault(MutableAIData::class, MutableAIData())
 
-    fun aiData(newAIData: MutableAIData) {
-        dataComponentList.removeAll {
-            it is MutableAIData
-        }
-        dataComponentList.add(newAIData)
-    }
+    fun aiData(newAIData: MutableAIData) = dataComponentMap.put(newAIData)
 
-    fun diplomacyData(): MutableDiplomacyData = (dataComponentList.lastOrNull {
-        it is MutableDiplomacyData
-    } ?: run {
-        logger.error("DiplomacyData not found, use default initialization")
-        MutableDiplomacyData()
-    }) as MutableDiplomacyData
+    fun diplomacyData(): MutableDiplomacyData =
+        dataComponentMap.getOrDefault(MutableDiplomacyData::class, MutableDiplomacyData())
 
-    fun diplomacyData(newDiplomacyData: MutableDiplomacyData) {
-        dataComponentList.removeAll {
-            it is MutableDiplomacyData
-        }
-        dataComponentList.add(newDiplomacyData)
-    }
+    fun diplomacyData(newDiplomacyData: MutableDiplomacyData) =
+        dataComponentMap.put(newDiplomacyData)
 
-    fun economyData(): MutableEconomyData = (dataComponentList.lastOrNull {
-        it is MutableEconomyData
-    } ?: run {
-        logger.error("EconomyData not found, use default initialization")
-        MutableEconomyData()
-    }) as MutableEconomyData
+    fun economyData(): MutableEconomyData =
+        dataComponentMap.getOrDefault(MutableEconomyData::class, MutableEconomyData())
 
-    fun economyData(newEconomyData: MutableEconomyData) {
-        dataComponentList.removeAll {
-            it is MutableEconomyData
-        }
-        dataComponentList.add(newEconomyData)
-    }
+    fun economyData(newEconomyData: MutableEconomyData) = dataComponentMap.put(newEconomyData)
 
-    fun physicsData(): MutablePhysicsData = (dataComponentList.lastOrNull {
-        it is MutablePhysicsData
-    } ?: run {
-        logger.error("PhysicsData not found, use default initialization")
-        MutablePhysicsData()
-    }) as MutablePhysicsData
+    fun physicsData(): MutablePhysicsData =
+        dataComponentMap.getOrDefault(MutablePhysicsData::class, MutablePhysicsData())
 
-    fun physicsData(newPhysicsData: MutablePhysicsData) {
-        dataComponentList.removeAll {
-            it is MutablePhysicsData
-        }
-        dataComponentList.add(newPhysicsData)
-    }
+    fun physicsData(newPhysicsData: MutablePhysicsData) = dataComponentMap.put(newPhysicsData)
 
-    fun playerScienceData(): MutablePlayerScienceData = (dataComponentList.lastOrNull {
-        it is MutablePlayerScienceData
-    } ?: run {
-        logger.error("PlayerScienceData not found, use default initialization")
-        MutablePlayerScienceData()
-    }) as MutablePlayerScienceData
+    fun playerScienceData(): MutablePlayerScienceData =
+        dataComponentMap.getOrDefault(MutablePlayerScienceData::class, MutablePlayerScienceData())
 
-    fun playerScienceData(newPlayerScienceData: MutablePlayerScienceData) {
-        dataComponentList.removeAll {
-            it is MutablePlayerScienceData
-        }
-        dataComponentList.add(newPlayerScienceData)
-    }
+    fun playerScienceData(newPlayerScienceData: MutablePlayerScienceData) =
+        dataComponentMap.put(newPlayerScienceData)
 
-    fun politicsData(): MutablePoliticsData = (dataComponentList.lastOrNull {
-        it is MutablePoliticsData
-    } ?: run {
-        logger.error("PoliticalData not found, use default initialization")
-        MutablePoliticsData()
-    }) as MutablePoliticsData
+    fun politicsData(): MutablePoliticsData =
+        dataComponentMap.getOrDefault(MutablePoliticsData::class, MutablePoliticsData())
 
-    fun politicsData(newPoliticsData: MutablePoliticsData) {
-        dataComponentList.removeAll {
-            it is MutablePoliticsData
-        }
-        dataComponentList.add(newPoliticsData)
-    }
+    fun politicsData(newPoliticsData: MutablePoliticsData) = dataComponentMap.put(newPoliticsData)
 
-    fun popSystemData(): MutablePopSystemData = (dataComponentList.lastOrNull {
-        it is MutablePopSystemData
-    } ?: run {
-        logger.error("PopSystemData not found, use default initialization")
-        MutablePopSystemData()
-    }) as MutablePopSystemData
+    fun popSystemData(): MutablePopSystemData =
+        dataComponentMap.getOrDefault(MutablePopSystemData::class, MutablePopSystemData())
 
-    fun popSystemData(newPopSystemData: MutablePopSystemData) {
-        dataComponentList.removeAll {
-            it is MutablePopSystemData
-        }
-        dataComponentList.add(newPopSystemData)
-    }
+    fun popSystemData(newPopSystemData: MutablePopSystemData) =
+        dataComponentMap.put(newPopSystemData)
 
-    fun modifierData(): MutableModifierData = (dataComponentList.lastOrNull {
-        it is MutableModifierData
-    } ?: run {
-        logger.error("ModifierData not found, use default initialization")
-        MutableModifierData()
-    }) as MutableModifierData
+    fun modifierData(): MutableModifierData =
+        dataComponentMap.getOrDefault(MutableModifierData::class, MutableModifierData())
 
-    fun modifierData(newModifierData: MutableModifierData) {
-        dataComponentList.removeAll {
-            it is MutableModifierData
-        }
-        dataComponentList.add(newModifierData)
-    }
+    fun modifierData(newModifierData: MutableModifierData) = dataComponentMap.put(newModifierData)
 
 
     /**
