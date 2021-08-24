@@ -102,11 +102,17 @@ class ClientSettingsScreen(val game: RelativitizationGame, private val inGame: B
 
         addGdxSettings(table)
 
-        table.row().space(10f)
+        table.row().space(20f)
 
         val universeClientSettingsLabel = createLabel("Universe Client Settings:", gdxSettings.hugeFontSize)
 
         table.add(universeClientSettingsLabel).colspan(2).space(20f)
+
+        table.row().space(10f)
+
+        addUniverseClientSettings(table)
+
+        table.row().space(10f)
 
         // Add empty space for Android keyboard input
         val emptyLabel = createLabel("", gdxSettings.smallFontSize)
@@ -381,6 +387,8 @@ class ClientSettingsScreen(val game: RelativitizationGame, private val inGame: B
             }
         }
         table.add(httpRequestTimeoutTextField)
+
+        table.row().space(10f)
 
         table.add(createLabel("Http connect timeout (in ms)", gdxSettings.normalFontSize))
         val httpConnectTimeoutTextField = createTextField(
