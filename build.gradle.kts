@@ -1,6 +1,7 @@
 plugins {
     kotlin("jvm") version "${Versions.kotlinVersion}"
     kotlin("plugin.serialization") version "${Versions.kotlinVersion}"
+    id("org.jetbrains.dokka") version "${Versions.dokkaVersion}"
 }
 
 buildscript {
@@ -9,6 +10,7 @@ buildscript {
     }
     dependencies {
         classpath("com.android.tools.build:gradle:${Versions.androidGradlePluginVersion}")
+
     }
 }
 

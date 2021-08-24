@@ -19,3 +19,6 @@ Make sure `../relativitization-art/assets` exists, then:
 Make sure `../relativitization-art/assets` exists, then:
 
 `./gradlew :gdx-android:assembleDebug`
+
+# Generate html doc
+`./gradlew dokkaHtml`
