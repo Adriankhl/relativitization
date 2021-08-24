@@ -1,11 +1,11 @@
 package relativitization.universe.science.empty
 
 import relativitization.universe.data.UniverseSettings
-import relativitization.universe.data.subsystem.science.UniverseScienceData
-import relativitization.universe.data.subsystem.science.knowledge.AppliedResearchProjectData
-import relativitization.universe.data.subsystem.science.knowledge.BasicResearchProjectData
-import relativitization.universe.data.subsystem.science.knowledge.MutableAppliedResearchData
-import relativitization.universe.data.subsystem.science.knowledge.MutableBasicResearchData
+import relativitization.universe.data.component.science.UniverseScienceData
+import relativitization.universe.data.component.science.knowledge.AppliedResearchProjectData
+import relativitization.universe.data.component.science.knowledge.BasicResearchProjectData
+import relativitization.universe.data.component.science.knowledge.MutableAppliedResearchData
+import relativitization.universe.data.component.science.knowledge.MutableBasicResearchData
 import relativitization.universe.science.UniverseScienceDataProcess
 
 object EmptyUniverseScienceDataProcess : UniverseScienceDataProcess() {

@@ -5,7 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Stack
 import com.badlogic.gdx.utils.Align
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.PlayerType
-import relativitization.universe.data.subsystem.popsystem.CarrierType
+import relativitization.universe.data.component.popsystem.CarrierType
 import relativitization.universe.utils.RelativitizationLogManager
 
 object PlayerImage {

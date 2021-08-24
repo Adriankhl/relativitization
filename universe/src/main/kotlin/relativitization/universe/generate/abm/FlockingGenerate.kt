@@ -1,8 +1,8 @@
 package relativitization.universe.generate.abm
 
 import relativitization.universe.data.*
-import relativitization.universe.data.subsystem.physics.MutableVelocity
-import relativitization.universe.data.subsystem.science.UniverseScienceData
+import relativitization.universe.data.component.physics.MutableVelocity
+import relativitization.universe.data.component.science.UniverseScienceData
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.generate.GenerateSettings
 import relativitization.universe.generate.GenerateUniverse

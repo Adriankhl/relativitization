@@ -1,6 +1,6 @@
 package relativitization.universe.maths.physics
 
-import relativitization.universe.data.subsystem.physics.*
+import relativitization.universe.data.component.physics.*
 import kotlin.math.abs
 import kotlin.math.sqrt
 

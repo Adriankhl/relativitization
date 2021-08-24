@@ -3,14 +3,14 @@ package relativitization.universe.data
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.events.EventData
 import relativitization.universe.data.events.MutableEventData
-import relativitization.universe.data.subsystem.*
-import relativitization.universe.data.subsystem.physics.*
-import relativitization.universe.data.subsystem.MutablePoliticsData
-import relativitization.universe.data.subsystem.PoliticsData
-import relativitization.universe.data.subsystem.MutablePopSystemData
-import relativitization.universe.data.subsystem.PopSystemData
-import relativitization.universe.data.subsystem.MutablePlayerScienceData
-import relativitization.universe.data.subsystem.PlayerScienceData
+import relativitization.universe.data.component.*
+import relativitization.universe.data.component.physics.*
+import relativitization.universe.data.component.MutablePoliticsData
+import relativitization.universe.data.component.PoliticsData
+import relativitization.universe.data.component.MutablePopSystemData
+import relativitization.universe.data.component.PopSystemData
+import relativitization.universe.data.component.MutablePlayerScienceData
+import relativitization.universe.data.component.PlayerScienceData
 import relativitization.universe.maths.collection.ListFind
 import relativitization.universe.maths.grid.Grids.double4DToGroupId
 import relativitization.universe.maths.grid.Grids.groupIdToCenterDouble3D
@@ -169,7 +169,7 @@ data class PlayerInternalData(
     val subordinateIdList: List<Int> = listOf(),
     val isAlive: Boolean = true,
     val eventDataMap: Map<Int, EventData> = mapOf(),
-    val subsystemDataList: List<PlayerSubsystemData> = listOf(
+    val dataComponentList: List<PlayerDataComponent> = listOf(
         AIData(),
         DiplomacyData(),
         EconomyData(),
@@ -180,56 +180,56 @@ data class PlayerInternalData(
         ModifierData(),
     ),
 ) {
-    fun aiData(): AIData = (subsystemDataList.lastOrNull {
+    fun aiData(): AIData = (dataComponentList.lastOrNull {
         it is AIData
     } ?: run {
         logger.error("AIData not found, use default initialization")
         AIData()
     }) as AIData
 
-    fun diplomacyData(): DiplomacyData = (subsystemDataList.lastOrNull {
+    fun diplomacyData(): DiplomacyData = (dataComponentList.lastOrNull {
         it is DiplomacyData
     } ?: run {
         logger.error("DiplomacyData not found, use default initialization")
         DiplomacyData()
     }) as DiplomacyData
 
-    fun economyData(): EconomyData = (subsystemDataList.lastOrNull {
+    fun economyData(): EconomyData = (dataComponentList.lastOrNull {
         it is EconomyData
     } ?: run {
         logger.error("EconomyData not found, use default initialization")
         EconomyData()
     }) as EconomyData
 
-    fun physicsData(): PhysicsData = (subsystemDataList.lastOrNull {
+    fun physicsData(): PhysicsData = (dataComponentList.lastOrNull {
         it is PhysicsData
     } ?: run {
         logger.error("PhysicsData not found, use default initialization")
         PhysicsData()
     }) as PhysicsData
 
-    fun playerScienceData(): PlayerScienceData = (subsystemDataList.lastOrNull {
+    fun playerScienceData(): PlayerScienceData = (dataComponentList.lastOrNull {
         it is PlayerScienceData
     } ?: run {
         logger.error("PlayerScienceData not found, use default initialization")
         PlayerScienceData()
     }) as PlayerScienceData
 
-    fun politicsData(): PoliticsData = (subsystemDataList.lastOrNull {
+    fun politicsData(): PoliticsData = (dataComponentList.lastOrNull {
         it is PoliticsData
     } ?: run {
         logger.error("PoliticalData not found, use default initialization")
         PoliticsData()
     }) as PoliticsData
 
-    fun popSystemData(): PopSystemData = (subsystemDataList.lastOrNull {
+    fun popSystemData(): PopSystemData = (dataComponentList.lastOrNull {
         it is PopSystemData
     } ?: run {
         logger.error("PopSystemData not found, use default initialization")
         PopSystemData()
     }) as PopSystemData
 
-    fun modifierData(): ModifierData = (subsystemDataList.lastOrNull {
+    fun modifierData(): ModifierData = (dataComponentList.lastOrNull {
         it is ModifierData
     } ?: run {
         logger.error("ModifierData not found, use default initialization")
@@ -249,7 +249,7 @@ data class MutablePlayerInternalData(
     var subordinateIdList: MutableList<Int> = mutableListOf(),
     var isAlive: Boolean = true,
     var eventDataMap: MutableMap<Int, MutableEventData> = mutableMapOf(),
-    var subsystemDataList: MutableList<MutablePlayerSubsystemData> = mutableListOf(
+    var dataComponentList: MutableList<MutablePlayerDataComponent> = mutableListOf(
         MutableAIData(),
         MutableDiplomacyData(),
         MutableEconomyData(),
@@ -260,7 +260,7 @@ data class MutablePlayerInternalData(
         MutableModifierData(),
     ),
 ) {
-    fun aiData(): MutableAIData = (subsystemDataList.lastOrNull {
+    fun aiData(): MutableAIData = (dataComponentList.lastOrNull {
         it is MutableAIData
     } ?: run {
         logger.error("AIData not found, use default initialization")
@@ -268,13 +268,13 @@ data class MutablePlayerInternalData(
     }) as MutableAIData
 
     fun aiData(newAIData: MutableAIData) {
-        subsystemDataList.removeAll {
+        dataComponentList.removeAll {
             it is MutableAIData
         }
-        subsystemDataList.add(newAIData)
+        dataComponentList.add(newAIData)
     }
 
-    fun diplomacyData(): MutableDiplomacyData = (subsystemDataList.lastOrNull {
+    fun diplomacyData(): MutableDiplomacyData = (dataComponentList.lastOrNull {
         it is MutableDiplomacyData
     } ?: run {
         logger.error("DiplomacyData not found, use default initialization")
@@ -282,13 +282,13 @@ data class MutablePlayerInternalData(
     }) as MutableDiplomacyData
 
     fun diplomacyData(newDiplomacyData: MutableDiplomacyData) {
-        subsystemDataList.removeAll {
+        dataComponentList.removeAll {
             it is MutableDiplomacyData
         }
-        subsystemDataList.add(newDiplomacyData)
+        dataComponentList.add(newDiplomacyData)
     }
 
-    fun economyData(): MutableEconomyData = (subsystemDataList.lastOrNull {
+    fun economyData(): MutableEconomyData = (dataComponentList.lastOrNull {
         it is MutableEconomyData
     } ?: run {
         logger.error("EconomyData not found, use default initialization")
@@ -296,13 +296,13 @@ data class MutablePlayerInternalData(
     }) as MutableEconomyData
 
     fun economyData(newEconomyData: MutableEconomyData) {
-        subsystemDataList.removeAll {
+        dataComponentList.removeAll {
             it is MutableEconomyData
         }
-        subsystemDataList.add(newEconomyData)
+        dataComponentList.add(newEconomyData)
     }
 
-    fun physicsData(): MutablePhysicsData = (subsystemDataList.lastOrNull {
+    fun physicsData(): MutablePhysicsData = (dataComponentList.lastOrNull {
         it is MutablePhysicsData
     } ?: run {
         logger.error("PhysicsData not found, use default initialization")
@@ -310,13 +310,13 @@ data class MutablePlayerInternalData(
     }) as MutablePhysicsData
 
     fun physicsData(newPhysicsData: MutablePhysicsData) {
-        subsystemDataList.removeAll {
+        dataComponentList.removeAll {
             it is MutablePhysicsData
         }
-        subsystemDataList.add(newPhysicsData)
+        dataComponentList.add(newPhysicsData)
     }
 
-    fun playerScienceData(): MutablePlayerScienceData = (subsystemDataList.lastOrNull {
+    fun playerScienceData(): MutablePlayerScienceData = (dataComponentList.lastOrNull {
         it is MutablePlayerScienceData
     } ?: run {
         logger.error("PlayerScienceData not found, use default initialization")
@@ -324,13 +324,13 @@ data class MutablePlayerInternalData(
     }) as MutablePlayerScienceData
 
     fun playerScienceData(newPlayerScienceData: MutablePlayerScienceData) {
-        subsystemDataList.removeAll {
+        dataComponentList.removeAll {
             it is MutablePlayerScienceData
         }
-        subsystemDataList.add(newPlayerScienceData)
+        dataComponentList.add(newPlayerScienceData)
     }
 
-    fun politicsData(): MutablePoliticsData = (subsystemDataList.lastOrNull {
+    fun politicsData(): MutablePoliticsData = (dataComponentList.lastOrNull {
         it is MutablePoliticsData
     } ?: run {
         logger.error("PoliticalData not found, use default initialization")
@@ -338,13 +338,13 @@ data class MutablePlayerInternalData(
     }) as MutablePoliticsData
 
     fun politicsData(newPoliticsData: MutablePoliticsData) {
-        subsystemDataList.removeAll {
+        dataComponentList.removeAll {
             it is MutablePoliticsData
         }
-        subsystemDataList.add(newPoliticsData)
+        dataComponentList.add(newPoliticsData)
     }
 
-    fun popSystemData(): MutablePopSystemData = (subsystemDataList.lastOrNull {
+    fun popSystemData(): MutablePopSystemData = (dataComponentList.lastOrNull {
         it is MutablePopSystemData
     } ?: run {
         logger.error("PopSystemData not found, use default initialization")
@@ -352,13 +352,13 @@ data class MutablePlayerInternalData(
     }) as MutablePopSystemData
 
     fun popSystemData(newPopSystemData: MutablePopSystemData) {
-        subsystemDataList.removeAll {
+        dataComponentList.removeAll {
             it is MutablePopSystemData
         }
-        subsystemDataList.add(newPopSystemData)
+        dataComponentList.add(newPopSystemData)
     }
 
-    fun modifierData(): MutableModifierData = (subsystemDataList.lastOrNull {
+    fun modifierData(): MutableModifierData = (dataComponentList.lastOrNull {
         it is MutableModifierData
     } ?: run {
         logger.error("ModifierData not found, use default initialization")
@@ -366,10 +366,10 @@ data class MutablePlayerInternalData(
     }) as MutableModifierData
 
     fun modifierData(newModifierData: MutableModifierData) {
-        subsystemDataList.removeAll {
+        dataComponentList.removeAll {
             it is MutableModifierData
         }
-        subsystemDataList.add(newModifierData)
+        dataComponentList.add(newModifierData)
     }
 
 

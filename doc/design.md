@@ -33,7 +33,7 @@
 * AI is individual, pick by aiName
 * data is separated into two category 
   * Core data which is common for all model
-  * Subsystem data which can be added or removed for individual models
+  * Component data which can be added or removed for individual models
 
 # Command
 * From player, to player

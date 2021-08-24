@@ -1,8 +1,8 @@
 package relativitization.universe.data
 
 import kotlinx.serialization.Serializable
-import relativitization.universe.data.subsystem.physics.Int3D
-import relativitization.universe.data.subsystem.physics.Int4D
+import relativitization.universe.data.component.physics.Int3D
+import relativitization.universe.data.component.physics.Int4D
 import relativitization.universe.maths.grid.Grids.create3DGrid
 import relativitization.universe.utils.RelativitizationLogManager
 

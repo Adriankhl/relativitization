@@ -1,6 +1,6 @@
 package relativitization.universe.maths.physics
 
-import relativitization.universe.data.subsystem.physics.Int3D
+import relativitization.universe.data.component.physics.Int3D
 import relativitization.universe.maths.physics.Intervals.intDelay
 import kotlin.test.Test
 

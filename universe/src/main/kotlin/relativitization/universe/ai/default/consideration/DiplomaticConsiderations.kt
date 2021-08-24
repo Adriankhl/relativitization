@@ -2,7 +2,7 @@ package relativitization.universe.ai.default.consideration
 
 import relativitization.universe.ai.default.utils.Consideration
 import relativitization.universe.ai.default.utils.DualUtilityData
-import relativitization.universe.data.subsystem.DiplomacyData
+import relativitization.universe.data.component.DiplomacyData
 import kotlin.math.exp
 
 /**
