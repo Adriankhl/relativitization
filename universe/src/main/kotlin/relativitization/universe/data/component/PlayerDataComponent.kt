@@ -13,14 +13,13 @@ sealed class PlayerDataComponent
 @Serializable
 sealed class MutablePlayerDataComponent
 
-@OptIn(InternalSerializationApi::class, ExperimentalSerializationApi::class)
 @Serializable
 data class DataComponentMap(
     val dataMap: Map<String, PlayerDataComponent> = mapOf(),
 ) {
     constructor(dataList: List<PlayerDataComponent>) : this(
         dataMap = dataList.map {
-            it::class.serializer().descriptor.serialName to it
+            (it::class.simpleName ?: "") to it
         }.toMap()
     )
 
@@ -28,7 +27,7 @@ data class DataComponentMap(
         key: KClass<T>,
         defaultValue: T
     ): T {
-        val data: PlayerDataComponent? = dataMap[key.serializer().descriptor.serialName]
+        val data: PlayerDataComponent? = dataMap[key.simpleName]
         return if (data is T) {
             data
         } else {
@@ -43,14 +42,14 @@ data class DataComponentMap(
     }
 }
 
-@OptIn(InternalSerializationApi::class, ExperimentalSerializationApi::class)
 @Serializable
 data class MutableDataComponentMap(
     val dataMap: MutableMap<String, MutablePlayerDataComponent> = mutableMapOf(),
 ) {
     constructor(dataList: List<MutablePlayerDataComponent>) : this(
         dataMap = dataList.map {
-            it::class.serializer().descriptor.serialName to it
+            // Drop first 7 character "Mutable"
+            (it::class.simpleName ?: "").drop(7) to it
         }.toMap().toMutableMap()
     )
 
@@ -58,7 +57,7 @@ data class MutableDataComponentMap(
         key: KClass<T>,
         defaultValue: T
     ): T {
-        val data: MutablePlayerDataComponent? = dataMap[key.serializer().descriptor.serialName]
+        val data: MutablePlayerDataComponent? = dataMap[(key.simpleName ?: "").drop(7)]
         return if (data is T) {
             data
         } else {
@@ -68,11 +67,11 @@ data class MutableDataComponentMap(
     }
 
     fun <T : MutablePlayerDataComponent> put(dataComponent: T) {
-        dataMap[dataComponent::class.serializer().descriptor.serialName] = dataComponent
+        dataMap[(dataComponent::class.simpleName ?: "").drop(7)] = dataComponent
     }
 
     fun <T : MutablePlayerDataComponent> remove(key: KClass<T>) {
-        dataMap.remove(key::class.serializer().descriptor.serialName)
+        dataMap.remove((key.simpleName ?: "").drop(7))
     }
 
 
