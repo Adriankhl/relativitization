@@ -47,7 +47,7 @@ internal class CoroutineTest {
 
     @Test
     fun wrongPasswordTest() {
-        Configurator.setRootLevel(Level.DEBUG);
+        Configurator.setRootLevel(Level.DEBUG)
 
         val universeServer = UniverseServer(UniverseServerSettings(adminPassword = "wrong"))
         val universeClient = UniverseClient(UniverseClientSettings(adminPassword = "pwd"))
@@ -70,7 +70,7 @@ internal class CoroutineTest {
 
     @Test
     fun createUniverseTest() {
-        Configurator.setRootLevel(Level.DEBUG);
+        Configurator.setRootLevel(Level.DEBUG)
 
         val universeServer = UniverseServer(UniverseServerSettings(adminPassword = "pwd"))
         val universeClient = UniverseClient(UniverseClientSettings(adminPassword = "pwd"))
