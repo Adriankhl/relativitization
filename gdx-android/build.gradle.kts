@@ -4,6 +4,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     id("com.android.application")
     kotlin("android")
+    id("org.jetbrains.dokka")
 }
 
 val natives: Configuration by configurations.creating
