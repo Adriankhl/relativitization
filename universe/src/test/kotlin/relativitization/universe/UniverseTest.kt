@@ -19,5 +19,6 @@ internal class UniverseTest {
         val universe = Universe(universeData = universeData, programDir= ".")
         universe.saveAll()
         val universeLoad = Universe.loadUniverseLatest("save-load-test", ".")
+        println(universeLoad)
     }
 }

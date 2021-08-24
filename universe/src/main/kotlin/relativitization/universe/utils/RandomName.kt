@@ -6,6 +6,11 @@ import relativitization.universe.data.PlayerInternalData
 object RandomName {
     val faker = Faker()
     fun randomPlayerName(playerInternalData: PlayerInternalData): String {
-        return faker.name.name()
+        val suffix: String = if (playerInternalData.leaderIdList.isEmpty()) {
+            " (Leader)"
+        } else {
+            " (Subordinate)"
+        }
+        return faker.name.name() + suffix
     }
 }

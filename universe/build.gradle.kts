@@ -28,6 +28,7 @@ kotlin {
 
 tasks.withType<KotlinCompile>().configureEach {
     kotlinOptions.jvmTarget = "11"
+    kotlinOptions.freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
 }
 
 tasks {

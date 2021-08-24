@@ -1,5 +1,7 @@
 package relativitization.universe.data.component
 
+import kotlinx.serialization.InternalSerializationApi
+import kotlinx.serialization.serializer
 import kotlin.test.Test
 
 internal class DataComponentMapTest {

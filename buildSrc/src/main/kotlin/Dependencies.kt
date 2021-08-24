@@ -3,7 +3,7 @@ object Versions {
     const val appCodeNumber = 1
     const val appVersion = "0.1"
 
-    const val kotlinVersion = "1.5.21"
+    const val kotlinVersion = "1.5.30"
     const val kotlinxCoroutineVersion = "1.5.1"
     const val kotlinxSerializationVersion = "1.2.2"
     const val ktorVersion = "1.6.2"

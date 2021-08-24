@@ -28,7 +28,8 @@ data class MutablePhysicsModifierData(
      * Update the time by proper (dilated) time of the player
      */
     fun updateByProperTime(gamma: Double) {
-
+        // Pretend doing something
+        gamma + 0.1
     }
 
     /**

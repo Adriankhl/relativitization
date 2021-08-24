@@ -81,6 +81,8 @@ internal class MovementTest {
             println("Rest mass 1: $currentRestMass1")
         }
 
+        println(l1)
+
         assert(currentDouble3D1 == Double3D(1.0, 0.0, 0.0))
 
         var currentRestMass2 = 1.0
@@ -105,6 +107,8 @@ internal class MovementTest {
             println("Double3D 2: $currentDouble3D2")
             println("Rest mass 2: $currentRestMass2")
         }
+
+        println(l2)
 
         assert(currentDouble3D2 == Double3D(1.0, 0.0, 0.0))
 
@@ -131,6 +135,8 @@ internal class MovementTest {
             println("Rest mass 3: $currentRestMass3")
         }
 
+        println(l6)
+
         assert(currentDouble3D3 == Double3D(1.0, 0.0, 0.0))
 
         var currentRestMass4 = 1.0
@@ -155,6 +161,8 @@ internal class MovementTest {
             println("Double3D 4: $currentDouble3D4")
             println("Rest mass 4: $currentRestMass4")
         }
+
+        println(l4)
 
         assert(currentDouble3D4 == Double3D(1.0, 0.0, 0.0))
 
@@ -184,6 +192,8 @@ internal class MovementTest {
             println("Double3D 1: $currentDouble3D1")
             println("Rest mass 1: $currentRestMass1")
         }
+
+        println(l1)
 
         val e1: Double = estimateRequiredDeltaMass(
             initialRestMass = 1.0,
@@ -219,6 +229,8 @@ internal class MovementTest {
             println("Double3D 2: $currentDouble3D2")
             println("Rest mass 2: $currentRestMass2")
         }
+
+        println(l2)
 
         val e2: Double = estimateRequiredDeltaMass(
             initialRestMass = 1.0,
