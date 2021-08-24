@@ -196,6 +196,9 @@ data class PlayerInternalData(
     fun economyData(): EconomyData =
         dataComponentMap.getOrDefault(EconomyData::class, EconomyData())
 
+    fun modifierData(): ModifierData =
+        dataComponentMap.getOrDefault(ModifierData::class, ModifierData())
+
     fun physicsData(): PhysicsData =
         dataComponentMap.getOrDefault(PhysicsData::class, PhysicsData())
 
@@ -207,9 +210,6 @@ data class PlayerInternalData(
 
     fun popSystemData(): PopSystemData =
         dataComponentMap.getOrDefault(PopSystemData::class, PopSystemData())
-
-    fun modifierData(): ModifierData =
-        dataComponentMap.getOrDefault(ModifierData::class, ModifierData())
 
     companion object {
         private val logger = RelativitizationLogManager.getLogger()
@@ -229,11 +229,11 @@ data class MutablePlayerInternalData(
             MutableAIData(),
             MutableDiplomacyData(),
             MutableEconomyData(),
+            MutableModifierData(),
             MutablePhysicsData(),
             MutablePlayerScienceData(),
             MutablePoliticsData(),
             MutablePopSystemData(),
-            MutableModifierData(),
         )
     ),
 ) {
@@ -252,6 +252,11 @@ data class MutablePlayerInternalData(
         dataComponentMap.getOrDefault(MutableEconomyData::class, MutableEconomyData())
 
     fun economyData(newEconomyData: MutableEconomyData) = dataComponentMap.put(newEconomyData)
+
+    fun modifierData(): MutableModifierData =
+        dataComponentMap.getOrDefault(MutableModifierData::class, MutableModifierData())
+
+    fun modifierData(newModifierData: MutableModifierData) = dataComponentMap.put(newModifierData)
 
     fun physicsData(): MutablePhysicsData =
         dataComponentMap.getOrDefault(MutablePhysicsData::class, MutablePhysicsData())
@@ -274,11 +279,6 @@ data class MutablePlayerInternalData(
 
     fun popSystemData(newPopSystemData: MutablePopSystemData) =
         dataComponentMap.put(newPopSystemData)
-
-    fun modifierData(): MutableModifierData =
-        dataComponentMap.getOrDefault(MutableModifierData::class, MutableModifierData())
-
-    fun modifierData(newModifierData: MutableModifierData) = dataComponentMap.put(newModifierData)
 
 
     /**
