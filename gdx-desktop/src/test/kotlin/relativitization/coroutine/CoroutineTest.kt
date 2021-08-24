@@ -140,6 +140,7 @@ internal class CoroutineTest {
             println("before")
             try {
                 val response: HttpResponse = universeClient.ktorClient.get("http://127.0.0.1:123")
+                println(response)
             } catch(cause: Throwable) {
                 println("Error: $cause")
             }

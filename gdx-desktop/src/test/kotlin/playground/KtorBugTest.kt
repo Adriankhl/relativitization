@@ -66,6 +66,7 @@ internal class KtorBugTest {
             val job = launch {
                 try {
                     val response: HttpResponse = client.get("http://127.0.0.1:12345")
+                    println(response)
                 } catch (cause: Throwable) {
                     println(cause)
                 }
