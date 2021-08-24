@@ -79,6 +79,7 @@ data class MutableAllPopData(
  * @property unemploymentBenefit the total amount of the unemployment benefit of the unemployed population
  * @property saving saving of the population in fuel rest mass
  * @property desireResourceMap the desire resources of the population
+ * @property educationLevel the education level of the population
  */
 @Serializable
 data class CommonPopData(
