@@ -1,7 +1,5 @@
 package relativitization.universe.ai.default.utils
 
-import kotlin.math.max
-
 
 data class DualUtilityData(
     val rank: Int = 0,

@@ -2,7 +2,6 @@ package relativitization.game
 
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.serializer.DataSerializer
-import relativitization.universe.generate.GenerateSettings
 import relativitization.universe.utils.RelativitizationLogManager
 import java.io.File
 

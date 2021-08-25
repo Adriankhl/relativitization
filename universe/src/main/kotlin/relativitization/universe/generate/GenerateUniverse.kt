@@ -1,7 +1,8 @@
 package relativitization.universe.generate
 
 import kotlinx.serialization.Serializable
-import relativitization.universe.data.*
+import relativitization.universe.data.MutableUniverseSettings
+import relativitization.universe.data.UniverseData
 import relativitization.universe.data.serializer.DataSerializer.decode
 import relativitization.universe.data.serializer.DataSerializer.encode
 import relativitization.universe.generate.abm.FlockingGenerate

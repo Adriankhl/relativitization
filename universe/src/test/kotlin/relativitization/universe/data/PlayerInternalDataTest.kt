@@ -1,7 +1,7 @@
 package relativitization.universe.data
 
-import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.data.component.*
+import relativitization.universe.data.serializer.DataSerializer
 import kotlin.test.Test
 
 internal class PlayerInternalDataTest {

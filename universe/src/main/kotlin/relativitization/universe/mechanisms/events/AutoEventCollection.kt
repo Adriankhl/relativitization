@@ -5,8 +5,8 @@ import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.AddEventCommand
 import relativitization.universe.data.commands.Command
-import relativitization.universe.data.events.AutoEvent
 import relativitization.universe.data.component.science.UniverseScienceData
+import relativitization.universe.data.events.AutoEvent
 import relativitization.universe.mechanisms.Mechanism
 
 

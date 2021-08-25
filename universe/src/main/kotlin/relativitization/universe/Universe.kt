@@ -1,6 +1,6 @@
 package relativitization.universe
 
-import kotlinx.coroutines.*
+import kotlinx.coroutines.coroutineScope
 import relativitization.universe.ai.AICollection
 import relativitization.universe.data.*
 import relativitization.universe.data.commands.Command

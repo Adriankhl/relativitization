@@ -4,11 +4,11 @@ import kotlinx.serialization.Serializable
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.UniverseSettings
+import relativitization.universe.data.component.physics.Int4D
 import relativitization.universe.data.events.Event
 import relativitization.universe.data.events.EventCollection
 import relativitization.universe.data.events.EventName
 import relativitization.universe.data.events.MutableEventData
-import relativitization.universe.data.component.physics.Int4D
 import relativitization.universe.utils.RelativitizationLogManager
 
 /**
