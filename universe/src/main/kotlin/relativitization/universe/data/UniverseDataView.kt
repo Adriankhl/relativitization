@@ -11,7 +11,6 @@ data class UniverseData3DAtGrid(
     val center: Int4D,
     val centerPlayerDataList: List<PlayerData>,
     val playerDataMap: Map<Int, PlayerData>,
-    val playerId3D: List<List<List<List<Int>>>>,
     val universeSettings: UniverseSettings,
 ) {
     fun idToUniverseData3DAtPlayer(): Map<Int, UniverseData3DAtPlayer> {

@@ -122,13 +122,6 @@ data class UniverseData(
     }
 
     fun toUniverseData3DAtGrid(center: Int4D): UniverseData3DAtGrid {
-        val playerId3D: List<List<List<MutableList<Int>>>> =
-            create3DGrid(
-                universeSettings.xDim,
-                universeSettings.yDim,
-                universeSettings.zDim
-            ) { _, _, _ -> mutableListOf() }
-
         val playerDataMap: MutableMap<Int, PlayerData> = mutableMapOf()
 
         for (i in 0 until universeSettings.xDim) {
@@ -143,26 +136,11 @@ data class UniverseData(
                     for (playerData in playerDataList) {
                         val id = playerData.playerId
                         if (playerDataMap.containsKey(playerData.playerId)) {
-                            // Two duplicate possibility:
-                            // 1. time difference -> take the latest one
-                            // 2. same time, different space -> take the one with the correct space coordinate
+                            // Take newer data if duplicate
                             if (playerData.int4D.t > playerDataMap.getValue(id).int4D.t) {
-                                val oldInt3D = playerDataMap.getValue(id).int4D.toInt3D()
-                                playerId3D[oldInt3D.x][oldInt3D.y][oldInt3D.z].remove(id)
-
-                                playerId3D[i][j][k].add(id)
                                 playerDataMap[id] = playerData
-                            } else if (playerData.int4D.t == playerDataMap.getValue(id).int4D.t) {
-                                if (playerData.int4D.toInt3D() == int3D ) {
-                                    val oldInt3D = playerDataMap.getValue(id).int4D.toInt3D()
-                                    playerId3D[oldInt3D.x][oldInt3D.y][oldInt3D.z].remove(id)
-
-                                    playerId3D[i][j][k].add(id)
-                                    playerDataMap[id] = playerData
-                                }
                             }
                         } else {
-                            playerId3D[i][j][k].add(id)
                             playerDataMap[id] = playerData
                         }
                     }
@@ -176,7 +154,6 @@ data class UniverseData(
             center,
             centerPlayerDataList,
             playerDataMap,
-            playerId3D,
             universeSettings
         )
     }
