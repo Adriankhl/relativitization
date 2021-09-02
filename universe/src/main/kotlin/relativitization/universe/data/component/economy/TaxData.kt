@@ -7,13 +7,15 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class TaxRateData(
-    val tariff: TariffData = TariffData(),
+    val importTariff: TariffData = TariffData(),
+    val exportTariff: TariffData = TariffData(),
     val incomeTax: IncomeTaxData = IncomeTaxData(),
 )
 
 @Serializable
 data class MutableTaxRateData(
-    var tariff: MutableTariffData = MutableTariffData(),
+    var importTariff: MutableTariffData = MutableTariffData(),
+    var exportTariff: MutableTariffData = MutableTariffData(),
     var incomeTax: MutableIncomeTaxData = MutableIncomeTaxData(),
 )
 
