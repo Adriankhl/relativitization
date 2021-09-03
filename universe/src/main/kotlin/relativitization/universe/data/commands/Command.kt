@@ -102,7 +102,7 @@ sealed class Command {
 
 fun Command.name(): String = this::class.simpleName.toString()
 
-fun <T : Command> KClass<T>.name(): String = this::class.simpleName.toString()
+fun <T : Command> KClass<T>.name(): String = this.simpleName.toString()
 
 object CommandCollection {
     private val logger = RelativitizationLogManager.getLogger()
