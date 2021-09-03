@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.commands.Command
+import relativitization.universe.data.commands.name
 
 class CommandsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.assets){
     private val gdxSettings = game.gdxSettings
@@ -58,7 +59,7 @@ class CommandsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>
 
         nestedTable.background = assets.getBackgroundColor(0.25f, 0.25f, 0.25f, 1.0f)
 
-        val commandNameLabel = createLabel(command::class.simpleName.toString(), gdxSettings.normalFontSize)
+        val commandNameLabel = createLabel(command.name(), gdxSettings.normalFontSize)
 
         val commandDescriptionLabel = createLabel(command.description, gdxSettings.smallFontSize)
         commandDescriptionLabel.wrap = true

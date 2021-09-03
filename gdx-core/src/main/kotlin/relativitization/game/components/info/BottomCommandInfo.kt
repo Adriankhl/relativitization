@@ -4,6 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.ScreenComponent
+import relativitization.universe.data.commands.name
 
 class BottomCommandInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.assets) {
 
@@ -129,7 +130,7 @@ class BottomCommandInfo(val game: RelativitizationGame) : ScreenComponent<Scroll
     }
 
     private fun update() {
-        commandNameLabel.setText(game.universeClient.currentCommand::class.simpleName.toString())
+        commandNameLabel.setText(game.universeClient.currentCommand.name())
         commandDescriptionLabel.setText(game.universeClient.currentCommand.description)
         commandTimeLabel.setText("Time: ${game.universeClient.currentCommand.fromInt4D.t}")
 

@@ -100,16 +100,20 @@ sealed class Command {
     }
 }
 
+fun Command.name(): String = this::class.simpleName.toString()
+
+fun <T : Command> KClass<T>.name(): String = this::class.simpleName.toString()
+
 object CommandCollection {
     private val logger = RelativitizationLogManager.getLogger()
 
     val defaultCommandList: List<String> = listOf(
-        AddEventCommand::class.simpleName.toString(),
-        ChangeVelocityCommand::class.simpleName.toString(),
-        CannotSendCommand::class.simpleName.toString(),
-        DisableFuelIncreaseCommand::class.simpleName.toString(),
-        DummyCommand::class.simpleName.toString(),
-        SelectEventChoiceCommand::class.simpleName.toString(),
+        AddEventCommand::class.name(),
+        ChangeVelocityCommand::class.name(),
+        CannotSendCommand::class.name(),
+        DisableFuelIncreaseCommand::class.name(),
+        DummyCommand::class.name(),
+        SelectEventChoiceCommand::class.name(),
     )
 
     val commandListNameMap: Map<String, List<String>> = mapOf(
@@ -124,6 +128,6 @@ object CommandCollection {
             defaultCommandList
         }
 
-        return commandCollection.contains(command::class.simpleName.toString())
+        return commandCollection.contains(command.name())
     }
 }
