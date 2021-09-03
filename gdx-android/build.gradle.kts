@@ -43,6 +43,7 @@ android {
 
                 implementation("androidx.lifecycle:lifecycle-runtime-ktx:${Versions.androidLifeCycleKtxVersion}")
                 implementation("androidx.fragment:fragment-ktx:${Versions.androidFragmentKtxVersion}")
+                implementation("androidx.appcompat:appcompat:${Versions.androidAppCompatVersion}")
 
 
                 implementation("com.badlogicgames.gdx:gdx-backend-android:${Versions.gdxVersion}")

@@ -15,6 +15,7 @@ object Versions {
     const val kotlinFakerVersion = "1.7.1"
 
     const val androidGradlePluginVersion = "7.0.2"
+    const val androidAppCompatVersion = "1.3.1"
     const val androidLifeCycleKtxVersion = "2.3.1"
     const val androidFragmentKtxVersion = "1.3.6"
 

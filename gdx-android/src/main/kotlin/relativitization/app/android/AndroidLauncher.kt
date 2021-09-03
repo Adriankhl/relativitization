@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.FragmentActivity
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.coroutineScope
 import com.badlogic.gdx.backends.android.AndroidFragmentApplication
@@ -19,7 +19,7 @@ import relativitization.universe.utils.AndroidLogger
 import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.random.Random
 
-class AndroidLauncher : FragmentActivity(), AndroidFragmentApplication.Callbacks {
+class AndroidLauncher : AppCompatActivity(), AndroidFragmentApplication.Callbacks {
     override fun onCreate(savedInstanceState: Bundle?) {
         RelativitizationLogManager.isAndroid = true
         AndroidLogger.showLog = true
