@@ -118,7 +118,7 @@ data class ResourceData(
 
 
     /**
-     * Get resource price, default to Double.MAX_VALUE if the resource doesn't exist
+     * Get resource price, default to Double.POSITIVE_INFINITY if the resource doesn't exist
      */
     fun getResourcePrice(
         resourceType: ResourceType,
@@ -126,7 +126,7 @@ data class ResourceData(
     ): Double {
         return resourcePriceMap[resourceType]?.get(
             resourceQualityClass
-        ) ?: Double.MAX_VALUE
+        ) ?: Double.POSITIVE_INFINITY
     }
 }
 
@@ -199,7 +199,7 @@ data class MutableResourceData(
     }
 
     /**
-     * Get resource price, default to Double.MAX_VALUE if the resource doesn't exist
+     * Get resource price, default to Double.POSITIVE_INFINITY if the resource doesn't exist
      */
     fun getResourcePrice(
         resourceType: ResourceType,
@@ -207,7 +207,7 @@ data class MutableResourceData(
     ): Double {
         return resourcePriceMap[resourceType]?.get(
             resourceQualityClass
-        ) ?: Double.MAX_VALUE
+        ) ?: Double.POSITIVE_INFINITY
     }
 }
 

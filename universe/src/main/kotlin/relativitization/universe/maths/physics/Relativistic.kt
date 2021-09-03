@@ -262,8 +262,8 @@ object Relativistic {
         val solution: QuadraticSolutions = solveQuadratic(a, b, c)
 
         return if (targetVelocity.squareMag() >= speedOfLight * speedOfLight) {
-            // Return max value if the target velocity is greator than the speed of light
-            Double.MAX_VALUE
+            // Return infinity if the target velocity is greater than the speed of light
+            Double.POSITIVE_INFINITY
         } else if ((solution.x2 <= initialRestMass) && (solution.x2 >= 0)) {
             initialRestMass - solution.x2
         } else if ((solution.x1 <= initialRestMass) && (solution.x1 >= 0)) {
