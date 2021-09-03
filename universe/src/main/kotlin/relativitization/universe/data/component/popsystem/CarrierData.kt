@@ -11,6 +11,7 @@ data class CarrierData(
     val maxDeltaFuelRestMass: Double = 0.0,
     val carrierType: CarrierType = CarrierType.SPACESHIP,
     val allPopData: AllPopData = AllPopData(),
+    val combatData: CombatData = CombatData(),
 
 )
 
@@ -21,6 +22,7 @@ data class MutableCarrierData(
     var maxDeltaFuelRestMass: Double = 0.0,
     var carrierType: CarrierType = CarrierType.SPACESHIP,
     var allPopData: MutableAllPopData = MutableAllPopData(),
+    var combatData: MutableCombatData = MutableCombatData(),
 )
 
 enum class CarrierType {

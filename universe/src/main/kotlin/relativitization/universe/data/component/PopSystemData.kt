@@ -23,10 +23,11 @@ data class PopSystemData(
     fun totalMaxDeltaFuelRestMass(): Double {
         return carrierDataMap.values.sumOf { it.maxDeltaFuelRestMass }
     }
+
+    fun numCarrier() = carrierDataMap.values.size
 }
 
-@Serializable
-@SerialName("PopSystemData")
+@Serializable @SerialName("PopSystemData")
 data class MutablePopSystemData(
     val carrierDataMap: MutableMap<Int, MutableCarrierData> = mutableMapOf(),
     var combatData: MutableCombatData = MutableCombatData(),
@@ -72,5 +73,17 @@ data class MutablePopSystemData(
             carrierType = CarrierType.SPACESHIP
         )
         carrierDataMap[newCarrierId()] = newCarrier
+    }
+
+    fun numCarrier(): Int = carrierDataMap.values.size
+
+    fun syncCombatData() {
+        combatData.attack = carrierDataMap.values.sumOf { it.combatData.attack }
+        combatData.morale = if (numCarrier() > 0) {
+            carrierDataMap.values.map { it.combatData.morale }.average()
+        } else {
+            0.0
+        }
+        combatData.strength = carrierDataMap.values.sumOf { it.combatData.strength }
     }
 }
