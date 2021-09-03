@@ -58,7 +58,7 @@ class CommandsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>
 
         nestedTable.background = assets.getBackgroundColor(0.25f, 0.25f, 0.25f, 1.0f)
 
-        val commandNameLabel = createLabel(command.name.toString(), gdxSettings.normalFontSize)
+        val commandNameLabel = createLabel(command::class.simpleName.toString(), gdxSettings.normalFontSize)
 
         val commandDescriptionLabel = createLabel(command.description, gdxSettings.smallFontSize)
         commandDescriptionLabel.wrap = true

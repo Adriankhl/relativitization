@@ -14,8 +14,6 @@ data class DisableFuelIncreaseCommand(
     override val fromInt4D: Int4D,
 ) : Command() {
 
-    override val name: CommandName = CommandName.DISABLE_FUEL_INCREASE
-
     override val description: String = "Disable fuel increase for $disableFuelIncreaseTimeLimit turn"
 
     override fun canSend(playerData: PlayerData, universeSettings: UniverseSettings): Boolean {

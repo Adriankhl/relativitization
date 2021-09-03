@@ -13,7 +13,6 @@ data class DummyCommand(
     override val fromId: Int = -1,
     override val fromInt4D: Int4D = Int4D(0, 0, 0, 0),
 ) : Command() {
-    override val name: CommandName = CommandName.DUMMY
 
     override val description = "Do nothing"
 
@@ -38,7 +37,6 @@ data class CannotSendCommand(
     override val fromId: Int = -1,
     override val fromInt4D: Int4D = Int4D(0, 0, 0, 0),
 ) : Command() {
-    override val name: CommandName = CommandName.CANNOT_SEND
 
     override val description: String = "Cannot send this command"
 

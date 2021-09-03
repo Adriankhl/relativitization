@@ -14,10 +14,6 @@ sealed class Command {
     abstract val fromId: Int
     abstract val fromInt4D: Int4D
 
-    // name of this command
-    // for haveCommand() function
-    abstract val name: CommandName
-
     /**
      * Description of the command
      */
@@ -109,6 +105,11 @@ object CommandCollection {
 
     val defaultCommandList: List<String> = listOf(
         AddEventCommand::class.simpleName.toString(),
+        ChangeVelocityCommand::class.simpleName.toString(),
+        CannotSendCommand::class.simpleName.toString(),
+        DisableFuelIncreaseCommand::class.simpleName.toString(),
+        DummyCommand::class.simpleName.toString(),
+        SelectEventChoiceCommand::class.simpleName.toString(),
     )
 
     val commandListNameMap: Map<String, List<String>> = mapOf(
@@ -116,14 +117,14 @@ object CommandCollection {
     )
 
     fun hasCommand(universeSettings: UniverseSettings, command: Command): Boolean {
-        val commandCollection: List<CommandName> = commandListNameMap.getOrElse(
+        val commandCollection: List<String> = commandListNameMap.getOrElse(
             universeSettings.commandCollectionName
         ) {
             logger.error("No command collection name: ${universeSettings.commandCollectionName} found")
             defaultCommandList
         }
 
-        return commandCollection.contains(command.name)
+        return commandCollection.contains(command::class.simpleName.toString())
     }
 }
 
