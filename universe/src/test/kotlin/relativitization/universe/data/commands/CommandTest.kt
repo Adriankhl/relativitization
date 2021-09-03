@@ -18,4 +18,9 @@ internal class CommandTest {
 
         assert(c1.name() == c2.name())
     }
+
+    @Test
+    fun repeatedNameTest() {
+        assert(CommandCollection.defaultCommandList.groupingBy { it }.eachCount().any { it.value == 1 })
+    }
 }
