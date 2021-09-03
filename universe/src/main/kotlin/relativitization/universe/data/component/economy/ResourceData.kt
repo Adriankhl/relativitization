@@ -42,19 +42,15 @@ enum class ResourceQualityClass {
  *
  * @property resourceQualityMap map from ResourceType and ResourceQualityClass to resource quality
  * @property resourceAmountMap map from ResourceType and ResourceQualityClass to resource amount
- * @property resourceTradeFractionMap map from ResourceType and ResourceQualityClass to the fraction
- * of resource available for trade
- * @property resourceProductionFractionMap map from ResourceType and ResourceQualityClass to the fraction
- * of resource available for production
+ * @property resourceTargetAmountMap  map from ResourceType and ResourceQualityClass to target amount
  * @property resourcePriceMap map from ResourceType and ResourceQualityClass to resource price to
  * fuel rest mass
  */
 @Serializable
 data class ResourceData(
     val resourceQualityMap: Map<ResourceType, Map<ResourceQualityClass, ResourceQualityData>> = mapOf(),
-    val resourceAmountMap: Map<ResourceType, Map<ResourceQualityClass, Double>> = mapOf(),
-    val resourceTradeFractionMap: Map<ResourceType, Map<ResourceQualityClass, Double>> = mapOf(),
-    val resourceProductionFractionMap: Map<ResourceType, Map<ResourceQualityClass, Double>> = mapOf(),
+    val resourceAmountMap: Map<ResourceType, Map<ResourceQualityClass, ResourceAmountData>> = mapOf(),
+    val resourceTargetAmountMap: Map<ResourceType, Map<ResourceQualityClass, ResourceAmountData>> = mapOf(),
     val resourcePriceMap: Map<ResourceType, Map<ResourceQualityClass, Double>> = mapOf(),
 ) {
     /**
@@ -73,17 +69,28 @@ data class ResourceData(
 
 
     /**
-     * Get resource amount, default to 0.0 if the resource doesn't exist
+     * Get total resource amount, default to 0.0 if the resource doesn't exist
      */
-    fun getResourceAmount(
+    fun getResourceTotalAmount(
         resourceType: ResourceType,
         resourceQualityClass: ResourceQualityClass
     ): Double {
         return resourceAmountMap[resourceType]?.get(
             resourceQualityClass
-        ) ?: 0.0
+        )?.total() ?: 0.0
     }
 
+    /**
+     * Get resource storage amount, default to 0.0 if the resource doesn't exist
+     */
+    fun getResourceStorageAmount(
+        resourceType: ResourceType,
+        resourceQualityClass: ResourceQualityClass
+    ): Double {
+        return resourceAmountMap[resourceType]?.get(
+            resourceQualityClass
+        )?.storage ?: 0.0
+    }
 
     /**
      * Get resource amount available for trading
@@ -92,11 +99,9 @@ data class ResourceData(
         resourceType: ResourceType,
         resourceQualityClass: ResourceQualityClass
     ): Double {
-        val amount: Double = getResourceAmount(resourceType, resourceQualityClass)
-        val fraction: Double = resourceTradeFractionMap[resourceType]?.get(
+        return resourceAmountMap[resourceType]?.get(
             resourceQualityClass
-        ) ?: 0.0
-        return amount * fraction
+        )?.trade ?: 0.0
     }
 
     /**
@@ -106,11 +111,9 @@ data class ResourceData(
         resourceType: ResourceType,
         resourceQualityClass: ResourceQualityClass
     ): Double {
-        val amount: Double = getResourceAmount(resourceType, resourceQualityClass)
-        val fraction: Double = resourceProductionFractionMap[resourceType]?.get(
+        return resourceAmountMap[resourceType]?.get(
             resourceQualityClass
-        ) ?: 0.0
-        return amount * fraction
+        )?.production ?: 0.0
     }
 
 
@@ -121,7 +124,7 @@ data class ResourceData(
         resourceType: ResourceType,
         resourceQualityClass: ResourceQualityClass
     ): Double {
-        return resourceAmountMap[resourceType]?.get(
+        return resourcePriceMap[resourceType]?.get(
             resourceQualityClass
         ) ?: Double.MAX_VALUE
     }
@@ -130,9 +133,8 @@ data class ResourceData(
 @Serializable
 data class MutableResourceData(
     var resourceQualityMap: MutableMap<ResourceType, MutableMap<ResourceQualityClass, MutableResourceQualityData>> = mutableMapOf(),
-    var resourceAmountMap: MutableMap<ResourceType, MutableMap<ResourceQualityClass, Double>> = mutableMapOf(),
-    var resourceTradeFractionMap: MutableMap<ResourceType, MutableMap<ResourceQualityClass, Double>> = mutableMapOf(),
-    var resourceProductionFractionMap: MutableMap<ResourceType, MutableMap<ResourceQualityClass, Double>> = mutableMapOf(),
+    val resourceAmountMap: MutableMap<ResourceType, Map<ResourceQualityClass, MutableResourceAmountData>> = mutableMapOf(),
+    val resourceTargetAmountMap: MutableMap<ResourceType, Map<ResourceQualityClass, MutableResourceAmountData>> = mutableMapOf(),
     var resourcePriceMap: MutableMap<ResourceType, MutableMap<ResourceQualityClass, Double>> = mutableMapOf(),
 ) {
     /**
@@ -151,15 +153,26 @@ data class MutableResourceData(
     /**
      * Get resource amount, default to 0.0 if the resource doesn't exist
      */
-    fun getResourceAmount(
+    fun getResourceTotalAmount(
         resourceType: ResourceType,
         resourceQualityClass: ResourceQualityClass
     ): Double {
         return resourceAmountMap[resourceType]?.get(
             resourceQualityClass
-        ) ?: 0.0
+        )?.total() ?: 0.0
     }
 
+    /**
+     * Get resource storage amount, default to 0.0 if the resource doesn't exist
+     */
+    fun getResourceStorageAmount(
+        resourceType: ResourceType,
+        resourceQualityClass: ResourceQualityClass
+    ): Double {
+        return resourceAmountMap[resourceType]?.get(
+            resourceQualityClass
+        )?.storage ?: 0.0
+    }
 
     /**
      * Get resource amount available for trading
@@ -168,11 +181,9 @@ data class MutableResourceData(
         resourceType: ResourceType,
         resourceQualityClass: ResourceQualityClass
     ): Double {
-        val amount: Double = getResourceAmount(resourceType, resourceQualityClass)
-        val fraction: Double = resourceTradeFractionMap[resourceType]?.get(
+        return resourceAmountMap[resourceType]?.get(
             resourceQualityClass
-        ) ?: 0.0
-        return amount * fraction
+        )?.trade ?: 0.0
     }
 
     /**
@@ -182,11 +193,9 @@ data class MutableResourceData(
         resourceType: ResourceType,
         resourceQualityClass: ResourceQualityClass
     ): Double {
-        val amount: Double = getResourceAmount(resourceType, resourceQualityClass)
-        val fraction: Double = resourceProductionFractionMap[resourceType]?.get(
+        return resourceAmountMap[resourceType]?.get(
             resourceQualityClass
-        ) ?: 0.0
-        return amount * fraction
+        )?.trade ?: 0.0
     }
 
     /**
@@ -196,7 +205,7 @@ data class MutableResourceData(
         resourceType: ResourceType,
         resourceQualityClass: ResourceQualityClass
     ): Double {
-        return resourceAmountMap[resourceType]?.get(
+        return resourcePriceMap[resourceType]?.get(
             resourceQualityClass
         ) ?: Double.MAX_VALUE
     }
@@ -227,4 +236,29 @@ data class MutableResourceQualityData(
         quality3 = (originalAmount * quality3 + newAmount * newData.quality3) /
                 (originalAmount + newAmount)
     }
+}
+
+/**
+ * Amount of resource in different usage
+ *
+ * @property storage not for use
+ * @property trade for trade
+ * @property production for production
+ */
+@Serializable
+data class ResourceAmountData(
+    val storage: Double = 0.0,
+    val trade: Double = 0.0,
+    val production: Double = 0.0,
+) {
+    fun total(): Double = storage + trade + production
+}
+
+@Serializable
+data class MutableResourceAmountData(
+    var storage: Double = 0.0,
+    var trade: Double = 0.0,
+    var production: Double = 0.0,
+) {
+    fun total(): Double = storage + trade + production
 }
