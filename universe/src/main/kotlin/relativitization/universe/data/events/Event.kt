@@ -7,12 +7,10 @@ import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
 import relativitization.universe.utils.RelativitizationLogManager
+import kotlin.reflect.KClass
 
 @Serializable
 sealed class Event {
-
-    // Name of the event
-    abstract val name: EventName
 
     // The event belongs (or will belong) to this player
     abstract val toId: Int
@@ -58,13 +56,19 @@ sealed class Event {
     }
 }
 
+fun Event.name(): String = this::class.simpleName.toString()
+
+fun <T : Event> KClass<T>.name(): String = this.simpleName.toString()
+
 object EventCollection {
     private val logger = RelativitizationLogManager.getLogger()
 
     // For canAddEvent command
-    val defaultEventList: List<EventName> = EventName.values().toList()
+    val defaultEventList: List<String> = listOf(
+        MoveToDouble3DEvent::class.name(),
+    )
 
-    val eventListNameMap: Map<String, List<EventName>> = mapOf(
+    val eventListNameMap: Map<String, List<String>> = mapOf(
         "DefaultCommands" to defaultEventList,
     )
 
@@ -72,28 +76,17 @@ object EventCollection {
      * Whether player can add this event to other player, used by AddEventCommand
      */
     fun canAddEvent(universeSettings: UniverseSettings, event: Event): Boolean {
-        val addEventList: List<EventName> = eventListNameMap.getOrElse(
+        val addEventList: List<String> = eventListNameMap.getOrElse(
             universeSettings.commandCollectionName
         ) {
             logger.error("No add event command collection name: ${universeSettings.commandCollectionName} found")
             defaultEventList
         }
 
-        return addEventList.contains(event.name)
+        return addEventList.contains(event.name())
     }
 }
 
-/**
- * Names of event, aid event comparison and grouping
- */
-enum class EventName(val value: String) {
-    MOVE_TO_DOUBLE3D("Move to double3D")
-    ;
-
-    override fun toString(): String {
-        return value
-    }
-}
 
 /**
  * Unit of event data

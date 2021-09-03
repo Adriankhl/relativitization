@@ -8,6 +8,7 @@ import relativitization.universe.data.PlayerData
 import relativitization.universe.data.commands.CannotSendCommand
 import relativitization.universe.data.commands.SelectEventChoiceCommand
 import relativitization.universe.data.events.EventData
+import relativitization.universe.data.events.name
 
 class EventsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.assets) {
     private val gdxSettings = game.gdxSettings
@@ -76,7 +77,7 @@ class EventsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(g
 
         nestedTable.background = assets.getBackgroundColor(0.25f, 0.25f, 0.25f, 1.0f)
 
-        val eventNameLabel = createLabel(eventData.event.name.toString(), gdxSettings.normalFontSize)
+        val eventNameLabel = createLabel(eventData.event.name(), gdxSettings.normalFontSize)
         nestedTable.add(eventNameLabel).colspan(2)
 
         nestedTable.row().space(10f)
@@ -104,7 +105,7 @@ class EventsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(g
             ) {
                 val selectEventDataCommand = SelectEventChoiceCommand(
                     eventKey = eventKey,
-                    eventName = eventData.event.name,
+                    eventName = eventData.event.name(),
                     choice = choice.key,
                     fromId = game.universeClient.getUniverseData3D().id,
                     fromInt4D = game.universeClient.getUniverseData3D().getCurrentPlayerData().int4D,

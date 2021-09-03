@@ -5,6 +5,7 @@ import relativitization.universe.Universe
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.component.physics.Int4D
 import relativitization.universe.data.events.MoveToDouble3DEvent
+import relativitization.universe.data.events.name
 import relativitization.universe.generate.GenerateSettings
 import relativitization.universe.generate.GenerateUniverse
 import kotlin.test.Test
@@ -50,7 +51,7 @@ internal class SelectEventChoiceCommandTest {
 
         val selectEventChoiceCommand = SelectEventChoiceCommand(
             eventKey = 0,
-            eventName = view8.getCurrentPlayerData().playerInternalData.eventDataMap.getValue(0).event.name,
+            eventName = view8.getCurrentPlayerData().playerInternalData.eventDataMap.getValue(0).event.name(),
             choice = 1,
             fromId = view8.id,
             fromInt4D = view8.getCurrentPlayerData().int4D,

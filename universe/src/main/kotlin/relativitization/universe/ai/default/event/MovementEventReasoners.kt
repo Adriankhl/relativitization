@@ -6,6 +6,8 @@ import relativitization.universe.data.commands.Command
 import relativitization.universe.data.commands.SelectEventChoiceCommand
 import relativitization.universe.data.events.EventData
 import relativitization.universe.data.events.EventName
+import relativitization.universe.data.events.MoveToDouble3DEvent
+import relativitization.universe.data.events.name
 
 /**
  * Reasoner to pick only one MoveToDouble3D event
@@ -18,7 +20,7 @@ class PickMoveToDouble3DEventReasoner(
         decisionData.universeData3DAtPlayer.getCurrentPlayerData(
         ).playerInternalData.eventDataMap.filter {
             // Filter out MoveToDouble3DEvent
-            it.value.event.name == EventName.MOVE_TO_DOUBLE3D
+            it.value.event is MoveToDouble3DEvent
         }.keys.toList()
 
 
@@ -45,14 +47,14 @@ class PickMoveToDouble3DEventOption(
     private val movementEventMap: Map<Int, EventData> =
         decisionData.universeData3DAtPlayer.getCurrentPlayerData().playerInternalData.eventDataMap.filter {
             // Filter out MoveToDouble3DEvent
-            it.value.event.name == EventName.MOVE_TO_DOUBLE3D
+            it.value.event is MoveToDouble3DEvent
         }
 
     override fun getCommandList(): List<Command> {
         return movementEventMap.filter { it.key != keepEventIndex }.map {
             SelectEventChoiceCommand(
                 eventKey = it.key,
-                eventName = it.value.event.name,
+                eventName = it.value.event.name(),
                 choice = 1,
                 fromId = decisionData.universeData3DAtPlayer.id,
                 fromInt4D = decisionData.universeData3DAtPlayer.getCurrentPlayerData().int4D,

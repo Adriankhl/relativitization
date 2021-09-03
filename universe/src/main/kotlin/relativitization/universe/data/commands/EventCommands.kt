@@ -5,10 +5,7 @@ import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.component.physics.Int4D
-import relativitization.universe.data.events.Event
-import relativitization.universe.data.events.EventCollection
-import relativitization.universe.data.events.EventName
-import relativitization.universe.data.events.MutableEventData
+import relativitization.universe.data.events.*
 import relativitization.universe.utils.RelativitizationLogManager
 
 /**
@@ -24,7 +21,7 @@ data class AddEventCommand(
     override val toId: Int = event.toId
     override val fromId: Int = event.fromId
 
-    override val description: String = "Add event (${event.name}) to player $toId from player $fromId."
+    override val description: String = "Add event (${event.name()}) to player $toId from player $fromId."
 
     /**
      * Whether this player can send the event depends on the event
@@ -68,7 +65,7 @@ data class AddEventCommand(
 @Serializable
 data class SelectEventChoiceCommand(
     val eventKey: Int,
-    val eventName: EventName,
+    val eventName: String,
     val choice: Int,
     override val fromId: Int,
     override val fromInt4D: Int4D,
@@ -91,7 +88,7 @@ data class SelectEventChoiceCommand(
         // Check if eventIndex is in range
         if (eventDataMap.containsKey(eventKey)) {
             val eventData: MutableEventData = eventDataMap.getValue(eventKey)
-            if (eventData.event.name == eventName) {
+            if (eventData.event.name() == eventName) {
                 eventData.hasChoice = true
                 eventData.choice = choice
             } else {
