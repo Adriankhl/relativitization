@@ -16,8 +16,6 @@ internal class CommandTest {
 
         val c2: Command = c1
 
-        assert(c1::class.simpleName == c2::class.simpleName)
-
         assert(c1.name() == c2.name())
     }
 }

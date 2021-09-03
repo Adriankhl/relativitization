@@ -10,13 +10,22 @@ sealed class PlayerDataComponent
 @Serializable
 sealed class MutablePlayerDataComponent
 
+fun PlayerDataComponent.name(): String = this::class.simpleName.toString()
+
+fun <T : PlayerDataComponent> KClass<T>.name(): String = this::class.simpleName.toString()
+
+fun MutablePlayerDataComponent.name(): String = this::class.simpleName.toString()
+
+@JvmName("nameMutable")
+fun <T : MutablePlayerDataComponent> KClass<T>.name(): String = this::class.simpleName.toString()
+
 @Serializable
 data class DataComponentMap(
     val dataMap: Map<String, PlayerDataComponent> = mapOf(),
 ) {
     constructor(dataList: List<PlayerDataComponent>) : this(
         dataMap = dataList.map {
-            (it::class.simpleName.toString()) to it
+            (it.name()) to it
         }.toMap()
     )
 
@@ -24,7 +33,7 @@ data class DataComponentMap(
         key: KClass<T>,
         defaultValue: T
     ): T {
-        val data: PlayerDataComponent? = dataMap[key.simpleName]
+        val data: PlayerDataComponent? = dataMap[key.name()]
         return if (data is T) {
             data
         } else {
@@ -46,7 +55,7 @@ data class MutableDataComponentMap(
     constructor(dataList: List<MutablePlayerDataComponent>) : this(
         dataMap = dataList.map {
             // Drop first 7 character "Mutable"
-            (it::class.simpleName.toString()).drop(7) to it
+            (it.name()).drop(7) to it
         }.toMap().toMutableMap()
     )
 
@@ -54,7 +63,7 @@ data class MutableDataComponentMap(
         key: KClass<T>,
         defaultValue: T
     ): T {
-        val data: MutablePlayerDataComponent? = dataMap[(key.simpleName ?: "").drop(7)]
+        val data: MutablePlayerDataComponent? = dataMap[(key.name()).drop(7)]
         return if (data is T) {
             data
         } else {
@@ -64,11 +73,11 @@ data class MutableDataComponentMap(
     }
 
     fun <T : MutablePlayerDataComponent> put(dataComponent: T) {
-        dataMap[(dataComponent::class.simpleName.toString()).drop(7)] = dataComponent
+        dataMap[(dataComponent.name()).drop(7)] = dataComponent
     }
 
     fun <T : MutablePlayerDataComponent> remove(key: KClass<T>) {
-        dataMap.remove((key.simpleName ?: "").drop(7))
+        dataMap.remove((key.name()).drop(7))
     }
 
 
