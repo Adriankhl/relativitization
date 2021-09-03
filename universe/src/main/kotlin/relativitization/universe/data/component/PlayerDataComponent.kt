@@ -16,7 +16,7 @@ data class DataComponentMap(
 ) {
     constructor(dataList: List<PlayerDataComponent>) : this(
         dataMap = dataList.map {
-            (it::class.simpleName ?: "") to it
+            (it::class.simpleName.toString()) to it
         }.toMap()
     )
 
@@ -46,7 +46,7 @@ data class MutableDataComponentMap(
     constructor(dataList: List<MutablePlayerDataComponent>) : this(
         dataMap = dataList.map {
             // Drop first 7 character "Mutable"
-            (it::class.simpleName ?: "").drop(7) to it
+            (it::class.simpleName.toString()).drop(7) to it
         }.toMap().toMutableMap()
     )
 
@@ -64,7 +64,7 @@ data class MutableDataComponentMap(
     }
 
     fun <T : MutablePlayerDataComponent> put(dataComponent: T) {
-        dataMap[(dataComponent::class.simpleName ?: "").drop(7)] = dataComponent
+        dataMap[(dataComponent::class.simpleName.toString()).drop(7)] = dataComponent
     }
 
     fun <T : MutablePlayerDataComponent> remove(key: KClass<T>) {

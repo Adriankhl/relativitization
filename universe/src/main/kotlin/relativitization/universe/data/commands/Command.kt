@@ -6,6 +6,7 @@ import relativitization.universe.data.PlayerData
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.component.physics.Int4D
 import relativitization.universe.utils.RelativitizationLogManager
+import kotlin.reflect.KClass
 
 @Serializable
 sealed class Command {
@@ -106,9 +107,11 @@ sealed class Command {
 object CommandCollection {
     private val logger = RelativitizationLogManager.getLogger()
 
-    val defaultCommandList: List<CommandName> = CommandName.values().toList()
+    val defaultCommandList: List<String> = listOf(
+        AddEventCommand::class.simpleName.toString(),
+    )
 
-    val commandListNameMap: Map<String, List<CommandName>> = mapOf(
+    val commandListNameMap: Map<String, List<String>> = mapOf(
         "DefaultCommands" to defaultCommandList
     )
 
