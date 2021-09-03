@@ -5,7 +5,6 @@ import relativitization.universe.ai.default.utils.*
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.commands.SelectEventChoiceCommand
 import relativitization.universe.data.events.EventData
-import relativitization.universe.data.events.EventName
 import relativitization.universe.data.events.MoveToDouble3DEvent
 import relativitization.universe.data.events.name
 
