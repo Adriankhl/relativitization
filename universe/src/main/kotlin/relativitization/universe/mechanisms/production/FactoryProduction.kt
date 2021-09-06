@@ -115,5 +115,9 @@ object FactoryProduction : Mechanism() {
         resourceData: MutableResourceData,
     ) {
         val amountFraction: Double = productAmountFraction(mutableFactoryData, resourceData)
+        val outputQuality: MutableResourceQualityData = productQuality(mutableFactoryData, resourceData)
+        mutableFactoryData.inputResourceMap.forEach { (type, resourceData) ->
+            resourceData.
+        }
     }
 }

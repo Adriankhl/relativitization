@@ -41,6 +41,7 @@ enum class ResourceQualityClass {
  * Resource data, a resource of a player has ResourceType and ResourceQualityClass
  *
  * @property resourceQualityMap map from ResourceType and ResourceQualityClass to resource quality
+ * @property resourceQualityLowerBoundMap the lower bound of resource quality
  * @property resourceAmountMap map from ResourceType and ResourceQualityClass to resource amount
  * @property resourceTargetAmountMap  map from ResourceType and ResourceQualityClass to target amount
  * @property resourcePriceMap map from ResourceType and ResourceQualityClass to resource price to
@@ -49,6 +50,7 @@ enum class ResourceQualityClass {
 @Serializable
 data class ResourceData(
     val resourceQualityMap: Map<ResourceType, Map<ResourceQualityClass, ResourceQualityData>> = mapOf(),
+    val resourceQualityLowerBoundMap: Map<ResourceType, Map<ResourceQualityClass, ResourceQualityData>> = mapOf(),
     val resourceAmountMap: Map<ResourceType, Map<ResourceQualityClass, ResourceAmountData>> = mapOf(),
     val resourceTargetAmountMap: Map<ResourceType, Map<ResourceQualityClass, ResourceAmountData>> = mapOf(),
     val resourcePriceMap: Map<ResourceType, Map<ResourceQualityClass, Double>> = mapOf(),
@@ -61,6 +63,20 @@ data class ResourceData(
         resourceQualityClass: ResourceQualityClass
     ): ResourceQualityData {
         return resourceQualityMap.get(
+            resourceType
+        )?.get(
+            resourceQualityClass
+        ) ?: ResourceQualityData()
+    }
+
+    /**
+     * Get resource quality lower bound
+     */
+    fun getResourceQualityLowerBound(
+        resourceType: ResourceType,
+        resourceQualityClass: ResourceQualityClass
+    ): ResourceQualityData {
+        return resourceQualityLowerBoundMap.get(
             resourceType
         )?.get(
             resourceQualityClass
@@ -132,10 +148,11 @@ data class ResourceData(
 
 @Serializable
 data class MutableResourceData(
-    var resourceQualityMap: MutableMap<ResourceType, MutableMap<ResourceQualityClass, MutableResourceQualityData>> = mutableMapOf(),
+    val resourceQualityMap: MutableMap<ResourceType, MutableMap<ResourceQualityClass, MutableResourceQualityData>> = mutableMapOf(),
+    val resourceQualityLowerBoundMap: MutableMap<ResourceType, MutableMap<ResourceQualityClass, MutableResourceQualityData>> = mutableMapOf(),
     val resourceAmountMap: MutableMap<ResourceType, Map<ResourceQualityClass, MutableResourceAmountData>> = mutableMapOf(),
     val resourceTargetAmountMap: MutableMap<ResourceType, Map<ResourceQualityClass, MutableResourceAmountData>> = mutableMapOf(),
-    var resourcePriceMap: MutableMap<ResourceType, MutableMap<ResourceQualityClass, Double>> = mutableMapOf(),
+    val resourcePriceMap: MutableMap<ResourceType, MutableMap<ResourceQualityClass, Double>> = mutableMapOf(),
 ) {
     /**
      * Get resource quality, default to ResourceQualityData() if the resource doesn't exist
@@ -145,6 +162,20 @@ data class MutableResourceData(
         resourceQualityClass: ResourceQualityClass
     ): MutableResourceQualityData {
         return resourceQualityMap[resourceType]?.get(
+            resourceQualityClass
+        ) ?: MutableResourceQualityData()
+    }
+
+    /**
+     * Get resource quality lower bound
+     */
+    fun getResourceQualityLowerBound(
+        resourceType: ResourceType,
+        resourceQualityClass: ResourceQualityClass
+    ): MutableResourceQualityData {
+        return resourceQualityLowerBoundMap.get(
+            resourceType
+        )?.get(
             resourceQualityClass
         ) ?: MutableResourceQualityData()
     }
