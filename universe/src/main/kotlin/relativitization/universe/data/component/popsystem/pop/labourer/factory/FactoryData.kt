@@ -42,7 +42,7 @@ data class MutableFactoryData(
     var maxOutputResourceQualityData: ResourceQualityData = ResourceQualityData(),
     var maxOutputAmount: Double = 0.0,
     var lastOutputAmount: Double = 0.0,
-    var inputResourceMap: MutableMap<ResourceType, InputResourceData> = mutableMapOf(),
+    var inputResourceMap: MutableMap<ResourceType, MutableInputResourceData> = mutableMapOf(),
     var fuelRestMassConsumptionRate: Double = 0.0,
     var maxNumEmployee: Double = 0.0,
     var lastNumEmployee: Double = 0.0,

@@ -71,7 +71,7 @@ data class ResourceData(
     /**
      * Get total resource amount, default to 0.0 if the resource doesn't exist
      */
-    fun getResourceTotalAmount(
+    fun getTotalResourceAmount(
         resourceType: ResourceType,
         resourceQualityClass: ResourceQualityClass
     ): Double {
@@ -83,7 +83,7 @@ data class ResourceData(
     /**
      * Get resource storage amount, default to 0.0 if the resource doesn't exist
      */
-    fun getResourceStorageAmount(
+    fun getStorageResourceAmount(
         resourceType: ResourceType,
         resourceQualityClass: ResourceQualityClass
     ): Double {
@@ -153,7 +153,7 @@ data class MutableResourceData(
     /**
      * Get resource amount, default to 0.0 if the resource doesn't exist
      */
-    fun getResourceTotalAmount(
+    fun getTotalResourceAmount(
         resourceType: ResourceType,
         resourceQualityClass: ResourceQualityClass
     ): Double {
@@ -165,7 +165,7 @@ data class MutableResourceData(
     /**
      * Get resource storage amount, default to 0.0 if the resource doesn't exist
      */
-    fun getResourceStorageAmount(
+    fun getStorageResourceAmount(
         resourceType: ResourceType,
         resourceQualityClass: ResourceQualityClass
     ): Double {
@@ -209,6 +209,27 @@ data class MutableResourceData(
             resourceQualityClass
         ) ?: Double.POSITIVE_INFINITY
     }
+
+    /**
+     * Get resource quality class with target quality and amount
+     * Default to quality class with maximum amount if none of them satisfy the requirement
+     */
+    fun productionQualityClass(
+        resourceType: ResourceType,
+        amount: Double,
+        targetQuality: MutableResourceQualityData,
+    ): ResourceQualityClass {
+        val satisfyList: List<Pair<ResourceQualityClass, Boolean>> = ResourceQualityClass.values().toList().map {
+            val b1: Boolean = getResourceQuality(resourceType, it).geq(targetQuality)
+            val b2: Boolean = getProductionResourceAmount(resourceType, it) >= amount
+            it to (b1 && b2)
+        }
+        return satisfyList.firstOrNull { it.second }?.first ?: run {
+            ResourceQualityClass.values().maxByOrNull {
+                getProductionResourceAmount(resourceType, it)
+            } ?: ResourceQualityClass.THIRD
+        }
+    }
 }
 
 @Serializable
@@ -216,7 +237,21 @@ data class ResourceQualityData(
     val quality1: Double = 0.0,
     val quality2: Double = 0.0,
     val quality3: Double = 0.0,
-)
+) {
+    /**
+     * Greater than or equal
+     */
+    fun geq(other: ResourceQualityData): Boolean {
+        return (quality1 >= other.quality1) && (quality2 >= other.quality2) &&
+                (quality3 >= other.quality3)
+    }
+/** * Less than or equal
+     */
+    fun leq(other: ResourceQualityData): Boolean {
+        return (quality1 <= other.quality1) && (quality2 <= other.quality2) &&
+                (quality3 <= other.quality3)
+    }
+}
 
 @Serializable
 data class MutableResourceQualityData(
@@ -235,6 +270,22 @@ data class MutableResourceQualityData(
                 (originalAmount + newAmount)
         quality3 = (originalAmount * quality3 + newAmount * newData.quality3) /
                 (originalAmount + newAmount)
+    }
+
+    /**
+     * Greater than or equal
+     */
+    fun geq(other: MutableResourceQualityData): Boolean {
+        return (quality1 >= other.quality1) && (quality2 >= other.quality2) &&
+                (quality3 >= other.quality3)
+    }
+
+    /**
+     * Less than or equal
+     */
+    fun leq(other: MutableResourceQualityData): Boolean {
+        return (quality1 <= other.quality1) && (quality2 <= other.quality2) &&
+                (quality3 <= other.quality3)
     }
 }
 
