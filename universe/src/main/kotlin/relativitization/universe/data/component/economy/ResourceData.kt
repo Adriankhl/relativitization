@@ -287,6 +287,12 @@ data class MutableResourceQualityData(
         return (quality1 <= other.quality1) && (quality2 <= other.quality2) &&
                 (quality3 <= other.quality3)
     }
+
+    operator fun times(d: Double): MutableResourceQualityData = MutableResourceQualityData(
+        quality1,
+        quality2,
+        quality3
+    )
 }
 
 /**

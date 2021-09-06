@@ -6,7 +6,6 @@ import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.component.economy.*
 import relativitization.universe.data.component.popsystem.pop.labourer.factory.MutableFactoryData
-import relativitization.universe.data.component.popsystem.pop.labourer.factory.MutableInputResourceData
 import relativitization.universe.data.component.science.UniverseScienceData
 import relativitization.universe.mechanisms.Mechanism
 
@@ -17,9 +16,9 @@ object FactoryProduction : Mechanism() {
         universeSettings: UniverseSettings,
         universeScienceData: UniverseScienceData
     ): List<Command> {
-        mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.forEach {
-           it.allPopData.labourerPopData.factoryMap.values.forEach {
-               it.outputResource
+        mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.forEach { carrier ->
+           carrier.allPopData.labourerPopData.factoryMap.values.forEach { factory ->
+               factory.outputResource
            }
         }
 
@@ -32,19 +31,89 @@ object FactoryProduction : Mechanism() {
      * @param mutableFactoryData the factory producing this resource
      * @param resourceData the amount of resource owned by the player
      */
-    fun productivityFraction(
+    fun productAmountFraction(
         mutableFactoryData: MutableFactoryData,
         resourceData: MutableResourceData,
     ): Double {
         val fractionList: List<Double> = mutableFactoryData.inputResourceMap.map { (type, inputResourceData) ->
             val requiredAmount: Double = inputResourceData.amountPerOutputUnit * mutableFactoryData.maxOutputAmount
+            val requiredQuality: MutableResourceQualityData = inputResourceData.maxInputResourceQualityData
             val qualityClass: ResourceQualityClass = resourceData.productionQualityClass(
                 type,
                 requiredAmount,
-                inputResourceData.maxInputResourceQualityData
+                requiredQuality
             )
             resourceData.getProductionResourceAmount(type, qualityClass) / requiredAmount
         }
         return fractionList.maxOrNull() ?: 0.0
+    }
+
+    /**
+     * Compute the reduced quality if the input quality is lower than required
+     */
+    fun qualityReducedFaction(
+        requiredQuality: MutableResourceQualityData,
+        actualQuality: MutableResourceQualityData
+    ): Double {
+        val r1: Double = if (actualQuality.quality1 < requiredQuality.quality1) {
+            actualQuality.quality1 / requiredQuality.quality1
+        } else {
+            1.0
+        }
+
+        val r2: Double = if (actualQuality.quality2 < requiredQuality.quality2) {
+            actualQuality.quality2 / requiredQuality.quality2
+        } else {
+            1.0
+        }
+
+        val r3: Double = if (actualQuality.quality3 < requiredQuality.quality3) {
+            actualQuality.quality3 / requiredQuality.quality3
+        } else {
+            1.0
+        }
+
+        return (r1 + r2 + r3) / 3.0
+    }
+
+    /**
+     * The quality of the output product
+     *
+     * @param mutableFactoryData the factory producing this resource
+     * @param resourceData the amount of resource owned by the player
+     */
+    fun productQuality(
+        mutableFactoryData: MutableFactoryData,
+        resourceData: MutableResourceData,
+    ): MutableResourceQualityData {
+        val fractionList: List<Double> = mutableFactoryData.inputResourceMap.map { (type, inputResourceData) ->
+            val requiredAmount: Double = inputResourceData.amountPerOutputUnit * mutableFactoryData.maxOutputAmount
+            val requiredQuality: MutableResourceQualityData = inputResourceData.maxInputResourceQualityData
+            val qualityClass: ResourceQualityClass = resourceData.productionQualityClass(
+                type,
+                requiredAmount,
+                requiredQuality
+            )
+            qualityReducedFaction(
+                requiredQuality,
+                resourceData.getResourceQuality(type, qualityClass)
+            )
+        }
+
+        val avgFraction: Double = fractionList.average()
+        return mutableFactoryData.maxOutputResourceQualityData * avgFraction
+    }
+
+    /**
+     * Consume and produce resource
+     *
+     * @param mutableFactoryData the factory producing this resource
+     * @param resourceData the amount of resource owned by the player
+     */
+    fun updateResourceData(
+        mutableFactoryData: MutableFactoryData,
+        resourceData: MutableResourceData,
+    ) {
+        val amountFraction: Double = productAmountFraction(mutableFactoryData, resourceData)
     }
 }

@@ -39,7 +39,7 @@ data class FactoryData(
 @Serializable
 data class MutableFactoryData(
     var outputResource: ResourceType = ResourceType.PLANT,
-    var maxOutputResourceQualityData: ResourceQualityData = ResourceQualityData(),
+    var maxOutputResourceQualityData: MutableResourceQualityData = MutableResourceQualityData(),
     var maxOutputAmount: Double = 0.0,
     var lastOutputAmount: Double = 0.0,
     var inputResourceMap: MutableMap<ResourceType, MutableInputResourceData> = mutableMapOf(),
