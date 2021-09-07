@@ -6,6 +6,8 @@ import relativitization.universe.data.PlayerData
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
+import relativitization.universe.data.commands.CommandCollection
+import relativitization.universe.data.commands.DefaultCommandList
 import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.reflect.KClass
 
@@ -59,34 +61,6 @@ sealed class Event {
 fun Event.name(): String = this::class.simpleName.toString()
 
 fun <T : Event> KClass<T>.name(): String = this.simpleName.toString()
-
-object EventCollection {
-    private val logger = RelativitizationLogManager.getLogger()
-
-    // For canAddEvent command
-    val defaultEventList: List<String> = listOf(
-        MoveToDouble3DEvent::class.name(),
-    )
-
-    val eventListNameMap: Map<String, List<String>> = mapOf(
-        "DefaultCommands" to defaultEventList,
-    )
-
-    /**
-     * Whether player can add this event to other player, used by AddEventCommand
-     */
-    fun canAddEvent(universeSettings: UniverseSettings, event: Event): Boolean {
-        val addEventList: List<String> = eventListNameMap.getOrElse(
-            universeSettings.commandCollectionName
-        ) {
-            logger.error("No add event command collection name: ${universeSettings.commandCollectionName} found")
-            defaultEventList
-        }
-
-        return addEventList.contains(event.name())
-    }
-}
-
 
 /**
  * Unit of event data

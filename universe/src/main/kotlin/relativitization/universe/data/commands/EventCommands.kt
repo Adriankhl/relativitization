@@ -28,7 +28,7 @@ data class AddEventCommand(
      */
     override fun canSend(playerData: PlayerData, universeSettings: UniverseSettings): Boolean {
         return validEventPlayerId() &&
-                EventCollection.canAddEvent(universeSettings, event) &&
+                canAddEvent(universeSettings, event) &&
                 event.canSend(playerData, universeSettings)
     }
 
@@ -36,7 +36,7 @@ data class AddEventCommand(
      * Whether the event can be added to the player depends on the event
      */
     override fun canExecute(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean {
-        return EventCollection.canAddEvent(universeSettings, event) &&
+        return canAddEvent(universeSettings, event) &&
                 event.canExecute(playerData, universeSettings)
     }
 
@@ -53,6 +53,24 @@ data class AddEventCommand(
      * Check whether the fromId and toId in the event is equal to those in the command
      */
     private fun validEventPlayerId(): Boolean = (fromId == event.fromId) && (toId == event.toId)
+
+    companion object {
+        private val logger = RelativitizationLogManager.getLogger()
+
+        /**
+         * Whether player can add this event to other player, used by AddEventCommand
+         */
+        fun canAddEvent(universeSettings: UniverseSettings, event: Event): Boolean {
+            val addEventList: List<String> = CommandCollection.commandListNameMap.getOrElse(
+                universeSettings.commandCollectionName
+            ) {
+                logger.error("No add event command collection name: ${universeSettings.commandCollectionName} found")
+                DefaultCommandList
+            }.eventList
+
+            return addEventList.contains(event.name())
+        }
+    }
 }
 
 /**

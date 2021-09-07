@@ -5,6 +5,8 @@ import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.component.physics.Int4D
+import relativitization.universe.data.events.MoveToDouble3DEvent
+import relativitization.universe.data.events.name
 import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.reflect.KClass
 
@@ -106,6 +108,9 @@ fun <T : Command> KClass<T>.name(): String = this.simpleName.toString()
 
 abstract class CommandList {
     abstract val commandList: List<String>
+
+    // Allowed event list
+    abstract val eventList: List<String>
 }
 
 object DefaultCommandList : CommandList() {
@@ -116,6 +121,10 @@ object DefaultCommandList : CommandList() {
         DisableFuelIncreaseCommand::class.name(),
         DummyCommand::class.name(),
         SelectEventChoiceCommand::class.name(),
+    )
+
+    override val eventList: List<String> = listOf(
+        MoveToDouble3DEvent::class.name(),
     )
 }
 
@@ -128,8 +137,8 @@ object CommandCollection {
         DefaultCommandList
     )
 
-    val commandListNameMap: Map<String, List<String>> = commandListList.map {
-        it.name() to it.commandList
+    val commandListNameMap: Map<String, CommandList> = commandListList.map {
+        it.name() to it
     }.toMap()
 
     fun hasCommand(universeSettings: UniverseSettings, command: Command): Boolean {
@@ -137,8 +146,8 @@ object CommandCollection {
             universeSettings.commandCollectionName
         ) {
             logger.error("No command collection name: ${universeSettings.commandCollectionName} found")
-            DefaultCommandList.commandList
-        }
+            DefaultCommandList
+        }.commandList
 
         return commandCollection.contains(command.name())
     }
