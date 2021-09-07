@@ -44,38 +44,42 @@ data class GenerateSettings(
     }
 }
 
-@Serializable
 abstract class GenerateUniverse {
     abstract fun generate(settings: GenerateSettings): UniverseData
+}
 
+fun GenerateUniverse.name(): String = this::class.simpleName.toString()
 
-    companion object {
-        private val logger = RelativitizationLogManager.getLogger()
+object UniverseGenerationCollection {
+    private val logger = RelativitizationLogManager.getLogger()
 
-        // Store all generate method
-        val generateMethodMap: Map<String, GenerateUniverse> = mapOf(
-            "FixedMinimal" to Minimal(),
-            "ABMFlocking" to FlockingGenerate()
-        )
+    val generateMethodList: List<GenerateUniverse> = listOf(
+        Minimal(),
+        FlockingGenerate(),
+    )
 
-        fun isSettingValid(settings: GenerateSettings): Boolean {
-            val generateData = generate(settings)
-            return if (generateData.isUniverseValid()) {
-                true
-            } else {
-                val className = this::class.qualifiedName
-                logger.error("$className: Generated universe is not valid")
-                false
-            }
+    // Store all generate method
+    val generateMethodMap: Map<String, GenerateUniverse> = generateMethodList.map {
+        it.name() to it
+    }.toMap()
+
+    fun isSettingValid(settings: GenerateSettings): Boolean {
+        val generateData = generate(settings)
+        return if (generateData.isUniverseValid()) {
+            true
+        } else {
+            val className = this::class.qualifiedName
+            logger.error("$className: Generated universe is not valid")
+            false
+        }
+    }
+
+    fun generate(settings: GenerateSettings): UniverseData {
+        val generateMethod: GenerateUniverse =  generateMethodMap.getOrElse(settings.generateMethod) {
+            logger.error("Generate method doesn't exist, using default method")
+            Minimal()
         }
 
-        fun generate(settings: GenerateSettings): UniverseData {
-            val generateMethod: GenerateUniverse =  generateMethodMap.getOrElse(settings.generateMethod) {
-                logger.error("Generate method doesn't exist, using default method")
-                Minimal()
-            }
-
-            return generateMethod.generate(settings)
-        }
+        return generateMethod.generate(settings)
     }
 }

@@ -7,12 +7,13 @@ import relativitization.universe.data.commands.AddEventCommand
 import relativitization.universe.data.component.physics.Int4D
 import relativitization.universe.generate.GenerateSettings
 import relativitization.universe.generate.GenerateUniverse
+import relativitization.universe.generate.UniverseGenerationCollection
 import kotlin.test.Test
 
 internal class MoveToDouble3DEventTest {
     @Test
     fun fixMinimalTest() {
-        val universe = Universe(GenerateUniverse.generate(GenerateSettings()), ".")
+        val universe = Universe(UniverseGenerationCollection.generate(GenerateSettings()), ".")
         val view7: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
         assert(view7.get(2).int4D == Int4D(7, 0, 0, 0))
 

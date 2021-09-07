@@ -11,6 +11,7 @@ import relativitization.universe.communication.LoadUniverseMessage
 import relativitization.universe.communication.NewUniverseMessage
 import relativitization.universe.data.UniverseData
 import relativitization.universe.generate.GenerateUniverse
+import relativitization.universe.generate.UniverseGenerationCollection
 
 fun Route.createUniverseRouting(universeServerInternal: UniverseServerInternal) {
     // new Universe
@@ -18,7 +19,7 @@ fun Route.createUniverseRouting(universeServerInternal: UniverseServerInternal) 
         post {
             val newUniverseMessage: NewUniverseMessage = call.receive()
             if (newUniverseMessage.adminPassword == universeServerInternal.universeServerSettings.adminPassword) {
-                val universeData: UniverseData = GenerateUniverse.generate(newUniverseMessage.generateSettings)
+                val universeData: UniverseData = UniverseGenerationCollection.generate(newUniverseMessage.generateSettings)
                 if (universeData.isUniverseValid()) {
                     universeServerInternal.setUniverse(Universe(
                         universeData, universeServerInternal.universeServerSettings.programDir
