@@ -41,13 +41,20 @@ abstract class UniverseScienceDataProcess {
 
 }
 
+fun UniverseScienceDataProcess.name(): String = this::class.simpleName.toString()
+
 object UniverseScienceDataProcessCollection {
     private val logger = RelativitizationLogManager.getLogger()
 
-    val universeScienceDataProcessNameMap: Map<String, UniverseScienceDataProcess> = mapOf(
-        "DefaultScience" to DefaultUniverseScienceDataProcess,
-        "EmptyScience" to EmptyUniverseScienceDataProcess,
+    private val universeScienceDataProcessList: List<UniverseScienceDataProcess> = listOf(
+        DefaultUniverseScienceDataProcess,
+        EmptyUniverseScienceDataProcess,
     )
+
+    val universeScienceDataProcessNameMap: Map<String, UniverseScienceDataProcess> =
+        universeScienceDataProcessList.map {
+            it.name() to it
+        }.toMap()
 
     fun getProcess(universeSettings: UniverseSettings): UniverseScienceDataProcess {
         return universeScienceDataProcessNameMap.getOrElse(
