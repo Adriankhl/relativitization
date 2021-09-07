@@ -16,7 +16,7 @@ fun AI.name(): String = this::class.simpleName.toString()
 object AICollection {
     private val logger = RelativitizationLogManager.getLogger()
 
-    val aiList: List<AI> = listOf(
+    private val aiList: List<AI> = listOf(
         DefaultAI,
         EmptyAI,
         FlockingAI
