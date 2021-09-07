@@ -150,8 +150,8 @@ data class ResourceData(
 data class MutableResourceData(
     val resourceQualityMap: MutableMap<ResourceType, MutableMap<ResourceQualityClass, MutableResourceQualityData>> = mutableMapOf(),
     val resourceQualityLowerBoundMap: MutableMap<ResourceType, MutableMap<ResourceQualityClass, MutableResourceQualityData>> = mutableMapOf(),
-    val resourceAmountMap: MutableMap<ResourceType, Map<ResourceQualityClass, MutableResourceAmountData>> = mutableMapOf(),
-    val resourceTargetAmountMap: MutableMap<ResourceType, Map<ResourceQualityClass, MutableResourceAmountData>> = mutableMapOf(),
+    val resourceAmountMap: MutableMap<ResourceType, MutableMap<ResourceQualityClass, MutableResourceAmountData>> = mutableMapOf(),
+    val resourceTargetAmountMap: MutableMap<ResourceType, MutableMap<ResourceQualityClass, MutableResourceAmountData>> = mutableMapOf(),
     val resourcePriceMap: MutableMap<ResourceType, MutableMap<ResourceQualityClass, Double>> = mutableMapOf(),
 ) {
     /**
@@ -161,9 +161,11 @@ data class MutableResourceData(
         resourceType: ResourceType,
         resourceQualityClass: ResourceQualityClass
     ): MutableResourceQualityData {
-        return resourceQualityMap[resourceType]?.get(
-            resourceQualityClass
-        ) ?: MutableResourceQualityData()
+        return resourceQualityMap.getOrPut(resourceType) {
+            mutableMapOf(resourceQualityClass to MutableResourceQualityData())
+        }.getOrPut(resourceQualityClass) {
+            MutableResourceQualityData()
+        }
     }
 
     /**
@@ -173,13 +175,26 @@ data class MutableResourceData(
         resourceType: ResourceType,
         resourceQualityClass: ResourceQualityClass
     ): MutableResourceQualityData {
-        return resourceQualityLowerBoundMap.get(
-            resourceType
-        )?.get(
-            resourceQualityClass
-        ) ?: MutableResourceQualityData()
+        return resourceQualityLowerBoundMap.getOrPut(resourceType) {
+            mutableMapOf(resourceQualityClass to MutableResourceQualityData())
+        }.getOrPut(resourceQualityClass) {
+            MutableResourceQualityData()
+        }
     }
 
+    /**
+     * Get resource amount data
+     */
+    fun getResourceAmountData(
+        resourceType: ResourceType,
+        resourceQualityClass: ResourceQualityClass
+    ): MutableResourceAmountData {
+        return resourceAmountMap.getOrPut(resourceType) {
+            mutableMapOf(resourceQualityClass to MutableResourceAmountData())
+        }.getOrPut(resourceQualityClass) {
+            MutableResourceAmountData()
+        }
+    }
 
     /**
      * Get resource amount, default to 0.0 if the resource doesn't exist
@@ -188,9 +203,11 @@ data class MutableResourceData(
         resourceType: ResourceType,
         resourceQualityClass: ResourceQualityClass
     ): Double {
-        return resourceAmountMap[resourceType]?.get(
-            resourceQualityClass
-        )?.total() ?: 0.0
+        return resourceAmountMap.getOrPut(resourceType) {
+            mutableMapOf(resourceQualityClass to MutableResourceAmountData())
+        }.getOrPut(resourceQualityClass) {
+            MutableResourceAmountData()
+        }.total()
     }
 
     /**
@@ -200,9 +217,11 @@ data class MutableResourceData(
         resourceType: ResourceType,
         resourceQualityClass: ResourceQualityClass
     ): Double {
-        return resourceAmountMap[resourceType]?.get(
-            resourceQualityClass
-        )?.storage ?: 0.0
+        return resourceAmountMap.getOrPut(resourceType) {
+            mutableMapOf(resourceQualityClass to MutableResourceAmountData())
+        }.getOrPut(resourceQualityClass) {
+            MutableResourceAmountData()
+        }.storage
     }
 
     /**
@@ -212,9 +231,11 @@ data class MutableResourceData(
         resourceType: ResourceType,
         resourceQualityClass: ResourceQualityClass
     ): Double {
-        return resourceAmountMap[resourceType]?.get(
-            resourceQualityClass
-        )?.trade ?: 0.0
+        return resourceAmountMap.getOrPut(resourceType) {
+            mutableMapOf(resourceQualityClass to MutableResourceAmountData())
+        }.getOrPut(resourceQualityClass) {
+            MutableResourceAmountData()
+        }.trade
     }
 
     /**
@@ -224,9 +245,11 @@ data class MutableResourceData(
         resourceType: ResourceType,
         resourceQualityClass: ResourceQualityClass
     ): Double {
-        return resourceAmountMap[resourceType]?.get(
-            resourceQualityClass
-        )?.trade ?: 0.0
+        return resourceAmountMap.getOrPut(resourceType) {
+            mutableMapOf(resourceQualityClass to MutableResourceAmountData())
+        }.getOrPut(resourceQualityClass) {
+            MutableResourceAmountData()
+        }.production
     }
 
     /**
@@ -236,9 +259,11 @@ data class MutableResourceData(
         resourceType: ResourceType,
         resourceQualityClass: ResourceQualityClass
     ): Double {
-        return resourcePriceMap[resourceType]?.get(
-            resourceQualityClass
-        ) ?: Double.POSITIVE_INFINITY
+        return resourcePriceMap.getOrPut(resourceType) {
+            mutableMapOf(resourceQualityClass to Double.POSITIVE_INFINITY)
+        }.getOrPut(resourceQualityClass) {
+            Double.POSITIVE_INFINITY
+        }
     }
 
     /**
@@ -260,6 +285,20 @@ data class MutableResourceData(
                 getProductionResourceAmount(resourceType, it)
             } ?: ResourceQualityClass.THIRD
         }
+    }
+
+    /**
+     * Add resource to storage, production or trading depending on the target
+     */
+    fun addResource(
+        resourceType: ResourceType,
+        resourceQuality: MutableResourceQualityData,
+        amount: Double,
+    ) {
+        val qualityClass: ResourceQualityClass = ResourceQualityClass.values().firstOrNull {
+            resourceQuality.geq(getResourceQualityLowerBound(resourceType, it))
+        } ?: ResourceQualityClass.THIRD
+
     }
 }
 
