@@ -1,9 +1,15 @@
 package relativitization.universe.data
 
 import kotlinx.serialization.Serializable
+import relativitization.universe.data.commands.DefaultCommandList
+import relativitization.universe.data.commands.name
 import relativitization.universe.data.component.physics.Int3D
 import relativitization.universe.maths.physics.Intervals.intDelay
 import relativitization.universe.maths.physics.Intervals.maxDelayAfterMove
+import relativitization.universe.mechanisms.DefaultMechanismList
+import relativitization.universe.mechanisms.name
+import relativitization.universe.science.default.DefaultUniverseScienceDataProcess
+import relativitization.universe.science.name
 
 /**
  * Setting data
@@ -21,9 +27,9 @@ import relativitization.universe.maths.physics.Intervals.maxDelayAfterMove
 @Serializable
 data class UniverseSettings(
     val universeName: String = "Test",
-    val mechanismCollectionName: String = "DefaultMechanism",
-    val commandCollectionName: String = "DefaultCommand",
-    val universeScienceDataProcessCollectionName: String = "DefaultScience",
+    val mechanismCollectionName: String = DefaultMechanismList.name(),
+    val commandCollectionName: String = DefaultCommandList.name(),
+    val universeScienceDataProcessCollectionName: String = DefaultUniverseScienceDataProcess.name(),
     val speedOfLight: Double = 1.0,
     val tDim: Int = 8,
     val xDim: Int = 2,
@@ -54,9 +60,9 @@ data class UniverseSettings(
 @Serializable
 data class MutableUniverseSettings(
     var universeName: String = "Test",
-    var mechanismCollectionName: String = "DefaultMechanism",
-    var commandCollectionName: String = "DefaultCommand",
-    var universeScienceDataProcessCollectionName: String = "DefaultScience",
+    var mechanismCollectionName: String = DefaultMechanismList.name(),
+    var commandCollectionName: String = DefaultCommandList.name(),
+    var universeScienceDataProcessCollectionName: String = DefaultUniverseScienceDataProcess.name(),
     var speedOfLight: Double = 1.0,
     var tDim: Int = 8,
     var xDim: Int = 2,
