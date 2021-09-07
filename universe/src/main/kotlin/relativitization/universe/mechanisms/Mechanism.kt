@@ -9,6 +9,7 @@ import relativitization.universe.data.component.science.UniverseScienceData
 import relativitization.universe.mechanisms.events.AutoEventCollection
 import relativitization.universe.mechanisms.events.ProcessEvents
 import relativitization.universe.mechanisms.modifier.UpdateModifierTime
+import relativitization.universe.mechanisms.production.FactoryProduction
 import relativitization.universe.mechanisms.science.SyncPlayerScienceData
 import relativitization.universe.mechanisms.science.UpdateScienceProductData
 import relativitization.universe.utils.RelativitizationLogManager
@@ -36,6 +37,7 @@ object MechanismCollection {
     private val defaultMechanismList: List<Mechanism> = listOf(
         AutoEventCollection,
         ProcessEvents,
+        FactoryProduction,
         UpdateModifierTime,
         SyncPlayerScienceData,
         UpdateScienceProductData,

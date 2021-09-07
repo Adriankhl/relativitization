@@ -18,7 +18,10 @@ object FactoryProduction : Mechanism() {
     ): List<Command> {
         mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.forEach { carrier ->
            carrier.allPopData.labourerPopData.factoryMap.values.forEach { factory ->
-               factory.outputResource
+               updateResourceData(
+                   factory,
+                   mutablePlayerData.playerInternalData.economyData().resourceData
+               )
            }
         }
 
@@ -116,8 +119,24 @@ object FactoryProduction : Mechanism() {
     ) {
         val amountFraction: Double = productAmountFraction(mutableFactoryData, resourceData)
         val outputQuality: MutableResourceQualityData = productQuality(mutableFactoryData, resourceData)
-        mutableFactoryData.inputResourceMap.forEach { (type, resourceData) ->
-            resourceData.
+
+        // Consume resource
+        mutableFactoryData.inputResourceMap.forEach { (type, inputResourceData) ->
+            val requiredAmount: Double = inputResourceData.amountPerOutputUnit * mutableFactoryData.maxOutputAmount
+            val requiredQuality: MutableResourceQualityData = inputResourceData.maxInputResourceQualityData
+            val qualityClass: ResourceQualityClass = resourceData.productionQualityClass(
+                type,
+                requiredAmount,
+                requiredQuality
+            )
+            resourceData.getResourceAmountData(type, qualityClass).production -= requiredAmount * amountFraction
         }
+
+        // Produce resource
+        resourceData.addNewResource(
+            mutableFactoryData.outputResource,
+            outputQuality,
+            mutableFactoryData.maxOutputAmount * amountFraction
+        )
     }
 }
