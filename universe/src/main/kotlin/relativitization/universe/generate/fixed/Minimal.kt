@@ -1,5 +1,7 @@
 package relativitization.universe.generate.fixed
 
+import relativitization.universe.ai.emptyAI.EmptyAI
+import relativitization.universe.ai.name
 import relativitization.universe.data.*
 import relativitization.universe.data.component.physics.MutableInt4D
 import relativitization.universe.data.component.science.UniverseScienceData
@@ -58,10 +60,10 @@ class Minimal : GenerateUniverse() {
         playerData4.playerInternalData.isAlive = false
 
         // Change AI to EmptyAI
-        playerData1.playerInternalData.aiData().aiName = "EmptyAI"
-        playerData2.playerInternalData.aiData().aiName = "EmptyAI"
-        playerData3.playerInternalData.aiData().aiName = "EmptyAI"
-        playerData4.playerInternalData.aiData().aiName = "EmptyAI"
+        playerData1.playerInternalData.aiData().aiName = EmptyAI.name()
+        playerData2.playerInternalData.aiData().aiName = EmptyAI.name()
+        playerData3.playerInternalData.aiData().aiName = EmptyAI.name()
+        playerData4.playerInternalData.aiData().aiName = EmptyAI.name()
 
         // Add mathematics and energy project to player
         // Should sync to universe project at turn 3 since this has not been added to universe

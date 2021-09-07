@@ -1,5 +1,7 @@
 package relativitization.universe.generate.abm
 
+import relativitization.universe.ai.abm.FlockingAI
+import relativitization.universe.ai.name
 import relativitization.universe.data.*
 import relativitization.universe.data.component.physics.MutableVelocity
 import relativitization.universe.data.component.science.UniverseScienceData
@@ -52,7 +54,7 @@ class FlockingGenerate : GenerateUniverse() {
             playerData.velocity = MutableVelocity(vx, vy, vz).scaleVelocity(0.5)
 
             // Use flocking ai
-            playerData.playerInternalData.aiData().aiName = "FlockingAI"
+            playerData.playerInternalData.aiData().aiName = FlockingAI.name()
 
             data.addPlayerDataToLatestWithAfterImage(
                 playerData,

@@ -11,14 +11,20 @@ abstract class AI {
     abstract fun compute(universeData3DAtPlayer: UniverseData3DAtPlayer): List<Command>
 }
 
+fun AI.name(): String = this::class.simpleName.toString()
+
 object AICollection {
     private val logger = RelativitizationLogManager.getLogger()
 
-    val aiNameMap: Map<String, AI> = mapOf(
-        "DefaultAI" to DefaultAI,
-        "EmptyAI" to EmptyAI,
-        "FlockingAI" to FlockingAI,
+    val aiList: List<AI> = listOf(
+        DefaultAI,
+        EmptyAI,
+        FlockingAI
     )
+
+    val aiNameMap: Map<String, AI> = aiList.map {
+        it.name() to it
+    }.toMap()
 
     fun compute(universeData3DAtPlayer: UniverseData3DAtPlayer): List<Command> {
         val aiName: String = universeData3DAtPlayer.get(
