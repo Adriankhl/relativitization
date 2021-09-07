@@ -253,6 +253,20 @@ data class MutableResourceData(
     }
 
     /**
+     * Get target resource amount data
+     */
+    fun getResourceTargetAmountData(
+        resourceType: ResourceType,
+        resourceQualityClass: ResourceQualityClass
+    ): MutableResourceAmountData {
+        return resourceTargetAmountMap.getOrPut(resourceType) {
+            mutableMapOf(resourceQualityClass to MutableResourceAmountData())
+        }.getOrPut(resourceQualityClass) {
+            MutableResourceAmountData()
+        }
+    }
+
+    /**
      * Get resource price, default to Double.POSITIVE_INFINITY if the resource doesn't exist
      */
     fun getResourcePrice(
@@ -290,15 +304,50 @@ data class MutableResourceData(
     /**
      * Add resource to storage, production or trading depending on the target
      */
-    fun addResource(
+    fun addNewResource(
         resourceType: ResourceType,
-        resourceQuality: MutableResourceQualityData,
+        newResourceQuality: MutableResourceQualityData,
         amount: Double,
     ) {
         val qualityClass: ResourceQualityClass = ResourceQualityClass.values().firstOrNull {
-            resourceQuality.geq(getResourceQualityLowerBound(resourceType, it))
+            newResourceQuality.geq(getResourceQualityLowerBound(resourceType, it))
         } ?: ResourceQualityClass.THIRD
 
+        val resourceQuality: MutableResourceQualityData = getResourceQuality(
+            resourceType,
+            qualityClass
+        )
+
+        val resourceAmount: MutableResourceAmountData = getResourceAmountData(
+            resourceType,
+            qualityClass
+        )
+
+        val targetResourceAmount: MutableResourceAmountData = getResourceTargetAmountData(
+            resourceType,
+            qualityClass
+        )
+
+        when {
+            resourceAmount.storage < targetResourceAmount.storage -> {
+                val originalAmount: Double = resourceAmount.storage
+                val newAmount: Double = originalAmount + amount
+                resourceQuality.updateQuality(originalAmount, newAmount, newResourceQuality)
+                resourceAmount.storage = newAmount
+            }
+            resourceAmount.production < targetResourceAmount.production -> {
+                val originalAmount: Double = resourceAmount.production
+                val newAmount: Double = originalAmount + amount
+                resourceQuality.updateQuality(originalAmount, newAmount, newResourceQuality)
+                resourceAmount.production = newAmount
+            }
+            else -> {
+                val originalAmount: Double = resourceAmount.trade
+                val newAmount: Double = originalAmount + amount
+                resourceQuality.updateQuality(originalAmount, newAmount, newResourceQuality)
+                resourceAmount.trade = newAmount
+            }
+        }
     }
 }
 
