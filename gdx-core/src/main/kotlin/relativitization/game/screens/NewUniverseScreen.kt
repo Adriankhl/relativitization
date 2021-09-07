@@ -8,7 +8,6 @@ import kotlinx.coroutines.runBlocking
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.TableScreen
 import relativitization.universe.data.commands.CommandCollection
-import relativitization.universe.generate.GenerateUniverse
 import relativitization.universe.generate.UniverseGenerationCollection
 import relativitization.universe.mechanisms.MechanismCollection
 import relativitization.universe.science.UniverseScienceDataProcessCollection
@@ -105,7 +104,7 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
 
         table.add(createLabel("Pick game mechanisms: ", gdxSettings.normalFontSize))
         val mechanismSelectBox = createSelectBox(
-            MechanismCollection.mechanismListNameMap.keys.toList(),
+            MechanismCollection.mechanismListMap.keys.toList(),
             game.universeClient.generateSettings.universeSettings.mechanismCollectionName,
             gdxSettings.normalFontSize,
         ) { mechanismCollectionName, _ ->

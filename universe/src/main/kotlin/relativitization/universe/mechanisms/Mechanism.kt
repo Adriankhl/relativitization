@@ -31,10 +31,18 @@ abstract class Mechanism {
     ): List<Command>
 }
 
-object MechanismCollection {
-    private val logger = RelativitizationLogManager.getLogger()
+abstract class MechanismList {
+    abstract val mechanismList: List<Mechanism>
+}
 
-    private val defaultMechanismList: List<Mechanism> = listOf(
+fun MechanismList.name(): String = this::class.simpleName.toString()
+
+object EmptyMechanismList : MechanismList() {
+    override val mechanismList: List<Mechanism> = listOf()
+}
+
+object DefaultMechanismList : MechanismList() {
+    override val mechanismList: List<Mechanism> = listOf(
         AutoEventCollection,
         ProcessEvents,
         FactoryProduction,
@@ -42,12 +50,19 @@ object MechanismCollection {
         SyncPlayerScienceData,
         UpdateScienceProductData,
     )
+}
 
-    // list of all possible process collection name
-    val mechanismListNameMap: Map<String, List<Mechanism>> = mapOf(
-        "DefaultMechanism" to defaultMechanismList,
-        "EmptyMechanism" to listOf(),
+object MechanismCollection {
+    private val logger = RelativitizationLogManager.getLogger()
+
+    private val mechanismListList: List<MechanismList> = listOf(
+        DefaultMechanismList,
+        EmptyMechanismList,
     )
+
+    val mechanismListMap: Map<String, MechanismList> = mechanismListList.map {
+        it.name() to it
+    }.toMap()
 
     fun processMechanismCollection(
         mutablePlayerData: MutablePlayerData,
@@ -55,10 +70,10 @@ object MechanismCollection {
         universeData: UniverseData,
     ): List<Command> {
 
-        return mechanismListNameMap.getOrElse(universeData.universeSettings.mechanismCollectionName) {
+        return mechanismListMap.getOrElse(universeData.universeSettings.mechanismCollectionName) {
             logger.error("No mechanism name matched, use default mechanism")
-            listOf()
-        }.map { mechanism ->
+            EmptyMechanismList
+        }.mechanismList.map { mechanism ->
             mechanism.process(
                 mutablePlayerData,
                 universeData3DAtPlayer,
