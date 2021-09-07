@@ -104,10 +104,12 @@ fun Command.name(): String = this::class.simpleName.toString()
 
 fun <T : Command> KClass<T>.name(): String = this.simpleName.toString()
 
-object CommandCollection {
-    private val logger = RelativitizationLogManager.getLogger()
+abstract class CommandList {
+    abstract val commandList: List<String>
+}
 
-    val defaultCommandList: List<String> = listOf(
+object DefaultCommandList : CommandList() {
+    override val commandList: List<String> = listOf(
         AddEventCommand::class.name(),
         ChangeVelocityCommand::class.name(),
         CannotSendCommand::class.name(),
@@ -115,17 +117,27 @@ object CommandCollection {
         DummyCommand::class.name(),
         SelectEventChoiceCommand::class.name(),
     )
+}
 
-    val commandListNameMap: Map<String, List<String>> = mapOf(
-        "DefaultCommands" to defaultCommandList
+fun CommandList.name(): String = this::class.simpleName.toString()
+
+object CommandCollection {
+    private val logger = RelativitizationLogManager.getLogger()
+
+    private val commandListList: List<CommandList> = listOf(
+        DefaultCommandList
     )
+
+    val commandListNameMap: Map<String, List<String>> = commandListList.map {
+        it.name() to it.commandList
+    }.toMap()
 
     fun hasCommand(universeSettings: UniverseSettings, command: Command): Boolean {
         val commandCollection: List<String> = commandListNameMap.getOrElse(
             universeSettings.commandCollectionName
         ) {
             logger.error("No command collection name: ${universeSettings.commandCollectionName} found")
-            defaultCommandList
+            DefaultCommandList.commandList
         }
 
         return commandCollection.contains(command.name())
