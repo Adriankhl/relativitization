@@ -62,9 +62,7 @@ data class ResourceData(
         resourceType: ResourceType,
         resourceQualityClass: ResourceQualityClass
     ): ResourceQualityData {
-        return resourceQualityMap.get(
-            resourceType
-        )?.get(
+        return resourceQualityMap[resourceType]?.get(
             resourceQualityClass
         ) ?: ResourceQualityData()
     }
@@ -76,9 +74,7 @@ data class ResourceData(
         resourceType: ResourceType,
         resourceQualityClass: ResourceQualityClass
     ): ResourceQualityData {
-        return resourceQualityLowerBoundMap.get(
-            resourceType
-        )?.get(
+        return resourceQualityLowerBoundMap[resourceType]?.get(
             resourceQualityClass
         ) ?: ResourceQualityData()
     }
