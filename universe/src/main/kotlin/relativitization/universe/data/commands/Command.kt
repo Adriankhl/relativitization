@@ -109,7 +109,7 @@ fun <T : Command> KClass<T>.name(): String = this.simpleName.toString()
 abstract class CommandList {
     abstract val commandList: List<String>
 
-    // Allowed event list
+    // Allowed event list for AddEventCommand
     abstract val eventList: List<String>
 }
 
