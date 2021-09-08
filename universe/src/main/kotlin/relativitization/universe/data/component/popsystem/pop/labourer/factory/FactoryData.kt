@@ -8,6 +8,7 @@ import relativitization.universe.data.component.economy.ResourceType
 /**
  * Data for a factory of labour pop
  *
+ * @property isOpen whether this factory is opened
  * @property outputResource the output resource type
  * @property maxOutputResourceQualityData maximum output resource quality
  * @property maxOutputAmount maximum output resource amount
@@ -20,6 +21,7 @@ import relativitization.universe.data.component.economy.ResourceType
  */
 @Serializable
 data class FactoryData(
+    val isOpened: Boolean = true,
     val outputResource: ResourceType = ResourceType.PLANT,
     val maxOutputResourceQualityData: ResourceQualityData = ResourceQualityData(),
     val maxOutputAmount: Double = 0.0,
@@ -38,6 +40,7 @@ data class FactoryData(
 
 @Serializable
 data class MutableFactoryData(
+    var isOpened: Boolean = true,
     var outputResource: ResourceType = ResourceType.PLANT,
     var maxOutputResourceQualityData: MutableResourceQualityData = MutableResourceQualityData(),
     var maxOutputAmount: Double = 0.0,
