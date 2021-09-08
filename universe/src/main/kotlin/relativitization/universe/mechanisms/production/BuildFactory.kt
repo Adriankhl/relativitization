@@ -14,6 +14,9 @@ object BuildFactory : Mechanism() {
         universeSettings: UniverseSettings,
         universeScienceData: UniverseScienceData
     ): List<Command> {
-        TODO("Not yet implemented")
+        mutablePlayerData.playerInternalData.popSystemData(
+        ).carrierDataMap.values.forEach { carrier ->
+        }
+        return listOf()
     }
 }
