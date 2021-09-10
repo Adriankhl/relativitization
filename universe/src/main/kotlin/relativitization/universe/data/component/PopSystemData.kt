@@ -59,7 +59,8 @@ data class MutablePopSystemData(
     ) {
         val newCarrier = MutableCarrierData(
             coreRestMass = coreRestMass,
-            carrierType = CarrierType.SPACESHIP
+            carrierType = CarrierType.SPACESHIP,
+            maxDeltaFuelRestMass = maxDeltaFuelRestMass
         )
         carrierDataMap[newCarrierId()] = newCarrier
     }

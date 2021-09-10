@@ -85,8 +85,6 @@ object FactoryProduction : Mechanism() {
             mutableFactoryData.inputResourceMap.map { (type, inputResourceData) ->
                 val requiredAmount: Double =
                     inputResourceData.amountPerOutputUnit * mutableFactoryData.maxOutputAmount
-                val requiredQuality: MutableResourceQualityData =
-                    inputResourceData.maxInputResourceQualityData
                 val qualityClass: ResourceQualityClass = inputResourceQualityClassMap.getValue(type)
                 resourceData.getProductionResourceAmount(type, qualityClass) / requiredAmount
             }
@@ -141,8 +139,6 @@ object FactoryProduction : Mechanism() {
     ): MutableResourceQualityData {
         val fractionList: List<Double> =
             mutableFactoryData.inputResourceMap.map { (type, inputResourceData) ->
-                val requiredAmount: Double =
-                    inputResourceData.amountPerOutputUnit * mutableFactoryData.maxOutputAmount
                 val requiredQuality: MutableResourceQualityData =
                     inputResourceData.maxInputResourceQualityData
                 val qualityClass: ResourceQualityClass = inputResourceQualityClassMap.getValue(type)

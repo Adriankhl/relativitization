@@ -423,9 +423,9 @@ data class MutableResourceQualityData(
     }
 
     operator fun times(d: Double): MutableResourceQualityData = MutableResourceQualityData(
-        quality1,
-        quality2,
-        quality3
+        quality1 * d,
+        quality2 * d,
+        quality3 * d,
     )
 }
 
