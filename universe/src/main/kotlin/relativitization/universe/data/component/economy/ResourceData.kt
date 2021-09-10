@@ -3,6 +3,7 @@ package relativitization.universe.data.component.economy
 import kotlinx.serialization.Serializable
 
 enum class ResourceType(val value: String) {
+    FUEL("Fuel"),
     PLANT("Plant"), // Raw material
     ANIMAL("Animal"),
     METAL("Metal"),

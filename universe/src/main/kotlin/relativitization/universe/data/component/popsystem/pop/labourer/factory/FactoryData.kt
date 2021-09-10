@@ -22,7 +22,7 @@ import relativitization.universe.data.component.economy.ResourceType
 @Serializable
 data class FactoryData(
     val isOpened: Boolean = true,
-    val outputResource: ResourceType = ResourceType.PLANT,
+    val outputResource: ResourceType = ResourceType.FUEL,
     val maxOutputResourceQualityData: ResourceQualityData = ResourceQualityData(),
     val maxOutputAmount: Double = 0.0,
     val lastOutputAmount: Double = 0.0,
@@ -41,7 +41,7 @@ data class FactoryData(
 @Serializable
 data class MutableFactoryData(
     var isOpened: Boolean = true,
-    var outputResource: ResourceType = ResourceType.PLANT,
+    var outputResource: ResourceType = ResourceType.FUEL,
     var maxOutputResourceQualityData: MutableResourceQualityData = MutableResourceQualityData(),
     var maxOutputAmount: Double = 0.0,
     var lastOutputAmount: Double = 0.0,
