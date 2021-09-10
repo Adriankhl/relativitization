@@ -1,3 +1,7 @@
+# Basic
+* Fuel: Factory can produce fuel, but it is stored in PhysicsData, the Fuel in EconomyData is
+only for convenience in intermediate processes.
+
 # Raw
 * Plant
 * Animal

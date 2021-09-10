@@ -11,6 +11,9 @@ import relativitization.universe.data.component.science.UniverseScienceData
 import relativitization.universe.mechanisms.Mechanism
 import kotlin.math.min
 
+/**
+ * Produce resources, fuel needs special treatments
+ */
 object FactoryProduction : Mechanism() {
     override fun process(
         mutablePlayerData: MutablePlayerData,
@@ -18,6 +21,9 @@ object FactoryProduction : Mechanism() {
         universeSettings: UniverseSettings,
         universeScienceData: UniverseScienceData
     ): List<Command> {
+        // Clean up fuel in resource data
+        mutablePlayerData.playerInternalData.economyData().resourceData.removeFuel()
+
         mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.forEach { carrier ->
             carrier.allPopData.labourerPopData.factoryMap.values.forEach { factory ->
                 updateResourceData(
@@ -27,6 +33,17 @@ object FactoryProduction : Mechanism() {
                 )
             }
         }
+
+        // Store fuel to physics data
+        if (mutablePlayerData.playerInternalData.modifierData(
+        ).physicsModifierData.disableFuelIncreaseTimeLimit <= 0) {
+            mutablePlayerData.playerInternalData.physicsData().fuelRestMass +=
+                mutablePlayerData.playerInternalData.economyData().resourceData.getFuelAmount()
+        }
+
+        // Clean up fuel in resource data
+        mutablePlayerData.playerInternalData.economyData().resourceData.removeFuel()
+
 
         return listOf()
     }
