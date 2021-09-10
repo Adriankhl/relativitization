@@ -16,6 +16,7 @@ import relativitization.universe.data.component.economy.ResourceType
 data class BuildFactoryData(
     val outputResource: ResourceType = ResourceType.FUEL,
     val targetQualityData: ResourceQualityData = ResourceQualityData(),
+    val targetOutputAmount: Double = 0.0,
     val progress: Double = 0.0,
 )
 
@@ -23,5 +24,6 @@ data class BuildFactoryData(
 data class MutableBuildFactoryData(
     var outputResource: ResourceType = ResourceType.FUEL,
     var targetQualityData: MutableResourceQualityData = MutableResourceQualityData(),
+    var targetOutputAmount: Double = 0.0,
     var progress: Double = 0.0,
 )

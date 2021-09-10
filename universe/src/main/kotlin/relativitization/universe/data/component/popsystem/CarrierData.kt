@@ -11,7 +11,6 @@ data class CarrierData(
     val carrierType: CarrierType = CarrierType.SPACESHIP,
     val allPopData: AllPopData = AllPopData(),
     val combatData: CombatData = CombatData(),
-
 )
 
 @Serializable
