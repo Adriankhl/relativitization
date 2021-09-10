@@ -42,8 +42,11 @@ class FlockingGenerate : GenerateUniverse() {
             playerData.int4D.z = Random.Default.nextInt(0, universeSettings.zDim)
 
             playerData.playerInternalData.popSystemData().addSpaceShip(
-                1.0, 1e6, 1e5
+                1.0, 1e5
             )
+
+            // Add fuel rest mass
+            playerData.playerInternalData.physicsData().fuelRestMass = 1e6
 
 
             val vx = Random.Default.nextDouble(-1.0, 1.0)

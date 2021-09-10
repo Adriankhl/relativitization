@@ -104,14 +104,6 @@ data class MutablePlayerData(
                 playerInternalData.popSystemData().totalCoreRestMass()
         }
 
-        if (playerInternalData.physicsData().fuelRestMass != playerInternalData.popSystemData()
-                .totalFuelRestMass()
-        ) {
-            logger.debug("Sync data component, change fuel mass")
-            playerInternalData.physicsData().fuelRestMass =
-                playerInternalData.popSystemData().totalFuelRestMass()
-        }
-
         if (playerInternalData.physicsData().maxDeltaFuelRestMass != playerInternalData.popSystemData()
                 .totalMaxDeltaFuelRestMass()
         ) {

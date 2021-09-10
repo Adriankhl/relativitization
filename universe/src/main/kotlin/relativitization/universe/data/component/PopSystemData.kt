@@ -16,10 +16,6 @@ data class PopSystemData(
         return carrierDataMap.values.sumOf { it.coreRestMass }
     }
 
-    fun totalFuelRestMass(): Double {
-        return carrierDataMap.values.sumOf { it.fuelRestMass }
-    }
-
     fun totalMaxDeltaFuelRestMass(): Double {
         return carrierDataMap.values.sumOf { it.maxDeltaFuelRestMass }
     }
@@ -34,10 +30,6 @@ data class MutablePopSystemData(
 ) : MutablePlayerDataComponent() {
     fun totalCoreRestMass(): Double {
         return carrierDataMap.values.sumOf { it.coreRestMass }
-    }
-
-    fun totalFuelRestMass(): Double {
-        return carrierDataMap.values.sumOf { it.fuelRestMass }
     }
 
     fun totalMaxDeltaFuelRestMass(): Double {
@@ -63,13 +55,10 @@ data class MutablePopSystemData(
 
     fun addSpaceShip(
         coreRestMass: Double,
-        fuelRestMass: Double,
         maxDeltaFuelRestMass: Double
     ) {
         val newCarrier = MutableCarrierData(
             coreRestMass = coreRestMass,
-            fuelRestMass = fuelRestMass,
-            maxDeltaFuelRestMass = maxDeltaFuelRestMass,
             carrierType = CarrierType.SPACESHIP
         )
         carrierDataMap[newCarrierId()] = newCarrier

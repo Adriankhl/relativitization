@@ -49,10 +49,16 @@ class TestingFixedMinimal : GenerateUniverse() {
         playerData3.playerInternalData.popSystemData().addRandomStellarSystem()
 
         // Add spaceShip
-        playerData1.playerInternalData.popSystemData().addSpaceShip(1.0, 100.0, 100.0)
-        playerData2.playerInternalData.popSystemData().addSpaceShip(1.0, 100.0, 100.0)
-        playerData3.playerInternalData.popSystemData().addSpaceShip(1.0, 100.0, 100.0)
-        playerData4.playerInternalData.popSystemData().addSpaceShip(1.0, 100.0, 100.0)
+        playerData1.playerInternalData.popSystemData().addSpaceShip(1.0, 100.0)
+        playerData2.playerInternalData.popSystemData().addSpaceShip(1.0, 100.0)
+        playerData3.playerInternalData.popSystemData().addSpaceShip(1.0, 100.0)
+        playerData4.playerInternalData.popSystemData().addSpaceShip(1.0, 100.0)
+
+        // Add fuel rest mass
+        playerData1.playerInternalData.physicsData().fuelRestMass = 100.0
+        playerData2.playerInternalData.physicsData().fuelRestMass = 100.0
+        playerData3.playerInternalData.physicsData().fuelRestMass = 100.0
+        playerData4.playerInternalData.physicsData().fuelRestMass = 100.0
 
 
         // player 1 is a leader of player 2
