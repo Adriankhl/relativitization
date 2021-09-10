@@ -15,7 +15,7 @@ import relativitization.universe.generate.GenerateUniverse
 import relativitization.universe.maths.grid.Grids.create4DGrid
 import relativitization.universe.science.default.DefaultUniverseScienceDataProcess
 
-class Minimal : GenerateUniverse() {
+class TestingFixedMinimal : GenerateUniverse() {
     override fun generate(settings: GenerateSettings): UniverseData {
         val universeSettings: UniverseSettings = copy(settings.universeSettings)
 

@@ -6,13 +6,13 @@ import relativitization.universe.data.UniverseData
 import relativitization.universe.data.serializer.DataSerializer.decode
 import relativitization.universe.data.serializer.DataSerializer.encode
 import relativitization.universe.generate.abm.FlockingGenerate
-import relativitization.universe.generate.fixed.Minimal
+import relativitization.universe.generate.fixed.TestingFixedMinimal
 import relativitization.universe.utils.RelativitizationLogManager
 import java.io.File
 
 @Serializable
 data class GenerateSettings(
-    var generateMethod: String = "FixedMinimal",
+    var generateMethod: String = TestingFixedMinimal().name(),
     var numPlayer: Int = 4,
     var numHumanPlayer: Int = 2,
     var numExtraStellarSystem: Int = 3,
@@ -54,7 +54,7 @@ object UniverseGenerationCollection {
     private val logger = RelativitizationLogManager.getLogger()
 
     val generateMethodList: List<GenerateUniverse> = listOf(
-        Minimal(),
+        TestingFixedMinimal(),
         FlockingGenerate(),
     )
 
@@ -77,7 +77,7 @@ object UniverseGenerationCollection {
     fun generate(settings: GenerateSettings): UniverseData {
         val generateMethod: GenerateUniverse =  generateMethodMap.getOrElse(settings.generateMethod) {
             logger.error("Generate method doesn't exist, using default method")
-            Minimal()
+            TestingFixedMinimal()
         }
 
         return generateMethod.generate(settings)
