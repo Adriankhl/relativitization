@@ -148,6 +148,11 @@ class TestingFixedMinimal : GenerateUniverse() {
             )
         )
 
+        // Add population to player 1
+        playerData1.playerInternalData.popSystemData().carrierDataMap.getValue(
+            0
+        ).allPopData.labourerPopData.commonPopData.adultPopulation = 100.0
+
         // Add fuel factory to player 1
         val fuelFactory1 = MutableFactoryData(
             isOpened = true,
@@ -162,7 +167,7 @@ class TestingFixedMinimal : GenerateUniverse() {
             inputResourceMap = mutableMapOf(),
             fuelRestMassConsumptionRate = 0.0,
             maxNumEmployee = 100.0,
-            lastNumEmployee = 0.0,
+            lastNumEmployee = 100.0,
             size = 3.0
         )
         playerData1.playerInternalData.popSystemData().carrierDataMap.getValue(
