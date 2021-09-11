@@ -241,7 +241,7 @@ object ActorFunction {
         style.font = assets.getFont(fontSize)
         style.fontColor = Color.WHITE
 
-        return Label(text, style)
+        return Label(translate(text, assets), style)
     }
 
     /**
@@ -298,7 +298,7 @@ object ActorFunction {
         val style = skin.get(CheckBox.CheckBoxStyle::class.java)
         style.font = assets.getFont(fontSize)
 
-        val checkBox = CheckBox(text, style)
+        val checkBox = CheckBox(translate(text, assets), style)
 
         checkBox.isChecked = default
 
