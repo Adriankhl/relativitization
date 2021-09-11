@@ -121,7 +121,7 @@ data class SelectEventChoiceCommand(
         listOf(
             choice.toString(),
             eventKey.toString(),
-            eventName.toString(),
+            eventName,
         ),
     )
 
