@@ -21,12 +21,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.badlogic.gdx.utils.I18NBundle
+import relativitization.game.GdxSettings
 import relativitization.universe.utils.RelativitizationLogManager
 import java.util.*
 import kotlin.random.Random
 
 
-class Assets {
+class Assets(val gdxSettings: GdxSettings) {
     private val manager: AssetManager = AssetManager()
 
     private val resolver: FileHandleResolver = InternalFileHandleResolver()

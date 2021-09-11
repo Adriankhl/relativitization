@@ -14,7 +14,7 @@ internal class ReflectionTest {
         val s1: Long = measureTimeMillis {
             for (i in (1..repeatTimes)) {
                 val t = TestData(i)
-                val n = t.name1
+                t.name1
             }
         }
 

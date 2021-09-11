@@ -22,7 +22,7 @@ class RelativitizationGame(val universeClient: UniverseClient, private val unive
         onGdxSettingsChangeFunctionList.forEach { it() }
     }
 
-    val assets: Assets = Assets()
+    val assets: Assets = Assets(gdxSettings)
 
     private lateinit var backgroundMusic: Music
 
