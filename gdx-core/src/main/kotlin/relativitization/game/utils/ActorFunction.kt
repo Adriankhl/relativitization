@@ -356,7 +356,15 @@ object ActorFunction {
         val style = skin.get(GdxList.ListStyle::class.java)
         style.font = assets.getFont(fontSize)
 
-        val gdxList: GdxList<T> = GdxList(style)
+        val gdxList: GdxList<T> = object : GdxList<T>(style) {
+            override fun toString(item: T): String {
+                return if (item is String) {
+                    translate(item, assets)
+                } else {
+                    item.toString()
+                }
+            }
+        }
 
         gdxList.setItems(Array(itemList.toTypedArray()))
 
@@ -389,7 +397,15 @@ object ActorFunction {
         style.font = assets.getFont(fontSize)
         style.listStyle.font = assets.getFont(fontSize)
 
-        val selectBox: SelectBox<T> = SelectBox(style)
+        val selectBox: SelectBox<T> = object : SelectBox<T>(style) {
+            override fun toString(item: T): String {
+                return if (item is String) {
+                    translate(item, assets)
+                } else {
+                    item.toString()
+                }
+            }
+        }
         selectBox.items = Array(itemList.toTypedArray())
 
         selectBox.selected = default
