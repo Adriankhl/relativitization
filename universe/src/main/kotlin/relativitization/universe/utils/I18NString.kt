@@ -12,11 +12,20 @@ data class IntString(val int: Int) : TString()
 @Serializable
 data class RealString(val str: String) : TString()
 
+/**
+ * Data format for translation
+ *
+ * @property message A list of string or int, int points to the string in arg
+ * @property arg additional arguments for printing message
+ */
 @Serializable
 data class I18NString(
     val message: List<TString>,
     val arg: List<String>
 ) {
+    /**
+     * Convert to a string
+     */
     fun toNormalString(): String = message.map {
         when (it) {
             is RealString -> it.str
@@ -29,6 +38,10 @@ data class I18NString(
         }
     }.reduce { acc, s ->  acc + s }
 
+    /**
+     * Convert to a list of string following the format of java's MessageFormat
+     * Used in libgdx translation
+     */
     fun toMessageFormat(): List<String> {
         val s1: String = message.map {
             when (it) {
