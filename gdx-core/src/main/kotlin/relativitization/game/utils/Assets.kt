@@ -54,7 +54,7 @@ class Assets {
         manager.load("sounds/click1.ogg", Sound::class.java)
 
         val bundleLoaderParameter = I18NBundleLoader.I18NBundleParameter(
-            Locale.CHINESE
+            Locale.TRADITIONAL_CHINESE
         )
         manager.load("translations/TrBundle", I18NBundle::class.java, bundleLoaderParameter)
 
