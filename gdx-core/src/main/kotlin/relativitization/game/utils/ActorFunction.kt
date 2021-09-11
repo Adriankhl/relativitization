@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.badlogic.gdx.utils.Array
+import relativitization.universe.utils.I18NString
 import relativitization.universe.utils.RelativitizationLogManager
 import com.badlogic.gdx.scenes.scene2d.ui.List as GdxList
 
@@ -29,6 +30,23 @@ object ActorFunction {
         } catch (e: Throwable) {
             logger.debug("No translation for $text")
             text
+        }
+    }
+
+    fun translate(text: I18NString, assets: Assets): String {
+        val i18NBundle = assets.getI18NBundle()
+        return try {
+            val strList: List<String> = text.toMessageFormat()
+            val trText: String = i18NBundle.format(strList[0], strList.drop(1))
+            if (trText != "") {
+                trText
+            } else {
+                logger.debug("Empty translated text: $text")
+                text.toNormalString()
+            }
+        } catch (e: Throwable) {
+            logger.debug("No translation for $text")
+            text.toNormalString()
         }
     }
 
