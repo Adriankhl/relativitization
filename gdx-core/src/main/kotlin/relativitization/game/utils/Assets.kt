@@ -22,12 +22,13 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.badlogic.gdx.utils.I18NBundle
 import relativitization.game.GdxSettings
+import relativitization.game.Language
 import relativitization.universe.utils.RelativitizationLogManager
 import java.util.*
 import kotlin.random.Random
 
 data class TranslationData(
-    val file: String = "English.properties",
+    val file: String = "English",
     val locale: Locale = Locale.ENGLISH,
 )
 
@@ -41,6 +42,14 @@ class Assets(val gdxSettings: GdxSettings) {
     private val ninePatchMap: MutableMap<String, NinePatch> = mutableMapOf()
 
     private val loadedFontMap: MutableMap<Int, String> = mutableMapOf()
+
+    private var language: Language = gdxSettings.language
+
+    private val languageMap: Map<Language, TranslationData> = mapOf(
+        Language.ENGLISH to TranslationData("English", Locale.ENGLISH),
+        Language.TRADITIONAL_CHINESE to TranslationData("Traditional_Chinese", Locale.TRADITIONAL_CHINESE),
+        Language.SIMPLIFIED_CHINESE to TranslationData("Simplified_Chinese", Locale.SIMPLIFIED_CHINESE)
+    )
 
     fun allChineseCharacter(): String {
         return "創建新宇宙"
@@ -56,12 +65,12 @@ class Assets(val gdxSettings: GdxSettings) {
         )
     }
 
-    fun loadFont(assetManager: AssetManager, fontSize: Int) {
+    fun loadFont(fontSize: Int) {
         // Unload fonts that are not required
         val unloadList: List<Int> = loadedFontMap.keys.filter { !allRequiredFontSize().contains(it) }
         unloadList.forEach {
             try {
-                assetManager.unload(loadedFontMap[it])
+                manager.unload(loadedFontMap[it])
             } catch (e: Throwable) {
                 logger.error("Unloading font that does not exist")
             }
@@ -71,7 +80,7 @@ class Assets(val gdxSettings: GdxSettings) {
         // unload font of this font size if already loaded
         if (loadedFontMap.containsKey(fontSize)) {
             try {
-                assetManager.unload(loadedFontMap[fontSize])
+                manager.unload(loadedFontMap[fontSize])
             } catch (e: Throwable) {
                 logger.error("Unloading font that does not exist")
             }
@@ -84,8 +93,18 @@ class Assets(val gdxSettings: GdxSettings) {
         fontLoaderParameter.fontParameters.characters = FreeTypeFontGenerator.DEFAULT_CHARS + allChineseCharacter()
 
         val name = "NotoSansCJKsc-Regular$fontSize.ttf"
-        assetManager.load(name , BitmapFont::class.java, fontLoaderParameter)
+        manager.load(name , BitmapFont::class.java, fontLoaderParameter)
         loadedFontMap[fontSize] = name
+    }
+
+    fun loadTranslationBundle() {
+        val translationData: TranslationData = languageMap[language] ?: TranslationData()
+
+        val bundleLoaderParameter = I18NBundleLoader.I18NBundleParameter(
+            translationData.locale
+        )
+
+        manager.load(translationData.file, I18NBundle::class.java, bundleLoaderParameter)
     }
 
     fun loadAll() {
@@ -108,7 +127,7 @@ class Assets(val gdxSettings: GdxSettings) {
         manager.load("translations/TrBundle", I18NBundle::class.java, bundleLoaderParameter)
 
         for (fontSize in allRequiredFontSize()) {
-            loadFont(manager, fontSize)
+            loadFont(fontSize)
         }
 
         manager.finishLoading()
@@ -276,7 +295,7 @@ class Assets(val gdxSettings: GdxSettings) {
         return try {
             manager.get("NotoSansCJKsc-Regular$actualSize.ttf")
         } catch (e: Throwable) {
-            loadFont(manager, fontSize)
+            loadFont(fontSize)
             manager.finishLoading()
             manager.get("NotoSansCJKsc-Regular$actualSize.ttf")
         }
