@@ -32,6 +32,10 @@ class Assets {
 
     private val ninePatchMap: MutableMap<String, NinePatch> = mutableMapOf()
 
+    fun allChineseCharacter(): String {
+        return "創建新宇宙"
+    }
+
     fun loadAll() {
         // https://stackoverflow.com/questions/46619234/libgdx-asset-manager-load-true-type-font
         manager.setLoader(FreeTypeFontGenerator::class.java, FreeTypeFontGeneratorLoader(resolver))
@@ -50,7 +54,7 @@ class Assets {
             val fontLoader = FreeTypeFontLoaderParameter()
             fontLoader.fontFileName = "fonts/NotoSansCJKsc-Regular.ttf"
             fontLoader.fontParameters.size = fontSize
-            fontLoader.fontParameters.characters = FreeTypeFontGenerator.DEFAULT_CHARS + "一嗎"
+            fontLoader.fontParameters.characters = FreeTypeFontGenerator.DEFAULT_CHARS + allChineseCharacter()
             manager.load("NotoSansCJKsc-Regular$fontSize.ttf", BitmapFont::class.java, fontLoader)
         }
 
