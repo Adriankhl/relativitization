@@ -2,6 +2,7 @@ package relativitization.game.utils
 
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.assets.loaders.FileHandleResolver
+import com.badlogic.gdx.assets.loaders.I18NBundleLoader
 import com.badlogic.gdx.assets.loaders.SkinLoader.SkinParameter
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver
 import com.badlogic.gdx.audio.Music
@@ -19,7 +20,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
+import com.badlogic.gdx.utils.I18NBundle
 import relativitization.universe.utils.RelativitizationLogManager
+import java.util.*
 import kotlin.random.Random
 
 
@@ -49,6 +52,11 @@ class Assets {
         manager.load("relativitization-asset.atlas", TextureAtlas::class.java)
 
         manager.load("sounds/click1.ogg", Sound::class.java)
+
+        val bundleLoader = I18NBundleLoader.I18NBundleParameter(
+            Locale.TRADITIONAL_CHINESE
+        )
+        manager.load("translations/TrBundle", I18NBundle::class.java, bundleLoader)
 
         for (fontSize in fontSizeList) {
             val fontLoader = FreeTypeFontLoaderParameter()
@@ -224,6 +232,8 @@ class Assets {
     }
 
     fun getSound(name: String): Sound = manager.get("sounds/$name")
+
+    fun getI18NBundle(): I18NBundle = manager.get("translations/TrBundle")
 
     companion object {
         private val logger = RelativitizationLogManager.getLogger()
