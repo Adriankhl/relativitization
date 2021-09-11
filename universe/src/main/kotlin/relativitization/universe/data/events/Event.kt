@@ -6,8 +6,7 @@ import relativitization.universe.data.PlayerData
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
-import relativitization.universe.data.commands.CommandCollection
-import relativitization.universe.data.commands.DefaultCommandList
+import relativitization.universe.utils.I18NString
 import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.reflect.KClass
 
@@ -21,7 +20,7 @@ sealed class Event {
     abstract val fromId: Int
 
     // Description of the event
-    abstract val description: String
+    abstract val description: I18NString
 
     // Available choice description
     abstract val choiceDescription: Map<Int, String>

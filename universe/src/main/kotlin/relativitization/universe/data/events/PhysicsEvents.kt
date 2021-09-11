@@ -11,6 +11,9 @@ import relativitization.universe.data.commands.DisableFuelIncreaseCommand
 import relativitization.universe.data.component.physics.Double3D
 import relativitization.universe.maths.physics.Movement.targetDouble3DByPhotonRocket
 import relativitization.universe.maths.physics.TargetVelocityData
+import relativitization.universe.utils.I18NString
+import relativitization.universe.utils.IntString
+import relativitization.universe.utils.RealString
 import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.math.min
 
@@ -27,7 +30,18 @@ data class MoveToDouble3DEvent(
     override val stayTime: Int,
 ) : Event() {
 
-    override val description: String = "Player $toId moving to $targetDouble3D"
+    override val description: I18NString = I18NString(
+        listOf(
+            RealString("Player "),
+            IntString(0),
+            RealString(" moving to"),
+            IntString(1),
+        ),
+        listOf(
+            toId.toString(),
+            targetDouble3D.toString()
+        ),
+    )
 
     override val choiceDescription: Map<Int, String> = mapOf(
         0 to "Moving to position $targetDouble3D",
