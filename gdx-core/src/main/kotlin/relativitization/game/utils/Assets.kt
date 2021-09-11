@@ -100,6 +100,30 @@ class Assets(val gdxSettings: GdxSettings) {
     fun loadTranslationBundle() {
         val translationData: TranslationData = languageMap[language] ?: TranslationData()
 
+        try {
+            manager.unload(translationData.file)
+        } catch (e: Throwable) {
+            logger.debug("No existing translation bundle")
+        }
+
+        val bundleLoaderParameter = I18NBundleLoader.I18NBundleParameter(
+            translationData.locale
+        )
+
+        manager.load(translationData.file, I18NBundle::class.java, bundleLoaderParameter)
+    }
+
+    fun updateTranslationBundle(newGdxSettings: GdxSettings) {
+        val translationData: TranslationData = languageMap[language] ?: TranslationData()
+
+        try {
+            manager.unload(translationData.file)
+        } catch (e: Throwable) {
+            logger.debug("No existing translation bundle")
+        }
+
+        language = newGdxSettings.language
+
         val bundleLoaderParameter = I18NBundleLoader.I18NBundleParameter(
             translationData.locale
         )
@@ -121,10 +145,7 @@ class Assets(val gdxSettings: GdxSettings) {
 
         manager.load("sounds/click1.ogg", Sound::class.java)
 
-        val bundleLoaderParameter = I18NBundleLoader.I18NBundleParameter(
-            Locale.TRADITIONAL_CHINESE
-        )
-        manager.load("translations/TrBundle", I18NBundle::class.java, bundleLoaderParameter)
+        loadTranslationBundle()
 
         for (fontSize in allRequiredFontSize()) {
             loadFont(fontSize)
@@ -303,7 +324,9 @@ class Assets(val gdxSettings: GdxSettings) {
 
     fun getSound(name: String): Sound = manager.get("sounds/$name")
 
-    fun getI18NBundle(): I18NBundle = manager.get("translations/TrBundle")
+    fun getI18NBundle(): I18NBundle = manager.get(
+        "translations/${languageMap[language]?.file ?: TranslationData().file}"
+    )
 
     companion object {
         private val logger = RelativitizationLogManager.getLogger()
