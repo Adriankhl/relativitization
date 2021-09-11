@@ -36,8 +36,52 @@ class Assets(val gdxSettings: GdxSettings) {
 
     private val ninePatchMap: MutableMap<String, NinePatch> = mutableMapOf()
 
+    private val loadedFontMap: MutableMap<Int, String> = mutableMapOf()
+
     fun allChineseCharacter(): String {
         return "創建新宇宙"
+    }
+
+    fun allRequiredFontSize(): List<Int> {
+        return listOf(
+            gdxSettings.smallFontSize,
+            gdxSettings.normalFontSize,
+            gdxSettings.bigFontSize,
+            gdxSettings.hugeFontSize,
+            gdxSettings.maxFontSize
+        )
+    }
+
+    fun loadFont(assetManager: AssetManager, fontSize: Int) {
+        // Unload fonts that are not required
+        val unloadList: List<Int> = loadedFontMap.keys.filter { !allRequiredFontSize().contains(it) }
+        unloadList.forEach {
+            try {
+                assetManager.unload(loadedFontMap[it])
+            } catch (e: Throwable) {
+                logger.error("Unloading font that does not exist")
+            }
+        }
+        unloadList.forEach { loadedFontMap.remove(it) }
+
+        // unload font of this font size if already loaded
+        if (loadedFontMap.containsKey(fontSize)) {
+            try {
+                assetManager.unload(loadedFontMap[fontSize])
+            } catch (e: Throwable) {
+                logger.error("Unloading font that does not exist")
+            }
+        }
+
+        // Load font
+        val fontLoaderParameter = FreeTypeFontLoaderParameter()
+        fontLoaderParameter.fontFileName = "fonts/NotoSansCJKsc-Regular.ttf"
+        fontLoaderParameter.fontParameters.size = fontSize
+        fontLoaderParameter.fontParameters.characters = FreeTypeFontGenerator.DEFAULT_CHARS + allChineseCharacter()
+
+        val name = "NotoSansCJKsc-Regular$fontSize.ttf"
+        assetManager.load(name , BitmapFont::class.java, fontLoaderParameter)
+        loadedFontMap[fontSize] = name
     }
 
     fun loadAll() {
@@ -59,12 +103,8 @@ class Assets(val gdxSettings: GdxSettings) {
         )
         manager.load("translations/TrBundle", I18NBundle::class.java, bundleLoaderParameter)
 
-        for (fontSize in fontSizeList) {
-            val fontLoaderParameter = FreeTypeFontLoaderParameter()
-            fontLoaderParameter.fontFileName = "fonts/NotoSansCJKsc-Regular.ttf"
-            fontLoaderParameter.fontParameters.size = fontSize
-            fontLoaderParameter.fontParameters.characters = FreeTypeFontGenerator.DEFAULT_CHARS + allChineseCharacter()
-            manager.load("NotoSansCJKsc-Regular$fontSize.ttf", BitmapFont::class.java, fontLoaderParameter)
+        for (fontSize in allRequiredFontSize()) {
+            loadFont(manager, fontSize)
         }
 
         manager.finishLoading()
@@ -229,7 +269,13 @@ class Assets(val gdxSettings: GdxSettings) {
             }
         }
 
-        return manager.get("NotoSansCJKsc-Regular$actualSize.ttf")
+        return try {
+            manager.get("NotoSansCJKsc-Regular$actualSize.ttf")
+        } catch (e: Throwable) {
+            loadFont(manager, fontSize)
+            manager.finishLoading()
+            manager.get("NotoSansCJKsc-Regular$actualSize.ttf")
+        }
     }
 
     fun getSound(name: String): Sound = manager.get("sounds/$name")
