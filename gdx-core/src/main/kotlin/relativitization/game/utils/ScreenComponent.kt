@@ -10,6 +10,7 @@ import kotlinx.coroutines.runBlocking
 import relativitization.game.RelativitizationGame
 import relativitization.universe.data.component.physics.Double2D
 import relativitization.universe.maths.physics.Intervals
+import relativitization.universe.utils.I18NString
 import kotlin.math.PI
 import kotlin.math.atan2
 
@@ -207,6 +208,16 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets){
      * @param fontSize size of the font
      */
     fun createLabel(text: String, fontSize: Int): Label = ActorFunction.createLabel(skin, assets, text, fontSize)
+
+
+    /**
+     * Create label to display text in I18NString
+     *
+     * @param text text to display
+     * @param fontSize size of the font
+     */
+    fun createLabel(text: I18NString, fontSize: Int): Label = ActorFunction.createLabel(skin, assets, text, fontSize)
+
 
     /**
      * Create a text button

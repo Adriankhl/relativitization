@@ -245,6 +245,20 @@ object ActorFunction {
     }
 
     /**
+     * Create label to display text in I18NString
+     *
+     * @param text text to display
+     * @param fontSize size of the font
+     */
+    fun createLabel(skin: Skin, assets: Assets, text: I18NString, fontSize: Int = 16): Label {
+        val style = skin.get(Label.LabelStyle::class.java)
+        style.font = assets.getFont(fontSize)
+        style.fontColor = Color.WHITE
+
+        return Label(translate(text, assets), style)
+    }
+
+    /**
      * Create a text button
      *
      * @param text the text in the button
