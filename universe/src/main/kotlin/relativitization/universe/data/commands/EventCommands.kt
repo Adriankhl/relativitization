@@ -6,6 +6,9 @@ import relativitization.universe.data.PlayerData
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.component.physics.Int4D
 import relativitization.universe.data.events.*
+import relativitization.universe.utils.I18NString
+import relativitization.universe.utils.IntString
+import relativitization.universe.utils.RealString
 import relativitization.universe.utils.RelativitizationLogManager
 
 /**
@@ -21,7 +24,21 @@ data class AddEventCommand(
     override val toId: Int = event.toId
     override val fromId: Int = event.fromId
 
-    override val description: String = "Add event (${event.name()}) to player $toId from player $fromId."
+    override val description: I18NString = I18NString(
+        listOf(
+            RealString("Add event ("),
+            IntString(0),
+            RealString(") to player "),
+            IntString(1),
+            RealString(" from player "),
+            IntString(2),
+        ),
+        listOf(
+            event.name(),
+            toId.toString(),
+            fromId.toString(),
+        ),
+    )
 
     /**
      * Whether this player can send the event depends on the event
@@ -90,7 +107,22 @@ data class SelectEventChoiceCommand(
     override val toId: Int,
 ) : Command() {
 
-    override val description: String = "Select choice $choice for event $eventKey ($eventName)"
+    override val description: I18NString = I18NString(
+        listOf(
+            RealString("Select choice "),
+            IntString(0),
+            RealString(" for event "),
+            IntString(1),
+            RealString(" ("),
+            IntString(2),
+            RealString(")")
+        ),
+        listOf(
+            choice.toString(),
+            eventKey.toString(),
+            eventName.toString(),
+        ),
+    )
 
     override fun canSend(playerData: PlayerData, universeSettings: UniverseSettings): Boolean {
         return playerData.playerId == toId

@@ -6,8 +6,12 @@ import relativitization.universe.data.PlayerData
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.component.physics.Int4D
 import relativitization.universe.data.component.physics.Velocity
+import relativitization.universe.data.events.name
 import relativitization.universe.maths.physics.Relativistic.targetVelocityByPhotonRocket
 import relativitization.universe.maths.physics.TargetVelocityData
+import relativitization.universe.utils.I18NString
+import relativitization.universe.utils.IntString
+import relativitization.universe.utils.RealString
 import relativitization.universe.utils.RelativitizationLogManager
 
 @Serializable
@@ -18,7 +22,18 @@ data class ChangeVelocityCommand(
     override val fromInt4D: Int4D,
 ) : Command() {
 
-    override val description: String = "Try to change velocity of player $toId to $targetVelocity"
+    override val description: I18NString = I18NString(
+        listOf(
+            RealString("Try to change velocity of player "),
+            IntString(0),
+            RealString(" to "),
+            IntString(1),
+        ),
+        listOf(
+            toId.toString(),
+            targetVelocity.toString(),
+        ),
+    )
 
     /**
      * Can only send to subordinate

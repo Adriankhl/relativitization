@@ -130,9 +130,9 @@ class BottomCommandInfo(val game: RelativitizationGame) : ScreenComponent<Scroll
     }
 
     private fun update() {
-        commandNameLabel.setText(game.universeClient.currentCommand.name())
-        commandDescriptionLabel.setText(game.universeClient.currentCommand.description)
-        commandTimeLabel.setText("Time: ${game.universeClient.currentCommand.fromInt4D.t}")
+        commandNameLabel.setText(translate(game.universeClient.currentCommand.name()))
+        commandDescriptionLabel.setText(translate(game.universeClient.currentCommand.description))
+        commandTimeLabel.setText(translate("Time: ") + ${game.universeClient.currentCommand.fromInt4D.t})
 
         if (game.universeClient.isCurrentCommandStored()) {
             disableActor(confirmCommandTextButton)

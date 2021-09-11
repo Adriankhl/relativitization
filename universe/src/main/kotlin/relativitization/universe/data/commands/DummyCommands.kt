@@ -5,6 +5,8 @@ import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.component.physics.Int4D
+import relativitization.universe.utils.I18NString
+import relativitization.universe.utils.RealString
 
 
 @Serializable
@@ -14,7 +16,10 @@ data class DummyCommand(
     override val fromInt4D: Int4D = Int4D(0, 0, 0, 0),
 ) : Command() {
 
-    override val description = "Do nothing"
+    override val description: I18NString = I18NString(
+        listOf(RealString("Do nothing")),
+        listOf(),
+    )
 
     override fun canSend(playerData: PlayerData, universeSettings: UniverseSettings): Boolean {
         return true
@@ -38,7 +43,10 @@ data class CannotSendCommand(
     override val fromInt4D: Int4D = Int4D(0, 0, 0, 0),
 ) : Command() {
 
-    override val description: String = "Cannot send this command"
+    override val description: I18NString = I18NString(
+        listOf(RealString("Cannot send this command")),
+        listOf(),
+    )
 
     override fun canSend(playerData: PlayerData, universeSettings: UniverseSettings): Boolean {
         return true

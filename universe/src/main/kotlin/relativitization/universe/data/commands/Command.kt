@@ -7,6 +7,7 @@ import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.component.physics.Int4D
 import relativitization.universe.data.events.MoveToDouble3DEvent
 import relativitization.universe.data.events.name
+import relativitization.universe.utils.I18NString
 import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.reflect.KClass
 
@@ -19,7 +20,7 @@ sealed class Command {
     /**
      * Description of the command
      */
-    abstract val description: String
+    abstract val description: I18NString
 
     /**
      * Check if the player (sender) can send the command
