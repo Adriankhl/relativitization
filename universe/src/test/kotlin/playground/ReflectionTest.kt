@@ -28,7 +28,7 @@ internal class ReflectionTest {
         val s3: Long = measureTimeMillis {
             for (i in (1..repeatTimes)) {
                 val t = TestData(i)
-                1t::class.simpleName
+                t::class.simpleName
             }
         }
 
