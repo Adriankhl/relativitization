@@ -32,13 +32,14 @@ data class AddEventCommand(
             IntString(1),
             RealString(" from player "),
             IntString(2),
+            RealString(". Event description: ")
         ),
         listOf(
             event.name(),
             toId.toString(),
             fromId.toString(),
         ),
-    )
+    ) + event.description
 
     /**
      * Whether this player can send the event depends on the event
