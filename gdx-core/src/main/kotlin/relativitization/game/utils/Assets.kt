@@ -48,9 +48,10 @@ class Assets {
 
         for (fontSize in fontSizeList) {
             val fontLoader = FreeTypeFontLoaderParameter()
-            fontLoader.fontFileName = "fonts/nerd.ttf"
+            fontLoader.fontFileName = "fonts/NotoSansCJKsc-Regular.ttf"
             fontLoader.fontParameters.size = fontSize
-            manager.load("nerd$fontSize.ttf", BitmapFont::class.java, fontLoader)
+            fontLoader.fontParameters.characters = FreeTypeFontGenerator.DEFAULT_CHARS + "一嗎"
+            manager.load("NotoSansCJKsc-Regular$fontSize.ttf", BitmapFont::class.java, fontLoader)
         }
 
         manager.finishLoading()
@@ -215,7 +216,7 @@ class Assets {
             }
         }
 
-        return manager.get("nerd$actualSize.ttf")
+        return manager.get("NotoSansCJKsc-Regular$actualSize.ttf")
     }
 
     fun getSound(name: String): Sound = manager.get("sounds/$name")
