@@ -24,6 +24,7 @@ import com.badlogic.gdx.utils.I18NBundle
 import relativitization.game.GdxSettings
 import relativitization.game.Language
 import relativitization.universe.utils.RelativitizationLogManager
+import java.io.File
 import java.util.*
 import kotlin.random.Random
 
@@ -53,8 +54,15 @@ class Assets(val gdxSettings: GdxSettings) {
         Language.SIMPLIFIED_CHINESE to TranslationData("Simplified_Chinese", Locale.SIMPLIFIED_CHINESE)
     )
 
-    fun allChineseCharacter(): String {
-        return "創建新宇宙"
+    /**
+     * All required characters to load from the ttf
+     */
+    fun allCharacters(): String {
+        val default: String = FreeTypeFontGenerator.DEFAULT_CHARS
+
+        val file: File = File(languageMap.getValue(language).filePath())
+
+        return default
     }
 
     fun allRequiredFontSize(): List<Int> {
@@ -92,7 +100,7 @@ class Assets(val gdxSettings: GdxSettings) {
         val fontLoaderParameter = FreeTypeFontLoaderParameter()
         fontLoaderParameter.fontFileName = "fonts/NotoSansCJKsc-Regular.ttf"
         fontLoaderParameter.fontParameters.size = fontSize
-        fontLoaderParameter.fontParameters.characters = FreeTypeFontGenerator.DEFAULT_CHARS + allChineseCharacter()
+        fontLoaderParameter.fontParameters.characters = allCharacters()
 
         val name = "NotoSansCJKsc-Regular$fontSize.ttf"
         manager.load(name , BitmapFont::class.java, fontLoaderParameter)
@@ -100,7 +108,7 @@ class Assets(val gdxSettings: GdxSettings) {
     }
 
     fun loadTranslationBundle() {
-        val translationData: TranslationData = languageMap[language] ?: TranslationData()
+        val translationData: TranslationData = languageMap.getValue(language)
 
         try {
             manager.unload(translationData.filePath())
@@ -116,7 +124,7 @@ class Assets(val gdxSettings: GdxSettings) {
     }
 
     fun updateTranslationBundle(newGdxSettings: GdxSettings) {
-        val translationData: TranslationData = languageMap[language] ?: TranslationData()
+        val translationData: TranslationData = languageMap.getValue(language)
 
         try {
             manager.unload(translationData.filePath())
@@ -126,7 +134,7 @@ class Assets(val gdxSettings: GdxSettings) {
 
         language = newGdxSettings.language
 
-        val newTranslationData: TranslationData = languageMap[language] ?: TranslationData()
+        val newTranslationData: TranslationData = languageMap.getValue(language)
 
         val bundleLoaderParameter = I18NBundleLoader.I18NBundleParameter(
             newTranslationData.locale
@@ -331,7 +339,7 @@ class Assets(val gdxSettings: GdxSettings) {
     fun getSound(name: String): Sound = manager.get("sounds/$name")
 
     fun getI18NBundle(): I18NBundle = manager.get(
-        "${languageMap[language]?.filePath() ?: TranslationData().filePath()}"
+        "${languageMap.getValue(language).filePath()}"
     )
 
     companion object {
