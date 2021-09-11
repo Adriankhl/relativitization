@@ -32,7 +32,8 @@ data class TranslationData(
     private val file: String = "English",
     val locale: Locale = Locale.ENGLISH,
 ) {
-    fun filePath(): String = "translations/$file"
+    fun fileName(): String = "translations/$file"
+    fun filePath(): String = fileName() + ".properties"
 }
 
 class Assets(val gdxSettings: GdxSettings) {
@@ -58,11 +59,22 @@ class Assets(val gdxSettings: GdxSettings) {
      * All required characters to load from the ttf
      */
     fun allCharacters(): String {
-        val default: String = FreeTypeFontGenerator.DEFAULT_CHARS
+        val default: Set<Char> = FreeTypeFontGenerator.DEFAULT_CHARS.toSet()
 
         val file: File = File(languageMap.getValue(language).filePath())
 
-        return default
+        val allChar: Set<Char> = file.useLines {
+            it.toList()
+        }.flatMap {
+            it.toList()
+        }.toSet()
+
+
+        val finalList: Set<Char> = default + allChar
+
+        return finalList.fold("") { acc, c ->
+            acc + c
+        }
     }
 
     fun allRequiredFontSize(): List<Int> {
@@ -108,10 +120,12 @@ class Assets(val gdxSettings: GdxSettings) {
     }
 
     fun loadTranslationBundle() {
+
+
         val translationData: TranslationData = languageMap.getValue(language)
 
         try {
-            manager.unload(translationData.filePath())
+            manager.unload(translationData.fileName())
         } catch (e: Throwable) {
             logger.debug("No existing translation bundle")
         }
@@ -120,14 +134,23 @@ class Assets(val gdxSettings: GdxSettings) {
             translationData.locale
         )
 
-        manager.load(translationData.filePath(), I18NBundle::class.java, bundleLoaderParameter)
+        manager.load(translationData.fileName(), I18NBundle::class.java, bundleLoaderParameter)
     }
 
     fun updateTranslationBundle(newGdxSettings: GdxSettings) {
+        loadedFontMap.keys.forEach {
+            try {
+                manager.unload(loadedFontMap[it])
+            } catch (e: Throwable) {
+                logger.error("Unloading font that does not exist")
+            }
+        }
+        loadedFontMap.clear()
+
         val translationData: TranslationData = languageMap.getValue(language)
 
         try {
-            manager.unload(translationData.filePath())
+            manager.unload(translationData.fileName())
         } catch (e: Throwable) {
             logger.debug("No existing translation bundle")
         }
@@ -140,7 +163,7 @@ class Assets(val gdxSettings: GdxSettings) {
             newTranslationData.locale
         )
 
-        manager.load(newTranslationData.filePath(), I18NBundle::class.java, bundleLoaderParameter)
+        manager.load(newTranslationData.fileName(), I18NBundle::class.java, bundleLoaderParameter)
 
         manager.finishLoading()
     }
@@ -339,7 +362,7 @@ class Assets(val gdxSettings: GdxSettings) {
     fun getSound(name: String): Sound = manager.get("sounds/$name")
 
     fun getI18NBundle(): I18NBundle = manager.get(
-        "${languageMap.getValue(language).filePath()}"
+        languageMap.getValue(language).fileName()
     )
 
     companion object {
