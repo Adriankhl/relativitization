@@ -105,6 +105,17 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets){
     open fun onSelectedKnowledgeDouble2DChange() {}
 
     /**
+     * Translate text
+     */
+    fun translate(text: String): String = ActorFunction.translate(text, assets)
+
+
+    /**
+     * Translate text in I18NString
+     */
+    fun translate(text: I18NString): String = ActorFunction.translate(text, assets)
+
+    /**
      * Create scroll pane for table
      *
      * @param actor the table to add scroll pane
