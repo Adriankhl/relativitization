@@ -23,7 +23,7 @@ sealed class Event {
     abstract val description: I18NString
 
     // Available choice description
-    abstract val choiceDescription: Map<Int, String>
+    abstract val choiceDescription: Map<Int, I18NString>
 
     // how many turns will this event stay in the player data
     abstract val stayTime: Int

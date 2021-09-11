@@ -43,9 +43,20 @@ data class MoveToDouble3DEvent(
         ),
     )
 
-    override val choiceDescription: Map<Int, String> = mapOf(
-        0 to "Moving to position $targetDouble3D",
-        1 to "Cancel this command"
+    override val choiceDescription: Map<Int, I18NString> = mapOf(
+        0 to I18NString(
+            listOf(
+                RealString("Moving to position "),
+                IntString(0),
+            ),
+            listOf(
+                targetDouble3D.toString()
+            )
+        ),
+        1 to I18NString(
+            listOf(RealString("Cancel this command")),
+            listOf()
+        )
     )
 
     override fun canSend(playerData: PlayerData, universeSettings: UniverseSettings): Boolean {
