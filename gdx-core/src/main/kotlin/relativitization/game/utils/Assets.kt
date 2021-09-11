@@ -26,6 +26,10 @@ import relativitization.universe.utils.RelativitizationLogManager
 import java.util.*
 import kotlin.random.Random
 
+data class TranslationData(
+    val file: String = "English.properties",
+    val locale: Locale = Locale.ENGLISH,
+)
 
 class Assets(val gdxSettings: GdxSettings) {
     private val manager: AssetManager = AssetManager()
