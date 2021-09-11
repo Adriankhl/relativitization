@@ -16,6 +16,11 @@ object ActorFunction {
 
     private val logger = RelativitizationLogManager.getLogger()
 
+    fun translate(text: String, assets: Assets): String {
+        val i18NBundle = assets.getI18NBundle()
+        return i18NBundle.format(text)
+    }
+
     /**
      * Create scroll pane for table
      *
