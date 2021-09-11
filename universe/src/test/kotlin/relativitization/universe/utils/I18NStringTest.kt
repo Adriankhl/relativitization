@@ -25,4 +25,17 @@ internal class I18NStringTest {
 
         assert(i2.toNormalString() == "Hello")
     }
+
+    @Test
+    fun messageFormatTest() {
+        val i1 = I18NString(
+            listOf(
+                RealString("Hello "),
+                IntString(0)
+            ),
+            listOf("world")
+        )
+
+        println(i1.toMessageFormat() == listOf("[Hello {0}", "world"))
+    }
 }
