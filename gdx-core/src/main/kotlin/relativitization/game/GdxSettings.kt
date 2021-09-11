@@ -26,7 +26,8 @@ data class GdxSettings(
     var worldMapAndInfoSplitAmount: Float = 0.7f,
     var showingBottomCommand: Boolean = true,
     var upperInfoAndBottomCommandSplitAmount: Float = 0.8f,
-    var showingInfoType: ShowingInfoType = ShowingInfoType.OVERVIEW
+    var showingInfoType: ShowingInfoType = ShowingInfoType.OVERVIEW,
+    var language: Language = Language.ENGLISH,
 ) {
     fun save(programDir: String) {
         logger.debug("Saving gdx settings to GdxSettings.json")
@@ -62,4 +63,15 @@ enum class ShowingInfoType {
     COMMANDS,
     KNOWLEDGE_MAP,
     SCIENCE,
+}
+
+enum class Language(private val value: String)  {
+    ENGLISH("English"),
+    TRADITIONAL_CHINESE("Traditional Chinese"),
+    SIMPLIFIED_CHINESE("Simplified Chinese"),
+    ;
+
+    override fun toString(): String {
+        return value
+    }
 }
