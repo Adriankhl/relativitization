@@ -1,6 +1,7 @@
 package relativitization.universe.utils
 
 import kotlinx.serialization.Serializable
+import kotlin.math.log
 
 @Serializable
 sealed class TString
@@ -22,8 +23,13 @@ data class I18NString(
             is IntString -> try {
                 arg[it.int]
             } catch (e: Throwable) {
+                logger.error("Problematic I18NString: $this")
                 ""
             }
         }
     }.reduce { acc, s ->  acc + s }
+
+    companion object {
+        private val logger = RelativitizationLogManager.getLogger()
+    }
 }
