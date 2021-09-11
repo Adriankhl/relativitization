@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import kotlinx.coroutines.runBlocking
+import relativitization.game.Language
 import relativitization.game.RelativitizationGame
 import relativitization.game.ShowingInfoType
 import relativitization.game.utils.Assets
@@ -28,6 +29,7 @@ class ClientSettingsScreen(val game: RelativitizationGame, private val inGame: B
             gdxSettings.soundEffectsVolume,
         ) {
             game.gdxSettings.save(game.universeClient.universeClientSettings.programDir)
+            game.assets.updateTranslationBundle(game.gdxSettings)
             game.changeGdxSettings()
             game.restoreSize()
             game.restartMusic()
@@ -372,6 +374,18 @@ class ClientSettingsScreen(val game: RelativitizationGame, private val inGame: B
             gdxSettings.showingInfoType = showingInfoType
         }
         table.add(showingInfoTypeSelectBox)
+
+        table.row().space(10f)
+
+        table.add(createLabel("Language: ", gdxSettings.normalFontSize))
+        val languageSelectBox = createSelectBox(
+            Language.values().toList(),
+            gdxSettings.language,
+            gdxSettings.normalFontSize
+        ) { language, _ ->
+            gdxSettings.language = language
+        }
+        table.add(languageSelectBox)
     }
 
     private fun addUniverseClientSettings(table: Table) {

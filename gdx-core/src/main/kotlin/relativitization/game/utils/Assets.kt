@@ -28,9 +28,11 @@ import java.util.*
 import kotlin.random.Random
 
 data class TranslationData(
-    val file: String = "English",
+    private val file: String = "English",
     val locale: Locale = Locale.ENGLISH,
-)
+) {
+    fun filePath(): String = "translations/$file"
+}
 
 class Assets(val gdxSettings: GdxSettings) {
     private val manager: AssetManager = AssetManager()
@@ -101,7 +103,7 @@ class Assets(val gdxSettings: GdxSettings) {
         val translationData: TranslationData = languageMap[language] ?: TranslationData()
 
         try {
-            manager.unload(translationData.file)
+            manager.unload(translationData.filePath())
         } catch (e: Throwable) {
             logger.debug("No existing translation bundle")
         }
@@ -110,25 +112,29 @@ class Assets(val gdxSettings: GdxSettings) {
             translationData.locale
         )
 
-        manager.load(translationData.file, I18NBundle::class.java, bundleLoaderParameter)
+        manager.load(translationData.filePath(), I18NBundle::class.java, bundleLoaderParameter)
     }
 
     fun updateTranslationBundle(newGdxSettings: GdxSettings) {
         val translationData: TranslationData = languageMap[language] ?: TranslationData()
 
         try {
-            manager.unload(translationData.file)
+            manager.unload(translationData.filePath())
         } catch (e: Throwable) {
             logger.debug("No existing translation bundle")
         }
 
         language = newGdxSettings.language
 
+        val newTranslationData: TranslationData = languageMap[language] ?: TranslationData()
+
         val bundleLoaderParameter = I18NBundleLoader.I18NBundleParameter(
-            translationData.locale
+            newTranslationData.locale
         )
 
-        manager.load(translationData.file, I18NBundle::class.java, bundleLoaderParameter)
+        manager.load(newTranslationData.filePath(), I18NBundle::class.java, bundleLoaderParameter)
+
+        manager.finishLoading()
     }
 
     fun loadAll() {
@@ -325,7 +331,7 @@ class Assets(val gdxSettings: GdxSettings) {
     fun getSound(name: String): Sound = manager.get("sounds/$name")
 
     fun getI18NBundle(): I18NBundle = manager.get(
-        "translations/${languageMap[language]?.file ?: TranslationData().file}"
+        "${languageMap[language]?.filePath() ?: TranslationData().filePath()}"
     )
 
     companion object {
