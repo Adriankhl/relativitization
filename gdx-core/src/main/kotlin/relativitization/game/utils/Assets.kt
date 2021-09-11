@@ -53,17 +53,17 @@ class Assets {
 
         manager.load("sounds/click1.ogg", Sound::class.java)
 
-        val bundleLoader = I18NBundleLoader.I18NBundleParameter(
-            Locale.TRADITIONAL_CHINESE
+        val bundleLoaderParameter = I18NBundleLoader.I18NBundleParameter(
+            Locale.CHINESE
         )
-        manager.load("translations/TrBundle", I18NBundle::class.java, bundleLoader)
+        manager.load("translations/TrBundle", I18NBundle::class.java, bundleLoaderParameter)
 
         for (fontSize in fontSizeList) {
-            val fontLoader = FreeTypeFontLoaderParameter()
-            fontLoader.fontFileName = "fonts/NotoSansCJKsc-Regular.ttf"
-            fontLoader.fontParameters.size = fontSize
-            fontLoader.fontParameters.characters = FreeTypeFontGenerator.DEFAULT_CHARS + allChineseCharacter()
-            manager.load("NotoSansCJKsc-Regular$fontSize.ttf", BitmapFont::class.java, fontLoader)
+            val fontLoaderParameter = FreeTypeFontLoaderParameter()
+            fontLoaderParameter.fontFileName = "fonts/NotoSansCJKsc-Regular.ttf"
+            fontLoaderParameter.fontParameters.size = fontSize
+            fontLoaderParameter.fontParameters.characters = FreeTypeFontGenerator.DEFAULT_CHARS + allChineseCharacter()
+            manager.load("NotoSansCJKsc-Regular$fontSize.ttf", BitmapFont::class.java, fontLoaderParameter)
         }
 
         manager.finishLoading()
