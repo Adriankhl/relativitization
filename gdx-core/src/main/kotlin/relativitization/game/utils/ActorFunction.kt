@@ -18,7 +18,16 @@ object ActorFunction {
 
     fun translate(text: String, assets: Assets): String {
         val i18NBundle = assets.getI18NBundle()
-        return i18NBundle.format(text)
+        return try {
+            val trText: String = i18NBundle.format(text)
+            if (trText != "") {
+                trText
+            } else {
+                text
+            }
+        } catch (e: Throwable) {
+            text
+        }
     }
 
     /**
@@ -235,7 +244,7 @@ object ActorFunction {
 
         style.font = assets.getFont(fontSize)
 
-        val button = TextButton(text, style)
+        val button = TextButton(translate(text, assets), style)
 
         button.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent, actor: Actor) {
