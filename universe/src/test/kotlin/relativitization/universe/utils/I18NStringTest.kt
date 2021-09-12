@@ -36,6 +36,6 @@ internal class I18NStringTest {
             listOf("world")
         )
 
-        println(i1.toMessageFormat() == listOf("[Hello {0}", "world"))
+        println(i1.toMessageFormat() == listOf(listOf("[Hello {0}", "world")))
     }
 }

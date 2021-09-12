@@ -35,19 +35,22 @@ object ActorFunction {
 
     fun translate(text: I18NString, assets: Assets): String {
         val i18NBundle = assets.getI18NBundle()
-        return try {
-            val strList: List<String> = text.toMessageFormat()
-            val trText: String = i18NBundle.format(strList[0], strList.drop(1))
-            if (trText != "") {
-                trText
-            } else {
-                logger.debug("Empty translated text: $text")
+        val messageFormatList: List<List<String>> = text.toMessageFormat()
+
+        return messageFormatList.map {
+            try {
+                val trText: String = i18NBundle.format(it[0], it.drop(1))
+                if (trText != "") {
+                    trText
+                } else {
+                    logger.debug("Empty translated text: $text")
+                    text.toNormalString()
+                }
+            } catch (e: Throwable) {
+                logger.debug("No translation for $text")
                 text.toNormalString()
             }
-        } catch (e: Throwable) {
-            logger.debug("No translation for $text")
-            text.toNormalString()
-        }
+        }.reduce(String::plus)
     }
 
     /**
@@ -60,13 +63,19 @@ object ActorFunction {
     /**
      * Create split pane
      */
-    fun createSplitPane(skin: Skin, actor1: Actor, actor2: Actor, vertical: Boolean) = SplitPane(actor1, actor2, vertical, skin)
+    fun createSplitPane(skin: Skin, actor1: Actor, actor2: Actor, vertical: Boolean) =
+        SplitPane(actor1, actor2, vertical, skin)
 
 
     /**
      * Create an Image
      */
-    fun createImage(assets: Assets, name: String, soundVolume: Float = 0.5f, function: (Image) -> Unit = {}): Image {
+    fun createImage(
+        assets: Assets,
+        name: String,
+        soundVolume: Float = 0.5f,
+        function: (Image) -> Unit = {}
+    ): Image {
         val image = assets.getImage(name)
         image.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
@@ -174,7 +183,8 @@ object ActorFunction {
         soundVolume: Float = 0.5f,
         function: (Image) -> Unit = {}
     ): Image {
-        val image = assets.getNinePatchImage(name, xPos, yPos, width, height, rotation, r, g, b, a)
+        val image =
+            assets.getNinePatchImage(name, xPos, yPos, width, height, rotation, r, g, b, a)
         image.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 val sound = assets.getSound("click1.ogg")
@@ -292,7 +302,6 @@ object ActorFunction {
     }
 
 
-
     /**
      * Create check box
      *
@@ -324,7 +333,6 @@ object ActorFunction {
 
         return checkBox
     }
-
 
 
     /**

@@ -39,7 +39,8 @@ data class AddEventCommand(
             toId.toString(),
             fromId.toString(),
         ),
-    ) + event.description
+        event.description
+    )
 
     /**
      * Whether this player can send the event depends on the event

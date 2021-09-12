@@ -17,25 +17,14 @@ data class RealString(val str: String) : TString()
  *
  * @property message A list of string or int, int points to the string in arg
  * @property arg additional arguments for printing message
+ * @property next store next string, for storing a sequence of I18NString as a linked list
  */
 @Serializable
 data class I18NString(
     val message: List<TString>,
-    val arg: List<String>
+    val arg: List<String>,
+    val next: I18NString? = null
 ) {
-    /**
-     * Combine 2 I18NString, increase the index of IntString in the other I18NString
-     */
-    operator fun plus(other: I18NString): I18NString {
-        val newMessage: List<TString> = message + other.message.map {
-            when (it) {
-                is RealString -> it
-                is IntString -> IntString(it.int + arg.size)
-            }
-        }
-        return I18NString(newMessage, arg + other.arg)
-    }
-
     /**
      * Convert to a string
      */
@@ -49,13 +38,13 @@ data class I18NString(
                 ""
             }
         }
-    }.reduce { acc, s ->  acc + s }
+    }.reduce { acc, s ->  acc + s } + (next?.toNormalString() ?: "")
 
     /**
      * Convert to a list of string following the format of java's MessageFormat
      * Used in libgdx translation
      */
-    fun toMessageFormat(): List<String> {
+    fun toMessageFormat(): List<List<String>> {
         val s1: String = message.map {
             when (it) {
                 is RealString -> it.str
@@ -68,7 +57,7 @@ data class I18NString(
             }
         }.reduce { acc, s ->  acc + s }
 
-        return listOf(s1) + arg
+        return listOf(listOf(s1) + arg) + (next?.toMessageFormat() ?: listOf())
     }
 
     companion object {
