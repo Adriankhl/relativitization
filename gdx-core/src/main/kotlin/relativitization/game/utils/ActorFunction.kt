@@ -39,7 +39,7 @@ object ActorFunction {
 
         return messageFormatList.map {
             try {
-                val trText: String = i18NBundle.format(it[0], it.drop(1))
+                val trText: String = i18NBundle.format(it[0], *it.drop(1).toTypedArray())
                 if (trText != "") {
                     trText
                 } else {
