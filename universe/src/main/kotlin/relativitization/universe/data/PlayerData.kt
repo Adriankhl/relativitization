@@ -283,11 +283,13 @@ data class MutablePlayerInternalData(
 
 
     /**
-     * Change direct leader id without removing the old direct leader as one of the leader
+     * Change direct leader id and add all leaders of direct leader
      */
-    fun changeDirectLeaderId(playerId: Int) {
-        directLeaderId = playerId
-        leaderIdList.add(playerId)
+    fun changeDirectLeaderId(newLeaderId: Int, leaderListOfDirectLeader: List<Int>) {
+        directLeaderId = newLeaderId
+        leaderIdList.clear()
+        leaderIdList.addAll(leaderListOfDirectLeader)
+        leaderIdList.add(newLeaderId)
     }
 
     /**
