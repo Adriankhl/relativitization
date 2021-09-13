@@ -2,7 +2,6 @@ package relativitization.universe.data.commands
 
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.MutablePlayerData
-import relativitization.universe.data.PlayerData
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.component.physics.Int4D
 import relativitization.universe.data.events.*
@@ -45,7 +44,7 @@ data class AddEventCommand(
     /**
      * Whether this player can send the event depends on the event
      */
-    override fun canSend(playerData: PlayerData, universeSettings: UniverseSettings): Boolean {
+    override fun canSend(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean {
         return validEventPlayerId() &&
                 canAddEvent(universeSettings, event) &&
                 event.canSend(playerData, universeSettings)
@@ -126,7 +125,7 @@ data class SelectEventChoiceCommand(
         ),
     )
 
-    override fun canSend(playerData: PlayerData, universeSettings: UniverseSettings): Boolean {
+    override fun canSend(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean {
         return playerData.playerId == toId
     }
 

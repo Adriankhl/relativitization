@@ -2,10 +2,8 @@ package relativitization.universe.data.commands
 
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.MutablePlayerData
-import relativitization.universe.data.PlayerData
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.component.physics.Int4D
-import relativitization.universe.data.events.name
 import relativitization.universe.utils.I18NString
 import relativitization.universe.utils.IntString
 import relativitization.universe.utils.RealString
@@ -29,7 +27,7 @@ data class DisableFuelIncreaseCommand(
         ),
     )
 
-    override fun canSend(playerData: PlayerData, universeSettings: UniverseSettings): Boolean {
+    override fun canSend(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean {
         return playerData.playerId == toId
     }
 

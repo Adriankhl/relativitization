@@ -2,7 +2,6 @@ package relativitization.universe.data.events
 
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.MutablePlayerData
-import relativitization.universe.data.PlayerData
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
@@ -43,7 +42,7 @@ sealed class Event {
     abstract fun defaultChoice(universeData3DAtPlayer: UniverseData3DAtPlayer): Int
 
     // Whether the player can send this event to other player
-    abstract fun canSend(playerData: PlayerData, universeSettings: UniverseSettings): Boolean
+    abstract fun canSend(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean
 
     // Whether this event can be added to the player
     abstract fun canExecute(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean

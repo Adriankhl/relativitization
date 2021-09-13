@@ -59,7 +59,7 @@ data class MoveToDouble3DEvent(
         )
     )
 
-    override fun canSend(playerData: PlayerData, universeSettings: UniverseSettings): Boolean {
+    override fun canSend(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean {
         return playerData.isSubOrdinateOrSelf(toId)
     }
 
