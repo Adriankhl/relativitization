@@ -12,6 +12,7 @@ data class BuildFactoryCommand(
     override val toId: Int,
     override val fromId: Int,
     override val fromInt4D: Int4D,
+    val topLeaderId: Int,
 ) : Command() {
     override val description: I18NString = I18NString(
         listOf(),
@@ -19,7 +20,7 @@ data class BuildFactoryCommand(
     )
 
     override fun canSend(playerData: PlayerData, universeSettings: UniverseSettings): Boolean {
-        TODO("Not yet implemented")
+        return playerData.topLeaderId() == topLeaderId
     }
 
     override fun canExecute(

@@ -58,6 +58,13 @@ data class PlayerData(
         return (toId == playerId) || playerInternalData.leaderIdList.contains(toId)
     }
 
+    /**
+     * The top leader id
+     */
+    fun topLeaderId(): Int {
+        return playerInternalData.leaderIdList.firstOrNull() ?: playerId
+    }
+
     fun isValid(currentTime: Int): Boolean {
         val isTValid: Boolean = currentTime == int4D.t
         val isRestMassValid: Boolean = (playerInternalData.physicsData().coreRestMass > 0.0) &&
