@@ -1,8 +1,10 @@
 package relativitization.universe.data
 
 import kotlinx.serialization.Serializable
+import relativitization.universe.data.commands.Command
 import relativitization.universe.data.component.physics.Int3D
 import relativitization.universe.data.component.physics.Int4D
+import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.maths.grid.Grids.create3DGrid
 import relativitization.universe.utils.RelativitizationLogManager
 
@@ -154,75 +156,10 @@ data class UniverseData3DAtPlayer(
         }
     }
 
-
-    companion object {
-        private val logger = RelativitizationLogManager.getLogger()
-    }
-}
-
-@Serializable
-data class MutableUniverseData3DAtPlayer(
-    val id: Int = -1,
-    val center: Int4D = Int4D(0, 0, 0, 0),
-    val playerDataMap: Map<Int, MutablePlayerData> = mapOf(),
-    val playerId3DMap: List<List<List<Map<Int, List<Int>>>>> = listOf(),
-    val universeSettings: UniverseSettings = UniverseSettings(),
-) {
-    /**
-     * Check int3D valid
-     */
-    fun isInt3DValid(int3D: Int3D): Boolean {
-        val xLower: Boolean = int3D.x >= 0
-        val xUpper: Boolean = int3D.x < universeSettings.xDim
-        val yLower: Boolean = int3D.y >= 0
-        val yUpper: Boolean = int3D.y < universeSettings.yDim
-        val zLower: Boolean = int3D.z >= 0
-        val zUpper: Boolean = int3D.z < universeSettings.zDim
-
-        return xLower && xUpper && yLower && yUpper && zLower && zUpper
-    }
-
-    /**
-     * Get player data by id
-     */
-    fun get(id: Int): MutablePlayerData {
-        return playerDataMap.getOrElse(id) {
-            logger.error("id $id not in playerDataMap or zeroDelayDataMap")
-            MutablePlayerData(-1)
-        }
-    }
-
-    /**
-     * Get set of player data by Int3D
-     */
-    fun get(int3D: Int3D): Map<Int, List<MutablePlayerData>> {
-        return if (isInt3DValid(int3D)) {
-            playerId3DMap[int3D.x][int3D.y][int3D.z].mapValues { it1 ->
-                it1.value.map { it2 -> get(it2) }
-            }
-        } else {
-            logger.error("$int3D is not a valid coordinate to get player")
-            mapOf()
-        }
-    }
-
-    /**
-     * Get current player data
-     */
-    fun getCurrentPlayerData(): MutablePlayerData {
-        return get(id)
-    }
-
-    /**
-     * Get set of player id by Int3D
-     */
-    fun getIdMap(int3D: Int3D): Map<Int, List<Int>> {
-        return if (isInt3DValid(int3D)) {
-            playerId3DMap[int3D.x][int3D.y][int3D.z]
-        } else {
-            logger.error("$int3D is not a valid coordinate to get player")
-            mapOf()
-        }
+    fun getTemporaryDataAtPlayer(): TemporaryDataAtPlayer {
+        return TemporaryDataAtPlayer(
+            DataSerializer.copy(getCurrentPlayerData())
+        )
     }
 
 
@@ -230,3 +167,12 @@ data class MutableUniverseData3DAtPlayer(
         private val logger = RelativitizationLogManager.getLogger()
     }
 }
+
+/**
+ * For human or ai to decide the command list
+ */
+data class TemporaryDataAtPlayer(
+    val thisPlayerData: MutablePlayerData,
+    val playerDataMap: MutableMap<Int, PlayerData> = mutableMapOf(),
+    val commandList: MutableList<Command> = mutableListOf(),
+)
