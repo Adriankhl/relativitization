@@ -12,11 +12,12 @@ sealed class MutablePlayerDataComponent
 
 fun PlayerDataComponent.name(): String = this::class.simpleName.toString()
 
+@JvmName("PlayerDataComponentName")
 fun <T : PlayerDataComponent> KClass<T>.name(): String = this.simpleName.toString()
 
 fun MutablePlayerDataComponent.name(): String = this::class.simpleName.toString()
 
-@JvmName("nameMutable")
+@JvmName("MutablePlayerDataComponentName")
 fun <T : MutablePlayerDataComponent> KClass<T>.name(): String = this.simpleName.toString()
 
 @Serializable
