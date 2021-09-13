@@ -27,7 +27,8 @@ data class BuildFactoryCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): Boolean {
-        TODO("Not yet implemented")
+        val sameTopLeader: Boolean = playerData.topLeaderId() == topLeaderId
+        return sameTopLeader || playerData.playerInternalData.politicsData().allowForeignInvestor
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {

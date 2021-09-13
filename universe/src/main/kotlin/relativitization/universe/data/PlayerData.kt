@@ -136,6 +136,13 @@ data class MutablePlayerData(
         return (toId == playerId) || playerInternalData.leaderIdList.contains(toId)
     }
 
+    /**
+     * The top leader id
+     */
+    fun topLeaderId(): Int {
+        return playerInternalData.leaderIdList.firstOrNull() ?: playerId
+    }
+
     companion object {
         private val logger = RelativitizationLogManager.getLogger()
     }
