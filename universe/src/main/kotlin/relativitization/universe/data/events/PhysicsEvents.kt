@@ -34,7 +34,7 @@ data class MoveToDouble3DEvent(
         listOf(
             RealString("Player "),
             IntString(0),
-            RealString(" moving to"),
+            RealString(" moving to "),
             IntString(1),
         ),
         listOf(

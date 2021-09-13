@@ -28,7 +28,7 @@ data class I18NString(
     /**
      * Convert to a string
      */
-    fun toNormalString(): String = message.map {
+    fun toNormalString(): List<String> = listOf(message.map {
         when (it) {
             is RealString -> it.str
             is IntString -> try {
@@ -38,7 +38,7 @@ data class I18NString(
                 ""
             }
         }
-    }.reduce { acc, s ->  acc + s } + (next?.toNormalString() ?: "")
+    }.reduce(String::plus))+ (next?.toNormalString() ?: listOf(""))
 
     /**
      * Convert to a list of string following the format of java's MessageFormat

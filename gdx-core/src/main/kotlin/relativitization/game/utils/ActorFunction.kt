@@ -36,19 +36,20 @@ object ActorFunction {
     fun translate(text: I18NString, assets: Assets): String {
         val i18NBundle = assets.getI18NBundle()
         val messageFormatList: List<List<String>> = text.toMessageFormat()
+        val normalStringList: List<String> = text.toNormalString()
 
-        return messageFormatList.map {
+        return messageFormatList.mapIndexed { index, strList ->
             try {
-                val trText: String = i18NBundle.format(it[0], *it.drop(1).toTypedArray())
-                if (trText != "") {
+                val trText: String = i18NBundle.format(strList[0], *strList.drop(1).toTypedArray())
+                if (trText.isNotEmpty()) {
                     trText
                 } else {
                     logger.debug("Empty translated text: $text")
-                    text.toNormalString()
+                    normalStringList[index]
                 }
             } catch (e: Throwable) {
                 logger.debug("No translation for $text")
-                text.toNormalString()
+                normalStringList[index]
             }
         }.reduce(String::plus)
     }
