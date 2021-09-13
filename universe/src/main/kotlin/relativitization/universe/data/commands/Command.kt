@@ -63,15 +63,56 @@ sealed class Command {
     }
 
     /**
-     * Check to see if id match
+     * Check to see if fromId match
      */
-    private fun checkId(playerData: MutablePlayerData): Boolean {
+    private fun checkFromId(playerData: MutablePlayerData): Boolean {
+        return if (playerData.playerId == fromId) {
+            true
+        } else {
+            val className = this::class.qualifiedName
+            logger.error("${className}: player id not equal to command from id")
+            false
+        }
+    }
+
+    /**
+     * Check to see if toId match
+     */
+    private fun checkToId(playerData: MutablePlayerData): Boolean {
         return if (playerData.playerId == toId) {
             true
         } else {
             val className = this::class.qualifiedName
             logger.error("${className}: player id not equal to command target id")
             false
+        }
+    }
+
+    /**
+     * Execute on self in order to end this command
+     */
+    protected open fun selfExecuteBeforeSend(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ) = run { }
+
+    /**
+     * Check and self execute
+     */
+    fun checkAndSelfExecuteBeforeSend(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ) {
+        if (checkFromId(playerData) && canSendFromPlayer(playerData, universeSettings)) {
+            try {
+                selfExecuteBeforeSend(playerData, universeSettings)
+            } catch (e: Throwable) {
+                logger.error("checkAndSelfExecuteBeforeSend fail, throwable $e")
+                throw e
+            }
+        } else {
+            val className = this::class.qualifiedName
+            logger.info("$className cannot be sent by $fromId")
         }
     }
 
@@ -85,7 +126,7 @@ sealed class Command {
      * Check and execute
      */
     fun checkAndExecute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
-        return if (checkId(playerData) && canExecuteOnPlayer(playerData, universeSettings)) {
+        if (checkToId(playerData) && canExecuteOnPlayer(playerData, universeSettings)) {
             try {
                 execute(playerData, universeSettings)
             } catch (e: Throwable) {
