@@ -9,6 +9,7 @@ import kotlin.math.abs
 data class PoliticsData(
     val centralizationLevel: Int = 0,
     val allowSubordinateBuildFactory: Boolean = false,
+    val allowForeignInvestor: Boolean = true,
 ) : PlayerDataComponent() {
     /**
      * Compute the ideology distance between player to represent how different between the two
@@ -22,7 +23,17 @@ data class PoliticsData(
             } else {
                 1.0
             }
-        return centralizationDistance + allowSubordinateBuildFactoryDistance
+
+        val allowForeignInvestorDistance =
+            if (allowForeignInvestor == politicsData.allowForeignInvestor) {
+                0.0
+            } else {
+                1.0
+            }
+        return (centralizationDistance +
+                allowSubordinateBuildFactoryDistance +
+                allowForeignInvestorDistance
+                )
     }
 }
 
@@ -30,5 +41,6 @@ data class PoliticsData(
 @SerialName("PoliticsData")
 data class MutablePoliticsData(
     var centralizationLevel: Int = 0,
-    val allowSubordinateBuildFactory: Boolean = false,
+    var allowSubordinateBuildFactory: Boolean = false,
+    var allowForeignInvestor: Boolean = true,
 ) : MutablePlayerDataComponent()
