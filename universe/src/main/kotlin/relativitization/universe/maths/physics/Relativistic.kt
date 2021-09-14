@@ -163,7 +163,7 @@ object Relativistic {
         // Return this if anything is wrong
         val failTargetVelocityData: TargetVelocityData = TargetVelocityData(
             TargetVelocityType.FAIL,
-            Velocity(0.0, 0.0, 0.0),
+            initialVelocity,
             0.0
         )
 

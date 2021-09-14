@@ -53,31 +53,41 @@ object Movement {
      * @param maxDeltaRestMass maximum change of rest mass to photon to stop the object
      * @param initialVelocity initial velocity
      * @param speedOfLight speed of light
+     * @param numIteration maximum number of iteration
      */
     fun stoppingDistanceByPhotonRocket(
         initialRestMass: Double,
         maxDeltaRestMass: Double,
         initialVelocity: Velocity,
         speedOfLight: Double,
+        numIteration: Int = 100,
     ): Double {
         var currentDistance: Double = 0.0
         var currentVelocity: Velocity = initialVelocity
         var currentRestMass: Double = initialRestMass
 
-        while (currentVelocity.squareMag() > 0) {
-            val velocityData: TargetVelocityData = decelerateByPhotonRocket(
-                initialRestMass = currentRestMass,
-                maxDeltaRestMass = maxDeltaRestMass,
-                initialVelocity = currentVelocity,
-                speedOfLight = speedOfLight
-            )
+        loop@ for (i in 1..numIteration) {
+            if (currentVelocity.squareMag() > 0) {
+                val velocityData: TargetVelocityData = decelerateByPhotonRocket(
+                    initialRestMass = currentRestMass,
+                    maxDeltaRestMass = maxDeltaRestMass,
+                    initialVelocity = currentVelocity,
+                    speedOfLight = speedOfLight
+                )
 
-            currentVelocity = velocityData.newVelocity
-            currentRestMass -= velocityData.deltaRestMass
-            currentDistance += currentVelocity.mag()
+                currentVelocity = velocityData.newVelocity
+                currentRestMass -= velocityData.deltaRestMass
+                currentDistance += currentVelocity.mag()
+            } else {
+                break@loop
+            }
         }
 
-        return currentDistance
+        return if (currentVelocity.squareMag() > 0) {
+            Double.POSITIVE_INFINITY
+        } else {
+            currentDistance
+        }
     }
 
     /**
