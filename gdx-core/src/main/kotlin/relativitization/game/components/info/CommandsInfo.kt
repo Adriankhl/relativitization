@@ -33,7 +33,7 @@ class CommandsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>
     }
 
     override fun onCommandListChange() {
-        commandList = game.universeClient.commandList.getList()
+        commandList = game.universeClient.planDataAtPlayer.commandList
         updateTable()
     }
 
@@ -81,7 +81,7 @@ class CommandsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>
             aChecked = 1.0f,
             soundVolume = gdxSettings.soundEffectsVolume
         ) {
-            game.universeClient.commandList.remove(command)
+            game.universeClient.planDataAtPlayer.removeCommand(command)
         }
 
         nestedTable.add(commandNameLabel).growX()

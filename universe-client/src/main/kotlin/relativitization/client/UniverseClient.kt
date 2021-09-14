@@ -14,6 +14,7 @@ import kotlinx.coroutines.sync.withLock
 import relativitization.universe.UniverseClientSettings
 import relativitization.universe.UniverseServerSettings
 import relativitization.universe.communication.*
+import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
@@ -132,7 +133,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
     // store list of command for sending them to the universe server
     // private val and any function changing command list should call onCommandListChangeFunctionList
     val onCommandListChangeFunctionList: MutableList<() -> Unit> = mutableListOf()
-    val commandList: ObservableList<Command> = ObservableList(mutableListOf()) {
+    var planDataAtPlayer: PlanDataAtPlayer = currentUniverseData3DAtPlayer.getPlanDataAtPlayer {
         onCommandListChangeFunctionList.forEach { it() }
     }
 
@@ -233,7 +234,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
      * Clear command list
      */
     fun clearCommandList() {
-        commandList.clear()
+        planDataAtPlayer.clearCommand()
         currentCommand = DummyCommand()
     }
 
@@ -425,11 +426,11 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
      */
     fun confirmCurrentCommand() {
         if (!isCurrentCommandStored()) {
-            commandList.add(currentCommand)
-            currentCommand = if (commandList.isEmpty()) {
+            planDataAtPlayer.addCommand(currentCommand)
+            currentCommand = if (planDataAtPlayer.commandList.isEmpty()) {
                 DummyCommand()
             } else {
-                commandList.last()
+                planDataAtPlayer.commandList.last()
             }
         } else {
             logger.error("Trying to confirm existing command")
@@ -441,17 +442,17 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
      */
     fun cancelCurrentCommand() {
         if (isCurrentCommandStored()) {
-            val index = commandList.indexOf(currentCommand)
-            commandList.remove(currentCommand)
+            val index = planDataAtPlayer.commandList.indexOf(currentCommand)
+            planDataAtPlayer.removeCommand(currentCommand)
             currentCommand = when {
-                commandList.isEmpty() -> {
+                planDataAtPlayer.commandList.isEmpty() -> {
                     DummyCommand()
                 }
-                index < commandList.size() - 1 -> {
-                    commandList[index]
+                index < planDataAtPlayer.commandList.size - 1 -> {
+                    planDataAtPlayer.commandList[index]
                 }
                 else -> {
-                    commandList.last()
+                    planDataAtPlayer.commandList.last()
                 }
             }
         } else {
@@ -463,7 +464,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
      * Is the current command stored in the command list
      */
     fun isCurrentCommandStored(): Boolean {
-        return commandList.contains(currentCommand)
+        return planDataAtPlayer.commandList.contains(currentCommand)
     }
 
     /**
@@ -471,15 +472,15 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
      */
     fun previousCommand() {
         if (isCurrentCommandStored()) {
-            val index = commandList.indexOf(currentCommand)
+            val index = planDataAtPlayer.commandList.indexOf(currentCommand)
             if (index > 0) {
-                currentCommand = commandList[index - 1]
+                currentCommand = planDataAtPlayer.commandList[index - 1]
             } else {
                 logger.debug("Can't goto previous command, already the earliest one")
             }
         } else {
-            if (commandList.isNotEmpty()) {
-                currentCommand = commandList.last()
+            if (planDataAtPlayer.commandList.isNotEmpty()) {
+                currentCommand = planDataAtPlayer.commandList.last()
             } else {
                 logger.debug("Can't goto previous command, the command list is empty")
             }
@@ -491,9 +492,9 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
      */
     fun nextCommand() {
         if (isCurrentCommandStored()) {
-            val index = commandList.indexOf(currentCommand)
-            if (index < commandList.size() - 1) {
-                currentCommand = commandList[index + 1]
+            val index = planDataAtPlayer.commandList.indexOf(currentCommand)
+            if (index < planDataAtPlayer.commandList.size - 1) {
+                currentCommand = planDataAtPlayer.commandList[index + 1]
             } else {
                 logger.debug("Can't goto next command, already the latest one")
             }
@@ -781,7 +782,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
             val password = universeClientSettings.password
             val response: HttpResponse = ktorClient.post("http://$serverAddress:$serverPort/run/input") {
                 contentType(ContentType.Application.Json)
-                body = CommandInputMessage(playerId, password, commandList.getList())
+                body = CommandInputMessage(playerId, password, planDataAtPlayer.commandList)
                 timeout {
                     connectTimeoutMillis = universeClientSettings.httpConnectTimeout
                     connectTimeoutMillis = universeClientSettings.httpRequestTimeout
