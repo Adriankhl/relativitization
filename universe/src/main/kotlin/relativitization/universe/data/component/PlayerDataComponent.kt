@@ -4,21 +4,20 @@ import kotlinx.serialization.Serializable
 import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.reflect.KClass
 
-@Serializable
-sealed class PlayerDataComponent
+sealed interface PlayerDataComponentClassWithName
 
 @Serializable
-sealed class MutablePlayerDataComponent
+sealed class PlayerDataComponent : PlayerDataComponentClassWithName
+
+@Serializable
+sealed class MutablePlayerDataComponent : PlayerDataComponentClassWithName
+
+fun <T : PlayerDataComponentClassWithName> KClass<T>.name(): String = this.simpleName.toString()
 
 fun PlayerDataComponent.name(): String = this::class.simpleName.toString()
 
-@JvmName("PlayerDataComponentName")
-fun <T : PlayerDataComponent> KClass<T>.name(): String = this.simpleName.toString()
-
 fun MutablePlayerDataComponent.name(): String = this::class.simpleName.toString()
 
-@JvmName("MutablePlayerDataComponentName")
-fun <T : MutablePlayerDataComponent> KClass<T>.name(): String = this.simpleName.toString()
 
 @Serializable
 data class DataComponentMap(
