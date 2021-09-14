@@ -1,5 +1,6 @@
 package relativitization.universe.ai.default.utils
 
+import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.commands.Command
 import relativitization.universe.utils.RelativitizationLogManager
 
@@ -40,7 +41,7 @@ interface Option {
     fun updateData()
 }
 
-abstract class CommandListOption(private val decisionData: DecisionData) : Option {
+abstract class CommandListOption(private val planDataAtPlayer: PlanDataAtPlayer) : Option {
     protected abstract fun getCommandList(): List<Command>
 
     // Extra step to update Decision Data beside adding command
@@ -52,7 +53,7 @@ abstract class CommandListOption(private val decisionData: DecisionData) : Optio
         logger.debug("$className (CommandListOption) updating data")
 
         val commandList = getCommandList()
-        decisionData.addCommands(commandList)
+        planDataAtPlayer.addAllCommand(commandList)
         extraUpdateDecisionData()
     }
 

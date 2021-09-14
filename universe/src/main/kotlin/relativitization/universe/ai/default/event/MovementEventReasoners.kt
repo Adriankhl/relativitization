@@ -2,6 +2,7 @@ package relativitization.universe.ai.default.event
 
 import relativitization.universe.ai.default.consideration.RelationConsideration
 import relativitization.universe.ai.default.utils.*
+import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.commands.SelectEventChoiceCommand
 import relativitization.universe.data.events.EventData
@@ -12,11 +13,11 @@ import relativitization.universe.data.events.name
  * Reasoner to pick only one MoveToDouble3D event
  */
 class PickMoveToDouble3DEventReasoner(
-    private val decisionData: DecisionData
+    private val planDataAtPlayer: PlanDataAtPlayer
 ) : DualUtilityReasoner() {
 
     private val movementEventKeyList: List<Int> =
-        decisionData.universeData3DAtPlayer.getCurrentPlayerData(
+        planDataAtPlayer.universeData3DAtPlayer.getCurrentPlayerData(
         ).playerInternalData.eventDataMap.filter {
             // Filter out MoveToDouble3DEvent
             it.value.event is MoveToDouble3DEvent
@@ -26,7 +27,7 @@ class PickMoveToDouble3DEventReasoner(
     override fun getOptionList(): List<Option> {
         return movementEventKeyList.map {
             PickMoveToDouble3DEventOption(
-                decisionData,
+                planDataAtPlayer,
                 it,
             )
         }
@@ -39,12 +40,12 @@ class PickMoveToDouble3DEventReasoner(
  * Cancel all MoveToDouble3D beside event at keepEventIndex
  */
 class PickMoveToDouble3DEventOption(
-    private val decisionData: DecisionData,
+    private val planDataAtPlayer: PlanDataAtPlayer,
     private val keepEventIndex: Int,
-) : CommandListOption(decisionData) {
+) : CommandListOption(planDataAtPlayer) {
 
     private val movementEventMap: Map<Int, EventData> =
-        decisionData.universeData3DAtPlayer.getCurrentPlayerData().playerInternalData.eventDataMap.filter {
+        planDataAtPlayer.universeData3DAtPlayer.getCurrentPlayerData().playerInternalData.eventDataMap.filter {
             // Filter out MoveToDouble3DEvent
             it.value.event is MoveToDouble3DEvent
         }
@@ -55,9 +56,9 @@ class PickMoveToDouble3DEventOption(
                 eventKey = it.key,
                 eventName = it.value.event.name(),
                 choice = 1,
-                fromId = decisionData.universeData3DAtPlayer.id,
-                fromInt4D = decisionData.universeData3DAtPlayer.getCurrentPlayerData().int4D,
-                toId = decisionData.universeData3DAtPlayer.id,
+                fromId = planDataAtPlayer.universeData3DAtPlayer.id,
+                fromInt4D = planDataAtPlayer.universeData3DAtPlayer.getCurrentPlayerData().int4D,
+                toId = planDataAtPlayer.universeData3DAtPlayer.id,
             )
         }
     }
@@ -67,7 +68,7 @@ class PickMoveToDouble3DEventOption(
             listOf(
                 RelationConsideration(
                     playerId = movementEventMap.getValue(keepEventIndex).event.fromId,
-                    diplomacyData = decisionData.universeData3DAtPlayer.getCurrentPlayerData().playerInternalData.diplomacyData(),
+                    diplomacyData = planDataAtPlayer.universeData3DAtPlayer.getCurrentPlayerData().playerInternalData.diplomacyData(),
                 )
             )
         } else {
