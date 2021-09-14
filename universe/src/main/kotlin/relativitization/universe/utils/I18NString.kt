@@ -38,7 +38,7 @@ data class I18NString(
                 ""
             }
         }
-    }.reduce(String::plus))+ (next?.toNormalString() ?: listOf(""))
+    }.reduce(String::plus)) + (next?.toNormalString() ?: listOf())
 
     /**
      * Convert to a list of string following the format of java's MessageFormat

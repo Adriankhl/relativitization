@@ -13,7 +13,7 @@ internal class I18NStringTest {
             listOf(" world")
         )
 
-        assert(i1.toNormalString() == "Hello world")
+        assert(i1.toNormalString() == listOf("Hello world"))
 
         val i2 = I18NString(
             listOf(
@@ -23,7 +23,7 @@ internal class I18NStringTest {
             listOf(" world")
         )
 
-        assert(i2.toNormalString() == "Hello")
+        assert(i2.toNormalString() == listOf("Hello"))
     }
 
     @Test
