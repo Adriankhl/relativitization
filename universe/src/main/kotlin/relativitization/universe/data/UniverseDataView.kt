@@ -177,8 +177,9 @@ data class PlanDataAtPlayer(
     var thisPlayerData: MutablePlayerData,
     val playerDataMap: MutableMap<Int, MutablePlayerData> = mutableMapOf(),
     val commandList: MutableList<Command> = mutableListOf(),
+    var onCommandListChange: () -> Unit = {},
 ) {
-    fun addCommand(command: Command) {
+    private fun addSingleCommand(command: Command) {
         val playerData: MutablePlayerData = playerDataMap.getOrPut(command.toId) {
             DataSerializer.copy(universeData3DAtPlayer.get(command.toId))
         }
@@ -191,10 +192,16 @@ data class PlanDataAtPlayer(
         }
     }
 
+    fun addCommand(command: Command) {
+        addSingleCommand(command)
+        onCommandListChange()
+    }
+
     fun addAllCommand(commandList: List<Command>) {
         commandList.forEach {
-            addCommand(it)
+            addSingleCommand(it)
         }
+        onCommandListChange()
     }
 
     fun resetPlayerData(playerId: Int) {
@@ -218,6 +225,7 @@ data class PlanDataAtPlayer(
         commandList.remove(command)
         resetPlayerData(command.toId)
         resetPlayerData(command.fromId)
+        onCommandListChange()
     }
 
     fun removeAllCommand(commandListToRemove: List<Command>) {
@@ -229,6 +237,7 @@ data class PlanDataAtPlayer(
         playerIdToReset.forEach {
             resetPlayerData(it)
         }
+        onCommandListChange()
     }
 
     companion object {
