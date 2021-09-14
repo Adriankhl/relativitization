@@ -180,6 +180,23 @@ data class PlanDataAtPlayer(
     val playerDataMap: MutableMap<Int, MutablePlayerData> = mutableMapOf(),
     val commandList: MutableList<Command> = mutableListOf(),
 ) {
+    fun resetPlayerData(playerId: Int) {
+        if (playerId == thisPlayerData.playerId) {
+            thisPlayerData = DataSerializer.copy(universeData3DAtPlayer.getCurrentPlayerData())
+            commandList.forEach {
+                it.checkAndSelfExecuteBeforeSend(thisPlayerData, universeData3DAtPlayer.universeSettings)
+            }
+        } else {
+            playerDataMap[playerId] = DataSerializer.copy(universeData3DAtPlayer.get(playerId))
+            val playerData: MutablePlayerData = playerDataMap.getValue(playerId)
+            commandList.filter {
+                it.toId == playerId
+            }.forEach {
+                it.checkAndExecute(playerData, universeData3DAtPlayer.universeSettings)
+            }
+        }
+    }
+
     private fun addSingleCommand(command: Command) {
         val playerData: MutablePlayerData = playerDataMap.getOrPut(command.toId) {
             DataSerializer.copy(universeData3DAtPlayer.get(command.toId))
@@ -205,22 +222,6 @@ data class PlanDataAtPlayer(
         onCommandListChange()
     }
 
-    fun resetPlayerData(playerId: Int) {
-        if (playerId == thisPlayerData.playerId) {
-            thisPlayerData = DataSerializer.copy(universeData3DAtPlayer.getCurrentPlayerData())
-            commandList.forEach {
-                it.checkAndSelfExecuteBeforeSend(thisPlayerData, universeData3DAtPlayer.universeSettings)
-            }
-        } else {
-            playerDataMap[playerId] = DataSerializer.copy(universeData3DAtPlayer.get(playerId))
-            val playerData: MutablePlayerData = playerDataMap.getValue(playerId)
-            commandList.filter {
-                it.toId == playerId
-            }.forEach {
-                it.checkAndExecute(playerData, universeData3DAtPlayer.universeSettings)
-            }
-        }
-    }
 
     fun removeCommand(command: Command) {
         commandList.remove(command)
@@ -245,6 +246,7 @@ data class PlanDataAtPlayer(
         commandList.clear()
         playerDataMap.clear()
         resetPlayerData(thisPlayerData.playerId)
+        onCommandListChange()
     }
 
     companion object {

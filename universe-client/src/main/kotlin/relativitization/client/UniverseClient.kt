@@ -317,6 +317,10 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
         }
         // set the data outside of the lock to prevent dead lock
         currentUniverseData3DAtPlayer = currentData
+        planDataAtPlayer = currentUniverseData3DAtPlayer.getPlanDataAtPlayer {
+            onCommandListChangeFunctionList.forEach { it() }
+        }
+        planDataAtPlayer.onCommandListChange()
         isNewDataReady.set(false)
     }
 
