@@ -94,7 +94,7 @@ sealed class Command {
     protected open fun selfExecuteBeforeSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ) = run { }
+    ) {}
 
     /**
      * Check and self execute
