@@ -1,15 +1,12 @@
 package relativitization.universe.ai.default.utils
 
-import relativitization.universe.data.TemporaryDataAtPlayer
-import relativitization.universe.data.UniverseData3DAtPlayer
+import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.utils.RelativitizationLogManager
 
 data class DecisionData(
-    val universeData3DAtPlayer: UniverseData3DAtPlayer,
-    val commandList: MutableList<Command> = mutableListOf(),
-    val temporaryDataAtPlayer: TemporaryDataAtPlayer = universeData3DAtPlayer.getTemporaryDataAtPlayer()
+    val planDataAtPlayer: PlanDataAtPlayer,
 ) {
     fun addCommands(newCommandList: List<Command>) {
         commandList.addAll(newCommandList)

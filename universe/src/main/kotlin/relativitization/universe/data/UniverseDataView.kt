@@ -156,8 +156,9 @@ data class UniverseData3DAtPlayer(
         }
     }
 
-    fun getTemporaryDataAtPlayer(): TemporaryDataAtPlayer {
-        return TemporaryDataAtPlayer(
+    fun getPlanDataAtPlayer(): PlanDataAtPlayer {
+        return PlanDataAtPlayer(
+            this,
             DataSerializer.copy(getCurrentPlayerData())
         )
     }
@@ -171,8 +172,66 @@ data class UniverseData3DAtPlayer(
 /**
  * For human or ai to decide the command list
  */
-data class TemporaryDataAtPlayer(
-    val thisPlayerData: MutablePlayerData,
-    val playerDataMap: MutableMap<Int, PlayerData> = mutableMapOf(),
+data class PlanDataAtPlayer(
+    val universeData3DAtPlayer: UniverseData3DAtPlayer,
+    var thisPlayerData: MutablePlayerData,
+    val playerDataMap: MutableMap<Int, MutablePlayerData> = mutableMapOf(),
     val commandList: MutableList<Command> = mutableListOf(),
-)
+) {
+    fun addCommand(command: Command) {
+        val playerData: MutablePlayerData = playerDataMap.getOrPut(command.toId) {
+            DataSerializer.copy(universeData3DAtPlayer.get(command.toId))
+        }
+
+        if (playerData.playerId == -1) {
+            logger.error("Add command error: Player id -1")
+        } else {
+            command.checkAndSelfExecuteBeforeSend(thisPlayerData, universeData3DAtPlayer.universeSettings)
+            command.checkAndExecute(playerData, universeData3DAtPlayer.universeSettings)
+        }
+    }
+
+    fun addAllCommand(commandList: List<Command>) {
+        commandList.forEach {
+            addCommand(it)
+        }
+    }
+
+    fun resetPlayerData(playerId: Int) {
+        if (playerId == thisPlayerData.playerId) {
+            thisPlayerData = DataSerializer.copy(universeData3DAtPlayer.getCurrentPlayerData())
+            commandList.forEach {
+                it.checkAndSelfExecuteBeforeSend(thisPlayerData, universeData3DAtPlayer.universeSettings)
+            }
+        } else {
+            playerDataMap[playerId] = DataSerializer.copy(universeData3DAtPlayer.get(playerId))
+            val playerData: MutablePlayerData = playerDataMap.getValue(playerId)
+            commandList.filter {
+                it.toId == playerId
+            }.forEach {
+                it.checkAndExecute(playerData, universeData3DAtPlayer.universeSettings)
+            }
+        }
+    }
+
+    fun removeCommand(command: Command) {
+        commandList.remove(command)
+        resetPlayerData(command.toId)
+        resetPlayerData(command.fromId)
+    }
+
+    fun removeAllCommand(commandListToRemove: List<Command>) {
+        commandList.removeAll(commandListToRemove)
+        val playerIdToReset: List<Int> = listOf(thisPlayerData.playerId) + commandListToRemove.map {
+            it.toId
+        }.toSet()
+
+        playerIdToReset.forEach {
+            resetPlayerData(it)
+        }
+    }
+
+    companion object {
+        private val logger = RelativitizationLogManager.getLogger()
+    }
+}
