@@ -23,7 +23,7 @@ class RootReasoner(
     universeData3DAtPlayer: UniverseData3DAtPlayer
 ) : SequenceReasoner() {
 
-    private val planDAtPlayer: PlanDataAtPlayer = universeData3DAtPlayer.getPlanDataAtPlayer()
+    private val planDAtPlayer: PlanDataAtPlayer = universeData3DAtPlayer.getPlanDataAtPlayer {}
 
     fun computeCommandList(): List<Command> {
         logger.debug("Root reasoner computing commandList")
