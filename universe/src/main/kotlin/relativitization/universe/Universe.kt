@@ -332,13 +332,13 @@ class Universe(
 
         val noneTypePlayerIdList: List<Int> = playerCollection.getNoneIdList()
 
-        // Filter out none type player, Check whether the command is valid
+        // Filter out none type player, Check whether the command is valid, self execute the command
         val validCommands: Map<Int, List<Command>> = inputCommands.filter { (id, _) ->
             !noneTypePlayerIdList.contains(id)
         }.mapValues { (id, commandList) ->
-            val playerData: PlayerData = copy(playerCollection.getPlayer(id))
+            val playerData: MutablePlayerData = playerCollection.getPlayer(id)
             commandList.filter { command ->
-                command.canSendFromPlayer(playerData, universeData.universeSettings)
+                command.checkAndSelfExecuteBeforeSend(playerData, universeData.universeSettings)
             }
         }
 

@@ -21,46 +21,6 @@ sealed class Command {
      */
     abstract val description: I18NString
 
-    /**
-     * Check if the player (sender) can send the command
-     */
-    protected abstract fun canSend(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean
-
-    /**
-     * Check if can send and have command
-     *
-     * @param playerData the player data to send this command
-     */
-    fun canSendFromPlayer(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean {
-        val hasCommand: Boolean = CommandCollection.hasCommand(universeSettings, this)
-        val canSend: Boolean =  canSend(playerData, universeSettings)
-        val isPlayerDataValid: Boolean = (playerData.int4D.toInt4D() == fromInt4D) &&
-                (playerData.playerId == fromId)
-        if (!hasCommand || !canSend || !isPlayerDataValid) {
-            val className = this::class.qualifiedName
-            logger.error("${className}: cannot send command, hasCommand: $hasCommand, canSend: $canSend, isPlayerDataValid: $isPlayerDataValid")
-        }
-
-        return hasCommand && canSend && isPlayerDataValid
-    }
-
-
-    /**
-     * Check if the player can receive the command
-     */
-    protected abstract fun canExecute(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean
-
-    /**
-     * Check if can execute and have command
-     *
-     * @param playerData the command execute on this player
-     * @param universeSettings universe setting, e.g., have
-     */
-    fun canExecuteOnPlayer(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean {
-        val hasCommand: Boolean = CommandCollection.hasCommand(universeSettings, this)
-        val canExecute: Boolean = canExecute(playerData, universeSettings)
-        return hasCommand && canExecute
-    }
 
     /**
      * Check to see if fromId match
@@ -88,6 +48,49 @@ sealed class Command {
         }
     }
 
+
+    /**
+     * Check if the player (sender) can send the command
+     */
+    protected abstract fun canSend(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean
+
+    /**
+     * Check if can send and have command
+     *
+     * @param playerData the player data to send this command
+     */
+    fun canSendFromPlayer(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean {
+        val hasCommand: Boolean = CommandCollection.hasCommand(universeSettings, this)
+        val canSend: Boolean =  canSend(playerData, universeSettings)
+        val isPlayerDataValid: Boolean = (playerData.int4D.toInt4D() == fromInt4D) &&
+                (checkFromId(playerData))
+        if (!hasCommand || !canSend || !isPlayerDataValid) {
+            val className = this::class.qualifiedName
+            logger.error("${className}: cannot send command, hasCommand: $hasCommand, canSend: $canSend, isPlayerDataValid: $isPlayerDataValid")
+        }
+
+        return hasCommand && canSend && isPlayerDataValid
+    }
+
+
+    /**
+     * Check if the player can receive the command
+     */
+    protected abstract fun canExecute(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean
+
+    /**
+     * Check if can execute and have command
+     *
+     * @param playerData the command execute on this player
+     * @param universeSettings universe setting, e.g., have
+     */
+    fun canExecuteOnPlayer(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean {
+        val hasCommand: Boolean = CommandCollection.hasCommand(universeSettings, this)
+        val correctId: Boolean = checkToId(playerData)
+        val canExecute: Boolean = canExecute(playerData, universeSettings)
+        return hasCommand && correctId && canExecute
+    }
+
     /**
      * Execute on self in order to end this command
      */
@@ -102,10 +105,11 @@ sealed class Command {
     fun checkAndSelfExecuteBeforeSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ) {
-        if (checkFromId(playerData) && canSendFromPlayer(playerData, universeSettings)) {
+    ): Boolean {
+        return if (canSendFromPlayer(playerData, universeSettings)) {
             try {
                 selfExecuteBeforeSend(playerData, universeSettings)
+                true
             } catch (e: Throwable) {
                 logger.error("checkAndSelfExecuteBeforeSend fail, throwable $e")
                 throw e
@@ -113,6 +117,7 @@ sealed class Command {
         } else {
             val className = this::class.qualifiedName
             logger.info("$className cannot be sent by $fromId")
+            false
         }
     }
 
@@ -125,10 +130,14 @@ sealed class Command {
     /**
      * Check and execute
      */
-    fun checkAndExecute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
-        if (checkToId(playerData) && canExecuteOnPlayer(playerData, universeSettings)) {
+    fun checkAndExecute(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): Boolean {
+        return if (canExecuteOnPlayer(playerData, universeSettings)) {
             try {
                 execute(playerData, universeSettings)
+                true
             } catch (e: Throwable) {
                 logger.error("checkAndExecute fail, throwable $e")
                 throw e
@@ -136,6 +145,7 @@ sealed class Command {
         } else {
             val className = this::class.qualifiedName
             logger.info("$className cannot be executed on $toId")
+            false
         }
     }
 
