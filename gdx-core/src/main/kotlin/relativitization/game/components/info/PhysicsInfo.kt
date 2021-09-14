@@ -59,7 +59,7 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
             )
 
             val canSend: Boolean = changeVelocityCommand.canSendFromPlayer(
-                game.universeClient.getUniverseData3D().getCurrentPlayerData(),
+                game.universeClient.planDataAtPlayer.thisPlayerData,
                 game.universeClient.getUniverseData3D().universeSettings
             )
 
@@ -119,7 +119,7 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
             )
 
             val canSend: Boolean = addEventCommand.canSendFromPlayer(
-                game.universeClient.getUniverseData3D().getCurrentPlayerData(),
+                game.universeClient.planDataAtPlayer.thisPlayerData,
                 game.universeClient.getUniverseData3D().universeSettings
             )
 

@@ -113,7 +113,7 @@ class EventsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(g
                 )
 
                 val canSend = selectEventDataCommand.canSendFromPlayer(
-                    game.universeClient.getUniverseData3D().getCurrentPlayerData(),
+                    game.universeClient.planDataAtPlayer.thisPlayerData,
                     game.universeClient.getUniverseData3D().universeSettings
                 )
 
