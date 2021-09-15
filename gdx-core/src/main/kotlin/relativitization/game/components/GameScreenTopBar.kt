@@ -502,7 +502,6 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         aChecked = 0.5f,
         soundVolume = gdxSettings.soundEffectsVolume
     ) {
-        it.isChecked = !it.isChecked
         game.universeClient.showMutablePlayerDataFromPlan = !it.isChecked
     }
 
