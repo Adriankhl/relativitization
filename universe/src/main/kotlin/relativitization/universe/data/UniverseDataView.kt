@@ -182,13 +182,15 @@ data class PlanDataAtPlayer(
 ) {
     fun getPlayerData(id: Int): PlayerData {
         return if (playerDataMap.containsKey(id)) {
-            val playerData: MutablePlayerData = playerDataMap.getOrElse(id) {
-                logger.error("id $id not in playerDataMap or zeroDelayDataMap")
-                MutablePlayerData(-1)
-            }
-            DataSerializer.copy(playerData)
+            DataSerializer.copy(playerDataMap.getValue(id))
         } else {
             universeData3DAtPlayer.get(id)
+        }
+    }
+
+    fun getMutablePlayerData(id: Int): MutablePlayerData {
+        return playerDataMap.getOrPut(id) {
+            DataSerializer.copy(universeData3DAtPlayer.get(id))
         }
     }
 
@@ -210,9 +212,7 @@ data class PlanDataAtPlayer(
     }
 
     private fun addSingleCommand(command: Command) {
-        val playerData: MutablePlayerData = playerDataMap.getOrPut(command.toId) {
-            DataSerializer.copy(universeData3DAtPlayer.get(command.toId))
-        }
+        val playerData: MutablePlayerData = getMutablePlayerData(command.toId)
 
         if (playerData.playerId == -1) {
             logger.error("Add command error: Player id -1")
