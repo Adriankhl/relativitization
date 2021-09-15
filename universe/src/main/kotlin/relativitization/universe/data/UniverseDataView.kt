@@ -173,7 +173,7 @@ data class UniverseData3DAtPlayer(
 /**
  * For human or ai to decide the command list
  */
-data class PlanDataAtPlayer(
+class PlanDataAtPlayer(
     val universeData3DAtPlayer: UniverseData3DAtPlayer,
     var thisPlayerData: MutablePlayerData,
     var onCommandListChange: () -> Unit,
