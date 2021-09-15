@@ -3,6 +3,13 @@ package relativitization.universe.data.component.physics
 import kotlinx.serialization.Serializable
 import kotlin.math.min
 
+/**
+ * Fuel (in rest mass) of player for various purposes
+ *
+ * @property movement fuel for movement
+ * @property production fuel for production
+ * @property trade fuel for production
+ */
 @Serializable
 data class FuelRestMassData(
     val movement: Double = 1.0,

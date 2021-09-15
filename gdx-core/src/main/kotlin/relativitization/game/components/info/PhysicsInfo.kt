@@ -249,7 +249,7 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         table.row().space(10f)
 
         val moveMaxPowerLabel = createLabel(
-            "Max. fuel rest mass change: ${playerData.playerInternalData.physicsData().maxDeltaFuelRestMass.toString()}",
+            "Max. movement fuel delta: ${playerData.playerInternalData.physicsData().fuelRestMassData.maxMovementDelta}",
             gdxSettings.smallFontSize
         )
 

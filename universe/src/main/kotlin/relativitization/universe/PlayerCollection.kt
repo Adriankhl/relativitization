@@ -303,10 +303,10 @@ class PlayerCollection(
             speedOfLight = speedOfLight
         )
 
-        val fuelRestMass: Double = playerData.playerInternalData.physicsData().fuelRestMass
+        val movementFuelRestMass: Double = playerData.playerInternalData.physicsData().fuelRestMassData.movement
 
         playerData.velocity = targetVelocity.toMutableVelocity()
-        playerData.playerInternalData.physicsData().fuelRestMass -= min(fuelRestMass, deltaRestMass)
+        playerData.playerInternalData.physicsData().fuelRestMassData.movement -= min(movementFuelRestMass, deltaRestMass)
     }
 
     fun syncAllPlayerDataComponent() {
