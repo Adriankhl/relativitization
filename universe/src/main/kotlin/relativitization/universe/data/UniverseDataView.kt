@@ -180,6 +180,14 @@ data class PlanDataAtPlayer(
     val playerDataMap: MutableMap<Int, MutablePlayerData> = mutableMapOf(),
     val commandList: MutableList<Command> = mutableListOf(),
 ) {
+    fun getPlayerData(playerId: Int): PlayerData {
+        return if (playerDataMap.containsKey(playerId)) {
+            DataSerializer.copy(playerDataMap)
+        } else {
+            universeData3DAtPlayer.get(playerId)
+        }
+    }
+
     fun resetPlayerData(playerId: Int) {
         if (playerId == thisPlayerData.playerId) {
             thisPlayerData = DataSerializer.copy(universeData3DAtPlayer.getCurrentPlayerData())

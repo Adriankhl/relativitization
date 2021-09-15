@@ -15,6 +15,7 @@ import relativitization.universe.UniverseClientSettings
 import relativitization.universe.UniverseServerSettings
 import relativitization.universe.communication.*
 import relativitization.universe.data.PlanDataAtPlayer
+import relativitization.universe.data.PlayerData
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
@@ -99,14 +100,14 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
     var primarySelectedInt3D: Int3D by Delegates.observable(Int3D(0, 0, 0)) { _, _, _ ->
         onPrimarySelectedInt3DChangeFunctionList.forEach { it() }
     }
-    // Display mutable player data from planDataAtPlayer or not
-    var showMutablePlayerDataFromPlan: Boolean by Delegates.observable(false) { _, _, _ ->
-        onPrimarySelectedInt3DChangeFunctionList.forEach { it() }
-    }
 
     // Primary selected player id
     val onPrimarySelectedPlayerIdChangeFunctionList: MutableList<() -> Unit> = mutableListOf()
     var primarySelectedPlayerId: Int by Delegates.observable(currentUniverseData3DAtPlayer.id) { _, _, _ ->
+        onPrimarySelectedPlayerIdChangeFunctionList.forEach { it() }
+    }
+    // Display mutable player data from planDataAtPlayer or not
+    var showMutablePlayerDataFromPlan: Boolean by Delegates.observable(false) { _, _, _ ->
         onPrimarySelectedPlayerIdChangeFunctionList.forEach { it() }
     }
 
@@ -516,6 +517,17 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
      */
     fun getUniverseData3D(): UniverseData3DAtPlayer {
         return currentUniverseData3DAtPlayer
+    }
+
+    /**
+     * Get player data from universe view or plan
+     */
+    fun getPrimarySelectedPlayerData(): PlayerData {
+        return if (showMutablePlayerDataFromPlan) {
+            planDataAtPlayer.getPlayerData(primarySelectedPlayerId)
+        } else {
+            getUniverseData3D().get(primarySelectedPlayerId)
+        }
     }
 
 
