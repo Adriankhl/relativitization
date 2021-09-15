@@ -4,8 +4,10 @@ import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.commands.Command
 import relativitization.universe.utils.RelativitizationLogManager
 
-interface Option {
-    fun getConsiderationList(): List<Consideration>
+abstract class Option : AINode {
+    abstract fun getConsiderationList(): List<Consideration>
+
+    protected abstract fun getCommandList(): List<Command>
 
     fun getRank(): Int {
         val considerationList = getConsiderationList()
@@ -38,23 +40,13 @@ interface Option {
         }
     }
 
-    fun updateData()
-}
 
-abstract class CommandListOption(private val planDataAtPlayer: PlanDataAtPlayer) : Option {
-    protected abstract fun getCommandList(): List<Command>
-
-    // Extra step to update Decision Data beside adding command
-    protected open fun extraUpdateDecisionData() {}
-
-    override fun updateData() {
-        val className = this::class.qualifiedName
-
-        logger.debug("$className (CommandListOption) updating data")
+    override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planStatus: PlanStatus) {
+        logger.debug("${this::class.simpleName} (CommandListOption) updating data")
 
         val commandList = getCommandList()
+
         planDataAtPlayer.addAllCommand(commandList)
-        extraUpdateDecisionData()
     }
 
     companion object {

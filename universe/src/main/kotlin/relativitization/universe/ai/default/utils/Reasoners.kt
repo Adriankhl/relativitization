@@ -1,20 +1,19 @@
 package relativitization.universe.ai.default.utils
 
+import relativitization.universe.data.PlanDataAtPlayer
+import relativitization.universe.maths.sampling.WeightedReservoir
 import relativitization.universe.utils.RelativitizationLogManager
-import kotlin.random.Random
 
-abstract class Reasoner : Option {
-    abstract fun getOptionList(): List<Option>
+abstract class Reasoner : AINode {
+    abstract fun getSubNodeList(): List<AINode>
 }
 
 abstract class SequenceReasoner : Reasoner() {
-    override fun updateData() {
-        val className = this::class.qualifiedName
+    override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planStatus: PlanStatus) {
+        logger.debug("${this::class.simpleName} (SequenceReasoner) updating data")
 
-        logger.debug("$className (SequenceReasoner) updating data")
-
-        val optionList = getOptionList()
-        optionList.forEach { it.updateData() }
+        val subNodeList: List<AINode> = getSubNodeList()
+        subNodeList.forEach { it.updatePlan(planDataAtPlayer, planStatus) }
     }
 
     companion object {
@@ -23,69 +22,31 @@ abstract class SequenceReasoner : Reasoner() {
 }
 
 abstract class DualUtilityReasoner : Reasoner() {
-    override fun updateData() {
-        val className = this::class.qualifiedName
+    abstract fun getOptionList(): List<Option>
+    override fun getSubNodeList(): List<AINode> = getOptionList()
 
-        logger.debug("$className (DualUtilityReasoner) updating data")
+    override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planStatus: PlanStatus) {
+        logger.debug("${this::class.java.simpleName} (DualUtilityReasoner) updating data")
 
-        val optionList = getOptionList()
+        val optionList: List<Option> = getOptionList()
         val optionWeightMap: Map<Option, Double> = optionList.associateWith { it.getWeight() }
         val validOptionWeightMap: Map<Option, Double> = optionWeightMap.filterValues { it > 0.0 }
 
         if (validOptionWeightMap.isNotEmpty()) {
+            val maxRank: Int = validOptionWeightMap.maxOfOrNull { it.key.getRank() }!!
 
-            val optionRankMap: Map<Option, Int> = validOptionWeightMap.keys.associateWith { it.getRank() }
-
-            val maxRank: Int = optionRankMap.values.maxOrNull()!!
-
-            val maxRankOptionList: Set<Option> = optionRankMap.filterValues { it == maxRank }.keys
-
-            val maxRankOptionWeightMap: Map<Option, Double> = optionWeightMap.filterKeys {
-                maxRankOptionList.contains(it)
+            val maxRankValidOptionWeightMap: Map<Option, Double> = validOptionWeightMap.filterKeys {
+                it.getRank() == maxRank
             }
 
-            // Iterate to select one option by weight
-            val totalWeight: Double = maxRankOptionWeightMap.values.sum()
-            var optionRand: Double = Random.Default.nextDouble() * totalWeight
-            for ((option, weight) in maxRankOptionWeightMap) {
-                optionRand -= weight
-                if (optionRand <= 0.0) {
-                    option.updateData()
-                    break
-                }
-            }
-        }
-    }
+            val selectedOption: Option = WeightedReservoir.aRes(
+                1,
+                maxRankValidOptionWeightMap.keys.toList(),
+            ) {
+                maxRankValidOptionWeightMap.getValue(it)
+            }.first()
 
-    companion object {
-        private val logger = RelativitizationLogManager.getLogger()
-    }
-}
-
-abstract class RepeatUntilReasoner : Reasoner() {
-
-    // Whether the reasoner should continue looping
-    abstract fun shouldContinue(): Boolean
-
-    // Tick after each updateData() in option
-    abstract fun tick(option: Option)
-
-    override fun updateData() {
-        val className = this::class.qualifiedName
-
-        logger.debug("$className (RepeatUntilReasoner) updating data")
-
-        while (shouldContinue()) {
-            logger.debug("$className (RepeatUntilReasoner) repeating")
-            val optionList = getOptionList()
-            for (option in optionList) {
-                if (shouldContinue()) {
-                    option.updateData()
-                    tick(option)
-                } else {
-                    break
-                }
-            }
+            selectedOption.updatePlan(planDataAtPlayer, planStatus)
         }
     }
 
