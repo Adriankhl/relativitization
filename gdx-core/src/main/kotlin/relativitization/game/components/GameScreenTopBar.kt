@@ -486,6 +486,27 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         }
     }
 
+    private val planButton: ImageButton = createImageButton(
+        name = "basic/white-pen",
+        rUp = 1.0f,
+        gUp = 1.0f,
+        bUp = 1.0f,
+        aUp = 1.0f,
+        rDown = 1.0f,
+        gDown = 1.0f,
+        bDown = 1.0f,
+        aDown = 0.7f,
+        rChecked = 1.0f,
+        gChecked = 1.0f,
+        bChecked = 1.0f,
+        aChecked = 0.5f,
+        soundVolume = gdxSettings.soundEffectsVolume
+    ) {
+        it.isChecked = !it.isChecked
+        game.universeClient.showMutablePlayerDataFromPlan = !it.isChecked
+    }
+
+
     // About server status
     private val serverStatusNameAndTimeLabel: Label = createLabel("", gdxSettings.smallFontSize)
     private val serverUniverseTimeLabel: Label = createLabel("", gdxSettings.smallFontSize)
@@ -515,6 +536,8 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         table.add(viewControlTable).pad(10f)
 
         table.add(currentUniverseDataTable).pad(10f)
+
+        table.add(planButton).size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
 
         table.add(clearSelectedButton).size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
 

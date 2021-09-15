@@ -107,7 +107,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
         onPrimarySelectedPlayerIdChangeFunctionList.forEach { it() }
     }
     // Display mutable player data from planDataAtPlayer or not
-    var showMutablePlayerDataFromPlan: Boolean by Delegates.observable(false) { _, _, _ ->
+    var showMutablePlayerDataFromPlan: Boolean by Delegates.observable(true) { _, _, _ ->
         onPrimarySelectedPlayerIdChangeFunctionList.forEach { it() }
     }
 
