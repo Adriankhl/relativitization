@@ -516,8 +516,6 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
 
         table.add(currentUniverseDataTable).pad(10f)
 
-        table.add(updateToLatestButton).size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
-
         table.add(clearSelectedButton).size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
 
         table.add(clearCommandListButton).size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
@@ -543,6 +541,8 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         table.add(stopWaitingTable).pad(10f)
 
         table.add(runOrStopUniverseTable).pad(10f)
+
+        table.add(updateToLatestButton).size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
 
         table.add(uploadButton).size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
 
