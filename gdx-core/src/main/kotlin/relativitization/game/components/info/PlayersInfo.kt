@@ -52,6 +52,11 @@ class PlayersInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         updateTable()
     }
 
+    override fun onCommandListChange() {
+        updatePlayerDataAndIdList()
+        updateTable()
+    }
+
     private fun previousPlayerId() {
         if (viewingIdIndex >= 1) {
             viewingIdIndex--

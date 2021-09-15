@@ -45,6 +45,11 @@ class EventsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(g
         updateTable()
     }
 
+    override fun onCommandListChange() {
+        updatePlayerData()
+        updateTable()
+    }
+
     private fun updatePlayerData() {
         playerData = if (game.universeClient.isPrimarySelectedPlayerIdValid()) {
             game.universeClient.getPrimarySelectedPlayerData()

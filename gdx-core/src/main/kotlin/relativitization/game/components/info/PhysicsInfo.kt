@@ -163,6 +163,11 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         updateTable()
     }
 
+    override fun onCommandListChange() {
+        updatePlayerData()
+        updateTable()
+    }
+
     override fun onPrimarySelectedInt3DChange() {
 
         val targetInt3D: Int3D = game.universeClient.primarySelectedInt3D

@@ -170,6 +170,11 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
         updateKnowledgeGroup()
     }
 
+    override fun onCommandListChange() {
+        updatePlayerData()
+        updateTable()
+    }
+
     override fun onGdxSettingsChange() {
         updateKnowledgeGroup()
     }
