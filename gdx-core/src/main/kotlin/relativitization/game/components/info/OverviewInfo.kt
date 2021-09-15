@@ -46,7 +46,7 @@ class OverviewInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>
 
     private fun updatePlayerData() {
         playerData = if (game.universeClient.isPrimarySelectedPlayerIdValid()) {
-            game.universeClient.getUniverseData3D().get(game.universeClient.primarySelectedPlayerId)
+            game.universeClient.getPrimarySelectedPlayerData()
         } else {
             game.universeClient.getUniverseData3D().getCurrentPlayerData()
         }
