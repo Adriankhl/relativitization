@@ -240,7 +240,7 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         table.row().space(10f)
 
         val energyLabel = createLabel(
-            "Fuel rest mass: ${playerData.playerInternalData.physicsData().fuelRestMass.toString()}",
+            "Total fuel rest mass: ${playerData.playerInternalData.physicsData().fuelRestMassData.total()}",
             gdxSettings.smallFontSize
         )
 

@@ -85,7 +85,7 @@ data class MoveToDouble3DEvent(
 
             val targetVelocityData: TargetVelocityData = targetDouble3DByPhotonRocket(
                 initialRestMass = playerData.playerInternalData.physicsData().totalRestMass(),
-                maxDeltaRestMass = playerData.playerInternalData.physicsData().maxDeltaRestMass(),
+                maxDeltaRestMass = playerData.playerInternalData.physicsData().fuelRestMassData.maxMovementDeltaRestMass(),
                 initialVelocity = playerData.velocity,
                 maxSpeed = min(maxSpeed, universeData3DAtPlayer.universeSettings.speedOfLight),
                 initialDouble3D = playerData.double4D.toDouble3D(),
