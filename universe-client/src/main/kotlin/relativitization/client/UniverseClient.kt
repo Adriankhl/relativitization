@@ -99,6 +99,10 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
     var primarySelectedInt3D: Int3D by Delegates.observable(Int3D(0, 0, 0)) { _, _, _ ->
         onPrimarySelectedInt3DChangeFunctionList.forEach { it() }
     }
+    // Display mutable player data from planDataAtPlayer or not
+    var showMutablePlayerDataFromPlan: Boolean by Delegates.observable(false) { _, _, _ ->
+        onPrimarySelectedInt3DChangeFunctionList.forEach { it() }
+    }
 
     // Primary selected player id
     val onPrimarySelectedPlayerIdChangeFunctionList: MutableList<() -> Unit> = mutableListOf()
