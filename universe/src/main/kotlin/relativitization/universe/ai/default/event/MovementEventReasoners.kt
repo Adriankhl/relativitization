@@ -12,45 +12,43 @@ import relativitization.universe.data.events.name
 /**
  * Reasoner to pick only one MoveToDouble3D event
  */
-class PickMoveToDouble3DEventReasoner(
-    private val planDataAtPlayer: PlanDataAtPlayer
-) : DualUtilityReasoner() {
+class PickMoveToDouble3DEventReasoner : DualUtilityReasoner() {
 
-    private val movementEventKeyList: List<Int> =
-        planDataAtPlayer.universeData3DAtPlayer.getCurrentPlayerData(
-        ).playerInternalData.eventDataMap.filter {
-            // Filter out MoveToDouble3DEvent
-            it.value.event is MoveToDouble3DEvent
-        }.keys.toList()
+    override fun getOptionList(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planStatus: PlanStatus
+    ): List<Option> {
+        val movementEventKeyList: List<Int> =
+            planDataAtPlayer.universeData3DAtPlayer.getCurrentPlayerData(
+            ).playerInternalData.eventDataMap.filter {
+                // Filter out MoveToDouble3DEvent
+                it.value.event is MoveToDouble3DEvent
+            }.keys.toList()
 
-
-    override fun getOptionList(): List<Option> {
         return movementEventKeyList.map {
             PickMoveToDouble3DEventOption(
-                planDataAtPlayer,
                 it,
             )
         }
     }
-
-    override fun getConsiderationList(): List<Consideration> = listOf()
 }
 
 /**
  * Cancel all MoveToDouble3D beside event at keepEventIndex
  */
 class PickMoveToDouble3DEventOption(
-    private val planDataAtPlayer: PlanDataAtPlayer,
     private val keepEventIndex: Int,
-) : CommandListOption(planDataAtPlayer) {
+) : Option() {
 
-    private val movementEventMap: Map<Int, EventData> =
-        planDataAtPlayer.universeData3DAtPlayer.getCurrentPlayerData().playerInternalData.eventDataMap.filter {
-            // Filter out MoveToDouble3DEvent
-            it.value.event is MoveToDouble3DEvent
-        }
-
-    override fun getCommandList(): List<Command> {
+    override fun getCommandList(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planStatus: PlanStatus
+    ): List<Command> {
+        val movementEventMap: Map<Int, EventData> =
+            planDataAtPlayer.universeData3DAtPlayer.getCurrentPlayerData().playerInternalData.eventDataMap.filter {
+                // Filter out MoveToDouble3DEvent
+                it.value.event is MoveToDouble3DEvent
+            }
         return movementEventMap.filter { it.key != keepEventIndex }.map {
             SelectEventChoiceCommand(
                 eventKey = it.key,
@@ -63,12 +61,20 @@ class PickMoveToDouble3DEventOption(
         }
     }
 
-    override fun getConsiderationList(): List<Consideration> {
+    override fun getConsiderationList(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planStatus: PlanStatus
+    ): List<Consideration> {
+        val movementEventMap: Map<Int, EventData> =
+            planDataAtPlayer.universeData3DAtPlayer.getCurrentPlayerData().playerInternalData.eventDataMap.filter {
+                // Filter out MoveToDouble3DEvent
+                it.value.event is MoveToDouble3DEvent
+            }
+
         return if (movementEventMap.containsKey(keepEventIndex)) {
             listOf(
                 RelationConsideration(
                     playerId = movementEventMap.getValue(keepEventIndex).event.fromId,
-                    diplomacyData = planDataAtPlayer.universeData3DAtPlayer.getCurrentPlayerData().playerInternalData.diplomacyData(),
                 )
             )
         } else {

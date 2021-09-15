@@ -2,9 +2,7 @@ package relativitization.universe.ai.default
 
 import relativitization.universe.ai.AI
 import relativitization.universe.ai.default.event.EventReasoner
-import relativitization.universe.ai.default.utils.Consideration
-import relativitization.universe.ai.default.utils.Option
-import relativitization.universe.ai.default.utils.SequenceReasoner
+import relativitization.universe.ai.default.utils.*
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.commands.Command
@@ -23,21 +21,21 @@ class RootReasoner(
     universeData3DAtPlayer: UniverseData3DAtPlayer
 ) : SequenceReasoner() {
 
-    private val planDAtPlayer: PlanDataAtPlayer = universeData3DAtPlayer.getPlanDataAtPlayer {}
+    private val planDataAtPlayer: PlanDataAtPlayer = universeData3DAtPlayer.getPlanDataAtPlayer {}
+    private val planStatus: PlanStatus = PlanStatus()
 
     fun computeCommandList(): List<Command> {
         logger.debug("Root reasoner computing commandList")
-        updateData()
-        return planDAtPlayer.commandList
+        updatePlan(planDataAtPlayer, planStatus)
+        return planDataAtPlayer.commandList
     }
 
-    override fun getOptionList(): List<Option> {
-        return listOf(
-            EventReasoner(planDAtPlayer),
-        )
-    }
-
-    override fun getConsiderationList(): List<Consideration> = listOf()
+    override fun getSubNodeList(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planStatus: PlanStatus
+    ): List<AINode> = listOf(
+        EventReasoner(),
+    )
 
     companion object {
         private val logger = RelativitizationLogManager.getLogger()

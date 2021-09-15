@@ -5,28 +5,44 @@ import relativitization.universe.data.commands.Command
 import relativitization.universe.utils.RelativitizationLogManager
 
 abstract class Option : AINode {
-    abstract fun getConsiderationList(): List<Consideration>
+    abstract fun getConsiderationList(
+        planDataAtPlayer: PlanDataAtPlayer, planStatus: PlanStatus
+    ): List<Consideration>
 
-    protected abstract fun getCommandList(): List<Command>
+    protected abstract fun getCommandList(
+        planDataAtPlayer: PlanDataAtPlayer, planStatus: PlanStatus
+    ): List<Command>
 
-    fun getRank(): Int {
-        val considerationList = getConsiderationList()
+    override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planStatus: PlanStatus) {
+        logger.debug("${this::class.simpleName} (CommandListOption) updating data")
+
+        val commandList = getCommandList(planDataAtPlayer, planStatus)
+
+        planDataAtPlayer.addAllCommand(commandList)
+    }
+
+    fun getRank(
+        planDataAtPlayer: PlanDataAtPlayer, planStatus: PlanStatus
+    ): Int {
+        val considerationList = getConsiderationList(planDataAtPlayer, planStatus)
         return if (considerationList.isEmpty()) {
             0
         } else {
             considerationList.maxOf {
-                it.getDualUtilityData().rank
+                it.getDualUtilityData(planDataAtPlayer, planStatus).rank
             }
         }
     }
 
-    fun getWeight(): Double {
-        val considerationList = getConsiderationList()
+    fun getWeight(
+        planDataAtPlayer: PlanDataAtPlayer, planStatus: PlanStatus
+    ): Double {
+        val considerationList = getConsiderationList(planDataAtPlayer, planStatus)
         return if (considerationList.isEmpty()) {
             0.0
         } else {
             val utilityDataList: List<DualUtilityData> = considerationList.map {
-                it.getDualUtilityData()
+                it.getDualUtilityData(planDataAtPlayer, planStatus)
             }
 
             val totalAddend: Double = utilityDataList.fold(0.0) { acc, data->
@@ -40,14 +56,6 @@ abstract class Option : AINode {
         }
     }
 
-
-    override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planStatus: PlanStatus) {
-        logger.debug("${this::class.simpleName} (CommandListOption) updating data")
-
-        val commandList = getCommandList()
-
-        planDataAtPlayer.addAllCommand(commandList)
-    }
 
     companion object {
         private val logger = RelativitizationLogManager.getLogger()
