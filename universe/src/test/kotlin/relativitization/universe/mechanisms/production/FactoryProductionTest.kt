@@ -28,6 +28,8 @@ internal class FactoryProductionTest {
 
         val view8: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
 
-        assert(view8.get(1).playerInternalData.physicsData().fuelRestMassData.movement == 102.0)
+        assert(view8.get(1).playerInternalData.physicsData().fuelRestMassData.movement == 100.0)
+        assert(view8.get(1).playerInternalData.physicsData().fuelRestMassData.production == 3.0)
+        assert(view8.get(1).playerInternalData.physicsData().fuelRestMassData.trade == 1.0)
     }
 }
