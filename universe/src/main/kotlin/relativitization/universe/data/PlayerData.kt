@@ -111,12 +111,12 @@ data class MutablePlayerData(
                 playerInternalData.popSystemData().totalCoreRestMass()
         }
 
-        if (playerInternalData.physicsData().maxDeltaFuelRestMass != playerInternalData.popSystemData()
-                .totalMaxDeltaFuelRestMass()
+        if (playerInternalData.physicsData().fuelRestMassData.maxMovementDelta !=
+            playerInternalData.popSystemData().totalMaxMovementDeltaFuelRestMass()
         ) {
             logger.debug("Sync data component, change max delta fuel rest mass")
-            playerInternalData.physicsData().maxDeltaFuelRestMass =
-                playerInternalData.popSystemData().totalMaxDeltaFuelRestMass()
+            playerInternalData.physicsData().fuelRestMassData.maxMovementDelta =
+                playerInternalData.popSystemData().totalMaxMovementDeltaFuelRestMass()
         }
 
         playerInternalData.popSystemData().syncCombatData()

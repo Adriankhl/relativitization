@@ -37,8 +37,9 @@ object FactoryProduction : Mechanism() {
         // Store fuel to physics data
         if (mutablePlayerData.playerInternalData.modifierData(
         ).physicsModifierData.disableFuelIncreaseTimeLimit <= 0) {
-            mutablePlayerData.playerInternalData.physicsData().fuelRestMass +=
+            mutablePlayerData.playerInternalData.physicsData().addFuel(
                 mutablePlayerData.playerInternalData.economyData().resourceData.getFuelAmount()
+            )
         }
 
         // Clean up fuel in resource data
@@ -93,7 +94,7 @@ object FactoryProduction : Mechanism() {
 
         val employeeFraction: Double = mutableFactoryData.lastNumEmployee / mutableFactoryData.maxNumEmployee
 
-        val fuelFraction: Double = physicsData.fuelRestMass / mutableFactoryData.fuelRestMassConsumptionRate
+        val fuelFraction: Double = physicsData.fuelRestMassData.production / mutableFactoryData.fuelRestMassConsumptionRate
 
         return listOf(inputFraction, employeeFraction, fuelFraction).minOrNull() ?: 0.0
     }
@@ -190,7 +191,7 @@ object FactoryProduction : Mechanism() {
         }
 
         // Consume fuel
-        physicsData.fuelRestMass -= mutableFactoryData.fuelRestMassConsumptionRate * amountFraction
+        physicsData.fuelRestMassData.production -= mutableFactoryData.fuelRestMassConsumptionRate * amountFraction
 
         // Produce resource
         resourceData.addNewResource(

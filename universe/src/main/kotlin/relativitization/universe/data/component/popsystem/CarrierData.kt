@@ -7,7 +7,7 @@ import relativitization.universe.data.component.popsystem.pop.MutableAllPopData
 @Serializable
 data class CarrierData(
     val coreRestMass: Double = 1.0,
-    val maxDeltaFuelRestMass: Double = 0.0,
+    val maxMovementDeltaFuelRestMass: Double = 0.0,
     val size: Double = 0.0,
     val carrierType: CarrierType = CarrierType.SPACESHIP,
     val allPopData: AllPopData = AllPopData(),
@@ -17,7 +17,7 @@ data class CarrierData(
 @Serializable
 data class MutableCarrierData(
     var coreRestMass: Double = 1.0,
-    var maxDeltaFuelRestMass: Double = 0.0,
+    var maxMovementDeltaFuelRestMass: Double = 0.0,
     var size: Double = 0.0,
     var carrierType: CarrierType = CarrierType.SPACESHIP,
     var allPopData: MutableAllPopData = MutableAllPopData(),

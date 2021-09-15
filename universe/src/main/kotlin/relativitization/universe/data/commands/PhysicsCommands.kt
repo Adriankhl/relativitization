@@ -64,7 +64,7 @@ data class ChangeVelocityCommand(
             playerData.velocity.vy = targetVelocityData.newVelocity.vy
             playerData.velocity.vz = targetVelocityData.newVelocity.vz
 
-            playerData.playerInternalData.physicsData().fuelRestMass -= targetVelocityData.deltaRestMass
+            playerData.playerInternalData.physicsData().fuelRestMassData.movement -= targetVelocityData.deltaRestMass
         } else {
             logger.error("Target velocity larger than the speed of light")
         }

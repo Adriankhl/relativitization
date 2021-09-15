@@ -17,7 +17,7 @@ data class PopSystemData(
     }
 
     fun totalMaxDeltaFuelRestMass(): Double {
-        return carrierDataMap.values.sumOf { it.maxDeltaFuelRestMass }
+        return carrierDataMap.values.sumOf { it.maxMovementDeltaFuelRestMass }
     }
 
     fun numCarrier() = carrierDataMap.values.size
@@ -32,8 +32,8 @@ data class MutablePopSystemData(
         return carrierDataMap.values.sumOf { it.coreRestMass }
     }
 
-    fun totalMaxDeltaFuelRestMass(): Double {
-        return carrierDataMap.values.sumOf { it.maxDeltaFuelRestMass }
+    fun totalMaxMovementDeltaFuelRestMass(): Double {
+        return carrierDataMap.values.sumOf { it.maxMovementDeltaFuelRestMass }
     }
 
     /**
@@ -60,7 +60,7 @@ data class MutablePopSystemData(
         val newCarrier = MutableCarrierData(
             coreRestMass = coreRestMass,
             carrierType = CarrierType.SPACESHIP,
-            maxDeltaFuelRestMass = maxDeltaFuelRestMass
+            maxMovementDeltaFuelRestMass = maxDeltaFuelRestMass
         )
         carrierDataMap[newCarrierId()] = newCarrier
     }
