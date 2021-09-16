@@ -7,23 +7,23 @@ import relativitization.universe.utils.RelativitizationLogManager
 abstract class Reasoner : AINode {
     abstract fun getSubNodeList(
         planDataAtPlayer: PlanDataAtPlayer,
-        planStatus: PlanStatus
+        planState: PlanState
     ): List<AINode>
 }
 
 abstract class SequenceReasoner : Reasoner() {
 
     protected open fun updateStatus(
-        planDataAtPlayer: PlanDataAtPlayer, planStatus: PlanStatus
+        planDataAtPlayer: PlanDataAtPlayer, planState: PlanState
     ) {}
 
-    override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planStatus: PlanStatus) {
+    override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
         logger.debug("${this::class.simpleName} (SequenceReasoner) updating data")
 
-        val subNodeList: List<AINode> = getSubNodeList(planDataAtPlayer, planStatus)
-        subNodeList.forEach { it.updatePlan(planDataAtPlayer, planStatus) }
+        val subNodeList: List<AINode> = getSubNodeList(planDataAtPlayer, planState)
+        subNodeList.forEach { it.updatePlan(planDataAtPlayer, planState) }
 
-        updateStatus(planDataAtPlayer, planStatus)
+        updateStatus(planDataAtPlayer, planState)
     }
 
     companion object {
@@ -34,44 +34,44 @@ abstract class SequenceReasoner : Reasoner() {
 abstract class DualUtilityReasoner : Reasoner() {
     abstract fun getOptionList(
         planDataAtPlayer: PlanDataAtPlayer,
-        planStatus: PlanStatus
+        planState: PlanState
     ): List<Option>
 
     protected open fun updateStatus(
-        planDataAtPlayer: PlanDataAtPlayer, planStatus: PlanStatus
+        planDataAtPlayer: PlanDataAtPlayer, planState: PlanState
     ) {}
 
     override fun getSubNodeList(
         planDataAtPlayer: PlanDataAtPlayer,
-        planStatus: PlanStatus
+        planState: PlanState
     ): List<AINode> {
-        return getOptionList(planDataAtPlayer, planStatus)
+        return getOptionList(planDataAtPlayer, planState)
     }
 
-    override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planStatus: PlanStatus) {
+    override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
         logger.debug("${this::class.java.simpleName} (DualUtilityReasoner) updating data")
 
-        val selectedOption: Option = selectOption(planDataAtPlayer, planStatus)
+        val selectedOption: Option = selectOption(planDataAtPlayer, planState)
 
-        selectedOption.updatePlan(planDataAtPlayer, planStatus)
+        selectedOption.updatePlan(planDataAtPlayer, planState)
 
-        updateStatus(planDataAtPlayer, planStatus)
+        updateStatus(planDataAtPlayer, planState)
     }
 
-    protected fun selectOption(planDataAtPlayer: PlanDataAtPlayer, planStatus: PlanStatus): Option {
-        val optionList: List<Option> = getOptionList(planDataAtPlayer, planStatus)
+    protected fun selectOption(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState): Option {
+        val optionList: List<Option> = getOptionList(planDataAtPlayer, planState)
         val optionWeightMap: Map<Option, Double> = optionList.associateWith {
-            it.getWeight(planDataAtPlayer, planStatus)
+            it.getWeight(planDataAtPlayer, planState)
         }
         val validOptionWeightMap: Map<Option, Double> = optionWeightMap.filterValues { it > 0.0 }
 
         return if (validOptionWeightMap.isNotEmpty()) {
             val maxRank: Int = validOptionWeightMap.maxOfOrNull {
-                it.key.getRank(planDataAtPlayer, planStatus)
+                it.key.getRank(planDataAtPlayer, planState)
             }!!
 
             val maxRankValidOptionWeightMap: Map<Option, Double> = validOptionWeightMap.filterKeys {
-                it.getRank(planDataAtPlayer, planStatus) == maxRank
+                it.getRank(planDataAtPlayer, planState) == maxRank
             }
 
             WeightedReservoir.aRes(

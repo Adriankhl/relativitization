@@ -6,49 +6,49 @@ import relativitization.universe.utils.RelativitizationLogManager
 
 abstract class Option : AINode {
     abstract fun getConsiderationList(
-        planDataAtPlayer: PlanDataAtPlayer, planStatus: PlanStatus
+        planDataAtPlayer: PlanDataAtPlayer, planState: PlanState
     ): List<Consideration>
 
     protected abstract fun getCommandList(
-        planDataAtPlayer: PlanDataAtPlayer, planStatus: PlanStatus
+        planDataAtPlayer: PlanDataAtPlayer, planState: PlanState
     ): List<Command>
 
     protected open fun updateStatus(
-        planDataAtPlayer: PlanDataAtPlayer, planStatus: PlanStatus
+        planDataAtPlayer: PlanDataAtPlayer, planState: PlanState
     ) {}
 
-    override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planStatus: PlanStatus) {
+    override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
         logger.debug("${this::class.simpleName} (CommandListOption) updating data")
 
-        val commandList = getCommandList(planDataAtPlayer, planStatus)
+        val commandList = getCommandList(planDataAtPlayer, planState)
 
         planDataAtPlayer.addAllCommand(commandList)
 
-        updateStatus(planDataAtPlayer, planStatus)
+        updateStatus(planDataAtPlayer, planState)
     }
 
     fun getRank(
-        planDataAtPlayer: PlanDataAtPlayer, planStatus: PlanStatus
+        planDataAtPlayer: PlanDataAtPlayer, planState: PlanState
     ): Int {
-        val considerationList = getConsiderationList(planDataAtPlayer, planStatus)
+        val considerationList = getConsiderationList(planDataAtPlayer, planState)
         return if (considerationList.isEmpty()) {
             0
         } else {
             considerationList.maxOf {
-                it.getDualUtilityData(planDataAtPlayer, planStatus).rank
+                it.getDualUtilityData(planDataAtPlayer, planState).rank
             }
         }
     }
 
     fun getWeight(
-        planDataAtPlayer: PlanDataAtPlayer, planStatus: PlanStatus
+        planDataAtPlayer: PlanDataAtPlayer, planState: PlanState
     ): Double {
-        val considerationList = getConsiderationList(planDataAtPlayer, planStatus)
+        val considerationList = getConsiderationList(planDataAtPlayer, planState)
         return if (considerationList.isEmpty()) {
             0.0
         } else {
             val utilityDataList: List<DualUtilityData> = considerationList.map {
-                it.getDualUtilityData(planDataAtPlayer, planStatus)
+                it.getDualUtilityData(planDataAtPlayer, planState)
             }
 
             val totalAddend: Double = utilityDataList.fold(0.0) { acc, data->
@@ -71,11 +71,11 @@ abstract class Option : AINode {
 class EmptyOption : Option() {
     override fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer,
-        planStatus: PlanStatus
+        planState: PlanState
     ): List<Consideration> = listOf()
 
     override fun getCommandList(
         planDataAtPlayer: PlanDataAtPlayer,
-        planStatus: PlanStatus
+        planState: PlanState
     ): List<Command>  = listOf()
 }

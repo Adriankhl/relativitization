@@ -6,7 +6,7 @@ import relativitization.universe.data.PlanDataAtPlayer
 class EventReasoner() : SequenceReasoner() {
     override fun getSubNodeList(
         planDataAtPlayer: PlanDataAtPlayer,
-        planStatus: PlanStatus
+        planState: PlanState
     ): List<AINode> {
         return listOf(
             PickMoveToDouble3DEventReasoner()

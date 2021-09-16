@@ -1,8 +1,8 @@
 package relativitization.universe.ai.default.utils
 
 /**
- * For storing plan status for communication between nodes
+ * For storing plan state for communication between nodes
  */
-class PlanStatus(
+class PlanState(
     val interestPlayerId: MutableList<Int> = mutableListOf(),
 )

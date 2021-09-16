@@ -16,7 +16,7 @@ class PickMoveToDouble3DEventReasoner : DualUtilityReasoner() {
 
     override fun getOptionList(
         planDataAtPlayer: PlanDataAtPlayer,
-        planStatus: PlanStatus
+        planState: PlanState
     ): List<Option> {
         val movementEventKeyList: List<Int> =
             planDataAtPlayer.universeData3DAtPlayer.getCurrentPlayerData(
@@ -42,7 +42,7 @@ class PickMoveToDouble3DEventOption(
 
     override fun getCommandList(
         planDataAtPlayer: PlanDataAtPlayer,
-        planStatus: PlanStatus
+        planState: PlanState
     ): List<Command> {
         val movementEventMap: Map<Int, EventData> =
             planDataAtPlayer.universeData3DAtPlayer.getCurrentPlayerData().playerInternalData.eventDataMap.filter {
@@ -63,7 +63,7 @@ class PickMoveToDouble3DEventOption(
 
     override fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer,
-        planStatus: PlanStatus
+        planState: PlanState
     ): List<Consideration> {
         val movementEventMap: Map<Int, EventData> =
             planDataAtPlayer.universeData3DAtPlayer.getCurrentPlayerData().playerInternalData.eventDataMap.filter {

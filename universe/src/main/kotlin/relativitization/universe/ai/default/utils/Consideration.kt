@@ -4,6 +4,6 @@ import relativitization.universe.data.PlanDataAtPlayer
 
 interface Consideration {
     fun getDualUtilityData(
-        planDataAtPlayer: PlanDataAtPlayer, planStatus: PlanStatus
+        planDataAtPlayer: PlanDataAtPlayer, planState: PlanState
     ): DualUtilityData
 }

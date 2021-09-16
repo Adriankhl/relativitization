@@ -2,7 +2,7 @@ package relativitization.universe.ai.default.consideration
 
 import relativitization.universe.ai.default.utils.Consideration
 import relativitization.universe.ai.default.utils.DualUtilityData
-import relativitization.universe.ai.default.utils.PlanStatus
+import relativitization.universe.ai.default.utils.PlanState
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.component.DiplomacyData
 import kotlin.math.exp
@@ -21,7 +21,7 @@ class RelationConsideration(
 
     override fun getDualUtilityData(
         planDataAtPlayer: PlanDataAtPlayer,
-        planStatus: PlanStatus
+        planState: PlanState
     ): DualUtilityData {
         val diplomacyData: DiplomacyData = planDataAtPlayer.universeData3DAtPlayer.
         getCurrentPlayerData().playerInternalData.diplomacyData()

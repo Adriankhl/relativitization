@@ -22,17 +22,17 @@ class RootReasoner(
 ) : SequenceReasoner() {
 
     private val planDataAtPlayer: PlanDataAtPlayer = universeData3DAtPlayer.getPlanDataAtPlayer {}
-    private val planStatus: PlanStatus = PlanStatus()
+    private val planState: PlanState = PlanState()
 
     fun computeCommandList(): List<Command> {
         logger.debug("Root reasoner computing commandList")
-        updatePlan(planDataAtPlayer, planStatus)
+        updatePlan(planDataAtPlayer, planState)
         return planDataAtPlayer.commandList
     }
 
     override fun getSubNodeList(
         planDataAtPlayer: PlanDataAtPlayer,
-        planStatus: PlanStatus
+        planState: PlanState
     ): List<AINode> = listOf(
         EventReasoner(),
     )
