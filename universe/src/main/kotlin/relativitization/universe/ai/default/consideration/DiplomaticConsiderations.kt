@@ -29,7 +29,7 @@ class RelationConsideration(
         return DualUtilityData(
             rank = rank,
             multiplier = multiplier,
-            addend = exp(diplomacyData.getRelation(playerId).toDouble() / normalizeRelation),
+            bonus = exp(diplomacyData.getRelation(playerId).toDouble() / normalizeRelation),
         )
     }
 }

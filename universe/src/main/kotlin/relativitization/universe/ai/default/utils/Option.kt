@@ -52,7 +52,7 @@ abstract class Option : AINode {
             }
 
             val totalAddend: Double = utilityDataList.fold(0.0) { acc, data->
-                acc + data.addend
+                acc + data.bonus
             }
             val totalMultiplier: Double = utilityDataList.fold(1.0) { acc, data->
                 acc * data.multiplier
