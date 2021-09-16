@@ -13,12 +13,18 @@ abstract class Option : AINode {
         planDataAtPlayer: PlanDataAtPlayer, planStatus: PlanStatus
     ): List<Command>
 
+    protected open fun updateStatus(
+        planDataAtPlayer: PlanDataAtPlayer, planStatus: PlanStatus
+    ) {}
+
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planStatus: PlanStatus) {
         logger.debug("${this::class.simpleName} (CommandListOption) updating data")
 
         val commandList = getCommandList(planDataAtPlayer, planStatus)
 
         planDataAtPlayer.addAllCommand(commandList)
+
+        updateStatus(planDataAtPlayer, planStatus)
     }
 
     fun getRank(
@@ -60,4 +66,16 @@ abstract class Option : AINode {
     companion object {
         private val logger = RelativitizationLogManager.getLogger()
     }
+}
+
+class EmptyOption : Option() {
+    override fun getConsiderationList(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planStatus: PlanStatus
+    ): List<Consideration> = listOf()
+
+    override fun getCommandList(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planStatus: PlanStatus
+    ): List<Command>  = listOf()
 }
