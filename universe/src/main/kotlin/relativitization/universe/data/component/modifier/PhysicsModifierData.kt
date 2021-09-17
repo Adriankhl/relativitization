@@ -33,7 +33,7 @@ data class MutablePhysicsModifierData(
     }
 
     /**
-     * Disable fuel increase (e.g., production, transfering) by time
+     * Disable fuel increase (e.g., production, transfer) by time
      *
      * @param time the minimum time to disable fuel production
      */
