@@ -311,7 +311,7 @@ object Movement {
      * @param targetDouble3D target double3D position
      * @param speedOfLight speed of light
      */
-    fun requiredDeltaMassUpperBound(
+    fun requiredDeltaRestMassUpperBound(
         initialRestMass: Double,
         maxDeltaRestMass: Double,
         initialVelocity: Velocity,
@@ -330,7 +330,7 @@ object Movement {
             initialDouble3D = initialDouble3D,
             targetDouble3D = targetDouble3D,
             speedOfLight = speedOfLight,
-            numIteration = 100,
+            numIteration = numIteration,
         )
 
         return if ((testMovementFinalState.double3D == targetDouble3D) && (

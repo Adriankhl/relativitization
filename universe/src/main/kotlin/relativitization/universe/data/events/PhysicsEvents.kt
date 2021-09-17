@@ -9,6 +9,8 @@ import relativitization.universe.data.commands.ChangeVelocityCommand
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.commands.DisableFuelIncreaseCommand
 import relativitization.universe.data.component.physics.Double3D
+import relativitization.universe.data.component.physics.Velocity
+import relativitization.universe.maths.physics.Movement
 import relativitization.universe.maths.physics.Movement.targetDouble3DByPhotonRocket
 import relativitization.universe.maths.physics.TargetVelocityData
 import relativitization.universe.utils.I18NString
@@ -64,7 +66,19 @@ data class MoveToDouble3DEvent(
     }
 
     override fun canExecute(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean {
-        return playerData.isLeaderOrSelf(fromId)
+        val requiredDeltaRestMass: Double = Movement.requiredDeltaRestMassUpperBound(
+            initialRestMass = playerData.playerInternalData.physicsData().totalRestMass(),
+            maxDeltaRestMass = playerData.playerInternalData.physicsData().fuelRestMassData.maxMovementDelta,
+            initialVelocity = playerData.velocity.toVelocity(),
+            maxSpeed = maxSpeed,
+            initialDouble3D = playerData.double4D.toDouble3D(),
+            targetDouble3D = targetDouble3D,
+            speedOfLight = universeSettings.speedOfLight,
+            numIteration = 100
+        )
+        return (requiredDeltaRestMass >=
+                playerData.playerInternalData.physicsData().fuelRestMassData.movement) &&
+                (playerData.isLeaderOrSelf(fromId))
     }
 
     override fun generateCommands(choice: Int, universeData3DAtPlayer: UniverseData3DAtPlayer): List<Command> {
