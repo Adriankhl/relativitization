@@ -9,7 +9,6 @@ import relativitization.universe.data.component.economy.*
 import relativitization.universe.data.component.popsystem.pop.labourer.factory.MutableFactoryData
 import relativitization.universe.data.component.science.UniverseScienceData
 import relativitization.universe.mechanisms.Mechanism
-import kotlin.math.min
 
 /**
  * Produce resources, fuel needs special treatments
@@ -36,7 +35,7 @@ object FactoryProduction : Mechanism() {
 
         // Store fuel to physics data
         if (mutablePlayerData.playerInternalData.modifierData(
-        ).physicsModifierData.disableFuelIncreaseTimeLimit <= 0) {
+        ).physicsModifierData.disableRestMassIncreaseTimeLimit <= 0) {
             mutablePlayerData.playerInternalData.physicsData().addFuel(
                 mutablePlayerData.playerInternalData.economyData().resourceData.getFuelAmount()
             )
