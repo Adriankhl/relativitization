@@ -7,7 +7,6 @@ import relativitization.universe.data.commands.AddEventCommand
 import relativitization.universe.data.component.physics.Double4D
 import relativitization.universe.data.component.physics.Int4D
 import relativitization.universe.generate.GenerateSettings
-import relativitization.universe.generate.GenerateUniverse
 import relativitization.universe.generate.UniverseGenerationCollection
 import kotlin.test.Test
 
@@ -104,6 +103,8 @@ internal class MoveToDouble3DEventTest {
             universe.preProcessUniverse()
         }
 
+        val view8: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
+        assert(view8.get(1).playerInternalData.eventDataMap.isEmpty())
 
         runBlocking {
             for (i in 1..20) {
@@ -119,8 +120,7 @@ internal class MoveToDouble3DEventTest {
                 universe.preProcessUniverse()
             }
         }
-
-        val view: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
-        assert(view.get(1).double4D.toDouble3D() == originalDouble4D.toDouble3D())
+        val finalView: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
+        assert(finalView.get(1).double4D.toDouble3D() == originalDouble4D.toDouble3D())
     }
 }

@@ -76,7 +76,7 @@ data class MoveToDouble3DEvent(
             speedOfLight = universeSettings.speedOfLight,
             numIteration = 100
         )
-        return (requiredDeltaRestMass >=
+        return (requiredDeltaRestMass <=
                 playerData.playerInternalData.physicsData().fuelRestMassData.movement) &&
                 (playerData.isLeaderOrSelf(fromId))
     }
