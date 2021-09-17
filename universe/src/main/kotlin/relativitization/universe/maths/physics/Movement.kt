@@ -245,6 +245,127 @@ object Movement {
     }
 
     /**
+     * Run several iteration to move the object by photon rocket
+     *
+     * @param initialRestMass initial rest mass of the object
+     * @param maxDeltaRestMass maximum change of rest mass to photon to stop the object
+     * @param initialVelocity initial velocity
+     * @param maxSpeed the maximum speed limit of the object, to prevent using too much rest mass as fuel
+     * @param initialDouble3D initial double3D position
+     * @param targetDouble3D target double3D position
+     * @param speedOfLight speed of light
+     * @param numIteration number of turn to move the object
+     */
+    fun runTargetDouble3DByPhotonRocket(
+        initialRestMass: Double,
+        maxDeltaRestMass: Double,
+        initialVelocity: Velocity,
+        maxSpeed: Double,
+        initialDouble3D: Double3D,
+        targetDouble3D: Double3D,
+        speedOfLight: Double,
+        numIteration: Int,
+    ): MovementStateData {
+
+        var currentRestMass = initialRestMass
+        var currentDouble3D = initialDouble3D
+        var currentVelocity = initialVelocity
+
+        loop@ for (i in 1..numIteration) {
+            if (currentDouble3D != targetDouble3D) {
+                val targetVelocityData: TargetVelocityData = targetDouble3DByPhotonRocket(
+                    initialRestMass = currentRestMass,
+                    maxDeltaRestMass = maxDeltaRestMass,
+                    initialVelocity = currentVelocity,
+                    maxSpeed = maxSpeed,
+                    initialDouble3D = currentDouble3D,
+                    targetDouble3D = targetDouble3D,
+                    speedOfLight = speedOfLight
+                )
+
+                currentRestMass -= targetVelocityData.deltaRestMass
+                currentVelocity = targetVelocityData.newVelocity
+                currentDouble3D += targetVelocityData.newVelocity.displacement(1)
+            } else {
+                break@loop
+            }
+        }
+
+        return MovementStateData(
+            currentRestMass,
+            currentVelocity,
+            currentDouble3D
+        )
+    }
+
+
+    /**
+     * Upper bound of the required delta mass to move to the target position, given that the
+     * rest mass does not increase
+     *
+     * @param initialRestMass initial rest mass of the object
+     * @param maxDeltaRestMass maximum change of rest mass to photon to stop the object
+     * @param initialVelocity initial velocity
+     * @param maxSpeed the maximum speed limit of the object, to prevent using too much rest mass as fuel
+     * @param initialDouble3D initial double3D position
+     * @param targetDouble3D target double3D position
+     * @param speedOfLight speed of light
+     */
+    fun requiredDeltaMassUpperBound(
+        initialRestMass: Double,
+        maxDeltaRestMass: Double,
+        initialVelocity: Velocity,
+        maxSpeed: Double,
+        initialDouble3D: Double3D,
+        targetDouble3D: Double3D,
+        speedOfLight: Double,
+        numIteration: Int = 100,
+    ): Double {
+        // Test the movement by 100 iteration
+        val testMovementFinalState: MovementStateData = runTargetDouble3DByPhotonRocket(
+            initialRestMass = initialRestMass,
+            maxDeltaRestMass = maxDeltaRestMass,
+            initialVelocity = initialVelocity,
+            maxSpeed = maxSpeed,
+            initialDouble3D = initialDouble3D,
+            targetDouble3D = targetDouble3D,
+            speedOfLight = speedOfLight,
+            numIteration = 100,
+        )
+
+        return if ((testMovementFinalState.double3D == targetDouble3D) && (
+                    testMovementFinalState.velocity.squareMag() == 0.0)
+        ) {
+            initialRestMass - testMovementFinalState.restMass
+        } else {
+            // First stop to zero velocity, then accelerate to max speed, then stop to zero again
+            val maxVelocity: Velocity = displacementToVelocity(initialDouble3D, targetDouble3D, speedOfLight).scaleVelocity(maxSpeed)
+            val requiredDeltaMass1: Double = deltaMassByPhotonRocket(
+                initialRestMass = initialRestMass,
+                initialVelocity = initialVelocity,
+                targetVelocity = Velocity(0.0, 0.0, 0.0),
+                speedOfLight = speedOfLight,
+            )
+
+            val requiredDeltaMass2: Double = deltaMassByPhotonRocket(
+                initialRestMass = initialRestMass - requiredDeltaMass1,
+                initialVelocity = Velocity(0.0, 0.0, 0.0),
+                targetVelocity = maxVelocity,
+                speedOfLight = speedOfLight,
+            )
+
+            val requiredDeltaMass3: Double = deltaMassByPhotonRocket(
+                initialRestMass = initialRestMass - requiredDeltaMass1 - requiredDeltaMass2,
+                initialVelocity = maxVelocity,
+                targetVelocity = Velocity(0.0, 0.0, 0.0),
+                speedOfLight = speedOfLight,
+            )
+
+            requiredDeltaMass1 + requiredDeltaMass2 + requiredDeltaMass3
+        }
+    }
+
+    /**
      * Compute the overall delta mass required to move to a target double3D position
      *
      * @param initialRestMass initial rest mass of the object
@@ -265,26 +386,23 @@ object Movement {
         speedOfLight: Double,
     ): Double {
 
-        var currentRestMass = initialRestMass
-        var currentDouble3D = initialDouble3D
-        var currentVelocity = initialVelocity
+        val currentMovementState: MovementStateData = runTargetDouble3DByPhotonRocket(
+            initialRestMass = initialRestMass,
+            maxDeltaRestMass = maxDeltaRestMass,
+            initialVelocity = initialVelocity,
+            maxSpeed = maxSpeed,
+            initialDouble3D = initialDouble3D,
+            targetDouble3D = targetDouble3D,
+            speedOfLight = speedOfLight,
+            numIteration = Int.MAX_VALUE,
 
-        while (currentDouble3D != targetDouble3D) {
-            val targetVelocityData: TargetVelocityData = targetDouble3DByPhotonRocket(
-                initialRestMass = currentRestMass,
-                maxDeltaRestMass = maxDeltaRestMass,
-                initialVelocity = currentVelocity,
-                maxSpeed = maxSpeed,
-                initialDouble3D = currentDouble3D,
-                targetDouble3D = targetDouble3D,
-                speedOfLight = speedOfLight
-            )
-
-            currentRestMass -= targetVelocityData.deltaRestMass
-            currentVelocity = targetVelocityData.newVelocity
-            currentDouble3D += targetVelocityData.newVelocity.displacement(1)
-        }
-
-        return initialRestMass - currentRestMass
+        )
+        return initialRestMass - currentMovementState.restMass
     }
 }
+
+data class MovementStateData(
+    val restMass: Double,
+    val velocity: Velocity,
+    val double3D: Double3D,
+)
