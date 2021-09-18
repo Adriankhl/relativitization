@@ -393,6 +393,12 @@ data class MutableResourceQualityData(
     var quality2: Double = 0.0,
     var quality3: Double = 0.0,
 ) {
+    fun toResourceQualityData(): ResourceQualityData = ResourceQualityData(
+        quality1,
+        quality2,
+        quality3
+    )
+
     fun updateQuality(
         originalAmount: Double,
         newAmount: Double,
