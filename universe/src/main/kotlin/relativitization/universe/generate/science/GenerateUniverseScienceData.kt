@@ -1,7 +1,7 @@
 package relativitization.universe.generate.science
 
-import relativitization.universe.data.component.science.MutableUniverseScienceData
-import relativitization.universe.data.component.science.UniverseScienceData
+import relativitization.universe.data.MutableUniverseScienceData
+import relativitization.universe.data.UniverseScienceData
 import relativitization.universe.data.component.science.knowledge.*
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.maths.physics.Intervals

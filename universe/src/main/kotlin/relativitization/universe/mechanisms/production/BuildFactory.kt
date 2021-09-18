@@ -4,11 +4,9 @@ import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
-import relativitization.universe.data.component.economy.MutableResourceQualityData
 import relativitization.universe.data.component.economy.ResourceType
-import relativitization.universe.data.component.popsystem.MutableCarrierData
 import relativitization.universe.data.component.popsystem.pop.labourer.factory.MutableBuildFactoryData
-import relativitization.universe.data.component.science.UniverseScienceData
+import relativitization.universe.data.UniverseScienceData
 import relativitization.universe.mechanisms.Mechanism
 
 object BuildFactory : Mechanism() {

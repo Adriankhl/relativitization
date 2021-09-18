@@ -7,7 +7,7 @@ import relativitization.universe.data.component.economy.MutableResourceQualityDa
 import relativitization.universe.data.component.economy.ResourceType
 import relativitization.universe.data.component.physics.MutableInt4D
 import relativitization.universe.data.component.popsystem.pop.labourer.factory.MutableFactoryData
-import relativitization.universe.data.component.science.UniverseScienceData
+import relativitization.universe.data.UniverseScienceData
 import relativitization.universe.data.component.science.knowledge.AppliedResearchField
 import relativitization.universe.data.component.science.knowledge.AppliedResearchProjectData
 import relativitization.universe.data.component.science.knowledge.BasicResearchField

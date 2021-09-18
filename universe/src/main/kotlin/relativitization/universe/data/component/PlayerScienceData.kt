@@ -2,7 +2,7 @@ package relativitization.universe.data.component
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import relativitization.universe.data.component.science.UniverseScienceData
+import relativitization.universe.data.UniverseScienceData
 import relativitization.universe.data.component.science.knowledge.*
 import relativitization.universe.data.component.science.product.MutableScienceProductData
 import relativitization.universe.data.component.science.product.ScienceProductData

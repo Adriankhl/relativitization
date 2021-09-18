@@ -4,7 +4,7 @@ import relativitization.universe.ai.abm.FlockingAI
 import relativitization.universe.ai.name
 import relativitization.universe.data.*
 import relativitization.universe.data.component.physics.MutableVelocity
-import relativitization.universe.data.component.science.UniverseScienceData
+import relativitization.universe.data.UniverseScienceData
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.generate.GenerateSettings
 import relativitization.universe.generate.GenerateUniverse

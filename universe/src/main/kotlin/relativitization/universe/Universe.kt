@@ -6,8 +6,8 @@ import relativitization.universe.data.*
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.component.physics.Int3D
 import relativitization.universe.data.component.physics.Int4D
-import relativitization.universe.data.component.science.MutableUniverseScienceData
-import relativitization.universe.data.component.science.UniverseScienceData
+import relativitization.universe.data.MutableUniverseScienceData
+import relativitization.universe.data.UniverseScienceData
 import relativitization.universe.data.serializer.DataSerializer.copy
 import relativitization.universe.data.serializer.DataSerializer.decode
 import relativitization.universe.data.serializer.DataSerializer.encode

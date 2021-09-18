@@ -1,7 +1,7 @@
 package relativitization.universe.generate.science
 
 
-import relativitization.universe.data.component.science.UniverseScienceData
+import relativitization.universe.data.UniverseScienceData
 import relativitization.universe.data.component.science.knowledge.AppliedResearchField
 import relativitization.universe.data.component.science.knowledge.BasicResearchField
 import kotlin.test.Test

@@ -7,7 +7,7 @@ import relativitization.universe.data.commands.Command
 import relativitization.universe.data.component.MutablePhysicsData
 import relativitization.universe.data.component.economy.*
 import relativitization.universe.data.component.popsystem.pop.labourer.factory.MutableFactoryData
-import relativitization.universe.data.component.science.UniverseScienceData
+import relativitization.universe.data.UniverseScienceData
 import relativitization.universe.mechanisms.Mechanism
 
 /**

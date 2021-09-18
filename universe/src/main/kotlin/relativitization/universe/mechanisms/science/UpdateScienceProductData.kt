@@ -5,7 +5,7 @@ import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.component.MutablePlayerScienceData
-import relativitization.universe.data.component.science.UniverseScienceData
+import relativitization.universe.data.UniverseScienceData
 import relativitization.universe.data.component.science.knowledge.MutableKnowledgeData
 import relativitization.universe.mechanisms.Mechanism
 import kotlin.math.exp
