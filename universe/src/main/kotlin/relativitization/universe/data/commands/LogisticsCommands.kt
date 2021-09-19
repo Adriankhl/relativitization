@@ -12,6 +12,7 @@ import relativitization.universe.maths.physics.Intervals
 import relativitization.universe.utils.I18NString
 import relativitization.universe.utils.IntString
 import relativitization.universe.utils.RealString
+import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.math.pow
 
 /**
@@ -24,11 +25,9 @@ data class SendResourceCommand(
     override val fromInt4D: Int4D,
     val resourceType: ResourceType,
     val resourceQualityClass: ResourceQualityClass,
+    val resourceQualityData: ResourceQualityData,
     val amount: Double,
 ) : Command() {
-
-    private var resourceQualityData: ResourceQualityData = ResourceQualityData()
-
     override val description: I18NString = I18NString(
         listOf(
             RealString("Send "),
@@ -53,10 +52,18 @@ data class SendResourceCommand(
 
     override fun canSend(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean {
         val isNotFuel: Boolean = resourceType != ResourceType.FUEL
-        val tradeAmount: Double = playerData.playerInternalData.economyData().resourceData.getTradeResourceAmount(
+        val hasAmount: Boolean = playerData.playerInternalData.economyData().resourceData.getTradeResourceAmount(
             resourceType, resourceQualityClass
-        )
-        return isNotFuel && (tradeAmount >= amount)
+        ) >= amount
+        val sameQuality: Boolean = playerData.playerInternalData.economyData().resourceData.getResourceQuality(
+            resourceType, resourceQualityClass
+        ).toResourceQualityData() == resourceQualityData
+
+        if (!sameQuality) {
+            logger.debug("Can't send resource, qualities are different")
+        }
+
+        return isNotFuel && hasAmount && sameQuality
     }
 
     override fun canExecute(
@@ -73,9 +80,6 @@ data class SendResourceCommand(
         playerData.playerInternalData.economyData().resourceData.getResourceAmountData(
             resourceType, resourceQualityClass
         ).trade -= amount
-        resourceQualityData = playerData.playerInternalData.economyData().resourceData.getResourceQuality(
-            resourceType, resourceQualityClass
-        ).toResourceQualityData()
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
@@ -96,5 +100,9 @@ data class SendResourceCommand(
             newResourceQuality = resourceQualityData.toMutableResourceQualityData(),
             amount = amount * lossFraction
         )
+    }
+
+    companion object {
+        private val logger = RelativitizationLogManager.getLogger()
     }
 }
