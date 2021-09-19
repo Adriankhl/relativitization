@@ -1,6 +1,7 @@
 package relativitization.universe.data.component.economy
 
 import kotlinx.serialization.Serializable
+import kotlin.math.pow
 
 enum class ResourceType(val value: String) {
     FUEL("Fuel"),
@@ -400,6 +401,14 @@ data class ResourceQualityData(
     fun leq(other: ResourceQualityData): Boolean {
         return (quality1 <= other.quality1) && (quality2 <= other.quality2) &&
                 (quality3 <= other.quality3)
+    }
+
+    /**
+     * Resource difference
+     */
+    fun squareDiff(other: ResourceQualityData): Double {
+        return (quality1 - other.quality1).pow(2) + (quality2 - other.quality2).pow(2) +
+                (quality3 - other.quality3).pow(2)
     }
 }
 

@@ -82,7 +82,7 @@ data class SendResourceCommand(
 
         val sameQuality: Boolean = playerData.playerInternalData.economyData().resourceData.getResourceQuality(
             resourceType, resourceQualityClass
-        ).toResourceQualityData() == resourceQualityData
+        ).toResourceQualityData().squareDiff(resourceQualityData) <= 0.1
         val sameQualityI18NString: I18NString = if (sameQuality) {
             I18NString("")
         } else {
