@@ -63,6 +63,10 @@ data class SendResourceCommand(
             logger.debug("Can't send resource, qualities are different")
         }
 
+        if (!hasAmount) {
+            logger.debug("Can't send fuel, not enough amount")
+        }
+
         return isNotFuel && hasAmount && sameQuality
     }
 
@@ -100,6 +104,77 @@ data class SendResourceCommand(
             newResourceQuality = resourceQualityData.toMutableResourceQualityData(),
             amount = amount * lossFraction
         )
+    }
+
+    companion object {
+        private val logger = RelativitizationLogManager.getLogger()
+    }
+}
+
+/**
+ * Send fuel from yourself to another player
+ */
+@Serializable
+data class SendFuelCommand(
+    override val toId: Int,
+    override val fromId: Int,
+    override val fromInt4D: Int4D,
+    val amount: Double,
+) : Command() {
+    override val description: I18NString = I18NString(
+        listOf(
+            RealString("Send "),
+            IntString(0),
+            RealString(" fuel from player "),
+            IntString(1),
+            RealString(" to "),
+            IntString(2),
+        ),
+        listOf(
+            amount.toString(),
+            fromId.toString(),
+            toId.toString(),
+        ),
+    )
+
+    override fun canSend(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean {
+        val hasAmount: Boolean = playerData.playerInternalData.physicsData().fuelRestMassData.trade >= amount
+
+        if (!hasAmount) {
+            logger.debug("Can't send fuel, not enough amount")
+        }
+
+        return hasAmount
+    }
+
+    override fun canExecute(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): Boolean {
+        return playerData.playerInternalData.modifierData().physicsModifierData.disableRestMassIncreaseTimeLimit <= 0
+    }
+
+    override fun selfExecuteBeforeSend(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ) {
+        playerData.playerInternalData.physicsData().fuelRestMassData.trade -= amount
+    }
+
+    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+        val lossFractionPerDistance: Double = playerData.playerInternalData.playerScienceData().playerScienceProductData.fuelLogisticsLossFractionPerDistance
+        val distance: Double = Intervals.distance(
+            fromInt4D.toDouble3D(),
+            playerData.int4D.toDouble3D()
+        )
+
+        val lossFraction: Double = if (distance < 1.0) {
+            0.0
+        } else {
+            lossFractionPerDistance.pow(distance)
+        }
+
+        playerData.playerInternalData.physicsData().addFuel(amount * lossFraction)
     }
 
     companion object {
