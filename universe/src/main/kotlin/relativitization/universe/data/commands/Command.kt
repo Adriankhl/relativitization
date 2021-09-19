@@ -7,6 +7,8 @@ import relativitization.universe.data.component.physics.Int4D
 import relativitization.universe.data.events.MoveToDouble3DEvent
 import relativitization.universe.data.events.name
 import relativitization.universe.utils.I18NString
+import relativitization.universe.utils.IntString
+import relativitization.universe.utils.RealString
 import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.reflect.KClass
 
@@ -213,6 +215,22 @@ data class CanSendWithMessage(
 
 object CanSendWIthMessageI18NStringFactory {
     fun isNotSubordinate(toId: Int): I18NString = I18NString(
-        "Player $toId not a subordinate of you"
+        listOf(
+            RealString("Player "),
+            IntString(0),
+            RealString(" not a subordinate of you.")
+        ),
+        listOf(
+            toId.toString(),
+        )
+    )
+    fun isNotYourId(toId: Int): I18NString = I18NString(
+        listOf(
+            RealString("Your id is not "),
+            IntString(0),
+        ),
+        listOf(
+            toId.toString(),
+        )
     )
 }

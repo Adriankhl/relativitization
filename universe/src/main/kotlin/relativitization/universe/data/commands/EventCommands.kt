@@ -45,9 +45,33 @@ data class AddEventCommand(
      * Whether this player can send the event depends on the event
      */
     override fun canSend(playerData: MutablePlayerData, universeSettings: UniverseSettings): CanSendWithMessage {
-        return validEventPlayerId() &&
-                canAddEvent(universeSettings, event) &&
-                event.canSend(playerData, universeSettings)
+
+        val isIdValid: Boolean = isEventPlayerIdValid()
+        val isIdValidI18NString: I18NString = if (isIdValid) {
+            I18NString("")
+        } else {
+            I18NString(
+                "Event player id is not valid. "
+            )
+        }
+        val canAdd: Boolean = canAddEvent(universeSettings, event)
+        val canAddI18NString: I18NString = if(canAdd) {
+            I18NString("")
+        } else {
+            I18NString(
+                "Cannot add this event by command. ",
+            )
+        }
+
+        val canSendEventMessage: CanSendWithMessage = event.canSend(playerData, universeSettings)
+
+
+        return CanSendWithMessage(
+            canAdd && isIdValid && canSendEventMessage.canSend,
+            I18NString.combine(listOf(
+                isIdValidI18NString, canAddI18NString, canSendEventMessage.message
+            ))
+        )
     }
 
     /**
@@ -70,7 +94,7 @@ data class AddEventCommand(
     /**
      * Check whether the fromId and toId in the event is equal to those in the command
      */
-    private fun validEventPlayerId(): Boolean = (fromId == event.fromId) && (toId == event.toId)
+    private fun isEventPlayerIdValid(): Boolean = (fromId == event.fromId) && (toId == event.toId)
 
     companion object {
         private val logger = RelativitizationLogManager.getLogger()
@@ -126,7 +150,15 @@ data class SelectEventChoiceCommand(
     )
 
     override fun canSend(playerData: MutablePlayerData, universeSettings: UniverseSettings): CanSendWithMessage {
-        return playerData.playerId == toId
+        val sameId: Boolean = playerData.playerId == toId
+        return if (sameId) {
+            CanSendWithMessage(true)
+        } else {
+            CanSendWithMessage(
+                false,
+                CanSendWIthMessageI18NStringFactory.isNotYourId(toId)
+            )
+        }
     }
 
     override fun canExecute(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean {

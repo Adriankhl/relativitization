@@ -68,5 +68,11 @@ data class I18NString(
 
     companion object {
         private val logger = RelativitizationLogManager.getLogger()
+
+        fun combine(i18NStringList: List<I18NString>): I18NString = i18NStringList.foldRight(
+            I18NString("")
+        ) { i18NString, acc ->
+            i18NString.copy(next = acc)
+        }
     }
 }
