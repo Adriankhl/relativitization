@@ -338,7 +338,7 @@ class Universe(
         }.mapValues { (id, commandList) ->
             val playerData: MutablePlayerData = playerCollection.getPlayer(id)
             commandList.filter { command ->
-                command.checkAndSelfExecuteBeforeSend(playerData, universeData.universeSettings)
+                command.checkAndSelfExecuteBeforeSend(playerData, universeData.universeSettings).canSend
             }
         }
 

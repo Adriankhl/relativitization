@@ -217,7 +217,7 @@ class PlanDataAtPlayer(
         if (playerData.playerId == -1) {
             logger.error("Add command error: Player id -1")
         } else {
-            if(command.checkAndSelfExecuteBeforeSend(thisPlayerData, universeData3DAtPlayer.universeSettings)) {
+            if(command.checkAndSelfExecuteBeforeSend(thisPlayerData, universeData3DAtPlayer.universeSettings).canSend) {
                 command.checkAndExecute(playerData, universeData3DAtPlayer.universeSettings)
                 commandList.add(command)
             } else {
