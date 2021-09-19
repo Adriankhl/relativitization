@@ -372,6 +372,13 @@ data class ResourceQualityData(
     val quality2: Double = 0.0,
     val quality3: Double = 0.0,
 ) {
+
+    operator fun times(d: Double): ResourceQualityData = ResourceQualityData(
+        quality1 * d,
+        quality2 * d,
+        quality3 * d,
+    )
+
     /**
      * Greater than or equal
      */
@@ -379,7 +386,9 @@ data class ResourceQualityData(
         return (quality1 >= other.quality1) && (quality2 >= other.quality2) &&
                 (quality3 >= other.quality3)
     }
-/** * Less than or equal
+
+    /**
+     * Less than or equal
      */
     fun leq(other: ResourceQualityData): Boolean {
         return (quality1 <= other.quality1) && (quality2 <= other.quality2) &&
@@ -393,6 +402,12 @@ data class MutableResourceQualityData(
     var quality2: Double = 0.0,
     var quality3: Double = 0.0,
 ) {
+    operator fun times(d: Double): MutableResourceQualityData = MutableResourceQualityData(
+        quality1 * d,
+        quality2 * d,
+        quality3 * d,
+    )
+
     fun toResourceQualityData(): ResourceQualityData = ResourceQualityData(
         quality1,
         quality2,
@@ -427,12 +442,6 @@ data class MutableResourceQualityData(
         return (quality1 <= other.quality1) && (quality2 <= other.quality2) &&
                 (quality3 <= other.quality3)
     }
-
-    operator fun times(d: Double): MutableResourceQualityData = MutableResourceQualityData(
-        quality1 * d,
-        quality2 * d,
-        quality3 * d,
-    )
 }
 
 /**
