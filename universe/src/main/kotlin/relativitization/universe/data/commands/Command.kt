@@ -52,7 +52,7 @@ sealed class Command {
     /**
      * Check if the player (sender) can send the command
      */
-    protected abstract fun canSend(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean
+    protected abstract fun canSend(playerData: MutablePlayerData, universeSettings: UniverseSettings): CanSendWithMessage
 
     /**
      * Check if can send and have command
@@ -61,7 +61,7 @@ sealed class Command {
      */
     fun canSendFromPlayer(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean {
         val hasCommand: Boolean = CommandCollection.hasCommand(universeSettings, this)
-        val canSend: Boolean =  canSend(playerData, universeSettings)
+        val canSend: Boolean =  canSend(playerData, universeSettings).canSend
         val isPlayerDataValid: Boolean = (playerData.int4D.toInt4D() == fromInt4D) &&
                 (checkFromId(playerData))
         if (!hasCommand || !canSend || !isPlayerDataValid) {
@@ -206,7 +206,13 @@ object CommandCollection {
 }
 
 @Serializable
-data class CanSendCommandMessage(
-    val success: Boolean,
-    val i18NString: I18NString = I18NString(listOf(), listOf())
+data class CanSendWithMessage(
+    val canSend: Boolean,
+    val message: I18NString = I18NString(listOf(), listOf())
 )
+
+object CanSendWIthMessageI18NStringFactory {
+    fun isNotSubordinate(toId: Int): I18NString = I18NString(
+        "Player $toId not a subordinate of you"
+    )
+}

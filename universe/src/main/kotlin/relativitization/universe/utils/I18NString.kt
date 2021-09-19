@@ -25,6 +25,12 @@ data class I18NString(
     val arg: List<String>,
     val next: I18NString? = null
 ) {
+    constructor(singleMessage: String, next: I18NString? = null) : this(
+        message = listOf(RealString(singleMessage)),
+        arg = listOf(),
+        next = next
+    )
+
     /**
      * Convert to a string
      */

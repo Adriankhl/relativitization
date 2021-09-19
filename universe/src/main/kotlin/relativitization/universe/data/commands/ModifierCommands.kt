@@ -27,7 +27,7 @@ data class DisableFuelIncreaseCommand(
         ),
     )
 
-    override fun canSend(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean {
+    override fun canSend(playerData: MutablePlayerData, universeSettings: UniverseSettings): CanSendWithMessage {
         return playerData.playerId == toId
     }
 

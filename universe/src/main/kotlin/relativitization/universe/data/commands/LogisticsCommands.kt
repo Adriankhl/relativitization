@@ -3,7 +3,6 @@ package relativitization.universe.data.commands
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseSettings
-import relativitization.universe.data.component.economy.MutableResourceQualityData
 import relativitization.universe.data.component.economy.ResourceQualityClass
 import relativitization.universe.data.component.economy.ResourceQualityData
 import relativitization.universe.data.component.economy.ResourceType
@@ -50,7 +49,7 @@ data class SendResourceCommand(
         ),
     )
 
-    override fun canSend(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean {
+    override fun canSend(playerData: MutablePlayerData, universeSettings: UniverseSettings): CanSendWithMessage {
         val isNotFuel: Boolean = resourceType != ResourceType.FUEL
         val hasAmount: Boolean = playerData.playerInternalData.economyData().resourceData.getTradeResourceAmount(
             resourceType, resourceQualityClass
@@ -137,7 +136,7 @@ data class SendFuelCommand(
         ),
     )
 
-    override fun canSend(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean {
+    override fun canSend(playerData: MutablePlayerData, universeSettings: UniverseSettings): CanSendWithMessage {
         val hasAmount: Boolean = playerData.playerInternalData.physicsData().fuelRestMassData.trade >= amount
 
         if (!hasAmount) {

@@ -28,7 +28,7 @@ data class BuildFactoryCommand(
         listOf()
     )
 
-    override fun canSend(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean {
+    override fun canSend(playerData: MutablePlayerData, universeSettings: UniverseSettings): CanSendWithMessage {
         return playerData.topLeaderId() == topLeaderId
     }
 

@@ -5,11 +5,8 @@ import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
-import relativitization.universe.data.commands.ChangeVelocityCommand
-import relativitization.universe.data.commands.Command
-import relativitization.universe.data.commands.DisableFuelIncreaseCommand
+import relativitization.universe.data.commands.*
 import relativitization.universe.data.component.physics.Double3D
-import relativitization.universe.data.component.physics.Velocity
 import relativitization.universe.maths.physics.Movement
 import relativitization.universe.maths.physics.Movement.targetDouble3DByPhotonRocket
 import relativitization.universe.maths.physics.TargetVelocityData
@@ -61,8 +58,16 @@ data class MoveToDouble3DEvent(
         )
     )
 
-    override fun canSend(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean {
-        return playerData.isSubOrdinateOrSelf(toId)
+    override fun canSend(playerData: MutablePlayerData, universeSettings: UniverseSettings): CanSendWithMessage {
+        val isSubOrdinate: Boolean = playerData.isSubOrdinateOrSelf(toId)
+        return if (isSubOrdinate) {
+            CanSendWithMessage(true)
+        } else {
+            CanSendWithMessage(
+                false,
+                CanSendWIthMessageI18NStringFactory.isNotSubordinate(toId)
+            )
+        }
     }
 
     override fun canExecute(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean {

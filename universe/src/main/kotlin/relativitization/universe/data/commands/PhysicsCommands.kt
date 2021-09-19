@@ -36,7 +36,7 @@ data class ChangeVelocityCommand(
     /**
      * Can only send to subordinate
      */
-    override fun canSend(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean {
+    override fun canSend(playerData: MutablePlayerData, universeSettings: UniverseSettings): CanSendWithMessage {
         return playerData.isSubOrdinateOrSelf(toId)
     }
 

@@ -44,7 +44,7 @@ data class AddEventCommand(
     /**
      * Whether this player can send the event depends on the event
      */
-    override fun canSend(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean {
+    override fun canSend(playerData: MutablePlayerData, universeSettings: UniverseSettings): CanSendWithMessage {
         return validEventPlayerId() &&
                 canAddEvent(universeSettings, event) &&
                 event.canSend(playerData, universeSettings)
@@ -125,7 +125,7 @@ data class SelectEventChoiceCommand(
         ),
     )
 
-    override fun canSend(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean {
+    override fun canSend(playerData: MutablePlayerData, universeSettings: UniverseSettings): CanSendWithMessage {
         return playerData.playerId == toId
     }
 
