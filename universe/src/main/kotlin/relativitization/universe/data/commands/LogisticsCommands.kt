@@ -50,23 +50,63 @@ data class SendResourceCommand(
     )
 
     override fun canSend(playerData: MutablePlayerData, universeSettings: UniverseSettings): CanSendWithMessage {
-        val isNotFuel: Boolean = resourceType != ResourceType.FUEL
+        val notFuel: Boolean = resourceType != ResourceType.FUEL
+        val notFuelI18NString: I18NString = if (notFuel) {
+            I18NString("")
+        } else {
+            I18NString("Cannot send fuel as resource. ")
+        }
+
         val hasAmount: Boolean = playerData.playerInternalData.economyData().resourceData.getTradeResourceAmount(
             resourceType, resourceQualityClass
         ) >= amount
+        val hasAmountI18NString: I18NString = if (hasAmount) {
+            I18NString("")
+        } else {
+            I18NString(
+                listOf(
+                    RealString("Trade resource amount "),
+                    IntString(0),
+                    RealString(" is less than "),
+                    IntString(1),
+                    RealString(". ")
+                ),
+                listOf(
+                    playerData.playerInternalData.economyData().resourceData.getTradeResourceAmount(
+                        resourceType, resourceQualityClass
+                    ).toString(),
+                    amount.toString()
+                )
+            )
+        }
+
         val sameQuality: Boolean = playerData.playerInternalData.economyData().resourceData.getResourceQuality(
             resourceType, resourceQualityClass
         ).toResourceQualityData() == resourceQualityData
-
-        if (!sameQuality) {
-            logger.debug("Can't send resource, qualities are different")
+        val sameQualityI18NString: I18NString = if (sameQuality) {
+            I18NString("")
+        } else {
+            I18NString(
+                listOf(
+                    RealString("Resource quality "),
+                    IntString(0),
+                    RealString(" is not equal to "),
+                    IntString(1),
+                    RealString(". ")
+                ),
+                listOf(
+                    playerData.playerInternalData.economyData().resourceData.getResourceQuality(
+                        resourceType, resourceQualityClass
+                    ).toResourceQualityData().toString(),
+                    resourceQualityData.toString(),
+                )
+            )
         }
 
-        if (!hasAmount) {
-            logger.debug("Can't send fuel, not enough amount")
-        }
-
-        return isNotFuel && hasAmount && sameQuality
+        return CanSendWithMessage(
+            notFuel && hasAmount && sameQuality,
+            I18NString.combine(listOf(notFuelI18NString, hasAmountI18NString, sameQualityI18NString))
+        )
     }
 
     override fun canExecute(
@@ -138,12 +178,28 @@ data class SendFuelCommand(
 
     override fun canSend(playerData: MutablePlayerData, universeSettings: UniverseSettings): CanSendWithMessage {
         val hasAmount: Boolean = playerData.playerInternalData.physicsData().fuelRestMassData.trade >= amount
-
-        if (!hasAmount) {
-            logger.debug("Can't send fuel, not enough amount")
+        val hasAmountI18NString: I18NString = if (hasAmount) {
+            I18NString("")
+        } else {
+            I18NString(
+                listOf(
+                    RealString("Trade resource amount "),
+                    IntString(0),
+                    RealString(" is less than "),
+                    IntString(1),
+                    RealString(". ")
+                ),
+                listOf(
+                    playerData.playerInternalData.physicsData().fuelRestMassData.trade.toString(),
+                    amount.toString()
+                )
+            )
         }
 
-        return hasAmount
+        return CanSendWithMessage(
+            hasAmount,
+            hasAmountI18NString
+        )
     }
 
     override fun canExecute(
