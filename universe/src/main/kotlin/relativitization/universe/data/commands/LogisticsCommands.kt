@@ -3,23 +3,30 @@ package relativitization.universe.data.commands
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseSettings
+import relativitization.universe.data.component.economy.MutableResourceQualityData
 import relativitization.universe.data.component.economy.ResourceQualityClass
+import relativitization.universe.data.component.economy.ResourceQualityData
 import relativitization.universe.data.component.economy.ResourceType
 import relativitization.universe.data.component.physics.Int4D
 import relativitization.universe.utils.I18NString
 import relativitization.universe.utils.IntString
 import relativitization.universe.utils.RealString
 
+/**
+ * Send resource (apart from fuel) from yourself to another player
+ */
 @Serializable
 data class SendResourceCommand(
     override val toId: Int,
     override val fromId: Int,
     override val fromInt4D: Int4D,
-    val targetPlayerId: Int,
     val resourceType: ResourceType,
     val resourceQualityClass: ResourceQualityClass,
     val amount: Double,
 ) : Command() {
+
+    private var resourceQualityData: ResourceQualityData = ResourceQualityData()
+
     override val description: I18NString = I18NString(
         listOf(
             RealString("Send "),
@@ -37,29 +44,43 @@ data class SendResourceCommand(
             amount.toString(),
             resourceType.toString(),
             resourceQualityClass.toString(),
+            fromId.toString(),
             toId.toString(),
-            targetPlayerId.toString(),
         ),
     )
 
     override fun canSend(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean {
-        return playerData.isSubOrdinateOrSelf(toId)
+        val isNotFuel: Boolean = resourceType != ResourceType.FUEL
+        val tradeAmount: Double = playerData.playerInternalData.economyData().resourceData.getTradeResourceAmount(
+            resourceType, resourceQualityClass
+        )
+        return isNotFuel && (tradeAmount >= amount)
     }
 
     override fun canExecute(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): Boolean {
-        return playerData.isLeaderOrSelf(fromId)
+        return true
     }
 
     override fun selfExecuteBeforeSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ) {
+        playerData.playerInternalData.economyData().resourceData.getResourceAmountData(
+            resourceType, resourceQualityClass
+        ).trade -= amount
+        resourceQualityData = playerData.playerInternalData.economyData().resourceData.getResourceQuality(
+            resourceType, resourceQualityClass
+        ).toResourceQualityData()
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
-        TODO("Not yet implemented")
+        playerData.playerInternalData.economyData().resourceData.addNewResource(
+            resourceType = resourceType,
+            newResourceQuality = resourceQualityData.toMutableResourceQualityData(),
+            amount = amount
+        )
     }
 }

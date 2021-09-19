@@ -379,6 +379,13 @@ data class ResourceQualityData(
         quality3 * d,
     )
 
+    fun toMutableResourceQualityData(): MutableResourceQualityData = MutableResourceQualityData(
+        quality1,
+        quality2,
+        quality3
+    )
+
+
     /**
      * Greater than or equal
      */
