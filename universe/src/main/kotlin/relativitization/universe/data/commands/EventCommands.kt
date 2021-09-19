@@ -156,7 +156,7 @@ data class SelectEventChoiceCommand(
         } else {
             CanSendWithMessage(
                 false,
-                CanSendWIthMessageI18NStringFactory.isNotYourId(toId)
+                CanSendWIthMessageI18NStringFactory.isToIdWrong(playerData.playerId, toId)
             )
         }
     }

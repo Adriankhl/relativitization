@@ -65,7 +65,7 @@ data class MoveToDouble3DEvent(
         } else {
             CanSendWithMessage(
                 false,
-                CanSendWIthMessageI18NStringFactory.isNotSubordinate(toId)
+                CanSendWIthMessageI18NStringFactory.isNotSubordinate(playerData.playerId, toId)
             )
         }
     }

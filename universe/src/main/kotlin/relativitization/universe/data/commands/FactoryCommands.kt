@@ -29,7 +29,15 @@ data class BuildFactoryCommand(
     )
 
     override fun canSend(playerData: MutablePlayerData, universeSettings: UniverseSettings): CanSendWithMessage {
-        return playerData.topLeaderId() == topLeaderId
+        val sameTopLeaderId: Boolean = playerData.topLeaderId() == topLeaderId
+        return if(sameTopLeaderId) {
+            CanSendWithMessage(true)
+        } else {
+            CanSendWithMessage(
+                false,
+                CanSendWIthMessageI18NStringFactory.isTopLeaderIdWrong(playerData.topLeaderId(), topLeaderId)
+            )
+        }
     }
 
     override fun canExecute(
@@ -47,6 +55,6 @@ data class BuildFactoryCommand(
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
-        playerData
+        playerData.playerInternalData
     }
 }

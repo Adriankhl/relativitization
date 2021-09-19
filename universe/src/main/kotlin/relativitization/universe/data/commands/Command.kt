@@ -214,23 +214,45 @@ data class CanSendWithMessage(
 )
 
 object CanSendWIthMessageI18NStringFactory {
-    fun isNotSubordinate(toId: Int): I18NString = I18NString(
+    fun isNotSubordinate(playerId: Int, toId: Int): I18NString = I18NString(
         listOf(
             RealString("Player "),
             IntString(0),
-            RealString(" not a subordinate of you.")
+            RealString(" not a subordinate of "),
+            IntString(1),
+            RealString(".")
         ),
         listOf(
+            toId.toString(),
+            playerId.toString(),
+        )
+    )
+
+    fun isToIdWrong(playerId: Int, toId: Int): I18NString = I18NString(
+        listOf(
+            RealString("Player id"),
+            IntString(0),
+            RealString(" the same as toId "),
+            IntString(1),
+            RealString(".")
+        ),
+        listOf(
+            playerId.toString(),
             toId.toString(),
         )
     )
-    fun isNotYourId(toId: Int): I18NString = I18NString(
+
+    fun isTopLeaderIdWrong(playerTopLeaderId: Int, topLeaderId: Int): I18NString = I18NString(
         listOf(
-            RealString("Your id is not "),
+            RealString("Player top leader id "),
             IntString(0),
+            RealString("the same as "),
+            IntString(1),
+            RealString(".")
         ),
         listOf(
-            toId.toString(),
+            playerTopLeaderId.toString(),
+            topLeaderId.toString()
         )
     )
 }
