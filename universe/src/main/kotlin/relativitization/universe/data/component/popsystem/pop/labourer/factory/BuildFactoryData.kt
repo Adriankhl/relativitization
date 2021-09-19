@@ -14,6 +14,7 @@ import relativitization.universe.data.component.economy.ResourceType
  */
 @Serializable
 data class BuildFactoryData(
+    val ownerPlayerId: Int = -1,
     val outputResource: ResourceType = ResourceType.FUEL,
     val targetQualityData: ResourceQualityData = ResourceQualityData(),
     val targetOutputAmount: Double = 0.0,
@@ -22,6 +23,7 @@ data class BuildFactoryData(
 
 @Serializable
 data class MutableBuildFactoryData(
+    var ownerPlayerId: Int = -1,
     var outputResource: ResourceType = ResourceType.FUEL,
     var targetQualityData: MutableResourceQualityData = MutableResourceQualityData(),
     var targetOutputAmount: Double = 0.0,
