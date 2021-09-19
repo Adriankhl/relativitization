@@ -204,3 +204,9 @@ object CommandCollection {
         return commandCollection.contains(command.name())
     }
 }
+
+@Serializable
+data class CanSendCommandMessage(
+    val success: Boolean,
+    val i18NString: I18NString = I18NString(listOf(), listOf())
+)
