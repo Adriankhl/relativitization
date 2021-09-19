@@ -61,17 +61,79 @@ sealed class Command {
      *
      * @param playerData the player data to send this command
      */
-    fun canSendFromPlayer(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean {
+    fun canSendFromPlayer(playerData: MutablePlayerData, universeSettings: UniverseSettings): CanSendWithMessage {
         val hasCommand: Boolean = CommandCollection.hasCommand(universeSettings, this)
-        val canSend: Boolean =  canSend(playerData, universeSettings).canSend
-        val isPlayerDataValid: Boolean = (playerData.int4D.toInt4D() == fromInt4D) &&
-                (checkFromId(playerData))
-        if (!hasCommand || !canSend || !isPlayerDataValid) {
-            val className = this::class.qualifiedName
-            logger.error("${className}: cannot send command, hasCommand: $hasCommand, canSend: $canSend, isPlayerDataValid: $isPlayerDataValid")
+        val hasCommandI18NString: I18NString = if (hasCommand) {
+            I18NString("")
+        } else {
+            I18NString(
+                listOf(
+                    RealString("No such command: "),
+                    IntString(0),
+                    RealString(". ")
+                ),
+                listOf(
+                    this.toString()
+                ),
+            )
         }
 
-        return hasCommand && canSend && isPlayerDataValid
+        val canSendMessage: CanSendWithMessage =  canSend(playerData, universeSettings)
+
+        val isFromInt4DValid: Boolean = playerData.int4D.toInt4D() == fromInt4D
+        val isFromInt4DValidI18NString: I18NString = if (isFromInt4DValid) {
+            I18NString("")
+        } else {
+            I18NString(
+                listOf(
+                    RealString("Player coordinate "),
+                    IntString(0),
+                    RealString(" is not the same as the coordinate "),
+                    IntString(1),
+                    RealString(" in this command. ")
+                ),
+                listOf(
+                    playerData.int4D.toInt4D().toString(),
+                    fromInt4D.toString(),
+                ),
+            )
+        }
+
+        val isFromIdValid: Boolean = checkFromId(playerData)
+        val isFromIdValidI18NString: I18NString = if (isFromIdValid) {
+            I18NString("")
+        } else {
+            I18NString(
+                listOf(
+                    RealString("Player id "),
+                    IntString(0),
+                    RealString(" is not the same as the id "),
+                    IntString(1),
+                    RealString(" in this command. ")
+                ),
+                listOf(
+                    playerData.playerId.toString(),
+                    fromId.toString(),
+                ),
+            )
+        }
+
+
+
+        if (!hasCommand || !(canSendMessage.canSend) || !isFromInt4DValid || !isFromIdValid) {
+            val className = this::class.qualifiedName
+            logger.error("${className}: cannot send command")
+        }
+
+        return CanSendWithMessage(
+            hasCommand && canSendMessage.canSend && isFromInt4DValid && isFromIdValid,
+            I18NString.combine(listOf(
+                hasCommandI18NString,
+                canSendMessage.message,
+                isFromInt4DValidI18NString,
+                isFromIdValidI18NString
+            ))
+        )
     }
 
 
@@ -107,11 +169,11 @@ sealed class Command {
     fun checkAndSelfExecuteBeforeSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): Boolean {
-        return if (canSendFromPlayer(playerData, universeSettings)) {
+    ): CanSendWithMessage {
+        return if (canSendFromPlayer(playerData, universeSettings).canSend) {
             try {
                 selfExecuteBeforeSend(playerData, universeSettings)
-                true
+                CanSendWithMessage(true)
             } catch (e: Throwable) {
                 logger.error("checkAndSelfExecuteBeforeSend fail, throwable $e")
                 throw e
@@ -119,7 +181,14 @@ sealed class Command {
         } else {
             val className = this::class.qualifiedName
             logger.info("$className cannot be sent by $fromId")
-            false
+            val reasonI18NString = I18NString("Reason: ")
+            CanSendWithMessage(
+                false,
+                I18NString.combine(listOf(
+                    reasonI18NString,
+                    canSendFromPlayer(playerData, universeSettings).message
+                ))
+            )
         }
     }
 
@@ -228,9 +297,9 @@ object CanSendWIthMessageI18NStringFactory {
         )
     )
 
-    fun isToIdWrong(playerId: Int, toId: Int): I18NString = I18NString(
+    fun isNotToSelf(playerId: Int, toId: Int): I18NString = I18NString(
         listOf(
-            RealString("Player id"),
+            RealString("Player id "),
             IntString(0),
             RealString(" the same as toId "),
             IntString(1),

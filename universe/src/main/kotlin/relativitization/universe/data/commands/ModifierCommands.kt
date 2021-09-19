@@ -34,7 +34,7 @@ data class DisableFuelIncreaseCommand(
         } else {
             CanSendWithMessage(
                 false,
-                CanSendWIthMessageI18NStringFactory.isToIdWrong(playerData.playerId, toId)
+                CanSendWIthMessageI18NStringFactory.isNotToSelf(playerData.playerId, toId)
             )
         }
     }
