@@ -287,7 +287,7 @@ object CanSendWIthMessageI18NStringFactory {
         listOf(
             RealString("Player "),
             IntString(0),
-            RealString(" not a subordinate of "),
+            RealString(" not a subordinate of player "),
             IntString(1),
             RealString(".")
         ),
