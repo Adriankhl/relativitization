@@ -58,16 +58,7 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
                 fromInt4D = game.universeClient.getUniverseData3D().getCurrentPlayerData().int4D,
             )
 
-            val canSend: Boolean = changeVelocityCommand.canSendFromPlayer(
-                game.universeClient.planDataAtPlayer.thisPlayerData,
-                game.universeClient.getUniverseData3D().universeSettings
-            )
-
-            if (canSend) {
-                game.universeClient.currentCommand = changeVelocityCommand
-            } else {
-                game.universeClient.currentCommand = CannotSendCommand()
-            }
+            game.universeClient.currentCommand = changeVelocityCommand
         } catch (e: NumberFormatException) {
             logger.error("Invalid target velocity")
         }
@@ -118,16 +109,7 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
                 fromInt4D = game.universeClient.getUniverseData3D().getCurrentPlayerData().int4D,
             )
 
-            val canSend: Boolean = addEventCommand.canSendFromPlayer(
-                game.universeClient.planDataAtPlayer.thisPlayerData,
-                game.universeClient.getUniverseData3D().universeSettings
-            )
-
-            if (canSend) {
-                game.universeClient.currentCommand = addEventCommand
-            } else {
-                game.universeClient.currentCommand = CannotSendCommand()
-            }
+            game.universeClient.currentCommand = addEventCommand
         } catch (e: NumberFormatException) {
             logger.error("Invalid target velocity")
         }

@@ -117,16 +117,7 @@ class EventsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(g
                     toId = playerData.playerId
                 )
 
-                val canSend = selectEventDataCommand.canSendFromPlayer(
-                    game.universeClient.planDataAtPlayer.thisPlayerData,
-                    game.universeClient.getUniverseData3D().universeSettings
-                )
-
-                if (canSend) {
-                    game.universeClient.currentCommand = selectEventDataCommand
-                } else {
-                    game.universeClient.currentCommand = CannotSendCommand()
-                }
+                game.universeClient.currentCommand = selectEventDataCommand
             }
 
             nestedTable.add(selectChoiceButton)

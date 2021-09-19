@@ -21,7 +21,10 @@ data class DummyCommand(
     )
 
     override fun canSend(playerData: MutablePlayerData, universeSettings: UniverseSettings): CanSendWithMessage {
-        return CanSendWithMessage(false)
+        return CanSendWithMessage(
+            false,
+            I18NString("This is dummy. ")
+        )
     }
 
     override fun canExecute(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean {
@@ -37,15 +40,13 @@ data class DummyCommand(
  */
 @Serializable
 data class CannotSendCommand(
+    val reason: I18NString,
     override val toId: Int = -1,
     override val fromId: Int = -1,
     override val fromInt4D: Int4D = Int4D(0, 0, 0, 0),
 ) : Command() {
 
-    override val description: I18NString = I18NString(
-        listOf(RealString("Cannot send this command")),
-        listOf(),
-    )
+    override val description: I18NString = reason
 
     override fun canSend(playerData: MutablePlayerData, universeSettings: UniverseSettings): CanSendWithMessage {
         return CanSendWithMessage(false)

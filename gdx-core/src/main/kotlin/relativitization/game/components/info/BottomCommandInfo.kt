@@ -4,6 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.ScreenComponent
+import relativitization.universe.data.commands.CannotSendCommand
 import relativitization.universe.data.commands.name
 
 class BottomCommandInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.assets) {
@@ -134,12 +135,17 @@ class BottomCommandInfo(val game: RelativitizationGame) : ScreenComponent<Scroll
         commandDescriptionLabel.setText(translate(game.universeClient.currentCommand.description))
         commandTimeLabel.setText(translate("Time: ") + "${game.universeClient.currentCommand.fromInt4D.t}")
 
-        if (game.universeClient.isCurrentCommandStored()) {
+        if (game.universeClient.currentCommand is CannotSendCommand) {
             disableActor(confirmCommandTextButton)
-            enableActor(cancelCommandTextButton)
-        } else {
-            enableActor(confirmCommandTextButton)
             disableActor(cancelCommandTextButton)
+        } else {
+            if (game.universeClient.isCurrentCommandStored()) {
+                disableActor(confirmCommandTextButton)
+                enableActor(cancelCommandTextButton)
+            } else {
+                enableActor(confirmCommandTextButton)
+                disableActor(cancelCommandTextButton)
+            }
         }
     }
 }

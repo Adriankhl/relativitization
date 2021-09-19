@@ -18,6 +18,8 @@ import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
+import relativitization.universe.data.commands.CanSendWithMessage
+import relativitization.universe.data.commands.CannotSendCommand
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.commands.DummyCommand
 import relativitization.universe.data.component.physics.Double2D
@@ -28,6 +30,7 @@ import relativitization.universe.utils.CoroutineBoolean
 import relativitization.universe.utils.ObservableList
 import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.properties.Delegates
+import kotlin.reflect.KProperty
 
 /**
  * @property universeClientSettings settings of the client, should only be updated by setUniverseClientSettings()
@@ -144,8 +147,23 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
 
     // command showing on GUI, can be new command to be confirmed or old command to be cancelled
     val onCurrentCommandChangeFunctionList: MutableList<() -> Unit> = mutableListOf()
-    var currentCommand: Command by Delegates.observable(DummyCommand()) { _, _, _ ->
-        onCurrentCommandChangeFunctionList.forEach { it() }
+    var currentCommand: Command by Delegates.observable(DummyCommand()) { _, _, newValue ->
+        if (newValue is CannotSendCommand) {
+            onCurrentCommandChangeFunctionList.forEach { it() }
+        } else {
+            val canSendWithMessage: CanSendWithMessage = newValue.canSendFromPlayer(
+                planDataAtPlayer.thisPlayerData,
+                planDataAtPlayer.universeData3DAtPlayer.universeSettings
+            )
+
+            if (canSendWithMessage.canSend) {
+                onCurrentCommandChangeFunctionList.forEach { it() }
+            } else {
+                currentCommand = CannotSendCommand(
+                    canSendWithMessage.message
+                )
+            }
+        }
     }
 
     // is this player dead
