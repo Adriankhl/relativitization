@@ -1,7 +1,7 @@
 plugins {
-    kotlin("jvm") version "${Versions.kotlinVersion}"
-    kotlin("plugin.serialization") version "${Versions.kotlinVersion}"
-    id("org.jetbrains.dokka") version "${Versions.dokkaVersion}"
+    kotlin("jvm") version Versions.kotlinVersion
+    kotlin("plugin.serialization") version Versions.kotlinVersion
+    id("org.jetbrains.dokka") version Versions.dokkaVersion
 }
 
 buildscript {
