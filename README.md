@@ -10,14 +10,16 @@ Grand strategy game / agent-based simulation framework / social model in 4D spac
 * `gdx-android` libgdx gui android launcher, depends on `gdx-core`, `universe`,  `universe-client`, and `universe-server` (very loosely, only manage the server `start()` and `stop()`)
 
 
-# Run desktop application
-Make sure `../relativitization-art/assets` exists, then:
+# Before working with the gui
+There should be a `../relativitization-art/assets` directory
 
+# Run desktop application
 `./gradlew :gdx-desktop:run`
 
-# Build Android (debug) apk
-Make sure `../relativitization-art/assets` exists, then:
+# Build fat jar
+`./gradlew :gdx-desktop:fatJar`
 
+# Build Android (debug) apk
 `./gradlew :gdx-android:assembleDebug`
 
 # Generate html doc
