@@ -7,6 +7,9 @@ plugins {
     id("org.jetbrains.dokka")
 }
 
+val mainClassPath = "relativitization.app.desktop.DesktopLauncherKt"
+val assetsFiles = File("../../relativitization-art/assets")
+
 kotlin {
     sourceSets {
         val main by getting {
@@ -57,9 +60,24 @@ tasks {
 }
 
 application {
-    mainClass.set("relativitization.app.desktop.DesktopLauncherKt")
+    mainClass.set(mainClassPath)
 }
 
 tasks.withType<JavaExec> {
-    workingDir = File("../../relativitization-art/assets")
+    workingDir = assetsFiles
+}
+
+tasks.register<Jar>("fatJar") {
+    archiveBaseName.set(Versions.appName)
+    destinationDirectory.set(assetsFiles)
+
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+    manifest {
+        attributes["Implementation-Version"] = Versions.appVersion
+        attributes["Main-Class"] = mainClassPath
+        attributes["Multi-Release"] = "true"
+    }
+    from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
+    with(tasks.jar.get() as CopySpec)
 }
