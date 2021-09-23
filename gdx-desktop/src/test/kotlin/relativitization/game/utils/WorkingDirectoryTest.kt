@@ -8,6 +8,8 @@ internal class WorkingDirectoryTest {
     fun dirTest() {
         assert(WorkingDirectory.isValidAssetDir(File(".")))
         assert(!WorkingDirectory.isValidAssetDir(File("../resources")))
-        WorkingDirectory.relativeAssetDir()
+        assert(WorkingDirectory.relativeAssetDir(File(".")) == "")
+        assert(WorkingDirectory.relativeAssetDir(File("..")) == "assets")
+        assert(WorkingDirectory.relativeAssetDir(File("../resources")) == "../assets")
     }
 }

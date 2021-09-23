@@ -3,7 +3,7 @@ package relativitization.game.utils
 import java.io.File
 
 object WorkingDirectory {
-    fun isValidAssetDir(checkFile: File): Boolean {
+    fun isValidAssetDir(thisDir: File): Boolean {
         val assetSubDirList: List<String> = listOf(
             "fonts",
             "images",
@@ -14,23 +14,44 @@ object WorkingDirectory {
         )
 
         val checkList: List<Boolean> = assetSubDirList.map {
-            val subFile = File(checkFile, it)
-            println(subFile.canonicalPath)
+            val subFile = File(thisDir, it)
             subFile.isFile || subFile.isDirectory
         }
 
         return checkList.all { it }
     }
 
-    fun relativeAssetDir(): String {
-        val thisDir = File("")
+    fun findAssetDir(thisDir: File): File {
+        return if (isValidAssetDir(thisDir)) {
+            thisDir
+        } else {
+            when {
+                File(thisDir, "lib").isDirectory -> {
+                    File(thisDir, "lib/app")
+                }
+                File(thisDir, "../lib").isDirectory -> {
+                    File(thisDir, "../lib/app")
+                }
+                File(thisDir, "assets").isDirectory -> {
+                    File(thisDir, "assets")
+                }
+                File(thisDir, "../assets").isDirectory -> {
+                    File(thisDir, "../assets")
+                }
+                else -> {
+                    thisDir
+                }
+            }
+        }
+    }
 
+    fun relativeAssetDir(thisDir: File): String {
+        val assetDir: File = findAssetDir(thisDir)
 
-        //val assetDir: File = if (thisDir.)
+        return thisDir.toPath().relativize(assetDir.toPath()).toString()
+    }
 
-        thisDir.parentFile
-        println(thisDir.path)
-
-        return thisDir.canonicalPath
+    fun relativeAssetDirFromWorkingDir(): String {
+        return relativeAssetDir(File("."))
     }
 }
