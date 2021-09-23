@@ -14,6 +14,8 @@ import org.apache.logging.log4j.Level
 import org.apache.logging.log4j.core.config.Configurator
 import relativitization.client.UniverseClient
 import relativitization.game.RelativitizationGame
+import relativitization.game.utils.Assets
+import relativitization.game.utils.WorkingDirectory
 import relativitization.server.UniverseServer
 import relativitization.universe.UniverseClientSettings
 import relativitization.universe.UniverseServerSettings
@@ -34,7 +36,7 @@ fun main() {
 
     val config = Lwjgl3ApplicationConfiguration()
     config.setTitle("Relativitization")
-    config.setWindowIcon(Files.FileType.Internal, "images/normal/logo/logo.png")
+    config.setWindowIcon(Files.FileType.Internal, "./${Assets.dir()}/images/normal/logo/logo.png")
     config.setHdpiMode(HdpiMode.Logical)
 
     val adminPassword: String = List(10) { Random.nextInt(0, 10) }.joinToString(separator = "")
@@ -85,7 +87,7 @@ private fun packImages() {
     // Pack if outdated
     val atlasFileName: String = "relativitization-asset"
     val atlasFile: File = File("$atlasFileName.atlas")
-    val input: String = "./images/pack"
+    val input: String = "./${Assets.dir()}/images/pack"
     if (!atlasFile.exists() || isAtlasOutdated(atlasFile, input)) {
         logger.info("Pack atlas")
         TexturePacker.process(settings, input, ".", atlasFileName)
