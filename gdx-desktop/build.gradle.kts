@@ -56,6 +56,7 @@ tasks.withType<KotlinCompile>().configureEach {
 tasks {
     test {
         useJUnitPlatform()
+        workingDir = assetsFiles
     }
 }
 
