@@ -10,16 +10,38 @@ Grand strategy game / agent-based simulation framework / social model in 4D spac
 * `gdx-android` libgdx gui android launcher, depends on `gdx-core`, `universe`,  `universe-client`, and `universe-server` (very loosely, only manage the server `start()` and `stop()`)
 
 
-# Before working with the gui
-There should be a `../relativitization-art/assets` directory
+# Build the game
+## Prerequisite
+You need jdk 17 to build the game.
 
-# Run desktop application
+There should be a `../relativitization-art/assets` directory. If not, create `../relativitization-art`
+and copy the assets:
+* `fonts`
+* `images`
+* `music`
+* `skin`
+* `sounds`
+* `translations`
+from the game into the `../relativitization-art/assets` folder.
+
+## Run desktop application
 `./gradlew :gdx-desktop:run`
 
-# Build fat jar
+## Build fat jar for desktop
+This will produce a `Relativitization.jar` in `../relativitization-art/assets`:
 `./gradlew :gdx-desktop:fatJar`
 
-# Build Android (debug) apk
+## Build executable for linux
+Go to `../relativitization-art` (`cd ../relativitization-art`), then run
+```
+jpackage --input ./assets --name relativitization --main-jar Relativitization.jar --type app-image
+```
+
+The generated `relativitization-art/relativitization` folder contains a `bin/relativitization`
+executable.
+
+
+## Build Android (debug) apk
 `./gradlew :gdx-android:assembleDebug`
 
 # Generate html doc
