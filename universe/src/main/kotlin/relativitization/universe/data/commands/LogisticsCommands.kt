@@ -26,6 +26,7 @@ data class SendResourceCommand(
     val resourceQualityClass: ResourceQualityClass,
     val resourceQualityData: ResourceQualityData,
     val amount: Double,
+    val senderResourceLossFractionPerDistance: Double,
 ) : Command() {
     override val description: I18NString = I18NString(
         listOf(
@@ -49,7 +50,10 @@ data class SendResourceCommand(
         ),
     )
 
-    override fun canSend(playerData: MutablePlayerData, universeSettings: UniverseSettings): CanSendWithMessage {
+    override fun canSend(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): CanSendWithMessage {
         val notFuel: Boolean = resourceType != ResourceType.FUEL
         val notFuelI18NString: I18NString = if (notFuel) {
             I18NString("")
@@ -57,9 +61,10 @@ data class SendResourceCommand(
             I18NString("Cannot send fuel as resource. ")
         }
 
-        val hasAmount: Boolean = playerData.playerInternalData.economyData().resourceData.getTradeResourceAmount(
-            resourceType, resourceQualityClass
-        ) >= amount
+        val hasAmount: Boolean =
+            playerData.playerInternalData.economyData().resourceData.getTradeResourceAmount(
+                resourceType, resourceQualityClass
+            ) >= amount
         val hasAmountI18NString: I18NString = if (hasAmount) {
             I18NString("")
         } else {
@@ -80,17 +85,18 @@ data class SendResourceCommand(
             )
         }
 
-        val sameQuality: Boolean = playerData.playerInternalData.economyData().resourceData.getResourceQuality(
-            resourceType, resourceQualityClass
-        ).toResourceQualityData().squareDiff(resourceQualityData) <= 0.1
-        val sameQualityI18NString: I18NString = if (sameQuality) {
+        val isQualityValid: Boolean =
+            playerData.playerInternalData.economyData().resourceData.getResourceQuality(
+                resourceType, resourceQualityClass
+            ).toResourceQualityData().squareDiff(resourceQualityData) <= 0.1
+        val isQualityValidI18NString: I18NString = if (isQualityValid) {
             I18NString("")
         } else {
             I18NString(
                 listOf(
                     RealString("Resource quality "),
                     IntString(0),
-                    RealString(" is not equal to "),
+                    RealString(" is not similar to "),
                     IntString(1),
                     RealString(". ")
                 ),
@@ -103,9 +109,36 @@ data class SendResourceCommand(
             )
         }
 
+        val isLossFractionValid: Boolean =
+            playerData.playerInternalData.playerScienceData().playerScienceProductData.resourceLogisticsLossFractionPerDistance <= senderResourceLossFractionPerDistance
+        val isLossFractionValidI18NString: I18NString = if (isLossFractionValid) {
+            I18NString("")
+        } else {
+            I18NString(
+                listOf(
+                    RealString("Sender resource loss fraction per distance"),
+                    IntString(0),
+                    RealString(" is greater than "),
+                    IntString(1),
+                    RealString(". ")
+                ),
+                listOf(
+                    playerData.playerInternalData.playerScienceData().playerScienceProductData.resourceLogisticsLossFractionPerDistance.toString(),
+                    senderResourceLossFractionPerDistance.toString()
+                )
+            )
+        }
+
         return CanSendWithMessage(
-            notFuel && hasAmount && sameQuality,
-            I18NString.combine(listOf(notFuelI18NString, hasAmountI18NString, sameQualityI18NString))
+            notFuel && hasAmount && isQualityValid && isLossFractionValid,
+            I18NString.combine(
+                listOf(
+                    notFuelI18NString,
+                    hasAmountI18NString,
+                    isQualityValidI18NString,
+                    isLossFractionValidI18NString,
+                )
+            )
         )
     }
 
@@ -126,22 +159,26 @@ data class SendResourceCommand(
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
-        val lossFractionPerDistance: Double = playerData.playerInternalData.playerScienceData().playerScienceProductData.resourceLogisticsLossFractionPerDistance
+        val receiverLossFractionPerDistance: Double =
+            playerData.playerInternalData.playerScienceData().playerScienceProductData.resourceLogisticsLossFractionPerDistance
+
+        val lossFractionPerDistance: Double = (receiverLossFractionPerDistance + senderResourceLossFractionPerDistance) * 0.5
+
         val distance: Double = Intervals.distance(
             fromInt4D.toDouble3D(),
             playerData.int4D.toDouble3D()
         )
 
-        val lossFraction: Double = if (distance < 1.0) {
-            0.0
+        val remainFraction: Double = if (distance < 1.0) {
+            1.0
         } else {
-            lossFractionPerDistance.pow(distance)
+            (1.0 - lossFractionPerDistance).pow(distance)
         }
 
         playerData.playerInternalData.economyData().resourceData.addNewResource(
             resourceType = resourceType,
             newResourceQuality = resourceQualityData.toMutableResourceQualityData(),
-            amount = amount * lossFraction
+            amount = amount * remainFraction
         )
     }
 
@@ -176,8 +213,12 @@ data class SendFuelCommand(
         ),
     )
 
-    override fun canSend(playerData: MutablePlayerData, universeSettings: UniverseSettings): CanSendWithMessage {
-        val hasAmount: Boolean = playerData.playerInternalData.physicsData().fuelRestMassData.trade >= amount
+    override fun canSend(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): CanSendWithMessage {
+        val hasAmount: Boolean =
+            playerData.playerInternalData.physicsData().fuelRestMassData.trade >= amount
         val hasAmountI18NString: I18NString = if (hasAmount) {
             I18NString("")
         } else {
@@ -217,7 +258,8 @@ data class SendFuelCommand(
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
-        val lossFractionPerDistance: Double = playerData.playerInternalData.playerScienceData().playerScienceProductData.fuelLogisticsLossFractionPerDistance
+        val lossFractionPerDistance: Double =
+            playerData.playerInternalData.playerScienceData().playerScienceProductData.fuelLogisticsLossFractionPerDistance
         val distance: Double = Intervals.distance(
             fromInt4D.toDouble3D(),
             playerData.int4D.toDouble3D()
