@@ -5,10 +5,10 @@ object Versions {
 
     const val kotlinVersion = "1.5.31"
     const val kotlinxCoroutineVersion = "1.5.2"
-    const val kotlinxSerializationVersion = "1.2.2"
+    const val kotlinxSerializationVersion = "1.3.0"
     const val ktorVersion = "1.6.3"
 
-    const val dokkaVersion = "1.5.0"
+    const val dokkaVersion = "1.5.30"
 
     const val gdxVersion = "1.10.0"
     const val log4jVersion = "2.14.1"
@@ -19,5 +19,5 @@ object Versions {
     const val androidLifeCycleKtxVersion = "2.3.1"
     const val androidFragmentKtxVersion = "1.3.6"
 
-    const val logbackVersion = "1.2.5"
+    const val logbackVersion = "1.2.6"
 }
