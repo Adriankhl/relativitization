@@ -196,6 +196,7 @@ data class SendFuelCommand(
     override val fromId: Int,
     override val fromInt4D: Int4D,
     val amount: Double,
+    val senderFuelLossFractionPerDistance: Double,
 ) : Command() {
     override val description: I18NString = I18NString(
         listOf(
@@ -237,9 +238,34 @@ data class SendFuelCommand(
             )
         }
 
+        val isLossFractionValid: Boolean =
+            playerData.playerInternalData.playerScienceData().playerScienceProductData.fuelLogisticsLossFractionPerDistance <= senderFuelLossFractionPerDistance
+        val isLossFractionValidI18NString: I18NString = if (isLossFractionValid) {
+            I18NString("")
+        } else {
+            I18NString(
+                listOf(
+                    RealString("Sender fuel loss fraction per distance"),
+                    IntString(0),
+                    RealString(" is greater than "),
+                    IntString(1),
+                    RealString(". ")
+                ),
+                listOf(
+                    playerData.playerInternalData.playerScienceData().playerScienceProductData.fuelLogisticsLossFractionPerDistance.toString(),
+                    senderFuelLossFractionPerDistance.toString()
+                )
+            )
+        }
+
         return CanSendWithMessage(
-            hasAmount,
-            hasAmountI18NString
+            hasAmount && isLossFractionValid,
+            I18NString.combine(
+                listOf(
+                    hasAmountI18NString,
+                    isLossFractionValidI18NString,
+                )
+            )
         )
     }
 
@@ -258,20 +284,23 @@ data class SendFuelCommand(
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
-        val lossFractionPerDistance: Double =
+        val receiverLossFractionPerDistance: Double =
             playerData.playerInternalData.playerScienceData().playerScienceProductData.fuelLogisticsLossFractionPerDistance
+
+        val lossFractionPerDistance: Double = (receiverLossFractionPerDistance + senderFuelLossFractionPerDistance) * 0.5
+
         val distance: Double = Intervals.distance(
             fromInt4D.toDouble3D(),
             playerData.int4D.toDouble3D()
         )
 
-        val lossFraction: Double = if (distance < 1.0) {
-            0.0
+        val remainFraction: Double = if (distance < 1.0) {
+            1.0
         } else {
-            lossFractionPerDistance.pow(distance)
+            (1.0 - lossFractionPerDistance).pow(distance)
         }
 
-        playerData.playerInternalData.physicsData().addFuel(amount * lossFraction)
+        playerData.playerInternalData.physicsData().addFuel(amount * remainFraction)
     }
 
     companion object {
