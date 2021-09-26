@@ -8,13 +8,15 @@ import relativitization.universe.data.component.economy.ResourceType
 /**
  * Data for a factory of labour pop
  *
- * @property isOpen whether this factory is opened
+ * @property ownerPlayerId the owner of this factory
+ * @property isOpened whether this factory is opened
  * @property outputResource the output resource type
  * @property maxOutputResourceQualityData maximum output resource quality
  * @property maxOutputAmount maximum output resource amount
  * @property lastOutputAmount the output amount in the latest turn
  * @property inputResourceMap map the input resource type to the input-related data
  * @property fuelRestMassConsumptionRate fuel consumption rate
+ * @property storedFuelRestMass stored fuel to be consumed if this is owned by foreign player
  * @property maxNumEmployee max number of employee
  * @property lastNumEmployee number of employee in the last turn
  * @property size the size of this factory
@@ -29,6 +31,7 @@ data class FactoryData(
     val lastOutputAmount: Double = 0.0,
     val inputResourceMap: Map<ResourceType, InputResourceData> = mapOf(),
     val fuelRestMassConsumptionRate: Double = 0.0,
+    val storedFuelRestMass: Double = 0.0,
     val maxNumEmployee: Double = 0.0,
     val lastNumEmployee: Double = 0.0,
     val size: Double = 0.0,
@@ -49,6 +52,7 @@ data class MutableFactoryData(
     var lastOutputAmount: Double = 0.0,
     var inputResourceMap: MutableMap<ResourceType, MutableInputResourceData> = mutableMapOf(),
     var fuelRestMassConsumptionRate: Double = 0.0,
+    var storedFuelRestMass: Double = 0.0,
     var maxNumEmployee: Double = 0.0,
     var lastNumEmployee: Double = 0.0,
     var size: Double = 0.0,

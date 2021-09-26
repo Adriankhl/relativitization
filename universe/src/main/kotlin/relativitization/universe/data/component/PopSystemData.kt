@@ -13,7 +13,15 @@ data class PopSystemData(
     val combatData: CombatData = CombatData(),
 ) : PlayerDataComponent() {
     fun totalCoreRestMass(): Double {
-        return carrierDataMap.values.sumOf { it.coreRestMass }
+        val carrierCoreMass: Double =  carrierDataMap.values.sumOf { it.coreRestMass }
+
+        val factoryFuelRestMass: Double = carrierDataMap.values.sumOf {
+            it.allPopData.labourerPopData.factoryMap.values.sumOf {
+                it.storedFuelRestMass
+            }
+        }
+
+        return carrierCoreMass + factoryFuelRestMass
     }
 
     fun totalMaxDeltaFuelRestMass(): Double {
@@ -29,7 +37,15 @@ data class MutablePopSystemData(
     var combatData: MutableCombatData = MutableCombatData(),
 ) : MutablePlayerDataComponent() {
     fun totalCoreRestMass(): Double {
-        return carrierDataMap.values.sumOf { it.coreRestMass }
+        val carrierCoreMass: Double =  carrierDataMap.values.sumOf { it.coreRestMass }
+
+        val factoryFuelRestMass: Double = carrierDataMap.values.sumOf {
+            it.allPopData.labourerPopData.factoryMap.values.sumOf {
+                it.storedFuelRestMass
+            }
+        }
+
+        return carrierCoreMass + factoryFuelRestMass
     }
 
     fun totalMaxMovementDeltaFuelRestMass(): Double {
