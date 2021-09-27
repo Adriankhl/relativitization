@@ -4,7 +4,9 @@ import kotlinx.serialization.Serializable
 import relativitization.universe.data.component.economy.ResourceQualityData
 import relativitization.universe.data.component.economy.ResourceType
 import relativitization.universe.data.component.popsystem.pop.labourer.factory.FactoryInternalData
+import relativitization.universe.data.component.popsystem.pop.labourer.factory.InputResourceData
 import relativitization.universe.data.component.popsystem.pop.labourer.factory.MutableFactoryInternalData
+import relativitization.universe.maths.algebra.Quadratic
 import relativitization.universe.utils.RelativitizationLogManager
 
 @Serializable
@@ -45,12 +47,26 @@ data class ScienceProductData(
         val maxOutputResourceQualityData: ResourceQualityData = idealFactory.maxOutputResourceQualityData * actualAdvancement
 
         // Max increase to 5 times
-        val maxOutputAmount: Double = idealFactory.maxOutputAmount * (1.0 + (1.0 - actualAdvancement) * 4.0)
+        val maxOutputAmount: Double = idealFactory.maxOutputAmount * Quadratic.standard(
+            x = qualityLevel,
+            xMin = 0.0,
+            xMax = 1.0,
+            yMin = 1.0,
+            yMax = 5.0,
+            increasing = false,
+            accelerate = true
+        )
+
+        val inputResourceMap: Map<ResourceType, InputResourceData> = idealFactory.inputResourceMap.mapValues {
+            val inputResourceData: InputResourceData = it.value
+
+            it.value
+        }
 
         return FactoryInternalData(
             outputResource = outputResourceType,
             maxOutputResourceQualityData = maxOutputResourceQualityData,
-            maxOutputAmount = 0.0,
+            maxOutputAmount = maxOutputAmount,
             inputResourceMap = mapOf(),
             fuelRestMassConsumptionRate = 0.0,
             maxNumEmployee = 0.0,
