@@ -33,6 +33,34 @@ object Quadratic {
             }
         }
     }
+
+    fun standard(
+        x: Double,
+        xMin: Double,
+        xMax: Double,
+        yMin: Double,
+        yMax: Double,
+        increasing: Boolean = true,
+        accelerate: Boolean = true,
+    ): Double {
+        val pX: Double = (x - xMin) / (xMax - xMin)
+        val pY: Double = when {
+            increasing && accelerate -> {
+                pX * pX
+            }
+            increasing && !accelerate -> {
+                1.0 - ((pX - 1.0) * (pX - 1.0))
+            }
+            !increasing && accelerate -> {
+                1.0 - (pX * pX)
+            }
+            else -> {
+                (pX - 1.0) * (pX - 1.0)
+            }
+        }
+
+        return pY * (yMax - yMin) + yMin
+    }
 }
 
 /**
