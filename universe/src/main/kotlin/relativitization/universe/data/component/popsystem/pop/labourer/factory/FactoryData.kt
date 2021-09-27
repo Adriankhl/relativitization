@@ -25,20 +25,14 @@ import relativitization.universe.data.component.economy.ResourceType
 data class FactoryData(
     val ownerPlayerId: Int = -1,
     val isOpened: Boolean = true,
-    val outputResource: ResourceType = ResourceType.FUEL,
-    val maxOutputResourceQualityData: ResourceQualityData = ResourceQualityData(),
-    val maxOutputAmount: Double = 0.0,
+    val factoryInternalData: FactoryInternalData = FactoryInternalData(),
     val lastOutputAmount: Double = 0.0,
-    val inputResourceMap: Map<ResourceType, InputResourceData> = mapOf(),
-    val fuelRestMassConsumptionRate: Double = 0.0,
     val storedFuelRestMass: Double = 0.0,
-    val maxNumEmployee: Double = 0.0,
     val lastNumEmployee: Double = 0.0,
-    val size: Double = 0.0,
 ) {
     fun maxInputAmount(resourceType: ResourceType): Double {
-        val amountPerUnit: Double = inputResourceMap[resourceType]?.amountPerOutputUnit ?: 0.0
-        return amountPerUnit * maxOutputAmount
+        val amountPerUnit: Double = factoryInternalData.inputResourceMap[resourceType]?.amountPerOutputUnit ?: 0.0
+        return amountPerUnit * factoryInternalData.maxOutputAmount
     }
 }
 
@@ -46,20 +40,14 @@ data class FactoryData(
 data class MutableFactoryData(
     var ownerPlayerId: Int = -1,
     var isOpened: Boolean = true,
-    var outputResource: ResourceType = ResourceType.FUEL,
-    var maxOutputResourceQualityData: MutableResourceQualityData = MutableResourceQualityData(),
-    var maxOutputAmount: Double = 0.0,
+    var factoryInternalData: MutableFactoryInternalData = MutableFactoryInternalData(),
     var lastOutputAmount: Double = 0.0,
-    var inputResourceMap: MutableMap<ResourceType, MutableInputResourceData> = mutableMapOf(),
-    var fuelRestMassConsumptionRate: Double = 0.0,
     var storedFuelRestMass: Double = 0.0,
-    var maxNumEmployee: Double = 0.0,
     var lastNumEmployee: Double = 0.0,
-    var size: Double = 0.0,
 ) {
     fun maxInputAmount(resourceType: ResourceType): Double {
-        val amountPerUnit: Double = inputResourceMap[resourceType]?.amountPerOutputUnit ?: 0.0
-        return amountPerUnit * maxOutputAmount
+        val amountPerUnit: Double = factoryInternalData.inputResourceMap[resourceType]?.amountPerOutputUnit ?: 0.0
+        return amountPerUnit * factoryInternalData.maxOutputAmount
     }
 }
 

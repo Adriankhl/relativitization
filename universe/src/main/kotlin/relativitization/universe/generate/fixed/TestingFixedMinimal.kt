@@ -8,6 +8,7 @@ import relativitization.universe.data.component.economy.ResourceType
 import relativitization.universe.data.component.physics.MutableInt4D
 import relativitization.universe.data.component.popsystem.pop.labourer.factory.MutableFactoryData
 import relativitization.universe.data.UniverseScienceData
+import relativitization.universe.data.component.popsystem.pop.labourer.factory.MutableFactoryInternalData
 import relativitization.universe.data.component.science.knowledge.AppliedResearchField
 import relativitization.universe.data.component.science.knowledge.AppliedResearchProjectData
 import relativitization.universe.data.component.science.knowledge.BasicResearchField
@@ -165,19 +166,21 @@ class TestingFixedMinimal : GenerateUniverse() {
         // Add fuel factory to player 1
         val fuelFactory1 = MutableFactoryData(
             isOpened = true,
-            outputResource = ResourceType.FUEL,
-            maxOutputResourceQualityData = MutableResourceQualityData(
-                quality1 = 0.0,
-                quality2 = 0.0,
-                quality3 = 0.0,
+            factoryInternalData = MutableFactoryInternalData(
+                outputResource = ResourceType.FUEL,
+                maxOutputResourceQualityData = MutableResourceQualityData(
+                    quality1 = 0.0,
+                    quality2 = 0.0,
+                    quality3 = 0.0,
+                ),
+                maxOutputAmount = 2.0,
+                inputResourceMap = mutableMapOf(),
+                fuelRestMassConsumptionRate = 0.0,
+                maxNumEmployee = 100.0,
+                size = 3.0,
             ),
-            maxOutputAmount = 2.0,
             lastOutputAmount = 0.0,
-            inputResourceMap = mutableMapOf(),
-            fuelRestMassConsumptionRate = 0.0,
-            maxNumEmployee = 100.0,
             lastNumEmployee = 100.0,
-            size = 3.0
         )
         playerData1.playerInternalData.popSystemData().carrierDataMap.getValue(
             0
