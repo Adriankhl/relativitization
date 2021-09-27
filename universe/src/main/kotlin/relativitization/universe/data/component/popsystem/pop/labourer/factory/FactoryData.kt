@@ -10,16 +10,9 @@ import relativitization.universe.data.component.economy.ResourceType
  *
  * @property ownerPlayerId the owner of this factory
  * @property isOpened whether this factory is opened
- * @property outputResource the output resource type
- * @property maxOutputResourceQualityData maximum output resource quality
- * @property maxOutputAmount maximum output resource amount
  * @property lastOutputAmount the output amount in the latest turn
- * @property inputResourceMap map the input resource type to the input-related data
- * @property fuelRestMassConsumptionRate fuel consumption rate
  * @property storedFuelRestMass stored fuel to be consumed if this is owned by foreign player
- * @property maxNumEmployee max number of employee
  * @property lastNumEmployee number of employee in the last turn
- * @property size the size of this factory
  */
 @Serializable
 data class FactoryData(
@@ -27,6 +20,7 @@ data class FactoryData(
     val isOpened: Boolean = true,
     val factoryInternalData: FactoryInternalData = FactoryInternalData(),
     val lastOutputAmount: Double = 0.0,
+    val lastInputAmountMap: Map<ResourceType, Double> = mapOf(),
     val storedFuelRestMass: Double = 0.0,
     val lastNumEmployee: Double = 0.0,
 ) {
@@ -42,6 +36,7 @@ data class MutableFactoryData(
     var isOpened: Boolean = true,
     var factoryInternalData: MutableFactoryInternalData = MutableFactoryInternalData(),
     var lastOutputAmount: Double = 0.0,
+    val lastInputAmountMap: MutableMap<ResourceType, Double> = mutableMapOf(),
     var storedFuelRestMass: Double = 0.0,
     var lastNumEmployee: Double = 0.0,
 ) {
@@ -57,22 +52,30 @@ data class MutableFactoryData(
  * @property maxInputResourceQualityData maximum input resource quality, quality exceeding this
  * won't improve the output quality
  * @property amountPerOutputUnit amount of resource required to produce one unit of output resource
- * @property lastInputAmount the input amount in the latest turn
  */
 @Serializable
 data class InputResourceData(
     val maxInputResourceQualityData: ResourceQualityData = ResourceQualityData(),
     val amountPerOutputUnit: Double = 1.0,
-    val lastInputAmount: Double = 0.0,
 )
 
 @Serializable
 data class MutableInputResourceData(
     var maxInputResourceQualityData: MutableResourceQualityData = MutableResourceQualityData(),
     var amountPerOutputUnit: Double = 1.0,
-    var lastInputAmount: Double = 0.0,
 )
 
+/**
+ * Internal Data for a factory of labour pop
+ *
+ * @property outputResource the output resource type
+ * @property maxOutputResourceQualityData maximum output resource quality
+ * @property maxOutputAmount maximum output resource amount
+ * @property inputResourceMap map the input resource type to the input-related data
+ * @property fuelRestMassConsumptionRate fuel consumption rate
+ * @property maxNumEmployee max number of employee
+ * @property size the size of this factory
+ */
 @Serializable
 data class FactoryInternalData(
     val outputResource: ResourceType = ResourceType.FUEL,
