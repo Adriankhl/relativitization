@@ -84,3 +84,25 @@ data class MutableInputResourceData(
     var amountPerOutputUnit: Double = 1.0,
     var lastInputAmount: Double = 0.0,
 )
+
+@Serializable
+data class FactoryInternalData(
+    val outputResource: ResourceType = ResourceType.FUEL,
+    val maxOutputResourceQualityData: ResourceQualityData = ResourceQualityData(),
+    val maxOutputAmount: Double = 0.0,
+    val inputResourceMap: Map<ResourceType, InputResourceData> = mapOf(),
+    val fuelRestMassConsumptionRate: Double = 0.0,
+    val maxNumEmployee: Double = 0.0,
+    val size: Double = 0.0,
+)
+
+@Serializable
+data class MutableFactoryInternalData(
+    var outputResource: ResourceType = ResourceType.FUEL,
+    var maxOutputResourceQualityData: MutableResourceQualityData = MutableResourceQualityData(),
+    var maxOutputAmount: Double = 0.0,
+    var inputResourceMap: MutableMap<ResourceType, MutableInputResourceData> = mutableMapOf(),
+    var fuelRestMassConsumptionRate: Double = 0.0,
+    var maxNumEmployee: Double = 0.0,
+    var size: Double = 0.0,
+)

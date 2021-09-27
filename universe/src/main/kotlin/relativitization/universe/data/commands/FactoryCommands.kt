@@ -6,6 +6,7 @@ import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.component.economy.ResourceQualityData
 import relativitization.universe.data.component.economy.ResourceType
 import relativitization.universe.data.component.physics.Int4D
+import relativitization.universe.data.component.popsystem.pop.labourer.factory.InputResourceData
 import relativitization.universe.utils.I18NString
 
 /**
@@ -19,9 +20,14 @@ data class BuildFactoryCommand(
     override val fromId: Int,
     override val fromInt4D: Int4D,
     val topLeaderId: Int,
-    val resourceType: ResourceType,
-    val qualityLevel: Double,
-    val senderMaxFactoryQuality: ResourceQualityData,
+    val outputResource: ResourceType = ResourceType.FUEL,
+    val maxOutputResourceQualityData: ResourceQualityData = ResourceQualityData(),
+    val maxOutputAmount: Double = 0.0,
+    val inputResourceMap: Map<ResourceType, InputResourceData> = mapOf(),
+    val fuelRestMassConsumptionRate: Double = 0.0,
+    val storedFuelRestMass: Double = 0.0,
+    val maxNumEmployee: Double = 0.0,
+    val size: Double = 0.0,
 ) : Command() {
     override val description: I18NString = I18NString(
         listOf(),
