@@ -28,7 +28,7 @@ data class ScienceProductData(
         outputResourceType: ResourceType,
         qualityLevel: Double
     ): FactoryInternalData {
-        val actualAdvancement: Double = when {
+        val actualQualityLevel: Double = when {
             qualityLevel > 1.0 -> {
                 logger.error("quality level greater than 1.0")
                 1.0
@@ -44,11 +44,11 @@ data class ScienceProductData(
 
         val idealFactory: FactoryInternalData = getIdealFactory(outputResourceType)
 
-        val maxOutputResourceQualityData: ResourceQualityData = idealFactory.maxOutputResourceQualityData * actualAdvancement
+        val maxOutputResourceQualityData: ResourceQualityData = idealFactory.maxOutputResourceQualityData * actualQualityLevel
 
         // Max increase to 5 times
         val maxOutputAmount: Double = idealFactory.maxOutputAmount * Quadratic.standard(
-            x = qualityLevel,
+            x = actualQualityLevel,
             xMin = 0.0,
             xMax = 1.0,
             yMin = 1.0,
@@ -57,17 +57,41 @@ data class ScienceProductData(
             accelerate = true
         )
 
+        // Reduce the required input resource quality and amount
         val inputResourceMap: Map<ResourceType, InputResourceData> = idealFactory.inputResourceMap.mapValues {
             val inputResourceData: InputResourceData = it.value
 
-            it.value
+            val qualityFactor: Double = Quadratic.standard(
+                x = actualQualityLevel,
+                xMin = 0.0,
+                xMax = 1.0,
+                yMin = 0.0,
+                yMax = 1.0,
+                increasing = true,
+                accelerate = true
+            )
+
+            val amountFactor: Double = Quadratic.standard(
+                x = actualQualityLevel,
+                xMin = 0.0,
+                xMax = 1.0,
+                yMin = 0.2,
+                yMax = 1.0,
+                increasing = true,
+                accelerate = true
+            )
+
+            InputResourceData(
+                maxInputResourceQualityData = inputResourceData.maxInputResourceQualityData * qualityFactor,
+                amountPerOutputUnit = inputResourceData.amountPerOutputUnit * amountFactor
+            )
         }
 
         return FactoryInternalData(
             outputResource = outputResourceType,
             maxOutputResourceQualityData = maxOutputResourceQualityData,
             maxOutputAmount = maxOutputAmount,
-            inputResourceMap = mapOf(),
+            inputResourceMap = inputResourceMap,
             fuelRestMassConsumptionRate = 0.0,
             maxNumEmployee = 0.0,
             size = 0.0
