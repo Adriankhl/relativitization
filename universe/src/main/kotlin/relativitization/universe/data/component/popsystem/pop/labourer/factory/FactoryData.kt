@@ -66,6 +66,14 @@ data class InputResourceData(
 
         return qualityDiff + amountDiff
     }
+
+    fun squareDiff(other: MutableInputResourceData): Double {
+        val qualityDiff: Double = maxInputResourceQualityData.squareDiff(other.maxInputResourceQualityData)
+
+        val amountDiff: Double = (amountPerOutputUnit - other.amountPerOutputUnit).pow(2)
+
+        return qualityDiff + amountDiff
+    }
 }
 
 @Serializable
@@ -104,6 +112,36 @@ data class FactoryInternalData(
     val size: Double = 0.0,
 ) {
     fun squareDiff(other: FactoryInternalData): Double {
+        val outputResourceDiff: Double = if (outputResource == other.outputResource) {
+            0.0
+        } else {
+            Double.POSITIVE_INFINITY
+        }
+
+        val outputQualityDiff: Double =
+            maxOutputResourceQualityData.squareDiff(other.maxOutputResourceQualityData)
+
+        val outputAmountDiff: Double = (maxOutputAmount - other.maxOutputAmount).pow(2)
+
+        val inputDiff: Double = inputResourceMap.map {
+            if (!other.inputResourceMap.containsKey(it.key)) {
+                Double.POSITIVE_INFINITY
+            } else {
+                it.value.squareDiff(other.inputResourceMap.getValue(it.key))
+            }
+        }.sumOf { it }
+
+        val consumptionDiff: Double = (fuelRestMassConsumptionRate - other.fuelRestMassConsumptionRate).pow(2)
+
+        val employeeDiff: Double = (maxNumEmployee - other.maxNumEmployee).pow(2)
+
+        val sizeDiff: Double = (size - other.size).pow(2)
+
+        return (outputResourceDiff + outputQualityDiff + outputAmountDiff + inputDiff +
+                consumptionDiff + employeeDiff + sizeDiff)
+    }
+
+    fun squareDiff(other: MutableFactoryInternalData): Double {
         val outputResourceDiff: Double = if (outputResource == other.outputResource) {
             0.0
         } else {

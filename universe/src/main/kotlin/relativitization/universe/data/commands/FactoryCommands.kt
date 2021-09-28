@@ -3,12 +3,11 @@ package relativitization.universe.data.commands
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseSettings
-import relativitization.universe.data.component.economy.ResourceQualityData
-import relativitization.universe.data.component.economy.ResourceType
 import relativitization.universe.data.component.physics.Int4D
 import relativitization.universe.data.component.popsystem.pop.labourer.factory.FactoryInternalData
-import relativitization.universe.data.component.popsystem.pop.labourer.factory.InputResourceData
 import relativitization.universe.utils.I18NString
+import relativitization.universe.utils.IntString
+import relativitization.universe.utils.RealString
 
 /**
  * Build a factory on player
@@ -22,6 +21,7 @@ data class BuildFactoryCommand(
     override val fromInt4D: Int4D,
     val topLeaderId: Int,
     val factoryInternalData: FactoryInternalData,
+    val qualityLevel: Double,
     val storedFuelRestMass: Double,
 ) : Command() {
     override val description: I18NString = I18NString(
@@ -31,14 +31,46 @@ data class BuildFactoryCommand(
 
     override fun canSend(playerData: MutablePlayerData, universeSettings: UniverseSettings): CanSendWithMessage {
         val sameTopLeaderId: Boolean = playerData.topLeaderId() == topLeaderId
-        return if(sameTopLeaderId) {
-            CanSendWithMessage(true)
+        val sameTopLeaderIdI18NString: I18NString = if (sameTopLeaderId) {
+            I18NString("")
         } else {
-            CanSendWithMessage(
-                false,
-                CanSendWIthMessageI18NStringFactory.isTopLeaderIdWrong(playerData.topLeaderId(), topLeaderId)
+            I18NString(
+                listOf(
+                    RealString("Top leader id "),
+                    IntString(0),
+                    RealString(" is not equal to "),
+                    IntString(1),
+                    RealString(".")
+                ),
+                listOf(
+                    topLeaderId.toString(),
+                    playerData.topLeaderId().toString(),
+                ),
             )
         }
+
+        val validFactoryInternalData: Boolean = factoryInternalData.squareDiff(
+            playerData.playerInternalData.playerScienceData().playerScienceProductData.newFactoryInternalData(
+                factoryInternalData.outputResource,
+                qualityLevel
+            )
+        ) < 0.1
+        val validFactoryInternalDataI18NString: I18NString = if (sameTopLeaderId) {
+            I18NString("")
+        } else {
+            I18NString("Factory internal data is not valid")
+        }
+
+
+        return CanSendWithMessage(
+            sameTopLeaderId && validFactoryInternalData,
+            I18NString.combine(
+                listOf(
+                    sameTopLeaderIdI18NString,
+                    validFactoryInternalDataI18NString
+                )
+            )
+        )
     }
 
     override fun canExecute(
