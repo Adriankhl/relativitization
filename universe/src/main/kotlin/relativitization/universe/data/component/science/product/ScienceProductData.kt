@@ -87,14 +87,47 @@ data class ScienceProductData(
             )
         }
 
+        // Reduce the fuel rest mass consumption rate
+        val fuelRestMassConsumptionRate: Double = idealFactory.fuelRestMassConsumptionRate * Quadratic.standard(
+            x = actualQualityLevel,
+            xMin = 0.0,
+            xMax = 1.0,
+            yMin = 0.2,
+            yMax = 1.0,
+            increasing = true,
+            accelerate = true
+        )
+
+        // Reduce the number of employee needed
+        val maxNumEmployee: Double = idealFactory.maxNumEmployee * Quadratic.standard(
+            x = actualQualityLevel,
+            xMin = 0.0,
+            xMax = 1.0,
+            yMin = 0.2,
+            yMax = 1.0,
+            increasing = true,
+            accelerate = true
+        )
+
+        // Reduce size
+        val size: Double = idealFactory.size * Quadratic.standard(
+            x = actualQualityLevel,
+            xMin = 0.0,
+            xMax = 1.0,
+            yMin = 0.2,
+            yMax = 1.0,
+            increasing = true,
+            accelerate = true
+        )
+
         return FactoryInternalData(
             outputResource = outputResourceType,
             maxOutputResourceQualityData = maxOutputResourceQualityData,
             maxOutputAmount = maxOutputAmount,
             inputResourceMap = inputResourceMap,
-            fuelRestMassConsumptionRate = 0.0,
-            maxNumEmployee = 0.0,
-            size = 0.0
+            fuelRestMassConsumptionRate = fuelRestMassConsumptionRate,
+            maxNumEmployee = maxNumEmployee,
+            size = size
         )
     }
 

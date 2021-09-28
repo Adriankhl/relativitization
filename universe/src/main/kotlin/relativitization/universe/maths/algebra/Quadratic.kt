@@ -34,6 +34,17 @@ object Quadratic {
         }
     }
 
+    /**
+     * Compute a standard quadratic function of x by enforcing specific criteria
+     *
+     * @param x the x coordinate of the quadratic curve
+     * @param xMin the min value of x in the specific context
+     * @param xMax the max value of x in the specific context
+     * @param yMin the min value of y in the specific context
+     * @param yMax the max value of y in the specific context
+     * @param increasing whether y increases as a function of x
+     * @param accelerate whether the change of y (increases or decreases) accelerates
+     */
     fun standard(
         x: Double,
         xMin: Double,
