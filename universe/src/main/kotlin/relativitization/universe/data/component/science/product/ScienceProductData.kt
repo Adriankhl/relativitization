@@ -260,6 +260,21 @@ data class MutableScienceProductData(
         )
     }
 
+    /**
+     * The fuel rest mass needed to construct a new factory
+     */
+    fun newFactoryFuelNeededByConstruction(
+        outputResourceType: ResourceType,
+        qualityLevel: Double
+    ): Double {
+        val factoryInternalData: MutableFactoryInternalData = newFactoryInternalData(
+            outputResourceType,
+            qualityLevel
+        )
+
+        return factoryInternalData.fuelRestMassConsumptionRate * 20
+    }
+
     companion object {
         private val logger = RelativitizationLogManager.getLogger()
     }
