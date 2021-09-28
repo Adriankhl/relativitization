@@ -116,7 +116,7 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
 
         table.add(createLabel("Pick available commands: ", gdxSettings.normalFontSize))
         val commandSelectBox = createSelectBox(
-            CommandCollection.commandListNameMap.keys.toList(),
+            CommandCollection.availableCommandsNameMap.keys.toList(),
             game.universeClient.generateSettings.universeSettings.commandCollectionName,
             gdxSettings.normalFontSize,
         ) { commandCollectionName, _ ->

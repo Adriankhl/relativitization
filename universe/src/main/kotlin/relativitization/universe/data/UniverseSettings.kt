@@ -1,7 +1,7 @@
 package relativitization.universe.data
 
 import kotlinx.serialization.Serializable
-import relativitization.universe.data.commands.DefaultCommandList
+import relativitization.universe.data.commands.DefaultAvailableCommands
 import relativitization.universe.data.commands.name
 import relativitization.universe.data.component.physics.Int3D
 import relativitization.universe.maths.physics.Intervals.intDelay
@@ -28,7 +28,7 @@ import relativitization.universe.science.name
 data class UniverseSettings(
     val universeName: String = "Test",
     val mechanismCollectionName: String = DefaultMechanismList.name(),
-    val commandCollectionName: String = DefaultCommandList.name(),
+    val commandCollectionName: String = DefaultAvailableCommands.name(),
     val universeScienceDataProcessCollectionName: String = DefaultUniverseScienceDataProcess.name(),
     val speedOfLight: Double = 1.0,
     val tDim: Int = 8,
@@ -61,7 +61,7 @@ data class UniverseSettings(
 data class MutableUniverseSettings(
     var universeName: String = "Test",
     var mechanismCollectionName: String = DefaultMechanismList.name(),
-    var commandCollectionName: String = DefaultCommandList.name(),
+    var commandCollectionName: String = DefaultAvailableCommands.name(),
     var universeScienceDataProcessCollectionName: String = DefaultUniverseScienceDataProcess.name(),
     var speedOfLight: Double = 1.0,
     var tDim: Int = 8,
