@@ -458,6 +458,14 @@ data class MutableResourceQualityData(
         return (quality1 <= other.quality1) && (quality2 <= other.quality2) &&
                 (quality3 <= other.quality3)
     }
+
+    /**
+     * Resource difference
+     */
+    fun squareDiff(other: MutableResourceQualityData): Double {
+        return (quality1 - other.quality1).pow(2) + (quality2 - other.quality2).pow(2) +
+                (quality3 - other.quality3).pow(2)
+    }
 }
 
 /**

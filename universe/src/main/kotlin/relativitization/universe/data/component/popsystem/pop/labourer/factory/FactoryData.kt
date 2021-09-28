@@ -4,6 +4,7 @@ import kotlinx.serialization.Serializable
 import relativitization.universe.data.component.economy.MutableResourceQualityData
 import relativitization.universe.data.component.economy.ResourceQualityData
 import relativitization.universe.data.component.economy.ResourceType
+import kotlin.math.pow
 
 /**
  * Data for a factory of labour pop
@@ -57,13 +58,29 @@ data class MutableFactoryData(
 data class InputResourceData(
     val maxInputResourceQualityData: ResourceQualityData = ResourceQualityData(),
     val amountPerOutputUnit: Double = 1.0,
-)
+) {
+    fun squareDiff(other: InputResourceData): Double {
+        val qualityDiff: Double = maxInputResourceQualityData.squareDiff(other.maxInputResourceQualityData)
+
+        val amountDiff: Double = (amountPerOutputUnit - other.amountPerOutputUnit).pow(2)
+
+        return qualityDiff + amountDiff
+    }
+}
 
 @Serializable
 data class MutableInputResourceData(
     var maxInputResourceQualityData: MutableResourceQualityData = MutableResourceQualityData(),
     var amountPerOutputUnit: Double = 1.0,
-)
+) {
+    fun squareDiff(other: MutableInputResourceData): Double {
+        val qualityDiff: Double = maxInputResourceQualityData.squareDiff(other.maxInputResourceQualityData)
+
+        val amountDiff: Double = (amountPerOutputUnit - other.amountPerOutputUnit).pow(2)
+
+        return qualityDiff + amountDiff
+    }
+}
 
 /**
  * Internal Data for a factory of labour pop
@@ -85,7 +102,37 @@ data class FactoryInternalData(
     val fuelRestMassConsumptionRate: Double = 0.0,
     val maxNumEmployee: Double = 0.0,
     val size: Double = 0.0,
-)
+) {
+    fun squareDiff(other: FactoryInternalData): Double {
+        val outputResourceDiff: Double = if (outputResource == other.outputResource) {
+            0.0
+        } else {
+            Double.POSITIVE_INFINITY
+        }
+
+        val outputQualityDiff: Double =
+            maxOutputResourceQualityData.squareDiff(other.maxOutputResourceQualityData)
+
+        val outputAmountDiff: Double = (maxOutputAmount - other.maxOutputAmount).pow(2)
+
+        val inputDiff: Double = inputResourceMap.map {
+            if (!other.inputResourceMap.containsKey(it.key)) {
+                Double.POSITIVE_INFINITY
+            } else {
+                it.value.squareDiff(other.inputResourceMap.getValue(it.key))
+            }
+        }.sumOf { it }
+
+        val consumptionDiff: Double = (fuelRestMassConsumptionRate - other.fuelRestMassConsumptionRate).pow(2)
+
+        val employeeDiff: Double = (maxNumEmployee - other.maxNumEmployee).pow(2)
+
+        val sizeDiff: Double = (size - other.size).pow(2)
+
+        return (outputResourceDiff + outputQualityDiff + outputAmountDiff + inputDiff +
+                consumptionDiff + employeeDiff + sizeDiff)
+    }
+}
 
 @Serializable
 data class MutableFactoryInternalData(
@@ -96,4 +143,34 @@ data class MutableFactoryInternalData(
     var fuelRestMassConsumptionRate: Double = 0.0,
     var maxNumEmployee: Double = 0.0,
     var size: Double = 0.0,
-)
+) {
+    fun squareDiff(other: MutableFactoryInternalData): Double {
+        val outputResourceDiff: Double = if (outputResource == other.outputResource) {
+            0.0
+        } else {
+            Double.POSITIVE_INFINITY
+        }
+
+        val outputQualityDiff: Double =
+            maxOutputResourceQualityData.squareDiff(other.maxOutputResourceQualityData)
+
+        val outputAmountDiff: Double = (maxOutputAmount - other.maxOutputAmount).pow(2)
+
+        val inputDiff: Double = inputResourceMap.map {
+            if (!other.inputResourceMap.containsKey(it.key)) {
+                Double.POSITIVE_INFINITY
+            } else {
+                it.value.squareDiff(other.inputResourceMap.getValue(it.key))
+            }
+        }.sumOf { it }
+
+        val consumptionDiff: Double = (fuelRestMassConsumptionRate - other.fuelRestMassConsumptionRate).pow(2)
+
+        val employeeDiff: Double = (maxNumEmployee - other.maxNumEmployee).pow(2)
+
+        val sizeDiff: Double = (size - other.size).pow(2)
+
+        return (outputResourceDiff + outputQualityDiff + outputAmountDiff + inputDiff +
+                consumptionDiff + employeeDiff + sizeDiff)
+    }
+}
