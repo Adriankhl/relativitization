@@ -27,16 +27,16 @@ object WorkingDirectory {
         } else {
             when {
                 File(thisDir, "lib").isDirectory -> {
-                    File(thisDir, "lib/app")
+                    File(thisDir, "lib/app/")
                 }
                 File(thisDir, "../lib").isDirectory -> {
-                    File(thisDir, "../lib/app")
+                    File(thisDir, "../lib/app/")
                 }
                 File(thisDir, "assets").isDirectory -> {
-                    File(thisDir, "assets")
+                    File(thisDir, "assets/")
                 }
                 File(thisDir, "../assets").isDirectory -> {
-                    File(thisDir, "../assets")
+                    File(thisDir, "../assets/")
                 }
                 else -> {
                     thisDir

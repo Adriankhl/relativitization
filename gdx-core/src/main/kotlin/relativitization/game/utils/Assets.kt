@@ -1,5 +1,6 @@
 package relativitization.game.utils
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.assets.loaders.FileHandleResolver
 import com.badlogic.gdx.assets.loaders.I18NBundleLoader
@@ -32,7 +33,7 @@ data class TranslationData(
     private val file: String = "English",
     val locale: Locale = Locale.ENGLISH,
 ) {
-    fun fileName(): String = "./${Assets.dir()}/translations/$file"
+    fun fileName(): String = "${Assets.dir()}translations/$file"
     fun filePath(): String = fileName() + ".properties"
 }
 
@@ -61,14 +62,9 @@ class Assets(val gdxSettings: GdxSettings) {
     fun allCharacters(): String {
         val default: Set<Char> = FreeTypeFontGenerator.DEFAULT_CHARS.toSet()
 
-        val file: File = File(languageMap.getValue(language).filePath())
+        val string = Gdx.files.internal(languageMap.getValue(language).filePath()).readString()
 
-        val allChar: Set<Char> = file.useLines {
-            it.toList()
-        }.flatMap {
-            it.toList()
-        }.toSet()
-
+        val allChar: Set<Char> = string.toSet()
 
         val finalList: Set<Char> = default + allChar
 
@@ -110,7 +106,7 @@ class Assets(val gdxSettings: GdxSettings) {
 
         // Load font
         val fontLoaderParameter = FreeTypeFontLoaderParameter()
-        fontLoaderParameter.fontFileName = "./${dir()}/fonts/NotoSansCJKsc-Regular.ttf"
+        fontLoaderParameter.fontFileName = "${dir()}fonts/NotoSansCJKsc-Regular.ttf"
         fontLoaderParameter.fontParameters.size = fontSize
         fontLoaderParameter.fontParameters.characters = allCharacters()
 
@@ -173,14 +169,14 @@ class Assets(val gdxSettings: GdxSettings) {
         manager.setLoader(FreeTypeFontGenerator::class.java, FreeTypeFontGeneratorLoader(resolver))
         manager.setLoader(BitmapFont::class.java, ".ttf", FreetypeFontLoader(resolver))
 
-        val skinParameter = SkinParameter("./${dir()}/skin/flat-earth-ui.atlas")
-        manager.load("./${dir()}/skin/flat-earth-ui.json", Skin::class.java, skinParameter)
+        val skinParameter = SkinParameter("${dir()}skin/flat-earth-ui.atlas")
+        manager.load("${dir()}skin/flat-earth-ui.json", Skin::class.java, skinParameter)
 
-        manager.load("./${dir()}/music/Alexander Ehlers - Warped.mp3", Music::class.java)
+        manager.load("${dir()}music/Alexander Ehlers - Warped.mp3", Music::class.java)
 
         manager.load("relativitization-asset.atlas", TextureAtlas::class.java)
 
-        manager.load("./${dir()}/sounds/click1.ogg", Sound::class.java)
+        manager.load("${dir()}sounds/click1.ogg", Sound::class.java)
 
         loadTranslationBundle()
 
@@ -195,9 +191,9 @@ class Assets(val gdxSettings: GdxSettings) {
         manager.dispose()
     }
 
-    fun getSkin(): Skin = manager.get("./${dir()}/skin/flat-earth-ui.json")
+    fun getSkin(): Skin = manager.get("${dir()}skin/flat-earth-ui.json")
 
-    fun getBackgroundMusic(): Music = manager.get("./${dir()}/music/Alexander Ehlers - Warped.mp3")
+    fun getBackgroundMusic(): Music = manager.get("${dir()}music/Alexander Ehlers - Warped.mp3")
 
     fun getAtlasRegion(name: String): AtlasRegion {
         return textureMap.getOrPut(name) {
@@ -359,7 +355,7 @@ class Assets(val gdxSettings: GdxSettings) {
         }
     }
 
-    fun getSound(name: String): Sound = manager.get("./${dir()}/sounds/$name")
+    fun getSound(name: String): Sound = manager.get("${dir()}sounds/$name")
 
     fun getI18NBundle(): I18NBundle = manager.get(
         languageMap.getValue(language).fileName()
