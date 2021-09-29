@@ -10,6 +10,8 @@ import kotlin.math.pow
  * Data for a factory of labour pop
  *
  * @property ownerPlayerId the owner of this factory
+ * @property factoryInternalData the data describing this factory
+ * @property numBuilding how large is this factory, affect the throughput of the factory
  * @property isOpened whether this factory is opened
  * @property lastOutputAmount the output amount in the latest turn
  * @property storedFuelRestMass stored fuel to be consumed if this is owned by foreign player
@@ -18,8 +20,9 @@ import kotlin.math.pow
 @Serializable
 data class FactoryData(
     val ownerPlayerId: Int = -1,
-    val isOpened: Boolean = true,
     val factoryInternalData: FactoryInternalData = FactoryInternalData(),
+    val numBuilding: Int = 1,
+    val isOpened: Boolean = true,
     val lastOutputAmount: Double = 0.0,
     val lastInputAmountMap: Map<ResourceType, Double> = mapOf(),
     val storedFuelRestMass: Double = 0.0,
@@ -27,15 +30,16 @@ data class FactoryData(
 ) {
     fun maxInputAmount(resourceType: ResourceType): Double {
         val amountPerUnit: Double = factoryInternalData.inputResourceMap[resourceType]?.amountPerOutputUnit ?: 0.0
-        return amountPerUnit * factoryInternalData.maxOutputAmount
+        return amountPerUnit * factoryInternalData.maxOutputAmount * numBuilding
     }
 }
 
 @Serializable
 data class MutableFactoryData(
     var ownerPlayerId: Int = -1,
-    var isOpened: Boolean = true,
     var factoryInternalData: MutableFactoryInternalData = MutableFactoryInternalData(),
+    var numBuilding: Int = 1,
+    var isOpened: Boolean = true,
     var lastOutputAmount: Double = 0.0,
     val lastInputAmountMap: MutableMap<ResourceType, Double> = mutableMapOf(),
     var storedFuelRestMass: Double = 0.0,
@@ -43,7 +47,7 @@ data class MutableFactoryData(
 ) {
     fun maxInputAmount(resourceType: ResourceType): Double {
         val amountPerUnit: Double = factoryInternalData.inputResourceMap[resourceType]?.amountPerOutputUnit ?: 0.0
-        return amountPerUnit * factoryInternalData.maxOutputAmount
+        return amountPerUnit * factoryInternalData.maxOutputAmount * numBuilding
     }
 }
 

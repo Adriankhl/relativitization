@@ -165,7 +165,7 @@ class TestingFixedMinimal : GenerateUniverse() {
 
         // Add fuel factory to player 1
         val fuelFactory1 = MutableFactoryData(
-            isOpened = true,
+            ownerPlayerId = 1,
             factoryInternalData = MutableFactoryInternalData(
                 outputResource = ResourceType.FUEL,
                 maxOutputResourceQualityData = MutableResourceQualityData(
@@ -179,8 +179,12 @@ class TestingFixedMinimal : GenerateUniverse() {
                 maxNumEmployee = 100.0,
                 size = 3.0,
             ),
+            numBuilding = 1,
+            isOpened = true,
             lastOutputAmount = 0.0,
             lastNumEmployee = 100.0,
+            lastInputAmountMap = mutableMapOf(),
+            storedFuelRestMass = 0.0,
         )
         playerData1.playerInternalData.popSystemData().carrierDataMap.getValue(
             0
