@@ -27,16 +27,16 @@ object WorkingDirectory {
         } else {
             when {
                 File(thisDir, "lib").isDirectory -> {
-                    File(thisDir, "lib/app/")
+                    File(thisDir, "lib/app")
                 }
                 File(thisDir, "../lib").isDirectory -> {
-                    File(thisDir, "../lib/app/")
+                    File(thisDir, "../lib/app")
                 }
                 File(thisDir, "assets").isDirectory -> {
-                    File(thisDir, "assets/")
+                    File(thisDir, "assets")
                 }
                 File(thisDir, "../assets").isDirectory -> {
-                    File(thisDir, "../assets/")
+                    File(thisDir, "../assets")
                 }
                 else -> {
                     thisDir
@@ -48,7 +48,11 @@ object WorkingDirectory {
     fun relativeAssetDir(thisDir: File): String {
         val assetDir: File = findAssetDir(thisDir)
 
-        return thisDir.toPath().relativize(assetDir.toPath()).toString()
+        return if (thisDir == assetDir) {
+            ""
+        } else {
+            thisDir.toPath().relativize(assetDir.toPath()).toString() + "/"
+        }
     }
 
     fun relativeAssetDirFromWorkingDir(): String {
