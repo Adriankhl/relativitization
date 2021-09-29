@@ -57,7 +57,7 @@ object FactoryProduction : Mechanism() {
     ): Map<ResourceType, ResourceQualityClass> {
         return mutableFactoryData.factoryInternalData.inputResourceMap.map { (type, inputResourceData) ->
             val requiredAmount: Double =
-                inputResourceData.amountPerOutputUnit * mutableFactoryData.factoryInternalData.maxOutputAmount
+                inputResourceData.amountPerOutputUnit * mutableFactoryData.factoryInternalData.maxOutputAmount * mutableFactoryData.numBuilding
             val requiredQuality: MutableResourceQualityData =
                 inputResourceData.maxInputResourceQualityData
             val qualityClass: ResourceQualityClass = resourceData.productionQualityClass(
@@ -84,16 +84,16 @@ object FactoryProduction : Mechanism() {
         val inputFractionList: List<Double> =
             mutableFactoryData.factoryInternalData.inputResourceMap.map { (type, inputResourceData) ->
                 val requiredAmount: Double =
-                    inputResourceData.amountPerOutputUnit * mutableFactoryData.factoryInternalData.maxOutputAmount
+                    inputResourceData.amountPerOutputUnit * mutableFactoryData.factoryInternalData.maxOutputAmount * mutableFactoryData.numBuilding
                 val qualityClass: ResourceQualityClass = inputResourceQualityClassMap.getValue(type)
                 resourceData.getProductionResourceAmount(type, qualityClass) / requiredAmount
             }
 
-        val inputFraction: Double = inputFractionList.maxOrNull() ?: 1.0
+        val inputFraction: Double = inputFractionList.minOrNull() ?: 1.0
 
-        val employeeFraction: Double = mutableFactoryData.lastNumEmployee / mutableFactoryData.factoryInternalData.maxNumEmployee
+        val employeeFraction: Double = mutableFactoryData.employeeFraction()
 
-        val fuelFraction: Double = physicsData.fuelRestMassData.production / mutableFactoryData.factoryInternalData.fuelRestMassConsumptionRate
+        val fuelFraction: Double = physicsData.fuelRestMassData.production / (mutableFactoryData.factoryInternalData.fuelRestMassConsumptionRate * mutableFactoryData.numBuilding)
 
         return listOf(inputFraction, employeeFraction, fuelFraction).minOrNull() ?: 0.0
     }
@@ -181,7 +181,7 @@ object FactoryProduction : Mechanism() {
         // Consume resource
         mutableFactoryData.factoryInternalData.inputResourceMap.forEach { (type, inputResourceData) ->
             val requiredAmount: Double =
-                inputResourceData.amountPerOutputUnit * mutableFactoryData.factoryInternalData.maxOutputAmount
+                inputResourceData.amountPerOutputUnit * mutableFactoryData.factoryInternalData.maxOutputAmount * mutableFactoryData.numBuilding
             val qualityClass: ResourceQualityClass = qualityClassMap.getValue(type)
             resourceData.getResourceAmountData(
                 type,
@@ -190,13 +190,13 @@ object FactoryProduction : Mechanism() {
         }
 
         // Consume fuel
-        physicsData.fuelRestMassData.production -= mutableFactoryData.factoryInternalData.fuelRestMassConsumptionRate * amountFraction
+        physicsData.fuelRestMassData.production -= mutableFactoryData.factoryInternalData.fuelRestMassConsumptionRate * amountFraction * mutableFactoryData.numBuilding
 
         // Produce resource
         resourceData.addNewResource(
             mutableFactoryData.factoryInternalData.outputResource,
             outputQuality,
-            mutableFactoryData.factoryInternalData.maxOutputAmount * amountFraction
+            mutableFactoryData.factoryInternalData.maxOutputAmount * amountFraction * mutableFactoryData.numBuilding
         )
     }
 }

@@ -49,6 +49,8 @@ data class MutableFactoryData(
         val amountPerUnit: Double = factoryInternalData.inputResourceMap[resourceType]?.amountPerOutputUnit ?: 0.0
         return amountPerUnit * factoryInternalData.maxOutputAmount * numBuilding
     }
+
+    fun employeeFraction(): Double = lastNumEmployee / (factoryInternalData.maxNumEmployee * numBuilding)
 }
 
 /**
