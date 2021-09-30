@@ -7,6 +7,7 @@ import io.ktor.http.*
 import kotlinx.coroutines.runBlocking
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.TableScreen
+import relativitization.universe.generate.UniverseGenerationCollection
 import relativitization.universe.utils.RelativitizationLogManager
 
 class ServerSettingsScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
@@ -18,6 +19,16 @@ class ServerSettingsScreen(val game: RelativitizationGame) : TableScreen(game.as
         root.add(createServerSettingsScrollPane()).pad(20f).growX()
 
         root.row().space(20f)
+
+        root.add(createButtonTable())
+    }
+
+    /**
+     * Create table for apply button and cancel button
+     */
+    private fun createButtonTable(): Table {
+        val nestedTable = Table()
+
 
         // Add apply setting button
         val applyFailLabel = createLabel("", gdxSettings.normalFontSize)
@@ -39,9 +50,20 @@ class ServerSettingsScreen(val game: RelativitizationGame) : TableScreen(game.as
             }
         }
 
-        root.add(applyButton)
-        root.row().space(10f)
-        root.add(applyFailLabel)
+        val cancelButton = createTextButton(
+            "Cancel",
+            gdxSettings.bigFontSize,
+            gdxSettings.soundEffectsVolume
+        ) {
+            game.screen = MainMenuScreen(game)
+        }
+
+        nestedTable.add(applyButton).space(10f)
+        nestedTable.add(cancelButton).space(10f)
+        nestedTable.row().space(10f)
+        nestedTable.add(applyFailLabel).colspan(2)
+
+        return nestedTable
     }
 
 

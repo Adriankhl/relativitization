@@ -23,6 +23,16 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
 
         root.row().space(20f)
 
+        root.add(createButtonTable())
+    }
+
+    /**
+     * Create table for generate button and cancel button
+     */
+    private fun createButtonTable(): Table {
+        val nestedTable = Table()
+
+
         // Add Generate button
         val generateFailLabel = createLabel("", gdxSettings.normalFontSize)
         val generateButton = createTextButton("Generate", gdxSettings.bigFontSize, gdxSettings.soundEffectsVolume) {
@@ -46,9 +56,19 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
             }
         }
 
-        root.add(generateButton)
-        root.row().space(10f)
-        root.add(generateFailLabel)
+        val cancelButton = createTextButton(
+            "Cancel",
+            gdxSettings.bigFontSize,
+            gdxSettings.soundEffectsVolume
+        ) {
+            game.screen = MainMenuScreen(game)
+        }
+        nestedTable.add(generateButton).space(10f)
+        nestedTable.add(cancelButton).space(10f)
+        nestedTable.row().space(10f)
+        nestedTable.add(generateFailLabel).colspan(2)
+
+        return nestedTable
     }
 
     /**

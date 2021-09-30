@@ -40,6 +40,14 @@ class RegisterPlayerScreen(val game: RelativitizationGame) : TableScreen(game.as
 
         root.row().space(10f)
 
+        root.add(createButtonTable())
+    }
+
+    /**
+     * Create table for start button and cancel button
+     */
+    private fun createButtonTable(): Table {
+        val nestedTable = Table()
 
         val startStatusLabel = createLabel("", gdxSettings.normalFontSize)
         val startButton: TextButton = createTextButton("Start", gdxSettings.normalFontSize, gdxSettings.soundEffectsVolume) {
@@ -67,12 +75,22 @@ class RegisterPlayerScreen(val game: RelativitizationGame) : TableScreen(game.as
             }
         }
 
-        root.add(startButton)
+        val cancelButton = createTextButton(
+            "Cancel",
+            gdxSettings.bigFontSize,
+            gdxSettings.soundEffectsVolume
+        ) {
+            game.screen = MainMenuScreen(game)
+        }
 
-        root.row().space(10f)
+        nestedTable.add(startButton).space(10f)
+        nestedTable.add(cancelButton).space(10f)
+        nestedTable.row().space(10f)
+        nestedTable.add(startStatusLabel).colspan(2)
 
-        root.add(startStatusLabel)
+        return nestedTable
     }
+
 
     private fun createRegisterPlayerScrollPane(): ScrollPane {
         val table = Table()
