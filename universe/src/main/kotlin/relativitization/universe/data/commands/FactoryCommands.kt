@@ -29,7 +29,10 @@ data class BuildFactoryCommand(
         listOf()
     )
 
-    override fun canSend(playerData: MutablePlayerData, universeSettings: UniverseSettings): CanSendWithMessage {
+    override fun canSend(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): CanSendWithMessage {
         val sameTopLeaderId: Boolean = playerData.topLeaderId() == topLeaderId
         val sameTopLeaderIdI18NString: I18NString = if (sameTopLeaderId) {
             I18NString("")
@@ -40,7 +43,7 @@ data class BuildFactoryCommand(
                     IntString(0),
                     RealString(" is not equal to "),
                     IntString(1),
-                    RealString(".")
+                    RealString(". ")
                 ),
                 listOf(
                     topLeaderId.toString(),
@@ -58,16 +61,30 @@ data class BuildFactoryCommand(
         val validFactoryInternalDataI18NString: I18NString = if (sameTopLeaderId) {
             I18NString("")
         } else {
-            I18NString("Factory internal data is not valid")
+            I18NString("Factory internal data is not valid. ")
+        }
+
+        val fuelNeeded: Double =
+            storedFuelRestMass + playerData.playerInternalData.playerScienceData().playerScienceProductData.newFactoryFuelNeededByConstruction(
+                factoryInternalData.outputResource,
+                qualityLevel
+            )
+        val enoughFuelRestMass: Boolean =
+            playerData.playerInternalData.physicsData().fuelRestMassData.production >= fuelNeeded
+        val enoughFuelRestMassI18NString: I18NString = if (enoughFuelRestMass) {
+            I18NString("")
+        } else {
+            I18NString("Not enough fuel rest mass. ")
         }
 
 
         return CanSendWithMessage(
-            sameTopLeaderId && validFactoryInternalData,
+            sameTopLeaderId && validFactoryInternalData && enoughFuelRestMass,
             I18NString.combine(
                 listOf(
                     sameTopLeaderIdI18NString,
-                    validFactoryInternalDataI18NString
+                    validFactoryInternalDataI18NString,
+                    enoughFuelRestMassI18NString
                 )
             )
         )
