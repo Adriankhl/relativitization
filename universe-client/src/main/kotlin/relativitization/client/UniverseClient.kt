@@ -568,7 +568,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
             ktorClient.get<UniverseServerStatusMessage>("http://$serverAddress:$serverPort/status") {
                 timeout {
                     connectTimeoutMillis = universeClientSettings.httpConnectTimeout
-                    connectTimeoutMillis = universeClientSettings.httpRequestTimeout
+                    requestTimeoutMillis = universeClientSettings.httpRequestTimeout
                 }
             }
         } catch (cause: Throwable) {
@@ -584,7 +584,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
             ktorClient.get<List<Int>>("http://$serverAddress:$serverPort/status/ids") {
                 timeout {
                     connectTimeoutMillis = universeClientSettings.httpConnectTimeout
-                    connectTimeoutMillis = universeClientSettings.httpRequestTimeout
+                    requestTimeoutMillis = universeClientSettings.httpRequestTimeout
                 }
             }
         } catch (cause: Throwable) {
@@ -599,7 +599,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
             ktorClient.get<List<Int>>("http://$serverAddress:$serverPort/status/human-ids") {
                 timeout {
                     connectTimeoutMillis = universeClientSettings.httpConnectTimeout
-                    connectTimeoutMillis = universeClientSettings.httpRequestTimeout
+                    requestTimeoutMillis = universeClientSettings.httpRequestTimeout
                 }
             }
         } catch (cause: Throwable) {
@@ -615,7 +615,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
             ktorClient.get<List<String>>("http://$serverAddress:$serverPort/create/list-saved") {
                 timeout {
                     connectTimeoutMillis = universeClientSettings.httpConnectTimeout
-                    connectTimeoutMillis = universeClientSettings.httpRequestTimeout
+                    requestTimeoutMillis = universeClientSettings.httpRequestTimeout
                 }
             }
         } catch (cause: Throwable) {
@@ -634,7 +634,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
                 body = CheckIsPlayerDeadMessage(playerId, password)
                 timeout {
                     connectTimeoutMillis = universeClientSettings.httpConnectTimeout
-                    connectTimeoutMillis = universeClientSettings.httpRequestTimeout
+                    requestTimeoutMillis = universeClientSettings.httpRequestTimeout
                 }
             }
         } catch (cause: Throwable) {
@@ -653,7 +653,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
                 body = UniverseData3DMessage(playerId, password)
                 timeout {
                     connectTimeoutMillis = universeClientSettings.httpConnectTimeout
-                    connectTimeoutMillis = universeClientSettings.httpRequestTimeout
+                    requestTimeoutMillis = universeClientSettings.httpRequestTimeout
                 }
             }
         } catch (cause: Throwable) {
@@ -673,7 +673,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
                     body = UniverseServerSettingsMessage(adminPassword, universeServerSettings)
                     timeout {
                         connectTimeoutMillis = universeClientSettings.httpConnectTimeout
-                        connectTimeoutMillis = universeClientSettings.httpRequestTimeout
+                        requestTimeoutMillis = universeClientSettings.httpRequestTimeout
                     }
                 }
             logger.debug("Update universe settings status: ${response.status}")
@@ -697,7 +697,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
                 body = NewUniverseMessage(adminPassword, generateSettings)
                 timeout {
                     connectTimeoutMillis = universeClientSettings.httpConnectTimeout
-                    connectTimeoutMillis = universeClientSettings.httpRequestTimeout
+                    requestTimeoutMillis = universeClientSettings.httpRequestTimeout
                 }
             }
             logger.debug("Create new universe status: ${response.status}")
@@ -721,7 +721,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
                 body = LoadUniverseMessage(adminPassword, universeName)
                 timeout {
                     connectTimeoutMillis = universeClientSettings.httpConnectTimeout
-                    connectTimeoutMillis = universeClientSettings.httpRequestTimeout
+                    requestTimeoutMillis = universeClientSettings.httpRequestTimeout
                 }
             }
 
@@ -747,7 +747,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
                 body = RegisterPlayerMessage(playerId, password)
                 timeout {
                     connectTimeoutMillis = universeClientSettings.httpConnectTimeout
-                    connectTimeoutMillis = universeClientSettings.httpRequestTimeout
+                    requestTimeoutMillis = universeClientSettings.httpRequestTimeout
                 }
             }
 
@@ -772,7 +772,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
                 body = RunUniverseMessage(adminPassword)
                 timeout {
                     connectTimeoutMillis = universeClientSettings.httpConnectTimeout
-                    connectTimeoutMillis = universeClientSettings.httpRequestTimeout
+                    requestTimeoutMillis = universeClientSettings.httpRequestTimeout
                 }
             }
             logger.debug("Run universe: ${response.status}")
@@ -797,7 +797,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
                 body = StopUniverseMessage(adminPassword)
                 timeout {
                     connectTimeoutMillis = universeClientSettings.httpConnectTimeout
-                    connectTimeoutMillis = universeClientSettings.httpRequestTimeout
+                    requestTimeoutMillis = universeClientSettings.httpRequestTimeout
                 }
             }
             logger.debug("Stop universe: ${response.status}")
@@ -823,7 +823,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
                 body = CommandInputMessage(playerId, password, planDataAtPlayer.commandList)
                 timeout {
                     connectTimeoutMillis = universeClientSettings.httpConnectTimeout
-                    connectTimeoutMillis = universeClientSettings.httpRequestTimeout
+                    requestTimeoutMillis = universeClientSettings.httpRequestTimeout
                 }
             }
             logger.debug("Human command input: ${response.status}")
@@ -847,7 +847,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
                 body = StopWaitingMessage(adminPassword)
                 timeout {
                     connectTimeoutMillis = universeClientSettings.httpConnectTimeout
-                    connectTimeoutMillis = universeClientSettings.httpRequestTimeout
+                    requestTimeoutMillis = universeClientSettings.httpRequestTimeout
                 }
             }
             logger.debug("Stop waiting: ${response.status}")
