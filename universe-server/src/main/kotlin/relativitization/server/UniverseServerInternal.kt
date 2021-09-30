@@ -237,6 +237,7 @@ class UniverseServerInternal(var universeServerSettings: UniverseServerSettings)
      * Set new universe
      */
     suspend fun setUniverse(newUniverse: Universe) {
+        logger.debug("Set universe")
         mutex.withLock {
             if (!isUniverseRunning.isTrue()) {
                 universe = newUniverse
