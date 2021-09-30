@@ -79,7 +79,7 @@ android {
         versionCode = Versions.appCodeNumber
         versionName = Versions.appVersion
 
-        base.archivesBaseName = "relativitization"
+        base.archivesName.set("relativitization")
     }
 
 
@@ -92,6 +92,7 @@ android {
         getByName("release") {
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
+            isDebuggable = true
         }
     }
 }
