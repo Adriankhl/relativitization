@@ -102,6 +102,12 @@ data class BuildFactoryCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ) {
+        val fuelNeeded: Double =
+            storedFuelRestMass + playerData.playerInternalData.playerScienceData().playerScienceProductData.newFactoryFuelNeededByConstruction(
+                factoryInternalData.outputResource,
+                qualityLevel
+            )
+        playerData.playerInternalData.physicsData().fuelRestMassData.production -= fuelNeeded
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
