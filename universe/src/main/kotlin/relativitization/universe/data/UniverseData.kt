@@ -297,7 +297,7 @@ data class MutableUniverseData4D(
         // Modified player data double 4D if it doesn't fit int4D
         val int4D = mutablePlayerData.int4D
         if (!mutablePlayerData.double4D.atInt4D(int4D)) {
-            logger.debug("Add player: force changing new player double4D")
+            logger.debug("Add player ${mutablePlayerData.playerId}: force changing new player double4D")
             mutablePlayerData.double4D = int4D.toMutableDouble4DCenter()
         }
 
@@ -320,8 +320,8 @@ data class MutableUniverseData4D(
 
         // Default group player id should be player id itself
         if (mutablePlayerData.groupId != double4DToGroupId(mutablePlayerData.double4D, edgeLength)) {
-            logger.debug("Default the attached player id to player id")
             mutablePlayerData.groupId = double4DToGroupId(mutablePlayerData.double4D, edgeLength)
+            logger.debug("Default the group id to ${mutablePlayerData.groupId}")
         }
 
         // Add player to the list
