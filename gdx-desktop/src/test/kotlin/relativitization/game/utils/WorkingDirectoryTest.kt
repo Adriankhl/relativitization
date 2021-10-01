@@ -9,7 +9,7 @@ internal class WorkingDirectoryTest {
         assert(WorkingDirectory.isValidAssetDir(File(".")))
         assert(!WorkingDirectory.isValidAssetDir(File("../resources")))
         assert(WorkingDirectory.relativeAssetDir(File(".")) == "")
-        assert(WorkingDirectory.relativeAssetDir(File("..")) == "assets")
-        assert(WorkingDirectory.relativeAssetDir(File("../resources")) == "../assets")
+        assert(WorkingDirectory.relativeAssetDir(File("..")) == "assets/")
+        assert(WorkingDirectory.relativeAssetDir(File("../resources")) == "../assets/")
     }
 }
