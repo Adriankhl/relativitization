@@ -7,7 +7,6 @@ import relativitization.universe.data.component.physics.Int4D
 import relativitization.universe.data.component.popsystem.MutableCarrierData
 import relativitization.universe.data.component.popsystem.pop.labourer.factory.FactoryInternalData
 import relativitization.universe.data.component.popsystem.pop.labourer.factory.MutableFactoryData
-import relativitization.universe.data.component.popsystem.pop.labourer.factory.MutableFactoryInternalData
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.utils.I18NString
 import relativitization.universe.utils.IntString
@@ -26,6 +25,7 @@ data class BuildFactoryCommand(
     override val fromInt4D: Int4D,
     val senderTopLeaderId: Int,
     val targetCarrierId: Int,
+    val ownerId: Int,
     val factoryInternalData: FactoryInternalData,
     val qualityLevel: Double,
     val storedFuelRestMass: Double,
@@ -106,7 +106,7 @@ data class BuildFactoryCommand(
 
         val hasCarrier: Boolean = playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(targetCarrierId)
 
-        return allowConstruction
+        return allowConstruction && hasCarrier
     }
 
     override fun selfExecuteBeforeSend(
@@ -130,7 +130,7 @@ data class BuildFactoryCommand(
             val carrier: MutableCarrierData = playerData.playerInternalData.popSystemData().carrierDataMap.getValue(targetCarrierId)
             carrier.allPopData.labourerPopData.addFactory(
                 MutableFactoryData(
-                    ownerPlayerId = fromId,
+                    ownerPlayerId = ownerId,
                     factoryInternalData = DataSerializer.copy(factoryInternalData),
                     numBuilding = 1,
                     isOpened = true,
