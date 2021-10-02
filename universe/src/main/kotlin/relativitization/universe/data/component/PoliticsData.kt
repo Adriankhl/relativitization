@@ -9,6 +9,7 @@ import kotlin.math.abs
 data class PoliticsData(
     val centralizationLevel: Int = 0,
     val allowSubordinateBuildFactory: Boolean = false,
+    val allowLeaderBuildLocalFactory: Boolean = true,
     val allowForeignInvestor: Boolean = true,
 ) : PlayerDataComponent() {
     /**
