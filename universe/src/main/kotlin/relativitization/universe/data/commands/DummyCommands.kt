@@ -20,8 +20,8 @@ data class DummyCommand(
         listOf(),
     )
 
-    override fun canSend(playerData: MutablePlayerData, universeSettings: UniverseSettings): CanSendWithMessage {
-        return CanSendWithMessage(
+    override fun canSend(playerData: MutablePlayerData, universeSettings: UniverseSettings): CanSendCheckMessage {
+        return CanSendCheckMessage(
             false,
             I18NString("This is dummy. ")
         )
@@ -48,8 +48,8 @@ data class CannotSendCommand(
 
     override val description: I18NString = reason
 
-    override fun canSend(playerData: MutablePlayerData, universeSettings: UniverseSettings): CanSendWithMessage {
-        return CanSendWithMessage(false)
+    override fun canSend(playerData: MutablePlayerData, universeSettings: UniverseSettings): CanSendCheckMessage {
+        return CanSendCheckMessage(false)
     }
 
     override fun canExecute(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean {

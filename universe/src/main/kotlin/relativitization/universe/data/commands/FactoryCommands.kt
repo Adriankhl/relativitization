@@ -62,7 +62,7 @@ data class BuildForeignFactoryCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CanSendWithMessage {
+    ): CanSendCheckMessage {
         val sameTopLeaderId: Boolean = playerData.topLeaderId() == senderTopLeaderId
         val sameTopLeaderIdI18NString: I18NString = if (sameTopLeaderId) {
             I18NString("")
@@ -108,7 +108,7 @@ data class BuildForeignFactoryCommand(
         }
 
 
-        return CanSendWithMessage(
+        return CanSendCheckMessage(
             sameTopLeaderId && validFactoryInternalData && enoughFuelRestMass,
             I18NString.combine(
                 listOf(
@@ -206,7 +206,7 @@ data class BuildLocalFactoryCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CanSendWithMessage {
+    ): CanSendCheckMessage {
         val isSubordinateOrSelf: Boolean = playerData.isSubOrdinateOrSelf(toId)
         val isSubordinateOrSelfI18NString: I18NString = if (isSubordinateOrSelf) {
             I18NString("")
@@ -214,7 +214,7 @@ data class BuildLocalFactoryCommand(
             I18NString("Not subordinate or self.")
         }
 
-        return CanSendWithMessage(
+        return CanSendCheckMessage(
             isSubordinateOrSelf,
             I18NString.combine(
                 listOf(

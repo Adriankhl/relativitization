@@ -53,7 +53,7 @@ data class SendResourceCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CanSendWithMessage {
+    ): CanSendCheckMessage {
         val notFuel: Boolean = resourceType != ResourceType.FUEL
         val notFuelI18NString: I18NString = if (notFuel) {
             I18NString("")
@@ -129,7 +129,7 @@ data class SendResourceCommand(
             )
         }
 
-        return CanSendWithMessage(
+        return CanSendCheckMessage(
             notFuel && hasAmount && isQualityValid && isLossFractionValid,
             I18NString.combine(
                 listOf(
@@ -217,7 +217,7 @@ data class SendFuelCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CanSendWithMessage {
+    ): CanSendCheckMessage {
         val hasAmount: Boolean =
             playerData.playerInternalData.physicsData().fuelRestMassData.trade >= amount
         val hasAmountI18NString: I18NString = if (hasAmount) {
@@ -258,7 +258,7 @@ data class SendFuelCommand(
             )
         }
 
-        return CanSendWithMessage(
+        return CanSendCheckMessage(
             hasAmount && isLossFractionValid,
             I18NString.combine(
                 listOf(
