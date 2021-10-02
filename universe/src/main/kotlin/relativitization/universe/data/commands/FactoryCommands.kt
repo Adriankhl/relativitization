@@ -17,6 +17,11 @@ import relativitization.universe.utils.RelativitizationLogManager
  * Build a factory on player
  *
  * @property senderTopLeaderId the player id of the top leader of the sender
+ * @property targetCarrierId build factory on that carrier
+ * @property ownerId who own this factory
+ * @property factoryInternalData data of the factory
+ * @property qualityLevel the quality of the factory, relative to tech level
+ * @property storedFuelRestMass fuel stored in the newly built factory
  */
 @Serializable
 data class BuildForeignFactoryCommand(
