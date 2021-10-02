@@ -204,7 +204,13 @@ data class BuildLocalFactoryCommand(
         val hasCarrier: Boolean =
             playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(targetCarrierId)
 
-        return isLeader && hasCarrier
+        val requiredFuel: Double = playerData.playerInternalData.playerScienceData().playerScienceProductData.newFactoryFuelNeededByConstruction(
+            outputResourceType = outputResourceType,
+            qualityLevel = qualityLevel
+        )
+        val hasFuel: Boolean = playerData.playerInternalData.physicsData().fuelRestMassData.production >- requiredFuel
+
+        return isLeader && hasCarrier && hasFuel
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
@@ -218,6 +224,13 @@ data class BuildLocalFactoryCommand(
             outputResourceType = outputResourceType,
             qualityLevel = qualityLevel
         )
+
+        val requiredFuel: Double = playerData.playerInternalData.playerScienceData().playerScienceProductData.newFactoryFuelNeededByConstruction(
+            outputResourceType = outputResourceType,
+            qualityLevel = qualityLevel
+        )
+
+        playerData.playerInternalData.physicsData().fuelRestMassData.production -= requiredFuel
 
         carrier.allPopData.labourerPopData.addFactory(
             MutableFactoryData(
