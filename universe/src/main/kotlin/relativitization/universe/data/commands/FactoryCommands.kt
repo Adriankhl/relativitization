@@ -38,8 +38,25 @@ data class BuildForeignFactoryCommand(
     val storedFuelRestMass: Double,
 ) : Command() {
     override val description: I18NString = I18NString(
-        listOf(),
-        listOf()
+        listOf(
+            RealString("Build a foreign factory with quality level "),
+            IntString(0),
+            RealString(" owned by "),
+            IntString(1),
+            RealString(" at carrier "),
+            IntString(2),
+            RealString(" of player "),
+            IntString(3),
+            RealString(". Initial stored fuel rest mass: "),
+            IntString(4),
+        ),
+        listOf(
+            qualityLevel.toString(),
+            ownerId.toString(),
+            targetCarrierId.toString(),
+            toId.toString(),
+            storedFuelRestMass.toString(),
+        )
     )
 
     override fun canSend(
