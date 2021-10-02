@@ -3,10 +3,12 @@ package relativitization.universe.data.commands
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseSettings
+import relativitization.universe.data.component.economy.ResourceType
 import relativitization.universe.data.component.physics.Int4D
 import relativitization.universe.data.component.popsystem.MutableCarrierData
 import relativitization.universe.data.component.popsystem.pop.labourer.factory.FactoryInternalData
 import relativitization.universe.data.component.popsystem.pop.labourer.factory.MutableFactoryData
+import relativitization.universe.data.component.popsystem.pop.labourer.factory.MutableFactoryInternalData
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.utils.I18NString
 import relativitization.universe.utils.IntString
@@ -109,7 +111,8 @@ data class BuildForeignFactoryCommand(
         val allowConstruction: Boolean =
             (sameTopLeader || playerData.playerInternalData.politicsData().allowForeignInvestor)
 
-        val hasCarrier: Boolean = playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(targetCarrierId)
+        val hasCarrier: Boolean =
+            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(targetCarrierId)
 
         return allowConstruction && hasCarrier
     }
@@ -129,25 +132,105 @@ data class BuildForeignFactoryCommand(
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
 
-        val hasCarrier: Boolean = playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(targetCarrierId)
+        val carrier: MutableCarrierData =
+            playerData.playerInternalData.popSystemData().carrierDataMap.getValue(targetCarrierId)
+        carrier.allPopData.labourerPopData.addFactory(
+            MutableFactoryData(
+                ownerPlayerId = ownerId,
+                factoryInternalData = DataSerializer.copy(factoryInternalData),
+                numBuilding = 1,
+                isOpened = true,
+                lastOutputAmount = 0.0,
+                lastInputAmountMap = mutableMapOf(),
+                storedFuelRestMass = storedFuelRestMass,
+                lastNumEmployee = 0.0
+            )
+        )
+    }
 
-        if (hasCarrier) {
-            val carrier: MutableCarrierData = playerData.playerInternalData.popSystemData().carrierDataMap.getValue(targetCarrierId)
-            carrier.allPopData.labourerPopData.addFactory(
-                MutableFactoryData(
-                    ownerPlayerId = ownerId,
-                    factoryInternalData = DataSerializer.copy(factoryInternalData),
-                    numBuilding = 1,
-                    isOpened = true,
-                    lastOutputAmount = 0.0,
-                    lastInputAmountMap = mutableMapOf(),
-                    storedFuelRestMass = storedFuelRestMass,
-                    lastNumEmployee = 0.0
+
+    companion object {
+        private val logger = RelativitizationLogManager.getLogger()
+    }
+}
+
+/**
+ * Build a factory on player
+ *
+ * @property outputResourceType the resource type of this factory
+ * @property targetCarrierId build factory on that carrier
+ * @property qualityLevel the quality of the factory, relative to tech level
+ */
+@Serializable
+data class BuildLocalFactoryCommand(
+    override val toId: Int,
+    override val fromId: Int,
+    override val fromInt4D: Int4D,
+    val outputResourceType: ResourceType,
+    val targetCarrierId: Int,
+    val qualityLevel: Double,
+) : Command() {
+    override val description: I18NString = I18NString(
+        listOf(),
+        listOf()
+    )
+
+    override fun canSend(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): CanSendWithMessage {
+        val isSubordinateOrSelf: Boolean = playerData.isSubOrdinateOrSelf(toId)
+        val isSubordinateOrSelfI18NString: I18NString = if (isSubordinateOrSelf) {
+            I18NString("")
+        } else {
+            I18NString("Not subordinate or self.")
+        }
+
+        return CanSendWithMessage(
+            isSubordinateOrSelf,
+            I18NString.combine(
+                listOf(
+                    isSubordinateOrSelfI18NString
                 )
             )
-        } else {
-            logger.error("No carrier $targetCarrierId")
-        }
+        )
+    }
+
+    override fun canExecute(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): Boolean {
+        val isLeader: Boolean = playerData.isLeaderOrSelf(fromId)
+        val hasCarrier: Boolean =
+            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(targetCarrierId)
+
+        return isLeader && hasCarrier
+    }
+
+    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+
+        val carrier: MutableCarrierData =
+            playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
+                targetCarrierId
+            )
+
+        val newFactoryInternalData: MutableFactoryInternalData = playerData.playerInternalData.playerScienceData().playerScienceProductData.newFactoryInternalData(
+            outputResourceType = outputResourceType,
+            qualityLevel = qualityLevel
+        )
+
+        carrier.allPopData.labourerPopData.addFactory(
+            MutableFactoryData(
+                ownerPlayerId = toId,
+                factoryInternalData = newFactoryInternalData,
+                numBuilding = 1,
+                isOpened = true,
+                lastOutputAmount = 0.0,
+                lastInputAmountMap = mutableMapOf(),
+                storedFuelRestMass = 0.0,
+                lastNumEmployee = 0.0
+            )
+        )
     }
 
 

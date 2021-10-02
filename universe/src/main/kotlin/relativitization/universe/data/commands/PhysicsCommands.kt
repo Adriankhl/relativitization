@@ -37,15 +37,21 @@ data class ChangeVelocityCommand(
      * Can only send to subordinate
      */
     override fun canSend(playerData: MutablePlayerData, universeSettings: UniverseSettings): CanSendWithMessage {
-        val isSubOrdinateOrSelf: Boolean = playerData.isSubOrdinateOrSelf(toId)
-        return if (isSubOrdinateOrSelf) {
-            CanSendWithMessage(true)
+        val isSubordinateOrSelf: Boolean = playerData.isSubOrdinateOrSelf(toId)
+        val isSubordinateOrSelfI18NString: I18NString = if (isSubordinateOrSelf) {
+            I18NString("")
         } else {
-            CanSendWithMessage(
-                false,
-                CanSendWIthMessageI18NStringFactory.isNotSubordinate(playerData.playerId, toId)
-            )
+            I18NString("Not subordinate or self.")
         }
+
+        return CanSendWithMessage(
+            isSubordinateOrSelf,
+            I18NString.combine(
+                listOf(
+                    isSubordinateOrSelfI18NString
+                )
+            )
+        )
     }
 
     /**
