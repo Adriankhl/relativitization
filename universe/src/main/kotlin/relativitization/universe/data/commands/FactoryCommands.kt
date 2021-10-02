@@ -135,11 +135,14 @@ data class BuildForeignFactoryCommand(
         universeSettings: UniverseSettings
     ): Boolean {
         val sameTopLeader: Boolean = playerData.topLeaderId() == senderTopLeaderId
+        val foreignInvestorOrSameTopLeader: Boolean = (sameTopLeader ||
+                playerData.playerInternalData.politicsData().allowForeignInvestor)
+
         val isSenderTopLeader: Boolean = fromId == playerData.topLeaderId()
-        val allowConstruction: Boolean = (sameTopLeader ||
-                    playerData.playerInternalData.politicsData().allowForeignInvestor ||
-                    (isSenderTopLeader || playerData.playerInternalData.politicsData().allowSubordinateBuildFactory)
-                    )
+        val canSenderBuild: Boolean = (isSenderTopLeader ||
+                playerData.playerInternalData.politicsData().allowSubordinateBuildFactory)
+
+        val allowConstruction: Boolean = foreignInvestorOrSameTopLeader && canSenderBuild
 
         val hasCarrier: Boolean =
             playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(targetCarrierId)
