@@ -31,6 +31,10 @@ tasks.withType<KotlinCompile>().configureEach {
     kotlinOptions.freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
 }
 
+tasks.withType<JavaCompile>().configureEach {
+    options.release.set(11)
+}
+
 tasks {
     test {
         useJUnitPlatform()
