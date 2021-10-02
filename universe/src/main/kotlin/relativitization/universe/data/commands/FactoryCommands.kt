@@ -188,8 +188,19 @@ data class BuildLocalFactoryCommand(
     val qualityLevel: Double,
 ) : Command() {
     override val description: I18NString = I18NString(
-        listOf(),
-        listOf()
+        listOf(
+            RealString("Build a local factory with quality level "),
+            IntString(0),
+            RealString(" at carrier "),
+            IntString(1),
+            RealString(" of player "),
+            IntString(2),
+        ),
+        listOf(
+            qualityLevel.toString(),
+            targetCarrierId.toString(),
+            toId.toString(),
+        )
     )
 
     override fun canSend(
