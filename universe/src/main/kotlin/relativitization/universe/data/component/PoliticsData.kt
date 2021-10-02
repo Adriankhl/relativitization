@@ -43,5 +43,6 @@ data class PoliticsData(
 data class MutablePoliticsData(
     var centralizationLevel: Int = 0,
     var allowSubordinateBuildFactory: Boolean = false,
+    var allowLeaderBuildLocalFactory: Boolean = true,
     var allowForeignInvestor: Boolean = true,
 ) : MutablePlayerDataComponent()

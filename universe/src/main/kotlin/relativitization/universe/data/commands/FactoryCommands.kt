@@ -230,11 +230,22 @@ data class BuildLocalFactoryCommand(
             I18NString("Not subordinate or self.")
         }
 
+        val isTopLeader: Boolean = playerData.isTopLeader()
+        val allowSubordinateConstruction: Boolean =
+            isTopLeader || playerData.playerInternalData.politicsData().allowSubordinateBuildFactory
+        val allowSubordinateConstructionI18NString: I18NString = if (allowSubordinateConstruction) {
+            I18NString("")
+        } else {
+            I18NString("Not allow to build factory, not a top leader")
+        }
+
+
         return CanSendCheckMessage(
-            isSubordinateOrSelf,
+            isSubordinateOrSelf && allowSubordinateConstruction,
             I18NString.combine(
                 listOf(
-                    isSubordinateOrSelfI18NString
+                    isSubordinateOrSelfI18NString,
+                    allowSubordinateConstructionI18NString
                 )
             )
         )
@@ -245,6 +256,17 @@ data class BuildLocalFactoryCommand(
         universeSettings: UniverseSettings
     ): Boolean {
         val isLeader: Boolean = playerData.isLeaderOrSelf(fromId)
+        val isSelf: Boolean = playerData.playerId == fromId
+
+        val isSenderTopLeader: Boolean = fromId == playerData.topLeaderId()
+        val canSenderBuild: Boolean = (isSenderTopLeader ||
+                playerData.playerInternalData.politicsData().allowSubordinateBuildFactory)
+
+        val selfOrLeaderBuild: Boolean = (isSelf ||
+                playerData.playerInternalData.politicsData().allowLeaderBuildLocalFactory)
+
+        val allowConstruction: Boolean = canSenderBuild && selfOrLeaderBuild
+
         val hasCarrier: Boolean =
             playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(targetCarrierId)
 
@@ -256,7 +278,7 @@ data class BuildLocalFactoryCommand(
         val hasFuel: Boolean =
             playerData.playerInternalData.physicsData().fuelRestMassData.production > -requiredFuel
 
-        return isLeader && hasCarrier && hasFuel
+        return isLeader && allowConstruction && hasCarrier && hasFuel
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
