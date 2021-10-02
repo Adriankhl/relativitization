@@ -82,6 +82,15 @@ data class BuildForeignFactoryCommand(
             )
         }
 
+        val isTopLeader: Boolean = playerData.isTopLeader()
+        val allowConstruction: Boolean =
+            isTopLeader || playerData.playerInternalData.politicsData().allowSubordinateBuildFactory
+        val allowConstructionI18NString: I18NString = if (allowConstruction) {
+            I18NString("")
+        } else {
+            I18NString("Not allow to build factory, not a top leader")
+        }
+
         val validFactoryInternalData: Boolean = factoryInternalData.squareDiff(
             playerData.playerInternalData.playerScienceData().playerScienceProductData.newFactoryInternalData(
                 factoryInternalData.outputResource,
@@ -109,10 +118,11 @@ data class BuildForeignFactoryCommand(
 
 
         return CanSendCheckMessage(
-            sameTopLeaderId && validFactoryInternalData && enoughFuelRestMass,
+            sameTopLeaderId && allowConstruction && validFactoryInternalData && enoughFuelRestMass,
             I18NString.combine(
                 listOf(
                     sameTopLeaderIdI18NString,
+                    allowConstructionI18NString,
                     validFactoryInternalDataI18NString,
                     enoughFuelRestMassI18NString
                 )
@@ -125,8 +135,11 @@ data class BuildForeignFactoryCommand(
         universeSettings: UniverseSettings
     ): Boolean {
         val sameTopLeader: Boolean = playerData.topLeaderId() == senderTopLeaderId
-        val allowConstruction: Boolean =
-            (sameTopLeader || playerData.playerInternalData.politicsData().allowForeignInvestor)
+        val isSenderTopLeader: Boolean = fromId == playerData.topLeaderId()
+        val allowConstruction: Boolean = (sameTopLeader ||
+                    playerData.playerInternalData.politicsData().allowForeignInvestor ||
+                    (isSenderTopLeader || playerData.playerInternalData.politicsData().allowSubordinateBuildFactory)
+                    )
 
         val hasCarrier: Boolean =
             playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(targetCarrierId)
@@ -232,11 +245,13 @@ data class BuildLocalFactoryCommand(
         val hasCarrier: Boolean =
             playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(targetCarrierId)
 
-        val requiredFuel: Double = playerData.playerInternalData.playerScienceData().playerScienceProductData.newFactoryFuelNeededByConstruction(
-            outputResourceType = outputResourceType,
-            qualityLevel = qualityLevel
-        )
-        val hasFuel: Boolean = playerData.playerInternalData.physicsData().fuelRestMassData.production >- requiredFuel
+        val requiredFuel: Double =
+            playerData.playerInternalData.playerScienceData().playerScienceProductData.newFactoryFuelNeededByConstruction(
+                outputResourceType = outputResourceType,
+                qualityLevel = qualityLevel
+            )
+        val hasFuel: Boolean =
+            playerData.playerInternalData.physicsData().fuelRestMassData.production > -requiredFuel
 
         return isLeader && hasCarrier && hasFuel
     }
@@ -248,15 +263,17 @@ data class BuildLocalFactoryCommand(
                 targetCarrierId
             )
 
-        val newFactoryInternalData: MutableFactoryInternalData = playerData.playerInternalData.playerScienceData().playerScienceProductData.newFactoryInternalData(
-            outputResourceType = outputResourceType,
-            qualityLevel = qualityLevel
-        )
+        val newFactoryInternalData: MutableFactoryInternalData =
+            playerData.playerInternalData.playerScienceData().playerScienceProductData.newFactoryInternalData(
+                outputResourceType = outputResourceType,
+                qualityLevel = qualityLevel
+            )
 
-        val requiredFuel: Double = playerData.playerInternalData.playerScienceData().playerScienceProductData.newFactoryFuelNeededByConstruction(
-            outputResourceType = outputResourceType,
-            qualityLevel = qualityLevel
-        )
+        val requiredFuel: Double =
+            playerData.playerInternalData.playerScienceData().playerScienceProductData.newFactoryFuelNeededByConstruction(
+                outputResourceType = outputResourceType,
+                qualityLevel = qualityLevel
+            )
 
         playerData.playerInternalData.physicsData().fuelRestMassData.production -= requiredFuel
 
