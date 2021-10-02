@@ -23,13 +23,28 @@ object FactoryProduction : Mechanism() {
         // Clean up fuel in resource data
         mutablePlayerData.playerInternalData.economyData().resourceData.removeFuel()
 
+        // Do self factory production first
         mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.forEach { carrier ->
             carrier.allPopData.labourerPopData.factoryMap.values.forEach { factory ->
-                updateResourceData(
-                    factory,
-                    mutablePlayerData.playerInternalData.economyData().resourceData,
-                    mutablePlayerData.playerInternalData.physicsData(),
-                )
+                if (factory.ownerPlayerId == mutablePlayerData.playerId) {
+                    updateResourceData(
+                        factory,
+                        mutablePlayerData.playerInternalData.economyData().resourceData,
+                        mutablePlayerData.playerInternalData.physicsData(),
+                    )
+                }
+            }
+        }
+
+        mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.forEach { carrier ->
+            carrier.allPopData.labourerPopData.factoryMap.values.forEach { factory ->
+                if (factory.ownerPlayerId != mutablePlayerData.playerId) {
+                    updateResourceData(
+                        factory,
+                        mutablePlayerData.playerInternalData.economyData().resourceData,
+                        mutablePlayerData.playerInternalData.physicsData(),
+                    )
+                }
             }
         }
 

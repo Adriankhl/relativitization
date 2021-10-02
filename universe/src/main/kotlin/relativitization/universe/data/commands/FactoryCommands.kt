@@ -19,7 +19,7 @@ import relativitization.universe.utils.RelativitizationLogManager
  * @property senderTopLeaderId the player id of the top leader of the sender
  */
 @Serializable
-data class BuildFactoryCommand(
+data class BuildForeignFactoryCommand(
     override val toId: Int,
     override val fromId: Int,
     override val fromInt4D: Int4D,

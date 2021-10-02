@@ -8,7 +8,7 @@ import relativitization.universe.generate.GenerateSettings
 import relativitization.universe.generate.UniverseGenerationCollection
 import kotlin.test.Test
 
-internal class BuildFactoryCommandTest {
+internal class BuildForeignFactoryCommandTest {
     @Test
     fun fixedMinimalTest() {
         val universe = Universe(UniverseGenerationCollection.generate(GenerateSettings()), ".")
