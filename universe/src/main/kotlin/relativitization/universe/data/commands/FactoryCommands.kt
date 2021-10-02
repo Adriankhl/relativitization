@@ -262,10 +262,9 @@ data class BuildLocalFactoryCommand(
         val canSenderBuild: Boolean = (isSenderTopLeader ||
                 playerData.playerInternalData.politicsData().allowSubordinateBuildFactory)
 
-        val selfOrLeaderBuild: Boolean = (isSelf ||
+        val canLeaderBuild: Boolean = (isSelf ||
                 playerData.playerInternalData.politicsData().allowLeaderBuildLocalFactory)
 
-        val allowConstruction: Boolean = canSenderBuild && selfOrLeaderBuild
 
         val hasCarrier: Boolean =
             playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(targetCarrierId)
@@ -278,7 +277,7 @@ data class BuildLocalFactoryCommand(
         val hasFuel: Boolean =
             playerData.playerInternalData.physicsData().fuelRestMassData.production > -requiredFuel
 
-        return isLeader && allowConstruction && hasCarrier && hasFuel
+        return isLeader && canSenderBuild && canLeaderBuild && hasCarrier && hasFuel
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
