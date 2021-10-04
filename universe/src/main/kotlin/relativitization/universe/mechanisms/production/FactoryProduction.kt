@@ -27,32 +27,22 @@ object FactoryProduction : Mechanism() {
 
         // Do self factory production first
         mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.forEach { carrier ->
-            carrier.allPopData.labourerPopData.factoryMap.values.forEach { factory ->
-                if (factory.ownerPlayerId == mutablePlayerData.playerId) {
-                    updateResourceData(
-                        factory,
-                        mutablePlayerData.playerInternalData.economyData().resourceData,
-                        mutablePlayerData.playerInternalData.physicsData(),
-                    )
-                }
+            carrier.allPopData.labourerPopData.factoryMap.values.filter { factory ->
+                factory.ownerPlayerId == mutablePlayerData.playerId
+            }.forEach { factory ->
+                updateResourceData(
+                    factory,
+                    mutablePlayerData.playerInternalData.economyData().resourceData,
+                    mutablePlayerData.playerInternalData.physicsData(),
+                )
             }
         }
 
-        mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.forEach { carrier ->
-            carrier.allPopData.labourerPopData.factoryMap.values.forEach { factory ->
-                if (factory.ownerPlayerId != mutablePlayerData.playerId) {
-                    updateResourceData(
-                        factory,
-                        mutablePlayerData.playerInternalData.economyData().resourceData,
-                        mutablePlayerData.playerInternalData.physicsData(),
-                    )
-                }
-            }
-        }
 
         // Store fuel to physics data
         if (mutablePlayerData.playerInternalData.modifierData(
-        ).physicsModifierData.disableRestMassIncreaseTimeLimit <= 0) {
+            ).physicsModifierData.disableRestMassIncreaseTimeLimit <= 0
+        ) {
             mutablePlayerData.playerInternalData.physicsData().addFuel(
                 mutablePlayerData.playerInternalData.economyData().resourceData.getFuelAmount()
             )
@@ -61,8 +51,22 @@ object FactoryProduction : Mechanism() {
         // Clean up fuel in resource data
         mutablePlayerData.playerInternalData.economyData().resourceData.removeFuel()
 
+        // Production by factory owned by other
+        val logisticCommandList: List<Command> =
+            mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.map { carrier ->
+                carrier.allPopData.labourerPopData.factoryMap.values.filter { factory ->
+                    factory.ownerPlayerId != mutablePlayerData.playerId
+                }.map { factory ->
+                    computeSendResourceCommand(
+                        factory,
+                        mutablePlayerData
+                    )
+                }
+            }.flatten()
 
-        return listOf()
+
+
+        return logisticCommandList
     }
 
     /**
@@ -114,16 +118,19 @@ object FactoryProduction : Mechanism() {
 
         val employeeFraction: Double = mutableFactoryData.employeeFraction()
 
-        val fuelFraction: Double = physicsData.fuelRestMassData.production / (mutableFactoryData.factoryInternalData.fuelRestMassConsumptionRate * mutableFactoryData.numBuilding)
+        val fuelFraction: Double =
+            physicsData.fuelRestMassData.production / (mutableFactoryData.factoryInternalData.fuelRestMassConsumptionRate * mutableFactoryData.numBuilding)
 
         val buyResourceFraction: Double = if (buyResource) {
-            val totalPrice: Double = mutableFactoryData.factoryInternalData.inputResourceMap.map { (type, inputResourceData) ->
-                val requiredAmount: Double =
-                    inputResourceData.amountPerOutputUnit * mutableFactoryData.factoryInternalData.maxOutputAmount * mutableFactoryData.numBuilding
-                val qualityClass: ResourceQualityClass = inputResourceQualityClassMap.getValue(type)
+            val totalPrice: Double =
+                mutableFactoryData.factoryInternalData.inputResourceMap.map { (type, inputResourceData) ->
+                    val requiredAmount: Double =
+                        inputResourceData.amountPerOutputUnit * mutableFactoryData.factoryInternalData.maxOutputAmount * mutableFactoryData.numBuilding
+                    val qualityClass: ResourceQualityClass =
+                        inputResourceQualityClassMap.getValue(type)
 
-                resourceData.getResourcePrice(type, qualityClass) * requiredAmount
-            }.sumOf { it }
+                    resourceData.getResourcePrice(type, qualityClass) * requiredAmount
+                }.sumOf { it }
 
             mutableFactoryData.storedFuelRestMass / totalPrice
         } else {
@@ -271,13 +278,14 @@ object FactoryProduction : Mechanism() {
             productQuality(mutableFactoryData, qualityClassMap, resourceData)
 
         // Pay price
-        val price: Double = mutableFactoryData.factoryInternalData.inputResourceMap.map { (type, inputResourceData) ->
-            val requiredAmount: Double =
-                inputResourceData.amountPerOutputUnit * mutableFactoryData.factoryInternalData.maxOutputAmount * mutableFactoryData.numBuilding
-            val qualityClass: ResourceQualityClass = qualityClassMap.getValue(type)
+        val price: Double =
+            mutableFactoryData.factoryInternalData.inputResourceMap.map { (type, inputResourceData) ->
+                val requiredAmount: Double =
+                    inputResourceData.amountPerOutputUnit * mutableFactoryData.factoryInternalData.maxOutputAmount * mutableFactoryData.numBuilding
+                val qualityClass: ResourceQualityClass = qualityClassMap.getValue(type)
 
-            resourceData.getResourcePrice(type, qualityClass) * requiredAmount
-        }.sumOf { it } * amountFraction
+                resourceData.getResourcePrice(type, qualityClass) * requiredAmount
+            }.sumOf { it } * amountFraction
         mutableFactoryData.storedFuelRestMass -= price
         mutablePlayerData.playerInternalData.physicsData().fuelRestMassData.trade += price
 
