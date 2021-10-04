@@ -380,7 +380,7 @@ data class SendFuelCommand(
     override val fromId: Int,
     override val fromInt4D: Int4D,
     val amount: Double,
-    val senderResourceLossFractionPerDistance: Double,
+    val senderFuelLossFractionPerDistance: Double,
 ) : Command() {
     override val description: I18NString = I18NString("")
 
@@ -405,9 +405,9 @@ data class SendFuelCommand(
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
         val receiverLossFractionPerDistance: Double =
-            playerData.playerInternalData.playerScienceData().playerScienceProductData.resourceLogisticsLossFractionPerDistance
+            playerData.playerInternalData.playerScienceData().playerScienceProductData.fuelLogisticsLossFractionPerDistance
 
-        val lossFractionPerDistance: Double = (receiverLossFractionPerDistance + senderResourceLossFractionPerDistance) * 0.5
+        val lossFractionPerDistance: Double = (receiverLossFractionPerDistance + senderFuelLossFractionPerDistance) * 0.5
 
         val distance: Double = Intervals.distance(
             fromInt4D.toDouble3D(),
