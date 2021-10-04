@@ -273,7 +273,7 @@ object FactoryProduction : Mechanism() {
                 fromId = mutablePlayerData.playerId,
                 fromInt4D = mutablePlayerData.int4D.toInt4D(),
                 amount = 0.0,
-                senderResourceLossFractionPerDistance = 0.0,
+                senderFuelLossFractionPerDistance = 0.0,
             )
         } else {
             SendResourceCommand(
