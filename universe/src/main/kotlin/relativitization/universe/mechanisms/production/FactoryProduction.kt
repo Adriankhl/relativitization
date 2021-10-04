@@ -8,8 +8,7 @@ import relativitization.universe.data.component.MutablePhysicsData
 import relativitization.universe.data.component.economy.*
 import relativitization.universe.data.component.popsystem.pop.labourer.factory.MutableFactoryData
 import relativitization.universe.data.UniverseScienceData
-import relativitization.universe.data.commands.SendResourceFromFactoryCommand
-import relativitization.universe.data.commands.SendResourceFromStorageCommand
+import relativitization.universe.data.commands.SendResourceCommand
 import relativitization.universe.mechanisms.Mechanism
 
 /**
@@ -226,7 +225,7 @@ object FactoryProduction : Mechanism() {
     fun computeSendResourceCommand(
         mutableFactoryData: MutableFactoryData,
         mutablePlayerData: MutablePlayerData,
-    ): SendResourceFromFactoryCommand {
+    ): Command {
         val toId: Int = mutableFactoryData.ownerPlayerId
 
         val qualityClassMap: Map<ResourceType, ResourceQualityClass> =
@@ -265,7 +264,7 @@ object FactoryProduction : Mechanism() {
             mutableFactoryData.factoryInternalData.maxOutputAmount * amountFraction * mutableFactoryData.numBuilding
         )
 
-        return SendResourceFromFactoryCommand(
+        return SendResourceCommand(
             toId = toId,
             fromId = mutablePlayerData.playerId,
             fromInt4D = mutablePlayerData.int4D.toInt4D(),
