@@ -12,7 +12,7 @@ object Versions {
 
     const val gdxVersion = "1.10.0"
     const val log4jVersion = "2.14.1"
-    const val kotlinFakerVersion = "1.7.1"
+    const val kotlinFakerVersion = "1.8.0"
 
     const val androidGradlePluginVersion = "7.0.2"
     const val androidAppCompatVersion = "1.3.1"
