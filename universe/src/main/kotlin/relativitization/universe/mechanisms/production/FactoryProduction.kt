@@ -8,6 +8,8 @@ import relativitization.universe.data.component.MutablePhysicsData
 import relativitization.universe.data.component.economy.*
 import relativitization.universe.data.component.popsystem.pop.labourer.factory.MutableFactoryData
 import relativitization.universe.data.UniverseScienceData
+import relativitization.universe.data.commands.SendResourceFromFactoryCommand
+import relativitization.universe.data.commands.SendResourceFromStorageCommand
 import relativitization.universe.mechanisms.Mechanism
 
 /**
@@ -212,6 +214,65 @@ object FactoryProduction : Mechanism() {
             mutableFactoryData.factoryInternalData.outputResource,
             outputQuality,
             mutableFactoryData.factoryInternalData.maxOutputAmount * amountFraction * mutableFactoryData.numBuilding
+        )
+    }
+
+    /**
+     * Produce resource and send resource to owner
+     *
+     * @param mutableFactoryData the factory to produce resource
+     * @param mutablePlayerData the player of that factory
+     */
+    fun computeSendResourceCommand(
+        mutableFactoryData: MutableFactoryData,
+        mutablePlayerData: MutablePlayerData,
+    ): SendResourceFromFactoryCommand {
+        val toId: Int = mutableFactoryData.ownerPlayerId
+
+        val qualityClassMap: Map<ResourceType, ResourceQualityClass> =
+            computeInputResourceQualityClassMap(
+                mutableFactoryData,
+                resourceData,
+            )
+        val amountFraction: Double = productAmountFraction(
+            mutableFactoryData,
+            qualityClassMap,
+            physicsData,
+            resourceData
+        )
+        val outputQuality: MutableResourceQualityData =
+            productQuality(mutableFactoryData, qualityClassMap, resourceData)
+
+
+        // Consume resource
+        mutableFactoryData.factoryInternalData.inputResourceMap.forEach { (type, inputResourceData) ->
+            val requiredAmount: Double =
+                inputResourceData.amountPerOutputUnit * mutableFactoryData.factoryInternalData.maxOutputAmount * mutableFactoryData.numBuilding
+            val qualityClass: ResourceQualityClass = qualityClassMap.getValue(type)
+            resourceData.getResourceAmountData(
+                type,
+                qualityClass
+            ).production -= requiredAmount * amountFraction
+        }
+
+        // Consume fuel
+        physicsData.fuelRestMassData.production -= mutableFactoryData.factoryInternalData.fuelRestMassConsumptionRate * amountFraction * mutableFactoryData.numBuilding
+
+        // Produce resource
+        resourceData.addNewResource(
+            mutableFactoryData.factoryInternalData.outputResource,
+            outputQuality,
+            mutableFactoryData.factoryInternalData.maxOutputAmount * amountFraction * mutableFactoryData.numBuilding
+        )
+
+        return SendResourceFromFactoryCommand(
+            toId = toId,
+            fromId = mutablePlayerData.playerId,
+            fromInt4D = mutablePlayerData.int4D.toInt4D(),
+            resourceType = mutableFactoryData.factoryInternalData.outputResource,
+            resourceQualityData = ResourceQualityData(),
+            amount = 0.0,
+            senderResourceLossFractionPerDistance = 0.0,
         )
     }
 }
