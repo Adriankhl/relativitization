@@ -8,6 +8,7 @@ import relativitization.universe.data.component.MutablePhysicsData
 import relativitization.universe.data.component.economy.*
 import relativitization.universe.data.component.popsystem.pop.labourer.factory.MutableFactoryData
 import relativitization.universe.data.UniverseScienceData
+import relativitization.universe.data.commands.SendFuelCommand
 import relativitization.universe.data.commands.SendResourceCommand
 import relativitization.universe.mechanisms.Mechanism
 
@@ -227,6 +228,8 @@ object FactoryProduction : Mechanism() {
         mutablePlayerData: MutablePlayerData,
     ): Command {
         val toId: Int = mutableFactoryData.ownerPlayerId
+        val resourceData = mutablePlayerData.playerInternalData.economyData().resourceData
+        val physicsData = mutablePlayerData.playerInternalData.physicsData()
 
         val qualityClassMap: Map<ResourceType, ResourceQualityClass> =
             computeInputResourceQualityClassMap(
@@ -264,14 +267,24 @@ object FactoryProduction : Mechanism() {
             mutableFactoryData.factoryInternalData.maxOutputAmount * amountFraction * mutableFactoryData.numBuilding
         )
 
-        return SendResourceCommand(
-            toId = toId,
-            fromId = mutablePlayerData.playerId,
-            fromInt4D = mutablePlayerData.int4D.toInt4D(),
-            resourceType = mutableFactoryData.factoryInternalData.outputResource,
-            resourceQualityData = ResourceQualityData(),
-            amount = 0.0,
-            senderResourceLossFractionPerDistance = 0.0,
-        )
+        return if (mutableFactoryData.factoryInternalData.outputResource == ResourceType.FUEL) {
+            SendFuelCommand(
+                toId = toId,
+                fromId = mutablePlayerData.playerId,
+                fromInt4D = mutablePlayerData.int4D.toInt4D(),
+                amount = 0.0,
+                senderResourceLossFractionPerDistance = 0.0,
+            )
+        } else {
+            SendResourceCommand(
+                toId = toId,
+                fromId = mutablePlayerData.playerId,
+                fromInt4D = mutablePlayerData.int4D.toInt4D(),
+                resourceType = mutableFactoryData.factoryInternalData.outputResource,
+                resourceQualityData = ResourceQualityData(),
+                amount = 0.0,
+                senderResourceLossFractionPerDistance = 0.0,
+            )
+        }
     }
 }
