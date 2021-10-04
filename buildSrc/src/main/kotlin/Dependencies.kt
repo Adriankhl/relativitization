@@ -8,7 +8,7 @@ object Versions {
     const val kotlinxSerializationVersion = "1.3.0"
     const val ktorVersion = "1.6.4"
 
-    const val dokkaVersion = "1.5.30"
+    const val dokkaVersion = "1.5.31"
 
     const val gdxVersion = "1.10.0"
     const val log4jVersion = "2.14.1"
