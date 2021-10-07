@@ -63,6 +63,17 @@ class TestingFixedMinimal : GenerateUniverse() {
 
         playerData1.playerInternalData.physicsData().fuelRestMassData.production = 30.0
 
+        // Add resource to player 1
+        playerData1.playerInternalData.economyData().resourceData.addNewResource(
+            ResourceType.PLANT,
+            MutableResourceQualityData(
+                1.0,
+                2.0,
+                3.0
+            ),
+            5.0,
+        )
+
 
         // player 1 is a leader of player 2
         playerData2.playerInternalData.changeDirectLeaderId(
