@@ -244,6 +244,9 @@ object DefaultAvailableCommands : AvailableCommands() {
         DisableFuelIncreaseCommand::class.name(),
         DummyCommand::class.name(),
         SelectEventChoiceCommand::class.name(),
+        BuildForeignFactoryCommand::class.name(),
+        BuildLocalFactoryCommand::class.name(),
+        SendResourceFromStorageCommand::class.name(),
     )
 
     override val addEventList: List<String> = listOf(

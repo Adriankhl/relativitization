@@ -1,5 +1,6 @@
 package relativitization.universe.data.commands
 
+import kotlinx.coroutines.runBlocking
 import relativitization.universe.Universe
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.component.economy.ResourceQualityClass
@@ -39,5 +40,22 @@ internal class BuildForeignFactoryCommandTest {
             qualityLevel = 1.0,
             storedFuelRestMass = 0.0
         )
+
+        runBlocking {
+            universe.postProcessUniverse(mapOf(
+                1 to listOf(command)),
+                mapOf(
+                    2 to listOf(),
+                    3 to listOf(),
+                    4 to listOf()
+                )
+            )
+            universe.preProcessUniverse()
+        }
+
+        val view8: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
+        val newPlayerData = view8.get(1)
+        val factoryMap = newPlayerData.playerInternalData.popSystemData().carrierDataMap.getValue(0).allPopData.labourerPopData.factoryMap
+        assert(factoryMap.size == 2)
     }
 }
