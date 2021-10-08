@@ -74,11 +74,7 @@ data class FuelFactoryInternalData(
 
 @Serializable
 data class MutableFuelFactoryInternalData(
-    var outputResource: ResourceType = ResourceType.FUEL,
-    var maxOutputResourceQualityData: MutableResourceQualityData = MutableResourceQualityData(),
     var maxOutputAmount: Double = 0.0,
-    var inputResourceMap: MutableMap<ResourceType, MutableInputResourceData> = mutableMapOf(),
-    var fuelRestMassConsumptionRate: Double = 0.0,
     var maxNumEmployee: Double = 0.0,
     var size: Double = 0.0,
 ) {
