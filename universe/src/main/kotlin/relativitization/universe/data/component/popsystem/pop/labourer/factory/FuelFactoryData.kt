@@ -27,7 +27,7 @@ data class FuelFactoryData(
 )
 
 @Serializable
-data class FuelResourceFactoryData(
+data class MutableFuelFactoryData(
     var ownerPlayerId: Int = -1,
     var resourceFactoryInternalData: MutableFuelFactoryInternalData = MutableFuelFactoryInternalData(),
     var numBuilding: Int = 1,

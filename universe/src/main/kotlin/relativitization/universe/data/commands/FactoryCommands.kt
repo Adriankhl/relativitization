@@ -167,7 +167,7 @@ data class BuildForeignFactoryCommand(
 
         val carrier: MutableCarrierData =
             playerData.playerInternalData.popSystemData().carrierDataMap.getValue(targetCarrierId)
-        carrier.allPopData.labourerPopData.addFactory(
+        carrier.allPopData.labourerPopData.addResourceFactory(
             MutableResourceFactoryData(
                 ownerPlayerId = ownerId,
                 resourceFactoryInternalData = DataSerializer.copy(resourceFactoryInternalData),
@@ -301,7 +301,7 @@ data class BuildLocalFactoryCommand(
 
         playerData.playerInternalData.physicsData().fuelRestMassData.production -= requiredFuel
 
-        carrier.allPopData.labourerPopData.addFactory(
+        carrier.allPopData.labourerPopData.addResourceFactory(
             MutableResourceFactoryData(
                 ownerPlayerId = toId,
                 resourceFactoryInternalData = newResourceFactoryInternalData,
