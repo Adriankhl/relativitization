@@ -28,7 +28,7 @@ internal class BuildForeignResourceFactoryCommandTest {
             senderTopLeaderId = playerData.topLeaderId(),
             targetCarrierId = 0,
             ownerId = 1,
-            resourceFactoryInternalData = playerData.playerInternalData.playerScienceData().playerScienceProductData.newFactoryInternalData(
+            resourceFactoryInternalData = playerData.playerInternalData.playerScienceData().playerScienceProductData.newResourceFactoryInternalData(
                 outputResourceType = ResourceType.FUEL,
                 qualityLevel = 1.0
             ),

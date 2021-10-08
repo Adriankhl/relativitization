@@ -19,14 +19,14 @@ data class ScienceProductData(
     val fuelLogisticsLossFractionPerDistance: Double = 0.9,
     val resourceLogisticsLossFractionPerDistance: Double = 0.9,
 ) {
-    fun getIdealFactory(resourceType: ResourceType): ResourceFactoryInternalData {
+    fun getIdealResourceFactory(resourceType: ResourceType): ResourceFactoryInternalData {
         return idealResourceFactoryMap.getOrElse(resourceType) {
             logger.debug("No ideal factory with type $resourceType")
             ResourceFactoryInternalData(outputResource = resourceType)
         }
     }
 
-    fun newFactoryInternalData(
+    fun newResourceFactoryInternalData(
         outputResourceType: ResourceType,
         qualityLevel: Double
     ): ResourceFactoryInternalData {
@@ -44,7 +44,7 @@ data class ScienceProductData(
             }
         }
 
-        val idealResourceFactory: ResourceFactoryInternalData = getIdealFactory(outputResourceType)
+        val idealResourceFactory: ResourceFactoryInternalData = getIdealResourceFactory(outputResourceType)
 
         val maxOutputResourceQualityData: ResourceQualityData = idealResourceFactory.maxOutputResourceQualityData * actualQualityLevel
 
@@ -146,14 +146,14 @@ data class MutableScienceProductData(
     var fuelLogisticsLossFractionPerDistance: Double = 0.9,
     var resourceLogisticsLossFractionPerDistance: Double = 0.9,
 ) {
-    fun getIdealFactory(resourceType: ResourceType): MutableResourceFactoryInternalData {
+    fun getIdealResourceFactory(resourceType: ResourceType): MutableResourceFactoryInternalData {
         return idealResourceFactoryMap.getOrPut(resourceType) {
             logger.debug("No ideal factory with type $resourceType")
             MutableResourceFactoryInternalData(outputResource = resourceType)
         }
     }
 
-    fun newFactoryInternalData(
+    fun newResourceFactoryInternalData(
         outputResourceType: ResourceType,
         qualityLevel: Double
     ): MutableResourceFactoryInternalData {
@@ -171,7 +171,7 @@ data class MutableScienceProductData(
             }
         }
 
-        val idealResourceFactory: MutableResourceFactoryInternalData = getIdealFactory(outputResourceType)
+        val idealResourceFactory: MutableResourceFactoryInternalData = getIdealResourceFactory(outputResourceType)
 
         val maxOutputResourceQualityData: MutableResourceQualityData = idealResourceFactory.maxOutputResourceQualityData * actualQualityLevel
 
@@ -263,11 +263,11 @@ data class MutableScienceProductData(
     /**
      * The fuel rest mass needed to construct a new factory
      */
-    fun newFactoryFuelNeededByConstruction(
+    fun newResourceFactoryFuelNeededByConstruction(
         outputResourceType: ResourceType,
         qualityLevel: Double
     ): Double {
-        val resourceFactoryInternalData: MutableResourceFactoryInternalData = newFactoryInternalData(
+        val resourceFactoryInternalData: MutableResourceFactoryInternalData = newResourceFactoryInternalData(
             outputResourceType,
             qualityLevel
         )
