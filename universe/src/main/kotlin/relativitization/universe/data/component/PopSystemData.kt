@@ -16,7 +16,7 @@ data class PopSystemData(
         val carrierCoreMass: Double =  carrierDataMap.values.sumOf { it.coreRestMass }
 
         val factoryFuelRestMass: Double = carrierDataMap.values.sumOf {
-            it.allPopData.labourerPopData.factoryMap.values.sumOf {
+            it.allPopData.labourerPopData.resourceFactoryMap.values.sumOf {
                 it.storedFuelRestMass
             }
         }
@@ -40,7 +40,7 @@ data class MutablePopSystemData(
         val carrierCoreMass: Double =  carrierDataMap.values.sumOf { it.coreRestMass }
 
         val factoryFuelRestMass: Double = carrierDataMap.values.sumOf {
-            it.allPopData.labourerPopData.factoryMap.values.sumOf {
+            it.allPopData.labourerPopData.resourceFactoryMap.values.sumOf {
                 it.storedFuelRestMass
             }
         }

@@ -6,9 +6,9 @@ import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.component.economy.ResourceType
 import relativitization.universe.data.component.physics.Int4D
 import relativitization.universe.data.component.popsystem.MutableCarrierData
-import relativitization.universe.data.component.popsystem.pop.labourer.factory.FactoryInternalData
-import relativitization.universe.data.component.popsystem.pop.labourer.factory.MutableFactoryData
-import relativitization.universe.data.component.popsystem.pop.labourer.factory.MutableFactoryInternalData
+import relativitization.universe.data.component.popsystem.pop.labourer.factory.ResourceFactoryInternalData
+import relativitization.universe.data.component.popsystem.pop.labourer.factory.MutableResourceFactoryData
+import relativitization.universe.data.component.popsystem.pop.labourer.factory.MutableResourceFactoryInternalData
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.utils.I18NString
 import relativitization.universe.utils.IntString
@@ -21,7 +21,7 @@ import relativitization.universe.utils.RelativitizationLogManager
  * @property senderTopLeaderId the player id of the top leader of the sender
  * @property targetCarrierId build factory on that carrier
  * @property ownerId who own this factory
- * @property factoryInternalData data of the factory
+ * @property resourceFactoryInternalData data of the factory
  * @property qualityLevel the quality of the factory, relative to tech level
  * @property storedFuelRestMass fuel stored in the newly built factory
  */
@@ -33,7 +33,7 @@ data class BuildForeignFactoryCommand(
     val senderTopLeaderId: Int,
     val targetCarrierId: Int,
     val ownerId: Int,
-    val factoryInternalData: FactoryInternalData,
+    val resourceFactoryInternalData: ResourceFactoryInternalData,
     val qualityLevel: Double,
     val storedFuelRestMass: Double,
 ) : Command() {
@@ -91,9 +91,9 @@ data class BuildForeignFactoryCommand(
             I18NString("Not allow to build factory, not a top leader")
         }
 
-        val validFactoryInternalData: Boolean = factoryInternalData.squareDiff(
+        val validFactoryInternalData: Boolean = resourceFactoryInternalData.squareDiff(
             playerData.playerInternalData.playerScienceData().playerScienceProductData.newFactoryInternalData(
-                factoryInternalData.outputResource,
+                resourceFactoryInternalData.outputResource,
                 qualityLevel
             )
         ) < 0.1
@@ -105,7 +105,7 @@ data class BuildForeignFactoryCommand(
 
         val fuelNeeded: Double =
             storedFuelRestMass + playerData.playerInternalData.playerScienceData().playerScienceProductData.newFactoryFuelNeededByConstruction(
-                factoryInternalData.outputResource,
+                resourceFactoryInternalData.outputResource,
                 qualityLevel
             )
         val enoughFuelRestMass: Boolean =
@@ -156,7 +156,7 @@ data class BuildForeignFactoryCommand(
     ) {
         val fuelNeeded: Double =
             storedFuelRestMass + playerData.playerInternalData.playerScienceData().playerScienceProductData.newFactoryFuelNeededByConstruction(
-                factoryInternalData.outputResource,
+                resourceFactoryInternalData.outputResource,
                 qualityLevel
             )
         playerData.playerInternalData.physicsData().fuelRestMassData.production -= fuelNeeded
@@ -168,9 +168,9 @@ data class BuildForeignFactoryCommand(
         val carrier: MutableCarrierData =
             playerData.playerInternalData.popSystemData().carrierDataMap.getValue(targetCarrierId)
         carrier.allPopData.labourerPopData.addFactory(
-            MutableFactoryData(
+            MutableResourceFactoryData(
                 ownerPlayerId = ownerId,
-                factoryInternalData = DataSerializer.copy(factoryInternalData),
+                resourceFactoryInternalData = DataSerializer.copy(resourceFactoryInternalData),
                 numBuilding = 1,
                 isOpened = true,
                 lastOutputAmount = 0.0,
@@ -287,7 +287,7 @@ data class BuildLocalFactoryCommand(
                 targetCarrierId
             )
 
-        val newFactoryInternalData: MutableFactoryInternalData =
+        val newResourceFactoryInternalData: MutableResourceFactoryInternalData =
             playerData.playerInternalData.playerScienceData().playerScienceProductData.newFactoryInternalData(
                 outputResourceType = outputResourceType,
                 qualityLevel = qualityLevel
@@ -302,9 +302,9 @@ data class BuildLocalFactoryCommand(
         playerData.playerInternalData.physicsData().fuelRestMassData.production -= requiredFuel
 
         carrier.allPopData.labourerPopData.addFactory(
-            MutableFactoryData(
+            MutableResourceFactoryData(
                 ownerPlayerId = toId,
-                factoryInternalData = newFactoryInternalData,
+                resourceFactoryInternalData = newResourceFactoryInternalData,
                 numBuilding = 1,
                 isOpened = true,
                 lastOutputAmount = 0.0,

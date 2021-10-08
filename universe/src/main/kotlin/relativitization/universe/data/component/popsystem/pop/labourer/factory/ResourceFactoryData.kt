@@ -10,7 +10,7 @@ import kotlin.math.pow
  * Data for a factory of labour pop
  *
  * @property ownerPlayerId the owner of this factory
- * @property factoryInternalData the data describing this factory
+ * @property resourceFactoryInternalData the data describing this factory
  * @property numBuilding how large is this factory, affect the throughput of the factory
  * @property isOpened whether this factory is opened
  * @property lastOutputAmount the output amount in the latest turn
@@ -18,9 +18,9 @@ import kotlin.math.pow
  * @property lastNumEmployee number of employee in the last turn
  */
 @Serializable
-data class FactoryData(
+data class ResourceFactoryData(
     val ownerPlayerId: Int = -1,
-    val factoryInternalData: FactoryInternalData = FactoryInternalData(),
+    val resourceFactoryInternalData: ResourceFactoryInternalData = ResourceFactoryInternalData(),
     val numBuilding: Int = 1,
     val isOpened: Boolean = true,
     val lastOutputAmount: Double = 0.0,
@@ -29,15 +29,15 @@ data class FactoryData(
     val lastNumEmployee: Double = 0.0,
 ) {
     fun maxInputAmount(resourceType: ResourceType): Double {
-        val amountPerUnit: Double = factoryInternalData.inputResourceMap[resourceType]?.amountPerOutputUnit ?: 0.0
-        return amountPerUnit * factoryInternalData.maxOutputAmount * numBuilding
+        val amountPerUnit: Double = resourceFactoryInternalData.inputResourceMap[resourceType]?.amountPerOutputUnit ?: 0.0
+        return amountPerUnit * resourceFactoryInternalData.maxOutputAmount * numBuilding
     }
 }
 
 @Serializable
-data class MutableFactoryData(
+data class MutableResourceFactoryData(
     var ownerPlayerId: Int = -1,
-    var factoryInternalData: MutableFactoryInternalData = MutableFactoryInternalData(),
+    var resourceFactoryInternalData: MutableResourceFactoryInternalData = MutableResourceFactoryInternalData(),
     var numBuilding: Int = 1,
     var isOpened: Boolean = true,
     var lastOutputAmount: Double = 0.0,
@@ -46,11 +46,11 @@ data class MutableFactoryData(
     var lastNumEmployee: Double = 0.0,
 ) {
     fun maxInputAmount(resourceType: ResourceType): Double {
-        val amountPerUnit: Double = factoryInternalData.inputResourceMap[resourceType]?.amountPerOutputUnit ?: 0.0
-        return amountPerUnit * factoryInternalData.maxOutputAmount * numBuilding
+        val amountPerUnit: Double = resourceFactoryInternalData.inputResourceMap[resourceType]?.amountPerOutputUnit ?: 0.0
+        return amountPerUnit * resourceFactoryInternalData.maxOutputAmount * numBuilding
     }
 
-    fun employeeFraction(): Double = lastNumEmployee / (factoryInternalData.maxNumEmployee * numBuilding)
+    fun employeeFraction(): Double = lastNumEmployee / (resourceFactoryInternalData.maxNumEmployee * numBuilding)
 }
 
 /**
@@ -108,7 +108,7 @@ data class MutableInputResourceData(
  * @property size the size of this factory
  */
 @Serializable
-data class FactoryInternalData(
+data class ResourceFactoryInternalData(
     val outputResource: ResourceType = ResourceType.FUEL,
     val maxOutputResourceQualityData: ResourceQualityData = ResourceQualityData(),
     val maxOutputAmount: Double = 0.0,
@@ -117,7 +117,7 @@ data class FactoryInternalData(
     val maxNumEmployee: Double = 0.0,
     val size: Double = 0.0,
 ) {
-    fun squareDiff(other: FactoryInternalData): Double {
+    fun squareDiff(other: ResourceFactoryInternalData): Double {
         val outputResourceDiff: Double = if (outputResource == other.outputResource) {
             0.0
         } else {
@@ -147,7 +147,7 @@ data class FactoryInternalData(
                 consumptionDiff + employeeDiff + sizeDiff)
     }
 
-    fun squareDiff(other: MutableFactoryInternalData): Double {
+    fun squareDiff(other: MutableResourceFactoryInternalData): Double {
         val outputResourceDiff: Double = if (outputResource == other.outputResource) {
             0.0
         } else {
@@ -179,7 +179,7 @@ data class FactoryInternalData(
 }
 
 @Serializable
-data class MutableFactoryInternalData(
+data class MutableResourceFactoryInternalData(
     var outputResource: ResourceType = ResourceType.FUEL,
     var maxOutputResourceQualityData: MutableResourceQualityData = MutableResourceQualityData(),
     var maxOutputAmount: Double = 0.0,
@@ -188,7 +188,7 @@ data class MutableFactoryInternalData(
     var maxNumEmployee: Double = 0.0,
     var size: Double = 0.0,
 ) {
-    fun squareDiff(other: MutableFactoryInternalData): Double {
+    fun squareDiff(other: MutableResourceFactoryInternalData): Double {
         val outputResourceDiff: Double = if (outputResource == other.outputResource) {
             0.0
         } else {

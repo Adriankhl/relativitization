@@ -3,12 +3,7 @@ package relativitization.universe.data.commands
 import kotlinx.coroutines.runBlocking
 import relativitization.universe.Universe
 import relativitization.universe.data.UniverseData3DAtPlayer
-import relativitization.universe.data.component.economy.ResourceQualityClass
 import relativitization.universe.data.component.economy.ResourceType
-import relativitization.universe.data.component.physics.FuelRestMassData
-import relativitization.universe.data.component.physics.Int3D
-import relativitization.universe.data.component.physics.Int4D
-import relativitization.universe.data.component.popsystem.pop.labourer.factory.FactoryInternalData
 import relativitization.universe.generate.GenerateSettings
 import relativitization.universe.generate.UniverseGenerationCollection
 import kotlin.test.Test
@@ -33,7 +28,7 @@ internal class BuildForeignFactoryCommandTest {
             senderTopLeaderId = playerData.topLeaderId(),
             targetCarrierId = 0,
             ownerId = 1,
-            factoryInternalData = playerData.playerInternalData.playerScienceData().playerScienceProductData.newFactoryInternalData(
+            resourceFactoryInternalData = playerData.playerInternalData.playerScienceData().playerScienceProductData.newFactoryInternalData(
                 outputResourceType = ResourceType.FUEL,
                 qualityLevel = 1.0
             ),
@@ -55,7 +50,7 @@ internal class BuildForeignFactoryCommandTest {
 
         val view8: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
         val newPlayerData = view8.get(1)
-        val factoryMap = newPlayerData.playerInternalData.popSystemData().carrierDataMap.getValue(0).allPopData.labourerPopData.factoryMap
+        val factoryMap = newPlayerData.playerInternalData.popSystemData().carrierDataMap.getValue(0).allPopData.labourerPopData.resourceFactoryMap
         assert(factoryMap.size == 2)
     }
 }
