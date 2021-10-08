@@ -4,10 +4,7 @@ import kotlinx.serialization.Serializable
 import relativitization.universe.data.component.economy.MutableResourceQualityData
 import relativitization.universe.data.component.economy.ResourceQualityData
 import relativitization.universe.data.component.economy.ResourceType
-import relativitization.universe.data.component.popsystem.pop.labourer.factory.ResourceFactoryInternalData
-import relativitization.universe.data.component.popsystem.pop.labourer.factory.InputResourceData
-import relativitization.universe.data.component.popsystem.pop.labourer.factory.MutableResourceFactoryInternalData
-import relativitization.universe.data.component.popsystem.pop.labourer.factory.MutableInputResourceData
+import relativitization.universe.data.component.popsystem.pop.labourer.factory.*
 import relativitization.universe.maths.algebra.Quadratic
 import relativitization.universe.utils.RelativitizationLogManager
 
@@ -16,6 +13,7 @@ data class ScienceProductData(
     val maxShipRestMass: Double = 10000.0,
     val maxShipEnginePowerByRestMass: Double = 1E-6,
     val idealResourceFactoryMap: Map<ResourceType, ResourceFactoryInternalData> = mapOf(),
+    val idealFuelFactory: FuelFactoryInternalData = FuelFactoryInternalData(),
     val fuelLogisticsLossFractionPerDistance: Double = 0.9,
     val resourceLogisticsLossFractionPerDistance: Double = 0.9,
 ) {
@@ -143,6 +141,7 @@ data class MutableScienceProductData(
     var maxShipRestMass: Double = 10000.0,
     var maxShipEnginePowerByRestMass: Double = 1E-6,
     var idealResourceFactoryMap: MutableMap<ResourceType, MutableResourceFactoryInternalData> = mutableMapOf(),
+    var idealFuelFactory: MutableFuelFactoryInternalData = MutableFuelFactoryInternalData(),
     var fuelLogisticsLossFractionPerDistance: Double = 0.9,
     var resourceLogisticsLossFractionPerDistance: Double = 0.9,
 ) {
