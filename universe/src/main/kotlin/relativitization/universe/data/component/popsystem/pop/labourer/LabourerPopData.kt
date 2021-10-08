@@ -27,4 +27,10 @@ data class MutableLabourerPopData(
         val newId: Int = ListFind.minMissing(allIdList, 0)
         resourceFactoryMap[newId] = mutableResourceFactoryData
     }
+
+    fun addFuelFactory(mutableFuelFactoryData: MutableFuelFactoryData) {
+        val allIdList: List<Int> = fuelFactoryMap.keys.toList()
+        val newId: Int = ListFind.minMissing(allIdList, 0)
+        fuelFactoryMap[newId] = mutableFuelFactoryData
+    }
 }

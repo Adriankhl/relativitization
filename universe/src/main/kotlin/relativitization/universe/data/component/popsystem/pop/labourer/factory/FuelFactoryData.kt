@@ -10,7 +10,7 @@ import kotlin.math.pow
  * Data for a factory of labour pop
  *
  * @property ownerPlayerId the owner of this factory
- * @property resourceFactoryInternalData the data describing this factory
+ * @property fuelFactoryInternalData the data describing this factory
  * @property numBuilding how large is this factory, affect the throughput of the factory
  * @property isOpened whether this factory is opened
  * @property lastOutputAmount the output amount in the latest turn
@@ -19,7 +19,7 @@ import kotlin.math.pow
 @Serializable
 data class FuelFactoryData(
     val ownerPlayerId: Int = -1,
-    val resourceFactoryInternalData: FuelFactoryInternalData = FuelFactoryInternalData(),
+    val fuelFactoryInternalData: FuelFactoryInternalData = FuelFactoryInternalData(),
     val numBuilding: Int = 1,
     val isOpened: Boolean = true,
     val lastOutputAmount: Double = 0.0,
@@ -29,13 +29,13 @@ data class FuelFactoryData(
 @Serializable
 data class MutableFuelFactoryData(
     var ownerPlayerId: Int = -1,
-    var resourceFactoryInternalData: MutableFuelFactoryInternalData = MutableFuelFactoryInternalData(),
+    var fuelFactoryInternalData: MutableFuelFactoryInternalData = MutableFuelFactoryInternalData(),
     var numBuilding: Int = 1,
     var isOpened: Boolean = true,
     var lastOutputAmount: Double = 0.0,
     var lastNumEmployee: Double = 0.0,
 ) {
-    fun employeeFraction(): Double = lastNumEmployee / (resourceFactoryInternalData.maxNumEmployee * numBuilding)
+    fun employeeFraction(): Double = lastNumEmployee / (fuelFactoryInternalData.maxNumEmployee * numBuilding)
 }
 
 /**
@@ -51,7 +51,7 @@ data class FuelFactoryInternalData(
     val maxNumEmployee: Double = 0.0,
     val size: Double = 0.0,
 ) {
-    fun squareDiff(other: ResourceFactoryInternalData): Double {
+    fun squareDiff(other: FuelFactoryInternalData): Double {
         val outputAmountDiff: Double = (maxOutputAmount - other.maxOutputAmount).pow(2)
 
         val employeeDiff: Double = (maxNumEmployee - other.maxNumEmployee).pow(2)
@@ -61,7 +61,7 @@ data class FuelFactoryInternalData(
         return (outputAmountDiff + employeeDiff + sizeDiff)
     }
 
-    fun squareDiff(other: MutableResourceFactoryInternalData): Double {
+    fun squareDiff(other: MutableFuelFactoryInternalData): Double {
         val outputAmountDiff: Double = (maxOutputAmount - other.maxOutputAmount).pow(2)
 
         val employeeDiff: Double = (maxNumEmployee - other.maxNumEmployee).pow(2)
@@ -82,7 +82,7 @@ data class MutableFuelFactoryInternalData(
     var maxNumEmployee: Double = 0.0,
     var size: Double = 0.0,
 ) {
-    fun squareDiff(other: ResourceFactoryInternalData): Double {
+    fun squareDiff(other: FuelFactoryInternalData): Double {
         val outputAmountDiff: Double = (maxOutputAmount - other.maxOutputAmount).pow(2)
 
         val employeeDiff: Double = (maxNumEmployee - other.maxNumEmployee).pow(2)
@@ -92,7 +92,7 @@ data class MutableFuelFactoryInternalData(
         return (outputAmountDiff + employeeDiff + sizeDiff)
     }
 
-    fun squareDiff(other: MutableResourceFactoryInternalData): Double {
+    fun squareDiff(other: MutableFuelFactoryInternalData): Double {
         val outputAmountDiff: Double = (maxOutputAmount - other.maxOutputAmount).pow(2)
 
         val employeeDiff: Double = (maxNumEmployee - other.maxNumEmployee).pow(2)

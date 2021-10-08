@@ -261,6 +261,19 @@ data class MutableScienceProductData(
         )
     }
 
+    /**
+     * The fuel rest mass needed to construct a new factory
+     */
+    fun newFuelFactoryFuelNeededByConstruction(
+        qualityLevel: Double
+    ): Double {
+        val fuelFactoryInternalData: MutableFuelFactoryInternalData = newFuelFactoryInternalData(
+            qualityLevel
+        )
+
+        return fuelFactoryInternalData.maxOutputAmount * 20
+    }
+
     fun getIdealResourceFactory(resourceType: ResourceType): MutableResourceFactoryInternalData {
         return idealResourceFactoryMap.getOrPut(resourceType) {
             logger.debug("No ideal factory with type $resourceType")
