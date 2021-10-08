@@ -12,11 +12,69 @@ import relativitization.universe.utils.RelativitizationLogManager
 data class ScienceProductData(
     val maxShipRestMass: Double = 10000.0,
     val maxShipEnginePowerByRestMass: Double = 1E-6,
-    val idealResourceFactoryMap: Map<ResourceType, ResourceFactoryInternalData> = mapOf(),
     val idealFuelFactory: FuelFactoryInternalData = FuelFactoryInternalData(),
+    val idealResourceFactoryMap: Map<ResourceType, ResourceFactoryInternalData> = mapOf(),
     val fuelLogisticsLossFractionPerDistance: Double = 0.9,
     val resourceLogisticsLossFractionPerDistance: Double = 0.9,
 ) {
+    fun newFuelFactoryInternalData(
+        qualityLevel: Double
+    ): FuelFactoryInternalData {
+        val actualQualityLevel: Double = when {
+            qualityLevel > 1.0 -> {
+                logger.error("quality level greater than 1.0")
+                1.0
+            }
+            qualityLevel < 0.0 -> {
+                logger.error("quality level smaller than 0.0")
+                0.0
+            }
+            else -> {
+                qualityLevel
+            }
+        }
+
+
+        // Max increase to 5 times
+        val maxOutputAmount: Double = idealFuelFactory.maxOutputAmount * Quadratic.standard(
+            x = actualQualityLevel,
+            xMin = 0.0,
+            xMax = 1.0,
+            yMin = 1.0,
+            yMax = 5.0,
+            increasing = false,
+            accelerate = true
+        )
+
+        // Reduce the number of employee needed
+        val maxNumEmployee: Double = idealFuelFactory.maxNumEmployee * Quadratic.standard(
+            x = actualQualityLevel,
+            xMin = 0.0,
+            xMax = 1.0,
+            yMin = 0.2,
+            yMax = 1.0,
+            increasing = true,
+            accelerate = true
+        )
+
+        // Reduce size
+        val size: Double = idealFuelFactory.size * Quadratic.standard(
+            x = actualQualityLevel,
+            xMin = 0.0,
+            xMax = 1.0,
+            yMin = 0.2,
+            yMax = 1.0,
+            increasing = true,
+            accelerate = true
+        )
+
+        return FuelFactoryInternalData(
+            maxOutputAmount = maxOutputAmount,
+            maxNumEmployee = maxNumEmployee,
+            size = size
+        )
+    }
+
     fun getIdealResourceFactory(resourceType: ResourceType): ResourceFactoryInternalData {
         return idealResourceFactoryMap.getOrElse(resourceType) {
             logger.debug("No ideal factory with type $resourceType")
@@ -140,11 +198,69 @@ data class ScienceProductData(
 data class MutableScienceProductData(
     var maxShipRestMass: Double = 10000.0,
     var maxShipEnginePowerByRestMass: Double = 1E-6,
-    var idealResourceFactoryMap: MutableMap<ResourceType, MutableResourceFactoryInternalData> = mutableMapOf(),
     var idealFuelFactory: MutableFuelFactoryInternalData = MutableFuelFactoryInternalData(),
+    var idealResourceFactoryMap: MutableMap<ResourceType, MutableResourceFactoryInternalData> = mutableMapOf(),
     var fuelLogisticsLossFractionPerDistance: Double = 0.9,
     var resourceLogisticsLossFractionPerDistance: Double = 0.9,
 ) {
+    fun newFuelFactoryInternalData(
+        qualityLevel: Double
+    ): MutableFuelFactoryInternalData {
+        val actualQualityLevel: Double = when {
+            qualityLevel > 1.0 -> {
+                logger.error("quality level greater than 1.0")
+                1.0
+            }
+            qualityLevel < 0.0 -> {
+                logger.error("quality level smaller than 0.0")
+                0.0
+            }
+            else -> {
+                qualityLevel
+            }
+        }
+
+
+        // Max increase to 5 times
+        val maxOutputAmount: Double = idealFuelFactory.maxOutputAmount * Quadratic.standard(
+            x = actualQualityLevel,
+            xMin = 0.0,
+            xMax = 1.0,
+            yMin = 1.0,
+            yMax = 5.0,
+            increasing = false,
+            accelerate = true
+        )
+
+        // Reduce the number of employee needed
+        val maxNumEmployee: Double = idealFuelFactory.maxNumEmployee * Quadratic.standard(
+            x = actualQualityLevel,
+            xMin = 0.0,
+            xMax = 1.0,
+            yMin = 0.2,
+            yMax = 1.0,
+            increasing = true,
+            accelerate = true
+        )
+
+        // Reduce size
+        val size: Double = idealFuelFactory.size * Quadratic.standard(
+            x = actualQualityLevel,
+            xMin = 0.0,
+            xMax = 1.0,
+            yMin = 0.2,
+            yMax = 1.0,
+            increasing = true,
+            accelerate = true
+        )
+
+        return MutableFuelFactoryInternalData(
+            maxOutputAmount = maxOutputAmount,
+            maxNumEmployee = maxNumEmployee,
+            size = size
+        )
+    }
+
     fun getIdealResourceFactory(resourceType: ResourceType): MutableResourceFactoryInternalData {
         return idealResourceFactoryMap.getOrPut(resourceType) {
             logger.debug("No ideal factory with type $resourceType")
