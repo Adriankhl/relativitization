@@ -348,9 +348,136 @@ data class BuildForeignResourceFactoryCommand(
     }
 }
 
+/**
+ * Build a fuel factory locally on player
+ *
+ * @property targetCarrierId build factory on that carrier
+ * @property qualityLevel the quality of the factory, relative to tech level
+ */
+@Serializable
+data class BuildLocalFuelFactoryCommand(
+    override val toId: Int,
+    override val fromId: Int,
+    override val fromInt4D: Int4D,
+    val targetCarrierId: Int,
+    val qualityLevel: Double,
+) : Command() {
+    override val description: I18NString = I18NString(
+        listOf(
+            RealString("Build a local factory with quality level "),
+            IntString(0),
+            RealString(" at carrier "),
+            IntString(1),
+            RealString(" of player "),
+            IntString(2),
+        ),
+        listOf(
+            qualityLevel.toString(),
+            targetCarrierId.toString(),
+            toId.toString(),
+        )
+    )
+
+    override fun canSend(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): CanSendCheckMessage {
+        val isSubordinateOrSelf: Boolean = playerData.isSubOrdinateOrSelf(toId)
+        val isSubordinateOrSelfI18NString: I18NString = if (isSubordinateOrSelf) {
+            I18NString("")
+        } else {
+            I18NString("Not subordinate or self.")
+        }
+
+        val isTopLeader: Boolean = playerData.isTopLeader()
+        val allowSubordinateConstruction: Boolean =
+            isTopLeader || playerData.playerInternalData.politicsData().allowSubordinateBuildFactory
+        val allowSubordinateConstructionI18NString: I18NString = if (allowSubordinateConstruction) {
+            I18NString("")
+        } else {
+            I18NString("Not allow to build factory, not a top leader")
+        }
+
+
+        return CanSendCheckMessage(
+            isSubordinateOrSelf && allowSubordinateConstruction,
+            I18NString.combine(
+                listOf(
+                    isSubordinateOrSelfI18NString,
+                    allowSubordinateConstructionI18NString
+                )
+            )
+        )
+    }
+
+    override fun canExecute(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): Boolean {
+        val isLeader: Boolean = playerData.isLeaderOrSelf(fromId)
+        val isSelf: Boolean = playerData.playerId == fromId
+
+        val isSenderTopLeader: Boolean = fromId == playerData.topLeaderId()
+        val canSenderBuild: Boolean = (isSenderTopLeader ||
+                playerData.playerInternalData.politicsData().allowSubordinateBuildFactory)
+
+        val canLeaderBuild: Boolean = (isSelf ||
+                playerData.playerInternalData.politicsData().allowLeaderBuildLocalFactory)
+
+
+        val hasCarrier: Boolean =
+            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(targetCarrierId)
+
+        val requiredFuel: Double =
+            playerData.playerInternalData.playerScienceData().playerScienceProductData.newFuelFactoryFuelNeededByConstruction(
+                qualityLevel = qualityLevel
+            )
+        val hasFuel: Boolean =
+            playerData.playerInternalData.physicsData().fuelRestMassData.production > -requiredFuel
+
+        return isLeader && canSenderBuild && canLeaderBuild && hasCarrier && hasFuel
+    }
+
+    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+
+        val carrier: MutableCarrierData =
+            playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
+                targetCarrierId
+            )
+
+        val newFuelFactoryInternalData: MutableFuelFactoryInternalData =
+            playerData.playerInternalData.playerScienceData().playerScienceProductData.newFuelFactoryInternalData(
+                qualityLevel = qualityLevel
+            )
+
+        val requiredFuel: Double =
+            playerData.playerInternalData.playerScienceData().playerScienceProductData.newFuelFactoryFuelNeededByConstruction(
+                qualityLevel = qualityLevel
+            )
+
+        playerData.playerInternalData.physicsData().fuelRestMassData.production -= requiredFuel
+
+        carrier.allPopData.labourerPopData.addFuelFactory(
+            MutableFuelFactoryData(
+                ownerPlayerId = toId,
+                fuelFactoryInternalData = newFuelFactoryInternalData,
+                numBuilding = 1,
+                isOpened = true,
+                lastOutputAmount = 0.0,
+                lastNumEmployee = 0.0
+            )
+        )
+    }
+
+
+    companion object {
+        private val logger = RelativitizationLogManager.getLogger()
+    }
+}
+
 
 /**
- * Build a factory on player
+ * Build a resource factory locally on player
  *
  * @property outputResourceType the resource type of this factory
  * @property targetCarrierId build factory on that carrier
