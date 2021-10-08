@@ -207,7 +207,12 @@ object FactoryProduction : Mechanism() {
                 )
             }
 
-        val avgFraction: Double = fractionList.average()
+        val avgFraction: Double = if (fractionList.isEmpty()) {
+            1.0
+        } else {
+            fractionList.average()
+        }
+
         return mutableResourceFactoryData.resourceFactoryInternalData.maxOutputResourceQualityData * avgFraction
     }
 

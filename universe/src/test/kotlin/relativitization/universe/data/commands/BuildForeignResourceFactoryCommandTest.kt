@@ -10,7 +10,7 @@ import kotlin.test.Test
 
 internal class BuildForeignResourceFactoryCommandTest {
     @Test
-    fun fixedMinimalSelfFuelFactoryTest() {
+    fun fixedMinimalSelfResourceFactoryTest() {
         val universe = Universe(UniverseGenerationCollection.generate(GenerateSettings()), ".")
         val view7: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
 
@@ -29,7 +29,7 @@ internal class BuildForeignResourceFactoryCommandTest {
             targetCarrierId = 0,
             ownerId = 1,
             resourceFactoryInternalData = playerData.playerInternalData.playerScienceData().playerScienceProductData.newResourceFactoryInternalData(
-                outputResourceType = ResourceType.FUEL,
+                outputResourceType = ResourceType.PLANT,
                 qualityLevel = 1.0
             ),
             qualityLevel = 1.0,
@@ -51,6 +51,6 @@ internal class BuildForeignResourceFactoryCommandTest {
         val view8: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
         val newPlayerData = view8.get(1)
         val factoryMap = newPlayerData.playerInternalData.popSystemData().carrierDataMap.getValue(0).allPopData.labourerPopData.resourceFactoryMap
-        assert(factoryMap.size == 2)
+        assert(factoryMap.size == 1)
     }
 }

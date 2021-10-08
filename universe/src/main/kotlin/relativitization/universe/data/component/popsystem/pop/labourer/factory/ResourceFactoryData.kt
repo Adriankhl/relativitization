@@ -185,7 +185,7 @@ data class MutableResourceFactoryInternalData(
     var maxOutputAmount: Double = 0.0,
     var inputResourceMap: MutableMap<ResourceType, MutableInputResourceData> = mutableMapOf(),
     var fuelRestMassConsumptionRate: Double = 0.0,
-    var maxNumEmployee: Double = 0.0,
+    var maxNumEmployee: Double = 1.0,
     var size: Double = 0.0,
 ) {
     fun squareDiff(other: MutableResourceFactoryInternalData): Double {
