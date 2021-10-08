@@ -8,7 +8,7 @@ import relativitization.universe.generate.GenerateSettings
 import relativitization.universe.generate.UniverseGenerationCollection
 import kotlin.test.Test
 
-internal class BuildForeignFactoryCommandTest {
+internal class BuildForeignResourceFactoryCommandTest {
     @Test
     fun fixedMinimalSelfFuelFactoryTest() {
         val universe = Universe(UniverseGenerationCollection.generate(GenerateSettings()), ".")
@@ -21,7 +21,7 @@ internal class BuildForeignFactoryCommandTest {
         assert(originalFuelRestMassData.production == 30.0)
         assert(originalFuelRestMassData.trade == 1.0)
 
-        val command = BuildForeignFactoryCommand(
+        val command = BuildForeignResourceFactoryCommand(
             toId = 1,
             fromId = 1,
             fromInt4D = playerData.int4D,

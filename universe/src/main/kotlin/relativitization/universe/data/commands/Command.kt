@@ -244,8 +244,8 @@ object DefaultAvailableCommands : AvailableCommands() {
         DisableFuelIncreaseCommand::class.name(),
         DummyCommand::class.name(),
         SelectEventChoiceCommand::class.name(),
-        BuildForeignFactoryCommand::class.name(),
-        BuildLocalFactoryCommand::class.name(),
+        BuildForeignResourceFactoryCommand::class.name(),
+        BuildLocalResourceFactoryCommand::class.name(),
         SendResourceFromStorageCommand::class.name(),
     )
 

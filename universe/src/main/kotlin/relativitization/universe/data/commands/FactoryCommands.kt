@@ -26,7 +26,7 @@ import relativitization.universe.utils.RelativitizationLogManager
  * @property storedFuelRestMass fuel stored in the newly built factory
  */
 @Serializable
-data class BuildForeignFactoryCommand(
+data class BuildForeignResourceFactoryCommand(
     override val toId: Int,
     override val fromId: Int,
     override val fromInt4D: Int4D,
@@ -195,7 +195,7 @@ data class BuildForeignFactoryCommand(
  * @property qualityLevel the quality of the factory, relative to tech level
  */
 @Serializable
-data class BuildLocalFactoryCommand(
+data class BuildLocalResourceFactoryCommand(
     override val toId: Int,
     override val fromId: Int,
     override val fromInt4D: Int4D,
