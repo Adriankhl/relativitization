@@ -14,6 +14,169 @@ import relativitization.universe.utils.RealString
 import relativitization.universe.utils.RelativitizationLogManager
 
 /**
+ * Build a fuel factory on player
+ *
+ * @property senderTopLeaderId the player id of the top leader of the sender
+ * @property targetCarrierId build factory on that carrier
+ * @property ownerId who own this factory
+ * @property fuelFactoryInternalData data of the factory
+ * @property qualityLevel the quality of the factory, relative to tech level
+ */
+@Serializable
+data class BuildForeignFuelFactoryCommand(
+    override val toId: Int,
+    override val fromId: Int,
+    override val fromInt4D: Int4D,
+    val senderTopLeaderId: Int,
+    val targetCarrierId: Int,
+    val ownerId: Int,
+    val fuelFactoryInternalData: FuelFactoryInternalData,
+    val qualityLevel: Double,
+) : Command() {
+    override val description: I18NString = I18NString(
+        listOf(
+            RealString("Build a foreign fuel factory with quality level "),
+            IntString(0),
+            RealString(" owned by "),
+            IntString(1),
+            RealString(" at carrier "),
+            IntString(2),
+            RealString(" of player "),
+            IntString(3),
+        ),
+        listOf(
+            qualityLevel.toString(),
+            ownerId.toString(),
+            targetCarrierId.toString(),
+            toId.toString(),
+        )
+    )
+
+    override fun canSend(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): CanSendCheckMessage {
+        val sameTopLeaderId: Boolean = playerData.topLeaderId() == senderTopLeaderId
+        val sameTopLeaderIdI18NString: I18NString = if (sameTopLeaderId) {
+            I18NString("")
+        } else {
+            I18NString(
+                listOf(
+                    RealString("Top leader id "),
+                    IntString(0),
+                    RealString(" is not equal to "),
+                    IntString(1),
+                    RealString(". ")
+                ),
+                listOf(
+                    senderTopLeaderId.toString(),
+                    playerData.topLeaderId().toString(),
+                ),
+            )
+        }
+
+        val isTopLeader: Boolean = playerData.isTopLeader()
+        val allowConstruction: Boolean =
+            isTopLeader || playerData.playerInternalData.politicsData().allowSubordinateBuildFactory
+        val allowConstructionI18NString: I18NString = if (allowConstruction) {
+            I18NString("")
+        } else {
+            I18NString("Not allow to build factory, not a top leader")
+        }
+
+        val validFactoryInternalData: Boolean = fuelFactoryInternalData.squareDiff(
+            playerData.playerInternalData.playerScienceData().playerScienceProductData.newFuelFactoryInternalData(
+                qualityLevel
+            )
+        ) < 0.1
+        val validFactoryInternalDataI18NString: I18NString = if (sameTopLeaderId) {
+            I18NString("")
+        } else {
+            I18NString("Factory internal data is not valid. ")
+        }
+
+        val fuelNeeded: Double =
+            playerData.playerInternalData.playerScienceData().playerScienceProductData.newFuelFactoryFuelNeededByConstruction(
+                qualityLevel
+            )
+        val enoughFuelRestMass: Boolean =
+            playerData.playerInternalData.physicsData().fuelRestMassData.production >= fuelNeeded
+        val enoughFuelRestMassI18NString: I18NString = if (enoughFuelRestMass) {
+            I18NString("")
+        } else {
+            I18NString("Not enough fuel rest mass. ")
+        }
+
+
+        return CanSendCheckMessage(
+            sameTopLeaderId && allowConstruction && validFactoryInternalData && enoughFuelRestMass,
+            I18NString.combine(
+                listOf(
+                    sameTopLeaderIdI18NString,
+                    allowConstructionI18NString,
+                    validFactoryInternalDataI18NString,
+                    enoughFuelRestMassI18NString
+                )
+            )
+        )
+    }
+
+    override fun canExecute(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): Boolean {
+        val sameTopLeader: Boolean = playerData.topLeaderId() == senderTopLeaderId
+        val foreignInvestorOrSameTopLeader: Boolean = (sameTopLeader ||
+                playerData.playerInternalData.politicsData().allowForeignInvestor)
+
+        val isSenderTopLeader: Boolean = fromId == playerData.topLeaderId()
+        val canSenderBuild: Boolean = (isSenderTopLeader ||
+                playerData.playerInternalData.politicsData().allowSubordinateBuildFactory)
+
+        val allowConstruction: Boolean = foreignInvestorOrSameTopLeader && canSenderBuild
+
+        val hasCarrier: Boolean =
+            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(targetCarrierId)
+
+        return allowConstruction && hasCarrier
+    }
+
+    override fun selfExecuteBeforeSend(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ) {
+        val fuelNeeded: Double =
+            playerData.playerInternalData.playerScienceData().playerScienceProductData.newFuelFactoryFuelNeededByConstruction(
+                qualityLevel
+            )
+        playerData.playerInternalData.physicsData().fuelRestMassData.production -= fuelNeeded
+
+    }
+
+    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+
+        val carrier: MutableCarrierData =
+            playerData.playerInternalData.popSystemData().carrierDataMap.getValue(targetCarrierId)
+        carrier.allPopData.labourerPopData.addFuelFactory(
+            MutableFuelFactoryData(
+                ownerPlayerId = ownerId,
+                fuelFactoryInternalData = DataSerializer.copy(fuelFactoryInternalData),
+                numBuilding = 1,
+                isOpened = true,
+                lastOutputAmount = 0.0,
+                lastNumEmployee = 0.0
+            )
+        )
+    }
+
+
+    companion object {
+        private val logger = RelativitizationLogManager.getLogger()
+    }
+}
+
+
+/**
  * Build a resource factory on player
  *
  * @property senderTopLeaderId the player id of the top leader of the sender
@@ -185,167 +348,6 @@ data class BuildForeignResourceFactoryCommand(
     }
 }
 
-/**
- * Build a fuel factory on player
- *
- * @property senderTopLeaderId the player id of the top leader of the sender
- * @property targetCarrierId build factory on that carrier
- * @property ownerId who own this factory
- * @property fuelFactoryInternalData data of the factory
- * @property qualityLevel the quality of the factory, relative to tech level
- */
-@Serializable
-data class BuildForeignFuelFactoryCommand(
-    override val toId: Int,
-    override val fromId: Int,
-    override val fromInt4D: Int4D,
-    val senderTopLeaderId: Int,
-    val targetCarrierId: Int,
-    val ownerId: Int,
-    val fuelFactoryInternalData: FuelFactoryInternalData,
-    val qualityLevel: Double,
-) : Command() {
-    override val description: I18NString = I18NString(
-        listOf(
-            RealString("Build a foreign fuel factory with quality level "),
-            IntString(0),
-            RealString(" owned by "),
-            IntString(1),
-            RealString(" at carrier "),
-            IntString(2),
-            RealString(" of player "),
-            IntString(3),
-        ),
-        listOf(
-            qualityLevel.toString(),
-            ownerId.toString(),
-            targetCarrierId.toString(),
-            toId.toString(),
-        )
-    )
-
-    override fun canSend(
-        playerData: MutablePlayerData,
-        universeSettings: UniverseSettings
-    ): CanSendCheckMessage {
-        val sameTopLeaderId: Boolean = playerData.topLeaderId() == senderTopLeaderId
-        val sameTopLeaderIdI18NString: I18NString = if (sameTopLeaderId) {
-            I18NString("")
-        } else {
-            I18NString(
-                listOf(
-                    RealString("Top leader id "),
-                    IntString(0),
-                    RealString(" is not equal to "),
-                    IntString(1),
-                    RealString(". ")
-                ),
-                listOf(
-                    senderTopLeaderId.toString(),
-                    playerData.topLeaderId().toString(),
-                ),
-            )
-        }
-
-        val isTopLeader: Boolean = playerData.isTopLeader()
-        val allowConstruction: Boolean =
-            isTopLeader || playerData.playerInternalData.politicsData().allowSubordinateBuildFactory
-        val allowConstructionI18NString: I18NString = if (allowConstruction) {
-            I18NString("")
-        } else {
-            I18NString("Not allow to build factory, not a top leader")
-        }
-
-        val validFactoryInternalData: Boolean = fuelFactoryInternalData.squareDiff(
-            playerData.playerInternalData.playerScienceData().playerScienceProductData.newFuelFactoryInternalData(
-                qualityLevel
-            )
-        ) < 0.1
-        val validFactoryInternalDataI18NString: I18NString = if (sameTopLeaderId) {
-            I18NString("")
-        } else {
-            I18NString("Factory internal data is not valid. ")
-        }
-
-        val fuelNeeded: Double =
-            playerData.playerInternalData.playerScienceData().playerScienceProductData.newFuelFactoryFuelNeededByConstruction(
-                qualityLevel
-            )
-        val enoughFuelRestMass: Boolean =
-            playerData.playerInternalData.physicsData().fuelRestMassData.production >= fuelNeeded
-        val enoughFuelRestMassI18NString: I18NString = if (enoughFuelRestMass) {
-            I18NString("")
-        } else {
-            I18NString("Not enough fuel rest mass. ")
-        }
-
-
-        return CanSendCheckMessage(
-            sameTopLeaderId && allowConstruction && validFactoryInternalData && enoughFuelRestMass,
-            I18NString.combine(
-                listOf(
-                    sameTopLeaderIdI18NString,
-                    allowConstructionI18NString,
-                    validFactoryInternalDataI18NString,
-                    enoughFuelRestMassI18NString
-                )
-            )
-        )
-    }
-
-    override fun canExecute(
-        playerData: MutablePlayerData,
-        universeSettings: UniverseSettings
-    ): Boolean {
-        val sameTopLeader: Boolean = playerData.topLeaderId() == senderTopLeaderId
-        val foreignInvestorOrSameTopLeader: Boolean = (sameTopLeader ||
-                playerData.playerInternalData.politicsData().allowForeignInvestor)
-
-        val isSenderTopLeader: Boolean = fromId == playerData.topLeaderId()
-        val canSenderBuild: Boolean = (isSenderTopLeader ||
-                playerData.playerInternalData.politicsData().allowSubordinateBuildFactory)
-
-        val allowConstruction: Boolean = foreignInvestorOrSameTopLeader && canSenderBuild
-
-        val hasCarrier: Boolean =
-            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(targetCarrierId)
-
-        return allowConstruction && hasCarrier
-    }
-
-    override fun selfExecuteBeforeSend(
-        playerData: MutablePlayerData,
-        universeSettings: UniverseSettings
-    ) {
-        val fuelNeeded: Double =
-            playerData.playerInternalData.playerScienceData().playerScienceProductData.newFuelFactoryFuelNeededByConstruction(
-                qualityLevel
-            )
-        playerData.playerInternalData.physicsData().fuelRestMassData.production -= fuelNeeded
-
-    }
-
-    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
-
-        val carrier: MutableCarrierData =
-            playerData.playerInternalData.popSystemData().carrierDataMap.getValue(targetCarrierId)
-        carrier.allPopData.labourerPopData.addFuelFactory(
-            MutableFuelFactoryData(
-                ownerPlayerId = ownerId,
-                fuelFactoryInternalData = DataSerializer.copy(fuelFactoryInternalData),
-                numBuilding = 1,
-                isOpened = true,
-                lastOutputAmount = 0.0,
-                lastNumEmployee = 0.0
-            )
-        )
-    }
-
-
-    companion object {
-        private val logger = RelativitizationLogManager.getLogger()
-    }
-}
 
 /**
  * Build a factory on player
