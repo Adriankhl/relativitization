@@ -400,11 +400,7 @@ data class MutableScienceProductData(
             qualityLevel
         )
 
-        return if (outputResourceType == ResourceType.FUEL) {
-            resourceFactoryInternalData.maxOutputAmount * 20
-        } else {
-            resourceFactoryInternalData.fuelRestMassConsumptionRate * 20
-        }
+        return resourceFactoryInternalData.fuelRestMassConsumptionRate * 20
     }
 
     companion object {

@@ -16,7 +16,7 @@ import relativitization.universe.mechanisms.Mechanism
 /**
  * Produce resources, fuel needs special treatments
  */
-object FactoryProduction : Mechanism() {
+object ResourceFactoryProduction : Mechanism() {
     override fun process(
         mutablePlayerData: MutablePlayerData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
@@ -27,9 +27,6 @@ object FactoryProduction : Mechanism() {
             mutablePlayerData.velocity.toVelocity(),
             universeSettings.speedOfLight
         )
-
-        // Clean up fuel in resource data
-        mutablePlayerData.playerInternalData.economyData().resourceData.removeFuel()
 
         // Do self factory production first
         mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.forEach { carrier ->
@@ -44,19 +41,6 @@ object FactoryProduction : Mechanism() {
                 )
             }
         }
-
-
-        // Store fuel to physics data
-        if (mutablePlayerData.playerInternalData.modifierData(
-            ).physicsModifierData.disableRestMassIncreaseTimeLimit <= 0
-        ) {
-            mutablePlayerData.playerInternalData.physicsData().addFuel(
-                mutablePlayerData.playerInternalData.economyData().resourceData.getFuelAmount()
-            )
-        }
-
-        // Clean up fuel in resource data
-        mutablePlayerData.playerInternalData.economyData().resourceData.removeFuel()
 
         // Production by factory owned by other
         val logisticCommandList: List<Command> =
@@ -333,24 +317,14 @@ object FactoryProduction : Mechanism() {
         // Consume fuel
         physicsData.fuelRestMassData.production -= mutableResourceFactoryData.resourceFactoryInternalData.fuelRestMassConsumptionRate * amountFraction * mutableResourceFactoryData.numBuilding / gamma
 
-        return if (mutableResourceFactoryData.resourceFactoryInternalData.outputResource == ResourceType.FUEL) {
-            SendFuelCommand(
-                toId = toId,
-                fromId = mutablePlayerData.playerId,
-                fromInt4D = mutablePlayerData.int4D.toInt4D(),
-                amount = mutableResourceFactoryData.resourceFactoryInternalData.maxOutputAmount * amountFraction * mutableResourceFactoryData.numBuilding / gamma,
-                senderFuelLossFractionPerDistance = mutablePlayerData.playerInternalData.playerScienceData().playerScienceProductData.fuelLogisticsLossFractionPerDistance,
-            )
-        } else {
-            SendResourceCommand(
-                toId = toId,
-                fromId = mutablePlayerData.playerId,
-                fromInt4D = mutablePlayerData.int4D.toInt4D(),
-                resourceType = mutableResourceFactoryData.resourceFactoryInternalData.outputResource,
-                resourceQualityData = outputQuality.toResourceQualityData(),
-                amount = mutableResourceFactoryData.resourceFactoryInternalData.maxOutputAmount * amountFraction * mutableResourceFactoryData.numBuilding / gamma,
-                senderResourceLossFractionPerDistance = mutablePlayerData.playerInternalData.playerScienceData().playerScienceProductData.resourceLogisticsLossFractionPerDistance,
-            )
-        }
+        return SendResourceCommand(
+            toId = toId,
+            fromId = mutablePlayerData.playerId,
+            fromInt4D = mutablePlayerData.int4D.toInt4D(),
+            resourceType = mutableResourceFactoryData.resourceFactoryInternalData.outputResource,
+            resourceQualityData = outputQuality.toResourceQualityData(),
+            amount = mutableResourceFactoryData.resourceFactoryInternalData.maxOutputAmount * amountFraction * mutableResourceFactoryData.numBuilding / gamma,
+            senderResourceLossFractionPerDistance = mutablePlayerData.playerInternalData.playerScienceData().playerScienceProductData.resourceLogisticsLossFractionPerDistance,
+        )
     }
 }

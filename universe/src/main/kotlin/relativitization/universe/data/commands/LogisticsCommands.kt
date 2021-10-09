@@ -54,13 +54,6 @@ data class SendResourceFromStorageCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): CanSendCheckMessage {
-        val notFuel: Boolean = resourceType != ResourceType.FUEL
-        val notFuelI18NString: I18NString = if (notFuel) {
-            I18NString("")
-        } else {
-            I18NString("Cannot send fuel as resource. ")
-        }
-
         val hasAmount: Boolean =
             playerData.playerInternalData.economyData().resourceData.getTradeResourceAmount(
                 resourceType, resourceQualityClass
@@ -130,10 +123,9 @@ data class SendResourceFromStorageCommand(
         }
 
         return CanSendCheckMessage(
-            notFuel && hasAmount && isQualityValid && isLossFractionValid,
+            hasAmount && isQualityValid && isLossFractionValid,
             I18NString.combine(
                 listOf(
-                    notFuelI18NString,
                     hasAmountI18NString,
                     isQualityValidI18NString,
                     isLossFractionValidI18NString,

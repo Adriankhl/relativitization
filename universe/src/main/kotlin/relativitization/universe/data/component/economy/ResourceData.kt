@@ -4,7 +4,6 @@ import kotlinx.serialization.Serializable
 import kotlin.math.pow
 
 enum class ResourceType(val value: String) {
-    FUEL("Fuel"),
     PLANT("Plant"), // Raw material
     ANIMAL("Animal"),
     METAL("Metal"),
@@ -346,24 +345,6 @@ data class MutableResourceData(
                 resourceAmount.trade = newAmount
             }
         }
-    }
-
-    /**
-     * Remove fuel data
-     */
-    fun removeFuel() {
-        resourceQualityMap.remove(ResourceType.FUEL)
-        resourceQualityLowerBoundMap.remove(ResourceType.FUEL)
-        resourceAmountMap.remove(ResourceType.FUEL)
-        resourceTargetAmountMap.remove(ResourceType.FUEL)
-        resourcePriceMap.remove(ResourceType.FUEL)
-    }
-
-    /**
-     * Get fuel amount, ignoring the quality
-     */
-    fun getFuelAmount(): Double {
-        return resourceAmountMap[ResourceType.FUEL]?.values?.sumOf { it.total() } ?: 0.0
     }
 }
 

@@ -8,6 +8,8 @@ import relativitization.universe.data.component.economy.ResourceType
 import relativitization.universe.data.component.physics.MutableInt4D
 import relativitization.universe.data.component.popsystem.pop.labourer.factory.MutableResourceFactoryData
 import relativitization.universe.data.UniverseScienceData
+import relativitization.universe.data.component.popsystem.pop.labourer.factory.MutableFuelFactoryData
+import relativitization.universe.data.component.popsystem.pop.labourer.factory.MutableFuelFactoryInternalData
 import relativitization.universe.data.component.popsystem.pop.labourer.factory.MutableResourceFactoryInternalData
 import relativitization.universe.data.component.science.knowledge.AppliedResearchField
 import relativitization.universe.data.component.science.knowledge.AppliedResearchProjectData
@@ -171,14 +173,10 @@ class TestingFixedMinimal : GenerateUniverse() {
             )
         )
 
-        // Add ideal factory to player 1
-        playerData1.playerInternalData.playerScienceData().playerScienceProductData.idealResourceFactoryMap[ResourceType.FUEL] =
-                MutableResourceFactoryInternalData(
-                    outputResource = ResourceType.FUEL,
-                    maxOutputResourceQualityData = MutableResourceQualityData(),
+        // Add ideal fuel factory to player 1
+        playerData1.playerInternalData.playerScienceData().playerScienceProductData.idealFuelFactory =
+                MutableFuelFactoryInternalData(
                     maxOutputAmount = 1.0,
-                    inputResourceMap = mutableMapOf(),
-                    fuelRestMassConsumptionRate = 0.0,
                     maxNumEmployee = 10.0,
                     size = 1.0,
                 )
@@ -189,18 +187,10 @@ class TestingFixedMinimal : GenerateUniverse() {
         ).allPopData.labourerPopData.commonPopData.adultPopulation = 100.0
 
         // Add fuel factory to player 1
-        val fuelFactory1 = MutableResourceFactoryData(
+        val fuelFactory1 = MutableFuelFactoryData(
             ownerPlayerId = 1,
-            resourceFactoryInternalData = MutableResourceFactoryInternalData(
-                outputResource = ResourceType.FUEL,
-                maxOutputResourceQualityData = MutableResourceQualityData(
-                    quality1 = 0.0,
-                    quality2 = 0.0,
-                    quality3 = 0.0,
-                ),
+            fuelFactoryInternalData = MutableFuelFactoryInternalData(
                 maxOutputAmount = 2.0,
-                inputResourceMap = mutableMapOf(),
-                fuelRestMassConsumptionRate = 0.0,
                 maxNumEmployee = 100.0,
                 size = 3.0,
             ),
@@ -208,12 +198,11 @@ class TestingFixedMinimal : GenerateUniverse() {
             isOpened = true,
             lastOutputAmount = 0.0,
             lastNumEmployee = 100.0,
-            lastInputAmountMap = mutableMapOf(),
-            storedFuelRestMass = 0.0,
         )
+
         playerData1.playerInternalData.popSystemData().carrierDataMap.getValue(
             0
-        ).allPopData.labourerPopData.resourceFactoryMap[1] = fuelFactory1
+        ).allPopData.labourerPopData.addFuelFactory(fuelFactory1)
 
 
         data.addPlayerDataToLatestWithAfterImage(

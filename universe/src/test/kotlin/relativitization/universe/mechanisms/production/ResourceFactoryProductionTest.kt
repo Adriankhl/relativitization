@@ -7,7 +7,7 @@ import relativitization.universe.generate.GenerateSettings
 import relativitization.universe.generate.UniverseGenerationCollection
 import kotlin.test.Test
 
-internal class FactoryProductionTest {
+internal class ResourceFactoryProductionTest {
     @Test
     fun fixedMinimalTest() {
         val universe = Universe(UniverseGenerationCollection.generate(GenerateSettings()), ".")

@@ -109,7 +109,7 @@ data class MutableInputResourceData(
  */
 @Serializable
 data class ResourceFactoryInternalData(
-    val outputResource: ResourceType = ResourceType.FUEL,
+    val outputResource: ResourceType = ResourceType.PLANT,
     val maxOutputResourceQualityData: ResourceQualityData = ResourceQualityData(),
     val maxOutputAmount: Double = 0.0,
     val inputResourceMap: Map<ResourceType, InputResourceData> = mapOf(),
@@ -180,7 +180,7 @@ data class ResourceFactoryInternalData(
 
 @Serializable
 data class MutableResourceFactoryInternalData(
-    var outputResource: ResourceType = ResourceType.FUEL,
+    var outputResource: ResourceType = ResourceType.PLANT,
     var maxOutputResourceQualityData: MutableResourceQualityData = MutableResourceQualityData(),
     var maxOutputAmount: Double = 0.0,
     var inputResourceMap: MutableMap<ResourceType, MutableInputResourceData> = mutableMapOf(),
