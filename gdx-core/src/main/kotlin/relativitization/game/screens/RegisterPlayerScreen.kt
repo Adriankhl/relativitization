@@ -49,7 +49,7 @@ class RegisterPlayerScreen(val game: RelativitizationGame) : TableScreen(game.as
     private fun createButtonTable(): Table {
         val nestedTable = Table()
 
-        val startStatusLabel = createLabel("", gdxSettings.normalFontSize)
+        val startStatusLabel = createLabel("", gdxSettings.bigFontSize)
         val startButton: TextButton = createTextButton("Start", gdxSettings.normalFontSize, gdxSettings.soundEffectsVolume) {
             if (registerPlayerButton.touchable == Touchable.disabled) {
                 runBlocking {
