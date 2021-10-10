@@ -26,6 +26,7 @@ data class ResourceFactoryData(
     val isOpened: Boolean = true,
     val storedFuelRestMass: Double = 0.0,
     val lastOutputAmount: Double = 0.0,
+    val lastOutputQuality: ResourceQualityData = ResourceQualityData(),
     val lastInputAmountMap: Map<ResourceType, Double> = mapOf(),
     val lastNumEmployee: Double = 0.0,
 ) {
@@ -43,6 +44,7 @@ data class MutableResourceFactoryData(
     var isOpened: Boolean = true,
     var storedFuelRestMass: Double = 0.0,
     var lastOutputAmount: Double = 0.0,
+    var lastOutputQuality: MutableResourceQualityData = MutableResourceQualityData(),
     val lastInputAmountMap: MutableMap<ResourceType, Double> = mutableMapOf(),
     var lastNumEmployee: Double = 0.0,
 ) {
