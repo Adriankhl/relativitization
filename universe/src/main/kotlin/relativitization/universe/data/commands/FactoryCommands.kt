@@ -91,7 +91,7 @@ data class BuildForeignFuelFactoryCommand(
                 qualityLevel
             )
         ) < 0.1
-        val validFactoryInternalDataI18NString: I18NString = if (sameTopLeaderId) {
+        val validFactoryInternalDataI18NString: I18NString = if (validFactoryInternalData) {
             I18NString("")
         } else {
             I18NString("Factory internal data is not valid. ")
@@ -261,7 +261,7 @@ data class BuildForeignResourceFactoryCommand(
                 qualityLevel
             )
         ) < 0.1
-        val validFactoryInternalDataI18NString: I18NString = if (sameTopLeaderId) {
+        val validFactoryInternalDataI18NString: I18NString = if (validFactoryInternalData) {
             I18NString("")
         } else {
             I18NString("Factory internal data is not valid. ")

@@ -181,6 +181,22 @@ class TestingFixedMinimal : GenerateUniverse() {
                     size = 1.0,
                 )
 
+        // Add ideal plant factory to player 1
+        playerData1.playerInternalData.playerScienceData().playerScienceProductData.idealResourceFactoryMap[ResourceType.PLANT] =
+                MutableResourceFactoryInternalData(
+                    outputResource = ResourceType.PLANT,
+                    maxOutputResourceQualityData = MutableResourceQualityData(
+                        quality1 = 0.0,
+                        quality2 = 0.0,
+                        quality3 = 0.0,
+                    ),
+                    maxOutputAmount = 1.0,
+                    inputResourceMap = mutableMapOf(),
+                    fuelRestMassConsumptionRate = 1.0,
+                    maxNumEmployee = 100.0,
+                    size = 1.0
+                )
+
         // Add population to player 1
         playerData1.playerInternalData.popSystemData().carrierDataMap.getValue(
             0
