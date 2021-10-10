@@ -13,6 +13,7 @@ import kotlin.math.pow
  * @property fuelFactoryInternalData the data describing this factory
  * @property numBuilding how large is this factory, affect the throughput of the factory
  * @property isOpened whether this factory is opened
+ * @property storedFuelRestMass stored fuel to be consumed if this is owned by foreign player
  * @property lastOutputAmount the output amount in the latest turn
  * @property lastNumEmployee number of employee in the last turn
  */
@@ -22,6 +23,7 @@ data class FuelFactoryData(
     val fuelFactoryInternalData: FuelFactoryInternalData = FuelFactoryInternalData(),
     val numBuilding: Int = 1,
     val isOpened: Boolean = true,
+    val storedFuelRestMass: Double = 0.0,
     val lastOutputAmount: Double = 0.0,
     val lastNumEmployee: Double = 0.0,
 )
@@ -32,6 +34,7 @@ data class MutableFuelFactoryData(
     var fuelFactoryInternalData: MutableFuelFactoryInternalData = MutableFuelFactoryInternalData(),
     var numBuilding: Int = 1,
     var isOpened: Boolean = true,
+    var storedFuelRestMass: Double = 0.0,
     var lastOutputAmount: Double = 0.0,
     var lastNumEmployee: Double = 0.0,
 ) {

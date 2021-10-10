@@ -13,8 +13,9 @@ import kotlin.math.pow
  * @property resourceFactoryInternalData the data describing this factory
  * @property numBuilding how large is this factory, affect the throughput of the factory
  * @property isOpened whether this factory is opened
- * @property lastOutputAmount the output amount in the latest turn
  * @property storedFuelRestMass stored fuel to be consumed if this is owned by foreign player
+ * @property lastOutputAmount the output amount in the latest turn
+ * @property lastInputAmountMap the input amount in the latest turn
  * @property lastNumEmployee number of employee in the last turn
  */
 @Serializable
@@ -23,9 +24,9 @@ data class ResourceFactoryData(
     val resourceFactoryInternalData: ResourceFactoryInternalData = ResourceFactoryInternalData(),
     val numBuilding: Int = 1,
     val isOpened: Boolean = true,
+    val storedFuelRestMass: Double = 0.0,
     val lastOutputAmount: Double = 0.0,
     val lastInputAmountMap: Map<ResourceType, Double> = mapOf(),
-    val storedFuelRestMass: Double = 0.0,
     val lastNumEmployee: Double = 0.0,
 ) {
     fun maxInputAmount(resourceType: ResourceType): Double {
@@ -40,9 +41,9 @@ data class MutableResourceFactoryData(
     var resourceFactoryInternalData: MutableResourceFactoryInternalData = MutableResourceFactoryInternalData(),
     var numBuilding: Int = 1,
     var isOpened: Boolean = true,
+    var storedFuelRestMass: Double = 0.0,
     var lastOutputAmount: Double = 0.0,
     val lastInputAmountMap: MutableMap<ResourceType, Double> = mutableMapOf(),
-    var storedFuelRestMass: Double = 0.0,
     var lastNumEmployee: Double = 0.0,
 ) {
     fun maxInputAmount(resourceType: ResourceType): Double {
