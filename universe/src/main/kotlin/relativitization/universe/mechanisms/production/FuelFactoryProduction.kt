@@ -97,7 +97,7 @@ object FuelFactoryProduction : Mechanism() {
         )
 
         // Produce fuel
-        physicsData.addFuel(mutableFuelFactoryData.fuelFactoryInternalData.maxOutputAmount * mutableFuelFactoryData.numBuilding / gamma)
+        physicsData.addFuel(mutableFuelFactoryData.fuelFactoryInternalData.maxOutputAmount * amountFraction * mutableFuelFactoryData.numBuilding / gamma)
     }
 
     /**
@@ -112,7 +112,6 @@ object FuelFactoryProduction : Mechanism() {
         gamma: Double,
     ): Command {
         val toId: Int = mutableFuelFactoryData.ownerPlayerId
-        val physicsData = mutablePlayerData.playerInternalData.physicsData()
 
 
         val amountFraction: Double = productAmountFraction(
