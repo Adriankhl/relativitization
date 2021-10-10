@@ -6,7 +6,6 @@ import relativitization.universe.data.*
 import relativitization.universe.data.component.economy.MutableResourceQualityData
 import relativitization.universe.data.component.economy.ResourceType
 import relativitization.universe.data.component.physics.MutableInt4D
-import relativitization.universe.data.component.popsystem.pop.labourer.factory.MutableResourceFactoryData
 import relativitization.universe.data.UniverseScienceData
 import relativitization.universe.data.component.popsystem.pop.labourer.factory.MutableFuelFactoryData
 import relativitization.universe.data.component.popsystem.pop.labourer.factory.MutableFuelFactoryInternalData
@@ -19,7 +18,7 @@ import relativitization.universe.data.serializer.DataSerializer.copy
 import relativitization.universe.generate.GenerateSettings
 import relativitization.universe.generate.GenerateUniverse
 import relativitization.universe.maths.grid.Grids.create4DGrid
-import relativitization.universe.science.default.DefaultUniverseScienceDataProcess
+import relativitization.universe.global.science.default.DefaultUniverseScienceDataProcess
 
 class TestingFixedMinimal : GenerateUniverse() {
     override fun generate(settings: GenerateSettings): UniverseData {

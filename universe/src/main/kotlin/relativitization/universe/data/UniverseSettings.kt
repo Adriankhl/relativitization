@@ -8,8 +8,8 @@ import relativitization.universe.maths.physics.Intervals.intDelay
 import relativitization.universe.maths.physics.Intervals.maxDelayAfterMove
 import relativitization.universe.mechanisms.DefaultMechanismList
 import relativitization.universe.mechanisms.name
-import relativitization.universe.science.default.DefaultUniverseScienceDataProcess
-import relativitization.universe.science.name
+import relativitization.universe.global.science.default.DefaultUniverseScienceDataProcess
+import relativitization.universe.global.science.name
 
 /**
  * Setting data

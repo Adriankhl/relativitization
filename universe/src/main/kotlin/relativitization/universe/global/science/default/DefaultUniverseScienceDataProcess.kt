@@ -1,10 +1,10 @@
-package relativitization.universe.science.default
+package relativitization.universe.global.science.default
 
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.UniverseScienceData
 import relativitization.universe.data.component.science.knowledge.*
 import relativitization.universe.generate.science.DefaultGenerateUniverseScienceData
-import relativitization.universe.science.UniverseScienceDataProcess
+import relativitization.universe.global.science.UniverseScienceDataProcess
 import kotlin.math.max
 
 object DefaultUniverseScienceDataProcess : UniverseScienceDataProcess() {

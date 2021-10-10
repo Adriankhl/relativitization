@@ -6,7 +6,7 @@ import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.UniverseScienceData
 import relativitization.universe.mechanisms.Mechanism
-import relativitization.universe.science.UniverseScienceDataProcessCollection
+import relativitization.universe.global.science.UniverseScienceDataProcessCollection
 
 /**
  * Sync player science data with universe science data

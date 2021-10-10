@@ -1,4 +1,4 @@
-package relativitization.universe.science
+package relativitization.universe.global.science
 
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.UniverseScienceData
@@ -6,8 +6,8 @@ import relativitization.universe.data.component.science.knowledge.AppliedResearc
 import relativitization.universe.data.component.science.knowledge.BasicResearchProjectData
 import relativitization.universe.data.component.science.knowledge.MutableAppliedResearchData
 import relativitization.universe.data.component.science.knowledge.MutableBasicResearchData
-import relativitization.universe.science.default.DefaultUniverseScienceDataProcess
-import relativitization.universe.science.empty.EmptyUniverseScienceDataProcess
+import relativitization.universe.global.science.default.DefaultUniverseScienceDataProcess
+import relativitization.universe.global.science.empty.EmptyUniverseScienceDataProcess
 import relativitization.universe.utils.RelativitizationLogManager
 
 abstract class UniverseScienceDataProcess {

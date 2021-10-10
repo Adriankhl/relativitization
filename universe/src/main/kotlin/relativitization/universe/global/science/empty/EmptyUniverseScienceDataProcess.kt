@@ -1,4 +1,4 @@
-package relativitization.universe.science.empty
+package relativitization.universe.global.science.empty
 
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.UniverseScienceData
@@ -6,7 +6,7 @@ import relativitization.universe.data.component.science.knowledge.AppliedResearc
 import relativitization.universe.data.component.science.knowledge.BasicResearchProjectData
 import relativitization.universe.data.component.science.knowledge.MutableAppliedResearchData
 import relativitization.universe.data.component.science.knowledge.MutableBasicResearchData
-import relativitization.universe.science.UniverseScienceDataProcess
+import relativitization.universe.global.science.UniverseScienceDataProcess
 
 object EmptyUniverseScienceDataProcess : UniverseScienceDataProcess() {
     override fun basicResearchProjectFunction(): (BasicResearchProjectData, MutableBasicResearchData) -> Unit {

@@ -14,7 +14,7 @@ import relativitization.universe.data.serializer.DataSerializer.encode
 import relativitization.universe.maths.grid.Grids.create3DGrid
 import relativitization.universe.maths.physics.Intervals.intDelay
 import relativitization.universe.mechanisms.MechanismCollection.processMechanismCollection
-import relativitization.universe.science.UniverseScienceDataProcessCollection
+import relativitization.universe.global.science.UniverseScienceDataProcessCollection
 import relativitization.universe.utils.RelativitizationLogManager
 import relativitization.universe.utils.pmap
 import java.io.File

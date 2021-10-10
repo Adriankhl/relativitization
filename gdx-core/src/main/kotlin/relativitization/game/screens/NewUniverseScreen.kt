@@ -10,7 +10,7 @@ import relativitization.game.utils.TableScreen
 import relativitization.universe.data.commands.CommandCollection
 import relativitization.universe.generate.UniverseGenerationCollection
 import relativitization.universe.mechanisms.MechanismCollection
-import relativitization.universe.science.UniverseScienceDataProcessCollection
+import relativitization.universe.global.science.UniverseScienceDataProcessCollection
 import relativitization.universe.utils.RelativitizationLogManager
 
 class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
