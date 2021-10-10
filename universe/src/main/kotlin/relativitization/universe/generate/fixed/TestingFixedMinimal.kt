@@ -196,6 +196,7 @@ class TestingFixedMinimal : GenerateUniverse() {
             ),
             numBuilding = 1,
             isOpened = true,
+            storedFuelRestMass = 0.0,
             lastOutputAmount = 0.0,
             lastNumEmployee = 100.0,
         )
