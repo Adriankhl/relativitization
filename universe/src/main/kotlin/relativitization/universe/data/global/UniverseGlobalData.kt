@@ -6,10 +6,7 @@ import relativitization.universe.data.UniverseScienceData
 
 @Serializable
 data class UniverseGlobalData(
-    val universeScienceData: UniverseScienceData = UniverseScienceData()
-)
-
-@Serializable
-data class MutableUniverseGlobalData(
-    val universeScienceData: MutableUniverseScienceData = MutableUniverseScienceData()
-)
+    var universeScienceData: UniverseScienceData = UniverseScienceData()
+) {
+    fun getScienceData() = universeScienceData
+}
