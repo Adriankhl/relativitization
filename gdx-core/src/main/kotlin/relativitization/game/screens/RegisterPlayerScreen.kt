@@ -49,8 +49,8 @@ class RegisterPlayerScreen(val game: RelativitizationGame) : TableScreen(game.as
     private fun createButtonTable(): Table {
         val nestedTable = Table()
 
-        val startStatusLabel = createLabel("", gdxSettings.bigFontSize)
-        val startButton: TextButton = createTextButton("Start", gdxSettings.normalFontSize, gdxSettings.soundEffectsVolume) {
+        val startStatusLabel = createLabel("", gdxSettings.normalFontSize)
+        val startButton: TextButton = createTextButton("Start", gdxSettings.bigFontSize, gdxSettings.soundEffectsVolume) {
             if (registerPlayerButton.touchable == Touchable.disabled) {
                 runBlocking {
                     if (game.universeClient.getCurrentServerStatus().isUniverseRunning) {
