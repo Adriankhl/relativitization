@@ -91,8 +91,13 @@ object FuelFactoryProduction : Mechanism() {
             mutableFuelFactoryData,
         )
 
+
+        val outputAmount: Double = mutableFuelFactoryData.fuelFactoryInternalData.maxOutputAmount * amountFraction * mutableFuelFactoryData.numBuilding / gamma
+
+        mutableFuelFactoryData.lastOutputAmount = outputAmount
+
         // Produce fuel
-        physicsData.addFuel(mutableFuelFactoryData.fuelFactoryInternalData.maxOutputAmount * amountFraction * mutableFuelFactoryData.numBuilding / gamma)
+        physicsData.addFuel(outputAmount)
     }
 
     /**
@@ -114,11 +119,15 @@ object FuelFactoryProduction : Mechanism() {
         )
 
 
+        val outputAmount: Double = mutableFuelFactoryData.fuelFactoryInternalData.maxOutputAmount * amountFraction * mutableFuelFactoryData.numBuilding / gamma
+
+        mutableFuelFactoryData.lastOutputAmount = outputAmount
+
         return SendFuelCommand(
             toId = toId,
             fromId = mutablePlayerData.playerId,
             fromInt4D = mutablePlayerData.int4D.toInt4D(),
-            amount = mutableFuelFactoryData.fuelFactoryInternalData.maxOutputAmount * amountFraction * mutableFuelFactoryData.numBuilding / gamma,
+            amount = outputAmount,
             senderFuelLossFractionPerDistance = mutablePlayerData.playerInternalData.playerScienceData().playerScienceProductData.fuelLogisticsLossFractionPerDistance,
         )
     }
