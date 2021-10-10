@@ -8,9 +8,11 @@ import relativitization.universe.data.component.physics.Int3D
 import relativitization.universe.data.component.physics.Int4D
 import relativitization.universe.data.MutableUniverseScienceData
 import relativitization.universe.data.UniverseScienceData
+import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.data.serializer.DataSerializer.copy
 import relativitization.universe.data.serializer.DataSerializer.decode
 import relativitization.universe.data.serializer.DataSerializer.encode
+import relativitization.universe.global.GlobalMechanismCollection
 import relativitization.universe.maths.grid.Grids.create3DGrid
 import relativitization.universe.maths.physics.Intervals.intDelay
 import relativitization.universe.mechanisms.MechanismCollection.processMechanismCollection
@@ -159,8 +161,8 @@ class Universe(
         )
 
         // save science data
-        File("${saveDir}/universeScienceData-${latestTime}.json").writeText(
-            encode(universeData.universeScienceData)
+        File("${saveDir}/universeGlobalData-${latestTime}.json").writeText(
+            encode(universeData.universeGlobalData)
         )
 
         // Additionally save state to latestState.json for loading
@@ -385,56 +387,13 @@ class Universe(
     }
 
     /**
-     * Process science data of universe, update common sense and generate new projects
-     */
-    private fun processUniverseScienceData() {
-
-        // Update universe common sense
-        val mutableUniverseScienceData: MutableUniverseScienceData = copy(
-            universeData.universeScienceData
-        )
-
-        val allVisiblePlayerData: List<PlayerData> = universeData.getAllVisiblePlayerData()
-
-        val newStartFromBasicResearchId: Int = allVisiblePlayerData.minOfOrNull {
-            it.playerInternalData.playerScienceData().playerKnowledgeData.startFromBasicResearchId
-        } ?: 0
-
-        val newStartFromAppliedResearchId: Int = allVisiblePlayerData.minOfOrNull {
-            it.playerInternalData.playerScienceData().playerKnowledgeData.startFromAppliedResearchId
-        } ?: 0
-
-        mutableUniverseScienceData.updateCommonSenseData(
-            newStartFromBasicResearchId = newStartFromBasicResearchId,
-            newStartFromAppliedResearchId = newStartFromAppliedResearchId,
-            basicProjectFunction = UniverseScienceDataProcessCollection.getProcess(
-                universeData.universeSettings
-            ).basicResearchProjectFunction(),
-            appliedProjectFunction = UniverseScienceDataProcessCollection.getProcess(
-                universeData.universeSettings
-            ).appliedResearchProjectFunction(),
-        )
-
-        // Generate new projects
-        val newUniverseScienceData: UniverseScienceData = UniverseScienceDataProcessCollection.getProcess(
-            universeData.universeSettings
-        ).newUniverseScienceData(
-            copy(mutableUniverseScienceData),
-            universeData.universeSettings
-        )
-
-        // Modify the universe science data
-        universeData.universeScienceData = newUniverseScienceData
-    }
-
-    /**
      * First part of the main step
      * Preprocess after the beginning of the turn
      * Save the latest slice and other information of the universe after that
      */
     suspend fun preProcessUniverse() {
         // beginning of the turn
-        processUniverseScienceData()
+        GlobalMechanismCollection.globalProcess(universeData)
         processMechanism()
         processCommandMap()
         processDeadAndNewPlayer()
@@ -492,8 +451,8 @@ class Universe(
                 File("${saveDir}/commandMap-${latestTime}.json").readText()
             )
 
-            val universeScienceData: UniverseScienceData = decode(
-                File("${saveDir}/universeScienceData-${latestTime}.json").readText()
+            val universeGlobalData: UniverseGlobalData = decode(
+                File("${saveDir}/universeGlobalData-${latestTime}.json").readText()
             )
 
             val playerData4D: MutableList<List<List<List<List<PlayerData>>>>> = mutableListOf()
@@ -508,7 +467,7 @@ class Universe(
                 universeSettings = universeSettings,
                 universeState = universeState,
                 commandMap = commandMap,
-                universeScienceData = universeScienceData
+                universeGlobalData = universeGlobalData
             )
         }
 

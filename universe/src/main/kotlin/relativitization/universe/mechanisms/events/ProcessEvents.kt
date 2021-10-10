@@ -4,7 +4,7 @@ import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
-import relativitization.universe.data.UniverseScienceData
+import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.mechanisms.Mechanism
 
 object ProcessEvents : Mechanism() {
@@ -12,7 +12,7 @@ object ProcessEvents : Mechanism() {
         mutablePlayerData: MutablePlayerData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
         universeSettings: UniverseSettings,
-        universeScienceData: UniverseScienceData
+        universeGlobalData: UniverseGlobalData
     ): List<Command> {
         // Remove all outdated event
         mutablePlayerData.playerInternalData.eventDataMap.filter {

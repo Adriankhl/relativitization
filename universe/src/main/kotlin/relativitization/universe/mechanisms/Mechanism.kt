@@ -5,7 +5,7 @@ import relativitization.universe.data.UniverseData
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
-import relativitization.universe.data.UniverseScienceData
+import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.mechanisms.events.AutoEventCollection
 import relativitization.universe.mechanisms.events.ProcessEvents
 import relativitization.universe.mechanisms.modifier.UpdateModifierTime
@@ -28,7 +28,7 @@ abstract class Mechanism {
         mutablePlayerData: MutablePlayerData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
         universeSettings: UniverseSettings,
-        universeScienceData: UniverseScienceData
+        universeGlobalData: UniverseGlobalData
     ): List<Command>
 }
 
@@ -80,7 +80,7 @@ object MechanismCollection {
                 mutablePlayerData,
                 universeData3DAtPlayer,
                 universeData.universeSettings,
-                universeData.universeScienceData
+                universeData.universeGlobalData
             )
         }.flatten()
     }

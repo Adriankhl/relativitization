@@ -4,7 +4,7 @@ import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
-import relativitization.universe.data.UniverseScienceData
+import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.mechanisms.Mechanism
 import relativitization.universe.global.science.UniverseScienceDataProcessCollection
 
@@ -16,12 +16,12 @@ object SyncPlayerScienceData : Mechanism() {
         mutablePlayerData: MutablePlayerData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
         universeSettings: UniverseSettings,
-        universeScienceData: UniverseScienceData
+        universeGlobalData: UniverseGlobalData
     ): List<Command> {
 
         // update player common sense
         mutablePlayerData.playerInternalData.playerScienceData().updateCommonSenseData(
-            universeScienceData.commonSenseKnowledgeData,
+            universeGlobalData.getScienceData().commonSenseKnowledgeData,
             UniverseScienceDataProcessCollection.getProcess(
                 universeSettings
             ).basicResearchProjectFunction(),
@@ -32,7 +32,7 @@ object SyncPlayerScienceData : Mechanism() {
 
         // sync research project data
         mutablePlayerData.playerInternalData.playerScienceData().syncProjectData(
-            universeScienceData,
+            universeGlobalData.getScienceData(),
             UniverseScienceDataProcessCollection.getProcess(
                 universeSettings
             ).basicResearchProjectFunction(),

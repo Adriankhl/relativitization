@@ -14,6 +14,7 @@ import relativitization.universe.data.component.science.knowledge.AppliedResearc
 import relativitization.universe.data.component.science.knowledge.AppliedResearchProjectData
 import relativitization.universe.data.component.science.knowledge.BasicResearchField
 import relativitization.universe.data.component.science.knowledge.BasicResearchProjectData
+import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.data.serializer.DataSerializer.copy
 import relativitization.universe.generate.GenerateSettings
 import relativitization.universe.generate.GenerateUniverse
@@ -251,7 +252,7 @@ class TestingFixedMinimal : GenerateUniverse() {
             universeSettings = universeSettings,
             universeState = universeState,
             commandMap = mutableMapOf(),
-            universeScienceData = UniverseScienceData(),
+            universeGlobalData = UniverseGlobalData(),
         )
     }
 }

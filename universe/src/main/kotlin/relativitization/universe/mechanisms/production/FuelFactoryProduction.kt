@@ -2,17 +2,12 @@ package relativitization.universe.mechanisms.production
 
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseData3DAtPlayer
-import relativitization.universe.data.UniverseScienceData
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.commands.SendFuelCommand
-import relativitization.universe.data.commands.SendResourceCommand
 import relativitization.universe.data.component.MutablePhysicsData
-import relativitization.universe.data.component.economy.MutableResourceQualityData
-import relativitization.universe.data.component.economy.ResourceQualityClass
-import relativitization.universe.data.component.economy.ResourceType
 import relativitization.universe.data.component.popsystem.pop.labourer.factory.MutableFuelFactoryData
-import relativitization.universe.data.component.popsystem.pop.labourer.factory.MutableResourceFactoryData
+import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.maths.physics.Relativistic
 import relativitization.universe.mechanisms.Mechanism
 
@@ -21,7 +16,7 @@ object FuelFactoryProduction : Mechanism() {
         mutablePlayerData: MutablePlayerData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
         universeSettings: UniverseSettings,
-        universeScienceData: UniverseScienceData
+        universeGlobalData: UniverseGlobalData
     ): List<Command> {
         val gamma: Double = Relativistic.gamma(
             mutablePlayerData.velocity.toVelocity(),

@@ -1,11 +1,12 @@
 package relativitization.universe.global.science
 
-import relativitization.universe.data.UniverseSettings
-import relativitization.universe.data.UniverseScienceData
+import relativitization.universe.data.*
 import relativitization.universe.data.component.science.knowledge.AppliedResearchProjectData
 import relativitization.universe.data.component.science.knowledge.BasicResearchProjectData
 import relativitization.universe.data.component.science.knowledge.MutableAppliedResearchData
 import relativitization.universe.data.component.science.knowledge.MutableBasicResearchData
+import relativitization.universe.data.global.MutableUniverseGlobalData
+import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.global.science.default.DefaultUniverseScienceDataProcess
 import relativitization.universe.global.science.empty.EmptyUniverseScienceDataProcess
 import relativitization.universe.utils.RelativitizationLogManager
@@ -64,5 +65,46 @@ object UniverseScienceDataProcessCollection {
                     " using default universe science data process")
             DefaultUniverseScienceDataProcess
         }
+    }
+
+    fun processUniverseScienceData(
+        mutableUniverseGlobalData: MutableUniverseGlobalData,
+        universeData: UniverseData,
+    ) {
+
+        // Update universe common sense
+        val mutableUniverseScienceData: MutableUniverseScienceData = DataSerializer.copy(mutableUniverseGlobalData.getScienceData())
+
+        val allVisiblePlayerData: List<PlayerData> = universeData.getAllVisiblePlayerData()
+
+        val newStartFromBasicResearchId: Int = allVisiblePlayerData.minOfOrNull {
+            it.playerInternalData.playerScienceData().playerKnowledgeData.startFromBasicResearchId
+        } ?: 0
+
+        val newStartFromAppliedResearchId: Int = allVisiblePlayerData.minOfOrNull {
+            it.playerInternalData.playerScienceData().playerKnowledgeData.startFromAppliedResearchId
+        } ?: 0
+
+        mutableUniverseScienceData.updateCommonSenseData(
+            newStartFromBasicResearchId = newStartFromBasicResearchId,
+            newStartFromAppliedResearchId = newStartFromAppliedResearchId,
+            basicProjectFunction = getProcess(
+                universeData.universeSettings
+            ).basicResearchProjectFunction(),
+            appliedProjectFunction = getProcess(
+                universeData.universeSettings
+            ).appliedResearchProjectFunction(),
+        )
+
+        // Generate new projects
+        val newUniverseScienceData: UniverseScienceData = getProcess(
+            universeData.universeSettings
+        ).newUniverseScienceData(
+            DataSerializer.copy(mutableUniverseScienceData),
+            universeData.universeSettings
+        )
+
+        // Modify the universe science data
+        mutableUniverseGlobalData.updateScienceData(newUniverseScienceData)
     }
 }

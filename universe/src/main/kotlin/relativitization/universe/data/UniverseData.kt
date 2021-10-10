@@ -4,6 +4,7 @@ import kotlinx.serialization.Serializable
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.component.physics.Int3D
 import relativitization.universe.data.component.physics.Int4D
+import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.maths.grid.Grids.double4DToGroupId
 import relativitization.universe.maths.physics.Intervals.intDelay
@@ -15,7 +16,7 @@ data class UniverseData(
     val universeSettings: UniverseSettings,
     val universeState: UniverseState,
     val commandMap: MutableMap<Int, MutableList<Command>>,
-    var universeScienceData: UniverseScienceData,
+    var universeGlobalData: UniverseGlobalData,
 ) {
     /**
      * Check whether the universeData4D has the correct dimension specified in the setting
