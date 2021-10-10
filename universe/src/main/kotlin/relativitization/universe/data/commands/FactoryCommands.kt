@@ -21,6 +21,7 @@ import relativitization.universe.utils.RelativitizationLogManager
  * @property ownerId who own this factory
  * @property fuelFactoryInternalData data of the factory
  * @property qualityLevel the quality of the factory, relative to tech level
+ * @property storedFuelRestMass fuel stored in the newly built factory
  */
 @Serializable
 data class BuildForeignFuelFactoryCommand(
@@ -32,6 +33,7 @@ data class BuildForeignFuelFactoryCommand(
     val ownerId: Int,
     val fuelFactoryInternalData: FuelFactoryInternalData,
     val qualityLevel: Double,
+    val storedFuelRestMass: Double,
 ) : Command() {
     override val description: I18NString = I18NString(
         listOf(
@@ -100,7 +102,7 @@ data class BuildForeignFuelFactoryCommand(
                 qualityLevel
             )
         val enoughFuelRestMass: Boolean =
-            playerData.playerInternalData.physicsData().fuelRestMassData.production >= fuelNeeded
+            playerData.playerInternalData.physicsData().fuelRestMassData.production >= fuelNeeded + storedFuelRestMass
         val enoughFuelRestMassI18NString: I18NString = if (enoughFuelRestMass) {
             I18NString("")
         } else {
@@ -149,7 +151,7 @@ data class BuildForeignFuelFactoryCommand(
             playerData.playerInternalData.playerScienceData().playerScienceProductData.newFuelFactoryFuelNeededByConstruction(
                 qualityLevel
             )
-        playerData.playerInternalData.physicsData().fuelRestMassData.production -= fuelNeeded
+        playerData.playerInternalData.physicsData().fuelRestMassData.production -= fuelNeeded + storedFuelRestMass
 
     }
 
@@ -163,6 +165,7 @@ data class BuildForeignFuelFactoryCommand(
                 fuelFactoryInternalData = DataSerializer.copy(fuelFactoryInternalData),
                 numBuilding = 1,
                 isOpened = true,
+                storedFuelRestMass = storedFuelRestMass,
                 lastOutputAmount = 0.0,
                 lastNumEmployee = 0.0
             )
@@ -270,7 +273,7 @@ data class BuildForeignResourceFactoryCommand(
                 qualityLevel
             )
         val enoughFuelRestMass: Boolean =
-            playerData.playerInternalData.physicsData().fuelRestMassData.production >= fuelNeeded
+            playerData.playerInternalData.physicsData().fuelRestMassData.production >= fuelNeeded + storedFuelRestMass
         val enoughFuelRestMassI18NString: I18NString = if (enoughFuelRestMass) {
             I18NString("")
         } else {
@@ -320,7 +323,7 @@ data class BuildForeignResourceFactoryCommand(
                 resourceFactoryInternalData.outputResource,
                 qualityLevel
             )
-        playerData.playerInternalData.physicsData().fuelRestMassData.production -= fuelNeeded
+        playerData.playerInternalData.physicsData().fuelRestMassData.production -= fuelNeeded + storedFuelRestMass
 
     }
 
@@ -463,6 +466,7 @@ data class BuildLocalFuelFactoryCommand(
                 fuelFactoryInternalData = newFuelFactoryInternalData,
                 numBuilding = 1,
                 isOpened = true,
+                storedFuelRestMass = 0.0,
                 lastOutputAmount = 0.0,
                 lastNumEmployee = 0.0
             )
