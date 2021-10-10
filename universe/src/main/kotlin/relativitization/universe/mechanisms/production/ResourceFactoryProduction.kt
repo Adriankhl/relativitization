@@ -11,6 +11,7 @@ import relativitization.universe.data.commands.SendResourceCommand
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.maths.physics.Relativistic
 import relativitization.universe.mechanisms.Mechanism
+import kotlin.math.max
 
 /**
  * Produce resources, fuel needs special treatments
@@ -126,18 +127,21 @@ object ResourceFactoryProduction : Mechanism() {
                     resourceData.getResourcePrice(type, qualityClass) * requiredAmount
                 }.sumOf { it }
 
-            mutableResourceFactoryData.storedFuelRestMass / totalPrice
+            (mutableResourceFactoryData.storedFuelRestMass - mutableResourceFactoryData.resourceFactoryInternalData.fuelRestMassConsumptionRate * mutableResourceFactoryData.numBuilding / gamma) / totalPrice
         } else {
             1.0
         }
 
-        return listOf(
+        val minFaction: Double = listOf(
             1.0,
             inputFraction,
             employeeFraction,
             fuelFraction,
             buyResourceFraction,
-        ).minOrNull() ?: 0.0
+        ).minOf { it }
+
+        // Prevent smaller than zero
+        return max(minFaction, 0.0)
     }
 
     /**
