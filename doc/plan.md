@@ -1,7 +1,7 @@
 # TODO list
 * Pop daily need
 * Salary
-* How research affect product
+* How research affect product, keep product quality simple, only use one dimension
 * Export center
 * Basic diplomacy
 * New carrier
