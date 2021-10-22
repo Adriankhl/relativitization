@@ -91,7 +91,7 @@ data class CommonPopData(
     val salary: Double = 0.0,
     val unemploymentBenefit: Double = 0.0,
     val saving: Double = 1.0,
-    val desireResourceMap: Map<ResourceType, ResourceQualityData> = mapOf(),
+    val desireResourceMap: Map<ResourceType, ResourceDesireData> = mapOf(),
     val educationLevel: Double = 0.0,
 )
 
@@ -105,7 +105,7 @@ data class MutableCommonPopData(
     var salary: Double = 0.0,
     var unemploymentBenefit: Double = 0.0,
     var saving: Double = 0.0,
-    var desireResourceMap: MutableMap<ResourceType, MutableResourceQualityData> = mutableMapOf(),
+    var desireResourceMap: MutableMap<ResourceType, MutableResourceDesireData> = mutableMapOf(),
     var educationLevel: Double = 0.0,
 )
 
