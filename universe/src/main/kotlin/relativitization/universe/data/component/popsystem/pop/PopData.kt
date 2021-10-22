@@ -93,6 +93,7 @@ data class CommonPopData(
     val saving: Double = 1.0,
     val desireResourceMap: Map<ResourceType, ResourceDesireData> = mapOf(),
     val educationLevel: Double = 0.0,
+    val lastDesireResourceMap: Map<ResourceType, ResourceDesireData> = mapOf(),
 )
 
 @Serializable
@@ -107,7 +108,31 @@ data class MutableCommonPopData(
     var saving: Double = 0.0,
     var desireResourceMap: MutableMap<ResourceType, MutableResourceDesireData> = mutableMapOf(),
     var educationLevel: Double = 0.0,
-)
+    var lastDesireResourceMap: MutableMap<ResourceType, MutableResourceDesireData> = mutableMapOf(),
+) {
+    fun addDesireResource(
+        resourceType: ResourceType,
+        resourceQualityData: ResourceQualityData,
+        resourceAmount: Double,
+    ) {
+        val desireData: MutableResourceDesireData = lastDesireResourceMap.getOrPut(
+            resourceType
+        ) {
+            MutableResourceDesireData()
+        }
+
+        val originalAmount: Double = desireData.desireAmount
+
+        desireData.desireQuality.updateQuality(
+            originalAmount = originalAmount,
+            newAmount = resourceAmount,
+            newData = resourceQualityData.toMutableResourceQualityData(),
+        )
+
+        desireData.desireAmount += resourceAmount
+
+    }
+}
 
 /**
  * A single desired resource of a pop
