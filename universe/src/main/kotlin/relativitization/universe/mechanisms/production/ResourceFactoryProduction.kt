@@ -151,19 +151,25 @@ object ResourceFactoryProduction : Mechanism() {
         requiredQuality: MutableResourceQualityData,
         actualQuality: MutableResourceQualityData
     ): Double {
-        val r1: Double = if (actualQuality.quality1 < requiredQuality.quality1) {
+        val r1: Double = if (
+            (actualQuality.quality1 < requiredQuality.quality1) && (requiredQuality.quality1 > 0.0)
+        ) {
             actualQuality.quality1 / requiredQuality.quality1
         } else {
             1.0
         }
 
-        val r2: Double = if (actualQuality.quality2 < requiredQuality.quality2) {
+        val r2: Double = if (
+            (actualQuality.quality2 < requiredQuality.quality2) && (requiredQuality.quality2 > 0.0)
+        ) {
             actualQuality.quality2 / requiredQuality.quality2
         } else {
             1.0
         }
 
-        val r3: Double = if (actualQuality.quality3 < requiredQuality.quality3) {
+        val r3: Double = if (
+            (actualQuality.quality3 < requiredQuality.quality3) && (requiredQuality.quality3 > 0.0)
+        ) {
             actualQuality.quality3 / requiredQuality.quality3
         } else {
             1.0
