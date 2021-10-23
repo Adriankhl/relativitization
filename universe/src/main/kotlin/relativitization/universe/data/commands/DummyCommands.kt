@@ -48,9 +48,10 @@ data class CannotSendCommand(
 
     override val description: I18NString = reason
 
-    override fun canSend(playerData: MutablePlayerData, universeSettings: UniverseSettings): CanSendCheckMessage {
-        return CanSendCheckMessage(false)
-    }
+    override fun canSend(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): CanSendCheckMessage = CanSendCheckMessage(false)
 
     override fun canExecute(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean {
         return true

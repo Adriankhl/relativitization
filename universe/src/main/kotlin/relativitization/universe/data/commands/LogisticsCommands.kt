@@ -7,6 +7,7 @@ import relativitization.universe.data.component.economy.ResourceQualityClass
 import relativitization.universe.data.component.economy.ResourceQualityData
 import relativitization.universe.data.component.economy.ResourceType
 import relativitization.universe.data.component.physics.Int4D
+import relativitization.universe.data.component.popsystem.pop.PopType
 import relativitization.universe.maths.physics.Intervals
 import relativitization.universe.utils.I18NString
 import relativitization.universe.utils.IntString
@@ -15,7 +16,7 @@ import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.math.pow
 
 /**
- * Send resource (apart from fuel) from yourself to another player
+ * Send resource from yourself to another player
  */
 @Serializable
 data class SendResourceFromStorageCommand(
@@ -318,13 +319,7 @@ data class SendResourceCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CanSendCheckMessage {
-
-        return CanSendCheckMessage(
-            false,
-            I18NString("")
-        )
-    }
+    ): CanSendCheckMessage = CanSendCheckMessage(false)
 
     override fun canExecute(
         playerData: MutablePlayerData,
@@ -379,13 +374,7 @@ data class SendFuelCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CanSendCheckMessage {
-
-        return CanSendCheckMessage(
-            false,
-            I18NString("")
-        )
-    }
+    ): CanSendCheckMessage = CanSendCheckMessage(false)
 
     override fun canExecute(
         playerData: MutablePlayerData,
@@ -413,6 +402,71 @@ data class SendFuelCommand(
         }
 
         playerData.playerInternalData.physicsData().addFuel(amount * remainFraction)
+    }
+
+    companion object {
+        private val logger = RelativitizationLogManager.getLogger()
+    }
+}
+
+/**
+ * Send resource to a pop
+ * Should be handled by mechanism only, cannot be sent by player manually
+ */
+@Serializable
+data class PopExportCenterSendResourceCommand(
+    override val toId: Int,
+    override val fromId: Int,
+    override val fromInt4D: Int4D,
+    val targetCarrierId: Int,
+    val targetPopType: PopType,
+    val resourceType: ResourceType,
+    val resourceQualityData: ResourceQualityData,
+    val amount: Double,
+    val senderResourceLossFractionPerDistance: Double,
+) : Command() {
+    override val description: I18NString = I18NString("")
+
+    override fun canSend(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): CanSendCheckMessage = CanSendCheckMessage(false)
+
+    override fun canExecute(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): Boolean {
+        return true
+    }
+
+    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+        val receiverLossFractionPerDistance: Double =
+            playerData.playerInternalData.playerScienceData().playerScienceProductData.resourceLogisticsLossFractionPerDistance
+
+        val lossFractionPerDistance: Double = (receiverLossFractionPerDistance + senderResourceLossFractionPerDistance) * 0.5
+
+        val distance: Double = Intervals.distance(
+            fromInt4D.toDouble3D(),
+            playerData.int4D.toDouble3D()
+        )
+
+        val remainFraction: Double = if (distance < 1.0) {
+            1.0
+        } else {
+            (1.0 - lossFractionPerDistance).pow(distance)
+        }
+
+        val carrierDataMap = playerData.playerInternalData.popSystemData().carrierDataMap
+
+        if (carrierDataMap.containsKey(targetCarrierId)) {
+            carrierDataMap.getValue(targetCarrierId).allPopData
+        }
+
+        playerData.playerInternalData.economyData().resourceData.addNewResource(
+            resourceType = resourceType,
+            newResourceQuality = resourceQualityData.toMutableResourceQualityData(),
+            amount = amount * remainFraction
+        )
     }
 
     companion object {
