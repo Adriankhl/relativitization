@@ -8,6 +8,8 @@ import relativitization.universe.data.component.economy.ResourceQualityData
 import relativitization.universe.data.component.economy.ResourceType
 import relativitization.universe.data.component.physics.Int4D
 import relativitization.universe.data.component.popsystem.pop.PopType
+import relativitization.universe.data.component.popsystem.pop.service.export.MutablePopExportCenterData
+import relativitization.universe.data.component.popsystem.pop.service.export.MutablePopSingleExportData
 import relativitization.universe.maths.physics.Intervals
 import relativitization.universe.utils.I18NString
 import relativitization.universe.utils.IntString
@@ -470,5 +472,86 @@ data class SendResourceToPopCommand(
 
     companion object {
         private val logger = RelativitizationLogManager.getLogger()
+    }
+
+    /**
+     * Send fuel to PopExportCenter to buy resource
+     * Should be handled by mechanism only, cannot be sent by player manually
+     */
+    @Serializable
+    data class PopBuyResourceCommand(
+        override val toId: Int,
+        override val fromId: Int,
+        override val fromInt4D: Int4D,
+        val fromCarrierId: Int,
+        val fromPopType: PopType,
+        val targetCarrierId: Int,
+        val resourceType: ResourceType,
+        val resourceQualityClass: ResourceQualityClass,
+        val fuelRestMassAmount: Double,
+        val amountPerTime: Double,
+        val senderFuelLossFractionPerDistance: Double,
+    ) : Command() {
+        override val description: I18NString = I18NString("")
+
+        override fun canSend(
+            playerData: MutablePlayerData,
+            universeSettings: UniverseSettings
+        ): CanSendCheckMessage = CanSendCheckMessage(false)
+
+        override fun canExecute(
+            playerData: MutablePlayerData,
+            universeSettings: UniverseSettings
+        ): Boolean {
+            return true
+        }
+
+
+        override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+            val receiverLossFractionPerDistance: Double =
+                playerData.playerInternalData.playerScienceData().playerScienceProductData.fuelLogisticsLossFractionPerDistance
+
+            val lossFractionPerDistance: Double = (receiverLossFractionPerDistance + senderFuelLossFractionPerDistance) * 0.5
+
+            val distance: Double = Intervals.distance(
+                fromInt4D.toDouble3D(),
+                playerData.int4D.toDouble3D()
+            )
+
+            val remainFraction: Double = if (distance < 1.0) {
+                1.0
+            } else {
+                (1.0 - lossFractionPerDistance).pow(distance)
+            }
+
+            val carrierDataMap = playerData.playerInternalData.popSystemData().carrierDataMap
+
+            if (carrierDataMap.containsKey(targetCarrierId)) {
+
+                val exportCenterMap: MutableMap<Int, MutablePopExportCenterData> =
+                    carrierDataMap.getValue(
+                        targetCarrierId
+                    ).allPopData.servicePopData.exportData.popExportCenterMap
+
+                val centerData: MutablePopSingleExportData = exportCenterMap.getOrPut(
+                    fromId
+                ) {
+                    MutablePopExportCenterData()
+                }.getSingleExportData(
+                    playerId = fromId,
+                    carrierId = fromCarrierId,
+                    popType = fromPopType,
+                    resourceType = resourceType,
+                    resourceQualityClass = resourceQualityClass
+                )
+
+                centerData.amountPerTime = amountPerTime
+                centerData.storedFuelRestMass += fuelRestMassAmount * remainFraction
+            }
+        }
+
+        companion object {
+            private val logger = RelativitizationLogManager.getLogger()
+        }
     }
 }

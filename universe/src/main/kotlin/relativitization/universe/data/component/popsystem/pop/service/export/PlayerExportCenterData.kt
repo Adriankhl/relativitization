@@ -6,12 +6,12 @@ import relativitization.universe.data.component.economy.ResourceType
 
 @Serializable
 data class PlayerExportCenterData(
-    val exportDataList: List<PlayerExportCenterData> = listOf()
+    val exportDataList: List<PlayerSingleExportData> = listOf()
 )
 
 @Serializable
 data class MutablePlayerExportCenterData(
-    val exportDataList: MutableList<MutablePlayerExportCenterData> = mutableListOf()
+    val exportDataList: MutableList<MutablePlayerSingleExportData> = mutableListOf()
 )
 
 @Serializable

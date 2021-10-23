@@ -5,6 +5,9 @@ import relativitization.universe.data.component.economy.ResourceQualityClass
 import relativitization.universe.data.component.economy.ResourceType
 import relativitization.universe.data.component.popsystem.pop.PopType
 
+/**
+ * Export center of pop
+ */
 @Serializable
 data class PopExportCenterData(
     val exportDataMap: Map<Int, Map<PopType, List<PopSingleExportData>>> = mapOf()
@@ -56,21 +59,41 @@ data class PopExportCenterData(
 data class MutablePopExportCenterData(
     val exportDataMap: MutableMap<Int, MutableMap<PopType, MutableList<MutablePopSingleExportData>>> = mutableMapOf()
 ) {
-    fun addSingleExportData(popSingleExportData: MutablePopSingleExportData) {
-        if (exportDataMap.containsKey(popSingleExportData.playerId) &&
-            exportDataMap.getValue(popSingleExportData.playerId).containsKey(popSingleExportData.popType)
+    fun getSingleExportData(
+        playerId: Int,
+        carrierId: Int,
+        popType: PopType,
+        resourceType: ResourceType,
+        resourceQualityClass: ResourceQualityClass
+    ): MutablePopSingleExportData {
+        val exportDataList: MutableList<MutablePopSingleExportData> = exportDataMap.getOrPut(
+            carrierId
+        ) { mutableMapOf() }.getOrPut(
+                popType
         ) {
-            val dataList: List<MutablePopSingleExportData> = exportDataMap.getValue(popSingleExportData.playerId).getValue(popSingleExportData.popType)
-            dataList.filter {
-                (it.resourceType == popSingleExportData.resourceType) && (it.resourceQualityClass == popSingleExportData.resourceQualityClass)
-            }
+            mutableListOf()
+        }
 
+        val hasData: Boolean = exportDataList.any {
+            (it.resourceType == resourceType) && (it.resourceQualityClass == resourceQualityClass)
+        }
 
-        } else {
-            val innerMap: MutableMap<PopType, MutableList<MutablePopSingleExportData>> = mutableMapOf(
-                popSingleExportData.popType to mutableListOf(popSingleExportData)
+        if(!hasData) {
+            exportDataList.add(
+                MutablePopSingleExportData(
+                    playerId = playerId,
+                    carrierId = carrierId,
+                    popType = popType,
+                    resourceType = resourceType,
+                    resourceQualityClass = resourceQualityClass,
+                    amountPerTime = 0.0,
+                    storedFuelRestMass = 0.0
+                )
             )
-            exportDataMap[popSingleExportData.carrierId] = innerMap
+        }
+
+        return exportDataList.first {
+            (it.resourceType == resourceType) && (it.resourceQualityClass == resourceQualityClass)
         }
     }
 }
