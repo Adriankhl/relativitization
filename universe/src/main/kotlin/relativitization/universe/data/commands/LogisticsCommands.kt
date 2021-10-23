@@ -221,7 +221,7 @@ data class SendFuelFromStorageCommand(
         } else {
             I18NString(
                 listOf(
-                    RealString("Trade resource amount "),
+                    RealString("Trade fuel amount "),
                     IntString(0),
                     RealString(" is less than "),
                     IntString(1),
@@ -608,13 +608,13 @@ data class PlayerBuyResourceCommand(
         universeSettings: UniverseSettings
     ): CanSendCheckMessage {
         val hasAmount: Boolean =
-            playerData.playerInternalData.physicsData().fuelRestMassData.trade >= amount
+            playerData.playerInternalData.physicsData().fuelRestMassData.trade >= fuelRestMassAmount
         val hasAmountI18NString: I18NString = if (hasAmount) {
             I18NString("")
         } else {
             I18NString(
                 listOf(
-                    RealString("Trade resource amount "),
+                    RealString("Trade fuel amount "),
                     IntString(0),
                     RealString(" is less than "),
                     IntString(1),
@@ -622,7 +622,7 @@ data class PlayerBuyResourceCommand(
                 ),
                 listOf(
                     playerData.playerInternalData.physicsData().fuelRestMassData.trade.toString(),
-                    amount.toString()
+                    fuelRestMassAmount.toString()
                 )
             )
         }
