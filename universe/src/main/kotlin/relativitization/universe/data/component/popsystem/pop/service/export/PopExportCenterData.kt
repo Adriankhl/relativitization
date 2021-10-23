@@ -60,7 +60,6 @@ data class MutablePopExportCenterData(
     val exportDataMap: MutableMap<Int, MutableMap<PopType, MutableList<MutablePopSingleExportData>>> = mutableMapOf()
 ) {
     fun getSingleExportData(
-        playerId: Int,
         carrierId: Int,
         popType: PopType,
         resourceType: ResourceType,
@@ -81,9 +80,6 @@ data class MutablePopExportCenterData(
         if(!hasData) {
             exportDataList.add(
                 MutablePopSingleExportData(
-                    playerId = playerId,
-                    carrierId = carrierId,
-                    popType = popType,
                     resourceType = resourceType,
                     resourceQualityClass = resourceQualityClass,
                     amountPerTime = 0.0,
@@ -92,17 +88,27 @@ data class MutablePopExportCenterData(
             )
         }
 
-        return exportDataList.first {
-            (it.resourceType == resourceType) && (it.resourceQualityClass == resourceQualityClass)
+        return if(hasData) {
+            exportDataList.first {
+                (it.resourceType == resourceType) && (it.resourceQualityClass == resourceQualityClass)
+            }
+        } else {
+            val default = MutablePopSingleExportData(
+                resourceType = resourceType,
+                resourceQualityClass = resourceQualityClass,
+                amountPerTime = 0.0,
+                storedFuelRestMass = 0.0
+            )
+
+            exportDataList.add(default)
+
+            default
         }
     }
 }
 
 @Serializable
 data class PopSingleExportData(
-    val playerId: Int = -1,
-    val carrierId: Int = -1,
-    val popType: PopType = PopType.LABOURER,
     val resourceType: ResourceType = ResourceType.PLANT,
     val resourceQualityClass: ResourceQualityClass = ResourceQualityClass.FIRST,
     val amountPerTime: Double = 0.0,
@@ -111,9 +117,6 @@ data class PopSingleExportData(
 
 @Serializable
 data class MutablePopSingleExportData(
-    var playerId: Int = -1,
-    var carrierId: Int = -1,
-    var popType: PopType = PopType.LABOURER,
     var resourceType: ResourceType = ResourceType.PLANT,
     var resourceQualityClass: ResourceQualityClass = ResourceQualityClass.FIRST,
     var amountPerTime: Double = 0.0,

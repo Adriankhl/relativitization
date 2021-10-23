@@ -8,6 +8,8 @@ import relativitization.universe.data.component.economy.ResourceQualityData
 import relativitization.universe.data.component.economy.ResourceType
 import relativitization.universe.data.component.physics.Int4D
 import relativitization.universe.data.component.popsystem.pop.PopType
+import relativitization.universe.data.component.popsystem.pop.service.export.MutablePlayerExportCenterData
+import relativitization.universe.data.component.popsystem.pop.service.export.MutablePlayerSingleExportData
 import relativitization.universe.data.component.popsystem.pop.service.export.MutablePopExportCenterData
 import relativitization.universe.data.component.popsystem.pop.service.export.MutablePopSingleExportData
 import relativitization.universe.maths.physics.Intervals
@@ -545,7 +547,6 @@ data class PopBuyResourceCommand(
             ) {
                 MutablePopExportCenterData()
             }.getSingleExportData(
-                playerId = fromId,
                 carrierId = fromCarrierId,
                 popType = fromPopType,
                 resourceType = resourceType,
@@ -570,6 +571,7 @@ data class PlayerBuyResourceCommand(
     override val toId: Int,
     override val fromId: Int,
     override val fromInt4D: Int4D,
+    val targetCarrierId: Int,
     val buyResourceTargetId: Int,
     val resourceType: ResourceType,
     val resourceQualityClass: ResourceQualityClass,
@@ -669,7 +671,7 @@ data class PlayerBuyResourceCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ) {
-        playerData.playerInternalData.physicsData().fuelRestMassData.trade -= amount
+        playerData.playerInternalData.physicsData().fuelRestMassData.trade -= fuelRestMassAmount
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
@@ -690,7 +692,27 @@ data class PlayerBuyResourceCommand(
             (1.0 - lossFractionPerDistance).pow(distance)
         }
 
-        playerData.playerInternalData.physicsData().addFuel(amount * remainFraction)
+        val carrierDataMap = playerData.playerInternalData.popSystemData().carrierDataMap
+
+        if (carrierDataMap.containsKey(targetCarrierId)) {
+
+            val exportCenterMap: MutableMap<Int, MutablePlayerExportCenterData> =
+                carrierDataMap.getValue(
+                    targetCarrierId
+                ).allPopData.servicePopData.exportData.playerExportCenterMap
+
+            val centerData: MutablePlayerSingleExportData = exportCenterMap.getOrPut(
+                buyResourceTargetId
+            ) {
+                MutablePlayerExportCenterData()
+            }.getSingleExportData(
+                resourceType = resourceType,
+                resourceQualityClass = resourceQualityClass
+            )
+
+            centerData.amountPerTime = amountPerTime
+            centerData.storedFuelRestMass += fuelRestMassAmount * remainFraction
+        }
     }
 
     companion object {
