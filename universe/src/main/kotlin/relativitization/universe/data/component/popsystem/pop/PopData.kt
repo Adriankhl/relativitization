@@ -65,7 +65,40 @@ data class MutableAllPopData(
     var servicePopData: MutableServicePopData = MutableServicePopData(),
     var entertainerPopData: MutableEntertainerPopData = MutableEntertainerPopData(),
     var soldierPopData: MutableSoldierPopData = MutableSoldierPopData(),
-)
+) {
+    fun addResource(
+        popType: PopType,
+        resourceType: ResourceType,
+        resourceQualityData: ResourceQualityData,
+        resourceAmount: Double
+    ) {
+        val commonPopData: MutableCommonPopData = when(popType) {
+            PopType.LABOURER -> labourerPopData.commonPopData
+            PopType.ENGINEER -> engineerPopData.commonPopData
+            PopType.SCHOLAR -> scholarPopData.commonPopData
+            PopType.EDUCATOR -> educatorPopData.commonPopData
+            PopType.MEDIC -> medicPopData.commonPopData
+            PopType.SERVICE_WORKER -> servicePopData.commonPopData
+            PopType.ENTERTAINER -> entertainerPopData.commonPopData
+            PopType.SOLDIER -> soldierPopData.commonPopData
+        }
+
+        val desireData: MutableResourceDesireData = commonPopData.lastDesireResourceMap.getOrPut(
+            resourceType
+        ) {
+            MutableResourceDesireData()
+        }
+
+        val originalAmount = desireData.desireAmount
+        desireData.desireQuality.updateQuality(
+            originalAmount,
+            resourceAmount,
+            resourceQualityData.toMutableResourceQualityData()
+        )
+
+        desireData.desireAmount += resourceAmount
+    }
+}
 
 /**
  * Common data for pop

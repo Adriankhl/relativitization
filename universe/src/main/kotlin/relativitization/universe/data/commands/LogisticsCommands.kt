@@ -414,7 +414,7 @@ data class SendFuelCommand(
  * Should be handled by mechanism only, cannot be sent by player manually
  */
 @Serializable
-data class PopExportCenterSendResourceCommand(
+data class SendResourceToPopCommand(
     override val toId: Int,
     override val fromId: Int,
     override val fromInt4D: Int4D,
@@ -459,14 +459,13 @@ data class PopExportCenterSendResourceCommand(
         val carrierDataMap = playerData.playerInternalData.popSystemData().carrierDataMap
 
         if (carrierDataMap.containsKey(targetCarrierId)) {
-            carrierDataMap.getValue(targetCarrierId).allPopData
+            carrierDataMap.getValue(targetCarrierId).allPopData.addResource(
+                popType = targetPopType,
+                resourceType = resourceType,
+                resourceQualityData = resourceQualityData,
+                resourceAmount = amount,
+            )
         }
-
-        playerData.playerInternalData.economyData().resourceData.addNewResource(
-            resourceType = resourceType,
-            newResourceQuality = resourceQualityData.toMutableResourceQualityData(),
-            amount = amount * remainFraction
-        )
     }
 
     companion object {
