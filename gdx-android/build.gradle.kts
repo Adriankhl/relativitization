@@ -10,7 +10,7 @@ plugins {
 val natives: Configuration by configurations.creating
 
 android {
-    compileSdk = 30
+    compileSdk = 31
 
     sourceSets {
         getByName("main") {
@@ -75,7 +75,7 @@ android {
     defaultConfig {
         applicationId = "relativitization.app.android"
         minSdk = 26
-        targetSdk = 30
+        targetSdk = 31
         versionCode = Versions.appCodeNumber
         versionName = Versions.appVersion
 
