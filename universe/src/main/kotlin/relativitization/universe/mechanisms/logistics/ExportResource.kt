@@ -5,6 +5,7 @@ import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.component.popsystem.pop.MutableAllPopData
+import relativitization.universe.data.component.popsystem.pop.service.MutableServicePopData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.mechanisms.Mechanism
 
@@ -22,8 +23,10 @@ object ExportResource : Mechanism() {
      * Compute the fraction of the effeciency of export centers
      */
     fun computeExportFraction(
-        mutableAllPopData: MutableAllPopData
+        mutableServicePopData: MutableServicePopData
     ) : Double {
+        val numEmployee: Double = mutableServicePopData.commonPopData.
+
         return 1.0
     }
 }

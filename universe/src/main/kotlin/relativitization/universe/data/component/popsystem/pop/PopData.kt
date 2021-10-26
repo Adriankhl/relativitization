@@ -20,6 +20,7 @@ import relativitization.universe.data.component.popsystem.pop.service.MutableSer
 import relativitization.universe.data.component.popsystem.pop.service.ServicePopData
 import relativitization.universe.data.component.popsystem.pop.soldier.MutableSoldierPopData
 import relativitization.universe.data.component.popsystem.pop.soldier.SoldierPopData
+import relativitization.universe.utils.RelativitizationLogManager
 
 /**
  * For events and commands specifically for a given type of pop
@@ -131,9 +132,9 @@ data class CommonPopData(
 
 @Serializable
 data class MutableCommonPopData(
-    var childPopulation: Double = 20.0,
+    var childPopulation: Double = 0.0,
     var adultPopulation: Double = 100.0,
-    var elderlyPopulation: Double = 20.0,
+    var elderlyPopulation: Double = 0.0,
     var unemploymentRate: Double = 0.0,
     var satisfaction: Double = 0.0,
     var salary: Double = 0.0,
@@ -143,6 +144,23 @@ data class MutableCommonPopData(
     var educationLevel: Double = 0.0,
     var lastDesireResourceMap: MutableMap<ResourceType, MutableResourceDesireData> = mutableMapOf(),
 ) {
+    fun numEmployee(): Double = when {
+        unemploymentRate > 1.0 -> {
+            logger.error("Unemployment rate > 1.0")
+            0.0
+        }
+        unemploymentRate < 0.0 -> {
+            logger.error("Unemployment rate < 0.0")
+            adultPopulation
+        }
+        else -> {
+            adultPopulation * (1 - unemploymentRate)
+        }
+    }
+
+    /**
+     * Add resource to lastDesireResourceMap
+     */
     fun addDesireResource(
         resourceType: ResourceType,
         resourceQualityData: ResourceQualityData,
@@ -164,6 +182,10 @@ data class MutableCommonPopData(
 
         desireData.desireAmount += resourceAmount
 
+    }
+
+    companion object {
+        private val logger = RelativitizationLogManager.getLogger()
     }
 }
 
