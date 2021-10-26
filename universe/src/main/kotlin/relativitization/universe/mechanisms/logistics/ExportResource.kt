@@ -29,8 +29,18 @@ object ExportResource : Mechanism() {
 
         val educationLevelMultiplier: Double = mutableServicePopData.commonPopData.educationLevel * 10.0
 
-        val totalExportAmount: Double = mutableServicePopData.exportData.
+        val totalExportAmount: Double = mutableServicePopData.exportData.totalExportAmount()
 
-        return 1.0
+        val fraction: Double = if (totalExportAmount > 0.0) {
+            numEmployee * educationLevelMultiplier / totalExportAmount
+        } else {
+            1.0
+        }
+
+        return when {
+            fraction > 1.0 -> 1.0
+            fraction < 0.0 -> 0.0
+            else -> fraction
+        }
     }
 }
