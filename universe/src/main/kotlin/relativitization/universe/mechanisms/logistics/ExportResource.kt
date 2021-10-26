@@ -27,7 +27,7 @@ object ExportResource : Mechanism() {
     ) : Double {
         val numEmployee: Double = mutableServicePopData.commonPopData.numEmployee()
 
-        val educationLevelMultiplier: Double = mutableServicePopData.commonPopData.educationLevel * 10.0
+        val educationLevelMultiplier: Double = (mutableServicePopData.commonPopData.educationLevel * 9.0) + 1.0
 
         val totalExportAmount: Double = mutableServicePopData.exportData.totalExportAmount()
 
