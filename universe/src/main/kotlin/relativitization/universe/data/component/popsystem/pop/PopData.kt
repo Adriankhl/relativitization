@@ -84,20 +84,11 @@ data class MutableAllPopData(
             PopType.SOLDIER -> soldierPopData.commonPopData
         }
 
-        val desireData: MutableResourceDesireData = commonPopData.lastDesireResourceMap.getOrPut(
-            resourceType
-        ) {
-            MutableResourceDesireData()
-        }
-
-        val originalAmount = desireData.desireAmount
-        desireData.desireQuality.updateQuality(
-            originalAmount,
-            resourceAmount,
-            resourceQualityData.toMutableResourceQualityData()
+        commonPopData.addDesireResource(
+            resourceType,
+            resourceQualityData,
+            resourceAmount
         )
-
-        desireData.desireAmount += resourceAmount
     }
 }
 
