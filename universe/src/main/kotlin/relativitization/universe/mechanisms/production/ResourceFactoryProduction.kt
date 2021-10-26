@@ -8,6 +8,7 @@ import relativitization.universe.data.component.MutablePhysicsData
 import relativitization.universe.data.component.economy.*
 import relativitization.universe.data.component.popsystem.pop.labourer.factory.MutableResourceFactoryData
 import relativitization.universe.data.commands.SendResourceCommand
+import relativitization.universe.data.component.popsystem.pop.labourer.MutableLabourerPopData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.maths.physics.Relativistic
 import relativitization.universe.mechanisms.Mechanism
@@ -35,6 +36,7 @@ object ResourceFactoryProduction : Mechanism() {
             }.forEach { factory ->
                 updateResourceData(
                     factory,
+                    carrier.allPopData.labourerPopData,
                     mutablePlayerData.playerInternalData.economyData().resourceData,
                     mutablePlayerData.playerInternalData.physicsData(),
                     gamma,
@@ -50,6 +52,7 @@ object ResourceFactoryProduction : Mechanism() {
                 }.map { factory ->
                     computeSendResourceCommand(
                         factory,
+                        carrier.allPopData.labourerPopData,
                         mutablePlayerData,
                         gamma
                     )
@@ -95,6 +98,7 @@ object ResourceFactoryProduction : Mechanism() {
      */
     fun productAmountFraction(
         mutableResourceFactoryData: MutableResourceFactoryData,
+        mutableLabourerPopData: MutableLabourerPopData,
         inputResourceQualityClassMap: Map<ResourceType, ResourceQualityClass>,
         physicsData: MutablePhysicsData,
         resourceData: MutableResourceData,
@@ -140,8 +144,16 @@ object ResourceFactoryProduction : Mechanism() {
             buyResourceFraction,
         ).minOf { it }
 
+        // Modifier by education level
+        val educationLevel: Double = (mutableLabourerPopData.commonPopData.educationLevel)
+        val educationLevelMultiplier: Double = when {
+            educationLevel > 1.0 -> 1.0
+            educationLevel < 0.0 -> 0.0
+            else -> educationLevel
+        }
+
         // Prevent smaller than zero
-        return max(minFaction, 0.0)
+        return max(minFaction, 0.0) * educationLevelMultiplier
     }
 
     /**
@@ -219,6 +231,7 @@ object ResourceFactoryProduction : Mechanism() {
      */
     fun updateResourceData(
         mutableResourceFactoryData: MutableResourceFactoryData,
+        mutableLabourerPopData: MutableLabourerPopData,
         resourceData: MutableResourceData,
         physicsData: MutablePhysicsData,
         gamma: Double
@@ -235,6 +248,7 @@ object ResourceFactoryProduction : Mechanism() {
 
         val amountFraction: Double = productAmountFraction(
             mutableResourceFactoryData,
+            mutableLabourerPopData,
             qualityClassMap,
             physicsData,
             resourceData,
@@ -286,6 +300,7 @@ object ResourceFactoryProduction : Mechanism() {
      */
     fun computeSendResourceCommand(
         mutableResourceFactoryData: MutableResourceFactoryData,
+        mutableLabourerPopData: MutableLabourerPopData,
         mutablePlayerData: MutablePlayerData,
         gamma: Double,
     ): Command {
@@ -306,6 +321,7 @@ object ResourceFactoryProduction : Mechanism() {
 
         val amountFraction: Double = productAmountFraction(
             mutableResourceFactoryData,
+            mutableLabourerPopData,
             qualityClassMap,
             physicsData,
             resourceData,

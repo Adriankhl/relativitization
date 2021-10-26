@@ -141,7 +141,7 @@ data class MutableCommonPopData(
     var unemploymentBenefit: Double = 0.0,
     var saving: Double = 0.0,
     var desireResourceMap: MutableMap<ResourceType, MutableResourceDesireData> = mutableMapOf(),
-    var educationLevel: Double = 0.0,
+    var educationLevel: Double = 1.0,
     var lastDesireResourceMap: MutableMap<ResourceType, MutableResourceDesireData> = mutableMapOf(),
 ) {
     fun numEmployee(): Double = when {
