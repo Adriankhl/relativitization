@@ -1,7 +1,11 @@
+# Keep it simple
+* Only one dimension in resource quality
+* Besides factory and research, other pop functionalities depend on size only.
+
 # TODO list
 * Pop daily need
 * Salary
-* How research affect product, keep product quality simple, only use one dimension
+* How research affect product
 * Export center
 * Basic diplomacy
 * New carrier
