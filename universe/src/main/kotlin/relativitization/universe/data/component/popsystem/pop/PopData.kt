@@ -126,7 +126,7 @@ data class CommonPopData(
     val unemploymentBenefit: Double = 0.0,
     val saving: Double = 1.0,
     val desireResourceMap: Map<ResourceType, ResourceDesireData> = mapOf(),
-    val educationLevel: Double = 0.0,
+    val educationLevel: Double = 1.0,
     val lastDesireResourceMap: Map<ResourceType, ResourceDesireData> = mapOf(),
 )
 
