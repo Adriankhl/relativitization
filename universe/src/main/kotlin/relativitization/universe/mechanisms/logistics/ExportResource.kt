@@ -8,7 +8,7 @@ import relativitization.universe.data.component.popsystem.pop.MutableAllPopData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.mechanisms.Mechanism
 
-object ExportCenter : Mechanism() {
+object ExportResource : Mechanism() {
     override fun process(
         mutablePlayerData: MutablePlayerData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
