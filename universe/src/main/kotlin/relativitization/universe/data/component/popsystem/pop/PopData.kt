@@ -116,9 +116,9 @@ data class MutableAllPopData(
  */
 @Serializable
 data class CommonPopData(
-    val childPopulation: Double = 20.0,
+    val childPopulation: Double = 0.0,
     val adultPopulation: Double = 100.0,
-    val elderlyPopulation: Double = 20.0,
+    val elderlyPopulation: Double = 0.0,
     val unemploymentRate: Double = 0.0,
     val satisfaction: Double = 0.0,
     val salary: Double = 0.0,

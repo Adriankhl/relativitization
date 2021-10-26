@@ -1,6 +1,7 @@
 # Keep it simple
 * Only one dimension in resource quality
 * Besides factory and research, other pop functionalities depend on size only.
+* Only adult population
 
 # TODO list
 * Pop daily need
