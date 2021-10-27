@@ -565,13 +565,19 @@ data class PopBuyResourceCommand(
 
 /**
  * Send fuel from yourself to another player
+ *
+ * @property targetCarrierId build export center at that carrier
+ * @property buyResourceTargetId export to this player
+ * @property resourceType type of the resource
+ * @property fuelRestMassAmount fuel rest mass to buy resource
+ * @property amountPerTime the amount to buy per turn
+ * @property senderFuelLossFractionPerDistance the logistics loss per distance
  */
 @Serializable
 data class PlayerBuyResourceCommand(
     override val toId: Int,
     override val fromId: Int,
     override val fromInt4D: Int4D,
-    val forPlayerId: Int,
     val targetCarrierId: Int,
     val buyResourceTargetId: Int,
     val resourceType: ResourceType,
@@ -703,11 +709,11 @@ data class PlayerBuyResourceCommand(
                 ).allPopData.servicePopData.exportData.playerExportCenterMap
 
             val centerData: MutablePlayerSingleExportData = exportCenterMap.getOrPut(
-                buyResourceTargetId
+                fromId
             ) {
                 MutablePlayerExportCenterData()
             }.getSingleExportData(
-                targetPlayerId = forPlayerId,
+                targetPlayerId = buyResourceTargetId,
                 resourceType = resourceType,
                 resourceQualityClass = resourceQualityClass
             )
