@@ -8,6 +8,7 @@ import relativitization.universe.data.commands.Command
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.mechanisms.events.AutoEventCollection
 import relativitization.universe.mechanisms.events.ProcessEvents
+import relativitization.universe.mechanisms.logistics.ExportResource
 import relativitization.universe.mechanisms.modifier.UpdateModifierTime
 import relativitization.universe.mechanisms.production.FuelFactoryProduction
 import relativitization.universe.mechanisms.production.ResourceFactoryProduction
@@ -48,6 +49,7 @@ object DefaultMechanismList : MechanismList() {
         ProcessEvents,
         FuelFactoryProduction,
         ResourceFactoryProduction,
+        ExportResource,
         UpdateModifierTime,
         SyncPlayerScienceData,
         UpdateScienceProductData,

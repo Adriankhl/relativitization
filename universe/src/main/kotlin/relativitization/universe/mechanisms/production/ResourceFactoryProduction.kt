@@ -136,13 +136,16 @@ object ResourceFactoryProduction : Mechanism() {
             1.0
         }
 
-        val minFaction: Double = listOf(
-            1.0,
-            inputFraction,
-            employeeFraction,
-            fuelFraction,
-            buyResourceFraction,
-        ).minOf { it }
+        val minFaction: Double = max(
+            listOf(
+                1.0,
+                inputFraction,
+                employeeFraction,
+                fuelFraction,
+                buyResourceFraction,
+            ).minOf { it },
+            0.0
+        )
 
         // Modifier by education level
         val educationLevel: Double = (mutableLabourerPopData.commonPopData.educationLevel)
@@ -281,7 +284,8 @@ object ResourceFactoryProduction : Mechanism() {
         physicsData.fuelRestMassData.production -= mutableResourceFactoryData.resourceFactoryInternalData.fuelRestMassConsumptionRate * amountFraction * mutableResourceFactoryData.numBuilding / gamma
 
         // output amount
-        val outputAmount: Double = mutableResourceFactoryData.resourceFactoryInternalData.maxOutputAmount * amountFraction * mutableResourceFactoryData.numBuilding / gamma
+        val outputAmount: Double =
+            mutableResourceFactoryData.resourceFactoryInternalData.maxOutputAmount * amountFraction * mutableResourceFactoryData.numBuilding / gamma
         mutableResourceFactoryData.lastOutputAmount = outputAmount
 
         // Produce resource
@@ -367,7 +371,8 @@ object ResourceFactoryProduction : Mechanism() {
         physicsData.fuelRestMassData.production -= mutableResourceFactoryData.resourceFactoryInternalData.fuelRestMassConsumptionRate * amountFraction * mutableResourceFactoryData.numBuilding / gamma
 
         // output amount
-        val outputAmount: Double = mutableResourceFactoryData.resourceFactoryInternalData.maxOutputAmount * amountFraction * mutableResourceFactoryData.numBuilding / gamma
+        val outputAmount: Double =
+            mutableResourceFactoryData.resourceFactoryInternalData.maxOutputAmount * amountFraction * mutableResourceFactoryData.numBuilding / gamma
         mutableResourceFactoryData.lastOutputAmount = outputAmount
 
 

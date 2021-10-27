@@ -13,6 +13,7 @@ import relativitization.universe.data.component.popsystem.pop.service.export.Mut
 import relativitization.universe.data.component.popsystem.pop.service.export.MutablePopSingleExportData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.mechanisms.Mechanism
+import kotlin.math.max
 
 object ExportResource : Mechanism() {
     override fun process(
@@ -31,7 +32,17 @@ object ExportResource : Mechanism() {
                 )
             }.flatten()
 
-        return exportToPlayerCommandList
+
+        val exportToPopCommandList: List<Command> =
+            mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.map {
+                val mutableServicePopData: MutableServicePopData = it.allPopData.servicePopData
+                computeExportToPopCommands(
+                    mutableServicePopData = mutableServicePopData,
+                    mutablePlayerData = mutablePlayerData,
+                )
+            }.flatten()
+
+        return exportToPlayerCommandList + exportToPopCommandList
     }
 
     /**
@@ -41,24 +52,51 @@ object ExportResource : Mechanism() {
         mutableServicePopData: MutableServicePopData,
         mutableResourceData: MutableResourceData,
         mutablePlayerSingleExportData: MutablePlayerSingleExportData,
-    ) : Double {
-        val numEmployee: Double = mutableServicePopData.commonPopData.numEmployee()
+    ): Double {
 
-        val educationLevelMultiplier: Double = (mutableServicePopData.commonPopData.educationLevel * 9.0) + 1.0
-
+        // Fraction affected by employees
         val totalExportAmount: Double = mutableServicePopData.exportData.totalExportAmount()
-
-        val fraction: Double = if (totalExportAmount > 0.0) {
+        val numEmployee: Double = mutableServicePopData.commonPopData.numEmployee()
+        val educationLevelMultiplier: Double =
+            (mutableServicePopData.commonPopData.educationLevel * 9.0) + 1.0
+        val employeeFraction: Double = if (totalExportAmount > 0.0) {
             numEmployee * educationLevelMultiplier / totalExportAmount
         } else {
             1.0
         }
 
-        return when {
-            fraction > 1.0 -> 1.0
-            fraction < 0.0 -> 0.0
-            else -> fraction
+        // Fraction affected by amount of resource
+        val requiredAmount: Double = mutablePlayerSingleExportData.amountPerTime
+        val storedAmount: Double = mutableResourceData.getTradeResourceAmount(
+            mutablePlayerSingleExportData.resourceType,
+            mutablePlayerSingleExportData.resourceQualityClass
+        )
+        val amountFraction: Double = if (requiredAmount > 0.0) {
+            storedAmount / requiredAmount
+        } else {
+            1.0
         }
+
+        // Fraction affected by the price
+        val price: Double = mutableResourceData.getResourcePrice(
+            mutablePlayerSingleExportData.resourceType,
+            mutablePlayerSingleExportData.resourceQualityClass
+        )
+        val priceFraction: Double = if ((price * requiredAmount) > 0.0) {
+            mutablePlayerSingleExportData.storedFuelRestMass / (price * requiredAmount)
+        } else {
+            1.0
+        }
+
+        return max(
+            listOf(
+                1.0,
+                employeeFraction,
+                amountFraction,
+                priceFraction
+            ).minOf { it },
+            0.0
+        )
     }
 
     /**
@@ -68,24 +106,51 @@ object ExportResource : Mechanism() {
         mutableServicePopData: MutableServicePopData,
         mutableResourceData: MutableResourceData,
         mutablePopSingleExportData: MutablePopSingleExportData
-    ) : Double {
-        val numEmployee: Double = mutableServicePopData.commonPopData.numEmployee()
+    ): Double {
 
-        val educationLevelMultiplier: Double = (mutableServicePopData.commonPopData.educationLevel * 9.0) + 1.0
-
+        // Fraction affected by employees
         val totalExportAmount: Double = mutableServicePopData.exportData.totalExportAmount()
-
-        val fraction: Double = if (totalExportAmount > 0.0) {
+        val numEmployee: Double = mutableServicePopData.commonPopData.numEmployee()
+        val educationLevelMultiplier: Double =
+            (mutableServicePopData.commonPopData.educationLevel * 9.0) + 1.0
+        val employeeFraction: Double = if (totalExportAmount > 0.0) {
             numEmployee * educationLevelMultiplier / totalExportAmount
         } else {
             1.0
         }
 
-        return when {
-            fraction > 1.0 -> 1.0
-            fraction < 0.0 -> 0.0
-            else -> fraction
+        // Fraction affected by amount of resource
+        val requiredAmount: Double = mutablePopSingleExportData.amountPerTime
+        val storedAmount: Double = mutableResourceData.getTradeResourceAmount(
+            mutablePopSingleExportData.resourceType,
+            mutablePopSingleExportData.resourceQualityClass
+        )
+        val amountFraction: Double = if (requiredAmount > 0.0) {
+            storedAmount / requiredAmount
+        } else {
+            1.0
         }
+
+        // Fraction affected by the price
+        val price: Double = mutableResourceData.getResourcePrice(
+            mutablePopSingleExportData.resourceType,
+            mutablePopSingleExportData.resourceQualityClass
+        )
+        val priceFraction: Double = if ((price * requiredAmount) > 0.0) {
+            mutablePopSingleExportData.storedFuelRestMass / (price * requiredAmount)
+        } else {
+            1.0
+        }
+
+        return max(
+            listOf(
+                1.0,
+                employeeFraction,
+                amountFraction,
+                priceFraction
+            ).minOf { it },
+            0.0
+        )
     }
 
     /**
@@ -100,7 +165,8 @@ object ExportResource : Mechanism() {
             exportCenterData.exportDataList.map {
 
                 // Compute the quality and amount
-                val resourceData: MutableResourceData = mutablePlayerData.playerInternalData.economyData().resourceData
+                val resourceData: MutableResourceData =
+                    mutablePlayerData.playerInternalData.economyData().resourceData
 
                 val exportFraction: Double = computePlayerExportFraction(
                     mutableServicePopData = mutableServicePopData,
@@ -146,7 +212,6 @@ object ExportResource : Mechanism() {
     fun computeExportToPopCommands(
         mutableServicePopData: MutableServicePopData,
         mutablePlayerData: MutablePlayerData,
-        exportFraction: Double,
     ): List<Command> {
 
         return mutableServicePopData.exportData.popExportCenterMap.map { (ownerPlayerId, exportCenterData) ->
@@ -166,10 +231,11 @@ object ExportResource : Mechanism() {
 
                         val amount: Double = it.amountPerTime * exportFraction
 
-                        val resourceQualityData: ResourceQualityData = resourceData.getResourceQuality(
-                            resourceType = it.resourceType,
-                            resourceQualityClass = it.resourceQualityClass
-                        ).toResourceQualityData()
+                        val resourceQualityData: ResourceQualityData =
+                            resourceData.getResourceQuality(
+                                resourceType = it.resourceType,
+                                resourceQualityClass = it.resourceQualityClass
+                            ).toResourceQualityData()
 
                         val price: Double = resourceData.getResourcePrice(
                             resourceType = it.resourceType,
