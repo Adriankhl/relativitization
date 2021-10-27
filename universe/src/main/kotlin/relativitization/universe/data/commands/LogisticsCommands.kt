@@ -571,6 +571,7 @@ data class PlayerBuyResourceCommand(
     override val toId: Int,
     override val fromId: Int,
     override val fromInt4D: Int4D,
+    val forPlayerId: Int,
     val targetCarrierId: Int,
     val buyResourceTargetId: Int,
     val resourceType: ResourceType,
@@ -706,6 +707,7 @@ data class PlayerBuyResourceCommand(
             ) {
                 MutablePlayerExportCenterData()
             }.getSingleExportData(
+                targetPlayerId = forPlayerId,
                 resourceType = resourceType,
                 resourceQualityClass = resourceQualityClass
             )

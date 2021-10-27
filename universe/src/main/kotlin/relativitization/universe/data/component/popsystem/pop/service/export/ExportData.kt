@@ -5,8 +5,8 @@ import kotlinx.serialization.Serializable
 /**
  * Data of export center
  *
- * @property playerExportCenterMap a map from playerId to PlayerExportCenterData
- * @property popExportCenterMap a map from playerId to PopExportCenterData
+ * @property playerExportCenterMap a map from owner playerId to PlayerExportCenterData
+ * @property popExportCenterMap a map from owner playerId to PopExportCenterData
  */
 @Serializable
 data class ExportData(

@@ -4,6 +4,10 @@ import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
+import relativitization.universe.data.commands.SendResourceCommand
+import relativitization.universe.data.component.economy.ResourceQualityData
+import relativitization.universe.data.component.physics.Int3D
+import relativitization.universe.data.component.physics.Int4D
 import relativitization.universe.data.component.popsystem.pop.MutableAllPopData
 import relativitization.universe.data.component.popsystem.pop.service.MutableServicePopData
 import relativitization.universe.data.global.UniverseGlobalData
@@ -16,11 +20,17 @@ object ExportResource : Mechanism() {
         universeSettings: UniverseSettings,
         universeGlobalData: UniverseGlobalData
     ): List<Command> {
-        TODO("Not yet implemented")
+
+        mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.forEach {
+            val mutableServicePopData: MutableServicePopData = it.allPopData.servicePopData
+            val exportFraction: Double = computeExportFraction(mutableServicePopData)
+        }
+
+        return listOf()
     }
 
     /**
-     * Compute the fraction of the effeciency of export centers
+     * Compute the fraction of the efficiency of export centers
      */
     fun computeExportFraction(
         mutableServicePopData: MutableServicePopData
@@ -42,5 +52,35 @@ object ExportResource : Mechanism() {
             fraction < 0.0 -> 0.0
             else -> fraction
         }
+    }
+
+    /**
+     * Compute export to player command
+     */
+    fun computeExportToPlayerCommands(
+        mutableServicePopData: MutableServicePopData,
+        mutablePlayerData: MutablePlayerData,
+        exportFraction: Double,
+    ): List<Command> {
+
+        mutableServicePopData.exportData.playerExportCenterMap.map { (ownerPlayerId, exportData) ->
+            exportData.exportDataList.map {
+                SendResourceCommand(
+                    toId = 0,
+                    fromId = mutablePlayerData.playerId,
+                    fromInt4D = mutablePlayerData.int4D.toInt4D(),
+                    resourceType = it.resourceType,
+                    resourceQualityData = ResourceQualityData(
+                        quality1 = 0.0,
+                        quality2 = 0.0,
+                        quality3 = 0.0,
+                    ),
+                    amount = 0.0,
+                    senderResourceLossFractionPerDistance = 0.0,
+                )
+            }
+        }
+
+        return listOf()
     }
 }
