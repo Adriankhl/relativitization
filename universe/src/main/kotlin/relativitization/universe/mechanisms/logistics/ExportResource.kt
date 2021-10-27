@@ -5,6 +5,7 @@ import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.commands.SendResourceCommand
+import relativitization.universe.data.commands.SendResourceToPopCommand
 import relativitization.universe.data.component.economy.MutableResourceData
 import relativitization.universe.data.component.economy.ResourceQualityData
 import relativitization.universe.data.component.physics.Int3D
@@ -22,12 +23,19 @@ object ExportResource : Mechanism() {
         universeGlobalData: UniverseGlobalData
     ): List<Command> {
 
-        mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.forEach {
-            val mutableServicePopData: MutableServicePopData = it.allPopData.servicePopData
-            val exportFraction: Double = computeExportFraction(mutableServicePopData)
-        }
+        val exportToPlayerCommandList: List<Command> =
+            mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.map {
+                val mutableServicePopData: MutableServicePopData = it.allPopData.servicePopData
+                val exportFraction: Double = computeExportFraction(mutableServicePopData)
+                computeExportToPlayerCommands(
+                    mutableServicePopData = mutableServicePopData,
+                    mutablePlayerData = mutablePlayerData,
+                    exportFraction = exportFraction
 
-        return listOf()
+                )
+            }.flatten()
+
+        return exportToPlayerCommandList
     }
 
     /**
@@ -64,8 +72,8 @@ object ExportResource : Mechanism() {
         exportFraction: Double,
     ): List<Command> {
 
-        return mutableServicePopData.exportData.playerExportCenterMap.map { (ownerPlayerId, exportData) ->
-            exportData.exportDataList.map {
+        return mutableServicePopData.exportData.playerExportCenterMap.map { (_, exportCenterData) ->
+            exportCenterData.exportDataList.map {
 
                 // Compute the quality and amount
                 val resourceData: MutableResourceData = mutablePlayerData.playerInternalData.economyData().resourceData
@@ -101,5 +109,62 @@ object ExportResource : Mechanism() {
                 )
             }
         }.flatten()
+    }
+
+    /**
+     * Compute export to player command
+     */
+    fun computeExportToPopCommands(
+        mutableServicePopData: MutableServicePopData,
+        mutablePlayerData: MutablePlayerData,
+        exportFraction: Double,
+    ): List<Command> {
+
+        return mutableServicePopData.exportData.popExportCenterMap.map { (ownerPlayerId, exportCenterData) ->
+            exportCenterData.exportDataMap.map { (carrierId, popTypeMap) ->
+                popTypeMap.map { (popType, exportDataList) ->
+                    exportDataList.map {
+
+                        // Compute the quality and amount
+                        val resourceData: MutableResourceData =
+                            mutablePlayerData.playerInternalData.economyData().resourceData
+                        val totalAmount: Double = resourceData.getTradeResourceAmount(
+                            resourceType = it.resourceType,
+                            resourceQualityClass = it.resourceQualityClass
+                        )
+                        val amount: Double =
+                            if (totalAmount > (it.amountPerTime * exportFraction)) {
+                                it.amountPerTime * exportFraction
+                            } else {
+                                totalAmount
+                            }
+
+                        val resourceQualityData: ResourceQualityData =
+                            resourceData.getResourceQuality(
+                                resourceType = it.resourceType,
+                                resourceQualityClass = it.resourceQualityClass
+                            ).toResourceQualityData()
+
+                        // Consume resource
+                        resourceData.getResourceAmountData(
+                            resourceType = it.resourceType,
+                            resourceQualityClass = it.resourceQualityClass
+                        ).trade -= amount
+
+                        SendResourceToPopCommand(
+                            toId = ownerPlayerId,
+                            fromId = mutablePlayerData.playerId,
+                            fromInt4D = mutablePlayerData.int4D.toInt4D(),
+                            targetCarrierId = carrierId,
+                            targetPopType = popType,
+                            resourceType = it.resourceType,
+                            resourceQualityData = resourceQualityData,
+                            amount = amount,
+                            senderResourceLossFractionPerDistance = mutablePlayerData.playerInternalData.playerScienceData().playerScienceProductData.resourceLogisticsLossFractionPerDistance,
+                        )
+                    }
+                }
+            }
+        }.flatten().flatten().flatten()
     }
 }
