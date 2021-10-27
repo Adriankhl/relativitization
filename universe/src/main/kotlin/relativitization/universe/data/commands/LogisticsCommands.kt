@@ -472,7 +472,7 @@ data class SendResourceToPopCommand(
                 popType = targetPopType,
                 resourceType = resourceType,
                 resourceQualityData = resourceQualityData,
-                resourceAmount = amount,
+                resourceAmount = amount * remainFraction,
             )
         }
     }
