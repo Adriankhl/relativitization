@@ -5,6 +5,7 @@ import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.commands.SendResourceCommand
+import relativitization.universe.data.component.economy.MutableResourceData
 import relativitization.universe.data.component.economy.ResourceQualityData
 import relativitization.universe.data.component.physics.Int3D
 import relativitization.universe.data.component.physics.Int4D
@@ -63,24 +64,42 @@ object ExportResource : Mechanism() {
         exportFraction: Double,
     ): List<Command> {
 
-        mutableServicePopData.exportData.playerExportCenterMap.map { (ownerPlayerId, exportData) ->
+        return mutableServicePopData.exportData.playerExportCenterMap.map { (ownerPlayerId, exportData) ->
             exportData.exportDataList.map {
+
+                // Compute the quality and amount
+                val resourceData: MutableResourceData = mutablePlayerData.playerInternalData.economyData().resourceData
+                val totalAmount: Double = resourceData.getTradeResourceAmount(
+                    resourceType = it.resourceType,
+                    resourceQualityClass = it.resourceQualityClass
+                )
+                val amount: Double = if (totalAmount > (it.amountPerTime * exportFraction)) {
+                    it.amountPerTime * exportFraction
+                } else {
+                    totalAmount
+                }
+
+                val resourceQualityData: ResourceQualityData = resourceData.getResourceQuality(
+                    resourceType = it.resourceType,
+                    resourceQualityClass = it.resourceQualityClass
+                ).toResourceQualityData()
+
+                // Consume resource
+                resourceData.getResourceAmountData(
+                    resourceType = it.resourceType,
+                    resourceQualityClass = it.resourceQualityClass
+                ).trade -= amount
+
                 SendResourceCommand(
-                    toId = 0,
+                    toId = it.targetPlayerId,
                     fromId = mutablePlayerData.playerId,
                     fromInt4D = mutablePlayerData.int4D.toInt4D(),
                     resourceType = it.resourceType,
-                    resourceQualityData = ResourceQualityData(
-                        quality1 = 0.0,
-                        quality2 = 0.0,
-                        quality3 = 0.0,
-                    ),
-                    amount = 0.0,
-                    senderResourceLossFractionPerDistance = 0.0,
+                    resourceQualityData = resourceQualityData,
+                    amount = amount,
+                    senderResourceLossFractionPerDistance = mutablePlayerData.playerInternalData.playerScienceData().playerScienceProductData.resourceLogisticsLossFractionPerDistance,
                 )
             }
-        }
-
-        return listOf()
+        }.flatten()
     }
 }
