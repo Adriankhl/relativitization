@@ -8,11 +8,13 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class TaxData(
     val taxRateData: TaxRateData = TaxRateData(),
+    val storedFuelRestMass: Double = 0.0,
 )
 
 @Serializable
 data class MutableTaxData(
     var taxRateData: MutableTaxRateData = MutableTaxRateData(),
+    var storedFuelRestMass: Double = 0.0,
 )
 
 /**
