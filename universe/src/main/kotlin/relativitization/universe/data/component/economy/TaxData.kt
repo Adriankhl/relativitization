@@ -3,6 +3,19 @@ package relativitization.universe.data.component.economy
 import kotlinx.serialization.Serializable
 
 /**
+ * Store tax rate and temporary tax storage
+ */
+@Serializable
+data class TaxData(
+    val taxRateData: TaxRateData = TaxRateData(),
+)
+
+@Serializable
+data class MutableTaxData(
+    var taxRateData: MutableTaxRateData = MutableTaxRateData(),
+)
+
+/**
  * Tax rate data
  */
 @Serializable
