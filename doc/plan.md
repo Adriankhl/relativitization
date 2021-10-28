@@ -6,6 +6,7 @@
 # TODO list
 * Pop daily need
 * Salary
+* Tax and tariff
 * How research affect product
 * Export center
 * Basic diplomacy
