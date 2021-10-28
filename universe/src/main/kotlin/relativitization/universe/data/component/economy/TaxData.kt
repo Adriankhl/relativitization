@@ -39,8 +39,13 @@ data class TariffData(
     val defaultTariffRate: TariffRateData = TariffRateData(),
     val tariffRatePlayerMap: Map<Int, TariffRateData> = mapOf(),
 ) {
-    fun getTariffRate(playerId: Int, resourceType: ResourceType): Double {
-        return tariffRatePlayerMap.getOrDefault(playerId, defaultTariffRate).getTariffRate(resourceType)
+    fun getResourceTariffRate(playerId: Int, resourceType: ResourceType): Double {
+        return tariffRatePlayerMap.getOrDefault(playerId, defaultTariffRate)
+            .getResourceTariffRate(resourceType)
+    }
+
+    fun getFuelTariffRate(playerId: Int): Double {
+        return tariffRatePlayerMap.getOrDefault(playerId, defaultTariffRate).fuelTariffRate
     }
 }
 
@@ -49,23 +54,32 @@ data class MutableTariffData(
     var defaultTariffRate: MutableTariffRateData = MutableTariffRateData(),
     var tariffRatePlayerMap: MutableMap<Int, MutableTariffRateData> = mutableMapOf(),
 ) {
-    fun getTariffRate(playerId: Int, resourceType: ResourceType): Double {
-        return tariffRatePlayerMap.getOrDefault(playerId, defaultTariffRate).getTariffRate(resourceType)
+    fun getResourceTariffRate(playerId: Int, resourceType: ResourceType): Double {
+        return tariffRatePlayerMap.getOrDefault(playerId, defaultTariffRate)
+            .getResourceTariffRate(resourceType)
+    }
+
+    fun getFuelTariffRate(playerId: Int): Double {
+        return tariffRatePlayerMap.getOrDefault(playerId, defaultTariffRate).fuelTariffRate
     }
 }
 
 @Serializable
 data class TariffRateData(
-    val tariffRateMap: Map<ResourceType, Double> = mapOf()
+    val resourceTariffRateMap: Map<ResourceType, Double> = mapOf(),
+    val fuelTariffRate: Double = 0.0,
 ) {
-    fun getTariffRate(resourceType: ResourceType): Double = tariffRateMap.getOrDefault(resourceType, 0.0)
+    fun getResourceTariffRate(resourceType: ResourceType): Double =
+        resourceTariffRateMap.getOrDefault(resourceType, 0.0)
 }
 
 @Serializable
 data class MutableTariffRateData(
-    var tariffRateMap: MutableMap<ResourceType, Double> = mutableMapOf()
+    var resourceTariffRateMap: MutableMap<ResourceType, Double> = mutableMapOf(),
+    var fuelTariffRate: Double = 0.0,
 ) {
-    fun getTariffRate(resourceType: ResourceType): Double = tariffRateMap.getOrDefault(resourceType, 0.0)
+    fun getResourceTariffRate(resourceType: ResourceType): Double =
+        resourceTariffRateMap.getOrDefault(resourceType, 0.0)
 }
 
 @Serializable
