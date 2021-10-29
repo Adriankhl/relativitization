@@ -194,7 +194,19 @@ object ExportResource : Mechanism() {
     ): List<Command> {
 
         return mutableServicePopData.exportData.playerExportCenterMap.map { (_, exportCenterData) ->
-            exportCenterData.exportDataList.map {
+            exportCenterData.exportDataList.map { mutablePlayerSingleExportData ->
+                val targetTopLeaderId: Int = universeData3DAtPlayer.get(
+                    mutablePlayerSingleExportData.targetPlayerId
+                ).topLeaderId()
+                val sameTopLeaderId: Boolean = (mutablePlayerData.topLeaderId() == targetTopLeaderId)
+                val tariffFactor: Double = if (sameTopLeaderId) {
+                    0.0
+                } else {
+                    mutablePlayerData.playerInternalData.economyData().taxData.taxRateData.exportTariff.getResourceTariffRate(
+                        topLeaderId = targetTopLeaderId,
+                        resourceType = mutablePlayerSingleExportData.resourceType
+                    )
+                }
 
                 // Compute the quality and amount
                 val resourceData: MutableResourceData =
@@ -208,30 +220,30 @@ object ExportResource : Mechanism() {
                     universeData3DAtPlayer = universeData3DAtPlayer,
                 )
 
-                val amount: Double = it.amountPerTime * exportFraction
+                val amount: Double = mutablePlayerSingleExportData.amountPerTime * exportFraction
 
                 val resourceQualityData: ResourceQualityData = resourceData.getResourceQuality(
-                    resourceType = it.resourceType,
-                    resourceQualityClass = it.resourceQualityClass
+                    resourceType = mutablePlayerSingleExportData.resourceType,
+                    resourceQualityClass = mutablePlayerSingleExportData.resourceQualityClass
                 ).toResourceQualityData()
 
                 val price: Double = resourceData.getResourcePrice(
-                    resourceType = it.resourceType,
-                    resourceQualityClass = it.resourceQualityClass
+                    resourceType = mutablePlayerSingleExportData.resourceType,
+                    resourceQualityClass = mutablePlayerSingleExportData.resourceQualityClass
                 )
 
                 // Consume resource
                 resourceData.getResourceAmountData(
-                    resourceType = it.resourceType,
-                    resourceQualityClass = it.resourceQualityClass
+                    resourceType = mutablePlayerSingleExportData.resourceType,
+                    resourceQualityClass = mutablePlayerSingleExportData.resourceQualityClass
                 ).trade -= amount
-                it.storedFuelRestMass -= price * amount
+                mutablePlayerSingleExportData.storedFuelRestMass -= price * amount
 
                 SendResourceCommand(
-                    toId = it.targetPlayerId,
+                    toId = mutablePlayerSingleExportData.targetPlayerId,
                     fromId = mutablePlayerData.playerId,
                     fromInt4D = mutablePlayerData.int4D.toInt4D(),
-                    resourceType = it.resourceType,
+                    resourceType = mutablePlayerSingleExportData.resourceType,
                     resourceQualityData = resourceQualityData,
                     amount = amount,
                     senderResourceLossFractionPerDistance = mutablePlayerData.playerInternalData.playerScienceData().playerScienceProductData.resourceLogisticsLossFractionPerDistance,
@@ -252,7 +264,7 @@ object ExportResource : Mechanism() {
         return mutableServicePopData.exportData.popExportCenterMap.map { (ownerPlayerId, exportCenterData) ->
             exportCenterData.exportDataMap.map { (carrierId, popTypeMap) ->
                 popTypeMap.map { (popType, exportDataList) ->
-                    exportDataList.map {
+                    exportDataList.map { mutablePopSingleExportData ->
 
                         // Compute the quality and amount
                         val resourceData: MutableResourceData =
@@ -261,31 +273,31 @@ object ExportResource : Mechanism() {
                         val exportFraction: Double = computePopExportFraction(
                             mutableServicePopData = mutableServicePopData,
                             mutableResourceData = resourceData,
-                            mutablePopSingleExportData = it,
+                            mutablePopSingleExportData = mutablePopSingleExportData,
                             ownerPlayerId = ownerPlayerId,
                             mutablePlayerData = mutablePlayerData,
                             universeData3DAtPlayer = universeData3DAtPlayer,
                         )
 
-                        val amount: Double = it.amountPerTime * exportFraction
+                        val amount: Double = mutablePopSingleExportData.amountPerTime * exportFraction
 
                         val resourceQualityData: ResourceQualityData =
                             resourceData.getResourceQuality(
-                                resourceType = it.resourceType,
-                                resourceQualityClass = it.resourceQualityClass
+                                resourceType = mutablePopSingleExportData.resourceType,
+                                resourceQualityClass = mutablePopSingleExportData.resourceQualityClass
                             ).toResourceQualityData()
 
                         val price: Double = resourceData.getResourcePrice(
-                            resourceType = it.resourceType,
-                            resourceQualityClass = it.resourceQualityClass
+                            resourceType = mutablePopSingleExportData.resourceType,
+                            resourceQualityClass = mutablePopSingleExportData.resourceQualityClass
                         )
 
                         // Consume resource
                         resourceData.getResourceAmountData(
-                            resourceType = it.resourceType,
-                            resourceQualityClass = it.resourceQualityClass
+                            resourceType = mutablePopSingleExportData.resourceType,
+                            resourceQualityClass = mutablePopSingleExportData.resourceQualityClass
                         ).trade -= amount
-                        it.storedFuelRestMass -= price * amount
+                        mutablePopSingleExportData.storedFuelRestMass -= price * amount
 
                         SendResourceToPopCommand(
                             toId = ownerPlayerId,
@@ -293,7 +305,7 @@ object ExportResource : Mechanism() {
                             fromInt4D = mutablePlayerData.int4D.toInt4D(),
                             targetCarrierId = carrierId,
                             targetPopType = popType,
-                            resourceType = it.resourceType,
+                            resourceType = mutablePopSingleExportData.resourceType,
                             resourceQualityData = resourceQualityData,
                             amount = amount,
                             senderResourceLossFractionPerDistance = mutablePlayerData.playerInternalData.playerScienceData().playerScienceProductData.resourceLogisticsLossFractionPerDistance,
