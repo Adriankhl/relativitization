@@ -136,25 +136,6 @@ sealed class Command {
         )
     }
 
-
-    /**
-     * Check if the player can receive the command
-     */
-    protected abstract fun canExecute(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean
-
-    /**
-     * Check if can execute and have command
-     *
-     * @param playerData the command execute on this player
-     * @param universeSettings universe setting, e.g., have
-     */
-    fun canExecuteOnPlayer(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean {
-        val hasCommand: Boolean = CommandCollection.hasCommand(universeSettings, this)
-        val correctId: Boolean = checkToId(playerData)
-        val canExecute: Boolean = canExecute(playerData, universeSettings)
-        return hasCommand && correctId && canExecute
-    }
-
     /**
      * Execute on self in order to end this command
      */
@@ -191,6 +172,27 @@ sealed class Command {
             )
         }
     }
+
+
+
+    /**
+     * Check if the player can receive the command
+     */
+    protected abstract fun canExecute(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean
+
+    /**
+     * Check if can execute and have command
+     *
+     * @param playerData the command execute on this player
+     * @param universeSettings universe setting, e.g., have
+     */
+    fun canExecuteOnPlayer(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean {
+        val hasCommand: Boolean = CommandCollection.hasCommand(universeSettings, this)
+        val correctId: Boolean = checkToId(playerData)
+        val canExecute: Boolean = canExecute(playerData, universeSettings)
+        return hasCommand && correctId && canExecute
+    }
+
 
     /**
      * Execute on playerData, for AI/human planning and action

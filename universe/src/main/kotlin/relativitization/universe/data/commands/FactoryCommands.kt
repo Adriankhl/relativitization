@@ -123,6 +123,18 @@ data class BuildForeignFuelFactoryCommand(
         )
     }
 
+    override fun selfExecuteBeforeSend(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ) {
+        val fuelNeeded: Double =
+            playerData.playerInternalData.playerScienceData().playerScienceProductData.newFuelFactoryFuelNeededByConstruction(
+                qualityLevel
+            )
+        playerData.playerInternalData.physicsData().fuelRestMassData.production -= fuelNeeded + storedFuelRestMass
+
+    }
+
     override fun canExecute(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
@@ -141,18 +153,6 @@ data class BuildForeignFuelFactoryCommand(
             playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(targetCarrierId)
 
         return allowConstruction && hasCarrier
-    }
-
-    override fun selfExecuteBeforeSend(
-        playerData: MutablePlayerData,
-        universeSettings: UniverseSettings
-    ) {
-        val fuelNeeded: Double =
-            playerData.playerInternalData.playerScienceData().playerScienceProductData.newFuelFactoryFuelNeededByConstruction(
-                qualityLevel
-            )
-        playerData.playerInternalData.physicsData().fuelRestMassData.production -= fuelNeeded + storedFuelRestMass
-
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
@@ -294,6 +294,19 @@ data class BuildForeignResourceFactoryCommand(
         )
     }
 
+    override fun selfExecuteBeforeSend(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ) {
+        val fuelNeeded: Double =
+            storedFuelRestMass + playerData.playerInternalData.playerScienceData().playerScienceProductData.newResourceFactoryFuelNeededByConstruction(
+                resourceFactoryInternalData.outputResource,
+                qualityLevel
+            )
+        playerData.playerInternalData.physicsData().fuelRestMassData.production -= fuelNeeded + storedFuelRestMass
+
+    }
+
     override fun canExecute(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
@@ -312,19 +325,6 @@ data class BuildForeignResourceFactoryCommand(
             playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(targetCarrierId)
 
         return allowConstruction && hasCarrier
-    }
-
-    override fun selfExecuteBeforeSend(
-        playerData: MutablePlayerData,
-        universeSettings: UniverseSettings
-    ) {
-        val fuelNeeded: Double =
-            storedFuelRestMass + playerData.playerInternalData.playerScienceData().playerScienceProductData.newResourceFactoryFuelNeededByConstruction(
-                resourceFactoryInternalData.outputResource,
-                qualityLevel
-            )
-        playerData.playerInternalData.physicsData().fuelRestMassData.production -= fuelNeeded + storedFuelRestMass
-
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {

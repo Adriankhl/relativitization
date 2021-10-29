@@ -139,13 +139,6 @@ data class SendResourceFromStorageCommand(
         )
     }
 
-    override fun canExecute(
-        playerData: MutablePlayerData,
-        universeSettings: UniverseSettings
-    ): Boolean {
-        return true
-    }
-
     override fun selfExecuteBeforeSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
@@ -153,6 +146,13 @@ data class SendResourceFromStorageCommand(
         playerData.playerInternalData.economyData().resourceData.getResourceAmountData(
             resourceType, resourceQualityClass
         ).trade -= amount
+    }
+
+    override fun canExecute(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): Boolean {
+        return true
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
@@ -267,18 +267,18 @@ data class SendFuelFromStorageCommand(
         )
     }
 
-    override fun canExecute(
-        playerData: MutablePlayerData,
-        universeSettings: UniverseSettings
-    ): Boolean {
-        return playerData.playerInternalData.modifierData().physicsModifierData.disableRestMassIncreaseTimeLimit <= 0
-    }
-
     override fun selfExecuteBeforeSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ) {
         playerData.playerInternalData.physicsData().fuelRestMassData.trade -= amount
+    }
+
+    override fun canExecute(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): Boolean {
+        return playerData.playerInternalData.modifierData().physicsModifierData.disableRestMassIncreaseTimeLimit <= 0
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
@@ -687,18 +687,6 @@ data class PlayerBuyResourceCommand(
         )
     }
 
-    override fun canExecute(
-        playerData: MutablePlayerData,
-        universeSettings: UniverseSettings
-    ): Boolean {
-        val validTopLeaderId: Boolean = (playerData.topLeaderId() == receiverTopLeaderId)
-
-        val isFuelDisable: Boolean =
-            playerData.playerInternalData.modifierData().physicsModifierData.disableRestMassIncreaseTimeLimit <= 0
-
-        return validTopLeaderId && isFuelDisable
-    }
-
     override fun selfExecuteBeforeSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
@@ -720,6 +708,18 @@ data class PlayerBuyResourceCommand(
 
         // Add tariff to storage
         playerData.playerInternalData.economyData().taxData.storedFuelRestMass += fuelRestMassAmount * tariffFactor
+    }
+
+    override fun canExecute(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): Boolean {
+        val validTopLeaderId: Boolean = (playerData.topLeaderId() == receiverTopLeaderId)
+
+        val isFuelDisable: Boolean =
+            playerData.playerInternalData.modifierData().physicsModifierData.disableRestMassIncreaseTimeLimit <= 0
+
+        return validTopLeaderId && isFuelDisable
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
