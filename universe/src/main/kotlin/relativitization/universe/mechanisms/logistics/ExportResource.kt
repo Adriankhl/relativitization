@@ -122,9 +122,22 @@ object ExportResource : Mechanism() {
         mutableServicePopData: MutableServicePopData,
         mutableResourceData: MutableResourceData,
         mutablePopSingleExportData: MutablePopSingleExportData,
+        ownerPlayerId: Int,
         mutablePlayerData: MutablePlayerData,
         universeData3DAtPlayer: UniverseData3DAtPlayer
     ): Double {
+        val targetTopLeaderId: Int = universeData3DAtPlayer.get(
+            ownerPlayerId
+        ).topLeaderId()
+        val sameTopLeaderId: Boolean = (mutablePlayerData.topLeaderId() == targetTopLeaderId)
+        val tariffFactor: Double = if (sameTopLeaderId) {
+            0.0
+        } else {
+            mutablePlayerData.playerInternalData.economyData().taxData.taxRateData.exportTariff.getResourceTariffRate(
+                topLeaderId = targetTopLeaderId,
+                resourceType = mutablePopSingleExportData.resourceType
+            )
+        }
 
         // Fraction affected by employees
         val totalExportAmount: Double = mutableServicePopData.exportData.totalExportAmount()
@@ -249,6 +262,7 @@ object ExportResource : Mechanism() {
                             mutableServicePopData = mutableServicePopData,
                             mutableResourceData = resourceData,
                             mutablePopSingleExportData = it,
+                            ownerPlayerId = ownerPlayerId,
                             mutablePlayerData = mutablePlayerData,
                             universeData3DAtPlayer = universeData3DAtPlayer,
                         )
