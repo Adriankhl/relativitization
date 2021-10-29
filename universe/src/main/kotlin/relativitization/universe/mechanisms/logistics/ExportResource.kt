@@ -54,9 +54,9 @@ object ExportResource : Mechanism() {
         mutableServicePopData: MutableServicePopData,
         mutableResourceData: MutableResourceData,
         mutablePlayerSingleExportData: MutablePlayerSingleExportData,
-        universeData3DAtPlayer: UniverseData3DAtPlayer
+        mutablePlayerData: MutablePlayerData,
+        universeData3DAtPlayer: UniverseData3DAtPlayer,
     ): Double {
-
         // Fraction affected by employees
         val totalExportAmount: Double = mutableServicePopData.exportData.totalExportAmount()
         val numEmployee: Double = mutableServicePopData.commonPopData.numEmployee()
@@ -109,6 +109,7 @@ object ExportResource : Mechanism() {
         mutableServicePopData: MutableServicePopData,
         mutableResourceData: MutableResourceData,
         mutablePopSingleExportData: MutablePopSingleExportData,
+        mutablePlayerData: MutablePlayerData,
         universeData3DAtPlayer: UniverseData3DAtPlayer
     ): Double {
 
@@ -177,6 +178,7 @@ object ExportResource : Mechanism() {
                     mutableServicePopData = mutableServicePopData,
                     mutableResourceData = resourceData,
                     mutablePlayerSingleExportData = it,
+                    mutablePlayerData = mutablePlayerData,
                     universeData3DAtPlayer = universeData3DAtPlayer,
                 )
 
@@ -234,6 +236,7 @@ object ExportResource : Mechanism() {
                             mutableServicePopData = mutableServicePopData,
                             mutableResourceData = resourceData,
                             mutablePopSingleExportData = it,
+                            mutablePlayerData = mutablePlayerData,
                             universeData3DAtPlayer = universeData3DAtPlayer,
                         )
 
