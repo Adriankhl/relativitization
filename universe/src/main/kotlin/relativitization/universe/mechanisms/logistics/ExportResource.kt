@@ -168,7 +168,7 @@ object ExportResource : Mechanism() {
             mutablePopSingleExportData.resourceQualityClass
         )
         val priceFraction: Double = if ((price * requiredAmount) > 0.0) {
-            mutablePopSingleExportData.storedFuelRestMass / (price * requiredAmount)
+            mutablePopSingleExportData.storedFuelRestMass / (price * requiredAmount * (1.0 + tariffFactor))
         } else {
             1.0
         }
