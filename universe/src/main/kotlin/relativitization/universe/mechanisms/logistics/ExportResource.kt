@@ -98,7 +98,7 @@ object ExportResource : Mechanism() {
             mutablePlayerSingleExportData.resourceType,
             mutablePlayerSingleExportData.resourceQualityClass
         )
-        val priceFraction: Double = if ((price * requiredAmount) > 0.0) {
+        val priceFraction: Double = if ((price * requiredAmount * (1.0 + tariffFactor)) > 0.0) {
             mutablePlayerSingleExportData.storedFuelRestMass / (price * requiredAmount * (1.0 + tariffFactor))
         } else {
             1.0
@@ -167,7 +167,7 @@ object ExportResource : Mechanism() {
             mutablePopSingleExportData.resourceType,
             mutablePopSingleExportData.resourceQualityClass
         )
-        val priceFraction: Double = if ((price * requiredAmount) > 0.0) {
+        val priceFraction: Double = if ((price * requiredAmount * (1.0 + tariffFactor)) > 0.0) {
             mutablePopSingleExportData.storedFuelRestMass / (price * requiredAmount * (1.0 + tariffFactor))
         } else {
             1.0
