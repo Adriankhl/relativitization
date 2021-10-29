@@ -237,7 +237,13 @@ object ExportResource : Mechanism() {
                     resourceType = mutablePlayerSingleExportData.resourceType,
                     resourceQualityClass = mutablePlayerSingleExportData.resourceQualityClass
                 ).trade -= amount
-                mutablePlayerSingleExportData.storedFuelRestMass -= price * amount
+                mutablePlayerSingleExportData.storedFuelRestMass -= price * amount * (1.0 + tariffFactor)
+
+                // Add tariff to player storage
+                if (mutablePlayerData.playerInternalData.modifierData().physicsModifierData.disableRestMassIncreaseTimeLimit <= 0) {
+                    mutablePlayerData.playerInternalData.physicsData().addFuel(price * amount)
+                    mutablePlayerData.playerInternalData.economyData().taxData.storedFuelRestMass += price * amount * tariffFactor
+                }
 
                 SendResourceCommand(
                     toId = mutablePlayerSingleExportData.targetPlayerId,
