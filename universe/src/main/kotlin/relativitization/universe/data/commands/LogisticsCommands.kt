@@ -491,6 +491,7 @@ data class PopBuyResourceCommand(
     override val toId: Int,
     override val fromId: Int,
     override val fromInt4D: Int4D,
+    val receiverTopLeaderId: Int,
     val fromCarrierId: Int,
     val fromPopType: PopType,
     val targetCarrierId: Int,
@@ -511,7 +512,12 @@ data class PopBuyResourceCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): Boolean {
-        return playerData.playerInternalData.modifierData().physicsModifierData.disableRestMassIncreaseTimeLimit <= 0
+        val validTopLeaderId: Boolean = (playerData.topLeaderId() == receiverTopLeaderId)
+
+        val isFuelDisable: Boolean =
+            playerData.playerInternalData.modifierData().physicsModifierData.disableRestMassIncreaseTimeLimit <= 0
+
+        return validTopLeaderId && isFuelDisable
     }
 
 
