@@ -566,6 +566,7 @@ data class PopBuyResourceCommand(
 /**
  * Send fuel from yourself to another player
  *
+ * @property receiverTopLeaderId top leader id of the receiver
  * @property targetCarrierId build export center at that carrier
  * @property buyResourceTargetId export to this player
  * @property resourceType type of the resource
@@ -578,6 +579,7 @@ data class PlayerBuyResourceCommand(
     override val toId: Int,
     override val fromId: Int,
     override val fromInt4D: Int4D,
+    val receiverTopLeaderId: Int,
     val targetCarrierId: Int,
     val buyResourceTargetId: Int,
     val resourceType: ResourceType,
@@ -616,8 +618,20 @@ data class PlayerBuyResourceCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): CanSendCheckMessage {
+        // Whether the receiver has the same top leader
+        val sameTopLeader: Boolean = (playerData.topLeaderId() == receiverTopLeaderId)
+
+        // Compute import tariff
+        val tariffFactor: Double = if (sameTopLeader) {
+            0.0
+        } else {
+            playerData.playerInternalData.economyData().taxData.taxRateData.importTariff.getResourceTariffRate(
+                topLeaderId = receiverTopLeaderId, resourceType = resourceType
+            )
+        }
+
         val hasAmount: Boolean =
-            playerData.playerInternalData.physicsData().fuelRestMassData.trade >= fuelRestMassAmount
+            playerData.playerInternalData.physicsData().fuelRestMassData.trade >= fuelRestMassAmount * (1.0 + tariffFactor)
         val hasAmountI18NString: I18NString = if (hasAmount) {
             I18NString("")
         } else {
@@ -657,8 +671,8 @@ data class PlayerBuyResourceCommand(
         }
 
         return CanSendCheckMessage(
-            hasAmount && isLossFractionValid,
-            I18NString.combine(
+            canSend = hasAmount && isLossFractionValid,
+            message = I18NString.combine(
                 listOf(
                     hasAmountI18NString,
                     isLossFractionValidI18NString,
@@ -671,14 +685,35 @@ data class PlayerBuyResourceCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): Boolean {
-        return playerData.playerInternalData.modifierData().physicsModifierData.disableRestMassIncreaseTimeLimit <= 0
+        val validTopLeaderId: Boolean = (playerData.topLeaderId() == receiverTopLeaderId)
+
+        val isFuelDisable: Boolean =
+            playerData.playerInternalData.modifierData().physicsModifierData.disableRestMassIncreaseTimeLimit <= 0
+
+        return validTopLeaderId && isFuelDisable
     }
 
     override fun selfExecuteBeforeSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ) {
-        playerData.playerInternalData.physicsData().fuelRestMassData.trade -= fuelRestMassAmount
+        // Whether the receiver has the same top leader
+        val sameTopLeader: Boolean = (playerData.topLeaderId() == receiverTopLeaderId)
+
+        // Compute import tariff
+        val tariffFactor: Double = if (sameTopLeader) {
+            0.0
+        } else {
+            playerData.playerInternalData.economyData().taxData.taxRateData.importTariff.getResourceTariffRate(
+                topLeaderId = receiverTopLeaderId, resourceType = resourceType
+            )
+        }
+
+        // Consume resource
+        playerData.playerInternalData.physicsData().fuelRestMassData.trade -= fuelRestMassAmount * (1.0 + tariffFactor)
+
+        // Add tariff to storage
+        playerData.playerInternalData.economyData().taxData.storedFuelRestMass += fuelRestMassAmount * tariffFactor
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {

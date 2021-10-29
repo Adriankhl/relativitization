@@ -34,18 +34,24 @@ data class MutableTaxRateData(
     var incomeTax: MutableIncomeTaxData = MutableIncomeTaxData(),
 )
 
+/**
+ * Tariff data
+ *
+ * @property defaultTariffRate the default tariff data, unless specified in tariffRatePlayerMap
+ * @property tariffRatePlayerMap map from top leader id to tariff rate
+ */
 @Serializable
 data class TariffData(
     val defaultTariffRate: TariffRateData = TariffRateData(),
     val tariffRatePlayerMap: Map<Int, TariffRateData> = mapOf(),
 ) {
-    fun getResourceTariffRate(playerId: Int, resourceType: ResourceType): Double {
-        return tariffRatePlayerMap.getOrDefault(playerId, defaultTariffRate)
+    fun getResourceTariffRate(topLeaderId: Int, resourceType: ResourceType): Double {
+        return tariffRatePlayerMap.getOrDefault(topLeaderId, defaultTariffRate)
             .getResourceTariffRate(resourceType)
     }
 
-    fun getFuelTariffRate(playerId: Int): Double {
-        return tariffRatePlayerMap.getOrDefault(playerId, defaultTariffRate).fuelTariffRate
+    fun getFuelTariffRate(topLeaderId: Int): Double {
+        return tariffRatePlayerMap.getOrDefault(topLeaderId, defaultTariffRate).fuelTariffRate
     }
 }
 
@@ -54,13 +60,13 @@ data class MutableTariffData(
     var defaultTariffRate: MutableTariffRateData = MutableTariffRateData(),
     var tariffRatePlayerMap: MutableMap<Int, MutableTariffRateData> = mutableMapOf(),
 ) {
-    fun getResourceTariffRate(playerId: Int, resourceType: ResourceType): Double {
-        return tariffRatePlayerMap.getOrDefault(playerId, defaultTariffRate)
+    fun getResourceTariffRate(topLeaderId: Int, resourceType: ResourceType): Double {
+        return tariffRatePlayerMap.getOrDefault(topLeaderId, defaultTariffRate)
             .getResourceTariffRate(resourceType)
     }
 
-    fun getFuelTariffRate(playerId: Int): Double {
-        return tariffRatePlayerMap.getOrDefault(playerId, defaultTariffRate).fuelTariffRate
+    fun getFuelTariffRate(topLeaderId: Int): Double {
+        return tariffRatePlayerMap.getOrDefault(topLeaderId, defaultTariffRate).fuelTariffRate
     }
 }
 
