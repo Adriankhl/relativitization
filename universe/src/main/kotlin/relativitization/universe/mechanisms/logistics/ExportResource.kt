@@ -29,6 +29,7 @@ object ExportResource : Mechanism() {
                 computeExportToPlayerCommands(
                     mutableServicePopData = mutableServicePopData,
                     mutablePlayerData = mutablePlayerData,
+                    universeData3DAtPlayer = universeData3DAtPlayer
                 )
             }.flatten()
 
@@ -39,6 +40,7 @@ object ExportResource : Mechanism() {
                 computeExportToPopCommands(
                     mutableServicePopData = mutableServicePopData,
                     mutablePlayerData = mutablePlayerData,
+                    universeData3DAtPlayer = universeData3DAtPlayer
                 )
             }.flatten()
 
@@ -52,6 +54,7 @@ object ExportResource : Mechanism() {
         mutableServicePopData: MutableServicePopData,
         mutableResourceData: MutableResourceData,
         mutablePlayerSingleExportData: MutablePlayerSingleExportData,
+        universeData3DAtPlayer: UniverseData3DAtPlayer
     ): Double {
 
         // Fraction affected by employees
@@ -105,7 +108,8 @@ object ExportResource : Mechanism() {
     fun computePopExportFraction(
         mutableServicePopData: MutableServicePopData,
         mutableResourceData: MutableResourceData,
-        mutablePopSingleExportData: MutablePopSingleExportData
+        mutablePopSingleExportData: MutablePopSingleExportData,
+        universeData3DAtPlayer: UniverseData3DAtPlayer
     ): Double {
 
         // Fraction affected by employees
@@ -159,6 +163,7 @@ object ExportResource : Mechanism() {
     fun computeExportToPlayerCommands(
         mutableServicePopData: MutableServicePopData,
         mutablePlayerData: MutablePlayerData,
+        universeData3DAtPlayer: UniverseData3DAtPlayer,
     ): List<Command> {
 
         return mutableServicePopData.exportData.playerExportCenterMap.map { (_, exportCenterData) ->
@@ -171,7 +176,8 @@ object ExportResource : Mechanism() {
                 val exportFraction: Double = computePlayerExportFraction(
                     mutableServicePopData = mutableServicePopData,
                     mutableResourceData = resourceData,
-                    mutablePlayerSingleExportData = it
+                    mutablePlayerSingleExportData = it,
+                    universeData3DAtPlayer = universeData3DAtPlayer,
                 )
 
                 val amount: Double = it.amountPerTime * exportFraction
@@ -212,6 +218,7 @@ object ExportResource : Mechanism() {
     fun computeExportToPopCommands(
         mutableServicePopData: MutableServicePopData,
         mutablePlayerData: MutablePlayerData,
+        universeData3DAtPlayer: UniverseData3DAtPlayer,
     ): List<Command> {
 
         return mutableServicePopData.exportData.popExportCenterMap.map { (ownerPlayerId, exportCenterData) ->
@@ -226,7 +233,8 @@ object ExportResource : Mechanism() {
                         val exportFraction: Double = computePopExportFraction(
                             mutableServicePopData = mutableServicePopData,
                             mutableResourceData = resourceData,
-                            mutablePopSingleExportData = it
+                            mutablePopSingleExportData = it,
+                            universeData3DAtPlayer = universeData3DAtPlayer,
                         )
 
                         val amount: Double = it.amountPerTime * exportFraction
