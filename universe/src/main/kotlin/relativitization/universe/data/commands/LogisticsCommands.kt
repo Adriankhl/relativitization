@@ -625,10 +625,10 @@ data class PlayerBuyResourceCommand(
         universeSettings: UniverseSettings
     ): CanSendCheckMessage {
         // Whether the receiver has the same top leader
-        val sameTopLeader: Boolean = (playerData.topLeaderId() == receiverTopLeaderId)
+        val sameTopLeaderId: Boolean = (playerData.topLeaderId() == receiverTopLeaderId)
 
         // Compute import tariff
-        val tariffFactor: Double = if (sameTopLeader) {
+        val tariffFactor: Double = if (sameTopLeaderId) {
             0.0
         } else {
             playerData.playerInternalData.economyData().taxData.taxRateData.importTariff.getResourceTariffRate(
@@ -692,10 +692,10 @@ data class PlayerBuyResourceCommand(
         universeSettings: UniverseSettings
     ) {
         // Whether the receiver has the same top leader
-        val sameTopLeader: Boolean = (playerData.topLeaderId() == receiverTopLeaderId)
+        val sameTopLeaderId: Boolean = (playerData.topLeaderId() == receiverTopLeaderId)
 
         // Compute import tariff
-        val tariffFactor: Double = if (sameTopLeader) {
+        val tariffFactor: Double = if (sameTopLeaderId) {
             0.0
         } else {
             playerData.playerInternalData.economyData().taxData.taxRateData.importTariff.getResourceTariffRate(

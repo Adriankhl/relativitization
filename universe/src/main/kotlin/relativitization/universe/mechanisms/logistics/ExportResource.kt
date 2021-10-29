@@ -57,6 +57,10 @@ object ExportResource : Mechanism() {
         mutablePlayerData: MutablePlayerData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
     ): Double {
+        val sameTopLeaderId: Boolean = (mutablePlayerData.topLeaderId() == universeData3DAtPlayer.get(
+            mutablePlayerSingleExportData.targetPlayerId
+        ).topLeaderId())
+
         // Fraction affected by employees
         val totalExportAmount: Double = mutableServicePopData.exportData.totalExportAmount()
         val numEmployee: Double = mutableServicePopData.commonPopData.numEmployee()

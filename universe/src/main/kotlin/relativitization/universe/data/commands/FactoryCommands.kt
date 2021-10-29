@@ -139,8 +139,8 @@ data class BuildForeignFuelFactoryCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): Boolean {
-        val sameTopLeader: Boolean = playerData.topLeaderId() == senderTopLeaderId
-        val foreignInvestorOrSameTopLeader: Boolean = (sameTopLeader ||
+        val sameTopLeaderId: Boolean = playerData.topLeaderId() == senderTopLeaderId
+        val foreignInvestorOrSameTopLeader: Boolean = (sameTopLeaderId ||
                 playerData.playerInternalData.politicsData().allowForeignInvestor)
 
         val isSenderTopLeader: Boolean = fromId == playerData.topLeaderId()
