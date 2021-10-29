@@ -215,7 +215,7 @@ object ExportResource : Mechanism() {
                 val exportFraction: Double = computePlayerExportFraction(
                     mutableServicePopData = mutableServicePopData,
                     mutableResourceData = resourceData,
-                    mutablePlayerSingleExportData = it,
+                    mutablePlayerSingleExportData = mutablePlayerSingleExportData,
                     mutablePlayerData = mutablePlayerData,
                     universeData3DAtPlayer = universeData3DAtPlayer,
                 )
