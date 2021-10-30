@@ -16,7 +16,11 @@ import relativitization.universe.utils.CoroutineVar
 import relativitization.universe.utils.RelativitizationLogManager
 import java.io.File
 
-class UniverseServerInternal(var universeServerSettings: UniverseServerSettings) {
+class UniverseServerInternal(
+    var universeServerSettings: UniverseServerSettings,
+    val serverHost: String,
+    val serverPort: Int,
+) {
     private val mutex: Mutex = Mutex()
 
     // Data of universe

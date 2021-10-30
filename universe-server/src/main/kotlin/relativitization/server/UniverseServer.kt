@@ -20,7 +20,14 @@ import java.net.Socket
 
 
 class UniverseServer(universeServerSettings: UniverseServerSettings) {
-    private val universeServerInternal: UniverseServerInternal = UniverseServerInternal(universeServerSettings)
+    private val serverHost: String = "127.0.0.1"
+    private val serverPort: Int = findAvailablePort()
+
+    private val universeServerInternal: UniverseServerInternal = UniverseServerInternal(
+        universeServerSettings,
+        serverHost,
+        serverPort,
+    )
 
     private var universeServerInternalJob: Job = Job()
 
@@ -47,8 +54,8 @@ class UniverseServer(universeServerSettings: UniverseServerSettings) {
             }
 
             connector {
-                port = findAvailablePort()
-                host = "127.0.0.1"
+                host = serverHost
+                port = serverPort
             }
 
         }
