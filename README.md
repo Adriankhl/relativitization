@@ -45,7 +45,7 @@ Download Windows jdk at `windows/jdk/jdk-17`
 
 Go to `../relativitization-art` (`cd ../relativitization-art`), then run
 ```
-wine ../windows/jdk/jdk-17/bin/jpackage.exe --input ./assets --dest C:\\relativitization-output --name relativitization-win --main-jar Relativitization.jar --type app-image
+wine ../windows/jdk/jdk-17/bin/jpackage.exe --input ./assets --dest C:/relativitization-output --name relativitization-win --main-jar Relativitization.jar --type app-image
 ```
 
 The generated `~/.wine/drive_c/relativitization-output/relativitization-win` folder contains a `relativitization-win.exe`
