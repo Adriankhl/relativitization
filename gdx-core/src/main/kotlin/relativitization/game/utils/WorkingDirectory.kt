@@ -26,6 +26,9 @@ object WorkingDirectory {
             thisDir
         } else {
             when {
+                File(thisDir, "app").isDirectory -> {
+                    File(thisDir, "app")
+                }
                 File(thisDir, "lib").isDirectory -> {
                     File(thisDir, "lib/app")
                 }
