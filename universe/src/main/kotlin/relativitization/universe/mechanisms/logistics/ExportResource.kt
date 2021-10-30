@@ -6,11 +6,11 @@ import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.commands.SendResourceCommand
 import relativitization.universe.data.commands.SendResourceToPopCommand
-import relativitization.universe.data.component.economy.MutableResourceData
-import relativitization.universe.data.component.economy.ResourceQualityData
-import relativitization.universe.data.component.popsystem.pop.service.MutableServicePopData
-import relativitization.universe.data.component.popsystem.pop.service.export.MutablePlayerSingleExportData
-import relativitization.universe.data.component.popsystem.pop.service.export.MutablePopSingleExportData
+import relativitization.universe.data.components.economy.MutableResourceData
+import relativitization.universe.data.components.economy.ResourceQualityData
+import relativitization.universe.data.components.popsystem.pop.service.MutableServicePopData
+import relativitization.universe.data.components.popsystem.pop.service.export.MutablePlayerSingleExportData
+import relativitization.universe.data.components.popsystem.pop.service.export.MutablePopSingleExportData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.mechanisms.Mechanism
 import kotlin.math.max

@@ -3,10 +3,10 @@ package relativitization.universe.data.commands
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseSettings
-import relativitization.universe.data.component.economy.ResourceType
-import relativitization.universe.data.component.physics.Int4D
-import relativitization.universe.data.component.popsystem.MutableCarrierData
-import relativitization.universe.data.component.popsystem.pop.labourer.factory.*
+import relativitization.universe.data.components.economy.ResourceType
+import relativitization.universe.data.components.physics.Int4D
+import relativitization.universe.data.components.popsystem.MutableCarrierData
+import relativitization.universe.data.components.popsystem.pop.labourer.factory.*
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.utils.I18NString
 import relativitization.universe.utils.IntString

@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.Align
 import kotlinx.coroutines.runBlocking
 import relativitization.game.RelativitizationGame
-import relativitization.universe.data.component.physics.Double2D
+import relativitization.universe.data.components.physics.Double2D
 import relativitization.universe.maths.physics.Intervals
 import relativitization.universe.utils.I18NString
 import kotlin.math.PI

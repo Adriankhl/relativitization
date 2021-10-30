@@ -3,8 +3,7 @@ package relativitization.universe.generate.abm
 import relativitization.universe.ai.abm.FlockingAI
 import relativitization.universe.ai.name
 import relativitization.universe.data.*
-import relativitization.universe.data.component.physics.MutableVelocity
-import relativitization.universe.data.UniverseScienceData
+import relativitization.universe.data.components.physics.MutableVelocity
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.generate.GenerateSettings

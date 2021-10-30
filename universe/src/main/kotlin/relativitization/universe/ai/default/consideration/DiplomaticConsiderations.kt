@@ -4,7 +4,7 @@ import relativitization.universe.ai.default.utils.Consideration
 import relativitization.universe.ai.default.utils.DualUtilityData
 import relativitization.universe.ai.default.utils.PlanState
 import relativitization.universe.data.PlanDataAtPlayer
-import relativitization.universe.data.component.DiplomacyData
+import relativitization.universe.data.components.DiplomacyData
 import kotlin.math.exp
 
 /**

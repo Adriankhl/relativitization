@@ -1,7 +1,7 @@
 package relativitization.universe.data
 
 import kotlinx.serialization.Serializable
-import relativitization.universe.data.component.science.knowledge.*
+import relativitization.universe.data.components.science.knowledge.*
 import relativitization.universe.utils.RelativitizationLogManager
 
 @Serializable

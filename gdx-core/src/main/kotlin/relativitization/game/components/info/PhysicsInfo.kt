@@ -7,11 +7,10 @@ import relativitization.game.RelativitizationGame
 import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.commands.AddEventCommand
-import relativitization.universe.data.commands.CannotSendCommand
 import relativitization.universe.data.commands.ChangeVelocityCommand
-import relativitization.universe.data.component.physics.Double3D
-import relativitization.universe.data.component.physics.Int3D
-import relativitization.universe.data.component.physics.Velocity
+import relativitization.universe.data.components.physics.Double3D
+import relativitization.universe.data.components.physics.Int3D
+import relativitization.universe.data.components.physics.Velocity
 import relativitization.universe.data.events.MoveToDouble3DEvent
 import relativitization.universe.maths.physics.Movement.displacementToVelocity
 import relativitization.universe.utils.RelativitizationLogManager

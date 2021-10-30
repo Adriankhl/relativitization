@@ -4,8 +4,8 @@ import kotlinx.coroutines.runBlocking
 import relativitization.universe.Universe
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.commands.AddEventCommand
-import relativitization.universe.data.component.physics.Double4D
-import relativitization.universe.data.component.physics.Int4D
+import relativitization.universe.data.components.physics.Double4D
+import relativitization.universe.data.components.physics.Int4D
 import relativitization.universe.generate.GenerateSettings
 import relativitization.universe.generate.UniverseGenerationCollection
 import kotlin.test.Test

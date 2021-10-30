@@ -1,14 +1,14 @@
 package relativitization.universe.data
 
 import kotlinx.serialization.Serializable
-import relativitization.universe.data.component.*
-import relativitization.universe.data.component.MutablePlayerScienceData
-import relativitization.universe.data.component.MutablePoliticsData
-import relativitization.universe.data.component.MutablePopSystemData
-import relativitization.universe.data.component.PlayerScienceData
-import relativitization.universe.data.component.PoliticsData
-import relativitization.universe.data.component.PopSystemData
-import relativitization.universe.data.component.physics.*
+import relativitization.universe.data.components.*
+import relativitization.universe.data.components.MutablePlayerScienceData
+import relativitization.universe.data.components.MutablePoliticsData
+import relativitization.universe.data.components.MutablePopSystemData
+import relativitization.universe.data.components.PlayerScienceData
+import relativitization.universe.data.components.PoliticsData
+import relativitization.universe.data.components.PopSystemData
+import relativitization.universe.data.components.physics.*
 import relativitization.universe.data.events.EventData
 import relativitization.universe.data.events.MutableEventData
 import relativitization.universe.maths.collection.ListFind

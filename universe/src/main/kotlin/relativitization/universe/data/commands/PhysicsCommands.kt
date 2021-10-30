@@ -3,8 +3,8 @@ package relativitization.universe.data.commands
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseSettings
-import relativitization.universe.data.component.physics.Int4D
-import relativitization.universe.data.component.physics.Velocity
+import relativitization.universe.data.components.physics.Int4D
+import relativitization.universe.data.components.physics.Velocity
 import relativitization.universe.maths.physics.Relativistic.targetVelocityByPhotonRocket
 import relativitization.universe.maths.physics.TargetVelocityData
 import relativitization.universe.utils.I18NString

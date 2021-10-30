@@ -5,8 +5,8 @@ import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.commands.SendFuelCommand
-import relativitization.universe.data.component.MutablePhysicsData
-import relativitization.universe.data.component.popsystem.pop.labourer.factory.MutableFuelFactoryData
+import relativitization.universe.data.components.MutablePhysicsData
+import relativitization.universe.data.components.popsystem.pop.labourer.factory.MutableFuelFactoryData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.maths.physics.Relativistic
 import relativitization.universe.mechanisms.Mechanism

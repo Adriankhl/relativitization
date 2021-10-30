@@ -5,8 +5,8 @@ import relativitization.universe.data.PlayerData
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.commands.ChangeVelocityCommand
 import relativitization.universe.data.commands.Command
-import relativitization.universe.data.component.physics.Double3D
-import relativitization.universe.data.component.physics.Velocity
+import relativitization.universe.data.components.physics.Double3D
+import relativitization.universe.data.components.physics.Velocity
 import relativitization.universe.maths.physics.Intervals.distance
 import relativitization.universe.utils.RelativitizationLogManager
 

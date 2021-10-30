@@ -14,7 +14,16 @@ object DiscoverKnowledge : Mechanism() {
         universeSettings: UniverseSettings,
         universeGlobalData: UniverseGlobalData
     ): List<Command> {
-        TODO("Not yet implemented")
+        return listOf()
+    }
+
+    /**
+     * Update research institute strength
+     */
+    fun updateInstituteStrength(
+
+    ) {
+
     }
 
 }
