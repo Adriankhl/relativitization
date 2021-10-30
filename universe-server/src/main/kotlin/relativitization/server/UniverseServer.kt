@@ -16,6 +16,7 @@ import relativitization.server.routes.registerUniverseStatusRoutes
 import relativitization.universe.UniverseServerSettings
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.utils.RelativitizationLogManager
+import java.net.Socket
 
 
 class UniverseServer(universeServerSettings: UniverseServerSettings) {
@@ -46,7 +47,7 @@ class UniverseServer(universeServerSettings: UniverseServerSettings) {
             }
 
             connector {
-                port = 29979
+                port = findAvailablePort()
                 host = "127.0.0.1"
             }
 
@@ -65,6 +66,21 @@ class UniverseServer(universeServerSettings: UniverseServerSettings) {
     suspend fun stop() {
         universeServerInternal.stop(universeServerInternalJob)
         ktorServer.stop(1000, 1000)
+    }
+
+    private fun findAvailablePort(testPort: Int = 29979): Int {
+        val available: Boolean = try {
+            Socket("127.0.0.1", testPort)
+            false
+        } catch (e: Throwable) {
+            true
+        }
+
+        return if (available) {
+            testPort
+        } else {
+            findAvailablePort(testPort + 1)
+        }
     }
 
 
