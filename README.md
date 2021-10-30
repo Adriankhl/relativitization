@@ -34,10 +34,21 @@ This will produce a `Relativitization.jar` in `../relativitization-art/assets`:
 ## Build executable for linux
 Go to `../relativitization-art` (`cd ../relativitization-art`), then run
 ```
-jpackage --input ./assets --name relativitization --main-jar Relativitization.jar --type app-image
+jpackage --input ./assets --name relativitization-linux --main-jar Relativitization.jar --type app-image
 ```
 
-The generated `relativitization-art/relativitization` folder contains a `bin/relativitization`
+The generated `relativitization-art/relativitization-linux` folder contains a `bin/relativitization-linux`
+executable.
+
+## Build executable for Windows on Linux
+Download Windows jdk at `windows/jdk/jdk-17`
+
+Go to `../relativitization-art` (`cd ../relativitization-art`), then run
+```
+wine ../windows/jdk/jdk-17/bin/jpackage.exe --input ./assets --dest C:\\relativitization-output --name relativitization-win --main-jar Relativitization.jar --type app-image
+```
+
+The generated `~/.wine/drive_c/relativitization-output/relativitization-win` folder contains a `relativitization-win.exe`
 executable.
 
 
