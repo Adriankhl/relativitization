@@ -16,7 +16,6 @@
 
 # Far future TODO List
 * Science era, e.g., Biology era favour nation with more biologist
-* When starting, detect if any local server exists or not by client http function, don't start the server if it already exists
 
 # Currently unused data
 * Size of factory and institute
