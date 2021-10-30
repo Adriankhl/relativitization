@@ -23,7 +23,7 @@ data class UniverseClientSettings(
     var playerId: Int = -1,
     var password: String = "player password",
     var serverAddress: String = "127.0.0.1",
-    var serverPort: String = "29979",
+    var serverPort: Int = 29979,
     var viewCenter: MutableInt3D = MutableInt3D(0, 0, 0),
     var zLimit:Int = 10,
     var httpRequestTimeout: Long = 10000,
