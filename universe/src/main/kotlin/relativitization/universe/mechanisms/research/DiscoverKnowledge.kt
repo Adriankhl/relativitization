@@ -1,8 +1,6 @@
 package relativitization.universe.mechanisms.research
 
-import relativitization.universe.data.MutablePlayerData
-import relativitization.universe.data.UniverseData3DAtPlayer
-import relativitization.universe.data.UniverseSettings
+import relativitization.universe.data.*
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.components.economy.MutableResourceData
 import relativitization.universe.data.components.economy.ResourceQualityClass
@@ -15,10 +13,14 @@ import relativitization.universe.data.components.popsystem.pop.scholar.institute
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.maths.physics.Relativistic
 import relativitization.universe.mechanisms.Mechanism
+import relativitization.universe.utils.RelativitizationLogManager
+import kotlin.math.PI
 import kotlin.math.log2
 import kotlin.math.min
 
 object DiscoverKnowledge : Mechanism() {
+    private val logger = RelativitizationLogManager.getLogger()
+
     override fun process(
         mutablePlayerData: MutablePlayerData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
@@ -72,7 +74,9 @@ object DiscoverKnowledge : Mechanism() {
 
     /**
      * Update research institute strength
-     */ fun updateInstituteStrength( gamma: Double,
+     */
+    fun updateInstituteStrength(
+        gamma: Double,
         mutableScholarPopData: MutableScholarPopData,
         mutableInstituteData: MutableInstituteData,
         mutableResourceData: MutableResourceData
@@ -156,4 +160,26 @@ object DiscoverKnowledge : Mechanism() {
             ).toResourceQualityData()
         )
     }
+
+    /**
+     * Update basic research discovery
+     */
+    fun updateBasicResearchDiscovery(
+        gamma: Double,
+        mutableInstituteData: MutableInstituteData,
+        mutablePlayerData: MutablePlayerData,
+        universeScienceData: UniverseScienceData,
+    ) {
+        val area: Double = if (mutableInstituteData.range > 0.0) {
+            mutableInstituteData.range * mutableInstituteData.range * PI
+        } else {
+            logger.error("Institute range smaller than zero")
+            1.0
+        }
+
+        val averageStrength: Double = mutableInstituteData.strength / area
+    }
+
+
+
 }

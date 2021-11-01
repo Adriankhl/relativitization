@@ -19,7 +19,7 @@ import kotlinx.serialization.Serializable
 data class InstituteData(
     val xCor: Double = 0.0,
     val yCor: Double = 0.0,
-    val range: Double = 0.0,
+    val range: Double = 1.0,
     val strength: Double = 0.0,
     val reputation: Double = 0.0,
     val researchEquipmentPerTime: Double = 0.0,
@@ -32,7 +32,7 @@ data class InstituteData(
 data class MutableInstituteData(
     var xCor: Double = 0.0,
     var yCor: Double = 0.0,
-    var range: Double = 0.0,
+    var range: Double = 1.0,
     var strength: Double = 0.0,
     var reputation: Double = 0.0,
     var researchEquipmentPerTime: Double = 0.0,
