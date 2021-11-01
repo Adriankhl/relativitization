@@ -12,9 +12,7 @@ import relativitization.universe.data.components.economy.ResourceQualityData
  * @property range how far the institute cover the knowledge plane
  * @property strength how good is this institute
  * @property reputation reputation of this institute
- * @property requiredResearchEquipmentQuality the required quality of research equipment
- * @property requiredResearchEquipmentAmount required amount of research equipment
- * @property fuelRestMassConsumptionRate fuel consumption rate
+ * @property researchEquipmentPerTime amount of research equipment provided per time
  * @property maxNumEmployee maximum number of employee
  * @property lastNumEmployee number of employee in the last round
  * @property size the size of this institute
@@ -26,9 +24,7 @@ data class LaboratoryData(
     val range: Double = 0.0,
     val strength: Double = 0.0,
     val reputation: Double = 0.0,
-    val requiredResearchEquipmentQuality: ResourceQualityData = ResourceQualityData(),
-    val requiredResearchEquipmentAmount: Double = 0.0,
-    val fuelRestMassConsumptionRate: Double = 0.0,
+    val researchEquipmentPerTime: Double = 0.0,
     val maxNumEmployee: Double = 0.0,
     val lastNumEmployee: Double = 0.0,
     val size: Double = 0.0,
@@ -41,9 +37,7 @@ data class MutableLaboratoryData(
     var range: Double = 0.0,
     var strength: Double = 0.0,
     var reputation: Double = 0.0,
-    var requiredResearchEquipmentQuality: MutableResourceQualityData = MutableResourceQualityData(),
-    var requiredResearchEquipmentAmount: Double = 0.0,
-    var fuelRestMassConsumptionRate: Double = 0.0,
+    var researchEquipmentPerTime: Double = 0.0,
     var maxNumEmployee: Double = 0.0,
     var lastNumEmployee: Double = 0.0,
     var size: Double = 0.0,
