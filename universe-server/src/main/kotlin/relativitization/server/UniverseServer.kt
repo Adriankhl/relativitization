@@ -16,14 +16,14 @@ import relativitization.server.routes.registerUniverseStatusRoutes
 import relativitization.universe.UniverseServerSettings
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.utils.RelativitizationLogManager
+import relativitization.utils.ServerPort
 import java.net.Socket
 
 
 class UniverseServer(
     universeServerSettings: UniverseServerSettings,
-    serverAddress: String,
-    serverPort: Int,
-
+    serverAddress: String = "127.0.0.1",
+    serverPort: Int = 29979,
 ) {
 
     private val universeServerInternal: UniverseServerInternal = UniverseServerInternal(
