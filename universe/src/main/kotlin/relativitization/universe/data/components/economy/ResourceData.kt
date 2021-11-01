@@ -2,6 +2,7 @@ package relativitization.universe.data.components.economy
 
 import kotlinx.serialization.Serializable
 import kotlin.math.pow
+import kotlin.math.sqrt
 
 enum class ResourceType(val value: String) {
     PLANT("Plant"), // Raw material
@@ -360,6 +361,10 @@ data class ResourceQualityData(
         quality2 * d,
         quality3 * d,
     )
+
+    fun square(): Double = quality1 * quality1 + quality2 * quality2 + quality3 * quality3
+
+    fun mag(): Double = sqrt(square())
 
     fun toMutableResourceQualityData(): MutableResourceQualityData = MutableResourceQualityData(
         quality1,

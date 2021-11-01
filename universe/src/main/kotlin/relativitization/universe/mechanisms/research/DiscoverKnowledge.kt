@@ -12,6 +12,7 @@ import relativitization.universe.data.components.popsystem.pop.scholar.institute
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.maths.physics.Relativistic
 import relativitization.universe.mechanisms.Mechanism
+import kotlin.math.log2
 import kotlin.math.min
 
 object DiscoverKnowledge : Mechanism() {
@@ -36,7 +37,11 @@ object DiscoverKnowledge : Mechanism() {
         equipmentQuality: ResourceQualityData
     ): Double {
 
-        return 0.0
+        val humanPower: Double = log2(numEmployee) * educationLevel
+
+        val machinePower: Double = log2(equipmentAmount) * equipmentQuality.mag()
+
+        return (humanPower + machinePower) * 0.5
     }
 
     /**
