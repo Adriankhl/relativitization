@@ -8,6 +8,7 @@ import relativitization.universe.data.components.economy.MutableResourceData
 import relativitization.universe.data.components.economy.ResourceQualityClass
 import relativitization.universe.data.components.economy.ResourceQualityData
 import relativitization.universe.data.components.economy.ResourceType
+import relativitization.universe.data.components.popsystem.pop.scholar.MutableScholarPopData
 import relativitization.universe.data.components.popsystem.pop.scholar.institute.MutableInstituteData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.maths.physics.Relativistic
@@ -49,6 +50,7 @@ object DiscoverKnowledge : Mechanism() {
      */
     fun updateInstituteStrength(
         gamma: Double,
+        mutableScholarPopData: MutableScholarPopData,
         mutableInstituteData: MutableInstituteData,
         mutableResourceData: MutableResourceData
     ) {
@@ -71,5 +73,19 @@ object DiscoverKnowledge : Mechanism() {
 
         val equipmentAmount: Double = min(requiredEquipmentAmount, resourceAmountMap.getValue(resourceQualityClass))
 
+        mutableResourceData.getResourceAmountData(
+            ResourceType.RESEARCH_EQUIPMENT,
+            resourceQualityClass
+        ).production -= equipmentAmount
+
+        mutableInstituteData.strength = computeStrength(
+            numEmployee = mutableInstituteData.lastNumEmployee,
+            educationLevel = mutableScholarPopData.commonPopData.educationLevel,
+            equipmentAmount = equipmentAmount,
+            equipmentQuality = mutableResourceData.getResourceQuality(
+                ResourceType.RESEARCH_EQUIPMENT,
+                resourceQualityClass
+            ).toResourceQualityData()
+        )
     }
 }
