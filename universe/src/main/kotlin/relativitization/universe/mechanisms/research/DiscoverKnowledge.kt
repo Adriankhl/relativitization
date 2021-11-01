@@ -30,6 +30,29 @@ object DiscoverKnowledge : Mechanism() {
             universeSettings.speedOfLight
         )
 
+        mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.forEach { mutableCarrierData ->
+            mutableCarrierData.allPopData.scholarPopData.instituteMap.values.forEach { mutableInstituteData ->
+                updateInstituteStrength(
+                    gamma,
+                    mutableCarrierData.allPopData.scholarPopData,
+                    mutableInstituteData,
+                    mutablePlayerData.playerInternalData.economyData().resourceData
+                )
+            }
+        }
+
+
+        mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.forEach { mutableCarrierData ->
+            mutableCarrierData.allPopData.engineerPopData.laboratoryMap.values.forEach { mutableLaboratoryData ->
+                updateLaboratoryStrength(
+                    gamma,
+                    mutableCarrierData.allPopData.engineerPopData,
+                    mutableLaboratoryData,
+                    mutablePlayerData.playerInternalData.economyData().resourceData
+                )
+            }
+        }
+
         return listOf()
     }
 
