@@ -8,6 +8,8 @@ import relativitization.universe.data.components.economy.MutableResourceData
 import relativitization.universe.data.components.economy.ResourceQualityClass
 import relativitization.universe.data.components.economy.ResourceQualityData
 import relativitization.universe.data.components.economy.ResourceType
+import relativitization.universe.data.components.popsystem.pop.engineer.MutableEngineerPopData
+import relativitization.universe.data.components.popsystem.pop.engineer.laboratory.MutableLaboratoryData
 import relativitization.universe.data.components.popsystem.pop.scholar.MutableScholarPopData
 import relativitization.universe.data.components.popsystem.pop.scholar.institute.MutableInstituteData
 import relativitization.universe.data.global.UniverseGlobalData
@@ -47,9 +49,7 @@ object DiscoverKnowledge : Mechanism() {
 
     /**
      * Update research institute strength
-     */
-    fun updateInstituteStrength(
-        gamma: Double,
+     */ fun updateInstituteStrength( gamma: Double,
         mutableScholarPopData: MutableScholarPopData,
         mutableInstituteData: MutableInstituteData,
         mutableResourceData: MutableResourceData
@@ -81,6 +81,51 @@ object DiscoverKnowledge : Mechanism() {
         mutableInstituteData.strength = computeStrength(
             numEmployee = mutableInstituteData.lastNumEmployee,
             educationLevel = mutableScholarPopData.commonPopData.educationLevel,
+            equipmentAmount = equipmentAmount,
+            equipmentQuality = mutableResourceData.getResourceQuality(
+                ResourceType.RESEARCH_EQUIPMENT,
+                resourceQualityClass
+            ).toResourceQualityData()
+        )
+    }
+
+
+    /**
+     * Update laboratory strength
+     */
+    fun updateLaboratoryStrength(
+        gamma: Double,
+        mutableEngineerPopData: MutableEngineerPopData,
+        mutableLaboratoryData: MutableLaboratoryData,
+        mutableResourceData: MutableResourceData
+    ) {
+        val requiredEquipmentAmount: Double = mutableLaboratoryData.researchEquipmentPerTime * gamma
+
+        val resourceAmountMap: Map<ResourceQualityClass, Double> = ResourceQualityClass.values().map {
+            it to mutableResourceData.getResourceAmountData(ResourceType.RESEARCH_EQUIPMENT, it).production
+        }.toMap()
+
+        val resourceQualityClass: ResourceQualityClass =
+            if (resourceAmountMap.values.any { it >= requiredEquipmentAmount }) {
+                resourceAmountMap.filter {
+                    it.value >= requiredEquipmentAmount
+                }.firstNotNullOfOrNull {
+                    it.key
+                } ?: ResourceQualityClass.FIRST
+            } else {
+                resourceAmountMap.maxByOrNull { it.value }?.key ?: ResourceQualityClass.FIRST
+            }
+
+        val equipmentAmount: Double = min(requiredEquipmentAmount, resourceAmountMap.getValue(resourceQualityClass))
+
+        mutableResourceData.getResourceAmountData(
+            ResourceType.RESEARCH_EQUIPMENT,
+            resourceQualityClass
+        ).production -= equipmentAmount
+
+        mutableLaboratoryData.strength = computeStrength(
+            numEmployee = mutableLaboratoryData.lastNumEmployee,
+            educationLevel = mutableEngineerPopData.commonPopData.educationLevel,
             equipmentAmount = equipmentAmount,
             equipmentQuality = mutableResourceData.getResourceQuality(
                 ResourceType.RESEARCH_EQUIPMENT,
