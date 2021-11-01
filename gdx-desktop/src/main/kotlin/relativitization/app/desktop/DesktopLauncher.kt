@@ -20,6 +20,7 @@ import relativitization.server.UniverseServer
 import relativitization.universe.UniverseClientSettings
 import relativitization.universe.UniverseServerSettings
 import relativitization.universe.utils.RelativitizationLogManager
+import relativitization.utils.ServerPort
 import java.io.File
 import java.util.concurrent.Executors
 import kotlin.random.Random
@@ -41,13 +42,24 @@ fun main() {
 
     val adminPassword: String = List(10) { Random.nextInt(0, 10) }.joinToString(separator = "")
 
+    val serverAddress: String = "127.0.0.1"
+    val serverPort: Int = ServerPort.findAvailablePort()
+
     val universeServerSettings = UniverseServerSettings(adminPassword = adminPassword)
-    val universeClientSettings = UniverseClientSettings(adminPassword = adminPassword)
+    val universeClientSettings = UniverseClientSettings(
+        adminPassword = adminPassword,
+        serverAddress = serverAddress,
+        serverPort = serverPort,
+    )
 
     val gdxExecutorService = Executors.newSingleThreadExecutor()
 
     runBlocking {
-        val universeServer: UniverseServer = UniverseServer(universeServerSettings)
+        val universeServer: UniverseServer = UniverseServer(
+            universeServerSettings = universeServerSettings,
+            serverAddress = serverAddress,
+            serverPort = serverPort
+        )
         val universeClient: UniverseClient = UniverseClient(universeClientSettings)
 
 

@@ -19,13 +19,16 @@ import relativitization.universe.utils.RelativitizationLogManager
 import java.net.Socket
 
 
-class UniverseServer(universeServerSettings: UniverseServerSettings) {
-    private val serverHost: String = "127.0.0.1"
-    private val serverPort: Int = findAvailablePort()
+class UniverseServer(
+    universeServerSettings: UniverseServerSettings,
+    serverAddress: String,
+    serverPort: Int,
+
+) {
 
     private val universeServerInternal: UniverseServerInternal = UniverseServerInternal(
         universeServerSettings,
-        serverHost,
+        serverAddress,
         serverPort,
     )
 
@@ -54,7 +57,7 @@ class UniverseServer(universeServerSettings: UniverseServerSettings) {
             }
 
             connector {
-                host = serverHost
+                host = serverAddress
                 port = serverPort
             }
 
@@ -73,21 +76,6 @@ class UniverseServer(universeServerSettings: UniverseServerSettings) {
     suspend fun stop() {
         universeServerInternal.stop(universeServerInternalJob)
         ktorServer.stop(1000, 1000)
-    }
-
-    private fun findAvailablePort(testPort: Int = 29979): Int {
-        val available: Boolean = try {
-            Socket("127.0.0.1", testPort)
-            false
-        } catch (e: Throwable) {
-            true
-        }
-
-        return if (available) {
-            testPort
-        } else {
-            findAvailablePort(testPort + 1)
-        }
     }
 
 

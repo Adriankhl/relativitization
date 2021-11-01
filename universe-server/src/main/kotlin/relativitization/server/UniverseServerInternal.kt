@@ -18,7 +18,7 @@ import java.io.File
 
 class UniverseServerInternal(
     var universeServerSettings: UniverseServerSettings,
-    val serverHost: String,
+    val serverAddress: String,
     val serverPort: Int,
 ) {
     private val mutex: Mutex = Mutex()

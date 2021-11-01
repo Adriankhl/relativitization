@@ -17,6 +17,7 @@ import relativitization.universe.UniverseClientSettings
 import relativitization.universe.UniverseServerSettings
 import relativitization.universe.utils.AndroidLogger
 import relativitization.universe.utils.RelativitizationLogManager
+import relativitization.utils.ServerPort
 import kotlin.random.Random
 
 class AndroidLauncher : AppCompatActivity(), AndroidFragmentApplication.Callbacks {
@@ -28,16 +29,26 @@ class AndroidLauncher : AppCompatActivity(), AndroidFragmentApplication.Callback
 
         val adminPassword: String = List(10) { Random.nextInt(0, 10) }.joinToString(separator = "")
 
+        val serverAddress: String = "127.0.0.1"
+        val serverPort: Int = ServerPort.findAvailablePort()
+
         val universeServerSettings = UniverseServerSettings(
             programDir = applicationContext.filesDir.toString(),
             adminPassword = adminPassword
         )
         val universeClientSettings = UniverseClientSettings(
             programDir = applicationContext.filesDir.toString(),
-            adminPassword = adminPassword
+            adminPassword = adminPassword,
+            serverAddress = serverAddress,
+            serverPort = serverPort,
         )
 
-        val universeServer: UniverseServer = UniverseServer(universeServerSettings)
+
+        val universeServer: UniverseServer = UniverseServer(
+            universeServerSettings = universeServerSettings,
+            serverAddress = serverAddress,
+            serverPort = serverPort
+        )
         val universeClient: UniverseClient = UniverseClient(universeClientSettings)
 
         val relativitizationGameFragment = RelativitizationGameFragment(universeClient, universeServer)
