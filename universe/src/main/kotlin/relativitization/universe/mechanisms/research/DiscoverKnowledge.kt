@@ -2,6 +2,7 @@ package relativitization.universe.mechanisms.research
 
 import relativitization.universe.data.*
 import relativitization.universe.data.commands.Command
+import relativitization.universe.data.components.MutablePlayerScienceData
 import relativitization.universe.data.components.economy.MutableResourceData
 import relativitization.universe.data.components.economy.ResourceQualityClass
 import relativitization.universe.data.components.economy.ResourceQualityData
@@ -10,13 +11,18 @@ import relativitization.universe.data.components.popsystem.pop.engineer.MutableE
 import relativitization.universe.data.components.popsystem.pop.engineer.laboratory.MutableLaboratoryData
 import relativitization.universe.data.components.popsystem.pop.scholar.MutableScholarPopData
 import relativitization.universe.data.components.popsystem.pop.scholar.institute.MutableInstituteData
+import relativitization.universe.data.components.science.knowledge.BasicResearchProjectData
+import relativitization.universe.data.components.science.knowledge.MutableKnowledgeData
 import relativitization.universe.data.global.UniverseGlobalData
+import relativitization.universe.maths.algebra.Logistic
+import relativitization.universe.maths.physics.Intervals
 import relativitization.universe.maths.physics.Relativistic
 import relativitization.universe.mechanisms.Mechanism
 import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.math.PI
 import kotlin.math.log2
 import kotlin.math.min
+import kotlin.random.Random
 
 object DiscoverKnowledge : Mechanism() {
     private val logger = RelativitizationLogManager.getLogger()
@@ -162,14 +168,13 @@ object DiscoverKnowledge : Mechanism() {
     }
 
     /**
-     * Update basic research discovery
+     * Whether this project can be discovered
      */
-    fun updateBasicResearchDiscovery(
-        gamma: Double,
+    fun canCompleteBasicResearchProject(
+        basicResearchProjectData: BasicResearchProjectData,
         mutableInstituteData: MutableInstituteData,
-        mutablePlayerData: MutablePlayerData,
-        universeScienceData: UniverseScienceData,
-    ) {
+        mutablePlayerScienceData: MutablePlayerScienceData,
+    ): Boolean {
         val area: Double = if (mutableInstituteData.range > 0.0) {
             mutableInstituteData.range * mutableInstituteData.range * PI
         } else {
@@ -178,6 +183,65 @@ object DiscoverKnowledge : Mechanism() {
         }
 
         val averageStrength: Double = mutableInstituteData.strength / area
+
+        val inRange: Boolean = Intervals.distance(
+            basicResearchProjectData.xCor,
+            basicResearchProjectData.yCor,
+            mutableInstituteData.xCor,
+            mutableInstituteData.yCor
+        ) <= mutableInstituteData.range
+
+        val doneReferenceFraction: Double =
+            if (basicResearchProjectData.referenceBasicResearchIdList.isNotEmpty() ||
+                basicResearchProjectData.referenceAppliedResearchIdList.isNotEmpty()
+            ) {
+                val numBasic: Int = basicResearchProjectData.referenceBasicResearchIdList.filter { id ->
+                    mutablePlayerScienceData.doneBasicResearchProjectList.any {
+                        it.basicResearchId == id
+                    }
+                }.size
+
+                val numApplied: Int = basicResearchProjectData.referenceAppliedResearchIdList.filter { id ->
+                    mutablePlayerScienceData.doneAppliedResearchProjectList.any {
+                        it.appliedResearchId == id
+                    }
+                }.size
+
+                val total: Int = basicResearchProjectData.referenceBasicResearchIdList.size +
+                        basicResearchProjectData.referenceAppliedResearchIdList.size
+
+                (numBasic + numApplied).toDouble() / total.toDouble()
+            } else {
+                1.0
+            }
+
+        val actualStrength: Double = averageStrength * doneReferenceFraction
+
+        // Probability of successfully complete the project
+        val prob: Double = if(actualStrength > 0.0) {
+            Logistic.standardLogistic(log2(basicResearchProjectData.difficulty / actualStrength))
+        } else {
+            0.0
+        }
+
+        val success: Boolean = Random.Default.nextDouble() < prob
+
+        return inRange && success
+    }
+
+
+    /**
+     * Update basic research discovery
+     */
+    fun updateBasicResearchDiscovery(
+        gamma: Double,
+        mutableInstituteData: MutableInstituteData,
+        mutablePlayerScienceData: MutablePlayerScienceData,
+        universeScienceData: UniverseScienceData,
+    ) {
+        universeScienceData.basicResearchProjectDataMap.values.forEach {
+
+        }
     }
 
 
