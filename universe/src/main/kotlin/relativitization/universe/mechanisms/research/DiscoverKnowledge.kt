@@ -171,7 +171,7 @@ object DiscoverKnowledge : Mechanism() {
     /**
      * Whether this project can be discovered
      */
-    fun isResearchProjectSuccess(
+    fun isResearchSuccess(
         gamma: Double,
         projectXCor: Double,
         projectYCor: Double,
@@ -180,6 +180,7 @@ object DiscoverKnowledge : Mechanism() {
         projectReferenceAppliedResearchIdList: List<Int>,
         mutableInstituteData: MutableInstituteData,
         mutablePlayerScienceData: MutablePlayerScienceData,
+        strengthFactor: Double = 1.0,
     ): Boolean {
         val area: Double = if (mutableInstituteData.range > 0.0) {
             mutableInstituteData.range * mutableInstituteData.range * PI
@@ -221,7 +222,7 @@ object DiscoverKnowledge : Mechanism() {
                 1.0
             }
 
-        val actualStrength: Double = averageStrength * doneReferenceFraction
+        val actualStrength: Double = averageStrength * doneReferenceFraction * strengthFactor
 
         // Probability of successfully complete the project
         val prob: Double = if(actualStrength > 0.0) {
@@ -246,8 +247,12 @@ object DiscoverKnowledge : Mechanism() {
         mutablePlayerScienceData: MutablePlayerScienceData,
         universeScienceData: UniverseScienceData,
     ) {
-        universeScienceData.basicResearchProjectDataMap.values.forEach { basicResearchProjectData ->
-            val canComplete: Boolean = isResearchProjectSuccess(
+        universeScienceData.basicResearchProjectDataMap.values.filter { basicResearchProjectData ->
+            !mutablePlayerScienceData.doneBasicResearchProjectList.any {
+                it.basicResearchId == basicResearchProjectData.basicResearchId
+            }
+        }.forEach { basicResearchProjectData ->
+            val doneProject: Boolean = isResearchSuccess(
                 gamma = gamma,
                 projectXCor = basicResearchProjectData.xCor,
                 projectYCor = basicResearchProjectData.yCor,
@@ -258,7 +263,7 @@ object DiscoverKnowledge : Mechanism() {
                 mutablePlayerScienceData = mutablePlayerScienceData,
             )
 
-            if (canComplete) {
+            if (doneProject) {
                 mutablePlayerScienceData.doneBasicResearchProjectList.add(basicResearchProjectData)
             }
         }
