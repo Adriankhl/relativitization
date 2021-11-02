@@ -79,6 +79,10 @@ data class MutablePlayerScienceData(
         }) {
             logger.error("Duplicate done basic research id: ${basicResearchProjectData.basicResearchId}, skipping")
         } else {
+            knownBasicResearchProjectList.removeAll {
+                logger.debug("Remove done project from known project")
+                it.basicResearchId == basicResearchProjectData.basicResearchId
+            }
             doneBasicResearchProjectList.add(basicResearchProjectData)
             playerKnowledgeData.addBasicResearchProjectData(basicResearchProjectData, function)
         }
@@ -96,6 +100,10 @@ data class MutablePlayerScienceData(
             }) {
             logger.error("Duplicate done applied research id: ${appliedResearchProjectData.appliedResearchId}, skipping")
         } else {
+            knownAppliedResearchProjectList.removeAll {
+                logger.debug("Remove done project from known project")
+                it.appliedResearchId == appliedResearchProjectData.appliedResearchId
+            }
             doneAppliedResearchProjectList.add(appliedResearchProjectData)
             playerKnowledgeData.addAppliedResearchProjectData(appliedResearchProjectData, function)
         }

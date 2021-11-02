@@ -15,6 +15,7 @@ import relativitization.universe.data.components.science.knowledge.AppliedResear
 import relativitization.universe.data.components.science.knowledge.BasicResearchProjectData
 import relativitization.universe.data.components.science.knowledge.MutableKnowledgeData
 import relativitization.universe.data.global.UniverseGlobalData
+import relativitization.universe.global.science.default.DefaultUniverseScienceDataProcess
 import relativitization.universe.maths.algebra.Logistic
 import relativitization.universe.maths.physics.Intervals
 import relativitization.universe.maths.physics.Relativistic
@@ -247,6 +248,7 @@ object DiscoverKnowledge : Mechanism() {
         mutablePlayerScienceData: MutablePlayerScienceData,
         universeScienceData: UniverseScienceData,
     ) {
+        // Done project
         universeScienceData.basicResearchProjectDataMap.values.filter { basicResearchProjectData ->
             !mutablePlayerScienceData.doneBasicResearchProjectList.any {
                 it.basicResearchId == basicResearchProjectData.basicResearchId
@@ -264,7 +266,10 @@ object DiscoverKnowledge : Mechanism() {
             )
 
             if (doneProject) {
-                mutablePlayerScienceData.doneBasicResearchProjectList.add(basicResearchProjectData)
+                mutablePlayerScienceData.doneBasicResearchProject(
+                    basicResearchProjectData,
+                    DefaultUniverseScienceDataProcess.basicResearchProjectFunction()
+                )
             }
         }
     }
