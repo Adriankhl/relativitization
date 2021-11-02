@@ -11,6 +11,7 @@ import relativitization.universe.data.components.popsystem.pop.engineer.MutableE
 import relativitization.universe.data.components.popsystem.pop.engineer.laboratory.MutableLaboratoryData
 import relativitization.universe.data.components.popsystem.pop.scholar.MutableScholarPopData
 import relativitization.universe.data.components.popsystem.pop.scholar.institute.MutableInstituteData
+import relativitization.universe.data.components.science.knowledge.AppliedResearchData
 import relativitization.universe.data.components.science.knowledge.BasicResearchProjectData
 import relativitization.universe.data.components.science.knowledge.MutableKnowledgeData
 import relativitization.universe.data.global.UniverseGlobalData
@@ -170,8 +171,13 @@ object DiscoverKnowledge : Mechanism() {
     /**
      * Whether this project can be discovered
      */
-    fun canCompleteBasicResearchProject(
-        basicResearchProjectData: BasicResearchProjectData,
+    fun isResearchProjectSuccess(
+        gamma: Double,
+        projectXCor: Double,
+        projectYCor: Double,
+        projectDifficulty: Double,
+        projectReferenceBasicResearchIdList: List<Int>,
+        projectReferenceAppliedResearchIdList: List<Int>,
         mutableInstituteData: MutableInstituteData,
         mutablePlayerScienceData: MutablePlayerScienceData,
     ): Boolean {
@@ -185,30 +191,30 @@ object DiscoverKnowledge : Mechanism() {
         val averageStrength: Double = mutableInstituteData.strength / area
 
         val inRange: Boolean = Intervals.distance(
-            basicResearchProjectData.xCor,
-            basicResearchProjectData.yCor,
+            projectXCor,
+            projectYCor,
             mutableInstituteData.xCor,
             mutableInstituteData.yCor
         ) <= mutableInstituteData.range
 
         val doneReferenceFraction: Double =
-            if (basicResearchProjectData.referenceBasicResearchIdList.isNotEmpty() ||
-                basicResearchProjectData.referenceAppliedResearchIdList.isNotEmpty()
+            if (projectReferenceBasicResearchIdList.isNotEmpty() ||
+                projectReferenceAppliedResearchIdList.isNotEmpty()
             ) {
-                val numBasic: Int = basicResearchProjectData.referenceBasicResearchIdList.filter { id ->
+                val numBasic: Int = projectReferenceBasicResearchIdList.filter { id ->
                     mutablePlayerScienceData.doneBasicResearchProjectList.any {
                         it.basicResearchId == id
                     }
                 }.size
 
-                val numApplied: Int = basicResearchProjectData.referenceAppliedResearchIdList.filter { id ->
+                val numApplied: Int = projectReferenceAppliedResearchIdList.filter { id ->
                     mutablePlayerScienceData.doneAppliedResearchProjectList.any {
                         it.appliedResearchId == id
                     }
                 }.size
 
-                val total: Int = basicResearchProjectData.referenceBasicResearchIdList.size +
-                        basicResearchProjectData.referenceAppliedResearchIdList.size
+                val total: Int =
+                    projectReferenceBasicResearchIdList.size + projectReferenceAppliedResearchIdList.size
 
                 (numBasic + numApplied).toDouble() / total.toDouble()
             } else {
@@ -219,12 +225,13 @@ object DiscoverKnowledge : Mechanism() {
 
         // Probability of successfully complete the project
         val prob: Double = if(actualStrength > 0.0) {
-            Logistic.standardLogistic(log2(basicResearchProjectData.difficulty / actualStrength))
+            Logistic.standardLogistic(log2(projectDifficulty / actualStrength))
         } else {
             0.0
         }
 
-        val success: Boolean = Random.Default.nextDouble() < prob
+        // The probability is affected by time dilation, i.e. gamma
+        val success: Boolean = Random.Default.nextDouble() < (prob / gamma)
 
         return inRange && success
     }
@@ -239,11 +246,21 @@ object DiscoverKnowledge : Mechanism() {
         mutablePlayerScienceData: MutablePlayerScienceData,
         universeScienceData: UniverseScienceData,
     ) {
-        universeScienceData.basicResearchProjectDataMap.values.forEach {
+        universeScienceData.basicResearchProjectDataMap.values.forEach { basicResearchProjectData ->
+            val canComplete: Boolean = isResearchProjectSuccess(
+                gamma = gamma,
+                projectXCor = basicResearchProjectData.xCor,
+                projectYCor = basicResearchProjectData.yCor,
+                projectDifficulty = basicResearchProjectData.difficulty,
+                projectReferenceBasicResearchIdList = basicResearchProjectData.referenceBasicResearchIdList,
+                projectReferenceAppliedResearchIdList = basicResearchProjectData.referenceAppliedResearchIdList,
+                mutableInstituteData = mutableInstituteData,
+                mutablePlayerScienceData = mutablePlayerScienceData,
+            )
 
+            if (canComplete) {
+                mutablePlayerScienceData.doneBasicResearchProjectList.add(basicResearchProjectData)
+            }
         }
     }
-
-
-
 }
