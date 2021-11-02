@@ -12,6 +12,7 @@ import relativitization.universe.mechanisms.logistics.ExportResource
 import relativitization.universe.mechanisms.modifier.UpdateModifierTime
 import relativitization.universe.mechanisms.production.FuelFactoryProduction
 import relativitization.universe.mechanisms.production.ResourceFactoryProduction
+import relativitization.universe.mechanisms.research.DiscoverKnowledge
 import relativitization.universe.mechanisms.science.SyncPlayerScienceData
 import relativitization.universe.mechanisms.science.UpdateScienceProductData
 import relativitization.universe.utils.RelativitizationLogManager
@@ -52,6 +53,7 @@ object DefaultMechanismList : MechanismList() {
         ExportResource,
         UpdateModifierTime,
         SyncPlayerScienceData,
+        DiscoverKnowledge,
         UpdateScienceProductData,
     )
 }

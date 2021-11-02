@@ -11,6 +11,7 @@ import relativitization.universe.data.components.popsystem.pop.engineer.MutableE
 import relativitization.universe.data.components.popsystem.pop.engineer.laboratory.MutableLaboratoryData
 import relativitization.universe.data.components.popsystem.pop.scholar.MutableScholarPopData
 import relativitization.universe.data.components.popsystem.pop.scholar.institute.MutableInstituteData
+import relativitization.universe.data.components.science.knowledge.AppliedResearchProjectData
 import relativitization.universe.data.components.science.knowledge.BasicResearchProjectData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.global.science.default.DefaultUniverseScienceDataProcess
@@ -65,6 +66,13 @@ object DiscoverKnowledge : Mechanism() {
                     mutableLaboratoryData,
                     mutablePlayerData.playerInternalData.economyData().resourceData
                 )
+
+                updateAppliedResearchDiscovery(
+                    gamma = gamma,
+                    mutableLaboratoryData = mutableLaboratoryData,
+                    mutablePlayerScienceData = mutablePlayerData.playerInternalData.playerScienceData(),
+                    universeScienceData = universeGlobalData.getScienceData(),
+                )
             }
         }
 
@@ -96,9 +104,13 @@ object DiscoverKnowledge : Mechanism() {
     ) {
         val requiredEquipmentAmount: Double = mutableInstituteData.researchEquipmentPerTime * gamma
 
-        val resourceAmountMap: Map<ResourceQualityClass, Double> = ResourceQualityClass.values().map {
-            it to mutableResourceData.getResourceAmountData(ResourceType.RESEARCH_EQUIPMENT, it).production
-        }.toMap()
+        val resourceAmountMap: Map<ResourceQualityClass, Double> =
+            ResourceQualityClass.values().map {
+                it to mutableResourceData.getResourceAmountData(
+                    ResourceType.RESEARCH_EQUIPMENT,
+                    it
+                ).production
+            }.toMap()
 
         val resourceQualityClass: ResourceQualityClass =
             if (resourceAmountMap.values.any { it >= requiredEquipmentAmount }) {
@@ -111,7 +123,8 @@ object DiscoverKnowledge : Mechanism() {
                 resourceAmountMap.maxByOrNull { it.value }?.key ?: ResourceQualityClass.FIRST
             }
 
-        val equipmentAmount: Double = min(requiredEquipmentAmount, resourceAmountMap.getValue(resourceQualityClass))
+        val equipmentAmount: Double =
+            min(requiredEquipmentAmount, resourceAmountMap.getValue(resourceQualityClass))
 
         mutableResourceData.getResourceAmountData(
             ResourceType.RESEARCH_EQUIPMENT,
@@ -141,9 +154,13 @@ object DiscoverKnowledge : Mechanism() {
     ) {
         val requiredEquipmentAmount: Double = mutableLaboratoryData.researchEquipmentPerTime * gamma
 
-        val resourceAmountMap: Map<ResourceQualityClass, Double> = ResourceQualityClass.values().map {
-            it to mutableResourceData.getResourceAmountData(ResourceType.RESEARCH_EQUIPMENT, it).production
-        }.toMap()
+        val resourceAmountMap: Map<ResourceQualityClass, Double> =
+            ResourceQualityClass.values().map {
+                it to mutableResourceData.getResourceAmountData(
+                    ResourceType.RESEARCH_EQUIPMENT,
+                    it
+                ).production
+            }.toMap()
 
         val resourceQualityClass: ResourceQualityClass =
             if (resourceAmountMap.values.any { it >= requiredEquipmentAmount }) {
@@ -156,7 +173,8 @@ object DiscoverKnowledge : Mechanism() {
                 resourceAmountMap.maxByOrNull { it.value }?.key ?: ResourceQualityClass.FIRST
             }
 
-        val equipmentAmount: Double = min(requiredEquipmentAmount, resourceAmountMap.getValue(resourceQualityClass))
+        val equipmentAmount: Double =
+            min(requiredEquipmentAmount, resourceAmountMap.getValue(resourceQualityClass))
 
         mutableResourceData.getResourceAmountData(
             ResourceType.RESEARCH_EQUIPMENT,
@@ -184,25 +202,28 @@ object DiscoverKnowledge : Mechanism() {
         projectDifficulty: Double,
         projectReferenceBasicResearchIdList: List<Int>,
         projectReferenceAppliedResearchIdList: List<Int>,
-        mutableInstituteData: MutableInstituteData,
+        organizationXCor: Double,
+        organizationYCor: Double,
+        organizationRange: Double,
+        organizationStrength: Double,
         mutablePlayerScienceData: MutablePlayerScienceData,
         strengthFactor: Double = 1.0,
     ): Boolean {
-        val area: Double = if (mutableInstituteData.range > 0.0) {
-            mutableInstituteData.range * mutableInstituteData.range * PI
+        val area: Double = if (organizationRange > 0.0) {
+            organizationRange * organizationRange * PI
         } else {
             logger.error("Institute range smaller than zero")
             1.0
         }
 
-        val averageStrength: Double = mutableInstituteData.strength / area
+        val averageStrength: Double = organizationStrength / area
 
         val inRange: Boolean = Intervals.distance(
             projectXCor,
             projectYCor,
-            mutableInstituteData.xCor,
-            mutableInstituteData.yCor
-        ) <= mutableInstituteData.range
+            organizationXCor,
+            organizationYCor
+        ) <= organizationRange
 
         val doneReferenceFraction: Double =
             if (projectReferenceBasicResearchIdList.isNotEmpty() ||
@@ -231,7 +252,7 @@ object DiscoverKnowledge : Mechanism() {
         val actualStrength: Double = averageStrength * doneReferenceFraction * strengthFactor
 
         // Probability of successfully complete the project
-        val prob: Double = if(actualStrength > 0.0) {
+        val prob: Double = if (actualStrength > 0.0) {
             Logistic.standardLogistic(log2(projectDifficulty / actualStrength))
         } else {
             0.0
@@ -266,7 +287,10 @@ object DiscoverKnowledge : Mechanism() {
                 projectDifficulty = basicResearchProjectData.difficulty,
                 projectReferenceBasicResearchIdList = basicResearchProjectData.referenceBasicResearchIdList,
                 projectReferenceAppliedResearchIdList = basicResearchProjectData.referenceAppliedResearchIdList,
-                mutableInstituteData = mutableInstituteData,
+                organizationXCor = mutableInstituteData.xCor,
+                organizationYCor = mutableInstituteData.yCor,
+                organizationRange = mutableInstituteData.range,
+                organizationStrength = mutableInstituteData.strength,
                 mutablePlayerScienceData = mutablePlayerScienceData,
             )
 
@@ -282,7 +306,7 @@ object DiscoverKnowledge : Mechanism() {
         universeScienceData.basicResearchProjectDataMap.values.filter { basicResearchProjectData ->
 
             val allProject: List<BasicResearchProjectData> =
-                mutablePlayerScienceData.doneBasicResearchProjectList + mutablePlayerScienceData.doneBasicResearchProjectList
+                mutablePlayerScienceData.doneBasicResearchProjectList + mutablePlayerScienceData.knownBasicResearchProjectList
 
             !allProject.any {
                 it.basicResearchId == basicResearchProjectData.basicResearchId
@@ -295,7 +319,10 @@ object DiscoverKnowledge : Mechanism() {
                 projectDifficulty = basicResearchProjectData.difficulty,
                 projectReferenceBasicResearchIdList = basicResearchProjectData.referenceBasicResearchIdList,
                 projectReferenceAppliedResearchIdList = basicResearchProjectData.referenceAppliedResearchIdList,
-                mutableInstituteData = mutableInstituteData,
+                organizationXCor = mutableInstituteData.xCor,
+                organizationYCor = mutableInstituteData.yCor,
+                organizationRange = mutableInstituteData.range,
+                organizationStrength = mutableInstituteData.strength,
                 mutablePlayerScienceData = mutablePlayerScienceData,
                 strengthFactor = 4.0,
             )
@@ -303,6 +330,77 @@ object DiscoverKnowledge : Mechanism() {
             if (success) {
                 mutablePlayerScienceData.knownBasicResearchProject(
                     basicResearchProjectData,
+                )
+            }
+        }
+    }
+
+
+    /**
+     * Update basic research discovery
+     */
+    fun updateAppliedResearchDiscovery(
+        gamma: Double,
+        mutableLaboratoryData: MutableLaboratoryData,
+        mutablePlayerScienceData: MutablePlayerScienceData,
+        universeScienceData: UniverseScienceData,
+    ) {
+        // Done new project
+        universeScienceData.appliedResearchProjectDataMap.values.filter { appliedResearchProjectData ->
+            !mutablePlayerScienceData.doneAppliedResearchProjectList.any {
+                it.appliedResearchId == appliedResearchProjectData.appliedResearchId
+            }
+        }.forEach { appliedResearchProjectData ->
+            val success: Boolean = isResearchSuccess(
+                gamma = gamma,
+                projectXCor = appliedResearchProjectData.xCor,
+                projectYCor = appliedResearchProjectData.yCor,
+                projectDifficulty = appliedResearchProjectData.difficulty,
+                projectReferenceBasicResearchIdList = appliedResearchProjectData.referenceBasicResearchIdList,
+                projectReferenceAppliedResearchIdList = appliedResearchProjectData.referenceAppliedResearchIdList,
+                organizationXCor = mutableLaboratoryData.xCor,
+                organizationYCor = mutableLaboratoryData.yCor,
+                organizationRange = mutableLaboratoryData.range,
+                organizationStrength = mutableLaboratoryData.strength,
+                mutablePlayerScienceData = mutablePlayerScienceData,
+            )
+
+            if (success) {
+                mutablePlayerScienceData.doneAppliedResearchProject(
+                    appliedResearchProjectData,
+                    DefaultUniverseScienceDataProcess.appliedResearchProjectFunction()
+                )
+            }
+        }
+
+        // Know new project
+        universeScienceData.appliedResearchProjectDataMap.values.filter { appliedResearchProjectData ->
+
+            val allProject: List<AppliedResearchProjectData> =
+                mutablePlayerScienceData.doneAppliedResearchProjectList + mutablePlayerScienceData.knownAppliedResearchProjectList
+
+            !allProject.any {
+                it.appliedResearchId == appliedResearchProjectData.appliedResearchId
+            }
+        }.forEach { appliedResearchProjectData ->
+            val success: Boolean = isResearchSuccess(
+                gamma = gamma,
+                projectXCor = appliedResearchProjectData.xCor,
+                projectYCor = appliedResearchProjectData.yCor,
+                projectDifficulty = appliedResearchProjectData.difficulty,
+                projectReferenceBasicResearchIdList = appliedResearchProjectData.referenceBasicResearchIdList,
+                projectReferenceAppliedResearchIdList = appliedResearchProjectData.referenceAppliedResearchIdList,
+                organizationXCor = mutableLaboratoryData.xCor,
+                organizationYCor = mutableLaboratoryData.yCor,
+                organizationRange = mutableLaboratoryData.range,
+                organizationStrength = mutableLaboratoryData.strength,
+                mutablePlayerScienceData = mutablePlayerScienceData,
+                strengthFactor = 4.0,
+            )
+
+            if (success) {
+                mutablePlayerScienceData.knownAppliedResearchProject(
+                    appliedResearchProjectData,
                 )
             }
         }
