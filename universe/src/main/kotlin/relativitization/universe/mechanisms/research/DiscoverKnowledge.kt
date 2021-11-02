@@ -23,6 +23,7 @@ import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.math.PI
 import kotlin.math.log2
 import kotlin.math.min
+import kotlin.math.pow
 import kotlin.random.Random
 
 object DiscoverKnowledge : Mechanism() {
@@ -258,8 +259,11 @@ object DiscoverKnowledge : Mechanism() {
             0.0
         }
 
+        // Probability adjusted by time dilation
+        val actualProb: Double = 1.0 - (1.0 - prob).pow(1.0 / gamma)
+
         // The probability is affected by time dilation, i.e. gamma
-        val success: Boolean = Random.Default.nextDouble() < (prob / gamma)
+        val success: Boolean = Random.Default.nextDouble() < actualProb
 
         return inRange && success
     }
