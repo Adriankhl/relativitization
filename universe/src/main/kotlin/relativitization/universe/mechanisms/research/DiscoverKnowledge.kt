@@ -11,9 +11,7 @@ import relativitization.universe.data.components.popsystem.pop.engineer.MutableE
 import relativitization.universe.data.components.popsystem.pop.engineer.laboratory.MutableLaboratoryData
 import relativitization.universe.data.components.popsystem.pop.scholar.MutableScholarPopData
 import relativitization.universe.data.components.popsystem.pop.scholar.institute.MutableInstituteData
-import relativitization.universe.data.components.science.knowledge.AppliedResearchData
 import relativitization.universe.data.components.science.knowledge.BasicResearchProjectData
-import relativitization.universe.data.components.science.knowledge.MutableKnowledgeData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.global.science.default.DefaultUniverseScienceDataProcess
 import relativitization.universe.maths.algebra.Logistic
@@ -47,6 +45,13 @@ object DiscoverKnowledge : Mechanism() {
                     mutableCarrierData.allPopData.scholarPopData,
                     mutableInstituteData,
                     mutablePlayerData.playerInternalData.economyData().resourceData
+                )
+
+                updateBasicResearchDiscovery(
+                    gamma = gamma,
+                    mutableInstituteData = mutableInstituteData,
+                    mutablePlayerScienceData = mutablePlayerData.playerInternalData.playerScienceData(),
+                    universeScienceData = universeGlobalData.getScienceData(),
                 )
             }
         }
@@ -248,13 +253,13 @@ object DiscoverKnowledge : Mechanism() {
         mutablePlayerScienceData: MutablePlayerScienceData,
         universeScienceData: UniverseScienceData,
     ) {
-        // Done project
+        // Done new project
         universeScienceData.basicResearchProjectDataMap.values.filter { basicResearchProjectData ->
             !mutablePlayerScienceData.doneBasicResearchProjectList.any {
                 it.basicResearchId == basicResearchProjectData.basicResearchId
             }
         }.forEach { basicResearchProjectData ->
-            val doneProject: Boolean = isResearchSuccess(
+            val success: Boolean = isResearchSuccess(
                 gamma = gamma,
                 projectXCor = basicResearchProjectData.xCor,
                 projectYCor = basicResearchProjectData.yCor,
@@ -265,10 +270,39 @@ object DiscoverKnowledge : Mechanism() {
                 mutablePlayerScienceData = mutablePlayerScienceData,
             )
 
-            if (doneProject) {
+            if (success) {
                 mutablePlayerScienceData.doneBasicResearchProject(
                     basicResearchProjectData,
                     DefaultUniverseScienceDataProcess.basicResearchProjectFunction()
+                )
+            }
+        }
+
+        // Know new project
+        universeScienceData.basicResearchProjectDataMap.values.filter { basicResearchProjectData ->
+
+            val allProject: List<BasicResearchProjectData> =
+                mutablePlayerScienceData.doneBasicResearchProjectList + mutablePlayerScienceData.doneBasicResearchProjectList
+
+            !allProject.any {
+                it.basicResearchId == basicResearchProjectData.basicResearchId
+            }
+        }.forEach { basicResearchProjectData ->
+            val success: Boolean = isResearchSuccess(
+                gamma = gamma,
+                projectXCor = basicResearchProjectData.xCor,
+                projectYCor = basicResearchProjectData.yCor,
+                projectDifficulty = basicResearchProjectData.difficulty,
+                projectReferenceBasicResearchIdList = basicResearchProjectData.referenceBasicResearchIdList,
+                projectReferenceAppliedResearchIdList = basicResearchProjectData.referenceAppliedResearchIdList,
+                mutableInstituteData = mutableInstituteData,
+                mutablePlayerScienceData = mutablePlayerScienceData,
+                strengthFactor = 4.0,
+            )
+
+            if (success) {
+                mutablePlayerScienceData.knownBasicResearchProject(
+                    basicResearchProjectData,
                 )
             }
         }
