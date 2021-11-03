@@ -178,11 +178,11 @@ class TestingFixedMinimal : GenerateUniverse() {
             xCor = -1.0,
             yCor = 2.0,
             range = 1.0,
-            strength = Double.POSITIVE_INFINITY,
+            strength = 1.0,
             reputation = 0.0,
             researchEquipmentPerTime = 0.0,
-            maxNumEmployee = Double.POSITIVE_INFINITY,
-            lastNumEmployee = Double.POSITIVE_INFINITY,
+            maxNumEmployee = Double.MAX_VALUE,
+            lastNumEmployee = Double.MAX_VALUE,
             size = 0.0
         )
         playerData1.playerInternalData.popSystemData().carrierDataMap.getValue(

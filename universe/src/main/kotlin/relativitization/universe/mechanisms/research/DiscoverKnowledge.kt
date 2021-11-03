@@ -87,9 +87,9 @@ object DiscoverKnowledge : Mechanism() {
         equipmentQuality: ResourceQualityData
     ): Double {
 
-        val humanPower: Double = log2(numEmployee) * educationLevel
+        val humanPower: Double = log2(numEmployee + 1.0) * educationLevel
 
-        val machinePower: Double = log2(equipmentAmount) * equipmentQuality.mag()
+        val machinePower: Double = log2(equipmentAmount + 1.0) * equipmentQuality.mag()
 
         return (humanPower + machinePower) * 0.5
     }
