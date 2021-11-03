@@ -175,14 +175,14 @@ class TestingFixedMinimal : GenerateUniverse() {
 
         // Add a research institute with infinite power to player 1
         val mutableInstitute: MutableInstituteData = MutableInstituteData(
-            xCor = 0.0,
-            yCor = 0.0,
-            range = 0.0,
-            strength = 0.0,
+            xCor = -1.0,
+            yCor = 2.0,
+            range = 1.0,
+            strength = Double.POSITIVE_INFINITY,
             reputation = 0.0,
             researchEquipmentPerTime = 0.0,
-            maxNumEmployee = 0.0,
-            lastNumEmployee = 0.0,
+            maxNumEmployee = Double.POSITIVE_INFINITY,
+            lastNumEmployee = Double.POSITIVE_INFINITY,
             size = 0.0
         )
         playerData1.playerInternalData.popSystemData().carrierDataMap.getValue(

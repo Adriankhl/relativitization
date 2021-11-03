@@ -264,7 +264,7 @@ object DiscoverKnowledge : Mechanism() {
 
         // Probability of successfully complete the project
         val prob: Double = if (actualStrength > 0.0) {
-            Logistic.standardLogistic(log2(projectDifficulty / actualStrength))
+            Logistic.standardLogistic(log2(actualStrength / projectDifficulty))
         } else {
             0.0
         }
