@@ -14,6 +14,7 @@ import relativitization.universe.data.components.science.knowledge.AppliedResear
 import relativitization.universe.data.components.science.knowledge.AppliedResearchProjectData
 import relativitization.universe.data.components.science.knowledge.BasicResearchField
 import relativitization.universe.data.components.science.knowledge.BasicResearchProjectData
+import relativitization.universe.data.global.MutableUniverseGlobalData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.data.serializer.DataSerializer.copy
 import relativitization.universe.generate.GenerateSettings
@@ -177,7 +178,7 @@ class TestingFixedMinimal : GenerateUniverse() {
         val mutableInstitute: MutableInstituteData = MutableInstituteData(
             xCor = -1.0,
             yCor = 2.0,
-            range = 1.0,
+            range = 0.25,
             strength = 1.0,
             reputation = 0.0,
             researchEquipmentPerTime = 0.0,

@@ -52,8 +52,8 @@ object DefaultMechanismList : MechanismList() {
         ResourceFactoryProduction,
         ExportResource,
         UpdateModifierTime,
-        SyncPlayerScienceData,
         DiscoverKnowledge,
+        SyncPlayerScienceData,
         UpdateScienceProductData,
     )
 }

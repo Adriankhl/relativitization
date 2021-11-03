@@ -30,5 +30,12 @@ internal class DiscoverKnowledgeTest {
             )
             universe.preProcessUniverse()
         }
+
+        val view8: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
+
+
+        assert(view8.get(1).playerInternalData.playerScienceData().doneBasicResearchProjectList.any {
+            it.basicResearchId == 2
+        })
     }
 }
