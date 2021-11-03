@@ -18,6 +18,10 @@ internal class DiscoverKnowledgeTest {
             it.basicResearchId == 2
         })
 
+        assert(!view7.get(1).playerInternalData.playerScienceData().doneAppliedResearchProjectList.any {
+            it.appliedResearchId == 2
+        })
+
 
         runBlocking {
             universe.postProcessUniverse(mapOf(
@@ -33,9 +37,12 @@ internal class DiscoverKnowledgeTest {
 
         val view8: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
 
-
+        // There is a small probability to fail, since research is not guarantee to success
         assert(view8.get(1).playerInternalData.playerScienceData().doneBasicResearchProjectList.any {
             it.basicResearchId == 2
+        })
+        assert(view8.get(1).playerInternalData.playerScienceData().doneAppliedResearchProjectList.any {
+            it.appliedResearchId == 2
         })
     }
 }

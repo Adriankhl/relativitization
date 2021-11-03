@@ -6,6 +6,7 @@ import relativitization.universe.data.*
 import relativitization.universe.data.components.economy.MutableResourceQualityData
 import relativitization.universe.data.components.economy.ResourceType
 import relativitization.universe.data.components.physics.MutableInt4D
+import relativitization.universe.data.components.popsystem.pop.engineer.laboratory.MutableLaboratoryData
 import relativitization.universe.data.components.popsystem.pop.labourer.factory.MutableFuelFactoryData
 import relativitization.universe.data.components.popsystem.pop.labourer.factory.MutableFuelFactoryInternalData
 import relativitization.universe.data.components.popsystem.pop.labourer.factory.MutableResourceFactoryInternalData
@@ -94,87 +95,94 @@ class TestingFixedMinimal : GenerateUniverse() {
         playerData3.playerInternalData.aiData().aiName = EmptyAI.name()
         playerData4.playerInternalData.aiData().aiName = EmptyAI.name()
 
+        // Create basic and applied project
+        val basic0 = BasicResearchProjectData(
+            basicResearchId = 0,
+            basicResearchField = BasicResearchField.MATHEMATICS,
+            xCor = -1.0,
+            yCor = -1.0,
+            difficulty = 1.0,
+            significance = 1.0,
+            referenceBasicResearchIdList = listOf(),
+            referenceAppliedResearchIdList = listOf()
+        )
+        val basic1 = BasicResearchProjectData(
+            basicResearchId = 1,
+            basicResearchField = BasicResearchField.MATHEMATICS,
+            xCor = -1.0,
+            yCor = 1.0,
+            difficulty = 1.0,
+            significance = 1.0,
+            referenceBasicResearchIdList = listOf(0),
+            referenceAppliedResearchIdList = listOf(0)
+        )
+        val basic2 = BasicResearchProjectData(
+            basicResearchId = 2,
+            basicResearchField = BasicResearchField.MATHEMATICS,
+            xCor = -1.0,
+            yCor = 2.0,
+            difficulty = 1.0,
+            significance = 1.0,
+            referenceBasicResearchIdList = listOf(0, 1),
+            referenceAppliedResearchIdList = listOf(0, 1)
+        )
+        val applied0 = AppliedResearchProjectData(
+            appliedResearchId = 0,
+            appliedResearchField = AppliedResearchField.ENERGY_TECHNOLOGY,
+            xCor = 1.0,
+            yCor = -1.0,
+            difficulty = 1.0,
+            significance = 1.0,
+            referenceBasicResearchIdList = listOf(),
+            referenceAppliedResearchIdList = listOf()
+        )
+        val applied1 = AppliedResearchProjectData(
+            appliedResearchId = 1,
+            appliedResearchField = AppliedResearchField.ENERGY_TECHNOLOGY,
+            xCor = 1.0,
+            yCor = 1.0,
+            difficulty = 1.0,
+            significance = 1.0,
+            referenceBasicResearchIdList = listOf(0, 1),
+            referenceAppliedResearchIdList = listOf(0)
+        )
+        val applied2 = AppliedResearchProjectData(
+            appliedResearchId = 2,
+            appliedResearchField = AppliedResearchField.ENERGY_TECHNOLOGY,
+            xCor = 1.0,
+            yCor = 2.0,
+            difficulty = 1.0,
+            significance = 1.0,
+            referenceBasicResearchIdList = listOf(0, 1, 2),
+            referenceAppliedResearchIdList = listOf(0, 1)
+        )
+
         // Add mathematics and energy project to player
-        // Should sync to universe project at turn 3 since this has not been added to universe
-        // science data
+        // Also need to add to universe science data later
         playerData1.playerInternalData.playerScienceData().doneBasicResearchProject(
-            BasicResearchProjectData(
-                basicResearchId = 0,
-                basicResearchField = BasicResearchField.MATHEMATICS,
-                xCor = -1.0,
-                yCor = -1.0,
-                difficulty = 1.0,
-                significance = 1.0,
-                referenceBasicResearchIdList = listOf(),
-                referenceAppliedResearchIdList = listOf()
-            ),
+            basic0,
             DefaultUniverseScienceDataProcess.basicResearchProjectFunction()
         )
         playerData1.playerInternalData.playerScienceData().doneAppliedResearchProject(
-            AppliedResearchProjectData(
-                appliedResearchId = 0,
-                appliedResearchField = AppliedResearchField.ENERGY_TECHNOLOGY,
-                xCor = 1.0,
-                yCor = -1.0,
-                difficulty = 1.0,
-                significance = 1.0,
-                referenceBasicResearchIdList = listOf(),
-                referenceAppliedResearchIdList = listOf()
-            ),
+            applied0,
             DefaultUniverseScienceDataProcess.appliedResearchProjectFunction()
         )
         playerData1.playerInternalData.playerScienceData().doneBasicResearchProject(
-            BasicResearchProjectData(
-                basicResearchId = 1,
-                basicResearchField = BasicResearchField.MATHEMATICS,
-                xCor = -1.0,
-                yCor = 1.0,
-                difficulty = 1.0,
-                significance = 1.0,
-                referenceBasicResearchIdList = listOf(0),
-                referenceAppliedResearchIdList = listOf(0)
-            ),
+            basic1,
             DefaultUniverseScienceDataProcess.basicResearchProjectFunction()
         )
         playerData1.playerInternalData.playerScienceData().doneAppliedResearchProject(
-            AppliedResearchProjectData(
-                appliedResearchId = 1,
-                appliedResearchField = AppliedResearchField.ENERGY_TECHNOLOGY,
-                xCor = 1.0,
-                yCor = 1.0,
-                difficulty = 1.0,
-                significance = 1.0,
-                referenceBasicResearchIdList = listOf(0, 1),
-                referenceAppliedResearchIdList = listOf(0)
-            ),
+            applied1,
             DefaultUniverseScienceDataProcess.appliedResearchProjectFunction()
         )
         playerData1.playerInternalData.playerScienceData().knownBasicResearchProject(
-            BasicResearchProjectData(
-                basicResearchId = 2,
-                basicResearchField = BasicResearchField.MATHEMATICS,
-                xCor = -1.0,
-                yCor = 2.0,
-                difficulty = 1.0,
-                significance = 1.0,
-                referenceBasicResearchIdList = listOf(0, 1),
-                referenceAppliedResearchIdList = listOf(0, 1)
-            )
+            basic2
         )
         playerData1.playerInternalData.playerScienceData().knownAppliedResearchProject(
-            AppliedResearchProjectData(
-                appliedResearchId = 2,
-                appliedResearchField = AppliedResearchField.ENERGY_TECHNOLOGY,
-                xCor = 1.0,
-                yCor = 2.0,
-                difficulty = 1.0,
-                significance = 1.0,
-                referenceBasicResearchIdList = listOf(0, 1, 2),
-                referenceAppliedResearchIdList = listOf(0, 1)
-            )
+            applied2
         )
 
-        // Add a research institute with infinite power to player 1
+        // Add a research institute with high research power to player 1
         val mutableInstitute: MutableInstituteData = MutableInstituteData(
             xCor = -1.0,
             yCor = 2.0,
@@ -189,6 +197,23 @@ class TestingFixedMinimal : GenerateUniverse() {
         playerData1.playerInternalData.popSystemData().carrierDataMap.getValue(
             0
         ).allPopData.scholarPopData.addInstitute(mutableInstitute)
+
+        // Add a laboratory to player 1
+        val mutableLaboratoryData: MutableLaboratoryData = MutableLaboratoryData(
+            xCor = 1.0,
+            yCor = 2.0,
+            range = 0.25,
+            strength = 0.0,
+            reputation = 0.0,
+            researchEquipmentPerTime = 0.0,
+            maxNumEmployee = Double.MAX_VALUE,
+            lastNumEmployee = Double.MAX_VALUE,
+            size = 0.0
+        )
+        playerData1.playerInternalData.popSystemData().carrierDataMap.getValue(
+            0
+        ).allPopData.engineerPopData.addLaboratory(mutableLaboratoryData)
+
 
         // Add ideal fuel factory to player 1
         playerData1.playerInternalData.playerScienceData().playerScienceProductData.idealFuelFactory =
@@ -264,12 +289,23 @@ class TestingFixedMinimal : GenerateUniverse() {
             universeSettings.playerAfterImageDuration
         )
 
+        // Add project to universe science data
+        val mutableUniverseScienceData = MutableUniverseScienceData()
+        mutableUniverseScienceData.addBasicResearchProjectData(basic0)
+        mutableUniverseScienceData.addBasicResearchProjectData(basic1)
+        mutableUniverseScienceData.addBasicResearchProjectData(basic2)
+        mutableUniverseScienceData.addAppliedResearchProjectData(applied0)
+        mutableUniverseScienceData.addAppliedResearchProjectData(applied1)
+        mutableUniverseScienceData.addAppliedResearchProjectData(applied2)
+
         return UniverseData(
             universeData4D = copy(data),
             universeSettings = universeSettings,
             universeState = universeState,
             commandMap = mutableMapOf(),
-            universeGlobalData = UniverseGlobalData(),
+            universeGlobalData = UniverseGlobalData(
+                universeScienceData = copy(mutableUniverseScienceData)
+            ),
         )
     }
 }
