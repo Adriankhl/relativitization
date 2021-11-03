@@ -14,6 +14,7 @@
 * New carrier
 * New player
 * Basic military
+* Sync leader data to subordinate, i.e., enemy
 * AI state store last command to subordinate
 * AI
 
