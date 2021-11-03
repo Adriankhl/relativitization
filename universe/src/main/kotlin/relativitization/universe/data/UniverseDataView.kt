@@ -7,6 +7,8 @@ import relativitization.universe.data.components.physics.Int4D
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.maths.grid.Grids.create3DGrid
 import relativitization.universe.utils.RelativitizationLogManager
+import kotlin.math.max
+import kotlin.math.min
 
 @Serializable
 data class UniverseData3DAtGrid(
@@ -114,6 +116,8 @@ data class UniverseData3DAtPlayer(
 
     /**
      * Get set of player data by Int3D
+     *
+     * @return a map from group id to player data
      */
     fun get(int3D: Int3D): Map<Int, List<PlayerData>> {
         return if (isInt3DValid(int3D)) {
@@ -134,13 +138,34 @@ data class UniverseData3DAtPlayer(
     }
 
     /**
-     * Get neighbour of current player
+     * Get neighbour player in the same group, excluding self
      */
     fun getNeighbour(): List<PlayerData> {
         val currentPlayer: PlayerData = getCurrentPlayerData()
         return get(currentPlayer.int4D.toInt3D()).getValue(currentPlayer.groupId).filter {
             // Filter out afterimage player data, which have different t coordinate
-            it.int4D.t == currentPlayer.int4D.t
+            (it.int4D.t == currentPlayer.int4D.t) && (it.playerId != currentPlayer.playerId)
+        }
+    }
+
+    /**
+     * Get neighbour player within a cube containing current player, excluding self
+     *
+     * @param range half of the length of the cube
+     *
+     */
+    fun getNeighbour(range: Int): List<PlayerData> {
+        val currentPlayer: PlayerData = getCurrentPlayerData()
+        val int3D: Int3D = currentPlayer.int4D.toInt3D()
+
+        return (max(int3D.x - range, 0)..min(int3D.x + range, universeSettings.xDim - 1)).map { x ->
+            (max(int3D.y - range, 0)..min(int3D.y + range, universeSettings.yDim - 1)).map {  y ->
+                (max(int3D.z - range, 0)..min(int3D.z + range, universeSettings.zDim - 1)).map { z ->
+                    get(Int3D(x, y, z)).values
+                }
+            }
+        }.flatten().flatten().flatten().flatten().filter {
+            it.playerId != currentPlayer.playerId
         }
     }
 
