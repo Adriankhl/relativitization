@@ -210,11 +210,13 @@ object DiscoverKnowledge : Mechanism() {
         mutablePlayerScienceData: MutablePlayerScienceData,
         strengthFactor: Double = 1.0,
     ): Boolean {
-        val area: Double = if (organizationRange > 0.0) {
+
+        // Minimum range is 0.25
+        val area: Double = if (organizationRange > 0.25) {
             organizationRange * organizationRange * PI
         } else {
-            logger.error("Institute range smaller than zero")
-            1.0
+            logger.error("Institute range smaller than 0.25")
+            0.25 * 0.25 * PI
         }
 
         val averageStrength: Double = organizationStrength / area
