@@ -228,7 +228,8 @@ object DiscoverKnowledge : Mechanism() {
             organizationYCor
         ) <= organizationRange
 
-        val doneReferenceFraction: Double =
+        // More done related research, higher this factor
+        val doneReferenceFactor: Double =
             if (projectReferenceBasicResearchIdList.isNotEmpty() ||
                 projectReferenceAppliedResearchIdList.isNotEmpty()
             ) {
@@ -247,12 +248,19 @@ object DiscoverKnowledge : Mechanism() {
                 val total: Int =
                     projectReferenceBasicResearchIdList.size + projectReferenceAppliedResearchIdList.size
 
-                (numBasic + numApplied).toDouble() / total.toDouble()
+                val factor: Double = (numBasic + numApplied).toDouble() / total.toDouble()
+
+                // Minimum factor to 0.01, there is a chance to discover this even if no reference is there
+                if (factor > 0.01) {
+                    factor
+                } else {
+                    0.01
+                }
             } else {
                 1.0
             }
 
-        val actualStrength: Double = averageStrength * doneReferenceFraction * strengthFactor
+        val actualStrength: Double = averageStrength * doneReferenceFactor * strengthFactor
 
         // Probability of successfully complete the project
         val prob: Double = if (actualStrength > 0.0) {

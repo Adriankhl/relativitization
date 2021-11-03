@@ -9,6 +9,7 @@ import relativitization.universe.data.components.physics.MutableInt4D
 import relativitization.universe.data.components.popsystem.pop.labourer.factory.MutableFuelFactoryData
 import relativitization.universe.data.components.popsystem.pop.labourer.factory.MutableFuelFactoryInternalData
 import relativitization.universe.data.components.popsystem.pop.labourer.factory.MutableResourceFactoryInternalData
+import relativitization.universe.data.components.popsystem.pop.scholar.institute.MutableInstituteData
 import relativitization.universe.data.components.science.knowledge.AppliedResearchField
 import relativitization.universe.data.components.science.knowledge.AppliedResearchProjectData
 import relativitization.universe.data.components.science.knowledge.BasicResearchField
@@ -171,6 +172,22 @@ class TestingFixedMinimal : GenerateUniverse() {
                 referenceAppliedResearchIdList = listOf(0, 1)
             )
         )
+
+        // Add a research institute with infinite power to player 1
+        val mutableInstitute: MutableInstituteData = MutableInstituteData(
+            xCor = 0.0,
+            yCor = 0.0,
+            range = 0.0,
+            strength = 0.0,
+            reputation = 0.0,
+            researchEquipmentPerTime = 0.0,
+            maxNumEmployee = 0.0,
+            lastNumEmployee = 0.0,
+            size = 0.0
+        )
+        playerData1.playerInternalData.popSystemData().carrierDataMap.getValue(
+            0
+        ).allPopData.scholarPopData.addInstitute(mutableInstitute)
 
         // Add ideal fuel factory to player 1
         playerData1.playerInternalData.playerScienceData().playerScienceProductData.idealFuelFactory =
