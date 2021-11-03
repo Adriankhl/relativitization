@@ -25,7 +25,7 @@ object ResourceFactoryProduction : Mechanism() {
         universeGlobalData: UniverseGlobalData
     ): List<Command> {
         val gamma: Double = Relativistic.gamma(
-            mutablePlayerData.velocity.toVelocity(),
+            universeData3DAtPlayer.getCurrentPlayerData().velocity,
             universeSettings.speedOfLight
         )
 
