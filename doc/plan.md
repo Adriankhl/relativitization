@@ -5,7 +5,7 @@
 
 # TODO list
 * Pop daily need
-* Salary
+* Salary, and allocate pop to factory, institute and lab
 * Tax and tariff
 * Research
 * How research affect product
@@ -14,7 +14,7 @@
 * New carrier
 * New player
 * Basic military
-* Sync leader data to subordinate, i.e., enemy
+* Sync leader data to subordinate, e.g., enemy
 * AI state store last command to subordinate
 * AI
 
