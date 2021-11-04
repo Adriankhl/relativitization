@@ -3,6 +3,7 @@ package relativitization.universe.mechanisms.research
 import relativitization.universe.data.*
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.components.MutablePlayerScienceData
+import relativitization.universe.data.components.PlayerScienceData
 import relativitization.universe.data.components.economy.MutableResourceData
 import relativitization.universe.data.components.economy.ResourceQualityClass
 import relativitization.universe.data.components.economy.ResourceQualityData
@@ -53,6 +54,7 @@ object DiscoverKnowledge : Mechanism() {
                     gamma = gamma,
                     mutableInstituteData = mutableInstituteData,
                     mutablePlayerScienceData = mutablePlayerData.playerInternalData.playerScienceData(),
+                    playerScienceData = universeData3DAtPlayer.getCurrentPlayerData().playerInternalData.playerScienceData(),
                     universeScienceData = universeGlobalData.getScienceData(),
                 )
             }
@@ -72,6 +74,7 @@ object DiscoverKnowledge : Mechanism() {
                     gamma = gamma,
                     mutableLaboratoryData = mutableLaboratoryData,
                     mutablePlayerScienceData = mutablePlayerData.playerInternalData.playerScienceData(),
+                    playerScienceData = universeData3DAtPlayer.getCurrentPlayerData().playerInternalData.playerScienceData(),
                     universeScienceData = universeGlobalData.getScienceData(),
                 )
             }
@@ -207,7 +210,7 @@ object DiscoverKnowledge : Mechanism() {
         organizationYCor: Double,
         organizationRange: Double,
         organizationStrength: Double,
-        mutablePlayerScienceData: MutablePlayerScienceData,
+        playerScienceData: PlayerScienceData,
         strengthFactor: Double = 1.0,
     ): Boolean {
 
@@ -234,13 +237,13 @@ object DiscoverKnowledge : Mechanism() {
                 projectReferenceAppliedResearchIdList.isNotEmpty()
             ) {
                 val numBasic: Int = projectReferenceBasicResearchIdList.filter { id ->
-                    mutablePlayerScienceData.doneBasicResearchProjectList.any {
+                    playerScienceData.doneBasicResearchProjectList.any {
                         it.basicResearchId == id
                     }
                 }.size
 
                 val numApplied: Int = projectReferenceAppliedResearchIdList.filter { id ->
-                    mutablePlayerScienceData.doneAppliedResearchProjectList.any {
+                    playerScienceData.doneAppliedResearchProjectList.any {
                         it.appliedResearchId == id
                     }
                 }.size
@@ -286,6 +289,7 @@ object DiscoverKnowledge : Mechanism() {
         gamma: Double,
         mutableInstituteData: MutableInstituteData,
         mutablePlayerScienceData: MutablePlayerScienceData,
+        playerScienceData: PlayerScienceData,
         universeScienceData: UniverseScienceData,
     ) {
         // Done new project
@@ -305,7 +309,7 @@ object DiscoverKnowledge : Mechanism() {
                 organizationYCor = mutableInstituteData.yCor,
                 organizationRange = mutableInstituteData.range,
                 organizationStrength = mutableInstituteData.strength,
-                mutablePlayerScienceData = mutablePlayerScienceData,
+                playerScienceData = playerScienceData,
             )
 
             if (success) {
@@ -337,7 +341,7 @@ object DiscoverKnowledge : Mechanism() {
                 organizationYCor = mutableInstituteData.yCor,
                 organizationRange = mutableInstituteData.range,
                 organizationStrength = mutableInstituteData.strength,
-                mutablePlayerScienceData = mutablePlayerScienceData,
+                playerScienceData = playerScienceData,
                 strengthFactor = 4.0,
             )
 
@@ -357,6 +361,7 @@ object DiscoverKnowledge : Mechanism() {
         gamma: Double,
         mutableLaboratoryData: MutableLaboratoryData,
         mutablePlayerScienceData: MutablePlayerScienceData,
+        playerScienceData: PlayerScienceData,
         universeScienceData: UniverseScienceData,
     ) {
         // Done new project
@@ -376,7 +381,7 @@ object DiscoverKnowledge : Mechanism() {
                 organizationYCor = mutableLaboratoryData.yCor,
                 organizationRange = mutableLaboratoryData.range,
                 organizationStrength = mutableLaboratoryData.strength,
-                mutablePlayerScienceData = mutablePlayerScienceData,
+                playerScienceData = playerScienceData,
             )
 
             if (success) {
@@ -408,7 +413,7 @@ object DiscoverKnowledge : Mechanism() {
                 organizationYCor = mutableLaboratoryData.yCor,
                 organizationRange = mutableLaboratoryData.range,
                 organizationStrength = mutableLaboratoryData.strength,
-                mutablePlayerScienceData = mutablePlayerScienceData,
+                playerScienceData = playerScienceData,
                 strengthFactor = 4.0,
             )
 
