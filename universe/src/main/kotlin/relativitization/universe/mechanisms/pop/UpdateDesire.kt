@@ -61,6 +61,7 @@ object UpdateDesire : Mechanism() {
                 ResourceType.CLOTH,
                 ResourceType.HOUSEHOLD_GOOD,
                 ResourceType.ENTERTAINMENT,
+                ResourceType.MEDICINE,
             )
             PopType.SERVICE_WORKER -> listOf(
                 ResourceType.FOOD,
@@ -79,6 +80,7 @@ object UpdateDesire : Mechanism() {
                 ResourceType.CLOTH,
                 ResourceType.HOUSEHOLD_GOOD,
                 ResourceType.ENTERTAINMENT,
+                ResourceType.AMMUNITION,
             )
         }
     }
