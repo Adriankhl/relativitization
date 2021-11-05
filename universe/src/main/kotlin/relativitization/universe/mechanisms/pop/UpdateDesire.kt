@@ -100,9 +100,14 @@ object UpdateDesire : Mechanism() {
         changeFactor: Double,
     ): MutableResourceQualityData {
         return if (mutableCommonPopData.desireResourceMap.containsKey(resourceType)) {
-            val newDesire: MutableResourceDesireData = mutableCommonPopData.lastDesireResourceMap.getValue(resourceType)
+            if (mutableCommonPopData.lastDesireResourceMap.containsKey(resourceType)) {
+                val oldQuality: MutableResourceQualityData = mutableCommonPopData.desireResourceMap.getValue(resourceType).desireQuality
+                val newQuality: MutableResourceQualityData = mutableCommonPopData.lastDesireResourceMap.getValue(resourceType).desireQuality
 
-            MutableResourceQualityData()
+                oldQuality + (newQuality - oldQuality) * changeFactor
+            } else {
+                mutableCommonPopData.desireResourceMap.getValue(resourceType).desireQuality * (1.0 - changeFactor)
+            }
         } else {
             if (mutableCommonPopData.lastDesireResourceMap.containsKey(resourceType)) {
                 mutableCommonPopData.lastDesireResourceMap.getValue(resourceType).desireQuality * changeFactor
