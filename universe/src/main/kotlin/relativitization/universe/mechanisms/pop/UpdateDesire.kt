@@ -20,9 +20,30 @@ object UpdateDesire : Mechanism() {
         universeSettings: UniverseSettings,
         universeGlobalData: UniverseGlobalData
     ): List<Command> {
+        val changeFactor: Double = 0.1
+
         mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.forEach { carrier ->
             PopType.values().forEach { popType ->
-                carrier.allPopData
+                val mutableCommonPopData: MutableCommonPopData =
+                    carrier.allPopData.getCommonPopData(popType)
+
+                val desireAmount: Double = computeDesireResourceAmount(
+                    mutableCommonPopData
+                )
+
+                val desireResourceTypeList: List<ResourceType> = computeDesireResourceType(
+                    popType
+                )
+
+                val desireResourceMap: Map<ResourceType, MutableResourceDesireData> = desireResourceTypeList.map {
+                    val desireQualityData: MutableResourceQualityData = computeDesireResourceQuality(
+                        mutableCommonPopData = mutableCommonPopData,
+                        resourceType = it,
+                        changeFactor = 0.1,
+                    )
+
+                    it to MutableResourceDesireData(desireAmount, desireQualityData)
+                }.toMap()
             }
         }
 
@@ -121,5 +142,16 @@ object UpdateDesire : Mechanism() {
                 MutableResourceQualityData()
             }
         }
+    }
+
+    /**
+     * Compute statisfaction
+     */
+    fun updateSatisfaction(
+        mutableCommonPopData: MutableCommonPopData,
+        popType: PopType,
+        desireResourceTypeList: List<ResourceType>
+    ) {
+
     }
 }
