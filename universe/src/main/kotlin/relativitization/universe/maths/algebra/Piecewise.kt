@@ -24,7 +24,7 @@ object Piecewise {
         else -> Logistic.scaledLogistic(
             x = x - 1.0,
             slope0 = 2.0,
-            yMax = yMax,
-        ) - 0.5 * yMax + 1.0
+            yMax = (yMax - 1.0) * 2.0,
+        ) - (yMax - 1.0) + 1.0
     }
 }
