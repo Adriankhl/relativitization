@@ -145,13 +145,29 @@ object UpdateDesire : Mechanism() {
     }
 
     /**
-     * Compute statisfaction
+     * Compute satisfaction
      */
     fun updateSatisfaction(
         mutableCommonPopData: MutableCommonPopData,
-        popType: PopType,
         desireResourceTypeList: List<ResourceType>
     ) {
+        desireResourceTypeList.map { resourceType ->
+            if (mutableCommonPopData.desireResourceMap.containsKey(resourceType)) {
+                if (mutableCommonPopData.lastDesireResourceMap.containsKey(resourceType)) {
+                    val oldAmount: Double = mutableCommonPopData.desireResourceMap.getValue(resourceType).desireAmount
+                    val newAmount: Double = mutableCommonPopData.lastDesireResourceMap.getValue(resourceType).desireAmount
+                } else {
+                    0.0
+                }
+            } else {
+                val requiredAmount: Double = computeDesireResourceAmount(mutableCommonPopData)
 
+                if (mutableCommonPopData.lastDesireResourceMap.containsKey(resourceType)) {
+                    mutableCommonPopData.lastDesireResourceMap.getValue(resourceType).desireAmount / requiredAmount
+                } else {
+                    0.0
+                }
+            }
+        }
     }
 }
