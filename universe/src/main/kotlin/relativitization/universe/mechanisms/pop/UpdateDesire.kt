@@ -20,6 +20,12 @@ object UpdateDesire : Mechanism() {
         universeSettings: UniverseSettings,
         universeGlobalData: UniverseGlobalData
     ): List<Command> {
+        mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.forEach { carrier ->
+            PopType.values().forEach { popType ->
+                carrier.allPopData
+            }
+        }
+
         return listOf()
     }
 

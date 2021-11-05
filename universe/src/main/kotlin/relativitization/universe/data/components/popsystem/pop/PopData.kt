@@ -54,7 +54,18 @@ data class AllPopData(
     val servicePopData: ServicePopData = ServicePopData(),
     val entertainerPopData: EntertainerPopData = EntertainerPopData(),
     val soldierPopData: SoldierPopData = SoldierPopData(),
-)
+) {
+    fun getCommonPopData(popType: PopType): CommonPopData = when(popType) {
+        PopType.LABOURER -> labourerPopData.commonPopData
+        PopType.ENGINEER -> engineerPopData.commonPopData
+        PopType.SCHOLAR -> scholarPopData.commonPopData
+        PopType.EDUCATOR -> educatorPopData.commonPopData
+        PopType.MEDIC -> medicPopData.commonPopData
+        PopType.SERVICE_WORKER -> servicePopData.commonPopData
+        PopType.ENTERTAINER -> entertainerPopData.commonPopData
+        PopType.SOLDIER -> soldierPopData.commonPopData
+    }
+}
 
 @Serializable
 data class MutableAllPopData(
@@ -67,22 +78,24 @@ data class MutableAllPopData(
     var entertainerPopData: MutableEntertainerPopData = MutableEntertainerPopData(),
     var soldierPopData: MutableSoldierPopData = MutableSoldierPopData(),
 ) {
+    fun getCommonPopData(popType: PopType): MutableCommonPopData = when(popType) {
+        PopType.LABOURER -> labourerPopData.commonPopData
+        PopType.ENGINEER -> engineerPopData.commonPopData
+        PopType.SCHOLAR -> scholarPopData.commonPopData
+        PopType.EDUCATOR -> educatorPopData.commonPopData
+        PopType.MEDIC -> medicPopData.commonPopData
+        PopType.SERVICE_WORKER -> servicePopData.commonPopData
+        PopType.ENTERTAINER -> entertainerPopData.commonPopData
+        PopType.SOLDIER -> soldierPopData.commonPopData
+    }
+
     fun addResource(
         popType: PopType,
         resourceType: ResourceType,
         resourceQualityData: ResourceQualityData,
         resourceAmount: Double
     ) {
-        val commonPopData: MutableCommonPopData = when(popType) {
-            PopType.LABOURER -> labourerPopData.commonPopData
-            PopType.ENGINEER -> engineerPopData.commonPopData
-            PopType.SCHOLAR -> scholarPopData.commonPopData
-            PopType.EDUCATOR -> educatorPopData.commonPopData
-            PopType.MEDIC -> medicPopData.commonPopData
-            PopType.SERVICE_WORKER -> servicePopData.commonPopData
-            PopType.ENTERTAINER -> entertainerPopData.commonPopData
-            PopType.SOLDIER -> soldierPopData.commonPopData
-        }
+        val commonPopData: MutableCommonPopData = getCommonPopData(popType)
 
         commonPopData.addDesireResource(
             resourceType,
