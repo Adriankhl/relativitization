@@ -128,9 +128,9 @@ object UpdateDesire : Mechanism() {
         return if (mutableCommonPopData.desireResourceMap.containsKey(resourceType)) {
             if (mutableCommonPopData.resourceInputMap.containsKey(resourceType)) {
                 val originalQuality: MutableResourceQualityData = mutableCommonPopData.desireResourceMap.getValue(resourceType).desireQuality
-                val newQuality: MutableResourceQualityData = mutableCommonPopData.resourceInputMap.getValue(resourceType).desireQuality
+                val inputQuality: MutableResourceQualityData = mutableCommonPopData.resourceInputMap.getValue(resourceType).desireQuality
 
-                originalQuality + (newQuality - originalQuality) * changeFactor
+                originalQuality + (inputQuality - originalQuality) * changeFactor
             } else {
                 mutableCommonPopData.desireResourceMap.getValue(resourceType).desireQuality * (1.0 - changeFactor)
             }
@@ -150,22 +150,23 @@ object UpdateDesire : Mechanism() {
         mutableCommonPopData: MutableCommonPopData,
         desireResourceTypeList: List<ResourceType>
     ) {
-        desireResourceTypeList.map { resourceType ->
+        val amountFraction: List<Double> = desireResourceTypeList.map { resourceType ->
             if (mutableCommonPopData.desireResourceMap.containsKey(resourceType)) {
                 if (mutableCommonPopData.resourceInputMap.containsKey(resourceType)) {
                     val originalAmount: Double = mutableCommonPopData.desireResourceMap.getValue(resourceType).desireAmount
-                    val newAmount: Double = mutableCommonPopData.resourceInputMap.getValue(resourceType).desireAmount
+                    val inputAmount: Double = mutableCommonPopData.resourceInputMap.getValue(resourceType).desireAmount
 
-
-
+                    if (originalAmount > 0.0) {
+                        inputAmount / originalAmount
+                    } else {
+                        1.0
+                    }
                 } else {
                     0.0
                 }
             } else {
-                val requiredAmount: Double = computeDesireResourceAmount(mutableCommonPopData)
-
                 if (mutableCommonPopData.resourceInputMap.containsKey(resourceType)) {
-                    mutableCommonPopData.resourceInputMap.getValue(resourceType).desireAmount / requiredAmount
+                    1.0
                 } else {
                     0.0
                 }
