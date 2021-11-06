@@ -5,7 +5,6 @@ import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.components.economy.MutableResourceQualityData
-import relativitization.universe.data.components.economy.ResourceQualityData
 import relativitization.universe.data.components.economy.ResourceType
 import relativitization.universe.data.components.popsystem.pop.MutableCommonPopData
 import relativitization.universe.data.components.popsystem.pop.MutableResourceDesireData
@@ -39,7 +38,7 @@ object UpdateDesire : Mechanism() {
                     val desireQualityData: MutableResourceQualityData = computeDesireResourceQuality(
                         mutableCommonPopData = mutableCommonPopData,
                         resourceType = it,
-                        changeFactor = 0.1,
+                        changeFactor = changeFactor,
                     )
 
                     it to MutableResourceDesireData(desireAmount, desireQualityData)
@@ -127,17 +126,17 @@ object UpdateDesire : Mechanism() {
         changeFactor: Double,
     ): MutableResourceQualityData {
         return if (mutableCommonPopData.desireResourceMap.containsKey(resourceType)) {
-            if (mutableCommonPopData.lastDesireResourceMap.containsKey(resourceType)) {
-                val oldQuality: MutableResourceQualityData = mutableCommonPopData.desireResourceMap.getValue(resourceType).desireQuality
-                val newQuality: MutableResourceQualityData = mutableCommonPopData.lastDesireResourceMap.getValue(resourceType).desireQuality
+            if (mutableCommonPopData.resourceInputMap.containsKey(resourceType)) {
+                val originalQuality: MutableResourceQualityData = mutableCommonPopData.desireResourceMap.getValue(resourceType).desireQuality
+                val newQuality: MutableResourceQualityData = mutableCommonPopData.resourceInputMap.getValue(resourceType).desireQuality
 
-                oldQuality + (newQuality - oldQuality) * changeFactor
+                originalQuality + (newQuality - originalQuality) * changeFactor
             } else {
                 mutableCommonPopData.desireResourceMap.getValue(resourceType).desireQuality * (1.0 - changeFactor)
             }
         } else {
-            if (mutableCommonPopData.lastDesireResourceMap.containsKey(resourceType)) {
-                mutableCommonPopData.lastDesireResourceMap.getValue(resourceType).desireQuality * changeFactor
+            if (mutableCommonPopData.resourceInputMap.containsKey(resourceType)) {
+                mutableCommonPopData.resourceInputMap.getValue(resourceType).desireQuality * changeFactor
             } else {
                 MutableResourceQualityData()
             }
@@ -153,17 +152,20 @@ object UpdateDesire : Mechanism() {
     ) {
         desireResourceTypeList.map { resourceType ->
             if (mutableCommonPopData.desireResourceMap.containsKey(resourceType)) {
-                if (mutableCommonPopData.lastDesireResourceMap.containsKey(resourceType)) {
-                    val oldAmount: Double = mutableCommonPopData.desireResourceMap.getValue(resourceType).desireAmount
-                    val newAmount: Double = mutableCommonPopData.lastDesireResourceMap.getValue(resourceType).desireAmount
+                if (mutableCommonPopData.resourceInputMap.containsKey(resourceType)) {
+                    val originalAmount: Double = mutableCommonPopData.desireResourceMap.getValue(resourceType).desireAmount
+                    val newAmount: Double = mutableCommonPopData.resourceInputMap.getValue(resourceType).desireAmount
+
+
+
                 } else {
                     0.0
                 }
             } else {
                 val requiredAmount: Double = computeDesireResourceAmount(mutableCommonPopData)
 
-                if (mutableCommonPopData.lastDesireResourceMap.containsKey(resourceType)) {
-                    mutableCommonPopData.lastDesireResourceMap.getValue(resourceType).desireAmount / requiredAmount
+                if (mutableCommonPopData.resourceInputMap.containsKey(resourceType)) {
+                    mutableCommonPopData.resourceInputMap.getValue(resourceType).desireAmount / requiredAmount
                 } else {
                     0.0
                 }
