@@ -10,6 +10,7 @@ import relativitization.universe.mechanisms.events.AutoEventCollection
 import relativitization.universe.mechanisms.events.ProcessEvents
 import relativitization.universe.mechanisms.logistics.ExportResource
 import relativitization.universe.mechanisms.modifier.UpdateModifierTime
+import relativitization.universe.mechanisms.pop.UpdateDesire
 import relativitization.universe.mechanisms.production.FuelFactoryProduction
 import relativitization.universe.mechanisms.production.ResourceFactoryProduction
 import relativitization.universe.mechanisms.research.DiscoverKnowledge
@@ -49,6 +50,7 @@ object DefaultMechanismList : MechanismList() {
     override val mechanismList: List<Mechanism> = listOf(
         AutoEventCollection,
         ProcessEvents,
+        UpdateDesire,
         FuelFactoryProduction,
         ResourceFactoryProduction,
         ExportResource,
