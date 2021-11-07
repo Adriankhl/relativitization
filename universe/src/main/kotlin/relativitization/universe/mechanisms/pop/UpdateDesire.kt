@@ -10,6 +10,8 @@ import relativitization.universe.data.components.popsystem.pop.MutableCommonPopD
 import relativitization.universe.data.components.popsystem.pop.MutableResourceDesireData
 import relativitization.universe.data.components.popsystem.pop.PopType
 import relativitization.universe.data.global.UniverseGlobalData
+import relativitization.universe.maths.algebra.Logistic
+import relativitization.universe.maths.algebra.Piecewise
 import relativitization.universe.mechanisms.Mechanism
 
 object UpdateDesire : Mechanism() {
@@ -21,6 +23,8 @@ object UpdateDesire : Mechanism() {
     ): List<Command> {
         val desireQualityUpdateFactor: Double = 0.2
         val desireQualityUpdateDiff: Double = 0.2
+        val satisfactionMaxDecreaseFactor: Double = 0.2
+        val satisfactionMaxIncreaseDelta: Double = 3.0
 
         mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.forEach { carrier ->
             PopType.values().forEach { popType ->
@@ -45,6 +49,18 @@ object UpdateDesire : Mechanism() {
 
                     it to MutableResourceDesireData(desireAmount, desireQualityData)
                 }.toMap()
+
+                updateSatisfaction(
+                    mutableCommonPopData,
+                    desireResourceTypeList = desireResourceTypeList,
+                    satisfactionMaxDecreaseFactor = satisfactionMaxDecreaseFactor,
+                    satisfactionMaxIncreaseDelta = satisfactionMaxIncreaseDelta,
+                )
+
+                // Update desire and clear input
+                mutableCommonPopData.desireResourceMap.clear()
+                mutableCommonPopData.desireResourceMap.putAll(desireResourceMap)
+                mutableCommonPopData.resourceInputMap.clear()
             }
         }
 
@@ -128,13 +144,13 @@ object UpdateDesire : Mechanism() {
         desireQualityUpdateFactor: Double,
         desireQualityUpdateMinDiff: Double,
     ): MutableResourceQualityData {
-        val originalQuality: MutableResourceDesireData =
+        val originalDesire: MutableResourceDesireData =
             mutableCommonPopData.desireResourceMap.getOrDefault(
                 resourceType,
                 MutableResourceDesireData()
             )
 
-        val inputQuality: MutableResourceDesireData =
+        val inputDesire: MutableResourceDesireData =
             mutableCommonPopData.resourceInputMap.getOrDefault(
                 resourceType,
                 MutableResourceDesireData()
@@ -142,14 +158,14 @@ object UpdateDesire : Mechanism() {
 
         // If sufficient amount, get close to the input quality
         // else decrease the desire quality
-        return if (inputQuality.desireAmount > originalQuality.desireAmount) {
-            originalQuality.desireQuality.changeTo(
-                inputQuality.desireQuality,
+        return if (inputDesire.desireAmount > originalDesire.desireAmount) {
+            originalDesire.desireQuality.changeTo(
+                inputDesire.desireQuality,
                 desireQualityUpdateFactor,
                 desireQualityUpdateMinDiff,
             )
         } else {
-            originalQuality.desireQuality.changeTo(
+            originalDesire.desireQuality.changeTo(
                 MutableResourceQualityData(0.0, 0.0, 0.0),
                 desireQualityUpdateFactor,
                 desireQualityUpdateMinDiff,
@@ -162,29 +178,78 @@ object UpdateDesire : Mechanism() {
      */
     fun updateSatisfaction(
         mutableCommonPopData: MutableCommonPopData,
-        desireResourceTypeList: List<ResourceType>
+        desireResourceTypeList: List<ResourceType>,
+        satisfactionMaxDecreaseFactor: Double,
+        satisfactionMaxIncreaseDelta: Double,
     ) {
-        val amountFraction: List<Double> = desireResourceTypeList.map { resourceType ->
-            if (mutableCommonPopData.desireResourceMap.containsKey(resourceType)) {
-                if (mutableCommonPopData.resourceInputMap.containsKey(resourceType)) {
-                    val originalAmount: Double = mutableCommonPopData.desireResourceMap.getValue(resourceType).desireAmount
-                    val inputAmount: Double = mutableCommonPopData.resourceInputMap.getValue(resourceType).desireAmount
+        val amountFractionList: List<Double> = desireResourceTypeList.map { resourceType ->
+            val originalDesire: MutableResourceDesireData =
+                mutableCommonPopData.desireResourceMap.getOrDefault(
+                    resourceType,
+                    MutableResourceDesireData()
+                )
 
-                    if (originalAmount > 0.0) {
-                        inputAmount / originalAmount
-                    } else {
-                        1.0
-                    }
-                } else {
-                    0.0
-                }
+            val inputDesire: MutableResourceDesireData =
+                mutableCommonPopData.resourceInputMap.getOrDefault(
+                    resourceType,
+                    MutableResourceDesireData()
+                )
+
+            if (originalDesire.desireAmount > 0.0) {
+                inputDesire.desireAmount / originalDesire.desireAmount
             } else {
-                if (mutableCommonPopData.resourceInputMap.containsKey(resourceType)) {
-                    1.0
-                } else {
-                    0.0
-                }
+                1.0
             }
         }
+
+        val qualityFractionList: List<Double> = desireResourceTypeList.map { resourceType ->
+            val originalDesire: MutableResourceDesireData =
+                mutableCommonPopData.desireResourceMap.getOrDefault(
+                    resourceType,
+                    MutableResourceDesireData()
+                )
+
+            val inputDesire: MutableResourceDesireData =
+                mutableCommonPopData.resourceInputMap.getOrDefault(
+                    resourceType,
+                    MutableResourceDesireData()
+                )
+
+            if (originalDesire.desireQuality.square() > 0.0) {
+                inputDesire.desireQuality.mag() / originalDesire.desireQuality.mag()
+            } else {
+                1.0
+            }
+        }
+
+        val originalSatisfaction: Double = mutableCommonPopData.satisfaction
+
+
+        val amountFactor: Double = amountFractionList.fold(1.0) { acc, d ->
+            acc * d
+        }
+
+        // Modify quality factor based on amount factor
+        // If amount factor is small, the impact from quality should be small
+        val qualityFactorWithoutMod: Double = qualityFractionList.fold(1.0) { acc, d ->
+            acc * d
+        }
+        val qualityFactor: Double = if (amountFactor > 1.0) {
+            qualityFactorWithoutMod
+        } else {
+            (qualityFactorWithoutMod - 1.0) * amountFactor + 1.0
+        }
+
+        val overallFactor: Double = amountFactor * qualityFactor
+
+        // Compute the change of satisfaction by piecewise function
+        val deltaSatisfaction: Double = Piecewise.quadLogistic(
+            x = overallFactor,
+            yMin = - satisfactionMaxDecreaseFactor * originalSatisfaction,
+            yMax = satisfactionMaxIncreaseDelta,
+            logisticSlope1 = 1.0
+        )
+
+        mutableCommonPopData.satisfaction += deltaSatisfaction
     }
 }

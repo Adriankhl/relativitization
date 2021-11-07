@@ -426,6 +426,10 @@ data class MutableResourceQualityData(
         quality3 * d,
     )
 
+    fun square(): Double = quality1 * quality1 + quality2 * quality2 + quality3 * quality3
+
+    fun mag(): Double = sqrt(square())
+
     /**
      * Change the quality data to get closer to other quality
      *
@@ -515,10 +519,7 @@ data class MutableResourceQualityData(
     /**
      * Resource difference
      */
-    fun squareDiff(other: MutableResourceQualityData): Double {
-        return (quality1 - other.quality1).pow(2) + (quality2 - other.quality2).pow(2) +
-                (quality3 - other.quality3).pow(2)
-    }
+    fun squareDiff(other: MutableResourceQualityData): Double = (this - other).square()
 }
 
 /**
