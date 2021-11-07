@@ -20,7 +20,7 @@ object UpdateDesire : Mechanism() {
         universeGlobalData: UniverseGlobalData
     ): List<Command> {
         val desireQualityUpdateFactor: Double = 0.2
-        val desireQualityUpdateMinInterval: Double = 0.2
+        val desireQualityUpdateDiff: Double = 0.2
 
         mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.forEach { carrier ->
             PopType.values().forEach { popType ->
@@ -40,7 +40,7 @@ object UpdateDesire : Mechanism() {
                         mutableCommonPopData = mutableCommonPopData,
                         resourceType = it,
                         desireQualityUpdateFactor = desireQualityUpdateFactor,
-                        desireQualityUpdateMinInterval = desireQualityUpdateMinInterval,
+                        desireQualityUpdateMinDiff = desireQualityUpdateDiff,
                     )
 
                     it to MutableResourceDesireData(desireAmount, desireQualityData)
@@ -126,24 +126,34 @@ object UpdateDesire : Mechanism() {
         mutableCommonPopData: MutableCommonPopData,
         resourceType: ResourceType,
         desireQualityUpdateFactor: Double,
-        desireQualityUpdateMinInterval: Double,
+        desireQualityUpdateMinDiff: Double,
     ): MutableResourceQualityData {
-        // Four situations
-        return if (mutableCommonPopData.desireResourceMap.containsKey(resourceType)) {
-            if (mutableCommonPopData.resourceInputMap.containsKey(resourceType)) {
-                val originalQuality: MutableResourceQualityData = mutableCommonPopData.desireResourceMap.getValue(resourceType).desireQuality
-                val inputQuality: MutableResourceQualityData = mutableCommonPopData.resourceInputMap.getValue(resourceType).desireQuality
+        val originalQuality: MutableResourceDesireData =
+            mutableCommonPopData.desireResourceMap.getOrDefault(
+                resourceType,
+                MutableResourceDesireData()
+            )
 
-                originalQuality + (inputQuality - originalQuality) * desireQualityUpdateFactor
-            } else {
-                mutableCommonPopData.desireResourceMap.getValue(resourceType).desireQuality * (1.0 - desireQualityUpdateFactor)
-            }
+        val inputQuality: MutableResourceDesireData =
+            mutableCommonPopData.resourceInputMap.getOrDefault(
+                resourceType,
+                MutableResourceDesireData()
+            )
+
+        // If sufficient amount, get close to the input quality
+        // else decrease the desire quality
+        return if (inputQuality.desireAmount > originalQuality.desireAmount) {
+            originalQuality.desireQuality.changeTo(
+                inputQuality.desireQuality,
+                desireQualityUpdateFactor,
+                desireQualityUpdateMinDiff,
+            )
         } else {
-            if (mutableCommonPopData.resourceInputMap.containsKey(resourceType)) {
-                mutableCommonPopData.resourceInputMap.getValue(resourceType).desireQuality * desireQualityUpdateFactor
-            } else {
-                MutableResourceQualityData()
-            }
+            originalQuality.desireQuality.changeTo(
+                MutableResourceQualityData(0.0, 0.0, 0.0),
+                desireQualityUpdateFactor,
+                desireQualityUpdateMinDiff,
+            )
         }
     }
 
