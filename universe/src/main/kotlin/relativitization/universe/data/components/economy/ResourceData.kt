@@ -1,8 +1,7 @@
 package relativitization.universe.data.components.economy
 
 import kotlinx.serialization.Serializable
-import kotlin.math.pow
-import kotlin.math.sqrt
+import kotlin.math.*
 
 enum class ResourceType(val value: String) {
     PLANT("Plant"), // Raw material
@@ -426,6 +425,57 @@ data class MutableResourceQualityData(
         quality2 * d,
         quality3 * d,
     )
+
+    /**
+     * Change the quality data to get closer to other quality
+     *
+     * @param other the target quality
+     * @param changeFactor the factor controlling the change step
+     * @param minChange minimum change step
+     */
+    fun changeTo(
+        other: MutableResourceQualityData,
+        changeFactor: Double,
+        minChange: Double,
+    ): MutableResourceQualityData {
+        val delta1: MutableResourceQualityData = (other - this) * changeFactor
+        val delta2: MutableResourceQualityData = (other - this)
+        val delta3: MutableResourceQualityData = MutableResourceQualityData(
+            quality1 = 1.0 * delta1.quality1.sign,
+            quality2 = 1.0 * delta1.quality2.sign,
+            quality3 = 1.0 * delta1.quality3.sign,
+        ) * minChange
+
+        val deltaQuality1: Double = if(abs(delta1.quality1) > minChange) {
+            delta1.quality1
+        } else if (abs(delta2.quality1) > minChange) {
+            delta3.quality1
+        } else {
+            delta2.quality1
+        }
+
+        val deltaQuality2: Double = if(abs(delta1.quality2) > minChange) {
+            delta1.quality2
+        } else if (abs(delta2.quality2) > minChange) {
+            delta3.quality2
+        } else {
+            delta2.quality2
+        }
+
+        val deltaQuality3: Double = if(abs(delta1.quality3) > minChange) {
+            delta1.quality3
+        } else if (abs(delta2.quality3) > minChange) {
+            delta3.quality3
+        } else {
+            delta2.quality3
+        }
+
+        return MutableResourceQualityData(
+            quality1 + deltaQuality1,
+            quality2 + deltaQuality2,
+            quality3 + deltaQuality3
+        )
+    }
 
     fun toResourceQualityData(): ResourceQualityData = ResourceQualityData(
         quality1,

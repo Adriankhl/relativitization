@@ -19,7 +19,8 @@ object UpdateDesire : Mechanism() {
         universeSettings: UniverseSettings,
         universeGlobalData: UniverseGlobalData
     ): List<Command> {
-        val changeFactor: Double = 0.1
+        val desireQualityUpdateFactor: Double = 0.2
+        val desireQualityUpdateMinInterval: Double = 0.2
 
         mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.forEach { carrier ->
             PopType.values().forEach { popType ->
@@ -38,7 +39,8 @@ object UpdateDesire : Mechanism() {
                     val desireQualityData: MutableResourceQualityData = computeDesireResourceQuality(
                         mutableCommonPopData = mutableCommonPopData,
                         resourceType = it,
-                        changeFactor = changeFactor,
+                        desireQualityUpdateFactor = desireQualityUpdateFactor,
+                        desireQualityUpdateMinInterval = desireQualityUpdateMinInterval,
                     )
 
                     it to MutableResourceDesireData(desireAmount, desireQualityData)
@@ -123,20 +125,22 @@ object UpdateDesire : Mechanism() {
     fun computeDesireResourceQuality(
         mutableCommonPopData: MutableCommonPopData,
         resourceType: ResourceType,
-        changeFactor: Double,
+        desireQualityUpdateFactor: Double,
+        desireQualityUpdateMinInterval: Double,
     ): MutableResourceQualityData {
+        // Four situations
         return if (mutableCommonPopData.desireResourceMap.containsKey(resourceType)) {
             if (mutableCommonPopData.resourceInputMap.containsKey(resourceType)) {
                 val originalQuality: MutableResourceQualityData = mutableCommonPopData.desireResourceMap.getValue(resourceType).desireQuality
                 val inputQuality: MutableResourceQualityData = mutableCommonPopData.resourceInputMap.getValue(resourceType).desireQuality
 
-                originalQuality + (inputQuality - originalQuality) * changeFactor
+                originalQuality + (inputQuality - originalQuality) * desireQualityUpdateFactor
             } else {
-                mutableCommonPopData.desireResourceMap.getValue(resourceType).desireQuality * (1.0 - changeFactor)
+                mutableCommonPopData.desireResourceMap.getValue(resourceType).desireQuality * (1.0 - desireQualityUpdateFactor)
             }
         } else {
             if (mutableCommonPopData.resourceInputMap.containsKey(resourceType)) {
-                mutableCommonPopData.resourceInputMap.getValue(resourceType).desireQuality * changeFactor
+                mutableCommonPopData.resourceInputMap.getValue(resourceType).desireQuality * desireQualityUpdateFactor
             } else {
                 MutableResourceQualityData()
             }
