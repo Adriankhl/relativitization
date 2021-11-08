@@ -24,16 +24,18 @@ object FuelFactoryProduction : Mechanism() {
         )
 
 
-        // Do self factory production first
-        mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.forEach { carrier ->
-            carrier.allPopData.labourerPopData.fuelFactoryMap.values.filter { factory ->
-                factory.ownerPlayerId == mutablePlayerData.playerId
-            }.forEach { factory ->
-                updateResourceData(
-                    factory,
-                    mutablePlayerData.playerInternalData.physicsData(),
-                    gamma,
-                )
+        // Do self factory production first if it is not disabled
+        if (mutablePlayerData.playerInternalData.modifierData().physicsModifierData.disableRestMassIncreaseTimeLimit <= 0) {
+            mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.forEach { carrier ->
+                carrier.allPopData.labourerPopData.fuelFactoryMap.values.filter { factory ->
+                    factory.ownerPlayerId == mutablePlayerData.playerId
+                }.forEach { factory ->
+                    updateResourceData(
+                        factory,
+                        mutablePlayerData.playerInternalData.physicsData(),
+                        gamma,
+                    )
+                }
             }
         }
 

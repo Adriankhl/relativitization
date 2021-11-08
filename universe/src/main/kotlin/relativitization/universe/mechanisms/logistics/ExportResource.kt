@@ -23,32 +23,28 @@ object ExportResource : Mechanism() {
         universeGlobalData: UniverseGlobalData
     ): List<Command> {
 
-        return if (mutablePlayerData.playerInternalData.modifierData().physicsModifierData.disableRestMassIncreaseTimeLimit <= 0) {
-            val exportToPlayerCommandList: List<Command> =
-                mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.map {
-                    val mutableServicePopData: MutableServicePopData = it.allPopData.servicePopData
-                    computeExportToPlayerCommands(
-                        mutableServicePopData = mutableServicePopData,
-                        mutablePlayerData = mutablePlayerData,
-                        universeData3DAtPlayer = universeData3DAtPlayer
-                    )
-                }.flatten()
+        val exportToPlayerCommandList: List<Command> =
+            mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.map {
+                val mutableServicePopData: MutableServicePopData = it.allPopData.servicePopData
+                computeExportToPlayerCommands(
+                    mutableServicePopData = mutableServicePopData,
+                    mutablePlayerData = mutablePlayerData,
+                    universeData3DAtPlayer = universeData3DAtPlayer
+                )
+            }.flatten()
 
 
-            val exportToPopCommandList: List<Command> =
-                mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.map {
-                    val mutableServicePopData: MutableServicePopData = it.allPopData.servicePopData
-                    computeExportToPopCommands(
-                        mutableServicePopData = mutableServicePopData,
-                        mutablePlayerData = mutablePlayerData,
-                        universeData3DAtPlayer = universeData3DAtPlayer
-                    )
-                }.flatten()
+        val exportToPopCommandList: List<Command> =
+            mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.map {
+                val mutableServicePopData: MutableServicePopData = it.allPopData.servicePopData
+                computeExportToPopCommands(
+                    mutableServicePopData = mutableServicePopData,
+                    mutablePlayerData = mutablePlayerData,
+                    universeData3DAtPlayer = universeData3DAtPlayer
+                )
+            }.flatten()
 
-            exportToPlayerCommandList + exportToPopCommandList
-        } else {
-            listOf()
-        }
+        return exportToPlayerCommandList + exportToPopCommandList
     }
 
     /**

@@ -11,6 +11,7 @@ import relativitization.universe.mechanisms.events.ProcessEvents
 import relativitization.universe.mechanisms.logistics.ExportResource
 import relativitization.universe.mechanisms.modifier.UpdateModifierTime
 import relativitization.universe.mechanisms.pop.UpdateDesire
+import relativitization.universe.mechanisms.production.BaseStellarFuelProduction
 import relativitization.universe.mechanisms.production.FuelFactoryProduction
 import relativitization.universe.mechanisms.production.ResourceFactoryProduction
 import relativitization.universe.mechanisms.research.DiscoverKnowledge
@@ -51,6 +52,7 @@ object DefaultMechanismList : MechanismList() {
         AutoEventCollection,
         ProcessEvents,
         UpdateDesire,
+        BaseStellarFuelProduction,
         FuelFactoryProduction,
         ResourceFactoryProduction,
         ExportResource,
