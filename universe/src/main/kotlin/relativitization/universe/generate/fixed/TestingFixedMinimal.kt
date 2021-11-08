@@ -50,8 +50,8 @@ class TestingFixedMinimal : GenerateUniverse() {
         playerData3.int4D = MutableInt4D(0, 0, 0, 1)
 
         // Add one stellar to players
-        playerData1.playerInternalData.popSystemData().addRandomStellarSystem()
-        playerData3.playerInternalData.popSystemData().addRandomStellarSystem()
+        playerData1.playerInternalData.popSystemData().addStellarSystem(1E30)
+        playerData3.playerInternalData.popSystemData().addStellarSystem(2E30)
 
         // Add spaceShip
         playerData1.playerInternalData.popSystemData().addSpaceShip(1.0, 100.0)

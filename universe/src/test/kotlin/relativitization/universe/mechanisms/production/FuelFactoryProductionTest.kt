@@ -7,7 +7,7 @@ import relativitization.universe.generate.GenerateSettings
 import relativitization.universe.generate.UniverseGenerationCollection
 import kotlin.test.Test
 
-internal class ResourceFactoryProductionTest {
+internal class FuelFactoryProductionTest {
     @Test
     fun fixedMinimalTest() {
         val universe = Universe(UniverseGenerationCollection.generate(GenerateSettings()), ".")
@@ -30,6 +30,6 @@ internal class ResourceFactoryProductionTest {
 
         assert(view8.get(1).playerInternalData.physicsData().fuelRestMassData.movement == 100.0)
         assert(view8.get(1).playerInternalData.physicsData().fuelRestMassData.production == 30.0)
-        assert(view8.get(1).playerInternalData.physicsData().fuelRestMassData.trade == 3.0)
+        assert(view8.get(1).playerInternalData.physicsData().fuelRestMassData.trade == 3.0 + 1E8)
     }
 }

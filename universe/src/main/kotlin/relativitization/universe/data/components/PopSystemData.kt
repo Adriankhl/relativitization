@@ -66,6 +66,16 @@ data class MutablePopSystemData(
             carrierType = CarrierType.STELLAR
         )
         carrierDataMap[newCarrierId()] = newCarrier
+    }
+
+    fun addStellarSystem(
+        coreRestMass: Double
+    ) {
+        val newCarrier = MutableCarrierData(
+            coreRestMass = coreRestMass,
+            carrierType = CarrierType.STELLAR
+        )
+        carrierDataMap[newCarrierId()] = newCarrier
 
     }
 
