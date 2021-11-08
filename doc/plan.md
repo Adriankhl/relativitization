@@ -4,6 +4,7 @@
 * Only adult population
 
 # TODO list
+* Basic resource output from stellar system
 * Pop daily need
 * Salary, and allocate pop to factory, institute and lab
 * Tax and tariff
