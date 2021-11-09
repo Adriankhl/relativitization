@@ -5,6 +5,7 @@
 * No migration
 * No work at other carrier
 * No minimum wage and unemployment benefit
+* Ignore trade data
 
 # Currently unused data
 * Size of factory and institute

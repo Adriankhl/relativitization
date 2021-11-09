@@ -95,7 +95,17 @@ data class IncomeTaxData(
     val highIncomeTaxRate: Double = 0.0,
     val lowMiddleBoundary: Double = 1.0,
     val middleHighBoundary: Double = 2.0,
-)
+) {
+    fun getIncomeTax(
+        salary: Double
+    ): Double {
+        return when {
+            salary < lowMiddleBoundary -> lowIncomeTaxRate
+            salary < middleHighBoundary -> middleIncomeTaxRate
+            else -> highIncomeTaxRate
+        }
+    }
+}
 
 @Serializable
 data class MutableIncomeTaxData(

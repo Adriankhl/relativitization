@@ -4,6 +4,7 @@ import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
+import relativitization.universe.data.components.EconomyData
 import relativitization.universe.data.components.physics.MutableFuelRestMassData
 import relativitization.universe.data.components.popsystem.MutableCarrierData
 import relativitization.universe.data.components.popsystem.pop.labourer.MutableLabourerPopData
@@ -51,6 +52,7 @@ object Employment : Mechanism() {
             gamma,
             carrierData.allPopData.labourerPopData,
             fuelRestMassData,
+            universeData3DAtPlayer.getCurrentPlayerData().playerInternalData.economyData(),
             universeData3DAtPlayer,
         )
 
@@ -65,9 +67,12 @@ object Employment : Mechanism() {
         gamma: Double,
         labourerPopData: MutableLabourerPopData,
         fuelRestMassData: MutableFuelRestMassData,
+        economyData: EconomyData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
     ) {
         val salary: Double = labourerPopData.commonPopData.salary * gamma
+
+        val incomeTax: Double = economyData.taxData.taxRateData.incomeTax.getIncomeTax(salary)
 
         // Available fuel to pay as salary
         val availableFuel: Double = fuelRestMassData.production
