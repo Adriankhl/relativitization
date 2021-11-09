@@ -50,7 +50,7 @@ object BaseStellarFuelProduction : Mechanism() {
     ): Double {
         return if (mutableCarrierData.carrierType == CarrierType.STELLAR) {
             // Estimate the relation between star mass and energy received by planet
-            mutableCarrierData.coreRestMass / 1E22 / gamma
+            mutableCarrierData.coreRestMass / 1E24 / gamma
         } else {
             0.0
         }
