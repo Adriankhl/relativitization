@@ -34,6 +34,8 @@
 * Expand Factory
 * Change economy policy
 * Change salary
+* Improve diplomatic relation
+* Declare war
 
 # GUI TODO List
 * Display information
