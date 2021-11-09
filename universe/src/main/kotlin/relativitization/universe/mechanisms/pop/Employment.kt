@@ -78,7 +78,7 @@ object Employment : Mechanism() {
         // Accumulated paid fuel
         var payAcc: Double = 0.0
 
-        // Accumulated labourer
+        // Accumulated employee
         var employeeAcc: Double = 0.0
 
         // Self factory first
@@ -142,7 +142,7 @@ object Employment : Mechanism() {
         // Accumulated paid fuel
         var payAcc: Double = 0.0
 
-        // Accumulated labourer
+        // Accumulated employee
         var employeeAcc: Double = 0.0
 
 
@@ -152,7 +152,7 @@ object Employment : Mechanism() {
             val maxNumEmployee: Double = it.maxNumEmployee
             val maxPay: Double = maxNumEmployee * salary
 
-            // Decide employee and payment based on the remaining labourer and fuel
+            // Decide employee and payment based on the remaining scholar and fuel
             if (((availableFuel - payAcc - maxPay) > 0.0) && ((availableScholar - employeeAcc - maxNumEmployee > 0.0))) {
                 it.lastNumEmployee = it.maxNumEmployee
                 // Accumulate salary and employee
