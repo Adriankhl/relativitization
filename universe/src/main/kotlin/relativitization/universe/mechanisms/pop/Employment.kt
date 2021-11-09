@@ -5,6 +5,7 @@ import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.components.EconomyData
+import relativitization.universe.data.components.MutableEconomyData
 import relativitization.universe.data.components.physics.MutableFuelRestMassData
 import relativitization.universe.data.components.popsystem.MutableCarrierData
 import relativitization.universe.data.components.popsystem.pop.labourer.MutableLabourerPopData
@@ -35,6 +36,7 @@ object Employment : Mechanism() {
                 gamma,
                 it,
                 fuelRestMassData,
+                mutablePlayerData.playerInternalData.economyData(),
                 universeData3DAtPlayer,
             )
         }
@@ -46,12 +48,14 @@ object Employment : Mechanism() {
         gamma: Double,
         carrierData: MutableCarrierData,
         fuelRestMassData: MutableFuelRestMassData,
+        mutableEconomyData: MutableEconomyData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
     ) {
         updateLabourerEmployment(
             gamma,
             carrierData.allPopData.labourerPopData,
             fuelRestMassData,
+            mutableEconomyData,
             universeData3DAtPlayer.getCurrentPlayerData().playerInternalData.economyData(),
             universeData3DAtPlayer,
         )
@@ -67,6 +71,7 @@ object Employment : Mechanism() {
         gamma: Double,
         labourerPopData: MutableLabourerPopData,
         fuelRestMassData: MutableFuelRestMassData,
+        mutableEconomyData: MutableEconomyData,
         economyData: EconomyData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
     ) {
@@ -74,14 +79,8 @@ object Employment : Mechanism() {
 
         val incomeTax: Double = economyData.taxData.taxRateData.incomeTax.getIncomeTax(salary)
 
-        // Available fuel to pay as salary
-        val availableFuel: Double = fuelRestMassData.production
-
         // Available labourer
         val availableLabourer: Double = labourerPopData.commonPopData.adultPopulation
-
-        // Accumulated paid fuel
-        var payAcc: Double = 0.0
 
         // Accumulated employee
         var employeeAcc: Double = 0.0
@@ -93,12 +92,21 @@ object Employment : Mechanism() {
 
             val maxNumEmployee: Double = it.fuelFactoryInternalData.maxNumEmployee * it.numBuilding
             val maxPay: Double = maxNumEmployee * salary
+            val tax: Double = maxPay * incomeTax
+            val maxPayWithTax: Double = maxPay + tax
+            val availableFuel: Double = fuelRestMassData.production
 
             // Decide employee and payment based on the remaining labourer and fuel
-            if (((availableFuel - payAcc - maxPay) > 0.0) && ((availableLabourer - employeeAcc - maxNumEmployee > 0.0))) {
+            if (((availableFuel - maxPayWithTax) > 0.0) && ((availableLabourer - employeeAcc - maxNumEmployee > 0.0))) {
+                // Update number of employee
                 it.lastNumEmployee = it.fuelFactoryInternalData.maxNumEmployee * it.numBuilding
-                // Accumulate salary and employee
-                payAcc += maxPay
+
+                // Pay salary and tax here
+                fuelRestMassData.production -= maxPayWithTax
+                labourerPopData.commonPopData.saving += maxPay
+                mutableEconomyData.taxData.storedFuelRestMass += tax
+
+                // Accumulate employee
                 employeeAcc += maxNumEmployee
             } else {
                 it.lastNumEmployee = 0.0
@@ -112,12 +120,18 @@ object Employment : Mechanism() {
 
             val maxNumEmployee: Double = it.fuelFactoryInternalData.maxNumEmployee * it.numBuilding
             val maxPay: Double = maxNumEmployee * salary
+            val maxPayWithTax: Double = maxPay * (1.0 + incomeTax)
 
             // Decide employee and payment based on the remaining labourer and fuel
-            if (((it.storedFuelRestMass - maxPay) > 0.0) && ((availableLabourer - employeeAcc - maxNumEmployee > 0.0))) {
+            if (((it.storedFuelRestMass - maxPayWithTax) > 0.0) && ((availableLabourer - employeeAcc - maxNumEmployee > 0.0))) {
+                // Update number of employee
                 it.lastNumEmployee = it.fuelFactoryInternalData.maxNumEmployee * it.numBuilding
-                // Pay salary
-                it.storedFuelRestMass -= maxPay
+
+                // Pay salary and tax here, it does not use the player fuel
+                it.storedFuelRestMass -= maxPayWithTax
+                labourerPopData.commonPopData.saving += maxPay
+                mutableEconomyData.taxData.storedFuelRestMass += maxPay * incomeTax
+
                 // Accumulate employee
                 employeeAcc += maxNumEmployee
             } else {
@@ -125,10 +139,8 @@ object Employment : Mechanism() {
             }
         }
 
-        // Update data, consume fuel and pay salary
+        // Compute unemployment rate
         labourerPopData.commonPopData.unemploymentRate = (1.0 - employeeAcc / availableLabourer)
-        labourerPopData.commonPopData.saving += payAcc
-        fuelRestMassData.production -= payAcc
     }
 
     fun updateScholarEmployment(
