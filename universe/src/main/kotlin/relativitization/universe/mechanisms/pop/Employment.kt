@@ -63,7 +63,9 @@ object Employment : Mechanism() {
         updateScholarEmployment(
             gamma,
             carrierData.allPopData.scholarPopData,
-            fuelRestMassData
+            fuelRestMassData,
+            mutableEconomyData,
+            universeData3DAtPlayer.getCurrentPlayerData().playerInternalData.economyData(),
         )
     }
 
@@ -79,8 +81,8 @@ object Employment : Mechanism() {
 
         val incomeTax: Double = economyData.taxData.taxRateData.incomeTax.getIncomeTax(salary)
 
-        // Available labourer
-        val availableLabourer: Double = labourerPopData.commonPopData.adultPopulation
+        // Available population to work
+        val availableEmployee: Double = labourerPopData.commonPopData.adultPopulation
 
         // Accumulated employee
         var employeeAcc: Double = 0.0
@@ -97,7 +99,7 @@ object Employment : Mechanism() {
             val availableFuel: Double = fuelRestMassData.production
 
             // Decide employee and payment based on the remaining labourer and fuel
-            if (((availableFuel - maxPayWithTax) > 0.0) && ((availableLabourer - employeeAcc - maxNumEmployee > 0.0))) {
+            if (((availableFuel - maxPayWithTax) > 0.0) && ((availableEmployee - employeeAcc - maxNumEmployee > 0.0))) {
                 // Update number of employee
                 it.lastNumEmployee = it.fuelFactoryInternalData.maxNumEmployee * it.numBuilding
 
@@ -123,7 +125,7 @@ object Employment : Mechanism() {
             val maxPayWithTax: Double = maxPay * (1.0 + incomeTax)
 
             // Decide employee and payment based on the remaining labourer and fuel
-            if (((it.storedFuelRestMass - maxPayWithTax) > 0.0) && ((availableLabourer - employeeAcc - maxNumEmployee > 0.0))) {
+            if (((it.storedFuelRestMass - maxPayWithTax) > 0.0) && ((availableEmployee - employeeAcc - maxNumEmployee > 0.0))) {
                 // Update number of employee
                 it.lastNumEmployee = it.fuelFactoryInternalData.maxNumEmployee * it.numBuilding
 
@@ -140,24 +142,22 @@ object Employment : Mechanism() {
         }
 
         // Compute unemployment rate
-        labourerPopData.commonPopData.unemploymentRate = (1.0 - employeeAcc / availableLabourer)
+        labourerPopData.commonPopData.unemploymentRate = (1.0 - employeeAcc / availableEmployee)
     }
 
     fun updateScholarEmployment(
         gamma: Double,
         scholarPopData: MutableScholarPopData,
         fuelRestMassData: MutableFuelRestMassData,
+        mutableEconomyData: MutableEconomyData,
+        economyData: EconomyData,
     ) {
         val salary: Double = scholarPopData.commonPopData.salary * gamma
 
-        // Available fuel to pay as salary
-        val availableFuel: Double = fuelRestMassData.production
+        val incomeTax: Double = economyData.taxData.taxRateData.incomeTax.getIncomeTax(salary)
 
-        // Available scholar
-        val availableScholar: Double = scholarPopData.commonPopData.adultPopulation
-
-        // Accumulated paid fuel
-        var payAcc: Double = 0.0
+        // Available population to work
+        val availableEmployee: Double = scholarPopData.commonPopData.adultPopulation
 
         // Accumulated employee
         var employeeAcc: Double = 0.0
@@ -168,21 +168,28 @@ object Employment : Mechanism() {
 
             val maxNumEmployee: Double = it.maxNumEmployee
             val maxPay: Double = maxNumEmployee * salary
+            val tax: Double = maxPay * incomeTax
+            val maxPayWithTax: Double = maxPay + tax
+            val availableFuel: Double = fuelRestMassData.production
 
             // Decide employee and payment based on the remaining scholar and fuel
-            if (((availableFuel - payAcc - maxPay) > 0.0) && ((availableScholar - employeeAcc - maxNumEmployee > 0.0))) {
+            if (((availableFuel - maxPayWithTax) > 0.0) && ((availableEmployee - employeeAcc - maxNumEmployee > 0.0))) {
+                // Update number of employee
                 it.lastNumEmployee = it.maxNumEmployee
-                // Accumulate salary and employee
-                payAcc += maxPay
+
+                // Pay salary and tax here
+                fuelRestMassData.production -= maxPayWithTax
+                scholarPopData.commonPopData.saving += maxPay
+                mutableEconomyData.taxData.storedFuelRestMass += tax
+
+                // Accumulate employee
                 employeeAcc += maxNumEmployee
             } else {
                 it.lastNumEmployee = 0.0
             }
         }
 
-        // Update data, consume fuel and pay salary
-        scholarPopData.commonPopData.unemploymentRate = (1.0 - employeeAcc / availableScholar)
-        scholarPopData.commonPopData.saving += payAcc
-        fuelRestMassData.production -= payAcc
+        // Compute unemployment rate
+        scholarPopData.commonPopData.unemploymentRate = (1.0 - employeeAcc / availableEmployee)
     }
 }
