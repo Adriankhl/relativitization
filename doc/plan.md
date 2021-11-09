@@ -5,7 +5,7 @@
 * No migration
 * No work at other carrier
 * No minimum wage and unemployment benefit
-* Ignore trade data
+* Don't use trade history data to determine price
 
 # Currently unused data
 * Size of factory and institute
