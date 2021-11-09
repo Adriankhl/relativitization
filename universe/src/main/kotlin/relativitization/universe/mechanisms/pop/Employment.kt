@@ -113,7 +113,7 @@ object Employment : Mechanism() {
             }
         }
 
-        // Update data
+        // Update data, consume fuel and pay salary
         labourerPopData.commonPopData.unemploymentRate = (1.0 - employeeAcc / availableLabourer)
         labourerPopData.commonPopData.saving += payAcc
         fuelRestMassData.production -= payAcc
