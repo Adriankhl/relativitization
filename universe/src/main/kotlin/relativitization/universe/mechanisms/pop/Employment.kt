@@ -62,6 +62,46 @@ object Employment : Mechanism() {
             universeData3DAtPlayer,
         )
 
+        updateCommonEmployment(
+            gamma,
+            carrierData.allPopData.soldierPopData.commonPopData,
+            fuelRestMassData,
+            mutableEconomyData,
+            universeData3DAtPlayer.getCurrentPlayerData().playerInternalData.economyData(),
+        )
+
+        updateCommonEmployment(
+            gamma,
+            carrierData.allPopData.entertainerPopData.commonPopData,
+            fuelRestMassData,
+            mutableEconomyData,
+            universeData3DAtPlayer.getCurrentPlayerData().playerInternalData.economyData(),
+        )
+
+        updateCommonEmployment(
+            gamma,
+            carrierData.allPopData.servicePopData.commonPopData,
+            fuelRestMassData,
+            mutableEconomyData,
+            universeData3DAtPlayer.getCurrentPlayerData().playerInternalData.economyData(),
+        )
+
+        updateCommonEmployment(
+            gamma,
+            carrierData.allPopData.medicPopData.commonPopData,
+            fuelRestMassData,
+            mutableEconomyData,
+            universeData3DAtPlayer.getCurrentPlayerData().playerInternalData.economyData(),
+        )
+
+        updateCommonEmployment(
+            gamma,
+            carrierData.allPopData.educatorPopData.commonPopData,
+            fuelRestMassData,
+            mutableEconomyData,
+            universeData3DAtPlayer.getCurrentPlayerData().playerInternalData.economyData(),
+        )
+
         updateEngineerEmployment(
             gamma,
             carrierData.allPopData.engineerPopData,
@@ -77,6 +117,7 @@ object Employment : Mechanism() {
             mutableEconomyData,
             universeData3DAtPlayer.getCurrentPlayerData().playerInternalData.economyData(),
         )
+
     }
 
     fun updateLabourerEmployment(
