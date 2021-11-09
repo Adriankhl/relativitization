@@ -10,6 +10,7 @@ import relativitization.universe.data.components.popsystem.MutableCarrierData
 import relativitization.universe.data.components.popsystem.pop.PopType
 import relativitization.universe.data.components.popsystem.pop.labourer.MutableLabourerPopData
 import relativitization.universe.data.global.UniverseGlobalData
+import relativitization.universe.maths.physics.Relativistic
 import relativitization.universe.mechanisms.Mechanism
 
 object Employment : Mechanism() {
@@ -19,6 +20,12 @@ object Employment : Mechanism() {
         universeSettings: UniverseSettings,
         universeGlobalData: UniverseGlobalData
     ): List<Command> {
+
+        val gamma: Double = Relativistic.gamma(
+            universeData3DAtPlayer.getCurrentPlayerData().velocity,
+            universeSettings.speedOfLight
+        )
+
 
         val fuelRestMassData: MutableFuelRestMassData =
             mutablePlayerData.playerInternalData.physicsData().fuelRestMassData
@@ -31,30 +38,22 @@ object Employment : Mechanism() {
     }
 
     fun updateEmployment(
+        gamma: Double,
         carrierData: MutableCarrierData,
         fuelRestMassData: MutableFuelRestMassData,
     ) {
-        PopType.values().forEach {
-            when (it) {
-                PopType.LABOURER -> updateLabourerEmployment(
-                    carrierData.allPopData.labourerPopData,
-                    fuelRestMassData
-                )
-                PopType.ENGINEER -> TODO()
-                PopType.SCHOLAR -> TODO()
-                PopType.EDUCATOR -> TODO()
-                PopType.MEDIC -> TODO()
-                PopType.SERVICE_WORKER -> TODO()
-                PopType.ENTERTAINER -> TODO()
-                PopType.SOLDIER -> TODO()
-            }
-        }
+        updateLabourerEmployment(
+            gamma,
+            carrierData.allPopData.labourerPopData,
+            fuelRestMassData,
+        )
     }
 
     fun updateLabourerEmployment(
+        gamma: Double,
         labourerPopData: MutableLabourerPopData,
         fuelRestMassData: MutableFuelRestMassData,
     ) {
-
+        labourerPopData.commonPopData.salary
     }
 }

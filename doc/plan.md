@@ -4,6 +4,7 @@
 * Only adult population
 * No migration
 * No work at other carrier
+* No minimum wage and unemployment benefit
 
 # Currently unused data
 * Size of factory and institute
