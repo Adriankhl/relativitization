@@ -7,6 +7,7 @@ import relativitization.universe.data.commands.Command
 import relativitization.universe.data.components.physics.MutableFuelRestMassData
 import relativitization.universe.data.components.popsystem.MutableCarrierData
 import relativitization.universe.data.components.popsystem.pop.labourer.MutableLabourerPopData
+import relativitization.universe.data.components.popsystem.pop.scholar.MutableScholarPopData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.maths.physics.Relativistic
 import relativitization.universe.mechanisms.Mechanism
@@ -51,6 +52,12 @@ object Employment : Mechanism() {
             carrierData.allPopData.labourerPopData,
             fuelRestMassData,
             universeData3DAtPlayer,
+        )
+
+        updateScholarEmployment(
+            gamma,
+            carrierData.allPopData.scholarPopData,
+            fuelRestMassData
         )
     }
 
@@ -116,6 +123,49 @@ object Employment : Mechanism() {
         // Update data, consume fuel and pay salary
         labourerPopData.commonPopData.unemploymentRate = (1.0 - employeeAcc / availableLabourer)
         labourerPopData.commonPopData.saving += payAcc
+        fuelRestMassData.production -= payAcc
+    }
+
+    fun updateScholarEmployment(
+        gamma: Double,
+        scholarPopData: MutableScholarPopData,
+        fuelRestMassData: MutableFuelRestMassData,
+    ) {
+        val salary: Double = scholarPopData.commonPopData.salary * gamma
+
+        // Available fuel to pay as salary
+        val availableFuel: Double = fuelRestMassData.production
+
+        // Available scholar
+        val availableScholar: Double = scholarPopData.commonPopData.adultPopulation
+
+        // Accumulated paid fuel
+        var payAcc: Double = 0.0
+
+        // Accumulated labourer
+        var employeeAcc: Double = 0.0
+
+
+        // Self factory first
+        scholarPopData.instituteMap.values.forEach {
+
+            val maxNumEmployee: Double = it.maxNumEmployee
+            val maxPay: Double = maxNumEmployee * salary
+
+            // Decide employee and payment based on the remaining labourer and fuel
+            if (((availableFuel - payAcc - maxPay) > 0.0) && ((availableScholar - employeeAcc - maxNumEmployee > 0.0))) {
+                it.lastNumEmployee = it.maxNumEmployee
+                // Accumulate salary and employee
+                payAcc += maxPay
+                employeeAcc += maxNumEmployee
+            } else {
+                it.lastNumEmployee = 0.0
+            }
+        }
+
+        // Update data, consume fuel and pay salary
+        scholarPopData.commonPopData.unemploymentRate = (1.0 - employeeAcc / availableScholar)
+        scholarPopData.commonPopData.saving += payAcc
         fuelRestMassData.production -= payAcc
     }
 }
