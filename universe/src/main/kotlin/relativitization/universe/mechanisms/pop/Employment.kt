@@ -8,6 +8,7 @@ import relativitization.universe.data.components.EconomyData
 import relativitization.universe.data.components.MutableEconomyData
 import relativitization.universe.data.components.physics.MutableFuelRestMassData
 import relativitization.universe.data.components.popsystem.MutableCarrierData
+import relativitization.universe.data.components.popsystem.pop.MutableCommonPopData
 import relativitization.universe.data.components.popsystem.pop.engineer.MutableEngineerPopData
 import relativitization.universe.data.components.popsystem.pop.labourer.MutableLabourerPopData
 import relativitization.universe.data.components.popsystem.pop.scholar.MutableScholarPopData
@@ -247,5 +248,34 @@ object Employment : Mechanism() {
 
         // Compute unemployment rate
         engineerPopData.commonPopData.unemploymentRate = (1.0 - employeeAcc / availableEmployee)
+    }
+
+    fun updateCommonEmployment(
+        gamma: Double,
+        commonPopData: MutableCommonPopData,
+        fuelRestMassData: MutableFuelRestMassData,
+        mutableEconomyData: MutableEconomyData,
+        economyData: EconomyData,
+    ) {
+        val salary: Double = commonPopData.salary * gamma
+
+        val incomeTax: Double = economyData.taxData.taxRateData.incomeTax.getIncomeTax(salary)
+
+        val maxPay: Double = commonPopData.adultPopulation * salary
+        val tax: Double = maxPay * incomeTax
+        val maxPayWithTax: Double = maxPay + tax
+
+        val availableFuel: Double = fuelRestMassData.production
+
+        if (availableFuel >= maxPayWithTax) {
+            commonPopData.unemploymentRate = 0.0
+
+            // Pay salary and tax here
+            fuelRestMassData.production -= maxPayWithTax
+            commonPopData.saving += maxPay
+            mutableEconomyData.taxData.storedFuelRestMass += tax
+        } else {
+            commonPopData.unemploymentRate = 1.0
+        }
     }
 }
