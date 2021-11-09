@@ -3,7 +3,7 @@
 * Besides factory and research, other pop functionalities depend on size only.
 * Only adult population
 
-# TODO list
+# Mechanism TODO list
 * Basic resource output from stellar system
 * Pop daily need
 * Salary, and allocate pop to factory, institute and lab
@@ -16,8 +16,20 @@
 * New player
 * Basic military
 * Sync leader data to subordinate, e.g., enemy
+
+# AI TODO List
+* Default AI
 * AI state store last command to subordinate
-* AI
+
+# Command TODO List
+* Destroy factory
+* Expand Factory
+* Change economy policy
+* Change salary
+
+# GUI TODO List
+* Display information
+* Available commands
 
 # Far future TODO List
 * Science era, e.g., Biology era favour nation with more biologist
