@@ -8,6 +8,7 @@ import relativitization.universe.data.components.EconomyData
 import relativitization.universe.data.components.MutableEconomyData
 import relativitization.universe.data.components.physics.MutableFuelRestMassData
 import relativitization.universe.data.components.popsystem.MutableCarrierData
+import relativitization.universe.data.components.popsystem.pop.engineer.MutableEngineerPopData
 import relativitization.universe.data.components.popsystem.pop.labourer.MutableLabourerPopData
 import relativitization.universe.data.components.popsystem.pop.scholar.MutableScholarPopData
 import relativitization.universe.data.global.UniverseGlobalData
@@ -58,6 +59,14 @@ object Employment : Mechanism() {
             mutableEconomyData,
             universeData3DAtPlayer.getCurrentPlayerData().playerInternalData.economyData(),
             universeData3DAtPlayer,
+        )
+
+        updateEngineerEmployment(
+            gamma,
+            carrierData.allPopData.engineerPopData,
+            fuelRestMassData,
+            mutableEconomyData,
+            universeData3DAtPlayer.getCurrentPlayerData().playerInternalData.economyData(),
         )
 
         updateScholarEmployment(
@@ -163,7 +172,6 @@ object Employment : Mechanism() {
         var employeeAcc: Double = 0.0
 
 
-        // Self factory first
         scholarPopData.instituteMap.values.forEach {
 
             val maxNumEmployee: Double = it.maxNumEmployee
@@ -191,5 +199,53 @@ object Employment : Mechanism() {
 
         // Compute unemployment rate
         scholarPopData.commonPopData.unemploymentRate = (1.0 - employeeAcc / availableEmployee)
+    }
+
+
+    fun updateEngineerEmployment(
+        gamma: Double,
+        engineerPopData: MutableEngineerPopData,
+        fuelRestMassData: MutableFuelRestMassData,
+        mutableEconomyData: MutableEconomyData,
+        economyData: EconomyData,
+    ) {
+        val salary: Double = engineerPopData.commonPopData.salary * gamma
+
+        val incomeTax: Double = economyData.taxData.taxRateData.incomeTax.getIncomeTax(salary)
+
+        // Available population to work
+        val availableEmployee: Double = engineerPopData.commonPopData.adultPopulation
+
+        // Accumulated employee
+        var employeeAcc: Double = 0.0
+
+
+        engineerPopData.laboratoryMap.values.forEach {
+
+            val maxNumEmployee: Double = it.maxNumEmployee
+            val maxPay: Double = maxNumEmployee * salary
+            val tax: Double = maxPay * incomeTax
+            val maxPayWithTax: Double = maxPay + tax
+            val availableFuel: Double = fuelRestMassData.production
+
+            // Decide employee and payment based on the remaining scholar and fuel
+            if (((availableFuel - maxPayWithTax) > 0.0) && ((availableEmployee - employeeAcc - maxNumEmployee > 0.0))) {
+                // Update number of employee
+                it.lastNumEmployee = it.maxNumEmployee
+
+                // Pay salary and tax here
+                fuelRestMassData.production -= maxPayWithTax
+                engineerPopData.commonPopData.saving += maxPay
+                mutableEconomyData.taxData.storedFuelRestMass += tax
+
+                // Accumulate employee
+                employeeAcc += maxNumEmployee
+            } else {
+                it.lastNumEmployee = 0.0
+            }
+        }
+
+        // Compute unemployment rate
+        engineerPopData.commonPopData.unemploymentRate = (1.0 - employeeAcc / availableEmployee)
     }
 }
