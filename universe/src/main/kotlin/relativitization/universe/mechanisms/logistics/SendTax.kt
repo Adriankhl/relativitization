@@ -19,9 +19,12 @@ object SendTax : Mechanism() {
 
         val fuelRestMass: Double = mutablePlayerData.playerInternalData.economyData().taxData.storedFuelRestMass
 
-        val leaderList: List<Int> = mutablePlayerData.playerInternalData.leaderIdList
+        // Repair empty leader list
+        if (mutablePlayerData.playerInternalData.leaderIdList.isEmpty()) {
+            mutablePlayerData.playerInternalData.leaderIdList.add(mutablePlayerData.playerId)
+        }
 
-
+        val numLeader: Int = mutablePlayerData.playerInternalData.leaderIdList.size
 
         return listOf()
     }
