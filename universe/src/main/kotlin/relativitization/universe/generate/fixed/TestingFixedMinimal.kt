@@ -190,8 +190,8 @@ class TestingFixedMinimal : GenerateUniverse() {
             strength = 1.0,
             reputation = 0.0,
             researchEquipmentPerTime = 0.0,
-            maxNumEmployee = Double.MAX_VALUE,
-            lastNumEmployee = Double.MAX_VALUE,
+            maxNumEmployee = Double.MAX_VALUE * 0.5,
+            lastNumEmployee = 0.0,
             size = 0.0
         )
         playerData1.playerInternalData.popSystemData().carrierDataMap.getValue(
@@ -206,8 +206,8 @@ class TestingFixedMinimal : GenerateUniverse() {
             strength = 0.0,
             reputation = 0.0,
             researchEquipmentPerTime = 0.0,
-            maxNumEmployee = Double.MAX_VALUE,
-            lastNumEmployee = Double.MAX_VALUE,
+            maxNumEmployee = Double.MAX_VALUE * 0.5,
+            lastNumEmployee = 0.0,
             size = 0.0
         )
         playerData1.playerInternalData.popSystemData().carrierDataMap.getValue(
@@ -243,6 +243,13 @@ class TestingFixedMinimal : GenerateUniverse() {
         playerData1.playerInternalData.popSystemData().carrierDataMap.getValue(
             0
         ).allPopData.labourerPopData.commonPopData.adultPopulation = 100.0
+        playerData1.playerInternalData.popSystemData().carrierDataMap.getValue(
+            0
+        ).allPopData.scholarPopData.commonPopData.adultPopulation = Double.MAX_VALUE
+        playerData1.playerInternalData.popSystemData().carrierDataMap.getValue(
+            0
+        ).allPopData.engineerPopData.commonPopData.adultPopulation = Double.MAX_VALUE
+
 
         // Add fuel factory to player 1
         val fuelFactory1 = MutableFuelFactoryData(
@@ -256,7 +263,7 @@ class TestingFixedMinimal : GenerateUniverse() {
             isOpened = true,
             storedFuelRestMass = 0.0,
             lastOutputAmount = 0.0,
-            lastNumEmployee = 100.0,
+            lastNumEmployee = 0.0,
         )
 
         playerData1.playerInternalData.popSystemData().carrierDataMap.getValue(
