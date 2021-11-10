@@ -9,6 +9,7 @@ import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.mechanisms.events.AutoEventCollection
 import relativitization.universe.mechanisms.events.ProcessEvents
 import relativitization.universe.mechanisms.logistics.ExportResource
+import relativitization.universe.mechanisms.logistics.SendTax
 import relativitization.universe.mechanisms.modifier.UpdateModifierTime
 import relativitization.universe.mechanisms.pop.Employment
 import relativitization.universe.mechanisms.pop.PopBuyResource
@@ -60,6 +61,7 @@ object DefaultMechanismList : MechanismList() {
         FuelFactoryProduction,
         ResourceFactoryProduction,
         ExportResource,
+        SendTax,
         UpdateModifierTime,
         KnowledgeDiffusion,
         DiscoverKnowledge,

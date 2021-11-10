@@ -4,7 +4,11 @@ import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
+import relativitization.universe.data.commands.SendFuelCommand
+import relativitization.universe.data.components.physics.Int3D
+import relativitization.universe.data.components.physics.Int4D
 import relativitization.universe.data.global.UniverseGlobalData
+import relativitization.universe.maths.collection.Fraction
 import relativitization.universe.mechanisms.Mechanism
 
 object SendTax : Mechanism() {
@@ -26,6 +30,22 @@ object SendTax : Mechanism() {
 
         val numLeader: Int = mutablePlayerData.playerInternalData.leaderIdList.size
 
-        return listOf()
+        val fractionList: List<Double> = Fraction.oneFractionList(numLeader, fraction).reversed()
+
+        // Send fuel command
+        val commandList: List<Command> =
+            mutablePlayerData.playerInternalData.leaderIdList.mapIndexed { index, id ->
+                SendFuelCommand(
+                    toId = id,
+                    fromId = universeData3DAtPlayer.getCurrentPlayerData().playerId,
+                    fromInt4D = universeData3DAtPlayer.getCurrentPlayerData().int4D,
+                    amount = fuelRestMass * fractionList[index],
+                    senderFuelLossFractionPerDistance = mutablePlayerData.playerInternalData.playerScienceData().playerScienceProductData.fuelLogisticsLossFractionPerDistance,
+                )
+            }
+
+        // Clear stored fuel in tax
+
+        return commandList
     }
 }

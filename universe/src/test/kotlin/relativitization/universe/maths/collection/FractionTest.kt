@@ -6,11 +6,13 @@ internal class FractionTest {
     @Test
     fun oneFractionTest() {
         val f1 = Fraction.oneFractionList(
-            3
+            3,
+            0.5
         )
 
         val f2 = Fraction.oneFractionList(
-            5
+            5,
+            0.5
         )
 
         assert(f1 == listOf(0.5, 0.25, 0.25))
