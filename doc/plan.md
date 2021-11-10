@@ -35,7 +35,7 @@
 # Command TODO List
 * Destroy factory
 * Expand Factory
-* Change economy policy
+* Change economy policy, e.g., tax, storage
 * Change salary
 * Improve diplomatic relation
 * Declare war
