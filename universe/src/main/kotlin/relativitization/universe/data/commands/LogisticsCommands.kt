@@ -20,6 +20,129 @@ import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.math.pow
 
 /**
+ * Send fuel from yourself to another player
+ */
+@Serializable
+data class SendFuelFromStorageCommand(
+    override val toId: Int,
+    override val fromId: Int,
+    override val fromInt4D: Int4D,
+    val amount: Double,
+    val senderFuelLossFractionPerDistance: Double,
+) : Command() {
+    override val description: I18NString = I18NString(
+        listOf(
+            RealString("Send "),
+            IntString(0),
+            RealString(" fuel from player "),
+            IntString(1),
+            RealString(" to "),
+            IntString(2),
+        ),
+        listOf(
+            amount.toString(),
+            fromId.toString(),
+            toId.toString(),
+        ),
+    )
+
+    override fun canSend(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): CanSendCheckMessage {
+        val hasAmount: Boolean =
+            playerData.playerInternalData.physicsData().fuelRestMassData.trade >= amount
+        val hasAmountI18NString: I18NString = if (hasAmount) {
+            I18NString("")
+        } else {
+            I18NString(
+                listOf(
+                    RealString("Trade fuel amount "),
+                    IntString(0),
+                    RealString(" is less than "),
+                    IntString(1),
+                    RealString(". ")
+                ),
+                listOf(
+                    playerData.playerInternalData.physicsData().fuelRestMassData.trade.toString(),
+                    amount.toString()
+                )
+            )
+        }
+
+        val isLossFractionValid: Boolean =
+            playerData.playerInternalData.playerScienceData().playerScienceProductData.fuelLogisticsLossFractionPerDistance <= senderFuelLossFractionPerDistance
+        val isLossFractionValidI18NString: I18NString = if (isLossFractionValid) {
+            I18NString("")
+        } else {
+            I18NString(
+                listOf(
+                    RealString("Sender fuel loss fraction per distance"),
+                    IntString(0),
+                    RealString(" is greater than "),
+                    IntString(1),
+                    RealString(". ")
+                ),
+                listOf(
+                    playerData.playerInternalData.playerScienceData().playerScienceProductData.fuelLogisticsLossFractionPerDistance.toString(),
+                    senderFuelLossFractionPerDistance.toString()
+                )
+            )
+        }
+
+        return CanSendCheckMessage(
+            hasAmount && isLossFractionValid,
+            I18NString.combine(
+                listOf(
+                    hasAmountI18NString,
+                    isLossFractionValidI18NString,
+                )
+            )
+        )
+    }
+
+    override fun selfExecuteBeforeSend(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ) {
+        playerData.playerInternalData.physicsData().fuelRestMassData.trade -= amount
+    }
+
+    override fun canExecute(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): Boolean {
+        return playerData.playerInternalData.modifierData().physicsModifierData.disableRestMassIncreaseTimeLimit <= 0
+    }
+
+    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+        val receiverLossFractionPerDistance: Double =
+            playerData.playerInternalData.playerScienceData().playerScienceProductData.fuelLogisticsLossFractionPerDistance
+
+        val lossFractionPerDistance: Double =
+            (receiverLossFractionPerDistance + senderFuelLossFractionPerDistance) * 0.5
+
+        val distance: Double = Intervals.distance(
+            fromInt4D.toDouble3D(),
+            playerData.int4D.toDouble3D()
+        )
+
+        val remainFraction: Double = if (distance < 1.0) {
+            1.0
+        } else {
+            (1.0 - lossFractionPerDistance).pow(distance)
+        }
+
+        playerData.playerInternalData.physicsData().addFuel(amount * remainFraction)
+    }
+
+    companion object {
+        private val logger = RelativitizationLogManager.getLogger()
+    }
+}
+
+
+/**
  * Send resource from yourself to another player
  */
 @Serializable
@@ -186,93 +309,22 @@ data class SendResourceFromStorageCommand(
 }
 
 /**
- * Send fuel from yourself to another player
+ * Generic send fuel, cannot be sent by player directly
  */
 @Serializable
-data class SendFuelFromStorageCommand(
+data class SendFuelCommand(
     override val toId: Int,
     override val fromId: Int,
     override val fromInt4D: Int4D,
     val amount: Double,
     val senderFuelLossFractionPerDistance: Double,
 ) : Command() {
-    override val description: I18NString = I18NString(
-        listOf(
-            RealString("Send "),
-            IntString(0),
-            RealString(" fuel from player "),
-            IntString(1),
-            RealString(" to "),
-            IntString(2),
-        ),
-        listOf(
-            amount.toString(),
-            fromId.toString(),
-            toId.toString(),
-        ),
-    )
+    override val description: I18NString = I18NString("")
 
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CanSendCheckMessage {
-        val hasAmount: Boolean =
-            playerData.playerInternalData.physicsData().fuelRestMassData.trade >= amount
-        val hasAmountI18NString: I18NString = if (hasAmount) {
-            I18NString("")
-        } else {
-            I18NString(
-                listOf(
-                    RealString("Trade fuel amount "),
-                    IntString(0),
-                    RealString(" is less than "),
-                    IntString(1),
-                    RealString(". ")
-                ),
-                listOf(
-                    playerData.playerInternalData.physicsData().fuelRestMassData.trade.toString(),
-                    amount.toString()
-                )
-            )
-        }
-
-        val isLossFractionValid: Boolean =
-            playerData.playerInternalData.playerScienceData().playerScienceProductData.fuelLogisticsLossFractionPerDistance <= senderFuelLossFractionPerDistance
-        val isLossFractionValidI18NString: I18NString = if (isLossFractionValid) {
-            I18NString("")
-        } else {
-            I18NString(
-                listOf(
-                    RealString("Sender fuel loss fraction per distance"),
-                    IntString(0),
-                    RealString(" is greater than "),
-                    IntString(1),
-                    RealString(". ")
-                ),
-                listOf(
-                    playerData.playerInternalData.playerScienceData().playerScienceProductData.fuelLogisticsLossFractionPerDistance.toString(),
-                    senderFuelLossFractionPerDistance.toString()
-                )
-            )
-        }
-
-        return CanSendCheckMessage(
-            hasAmount && isLossFractionValid,
-            I18NString.combine(
-                listOf(
-                    hasAmountI18NString,
-                    isLossFractionValidI18NString,
-                )
-            )
-        )
-    }
-
-    override fun selfExecuteBeforeSend(
-        playerData: MutablePlayerData,
-        universeSettings: UniverseSettings
-    ) {
-        playerData.playerInternalData.physicsData().fuelRestMassData.trade -= amount
-    }
+    ): CanSendCheckMessage = CanSendCheckMessage(false)
 
     override fun canExecute(
         playerData: MutablePlayerData,
@@ -280,6 +332,7 @@ data class SendFuelFromStorageCommand(
     ): Boolean {
         return playerData.playerInternalData.modifierData().physicsModifierData.disableRestMassIncreaseTimeLimit <= 0
     }
+
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
         val receiverLossFractionPerDistance: Double =
@@ -306,6 +359,7 @@ data class SendFuelFromStorageCommand(
         private val logger = RelativitizationLogManager.getLogger()
     }
 }
+
 
 /**
  * Generic send resource, cannot be sent by player directly
@@ -365,57 +419,6 @@ data class SendResourceCommand(
     }
 }
 
-/**
- * Generic send fuel, cannot be sent by player directly
- */
-@Serializable
-data class SendFuelCommand(
-    override val toId: Int,
-    override val fromId: Int,
-    override val fromInt4D: Int4D,
-    val amount: Double,
-    val senderFuelLossFractionPerDistance: Double,
-) : Command() {
-    override val description: I18NString = I18NString("")
-
-    override fun canSend(
-        playerData: MutablePlayerData,
-        universeSettings: UniverseSettings
-    ): CanSendCheckMessage = CanSendCheckMessage(false)
-
-    override fun canExecute(
-        playerData: MutablePlayerData,
-        universeSettings: UniverseSettings
-    ): Boolean {
-        return playerData.playerInternalData.modifierData().physicsModifierData.disableRestMassIncreaseTimeLimit <= 0
-    }
-
-
-    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
-        val receiverLossFractionPerDistance: Double =
-            playerData.playerInternalData.playerScienceData().playerScienceProductData.fuelLogisticsLossFractionPerDistance
-
-        val lossFractionPerDistance: Double =
-            (receiverLossFractionPerDistance + senderFuelLossFractionPerDistance) * 0.5
-
-        val distance: Double = Intervals.distance(
-            fromInt4D.toDouble3D(),
-            playerData.int4D.toDouble3D()
-        )
-
-        val remainFraction: Double = if (distance < 1.0) {
-            1.0
-        } else {
-            (1.0 - lossFractionPerDistance).pow(distance)
-        }
-
-        playerData.playerInternalData.physicsData().addFuel(amount * remainFraction)
-    }
-
-    companion object {
-        private val logger = RelativitizationLogManager.getLogger()
-    }
-}
 
 /**
  * Send resource to a pop

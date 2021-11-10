@@ -240,15 +240,23 @@ abstract class AvailableCommands {
 
 object DefaultAvailableCommands : AvailableCommands() {
     override val commandList: List<String> = listOf(
-        AddEventCommand::class.name(),
-        ChangeVelocityCommand::class.name(),
-        CannotSendCommand::class.name(),
-        DisableFuelIncreaseCommand::class.name(),
         DummyCommand::class.name(),
+        CannotSendCommand::class.name(),
+        AddEventCommand::class.name(),
         SelectEventChoiceCommand::class.name(),
+        BuildForeignFuelFactoryCommand::class.name(),
         BuildForeignResourceFactoryCommand::class.name(),
+        BuildLocalFuelFactoryCommand::class.name(),
         BuildLocalResourceFactoryCommand::class.name(),
+        SendFuelFromStorageCommand::class.name(),
         SendResourceFromStorageCommand::class.name(),
+        SendFuelCommand::class.name(),
+        SendResourceCommand::class.name(),
+        SendResourceToPopCommand::class.name(),
+        PopBuyResourceCommand::class.name(),
+        PlayerBuyResourceCommand::class.name(),
+        DisableFuelIncreaseCommand::class.name(),
+        ChangeVelocityCommand::class.name(),
     )
 
     override val addEventList: List<String> = listOf(
