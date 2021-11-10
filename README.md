@@ -11,6 +11,7 @@ Grand strategy game / agent-based simulation framework / social model in 4D spac
 
 
 # Build the game
+
 ## Prerequisite
 You need jdk 17 to build the game.
 
@@ -25,11 +26,16 @@ and copy the assets:
 from the game into the `../relativitization-art/assets` folder.
 
 ## Run desktop application
-`./gradlew :gdx-desktop:run`
+In terminal, run:
+```
+./gradlew :gdx-desktop:run
+```
 
 ## Build fat jar for desktop
 This will produce a `Relativitization.jar` in `../relativitization-art/assets`:
-`./gradlew :gdx-desktop:fatJar`
+```
+./gradlew :gdx-desktop:fatJar
+```
 
 ## Build executable for linux
 Go to `../relativitization-art` (`cd ../relativitization-art`), then run
