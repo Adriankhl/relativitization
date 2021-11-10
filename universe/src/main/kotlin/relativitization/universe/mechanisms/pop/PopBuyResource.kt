@@ -77,7 +77,8 @@ object PopBuyResource : Mechanism() {
                 } ?: ResourceQualityClass.THIRD
 
             val selectedQuality: MutableResourceQualityData = economyData.resourceData.getResourceQuality(
-                resourceType, resourceQualityClass = selectedClass,
+                resourceType = resourceType,
+                resourceQualityClass = selectedClass,
             )
 
             val selectedPrice: Double = economyData.resourceData.getResourcePrice(
