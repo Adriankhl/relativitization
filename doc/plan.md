@@ -40,6 +40,9 @@
 * Improve diplomatic relation
 * Declare war
 
+# Generate universe TODO List
+* One stellar per player generation
+
 # GUI TODO List
 * Display information
 * Available commands
