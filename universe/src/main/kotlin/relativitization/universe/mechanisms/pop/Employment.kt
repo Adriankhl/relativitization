@@ -150,7 +150,7 @@ object Employment : Mechanism() {
             val availableFuel: Double = fuelRestMassData.production
 
             // Decide employee and payment based on the remaining labourer and fuel
-            if (((availableFuel - maxPayWithTax) > 0.0) && ((availableEmployee - employeeAcc - maxNumEmployee > 0.0))) {
+            if (((availableFuel - maxPayWithTax) >= 0.0) && ((availableEmployee - employeeAcc - maxNumEmployee >= 0.0))) {
                 // Update number of employee
                 it.lastNumEmployee = it.fuelFactoryInternalData.maxNumEmployee * it.numBuilding
 
@@ -176,7 +176,7 @@ object Employment : Mechanism() {
             val maxPayWithTax: Double = maxPay * (1.0 + incomeTax)
 
             // Decide employee and payment based on the remaining labourer and fuel
-            if (((it.storedFuelRestMass - maxPayWithTax) > 0.0) && ((availableEmployee - employeeAcc - maxNumEmployee > 0.0))) {
+            if (((it.storedFuelRestMass - maxPayWithTax) >= 0.0) && ((availableEmployee - employeeAcc - maxNumEmployee >- 0.0))) {
                 // Update number of employee
                 it.lastNumEmployee = it.fuelFactoryInternalData.maxNumEmployee * it.numBuilding
 
@@ -223,7 +223,7 @@ object Employment : Mechanism() {
             val availableFuel: Double = fuelRestMassData.production
 
             // Decide employee and payment based on the remaining scholar and fuel
-            if (((availableFuel - maxPayWithTax) > 0.0) && ((availableEmployee - employeeAcc - maxNumEmployee > 0.0))) {
+            if (((availableFuel - maxPayWithTax) >= 0.0) && ((availableEmployee - employeeAcc - maxNumEmployee >= 0.0))) {
                 // Update number of employee
                 it.lastNumEmployee = it.maxNumEmployee
 
@@ -271,7 +271,7 @@ object Employment : Mechanism() {
             val availableFuel: Double = fuelRestMassData.production
 
             // Decide employee and payment based on the remaining scholar and fuel
-            if (((availableFuel - maxPayWithTax) > 0.0) && ((availableEmployee - employeeAcc - maxNumEmployee > 0.0))) {
+            if (((availableFuel - maxPayWithTax) >= 0.0) && ((availableEmployee - employeeAcc - maxNumEmployee >= 0.0))) {
                 // Update number of employee
                 it.lastNumEmployee = it.maxNumEmployee
 
