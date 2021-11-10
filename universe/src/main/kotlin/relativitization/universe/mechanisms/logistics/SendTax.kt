@@ -14,6 +14,15 @@ object SendTax : Mechanism() {
         universeSettings: UniverseSettings,
         universeGlobalData: UniverseGlobalData
     ): List<Command> {
-        TODO("Not yet implemented")
+
+        val fraction: Double = 0.5
+
+        val fuelRestMass: Double = mutablePlayerData.playerInternalData.economyData().taxData.storedFuelRestMass
+
+        val leaderList: List<Int> = mutablePlayerData.playerInternalData.leaderIdList
+
+
+
+        return listOf()
     }
 }

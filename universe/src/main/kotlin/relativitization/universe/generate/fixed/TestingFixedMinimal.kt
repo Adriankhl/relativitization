@@ -80,11 +80,10 @@ class TestingFixedMinimal : GenerateUniverse() {
 
 
         // player 1 is a leader of player 2
-        playerData2.playerInternalData.changeDirectLeaderId(
-            playerData1.playerId,
+        playerData2.changeDirectLeaderId(
             playerData1.playerInternalData.leaderIdList
         )
-        playerData1.playerInternalData.addDirectSubordinateId(playerData2.playerId)
+        playerData1.addDirectSubordinateId(playerData2.playerId)
 
         // player 4 is a dead player
         playerData4.playerInternalData.isAlive = false

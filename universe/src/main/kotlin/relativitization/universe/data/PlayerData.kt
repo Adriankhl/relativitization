@@ -150,6 +150,31 @@ data class MutablePlayerData(
         return topLeaderId() == playerId
     }
 
+
+    /**
+     * Change direct leader id and add all leaders of direct leader
+     */
+    fun changeDirectLeaderId(leaderListOfDirectLeader: List<Int>) {
+        if (leaderListOfDirectLeader.isNotEmpty()) {
+            playerInternalData.directLeaderId = leaderListOfDirectLeader.last()
+            playerInternalData.leaderIdList.clear()
+            playerInternalData.leaderIdList.addAll(leaderListOfDirectLeader)
+            playerInternalData.leaderIdList.add(playerId)
+        } else {
+            playerInternalData.directLeaderId = playerId
+            playerInternalData.leaderIdList.clear()
+            playerInternalData.leaderIdList.add(playerId)
+        }
+    }
+
+    /**
+     * Add subordinate to this player
+     */
+    fun addDirectSubordinateId(subordinateId: Int) {
+        playerInternalData.directSubordinateIdList.add(subordinateId)
+        playerInternalData.subordinateIdList.add(subordinateId)
+    }
+
     companion object {
         private val logger = RelativitizationLogManager.getLogger()
     }
@@ -295,24 +320,6 @@ data class MutablePlayerInternalData(
     fun popSystemData(newPopSystemData: MutablePopSystemData) =
         dataComponentMap.put(newPopSystemData)
 
-
-    /**
-     * Change direct leader id and add all leaders of direct leader
-     */
-    fun changeDirectLeaderId(newLeaderId: Int, leaderListOfDirectLeader: List<Int>) {
-        directLeaderId = newLeaderId
-        leaderIdList.clear()
-        leaderIdList.addAll(leaderListOfDirectLeader)
-        leaderIdList.add(newLeaderId)
-    }
-
-    /**
-     * Add subordinate to this player
-     */
-    fun addDirectSubordinateId(playerId: Int) {
-        directSubordinateIdList.add(playerId)
-        subordinateIdList.add(playerId)
-    }
 
     /**
      * Add an event to event map
