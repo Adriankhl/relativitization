@@ -38,7 +38,7 @@
 * Change economy policy, e.g., tax, storage
 * Change salary
 * Improve diplomatic relation
-* Declare war
+* Declare war, declare independence
 
 # Generate universe TODO List
 * One stellar per player generation
