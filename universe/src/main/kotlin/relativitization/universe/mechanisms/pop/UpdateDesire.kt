@@ -12,6 +12,7 @@ import relativitization.universe.data.components.popsystem.pop.PopType
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.maths.algebra.Logistic
 import relativitization.universe.maths.algebra.Piecewise
+import relativitization.universe.maths.physics.Relativistic
 import relativitization.universe.mechanisms.Mechanism
 
 object UpdateDesire : Mechanism() {
@@ -26,13 +27,19 @@ object UpdateDesire : Mechanism() {
         val satisfactionMaxDecreaseFactor: Double = 0.2
         val satisfactionMaxIncreaseDelta: Double = 3.0
 
+
+        val gamma: Double = Relativistic.gamma(
+            universeData3DAtPlayer.getCurrentPlayerData().velocity,
+            universeSettings.speedOfLight
+        )
+
         mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.forEach { carrier ->
             PopType.values().forEach { popType ->
                 val mutableCommonPopData: MutableCommonPopData =
                     carrier.allPopData.getCommonPopData(popType)
 
                 val desireAmount: Double = computeDesireResourceAmount(
-                    mutableCommonPopData
+                    mutableCommonPopData = mutableCommonPopData
                 )
 
                 val desireResourceTypeList: List<ResourceType> = computeDesireResourceType(
@@ -41,6 +48,7 @@ object UpdateDesire : Mechanism() {
 
                 val desireResourceMap: Map<ResourceType, MutableResourceDesireData> = desireResourceTypeList.map {
                     val desireQualityData: MutableResourceQualityData = computeDesireResourceQuality(
+                        gamma = gamma,
                         mutableCommonPopData = mutableCommonPopData,
                         resourceType = it,
                         desireQualityUpdateFactor = desireQualityUpdateFactor,
@@ -51,7 +59,8 @@ object UpdateDesire : Mechanism() {
                 }.toMap()
 
                 updateSatisfaction(
-                    mutableCommonPopData,
+                    gamma = gamma,
+                    mutableCommonPopData = mutableCommonPopData,
                     desireResourceTypeList = desireResourceTypeList,
                     satisfactionMaxDecreaseFactor = satisfactionMaxDecreaseFactor,
                     satisfactionMaxIncreaseDelta = satisfactionMaxIncreaseDelta,
@@ -129,6 +138,9 @@ object UpdateDesire : Mechanism() {
         }
     }
 
+    /**
+     * Compute the desire amount without the effect of time dilation
+     */
     fun computeDesireResourceAmount(
         mutableCommonPopData: MutableCommonPopData
     ): Double {
@@ -136,9 +148,10 @@ object UpdateDesire : Mechanism() {
     }
 
     /**
-     * Compute the new desire resource quality
+     * Compute the new desire resource quality, adjusted by time dilation
      */
     fun computeDesireResourceQuality(
+        gamma: Double,
         mutableCommonPopData: MutableCommonPopData,
         resourceType: ResourceType,
         desireQualityUpdateFactor: Double,
@@ -158,25 +171,27 @@ object UpdateDesire : Mechanism() {
 
         // If sufficient amount, get close to the input quality
         // else decrease the desire quality
-        return if (inputDesire.desireAmount > originalDesire.desireAmount) {
+        // Adjusted by time dilation
+        return if (inputDesire.desireAmount > (originalDesire.desireAmount / gamma)) {
             originalDesire.desireQuality.changeTo(
                 inputDesire.desireQuality,
-                desireQualityUpdateFactor,
-                desireQualityUpdateMinDiff,
+                desireQualityUpdateFactor / gamma,
+                desireQualityUpdateMinDiff / gamma,
             )
         } else {
             originalDesire.desireQuality.changeTo(
                 MutableResourceQualityData(0.0, 0.0, 0.0),
-                desireQualityUpdateFactor,
-                desireQualityUpdateMinDiff,
+                desireQualityUpdateFactor / gamma,
+                desireQualityUpdateMinDiff / gamma,
             )
         }
     }
 
     /**
-     * Compute satisfaction
+     * Compute satisfaction, adjusted by time dilation
      */
     fun updateSatisfaction(
+        gamma: Double,
         mutableCommonPopData: MutableCommonPopData,
         desireResourceTypeList: List<ResourceType>,
         satisfactionMaxDecreaseFactor: Double,
@@ -196,7 +211,7 @@ object UpdateDesire : Mechanism() {
                 )
 
             if (originalDesire.desireAmount > 0.0) {
-                inputDesire.desireAmount / originalDesire.desireAmount
+                inputDesire.desireAmount / (originalDesire.desireAmount / gamma)
             } else {
                 1.0
             }
@@ -250,6 +265,6 @@ object UpdateDesire : Mechanism() {
             logisticSlope1 = 1.0
         )
 
-        mutableCommonPopData.satisfaction += deltaSatisfaction
+        mutableCommonPopData.satisfaction += (deltaSatisfaction / gamma)
     }
 }

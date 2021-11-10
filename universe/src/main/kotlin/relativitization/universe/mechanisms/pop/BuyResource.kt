@@ -5,6 +5,7 @@ import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.global.UniverseGlobalData
+import relativitization.universe.maths.physics.Relativistic
 import relativitization.universe.mechanisms.Mechanism
 
 /**
@@ -19,6 +20,12 @@ object BuyResource : Mechanism() {
         universeSettings: UniverseSettings,
         universeGlobalData: UniverseGlobalData
     ): List<Command> {
-        TODO("Not yet implemented")
+
+        val gamma: Double = Relativistic.gamma(
+            universeData3DAtPlayer.getCurrentPlayerData().velocity,
+            universeSettings.speedOfLight
+        )
+
+        return listOf()
     }
 }
