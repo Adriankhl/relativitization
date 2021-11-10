@@ -42,6 +42,7 @@
 
 # Generate universe TODO List
 * One stellar per player generation
+* Generate proper knowledge network
 
 # GUI TODO List
 * Display information
