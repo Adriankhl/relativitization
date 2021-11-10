@@ -278,14 +278,18 @@ object CommandCollection {
     }.toMap()
 
     fun hasCommand(universeSettings: UniverseSettings, command: Command): Boolean {
-        val commandCollection: List<String> = availableCommandsNameMap.getOrElse(
-            universeSettings.commandCollectionName
-        ) {
-            logger.error("No command collection name: ${universeSettings.commandCollectionName} found")
-            DefaultAvailableCommands
-        }.commandList
+        return if (universeSettings.commandCollectionName != "All") {
+            val commandCollection: List<String> = availableCommandsNameMap.getOrElse(
+                universeSettings.commandCollectionName
+            ) {
+                logger.error("No command collection name: ${universeSettings.commandCollectionName} found")
+                DefaultAvailableCommands
+            }.commandList
 
-        return commandCollection.contains(command.name())
+            commandCollection.contains(command.name())
+        } else {
+            true
+        }
     }
 }
 

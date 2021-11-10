@@ -15,6 +15,9 @@ import relativitization.universe.global.science.name
  * Setting data
  *
  * @property universeName name of the universe
+ * @property mechanismCollectionName the name of the mechanism collection
+ * @property commandCollectionName the name of the available command collection, or "All" to available all commands
+ * @property universeScienceDataProcessCollectionName the name of the science process
  * @property speedOfLight speed of light in integer
  * @property tDim t dimension of the universe
  * @property xDim x dimension of the universe
