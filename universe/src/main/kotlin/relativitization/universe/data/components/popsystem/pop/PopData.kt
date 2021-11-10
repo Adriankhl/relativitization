@@ -189,6 +189,33 @@ data class MutableCommonPopData(
 
     }
 
+
+    /**
+     * Add resource to lastDesireResourceMap for mutable resource quality data
+     */
+    fun addDesireResource(
+        resourceType: ResourceType,
+        resourceQualityData: MutableResourceQualityData,
+        resourceAmount: Double,
+    ) {
+        val desireData: MutableResourceDesireData = resourceInputMap.getOrPut(
+            resourceType
+        ) {
+            MutableResourceDesireData()
+        }
+
+        val originalAmount: Double = desireData.desireAmount
+
+        desireData.desireQuality.updateQuality(
+            originalAmount = originalAmount,
+            newAmount = resourceAmount,
+            newData = resourceQualityData,
+        )
+
+        desireData.desireAmount += resourceAmount
+
+    }
+
     companion object {
         private val logger = RelativitizationLogManager.getLogger()
     }
