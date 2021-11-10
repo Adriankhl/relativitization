@@ -15,9 +15,10 @@
 
 # Mechanism TODO list
 * Basic resource output from stellar system [x]
-* Pop daily need [x]
+* Pop update daily need [x]
 * Salary, and allocate pop to factory, institute and lab [x]
-* Tax and tariff
+* Pop buy resource to fulfill need
+* Tax and tariff, send to leaders
 * Research [x]
 * How research affect product
 * Export center [x]
