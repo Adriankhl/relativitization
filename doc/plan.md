@@ -18,7 +18,9 @@
 * Pop update daily need [x]
 * Salary, and allocate pop to factory, institute and lab [x]
 * Pop buy resource to fulfill need [x]
-* Pop growth
+* Pop growth: Medic
+* Education level: educator
+* Entertainment production: entertainer
 * Tax and tariff, send to leaders
 * Research [x]
 * How research affect product
@@ -26,7 +28,7 @@
 * Basic diplomacy
 * New carrier
 * New player
-* Basic military
+* Basic military: Sodier
 * Sync leader data to subordinate, e.g., enemy
 
 # AI TODO List
