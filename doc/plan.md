@@ -28,7 +28,7 @@
 * Basic diplomacy
 * New carrier
 * New player
-* Basic military: Sodier
+* Basic military: Soldier
 * Sync leader data to subordinate, e.g., enemy
 
 # AI TODO List
