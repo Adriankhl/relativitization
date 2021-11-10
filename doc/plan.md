@@ -17,7 +17,8 @@
 * Basic resource output from stellar system [x]
 * Pop update daily need [x]
 * Salary, and allocate pop to factory, institute and lab [x]
-* Pop buy resource to fulfill need
+* Pop buy resource to fulfill need [x]
+* Pop growth
 * Tax and tariff, send to leaders
 * Research [x]
 * How research affect product
