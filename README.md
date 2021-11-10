@@ -1,5 +1,5 @@
 # Relativitization
-Grand strategy game / agent-based simulation framework / social model in 4D spacetime
+Turn-based strategy game / agent-based simulation toolkit / social model in 4D relativistic spacetime.
 
 # Project layout
 * `universe` core stuffs for the universe simulation
