@@ -99,6 +99,9 @@ object PopulationGrowth : Mechanism() {
         // Maximum positive or negative change of the population
         val maxPopulationChange: Double = currentPopulation * 0.1
 
+        // Always add 100 population to avoid 0 population
+        val basePopulationGrowth: Double = 100.0
+
         val educationFactor: Double = if (popType == PopType.SCHOLAR || popType == PopType.ENGINEER) {
             (educationLevel - 0.5) * 2.0
         } else {
@@ -113,12 +116,11 @@ object PopulationGrowth : Mechanism() {
 
         val absPopulationChange: Double = min(
             maxPopulationChange * 2.0,
-            maxPopulationChange * educationFactor * totalPopulationFactor * medicFactor * satisfaction
+            maxPopulationChange * educationFactor * totalPopulationFactor * medicFactor * satisfaction + basePopulationGrowth
         )
 
         val populationChange: Double = absPopulationChange - maxPopulationChange
 
-        // Always add 100 population to avoid 0 population
-        return currentPopulation + populationChange + 100.0
+        return currentPopulation + populationChange
     }
 }
