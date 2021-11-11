@@ -8,8 +8,11 @@ import relativitization.universe.data.components.popsystem.pop.medic.MedicPopDat
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.maths.physics.Relativistic
 import relativitization.universe.mechanisms.Mechanism
+import relativitization.universe.utils.RelativitizationLogManager
 
 object PopulationGrowth : Mechanism() {
+    private val logger = RelativitizationLogManager.getLogger()
+
     override fun process(
         mutablePlayerData: MutablePlayerData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
@@ -29,9 +32,29 @@ object PopulationGrowth : Mechanism() {
         return listOf()
     }
 
+    /**
+     * Compute the effect ot medic pop
+     */
     fun computeMedicFactor(
         medicPopData: MedicPopData,
+        totalPopulation: Double
     ): Double {
+        // adjust the effective population by satisfaction
+        val effectiveMedicPopulation: Double = if (medicPopData.commonPopData.satisfaction > 1.0) {
+            medicPopData.commonPopData.adultPopulation
+        } else {
+            medicPopData.commonPopData.adultPopulation * medicPopData.commonPopData.satisfaction
+        }
 
+        return if (totalPopulation > 0.0) {
+            if (effectiveMedicPopulation * 10.0 > totalPopulation) {
+                1.0
+            } else {
+                effectiveMedicPopulation * 10.0 / totalPopulation
+            }
+        } else {
+            logger.error("Population <= 0.0")
+            1.0
+        }
     }
 }
