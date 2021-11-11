@@ -16,6 +16,7 @@ data class ScienceProductData(
     val idealResourceFactoryMap: Map<ResourceType, ResourceFactoryInternalData> = mapOf(),
     val fuelLogisticsLossFractionPerDistance: Double = 0.9,
     val resourceLogisticsLossFractionPerDistance: Double = 0.9,
+    val idealEntertainmentQuality: ResourceQualityData = ResourceQualityData(),
 ) {
     fun newFuelFactoryInternalData(
         qualityLevel: Double
@@ -202,6 +203,7 @@ data class MutableScienceProductData(
     var idealResourceFactoryMap: MutableMap<ResourceType, MutableResourceFactoryInternalData> = mutableMapOf(),
     var fuelLogisticsLossFractionPerDistance: Double = 0.9,
     var resourceLogisticsLossFractionPerDistance: Double = 0.9,
+    var idealEntertainmentQuality: MutableResourceQualityData = MutableResourceQualityData(),
 ) {
     fun newFuelFactoryInternalData(
         qualityLevel: Double
