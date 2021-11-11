@@ -4,11 +4,15 @@ import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
-import relativitization.universe.data.components.popsystem.pop.medic.MedicPopData
+import relativitization.universe.data.components.popsystem.pop.MutableCommonPopData
+import relativitization.universe.data.components.popsystem.pop.PopType
+import relativitization.universe.data.components.popsystem.pop.medic.MutableMedicPopData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.maths.physics.Relativistic
 import relativitization.universe.mechanisms.Mechanism
 import relativitization.universe.utils.RelativitizationLogManager
+import kotlin.math.min
+import kotlin.math.pow
 
 object PopulationGrowth : Mechanism() {
     private val logger = RelativitizationLogManager.getLogger()
@@ -27,6 +31,28 @@ object PopulationGrowth : Mechanism() {
 
         mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.forEach { mutableCarrierData ->
             val totalPopulation: Double = mutableCarrierData.allPopData.totalAdultPopulation()
+            val medicFactor: Double = computeMedicFactor(
+                mutableCarrierData.allPopData.medicPopData,
+                totalPopulation,
+            )
+
+            PopType.values().forEach { popType ->
+                val commonPopData: MutableCommonPopData = mutableCarrierData.allPopData.getCommonPopData(
+                    popType
+                )
+
+                val newPopulation: Double = computeNewPop(
+                    popType = popType,
+                    medicFactor = medicFactor,
+                    satisfaction = commonPopData.satisfaction,
+                    educationLevel = commonPopData.educationLevel,
+                    currentPopulation = commonPopData.adultPopulation,
+                    currentTotalPopulation = totalPopulation,
+                    idealTotalPopulation = mutableCarrierData.idealPopulation,
+                )
+
+                commonPopData.adultPopulation = newPopulation
+            }
         }
 
         return listOf()
@@ -36,7 +62,7 @@ object PopulationGrowth : Mechanism() {
      * Compute the effect ot medic pop
      */
     fun computeMedicFactor(
-        medicPopData: MedicPopData,
+        medicPopData: MutableMedicPopData,
         totalPopulation: Double
     ): Double {
         // adjust the effective population by satisfaction
@@ -56,5 +82,42 @@ object PopulationGrowth : Mechanism() {
             logger.error("Population <= 0.0")
             1.0
         }
+    }
+
+    /**
+     * Compute new population
+     */
+    fun computeNewPop(
+        popType: PopType,
+        medicFactor: Double,
+        satisfaction: Double,
+        educationLevel: Double,
+        currentPopulation: Double,
+        currentTotalPopulation: Double,
+        idealTotalPopulation: Double,
+    ): Double {
+        // Maximum positive or negative change of the population
+        val maxPopulationChange: Double = currentPopulation * 0.1
+
+        val educationFactor: Double = if (popType == PopType.SCHOLAR || popType == PopType.ENGINEER) {
+            (educationLevel - 0.5) * 2.0
+        } else {
+            1.0
+        }
+
+        val totalPopulationFactor: Double = if (currentTotalPopulation > idealTotalPopulation * 0.5) {
+            (0.5).pow(currentPopulation / idealTotalPopulation - 1.0)
+        } else {
+            2.0
+        }
+
+        val absPopulationChange: Double = min(
+            maxPopulationChange * 2.0,
+            maxPopulationChange * educationFactor * totalPopulationFactor * medicFactor * satisfaction
+        )
+
+        val populationChange: Double = absPopulationChange - maxPopulationChange
+
+        return currentPopulation + populationChange
     }
 }
