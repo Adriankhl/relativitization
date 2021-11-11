@@ -21,7 +21,7 @@
 * Pop growth: Medic
 * Education level: educator
 * Entertainment production: entertainer
-* Tax and tariff, send to leaders
+* Tax and tariff, send to leaders [x]
 * Research [x]
 * How research affect product
 * Export center [x]
