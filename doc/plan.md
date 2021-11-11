@@ -19,7 +19,7 @@
 * Salary, and allocate pop to factory, institute and lab [x]
 * Pop buy resource to fulfill need [x]
 * Pop growth: Medic [x]
-* Education level: educator
+* Education level: educator [x]
 * Entertainment production: entertainer
 * Tax and tariff, send to leaders [x]
 * Research [x]
