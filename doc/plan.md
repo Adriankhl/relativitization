@@ -20,7 +20,7 @@
 * Pop buy resource to fulfill need [x]
 * Pop growth: Medic [x]
 * Education level: educator [x]
-* Entertainment production: entertainer
+* Entertainment production: entertainer [x]
 * Tax and tariff, send to leaders [x]
 * Research [x]
 * How research affect product
