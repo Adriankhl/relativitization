@@ -13,6 +13,7 @@ import relativitization.universe.mechanisms.logistics.SendTax
 import relativitization.universe.mechanisms.modifier.UpdateModifierTime
 import relativitization.universe.mechanisms.pop.*
 import relativitization.universe.mechanisms.production.BaseStellarFuelProduction
+import relativitization.universe.mechanisms.production.EntertainmentProduction
 import relativitization.universe.mechanisms.production.FuelFactoryProduction
 import relativitization.universe.mechanisms.production.ResourceFactoryProduction
 import relativitization.universe.mechanisms.research.DiscoverKnowledge
@@ -58,6 +59,7 @@ object DefaultMechanismList : MechanismList() {
         BaseStellarFuelProduction,
         FuelFactoryProduction,
         ResourceFactoryProduction,
+        EntertainmentProduction,
         ExportResource,
         Educate,
         PopulationGrowth,
