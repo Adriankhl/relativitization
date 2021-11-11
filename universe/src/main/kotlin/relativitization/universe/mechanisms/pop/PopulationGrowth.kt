@@ -42,6 +42,7 @@ object PopulationGrowth : Mechanism() {
                 )
 
                 val newPopulation: Double = computeNewPop(
+                    gamma = gamma,
                     popType = popType,
                     medicFactor = medicFactor,
                     satisfaction = commonPopData.satisfaction,
@@ -88,6 +89,7 @@ object PopulationGrowth : Mechanism() {
      * Compute new population
      */
     fun computeNewPop(
+        gamma: Double,
         popType: PopType,
         medicFactor: Double,
         satisfaction: Double,
@@ -114,12 +116,14 @@ object PopulationGrowth : Mechanism() {
             5.0 * (1.0 - currentPopulation / idealTotalPopulation)
         }
 
-        val absPopulationChange: Double = min(
+        // the new population compare to maxPopulationChange
+        val relativeNewPopulation: Double = min(
             maxPopulationChange * 2.0,
             maxPopulationChange * educationFactor * totalPopulationFactor * medicFactor * satisfaction + basePopulationGrowth
         )
 
-        val populationChange: Double = absPopulationChange - maxPopulationChange
+        // Adjusted by time dilation
+        val populationChange: Double = (relativeNewPopulation - maxPopulationChange) / gamma
 
         return currentPopulation + populationChange
     }
