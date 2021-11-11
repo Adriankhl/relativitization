@@ -4,6 +4,7 @@ import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
+import relativitization.universe.data.components.popsystem.pop.medic.MedicPopData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.maths.physics.Relativistic
 import relativitization.universe.mechanisms.Mechanism
@@ -21,6 +22,16 @@ object PopulationGrowth : Mechanism() {
             universeSettings.speedOfLight
         )
 
+        mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.forEach { mutableCarrierData ->
+            val totalPopulation: Double = mutableCarrierData.allPopData.totalAdultPopulation()
+        }
+
         return listOf()
+    }
+
+    fun computeMedicFactor(
+        medicPopData: MedicPopData,
+    ): Double {
+
     }
 }

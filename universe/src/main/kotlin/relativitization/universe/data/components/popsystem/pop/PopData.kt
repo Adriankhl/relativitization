@@ -65,6 +65,10 @@ data class AllPopData(
         PopType.ENTERTAINER -> entertainerPopData.commonPopData
         PopType.SOLDIER -> soldierPopData.commonPopData
     }
+
+    fun totalAdultPopulation(): Double = PopType.values().fold(0.0) { acc, popType ->
+        acc + getCommonPopData(popType).adultPopulation
+    }
 }
 
 @Serializable
@@ -102,6 +106,10 @@ data class MutableAllPopData(
             resourceQualityData,
             resourceAmount
         )
+    }
+
+    fun totalAdultPopulation(): Double = PopType.values().fold(0.0) { acc, popType ->
+        acc + getCommonPopData(popType).adultPopulation
     }
 }
 
