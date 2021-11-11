@@ -108,7 +108,7 @@ object PopulationGrowth : Mechanism() {
         val totalPopulationFactor: Double = if (currentTotalPopulation > idealTotalPopulation * 0.5) {
             (0.5).pow(currentPopulation / idealTotalPopulation - 1.0)
         } else {
-            2.0
+            5.0 * (1.0 - currentPopulation / idealTotalPopulation)
         }
 
         val absPopulationChange: Double = min(
@@ -118,6 +118,7 @@ object PopulationGrowth : Mechanism() {
 
         val populationChange: Double = absPopulationChange - maxPopulationChange
 
-        return currentPopulation + populationChange
+        // Always add 100 population to avoid 0 population
+        return currentPopulation + populationChange + 100.0
     }
 }
