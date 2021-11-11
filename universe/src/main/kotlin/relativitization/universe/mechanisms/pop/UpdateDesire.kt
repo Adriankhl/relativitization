@@ -22,6 +22,8 @@ object UpdateDesire : Mechanism() {
         universeSettings: UniverseSettings,
         universeGlobalData: UniverseGlobalData
     ): List<Command> {
+
+        // Parameters
         val desireQualityUpdateFactor: Double = 0.2
         val desireQualityUpdateDiff: Double = 0.2
         val satisfactionMaxDecreaseFactor: Double = 0.2
