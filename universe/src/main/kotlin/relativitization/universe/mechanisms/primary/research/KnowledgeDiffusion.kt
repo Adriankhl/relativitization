@@ -1,4 +1,4 @@
-package relativitization.universe.mechanisms.main.research
+package relativitization.universe.mechanisms.primary.research
 
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseData3DAtPlayer

@@ -1,4 +1,4 @@
-package relativitization.universe.mechanisms.main.production
+package relativitization.universe.mechanisms.primary.production
 
 import kotlinx.coroutines.runBlocking
 import relativitization.universe.Universe

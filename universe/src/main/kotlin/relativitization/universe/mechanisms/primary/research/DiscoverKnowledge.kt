@@ -1,4 +1,4 @@
-package relativitization.universe.mechanisms.main.research
+package relativitization.universe.mechanisms.primary.research
 
 import relativitization.universe.data.*
 import relativitization.universe.data.commands.Command
