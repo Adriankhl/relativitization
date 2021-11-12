@@ -361,37 +361,53 @@ object Employment : Mechanism() {
             acc + mutableInstituteData.maxNumEmployee
         }
 
-        // Accumulated employee
-        var employeeAcc: Double = 0.0
+
+        // Compute fractions of employee if number of available employees is not enough
+        val instituteEmployeeFraction: Double =
+            when {
+                maxInstituteEmployee > availableEmployee -> {
+                    1.0
+                }
+                availableEmployee > 0.0 -> {
+                    maxInstituteEmployee / availableEmployee
+                }
+                else -> {
+                    0.0
+                }
+            }
 
 
         scholarPopData.instituteMap.values.forEach {
 
             val maxNumEmployee: Double = it.maxNumEmployee
-            val maxPay: Double = maxNumEmployee * salary
-            val tax: Double = maxPay * incomeTax
-            val maxPayWithTax: Double = maxPay + tax
+            val newNumEmployee: Double = maxNumEmployee * instituteEmployeeFraction
+            val pay: Double = newNumEmployee * salary
+            val tax: Double = pay * incomeTax
+            val payWithTax: Double = pay + tax
             val availableFuel: Double = fuelRestMassData.production
 
             // Decide employee and payment based on the remaining scholar and fuel
-            if (((availableFuel - maxPayWithTax) >= 0.0) && ((availableEmployee - employeeAcc - maxNumEmployee >= 0.0))) {
+            if (availableFuel - payWithTax >= 0.0) {
                 // Update number of employee
                 it.lastNumEmployee = it.maxNumEmployee
 
                 // Pay salary and tax here
-                fuelRestMassData.production -= maxPayWithTax
-                scholarPopData.commonPopData.saving += maxPay
+                fuelRestMassData.production -= payWithTax
+                scholarPopData.commonPopData.saving += pay
                 mutableEconomyData.taxData.storedFuelRestMass += tax
 
-                // Accumulate employee
-                employeeAcc += maxNumEmployee
             } else {
                 it.lastNumEmployee = 0.0
             }
         }
 
+        // Actual number of employee, for computation of unemployment rate
+        val actualNumEmployee: Double = scholarPopData.instituteMap.values.fold(0.0) { acc, mutableInstituteData ->
+            acc + mutableInstituteData.lastNumEmployee
+        }
+
         // Compute unemployment rate
-        scholarPopData.commonPopData.unemploymentRate = (1.0 - employeeAcc / availableEmployee)
+        scholarPopData.commonPopData.unemploymentRate = (1.0 - actualNumEmployee / availableEmployee)
     }
 
 
@@ -409,37 +425,58 @@ object Employment : Mechanism() {
         // Available population to work
         val availableEmployee: Double = engineerPopData.commonPopData.adultPopulation
 
-        // Accumulated employee
-        var employeeAcc: Double = 0.0
+        // Maximum scholar employee in laboratories
+        val maxLaboratoryEmployee: Double = engineerPopData.laboratoryMap.values.fold(0.0) { acc, mutableLaboratoryData ->
+            acc + mutableLaboratoryData.maxNumEmployee
+        }
+
+
+        // Compute fractions of employee if number of available employees is not enough
+        val laboratoryEmployeeFraction: Double =
+            when {
+                maxLaboratoryEmployee > availableEmployee -> {
+                    1.0
+                }
+                availableEmployee > 0.0 -> {
+                    maxLaboratoryEmployee / availableEmployee
+                }
+                else -> {
+                    0.0
+                }
+            }
 
 
         engineerPopData.laboratoryMap.values.forEach {
 
             val maxNumEmployee: Double = it.maxNumEmployee
-            val maxPay: Double = maxNumEmployee * salary
-            val tax: Double = maxPay * incomeTax
-            val maxPayWithTax: Double = maxPay + tax
+            val newNumEmployee: Double = maxNumEmployee * laboratoryEmployeeFraction
+            val pay: Double = newNumEmployee * salary
+            val tax: Double = pay * incomeTax
+            val payWithTax: Double = pay + tax
             val availableFuel: Double = fuelRestMassData.production
 
             // Decide employee and payment based on the remaining scholar and fuel
-            if (((availableFuel - maxPayWithTax) >= 0.0) && ((availableEmployee - employeeAcc - maxNumEmployee >= 0.0))) {
+            if (availableFuel - payWithTax >= 0.0) {
                 // Update number of employee
                 it.lastNumEmployee = it.maxNumEmployee
 
                 // Pay salary and tax here
-                fuelRestMassData.production -= maxPayWithTax
-                engineerPopData.commonPopData.saving += maxPay
+                fuelRestMassData.production -= payWithTax
+                engineerPopData.commonPopData.saving += pay
                 mutableEconomyData.taxData.storedFuelRestMass += tax
 
-                // Accumulate employee
-                employeeAcc += maxNumEmployee
             } else {
                 it.lastNumEmployee = 0.0
             }
         }
 
+        // Actual number of employee, for computation of unemployment rate
+        val actualNumEmployee: Double = engineerPopData.laboratoryMap.values.fold(0.0) { acc, mutableLaboratoryData ->
+            acc + mutableLaboratoryData.lastNumEmployee
+        }
+
         // Compute unemployment rate
-        engineerPopData.commonPopData.unemploymentRate = (1.0 - employeeAcc / availableEmployee)
+        engineerPopData.commonPopData.unemploymentRate = (1.0 - actualNumEmployee / availableEmployee)
     }
 
     /**
