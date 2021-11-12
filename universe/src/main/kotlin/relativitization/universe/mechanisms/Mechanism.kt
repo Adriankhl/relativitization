@@ -19,7 +19,7 @@ import relativitization.universe.mechanisms.main.production.ResourceFactoryProdu
 import relativitization.universe.mechanisms.main.research.DiscoverKnowledge
 import relativitization.universe.mechanisms.main.research.KnowledgeDiffusion
 import relativitization.universe.mechanisms.main.science.SyncPlayerScienceData
-import relativitization.universe.mechanisms.main.science.UpdateScienceProductData
+import relativitization.universe.mechanisms.main.science.UpdateScienceApplicationData
 import relativitization.universe.utils.RelativitizationLogManager
 
 abstract class Mechanism {
@@ -68,7 +68,7 @@ object DefaultMechanismList : MechanismList() {
         KnowledgeDiffusion,
         DiscoverKnowledge,
         SyncPlayerScienceData,
-        UpdateScienceProductData,
+        UpdateScienceApplicationData,
     )
 }
 
