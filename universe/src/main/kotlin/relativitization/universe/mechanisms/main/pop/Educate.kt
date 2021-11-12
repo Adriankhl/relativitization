@@ -1,4 +1,4 @@
-package relativitization.universe.mechanisms.pop
+package relativitization.universe.mechanisms.main.pop
 
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseData3DAtPlayer
@@ -9,7 +9,6 @@ import relativitization.universe.data.components.popsystem.pop.PopType
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.maths.physics.Relativistic
 import relativitization.universe.mechanisms.Mechanism
-import kotlin.math.max
 import kotlin.math.min
 
 object Educate : Mechanism() {

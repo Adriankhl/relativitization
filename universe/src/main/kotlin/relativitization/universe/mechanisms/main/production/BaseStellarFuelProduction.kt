@@ -1,10 +1,9 @@
-package relativitization.universe.mechanisms.production
+package relativitization.universe.mechanisms.main.production
 
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
-import relativitization.universe.data.components.economy.ResourceType
 import relativitization.universe.data.components.popsystem.CarrierType
 import relativitization.universe.data.components.popsystem.MutableCarrierData
 import relativitization.universe.data.global.UniverseGlobalData

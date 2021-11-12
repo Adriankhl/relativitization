@@ -6,20 +6,20 @@ import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.global.UniverseGlobalData
-import relativitization.universe.mechanisms.events.AutoEventCollection
-import relativitization.universe.mechanisms.events.ProcessEvents
-import relativitization.universe.mechanisms.logistics.ExportResource
-import relativitization.universe.mechanisms.logistics.SendTax
-import relativitization.universe.mechanisms.modifier.UpdateModifierTime
-import relativitization.universe.mechanisms.pop.*
-import relativitization.universe.mechanisms.production.BaseStellarFuelProduction
-import relativitization.universe.mechanisms.production.EntertainmentProduction
-import relativitization.universe.mechanisms.production.FuelFactoryProduction
-import relativitization.universe.mechanisms.production.ResourceFactoryProduction
-import relativitization.universe.mechanisms.research.DiscoverKnowledge
-import relativitization.universe.mechanisms.research.KnowledgeDiffusion
-import relativitization.universe.mechanisms.science.SyncPlayerScienceData
-import relativitization.universe.mechanisms.science.UpdateScienceProductData
+import relativitization.universe.mechanisms.main.events.AutoEventCollection
+import relativitization.universe.mechanisms.main.events.ProcessEvents
+import relativitization.universe.mechanisms.main.logistics.ExportResource
+import relativitization.universe.mechanisms.main.logistics.SendTax
+import relativitization.universe.mechanisms.main.modifier.UpdateModifierTime
+import relativitization.universe.mechanisms.main.pop.*
+import relativitization.universe.mechanisms.main.production.BaseStellarFuelProduction
+import relativitization.universe.mechanisms.main.production.EntertainmentProduction
+import relativitization.universe.mechanisms.main.production.FuelFactoryProduction
+import relativitization.universe.mechanisms.main.production.ResourceFactoryProduction
+import relativitization.universe.mechanisms.main.research.DiscoverKnowledge
+import relativitization.universe.mechanisms.main.research.KnowledgeDiffusion
+import relativitization.universe.mechanisms.main.science.SyncPlayerScienceData
+import relativitization.universe.mechanisms.main.science.UpdateScienceProductData
 import relativitization.universe.utils.RelativitizationLogManager
 
 abstract class Mechanism {

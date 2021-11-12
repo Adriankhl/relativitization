@@ -1,4 +1,4 @@
-package relativitization.universe.mechanisms.logistics
+package relativitization.universe.mechanisms.main.logistics
 
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseData3DAtPlayer

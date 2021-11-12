@@ -1,4 +1,4 @@
-package relativitization.universe.mechanisms.production
+package relativitization.universe.mechanisms.main.production
 
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseData3DAtPlayer
