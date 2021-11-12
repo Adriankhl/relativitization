@@ -312,7 +312,7 @@ object Employment : Mechanism() {
         }.forEach {
 
             val maxNumEmployee: Double = it.resourceFactoryInternalData.maxNumEmployee * it.numBuilding
-            val newNumEmployee: Double = maxNumEmployee * otherFuelFactoryEmployeeFraction
+            val newNumEmployee: Double = maxNumEmployee * otherResourceFactoryEmployeeFraction
             val pay: Double = newNumEmployee * salary
             val payWithTax: Double = pay * (1.0 + incomeTax)
 
@@ -355,6 +355,11 @@ object Employment : Mechanism() {
 
         // Available population to work
         val availableEmployee: Double = scholarPopData.commonPopData.adultPopulation
+
+        // Maximum scholar employee in institutes
+        val maxInstituteEmployee: Double = scholarPopData.instituteMap.values.fold(0.0) { acc, mutableInstituteData ->
+            acc + mutableInstituteData.maxNumEmployee
+        }
 
         // Accumulated employee
         var employeeAcc: Double = 0.0
