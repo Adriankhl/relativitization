@@ -10,6 +10,7 @@ import relativitization.universe.mechanisms.primary.events.AutoEventCollection
 import relativitization.universe.mechanisms.primary.events.ProcessEvents
 import relativitization.universe.mechanisms.primary.logistics.ExportResource
 import relativitization.universe.mechanisms.primary.logistics.SendTax
+import relativitization.universe.mechanisms.primary.military.UpdateMilitaryBase
 import relativitization.universe.mechanisms.primary.modifier.UpdateModifierTime
 import relativitization.universe.mechanisms.primary.pop.*
 import relativitization.universe.mechanisms.primary.production.BaseStellarFuelProduction
@@ -56,6 +57,7 @@ object DefaultMechanismList : MechanismList() {
         Employment,
         PopBuyResource,
         UpdateDesire,
+        UpdateMilitaryBase,
         BaseStellarFuelProduction,
         FuelFactoryProduction,
         ResourceFactoryProduction,

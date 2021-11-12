@@ -17,6 +17,8 @@ data class ScienceApplicationData(
     val fuelLogisticsLossFractionPerDistance: Double = 0.9,
     val resourceLogisticsLossFractionPerDistance: Double = 0.9,
     val idealEntertainmentQuality: ResourceQualityData = ResourceQualityData(),
+    val militaryBaseAttackFactor: Double = 1.0,
+    val militaryBaseShieldFactor: Double = 1.0,
 ) {
     fun newFuelFactoryInternalData(
         qualityLevel: Double
@@ -204,6 +206,8 @@ data class MutableScienceApplicationData(
     var fuelLogisticsLossFractionPerDistance: Double = 0.9,
     var resourceLogisticsLossFractionPerDistance: Double = 0.9,
     var idealEntertainmentQuality: MutableResourceQualityData = MutableResourceQualityData(),
+    var militaryBaseAttackFactor: Double = 1.0,
+    var militaryBaseShieldFactor: Double = 1.0,
 ) {
     fun newFuelFactoryInternalData(
         qualityLevel: Double
