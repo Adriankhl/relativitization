@@ -120,6 +120,10 @@ object Employment : Mechanism() {
 
     }
 
+    /**
+     * Distribute the labourer among fuel factories and resource factories
+     * Prioritize self factories than other factories, fuel factories than resource factories
+     */
     fun updateLabourerEmployment(
         gamma: Double,
         labourerPopData: MutableLabourerPopData,
@@ -135,8 +139,93 @@ object Employment : Mechanism() {
         // Available population to work
         val availableEmployee: Double = labourerPopData.commonPopData.adultPopulation
 
-        // Accumulated employee
-        var employeeAcc: Double = 0.0
+        // Total number of max employee of self fuel factory
+        val maxSelfFuelFactoryEmployee: Double = labourerPopData.fuelFactoryMap.values.filter {
+            it.ownerPlayerId == universeData3DAtPlayer.getCurrentPlayerData().playerId
+        }.fold(0.0) { acc, mutableFuelFactoryData ->
+            acc + mutableFuelFactoryData.fuelFactoryInternalData.maxNumEmployee * mutableFuelFactoryData.numBuilding
+        }
+
+        // Total number of max employee of self resource factory
+        val maxSelfResourceFactoryEmployee: Double =
+            labourerPopData.resourceFactoryMap.values.filter {
+                it.ownerPlayerId == universeData3DAtPlayer.getCurrentPlayerData().playerId
+            }.fold(0.0) { acc, mutableResourceFactoryData ->
+                acc + mutableResourceFactoryData.resourceFactoryInternalData.maxNumEmployee * mutableResourceFactoryData.numBuilding
+            }
+
+        // Total number of max employee of other fuel factory
+        val maxOtherFuelFactoryEmployee: Double = labourerPopData.fuelFactoryMap.values.filter {
+            it.ownerPlayerId != universeData3DAtPlayer.getCurrentPlayerData().playerId
+        }.fold(0.0) { acc, mutableFuelFactoryData ->
+            acc + mutableFuelFactoryData.fuelFactoryInternalData.maxNumEmployee * mutableFuelFactoryData.numBuilding
+        }
+
+
+        // Total number of max employee of other resource factory
+        val maxOtherResourceFactoryEmployee: Double =
+            labourerPopData.resourceFactoryMap.values.filter {
+                it.ownerPlayerId != universeData3DAtPlayer.getCurrentPlayerData().playerId
+            }.fold(0.0) { acc, mutableResourceFactoryData ->
+                acc + mutableResourceFactoryData.resourceFactoryInternalData.maxNumEmployee * mutableResourceFactoryData.numBuilding
+            }
+
+        // Compute fractions of employee if number of available employees is not enough
+        val selfFuelFactoryEmployeeFraction: Double =
+            when {
+                maxSelfFuelFactoryEmployee > availableEmployee -> {
+                    1.0
+                }
+                availableEmployee > 0.0 -> {
+                    maxSelfFuelFactoryEmployee / availableEmployee
+                }
+                else -> {
+                    0.0
+                }
+            }
+
+        val selfResourceFactoryEmployeeFraction: Double =
+            when {
+                maxSelfFuelFactoryEmployee + maxSelfResourceFactoryEmployee > availableEmployee -> {
+                    1.0
+                }
+                availableEmployee - maxSelfFuelFactoryEmployee > 0.0 -> {
+                    maxSelfResourceFactoryEmployee / availableEmployee
+                }
+                else -> {
+                    0.0
+                }
+            }
+
+
+        val otherFuelFactoryEmployeeFraction: Double =
+            when {
+                maxSelfFuelFactoryEmployee + maxSelfResourceFactoryEmployee + maxOtherFuelFactoryEmployee > availableEmployee -> {
+                    1.0
+                }
+                availableEmployee - maxSelfFuelFactoryEmployee - maxSelfResourceFactoryEmployee > 0.0 -> {
+                    maxOtherFuelFactoryEmployee / availableEmployee
+                }
+                else -> {
+                    0.0
+                }
+            }
+
+
+        val otherResourceFactoryEmployeeFraction: Double =
+            when {
+                maxSelfFuelFactoryEmployee + maxSelfResourceFactoryEmployee + maxOtherFuelFactoryEmployee + maxOtherResourceFactoryEmployee > availableEmployee -> {
+                    1.0
+                }
+                availableEmployee - maxSelfFuelFactoryEmployee - maxSelfResourceFactoryEmployee - maxOtherFuelFactoryEmployee > 0.0 -> {
+                    maxOtherResourceFactoryEmployee / availableEmployee
+                }
+                else -> {
+                    0.0
+                }
+            }
+
+
 
         // Self factory first
         labourerPopData.fuelFactoryMap.values.filter {
@@ -144,23 +233,49 @@ object Employment : Mechanism() {
         }.forEach {
 
             val maxNumEmployee: Double = it.fuelFactoryInternalData.maxNumEmployee * it.numBuilding
-            val maxPay: Double = maxNumEmployee * salary
-            val tax: Double = maxPay * incomeTax
-            val maxPayWithTax: Double = maxPay + tax
+            val newNumEmployee: Double = maxNumEmployee * selfFuelFactoryEmployeeFraction
+            val pay: Double = newNumEmployee * salary
+            val tax: Double = pay * incomeTax
+            val payWithTax: Double = pay + tax
             val availableFuel: Double = fuelRestMassData.production
 
             // Decide employee and payment based on the remaining labourer and fuel
-            if (((availableFuel - maxPayWithTax) >= 0.0) && ((availableEmployee - employeeAcc - maxNumEmployee >= 0.0))) {
+            if (availableFuel - payWithTax >= 0.0) {
                 // Update number of employee
-                it.lastNumEmployee = it.fuelFactoryInternalData.maxNumEmployee * it.numBuilding
+                it.lastNumEmployee = newNumEmployee
 
                 // Pay salary and tax here
-                fuelRestMassData.production -= maxPayWithTax
-                labourerPopData.commonPopData.saving += maxPay
+                fuelRestMassData.production -= payWithTax
+                labourerPopData.commonPopData.saving += pay
                 mutableEconomyData.taxData.storedFuelRestMass += tax
 
-                // Accumulate employee
-                employeeAcc += maxNumEmployee
+            } else {
+                it.lastNumEmployee = 0.0
+            }
+        }
+
+        // Self factory first
+        labourerPopData.resourceFactoryMap.values.filter {
+            it.ownerPlayerId == universeData3DAtPlayer.getCurrentPlayerData().playerId
+        }.forEach {
+
+            val maxNumEmployee: Double = it.resourceFactoryInternalData.maxNumEmployee * it.numBuilding
+            val newNumEmployee: Double = maxNumEmployee * selfResourceFactoryEmployeeFraction
+            val pay: Double = newNumEmployee * salary
+            val tax: Double = pay * incomeTax
+            val payWithTax: Double = pay + tax
+            val availableFuel: Double = fuelRestMassData.production
+
+            // Decide employee and payment based on the remaining labourer and fuel
+            if (availableFuel - payWithTax >= 0.0) {
+                // Update number of employee
+                it.lastNumEmployee = newNumEmployee
+
+                // Pay salary and tax here
+                fuelRestMassData.production -= payWithTax
+                labourerPopData.commonPopData.saving += pay
+                mutableEconomyData.taxData.storedFuelRestMass += tax
+
             } else {
                 it.lastNumEmployee = 0.0
             }
@@ -172,28 +287,59 @@ object Employment : Mechanism() {
         }.forEach {
 
             val maxNumEmployee: Double = it.fuelFactoryInternalData.maxNumEmployee * it.numBuilding
-            val maxPay: Double = maxNumEmployee * salary
-            val maxPayWithTax: Double = maxPay * (1.0 + incomeTax)
+            val newNumEmployee: Double = maxNumEmployee * otherFuelFactoryEmployeeFraction
+            val pay: Double = newNumEmployee * salary
+            val payWithTax: Double = pay * (1.0 + incomeTax)
 
             // Decide employee and payment based on the remaining labourer and fuel
-            if (((it.storedFuelRestMass - maxPayWithTax) >= 0.0) && ((availableEmployee - employeeAcc - maxNumEmployee >- 0.0))) {
+            if (it.storedFuelRestMass - payWithTax >= 0.0) {
                 // Update number of employee
-                it.lastNumEmployee = it.fuelFactoryInternalData.maxNumEmployee * it.numBuilding
+                it.lastNumEmployee = newNumEmployee
 
                 // Pay salary and tax here, it does not use the player fuel
-                it.storedFuelRestMass -= maxPayWithTax
-                labourerPopData.commonPopData.saving += maxPay
-                mutableEconomyData.taxData.storedFuelRestMass += maxPay * incomeTax
+                it.storedFuelRestMass -= payWithTax
+                labourerPopData.commonPopData.saving += pay
+                mutableEconomyData.taxData.storedFuelRestMass += pay * incomeTax
 
-                // Accumulate employee
-                employeeAcc += maxNumEmployee
             } else {
                 it.lastNumEmployee = 0.0
             }
         }
 
+        // Other player factory, don't pay from player fuel storage here
+        labourerPopData.resourceFactoryMap.values.filter {
+            it.ownerPlayerId != universeData3DAtPlayer.getCurrentPlayerData().playerId
+        }.forEach {
+
+            val maxNumEmployee: Double = it.resourceFactoryInternalData.maxNumEmployee * it.numBuilding
+            val newNumEmployee: Double = maxNumEmployee * otherFuelFactoryEmployeeFraction
+            val pay: Double = newNumEmployee * salary
+            val payWithTax: Double = pay * (1.0 + incomeTax)
+
+            // Decide employee and payment based on the remaining labourer and fuel
+            if (it.storedFuelRestMass - payWithTax >= 0.0) {
+                // Update number of employee
+                it.lastNumEmployee = newNumEmployee
+
+                // Pay salary and tax here, it does not use the player fuel
+                it.storedFuelRestMass -= payWithTax
+                labourerPopData.commonPopData.saving += pay
+                mutableEconomyData.taxData.storedFuelRestMass += pay * incomeTax
+
+            } else {
+                it.lastNumEmployee = 0.0
+            }
+        }
+
+        // Actual number of employee, for computation of unemployment rate
+        val actualNumEmployee: Double = labourerPopData.fuelFactoryMap.values.fold(0.0) { acc, mutableFuelFactoryData ->
+            acc + mutableFuelFactoryData.lastNumEmployee
+        } + labourerPopData.resourceFactoryMap.values.fold(0.0) { acc, mutableResourceFactoryData ->
+            acc + mutableResourceFactoryData.lastNumEmployee
+        }
+
         // Compute unemployment rate
-        labourerPopData.commonPopData.unemploymentRate = (1.0 - employeeAcc / availableEmployee)
+        labourerPopData.commonPopData.unemploymentRate = (1.0 - actualNumEmployee / availableEmployee)
     }
 
     fun updateScholarEmployment(
