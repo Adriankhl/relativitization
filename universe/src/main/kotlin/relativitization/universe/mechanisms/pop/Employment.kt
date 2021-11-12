@@ -437,6 +437,9 @@ object Employment : Mechanism() {
         engineerPopData.commonPopData.unemploymentRate = (1.0 - employeeAcc / availableEmployee)
     }
 
+    /**
+     * Generic salary payment, pay all or nothing
+     */
     fun updateCommonEmployment(
         gamma: Double,
         commonPopData: MutableCommonPopData,
