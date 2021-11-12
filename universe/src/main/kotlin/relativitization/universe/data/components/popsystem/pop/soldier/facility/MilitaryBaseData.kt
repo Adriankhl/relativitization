@@ -11,7 +11,7 @@ data class MilitaryBaseData(
 
 @Serializable
 data class MutableMilitaryBaseData(
-    val attack: Double = 0.0,
-    val shield: Double = 1.0,
-    val lastNumEmployee: Double = 0.0,
+    var attack: Double = 0.0,
+    var shield: Double = 1.0,
+    var lastNumEmployee: Double = 0.0,
 )

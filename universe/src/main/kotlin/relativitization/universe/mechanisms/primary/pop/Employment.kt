@@ -12,6 +12,7 @@ import relativitization.universe.data.components.popsystem.pop.MutableCommonPopD
 import relativitization.universe.data.components.popsystem.pop.engineer.MutableEngineerPopData
 import relativitization.universe.data.components.popsystem.pop.labourer.MutableLabourerPopData
 import relativitization.universe.data.components.popsystem.pop.scholar.MutableScholarPopData
+import relativitization.universe.data.components.popsystem.pop.soldier.MutableSoldierPopData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.maths.physics.Relativistic
 import relativitization.universe.mechanisms.Mechanism
@@ -62,9 +63,9 @@ object Employment : Mechanism() {
             universeData3DAtPlayer,
         )
 
-        updateCommonEmployment(
+        updateSoldierEmployment(
             gamma,
-            carrierData.allPopData.soldierPopData.commonPopData,
+            carrierData.allPopData.soldierPopData,
             fuelRestMassData,
             mutableEconomyData,
             universeData3DAtPlayer.getCurrentPlayerData().playerInternalData.economyData(),
@@ -477,6 +478,44 @@ object Employment : Mechanism() {
 
         // Compute unemployment rate
         engineerPopData.commonPopData.unemploymentRate = (1.0 - actualNumEmployee / availableEmployee)
+    }
+
+    /**
+     * Update soldier employment
+     */
+    fun updateSoldierEmployment(
+        gamma: Double,
+        soldierPopData: MutableSoldierPopData,
+        fuelRestMassData: MutableFuelRestMassData,
+        mutableEconomyData: MutableEconomyData,
+        economyData: EconomyData,
+    ) {
+        val salary: Double = soldierPopData.commonPopData.salary * gamma
+
+        val incomeTax: Double = economyData.taxData.taxRateData.incomeTax.getIncomeTax(salary)
+
+        val maxPay: Double = soldierPopData.commonPopData.adultPopulation * salary
+        val tax: Double = maxPay * incomeTax
+        val maxPayWithTax: Double = maxPay + tax
+
+        val availableFuel: Double = fuelRestMassData.production
+
+        if (availableFuel >= maxPayWithTax) {
+            soldierPopData.commonPopData.unemploymentRate = 0.0
+
+            // Update military base employment
+            soldierPopData.militaryBaseData.lastNumEmployee = soldierPopData.commonPopData.adultPopulation
+
+            // Pay salary and tax here
+            fuelRestMassData.production -= maxPayWithTax
+            soldierPopData.commonPopData.saving += maxPay
+            mutableEconomyData.taxData.storedFuelRestMass += tax
+        } else {
+            soldierPopData.commonPopData.unemploymentRate = 1.0
+
+            // Update military base employment
+            soldierPopData.militaryBaseData.lastNumEmployee = 0.0
+        }
     }
 
     /**
