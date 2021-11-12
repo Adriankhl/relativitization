@@ -5,11 +5,11 @@ import kotlin.test.Test
 internal class CommandCollectionTest {
     @Test
     fun repeatedNameTest() {
-        assert(DefaultAvailableCommands.commandList.groupingBy {
+        assert(DefaultCommandAvailability.commandList.groupingBy {
             it
         }.eachCount().any { it.value == 1 })
 
-        assert(DefaultAvailableCommands.addEventList.groupingBy {
+        assert(DefaultCommandAvailability.addEventList.groupingBy {
             it
         }.eachCount().any { it.value == 1 })
     }

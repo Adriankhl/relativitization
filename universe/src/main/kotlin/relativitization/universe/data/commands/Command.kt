@@ -231,14 +231,14 @@ fun Command.name(): String = this::class.simpleName.toString()
 
 fun <T : Command> KClass<T>.name(): String = this.simpleName.toString()
 
-abstract class AvailableCommands {
+abstract class CommandAvailability {
     abstract val commandList: List<String>
 
     // Allowed event list for AddEventCommand
     abstract val addEventList: List<String>
 }
 
-object DefaultAvailableCommands : AvailableCommands() {
+object DefaultCommandAvailability : CommandAvailability() {
     override val commandList: List<String> = listOf(
         DummyCommand::class.name(),
         CannotSendCommand::class.name(),
@@ -264,26 +264,26 @@ object DefaultAvailableCommands : AvailableCommands() {
     )
 }
 
-fun AvailableCommands.name(): String = this::class.simpleName.toString()
+fun CommandAvailability.name(): String = this::class.simpleName.toString()
 
 object CommandCollection {
     private val logger = RelativitizationLogManager.getLogger()
 
-    private val availableCommandsList: List<AvailableCommands> = listOf(
-        DefaultAvailableCommands
+    private val commandAvailabilityList: List<CommandAvailability> = listOf(
+        DefaultCommandAvailability
     )
 
-    val availableCommandsNameMap: Map<String, AvailableCommands> = availableCommandsList.map {
+    val commandAvailabilityNameMap: Map<String, CommandAvailability> = commandAvailabilityList.map {
         it.name() to it
     }.toMap()
 
     fun hasCommand(universeSettings: UniverseSettings, command: Command): Boolean {
         return if (universeSettings.commandCollectionName != "All") {
-            val commandCollection: List<String> = availableCommandsNameMap.getOrElse(
+            val commandCollection: List<String> = commandAvailabilityNameMap.getOrElse(
                 universeSettings.commandCollectionName
             ) {
                 logger.error("No command collection name: ${universeSettings.commandCollectionName} found")
-                DefaultAvailableCommands
+                DefaultCommandAvailability
             }.commandList
 
             commandCollection.contains(command.name())
