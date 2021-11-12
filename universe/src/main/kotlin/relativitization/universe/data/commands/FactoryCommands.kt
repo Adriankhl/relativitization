@@ -87,7 +87,7 @@ data class BuildForeignFuelFactoryCommand(
         }
 
         val validFactoryInternalData: Boolean = fuelFactoryInternalData.squareDiff(
-            playerData.playerInternalData.playerScienceData().playerScienceProductData.newFuelFactoryInternalData(
+            playerData.playerInternalData.playerScienceData().playerScienceApplicationData.newFuelFactoryInternalData(
                 qualityLevel
             )
         ) < 0.1
@@ -98,7 +98,7 @@ data class BuildForeignFuelFactoryCommand(
         }
 
         val fuelNeeded: Double =
-            playerData.playerInternalData.playerScienceData().playerScienceProductData.newFuelFactoryFuelNeededByConstruction(
+            playerData.playerInternalData.playerScienceData().playerScienceApplicationData.newFuelFactoryFuelNeededByConstruction(
                 qualityLevel
             )
         val enoughFuelRestMass: Boolean =
@@ -128,7 +128,7 @@ data class BuildForeignFuelFactoryCommand(
         universeSettings: UniverseSettings
     ) {
         val fuelNeeded: Double =
-            playerData.playerInternalData.playerScienceData().playerScienceProductData.newFuelFactoryFuelNeededByConstruction(
+            playerData.playerInternalData.playerScienceData().playerScienceApplicationData.newFuelFactoryFuelNeededByConstruction(
                 qualityLevel
             )
         playerData.playerInternalData.physicsData().fuelRestMassData.production -= fuelNeeded + storedFuelRestMass
@@ -256,7 +256,7 @@ data class BuildForeignResourceFactoryCommand(
         }
 
         val validFactoryInternalData: Boolean = resourceFactoryInternalData.squareDiff(
-            playerData.playerInternalData.playerScienceData().playerScienceProductData.newResourceFactoryInternalData(
+            playerData.playerInternalData.playerScienceData().playerScienceApplicationData.newResourceFactoryInternalData(
                 resourceFactoryInternalData.outputResource,
                 qualityLevel
             )
@@ -268,7 +268,7 @@ data class BuildForeignResourceFactoryCommand(
         }
 
         val fuelNeeded: Double =
-            storedFuelRestMass + playerData.playerInternalData.playerScienceData().playerScienceProductData.newResourceFactoryFuelNeededByConstruction(
+            storedFuelRestMass + playerData.playerInternalData.playerScienceData().playerScienceApplicationData.newResourceFactoryFuelNeededByConstruction(
                 resourceFactoryInternalData.outputResource,
                 qualityLevel
             )
@@ -299,7 +299,7 @@ data class BuildForeignResourceFactoryCommand(
         universeSettings: UniverseSettings
     ) {
         val fuelNeeded: Double =
-            storedFuelRestMass + playerData.playerInternalData.playerScienceData().playerScienceProductData.newResourceFactoryFuelNeededByConstruction(
+            storedFuelRestMass + playerData.playerInternalData.playerScienceData().playerScienceApplicationData.newResourceFactoryFuelNeededByConstruction(
                 resourceFactoryInternalData.outputResource,
                 qualityLevel
             )
@@ -432,7 +432,7 @@ data class BuildLocalFuelFactoryCommand(
             playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(targetCarrierId)
 
         val requiredFuel: Double =
-            playerData.playerInternalData.playerScienceData().playerScienceProductData.newFuelFactoryFuelNeededByConstruction(
+            playerData.playerInternalData.playerScienceData().playerScienceApplicationData.newFuelFactoryFuelNeededByConstruction(
                 qualityLevel = qualityLevel
             )
         val hasFuel: Boolean =
@@ -449,12 +449,12 @@ data class BuildLocalFuelFactoryCommand(
             )
 
         val newFuelFactoryInternalData: MutableFuelFactoryInternalData =
-            playerData.playerInternalData.playerScienceData().playerScienceProductData.newFuelFactoryInternalData(
+            playerData.playerInternalData.playerScienceData().playerScienceApplicationData.newFuelFactoryInternalData(
                 qualityLevel = qualityLevel
             )
 
         val requiredFuel: Double =
-            playerData.playerInternalData.playerScienceData().playerScienceProductData.newFuelFactoryFuelNeededByConstruction(
+            playerData.playerInternalData.playerScienceData().playerScienceApplicationData.newFuelFactoryFuelNeededByConstruction(
                 qualityLevel = qualityLevel
             )
 
@@ -563,7 +563,7 @@ data class BuildLocalResourceFactoryCommand(
             playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(targetCarrierId)
 
         val requiredFuel: Double =
-            playerData.playerInternalData.playerScienceData().playerScienceProductData.newResourceFactoryFuelNeededByConstruction(
+            playerData.playerInternalData.playerScienceData().playerScienceApplicationData.newResourceFactoryFuelNeededByConstruction(
                 outputResourceType = outputResourceType,
                 qualityLevel = qualityLevel
             )
@@ -581,13 +581,13 @@ data class BuildLocalResourceFactoryCommand(
             )
 
         val newResourceFactoryInternalData: MutableResourceFactoryInternalData =
-            playerData.playerInternalData.playerScienceData().playerScienceProductData.newResourceFactoryInternalData(
+            playerData.playerInternalData.playerScienceData().playerScienceApplicationData.newResourceFactoryInternalData(
                 outputResourceType = outputResourceType,
                 qualityLevel = qualityLevel
             )
 
         val requiredFuel: Double =
-            playerData.playerInternalData.playerScienceData().playerScienceProductData.newResourceFactoryFuelNeededByConstruction(
+            playerData.playerInternalData.playerScienceData().playerScienceApplicationData.newResourceFactoryFuelNeededByConstruction(
                 outputResourceType = outputResourceType,
                 qualityLevel = qualityLevel
             )

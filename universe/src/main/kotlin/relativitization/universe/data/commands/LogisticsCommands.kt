@@ -71,7 +71,7 @@ data class SendFuelFromStorageCommand(
         }
 
         val isLossFractionValid: Boolean =
-            playerData.playerInternalData.playerScienceData().playerScienceProductData.fuelLogisticsLossFractionPerDistance <= senderFuelLossFractionPerDistance
+            playerData.playerInternalData.playerScienceData().playerScienceApplicationData.fuelLogisticsLossFractionPerDistance <= senderFuelLossFractionPerDistance
         val isLossFractionValidI18NString: I18NString = if (isLossFractionValid) {
             I18NString("")
         } else {
@@ -84,7 +84,7 @@ data class SendFuelFromStorageCommand(
                     RealString(". ")
                 ),
                 listOf(
-                    playerData.playerInternalData.playerScienceData().playerScienceProductData.fuelLogisticsLossFractionPerDistance.toString(),
+                    playerData.playerInternalData.playerScienceData().playerScienceApplicationData.fuelLogisticsLossFractionPerDistance.toString(),
                     senderFuelLossFractionPerDistance.toString()
                 )
             )
@@ -117,7 +117,7 @@ data class SendFuelFromStorageCommand(
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
         val receiverLossFractionPerDistance: Double =
-            playerData.playerInternalData.playerScienceData().playerScienceProductData.fuelLogisticsLossFractionPerDistance
+            playerData.playerInternalData.playerScienceData().playerScienceApplicationData.fuelLogisticsLossFractionPerDistance
 
         val lossFractionPerDistance: Double =
             (receiverLossFractionPerDistance + senderFuelLossFractionPerDistance) * 0.5
@@ -231,7 +231,7 @@ data class SendResourceFromStorageCommand(
         }
 
         val isLossFractionValid: Boolean =
-            playerData.playerInternalData.playerScienceData().playerScienceProductData.resourceLogisticsLossFractionPerDistance <= senderResourceLossFractionPerDistance
+            playerData.playerInternalData.playerScienceData().playerScienceApplicationData.resourceLogisticsLossFractionPerDistance <= senderResourceLossFractionPerDistance
         val isLossFractionValidI18NString: I18NString = if (isLossFractionValid) {
             I18NString("")
         } else {
@@ -244,7 +244,7 @@ data class SendResourceFromStorageCommand(
                     RealString(". ")
                 ),
                 listOf(
-                    playerData.playerInternalData.playerScienceData().playerScienceProductData.resourceLogisticsLossFractionPerDistance.toString(),
+                    playerData.playerInternalData.playerScienceData().playerScienceApplicationData.resourceLogisticsLossFractionPerDistance.toString(),
                     senderResourceLossFractionPerDistance.toString()
                 )
             )
@@ -280,7 +280,7 @@ data class SendResourceFromStorageCommand(
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
         val receiverLossFractionPerDistance: Double =
-            playerData.playerInternalData.playerScienceData().playerScienceProductData.resourceLogisticsLossFractionPerDistance
+            playerData.playerInternalData.playerScienceData().playerScienceApplicationData.resourceLogisticsLossFractionPerDistance
 
         val lossFractionPerDistance: Double =
             (receiverLossFractionPerDistance + senderResourceLossFractionPerDistance) * 0.5
@@ -336,7 +336,7 @@ data class SendFuelCommand(
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
         val receiverLossFractionPerDistance: Double =
-            playerData.playerInternalData.playerScienceData().playerScienceProductData.fuelLogisticsLossFractionPerDistance
+            playerData.playerInternalData.playerScienceData().playerScienceApplicationData.fuelLogisticsLossFractionPerDistance
 
         val lossFractionPerDistance: Double =
             (receiverLossFractionPerDistance + senderFuelLossFractionPerDistance) * 0.5
@@ -391,7 +391,7 @@ data class SendResourceCommand(
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
         val receiverLossFractionPerDistance: Double =
-            playerData.playerInternalData.playerScienceData().playerScienceProductData.resourceLogisticsLossFractionPerDistance
+            playerData.playerInternalData.playerScienceData().playerScienceApplicationData.resourceLogisticsLossFractionPerDistance
 
         val lossFractionPerDistance: Double =
             (receiverLossFractionPerDistance + senderResourceLossFractionPerDistance) * 0.5
@@ -452,7 +452,7 @@ data class SendResourceToPopCommand(
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
         val receiverLossFractionPerDistance: Double =
-            playerData.playerInternalData.playerScienceData().playerScienceProductData.resourceLogisticsLossFractionPerDistance
+            playerData.playerInternalData.playerScienceData().playerScienceApplicationData.resourceLogisticsLossFractionPerDistance
 
         val lossFractionPerDistance: Double =
             (receiverLossFractionPerDistance + senderResourceLossFractionPerDistance) * 0.5
@@ -526,7 +526,7 @@ data class PopBuyResourceCommand(
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
         val receiverLossFractionPerDistance: Double =
-            playerData.playerInternalData.playerScienceData().playerScienceProductData.fuelLogisticsLossFractionPerDistance
+            playerData.playerInternalData.playerScienceData().playerScienceApplicationData.fuelLogisticsLossFractionPerDistance
 
         val lossFractionPerDistance: Double =
             (receiverLossFractionPerDistance + senderFuelLossFractionPerDistance) * 0.5
@@ -660,7 +660,7 @@ data class PlayerBuyResourceCommand(
         }
 
         val isLossFractionValid: Boolean =
-            playerData.playerInternalData.playerScienceData().playerScienceProductData.fuelLogisticsLossFractionPerDistance <= senderFuelLossFractionPerDistance
+            playerData.playerInternalData.playerScienceData().playerScienceApplicationData.fuelLogisticsLossFractionPerDistance <= senderFuelLossFractionPerDistance
         val isLossFractionValidI18NString: I18NString = if (isLossFractionValid) {
             I18NString("")
         } else {
@@ -673,7 +673,7 @@ data class PlayerBuyResourceCommand(
                     RealString(". ")
                 ),
                 listOf(
-                    playerData.playerInternalData.playerScienceData().playerScienceProductData.fuelLogisticsLossFractionPerDistance.toString(),
+                    playerData.playerInternalData.playerScienceData().playerScienceApplicationData.fuelLogisticsLossFractionPerDistance.toString(),
                     senderFuelLossFractionPerDistance.toString()
                 )
             )
@@ -727,7 +727,7 @@ data class PlayerBuyResourceCommand(
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
         val receiverLossFractionPerDistance: Double =
-            playerData.playerInternalData.playerScienceData().playerScienceProductData.fuelLogisticsLossFractionPerDistance
+            playerData.playerInternalData.playerScienceData().playerScienceApplicationData.fuelLogisticsLossFractionPerDistance
 
         val lossFractionPerDistance: Double =
             (receiverLossFractionPerDistance + senderFuelLossFractionPerDistance) * 0.5

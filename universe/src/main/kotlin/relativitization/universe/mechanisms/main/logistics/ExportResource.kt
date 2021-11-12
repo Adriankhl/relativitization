@@ -251,7 +251,7 @@ object ExportResource : Mechanism() {
                     resourceType = mutablePlayerSingleExportData.resourceType,
                     resourceQualityData = resourceQualityData,
                     amount = amount,
-                    senderResourceLossFractionPerDistance = mutablePlayerData.playerInternalData.playerScienceData().playerScienceProductData.resourceLogisticsLossFractionPerDistance,
+                    senderResourceLossFractionPerDistance = mutablePlayerData.playerInternalData.playerScienceData().playerScienceApplicationData.resourceLogisticsLossFractionPerDistance,
                 )
             }
         }.flatten()
@@ -333,7 +333,7 @@ object ExportResource : Mechanism() {
                             resourceType = mutablePopSingleExportData.resourceType,
                             resourceQualityData = resourceQualityData,
                             amount = amount,
-                            senderResourceLossFractionPerDistance = mutablePlayerData.playerInternalData.playerScienceData().playerScienceProductData.resourceLogisticsLossFractionPerDistance,
+                            senderResourceLossFractionPerDistance = mutablePlayerData.playerInternalData.playerScienceData().playerScienceApplicationData.resourceLogisticsLossFractionPerDistance,
                         )
                     }
                 }

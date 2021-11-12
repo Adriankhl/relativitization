@@ -1,4 +1,4 @@
-package relativitization.universe.data.components.science.product
+package relativitization.universe.data.components.science.application
 
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.components.economy.MutableResourceQualityData
@@ -9,7 +9,7 @@ import relativitization.universe.maths.algebra.Quadratic
 import relativitization.universe.utils.RelativitizationLogManager
 
 @Serializable
-data class ScienceProductData(
+data class ScienceApplicationData(
     val maxShipRestMass: Double = 10000.0,
     val maxShipEnginePowerByRestMass: Double = 1E-6,
     val idealFuelFactory: FuelFactoryInternalData = FuelFactoryInternalData(),
@@ -196,7 +196,7 @@ data class ScienceProductData(
 }
 
 @Serializable
-data class MutableScienceProductData(
+data class MutableScienceApplicationData(
     var maxShipRestMass: Double = 10000.0,
     var maxShipEnginePowerByRestMass: Double = 1E-6,
     var idealFuelFactory: MutableFuelFactoryInternalData = MutableFuelFactoryInternalData(),

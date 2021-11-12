@@ -31,7 +31,7 @@ object EntertainmentProduction : Mechanism() {
 
             val qualityData: MutableResourceQualityData = computeEntertainmentQuality(
                 entertainerPopData,
-                mutablePlayerData.playerInternalData.playerScienceData().playerScienceProductData.idealEntertainmentQuality
+                mutablePlayerData.playerInternalData.playerScienceData().playerScienceApplicationData.idealEntertainmentQuality
             )
 
             mutablePlayerData.playerInternalData.economyData().resourceData.addNewResource(

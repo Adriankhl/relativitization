@@ -32,7 +32,7 @@ internal class SendResourceFromStorageCommandTest {
             resourceQualityClass = ResourceQualityClass.FIRST,
             resourceQualityData = resourceData1.getResourceQuality(ResourceType.PLANT, ResourceQualityClass.FIRST),
             amount = 3.0,
-            senderResourceLossFractionPerDistance = playerData1.playerInternalData.playerScienceData().playerScienceProductData.resourceLogisticsLossFractionPerDistance
+            senderResourceLossFractionPerDistance = playerData1.playerInternalData.playerScienceData().playerScienceApplicationData.resourceLogisticsLossFractionPerDistance
         )
 
 

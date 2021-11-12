@@ -20,10 +20,10 @@ object UpdateScienceProductData : Mechanism() {
 
         val scienceData: MutablePlayerScienceData = mutablePlayerData.playerInternalData.playerScienceData()
 
-        scienceData.playerScienceProductData.maxShipRestMass =
+        scienceData.playerScienceApplicationData.maxShipRestMass =
             maxRestShipMass(scienceData.playerKnowledgeData)
 
-        scienceData.playerScienceProductData.maxShipEnginePowerByRestMass =
+        scienceData.playerScienceApplicationData.maxShipEnginePowerByRestMass =
             maxShipEnginePowerByRestMass(scienceData.playerKnowledgeData)
 
         return listOf()

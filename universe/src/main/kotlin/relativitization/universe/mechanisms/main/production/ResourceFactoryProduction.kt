@@ -383,7 +383,7 @@ object ResourceFactoryProduction : Mechanism() {
             resourceType = mutableResourceFactoryData.resourceFactoryInternalData.outputResource,
             resourceQualityData = outputQuality.toResourceQualityData(),
             amount = outputAmount,
-            senderResourceLossFractionPerDistance = mutablePlayerData.playerInternalData.playerScienceData().playerScienceProductData.resourceLogisticsLossFractionPerDistance,
+            senderResourceLossFractionPerDistance = mutablePlayerData.playerInternalData.playerScienceData().playerScienceApplicationData.resourceLogisticsLossFractionPerDistance,
         )
     }
 }

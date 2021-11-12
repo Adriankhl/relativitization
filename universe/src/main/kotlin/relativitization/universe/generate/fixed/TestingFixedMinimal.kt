@@ -15,7 +15,6 @@ import relativitization.universe.data.components.science.knowledge.AppliedResear
 import relativitization.universe.data.components.science.knowledge.AppliedResearchProjectData
 import relativitization.universe.data.components.science.knowledge.BasicResearchField
 import relativitization.universe.data.components.science.knowledge.BasicResearchProjectData
-import relativitization.universe.data.global.MutableUniverseGlobalData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.data.serializer.DataSerializer.copy
 import relativitization.universe.generate.GenerateSettings
@@ -215,7 +214,7 @@ class TestingFixedMinimal : GenerateUniverse() {
 
 
         // Add ideal fuel factory to player 1
-        playerData1.playerInternalData.playerScienceData().playerScienceProductData.idealFuelFactory =
+        playerData1.playerInternalData.playerScienceData().playerScienceApplicationData.idealFuelFactory =
                 MutableFuelFactoryInternalData(
                     maxOutputAmount = 1.0,
                     maxNumEmployee = 10.0,
@@ -223,7 +222,7 @@ class TestingFixedMinimal : GenerateUniverse() {
                 )
 
         // Add ideal plant factory to player 1
-        playerData1.playerInternalData.playerScienceData().playerScienceProductData.idealResourceFactoryMap[ResourceType.PLANT] =
+        playerData1.playerInternalData.playerScienceData().playerScienceApplicationData.idealResourceFactoryMap[ResourceType.PLANT] =
                 MutableResourceFactoryInternalData(
                     outputResource = ResourceType.PLANT,
                     maxOutputResourceQualityData = MutableResourceQualityData(

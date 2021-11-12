@@ -38,7 +38,7 @@ object SendTax : Mechanism() {
                     fromId = universeData3DAtPlayer.getCurrentPlayerData().playerId,
                     fromInt4D = universeData3DAtPlayer.getCurrentPlayerData().int4D,
                     amount = fuelRestMass * fractionList[index],
-                    senderFuelLossFractionPerDistance = mutablePlayerData.playerInternalData.playerScienceData().playerScienceProductData.fuelLogisticsLossFractionPerDistance,
+                    senderFuelLossFractionPerDistance = mutablePlayerData.playerInternalData.playerScienceData().playerScienceApplicationData.fuelLogisticsLossFractionPerDistance,
                 )
             }
 

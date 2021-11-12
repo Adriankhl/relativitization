@@ -4,8 +4,8 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.UniverseScienceData
 import relativitization.universe.data.components.science.knowledge.*
-import relativitization.universe.data.components.science.product.MutableScienceProductData
-import relativitization.universe.data.components.science.product.ScienceProductData
+import relativitization.universe.data.components.science.application.MutableScienceApplicationData
+import relativitization.universe.data.components.science.application.ScienceApplicationData
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.utils.RelativitizationLogManager
 
@@ -19,7 +19,7 @@ import relativitization.universe.utils.RelativitizationLogManager
  * @property knownAppliedResearchProjectList this player know these applied research projects exist
  * @property playerKnowledgeData the knowledge data own by the player, based on common sense and
  *  done projects
- * @property playerScienceProductData the science product data of the player, based on playerKnowledgeData
+ * @property playerScienceApplicationData the science product data of the player, based on playerKnowledgeData
  */
 @Serializable
 @SerialName("PlayerScienceData")
@@ -30,7 +30,7 @@ data class PlayerScienceData(
     val knownBasicResearchProjectList: List<BasicResearchProjectData> = listOf(),
     val knownAppliedResearchProjectList: List<AppliedResearchProjectData> = listOf(),
     val playerKnowledgeData: KnowledgeData = KnowledgeData(),
-    val playerScienceProductData: ScienceProductData = ScienceProductData(),
+    val playerScienceApplicationData: ScienceApplicationData = ScienceApplicationData(),
 ) : PlayerDataComponent()
 
 @Serializable
@@ -42,7 +42,7 @@ data class MutablePlayerScienceData(
     val knownBasicResearchProjectList: MutableList<BasicResearchProjectData> = mutableListOf(),
     val knownAppliedResearchProjectList: MutableList<AppliedResearchProjectData> = mutableListOf(),
     var playerKnowledgeData: MutableKnowledgeData = MutableKnowledgeData(),
-    var playerScienceProductData: MutableScienceProductData = MutableScienceProductData(),
+    var playerScienceApplicationData: MutableScienceApplicationData = MutableScienceApplicationData(),
 ) : MutablePlayerDataComponent() {
     /**
      * Compute player knowledge data by common sense and knowledge data list

@@ -130,7 +130,7 @@ object FuelFactoryProduction : Mechanism() {
             fromId = mutablePlayerData.playerId,
             fromInt4D = mutablePlayerData.int4D.toInt4D(),
             amount = outputAmount,
-            senderFuelLossFractionPerDistance = mutablePlayerData.playerInternalData.playerScienceData().playerScienceProductData.fuelLogisticsLossFractionPerDistance,
+            senderFuelLossFractionPerDistance = mutablePlayerData.playerInternalData.playerScienceData().playerScienceApplicationData.fuelLogisticsLossFractionPerDistance,
         )
     }
 }
