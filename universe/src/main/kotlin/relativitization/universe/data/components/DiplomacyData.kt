@@ -16,6 +16,8 @@ data class DiplomacyData(
     fun getDiplomaticRelationData(id: Int): DiplomaticRelationData {
         return relationMap.getOrDefault(id, DiplomaticRelationData())
     }
+
+    fun getRelation(id: Int) = getDiplomaticRelationData(id).relation
 }
 
 @Serializable
@@ -26,4 +28,6 @@ data class MutableDiplomacyData(
     fun getDiplomaticRelationData(id: Int): MutableDiplomaticRelationData {
         return relationMap.getOrPut(id) { MutableDiplomaticRelationData() }
     }
+
+    fun getRelation(id: Int) = getDiplomaticRelationData(id).relation
 }
