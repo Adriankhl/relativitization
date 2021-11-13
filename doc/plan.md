@@ -42,6 +42,7 @@
 * Change salary
 * Improve diplomatic relation
 * Declare war, declare independence
+* Surrender
 
 # Generate universe TODO List
 * One stellar per player generation
