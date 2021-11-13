@@ -41,32 +41,33 @@ enum class ResourceQualityClass {
 /**
  * Resource data, a resource of a player has ResourceType and ResourceQualityClass
  *
- * @property resourceQualityMap map from ResourceType and ResourceQualityClass to resource quality
- * @property resourceQualityLowerBoundMap the lower bound of resource quality
- * @property resourceAmountMap map from ResourceType and ResourceQualityClass to resource amount
- * @property resourceTargetAmountMap  map from ResourceType and ResourceQualityClass to target amount
- * @property resourcePriceMap map from ResourceType and ResourceQualityClass to resource price to
- * fuel rest mass
+ * @property singleResourceMap map from resource type and quality class to SingleResourceData
  */
 @Serializable
 data class ResourceData(
-    val resourceQualityMap: Map<ResourceType, Map<ResourceQualityClass, ResourceQualityData>> = mapOf(),
-    val resourceQualityLowerBoundMap: Map<ResourceType, Map<ResourceQualityClass, ResourceQualityData>> = mapOf(),
-    val resourceAmountMap: Map<ResourceType, Map<ResourceQualityClass, ResourceAmountData>> = mapOf(),
-    val resourceTargetAmountMap: Map<ResourceType, Map<ResourceQualityClass, ResourceAmountData>> = mapOf(),
-    val resourcePriceMap: Map<ResourceType, Map<ResourceQualityClass, Double>> = mapOf(),
+    val singleResourceMap: Map<ResourceType, Map<ResourceQualityClass, SingleResourceData>> = mapOf(),
 ) {
     /**
-     * Get resource quality, default to ResourceQualityData() if the resource doesn't exist
+     * Get single resource data, default to SingleResourceData() if it doesn't exist
+     */
+    fun getSingleResourceData(
+        resourceType: ResourceType,
+        resourceQualityClass: ResourceQualityClass,
+    ): SingleResourceData = singleResourceMap.getOrDefault(
+        resourceType,
+        mapOf()
+    ).getOrDefault(
+        resourceQualityClass,
+        SingleResourceData()
+    )
+
+    /**
+     * Get resource quality
      */
     fun getResourceQuality(
         resourceType: ResourceType,
         resourceQualityClass: ResourceQualityClass
-    ): ResourceQualityData {
-        return resourceQualityMap[resourceType]?.get(
-            resourceQualityClass
-        ) ?: ResourceQualityData()
-    }
+    ): ResourceQualityData = getSingleResourceData(resourceType, resourceQualityClass).resourceQuality
 
     /**
      * Get resource quality lower bound
@@ -74,11 +75,105 @@ data class ResourceData(
     fun getResourceQualityLowerBound(
         resourceType: ResourceType,
         resourceQualityClass: ResourceQualityClass
-    ): ResourceQualityData {
-        return resourceQualityLowerBoundMap[resourceType]?.get(
-            resourceQualityClass
-        ) ?: ResourceQualityData()
+    ): ResourceQualityData = getSingleResourceData(resourceType, resourceQualityClass).resourceQualityLowerBound
+
+    /**
+     * Get total resource amount data
+     */
+    fun getResourceAmountData(
+        resourceType: ResourceType,
+        resourceQualityClass: ResourceQualityClass
+    ): ResourceAmountData = getSingleResourceData(resourceType, resourceQualityClass).resourceAmount
+
+
+    /**
+     * Get total resource amount
+     */
+    fun getTotalResourceAmount(
+        resourceType: ResourceType,
+        resourceQualityClass: ResourceQualityClass
+    ): Double = getSingleResourceData(resourceType, resourceQualityClass).resourceAmount.total()
+
+    /**
+     * Get resource storage amount
+     */
+    fun getStorageResourceAmount(
+        resourceType: ResourceType,
+        resourceQualityClass: ResourceQualityClass
+    ): Double = getSingleResourceData(resourceType, resourceQualityClass).resourceAmount.storage
+
+    /**
+     * Get resource amount available for trading
+     */
+    fun getTradeResourceAmount(
+        resourceType: ResourceType,
+        resourceQualityClass: ResourceQualityClass
+    ): Double = getSingleResourceData(resourceType, resourceQualityClass).resourceAmount.trade
+
+    /**
+     * Get resource amount available for trading
+     */
+    fun getProductionResourceAmount(
+        resourceType: ResourceType,
+        resourceQualityClass: ResourceQualityClass
+    ): Double = getSingleResourceData(resourceType, resourceQualityClass).resourceAmount.production
+
+    /**
+     * Get resource target amount
+     */
+    fun getResourceTargetAmountData(
+        resourceType: ResourceType,
+        resourceQualityClass: ResourceQualityClass
+    ): ResourceAmountData = getSingleResourceData(resourceType, resourceQualityClass).resourceTargetAmount
+
+    /**
+     * Get resource price
+     */
+    fun getResourcePrice(
+        resourceType: ResourceType,
+        resourceQualityClass: ResourceQualityClass
+    ): Double = getSingleResourceData(resourceType, resourceQualityClass).resourcePrice
+}
+
+@Serializable
+data class MutableResourceData(
+    val singleResourceMap: MutableMap<ResourceType, MutableMap<ResourceQualityClass, MutableSingleResourceData>> = mutableMapOf(),
+) {
+    /**
+     * Get single resource data
+     */
+    fun getSingleResourceData(
+        resourceType: ResourceType,
+        resourceQualityClass: ResourceQualityClass,
+    ): MutableSingleResourceData = singleResourceMap.getOrPut(resourceType) {
+        mutableMapOf()
+    }.getOrPut(resourceQualityClass) {
+        MutableSingleResourceData()
     }
+
+    /**
+     * Get resource quality, default to ResourceQualityData() if the resource doesn't exist
+     */
+    fun getResourceQuality(
+        resourceType: ResourceType,
+        resourceQualityClass: ResourceQualityClass
+    ): MutableResourceQualityData = getSingleResourceData(resourceType, resourceQualityClass).resourceQuality
+
+    /**
+     * Get resource quality lower bound
+     */
+    fun getResourceQualityLowerBound(
+        resourceType: ResourceType,
+        resourceQualityClass: ResourceQualityClass
+    ): MutableResourceQualityData = getSingleResourceData(resourceType, resourceQualityClass).resourceQualityLowerBound
+
+    /**
+     * Get total resource amount data
+     */
+    fun getResourceAmountData(
+        resourceType: ResourceType,
+        resourceQualityClass: ResourceQualityClass
+    ): MutableResourceAmountData = getSingleResourceData(resourceType, resourceQualityClass).resourceAmount
 
 
     /**
@@ -87,11 +182,7 @@ data class ResourceData(
     fun getTotalResourceAmount(
         resourceType: ResourceType,
         resourceQualityClass: ResourceQualityClass
-    ): Double {
-        return resourceAmountMap[resourceType]?.get(
-            resourceQualityClass
-        )?.total() ?: 0.0
-    }
+    ): Double = getSingleResourceData(resourceType, resourceQualityClass).resourceAmount.total()
 
     /**
      * Get resource storage amount, default to 0.0 if the resource doesn't exist
@@ -99,11 +190,7 @@ data class ResourceData(
     fun getStorageResourceAmount(
         resourceType: ResourceType,
         resourceQualityClass: ResourceQualityClass
-    ): Double {
-        return resourceAmountMap[resourceType]?.get(
-            resourceQualityClass
-        )?.storage ?: 0.0
-    }
+    ): Double = getSingleResourceData(resourceType, resourceQualityClass).resourceAmount.storage
 
     /**
      * Get resource amount available for trading
@@ -111,11 +198,7 @@ data class ResourceData(
     fun getTradeResourceAmount(
         resourceType: ResourceType,
         resourceQualityClass: ResourceQualityClass
-    ): Double {
-        return resourceAmountMap[resourceType]?.get(
-            resourceQualityClass
-        )?.trade ?: 0.0
-    }
+    ): Double = getSingleResourceData(resourceType, resourceQualityClass).resourceAmount.trade
 
     /**
      * Get resource amount available for trading
@@ -123,145 +206,17 @@ data class ResourceData(
     fun getProductionResourceAmount(
         resourceType: ResourceType,
         resourceQualityClass: ResourceQualityClass
-    ): Double {
-        return resourceAmountMap[resourceType]?.get(
-            resourceQualityClass
-        )?.production ?: 0.0
-    }
+    ): Double = getSingleResourceData(resourceType, resourceQualityClass).resourceAmount.production
 
 
     /**
-     * Get resource price, default to 1.0 if the resource doesn't exist
-     */
-    fun getResourcePrice(
-        resourceType: ResourceType,
-        resourceQualityClass: ResourceQualityClass
-    ): Double {
-        return resourcePriceMap[resourceType]?.get(
-            resourceQualityClass
-        ) ?: 1.0
-    }
-}
-
-@Serializable
-data class MutableResourceData(
-    val resourceQualityMap: MutableMap<ResourceType, MutableMap<ResourceQualityClass, MutableResourceQualityData>> = mutableMapOf(),
-    val resourceQualityLowerBoundMap: MutableMap<ResourceType, MutableMap<ResourceQualityClass, MutableResourceQualityData>> = mutableMapOf(),
-    val resourceAmountMap: MutableMap<ResourceType, MutableMap<ResourceQualityClass, MutableResourceAmountData>> = mutableMapOf(),
-    val resourceTargetAmountMap: MutableMap<ResourceType, MutableMap<ResourceQualityClass, MutableResourceAmountData>> = mutableMapOf(),
-    val resourcePriceMap: MutableMap<ResourceType, MutableMap<ResourceQualityClass, Double>> = mutableMapOf(),
-) {
-    /**
-     * Get resource quality, default to ResourceQualityData() if the resource doesn't exist
-     */
-    fun getResourceQuality(
-        resourceType: ResourceType,
-        resourceQualityClass: ResourceQualityClass
-    ): MutableResourceQualityData {
-        return resourceQualityMap.getOrPut(resourceType) {
-            mutableMapOf(resourceQualityClass to MutableResourceQualityData())
-        }.getOrPut(resourceQualityClass) {
-            MutableResourceQualityData()
-        }
-    }
-
-    /**
-     * Get resource quality lower bound
-     */
-    fun getResourceQualityLowerBound(
-        resourceType: ResourceType,
-        resourceQualityClass: ResourceQualityClass
-    ): MutableResourceQualityData {
-        return resourceQualityLowerBoundMap.getOrPut(resourceType) {
-            mutableMapOf(resourceQualityClass to MutableResourceQualityData())
-        }.getOrPut(resourceQualityClass) {
-            MutableResourceQualityData()
-        }
-    }
-
-    /**
-     * Get resource amount data
-     */
-    fun getResourceAmountData(
-        resourceType: ResourceType,
-        resourceQualityClass: ResourceQualityClass
-    ): MutableResourceAmountData {
-        return resourceAmountMap.getOrPut(resourceType) {
-            mutableMapOf(resourceQualityClass to MutableResourceAmountData())
-        }.getOrPut(resourceQualityClass) {
-            MutableResourceAmountData()
-        }
-    }
-
-    /**
-     * Get resource amount, default to 0.0 if the resource doesn't exist
-     */
-    fun getTotalResourceAmount(
-        resourceType: ResourceType,
-        resourceQualityClass: ResourceQualityClass
-    ): Double {
-        return resourceAmountMap.getOrPut(resourceType) {
-            mutableMapOf(resourceQualityClass to MutableResourceAmountData())
-        }.getOrPut(resourceQualityClass) {
-            MutableResourceAmountData()
-        }.total()
-    }
-
-    /**
-     * Get resource storage amount, default to 0.0 if the resource doesn't exist
-     */
-    fun getStorageResourceAmount(
-        resourceType: ResourceType,
-        resourceQualityClass: ResourceQualityClass
-    ): Double {
-        return resourceAmountMap.getOrPut(resourceType) {
-            mutableMapOf(resourceQualityClass to MutableResourceAmountData())
-        }.getOrPut(resourceQualityClass) {
-            MutableResourceAmountData()
-        }.storage
-    }
-
-    /**
-     * Get resource amount available for trading
-     */
-    fun getTradeResourceAmount(
-        resourceType: ResourceType,
-        resourceQualityClass: ResourceQualityClass
-    ): Double {
-        return resourceAmountMap.getOrPut(resourceType) {
-            mutableMapOf(resourceQualityClass to MutableResourceAmountData())
-        }.getOrPut(resourceQualityClass) {
-            MutableResourceAmountData()
-        }.trade
-    }
-
-    /**
-     * Get resource amount available for trading
-     */
-    fun getProductionResourceAmount(
-        resourceType: ResourceType,
-        resourceQualityClass: ResourceQualityClass
-    ): Double {
-        return resourceAmountMap.getOrPut(resourceType) {
-            mutableMapOf(resourceQualityClass to MutableResourceAmountData())
-        }.getOrPut(resourceQualityClass) {
-            MutableResourceAmountData()
-        }.production
-    }
-
-    /**
-     * Get target resource amount data
+     * Get resource target amount
      */
     fun getResourceTargetAmountData(
         resourceType: ResourceType,
         resourceQualityClass: ResourceQualityClass
-    ): MutableResourceAmountData {
-        return resourceTargetAmountMap.getOrPut(resourceType) {
-            mutableMapOf(resourceQualityClass to MutableResourceAmountData())
-        }.getOrPut(resourceQualityClass) {
-            MutableResourceAmountData()
-        }
-    }
+    ): MutableResourceAmountData = getSingleResourceData(resourceType, resourceQualityClass).resourceTargetAmount
+
 
     /**
      * Get resource price, default to 1.0 if the resource doesn't exist
@@ -269,13 +224,7 @@ data class MutableResourceData(
     fun getResourcePrice(
         resourceType: ResourceType,
         resourceQualityClass: ResourceQualityClass
-    ): Double {
-        return resourcePriceMap.getOrPut(resourceType) {
-            mutableMapOf(resourceQualityClass to 1.0)
-        }.getOrPut(resourceQualityClass) {
-            1.0
-        }
-    }
+    ): Double = getSingleResourceData(resourceType, resourceQualityClass).resourcePrice
 
     /**
      * Get resource quality class with target quality and amount
@@ -566,9 +515,9 @@ data class SingleResourceData(
 
 @Serializable
 data class MutableSingleResourceData(
-    var resourceAmount: ResourceAmountData = ResourceAmountData(),
-    var resourceTargetAmount: ResourceAmountData = ResourceAmountData(),
-    var resourceQuality: ResourceQualityData = ResourceQualityData(),
-    var resourceQualityLowerBound: ResourceQualityData = ResourceQualityData(),
+    var resourceAmount: MutableResourceAmountData = MutableResourceAmountData(),
+    var resourceTargetAmount: MutableResourceAmountData = MutableResourceAmountData(),
+    var resourceQuality: MutableResourceQualityData = MutableResourceQualityData(),
+    var resourceQualityLowerBound: MutableResourceQualityData = MutableResourceQualityData(),
     var resourcePrice: Double = 0.01,
 )
