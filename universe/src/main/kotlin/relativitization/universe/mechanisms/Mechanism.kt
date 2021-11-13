@@ -6,6 +6,7 @@ import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.global.UniverseGlobalData
+import relativitization.universe.mechanisms.primary.diplomacy.SyncDiplomaticRelation
 import relativitization.universe.mechanisms.primary.events.AutoEventCollection
 import relativitization.universe.mechanisms.primary.events.ProcessEvents
 import relativitization.universe.mechanisms.primary.logistics.ExportResource
@@ -54,6 +55,7 @@ object DefaultMechanismList : MechanismList() {
     override val mechanismList: List<Mechanism> = listOf(
         AutoEventCollection,
         ProcessEvents,
+        SyncDiplomaticRelation,
         Employment,
         PopBuyResource,
         UpdateDesire,
