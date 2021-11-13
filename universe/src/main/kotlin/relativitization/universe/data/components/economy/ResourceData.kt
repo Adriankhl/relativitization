@@ -45,7 +45,12 @@ enum class ResourceQualityClass {
  */
 @Serializable
 data class ResourceData(
-    val singleResourceMap: Map<ResourceType, Map<ResourceQualityClass, SingleResourceData>> = mapOf(),
+    val singleResourceMap: Map<ResourceType, Map<ResourceQualityClass, SingleResourceData>> =
+        ResourceType.values().map { resourceType ->
+            resourceType to ResourceQualityClass.values().map { resourceQualityClass ->
+                resourceQualityClass to SingleResourceData()
+            }.toMap()
+        }.toMap(),
 ) {
     /**
      * Get single resource data, default to SingleResourceData() if it doesn't exist
@@ -137,7 +142,12 @@ data class ResourceData(
 
 @Serializable
 data class MutableResourceData(
-    val singleResourceMap: MutableMap<ResourceType, MutableMap<ResourceQualityClass, MutableSingleResourceData>> = mutableMapOf(),
+    val singleResourceMap: MutableMap<ResourceType, MutableMap<ResourceQualityClass, MutableSingleResourceData>> =
+        ResourceType.values().map { resourceType ->
+            resourceType to ResourceQualityClass.values().map { resourceQualityClass ->
+                resourceQualityClass to MutableSingleResourceData()
+            }.toMap().toMutableMap()
+        }.toMap().toMutableMap(),
 ) {
     /**
      * Get single resource data
