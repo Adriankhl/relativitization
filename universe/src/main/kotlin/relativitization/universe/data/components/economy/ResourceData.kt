@@ -259,41 +259,10 @@ data class MutableResourceData(
             newResourceQuality.geq(getResourceQualityLowerBound(resourceType, it))
         } ?: ResourceQualityClass.THIRD
 
-        val resourceQuality: MutableResourceQualityData = getResourceQuality(
-            resourceType,
-            qualityClass
+        getSingleResourceData(resourceType, qualityClass).addNewResource(
+            newResourceQuality,
+            amount
         )
-
-        val resourceAmount: MutableResourceAmountData = getResourceAmountData(
-            resourceType,
-            qualityClass
-        )
-
-        val targetResourceAmount: MutableResourceAmountData = getResourceTargetAmountData(
-            resourceType,
-            qualityClass
-        )
-
-        when {
-            resourceAmount.storage < targetResourceAmount.storage -> {
-                val originalAmount: Double = resourceAmount.storage
-                val newAmount: Double = originalAmount + amount
-                resourceQuality.updateQuality(originalAmount, newAmount, newResourceQuality)
-                resourceAmount.storage = newAmount
-            }
-            resourceAmount.production < targetResourceAmount.production -> {
-                val originalAmount: Double = resourceAmount.production
-                val newAmount: Double = originalAmount + amount
-                resourceQuality.updateQuality(originalAmount, newAmount, newResourceQuality)
-                resourceAmount.production = newAmount
-            }
-            else -> {
-                val originalAmount: Double = resourceAmount.trade
-                val newAmount: Double = originalAmount + amount
-                resourceQuality.updateQuality(originalAmount, newAmount, newResourceQuality)
-                resourceAmount.trade = newAmount
-            }
-        }
     }
 }
 
@@ -520,4 +489,33 @@ data class MutableSingleResourceData(
     var resourceQuality: MutableResourceQualityData = MutableResourceQualityData(),
     var resourceQualityLowerBound: MutableResourceQualityData = MutableResourceQualityData(),
     var resourcePrice: Double = 0.01,
-)
+) {
+    /**
+     * Add resource to this data
+     */
+    fun addNewResource(
+        newResourceQuality: MutableResourceQualityData,
+        amount: Double,
+    ) {
+        when {
+            resourceAmount.storage < resourceTargetAmount.storage -> {
+                val originalAmount: Double = resourceAmount.storage
+                val newAmount: Double = originalAmount + amount
+                resourceQuality.updateQuality(originalAmount, newAmount, newResourceQuality)
+                resourceAmount.storage = newAmount
+            }
+            resourceAmount.production < resourceTargetAmount.production -> {
+                val originalAmount: Double = resourceAmount.production
+                val newAmount: Double = originalAmount + amount
+                resourceQuality.updateQuality(originalAmount, newAmount, newResourceQuality)
+                resourceAmount.production = newAmount
+            }
+            else -> {
+                val originalAmount: Double = resourceAmount.trade
+                val newAmount: Double = originalAmount + amount
+                resourceQuality.updateQuality(originalAmount, newAmount, newResourceQuality)
+                resourceAmount.trade = newAmount
+            }
+        }
+    }
+}
