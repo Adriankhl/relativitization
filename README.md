@@ -2,8 +2,8 @@
 Turn-based strategy game / agent-based simulation toolkit / social model in 4D relativistic spacetime.
 
 # Project layout
-* `universe` core stuffs for the universe simulation
-* `universe-server` server for running universe, depends on `universe`
+* `universe` core to run universe simulations
+* `universe-server` server to run a game, depends on `universe`
 * `universe-client` should be used with a gui, store non-gui functions, depends on `universe`
 * `gdx-core` libgdx gui core, depends on `universe`,  `universe-client`, and `universe-server` (very loosely, only manage the server `start()` and `stop()`)
 * `gdx-desktop` libgdx gui desktop launcher, depends on `gdx-core`, `universe`,  `universe-client`, and `universe-server` (very loosely, only manage the server `start()` and `stop()`)
@@ -11,22 +11,25 @@ Turn-based strategy game / agent-based simulation toolkit / social model in 4D r
 
 
 # Build the game
+The following assume 
 
 ## Prerequisite
 You need jdk 17 to build the game.
 
 There should be a `../relativitization-art/assets` directory. If not, create `../relativitization-art`
 and copy the assets:
+
 * `fonts`
 * `images`
 * `music`
 * `skin`
 * `sounds`
 * `translations`
+
 from the game into the `../relativitization-art/assets` folder.
 
 ## Run desktop application
-In terminal, run:
+In your terminal, run:
 ```
 ./gradlew :gdx-desktop:run
 ```
@@ -43,19 +46,19 @@ Go to `../relativitization-art` (`cd ../relativitization-art`), then run
 jpackage --input ./assets --name relativitization-linux --main-jar Relativitization.jar --type app-image
 ```
 
-The generated `relativitization-art/relativitization-linux` folder contains a `bin/relativitization-linux`
-executable.
+The generated `relativitization-linux` folder contains a `bin/relativitization-linux` executable.
 
 ## Build executable for Windows on Linux
-Download Windows jdk at `windows/jdk/jdk-17`
+You need `wine` to cross-build Windows executable on Linux.
 
-Go to `../relativitization-art` (`cd ../relativitization-art`), then run
+Download Windows jdk at `../windows/jdk/jdk-17`
+
+Go to `relativitization-art` if it is not your current directory, then run
 ```
 wine ../windows/jdk/jdk-17/bin/jpackage.exe --input ./assets --dest C:/relativitization-output --name relativitization-win --main-jar Relativitization.jar --type app-image
 ```
 
-The generated `~/.wine/drive_c/relativitization-output/relativitization-win` folder contains a `relativitization-win.exe`
-executable.
+The generated `~/.wine/drive_c/relativitization-output/relativitization-win` folder contains a `relativitization-win.exe` executable.
 
 
 ## Build Android (debug) apk
