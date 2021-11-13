@@ -546,3 +546,29 @@ data class MutableResourceAmountData(
 ) {
     fun total(): Double = storage + trade + production
 }
+
+/**
+ * The resource data of a specific type and class
+ * @property resourceQuality resource quality
+ * @property resourceQualityLowerBound the lower bound of resource quality
+ * @property resourceAmount resource amount
+ * @property resourceTargetAmount  target amount
+ * @property resourcePrice resource price in fuel rest mass
+ */
+@Serializable
+data class SingleResourceData(
+    val resourceAmount: ResourceAmountData = ResourceAmountData(),
+    val resourceTargetAmount: ResourceAmountData = ResourceAmountData(),
+    val resourceQuality: ResourceQualityData = ResourceQualityData(),
+    val resourceQualityLowerBound: ResourceQualityData = ResourceQualityData(),
+    val resourcePrice: Double = 0.01,
+)
+
+@Serializable
+data class MutableSingleResourceData(
+    var resourceAmount: ResourceAmountData = ResourceAmountData(),
+    var resourceTargetAmount: ResourceAmountData = ResourceAmountData(),
+    var resourceQuality: ResourceQualityData = ResourceQualityData(),
+    var resourceQualityLowerBound: ResourceQualityData = ResourceQualityData(),
+    var resourcePrice: Double = 0.01,
+)
