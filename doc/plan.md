@@ -53,3 +53,4 @@
 
 # Far future TODO List
 * Science era, e.g., Biology era favour nation with more biologist
+* Optimize afterimage and load saved universe to reduce memory usage
