@@ -68,11 +68,11 @@ object DefaultMechanismList : MechanismList() {
         Educate,
         PopulationGrowth,
         SendTax,
-        UpdateModifierTime,
         KnowledgeDiffusion,
         DiscoverKnowledge,
         SyncPlayerScienceData,
         UpdateScienceApplicationData,
+        UpdateModifierTime,
     )
 }
 
