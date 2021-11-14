@@ -240,6 +240,7 @@ abstract class CommandAvailability {
 
 object DefaultCommandAvailability : CommandAvailability() {
     override val commandList: List<String> = listOf(
+        DamageCommand::class.name(),
         DummyCommand::class.name(),
         CannotSendCommand::class.name(),
         AddEventCommand::class.name(),
@@ -248,6 +249,7 @@ object DefaultCommandAvailability : CommandAvailability() {
         BuildForeignResourceFactoryCommand::class.name(),
         BuildLocalFuelFactoryCommand::class.name(),
         BuildLocalResourceFactoryCommand::class.name(),
+        AddSubordinateCommand::class.name(),
         SendFuelFromStorageCommand::class.name(),
         SendResourceFromStorageCommand::class.name(),
         SendFuelCommand::class.name(),
