@@ -45,17 +45,17 @@ data class PlayerData(
     val newPlayerList: List<PlayerInternalData> = listOf()
 ) {
     /**
-     * @param toId whether this id is the player or one the subordinates of the player
+     * @param otherPlayerId whether this id is the player or one the subordinates of the player
      */
-    fun isSubOrdinateOrSelf(toId: Int): Boolean {
-        return (toId == playerId) || playerInternalData.subordinateIdList.contains(toId)
+    fun isSubOrdinateOrSelf(otherPlayerId: Int): Boolean {
+        return (otherPlayerId == playerId) || playerInternalData.subordinateIdList.contains(otherPlayerId)
     }
 
     /**
-     * @param toId whether this id is the player or one of the leaders of the player
+     * @param otherPlayerId whether this id is the player or one of the leaders of the player
      */
-    fun isLeaderOrSelf(toId: Int): Boolean {
-        return (toId == playerId) || playerInternalData.leaderIdList.contains(toId)
+    fun isLeaderOrSelf(otherPlayerId: Int): Boolean {
+        return (otherPlayerId == playerId) || playerInternalData.leaderIdList.contains(otherPlayerId)
     }
 
     /**
@@ -123,17 +123,17 @@ data class MutablePlayerData(
     }
 
     /**
-     * @param toId whether this id is the player or one the subordinates of the player
+     * @param otherPlayerId whether this id is the player or one the subordinates of the player
      */
-    fun isSubOrdinateOrSelf(toId: Int): Boolean {
-        return (toId == playerId) || playerInternalData.subordinateIdList.contains(toId)
+    fun isSubOrdinateOrSelf(otherPlayerId: Int): Boolean {
+        return (otherPlayerId == playerId) || playerInternalData.subordinateIdList.contains(otherPlayerId)
     }
 
     /**
-     * @param toId whether this id is the player or one of the leaders of the player
+     * @param otherPlayerId whether this id is the player or one of the leaders of the player
      */
-    fun isLeaderOrSelf(toId: Int): Boolean {
-        return (toId == playerId) || playerInternalData.leaderIdList.contains(toId)
+    fun isLeaderOrSelf(otherPlayerId: Int): Boolean {
+        return (otherPlayerId == playerId) || playerInternalData.leaderIdList.contains(otherPlayerId)
     }
 
     /**
