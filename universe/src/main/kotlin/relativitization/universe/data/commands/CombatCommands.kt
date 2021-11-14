@@ -4,35 +4,89 @@ import kotlinx.serialization.Serializable
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.components.physics.Int4D
+import relativitization.universe.data.components.popsystem.CarrierType
+import relativitization.universe.data.components.popsystem.MutableCarrierData
+import relativitization.universe.data.components.popsystem.pop.soldier.facility.MutableMilitaryBaseData
+import relativitization.universe.maths.sampling.WeightedReservoir
 import relativitization.universe.utils.I18NString
 
 /**
- * Damage from one player to another, used in auto combat
+ * Damage from one player to another, send by auto combat mechanism only
+ *
+ * @property attack attack from player
  */
 @Serializable
 data class DamageCommand(
     override val toId: Int,
     override val fromId: Int,
-    override val fromInt4D: Int4D
+    override val fromInt4D: Int4D,
+    val attack: Double,
 ) : Command() {
-    override val description: I18NString
-        get() = TODO("Not yet implemented")
+    override val description: I18NString = I18NString("")
 
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): CanSendCheckMessage {
-        TODO("Not yet implemented")
+        return CanSendCheckMessage(false)
     }
 
     override fun canExecute(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): Boolean {
-        TODO("Not yet implemented")
+        return true
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
-        TODO("Not yet implemented")
+        // Disable military base recovery by 1 turn
+        playerData.playerInternalData.modifierData().combatModifierData.disableMilitaryBaseRecoveryByTime(1)
+
+        val carrierIdList: MutableList<Int> =
+            playerData.playerInternalData.popSystemData().carrierDataMap.keys.shuffled().toMutableList()
+
+        // Use attack to destroy carrier, until used up or no carrier left
+        var attackAcc: Double = attack
+
+        // Attack consume shield
+        carrierIdList.forEach {
+
+            val carrierData: MutableCarrierData =
+                playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
+                    it
+                )
+
+            val shield: Double = carrierData.allPopData.soldierPopData.militaryBaseData.shield
+
+            if (shield > attackAcc) {
+                carrierData.allPopData.soldierPopData.militaryBaseData.shield -= attackAcc
+                attackAcc = 0.0
+            } else {
+                if (carrierData.carrierType == CarrierType.SPACESHIP) {
+                    // Destroy this carrier
+                    playerData.playerInternalData.popSystemData().carrierDataMap.remove(it)
+                } else {
+                    carrierData.allPopData.soldierPopData.militaryBaseData.shield = 0.0
+                }
+
+                attackAcc -= shield
+            }
+
+            if (attackAcc <= 0.0) return@forEach
+        }
+
+        // player is dead if no carrier
+        if (playerData.playerInternalData.popSystemData().carrierDataMap.isEmpty()) {
+            playerData.playerInternalData.isAlive = false
+        } else {
+            // Change leader if all carrier shields are destroyed
+            val allCarrierDestroyed: Boolean = playerData.playerInternalData.popSystemData().carrierDataMap.values. all {
+                (it.carrierType != CarrierType.SPACESHIP) && (it.allPopData.soldierPopData.militaryBaseData.shield <= 0.0)
+            }
+
+            if (allCarrierDestroyed) {
+                playerData.changeDirectLeaderId(listOf(fromId))
+            }
+        }
     }
 }
