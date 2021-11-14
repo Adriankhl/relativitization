@@ -4,6 +4,7 @@ import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
+import relativitization.universe.data.commands.AddSubordinateCommand
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.mechanisms.Mechanism
@@ -19,8 +20,7 @@ object SyncHierarchy : Mechanism() {
         universeGlobalData: UniverseGlobalData
     ): List<Command> {
 
-
-        return if (mutablePlayerData.isTopLeader()) {
+        val toDirectLeaderCommandList: List<Command> = if (mutablePlayerData.isTopLeader()) {
             listOf()
         } else {
 
@@ -28,8 +28,19 @@ object SyncHierarchy : Mechanism() {
 
             mutablePlayerData.changeDirectLeaderId(directLeaderData.playerInternalData.leaderIdList)
 
-
-            listOf()
+            if (directLeaderData.playerInternalData.directSubordinateIdList.contains(mutablePlayerData.playerId)) {
+                listOf()
+            } else {
+                listOf(
+                    AddSubordinateCommand(
+                        toId = directLeaderData.playerId,
+                        fromId = mutablePlayerData.playerId,
+                        fromInt4D = mutablePlayerData.int4D.toInt4D(),
+                    )
+                )
+            }
         }
+
+        return toDirectLeaderCommandList
     }
 }

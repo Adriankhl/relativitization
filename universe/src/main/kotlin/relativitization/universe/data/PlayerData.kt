@@ -171,8 +171,13 @@ data class MutablePlayerData(
      * Add subordinate to this player
      */
     fun addDirectSubordinateId(subordinateId: Int) {
-        playerInternalData.directSubordinateIdList.add(subordinateId)
-        playerInternalData.subordinateIdList.add(subordinateId)
+        if (!playerInternalData.directSubordinateIdList.contains(subordinateId)) {
+            playerInternalData.directSubordinateIdList.add(subordinateId)
+        }
+
+        if (!playerInternalData.subordinateIdList.contains(subordinateId)) {
+            playerInternalData.subordinateIdList.add(subordinateId)
+        }
     }
 
     companion object {
