@@ -5,6 +5,7 @@ import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.components.MutablePlayerScienceData
+import relativitization.universe.data.components.modifier.MutableCombatModifierData
 import relativitization.universe.data.components.popsystem.pop.soldier.MutableSoldierPopData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.mechanisms.Mechanism
@@ -27,15 +28,16 @@ object UpdateMilitaryBase : Mechanism() {
 
         mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.forEach { mutableCarrierData ->
             val newAttack: Double = computeMilitaryBaseAttack(
-                mutableCarrierData.allPopData.soldierPopData,
-                mutablePlayerData.playerInternalData.playerScienceData(),
+                soldierPopData = mutableCarrierData.allPopData.soldierPopData,
+                playerScienceData = mutablePlayerData.playerInternalData.playerScienceData(),
             )
 
             val newShield: Double = computeMilitaryBaseShield(
                 soldierPopData = mutableCarrierData.allPopData.soldierPopData,
                 playerScienceData = mutablePlayerData.playerInternalData.playerScienceData(),
                 maxShieldFactor = maxShieldFactor,
-                shieldChangeFactor = shieldChangeFactor
+                shieldChangeFactor = shieldChangeFactor,
+                combatModifierData = mutablePlayerData.playerInternalData.modifierData().combatModifierData,
             )
 
             mutableCarrierData.allPopData.soldierPopData.militaryBaseData.attack = newAttack
@@ -57,7 +59,12 @@ object UpdateMilitaryBase : Mechanism() {
             soldierPopData.commonPopData.satisfaction
         }
 
-        return soldierPopData.militaryBaseData.lastNumEmployee * satisfactionFactor * playerScienceData.playerScienceApplicationData.militaryBaseAttackFactor
+        // Can only attack if shield is greater than 0
+        return if (soldierPopData.militaryBaseData.shield > 0.0) {
+            soldierPopData.militaryBaseData.lastNumEmployee * satisfactionFactor * playerScienceData.playerScienceApplicationData.militaryBaseAttackFactor
+        } else {
+            0.0
+        }
     }
 
     fun computeMilitaryBaseShield(
@@ -65,6 +72,7 @@ object UpdateMilitaryBase : Mechanism() {
         playerScienceData: MutablePlayerScienceData,
         maxShieldFactor: Double = 5.0,
         shieldChangeFactor: Double,
+        combatModifierData: MutableCombatModifierData,
     ): Double {
 
         val originalShield: Double = soldierPopData.militaryBaseData.shield
@@ -87,7 +95,11 @@ object UpdateMilitaryBase : Mechanism() {
                 -min(maxShield * shieldChangeFactor, originalShield - maxShield)
             }
             else -> {
-                min(maxShield * shieldChangeFactor, maxShield - originalShield)
+                if (combatModifierData.disableMilitaryBaseRecoveryTimeLimit <= 0) {
+                    min(maxShield * shieldChangeFactor, maxShield - originalShield)
+                } else {
+                    originalShield
+                }
             }
         }
 
