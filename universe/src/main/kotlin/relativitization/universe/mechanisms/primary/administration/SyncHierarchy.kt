@@ -41,6 +41,19 @@ object SyncHierarchy : Mechanism() {
             }
         }
 
+        // Clear direct subordinate
+        val toRemoveDirectIdList: List<Int> = mutablePlayerData.playerInternalData.directSubordinateIdList.filter {
+            universeData3DAtPlayer.get(it).playerInternalData.directLeaderId != mutablePlayerData.playerId
+        }
+        mutablePlayerData.playerInternalData.directSubordinateIdList.removeAll(toRemoveDirectIdList)
+
+        // Clear subordinate
+        val toRemoveIdList: List<Int> = mutablePlayerData.playerInternalData.directSubordinateIdList.filter {
+            universeData3DAtPlayer.get(it).isLeaderOrSelf(mutablePlayerData.playerId)
+        }
+        mutablePlayerData.playerInternalData.subordinateIdList.removeAll(toRemoveIdList)
+
+
         return toDirectLeaderCommandList
     }
 }
