@@ -249,7 +249,7 @@ object DefaultCommandAvailability : CommandAvailability() {
         BuildForeignResourceFactoryCommand::class.name(),
         BuildLocalFuelFactoryCommand::class.name(),
         BuildLocalResourceFactoryCommand::class.name(),
-        AddSubordinateCommand::class.name(),
+        AddDirectSubordinateCommand::class.name(),
         SendFuelFromStorageCommand::class.name(),
         SendResourceFromStorageCommand::class.name(),
         SendFuelCommand::class.name(),

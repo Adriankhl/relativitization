@@ -4,7 +4,7 @@ import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
-import relativitization.universe.data.commands.AddSubordinateCommand
+import relativitization.universe.data.commands.AddDirectSubordinateCommand
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.mechanisms.Mechanism
@@ -20,6 +20,7 @@ object SyncHierarchy : Mechanism() {
         universeGlobalData: UniverseGlobalData
     ): List<Command> {
 
+        // Send AddSubordinateCommand to direct leader if the leader data is not correct
         val toDirectLeaderCommandList: List<Command> = if (mutablePlayerData.isTopLeader()) {
             listOf()
         } else {
@@ -32,7 +33,7 @@ object SyncHierarchy : Mechanism() {
                 listOf()
             } else {
                 listOf(
-                    AddSubordinateCommand(
+                    AddDirectSubordinateCommand(
                         toId = directLeaderData.playerId,
                         fromId = mutablePlayerData.playerId,
                         fromInt4D = mutablePlayerData.int4D.toInt4D(),
@@ -52,6 +53,15 @@ object SyncHierarchy : Mechanism() {
             universeData3DAtPlayer.get(it).isLeaderOrSelf(mutablePlayerData.playerId)
         }
         mutablePlayerData.playerInternalData.subordinateIdList.removeAll(toRemoveIdList)
+
+
+        // Add all subordinates of direct subordinates
+        mutablePlayerData.playerInternalData.directSubordinateIdList.map {
+            universeData3DAtPlayer.get(it).playerInternalData.subordinateIdList
+        }.flatten().forEach {
+            mutablePlayerData.addSubordinateId(it)
+        }
+
 
 
         return toDirectLeaderCommandList

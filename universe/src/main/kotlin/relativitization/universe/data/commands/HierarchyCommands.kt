@@ -11,7 +11,7 @@ import relativitization.universe.utils.I18NString
  * For mechanism only
  */
 @Serializable
-data class AddSubordinateCommand(
+data class AddDirectSubordinateCommand(
     override val toId: Int,
     override val fromId: Int,
     override val fromInt4D: Int4D

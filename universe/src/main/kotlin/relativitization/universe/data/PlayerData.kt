@@ -155,28 +155,49 @@ data class MutablePlayerData(
      * Change direct leader id and add all leaders of direct leader
      */
     fun changeDirectLeaderId(leaderListOfDirectLeader: List<Int>) {
-        if (leaderListOfDirectLeader.isNotEmpty()) {
-            playerInternalData.directLeaderId = leaderListOfDirectLeader.last()
-            playerInternalData.leaderIdList.clear()
-            playerInternalData.leaderIdList.addAll(leaderListOfDirectLeader)
-            playerInternalData.leaderIdList.add(playerId)
+        if (playerInternalData.subordinateIdList.any { !leaderListOfDirectLeader.contains(it) }) {
+            if (leaderListOfDirectLeader.isNotEmpty()) {
+                playerInternalData.directLeaderId = leaderListOfDirectLeader.last()
+                playerInternalData.leaderIdList.clear()
+                playerInternalData.leaderIdList.addAll(leaderListOfDirectLeader)
+                playerInternalData.leaderIdList.add(playerId)
+            } else {
+                playerInternalData.directLeaderId = playerId
+                playerInternalData.leaderIdList.clear()
+                playerInternalData.leaderIdList.add(playerId)
+            }
         } else {
-            playerInternalData.directLeaderId = playerId
-            playerInternalData.leaderIdList.clear()
-            playerInternalData.leaderIdList.add(playerId)
+            logger.error("Add subordinate as error")
+        }
+    }
+
+    /**
+     * Add direct subordinate to this player
+     */
+    fun addDirectSubordinateId(subordinateId: Int) {
+        if (!playerInternalData.leaderIdList.contains(subordinateId)) {
+            if (!playerInternalData.directSubordinateIdList.contains(subordinateId)) {
+                playerInternalData.directSubordinateIdList.add(subordinateId)
+            }
+
+            if (!playerInternalData.subordinateIdList.contains(subordinateId)) {
+                playerInternalData.subordinateIdList.add(subordinateId)
+            }
+        } else {
+            logger.error("Add leader as subordinate")
         }
     }
 
     /**
      * Add subordinate to this player
      */
-    fun addDirectSubordinateId(subordinateId: Int) {
-        if (!playerInternalData.directSubordinateIdList.contains(subordinateId)) {
-            playerInternalData.directSubordinateIdList.add(subordinateId)
-        }
-
-        if (!playerInternalData.subordinateIdList.contains(subordinateId)) {
-            playerInternalData.subordinateIdList.add(subordinateId)
+    fun addSubordinateId(subordinateId: Int) {
+        if (!playerInternalData.leaderIdList.contains(subordinateId)) {
+            if (!playerInternalData.subordinateIdList.contains(subordinateId)) {
+                playerInternalData.subordinateIdList.add(subordinateId)
+            }
+        } else {
+            logger.error("Add leader as subordinate")
         }
     }
 
