@@ -276,7 +276,7 @@ object DiscoverKnowledge : Mechanism() {
         val actualProb: Double = 1.0 - (1.0 - prob).pow(1.0 / gamma)
 
         // The probability is affected by time dilation, i.e. gamma
-        val success: Boolean = Random.Default.nextDouble() < actualProb
+        val success: Boolean = Random.nextDouble() < actualProb
 
         return inRange && success
     }

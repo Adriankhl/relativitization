@@ -29,7 +29,7 @@ object SyncDiplomaticRelation : Mechanism() {
             // Allow internal war
             directLeader.playerInternalData.diplomacyData().relationMap.filterKeys {
                 !directLeader.playerInternalData.directSubordinateIdList.contains(it)
-            }.forEach { playerId, relationData ->
+            }.forEach { (playerId, relationData) ->
                 mutablePlayerData.playerInternalData.diplomacyData().getDiplomaticRelationData(
                     playerId
                 ).relationState = relationData.relationState

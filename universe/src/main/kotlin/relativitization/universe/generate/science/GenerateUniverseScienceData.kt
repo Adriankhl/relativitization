@@ -102,8 +102,8 @@ object DefaultGenerateUniverseScienceData {
             )
         }
 
-        val angle: Double = Random.Default.nextDouble(0.0, PI)
-        val radialDistance: Double = Random.Default.nextDouble(
+        val angle: Double = Random.nextDouble(0.0, PI)
+        val radialDistance: Double = Random.nextDouble(
             0.0,
             generationData.projectGenerationData.range
         )
@@ -113,8 +113,8 @@ object DefaultGenerateUniverseScienceData {
         val yCor: Double =
             generationData.projectGenerationData.centerY + radialDistance * sin(angle)
 
-        val numReferenceBasicResearch: Int = Random.Default.nextInt(1, 10)
-        val numReferenceAppliedResearch: Int = Random.Default.nextInt(1, 10)
+        val numReferenceBasicResearch: Int = Random.nextInt(1, 10)
+        val numReferenceAppliedResearch: Int = Random.nextInt(1, 10)
 
         val referenceBasicResearchIdList: List<Int> = WeightedReservoir.aRes(
             numItem = numReferenceBasicResearch,
@@ -142,8 +142,8 @@ object DefaultGenerateUniverseScienceData {
             basicResearchField = generationData.basicResearchField,
             xCor = xCor,
             yCor = yCor,
-            difficulty = Random.Default.nextDouble(0.0, 1.0),
-            significance = Random.Default.nextDouble(0.0, 1.0),
+            difficulty = Random.nextDouble(0.0, 1.0),
+            significance = Random.nextDouble(0.0, 1.0),
             referenceBasicResearchIdList = referenceBasicResearchIdList,
             referenceAppliedResearchIdList = referenceAppliedResearchIdList,
         )
@@ -178,8 +178,8 @@ object DefaultGenerateUniverseScienceData {
             )
         }
 
-        val angle: Double = Random.Default.nextDouble(0.0, PI)
-        val radialDistance: Double = Random.Default.nextDouble(
+        val angle: Double = Random.nextDouble(0.0, PI)
+        val radialDistance: Double = Random.nextDouble(
             0.0,
             generationData.projectGenerationData.range
         )
@@ -189,8 +189,8 @@ object DefaultGenerateUniverseScienceData {
         val yCor: Double =
             generationData.projectGenerationData.centerY + radialDistance * sin(angle)
 
-        val numReferenceBasicResearch: Int = Random.Default.nextInt(1, 10)
-        val numReferenceAppliedResearch: Int = Random.Default.nextInt(1, 10)
+        val numReferenceBasicResearch: Int = Random.nextInt(1, 10)
+        val numReferenceAppliedResearch: Int = Random.nextInt(1, 10)
 
         val referenceBasicResearchIdList: List<Int> = WeightedReservoir.aRes(
             numItem = numReferenceBasicResearch,
@@ -218,8 +218,8 @@ object DefaultGenerateUniverseScienceData {
             appliedResearchField = generationData.appliedResearchField,
             xCor = xCor,
             yCor = yCor,
-            difficulty = Random.Default.nextDouble(0.0, 1.0),
-            significance = Random.Default.nextDouble(0.0, 1.0),
+            difficulty = Random.nextDouble(0.0, 1.0),
+            significance = Random.nextDouble(0.0, 1.0),
             referenceBasicResearchIdList = referenceBasicResearchIdList,
             referenceAppliedResearchIdList = referenceAppliedResearchIdList,
         )

@@ -30,7 +30,7 @@ object WeightedReservoir {
         } else {
             val pairList: List<Pair<T, Double>> = itemList.map {
                 val weight: Double = weightFunction(it)
-                val random: Double = Random.Default.nextDouble()
+                val random: Double = Random.nextDouble()
 
                 if (weight <= 0.0) {
                     logger.error("Weight smaller than 0.0, setting weightto 1E-9")

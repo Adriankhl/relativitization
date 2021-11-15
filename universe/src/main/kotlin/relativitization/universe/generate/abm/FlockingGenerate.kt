@@ -37,9 +37,9 @@ class FlockingGenerate : GenerateUniverse() {
                 playerData.playerType = PlayerType.HUMAN
             }
 
-            playerData.int4D.x = Random.Default.nextInt(0, universeSettings.xDim)
-            playerData.int4D.y = Random.Default.nextInt(0, universeSettings.yDim)
-            playerData.int4D.z = Random.Default.nextInt(0, universeSettings.zDim)
+            playerData.int4D.x = Random.nextInt(0, universeSettings.xDim)
+            playerData.int4D.y = Random.nextInt(0, universeSettings.yDim)
+            playerData.int4D.z = Random.nextInt(0, universeSettings.zDim)
 
             playerData.playerInternalData.popSystemData().addSpaceShip(
                 1.0, 1E5
@@ -49,9 +49,9 @@ class FlockingGenerate : GenerateUniverse() {
             playerData.playerInternalData.physicsData().fuelRestMassData.movement = 1E6
 
 
-            val vx = Random.Default.nextDouble(-1.0, 1.0)
-            val vy = Random.Default.nextDouble(-1.0, 1.0)
-            val vz = Random.Default.nextDouble(-1.0, 1.0)
+            val vx = Random.nextDouble(-1.0, 1.0)
+            val vy = Random.nextDouble(-1.0, 1.0)
+            val vz = Random.nextDouble(-1.0, 1.0)
 
             // Constant velocity 0.5
             playerData.velocity = MutableVelocity(vx, vy, vz).scaleVelocity(0.5)

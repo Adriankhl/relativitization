@@ -78,7 +78,7 @@ object KnowledgeDiffusion : Mechanism() {
                 thisProject.basicResearchId == otherProject.basicResearchId
             }
         }.filter {
-            Random.Default.nextDouble() < diffusionProb
+            Random.nextDouble() < diffusionProb
         }
     }
 
@@ -92,7 +92,7 @@ object KnowledgeDiffusion : Mechanism() {
                 thisProject.appliedResearchId == otherProject.appliedResearchId
             }
         }.filter {
-            Random.Default.nextDouble() < diffusionProb
+            Random.nextDouble() < diffusionProb
         }
     }
 }
