@@ -517,10 +517,10 @@ data class PopBuyResourceCommand(
     ): Boolean {
         val validTopLeaderId: Boolean = (playerData.topLeaderId() == receiverTopLeaderId)
 
-        val isFuelDisable: Boolean =
+        val isFuelIncreaseEnable: Boolean =
             playerData.playerInternalData.modifierData().physicsModifierData.disableRestMassIncreaseTimeLimit <= 0
 
-        return validTopLeaderId && isFuelDisable
+        return validTopLeaderId && isFuelIncreaseEnable
     }
 
 
@@ -719,10 +719,10 @@ data class PlayerBuyResourceCommand(
     ): Boolean {
         val validTopLeaderId: Boolean = (playerData.topLeaderId() == receiverTopLeaderId)
 
-        val isFuelDisable: Boolean =
+        val isFuelIncreaseEnable: Boolean =
             playerData.playerInternalData.modifierData().physicsModifierData.disableRestMassIncreaseTimeLimit <= 0
 
-        return validTopLeaderId && isFuelDisable
+        return validTopLeaderId && isFuelIncreaseEnable
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
