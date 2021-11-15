@@ -28,8 +28,8 @@
 * Basic diplomacy
 * New carrier
 * New player
-* Basic military: Soldier
-* Sync leader data to subordinate, e.g., enemy
+* Basic military: Soldier [x]
+* Sync leader data to subordinate, e.g., enemy [x]
 
 # AI TODO List
 * Default AI
