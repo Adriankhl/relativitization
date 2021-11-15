@@ -40,9 +40,11 @@
 * Expand Factory
 * Change economy policy, e.g., tax, storage
 * Change salary
-* Improve diplomatic relation
+* Improve diplomatic relation by sending resource
 * Declare war, declare independence
 * Surrender
+* Retract direct subordinate of subordinate
+* Merge direct subordinate at exactly the same position
 
 # Generate universe TODO List
 * One stellar per player generation
