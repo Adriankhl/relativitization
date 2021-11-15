@@ -155,7 +155,7 @@ data class MutablePlayerData(
      * Change direct leader id and add all leaders of direct leader
      */
     fun changeDirectLeaderId(leaderListOfDirectLeader: List<Int>) {
-        if (playerInternalData.subordinateIdList.any { !leaderListOfDirectLeader.contains(it) }) {
+        if (playerInternalData.subordinateIdList.all{ !leaderListOfDirectLeader.contains(it) }) {
             if (leaderListOfDirectLeader.isNotEmpty()) {
                 playerInternalData.directLeaderId = leaderListOfDirectLeader.last()
                 playerInternalData.leaderIdList.clear()
@@ -167,7 +167,7 @@ data class MutablePlayerData(
                 playerInternalData.leaderIdList.add(playerId)
             }
         } else {
-            logger.error("Add subordinate as error")
+            logger.error("Add subordinate as leader")
         }
     }
 
