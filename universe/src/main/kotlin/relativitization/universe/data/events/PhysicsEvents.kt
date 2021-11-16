@@ -58,7 +58,10 @@ data class MoveToDouble3DEvent(
         )
     )
 
-    override fun canSend(playerData: MutablePlayerData, universeSettings: UniverseSettings): CanSendCheckMessage {
+    override fun canSend(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): CanSendCheckMessage {
         val isSubOrdinateOrSelf: Boolean = playerData.isSubOrdinateOrSelf(toId)
         return if (isSubOrdinateOrSelf) {
             CanSendCheckMessage(true)
@@ -70,7 +73,10 @@ data class MoveToDouble3DEvent(
         }
     }
 
-    override fun canExecute(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean {
+    override fun canExecute(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): Boolean {
         val requiredDeltaRestMass: Double = Movement.requiredDeltaRestMassUpperBound(
             initialRestMass = playerData.playerInternalData.physicsData().totalRestMass(),
             maxDeltaRestMass = playerData.playerInternalData.physicsData().fuelRestMassData.maxMovementDelta,
@@ -129,12 +135,43 @@ data class MoveToDouble3DEvent(
     }
 
 
-    override fun defaultChoice(eventId: Int, universeData3DAtPlayer: UniverseData3DAtPlayer): Int {
-        val otherMovementEvent: Map<Int, EventData> =
-            universeData3DAtPlayer.getCurrentPlayerData().playerInternalData.eventDataMap.filter { (id, eventData) ->
-                (eventData.event is MoveToDouble3DEvent) && (id != eventId)
+    override fun defaultChoice(
+        eventId: Int,
+        universeData3DAtPlayer: UniverseData3DAtPlayer
+    ): Int {
+        val eventDataMap: Map<Int, EventData> =
+            universeData3DAtPlayer.getCurrentPlayerData().playerInternalData.eventDataMap
+
+        val otherMovementEvents: Map<Int, EventData> = eventDataMap.filter { (id, eventData) ->
+            (eventData.event is MoveToDouble3DEvent) && (id != eventId)
+        }
+        return if (otherMovementEvents.isEmpty()) {
+            0
+        } else {
+            if (otherMovementEvents.any { it.value.hasChoice }) {
+                1
+            } else {
+                val leaderIdList: List<Int> =
+                    universeData3DAtPlayer.getCurrentPlayerData().playerInternalData.leaderIdList
+
+                // if all movement events are default, find the one with the closest relation with the player
+                val entry = eventDataMap.maxByOrNull { (_, eventData) ->
+                    if (leaderIdList.contains(eventData.event.fromId)) {
+                        leaderIdList.indexOf(eventData.event.fromId)
+                    } else {
+                        -1
+                    }
+                }
+
+                val entryId: Int = entry?.key ?: eventId
+
+                if (entryId == eventId) {
+                    0
+                } else {
+                    1
+                }
             }
-        return 0
+        }
     }
 
     override fun shouldCancelThisEvent(
@@ -144,8 +181,10 @@ data class MoveToDouble3DEvent(
         return if (mutableEventData.choice == 1) {
             true
         } else {
-            val sameDouble3D: Boolean = universeData3DAtPlayer.getCurrentPlayerData().double4D.toDouble3D() == targetDouble3D
-            val zeroVelocity: Boolean = universeData3DAtPlayer.getCurrentPlayerData().velocity.mag() <= 0.0
+            val sameDouble3D: Boolean =
+                universeData3DAtPlayer.getCurrentPlayerData().double4D.toDouble3D() == targetDouble3D
+            val zeroVelocity: Boolean =
+                universeData3DAtPlayer.getCurrentPlayerData().velocity.mag() <= 0.0
 
             sameDouble3D && zeroVelocity
         }
