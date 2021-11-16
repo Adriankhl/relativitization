@@ -5,6 +5,8 @@ import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.components.physics.Int4D
 import relativitization.universe.utils.I18NString
+import relativitization.universe.utils.IntString
+import relativitization.universe.utils.RealString
 
 @Serializable
 data class DeclareWarCommand(
@@ -12,8 +14,15 @@ data class DeclareWarCommand(
     override val fromId: Int,
     override val fromInt4D: Int4D
 ) : Command() {
-    override val description: I18NString
-        get() = TODO("Not yet implemented")
+    override val description: I18NString = I18NString(
+        listOf(
+            RealString("Declare war on "),
+            IntString(0),
+        ),
+        listOf(
+            toId.toString(),
+        )
+    )
 
     override fun canSend(
         playerData: MutablePlayerData,

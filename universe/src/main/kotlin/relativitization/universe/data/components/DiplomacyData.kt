@@ -6,6 +6,7 @@ import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.components.diplomacy.DiplomaticRelationData
 import relativitization.universe.data.components.diplomacy.DiplomaticRelationState
 import relativitization.universe.data.components.diplomacy.MutableDiplomaticRelationData
+import relativitization.universe.data.components.diplomacy.WarData
 
 /**
  * @property relationMap map from other player id to the DiplomaticRelationData view by this player
@@ -14,6 +15,7 @@ import relativitization.universe.data.components.diplomacy.MutableDiplomaticRela
 @SerialName("DiplomacyData")
 data class DiplomacyData(
     val relationMap: Map<Int, DiplomaticRelationData> = mapOf(),
+    val warData: WarData = WarData(),
 ) : PlayerDataComponent() {
     fun getDiplomaticRelationData(id: Int): DiplomaticRelationData {
         return relationMap.getOrDefault(id, DiplomaticRelationData())
@@ -37,6 +39,7 @@ data class DiplomacyData(
 @SerialName("DiplomacyData")
 data class MutableDiplomacyData(
     var relationMap: MutableMap<Int, MutableDiplomaticRelationData> = mutableMapOf(),
+    var warData: WarData = WarData(),
 ) : MutablePlayerDataComponent() {
     fun getDiplomaticRelationData(id: Int): MutableDiplomaticRelationData {
         return relationMap.getOrPut(id) { MutableDiplomaticRelationData() }
