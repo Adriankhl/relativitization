@@ -33,22 +33,30 @@ data class DeclareWarCommand(
         val isNotLeaderI18NString: I18NString = if (isNotLeader) {
             I18NString("")
         } else {
-            I18NString("Target is leader")
+            I18NString("Target is leader. ")
         }
 
         val isNotSubordinate: Boolean = !playerData.isLeaderOrSelf(toId)
         val isNotSubordinateI18NString: I18NString = if (isNotSubordinate) {
             I18NString("")
         } else {
-            I18NString("Target is leader")
+            I18NString("Target is leader. ")
+        }
+
+        val isNotInWar: Boolean = !playerData.playerInternalData.diplomacyData().warData.warStateMap.containsKey(toId)
+        val isNotInWarI18NString: I18NString = if (isNotInWar) {
+            I18NString("")
+        } else {
+            I18NString("Target is in war with you. ")
         }
 
         return CanSendCheckMessage(
-            isNotLeader && isNotSubordinate,
+            isNotLeader && isNotSubordinate && isNotInWar,
             I18NString.combine(
                 listOf(
                     isNotLeaderI18NString,
-                    isNotSubordinateI18NString
+                    isNotSubordinateI18NString,
+                    isNotInWarI18NString,
                 )
             )
         )
@@ -71,10 +79,19 @@ data class DeclareWarCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): Boolean {
-        TODO("Not yet implemented")
+        return !playerData.playerInternalData.diplomacyData().warData.warStateMap.containsKey(fromId)
     }
 
-    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
-        TODO("Not yet implemented")
+    override fun execute(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings,
+    ) {
+        playerData.playerInternalData.diplomacyData().getDiplomaticRelationData(
+            fromId
+        ).diplomaticRelationState = DiplomaticRelationState.ENEMY
+
+        playerData.playerInternalData.diplomacyData().warData.getWarStateData(
+            fromId
+        ).initialSubordinateList = playerData.playerInternalData.subordinateIdList
     }
 }
