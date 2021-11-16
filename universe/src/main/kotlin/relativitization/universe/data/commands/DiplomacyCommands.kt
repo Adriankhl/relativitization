@@ -3,6 +3,7 @@ package relativitization.universe.data.commands
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseSettings
+import relativitization.universe.data.components.diplomacy.DiplomaticRelationState
 import relativitization.universe.data.components.physics.Int4D
 import relativitization.universe.utils.I18NString
 import relativitization.universe.utils.IntString
@@ -57,7 +58,13 @@ data class DeclareWarCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ) {
+        playerData.playerInternalData.diplomacyData().getDiplomaticRelationData(
+            toId
+        ).diplomaticRelationState = DiplomaticRelationState.ENEMY
 
+        playerData.playerInternalData.diplomacyData().warData.getWarStateData(
+            toId
+        ).initialSubordinateList = playerData.playerInternalData.subordinateIdList
     }
 
     override fun canExecute(

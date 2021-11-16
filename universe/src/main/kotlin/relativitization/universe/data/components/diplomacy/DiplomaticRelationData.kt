@@ -16,12 +16,12 @@ enum class DiplomaticRelationState(val value: String) {
 @Serializable
 data class DiplomaticRelationData(
     val relation: Double = 0.0,
-    val relationState: DiplomaticRelationState = DiplomaticRelationState.NEUTRAL,
+    val diplomaticRelationState: DiplomaticRelationState = DiplomaticRelationState.NEUTRAL,
 )
 
 @Serializable
 data class MutableDiplomaticRelationData(
     var relation: Double = 0.0,
-    var relationState: DiplomaticRelationState = DiplomaticRelationState.NEUTRAL,
+    var diplomaticRelationState: DiplomaticRelationState = DiplomaticRelationState.NEUTRAL,
 )
 

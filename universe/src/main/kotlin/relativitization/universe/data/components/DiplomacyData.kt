@@ -3,10 +3,7 @@ package relativitization.universe.data.components
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.MutablePlayerData
-import relativitization.universe.data.components.diplomacy.DiplomaticRelationData
-import relativitization.universe.data.components.diplomacy.DiplomaticRelationState
-import relativitization.universe.data.components.diplomacy.MutableDiplomaticRelationData
-import relativitization.universe.data.components.diplomacy.WarData
+import relativitization.universe.data.components.diplomacy.*
 
 /**
  * @property relationMap map from other player id to the DiplomaticRelationData view by this player
@@ -23,7 +20,7 @@ data class DiplomacyData(
 
     fun getRelation(id: Int): Double = getDiplomaticRelationData(id).relation
 
-    fun getRelationState(id: Int): DiplomaticRelationState = getDiplomaticRelationData(id).relationState
+    fun getRelationState(id: Int): DiplomaticRelationState = getDiplomaticRelationData(id).diplomaticRelationState
 
     /**
      * Whether this player is a enemy of other player
@@ -39,7 +36,7 @@ data class DiplomacyData(
 @SerialName("DiplomacyData")
 data class MutableDiplomacyData(
     var relationMap: MutableMap<Int, MutableDiplomaticRelationData> = mutableMapOf(),
-    var warData: WarData = WarData(),
+    var warData: MutableWarData = MutableWarData(),
 ) : MutablePlayerDataComponent() {
     fun getDiplomaticRelationData(id: Int): MutableDiplomaticRelationData {
         return relationMap.getOrPut(id) { MutableDiplomaticRelationData() }

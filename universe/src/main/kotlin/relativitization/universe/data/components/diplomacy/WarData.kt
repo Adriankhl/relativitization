@@ -10,7 +10,13 @@ data class WarData(
 @Serializable
 data class MutableWarData(
     val warStateMap: MutableMap<Int, MutableWarStateData> = mutableMapOf(),
-)
+) {
+    fun getWarStateData(id: Int): MutableWarStateData = warStateMap.getOrPut(
+        id
+    ) {
+        MutableWarStateData()
+    }
+}
 
 /**
  * Store the state of a war
@@ -24,5 +30,5 @@ data class WarStateData(
 
 @Serializable
 data class MutableWarStateData(
-    val initialSubordinateList: MutableList<Int> = mutableListOf()
+    var initialSubordinateList: MutableList<Int> = mutableListOf()
 )

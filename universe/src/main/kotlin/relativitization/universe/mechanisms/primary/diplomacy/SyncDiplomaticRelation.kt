@@ -32,7 +32,7 @@ object SyncDiplomaticRelation : Mechanism() {
             }.forEach { (playerId, relationData) ->
                 mutablePlayerData.playerInternalData.diplomacyData().getDiplomaticRelationData(
                     playerId
-                ).relationState = relationData.relationState
+                ).diplomaticRelationState = relationData.diplomaticRelationState
             }
 
         }
