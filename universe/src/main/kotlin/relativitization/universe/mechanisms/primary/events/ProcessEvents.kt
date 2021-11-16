@@ -40,7 +40,7 @@ object ProcessEvents : Mechanism() {
                 } else {
                     mutableEventData.event.generateCommands(
                         eventId,
-                        mutableEventData.event.defaultChoice(universeData3DAtPlayer),
+                        mutableEventData.event.defaultChoice(eventId, universeData3DAtPlayer),
                         universeData3DAtPlayer
                     )
                 }

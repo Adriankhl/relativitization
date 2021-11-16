@@ -129,7 +129,11 @@ data class MoveToDouble3DEvent(
     }
 
 
-    override fun defaultChoice(universeData3DAtPlayer: UniverseData3DAtPlayer): Int {
+    override fun defaultChoice(eventId: Int, universeData3DAtPlayer: UniverseData3DAtPlayer): Int {
+        val otherMovementEvent: Map<Int, EventData> =
+            universeData3DAtPlayer.getCurrentPlayerData().playerInternalData.eventDataMap.filter { (id, eventData) ->
+                (eventData.event is MoveToDouble3DEvent) && (id != eventId)
+            }
         return 0
     }
 

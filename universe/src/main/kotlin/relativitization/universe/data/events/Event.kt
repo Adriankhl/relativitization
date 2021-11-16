@@ -41,8 +41,13 @@ sealed class Event {
 
     /**
      * Generate default choice if no choice is decided, i.e., choice = 0
+     * @param eventId the id of this event in eventMap
+     * @param universeData3DAtPlayer the 3d data to determine the generated command
      */
-    abstract fun defaultChoice(universeData3DAtPlayer: UniverseData3DAtPlayer): Int
+    abstract fun defaultChoice(
+        eventId: Int,
+        universeData3DAtPlayer: UniverseData3DAtPlayer
+    ): Int
 
     /**
      * Whether the player can send this event to other player
@@ -64,6 +69,7 @@ sealed class Event {
     /**
      * Generate commands once per turn
      *
+     * @param eventId the id of this event in eventMap
      * @param choice the choice of this event
      * @param universeData3DAtPlayer the 3d data to determine the generated command
      */
