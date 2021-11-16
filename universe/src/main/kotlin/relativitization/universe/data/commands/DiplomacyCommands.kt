@@ -28,7 +28,36 @@ data class DeclareWarCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): CanSendCheckMessage {
-        TODO("Not yet implemented")
+        val isNotLeader: Boolean = !playerData.isLeaderOrSelf(toId)
+        val isNotLeaderI18NString: I18NString = if (isNotLeader) {
+            I18NString("")
+        } else {
+            I18NString("Target is leader")
+        }
+
+        val isNotSubordinate: Boolean = !playerData.isLeaderOrSelf(toId)
+        val isNotSubordinateI18NString: I18NString = if (isNotSubordinate) {
+            I18NString("")
+        } else {
+            I18NString("Target is leader")
+        }
+
+        return CanSendCheckMessage(
+            isNotLeader && isNotSubordinate,
+            I18NString.combine(
+                listOf(
+                    isNotLeaderI18NString,
+                    isNotSubordinateI18NString
+                )
+            )
+        )
+    }
+
+    override fun selfExecuteBeforeSend(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ) {
+
     }
 
     override fun canExecute(
