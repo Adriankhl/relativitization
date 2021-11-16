@@ -9,6 +9,7 @@ import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.mechanisms.primary.administration.SyncHierarchy
 import relativitization.universe.mechanisms.primary.combat.AutoCombat
 import relativitization.universe.mechanisms.primary.diplomacy.SyncDiplomaticRelation
+import relativitization.universe.mechanisms.primary.economy.SyncTaxRate
 import relativitization.universe.mechanisms.primary.events.AutoEventCollection
 import relativitization.universe.mechanisms.primary.events.ProcessEvents
 import relativitization.universe.mechanisms.primary.logistics.ExportResource
@@ -74,6 +75,7 @@ object DefaultMechanismList : MechanismList() {
         DiscoverKnowledge,
         AutoCombat,
         SyncHierarchy,
+        SyncTaxRate,
         SyncPlayerScienceData,
         UpdateScienceApplicationData,
         UpdateModifierTime,
