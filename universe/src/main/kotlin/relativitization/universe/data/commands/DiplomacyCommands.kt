@@ -182,3 +182,63 @@ data class DeclareIndependenceCommand(
         ).initialSubordinateList = playerData.playerInternalData.subordinateIdList
     }
 }
+
+/**
+ * Change player war state to propose peace
+ * Send to the player himself instead of target player
+ *
+ * @property targetPlayerId the target player which is in war
+ */
+@Serializable
+data class ProposePeaceCommand(
+    override val toId: Int,
+    override val fromId: Int,
+    override val fromInt4D: Int4D,
+    val targetPlayerId: Int,
+) : Command() {
+    override val description: I18NString = I18NString(
+        listOf(
+            RealString("Propose peace with "),
+            IntString(0),
+        ),
+        listOf(
+            targetPlayerId.toString(),
+        )
+    )
+
+    override fun canSend(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): CanSendCheckMessage {
+        val isSelf: Boolean = playerData.playerId == toId
+        val isSelfI18NString: I18NString = if (isSelf) {
+            I18NString("")
+        } else {
+            I18NString("Is not sending to self. ")
+        }
+
+        return CanSendCheckMessage(
+            isSelf,
+            I18NString.combine(
+                listOf(
+                    isSelfI18NString,
+                )
+            )
+        )
+    }
+
+    override fun canExecute(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): Boolean {
+        return playerData.playerInternalData.diplomacyData().warData.warStateMap.containsKey(
+            targetPlayerId
+        )
+    }
+
+    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+        playerData.playerInternalData.diplomacyData().warData.warStateMap.getValue(
+            targetPlayerId
+        ).proposePeace = true
+    }
+}

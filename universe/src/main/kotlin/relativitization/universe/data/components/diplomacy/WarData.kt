@@ -22,16 +22,16 @@ data class MutableWarData(
  * Store the state of a war
  *
  * @property initialSubordinateList the initial subordinate list at the beginning of war
- * @property desirePeace whether this player desire peace for this war
+ * @property proposePeace whether this player desire peace for this war
  */
 @Serializable
 data class WarStateData(
     val initialSubordinateList: List<Int> = listOf(),
-    val desirePeace: Boolean = false,
+    val proposePeace: Boolean = false,
 )
 
 @Serializable
 data class MutableWarStateData(
     var initialSubordinateList: MutableList<Int> = mutableListOf(),
-    var desirePeace: Boolean = false,
+    var proposePeace: Boolean = false,
 )
