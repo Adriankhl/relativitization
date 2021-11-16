@@ -43,14 +43,23 @@ sealed class Event {
     abstract fun defaultChoice(universeData3DAtPlayer: UniverseData3DAtPlayer): Int
 
     // Whether the player can send this event to other player
-    abstract fun canSend(playerData: MutablePlayerData, universeSettings: UniverseSettings): CanSendCheckMessage
+    abstract fun canSend(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): CanSendCheckMessage
 
     // Whether this event can be added to the player
-    abstract fun canExecute(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean
+    abstract fun canExecute(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): Boolean
 
     // generate commands
     // call once per turn
-    abstract fun generateCommands(choice: Int, universeData3DAtPlayer: UniverseData3DAtPlayer): List<Command>
+    abstract fun generateCommands(
+        choice: Int,
+        universeData3DAtPlayer: UniverseData3DAtPlayer
+    ): List<Command>
 
     companion object {
         private val logger = RelativitizationLogManager.getLogger()
