@@ -64,7 +64,7 @@ sealed class Event {
     /**
      * Generate commands once per turn
      *
-     * @param choice the choice of this event, start from 1
+     * @param choice the choice of this event
      * @param universeData3DAtPlayer the 3d data to determine the generated command
      */
     abstract fun generateCommands(
@@ -87,7 +87,7 @@ fun <T : Event> KClass<T>.name(): String = this.simpleName.toString()
  *
  * @property event the event
  * @property hasChoice the player has a choice (instead of the default choice)
- * @property choice choice of the player, starts from 1
+ * @property choice choice of the player
  * @property stayCounter number of turns the event has been stayed in the player data
  */
 @Serializable
