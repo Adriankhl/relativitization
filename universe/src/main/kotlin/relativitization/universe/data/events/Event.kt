@@ -39,24 +39,36 @@ sealed class Event {
         universeData3DAtPlayer: UniverseData3DAtPlayer
     ): Boolean
 
-    // Generate default choice if no choice is given to help ai decision
+    /**
+     * Generate default choice if no choice is decided, i.e., choice = 0
+     */
     abstract fun defaultChoice(universeData3DAtPlayer: UniverseData3DAtPlayer): Int
 
-    // Whether the player can send this event to other player
+    /**
+     * Whether the player can send this event to other player
+     */
     abstract fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): CanSendCheckMessage
 
-    // Whether this event can be added to the player
+
+    /**
+     * Whether this event can be added to the player
+     */
     abstract fun canExecute(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): Boolean
 
-    // generate commands
-    // call once per turn
+    /**
+     * Generate commands once per turn
+     *
+     * @param choice the choice of this event, start from 1
+     * @param universeData3DAtPlayer the 3d data to determine the generated command
+     */
     abstract fun generateCommands(
+        eventId: Int,
         choice: Int,
         universeData3DAtPlayer: UniverseData3DAtPlayer
     ): List<Command>
@@ -75,7 +87,7 @@ fun <T : Event> KClass<T>.name(): String = this.simpleName.toString()
  *
  * @property event the event
  * @property hasChoice the player has a choice (instead of the default choice)
- * @property choice choice of the player
+ * @property choice choice of the player, starts from 1
  * @property stayCounter number of turns the event has been stayed in the player data
  */
 @Serializable

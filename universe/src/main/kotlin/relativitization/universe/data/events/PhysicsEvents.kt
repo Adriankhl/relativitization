@@ -86,7 +86,11 @@ data class MoveToDouble3DEvent(
                 (playerData.isLeaderOrSelf(fromId))
     }
 
-    override fun generateCommands(choice: Int, universeData3DAtPlayer: UniverseData3DAtPlayer): List<Command> {
+    override fun generateCommands(
+        eventId: Int,
+        choice: Int,
+        universeData3DAtPlayer: UniverseData3DAtPlayer
+    ): List<Command> {
         val playerData: PlayerData = universeData3DAtPlayer.getCurrentPlayerData()
 
         if (maxSpeed > universeData3DAtPlayer.universeSettings.speedOfLight) {

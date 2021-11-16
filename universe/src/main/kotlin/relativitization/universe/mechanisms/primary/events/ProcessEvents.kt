@@ -30,14 +30,16 @@ object ProcessEvents : Mechanism() {
 
         // Get the command list
         val commandList: List<Command> =
-            mutablePlayerData.playerInternalData.eventDataMap.values.map { mutableEventData ->
+            mutablePlayerData.playerInternalData.eventDataMap.map { (eventId, mutableEventData) ->
                 if (mutableEventData.hasChoice) {
                     mutableEventData.event.generateCommands(
+                        eventId,
                         mutableEventData.choice,
                         universeData3DAtPlayer
                     )
                 } else {
                     mutableEventData.event.generateCommands(
+                        eventId,
                         mutableEventData.event.defaultChoice(universeData3DAtPlayer),
                         universeData3DAtPlayer
                     )
