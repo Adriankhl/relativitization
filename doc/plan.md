@@ -30,6 +30,7 @@
 * New player
 * Basic military: Soldier [x]
 * Sync leader data to subordinate, e.g., enemy [x]
+* Sync economy data to subordinate
 
 # AI TODO List
 * Default AI
