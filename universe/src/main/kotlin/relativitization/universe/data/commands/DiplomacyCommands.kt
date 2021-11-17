@@ -250,37 +250,3 @@ data class ProposePeaceCommand(
         ).proposePeace = true
     }
 }
-
-/**
- * Force peace between player, by mechanism only
- */
-@Serializable
-data class ForcePeaceCommand(
-    override val toId: Int,
-    override val fromId: Int,
-    override val fromInt4D: Int4D,
-) : Command() {
-    override val description: I18NString = I18NString("")
-
-    override fun canSend(
-        playerData: MutablePlayerData,
-        universeSettings: UniverseSettings
-    ): CanSendCheckMessage {
-        return CanSendCheckMessage(false)
-    }
-
-    override fun canExecute(
-        playerData: MutablePlayerData,
-        universeSettings: UniverseSettings
-    ): Boolean {
-        return playerData.playerInternalData.diplomacyData().warData.warStateMap.containsKey(
-            fromId
-        )
-    }
-
-    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
-        playerData.playerInternalData.diplomacyData().warData.warStateMap.remove(
-            fromId
-        )
-    }
-}

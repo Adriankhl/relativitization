@@ -14,6 +14,8 @@ object UpdateWarState : Mechanism() {
         universeSettings: UniverseSettings,
         universeGlobalData: UniverseGlobalData
     ): List<Command> {
+        // Parameters
+
         TODO("Not yet implemented")
     }
 }
