@@ -50,13 +50,21 @@ data class DeclareWarCommand(
             I18NString("Target is in war with you. ")
         }
 
+        val isNotInPeaceTreaty: Boolean = !playerData.playerInternalData.modifierData().diplomacyModifierData.canDeclareWar(toId)
+        val isNotInPeaceTreatyI18NString: I18NString = if (isNotInPeaceTreaty) {
+            I18NString("")
+        } else {
+            I18NString("Target is in peace with you. ")
+        }
+
         return CanSendCheckMessage(
-            isNotLeader && isNotSubordinate && isNotInWar,
+            isNotLeader && isNotSubordinate && isNotInWar && isNotInPeaceTreaty,
             I18NString.combine(
                 listOf(
                     isNotLeaderI18NString,
                     isNotSubordinateI18NString,
                     isNotInWarI18NString,
+                    isNotInPeaceTreatyI18NString,
                 )
             )
         )
