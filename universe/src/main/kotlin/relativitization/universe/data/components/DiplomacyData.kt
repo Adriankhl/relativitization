@@ -48,7 +48,7 @@ data class MutableDiplomacyData(
      * Clear relation with neutral player and zero relation
      */
     fun clearZeroRelationNeutral() {
-        val toClearSet: Set<Int> = relationMap.filter { (id, relationData) ->
+        val toClearSet: Set<Int> = relationMap.filter { (_, relationData) ->
             (relationData.diplomaticRelationState == DiplomaticRelationState.NEUTRAL) && (relationData.relation == 0.0)
         }.keys
 

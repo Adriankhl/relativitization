@@ -1,6 +1,7 @@
 package relativitization.universe.data.components.modifier
 
 import kotlinx.serialization.Serializable
+import kotlin.math.max
 
 /**
  * Modifier about diplomacy
@@ -40,4 +41,26 @@ data class MutableDiplomacyModifierData(
      */
     fun updateByProperTime(gamma: Double) {  }
 
+
+    /**
+     * Check can declare war or not
+     */
+    fun canDeclareWar(id: Int): Boolean {
+        return peaceTreaty.containsKey(id)
+    }
+
+    /**
+     * Store a peace treaty
+     *
+     * @param id treaty with player of this id
+     * @param length length of this peace treaty
+     */
+    fun setPeaceTreatyWithLength(id: Int, length: Int) {
+        if (peaceTreaty.containsKey(id)) {
+            val originalLength: Int = peaceTreaty.getValue(id)
+            peaceTreaty[id] = max(originalLength, length)
+        } else {
+            peaceTreaty[id] = length
+        }
+    }
 }
