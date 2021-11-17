@@ -9,7 +9,7 @@ import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.mechanisms.primary.administration.SyncHierarchy
 import relativitization.universe.mechanisms.primary.combat.AutoCombat
 import relativitization.universe.mechanisms.primary.dead.ClearDeadPlayer
-import relativitization.universe.mechanisms.primary.diplomacy.SyncDiplomaticRelation
+import relativitization.universe.mechanisms.primary.diplomacy.UpdateDiplomaticRelationState
 import relativitization.universe.mechanisms.primary.economy.SyncTaxRate
 import relativitization.universe.mechanisms.primary.events.AutoEventCollection
 import relativitization.universe.mechanisms.primary.events.ProcessEvents
@@ -60,7 +60,7 @@ object DefaultMechanismList : MechanismList() {
         ClearDeadPlayer,
         AutoEventCollection,
         ProcessEvents,
-        SyncDiplomaticRelation,
+        UpdateDiplomaticRelationState,
         Employment,
         PopBuyResource,
         UpdateDesire,
