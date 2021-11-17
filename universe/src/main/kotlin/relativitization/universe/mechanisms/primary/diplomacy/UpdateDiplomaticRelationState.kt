@@ -24,11 +24,15 @@ object UpdateDiplomaticRelationState : Mechanism() {
         // Determine top leader relation state by war
         // Only do the sync if the player is not a top leader
         if (mutablePlayerData.isTopLeader()) {
-            val inWarSet: Set<Int> = mutablePlayerData.playerInternalData.diplomacyData().warData.warStateMap.keys
+            val inWarSet: Set<Int> =
+                mutablePlayerData.playerInternalData.diplomacyData().warData.warStateMap.keys
 
-            val toChangeSet: Set<Int> = mutablePlayerData.playerInternalData.diplomacyData().relationMap.filter { (id, relation) ->
-                (relation.diplomaticRelationState == DiplomaticRelationState.ENEMY) && (!inWarSet.contains(id))
-            }.keys
+            val toChangeSet: Set<Int> =
+                mutablePlayerData.playerInternalData.diplomacyData().relationMap.filter { (id, relation) ->
+                    (relation.diplomaticRelationState == DiplomaticRelationState.ENEMY) && (!inWarSet.contains(
+                        id
+                    ))
+                }.keys
 
             toChangeSet.forEach {
                 mutablePlayerData.playerInternalData.diplomacyData().relationMap.getValue(
@@ -40,24 +44,20 @@ object UpdateDiplomaticRelationState : Mechanism() {
                 mutablePlayerData.playerInternalData.directLeaderId
             )
 
-            val (sameDirectLeader, otherDirectLeader) = mutablePlayerData.playerInternalData.diplomacyData().relationMap.keys.partition {
-                directLeader.playerInternalData.directSubordinateIdList.contains(it)
+
+            val (prioritizeSelf, prioritizeDirectLeader) = mutablePlayerData.playerInternalData.diplomacyData().relationMap.keys.partition {
+                val topLeaderId: Int = universeData3DAtPlayer.get(it).topLeaderId()
+                if (topLeaderId == mutablePlayerData.topLeaderId()) {
+                    directLeader.playerInternalData.directSubordinateIdList.contains(it)
+                } else {
+                    true
+                }
             }
 
-            // Sync diplomatic relation if not belong to same direct leader
-            // Allow internal war
-            otherDirectLeader.forEach { otherId ->
-                val leaderRelationData: DiplomaticRelationData =
-                    directLeader.playerInternalData.diplomacyData()
-                        .getDiplomaticRelationData(otherId)
-
-                mutablePlayerData.playerInternalData.diplomacyData().getDiplomaticRelationData(
-                    otherId
-                ).diplomaticRelationState = leaderRelationData.diplomaticRelationState
-            }
-
-            // Same direct leader, the relation depends on their war status, follow the direct leader if no war
-            sameDirectLeader.forEach { otherId ->
+            // Same direct leader or not the same top leader
+            // the relation depends on their war status, follow the direct leader if no war
+            prioritizeSelf.forEach { otherId ->
+                // Allow internal war
                 if (mutablePlayerData.playerInternalData.diplomacyData().warData.warStateMap.containsKey(
                         otherId
                     )
@@ -75,7 +75,18 @@ object UpdateDiplomaticRelationState : Mechanism() {
                     ).diplomaticRelationState = leaderRelationData.diplomaticRelationState
                 }
             }
+
+            prioritizeDirectLeader.forEach { otherId ->
+                val leaderRelationData: DiplomaticRelationData =
+                    directLeader.playerInternalData.diplomacyData()
+                        .getDiplomaticRelationData(otherId)
+
+                mutablePlayerData.playerInternalData.diplomacyData().getDiplomaticRelationData(
+                    otherId
+                ).diplomaticRelationState = leaderRelationData.diplomaticRelationState
+            }
         }
+
         return listOf()
     }
 }
