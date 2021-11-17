@@ -87,6 +87,9 @@ object UpdateDiplomaticRelationState : Mechanism() {
             }
         }
 
+        // Clear neutral and zero relation diplomatic relation
+        mutablePlayerData.playerInternalData.diplomacyData().clearZeroRelationNeutral()
+
         return listOf()
     }
 }
