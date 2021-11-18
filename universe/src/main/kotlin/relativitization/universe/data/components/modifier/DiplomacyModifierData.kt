@@ -42,7 +42,9 @@ data class MutableDiplomacyModifierData(
     /**
      * Update the time by proper (dilated) time of the player
      */
-    fun updateByProperTime(gamma: Double) {  }
+    fun updateByProperTime(gamma: Double) {
+        relationModifierMap.values.forEach { it.updateByProperTime(gamma) }
+    }
 
 
     /**
@@ -79,7 +81,19 @@ data class RelationModifier(
 @Serializable
 data class MutableRelationModifier(
     var receiveFuelList: MutableList<MutableSingleRelationModifier> = mutableListOf(),
-)
+) {
+
+
+    /**
+     * Update the time by proper (dilated) time of the player
+     */
+    fun updateByProperTime(gamma: Double) {
+        receiveFuelList.forEach {
+            it.durationLeft -= 1.0 / gamma
+        }
+    }
+
+}
 
 
 /**
