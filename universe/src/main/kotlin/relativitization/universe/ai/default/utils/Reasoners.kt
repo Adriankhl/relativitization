@@ -58,7 +58,7 @@ abstract class DualUtilityReasoner : Reasoner() {
         updateStatus(planDataAtPlayer, planState)
     }
 
-    protected fun selectOption(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState): Option {
+    private fun selectOption(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState): Option {
         val optionList: List<Option> = getOptionList(planDataAtPlayer, planState)
         val optionWeightMap: Map<Option, Double> = optionList.associateWith {
             it.getWeight(planDataAtPlayer, planState)
@@ -66,9 +66,9 @@ abstract class DualUtilityReasoner : Reasoner() {
         val validOptionWeightMap: Map<Option, Double> = optionWeightMap.filterValues { it > 0.0 }
 
         return if (validOptionWeightMap.isNotEmpty()) {
-            val maxRank: Int = validOptionWeightMap.maxOfOrNull {
+            val maxRank: Int = validOptionWeightMap.maxOf {
                 it.key.getRank(planDataAtPlayer, planState)
-            }!!
+            }
 
             val maxRankValidOptionWeightMap: Map<Option, Double> = validOptionWeightMap.filterKeys {
                 it.getRank(planDataAtPlayer, planState) == maxRank
