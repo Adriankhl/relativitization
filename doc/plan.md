@@ -26,6 +26,7 @@
 * How research affect product
 * Export center [x]
 * Basic diplomacy
+* Merge carrier
 * New carrier
 * New player
 * Basic military: Soldier [x]
