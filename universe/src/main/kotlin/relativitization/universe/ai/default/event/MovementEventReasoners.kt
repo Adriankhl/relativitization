@@ -1,5 +1,6 @@
 package relativitization.universe.ai.default.event
 
+import relativitization.universe.ai.default.consideration.HierarchyConsideration
 import relativitization.universe.ai.default.consideration.RelationConsideration
 import relativitization.universe.ai.default.utils.*
 import relativitization.universe.data.PlanDataAtPlayer
@@ -74,6 +75,9 @@ class PickMoveToDouble3DEventOption(
         return if (movementEventMap.containsKey(keepEventIndex)) {
             listOf(
                 RelationConsideration(
+                    playerId = movementEventMap.getValue(keepEventIndex).event.fromId,
+                ),
+                HierarchyConsideration(
                     playerId = movementEventMap.getValue(keepEventIndex).event.fromId,
                 )
             )
