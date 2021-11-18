@@ -11,6 +11,9 @@ import kotlin.math.exp
  * Consideration of diplomatic relation
  *
  * @property playerId the relation between player with this id and current player
+ * @property rank the rank of the DualUtilityData
+ * @property multiplier the multiplier of the DualUtilityData
+ * @property normalizeRelation the normalization to scale the bonus of relation
  */
 class RelationConsideration(
     val playerId: Int,
