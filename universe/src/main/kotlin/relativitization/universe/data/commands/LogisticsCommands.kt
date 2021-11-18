@@ -20,7 +20,7 @@ import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.math.pow
 
 /**
- * Send fuel from yourself to another player
+ * Send fuel from yourself to another player, also improve relation modifier
  */
 @Serializable
 data class SendFuelFromStorageCommand(
@@ -133,7 +133,29 @@ data class SendFuelFromStorageCommand(
             (1.0 - lossFractionPerDistance).pow(distance)
         }
 
-        playerData.playerInternalData.physicsData().addFuel(amount * remainFraction)
+        val remainAmount: Double = remainFraction * amount
+
+        // Improve diplomatic relation by sending fuel
+        val originalTotalAmount: Double = playerData.playerInternalData.physicsData().fuelRestMassData.total()
+        val changeFraction: Double = if (originalTotalAmount > 0.0) {
+            remainAmount / originalTotalAmount
+        } else {
+            Double.MAX_VALUE
+        }
+        val relationChange: Double = if (changeFraction > 1.0) {
+            100.0
+        } else {
+            100.0 * changeFraction
+        }
+        val duration: Double = 10.0
+        playerData.playerInternalData.modifierData().diplomacyModifierData.addReceiveFuelToRelationModifier(
+            id = fromId,
+            relationChange = relationChange,
+            duration = duration,
+        )
+
+        // Add fuel
+        playerData.playerInternalData.physicsData().addFuel(remainAmount)
     }
 
     companion object {
