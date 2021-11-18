@@ -13,7 +13,24 @@ import kotlin.math.max
 data class DiplomacyModifierData(
     val peaceTreaty: Map<Int, Int> = mapOf(),
     val relationModifierMap: Map<Int, RelationModifier> = mapOf(),
-)
+) {
+    /**
+     * Get relation change by modifier
+     *
+     * @param id relation change between the player of the id and this player
+     * @param maxReceiveFuelChange max change from receiving fuel
+     */
+    fun getRelationChange(
+        id: Int,
+        maxReceiveFuelChange: Double
+    ): Double {
+        return if (relationModifierMap.containsKey(id)) {
+            relationModifierMap.getValue(id).getOverallRelationChange(maxReceiveFuelChange)
+        } else {
+            0.0
+        }
+    }
+}
 
 @Serializable
 data class MutableDiplomacyModifierData(
@@ -68,6 +85,44 @@ data class MutableDiplomacyModifierData(
             peaceTreaty[id] = length
         }
     }
+
+    /**
+     * Get relation change by modifier
+     *
+     * @param id relation change between the player of the id and this player
+     * @param maxReceiveFuelChange max change from receiving fuel
+     */
+    fun getRelationChange(
+        id: Int,
+        maxReceiveFuelChange: Double
+    ): Double {
+        return if (relationModifierMap.containsKey(id)) {
+            relationModifierMap.getValue(id).getOverallRelationChange(maxReceiveFuelChange)
+        } else {
+            0.0
+        }
+    }
+
+    /**
+     * Add receive fuel relation modifier
+     *
+     * @param id relation change between the player of the id and this player
+     * @param relationChange the amount of relation change
+     * @param duration the duration of this effect left, in player time, affected by time dilation
+     */
+    fun addReceiveFuelToRelationModifier(
+        id: Int,
+        relationChange: Double,
+        duration: Double,
+    ) {
+        relationModifierMap.getOrPut(id) {
+            MutableRelationModifier()
+        }.receiveFuelList.add(
+            MutableSingleRelationModifier(
+                change = relationChange,
+                durationLeft = duration
+        ))
+    }
 }
 
 /**
@@ -76,23 +131,63 @@ data class MutableDiplomacyModifierData(
 @Serializable
 data class RelationModifier(
     val receiveFuelList: List<SingleRelationModifier> = listOf(),
-)
+) {
+    /**
+     * Get overall relation change
+     *
+     * @param maxReceiveFuelChange max change from receiving fuel
+     */
+    fun getOverallRelationChange(
+        maxReceiveFuelChange: Double
+    ): Double {
+        val totalChange: Double = receiveFuelList.fold(0.0) { acc, mutableSingleRelationModifier ->
+            acc + mutableSingleRelationModifier.change
+        }
+
+        return when {
+            totalChange > maxReceiveFuelChange -> maxReceiveFuelChange
+            totalChange < -maxReceiveFuelChange -> - maxReceiveFuelChange
+            else -> totalChange
+        }
+    }
+}
 
 @Serializable
 data class MutableRelationModifier(
     var receiveFuelList: MutableList<MutableSingleRelationModifier> = mutableListOf(),
 ) {
-
-
     /**
      * Update the time by proper (dilated) time of the player
      */
     fun updateByProperTime(gamma: Double) {
+        // Clear modifier when time left is smaller than 0
+        receiveFuelList.removeIf {
+            it.durationLeft < 0.0
+        }
+
         receiveFuelList.forEach {
             it.durationLeft -= 1.0 / gamma
         }
     }
 
+    /**
+     * Get overall relation change
+     *
+     * @param maxReceiveFuelChange max change from receiving fuel
+     */
+    fun getOverallRelationChange(
+        maxReceiveFuelChange: Double
+    ): Double {
+        val totalChange: Double = receiveFuelList.fold(0.0) { acc, mutableSingleRelationModifier ->
+            acc + mutableSingleRelationModifier.change
+        }
+
+        return when {
+            totalChange > maxReceiveFuelChange -> maxReceiveFuelChange
+            totalChange < -maxReceiveFuelChange -> - maxReceiveFuelChange
+            else -> totalChange
+        }
+    }
 }
 
 
