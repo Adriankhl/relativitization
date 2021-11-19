@@ -53,7 +53,22 @@ object ClearDeadPlayer : Mechanism() {
             mutablePlayerData.playerInternalData.economyData().taxData.taxRateData.importTariff.tariffRatePlayerMap.remove(it)
         }
 
+        // Clear direct leader
+        if (!allPlayerId.contains(mutablePlayerData.playerInternalData.directLeaderId)) {
+            val newLeaderIdList: MutableList<Int> = mutablePlayerData.playerInternalData.leaderIdList
+            newLeaderIdList.remove(mutablePlayerData.playerInternalData.directLeaderId)
+            newLeaderIdList.remove(mutablePlayerData.playerId)
+            mutablePlayerData.changeDirectLeaderId(newLeaderIdList)
+        }
 
+        // Clear leaders
+        mutablePlayerData.playerInternalData.leaderIdList.removeIf { !allPlayerId.contains(it) }
+
+        // Clear direct subordinate
+        mutablePlayerData.playerInternalData.directSubordinateIdList.removeIf { !allPlayerId.contains(it) }
+
+        // Clear subordinate
+        mutablePlayerData.playerInternalData.subordinateIdList.removeIf { !allPlayerId.contains(it) }
 
         return listOf()
     }
