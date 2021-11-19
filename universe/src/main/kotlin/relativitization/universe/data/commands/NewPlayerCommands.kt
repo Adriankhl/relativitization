@@ -10,7 +10,8 @@ import relativitization.universe.utils.I18NString
 data class CreateNewPlayerCommand(
     override val toId: Int,
     override val fromId: Int,
-    override val fromInt4D: Int4D
+    override val fromInt4D: Int4D,
+    val carrierIdList: List<Int>,
 ) : Command() {
     override val description: I18NString
         get() = TODO("Not yet implemented")

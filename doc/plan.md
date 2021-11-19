@@ -32,6 +32,7 @@
 * Basic military: Soldier [x]
 * Sync leader data to subordinate, e.g., enemy [x]
 * Sync economy data to subordinate [x]
+* Stop war after long period of time
 
 # AI TODO List
 * Default AI
