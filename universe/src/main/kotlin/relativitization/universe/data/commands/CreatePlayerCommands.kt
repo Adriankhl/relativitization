@@ -12,6 +12,7 @@ import relativitization.universe.utils.RealString
  * Split carrier to create new player
  *
  * @property carrierIdList the id of the carriers to form the new player
+ * @property resourceFraction the fraction of fuel and resource from original player to new player
  */
 @Serializable
 data class SplitCarrierCommand(
@@ -19,6 +20,7 @@ data class SplitCarrierCommand(
     override val fromId: Int,
     override val fromInt4D: Int4D,
     val carrierIdList: List<Int>,
+    val resourceFraction: Double,
 ) : Command() {
     override val description: I18NString = I18NString(
         listOf(
@@ -69,7 +71,8 @@ data class SplitCarrierCommand(
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
-        TODO("Not yet implemented")
+
+        playerData.newPlayerList.add
     }
 
 }
