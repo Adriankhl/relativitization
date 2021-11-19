@@ -28,6 +28,7 @@ import relativitization.universe.mechanisms.primary.research.DiscoverKnowledge
 import relativitization.universe.mechanisms.primary.research.KnowledgeDiffusion
 import relativitization.universe.mechanisms.primary.science.SyncPlayerScienceData
 import relativitization.universe.mechanisms.primary.science.UpdateScienceApplicationData
+import relativitization.universe.mechanisms.primary.sync.SyncDataComponent
 import relativitization.universe.utils.RelativitizationLogManager
 
 abstract class Mechanism {
@@ -59,6 +60,7 @@ object EmptyMechanismList : MechanismList() {
 
 object DefaultMechanismList : MechanismList() {
     override val mechanismList: List<Mechanism> = listOf(
+        SyncDataComponent,
         ClearDeadPlayer,
         AutoEventCollection,
         ProcessEvents,
