@@ -8,8 +8,13 @@ import relativitization.universe.utils.I18NString
 import relativitization.universe.utils.IntString
 import relativitization.universe.utils.RealString
 
+/**
+ * Split carrier to create new player
+ *
+ * @property carrierIdList the id of the carriers to form the new player
+ */
 @Serializable
-data class CreateNewPlayerCommand(
+data class SplitCarrierCommand(
     override val toId: Int,
     override val fromId: Int,
     override val fromInt4D: Int4D,
@@ -60,7 +65,7 @@ data class CreateNewPlayerCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): Boolean {
-        TODO("Not yet implemented")
+        return fromId == playerData.playerId
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
