@@ -22,12 +22,12 @@ data class UniverseData(
      * Check whether the universeData4D has the correct dimension specified in the setting
      */
     private fun isDimensionValid(): Boolean {
-        val tCheckList = universeData4D.getTSizeList().map { it == universeSettings.tDim }
-        val xCheckList = universeData4D.getXSizeList().map { it == universeSettings.xDim }
-        val yCheckList = universeData4D.getYSizeList().map { it == universeSettings.yDim }
-        val zCheckList = universeData4D.getZSizeList().map { it == universeSettings.zDim }
+        val isTValid: Boolean = universeData4D.getTSizeList().all { it == universeSettings.tDim }
+        val isXValid: Boolean = universeData4D.getXSizeList().all { it == universeSettings.xDim }
+        val isYValid: Boolean = universeData4D.getYSizeList().all { it == universeSettings.yDim }
+        val isZValid: Boolean = universeData4D.getZSizeList().all { it == universeSettings.zDim }
 
-        return !(tCheckList + xCheckList + yCheckList + zCheckList).contains(false)
+        return isTValid && isXValid && isYValid && isZValid
     }
 
     /**
@@ -261,7 +261,7 @@ data class UniverseData4D(
     /**
      * Get the y dimension of playerData4D as list
      */
-    internal fun getYSizeList(): List<Int> = playerData4D.flatten().map{ it.size}
+    internal fun getYSizeList(): List<Int> = playerData4D.flatten().map{ it.size }
 
     /**
      * Get the z dimension of playerData4D as list
