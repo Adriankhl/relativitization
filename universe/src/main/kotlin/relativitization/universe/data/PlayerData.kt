@@ -118,8 +118,6 @@ data class MutablePlayerData(
             playerInternalData.physicsData().fuelRestMassData.maxMovementDelta =
                 playerInternalData.popSystemData().totalMaxMovementDeltaFuelRestMass()
         }
-
-        playerInternalData.popSystemData().syncCombatData()
     }
 
     /**

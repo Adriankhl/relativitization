@@ -10,7 +10,6 @@ import kotlin.random.Random
 @SerialName("PopSystemData")
 data class PopSystemData(
     val carrierDataMap: Map<Int, CarrierData> = mapOf(),
-    val combatData: CombatData = CombatData(),
 ) : PlayerDataComponent() {
     fun totalCoreRestMass(): Double {
         val carrierCoreMass: Double =  carrierDataMap.values.sumOf { it.coreRestMass }
@@ -34,7 +33,6 @@ data class PopSystemData(
 @Serializable @SerialName("PopSystemData")
 data class MutablePopSystemData(
     val carrierDataMap: MutableMap<Int, MutableCarrierData> = mutableMapOf(),
-    var combatData: MutableCombatData = MutableCombatData(),
 ) : MutablePlayerDataComponent() {
     fun totalCoreRestMass(): Double {
         val carrierCoreMass: Double =  carrierDataMap.values.sumOf { it.coreRestMass }
@@ -92,14 +90,4 @@ data class MutablePopSystemData(
     }
 
     fun numCarrier(): Int = carrierDataMap.values.size
-
-    fun syncCombatData() {
-        combatData.attack = carrierDataMap.values.sumOf { it.combatData.attack }
-        combatData.morale = if (numCarrier() > 0) {
-            carrierDataMap.values.map { it.combatData.morale }.average()
-        } else {
-            0.0
-        }
-        combatData.strength = carrierDataMap.values.sumOf { it.combatData.strength }
-    }
 }
