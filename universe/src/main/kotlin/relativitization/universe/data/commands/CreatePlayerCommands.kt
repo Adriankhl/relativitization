@@ -2,6 +2,7 @@ package relativitization.universe.data.commands
 
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.MutablePlayerData
+import relativitization.universe.data.MutablePlayerInternalData
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.components.physics.Int4D
 import relativitization.universe.utils.I18NString
@@ -71,8 +72,9 @@ data class SplitCarrierCommand(
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
-
-        playerData.newPlayerList.add
+        val newPlayerInternalData: MutablePlayerInternalData = MutablePlayerInternalData(
+            playerData.playerId,
+            (playerData.playerInternalData.leaderIdList + playerData.playerId).toMutableList(),
+        )
     }
-
 }
