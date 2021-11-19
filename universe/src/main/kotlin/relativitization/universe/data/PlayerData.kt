@@ -103,12 +103,20 @@ data class MutablePlayerData(
      * Synchronize different data component to ensure consistency
      */
     fun syncDataComponent() {
-        if (playerInternalData.physicsData().coreRestMass != playerInternalData.popSystemData()
-                .totalCoreRestMass()
+        if (playerInternalData.physicsData().coreRestMass !=
+            playerInternalData.popSystemData().totalCoreRestMass()
         ) {
             logger.debug("Sync data component, change core mass")
             playerInternalData.physicsData().coreRestMass =
                 playerInternalData.popSystemData().totalCoreRestMass()
+        }
+
+        if (playerInternalData.physicsData().otherRestMass !=
+            playerInternalData.popSystemData().totalOtherRestMass()
+        ) {
+            logger.debug("Sync data component, change other rest mass")
+            playerInternalData.physicsData().otherRestMass =
+                playerInternalData.popSystemData().totalOtherRestMass()
         }
 
         if (playerInternalData.physicsData().fuelRestMassData.maxMovementDelta !=
