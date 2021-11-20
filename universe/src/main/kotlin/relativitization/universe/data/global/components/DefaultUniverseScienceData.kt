@@ -1,24 +1,27 @@
-package relativitization.universe.data.global.components.default.science
+package relativitization.universe.data.global.components
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.components.default.science.knowledge.*
 import relativitization.universe.utils.RelativitizationLogManager
 
 @Serializable
+@SerialName("UniverseScienceData")
 data class UniverseScienceData(
     val commonSenseKnowledgeData: KnowledgeData = KnowledgeData(),
     val basicResearchProjectDataMap: Map<Int, BasicResearchProjectData> = mapOf(),
     val appliedResearchProjectDataMap: Map<Int, AppliedResearchProjectData> = mapOf(),
     val universeProjectGenerationData: UniverseProjectGenerationData = UniverseProjectGenerationData(),
-)
+) : DefaultGlobalDataComponent()
 
 @Serializable
+@SerialName("UniverseScienceData")
 data class MutableUniverseScienceData(
     var commonSenseKnowledgeData: MutableKnowledgeData = MutableKnowledgeData(),
     val basicResearchProjectDataMap: MutableMap<Int, BasicResearchProjectData> = mutableMapOf(),
     val appliedResearchProjectDataMap: MutableMap<Int, AppliedResearchProjectData> = mutableMapOf(),
     var universeProjectGenerationData: MutableUniverseProjectGenerationData = MutableUniverseProjectGenerationData(),
-) {
+) : MutableDefaultGlobalDataComponent() {
     /**
      * Check the validity and add basic research project
      */

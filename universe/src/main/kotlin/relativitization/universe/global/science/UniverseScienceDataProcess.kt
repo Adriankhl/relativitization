@@ -6,8 +6,8 @@ import relativitization.universe.data.components.default.science.knowledge.Basic
 import relativitization.universe.data.components.default.science.knowledge.MutableAppliedResearchData
 import relativitization.universe.data.components.default.science.knowledge.MutableBasicResearchData
 import relativitization.universe.data.global.MutableUniverseGlobalData
-import relativitization.universe.data.global.components.default.science.MutableUniverseScienceData
-import relativitization.universe.data.global.components.default.science.UniverseScienceData
+import relativitization.universe.data.global.components.MutableUniverseScienceData
+import relativitization.universe.data.global.components.UniverseScienceData
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.global.science.default.DefaultUniverseScienceDataProcess
 import relativitization.universe.global.science.empty.EmptyUniverseScienceDataProcess
@@ -63,8 +63,10 @@ object UniverseScienceDataProcessCollection {
         return universeScienceDataProcessNameMap.getOrElse(
             universeSettings.universeScienceDataProcessCollectionName
         ) {
-            logger.error("No universe science process name: ${universeSettings.universeScienceDataProcessCollectionName}," +
-                    " using default universe science data process")
+            logger.error(
+                "No universe science process name: ${universeSettings.universeScienceDataProcessCollectionName}," +
+                        " using default universe science data process"
+            )
             DefaultUniverseScienceDataProcess
         }
     }
@@ -75,7 +77,8 @@ object UniverseScienceDataProcessCollection {
     ) {
 
         // Update universe common sense
-        val mutableUniverseScienceData: MutableUniverseScienceData = DataSerializer.copy(mutableUniverseGlobalData.getScienceData())
+        val mutableUniverseScienceData: MutableUniverseScienceData =
+            DataSerializer.copy(mutableUniverseGlobalData.universeScienceData())
 
         val allVisiblePlayerData: List<PlayerData> = universeData.getAllVisiblePlayerData()
 
@@ -99,14 +102,16 @@ object UniverseScienceDataProcessCollection {
         )
 
         // Generate new projects
-        val newUniverseScienceData: UniverseScienceData = getProcess(
-            universeData.universeSettings
-        ).newUniverseScienceData(
-            DataSerializer.copy(mutableUniverseScienceData),
-            universeData.universeSettings
+        val newUniverseScienceData: MutableUniverseScienceData = DataSerializer.copy(
+            getProcess(
+                universeData.universeSettings
+            ).newUniverseScienceData(
+                DataSerializer.copy(mutableUniverseScienceData),
+                universeData.universeSettings
+            )
         )
 
         // Modify the universe science data
-        mutableUniverseGlobalData.updateScienceData(newUniverseScienceData)
+        mutableUniverseGlobalData.universeScienceData(newUniverseScienceData)
     }
 }

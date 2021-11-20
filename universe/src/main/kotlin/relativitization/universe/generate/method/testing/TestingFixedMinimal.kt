@@ -16,14 +16,16 @@ import relativitization.universe.data.components.default.science.knowledge.Appli
 import relativitization.universe.data.components.default.science.knowledge.BasicResearchField
 import relativitization.universe.data.components.default.science.knowledge.BasicResearchProjectData
 import relativitization.universe.data.global.UniverseGlobalData
-import relativitization.universe.data.global.components.default.science.MutableUniverseScienceData
+import relativitization.universe.data.global.components.GlobalDataComponentMap
+import relativitization.universe.data.global.components.MutableUniverseScienceData
+import relativitization.universe.data.global.components.UniverseScienceData
 import relativitization.universe.data.serializer.DataSerializer.copy
 import relativitization.universe.generate.method.GenerateSettings
 import relativitization.universe.generate.method.GenerateUniverseMethod
 import relativitization.universe.maths.grid.Grids.create4DGrid
 import relativitization.universe.global.science.default.DefaultUniverseScienceDataProcess
 
-object TestingFixedMinimal : GenerateUniverseMethod() {
+object TestingFixedMinimal : TestingGenerateUniverseMethod() {
     override fun generate(settings: GenerateSettings): UniverseData {
         val universeSettings: UniverseSettings = copy(settings.universeSettings)
 
@@ -304,13 +306,19 @@ object TestingFixedMinimal : GenerateUniverseMethod() {
         mutableUniverseScienceData.addAppliedResearchProjectData(applied1)
         mutableUniverseScienceData.addAppliedResearchProjectData(applied2)
 
+        val universeScienceData: UniverseScienceData = copy(mutableUniverseScienceData)
+
         return UniverseData(
             universeData4D = copy(data),
             universeSettings = universeSettings,
             universeState = universeState,
             commandMap = mutableMapOf(),
             universeGlobalData = UniverseGlobalData(
-                universeScienceData = copy(mutableUniverseScienceData)
+                GlobalDataComponentMap(
+                    listOf(
+                        universeScienceData
+                    )
+                )
             ),
         )
     }

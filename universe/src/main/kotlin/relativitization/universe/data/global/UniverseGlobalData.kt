@@ -1,22 +1,33 @@
 package relativitization.universe.data.global
 
 import kotlinx.serialization.Serializable
-import relativitization.universe.data.global.components.default.science.UniverseScienceData
+import relativitization.universe.Universe
+import relativitization.universe.data.global.components.*
+import kotlin.reflect.full.createInstance
 
 @Serializable
 data class UniverseGlobalData(
-    val universeScienceData: UniverseScienceData = UniverseScienceData()
+    val globalDataComponentMap: GlobalDataComponentMap = GlobalDataComponentMap(
+        DefaultGlobalDataComponent::class.sealedSubclasses.map { it.createInstance() },
+    )
 ) {
-    fun getScienceData() = universeScienceData
+    fun universeScienceData(): UniverseScienceData =
+        globalDataComponentMap.getOrDefault(UniverseScienceData::class, UniverseScienceData())
 }
 
 @Serializable
 data class MutableUniverseGlobalData(
-    var universeScienceData: UniverseScienceData = UniverseScienceData()
+    var globalDataComponentMap: MutableGlobalDataComponentMap = MutableGlobalDataComponentMap(
+        MutableDefaultGlobalDataComponent::class.sealedSubclasses.map { it.createInstance() },
+    )
 ) {
-    fun getScienceData() = universeScienceData
+    fun universeScienceData(): MutableUniverseScienceData =
+        globalDataComponentMap.getOrDefault(
+            MutableUniverseScienceData::class,
+            MutableUniverseScienceData()
+        )
 
-    fun updateScienceData(newUniverseScienceData: UniverseScienceData) {
-        universeScienceData = newUniverseScienceData
+    fun universeScienceData(newUniverseScienceData: MutableUniverseScienceData) {
+        globalDataComponentMap.put(newUniverseScienceData)
     }
 }

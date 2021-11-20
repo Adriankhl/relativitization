@@ -15,7 +15,7 @@ import relativitization.universe.data.components.default.popsystem.pop.scholar.i
 import relativitization.universe.data.components.default.science.knowledge.AppliedResearchProjectData
 import relativitization.universe.data.components.default.science.knowledge.BasicResearchProjectData
 import relativitization.universe.data.global.UniverseGlobalData
-import relativitization.universe.data.global.components.default.science.UniverseScienceData
+import relativitization.universe.data.global.components.UniverseScienceData
 import relativitization.universe.global.science.default.DefaultUniverseScienceDataProcess
 import relativitization.universe.maths.algebra.Logistic
 import relativitization.universe.maths.physics.Intervals
@@ -56,7 +56,7 @@ object DiscoverKnowledge : Mechanism() {
                     mutableInstituteData = mutableInstituteData,
                     mutablePlayerScienceData = mutablePlayerData.playerInternalData.playerScienceData(),
                     playerScienceData = universeData3DAtPlayer.getCurrentPlayerData().playerInternalData.playerScienceData(),
-                    universeScienceData = universeGlobalData.getScienceData(),
+                    universeScienceData = universeGlobalData.universeScienceData(),
                 )
             }
         }
@@ -76,7 +76,7 @@ object DiscoverKnowledge : Mechanism() {
                     mutableLaboratoryData = mutableLaboratoryData,
                     mutablePlayerScienceData = mutablePlayerData.playerInternalData.playerScienceData(),
                     playerScienceData = universeData3DAtPlayer.getCurrentPlayerData().playerInternalData.playerScienceData(),
-                    universeScienceData = universeGlobalData.getScienceData(),
+                    universeScienceData = universeGlobalData.universeScienceData(),
                 )
             }
         }

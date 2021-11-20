@@ -21,7 +21,7 @@ object SyncPlayerScienceData : Mechanism() {
 
         // update player common sense
         mutablePlayerData.playerInternalData.playerScienceData().updateCommonSenseData(
-            universeGlobalData.getScienceData().commonSenseKnowledgeData,
+            universeGlobalData.universeScienceData().commonSenseKnowledgeData,
             UniverseScienceDataProcessCollection.getProcess(
                 universeSettings
             ).basicResearchProjectFunction(),
@@ -32,7 +32,7 @@ object SyncPlayerScienceData : Mechanism() {
 
         // sync research project data
         mutablePlayerData.playerInternalData.playerScienceData().syncProjectData(
-            universeGlobalData.getScienceData(),
+            universeGlobalData.universeScienceData(),
             UniverseScienceDataProcessCollection.getProcess(
                 universeSettings
             ).basicResearchProjectFunction(),
