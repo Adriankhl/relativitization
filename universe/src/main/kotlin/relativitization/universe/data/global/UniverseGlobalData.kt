@@ -1,8 +1,7 @@
 package relativitization.universe.data.global
 
 import kotlinx.serialization.Serializable
-import relativitization.universe.data.MutableUniverseScienceData
-import relativitization.universe.data.UniverseScienceData
+import relativitization.universe.data.global.components.science.UniverseScienceData
 
 @Serializable
 data class UniverseGlobalData(

@@ -2,7 +2,7 @@ package relativitization.universe.data.components
 
 import kotlin.test.Test
 
-internal class DataComponentMapTest {
+internal class PlayerDataComponentMapTest {
     @Test
     fun nullTest() {
         val d1: DiplomacyData? = null
@@ -14,7 +14,7 @@ internal class DataComponentMapTest {
 
     @Test
     fun getOrDefaultTest() {
-        val d = DataComponentMap(
+        val d = PlayerDataComponentMap(
             listOf(AIData("Hello"))
         )
         assert(d.getOrDefault(AIData::class, AIData()) == AIData("Hello"))

@@ -9,7 +9,6 @@ import relativitization.universe.data.components.PlayerScienceData
 import relativitization.universe.data.components.PoliticsData
 import relativitization.universe.data.components.PopSystemData
 import relativitization.universe.data.components.default.physics.*
-import relativitization.universe.data.components.default.physics.*
 import relativitization.universe.data.events.EventData
 import relativitization.universe.data.events.MutableEventData
 import relativitization.universe.maths.collection.ListFind
@@ -249,32 +248,32 @@ data class PlayerInternalData(
     val subordinateIdList: List<Int> = listOf(),
     val isAlive: Boolean = true,
     val eventDataMap: Map<Int, EventData> = mapOf(),
-    val dataComponentMap: DataComponentMap = DataComponentMap(
+    val playerDataComponentMap: PlayerDataComponentMap = PlayerDataComponentMap(
         DefaultPlayerDataComponent::class.sealedSubclasses.map { it.createInstance() }
     ),
 ) {
-    fun aiData(): AIData = dataComponentMap.getOrDefault(AIData::class, AIData())
+    fun aiData(): AIData = playerDataComponentMap.getOrDefault(AIData::class, AIData())
 
     fun diplomacyData(): DiplomacyData =
-        dataComponentMap.getOrDefault(DiplomacyData::class, DiplomacyData())
+        playerDataComponentMap.getOrDefault(DiplomacyData::class, DiplomacyData())
 
     fun economyData(): EconomyData =
-        dataComponentMap.getOrDefault(EconomyData::class, EconomyData())
+        playerDataComponentMap.getOrDefault(EconomyData::class, EconomyData())
 
     fun modifierData(): ModifierData =
-        dataComponentMap.getOrDefault(ModifierData::class, ModifierData())
+        playerDataComponentMap.getOrDefault(ModifierData::class, ModifierData())
 
     fun physicsData(): PhysicsData =
-        dataComponentMap.getOrDefault(PhysicsData::class, PhysicsData())
+        playerDataComponentMap.getOrDefault(PhysicsData::class, PhysicsData())
 
     fun playerScienceData(): PlayerScienceData =
-        dataComponentMap.getOrDefault(PlayerScienceData::class, PlayerScienceData())
+        playerDataComponentMap.getOrDefault(PlayerScienceData::class, PlayerScienceData())
 
     fun politicsData(): PoliticsData =
-        dataComponentMap.getOrDefault(PoliticsData::class, PoliticsData())
+        playerDataComponentMap.getOrDefault(PoliticsData::class, PoliticsData())
 
     fun popSystemData(): PopSystemData =
-        dataComponentMap.getOrDefault(PopSystemData::class, PopSystemData())
+        playerDataComponentMap.getOrDefault(PopSystemData::class, PopSystemData())
 
     companion object {
         private val logger = RelativitizationLogManager.getLogger()
@@ -289,52 +288,52 @@ data class MutablePlayerInternalData(
     var subordinateIdList: MutableList<Int> = mutableListOf(),
     var isAlive: Boolean = true,
     var eventDataMap: MutableMap<Int, MutableEventData> = mutableMapOf(),
-    var dataComponentMap: MutableDataComponentMap = MutableDataComponentMap(
+    var playerDataComponentMap: MutablePlayerDataComponentMap = MutablePlayerDataComponentMap(
         MutableDefaultPlayerDataComponent::class.sealedSubclasses.map { it.createInstance() }
     ),
 ) {
     fun aiData(): MutableAIData =
-        dataComponentMap.getOrDefault(MutableAIData::class, MutableAIData())
+        playerDataComponentMap.getOrDefault(MutableAIData::class, MutableAIData())
 
-    fun aiData(newAIData: MutableAIData) = dataComponentMap.put(newAIData)
+    fun aiData(newAIData: MutableAIData) = playerDataComponentMap.put(newAIData)
 
     fun diplomacyData(): MutableDiplomacyData =
-        dataComponentMap.getOrDefault(MutableDiplomacyData::class, MutableDiplomacyData())
+        playerDataComponentMap.getOrDefault(MutableDiplomacyData::class, MutableDiplomacyData())
 
     fun diplomacyData(newDiplomacyData: MutableDiplomacyData) =
-        dataComponentMap.put(newDiplomacyData)
+        playerDataComponentMap.put(newDiplomacyData)
 
     fun economyData(): MutableEconomyData =
-        dataComponentMap.getOrDefault(MutableEconomyData::class, MutableEconomyData())
+        playerDataComponentMap.getOrDefault(MutableEconomyData::class, MutableEconomyData())
 
-    fun economyData(newEconomyData: MutableEconomyData) = dataComponentMap.put(newEconomyData)
+    fun economyData(newEconomyData: MutableEconomyData) = playerDataComponentMap.put(newEconomyData)
 
     fun modifierData(): MutableModifierData =
-        dataComponentMap.getOrDefault(MutableModifierData::class, MutableModifierData())
+        playerDataComponentMap.getOrDefault(MutableModifierData::class, MutableModifierData())
 
-    fun modifierData(newModifierData: MutableModifierData) = dataComponentMap.put(newModifierData)
+    fun modifierData(newModifierData: MutableModifierData) = playerDataComponentMap.put(newModifierData)
 
     fun physicsData(): MutablePhysicsData =
-        dataComponentMap.getOrDefault(MutablePhysicsData::class, MutablePhysicsData())
+        playerDataComponentMap.getOrDefault(MutablePhysicsData::class, MutablePhysicsData())
 
-    fun physicsData(newPhysicsData: MutablePhysicsData) = dataComponentMap.put(newPhysicsData)
+    fun physicsData(newPhysicsData: MutablePhysicsData) = playerDataComponentMap.put(newPhysicsData)
 
     fun playerScienceData(): MutablePlayerScienceData =
-        dataComponentMap.getOrDefault(MutablePlayerScienceData::class, MutablePlayerScienceData())
+        playerDataComponentMap.getOrDefault(MutablePlayerScienceData::class, MutablePlayerScienceData())
 
     fun playerScienceData(newPlayerScienceData: MutablePlayerScienceData) =
-        dataComponentMap.put(newPlayerScienceData)
+        playerDataComponentMap.put(newPlayerScienceData)
 
     fun politicsData(): MutablePoliticsData =
-        dataComponentMap.getOrDefault(MutablePoliticsData::class, MutablePoliticsData())
+        playerDataComponentMap.getOrDefault(MutablePoliticsData::class, MutablePoliticsData())
 
-    fun politicsData(newPoliticsData: MutablePoliticsData) = dataComponentMap.put(newPoliticsData)
+    fun politicsData(newPoliticsData: MutablePoliticsData) = playerDataComponentMap.put(newPoliticsData)
 
     fun popSystemData(): MutablePopSystemData =
-        dataComponentMap.getOrDefault(MutablePopSystemData::class, MutablePopSystemData())
+        playerDataComponentMap.getOrDefault(MutablePopSystemData::class, MutablePopSystemData())
 
     fun popSystemData(newPopSystemData: MutablePopSystemData) =
-        dataComponentMap.put(newPopSystemData)
+        playerDataComponentMap.put(newPopSystemData)
 
 
     /**

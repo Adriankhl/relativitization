@@ -4,15 +4,15 @@ import kotlinx.serialization.Serializable
 import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.reflect.KClass
 
-sealed interface PlayerDataComponentClassWithName
+sealed interface PlayerDataComponentCommon
 
 @Serializable
-sealed class PlayerDataComponent : PlayerDataComponentClassWithName
+sealed class PlayerDataComponent : PlayerDataComponentCommon
 
 @Serializable
-sealed class MutablePlayerDataComponent : PlayerDataComponentClassWithName
+sealed class MutablePlayerDataComponent : PlayerDataComponentCommon
 
-fun <T : PlayerDataComponentClassWithName> KClass<T>.name(): String = this.simpleName.toString()
+fun <T : PlayerDataComponentCommon> KClass<T>.name(): String = this.simpleName.toString()
 
 fun PlayerDataComponent.name(): String = this::class.simpleName.toString()
 
@@ -20,7 +20,7 @@ fun MutablePlayerDataComponent.name(): String = this::class.simpleName.toString(
 
 
 @Serializable
-data class DataComponentMap(
+data class PlayerDataComponentMap(
     val dataMap: Map<String, PlayerDataComponent> = mapOf(),
 ) {
     constructor(dataList: List<PlayerDataComponent>) : this(
@@ -49,7 +49,7 @@ data class DataComponentMap(
 }
 
 @Serializable
-data class MutableDataComponentMap(
+data class MutablePlayerDataComponentMap(
     val dataMap: MutableMap<String, MutablePlayerDataComponent> = mutableMapOf(),
 ) {
     constructor(dataList: List<MutablePlayerDataComponent>) : this(
