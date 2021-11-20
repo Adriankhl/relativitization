@@ -8,6 +8,7 @@ import relativitization.universe.data.commands.Command
 import relativitization.universe.data.commands.DamageCommand
 import relativitization.universe.data.components.default.diplomacy.DiplomaticRelationState
 import relativitization.universe.data.global.UniverseGlobalData
+import relativitization.universe.maths.physics.Relativistic
 import relativitization.universe.mechanisms.Mechanism
 import kotlin.random.Random
 
@@ -18,6 +19,11 @@ object AutoCombat : Mechanism() {
         universeSettings: UniverseSettings,
         universeGlobalData: UniverseGlobalData
     ): List<Command> {
+
+        val gamma: Double = Relativistic.gamma(
+            universeData3DAtPlayer.getCurrentPlayerData().velocity,
+            universeSettings.speedOfLight
+        )
 
         // enemy in the same cube
         val sameCubeEnemy: List<PlayerData> = computeEnemyList(
@@ -30,11 +36,13 @@ object AutoCombat : Mechanism() {
             mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.map {
                 // Randomly pick target enemy
                 val targetEnemy: PlayerData = sameCubeEnemy[Random.nextInt(sameCubeEnemy.size)]
+
+                // Adjust damage by time dilation
                 DamageCommand(
                     toId = targetEnemy.playerId,
                     fromId = mutablePlayerData.playerId,
                     fromInt4D = mutablePlayerData.int4D.toInt4D(),
-                    attack = it.allPopData.soldierPopData.militaryBaseData.attack
+                    attack = it.allPopData.soldierPopData.militaryBaseData.attack / gamma
                 )
             }
         } else {
@@ -51,25 +59,28 @@ object AutoCombat : Mechanism() {
         neighbors: List<PlayerData>,
     ): List<PlayerData> {
 
-        val enemyOfSelf: List<PlayerData> =
+        // Neighbor that views the player as enemy
+        val neighborViewEnemyList: List<PlayerData> =
             neighbors.filter { playerData ->
                     playerData.playerInternalData.diplomacyData().isEnemyOf(
                         mutablePlayerData
                     )
                 }
 
-        val selfEnemy: List<PlayerData> =
+
+        // Neighbor that this player views as enemy
+        val selfViewEnemyList: List<PlayerData> =
             mutablePlayerData.playerInternalData.diplomacyData().relationMap.filter { (id, relationData) ->
                 // Select the player that are enemy, nearby, and not in enemyOfSelf list
                 (relationData.diplomaticRelationState == DiplomaticRelationState.ENEMY) && neighbors.any { playerData ->
                     playerData.playerId == id
-                } && enemyOfSelf.all { playerData ->
+                } && neighborViewEnemyList.all { playerData ->
                     playerData.playerId != id
                 }
             }.map { (playerId, _) ->
                 universeData3DAtPlayer.get(playerId)
             }
 
-        return selfEnemy + enemyOfSelf
+        return selfViewEnemyList + neighborViewEnemyList
     }
 }
