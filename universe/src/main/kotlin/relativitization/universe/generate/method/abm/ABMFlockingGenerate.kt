@@ -1,13 +1,12 @@
 package relativitization.universe.generate.method.abm
 
-import relativitization.universe.ai.abm.FlockingAI
+import relativitization.universe.ai.ABMFlockingAI
 import relativitization.universe.ai.name
 import relativitization.universe.data.*
 import relativitization.universe.data.components.physics.MutableVelocity
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.generate.method.GenerateSettings
-import relativitization.universe.generate.method.GenerateUniverseMethod
 import relativitization.universe.maths.grid.Grids.create4DGrid
 import kotlin.random.Random
 
@@ -57,7 +56,7 @@ object ABMFlockingGenerate : ABMGenerateUniverseMethod() {
             playerData.velocity = MutableVelocity(vx, vy, vz).scaleVelocity(0.5)
 
             // Use flocking ai
-            playerData.playerInternalData.aiData().aiName = FlockingAI.name()
+            playerData.playerInternalData.aiData().aiName = ABMFlockingAI.name()
 
             data.addPlayerDataToLatestWithAfterImage(
                 playerData,

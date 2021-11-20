@@ -1,6 +1,6 @@
 package relativitization.universe.generate.method.testing
 
-import relativitization.universe.ai.emptyAI.EmptyAI
+import relativitization.universe.ai.EmptyAI
 import relativitization.universe.ai.name
 import relativitization.universe.data.*
 import relativitization.universe.data.components.economy.MutableResourceQualityData

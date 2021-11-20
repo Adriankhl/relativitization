@@ -1,6 +1,5 @@
-package relativitization.universe.ai.abm
+package relativitization.universe.ai
 
-import relativitization.universe.ai.AI
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.commands.ChangeVelocityCommand
@@ -10,7 +9,7 @@ import relativitization.universe.data.components.physics.Velocity
 import relativitization.universe.maths.physics.Intervals.distance
 import relativitization.universe.utils.RelativitizationLogManager
 
-object FlockingAI : AI() {
+object ABMFlockingAI : AI() {
 
     private val logger = RelativitizationLogManager.getLogger()
 

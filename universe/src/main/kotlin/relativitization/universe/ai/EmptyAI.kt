@@ -1,6 +1,5 @@
-package relativitization.universe.ai.emptyAI
+package relativitization.universe.ai
 
-import relativitization.universe.ai.AI
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.commands.Command
 import relativitization.universe.utils.RelativitizationLogManager

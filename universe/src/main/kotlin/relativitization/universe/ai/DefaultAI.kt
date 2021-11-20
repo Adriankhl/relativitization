@@ -1,6 +1,5 @@
-package relativitization.universe.ai.default
+package relativitization.universe.ai
 
-import relativitization.universe.ai.AI
 import relativitization.universe.ai.default.event.EventReasoner
 import relativitization.universe.ai.default.utils.*
 import relativitization.universe.data.PlanDataAtPlayer

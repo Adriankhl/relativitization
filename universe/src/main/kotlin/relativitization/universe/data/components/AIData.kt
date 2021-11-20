@@ -2,7 +2,7 @@ package relativitization.universe.data.components
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import relativitization.universe.ai.default.DefaultAI
+import relativitization.universe.ai.DefaultAI
 import relativitization.universe.ai.name
 
 @Serializable
