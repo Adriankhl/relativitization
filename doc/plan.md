@@ -33,6 +33,7 @@
 * Sync leader data to subordinate, e.g., enemy [x]
 * Sync economy data to subordinate [x]
 * Stop war after long period of time
+* Adjust attack and export by time dilation
 
 # AI TODO List
 * Default AI
