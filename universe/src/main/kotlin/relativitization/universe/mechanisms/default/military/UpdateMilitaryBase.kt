@@ -8,6 +8,7 @@ import relativitization.universe.data.components.MutablePlayerScienceData
 import relativitization.universe.data.components.default.modifier.MutableCombatModifierData
 import relativitization.universe.data.components.default.popsystem.pop.soldier.MutableSoldierPopData
 import relativitization.universe.data.global.UniverseGlobalData
+import relativitization.universe.maths.physics.Relativistic
 import relativitization.universe.mechanisms.Mechanism
 import kotlin.math.min
 
@@ -18,6 +19,11 @@ object UpdateMilitaryBase : Mechanism() {
         universeSettings: UniverseSettings,
         universeGlobalData: UniverseGlobalData
     ): List<Command> {
+
+        val gamma: Double = Relativistic.gamma(
+            universeData3DAtPlayer.getCurrentPlayerData().velocity,
+            universeSettings.speedOfLight
+        )
 
         // Affect the size of the shield compare to typical attack
         val maxShieldFactor: Double = 5.0
@@ -36,6 +42,7 @@ object UpdateMilitaryBase : Mechanism() {
                 maxShieldFactor = maxShieldFactor,
                 shieldChangeFactor = shieldChangeFactor,
                 combatModifierData = mutablePlayerData.playerInternalData.modifierData().combatModifierData,
+                gamma = gamma,
             )
 
             mutableCarrierData.allPopData.soldierPopData.militaryBaseData.attack = newAttack
@@ -71,6 +78,7 @@ object UpdateMilitaryBase : Mechanism() {
         maxShieldFactor: Double = 5.0,
         shieldChangeFactor: Double,
         combatModifierData: MutableCombatModifierData,
+        gamma: Double,
     ): Double {
 
         val originalShield: Double = soldierPopData.militaryBaseData.shield
@@ -101,6 +109,7 @@ object UpdateMilitaryBase : Mechanism() {
             }
         }
 
-        return originalShield + change
+        // Adjusted by time dilation
+        return originalShield + (change / gamma)
     }
 }
