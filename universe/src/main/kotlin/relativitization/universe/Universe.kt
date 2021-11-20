@@ -24,11 +24,13 @@ import java.io.File
  * @param universeData the core data of the universe
  * @param programDir the location of the program directories, "." for desktop and context.filesDir for android
  * @param saveWhenInit save all when initializing the universe
+ * @param alwaysSaveLatest always save latest slice for loading
  */
 class Universe(
     private val universeData: UniverseData,
     private val programDir: String,
-    saveWhenInit: Boolean = true
+    private val saveWhenInit: Boolean = true,
+    private val alwaysSaveLatest: Boolean = true
 ) {
 
     private val xDim = universeData.universeSettings.xDim
@@ -400,7 +402,9 @@ class Universe(
         val universeSlice = playerCollection.getUniverseSlice(universeData)
         universeData.updateUniverseReplaceLatest(universeSlice)
 
-        saveLatest()
+        if (alwaysSaveLatest) {
+            saveLatest()
+        }
     }
 
     /**
