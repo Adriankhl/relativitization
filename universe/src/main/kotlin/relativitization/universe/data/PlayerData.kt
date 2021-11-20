@@ -16,6 +16,7 @@ import relativitization.universe.maths.collection.ListFind
 import relativitization.universe.maths.grid.Grids.double4DToGroupId
 import relativitization.universe.maths.grid.Grids.groupIdToCenterDouble3D
 import relativitization.universe.utils.RelativitizationLogManager
+import kotlin.reflect.full.createInstance
 
 /**
  * Data of the basic unit (player)
@@ -249,16 +250,7 @@ data class PlayerInternalData(
     val isAlive: Boolean = true,
     val eventDataMap: Map<Int, EventData> = mapOf(),
     val dataComponentMap: DataComponentMap = DataComponentMap(
-        listOf(
-            AIData(),
-            DiplomacyData(),
-            EconomyData(),
-            PhysicsData(),
-            PlayerScienceData(),
-            PoliticsData(),
-            PopSystemData(),
-            ModifierData(),
-        )
+        DefaultPlayerDataComponent::class.sealedSubclasses.map { it.createInstance() }
     ),
 ) {
     fun aiData(): AIData = dataComponentMap.getOrDefault(AIData::class, AIData())
@@ -298,16 +290,7 @@ data class MutablePlayerInternalData(
     var isAlive: Boolean = true,
     var eventDataMap: MutableMap<Int, MutableEventData> = mutableMapOf(),
     var dataComponentMap: MutableDataComponentMap = MutableDataComponentMap(
-        listOf(
-            MutableAIData(),
-            MutableDiplomacyData(),
-            MutableEconomyData(),
-            MutableModifierData(),
-            MutablePhysicsData(),
-            MutablePlayerScienceData(),
-            MutablePoliticsData(),
-            MutablePopSystemData(),
-        )
+        MutableDefaultPlayerDataComponent::class.sealedSubclasses.map { it.createInstance() }
     ),
 ) {
     fun aiData(): MutableAIData =
