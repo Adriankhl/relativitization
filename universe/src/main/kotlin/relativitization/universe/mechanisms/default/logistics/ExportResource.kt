@@ -12,6 +12,7 @@ import relativitization.universe.data.components.default.popsystem.pop.service.M
 import relativitization.universe.data.components.default.popsystem.pop.service.export.MutablePlayerSingleExportData
 import relativitization.universe.data.components.default.popsystem.pop.service.export.MutablePopSingleExportData
 import relativitization.universe.data.global.UniverseGlobalData
+import relativitization.universe.maths.physics.Relativistic
 import relativitization.universe.mechanisms.Mechanism
 import kotlin.math.max
 
@@ -23,13 +24,19 @@ object ExportResource : Mechanism() {
         universeGlobalData: UniverseGlobalData
     ): List<Command> {
 
+        val gamma: Double = Relativistic.gamma(
+            universeData3DAtPlayer.getCurrentPlayerData().velocity,
+            universeSettings.speedOfLight
+        )
+
         val exportToPlayerCommandList: List<Command> =
             mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.map {
                 val mutableServicePopData: MutableServicePopData = it.allPopData.servicePopData
                 computeExportToPlayerCommands(
                     mutableServicePopData = mutableServicePopData,
                     mutablePlayerData = mutablePlayerData,
-                    universeData3DAtPlayer = universeData3DAtPlayer
+                    universeData3DAtPlayer = universeData3DAtPlayer,
+                    gamma = gamma,
                 )
             }.flatten()
 
@@ -40,7 +47,8 @@ object ExportResource : Mechanism() {
                 computeExportToPopCommands(
                     mutableServicePopData = mutableServicePopData,
                     mutablePlayerData = mutablePlayerData,
-                    universeData3DAtPlayer = universeData3DAtPlayer
+                    universeData3DAtPlayer = universeData3DAtPlayer,
+                    gamma = gamma,
                 )
             }.flatten()
 
@@ -56,6 +64,7 @@ object ExportResource : Mechanism() {
         mutablePlayerSingleExportData: MutablePlayerSingleExportData,
         mutablePlayerData: MutablePlayerData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
+        gamma: Double,
     ): Double {
         val targetTopLeaderId: Int = universeData3DAtPlayer.get(
             mutablePlayerSingleExportData.targetPlayerId
@@ -70,13 +79,13 @@ object ExportResource : Mechanism() {
             )
         }
 
-        // Fraction affected by employees
+        // Fraction affected by employees, adjusted by time dilation
         val totalExportAmount: Double = mutableServicePopData.exportData.totalExportAmount()
         val numEmployee: Double = mutableServicePopData.commonPopData.numEmployee()
         val educationLevelMultiplier: Double =
             (mutableServicePopData.commonPopData.educationLevel * 9.0) + 1.0
         val employeeFraction: Double = if (totalExportAmount > 0.0) {
-            numEmployee * educationLevelMultiplier / totalExportAmount
+            numEmployee * educationLevelMultiplier / totalExportAmount / gamma
         } else {
             1.0
         }
@@ -124,7 +133,8 @@ object ExportResource : Mechanism() {
         mutablePopSingleExportData: MutablePopSingleExportData,
         ownerPlayerId: Int,
         mutablePlayerData: MutablePlayerData,
-        universeData3DAtPlayer: UniverseData3DAtPlayer
+        universeData3DAtPlayer: UniverseData3DAtPlayer,
+        gamma: Double,
     ): Double {
         val targetTopLeaderId: Int = universeData3DAtPlayer.get(
             ownerPlayerId
@@ -139,13 +149,13 @@ object ExportResource : Mechanism() {
             )
         }
 
-        // Fraction affected by employees
+        // Fraction affected by employees, adjusted by time dilation
         val totalExportAmount: Double = mutableServicePopData.exportData.totalExportAmount()
         val numEmployee: Double = mutableServicePopData.commonPopData.numEmployee()
         val educationLevelMultiplier: Double =
             (mutableServicePopData.commonPopData.educationLevel * 9.0) + 1.0
         val employeeFraction: Double = if (totalExportAmount > 0.0) {
-            numEmployee * educationLevelMultiplier / totalExportAmount
+            numEmployee * educationLevelMultiplier / totalExportAmount / gamma
         } else {
             1.0
         }
@@ -191,6 +201,7 @@ object ExportResource : Mechanism() {
         mutableServicePopData: MutableServicePopData,
         mutablePlayerData: MutablePlayerData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
+        gamma: Double,
     ): List<Command> {
 
         return mutableServicePopData.exportData.playerExportCenterMap.map { (_, exportCenterData) ->
@@ -219,6 +230,7 @@ object ExportResource : Mechanism() {
                     mutablePlayerSingleExportData = mutablePlayerSingleExportData,
                     mutablePlayerData = mutablePlayerData,
                     universeData3DAtPlayer = universeData3DAtPlayer,
+                    gamma = gamma,
                 )
 
                 val amount: Double = mutablePlayerSingleExportData.amountPerTime * exportFraction
@@ -264,6 +276,7 @@ object ExportResource : Mechanism() {
         mutableServicePopData: MutableServicePopData,
         mutablePlayerData: MutablePlayerData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
+        gamma: Double,
     ): List<Command> {
 
         return mutableServicePopData.exportData.popExportCenterMap.map { (ownerPlayerId, exportCenterData) ->
@@ -297,6 +310,7 @@ object ExportResource : Mechanism() {
                             ownerPlayerId = ownerPlayerId,
                             mutablePlayerData = mutablePlayerData,
                             universeData3DAtPlayer = universeData3DAtPlayer,
+                            gamma = gamma,
                         )
 
                         val amount: Double =

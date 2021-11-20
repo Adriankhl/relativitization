@@ -6,6 +6,7 @@
 * No work at other carrier
 * No minimum wage and unemployment benefit
 * Don't use trade history data to determine price
+* No pop buy resource from other player
 
 # Currently unused data
 * Size of factory and institute
@@ -33,7 +34,7 @@
 * Sync leader data to subordinate, e.g., enemy [x]
 * Sync economy data to subordinate [x]
 * Stop war after long period of time
-* Adjust attack and export by time dilation
+* Adjust attack and export by time dilation [x]
 
 # AI TODO List
 * Default AI
