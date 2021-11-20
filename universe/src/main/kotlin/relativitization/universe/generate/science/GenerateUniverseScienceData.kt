@@ -1,8 +1,11 @@
 package relativitization.universe.generate.science
 
+import relativitization.universe.data.components.default.science.knowledge.AppliedResearchField
+import relativitization.universe.data.components.default.science.knowledge.AppliedResearchProjectData
+import relativitization.universe.data.components.default.science.knowledge.BasicResearchField
+import relativitization.universe.data.components.default.science.knowledge.BasicResearchProjectData
 import relativitization.universe.data.global.components.MutableUniverseScienceData
 import relativitization.universe.data.global.components.UniverseScienceData
-import relativitization.universe.data.components.default.science.knowledge.*
 import relativitization.universe.data.global.components.default.science.knowledge.MutableAppliedResearchProjectGenerationData
 import relativitization.universe.data.global.components.default.science.knowledge.MutableBasicResearchProjectGenerationData
 import relativitization.universe.data.global.components.default.science.knowledge.MutableProjectGenerationData

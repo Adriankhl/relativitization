@@ -1,6 +1,8 @@
 package relativitization.universe.mechanisms.default.research
 
-import relativitization.universe.data.*
+import relativitization.universe.data.MutablePlayerData
+import relativitization.universe.data.UniverseData3DAtPlayer
+import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.components.MutablePlayerScienceData
 import relativitization.universe.data.components.PlayerScienceData

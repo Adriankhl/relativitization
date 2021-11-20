@@ -1,7 +1,6 @@
 package relativitization.universe.utils
 
 import kotlinx.serialization.Serializable
-import kotlin.math.log
 
 @Serializable
 sealed class TString

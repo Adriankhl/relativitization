@@ -3,7 +3,6 @@ package relativitization.universe.data.components.default.popsystem.pop.service.
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.components.default.economy.ResourceQualityClass
 import relativitization.universe.data.components.default.economy.ResourceType
-import relativitization.universe.data.components.default.popsystem.pop.PopType
 
 /**
  * Export center of pop

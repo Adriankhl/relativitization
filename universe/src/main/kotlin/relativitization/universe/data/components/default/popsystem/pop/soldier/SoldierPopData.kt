@@ -1,8 +1,6 @@
 package relativitization.universe.data.components.default.popsystem.pop.soldier
 
 import kotlinx.serialization.Serializable
-import relativitization.universe.data.components.default.popsystem.pop.CommonPopData
-import relativitization.universe.data.components.default.popsystem.pop.MutableCommonPopData
 import relativitization.universe.data.components.default.popsystem.pop.soldier.facility.MilitaryBaseData
 import relativitization.universe.data.components.default.popsystem.pop.soldier.facility.MutableMilitaryBaseData
 

@@ -5,7 +5,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.PlayerData
-import relativitization.universe.data.commands.CannotSendCommand
 import relativitization.universe.data.commands.SelectEventChoiceCommand
 import relativitization.universe.data.events.EventData
 import relativitization.universe.data.events.name

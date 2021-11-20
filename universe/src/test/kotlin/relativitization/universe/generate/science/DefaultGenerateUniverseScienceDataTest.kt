@@ -1,9 +1,9 @@
 package relativitization.universe.generate.science
 
 
-import relativitization.universe.data.global.components.UniverseScienceData
 import relativitization.universe.data.components.default.science.knowledge.AppliedResearchField
 import relativitization.universe.data.components.default.science.knowledge.BasicResearchField
+import relativitization.universe.data.global.components.UniverseScienceData
 import kotlin.test.Test
 
 internal class DefaultGenerateUniverseScienceDataTest {

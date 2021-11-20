@@ -2,10 +2,10 @@ package relativitization.universe.global.science.default
 
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.UniverseData
-import relativitization.universe.data.global.components.UniverseScienceData
 import relativitization.universe.data.components.default.science.knowledge.*
 import relativitization.universe.data.global.MutableUniverseGlobalData
 import relativitization.universe.data.global.components.MutableUniverseScienceData
+import relativitization.universe.data.global.components.UniverseScienceData
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.generate.science.DefaultGenerateUniverseScienceData
 import relativitization.universe.global.GlobalMechanism

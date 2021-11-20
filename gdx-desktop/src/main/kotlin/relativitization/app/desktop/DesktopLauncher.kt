@@ -15,7 +15,6 @@ import org.apache.logging.log4j.core.config.Configurator
 import relativitization.client.UniverseClient
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.Assets
-import relativitization.game.utils.WorkingDirectory
 import relativitization.server.UniverseServer
 import relativitization.universe.UniverseClientSettings
 import relativitization.universe.UniverseServerSettings

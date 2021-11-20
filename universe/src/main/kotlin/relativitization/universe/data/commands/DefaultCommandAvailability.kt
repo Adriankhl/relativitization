@@ -2,7 +2,6 @@ package relativitization.universe.data.commands
 
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.events.DefaultEvent
-import relativitization.universe.data.events.MoveToDouble3DEvent
 import relativitization.universe.data.events.name
 
 @Serializable

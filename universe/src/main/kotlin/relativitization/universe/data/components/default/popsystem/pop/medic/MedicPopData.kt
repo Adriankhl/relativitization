@@ -1,8 +1,6 @@
 package relativitization.universe.data.components.default.popsystem.pop.medic
 
 import kotlinx.serialization.Serializable
-import relativitization.universe.data.components.default.popsystem.pop.CommonPopData
-import relativitization.universe.data.components.default.popsystem.pop.MutableCommonPopData
 
 @Serializable
 data class MedicPopData(

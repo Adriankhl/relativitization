@@ -1,7 +1,10 @@
 package relativitization.universe.data.components.default.economy
 
 import kotlinx.serialization.Serializable
-import kotlin.math.*
+import kotlin.math.abs
+import kotlin.math.pow
+import kotlin.math.sign
+import kotlin.math.sqrt
 
 enum class ResourceType(val value: String) {
     PLANT("Plant"), // Raw material

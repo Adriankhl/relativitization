@@ -1,7 +1,6 @@
 package relativitization.universe.data.global
 
 import kotlinx.serialization.Serializable
-import relativitization.universe.Universe
 import relativitization.universe.data.global.components.*
 import kotlin.reflect.full.createInstance
 

@@ -7,8 +7,6 @@ import relativitization.universe.data.commands.Command
 import relativitization.universe.data.components.EconomyData
 import relativitization.universe.data.components.MutableEconomyData
 import relativitization.universe.data.components.default.physics.MutableFuelRestMassData
-import relativitization.universe.data.components.default.popsystem.MutableCarrierData
-import relativitization.universe.data.components.default.popsystem.pop.MutableCommonPopData
 import relativitization.universe.data.components.default.popsystem.pop.engineer.MutableEngineerPopData
 import relativitization.universe.data.components.default.popsystem.pop.labourer.MutableLabourerPopData
 import relativitization.universe.data.components.default.popsystem.pop.scholar.MutableScholarPopData

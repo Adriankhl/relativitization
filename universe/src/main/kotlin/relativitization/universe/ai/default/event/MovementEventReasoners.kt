@@ -2,7 +2,10 @@ package relativitization.universe.ai.default.event
 
 import relativitization.universe.ai.default.consideration.HierarchyConsideration
 import relativitization.universe.ai.default.consideration.RelationConsideration
-import relativitization.universe.ai.default.utils.*
+import relativitization.universe.ai.default.utils.Consideration
+import relativitization.universe.ai.default.utils.DualUtilityReasoner
+import relativitization.universe.ai.default.utils.Option
+import relativitization.universe.ai.default.utils.PlanState
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.commands.SelectEventChoiceCommand

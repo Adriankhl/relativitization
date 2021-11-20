@@ -1,8 +1,6 @@
 package relativitization.universe.data.components.default.popsystem.pop.engineer.laboratory
 
 import kotlinx.serialization.Serializable
-import relativitization.universe.data.components.default.economy.MutableResourceQualityData
-import relativitization.universe.data.components.default.economy.ResourceQualityData
 
 /**
  * Data of a research laboratory

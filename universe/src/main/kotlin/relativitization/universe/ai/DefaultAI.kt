@@ -1,7 +1,9 @@
 package relativitization.universe.ai
 
 import relativitization.universe.ai.default.event.EventReasoner
-import relativitization.universe.ai.default.utils.*
+import relativitization.universe.ai.default.utils.AINode
+import relativitization.universe.ai.default.utils.PlanState
+import relativitization.universe.ai.default.utils.SequenceReasoner
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.commands.Command

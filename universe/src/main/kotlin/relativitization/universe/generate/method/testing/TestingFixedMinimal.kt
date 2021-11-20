@@ -21,8 +21,8 @@ import relativitization.universe.data.global.components.MutableUniverseScienceDa
 import relativitization.universe.data.global.components.UniverseScienceData
 import relativitization.universe.data.serializer.DataSerializer.copy
 import relativitization.universe.generate.method.GenerateSettings
-import relativitization.universe.maths.grid.Grids.create4DGrid
 import relativitization.universe.global.science.default.UpdateUniverseScienceData
+import relativitization.universe.maths.grid.Grids.create4DGrid
 
 object TestingFixedMinimal : TestingGenerateUniverseMethod() {
     override fun generate(settings: GenerateSettings): UniverseData {

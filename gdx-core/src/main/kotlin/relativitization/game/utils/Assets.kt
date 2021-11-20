@@ -25,7 +25,6 @@ import com.badlogic.gdx.utils.I18NBundle
 import relativitization.game.GdxSettings
 import relativitization.game.Language
 import relativitization.universe.utils.RelativitizationLogManager
-import java.io.File
 import java.util.*
 import kotlin.random.Random
 

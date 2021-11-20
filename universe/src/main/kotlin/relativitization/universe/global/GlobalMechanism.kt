@@ -1,10 +1,8 @@
 package relativitization.universe.global
 
 import relativitization.universe.data.UniverseData
-import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.global.MutableUniverseGlobalData
 import relativitization.universe.data.serializer.DataSerializer
-import relativitization.universe.mechanisms.MechanismCollection
 import relativitization.universe.utils.RelativitizationLogManager
 
 abstract class GlobalMechanism {

@@ -5,7 +5,6 @@ import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.components.default.economy.ResourceType
 import relativitization.universe.data.components.default.physics.Int4D
-import relativitization.universe.data.components.default.popsystem.MutableCarrierData
 import relativitization.universe.data.components.default.popsystem.pop.labourer.factory.*
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.utils.I18NString

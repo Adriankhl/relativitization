@@ -8,8 +8,6 @@ import relativitization.universe.data.components.MutableEconomyData
 import relativitization.universe.data.components.MutablePhysicsData
 import relativitization.universe.data.components.default.economy.MutableResourceQualityData
 import relativitization.universe.data.components.default.economy.ResourceQualityClass
-import relativitization.universe.data.components.default.popsystem.pop.MutableCommonPopData
-import relativitization.universe.data.components.default.popsystem.pop.PopType
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.maths.physics.Relativistic
 import relativitization.universe.mechanisms.Mechanism

@@ -16,8 +16,6 @@ import relativitization.server.routes.registerUniverseStatusRoutes
 import relativitization.universe.UniverseServerSettings
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.utils.RelativitizationLogManager
-import relativitization.utils.ServerPort
-import java.net.Socket
 
 
 class UniverseServer(
