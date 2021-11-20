@@ -50,7 +50,7 @@ abstract class GenerateUniverseMethod {
 
 fun GenerateUniverseMethod.name(): String = this::class.simpleName.toString()
 
-object UniverseGenerationCollection {
+object UniverseGenerateMethodCollection {
     private val logger = RelativitizationLogManager.getLogger()
 
     val generateMethodList: List<GenerateUniverseMethod> = listOf(

@@ -4,13 +4,13 @@ import kotlinx.coroutines.runBlocking
 import relativitization.universe.Universe
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.generate.method.GenerateSettings
-import relativitization.universe.generate.method.UniverseGenerationCollection
+import relativitization.universe.generate.method.UniverseGenerateMethodCollection
 import kotlin.test.Test
 
 internal class DiscoverKnowledgeTest {
     @Test
     fun fixedMinimalTest() {
-        val universe = Universe(UniverseGenerationCollection.generate(GenerateSettings()), ".")
+        val universe = Universe(UniverseGenerateMethodCollection.generate(GenerateSettings()), ".")
 
         val view7: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
 
