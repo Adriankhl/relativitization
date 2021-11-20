@@ -27,7 +27,7 @@ data class MoveToDouble3DEvent(
     val targetDouble3D: Double3D,
     val maxSpeed: Double,
     override val stayTime: Int,
-) : Event() {
+) : DefaultEvent() {
 
     override val description: I18NString = I18NString(
         listOf(
