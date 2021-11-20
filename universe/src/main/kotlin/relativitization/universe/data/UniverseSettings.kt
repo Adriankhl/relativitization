@@ -4,6 +4,8 @@ import kotlinx.serialization.Serializable
 import relativitization.universe.data.commands.DefaultCommandAvailability
 import relativitization.universe.data.commands.name
 import relativitization.universe.data.components.default.physics.Int3D
+import relativitization.universe.global.DefaultGlobalMechanismList
+import relativitization.universe.global.name
 import relativitization.universe.maths.physics.Intervals.intDelay
 import relativitization.universe.maths.physics.Intervals.maxDelayAfterMove
 import relativitization.universe.mechanisms.DefaultMechanismList
@@ -18,6 +20,7 @@ import relativitization.universe.global.science.name
  * @property mechanismCollectionName the name of the mechanism collection
  * @property commandCollectionName the name of the available command collection, or "All" to available all commands
  * @property universeScienceDataProcessCollectionName the name of the science process
+ * @property globalMechanismCollectionName the name of global mechanism collection, such as how universe science is generated procedurally
  * @property speedOfLight speed of light in integer
  * @property tDim t dimension of the universe
  * @property xDim x dimension of the universe
@@ -33,6 +36,7 @@ data class UniverseSettings(
     val mechanismCollectionName: String = DefaultMechanismList.name(),
     val commandCollectionName: String = DefaultCommandAvailability.name(),
     val universeScienceDataProcessCollectionName: String = DefaultUniverseScienceDataProcess.name(),
+    val globalMechanismCollectionName: String = DefaultGlobalMechanismList.name(),
     val speedOfLight: Double = 1.0,
     val tDim: Int = 8,
     val xDim: Int = 2,
@@ -66,6 +70,7 @@ data class MutableUniverseSettings(
     var mechanismCollectionName: String = DefaultMechanismList.name(),
     var commandCollectionName: String = DefaultCommandAvailability.name(),
     var universeScienceDataProcessCollectionName: String = DefaultUniverseScienceDataProcess.name(),
+    var globalMechanismCollectionName: String = DefaultGlobalMechanismList.name(),
     var speedOfLight: Double = 1.0,
     var tDim: Int = 8,
     var xDim: Int = 2,

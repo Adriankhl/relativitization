@@ -71,7 +71,7 @@ object MechanismCollection {
     ): List<Command> {
 
         return mechanismListMap.getOrElse(universeData.universeSettings.mechanismCollectionName) {
-            logger.error("No mechanism name matched, use default mechanism")
+            logger.error("No mechanism name matched, use empty mechanism")
             EmptyMechanismList
         }.mechanismList.map { mechanism ->
             mechanism.process(

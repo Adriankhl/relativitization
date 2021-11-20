@@ -6,6 +6,7 @@ import relativitization.universe.data.global.MutableUniverseGlobalData
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.global.science.UniverseScienceDataProcess
 import relativitization.universe.global.science.UniverseScienceDataProcessCollection
+import relativitization.universe.mechanisms.MechanismCollection
 import relativitization.universe.utils.RelativitizationLogManager
 
 abstract class GlobalMechanism {
@@ -42,7 +43,12 @@ object GlobalMechanismCollection {
     ) {
         val mutableUniverseGlobalData: MutableUniverseGlobalData = DataSerializer.copy(universeData.universeGlobalData)
 
-        UniverseScienceDataProcessCollection.processUniverseScienceData(mutableUniverseGlobalData, universeData)
+        globalMechanismListMap.getOrElse(universeData.universeSettings.globalMechanismCollectionName) {
+            logger.error("No global mechanism name matched, use empty mechanism")
+            EmptyGlobalMechanismList
+        }.globalMechanismList.forEach { globalMechanism ->
+            globalMechanism.updateGlobalData(mutableUniverseGlobalData, universeData)
+        }
 
         universeData.universeGlobalData = DataSerializer.copy(mutableUniverseGlobalData)
     }
