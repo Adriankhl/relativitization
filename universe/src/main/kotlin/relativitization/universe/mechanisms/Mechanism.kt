@@ -48,55 +48,17 @@ abstract class Mechanism {
     ): List<Command>
 }
 
-abstract class MechanismList {
+sealed class MechanismList {
     abstract val mechanismList: List<Mechanism>
 }
 
 fun MechanismList.name(): String = this::class.simpleName.toString()
 
-object EmptyMechanismList : MechanismList() {
-    override val mechanismList: List<Mechanism> = listOf()
-}
-
-object DefaultMechanismList : MechanismList() {
-    override val mechanismList: List<Mechanism> = listOf(
-        SyncDataComponent,
-        ClearDeadPlayer,
-        AutoEventCollection,
-        ProcessEvents,
-        UpdateWarState,
-        UpdateDiplomaticRelation,
-        UpdateDiplomaticRelationState,
-        Employment,
-        PopBuyResource,
-        UpdateDesire,
-        UpdateMilitaryBase,
-        BaseStellarFuelProduction,
-        FuelFactoryProduction,
-        ResourceFactoryProduction,
-        EntertainmentProduction,
-        ExportResource,
-        Educate,
-        PopulationGrowth,
-        SendTax,
-        KnowledgeDiffusion,
-        DiscoverKnowledge,
-        SyncHierarchy,
-        AutoCombat,
-        SyncTaxRate,
-        SyncPlayerScienceData,
-        UpdateScienceApplicationData,
-        UpdateModifierTime,
-    )
-}
-
 object MechanismCollection {
     private val logger = RelativitizationLogManager.getLogger()
 
-    private val mechanismListList: List<MechanismList> = listOf(
-        DefaultMechanismList,
-        EmptyMechanismList,
-    )
+    private val mechanismListList: List<MechanismList> =
+        MechanismList::class.sealedSubclasses.map { it.objectInstance!! }
 
     val mechanismListMap: Map<String, MechanismList> = mechanismListList.map {
         it.name() to it
