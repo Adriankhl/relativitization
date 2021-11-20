@@ -25,7 +25,7 @@ import relativitization.universe.data.commands.DummyCommand
 import relativitization.universe.data.components.physics.Double2D
 import relativitization.universe.data.components.physics.Int3D
 import relativitization.universe.data.serializer.DataSerializer
-import relativitization.universe.generate.GenerateSettings
+import relativitization.universe.generate.method.GenerateSettings
 import relativitization.universe.utils.CoroutineBoolean
 import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.properties.Delegates

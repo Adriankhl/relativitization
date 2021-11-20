@@ -6,8 +6,8 @@ import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.components.physics.Int4D
 import relativitization.universe.data.events.MoveToDouble3DEvent
 import relativitization.universe.data.events.name
-import relativitization.universe.generate.GenerateSettings
-import relativitization.universe.generate.UniverseGenerationCollection
+import relativitization.universe.generate.method.GenerateSettings
+import relativitization.universe.generate.method.UniverseGenerationCollection
 import kotlin.test.Test
 
 internal class SelectEventChoiceCommandTest {

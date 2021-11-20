@@ -8,7 +8,7 @@ import kotlinx.coroutines.runBlocking
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.TableScreen
 import relativitization.universe.data.commands.CommandCollection
-import relativitization.universe.generate.UniverseGenerationCollection
+import relativitization.universe.generate.method.UniverseGenerationCollection
 import relativitization.universe.mechanisms.MechanismCollection
 import relativitization.universe.global.science.UniverseScienceDataProcessCollection
 import relativitization.universe.utils.RelativitizationLogManager

@@ -3,8 +3,8 @@ package relativitization.universe.mechanisms.default.research
 import kotlinx.coroutines.runBlocking
 import relativitization.universe.Universe
 import relativitization.universe.data.UniverseData3DAtPlayer
-import relativitization.universe.generate.GenerateSettings
-import relativitization.universe.generate.UniverseGenerationCollection
+import relativitization.universe.generate.method.GenerateSettings
+import relativitization.universe.generate.method.UniverseGenerationCollection
 import kotlin.test.Test
 
 internal class DiscoverKnowledgeTest {

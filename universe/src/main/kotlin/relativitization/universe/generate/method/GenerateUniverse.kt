@@ -1,12 +1,12 @@
-package relativitization.universe.generate
+package relativitization.universe.generate.method
 
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.MutableUniverseSettings
 import relativitization.universe.data.UniverseData
 import relativitization.universe.data.serializer.DataSerializer.decode
 import relativitization.universe.data.serializer.DataSerializer.encode
-import relativitization.universe.generate.abm.FlockingGenerate
-import relativitization.universe.generate.fixed.TestingFixedMinimal
+import relativitization.universe.generate.method.abm.FlockingGenerate
+import relativitization.universe.generate.method.fixed.TestingFixedMinimal
 import relativitization.universe.utils.RelativitizationLogManager
 import java.io.File
 
@@ -44,22 +44,22 @@ data class GenerateSettings(
     }
 }
 
-abstract class GenerateUniverse {
+abstract class GenerateUniverseMethod {
     abstract fun generate(settings: GenerateSettings): UniverseData
 }
 
-fun GenerateUniverse.name(): String = this::class.simpleName.toString()
+fun GenerateUniverseMethod.name(): String = this::class.simpleName.toString()
 
 object UniverseGenerationCollection {
     private val logger = RelativitizationLogManager.getLogger()
 
-    val generateMethodList: List<GenerateUniverse> = listOf(
+    val generateMethodList: List<GenerateUniverseMethod> = listOf(
         TestingFixedMinimal(),
         FlockingGenerate(),
     )
 
     // Store all generate method
-    val generateMethodMap: Map<String, GenerateUniverse> = generateMethodList.map {
+    val generateMethodMap: Map<String, GenerateUniverseMethod> = generateMethodList.map {
         it.name() to it
     }.toMap()
 
@@ -75,7 +75,7 @@ object UniverseGenerationCollection {
     }
 
     fun generate(settings: GenerateSettings): UniverseData {
-        val generateMethod: GenerateUniverse =  generateMethodMap.getOrElse(settings.generateMethod) {
+        val generateMethod: GenerateUniverseMethod =  generateMethodMap.getOrElse(settings.generateMethod) {
             logger.error("Generate method doesn't exist, using default method")
             TestingFixedMinimal()
         }

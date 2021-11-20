@@ -8,9 +8,8 @@ import relativitization.universe.UniverseServerSettings
 import relativitization.universe.communication.*
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.commands.Command
-import relativitization.universe.generate.GenerateSettings
-import relativitization.universe.generate.GenerateUniverse
-import relativitization.universe.generate.UniverseGenerationCollection
+import relativitization.universe.generate.method.GenerateSettings
+import relativitization.universe.generate.method.UniverseGenerationCollection
 import relativitization.universe.utils.CoroutineBoolean
 import relativitization.universe.utils.CoroutineVar
 import relativitization.universe.utils.RelativitizationLogManager

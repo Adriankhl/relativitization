@@ -1,4 +1,4 @@
-package relativitization.universe.generate.fixed
+package relativitization.universe.generate.method.fixed
 
 import relativitization.universe.ai.emptyAI.EmptyAI
 import relativitization.universe.ai.name
@@ -17,12 +17,12 @@ import relativitization.universe.data.components.science.knowledge.BasicResearch
 import relativitization.universe.data.components.science.knowledge.BasicResearchProjectData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.data.serializer.DataSerializer.copy
-import relativitization.universe.generate.GenerateSettings
-import relativitization.universe.generate.GenerateUniverse
+import relativitization.universe.generate.method.GenerateSettings
+import relativitization.universe.generate.method.GenerateUniverseMethod
 import relativitization.universe.maths.grid.Grids.create4DGrid
 import relativitization.universe.global.science.default.DefaultUniverseScienceDataProcess
 
-class TestingFixedMinimal : GenerateUniverse() {
+class TestingFixedMinimal : GenerateUniverseMethod() {
     override fun generate(settings: GenerateSettings): UniverseData {
         val universeSettings: UniverseSettings = copy(settings.universeSettings)
 

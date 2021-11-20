@@ -1,4 +1,4 @@
-package relativitization.universe.generate.abm
+package relativitization.universe.generate.method.abm
 
 import relativitization.universe.ai.abm.FlockingAI
 import relativitization.universe.ai.name
@@ -6,12 +6,12 @@ import relativitization.universe.data.*
 import relativitization.universe.data.components.physics.MutableVelocity
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.data.serializer.DataSerializer
-import relativitization.universe.generate.GenerateSettings
-import relativitization.universe.generate.GenerateUniverse
+import relativitization.universe.generate.method.GenerateSettings
+import relativitization.universe.generate.method.GenerateUniverseMethod
 import relativitization.universe.maths.grid.Grids.create4DGrid
 import kotlin.random.Random
 
-class FlockingGenerate : GenerateUniverse() {
+class FlockingGenerate : GenerateUniverseMethod() {
     override fun generate(settings: GenerateSettings): UniverseData {
         val universeSettings: UniverseSettings = DataSerializer.copy(settings.universeSettings)
 

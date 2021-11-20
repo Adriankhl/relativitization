@@ -7,7 +7,6 @@ import io.ktor.http.*
 import kotlinx.coroutines.runBlocking
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.TableScreen
-import relativitization.universe.generate.UniverseGenerationCollection
 import relativitization.universe.utils.RelativitizationLogManager
 
 class ServerSettingsScreen(val game: RelativitizationGame) : TableScreen(game.assets) {

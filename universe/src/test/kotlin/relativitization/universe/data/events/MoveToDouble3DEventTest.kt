@@ -6,8 +6,8 @@ import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.commands.AddEventCommand
 import relativitization.universe.data.components.physics.Double4D
 import relativitization.universe.data.components.physics.Int4D
-import relativitization.universe.generate.GenerateSettings
-import relativitization.universe.generate.UniverseGenerationCollection
+import relativitization.universe.generate.method.GenerateSettings
+import relativitization.universe.generate.method.UniverseGenerationCollection
 import kotlin.test.Test
 
 internal class MoveToDouble3DEventTest {

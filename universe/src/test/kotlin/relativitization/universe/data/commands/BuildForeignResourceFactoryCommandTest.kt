@@ -4,8 +4,8 @@ import kotlinx.coroutines.runBlocking
 import relativitization.universe.Universe
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.components.economy.ResourceType
-import relativitization.universe.generate.GenerateSettings
-import relativitization.universe.generate.UniverseGenerationCollection
+import relativitization.universe.generate.method.GenerateSettings
+import relativitization.universe.generate.method.UniverseGenerationCollection
 import kotlin.test.Test
 
 internal class BuildForeignResourceFactoryCommandTest {
