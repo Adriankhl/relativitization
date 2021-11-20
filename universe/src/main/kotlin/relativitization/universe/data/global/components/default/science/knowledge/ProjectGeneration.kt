@@ -1,6 +1,8 @@
-package relativitization.universe.data.components.default.science.knowledge
+package relativitization.universe.data.global.components.default.science.knowledge
 
 import kotlinx.serialization.Serializable
+import relativitization.universe.data.components.default.science.knowledge.AppliedResearchField
+import relativitization.universe.data.components.default.science.knowledge.BasicResearchField
 
 
 /**

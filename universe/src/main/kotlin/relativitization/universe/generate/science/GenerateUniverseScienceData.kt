@@ -3,6 +3,9 @@ package relativitization.universe.generate.science
 import relativitization.universe.data.global.components.MutableUniverseScienceData
 import relativitization.universe.data.global.components.UniverseScienceData
 import relativitization.universe.data.components.default.science.knowledge.*
+import relativitization.universe.data.global.components.default.science.knowledge.MutableAppliedResearchProjectGenerationData
+import relativitization.universe.data.global.components.default.science.knowledge.MutableBasicResearchProjectGenerationData
+import relativitization.universe.data.global.components.default.science.knowledge.MutableProjectGenerationData
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.maths.physics.Intervals
 import relativitization.universe.maths.sampling.WeightedReservoir
