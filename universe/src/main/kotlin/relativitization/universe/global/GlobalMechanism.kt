@@ -8,8 +8,34 @@ import relativitization.universe.global.science.UniverseScienceDataProcess
 import relativitization.universe.global.science.UniverseScienceDataProcessCollection
 import relativitization.universe.utils.RelativitizationLogManager
 
+abstract class GlobalMechanism {
+    /**
+     * Update global data
+     *
+     * @param mutableUniverseGlobalData the global data to be update
+     * @param universeData the update process can depend on this universe data
+     */
+    abstract fun updateGlobalData(
+        mutableUniverseGlobalData: MutableUniverseGlobalData,
+        universeData: UniverseData,
+    )
+}
+
+sealed class GlobalMechanismList {
+    abstract val globalMechanismList: List<GlobalMechanism>
+}
+
+fun GlobalMechanismList.name(): String = this::class.simpleName.toString()
+
 object GlobalMechanismCollection {
     private val logger = RelativitizationLogManager.getLogger()
+
+    private val globalMechanismListList: List<GlobalMechanismList> =
+        GlobalMechanismList::class.sealedSubclasses.map { it.objectInstance!! }
+
+    val globalMechanismListMap: Map<String, GlobalMechanismList> = globalMechanismListList.map {
+        it.name() to it
+    }.toMap()
 
     fun globalProcess(
         universeData: UniverseData
