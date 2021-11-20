@@ -3,7 +3,7 @@ package relativitization.universe.data.components
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.components.default.economy.*
-import relativitization.universe.data.components.economy.*
+import relativitization.universe.data.components.default.economy.*
 
 /**
  * @property taxData data about the tax rate of various stuff

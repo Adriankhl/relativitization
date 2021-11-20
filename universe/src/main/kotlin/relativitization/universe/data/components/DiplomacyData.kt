@@ -3,7 +3,7 @@ package relativitization.universe.data.components
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.MutablePlayerData
-import relativitization.universe.data.components.diplomacy.*
+import relativitization.universe.data.components.default.diplomacy.*
 
 /**
  * @property relationMap map from other player id to the DiplomaticRelationData view by this player

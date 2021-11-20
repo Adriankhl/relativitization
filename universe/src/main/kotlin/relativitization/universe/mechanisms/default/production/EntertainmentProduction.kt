@@ -6,7 +6,7 @@ import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.components.default.economy.MutableResourceQualityData
 import relativitization.universe.data.components.default.economy.ResourceType
-import relativitization.universe.data.components.popsystem.pop.entertainer.MutableEntertainerPopData
+import relativitization.universe.data.components.default.popsystem.pop.entertainer.MutableEntertainerPopData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.maths.physics.Relativistic
 import relativitization.universe.mechanisms.Mechanism

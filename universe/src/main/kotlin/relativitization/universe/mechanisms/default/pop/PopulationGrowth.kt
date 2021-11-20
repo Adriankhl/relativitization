@@ -6,7 +6,7 @@ import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.components.default.popsystem.pop.MutableCommonPopData
 import relativitization.universe.data.components.default.popsystem.pop.PopType
-import relativitization.universe.data.components.popsystem.pop.medic.MutableMedicPopData
+import relativitization.universe.data.components.default.popsystem.pop.medic.MutableMedicPopData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.maths.physics.Relativistic
 import relativitization.universe.mechanisms.Mechanism

@@ -3,8 +3,8 @@ package relativitization.universe.data.components.default.popsystem.pop.engineer
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.components.default.popsystem.pop.CommonPopData
 import relativitization.universe.data.components.default.popsystem.pop.MutableCommonPopData
-import relativitization.universe.data.components.popsystem.pop.engineer.laboratory.LaboratoryData
-import relativitization.universe.data.components.popsystem.pop.engineer.laboratory.MutableLaboratoryData
+import relativitization.universe.data.components.default.popsystem.pop.engineer.laboratory.LaboratoryData
+import relativitization.universe.data.components.default.popsystem.pop.engineer.laboratory.MutableLaboratoryData
 import relativitization.universe.maths.collection.ListFind
 
 @Serializable

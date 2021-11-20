@@ -3,8 +3,8 @@ package relativitization.universe.data.components.default.popsystem.pop.service
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.components.default.popsystem.pop.CommonPopData
 import relativitization.universe.data.components.default.popsystem.pop.MutableCommonPopData
-import relativitization.universe.data.components.popsystem.pop.service.export.ExportData
-import relativitization.universe.data.components.popsystem.pop.service.export.MutableExportData
+import relativitization.universe.data.components.default.popsystem.pop.service.export.ExportData
+import relativitization.universe.data.components.default.popsystem.pop.service.export.MutableExportData
 
 @Serializable
 data class ServicePopData(

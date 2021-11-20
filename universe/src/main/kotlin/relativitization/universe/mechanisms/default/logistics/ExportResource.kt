@@ -8,9 +8,9 @@ import relativitization.universe.data.commands.SendResourceCommand
 import relativitization.universe.data.commands.SendResourceToPopCommand
 import relativitization.universe.data.components.default.economy.MutableResourceData
 import relativitization.universe.data.components.default.economy.ResourceQualityData
-import relativitization.universe.data.components.popsystem.pop.service.MutableServicePopData
-import relativitization.universe.data.components.popsystem.pop.service.export.MutablePlayerSingleExportData
-import relativitization.universe.data.components.popsystem.pop.service.export.MutablePopSingleExportData
+import relativitization.universe.data.components.default.popsystem.pop.service.MutableServicePopData
+import relativitization.universe.data.components.default.popsystem.pop.service.export.MutablePlayerSingleExportData
+import relativitization.universe.data.components.default.popsystem.pop.service.export.MutablePopSingleExportData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.mechanisms.Mechanism
 import kotlin.math.max

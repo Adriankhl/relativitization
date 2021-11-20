@@ -2,13 +2,13 @@ package relativitization.universe.data.components
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import relativitization.universe.data.components.popsystem.*
+import relativitization.universe.data.components.default.popsystem.*
 import relativitization.universe.data.components.default.popsystem.pop.PopType
-import relativitization.universe.data.components.popsystem.pop.labourer.factory.MutableFuelFactoryData
-import relativitization.universe.data.components.popsystem.pop.service.export.MutablePlayerExportCenterData
-import relativitization.universe.data.components.popsystem.pop.service.export.MutablePlayerSingleExportData
-import relativitization.universe.data.components.popsystem.pop.service.export.MutablePopExportCenterData
-import relativitization.universe.data.components.popsystem.pop.service.export.MutablePopSingleExportData
+import relativitization.universe.data.components.default.popsystem.pop.labourer.factory.MutableFuelFactoryData
+import relativitization.universe.data.components.default.popsystem.pop.service.export.MutablePlayerExportCenterData
+import relativitization.universe.data.components.default.popsystem.pop.service.export.MutablePlayerSingleExportData
+import relativitization.universe.data.components.default.popsystem.pop.service.export.MutablePopExportCenterData
+import relativitization.universe.data.components.default.popsystem.pop.service.export.MutablePopSingleExportData
 import relativitization.universe.maths.collection.ListFind
 import kotlin.random.Random
 

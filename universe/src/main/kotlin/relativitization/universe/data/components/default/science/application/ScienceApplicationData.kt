@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 import relativitization.universe.data.components.default.economy.MutableResourceQualityData
 import relativitization.universe.data.components.default.economy.ResourceQualityData
 import relativitization.universe.data.components.default.economy.ResourceType
-import relativitization.universe.data.components.popsystem.pop.labourer.factory.*
+import relativitization.universe.data.components.default.popsystem.pop.labourer.factory.*
 import relativitization.universe.maths.algebra.Quadratic
 import relativitization.universe.utils.RelativitizationLogManager
 

@@ -1,10 +1,10 @@
 package relativitization.universe.global.science
 
 import relativitization.universe.data.*
-import relativitization.universe.data.components.science.knowledge.AppliedResearchProjectData
-import relativitization.universe.data.components.science.knowledge.BasicResearchProjectData
-import relativitization.universe.data.components.science.knowledge.MutableAppliedResearchData
-import relativitization.universe.data.components.science.knowledge.MutableBasicResearchData
+import relativitization.universe.data.components.default.science.knowledge.AppliedResearchProjectData
+import relativitization.universe.data.components.default.science.knowledge.BasicResearchProjectData
+import relativitization.universe.data.components.default.science.knowledge.MutableAppliedResearchData
+import relativitization.universe.data.components.default.science.knowledge.MutableBasicResearchData
 import relativitization.universe.data.global.MutableUniverseGlobalData
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.global.science.default.DefaultUniverseScienceDataProcess

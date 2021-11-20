@@ -9,10 +9,10 @@ import relativitization.universe.data.components.MutableEconomyData
 import relativitization.universe.data.components.default.physics.MutableFuelRestMassData
 import relativitization.universe.data.components.default.popsystem.MutableCarrierData
 import relativitization.universe.data.components.default.popsystem.pop.MutableCommonPopData
-import relativitization.universe.data.components.popsystem.pop.engineer.MutableEngineerPopData
-import relativitization.universe.data.components.popsystem.pop.labourer.MutableLabourerPopData
-import relativitization.universe.data.components.popsystem.pop.scholar.MutableScholarPopData
-import relativitization.universe.data.components.popsystem.pop.soldier.MutableSoldierPopData
+import relativitization.universe.data.components.default.popsystem.pop.engineer.MutableEngineerPopData
+import relativitization.universe.data.components.default.popsystem.pop.labourer.MutableLabourerPopData
+import relativitization.universe.data.components.default.popsystem.pop.scholar.MutableScholarPopData
+import relativitization.universe.data.components.default.popsystem.pop.soldier.MutableSoldierPopData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.maths.physics.Relativistic
 import relativitization.universe.mechanisms.Mechanism

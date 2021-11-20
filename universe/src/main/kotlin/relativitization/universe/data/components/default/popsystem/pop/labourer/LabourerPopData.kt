@@ -3,10 +3,10 @@ package relativitization.universe.data.components.default.popsystem.pop.labourer
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.components.default.popsystem.pop.CommonPopData
 import relativitization.universe.data.components.default.popsystem.pop.MutableCommonPopData
-import relativitization.universe.data.components.popsystem.pop.labourer.factory.FuelFactoryData
-import relativitization.universe.data.components.popsystem.pop.labourer.factory.MutableFuelFactoryData
-import relativitization.universe.data.components.popsystem.pop.labourer.factory.ResourceFactoryData
-import relativitization.universe.data.components.popsystem.pop.labourer.factory.MutableResourceFactoryData
+import relativitization.universe.data.components.default.popsystem.pop.labourer.factory.FuelFactoryData
+import relativitization.universe.data.components.default.popsystem.pop.labourer.factory.MutableFuelFactoryData
+import relativitization.universe.data.components.default.popsystem.pop.labourer.factory.ResourceFactoryData
+import relativitization.universe.data.components.default.popsystem.pop.labourer.factory.MutableResourceFactoryData
 import relativitization.universe.maths.collection.ListFind
 
 @Serializable

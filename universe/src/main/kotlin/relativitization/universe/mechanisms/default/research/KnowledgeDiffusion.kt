@@ -6,8 +6,8 @@ import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.components.MutablePlayerScienceData
 import relativitization.universe.data.components.PlayerScienceData
-import relativitization.universe.data.components.science.knowledge.AppliedResearchProjectData
-import relativitization.universe.data.components.science.knowledge.BasicResearchProjectData
+import relativitization.universe.data.components.default.science.knowledge.AppliedResearchProjectData
+import relativitization.universe.data.components.default.science.knowledge.BasicResearchProjectData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.global.science.default.DefaultUniverseScienceDataProcess
 import relativitization.universe.maths.physics.Relativistic

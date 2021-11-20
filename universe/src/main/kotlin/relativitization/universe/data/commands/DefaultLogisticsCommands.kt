@@ -8,10 +8,10 @@ import relativitization.universe.data.components.default.economy.ResourceQuality
 import relativitization.universe.data.components.default.economy.ResourceType
 import relativitization.universe.data.components.default.physics.Int4D
 import relativitization.universe.data.components.default.popsystem.pop.PopType
-import relativitization.universe.data.components.popsystem.pop.service.export.MutablePlayerExportCenterData
-import relativitization.universe.data.components.popsystem.pop.service.export.MutablePlayerSingleExportData
-import relativitization.universe.data.components.popsystem.pop.service.export.MutablePopExportCenterData
-import relativitization.universe.data.components.popsystem.pop.service.export.MutablePopSingleExportData
+import relativitization.universe.data.components.default.popsystem.pop.service.export.MutablePlayerExportCenterData
+import relativitization.universe.data.components.default.popsystem.pop.service.export.MutablePlayerSingleExportData
+import relativitization.universe.data.components.default.popsystem.pop.service.export.MutablePopExportCenterData
+import relativitization.universe.data.components.default.popsystem.pop.service.export.MutablePopSingleExportData
 import relativitization.universe.maths.physics.Intervals
 import relativitization.universe.utils.I18NString
 import relativitization.universe.utils.IntString

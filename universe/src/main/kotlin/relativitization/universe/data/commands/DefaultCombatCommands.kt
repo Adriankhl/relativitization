@@ -6,7 +6,7 @@ import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.components.default.physics.Int4D
 import relativitization.universe.data.components.default.popsystem.CarrierType
 import relativitization.universe.data.components.default.popsystem.MutableCarrierData
-import relativitization.universe.data.components.popsystem.pop.soldier.facility.MutableMilitaryBaseData
+import relativitization.universe.data.components.default.popsystem.pop.soldier.facility.MutableMilitaryBaseData
 import relativitization.universe.maths.sampling.WeightedReservoir
 import relativitization.universe.utils.I18NString
 

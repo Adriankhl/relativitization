@@ -3,7 +3,7 @@ package relativitization.universe.data.components
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.components.default.modifier.*
-import relativitization.universe.data.components.modifier.*
+import relativitization.universe.data.components.default.modifier.*
 
 @Serializable
 @SerialName("ModifierData")
