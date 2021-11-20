@@ -21,9 +21,8 @@ import relativitization.universe.data.global.components.MutableUniverseScienceDa
 import relativitization.universe.data.global.components.UniverseScienceData
 import relativitization.universe.data.serializer.DataSerializer.copy
 import relativitization.universe.generate.method.GenerateSettings
-import relativitization.universe.generate.method.GenerateUniverseMethod
 import relativitization.universe.maths.grid.Grids.create4DGrid
-import relativitization.universe.global.science.default.DefaultUniverseScienceDataProcess
+import relativitization.universe.global.science.default.UpdateUniverseScienceData
 
 object TestingFixedMinimal : TestingGenerateUniverseMethod() {
     override fun generate(settings: GenerateSettings): UniverseData {
@@ -162,19 +161,19 @@ object TestingFixedMinimal : TestingGenerateUniverseMethod() {
         // Also need to add to universe science data later
         playerData1.playerInternalData.playerScienceData().doneBasicResearchProject(
             basic0,
-            DefaultUniverseScienceDataProcess.basicResearchProjectFunction()
+            UpdateUniverseScienceData.basicResearchProjectFunction()
         )
         playerData1.playerInternalData.playerScienceData().doneAppliedResearchProject(
             applied0,
-            DefaultUniverseScienceDataProcess.appliedResearchProjectFunction()
+            UpdateUniverseScienceData.appliedResearchProjectFunction()
         )
         playerData1.playerInternalData.playerScienceData().doneBasicResearchProject(
             basic1,
-            DefaultUniverseScienceDataProcess.basicResearchProjectFunction()
+            UpdateUniverseScienceData.basicResearchProjectFunction()
         )
         playerData1.playerInternalData.playerScienceData().doneAppliedResearchProject(
             applied1,
-            DefaultUniverseScienceDataProcess.appliedResearchProjectFunction()
+            UpdateUniverseScienceData.appliedResearchProjectFunction()
         )
         playerData1.playerInternalData.playerScienceData().knownBasicResearchProject(
             basic2

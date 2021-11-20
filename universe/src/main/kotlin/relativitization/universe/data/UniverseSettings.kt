@@ -10,8 +10,6 @@ import relativitization.universe.maths.physics.Intervals.intDelay
 import relativitization.universe.maths.physics.Intervals.maxDelayAfterMove
 import relativitization.universe.mechanisms.DefaultMechanismList
 import relativitization.universe.mechanisms.name
-import relativitization.universe.global.science.default.DefaultUniverseScienceDataProcess
-import relativitization.universe.global.science.name
 
 /**
  * Setting data
@@ -19,7 +17,6 @@ import relativitization.universe.global.science.name
  * @property universeName name of the universe
  * @property mechanismCollectionName the name of the mechanism collection
  * @property commandCollectionName the name of the available command collection, or "All" to available all commands
- * @property universeScienceDataProcessCollectionName the name of the science process
  * @property globalMechanismCollectionName the name of global mechanism collection, such as how universe science is generated procedurally
  * @property speedOfLight speed of light in integer
  * @property tDim t dimension of the universe
@@ -35,7 +32,6 @@ data class UniverseSettings(
     val universeName: String = "Test",
     val mechanismCollectionName: String = DefaultMechanismList.name(),
     val commandCollectionName: String = DefaultCommandAvailability.name(),
-    val universeScienceDataProcessCollectionName: String = DefaultUniverseScienceDataProcess.name(),
     val globalMechanismCollectionName: String = DefaultGlobalMechanismList.name(),
     val speedOfLight: Double = 1.0,
     val tDim: Int = 8,
@@ -69,7 +65,6 @@ data class MutableUniverseSettings(
     var universeName: String = "Test",
     var mechanismCollectionName: String = DefaultMechanismList.name(),
     var commandCollectionName: String = DefaultCommandAvailability.name(),
-    var universeScienceDataProcessCollectionName: String = DefaultUniverseScienceDataProcess.name(),
     var globalMechanismCollectionName: String = DefaultGlobalMechanismList.name(),
     var speedOfLight: Double = 1.0,
     var tDim: Int = 8,

@@ -9,8 +9,8 @@ import relativitization.game.RelativitizationGame
 import relativitization.game.utils.TableScreen
 import relativitization.universe.data.commands.CommandCollection
 import relativitization.universe.generate.method.GenerateUniverseMethodCollection
+import relativitization.universe.global.GlobalMechanismCollection
 import relativitization.universe.mechanisms.MechanismCollection
-import relativitization.universe.global.science.UniverseScienceDataProcessCollection
 import relativitization.universe.utils.RelativitizationLogManager
 
 class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
@@ -146,13 +146,13 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
 
         table.row().space(10f)
 
-        table.add(createLabel("Pick universe science data process: ", gdxSettings.normalFontSize))
+        table.add(createLabel("Pick global mechanics: ", gdxSettings.normalFontSize))
         val universeScienceDataProcessSelectBox = createSelectBox(
-            UniverseScienceDataProcessCollection.universeScienceDataProcessNameMap.keys.toList(),
-            game.universeClient.generateSettings.universeSettings.universeScienceDataProcessCollectionName,
+            GlobalMechanismCollection.globalMechanismListMap.keys.toList(),
+            game.universeClient.generateSettings.universeSettings.globalMechanismCollectionName,
             gdxSettings.normalFontSize,
-        ) { universeScienceDataProcessName, _ ->
-            game.universeClient.generateSettings.universeSettings.universeScienceDataProcessCollectionName = universeScienceDataProcessName
+        ) { globalMechanismCollectionName, _ ->
+            game.universeClient.generateSettings.universeSettings.globalMechanismCollectionName = globalMechanismCollectionName
         }
         table.add(universeScienceDataProcessSelectBox)
 

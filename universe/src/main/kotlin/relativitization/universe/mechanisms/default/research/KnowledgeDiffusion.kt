@@ -9,7 +9,7 @@ import relativitization.universe.data.components.PlayerScienceData
 import relativitization.universe.data.components.default.science.knowledge.AppliedResearchProjectData
 import relativitization.universe.data.components.default.science.knowledge.BasicResearchProjectData
 import relativitization.universe.data.global.UniverseGlobalData
-import relativitization.universe.global.science.default.DefaultUniverseScienceDataProcess
+import relativitization.universe.global.science.default.UpdateUniverseScienceData
 import relativitization.universe.maths.physics.Relativistic
 import relativitization.universe.mechanisms.Mechanism
 import kotlin.math.pow
@@ -49,7 +49,7 @@ object KnowledgeDiffusion : Mechanism() {
             ).forEach {
                 mutablePlayerData.playerInternalData.playerScienceData().doneBasicResearchProject(
                     it,
-                    DefaultUniverseScienceDataProcess.basicResearchProjectFunction()
+                    UpdateUniverseScienceData.basicResearchProjectFunction()
                 )
             }
 
@@ -60,7 +60,7 @@ object KnowledgeDiffusion : Mechanism() {
             ).forEach {
                 mutablePlayerData.playerInternalData.playerScienceData().doneAppliedResearchProject(
                     it,
-                    DefaultUniverseScienceDataProcess.appliedResearchProjectFunction()
+                    UpdateUniverseScienceData.appliedResearchProjectFunction()
                 )
             }
         }
