@@ -4,10 +4,10 @@ import relativitization.universe.data.*
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.components.MutablePlayerScienceData
 import relativitization.universe.data.components.PlayerScienceData
-import relativitization.universe.data.components.economy.MutableResourceData
-import relativitization.universe.data.components.economy.ResourceQualityClass
-import relativitization.universe.data.components.economy.ResourceQualityData
-import relativitization.universe.data.components.economy.ResourceType
+import relativitization.universe.data.components.default.economy.MutableResourceData
+import relativitization.universe.data.components.default.economy.ResourceQualityClass
+import relativitization.universe.data.components.default.economy.ResourceQualityData
+import relativitization.universe.data.components.default.economy.ResourceType
 import relativitization.universe.data.components.popsystem.pop.engineer.MutableEngineerPopData
 import relativitization.universe.data.components.popsystem.pop.engineer.laboratory.MutableLaboratoryData
 import relativitization.universe.data.components.popsystem.pop.scholar.MutableScholarPopData

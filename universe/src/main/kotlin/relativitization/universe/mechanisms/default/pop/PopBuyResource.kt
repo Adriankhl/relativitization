@@ -6,10 +6,10 @@ import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.components.MutableEconomyData
 import relativitization.universe.data.components.MutablePhysicsData
-import relativitization.universe.data.components.economy.MutableResourceQualityData
-import relativitization.universe.data.components.economy.ResourceQualityClass
-import relativitization.universe.data.components.popsystem.pop.MutableCommonPopData
-import relativitization.universe.data.components.popsystem.pop.PopType
+import relativitization.universe.data.components.default.economy.MutableResourceQualityData
+import relativitization.universe.data.components.default.economy.ResourceQualityClass
+import relativitization.universe.data.components.default.popsystem.pop.MutableCommonPopData
+import relativitization.universe.data.components.default.popsystem.pop.PopType
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.maths.physics.Relativistic
 import relativitization.universe.mechanisms.Mechanism
@@ -33,7 +33,7 @@ object PopBuyResource : Mechanism() {
         )
 
         mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.forEach { mutableCarrierData ->
-            PopType.values().forEach { popType ->
+            relativitization.universe.data.components.default.popsystem.pop.PopType.values().forEach { popType ->
                 val commonPopData = mutableCarrierData.allPopData.getCommonPopData(popType)
                 buyFromThisPlayer(
                     gamma,
@@ -50,7 +50,7 @@ object PopBuyResource : Mechanism() {
     fun buyFromThisPlayer(
         gamma: Double,
         physicsData: MutablePhysicsData,
-        commonPopData: MutableCommonPopData,
+        commonPopData: relativitization.universe.data.components.default.popsystem.pop.MutableCommonPopData,
         economyData: MutableEconomyData,
     ) {
         val numDesire: Double = commonPopData.desireResourceMap.size.toDouble()

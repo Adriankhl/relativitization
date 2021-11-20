@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.components.diplomacy.DiplomaticRelationState
-import relativitization.universe.data.components.physics.Int4D
+import relativitization.universe.data.components.default.physics.Int4D
 import relativitization.universe.utils.I18NString
 import relativitization.universe.utils.IntString
 import relativitization.universe.utils.RealString

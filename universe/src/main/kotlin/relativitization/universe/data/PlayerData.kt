@@ -8,6 +8,7 @@ import relativitization.universe.data.components.MutablePopSystemData
 import relativitization.universe.data.components.PlayerScienceData
 import relativitization.universe.data.components.PoliticsData
 import relativitization.universe.data.components.PopSystemData
+import relativitization.universe.data.components.default.physics.*
 import relativitization.universe.data.components.physics.*
 import relativitization.universe.data.events.EventData
 import relativitization.universe.data.events.MutableEventData

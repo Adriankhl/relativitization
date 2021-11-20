@@ -3,9 +3,9 @@ package relativitization.universe.data.commands
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseSettings
-import relativitization.universe.data.components.physics.Int4D
-import relativitization.universe.data.components.popsystem.CarrierType
-import relativitization.universe.data.components.popsystem.MutableCarrierData
+import relativitization.universe.data.components.default.physics.Int4D
+import relativitization.universe.data.components.default.popsystem.CarrierType
+import relativitization.universe.data.components.default.popsystem.MutableCarrierData
 import relativitization.universe.data.components.popsystem.pop.soldier.facility.MutableMilitaryBaseData
 import relativitization.universe.maths.sampling.WeightedReservoir
 import relativitization.universe.utils.I18NString
@@ -51,7 +51,7 @@ data class DamageCommand(
         // Attack consume shield
         carrierIdList.forEach {
 
-            val carrierData: MutableCarrierData =
+            val carrierData: relativitization.universe.data.components.default.popsystem.MutableCarrierData =
                 playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
                     it
                 )
@@ -62,7 +62,7 @@ data class DamageCommand(
                 carrierData.allPopData.soldierPopData.militaryBaseData.shield -= attackAcc
                 attackAcc = 0.0
             } else {
-                if (carrierData.carrierType == CarrierType.SPACESHIP) {
+                if (carrierData.carrierType == relativitization.universe.data.components.default.popsystem.CarrierType.SPACESHIP) {
                     // Destroy this carrier
                     playerData.playerInternalData.popSystemData().carrierDataMap.remove(it)
                 } else {
@@ -81,7 +81,7 @@ data class DamageCommand(
         } else {
             // Change leader if all carrier shields are destroyed
             val allCarrierDestroyed: Boolean = playerData.playerInternalData.popSystemData().carrierDataMap.values. all {
-                (it.carrierType != CarrierType.SPACESHIP) && (it.allPopData.soldierPopData.militaryBaseData.shield <= 0.0)
+                (it.carrierType != relativitization.universe.data.components.default.popsystem.CarrierType.SPACESHIP) && (it.allPopData.soldierPopData.militaryBaseData.shield <= 0.0)
             }
 
             if (allCarrierDestroyed) {

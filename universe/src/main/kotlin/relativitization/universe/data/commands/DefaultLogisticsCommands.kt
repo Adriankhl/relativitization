@@ -3,11 +3,11 @@ package relativitization.universe.data.commands
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseSettings
-import relativitization.universe.data.components.economy.ResourceQualityClass
-import relativitization.universe.data.components.economy.ResourceQualityData
-import relativitization.universe.data.components.economy.ResourceType
-import relativitization.universe.data.components.physics.Int4D
-import relativitization.universe.data.components.popsystem.pop.PopType
+import relativitization.universe.data.components.default.economy.ResourceQualityClass
+import relativitization.universe.data.components.default.economy.ResourceQualityData
+import relativitization.universe.data.components.default.economy.ResourceType
+import relativitization.universe.data.components.default.physics.Int4D
+import relativitization.universe.data.components.default.popsystem.pop.PopType
 import relativitization.universe.data.components.popsystem.pop.service.export.MutablePlayerExportCenterData
 import relativitization.universe.data.components.popsystem.pop.service.export.MutablePlayerSingleExportData
 import relativitization.universe.data.components.popsystem.pop.service.export.MutablePopExportCenterData
@@ -452,7 +452,7 @@ data class SendResourceToPopCommand(
     override val fromId: Int,
     override val fromInt4D: Int4D,
     val targetCarrierId: Int,
-    val targetPopType: PopType,
+    val targetPopType: relativitization.universe.data.components.default.popsystem.pop.PopType,
     val resourceType: ResourceType,
     val resourceQualityData: ResourceQualityData,
     val amount: Double,
@@ -518,7 +518,7 @@ data class PopBuyResourceCommand(
     override val fromInt4D: Int4D,
     val receiverTopLeaderId: Int,
     val fromCarrierId: Int,
-    val fromPopType: PopType,
+    val fromPopType: relativitization.universe.data.components.default.popsystem.pop.PopType,
     val targetCarrierId: Int,
     val resourceType: ResourceType,
     val resourceQualityClass: ResourceQualityClass,

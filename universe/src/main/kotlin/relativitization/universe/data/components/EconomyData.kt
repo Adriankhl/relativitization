@@ -2,6 +2,7 @@ package relativitization.universe.data.components
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import relativitization.universe.data.components.default.economy.*
 import relativitization.universe.data.components.economy.*
 
 /**

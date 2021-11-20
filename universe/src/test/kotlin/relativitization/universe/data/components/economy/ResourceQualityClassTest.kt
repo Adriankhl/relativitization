@@ -1,5 +1,6 @@
 package relativitization.universe.data.components.economy
 
+import relativitization.universe.data.components.default.economy.ResourceQualityClass
 import kotlin.test.Test
 
 internal class ResourceQualityClassTest {

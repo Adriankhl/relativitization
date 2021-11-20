@@ -1,9 +1,9 @@
 package relativitization.universe.maths.grid
 
-import relativitization.universe.data.components.physics.Double3D
-import relativitization.universe.data.components.physics.Double4D
-import relativitization.universe.data.components.physics.Int3D
-import relativitization.universe.data.components.physics.MutableDouble4D
+import relativitization.universe.data.components.default.physics.Double3D
+import relativitization.universe.data.components.default.physics.Double4D
+import relativitization.universe.data.components.default.physics.Int3D
+import relativitization.universe.data.components.default.physics.MutableDouble4D
 
 object Grids {
 

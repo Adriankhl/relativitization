@@ -3,7 +3,7 @@ package relativitization.universe.data
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.commands.DefaultCommandAvailability
 import relativitization.universe.data.commands.name
-import relativitization.universe.data.components.physics.Int3D
+import relativitization.universe.data.components.default.physics.Int3D
 import relativitization.universe.maths.physics.Intervals.intDelay
 import relativitization.universe.maths.physics.Intervals.maxDelayAfterMove
 import relativitization.universe.mechanisms.DefaultMechanismList

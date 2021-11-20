@@ -5,7 +5,7 @@ import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.components.MutablePlayerScienceData
-import relativitization.universe.data.components.modifier.MutableCombatModifierData
+import relativitization.universe.data.components.default.modifier.MutableCombatModifierData
 import relativitization.universe.data.components.popsystem.pop.soldier.MutableSoldierPopData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.mechanisms.Mechanism

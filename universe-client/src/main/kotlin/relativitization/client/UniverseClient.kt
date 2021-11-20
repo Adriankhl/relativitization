@@ -22,8 +22,8 @@ import relativitization.universe.data.commands.CanSendCheckMessage
 import relativitization.universe.data.commands.CannotSendCommand
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.commands.DummyCommand
-import relativitization.universe.data.components.physics.Double2D
-import relativitization.universe.data.components.physics.Int3D
+import relativitization.universe.data.components.default.physics.Double2D
+import relativitization.universe.data.components.default.physics.Int3D
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.generate.method.GenerateSettings
 import relativitization.universe.utils.CoroutineBoolean

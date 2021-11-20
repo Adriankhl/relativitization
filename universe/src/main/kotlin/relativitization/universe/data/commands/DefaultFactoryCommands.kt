@@ -3,9 +3,9 @@ package relativitization.universe.data.commands
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseSettings
-import relativitization.universe.data.components.economy.ResourceType
-import relativitization.universe.data.components.physics.Int4D
-import relativitization.universe.data.components.popsystem.MutableCarrierData
+import relativitization.universe.data.components.default.economy.ResourceType
+import relativitization.universe.data.components.default.physics.Int4D
+import relativitization.universe.data.components.default.popsystem.MutableCarrierData
 import relativitization.universe.data.components.popsystem.pop.labourer.factory.*
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.utils.I18NString
@@ -157,7 +157,7 @@ data class BuildForeignFuelFactoryCommand(
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
 
-        val carrier: MutableCarrierData =
+        val carrier: relativitization.universe.data.components.default.popsystem.MutableCarrierData =
             playerData.playerInternalData.popSystemData().carrierDataMap.getValue(targetCarrierId)
         carrier.allPopData.labourerPopData.addFuelFactory(
             MutableFuelFactoryData(
@@ -329,7 +329,7 @@ data class BuildForeignResourceFactoryCommand(
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
 
-        val carrier: MutableCarrierData =
+        val carrier: relativitization.universe.data.components.default.popsystem.MutableCarrierData =
             playerData.playerInternalData.popSystemData().carrierDataMap.getValue(targetCarrierId)
         carrier.allPopData.labourerPopData.addResourceFactory(
             MutableResourceFactoryData(
@@ -443,7 +443,7 @@ data class BuildLocalFuelFactoryCommand(
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
 
-        val carrier: MutableCarrierData =
+        val carrier: relativitization.universe.data.components.default.popsystem.MutableCarrierData =
             playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
                 targetCarrierId
             )
@@ -575,7 +575,7 @@ data class BuildLocalResourceFactoryCommand(
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
 
-        val carrier: MutableCarrierData =
+        val carrier: relativitization.universe.data.components.default.popsystem.MutableCarrierData =
             playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
                 targetCarrierId
             )

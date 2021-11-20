@@ -1,6 +1,6 @@
 package relativitization.universe.maths.physics
 
-import relativitization.universe.data.components.physics.Velocity
+import relativitization.universe.data.components.default.physics.Velocity
 import relativitization.universe.maths.algebra.Quadratic.discriminant
 import relativitization.universe.maths.algebra.Quadratic.solveQuadratic
 import relativitization.universe.maths.algebra.QuadraticSolutions

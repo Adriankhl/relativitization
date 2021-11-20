@@ -3,9 +3,9 @@ package relativitization.universe.generate.method.testing
 import relativitization.universe.ai.EmptyAI
 import relativitization.universe.ai.name
 import relativitization.universe.data.*
-import relativitization.universe.data.components.economy.MutableResourceQualityData
-import relativitization.universe.data.components.economy.ResourceType
-import relativitization.universe.data.components.physics.MutableInt4D
+import relativitization.universe.data.components.default.economy.MutableResourceQualityData
+import relativitization.universe.data.components.default.economy.ResourceType
+import relativitization.universe.data.components.default.physics.MutableInt4D
 import relativitization.universe.data.components.popsystem.pop.engineer.laboratory.MutableLaboratoryData
 import relativitization.universe.data.components.popsystem.pop.labourer.factory.MutableFuelFactoryData
 import relativitization.universe.data.components.popsystem.pop.labourer.factory.MutableFuelFactoryInternalData

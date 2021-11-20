@@ -1,7 +1,7 @@
 package relativitization.universe.maths.physics
 
-import relativitization.universe.data.components.physics.Double3D
-import relativitization.universe.data.components.physics.Velocity
+import relativitization.universe.data.components.default.physics.Double3D
+import relativitization.universe.data.components.default.physics.Velocity
 import relativitization.universe.maths.physics.Intervals.distance
 import relativitization.universe.maths.physics.Relativistic.decelerateByPhotonRocket
 import relativitization.universe.maths.physics.Relativistic.deltaMassByPhotonRocket

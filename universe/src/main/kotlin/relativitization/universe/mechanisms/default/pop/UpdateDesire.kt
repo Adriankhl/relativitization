@@ -4,11 +4,11 @@ import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
-import relativitization.universe.data.components.economy.MutableResourceQualityData
-import relativitization.universe.data.components.economy.ResourceType
-import relativitization.universe.data.components.popsystem.pop.MutableCommonPopData
-import relativitization.universe.data.components.popsystem.pop.MutableResourceDesireData
-import relativitization.universe.data.components.popsystem.pop.PopType
+import relativitization.universe.data.components.default.economy.MutableResourceQualityData
+import relativitization.universe.data.components.default.economy.ResourceType
+import relativitization.universe.data.components.default.popsystem.pop.MutableCommonPopData
+import relativitization.universe.data.components.default.popsystem.pop.MutableResourceDesireData
+import relativitization.universe.data.components.default.popsystem.pop.PopType
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.maths.algebra.Piecewise
 import relativitization.universe.maths.physics.Relativistic
@@ -35,8 +35,8 @@ object UpdateDesire : Mechanism() {
         )
 
         mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.forEach { carrier ->
-            PopType.values().forEach { popType ->
-                val mutableCommonPopData: MutableCommonPopData =
+            relativitization.universe.data.components.default.popsystem.pop.PopType.values().forEach { popType ->
+                val mutableCommonPopData: relativitization.universe.data.components.default.popsystem.pop.MutableCommonPopData =
                     carrier.allPopData.getCommonPopData(popType)
 
                 val desireAmount: Double = computeDesireResourceAmount(
@@ -47,7 +47,7 @@ object UpdateDesire : Mechanism() {
                     popType
                 )
 
-                val desireResourceMap: Map<ResourceType, MutableResourceDesireData> = desireResourceTypeList.map {
+                val desireResourceMap: Map<ResourceType, relativitization.universe.data.components.default.popsystem.pop.MutableResourceDesireData> = desireResourceTypeList.map {
                     val desireQualityData: MutableResourceQualityData = computeDesireResourceQuality(
                         gamma = gamma,
                         mutableCommonPopData = mutableCommonPopData,
@@ -56,7 +56,10 @@ object UpdateDesire : Mechanism() {
                         desireQualityUpdateMinDiff = desireQualityUpdateDiff,
                     )
 
-                    it to MutableResourceDesireData(desireAmount, desireQualityData)
+                    it to relativitization.universe.data.components.default.popsystem.pop.MutableResourceDesireData(
+                        desireAmount,
+                        desireQualityData
+                    )
                 }.toMap()
 
                 updateSatisfaction(
@@ -83,53 +86,53 @@ object UpdateDesire : Mechanism() {
      * @param popType the desire of this pop
      */
     fun computeDesireResourceType(
-        popType: PopType
+        popType: relativitization.universe.data.components.default.popsystem.pop.PopType
     ): List<ResourceType> {
         return when (popType) {
-            PopType.LABOURER -> listOf(
+            relativitization.universe.data.components.default.popsystem.pop.PopType.LABOURER -> listOf(
                 ResourceType.FOOD,
                 ResourceType.CLOTH,
                 ResourceType.HOUSEHOLD_GOOD,
                 ResourceType.ENTERTAINMENT,
             )
-            PopType.ENGINEER -> listOf(
+            relativitization.universe.data.components.default.popsystem.pop.PopType.ENGINEER -> listOf(
                 ResourceType.FOOD,
                 ResourceType.CLOTH,
                 ResourceType.HOUSEHOLD_GOOD,
                 ResourceType.ENTERTAINMENT,
             )
-            PopType.SCHOLAR -> listOf(
+            relativitization.universe.data.components.default.popsystem.pop.PopType.SCHOLAR -> listOf(
                 ResourceType.FOOD,
                 ResourceType.CLOTH,
                 ResourceType.HOUSEHOLD_GOOD,
                 ResourceType.ENTERTAINMENT,
             )
-            PopType.EDUCATOR -> listOf(
+            relativitization.universe.data.components.default.popsystem.pop.PopType.EDUCATOR -> listOf(
                 ResourceType.FOOD,
                 ResourceType.CLOTH,
                 ResourceType.HOUSEHOLD_GOOD,
                 ResourceType.ENTERTAINMENT,
             )
-            PopType.MEDIC -> listOf(
+            relativitization.universe.data.components.default.popsystem.pop.PopType.MEDIC -> listOf(
                 ResourceType.FOOD,
                 ResourceType.CLOTH,
                 ResourceType.HOUSEHOLD_GOOD,
                 ResourceType.ENTERTAINMENT,
                 ResourceType.MEDICINE,
             )
-            PopType.SERVICE_WORKER -> listOf(
+            relativitization.universe.data.components.default.popsystem.pop.PopType.SERVICE_WORKER -> listOf(
                 ResourceType.FOOD,
                 ResourceType.CLOTH,
                 ResourceType.HOUSEHOLD_GOOD,
                 ResourceType.ENTERTAINMENT,
             )
-            PopType.ENTERTAINER -> listOf(
+            relativitization.universe.data.components.default.popsystem.pop.PopType.ENTERTAINER -> listOf(
                 ResourceType.FOOD,
                 ResourceType.CLOTH,
                 ResourceType.HOUSEHOLD_GOOD,
                 ResourceType.ENTERTAINMENT,
             )
-            PopType.SOLDIER -> listOf(
+            relativitization.universe.data.components.default.popsystem.pop.PopType.SOLDIER -> listOf(
                 ResourceType.FOOD,
                 ResourceType.CLOTH,
                 ResourceType.HOUSEHOLD_GOOD,
@@ -143,7 +146,7 @@ object UpdateDesire : Mechanism() {
      * Compute the desire amount without the effect of time dilation
      */
     fun computeDesireResourceAmount(
-        mutableCommonPopData: MutableCommonPopData
+        mutableCommonPopData: relativitization.universe.data.components.default.popsystem.pop.MutableCommonPopData
     ): Double {
         return mutableCommonPopData.adultPopulation
     }
@@ -153,21 +156,21 @@ object UpdateDesire : Mechanism() {
      */
     fun computeDesireResourceQuality(
         gamma: Double,
-        mutableCommonPopData: MutableCommonPopData,
+        mutableCommonPopData: relativitization.universe.data.components.default.popsystem.pop.MutableCommonPopData,
         resourceType: ResourceType,
         desireQualityUpdateFactor: Double,
         desireQualityUpdateMinDiff: Double,
     ): MutableResourceQualityData {
-        val originalDesire: MutableResourceDesireData =
+        val originalDesire: relativitization.universe.data.components.default.popsystem.pop.MutableResourceDesireData =
             mutableCommonPopData.desireResourceMap.getOrDefault(
                 resourceType,
-                MutableResourceDesireData()
+                relativitization.universe.data.components.default.popsystem.pop.MutableResourceDesireData()
             )
 
-        val inputDesire: MutableResourceDesireData =
+        val inputDesire: relativitization.universe.data.components.default.popsystem.pop.MutableResourceDesireData =
             mutableCommonPopData.resourceInputMap.getOrDefault(
                 resourceType,
-                MutableResourceDesireData()
+                relativitization.universe.data.components.default.popsystem.pop.MutableResourceDesireData()
             )
 
         // If sufficient amount, get close to the input quality
@@ -193,22 +196,22 @@ object UpdateDesire : Mechanism() {
      */
     fun updateSatisfaction(
         gamma: Double,
-        mutableCommonPopData: MutableCommonPopData,
+        mutableCommonPopData: relativitization.universe.data.components.default.popsystem.pop.MutableCommonPopData,
         desireResourceTypeList: List<ResourceType>,
         satisfactionMaxDecreaseFactor: Double,
         satisfactionMaxIncreaseDelta: Double,
     ) {
         val amountFractionList: List<Double> = desireResourceTypeList.map { resourceType ->
-            val originalDesire: MutableResourceDesireData =
+            val originalDesire: relativitization.universe.data.components.default.popsystem.pop.MutableResourceDesireData =
                 mutableCommonPopData.desireResourceMap.getOrDefault(
                     resourceType,
-                    MutableResourceDesireData()
+                    relativitization.universe.data.components.default.popsystem.pop.MutableResourceDesireData()
                 )
 
-            val inputDesire: MutableResourceDesireData =
+            val inputDesire: relativitization.universe.data.components.default.popsystem.pop.MutableResourceDesireData =
                 mutableCommonPopData.resourceInputMap.getOrDefault(
                     resourceType,
-                    MutableResourceDesireData()
+                    relativitization.universe.data.components.default.popsystem.pop.MutableResourceDesireData()
                 )
 
             if (originalDesire.desireAmount > 0.0) {
@@ -219,16 +222,16 @@ object UpdateDesire : Mechanism() {
         }
 
         val qualityFractionList: List<Double> = desireResourceTypeList.map { resourceType ->
-            val originalDesire: MutableResourceDesireData =
+            val originalDesire: relativitization.universe.data.components.default.popsystem.pop.MutableResourceDesireData =
                 mutableCommonPopData.desireResourceMap.getOrDefault(
                     resourceType,
-                    MutableResourceDesireData()
+                    relativitization.universe.data.components.default.popsystem.pop.MutableResourceDesireData()
                 )
 
-            val inputDesire: MutableResourceDesireData =
+            val inputDesire: relativitization.universe.data.components.default.popsystem.pop.MutableResourceDesireData =
                 mutableCommonPopData.resourceInputMap.getOrDefault(
                     resourceType,
-                    MutableResourceDesireData()
+                    relativitization.universe.data.components.default.popsystem.pop.MutableResourceDesireData()
                 )
 
             if (originalDesire.desireQuality.square() > 0.0) {

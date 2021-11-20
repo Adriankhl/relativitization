@@ -3,7 +3,7 @@ package relativitization.universe.data.components
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.components.popsystem.*
-import relativitization.universe.data.components.popsystem.pop.PopType
+import relativitization.universe.data.components.default.popsystem.pop.PopType
 import relativitization.universe.data.components.popsystem.pop.labourer.factory.MutableFuelFactoryData
 import relativitization.universe.data.components.popsystem.pop.service.export.MutablePlayerExportCenterData
 import relativitization.universe.data.components.popsystem.pop.service.export.MutablePlayerSingleExportData
@@ -15,7 +15,7 @@ import kotlin.random.Random
 @Serializable
 @SerialName("PopSystemData")
 data class PopSystemData(
-    val carrierDataMap: Map<Int, CarrierData> = mapOf(),
+    val carrierDataMap: Map<Int, relativitization.universe.data.components.default.popsystem.CarrierData> = mapOf(),
 ) : PlayerDataComponent() {
     fun totalCoreRestMass(): Double {
         return carrierDataMap.values.sumOf { it.coreRestMass }
@@ -45,7 +45,7 @@ data class PopSystemData(
         }
 
         val popStoredFuelRestMass: Double = carrierDataMap.values.sumOf { mutableCarrierData ->
-            PopType.values().sumOf { popType ->
+            relativitization.universe.data.components.default.popsystem.pop.PopType.values().sumOf { popType ->
                 mutableCarrierData.allPopData.getCommonPopData(popType).saving
             }
         }
@@ -63,7 +63,7 @@ data class PopSystemData(
 
 @Serializable @SerialName("PopSystemData")
 data class MutablePopSystemData(
-    val carrierDataMap: MutableMap<Int, MutableCarrierData> = mutableMapOf(),
+    val carrierDataMap: MutableMap<Int, relativitization.universe.data.components.default.popsystem.MutableCarrierData> = mutableMapOf(),
 ) : MutablePlayerDataComponent() {
     fun totalCoreRestMass(): Double {
         return carrierDataMap.values.sumOf { it.coreRestMass }
@@ -93,7 +93,7 @@ data class MutablePopSystemData(
         }
 
         val popStoredFuelRestMass: Double = carrierDataMap.values.sumOf { mutableCarrierData ->
-            PopType.values().sumOf { popType ->
+            relativitization.universe.data.components.default.popsystem.pop.PopType.values().sumOf { popType ->
                 mutableCarrierData.allPopData.getCommonPopData(popType).saving
             }
         }
@@ -114,20 +114,22 @@ data class MutablePopSystemData(
 
     fun addRandomStellarSystem() {
         val restMass = Random.nextDouble(1.0e30, 2.5e30)
-        val newCarrier = MutableCarrierData(
-            coreRestMass = restMass,
-            carrierType = CarrierType.STELLAR
-        )
+        val newCarrier =
+            relativitization.universe.data.components.default.popsystem.MutableCarrierData(
+                coreRestMass = restMass,
+                carrierType = relativitization.universe.data.components.default.popsystem.CarrierType.STELLAR
+            )
         carrierDataMap[newCarrierId()] = newCarrier
     }
 
     fun addStellarSystem(
         coreRestMass: Double
     ) {
-        val newCarrier = MutableCarrierData(
-            coreRestMass = coreRestMass,
-            carrierType = CarrierType.STELLAR
-        )
+        val newCarrier =
+            relativitization.universe.data.components.default.popsystem.MutableCarrierData(
+                coreRestMass = coreRestMass,
+                carrierType = relativitization.universe.data.components.default.popsystem.CarrierType.STELLAR
+            )
         carrierDataMap[newCarrierId()] = newCarrier
 
     }
@@ -136,11 +138,12 @@ data class MutablePopSystemData(
         coreRestMass: Double,
         maxDeltaFuelRestMass: Double
     ) {
-        val newCarrier = MutableCarrierData(
-            coreRestMass = coreRestMass,
-            carrierType = CarrierType.SPACESHIP,
-            maxMovementDeltaFuelRestMass = maxDeltaFuelRestMass
-        )
+        val newCarrier =
+            relativitization.universe.data.components.default.popsystem.MutableCarrierData(
+                coreRestMass = coreRestMass,
+                carrierType = relativitization.universe.data.components.default.popsystem.CarrierType.SPACESHIP,
+                maxMovementDeltaFuelRestMass = maxDeltaFuelRestMass
+            )
         carrierDataMap[newCarrierId()] = newCarrier
     }
 
