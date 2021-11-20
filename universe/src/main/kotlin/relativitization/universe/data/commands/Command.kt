@@ -231,39 +231,11 @@ fun Command.name(): String = this::class.simpleName.toString()
 
 fun <T : Command> KClass<T>.name(): String = this.simpleName.toString()
 
-abstract class CommandAvailability {
+sealed class CommandAvailability {
     abstract val commandList: List<String>
 
     // Allowed event list for AddEventCommand
     abstract val addEventList: List<String>
-}
-
-object DefaultCommandAvailability : CommandAvailability() {
-    override val commandList: List<String> = listOf(
-        DamageCommand::class.name(),
-        DummyCommand::class.name(),
-        CannotSendCommand::class.name(),
-        AddEventCommand::class.name(),
-        SelectEventChoiceCommand::class.name(),
-        BuildForeignFuelFactoryCommand::class.name(),
-        BuildForeignResourceFactoryCommand::class.name(),
-        BuildLocalFuelFactoryCommand::class.name(),
-        BuildLocalResourceFactoryCommand::class.name(),
-        AddDirectSubordinateCommand::class.name(),
-        SendFuelFromStorageCommand::class.name(),
-        SendResourceFromStorageCommand::class.name(),
-        SendFuelCommand::class.name(),
-        SendResourceCommand::class.name(),
-        SendResourceToPopCommand::class.name(),
-        PopBuyResourceCommand::class.name(),
-        PlayerBuyResourceCommand::class.name(),
-        DisableFuelIncreaseCommand::class.name(),
-        ChangeVelocityCommand::class.name(),
-    )
-
-    override val addEventList: List<String> = listOf(
-        MoveToDouble3DEvent::class.name(),
-    )
 }
 
 fun CommandAvailability.name(): String = this::class.simpleName.toString()
@@ -271,9 +243,10 @@ fun CommandAvailability.name(): String = this::class.simpleName.toString()
 object CommandCollection {
     private val logger = RelativitizationLogManager.getLogger()
 
-    private val commandAvailabilityList: List<CommandAvailability> = listOf(
-        DefaultCommandAvailability
-    )
+    private val commandAvailabilityList: List<CommandAvailability> =
+        CommandAvailability::class.sealedSubclasses.map {
+            it.objectInstance!!
+        }
 
     val commandAvailabilityNameMap: Map<String, CommandAvailability> = commandAvailabilityList.map {
         it.name() to it
@@ -281,14 +254,14 @@ object CommandCollection {
 
     fun hasCommand(universeSettings: UniverseSettings, command: Command): Boolean {
         return if (universeSettings.commandCollectionName != "All") {
-            val commandCollection: List<String> = commandAvailabilityNameMap.getOrElse(
-                universeSettings.commandCollectionName
-            ) {
+            if (commandAvailabilityNameMap.containsKey(universeSettings.commandCollectionName)) {
+                commandAvailabilityNameMap.getValue(
+                    universeSettings.commandCollectionName
+                ).commandList.contains(command.name())
+            } else {
                 logger.error("No command collection name: ${universeSettings.commandCollectionName} found")
-                DefaultCommandAvailability
-            }.commandList
-
-            commandCollection.contains(command.name())
+                false
+            }
         } else {
             true
         }

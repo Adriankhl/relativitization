@@ -13,7 +13,7 @@ data class DummyCommand(
     override val toId: Int = -1,
     override val fromId: Int = -1,
     override val fromInt4D: Int4D = Int4D(0, 0, 0, 0),
-) : Command() {
+) : DefaultCommand() {
 
     override val description: I18NString = I18NString(
         listOf(RealString("Do nothing")),
@@ -44,7 +44,7 @@ data class CannotSendCommand(
     override val toId: Int = -1,
     override val fromId: Int = -1,
     override val fromInt4D: Int4D = Int4D(0, 0, 0, 0),
-) : Command() {
+) : DefaultCommand() {
 
     override val description: I18NString = reason
 

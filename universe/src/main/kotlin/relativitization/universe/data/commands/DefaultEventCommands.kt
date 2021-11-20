@@ -17,7 +17,7 @@ import relativitization.universe.utils.RelativitizationLogManager
 data class AddEventCommand(
     val event: Event,
     override val fromInt4D: Int4D,
-) : Command() {
+) : DefaultCommand() {
 
 
     override val toId: Int = event.toId
@@ -130,7 +130,7 @@ data class SelectEventChoiceCommand(
     override val fromId: Int,
     override val fromInt4D: Int4D,
     override val toId: Int,
-) : Command() {
+) : DefaultCommand() {
 
     override val description: I18NString = I18NString(
         listOf(

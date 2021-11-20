@@ -29,7 +29,7 @@ data class SendFuelFromStorageCommand(
     override val fromInt4D: Int4D,
     val amount: Double,
     val senderFuelLossFractionPerDistance: Double,
-) : Command() {
+) : DefaultCommand() {
     override val description: I18NString = I18NString(
         listOf(
             RealString("Send "),
@@ -177,7 +177,7 @@ data class SendResourceFromStorageCommand(
     val resourceQualityData: ResourceQualityData,
     val amount: Double,
     val senderResourceLossFractionPerDistance: Double,
-) : Command() {
+) : DefaultCommand() {
     override val description: I18NString = I18NString(
         listOf(
             RealString("Send "),
@@ -340,7 +340,7 @@ data class SendFuelCommand(
     override val fromInt4D: Int4D,
     val amount: Double,
     val senderFuelLossFractionPerDistance: Double,
-) : Command() {
+) : DefaultCommand() {
     override val description: I18NString = I18NString("")
 
     override fun canSend(
@@ -395,7 +395,7 @@ data class SendResourceCommand(
     val resourceQualityData: ResourceQualityData,
     val amount: Double,
     val senderResourceLossFractionPerDistance: Double,
-) : Command() {
+) : DefaultCommand() {
     override val description: I18NString = I18NString("")
 
     override fun canSend(
@@ -457,7 +457,7 @@ data class SendResourceToPopCommand(
     val resourceQualityData: ResourceQualityData,
     val amount: Double,
     val senderResourceLossFractionPerDistance: Double,
-) : Command() {
+) : DefaultCommand() {
     override val description: I18NString = I18NString("")
 
     override fun canSend(
@@ -525,7 +525,7 @@ data class PopBuyResourceCommand(
     val fuelRestMassAmount: Double,
     val amountPerTime: Double,
     val senderFuelLossFractionPerDistance: Double,
-) : Command() {
+) : DefaultCommand() {
     override val description: I18NString = I18NString("")
 
     override fun canSend(
@@ -618,7 +618,7 @@ data class PlayerBuyResourceCommand(
     val fuelRestMassAmount: Double,
     val amountPerTime: Double,
     val senderFuelLossFractionPerDistance: Double,
-) : Command() {
+) : DefaultCommand() {
     override val description: I18NString = I18NString(
         listOf(
             RealString("Send "),

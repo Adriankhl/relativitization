@@ -34,7 +34,7 @@ data class BuildForeignFuelFactoryCommand(
     val fuelFactoryInternalData: FuelFactoryInternalData,
     val qualityLevel: Double,
     val storedFuelRestMass: Double,
-) : Command() {
+) : DefaultCommand() {
     override val description: I18NString = I18NString(
         listOf(
             RealString("Build a foreign fuel factory with quality level "),
@@ -200,7 +200,7 @@ data class BuildForeignResourceFactoryCommand(
     val resourceFactoryInternalData: ResourceFactoryInternalData,
     val qualityLevel: Double,
     val storedFuelRestMass: Double,
-) : Command() {
+) : DefaultCommand() {
     override val description: I18NString = I18NString(
         listOf(
             RealString("Build a foreign resource factory with quality level "),
@@ -364,7 +364,7 @@ data class BuildLocalFuelFactoryCommand(
     override val fromInt4D: Int4D,
     val targetCarrierId: Int,
     val qualityLevel: Double,
-) : Command() {
+) : DefaultCommand() {
     override val description: I18NString = I18NString(
         listOf(
             RealString("Build a local factory with quality level "),
@@ -495,7 +495,7 @@ data class BuildLocalResourceFactoryCommand(
     val outputResourceType: ResourceType,
     val targetCarrierId: Int,
     val qualityLevel: Double,
-) : Command() {
+) : DefaultCommand() {
     override val description: I18NString = I18NString(
         listOf(
             RealString("Build a local factory with quality level "),

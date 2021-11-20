@@ -18,7 +18,7 @@ data class ChangeVelocityCommand(
     override val toId: Int,
     override val fromId: Int,
     override val fromInt4D: Int4D,
-) : Command() {
+) : DefaultCommand() {
 
     override val description: I18NString = I18NString(
         listOf(
