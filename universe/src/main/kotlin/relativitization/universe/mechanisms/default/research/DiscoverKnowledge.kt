@@ -15,7 +15,7 @@ import relativitization.universe.data.components.default.popsystem.pop.scholar.i
 import relativitization.universe.data.components.default.science.knowledge.AppliedResearchProjectData
 import relativitization.universe.data.components.default.science.knowledge.BasicResearchProjectData
 import relativitization.universe.data.global.UniverseGlobalData
-import relativitization.universe.data.global.components.science.UniverseScienceData
+import relativitization.universe.data.global.components.default.science.UniverseScienceData
 import relativitization.universe.global.science.default.DefaultUniverseScienceDataProcess
 import relativitization.universe.maths.algebra.Logistic
 import relativitization.universe.maths.physics.Intervals

@@ -1,7 +1,7 @@
 package relativitization.universe.global.science.empty
 
 import relativitization.universe.data.UniverseSettings
-import relativitization.universe.data.global.components.science.UniverseScienceData
+import relativitization.universe.data.global.components.default.science.UniverseScienceData
 import relativitization.universe.data.components.default.science.knowledge.AppliedResearchProjectData
 import relativitization.universe.data.components.default.science.knowledge.BasicResearchProjectData
 import relativitization.universe.data.components.default.science.knowledge.MutableAppliedResearchData

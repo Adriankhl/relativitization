@@ -16,7 +16,7 @@ import relativitization.universe.data.components.default.science.knowledge.Appli
 import relativitization.universe.data.components.default.science.knowledge.BasicResearchField
 import relativitization.universe.data.components.default.science.knowledge.BasicResearchProjectData
 import relativitization.universe.data.global.UniverseGlobalData
-import relativitization.universe.data.global.components.science.MutableUniverseScienceData
+import relativitization.universe.data.global.components.default.science.MutableUniverseScienceData
 import relativitization.universe.data.serializer.DataSerializer.copy
 import relativitization.universe.generate.method.GenerateSettings
 import relativitization.universe.generate.method.GenerateUniverseMethod

@@ -6,8 +6,8 @@ import relativitization.universe.data.components.default.science.knowledge.Basic
 import relativitization.universe.data.components.default.science.knowledge.MutableAppliedResearchData
 import relativitization.universe.data.components.default.science.knowledge.MutableBasicResearchData
 import relativitization.universe.data.global.MutableUniverseGlobalData
-import relativitization.universe.data.global.components.science.MutableUniverseScienceData
-import relativitization.universe.data.global.components.science.UniverseScienceData
+import relativitization.universe.data.global.components.default.science.MutableUniverseScienceData
+import relativitization.universe.data.global.components.default.science.UniverseScienceData
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.global.science.default.DefaultUniverseScienceDataProcess
 import relativitization.universe.global.science.empty.EmptyUniverseScienceDataProcess
