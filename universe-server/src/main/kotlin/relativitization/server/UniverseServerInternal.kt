@@ -9,7 +9,7 @@ import relativitization.universe.communication.*
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.commands.Command
 import relativitization.universe.generate.method.GenerateSettings
-import relativitization.universe.generate.method.UniverseGenerateMethodCollection
+import relativitization.universe.generate.method.GenerateUniverseMethodCollection
 import relativitization.universe.utils.CoroutineBoolean
 import relativitization.universe.utils.CoroutineVar
 import relativitization.universe.utils.RelativitizationLogManager
@@ -24,7 +24,7 @@ class UniverseServerInternal(
 
     // Data of universe
     private var universe: Universe = Universe(
-        universeData = UniverseGenerateMethodCollection.generate(GenerateSettings()),
+        universeData = GenerateUniverseMethodCollection.generate(GenerateSettings()),
         programDir = universeServerSettings.programDir,
         saveWhenInit = false,
     )

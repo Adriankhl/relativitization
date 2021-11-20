@@ -1,4 +1,4 @@
-package relativitization.universe.generate.method.fixed
+package relativitization.universe.generate.method.testing
 
 import relativitization.universe.ai.emptyAI.EmptyAI
 import relativitization.universe.ai.name
@@ -22,7 +22,7 @@ import relativitization.universe.generate.method.GenerateUniverseMethod
 import relativitization.universe.maths.grid.Grids.create4DGrid
 import relativitization.universe.global.science.default.DefaultUniverseScienceDataProcess
 
-class TestingFixedMinimal : GenerateUniverseMethod() {
+object TestingFixedMinimal : GenerateUniverseMethod() {
     override fun generate(settings: GenerateSettings): UniverseData {
         val universeSettings: UniverseSettings = copy(settings.universeSettings)
 

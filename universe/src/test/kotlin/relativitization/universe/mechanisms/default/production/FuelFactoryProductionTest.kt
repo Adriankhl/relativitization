@@ -4,13 +4,13 @@ import kotlinx.coroutines.runBlocking
 import relativitization.universe.Universe
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.generate.method.GenerateSettings
-import relativitization.universe.generate.method.UniverseGenerateMethodCollection
+import relativitization.universe.generate.method.GenerateUniverseMethodCollection
 import kotlin.test.Test
 
 internal class FuelFactoryProductionTest {
     @Test
     fun fixedMinimalTest() {
-        val universe = Universe(UniverseGenerateMethodCollection.generate(GenerateSettings()), ".")
+        val universe = Universe(GenerateUniverseMethodCollection.generate(GenerateSettings()), ".")
 
 
         runBlocking {

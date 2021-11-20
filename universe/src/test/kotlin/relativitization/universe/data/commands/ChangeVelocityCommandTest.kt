@@ -7,13 +7,13 @@ import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.components.physics.Int4D
 import relativitization.universe.data.components.physics.Velocity
 import relativitization.universe.generate.method.GenerateSettings
-import relativitization.universe.generate.method.UniverseGenerateMethodCollection
+import relativitization.universe.generate.method.GenerateUniverseMethodCollection
 import kotlin.test.Test
 
 internal class ChangeVelocityCommandTest {
     @Test
     fun fixedMinimalTest() {
-        val universe = Universe(UniverseGenerateMethodCollection.generate(GenerateSettings()), ".")
+        val universe = Universe(GenerateUniverseMethodCollection.generate(GenerateSettings()), ".")
         val view7: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
         assert(view7.get(2).int4D == Int4D(7, 0, 0, 0))
 

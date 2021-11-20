@@ -8,7 +8,7 @@ import kotlinx.coroutines.runBlocking
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.TableScreen
 import relativitization.universe.data.commands.CommandCollection
-import relativitization.universe.generate.method.UniverseGenerateMethodCollection
+import relativitization.universe.generate.method.GenerateUniverseMethodCollection
 import relativitization.universe.mechanisms.MechanismCollection
 import relativitization.universe.global.science.UniverseScienceDataProcessCollection
 import relativitization.universe.utils.RelativitizationLogManager
@@ -36,7 +36,7 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
         // Add Generate button
         val generateFailLabel = createLabel("", gdxSettings.normalFontSize)
         val generateButton = createTextButton("Generate", gdxSettings.bigFontSize, gdxSettings.soundEffectsVolume) {
-            if (UniverseGenerateMethodCollection.isSettingValid(game.universeClient.generateSettings)) {
+            if (GenerateUniverseMethodCollection.isSettingValid(game.universeClient.generateSettings)) {
                 logger.info("Generate settings: " + game.universeClient.generateSettings)
                 runBlocking {
                     val httpCode = game.universeClient.httpPostNewUniverse()
@@ -112,7 +112,7 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
     private fun addGenerateSettings(table: Table) {
         table.add(createLabel("Generate Method: ", gdxSettings.normalFontSize))
         val generateMethodSelectBox = createSelectBox(
-            UniverseGenerateMethodCollection.generateMethodMap.keys.toList(),
+            GenerateUniverseMethodCollection.generateMethodMap.keys.toList(),
             game.universeClient.generateSettings.generateMethod,
             gdxSettings.normalFontSize,
         ) { method, _ ->
