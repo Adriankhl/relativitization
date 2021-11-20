@@ -16,7 +16,7 @@ import kotlin.random.Random
 @SerialName("PopSystemData")
 data class PopSystemData(
     val carrierDataMap: Map<Int, relativitization.universe.data.components.default.popsystem.CarrierData> = mapOf(),
-) : PlayerDataComponent() {
+) : DefaultPlayerDataComponent() {
     fun totalCoreRestMass(): Double {
         return carrierDataMap.values.sumOf { it.coreRestMass }
     }
@@ -64,7 +64,7 @@ data class PopSystemData(
 @Serializable @SerialName("PopSystemData")
 data class MutablePopSystemData(
     val carrierDataMap: MutableMap<Int, relativitization.universe.data.components.default.popsystem.MutableCarrierData> = mutableMapOf(),
-) : MutablePlayerDataComponent() {
+) : MutableDefaultPlayerDataComponent() {
     fun totalCoreRestMass(): Double {
         return carrierDataMap.values.sumOf { it.coreRestMass }
     }

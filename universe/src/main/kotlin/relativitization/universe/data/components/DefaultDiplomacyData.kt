@@ -13,7 +13,7 @@ import relativitization.universe.data.components.default.diplomacy.*
 data class DiplomacyData(
     val relationMap: Map<Int, DiplomaticRelationData> = mapOf(),
     val warData: WarData = WarData(),
-) : PlayerDataComponent() {
+) : DefaultPlayerDataComponent() {
     fun getDiplomaticRelationData(id: Int): DiplomaticRelationData {
         return relationMap.getOrDefault(id, DiplomaticRelationData())
     }
@@ -37,7 +37,7 @@ data class DiplomacyData(
 data class MutableDiplomacyData(
     var relationMap: MutableMap<Int, MutableDiplomaticRelationData> = mutableMapOf(),
     var warData: MutableWarData = MutableWarData(),
-) : MutablePlayerDataComponent() {
+) : MutableDefaultPlayerDataComponent() {
     fun getDiplomaticRelationData(id: Int): MutableDiplomaticRelationData {
         return relationMap.getOrPut(id) { MutableDiplomaticRelationData() }
     }

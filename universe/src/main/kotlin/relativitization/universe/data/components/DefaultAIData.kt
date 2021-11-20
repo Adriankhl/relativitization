@@ -10,14 +10,14 @@ import relativitization.universe.ai.name
 data class AIData(
     val aiName: String = DefaultAI.name(),
     val aiTask: AITask = AITask.DEFAULT,
-) : PlayerDataComponent()
+) : DefaultPlayerDataComponent()
 
 @Serializable
 @SerialName("AIData")
 data class MutableAIData(
     var aiName: String = DefaultAI.name(),
     var aiTask: AITask = AITask.DEFAULT,
-) : MutablePlayerDataComponent()
+) : MutableDefaultPlayerDataComponent()
 
 enum class AITask(val value: String) {
     DEFAULT("Default"),

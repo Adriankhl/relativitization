@@ -31,7 +31,7 @@ data class PlayerScienceData(
     val knownAppliedResearchProjectList: List<AppliedResearchProjectData> = listOf(),
     val playerKnowledgeData: KnowledgeData = KnowledgeData(),
     val playerScienceApplicationData: ScienceApplicationData = ScienceApplicationData(),
-) : PlayerDataComponent()
+) : DefaultPlayerDataComponent()
 
 @Serializable
 @SerialName("PlayerScienceData")
@@ -43,7 +43,7 @@ data class MutablePlayerScienceData(
     val knownAppliedResearchProjectList: MutableList<AppliedResearchProjectData> = mutableListOf(),
     var playerKnowledgeData: MutableKnowledgeData = MutableKnowledgeData(),
     var playerScienceApplicationData: MutableScienceApplicationData = MutableScienceApplicationData(),
-) : MutablePlayerDataComponent() {
+) : MutableDefaultPlayerDataComponent() {
     /**
      * Compute player knowledge data by common sense and knowledge data list
      */

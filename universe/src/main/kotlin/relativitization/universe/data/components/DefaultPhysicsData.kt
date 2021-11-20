@@ -20,7 +20,7 @@ data class PhysicsData(
     val otherRestMass: Double = 0.0,
     val fuelRestMassData: FuelRestMassData = FuelRestMassData(),
     val targetFuelRestMassData: FuelRestMassData = FuelRestMassData(),
-) : PlayerDataComponent() {
+) : DefaultPlayerDataComponent() {
     fun totalRestMass() = coreRestMass + otherRestMass + fuelRestMassData.total()
 }
 
@@ -31,7 +31,7 @@ data class MutablePhysicsData(
     var otherRestMass: Double = 0.0,
     var fuelRestMassData: MutableFuelRestMassData = MutableFuelRestMassData(),
     var targetFuelRestMassData: MutableFuelRestMassData = MutableFuelRestMassData(),
-) : MutablePlayerDataComponent() {
+) : MutableDefaultPlayerDataComponent() {
     fun totalRestMass() = coreRestMass + otherRestMass + fuelRestMassData.total()
 
     fun addFuel(restMass: Double) {

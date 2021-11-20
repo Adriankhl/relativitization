@@ -15,7 +15,7 @@ data class EconomyData(
     val resourceData: ResourceData = ResourceData(),
     val tradeHistoryData: TradeHistoryData = TradeHistoryData(),
     val socialSecurityData: SocialSecurityData = SocialSecurityData(),
-) : PlayerDataComponent()
+) : DefaultPlayerDataComponent()
 
 @Serializable
 @SerialName("EconomyData")
@@ -24,4 +24,4 @@ data class MutableEconomyData(
     var resourceData: MutableResourceData = MutableResourceData(),
     var tradeHistoryData: MutableTradeHistoryData = MutableTradeHistoryData(),
     var socialSecurityData: MutableSocialSecurityData = MutableSocialSecurityData(),
-) : MutablePlayerDataComponent()
+) : MutableDefaultPlayerDataComponent()

@@ -11,7 +11,7 @@ data class PoliticsData(
     val allowSubordinateBuildFactory: Boolean = false,
     val allowLeaderBuildLocalFactory: Boolean = true,
     val allowForeignInvestor: Boolean = true,
-) : PlayerDataComponent() {
+) : DefaultPlayerDataComponent() {
     /**
      * Compute the ideology distance between player to represent how different between the two
      */
@@ -45,4 +45,4 @@ data class MutablePoliticsData(
     var allowSubordinateBuildFactory: Boolean = false,
     var allowLeaderBuildLocalFactory: Boolean = true,
     var allowForeignInvestor: Boolean = true,
-) : MutablePlayerDataComponent()
+) : MutableDefaultPlayerDataComponent()

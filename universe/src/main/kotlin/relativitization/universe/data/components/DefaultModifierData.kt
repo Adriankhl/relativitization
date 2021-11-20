@@ -11,7 +11,7 @@ data class ModifierData(
     val physicsModifierData: PhysicsModifierData = PhysicsModifierData(),
     val combatModifierData: CombatModifierData = CombatModifierData(),
     val diplomacyModifierData: DiplomacyModifierData = DiplomacyModifierData(),
-) : PlayerDataComponent()
+) : DefaultPlayerDataComponent()
 
 @Serializable
 @SerialName("ModifierData")
@@ -19,7 +19,7 @@ data class MutableModifierData(
     var physicsModifierData: MutablePhysicsModifierData = MutablePhysicsModifierData(),
     var combatModifierData: MutableCombatModifierData = MutableCombatModifierData(),
     var diplomacyModifierData: MutableDiplomacyModifierData = MutableDiplomacyModifierData(),
-) : MutablePlayerDataComponent() {
+) : MutableDefaultPlayerDataComponent() {
     /**
      * Decrease time of modifiers
      */
