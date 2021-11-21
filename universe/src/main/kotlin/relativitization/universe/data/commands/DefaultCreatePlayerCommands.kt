@@ -6,6 +6,7 @@ import relativitization.universe.data.MutablePlayerInternalData
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.components.MutableAIData
 import relativitization.universe.data.components.MutableDiplomacyData
+import relativitization.universe.data.components.MutableEconomyData
 import relativitization.universe.data.components.default.physics.Int4D
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.utils.I18NString
@@ -53,15 +54,23 @@ data class SplitCarrierCommand(
         val isCarrierIdValidI18String: I18NString = if (isCarrierIdValid) {
             I18NString("")
         } else {
-            I18NString("Invalid carrier id")
+            I18NString("Invalid carrier id. ")
+        }
+
+        val isResourceFractionValid: Boolean = (resourceFraction >= 0.0) && (resourceFraction <= 1.0)
+        val isResourceFractionValidI18String: I18NString = if (isCarrierIdValid) {
+            I18NString("")
+        } else {
+            I18NString("Invalid resource fraction. ")
         }
 
         return CanSendCheckMessage(
-            isToSelf && isCarrierIdValid,
+            isToSelf && isCarrierIdValid && isResourceFractionValid,
             I18NString.combine(
                 listOf(
                     isToSelfI18NString,
                     isCarrierIdValidI18String,
+                    isResourceFractionValidI18String,
                 )
             )
         )
@@ -88,5 +97,25 @@ data class SplitCarrierCommand(
         val newDiplomacyData: MutableDiplomacyData = DataSerializer.copy(playerData.playerInternalData.diplomacyData())
         newDiplomacyData.warData.warStateMap.clear()
         newPlayerInternalData.diplomacyData(newDiplomacyData)
+
+        // split the economy data to new player
+        val newEconomyData: MutableEconomyData = DataSerializer.copy(playerData.playerInternalData.economyData())
+        newEconomyData.resourceData.singleResourceMap.forEach { (_, qualityMap) ->
+            qualityMap.forEach { (_, singleResourceData) ->
+                singleResourceData.resourceAmount.storage *= resourceFraction
+                singleResourceData.resourceAmount.production *= resourceFraction
+                singleResourceData.resourceAmount.trade *= resourceFraction
+            }
+        }
+        newPlayerInternalData.economyData(newEconomyData)
+
+        // reduce original resource
+        playerData.playerInternalData.economyData().resourceData.singleResourceMap.forEach { (_, qualityMap) ->
+            qualityMap.forEach { (_, singleResourceData) ->
+                singleResourceData.resourceAmount.storage *= (1.0 - resourceFraction)
+                singleResourceData.resourceAmount.production *= (1.0 - resourceFraction)
+                singleResourceData.resourceAmount.trade *= (1.0 - resourceFraction)
+            }
+        }
     }
 }
