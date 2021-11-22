@@ -14,6 +14,8 @@
 * Child and elder population
 * Quality 2 and 3 of resources
 * Reputation of research institute and laboratory
+* Trade history
+* Centralization
 
 # Mechanism TODO list
 * Basic resource output from stellar system [x]
