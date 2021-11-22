@@ -77,7 +77,7 @@ data class AskToMergeCarrierEvent(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): Boolean {
-        return playerData.playerInternalData.directLeaderId == fromId
+        return (playerData.playerInternalData.directLeaderId == fromId) && !playerData.isTopLeader()
     }
 
     override fun generateCommands(
