@@ -8,6 +8,7 @@
 * Don't use trade history data to determine price
 * Unused centralization
 * No pop buy resource from other player
+* No alliance
 
 # Currently unused data
 * Size of factory and institute
@@ -16,6 +17,7 @@
 * Reputation of research institute and laboratory
 * Trade history
 * Centralization
+* Ally
 
 # Mechanism TODO list
 * Basic resource output from stellar system [x]
