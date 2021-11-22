@@ -2,6 +2,7 @@ package relativitization.universe.data.components
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import relativitization.universe.data.components.default.popsystem.MutableCarrierData
 import relativitization.universe.maths.collection.ListFind
 import kotlin.random.Random
 
@@ -137,6 +138,12 @@ data class MutablePopSystemData(
                 carrierType = relativitization.universe.data.components.default.popsystem.CarrierType.SPACESHIP,
                 maxMovementDeltaFuelRestMass = maxDeltaFuelRestMass
             )
+        carrierDataMap[newCarrierId()] = newCarrier
+    }
+
+    fun addCarrier(
+        newCarrier: MutableCarrierData
+    ) {
         carrierDataMap[newCarrierId()] = newCarrier
     }
 
