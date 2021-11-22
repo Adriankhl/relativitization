@@ -13,6 +13,7 @@ import relativitization.universe.mechanisms.default.logistics.ExportResource
 import relativitization.universe.mechanisms.default.logistics.SendTax
 import relativitization.universe.mechanisms.default.military.UpdateMilitaryBase
 import relativitization.universe.mechanisms.default.modifier.UpdateModifierTime
+import relativitization.universe.mechanisms.default.politics.SyncPoliticsData
 import relativitization.universe.mechanisms.default.pop.*
 import relativitization.universe.mechanisms.default.production.BaseStellarFuelProduction
 import relativitization.universe.mechanisms.default.production.EntertainmentProduction
@@ -50,6 +51,7 @@ object DefaultMechanismList : MechanismList() {
         SyncHierarchy,
         AutoCombat,
         SyncTaxRate,
+        SyncPoliticsData,
         SyncPlayerScienceData,
         UpdateScienceApplicationData,
         UpdateModifierTime,
