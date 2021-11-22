@@ -31,7 +31,7 @@
 * Research [x]
 * How research affect product
 * Export center [x]
-* Basic diplomacy
+* Basic diplomacy [x]
 * Merge carrier [x]
 * New carrier
 * New player [x]
@@ -73,3 +73,4 @@
 * Science era, e.g., Biology era favour nation with more biologist
 * Optimize afterimage and load saved universe to reduce memory usage
 * Transfer player and transfer carrier commands
+* Surrender, alliance
