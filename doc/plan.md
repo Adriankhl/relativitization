@@ -32,9 +32,9 @@
 * How research affect product
 * Export center [x]
 * Basic diplomacy
-* Merge carrier
+* Merge carrier [x]
 * New carrier
-* New player
+* New player [x]
 * Basic military: Soldier [x]
 * Sync leader data to subordinate, e.g., enemy [x]
 * Sync economy data to subordinate [x]
@@ -63,6 +63,11 @@
 # GUI TODO List
 * Display information
 * Available commands
+
+# Test TODO List
+* Declare war, combat, and propose pease
+* New player
+* Merge player
 
 # Far future TODO List
 * Science era, e.g., Biology era favour nation with more biologist
