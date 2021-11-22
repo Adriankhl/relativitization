@@ -1,4 +1,4 @@
-package relativitization.universe.mechanisms.default.administration
+package relativitization.universe.mechanisms.default.politics
 
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.PlayerData

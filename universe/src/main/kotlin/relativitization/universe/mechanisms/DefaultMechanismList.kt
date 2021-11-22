@@ -1,6 +1,6 @@
 package relativitization.universe.mechanisms
 
-import relativitization.universe.mechanisms.default.administration.SyncHierarchy
+import relativitization.universe.mechanisms.default.politics.SyncHierarchy
 import relativitization.universe.mechanisms.default.combat.AutoCombat
 import relativitization.universe.mechanisms.default.dead.ClearDeadPlayer
 import relativitization.universe.mechanisms.default.diplomacy.UpdateDiplomaticRelation
