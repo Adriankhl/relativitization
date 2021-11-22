@@ -55,7 +55,8 @@ data class SplitCarrierCommand(
             I18NString("Invalid carrier id. ")
         }
 
-        val isResourceFractionValid: Boolean = (resourceFraction >= 0.0) && (resourceFraction <= 1.0)
+        val isResourceFractionValid: Boolean =
+            (resourceFraction >= 0.0) && (resourceFraction <= 1.0)
         val isResourceFractionValidI18String: I18NString = if (isCarrierIdValid) {
             I18NString("")
         } else {
@@ -92,12 +93,14 @@ data class SplitCarrierCommand(
         newPlayerInternalData.aiData(newAIData)
 
         // copy diplomacy data and remove war state
-        val newDiplomacyData: MutableDiplomacyData = DataSerializer.copy(playerData.playerInternalData.diplomacyData())
+        val newDiplomacyData: MutableDiplomacyData =
+            DataSerializer.copy(playerData.playerInternalData.diplomacyData())
         newDiplomacyData.warData.warStateMap.clear()
         newPlayerInternalData.diplomacyData(newDiplomacyData)
 
         // split the economy data to new player
-        val newEconomyData: MutableEconomyData = DataSerializer.copy(playerData.playerInternalData.economyData())
+        val newEconomyData: MutableEconomyData =
+            DataSerializer.copy(playerData.playerInternalData.economyData())
         newEconomyData.resourceData.singleResourceMap.forEach { (_, qualityMap) ->
             qualityMap.forEach { (_, singleResourceData) ->
                 singleResourceData.resourceAmount.storage *= resourceFraction
@@ -121,7 +124,8 @@ data class SplitCarrierCommand(
         newPlayerInternalData.modifierData(newModifierData)
 
         // split fuel rest mass data
-        val newPhysicsData: MutablePhysicsData = DataSerializer.copy(playerData.playerInternalData.physicsData())
+        val newPhysicsData: MutablePhysicsData =
+            DataSerializer.copy(playerData.playerInternalData.physicsData())
         newPhysicsData.fuelRestMassData.movement *= resourceFraction
         newPhysicsData.fuelRestMassData.trade *= resourceFraction
         newPhysicsData.fuelRestMassData.production *= resourceFraction
@@ -141,5 +145,26 @@ data class SplitCarrierCommand(
         val newPoliticsData: MutablePoliticsData =
             DataSerializer.copy(playerData.playerInternalData.politicsData())
         newPlayerInternalData.politicsData(newPoliticsData)
+
+        // Split carrier
+        val newPopSystemData: MutablePopSystemData =
+            DataSerializer.copy(playerData.playerInternalData.popSystemData())
+        val toRemoveCarrierId: List<Int> = newPopSystemData.carrierDataMap.keys.filter {
+            !carrierIdList.contains(it)
+        }
+        toRemoveCarrierId.forEach { newPopSystemData.carrierDataMap.remove(it) }
+
+        val toRemoveOriginalCarrierId: List<Int> =
+            playerData.playerInternalData.popSystemData().carrierDataMap.keys.filter {
+                carrierIdList.contains(it)
+            }
+        toRemoveOriginalCarrierId.forEach {
+            playerData.playerInternalData.popSystemData().carrierDataMap.remove(it)
+        }
+
+        // Sync data and add the new player internal data to new player list
+        playerData.syncData()
+        newPlayerInternalData.syncDataComponent()
+        playerData.newPlayerList.add(newPlayerInternalData)
     }
 }
