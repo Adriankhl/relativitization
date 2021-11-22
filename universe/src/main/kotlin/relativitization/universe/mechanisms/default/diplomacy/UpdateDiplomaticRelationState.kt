@@ -27,22 +27,49 @@ object UpdateDiplomaticRelationState : Mechanism() {
             val inWarSet: Set<Int> =
                 mutablePlayerData.playerInternalData.diplomacyData().warData.warStateMap.keys
 
-            val toChangeSet: Set<Int> =
-                mutablePlayerData.playerInternalData.diplomacyData().relationMap.filter { (id, relation) ->
-                    (relation.diplomaticRelationState == DiplomaticRelationState.ENEMY) && (!inWarSet.contains(
-                        id
-                    ))
-                }.keys
+            val inRelationSet: Set<Int> =
+                mutablePlayerData.playerInternalData.diplomacyData().relationMap.keys
 
-            toChangeSet.forEach {
-                mutablePlayerData.playerInternalData.diplomacyData().relationMap.getValue(
-                    it
-                ).diplomaticRelationState = DiplomaticRelationState.NEUTRAL
+            // Change in war player to enemy
+            inWarSet.forEach {
+                mutablePlayerData.playerInternalData.diplomacyData()
+                    .getDiplomaticRelationData(it).diplomaticRelationState =
+                    DiplomaticRelationState.ENEMY
+            }
+
+            // Change not in war player from enemy to neutral
+            inRelationSet.filter {
+                !inWarSet.contains(it) && mutablePlayerData.playerInternalData.diplomacyData()
+                    .getRelationState(it) == DiplomaticRelationState.ENEMY
+            }.forEach {
+                mutablePlayerData.playerInternalData.diplomacyData()
+                    .getDiplomaticRelationData(it).diplomaticRelationState =
+                    DiplomaticRelationState.NEUTRAL
             }
         } else {
             val directLeader: PlayerData = universeData3DAtPlayer.get(
                 mutablePlayerData.playerInternalData.directLeaderId
             )
+
+            val inSelfWarSet: Set<Int> =
+                mutablePlayerData.playerInternalData.diplomacyData().warData.warStateMap.keys
+
+            val inSelfRelationSet: Set<Int> =
+                mutablePlayerData.playerInternalData.diplomacyData().relationMap.keys
+
+            val inLeaderRelationSet: Set<Int> =
+                directLeader.playerInternalData.diplomacyData().relationMap.keys
+
+            // Sync enemy
+            inLeaderRelationSet.filter {
+                directLeader.playerInternalData.diplomacyData()
+                    .getRelationState(it) == DiplomaticRelationState.ENEMY
+            }.forEach {
+                mutablePlayerData.playerInternalData.diplomacyData()
+                    .getDiplomaticRelationData(it).diplomaticRelationState =
+                    DiplomaticRelationState.ENEMY
+            }
+
 
 
             val (prioritizeSelf, prioritizeDirectLeader) = mutablePlayerData.playerInternalData.diplomacyData().relationMap.keys.partition {

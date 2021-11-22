@@ -44,6 +44,9 @@ data class MutableDiplomacyData(
 
     fun getRelation(id: Int): Double = getDiplomaticRelationData(id).relation
 
+
+    fun getRelationState(id: Int): DiplomaticRelationState = getDiplomaticRelationData(id).diplomaticRelationState
+
     /**
      * Clear relation with neutral player and zero relation
      */
