@@ -53,3 +53,34 @@ data class MergeCarrierCommand(
         }
     }
 }
+
+/**
+ * Agree this player merge to direct leader
+ * Send by mechanism only
+ */
+@Serializable
+data class AgreeMergeCommand(
+    override val toId: Int,
+    override val fromId: Int,
+    override val fromInt4D: Int4D
+) : DefaultCommand() {
+    override val description: I18NString = I18NString("")
+
+    override fun canSend(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): CanSendCheckMessage {
+        return CanSendCheckMessage(false)
+    }
+
+    override fun canExecute(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): Boolean {
+        return true
+    }
+
+    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+        playerData.playerInternalData.politicsData().agreeMerge = true
+    }
+}
