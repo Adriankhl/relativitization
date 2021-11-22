@@ -2,11 +2,15 @@ package relativitization.universe.data.events
 
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.MutablePlayerData
+import relativitization.universe.data.PlayerType
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.CanSendCheckMessage
+import relativitization.universe.data.commands.CanSendCheckMessageI18NStringFactory
 import relativitization.universe.data.commands.Command
 import relativitization.universe.utils.I18NString
+import relativitization.universe.utils.IntString
+import relativitization.universe.utils.RealString
 
 /**
  * Ask to merge this player to its direct leader
@@ -16,36 +20,63 @@ data class MergeCarrierEvent(
     override val toId: Int,
     override val fromId: Int
 ) : DefaultEvent() {
-    override val description: I18NString
-        get() = TODO("Not yet implemented")
-    override val choiceDescription: Map<Int, I18NString>
-        get() = TODO("Not yet implemented")
-    override val stayTime: Int
-        get() = TODO("Not yet implemented")
+
+    override val stayTime: Int = 1
+
+    override val description: I18NString = I18NString(
+        listOf(
+            RealString("Merge all your carriers to player "),
+            IntString(0)
+        ),
+        listOf(
+            fromId.toString()
+        )
+    )
+
+    override val choiceDescription: Map<Int, I18NString> = mapOf(
+        0 to I18NString("Accept. Warning! You are going to die"),
+        1 to I18NString("Reject")
+    )
 
     override fun shouldCancelThisEvent(
         mutableEventData: MutableEventData,
         universeData3DAtPlayer: UniverseData3DAtPlayer
     ): Boolean {
-        TODO("Not yet implemented")
+        return mutableEventData.hasChoice
     }
 
     override fun defaultChoice(eventId: Int, universeData3DAtPlayer: UniverseData3DAtPlayer): Int {
-        TODO("Not yet implemented")
+        return when (universeData3DAtPlayer.getCurrentPlayerData().playerType) {
+            PlayerType.HUMAN -> 1
+            PlayerType.NONE -> 0
+            PlayerType.AI -> 1
+        }
     }
 
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): CanSendCheckMessage {
-        TODO("Not yet implemented")
+        val isDirectSubordinate: Boolean = playerData.playerInternalData.directSubordinateIdList.contains(toId)
+        val isDirectSubordinateI18NString: I18NString = CanSendCheckMessageI18NStringFactory.isNotDirectSubordinate(
+            playerId = fromId, toId = toId
+        )
+
+        return CanSendCheckMessage(
+            isDirectSubordinate,
+            I18NString.combine(
+                listOf(
+                    isDirectSubordinateI18NString
+                )
+            )
+        )
     }
 
     override fun canExecute(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): Boolean {
-        TODO("Not yet implemented")
+        return playerData.playerInternalData.directLeaderId == fromId
     }
 
     override fun generateCommands(
@@ -53,6 +84,10 @@ data class MergeCarrierEvent(
         choice: Int,
         universeData3DAtPlayer: UniverseData3DAtPlayer
     ): List<Command> {
-        TODO("Not yet implemented")
+        return if (choice == 0) {
+            listOf()
+        } else {
+            listOf()
+        }
     }
 }

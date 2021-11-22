@@ -273,6 +273,20 @@ data class CanSendCheckMessage(
 )
 
 object CanSendCheckMessageI18NStringFactory {
+    fun isNotDirectSubordinate(playerId: Int, toId: Int): I18NString = I18NString(
+        listOf(
+            RealString("Player "),
+            IntString(0),
+            RealString(" not a direct subordinate of player "),
+            IntString(1),
+            RealString(".")
+        ),
+        listOf(
+            toId.toString(),
+            playerId.toString(),
+        )
+    )
+
     fun isNotSubordinate(playerId: Int, toId: Int): I18NString = I18NString(
         listOf(
             RealString("Player "),
