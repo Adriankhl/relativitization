@@ -81,6 +81,10 @@ data class DeclareWarCommand(
         playerData.playerInternalData.diplomacyData().warData.getWarStateData(
             toId
         ).initialSubordinateList = playerData.playerInternalData.subordinateIdList
+
+        playerData.playerInternalData.diplomacyData().warData.getWarStateData(
+            fromId
+        ).startTime = playerData.int4D.t
     }
 
     override fun canExecute(
@@ -102,6 +106,10 @@ data class DeclareWarCommand(
         playerData.playerInternalData.diplomacyData().warData.getWarStateData(
             fromId
         ).initialSubordinateList = playerData.playerInternalData.subordinateIdList
+
+        playerData.playerInternalData.diplomacyData().warData.getWarStateData(
+            fromId
+        ).startTime = playerData.int4D.t
     }
 }
 
@@ -169,6 +177,10 @@ data class DeclareIndependenceCommand(
         playerData.playerInternalData.diplomacyData().warData.getWarStateData(
             toId
         ).initialSubordinateList = playerData.playerInternalData.subordinateIdList
+
+        playerData.playerInternalData.diplomacyData().warData.getWarStateData(
+            fromId
+        ).startTime = playerData.int4D.t
     }
 
 
@@ -188,6 +200,10 @@ data class DeclareIndependenceCommand(
         playerData.playerInternalData.diplomacyData().warData.getWarStateData(
             fromId
         ).initialSubordinateList = playerData.playerInternalData.subordinateIdList
+
+        playerData.playerInternalData.diplomacyData().warData.getWarStateData(
+            fromId
+        ).startTime = playerData.int4D.t
     }
 }
 
