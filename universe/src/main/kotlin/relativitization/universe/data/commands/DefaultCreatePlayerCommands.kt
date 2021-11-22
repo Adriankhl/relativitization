@@ -117,6 +117,8 @@ data class SplitCarrierCommand(
         }
 
         // Use default modifier data
+        val newModifierData: MutableModifierData = MutableModifierData()
+        newPlayerInternalData.modifierData(newModifierData)
 
         // split fuel rest mass data
         val newPhysicsData: MutablePhysicsData = DataSerializer.copy(playerData.playerInternalData.physicsData())
@@ -134,5 +136,10 @@ data class SplitCarrierCommand(
         val newPlayerScienceData: MutablePlayerScienceData =
             DataSerializer.copy(playerData.playerInternalData.playerScienceData())
         newPlayerInternalData.playerScienceData(newPlayerScienceData)
+
+        // Copy politics data
+        val newPoliticsData: MutablePoliticsData =
+            DataSerializer.copy(playerData.playerInternalData.politicsData())
+        newPlayerInternalData.politicsData(newPoliticsData)
     }
 }
