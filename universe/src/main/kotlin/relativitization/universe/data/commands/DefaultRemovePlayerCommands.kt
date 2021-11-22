@@ -51,6 +51,7 @@ data class MergeCarrierCommand(
         newCarrierList.forEach {
             playerData.playerInternalData.popSystemData().addCarrier(it)
         }
+        playerData.syncData()
     }
 }
 
