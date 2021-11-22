@@ -31,14 +31,6 @@ data class MergeCarrierCommand(
         return CanSendCheckMessage(false)
     }
 
-    override fun selfExecuteBeforeSend(
-        playerData: MutablePlayerData,
-        universeSettings: UniverseSettings
-    ) {
-        // the player is dead
-        playerData.playerInternalData.isAlive = false
-    }
-
     override fun canExecute(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
