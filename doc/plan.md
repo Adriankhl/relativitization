@@ -6,6 +6,7 @@
 * No work at other carrier
 * No minimum wage and unemployment benefit
 * Don't use trade history data to determine price
+* Unused centralization
 * No pop buy resource from other player
 
 # Currently unused data
@@ -62,3 +63,4 @@
 # Far future TODO List
 * Science era, e.g., Biology era favour nation with more biologist
 * Optimize afterimage and load saved universe to reduce memory usage
+* Transfer player and transfer carrier commands
