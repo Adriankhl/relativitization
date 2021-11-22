@@ -5,6 +5,7 @@ import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.PlayerType
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
+import relativitization.universe.data.commands.AgreeMergeCommand
 import relativitization.universe.data.commands.CanSendCheckMessage
 import relativitization.universe.data.commands.CanSendCheckMessageI18NStringFactory
 import relativitization.universe.data.commands.Command
@@ -16,7 +17,7 @@ import relativitization.universe.utils.RealString
  * Ask to merge this player to its direct leader
  */
 @Serializable
-data class MergeCarrierEvent(
+data class AskToMergeCarrierEvent(
     override val toId: Int,
     override val fromId: Int
 ) : DefaultEvent() {
@@ -85,7 +86,13 @@ data class MergeCarrierEvent(
         universeData3DAtPlayer: UniverseData3DAtPlayer
     ): List<Command> {
         return if (choice == 0) {
-            listOf()
+            listOf(
+                AgreeMergeCommand(
+                    toId = toId,
+                    fromId = toId,
+                    fromInt4D = universeData3DAtPlayer.getCurrentPlayerData().int4D
+                )
+            )
         } else {
             listOf()
         }
