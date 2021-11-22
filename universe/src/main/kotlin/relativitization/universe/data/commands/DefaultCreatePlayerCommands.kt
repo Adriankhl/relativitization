@@ -4,10 +4,7 @@ import kotlinx.serialization.Serializable
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.MutablePlayerInternalData
 import relativitization.universe.data.UniverseSettings
-import relativitization.universe.data.components.MutableAIData
-import relativitization.universe.data.components.MutableDiplomacyData
-import relativitization.universe.data.components.MutableEconomyData
-import relativitization.universe.data.components.MutablePhysicsData
+import relativitization.universe.data.components.*
 import relativitization.universe.data.components.default.physics.Int4D
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.utils.I18NString
@@ -119,8 +116,23 @@ data class SplitCarrierCommand(
             }
         }
 
+        // Use default modifier data
+
         // split fuel rest mass data
         val newPhysicsData: MutablePhysicsData = DataSerializer.copy(playerData.playerInternalData.physicsData())
-        newPhysicsData.fuelRestMassData
+        newPhysicsData.fuelRestMassData.movement *= resourceFraction
+        newPhysicsData.fuelRestMassData.trade *= resourceFraction
+        newPhysicsData.fuelRestMassData.production *= resourceFraction
+        newPlayerInternalData.physicsData(newPhysicsData)
+
+        // reduce original fuel
+        playerData.playerInternalData.physicsData().fuelRestMassData.movement *= (1.0 - resourceFraction)
+        playerData.playerInternalData.physicsData().fuelRestMassData.trade *= (1.0 - resourceFraction)
+        playerData.playerInternalData.physicsData().fuelRestMassData.production *= (1.0 - resourceFraction)
+
+        // Copy science data
+        val newPlayerScienceData: MutablePlayerScienceData =
+            DataSerializer.copy(playerData.playerInternalData.playerScienceData())
+        newPlayerInternalData.playerScienceData(newPlayerScienceData)
     }
 }
