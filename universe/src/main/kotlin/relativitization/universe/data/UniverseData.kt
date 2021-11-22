@@ -293,7 +293,7 @@ data class MutableUniverseData4D(
         val tSize: Int = playerData4D.size
 
         // Sync data component
-        mutablePlayerData.syncDataComponent()
+        mutablePlayerData.syncData()
 
         // Modified player data double 4D if it doesn't fit int4D
         val int4D = mutablePlayerData.int4D

@@ -103,30 +103,8 @@ data class MutablePlayerData(
     /**
      * Synchronize different data component to ensure consistency
      */
-    fun syncDataComponent() {
-        if (playerInternalData.physicsData().coreRestMass !=
-            playerInternalData.popSystemData().totalCoreRestMass()
-        ) {
-            logger.debug("Sync data component, change core mass")
-            playerInternalData.physicsData().coreRestMass =
-                playerInternalData.popSystemData().totalCoreRestMass()
-        }
-
-        if (playerInternalData.physicsData().otherRestMass !=
-            playerInternalData.popSystemData().totalOtherRestMass()
-        ) {
-            logger.debug("Sync data component, change other rest mass")
-            playerInternalData.physicsData().otherRestMass =
-                playerInternalData.popSystemData().totalOtherRestMass()
-        }
-
-        if (playerInternalData.physicsData().fuelRestMassData.maxMovementDelta !=
-            playerInternalData.popSystemData().totalMaxMovementDeltaFuelRestMass()
-        ) {
-            logger.debug("Sync data component, change max delta fuel rest mass")
-            playerInternalData.physicsData().fuelRestMassData.maxMovementDelta =
-                playerInternalData.popSystemData().totalMaxMovementDeltaFuelRestMass()
-        }
+    fun syncData() {
+        playerInternalData.syncDataComponent()
     }
 
     /**
@@ -342,6 +320,35 @@ data class MutablePlayerInternalData(
     fun addEventData(eventData: MutableEventData) {
         val newKey: Int = ListFind.minMissing(eventDataMap.keys.toList(), 0)
         eventDataMap[newKey] = eventData
+    }
+
+    /**
+     * Synchronize different data component to ensure consistency
+     */
+    fun syncDataComponent() {
+        if (physicsData().coreRestMass !=
+            popSystemData().totalCoreRestMass()
+        ) {
+            logger.debug("Sync data component, change core mass")
+            physicsData().coreRestMass =
+                popSystemData().totalCoreRestMass()
+        }
+
+        if (physicsData().otherRestMass !=
+            popSystemData().totalOtherRestMass()
+        ) {
+            logger.debug("Sync data component, change other rest mass")
+            physicsData().otherRestMass =
+                popSystemData().totalOtherRestMass()
+        }
+
+        if (physicsData().fuelRestMassData.maxMovementDelta !=
+            popSystemData().totalMaxMovementDeltaFuelRestMass()
+        ) {
+            logger.debug("Sync data component, change max delta fuel rest mass")
+            physicsData().fuelRestMassData.maxMovementDelta =
+                popSystemData().totalMaxMovementDeltaFuelRestMass()
+        }
     }
 
     companion object {

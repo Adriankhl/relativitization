@@ -310,7 +310,7 @@ class PlayerCollection(
     }
 
     fun syncAllPlayerDataComponent() {
-        playerMap.values.forEach { it.syncDataComponent() }
+        playerMap.values.forEach { it.syncData() }
     }
 
     companion object {

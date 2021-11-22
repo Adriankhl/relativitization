@@ -22,11 +22,11 @@ import relativitization.universe.mechanisms.default.research.DiscoverKnowledge
 import relativitization.universe.mechanisms.default.research.KnowledgeDiffusion
 import relativitization.universe.mechanisms.default.science.SyncPlayerScienceData
 import relativitization.universe.mechanisms.default.science.UpdateScienceApplicationData
-import relativitization.universe.mechanisms.default.sync.SyncDataComponent
+import relativitization.universe.mechanisms.default.sync.SyncPlayerData
 
 object DefaultMechanismList : MechanismList() {
     override val mechanismList: List<Mechanism> = listOf(
-        SyncDataComponent,
+        SyncPlayerData,
         ClearDeadPlayer,
         AutoEventCollection,
         ProcessEvents,

@@ -10,7 +10,7 @@ import relativitization.universe.mechanisms.Mechanism
 /**
  * Sync data component before all mechanism start
  */
-object SyncDataComponent : Mechanism() {
+object SyncPlayerData : Mechanism() {
     override fun process(
         mutablePlayerData: MutablePlayerData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
@@ -18,7 +18,7 @@ object SyncDataComponent : Mechanism() {
         universeGlobalData: UniverseGlobalData
     ): List<Command> {
 
-        mutablePlayerData.syncDataComponent()
+        mutablePlayerData.syncData()
 
         return listOf()
     }

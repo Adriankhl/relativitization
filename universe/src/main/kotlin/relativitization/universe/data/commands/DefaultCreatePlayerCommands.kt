@@ -7,6 +7,7 @@ import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.components.MutableAIData
 import relativitization.universe.data.components.MutableDiplomacyData
 import relativitization.universe.data.components.MutableEconomyData
+import relativitization.universe.data.components.MutablePhysicsData
 import relativitization.universe.data.components.default.physics.Int4D
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.utils.I18NString
@@ -117,5 +118,9 @@ data class SplitCarrierCommand(
                 singleResourceData.resourceAmount.trade *= (1.0 - resourceFraction)
             }
         }
+
+        // split fuel rest mass data
+        val newPhysicsData: MutablePhysicsData = DataSerializer.copy(playerData.playerInternalData.physicsData())
+        newPhysicsData.fuelRestMassData
     }
 }
