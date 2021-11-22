@@ -272,7 +272,7 @@ data class CanSendCheckMessage(
     val message: I18NString = I18NString(listOf(), listOf())
 )
 
-object CanSendWIthMessageI18NStringFactory {
+object CanSendCheckMessageI18NStringFactory {
     fun isNotSubordinate(playerId: Int, toId: Int): I18NString = I18NString(
         listOf(
             RealString("Player "),

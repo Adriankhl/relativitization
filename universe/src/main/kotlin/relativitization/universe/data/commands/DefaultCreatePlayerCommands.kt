@@ -43,7 +43,7 @@ data class SplitCarrierCommand(
         val isToSelfI18NString: I18NString = if (isToSelf) {
             I18NString("")
         } else {
-            CanSendWIthMessageI18NStringFactory.isNotToSelf(fromId, toId)
+            CanSendCheckMessageI18NStringFactory.isNotToSelf(fromId, toId)
         }
 
         val isCarrierIdValid: Boolean = carrierIdList.all {

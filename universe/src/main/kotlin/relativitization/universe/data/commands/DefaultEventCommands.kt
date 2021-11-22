@@ -158,7 +158,7 @@ data class SelectEventChoiceCommand(
         } else {
             CanSendCheckMessage(
                 false,
-                CanSendWIthMessageI18NStringFactory.isNotToSelf(playerData.playerId, toId)
+                CanSendCheckMessageI18NStringFactory.isNotToSelf(playerData.playerId, toId)
             )
         }
     }
