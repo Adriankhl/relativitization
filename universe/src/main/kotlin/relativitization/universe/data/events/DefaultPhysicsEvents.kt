@@ -24,9 +24,9 @@ import kotlin.math.min
 data class MoveToDouble3DEvent(
     override val toId: Int,
     override val fromId: Int,
+    override val stayTime: Int,
     val targetDouble3D: Double3D,
     val maxSpeed: Double,
-    override val stayTime: Int,
 ) : DefaultEvent() {
 
     override val description: I18NString = I18NString(

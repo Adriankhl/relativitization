@@ -20,10 +20,10 @@ internal class SelectEventChoiceCommandTest {
         val event = MoveToDouble3DEvent(
             toId = 2,
             fromId = 2,
+            stayTime = 999,
             targetDouble3D = view7.get(3)
                 .groupCenterDouble3D(view7.universeSettings.groupEdgeLength),
-            maxSpeed = 0.2,
-            stayTime = 999
+            maxSpeed = 0.2
 
         )
 

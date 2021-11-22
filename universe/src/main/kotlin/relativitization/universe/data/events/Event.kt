@@ -19,14 +19,14 @@ sealed class Event {
     // The event sent from this player id, -1 if this is an auto-event
     abstract val fromId: Int
 
+    // how many turns will this event stay in the player data
+    abstract val stayTime: Int
+
     // Description of the event
     abstract val description: I18NString
 
     // Available choice description
     abstract val choiceDescription: Map<Int, I18NString>
-
-    // how many turns will this event stay in the player data
-    abstract val stayTime: Int
 
     /**
      * Whether this event should be cancel, such as the player made a choice or some condition has been met

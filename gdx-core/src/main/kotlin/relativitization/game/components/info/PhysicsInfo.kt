@@ -98,9 +98,9 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
             val moveToDouble3DEvent = MoveToDouble3DEvent(
                 toId = playerData.playerId,
                 fromId = game.universeClient.getUniverseData3D().getCurrentPlayerData().playerId,
+                stayTime = Int.MAX_VALUE,
                 targetDouble3D = Double3D(x, y, z),
                 maxSpeed = maxSpeed,
-                stayTime = Int.MAX_VALUE,
             )
 
             val addEventCommand = AddEventCommand(
