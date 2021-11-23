@@ -71,6 +71,7 @@ object UpdateWarState : Mechanism() {
                 }
                 (mutablePlayerData.int4D.t - warState.startTime > maxWarLength) && (!otherHasWarState || otherWarTooLong)
             }.keys
+        
         warTooLongSet.forEach {
             mutablePlayerData.playerInternalData.diplomacyData().warData.warStateMap.remove(it)
             mutablePlayerData.playerInternalData.modifierData().diplomacyModifierData.setPeaceTreatyWithLength(
