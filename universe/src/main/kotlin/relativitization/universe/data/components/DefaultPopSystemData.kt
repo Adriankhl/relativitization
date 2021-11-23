@@ -5,6 +5,7 @@ import kotlinx.serialization.Serializable
 import relativitization.universe.data.components.default.popsystem.CarrierData
 import relativitization.universe.data.components.default.popsystem.CarrierType
 import relativitization.universe.data.components.default.popsystem.MutableCarrierData
+import relativitization.universe.data.components.default.popsystem.MutableCarrierInternalData
 import relativitization.universe.data.components.default.popsystem.pop.PopType
 import relativitization.universe.maths.collection.ListFind
 import kotlin.random.Random
@@ -15,7 +16,7 @@ data class PopSystemData(
     val carrierDataMap: Map<Int, CarrierData> = mapOf(),
 ) : DefaultPlayerDataComponent() {
     fun totalCoreRestMass(): Double {
-        return carrierDataMap.values.sumOf { it.coreRestMass }
+        return carrierDataMap.values.sumOf { it.carrierInternalData.coreRestMass }
     }
 
     fun totalOtherRestMass(): Double {
@@ -52,7 +53,7 @@ data class PopSystemData(
 
 
     fun totalMaxDeltaFuelRestMass(): Double {
-        return carrierDataMap.values.sumOf { it.maxMovementDeltaFuelRestMass }
+        return carrierDataMap.values.sumOf { it.carrierInternalData.maxMovementDeltaFuelRestMass }
     }
 
     fun numCarrier() = carrierDataMap.values.size
@@ -112,10 +113,16 @@ data class MutablePopSystemData(
 
     fun addRandomStellarSystem() {
         val restMass = Random.nextDouble(1.0e30, 2.5e30)
+        val newCarrierInternalData = MutableCarrierInternalData(
+            coreRestMass = restMass,
+            maxMovementDeltaFuelRestMass = 0.0,
+            size = 100.0,
+            idealPopulation = restMass / 1E10
+        )
         val newCarrier =
             MutableCarrierData(
-                coreRestMass = restMass,
-                carrierType = CarrierType.STELLAR
+                carrierType = CarrierType.STELLAR,
+                carrierInternalData = newCarrierInternalData
             )
         carrierDataMap[newCarrierId()] = newCarrier
     }

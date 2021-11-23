@@ -6,7 +6,6 @@ import relativitization.universe.data.components.default.popsystem.pop.MutableAl
 
 enum class CarrierType {
     STELLAR,
-    PLANETARY,
     SPACESHIP
 }
 
@@ -14,10 +13,6 @@ enum class CarrierType {
 data class CarrierData(
     val carrierType: CarrierType = CarrierType.SPACESHIP,
     val carrierInternalData: CarrierInternalData = CarrierInternalData(),
-    val coreRestMass: Double = 1.0,
-    val maxMovementDeltaFuelRestMass: Double = 0.0,
-    val size: Double = 100.0,
-    val idealPopulation: Double = 100.0,
     val allPopData: AllPopData = AllPopData(),
 )
 

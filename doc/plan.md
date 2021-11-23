@@ -12,6 +12,7 @@
 
 # Currently unused data
 * Size of factory and institute
+* Size of carrier
 * Child and elder population
 * Quality 2 and 3 of resources
 * Reputation of research institute and laboratory
