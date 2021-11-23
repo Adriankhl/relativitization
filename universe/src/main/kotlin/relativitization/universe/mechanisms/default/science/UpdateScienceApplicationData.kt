@@ -5,10 +5,10 @@ import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.components.MutablePlayerScienceData
+import relativitization.universe.data.components.default.popsystem.MutableCarrierInternalData
 import relativitization.universe.data.components.default.science.knowledge.MutableKnowledgeData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.mechanisms.Mechanism
-import kotlin.math.exp
 
 object UpdateScienceApplicationData : Mechanism() {
     override fun process(
@@ -21,21 +21,13 @@ object UpdateScienceApplicationData : Mechanism() {
         val scienceData: MutablePlayerScienceData =
             mutablePlayerData.playerInternalData.playerScienceData()
 
-        scienceData.playerScienceApplicationData.maxShipRestMass =
-            maxRestShipMass(scienceData.playerKnowledgeData)
-
-        scienceData.playerScienceApplicationData.maxShipEnginePowerByRestMass =
-            maxShipEnginePowerByRestMass(scienceData.playerKnowledgeData)
+        scienceData.playerScienceApplicationData.idealShip =
+            computeIdealShip(scienceData.playerKnowledgeData)
 
         return listOf()
     }
 
-    private fun maxRestShipMass(mutableKnowledgeData: MutableKnowledgeData): Double {
-        return 1.0E6 + mutableKnowledgeData.appliedResearchData.architectureTechnologyLevel * 100.0
+    private fun computeIdealShip(mutableKnowledgeData: MutableKnowledgeData): MutableCarrierInternalData {
+        return MutableCarrierInternalData()
     }
-
-    private fun maxShipEnginePowerByRestMass(mutableKnowledgeData: MutableKnowledgeData): Double {
-        return 1.0 / (1.0 + exp(mutableKnowledgeData.appliedResearchData.energyTechnologyLevel))
-    }
-
 }
