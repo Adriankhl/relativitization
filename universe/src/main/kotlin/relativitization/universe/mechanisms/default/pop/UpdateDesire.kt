@@ -6,6 +6,8 @@ import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.components.default.economy.MutableResourceQualityData
 import relativitization.universe.data.components.default.economy.ResourceType
+import relativitization.universe.data.components.default.popsystem.pop.MutableCommonPopData
+import relativitization.universe.data.components.default.popsystem.pop.PopType
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.maths.algebra.Piecewise
 import relativitization.universe.maths.physics.Relativistic
@@ -32,8 +34,8 @@ object UpdateDesire : Mechanism() {
         )
 
         mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.forEach { carrier ->
-            relativitization.universe.data.components.default.popsystem.pop.PopType.values().forEach { popType ->
-                val mutableCommonPopData: relativitization.universe.data.components.default.popsystem.pop.MutableCommonPopData =
+            PopType.values().forEach { popType ->
+                val mutableCommonPopData: MutableCommonPopData =
                     carrier.allPopData.getCommonPopData(popType)
 
                 val desireAmount: Double = computeDesireResourceAmount(
@@ -83,53 +85,53 @@ object UpdateDesire : Mechanism() {
      * @param popType the desire of this pop
      */
     fun computeDesireResourceType(
-        popType: relativitization.universe.data.components.default.popsystem.pop.PopType
+        popType: PopType
     ): List<ResourceType> {
         return when (popType) {
-            relativitization.universe.data.components.default.popsystem.pop.PopType.LABOURER -> listOf(
+            PopType.LABOURER -> listOf(
                 ResourceType.FOOD,
                 ResourceType.CLOTH,
                 ResourceType.HOUSEHOLD_GOOD,
                 ResourceType.ENTERTAINMENT,
             )
-            relativitization.universe.data.components.default.popsystem.pop.PopType.ENGINEER -> listOf(
+            PopType.ENGINEER -> listOf(
                 ResourceType.FOOD,
                 ResourceType.CLOTH,
                 ResourceType.HOUSEHOLD_GOOD,
                 ResourceType.ENTERTAINMENT,
             )
-            relativitization.universe.data.components.default.popsystem.pop.PopType.SCHOLAR -> listOf(
+            PopType.SCHOLAR -> listOf(
                 ResourceType.FOOD,
                 ResourceType.CLOTH,
                 ResourceType.HOUSEHOLD_GOOD,
                 ResourceType.ENTERTAINMENT,
             )
-            relativitization.universe.data.components.default.popsystem.pop.PopType.EDUCATOR -> listOf(
+            PopType.EDUCATOR -> listOf(
                 ResourceType.FOOD,
                 ResourceType.CLOTH,
                 ResourceType.HOUSEHOLD_GOOD,
                 ResourceType.ENTERTAINMENT,
             )
-            relativitization.universe.data.components.default.popsystem.pop.PopType.MEDIC -> listOf(
+            PopType.MEDIC -> listOf(
                 ResourceType.FOOD,
                 ResourceType.CLOTH,
                 ResourceType.HOUSEHOLD_GOOD,
                 ResourceType.ENTERTAINMENT,
                 ResourceType.MEDICINE,
             )
-            relativitization.universe.data.components.default.popsystem.pop.PopType.SERVICE_WORKER -> listOf(
+            PopType.SERVICE_WORKER -> listOf(
                 ResourceType.FOOD,
                 ResourceType.CLOTH,
                 ResourceType.HOUSEHOLD_GOOD,
                 ResourceType.ENTERTAINMENT,
             )
-            relativitization.universe.data.components.default.popsystem.pop.PopType.ENTERTAINER -> listOf(
+            PopType.ENTERTAINER -> listOf(
                 ResourceType.FOOD,
                 ResourceType.CLOTH,
                 ResourceType.HOUSEHOLD_GOOD,
                 ResourceType.ENTERTAINMENT,
             )
-            relativitization.universe.data.components.default.popsystem.pop.PopType.SOLDIER -> listOf(
+            PopType.SOLDIER -> listOf(
                 ResourceType.FOOD,
                 ResourceType.CLOTH,
                 ResourceType.HOUSEHOLD_GOOD,
@@ -143,7 +145,7 @@ object UpdateDesire : Mechanism() {
      * Compute the desire amount without the effect of time dilation
      */
     fun computeDesireResourceAmount(
-        mutableCommonPopData: relativitization.universe.data.components.default.popsystem.pop.MutableCommonPopData
+        mutableCommonPopData: MutableCommonPopData
     ): Double {
         return mutableCommonPopData.adultPopulation
     }
@@ -153,7 +155,7 @@ object UpdateDesire : Mechanism() {
      */
     fun computeDesireResourceQuality(
         gamma: Double,
-        mutableCommonPopData: relativitization.universe.data.components.default.popsystem.pop.MutableCommonPopData,
+        mutableCommonPopData: MutableCommonPopData,
         resourceType: ResourceType,
         desireQualityUpdateFactor: Double,
         desireQualityUpdateMinDiff: Double,
@@ -193,7 +195,7 @@ object UpdateDesire : Mechanism() {
      */
     fun updateSatisfaction(
         gamma: Double,
-        mutableCommonPopData: relativitization.universe.data.components.default.popsystem.pop.MutableCommonPopData,
+        mutableCommonPopData: MutableCommonPopData,
         desireResourceTypeList: List<ResourceType>,
         satisfactionMaxDecreaseFactor: Double,
         satisfactionMaxIncreaseDelta: Double,

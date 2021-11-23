@@ -4,6 +4,8 @@ import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
+import relativitization.universe.data.components.default.popsystem.pop.MutableCommonPopData
+import relativitization.universe.data.components.default.popsystem.pop.PopType
 import relativitization.universe.data.components.default.popsystem.pop.medic.MutableMedicPopData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.maths.physics.Relativistic
@@ -34,8 +36,8 @@ object PopulationGrowth : Mechanism() {
                 totalPopulation,
             )
 
-            relativitization.universe.data.components.default.popsystem.pop.PopType.values().forEach { popType ->
-                val commonPopData: relativitization.universe.data.components.default.popsystem.pop.MutableCommonPopData = mutableCarrierData.allPopData.getCommonPopData(
+            PopType.values().forEach { popType ->
+                val commonPopData: MutableCommonPopData = mutableCarrierData.allPopData.getCommonPopData(
                     popType
                 )
 
@@ -88,7 +90,7 @@ object PopulationGrowth : Mechanism() {
      */
     fun computeNewPop(
         gamma: Double,
-        popType: relativitization.universe.data.components.default.popsystem.pop.PopType,
+        popType: PopType,
         medicFactor: Double,
         satisfaction: Double,
         educationLevel: Double,
@@ -102,7 +104,7 @@ object PopulationGrowth : Mechanism() {
         // Always add 100 population to avoid 0 population
         val basePopulationGrowth: Double = 100.0
 
-        val educationFactor: Double = if (popType == relativitization.universe.data.components.default.popsystem.pop.PopType.SCHOLAR || popType == relativitization.universe.data.components.default.popsystem.pop.PopType.ENGINEER) {
+        val educationFactor: Double = if (popType == PopType.SCHOLAR || popType == PopType.ENGINEER) {
             (educationLevel - 0.5) * 2.0
         } else {
             1.0

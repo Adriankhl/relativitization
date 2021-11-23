@@ -4,6 +4,8 @@ import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
+import relativitization.universe.data.components.default.popsystem.pop.MutableCommonPopData
+import relativitization.universe.data.components.default.popsystem.pop.PopType
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.maths.physics.Relativistic
 import relativitization.universe.mechanisms.Mechanism
@@ -26,15 +28,15 @@ object Educate : Mechanism() {
             val totalPopulation: Double = mutableCarrierData.allPopData.totalAdultPopulation()
 
             val educatorPopulation: Double = mutableCarrierData.allPopData.getCommonPopData(
-                relativitization.universe.data.components.default.popsystem.pop.PopType.EDUCATOR
+                PopType.EDUCATOR
             ).adultPopulation
 
             val educatorSatisfaction: Double = mutableCarrierData.allPopData.getCommonPopData(
-                relativitization.universe.data.components.default.popsystem.pop.PopType.EDUCATOR
+                PopType.EDUCATOR
             ).satisfaction
 
-            relativitization.universe.data.components.default.popsystem.pop.PopType.values().forEach { popType ->
-                val commonPopData: relativitization.universe.data.components.default.popsystem.pop.MutableCommonPopData = mutableCarrierData.allPopData.getCommonPopData(
+            PopType.values().forEach { popType ->
+                val commonPopData: MutableCommonPopData = mutableCarrierData.allPopData.getCommonPopData(
                     popType
                 )
                 val newEducationLevel: Double = computeNewEducationLevel(

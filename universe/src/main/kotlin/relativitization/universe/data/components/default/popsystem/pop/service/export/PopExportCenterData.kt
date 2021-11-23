@@ -3,17 +3,18 @@ package relativitization.universe.data.components.default.popsystem.pop.service.
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.components.default.economy.ResourceQualityClass
 import relativitization.universe.data.components.default.economy.ResourceType
+import relativitization.universe.data.components.default.popsystem.pop.PopType
 
 /**
  * Export center of pop
  */
 @Serializable
 data class PopExportCenterData(
-    val exportDataMap: Map<Int, Map<relativitization.universe.data.components.default.popsystem.pop.PopType, List<PopSingleExportData>>> = mapOf()
+    val exportDataMap: Map<Int, Map<PopType, List<PopSingleExportData>>> = mapOf()
 ) {
     fun hasSingleExportData(
         carrierId: Int,
-        popType: relativitization.universe.data.components.default.popsystem.pop.PopType,
+        popType: PopType,
         resourceType: ResourceType,
         resourceQualityClass: ResourceQualityClass
     ): Boolean {
@@ -36,7 +37,7 @@ data class PopExportCenterData(
 
     fun getSingleExportData(
         carrierId: Int,
-        popType: relativitization.universe.data.components.default.popsystem.pop.PopType,
+        popType: PopType,
         resourceType: ResourceType,
         resourceQualityClass: ResourceQualityClass
     ): PopSingleExportData {
@@ -56,11 +57,11 @@ data class PopExportCenterData(
 
 @Serializable
 data class MutablePopExportCenterData(
-    val exportDataMap: MutableMap<Int, MutableMap<relativitization.universe.data.components.default.popsystem.pop.PopType, MutableList<MutablePopSingleExportData>>> = mutableMapOf()
+    val exportDataMap: MutableMap<Int, MutableMap<PopType, MutableList<MutablePopSingleExportData>>> = mutableMapOf()
 ) {
     fun getSingleExportData(
         carrierId: Int,
-        popType: relativitization.universe.data.components.default.popsystem.pop.PopType,
+        popType: PopType,
         resourceType: ResourceType,
         resourceQualityClass: ResourceQualityClass
     ): MutablePopSingleExportData {

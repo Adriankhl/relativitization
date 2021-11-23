@@ -8,7 +8,7 @@ data class CarrierData(
     val maxMovementDeltaFuelRestMass: Double = 0.0,
     val size: Double = 100.0,
     val idealPopulation: Double = 100.0,
-    val carrierType: relativitization.universe.data.components.default.popsystem.CarrierType = relativitization.universe.data.components.default.popsystem.CarrierType.SPACESHIP,
+    val carrierType: CarrierType = CarrierType.SPACESHIP,
     val allPopData: relativitization.universe.data.components.default.popsystem.pop.AllPopData = relativitization.universe.data.components.default.popsystem.pop.AllPopData(),
 )
 
@@ -18,7 +18,7 @@ data class MutableCarrierData(
     var maxMovementDeltaFuelRestMass: Double = 0.0,
     var size: Double = 100.0,
     var idealPopulation: Double = 100.0,
-    var carrierType: relativitization.universe.data.components.default.popsystem.CarrierType = relativitization.universe.data.components.default.popsystem.CarrierType.SPACESHIP,
+    var carrierType: CarrierType = CarrierType.SPACESHIP,
     var allPopData: relativitization.universe.data.components.default.popsystem.pop.MutableAllPopData = relativitization.universe.data.components.default.popsystem.pop.MutableAllPopData(),
 )
 

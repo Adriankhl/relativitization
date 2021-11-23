@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Stack
 import com.badlogic.gdx.utils.Align
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.PlayerType
+import relativitization.universe.data.components.default.popsystem.CarrierType
 import relativitization.universe.utils.RelativitizationLogManager
 
 object PlayerImage {
@@ -25,9 +26,10 @@ object PlayerImage {
 
         val playerId = playerData.playerId
 
-        val hasStellarSystem: Boolean = playerData.playerInternalData.popSystemData().carrierDataMap.any {
-            it.value.carrierType == relativitization.universe.data.components.default.popsystem.CarrierType.STELLAR
-        }
+        val hasStellarSystem: Boolean =
+            playerData.playerInternalData.popSystemData().carrierDataMap.any {
+                it.value.carrierType == CarrierType.STELLAR
+            }
 
         if (hasStellarSystem) {
             val stellarImage: Image = ActorFunction.createImage(assets, "system/sun", soundVolume)

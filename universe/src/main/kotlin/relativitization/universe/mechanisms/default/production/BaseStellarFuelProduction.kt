@@ -4,6 +4,8 @@ import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
+import relativitization.universe.data.components.default.popsystem.CarrierType
+import relativitization.universe.data.components.default.popsystem.MutableCarrierData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.maths.physics.Relativistic
 import relativitization.universe.mechanisms.Mechanism
@@ -42,10 +44,10 @@ object BaseStellarFuelProduction : Mechanism() {
     }
 
     fun baseFuelProduction(
-        mutableCarrierData: relativitization.universe.data.components.default.popsystem.MutableCarrierData,
+        mutableCarrierData: MutableCarrierData,
         gamma: Double,
     ): Double {
-        return if (mutableCarrierData.carrierType == relativitization.universe.data.components.default.popsystem.CarrierType.STELLAR) {
+        return if (mutableCarrierData.carrierType == CarrierType.STELLAR) {
             // Estimate the relation between star mass and energy received by planet
             mutableCarrierData.coreRestMass / 1E24 / gamma
         } else {

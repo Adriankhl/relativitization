@@ -7,6 +7,8 @@ import relativitization.universe.data.commands.Command
 import relativitization.universe.data.components.EconomyData
 import relativitization.universe.data.components.MutableEconomyData
 import relativitization.universe.data.components.default.physics.MutableFuelRestMassData
+import relativitization.universe.data.components.default.popsystem.MutableCarrierData
+import relativitization.universe.data.components.default.popsystem.pop.MutableCommonPopData
 import relativitization.universe.data.components.default.popsystem.pop.engineer.MutableEngineerPopData
 import relativitization.universe.data.components.default.popsystem.pop.labourer.MutableLabourerPopData
 import relativitization.universe.data.components.default.popsystem.pop.scholar.MutableScholarPopData
@@ -47,7 +49,7 @@ object Employment : Mechanism() {
 
     fun updateEmployment(
         gamma: Double,
-        carrierData: relativitization.universe.data.components.default.popsystem.MutableCarrierData,
+        carrierData: MutableCarrierData,
         fuelRestMassData: MutableFuelRestMassData,
         mutableEconomyData: MutableEconomyData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
@@ -521,7 +523,7 @@ object Employment : Mechanism() {
      */
     fun updateCommonEmployment(
         gamma: Double,
-        commonPopData: relativitization.universe.data.components.default.popsystem.pop.MutableCommonPopData,
+        commonPopData: MutableCommonPopData,
         fuelRestMassData: MutableFuelRestMassData,
         mutableEconomyData: MutableEconomyData,
         economyData: EconomyData,

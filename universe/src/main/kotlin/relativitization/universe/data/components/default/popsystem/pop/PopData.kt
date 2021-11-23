@@ -55,18 +55,18 @@ data class AllPopData(
     val entertainerPopData: EntertainerPopData = EntertainerPopData(),
     val soldierPopData: SoldierPopData = SoldierPopData(),
 ) {
-    fun getCommonPopData(popType: relativitization.universe.data.components.default.popsystem.pop.PopType): relativitization.universe.data.components.default.popsystem.pop.CommonPopData = when(popType) {
-        relativitization.universe.data.components.default.popsystem.pop.PopType.LABOURER -> labourerPopData.commonPopData
-        relativitization.universe.data.components.default.popsystem.pop.PopType.ENGINEER -> engineerPopData.commonPopData
-        relativitization.universe.data.components.default.popsystem.pop.PopType.SCHOLAR -> scholarPopData.commonPopData
-        relativitization.universe.data.components.default.popsystem.pop.PopType.EDUCATOR -> educatorPopData.commonPopData
-        relativitization.universe.data.components.default.popsystem.pop.PopType.MEDIC -> medicPopData.commonPopData
-        relativitization.universe.data.components.default.popsystem.pop.PopType.SERVICE_WORKER -> servicePopData.commonPopData
-        relativitization.universe.data.components.default.popsystem.pop.PopType.ENTERTAINER -> entertainerPopData.commonPopData
-        relativitization.universe.data.components.default.popsystem.pop.PopType.SOLDIER -> soldierPopData.commonPopData
+    fun getCommonPopData(popType: PopType): CommonPopData = when(popType) {
+        PopType.LABOURER -> labourerPopData.commonPopData
+        PopType.ENGINEER -> engineerPopData.commonPopData
+        PopType.SCHOLAR -> scholarPopData.commonPopData
+        PopType.EDUCATOR -> educatorPopData.commonPopData
+        PopType.MEDIC -> medicPopData.commonPopData
+        PopType.SERVICE_WORKER -> servicePopData.commonPopData
+        PopType.ENTERTAINER -> entertainerPopData.commonPopData
+        PopType.SOLDIER -> soldierPopData.commonPopData
     }
 
-    fun totalAdultPopulation(): Double = relativitization.universe.data.components.default.popsystem.pop.PopType.values().fold(0.0) { acc, popType ->
+    fun totalAdultPopulation(): Double = PopType.values().fold(0.0) { acc, popType ->
         acc + getCommonPopData(popType).adultPopulation
     }
 }
@@ -82,24 +82,24 @@ data class MutableAllPopData(
     var entertainerPopData: MutableEntertainerPopData = MutableEntertainerPopData(),
     var soldierPopData: MutableSoldierPopData = MutableSoldierPopData(),
 ) {
-    fun getCommonPopData(popType: relativitization.universe.data.components.default.popsystem.pop.PopType): relativitization.universe.data.components.default.popsystem.pop.MutableCommonPopData = when(popType) {
-        relativitization.universe.data.components.default.popsystem.pop.PopType.LABOURER -> labourerPopData.commonPopData
-        relativitization.universe.data.components.default.popsystem.pop.PopType.ENGINEER -> engineerPopData.commonPopData
-        relativitization.universe.data.components.default.popsystem.pop.PopType.SCHOLAR -> scholarPopData.commonPopData
-        relativitization.universe.data.components.default.popsystem.pop.PopType.EDUCATOR -> educatorPopData.commonPopData
-        relativitization.universe.data.components.default.popsystem.pop.PopType.MEDIC -> medicPopData.commonPopData
-        relativitization.universe.data.components.default.popsystem.pop.PopType.SERVICE_WORKER -> servicePopData.commonPopData
-        relativitization.universe.data.components.default.popsystem.pop.PopType.ENTERTAINER -> entertainerPopData.commonPopData
-        relativitization.universe.data.components.default.popsystem.pop.PopType.SOLDIER -> soldierPopData.commonPopData
+    fun getCommonPopData(popType: PopType): MutableCommonPopData = when(popType) {
+        PopType.LABOURER -> labourerPopData.commonPopData
+        PopType.ENGINEER -> engineerPopData.commonPopData
+        PopType.SCHOLAR -> scholarPopData.commonPopData
+        PopType.EDUCATOR -> educatorPopData.commonPopData
+        PopType.MEDIC -> medicPopData.commonPopData
+        PopType.SERVICE_WORKER -> servicePopData.commonPopData
+        PopType.ENTERTAINER -> entertainerPopData.commonPopData
+        PopType.SOLDIER -> soldierPopData.commonPopData
     }
 
     fun addResource(
-        popType: relativitization.universe.data.components.default.popsystem.pop.PopType,
+        popType: PopType,
         resourceType: ResourceType,
         resourceQualityData: ResourceQualityData,
         resourceAmount: Double
     ) {
-        val commonPopData: relativitization.universe.data.components.default.popsystem.pop.MutableCommonPopData = getCommonPopData(popType)
+        val commonPopData: MutableCommonPopData = getCommonPopData(popType)
 
         commonPopData.addDesireResource(
             resourceType,
@@ -108,7 +108,7 @@ data class MutableAllPopData(
         )
     }
 
-    fun totalAdultPopulation(): Double = relativitization.universe.data.components.default.popsystem.pop.PopType.values().fold(0.0) { acc, popType ->
+    fun totalAdultPopulation(): Double = PopType.values().fold(0.0) { acc, popType ->
         acc + getCommonPopData(popType).adultPopulation
     }
 }
@@ -159,11 +159,11 @@ data class MutableCommonPopData(
 ) {
     fun numEmployee(): Double = when {
         unemploymentRate > 1.0 -> {
-            relativitization.universe.data.components.default.popsystem.pop.MutableCommonPopData.Companion.logger.error("Unemployment rate > 1.0")
+            MutableCommonPopData.Companion.logger.error("Unemployment rate > 1.0")
             0.0
         }
         unemploymentRate < 0.0 -> {
-            relativitization.universe.data.components.default.popsystem.pop.MutableCommonPopData.Companion.logger.error("Unemployment rate < 0.0")
+            MutableCommonPopData.Companion.logger.error("Unemployment rate < 0.0")
             adultPopulation
         }
         else -> {

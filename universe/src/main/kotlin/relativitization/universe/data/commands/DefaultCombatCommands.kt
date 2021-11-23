@@ -4,6 +4,8 @@ import kotlinx.serialization.Serializable
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.components.default.physics.Int4D
+import relativitization.universe.data.components.default.popsystem.CarrierType
+import relativitization.universe.data.components.default.popsystem.MutableCarrierData
 import relativitization.universe.utils.I18NString
 
 /**
@@ -47,7 +49,7 @@ data class DamageCommand(
         // Attack consume shield
         carrierIdList.forEach {
 
-            val carrierData: relativitization.universe.data.components.default.popsystem.MutableCarrierData =
+            val carrierData: MutableCarrierData =
                 playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
                     it
                 )
@@ -58,7 +60,7 @@ data class DamageCommand(
                 carrierData.allPopData.soldierPopData.militaryBaseData.shield -= attackAcc
                 attackAcc = 0.0
             } else {
-                if (carrierData.carrierType == relativitization.universe.data.components.default.popsystem.CarrierType.SPACESHIP) {
+                if (carrierData.carrierType == CarrierType.SPACESHIP) {
                     // Destroy this carrier
                     playerData.playerInternalData.popSystemData().carrierDataMap.remove(it)
                 } else {
@@ -76,9 +78,10 @@ data class DamageCommand(
             playerData.playerInternalData.isAlive = false
         } else {
             // Change leader if all carrier shields are destroyed
-            val allCarrierDestroyed: Boolean = playerData.playerInternalData.popSystemData().carrierDataMap.values. all {
-                (it.carrierType != relativitization.universe.data.components.default.popsystem.CarrierType.SPACESHIP) && (it.allPopData.soldierPopData.militaryBaseData.shield <= 0.0)
-            }
+            val allCarrierDestroyed: Boolean =
+                playerData.playerInternalData.popSystemData().carrierDataMap.values.all {
+                    (it.carrierType != CarrierType.SPACESHIP) && (it.allPopData.soldierPopData.militaryBaseData.shield <= 0.0)
+                }
 
             if (allCarrierDestroyed) {
                 playerData.changeDirectLeaderId(listOf(fromId))

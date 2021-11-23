@@ -7,6 +7,7 @@ import relativitization.universe.data.components.default.economy.ResourceQuality
 import relativitization.universe.data.components.default.economy.ResourceQualityData
 import relativitization.universe.data.components.default.economy.ResourceType
 import relativitization.universe.data.components.default.physics.Int4D
+import relativitization.universe.data.components.default.popsystem.pop.PopType
 import relativitization.universe.data.components.default.popsystem.pop.service.export.MutablePlayerExportCenterData
 import relativitization.universe.data.components.default.popsystem.pop.service.export.MutablePlayerSingleExportData
 import relativitization.universe.data.components.default.popsystem.pop.service.export.MutablePopExportCenterData
@@ -451,7 +452,7 @@ data class SendResourceToPopCommand(
     override val fromId: Int,
     override val fromInt4D: Int4D,
     val targetCarrierId: Int,
-    val targetPopType: relativitization.universe.data.components.default.popsystem.pop.PopType,
+    val targetPopType: PopType,
     val resourceType: ResourceType,
     val resourceQualityData: ResourceQualityData,
     val amount: Double,
@@ -517,7 +518,7 @@ data class PopBuyResourceCommand(
     override val fromInt4D: Int4D,
     val receiverTopLeaderId: Int,
     val fromCarrierId: Int,
-    val fromPopType: relativitization.universe.data.components.default.popsystem.pop.PopType,
+    val fromPopType: PopType,
     val targetCarrierId: Int,
     val resourceType: ResourceType,
     val resourceQualityClass: ResourceQualityClass,
