@@ -20,7 +20,7 @@ object UpdateWarState : Mechanism() {
 
         // Invalid internal war, is leader or subordinate
         val invalidWarSet: Set<Int> =
-            mutablePlayerData.playerInternalData.diplomacyData().warData.warStateMap.filter { (id, warState) ->
+            mutablePlayerData.playerInternalData.diplomacyData().warData.warStateMap.filter { (id, _) ->
                 mutablePlayerData.isLeaderOrSelf(id) || mutablePlayerData.isSubOrdinateOrSelf(id)
             }.keys
 
