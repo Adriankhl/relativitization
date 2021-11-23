@@ -8,7 +8,7 @@ import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.commands.name
 
-class CommandsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.assets){
+class CommandsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.assets) {
     private val gdxSettings = game.gdxSettings
 
     private var table: Table = Table()
@@ -86,7 +86,8 @@ class CommandsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>
 
         nestedTable.add(commandNameLabel).growX()
 
-        nestedTable.add(cancelButton).size(30f * gdxSettings.imageScale, 30f * gdxSettings.imageScale)
+        nestedTable.add(cancelButton)
+            .size(30f * gdxSettings.imageScale, 30f * gdxSettings.imageScale)
 
         nestedTable.row().space(10f)
 

@@ -41,7 +41,7 @@ data class PopExportCenterData(
         resourceType: ResourceType,
         resourceQualityClass: ResourceQualityClass
     ): PopSingleExportData {
-        return if(hasSingleExportData(carrierId, popType, resourceType, resourceQualityClass)) {
+        return if (hasSingleExportData(carrierId, popType, resourceType, resourceQualityClass)) {
             exportDataMap.getValue(
                 carrierId
             ).getValue(
@@ -68,7 +68,7 @@ data class MutablePopExportCenterData(
         val exportDataList: MutableList<MutablePopSingleExportData> = exportDataMap.getOrPut(
             carrierId
         ) { mutableMapOf() }.getOrPut(
-                popType
+            popType
         ) {
             mutableListOf()
         }
@@ -77,7 +77,7 @@ data class MutablePopExportCenterData(
             (it.resourceType == resourceType) && (it.resourceQualityClass == resourceQualityClass)
         }
 
-        if(!hasData) {
+        if (!hasData) {
             exportDataList.add(
                 MutablePopSingleExportData(
                     resourceType = resourceType,
@@ -88,7 +88,7 @@ data class MutablePopExportCenterData(
             )
         }
 
-        return if(hasData) {
+        return if (hasData) {
             exportDataList.first {
                 (it.resourceType == resourceType) && (it.resourceQualityClass == resourceQualityClass)
             }

@@ -95,11 +95,16 @@ class PlayerCollection(
      * Generate 3D slice of universe
      */
     fun getPlayerId3D(): List<List<List<List<Int>>>> {
-        val playerId3D: List<List<List<MutableList<Int>>>> = create3DGrid(xDim, yDim, zDim) {
-                _, _, _ -> mutableListOf()
-        }
+        val playerId3D: List<List<List<MutableList<Int>>>> =
+            create3DGrid(xDim, yDim, zDim) { _, _, _ ->
+                mutableListOf()
+            }
 
-        playerMap.forEach { (_, player) -> playerId3D[player.int4D.x] [player.int4D.y][player.int4D.z].add(player.playerId) }
+        playerMap.forEach { (_, player) ->
+            playerId3D[player.int4D.x][player.int4D.y][player.int4D.z].add(
+                player.playerId
+            )
+        }
 
         return playerId3D
     }
@@ -108,17 +113,18 @@ class PlayerCollection(
      * Turn data to immutable data, and return new universe slice
      */
     fun getUniverseSlice(universeData: UniverseData): List<List<List<List<PlayerData>>>> {
-        val playerId3D: List<List<List<MutableList<PlayerData>>>> = create3DGrid(xDim, yDim, zDim) {
-                _, _, _ -> mutableListOf()
-        }
+        val playerId3D: List<List<List<MutableList<PlayerData>>>> =
+            create3DGrid(xDim, yDim, zDim) { _, _, _ ->
+                mutableListOf()
+            }
 
         playerMap.forEach { (_, player) ->
-            playerId3D[player.int4D.x] [player.int4D.y][player.int4D.z].add(copy(player))
+            playerId3D[player.int4D.x][player.int4D.y][player.int4D.z].add(copy(player))
 
             // Also add afterimage
             player.int4DHistory.forEach { int4D ->
                 val oldData: PlayerData = universeData.getPlayerDataAt(int4D, player.playerId)
-                playerId3D[oldData.int4D.x] [oldData.int4D.y][oldData.int4D.z].add(oldData)
+                playerId3D[oldData.int4D.x][oldData.int4D.y][oldData.int4D.z].add(oldData)
             }
         }
 
@@ -129,7 +135,7 @@ class PlayerCollection(
      * Remove player by id from player3D and playerMap
      */
     private fun removePlayer(id: Int) {
-        if(playerMap.containsKey(id)) {
+        if (playerMap.containsKey(id)) {
             playerMap.remove(id)
         } else {
             logger.error("Cannot remove player, player $id does not exist")
@@ -156,7 +162,8 @@ class PlayerCollection(
      * Remove player and add id to deadIdList if player is dead
      */
     fun cleanDeadPlayer() {
-        val dead: List<Int> = playerMap.values.filter { !it.playerInternalData.isAlive }.map { it.playerId }
+        val dead: List<Int> =
+            playerMap.values.filter { !it.playerInternalData.isAlive }.map { it.playerId }
         dead.map { removePlayer(it) }
         deadIdList.addAll(dead)
     }
@@ -176,7 +183,7 @@ class PlayerCollection(
                 val newPlayerData: PlayerData = PlayerData(
                     playerId = playerId,
                     name = name,
-                    playerType= PlayerType.AI,
+                    playerType = PlayerType.AI,
                     int4D = copy(playerData.int4D),
                     double4D = copy(playerData.double4D),
                     groupId = playerData.groupId,
@@ -213,32 +220,32 @@ class PlayerCollection(
 
             // Check boundaries and ensure double 4D is within boundaries
             // If exceeds boundaries, also decreases the velocity component to zero
-            if (playerData.double4D.x <= 0.0 ) {
+            if (playerData.double4D.x <= 0.0) {
                 playerData.double4D.x = 0.000001
                 velocityComponentToZero('x', playerData, universeSettings.speedOfLight)
             }
 
-            if (playerData.double4D.x >= universeSettings.xDim.toDouble() ) {
+            if (playerData.double4D.x >= universeSettings.xDim.toDouble()) {
                 playerData.double4D.x = universeSettings.xDim.toDouble() - 0.000001
                 velocityComponentToZero('x', playerData, universeSettings.speedOfLight)
             }
 
-            if (playerData.double4D.y <= 0.0 ) {
+            if (playerData.double4D.y <= 0.0) {
                 playerData.double4D.y = 0.000001
                 velocityComponentToZero('y', playerData, universeSettings.speedOfLight)
             }
 
-            if (playerData.double4D.y >= universeSettings.yDim.toDouble() ) {
+            if (playerData.double4D.y >= universeSettings.yDim.toDouble()) {
                 playerData.double4D.y = universeSettings.yDim.toDouble() - 0.000001
                 velocityComponentToZero('y', playerData, universeSettings.speedOfLight)
             }
 
-            if (playerData.double4D.z <= 0.0 ) {
+            if (playerData.double4D.z <= 0.0) {
                 playerData.double4D.z = 0.000001
                 velocityComponentToZero('z', playerData, universeSettings.speedOfLight)
             }
 
-            if (playerData.double4D.z >= universeSettings.zDim.toDouble() ) {
+            if (playerData.double4D.z >= universeSettings.zDim.toDouble()) {
                 playerData.double4D.z = universeSettings.zDim.toDouble() - 0.000001
                 velocityComponentToZero('z', playerData, universeSettings.speedOfLight)
             }
@@ -303,10 +310,14 @@ class PlayerCollection(
             speedOfLight = speedOfLight
         )
 
-        val movementFuelRestMass: Double = playerData.playerInternalData.physicsData().fuelRestMassData.movement
+        val movementFuelRestMass: Double =
+            playerData.playerInternalData.physicsData().fuelRestMassData.movement
 
         playerData.velocity = targetVelocity.toMutableVelocity()
-        playerData.playerInternalData.physicsData().fuelRestMassData.movement -= min(movementFuelRestMass, deltaRestMass)
+        playerData.playerInternalData.physicsData().fuelRestMassData.movement -= min(
+            movementFuelRestMass,
+            deltaRestMass
+        )
     }
 
     fun syncAllPlayerDataComponent() {

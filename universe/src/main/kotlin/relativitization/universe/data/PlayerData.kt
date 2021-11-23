@@ -49,7 +49,9 @@ data class PlayerData(
      * @param otherPlayerId whether this id is the player or one the subordinates of the player
      */
     fun isSubOrdinateOrSelf(otherPlayerId: Int): Boolean {
-        return (otherPlayerId == playerId) || playerInternalData.subordinateIdList.contains(otherPlayerId)
+        return (otherPlayerId == playerId) || playerInternalData.subordinateIdList.contains(
+            otherPlayerId
+        )
     }
 
     /**
@@ -111,7 +113,9 @@ data class MutablePlayerData(
      * @param otherPlayerId whether this id is the player or one the subordinates of the player
      */
     fun isSubOrdinateOrSelf(otherPlayerId: Int): Boolean {
-        return (otherPlayerId == playerId) || playerInternalData.subordinateIdList.contains(otherPlayerId)
+        return (otherPlayerId == playerId) || playerInternalData.subordinateIdList.contains(
+            otherPlayerId
+        )
     }
 
     /**
@@ -140,7 +144,7 @@ data class MutablePlayerData(
      * Change direct leader id and add all leaders of direct leader
      */
     fun changeDirectLeaderId(leaderListOfDirectLeader: List<Int>) {
-        if (playerInternalData.subordinateIdList.all{ !leaderListOfDirectLeader.contains(it) }) {
+        if (playerInternalData.subordinateIdList.all { !leaderListOfDirectLeader.contains(it) }) {
             if (leaderListOfDirectLeader.isNotEmpty()) {
                 playerInternalData.directLeaderId = leaderListOfDirectLeader.last()
                 playerInternalData.leaderIdList.clear()
@@ -289,7 +293,8 @@ data class MutablePlayerInternalData(
     fun modifierData(): MutableModifierData =
         playerDataComponentMap.getOrDefault(MutableModifierData::class, MutableModifierData())
 
-    fun modifierData(newModifierData: MutableModifierData) = playerDataComponentMap.put(newModifierData)
+    fun modifierData(newModifierData: MutableModifierData) =
+        playerDataComponentMap.put(newModifierData)
 
     fun physicsData(): MutablePhysicsData =
         playerDataComponentMap.getOrDefault(MutablePhysicsData::class, MutablePhysicsData())
@@ -297,7 +302,10 @@ data class MutablePlayerInternalData(
     fun physicsData(newPhysicsData: MutablePhysicsData) = playerDataComponentMap.put(newPhysicsData)
 
     fun playerScienceData(): MutablePlayerScienceData =
-        playerDataComponentMap.getOrDefault(MutablePlayerScienceData::class, MutablePlayerScienceData())
+        playerDataComponentMap.getOrDefault(
+            MutablePlayerScienceData::class,
+            MutablePlayerScienceData()
+        )
 
     fun playerScienceData(newPlayerScienceData: MutablePlayerScienceData) =
         playerDataComponentMap.put(newPlayerScienceData)
@@ -305,7 +313,8 @@ data class MutablePlayerInternalData(
     fun politicsData(): MutablePoliticsData =
         playerDataComponentMap.getOrDefault(MutablePoliticsData::class, MutablePoliticsData())
 
-    fun politicsData(newPoliticsData: MutablePoliticsData) = playerDataComponentMap.put(newPoliticsData)
+    fun politicsData(newPoliticsData: MutablePoliticsData) =
+        playerDataComponentMap.put(newPoliticsData)
 
     fun popSystemData(): MutablePopSystemData =
         playerDataComponentMap.getOrDefault(MutablePopSystemData::class, MutablePopSystemData())

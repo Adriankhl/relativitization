@@ -29,8 +29,10 @@ object DefaultGenerateUniverseScienceData {
     ): UniverseScienceData {
 
         if (numBasicResearchProjectGenerate < 0 || numAppliedResearchProjectGenerate < 0) {
-            logger.error("Negative numBasicResearchProjectGenerate (${numBasicResearchProjectGenerate}) or" +
-                    " numAppliedResearchProjectGenerate (${numAppliedResearchProjectGenerate})")
+            logger.error(
+                "Negative numBasicResearchProjectGenerate (${numBasicResearchProjectGenerate}) or" +
+                        " numAppliedResearchProjectGenerate (${numAppliedResearchProjectGenerate})"
+            )
         }
 
         val mutableUniverseScienceData: MutableUniverseScienceData = DataSerializer.copy(

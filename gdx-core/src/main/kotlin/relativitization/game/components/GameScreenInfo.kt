@@ -57,7 +57,8 @@ class GameScreenInfo(val game: RelativitizationGame) : ScreenComponent<SplitPane
             ShowingInfoType.PHYSICS -> upperInfoContainer.actor = physicsInfo.getScreenComponent()
             ShowingInfoType.EVENTS -> upperInfoContainer.actor = eventsInfo.getScreenComponent()
             ShowingInfoType.COMMANDS -> upperInfoContainer.actor = commandsInfo.getScreenComponent()
-            ShowingInfoType.KNOWLEDGE_MAP -> upperInfoContainer.actor = knowledgeMapInfo.getScreenComponent()
+            ShowingInfoType.KNOWLEDGE_MAP -> upperInfoContainer.actor =
+                knowledgeMapInfo.getScreenComponent()
             ShowingInfoType.SCIENCE -> upperInfoContainer.actor = scienceInfo.getScreenComponent()
         }
 

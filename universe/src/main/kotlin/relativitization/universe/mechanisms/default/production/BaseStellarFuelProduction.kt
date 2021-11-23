@@ -28,12 +28,13 @@ object BaseStellarFuelProduction : Mechanism() {
                 universeSettings.speedOfLight
             )
 
-            val fuelList: List<Double> = mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.map {
-                baseFuelProduction(
-                    mutableCarrierData = it,
-                    gamma
-                )
-            }
+            val fuelList: List<Double> =
+                mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.map {
+                    baseFuelProduction(
+                        mutableCarrierData = it,
+                        gamma
+                    )
+                }
 
             fuelList.forEach {
                 mutablePlayerData.playerInternalData.physicsData().addFuel(it)

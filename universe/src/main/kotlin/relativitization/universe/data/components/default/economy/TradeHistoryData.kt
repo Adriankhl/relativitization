@@ -14,7 +14,8 @@ data class TradeHistoryData(
         resourceType: ResourceType,
         resourceQualityClass: ResourceQualityClass
     ): TradeRecordData {
-        return historyMap.get(time)?.get(resourceType)?.get(resourceQualityClass) ?: TradeRecordData()
+        return historyMap.get(time)?.get(resourceType)?.get(resourceQualityClass)
+            ?: TradeRecordData()
     }
 
 }
@@ -29,7 +30,8 @@ data class MutableTradeHistoryData(
         resourceType: ResourceType,
         resourceQualityClass: ResourceQualityClass
     ): MutableTradeRecordData {
-        return historyMap.get(time)?.get(resourceType)?.get(resourceQualityClass) ?: MutableTradeRecordData()
+        return historyMap.get(time)?.get(resourceType)?.get(resourceQualityClass)
+            ?: MutableTradeRecordData()
     }
 
 

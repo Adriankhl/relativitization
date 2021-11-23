@@ -94,7 +94,8 @@ object FuelFactoryProduction : Mechanism() {
         )
 
 
-        val outputAmount: Double = mutableFuelFactoryData.fuelFactoryInternalData.maxOutputAmount * amountFraction * mutableFuelFactoryData.numBuilding / gamma
+        val outputAmount: Double =
+            mutableFuelFactoryData.fuelFactoryInternalData.maxOutputAmount * amountFraction * mutableFuelFactoryData.numBuilding / gamma
 
         mutableFuelFactoryData.lastOutputAmount = outputAmount
 
@@ -121,7 +122,8 @@ object FuelFactoryProduction : Mechanism() {
         )
 
 
-        val outputAmount: Double = mutableFuelFactoryData.fuelFactoryInternalData.maxOutputAmount * amountFraction * mutableFuelFactoryData.numBuilding / gamma
+        val outputAmount: Double =
+            mutableFuelFactoryData.fuelFactoryInternalData.maxOutputAmount * amountFraction * mutableFuelFactoryData.numBuilding / gamma
 
         mutableFuelFactoryData.lastOutputAmount = outputAmount
 

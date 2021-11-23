@@ -55,7 +55,7 @@ data class AllPopData(
     val entertainerPopData: EntertainerPopData = EntertainerPopData(),
     val soldierPopData: SoldierPopData = SoldierPopData(),
 ) {
-    fun getCommonPopData(popType: PopType): CommonPopData = when(popType) {
+    fun getCommonPopData(popType: PopType): CommonPopData = when (popType) {
         PopType.LABOURER -> labourerPopData.commonPopData
         PopType.ENGINEER -> engineerPopData.commonPopData
         PopType.SCHOLAR -> scholarPopData.commonPopData
@@ -82,7 +82,7 @@ data class MutableAllPopData(
     var entertainerPopData: MutableEntertainerPopData = MutableEntertainerPopData(),
     var soldierPopData: MutableSoldierPopData = MutableSoldierPopData(),
 ) {
-    fun getCommonPopData(popType: PopType): MutableCommonPopData = when(popType) {
+    fun getCommonPopData(popType: PopType): MutableCommonPopData = when (popType) {
         PopType.LABOURER -> labourerPopData.commonPopData
         PopType.ENGINEER -> engineerPopData.commonPopData
         PopType.SCHOLAR -> scholarPopData.commonPopData
@@ -179,11 +179,12 @@ data class MutableCommonPopData(
         resourceQualityData: ResourceQualityData,
         resourceAmount: Double,
     ) {
-        val desireData: relativitization.universe.data.components.default.popsystem.pop.MutableResourceDesireData = resourceInputMap.getOrPut(
-            resourceType
-        ) {
-            relativitization.universe.data.components.default.popsystem.pop.MutableResourceDesireData()
-        }
+        val desireData: relativitization.universe.data.components.default.popsystem.pop.MutableResourceDesireData =
+            resourceInputMap.getOrPut(
+                resourceType
+            ) {
+                relativitization.universe.data.components.default.popsystem.pop.MutableResourceDesireData()
+            }
 
         val originalAmount: Double = desireData.desireAmount
 
@@ -206,11 +207,12 @@ data class MutableCommonPopData(
         resourceQualityData: MutableResourceQualityData,
         resourceAmount: Double,
     ) {
-        val desireData: relativitization.universe.data.components.default.popsystem.pop.MutableResourceDesireData = resourceInputMap.getOrPut(
-            resourceType
-        ) {
-            relativitization.universe.data.components.default.popsystem.pop.MutableResourceDesireData()
-        }
+        val desireData: relativitization.universe.data.components.default.popsystem.pop.MutableResourceDesireData =
+            resourceInputMap.getOrPut(
+                resourceType
+            ) {
+                relativitization.universe.data.components.default.popsystem.pop.MutableResourceDesireData()
+            }
 
         val originalAmount: Double = desireData.desireAmount
 

@@ -35,26 +35,27 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
 
         // Add Generate button
         val generateFailLabel = createLabel("", gdxSettings.normalFontSize)
-        val generateButton = createTextButton("Generate", gdxSettings.bigFontSize, gdxSettings.soundEffectsVolume) {
-            if (GenerateUniverseMethodCollection.isSettingValid(game.universeClient.generateSettings)) {
-                logger.info("Generate settings: " + game.universeClient.generateSettings)
-                runBlocking {
-                    val httpCode = game.universeClient.httpPostNewUniverse()
-                    if (httpCode == HttpStatusCode.OK) {
-                        // Save generate setting for the next generation
-                        game.universeClient.generateSettings.save(
-                            game.universeClient.universeClientSettings.programDir
-                        )
-                        game.screen = ServerSettingsScreen(game)
-                        dispose()
-                    } else {
-                        generateFailLabel.setText("Generate universe fail, http code: $httpCode")
+        val generateButton =
+            createTextButton("Generate", gdxSettings.bigFontSize, gdxSettings.soundEffectsVolume) {
+                if (GenerateUniverseMethodCollection.isSettingValid(game.universeClient.generateSettings)) {
+                    logger.info("Generate settings: " + game.universeClient.generateSettings)
+                    runBlocking {
+                        val httpCode = game.universeClient.httpPostNewUniverse()
+                        if (httpCode == HttpStatusCode.OK) {
+                            // Save generate setting for the next generation
+                            game.universeClient.generateSettings.save(
+                                game.universeClient.universeClientSettings.programDir
+                            )
+                            game.screen = ServerSettingsScreen(game)
+                            dispose()
+                        } else {
+                            generateFailLabel.setText("Generate universe fail, http code: $httpCode")
+                        }
                     }
+                } else {
+                    generateFailLabel.setText("Generate universe fail, some setting is wrong")
                 }
-            } else {
-                generateFailLabel.setText("Generate universe fail, some setting is wrong")
             }
-        }
 
         val cancelButton = createTextButton(
             "Cancel",
@@ -77,7 +78,8 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
     private fun createGenerateSettingsScrollPane(): ScrollPane {
         val table = Table()
 
-        val generateSettingLabel = createLabel("Generate Universe Settings:", gdxSettings.hugeFontSize)
+        val generateSettingLabel =
+            createLabel("Generate Universe Settings:", gdxSettings.hugeFontSize)
 
         table.add(generateSettingLabel).colspan(2).space(20f)
 
@@ -128,7 +130,8 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
             game.universeClient.generateSettings.universeSettings.mechanismCollectionName,
             gdxSettings.normalFontSize,
         ) { mechanismCollectionName, _ ->
-            game.universeClient.generateSettings.universeSettings.mechanismCollectionName = mechanismCollectionName
+            game.universeClient.generateSettings.universeSettings.mechanismCollectionName =
+                mechanismCollectionName
         }
         table.add(mechanismSelectBox)
 
@@ -140,7 +143,8 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
             game.universeClient.generateSettings.universeSettings.commandCollectionName,
             gdxSettings.normalFontSize,
         ) { commandCollectionName, _ ->
-            game.universeClient.generateSettings.universeSettings.commandCollectionName = commandCollectionName
+            game.universeClient.generateSettings.universeSettings.commandCollectionName =
+                commandCollectionName
         }
         table.add(commandSelectBox)
 
@@ -152,7 +156,8 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
             game.universeClient.generateSettings.universeSettings.globalMechanismCollectionName,
             gdxSettings.normalFontSize,
         ) { globalMechanismCollectionName, _ ->
-            game.universeClient.generateSettings.universeSettings.globalMechanismCollectionName = globalMechanismCollectionName
+            game.universeClient.generateSettings.universeSettings.globalMechanismCollectionName =
+                globalMechanismCollectionName
         }
         table.add(universeScienceDataProcessSelectBox)
 
@@ -217,7 +222,8 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
             gdxSettings.normalFontSize
         ) { speedOfLight, _ ->
             try {
-                game.universeClient.generateSettings.universeSettings.speedOfLight = speedOfLight.toDouble()
+                game.universeClient.generateSettings.universeSettings.speedOfLight =
+                    speedOfLight.toDouble()
             } catch (e: NumberFormatException) {
                 logger.error("Invalid speed of light")
             }
@@ -280,7 +286,8 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
             game.universeClient.generateSettings.universeSettings.playerAfterImageDuration,
             gdxSettings.normalFontSize
         ) { duration, _ ->
-            game.universeClient.generateSettings.universeSettings.playerAfterImageDuration = duration
+            game.universeClient.generateSettings.universeSettings.playerAfterImageDuration =
+                duration
         }
         table.add(playerAfterImageSelectBox)
 
@@ -297,7 +304,8 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
             game.universeClient.generateSettings.universeSettings.playerHistoricalInt4DLength,
             gdxSettings.normalFontSize
         ) { length, _ ->
-            game.universeClient.generateSettings.universeSettings.playerHistoricalInt4DLength = length
+            game.universeClient.generateSettings.universeSettings.playerHistoricalInt4DLength =
+                length
         }
         table.add(playerHistoricalInt4DLengthSelectBox)
 
@@ -309,7 +317,8 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
             gdxSettings.normalFontSize
         ) { groupEdgeLength, _ ->
             try {
-                game.universeClient.generateSettings.universeSettings.groupEdgeLength = groupEdgeLength.toDouble()
+                game.universeClient.generateSettings.universeSettings.groupEdgeLength =
+                    groupEdgeLength.toDouble()
             } catch (e: NumberFormatException) {
                 logger.error("Invalid group edge Length")
             }

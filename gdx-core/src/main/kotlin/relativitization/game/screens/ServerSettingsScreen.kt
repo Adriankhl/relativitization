@@ -31,7 +31,11 @@ class ServerSettingsScreen(val game: RelativitizationGame) : TableScreen(game.as
 
         // Add apply setting button
         val applyFailLabel = createLabel("", gdxSettings.normalFontSize)
-        val applyButton = createTextButton("Apply settings", gdxSettings.bigFontSize, gdxSettings.soundEffectsVolume) {
+        val applyButton = createTextButton(
+            "Apply settings",
+            gdxSettings.bigFontSize,
+            gdxSettings.soundEffectsVolume
+        ) {
             logger.debug("Applying settings")
             runBlocking {
                 val httpCode = game.universeClient.httpPostUniverseServerSettings()
@@ -77,7 +81,12 @@ class ServerSettingsScreen(val game: RelativitizationGame) : TableScreen(game.as
         table.row().space(20f)
 
         // don't change admin password stored in the client now, do this after successfully updated server password
-        table.add(createLabel("Admin password (for admin access to server): ", gdxSettings.normalFontSize))
+        table.add(
+            createLabel(
+                "Admin password (for admin access to server): ",
+                gdxSettings.normalFontSize
+            )
+        )
         val adminPasswordTextField = createTextField(
             game.universeClient.universeServerSettings.adminPassword,
             gdxSettings.normalFontSize
@@ -100,7 +109,12 @@ class ServerSettingsScreen(val game: RelativitizationGame) : TableScreen(game.as
 
         table.row().space(10f)
 
-        table.add(createLabel("Human input wait time limit (in seconds): ", gdxSettings.normalFontSize))
+        table.add(
+            createLabel(
+                "Human input wait time limit (in seconds): ",
+                gdxSettings.normalFontSize
+            )
+        )
         val waitTimeLimitSelectBox = createSelectBox(
             (10..3600).toList(),
             game.universeClient.universeServerSettings.waitTimeLimit,

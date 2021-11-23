@@ -43,7 +43,7 @@ object Grids {
         zDim: Int,
         generate: (Int, Int, Int) -> T
     ): List<List<List<T>>> =
-        List(xDim) { create2DGrid<T>(yDim, zDim) { y, z -> generate(it, y, z)} }
+        List(xDim) { create2DGrid<T>(yDim, zDim) { y, z -> generate(it, y, z) } }
 
 
     /**
@@ -63,7 +63,7 @@ object Grids {
         zDim: Int,
         generate: (Int, Int, Int, Int) -> T
     ): MutableList<List<List<List<T>>>> =
-        MutableList(tDim) { create3DGrid<T>(xDim, yDim, zDim) { x, y, z -> generate(it, x, y, z)} }
+        MutableList(tDim) { create3DGrid<T>(xDim, yDim, zDim) { x, y, z -> generate(it, x, y, z) } }
 
     /**
      * Whether the coordinate belong to same cube in a grid
@@ -146,7 +146,8 @@ object Grids {
         val numEdge: Int = numEdge(edgeLength)
 
         val x: Double = (groupId / numEdge / numEdge).toDouble() * edgeLength + edgeLength * 0.5
-        val y: Double = ((groupId % (numEdge * numEdge)) / numEdge ).toDouble() * edgeLength + edgeLength * 0.5
+        val y: Double =
+            ((groupId % (numEdge * numEdge)) / numEdge).toDouble() * edgeLength + edgeLength * 0.5
         val z: Double = groupId % numEdge * edgeLength + edgeLength * 0.5
 
         return Double3D(x, y, z)

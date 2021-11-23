@@ -149,7 +149,8 @@ data class BuildForeignFuelFactoryCommand(
         val canSubordinateBuild: Boolean = (!isSenderTopLeader &&
                 playerData.playerInternalData.politicsData().allowSubordinateBuildFactory)
 
-        val allowConstruction: Boolean = isSenderTopLeader || canForeignInvestorBuild || canSubordinateBuild
+        val allowConstruction: Boolean =
+            isSenderTopLeader || canForeignInvestorBuild || canSubordinateBuild
 
         val hasCarrier: Boolean =
             playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(targetCarrierId)
@@ -323,7 +324,8 @@ data class BuildForeignResourceFactoryCommand(
         val canSubordinateBuild: Boolean = (!isSenderTopLeader &&
                 playerData.playerInternalData.politicsData().allowSubordinateBuildFactory)
 
-        val allowConstruction: Boolean = isSenderTopLeader || canForeignInvestorBuild || canSubordinateBuild
+        val allowConstruction: Boolean =
+            isSenderTopLeader || canForeignInvestorBuild || canSubordinateBuild
 
         val hasCarrier: Boolean =
             playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(targetCarrierId)

@@ -227,7 +227,6 @@ object Employment : Mechanism() {
             }
 
 
-
         // Self factory first
         labourerPopData.fuelFactoryMap.values.filter {
             it.ownerPlayerId == universeData3DAtPlayer.getCurrentPlayerData().playerId
@@ -260,7 +259,8 @@ object Employment : Mechanism() {
             it.ownerPlayerId == universeData3DAtPlayer.getCurrentPlayerData().playerId
         }.forEach {
 
-            val maxNumEmployee: Double = it.resourceFactoryInternalData.maxNumEmployee * it.numBuilding
+            val maxNumEmployee: Double =
+                it.resourceFactoryInternalData.maxNumEmployee * it.numBuilding
             val newNumEmployee: Double = maxNumEmployee * selfResourceFactoryEmployeeFraction
             val pay: Double = newNumEmployee * salary
             val tax: Double = pay * incomeTax
@@ -312,7 +312,8 @@ object Employment : Mechanism() {
             it.ownerPlayerId != universeData3DAtPlayer.getCurrentPlayerData().playerId
         }.forEach {
 
-            val maxNumEmployee: Double = it.resourceFactoryInternalData.maxNumEmployee * it.numBuilding
+            val maxNumEmployee: Double =
+                it.resourceFactoryInternalData.maxNumEmployee * it.numBuilding
             val newNumEmployee: Double = maxNumEmployee * otherResourceFactoryEmployeeFraction
             val pay: Double = newNumEmployee * salary
             val payWithTax: Double = pay * (1.0 + incomeTax)
@@ -333,14 +334,16 @@ object Employment : Mechanism() {
         }
 
         // Actual number of employee, for computation of unemployment rate
-        val actualNumEmployee: Double = labourerPopData.fuelFactoryMap.values.fold(0.0) { acc, mutableFuelFactoryData ->
-            acc + mutableFuelFactoryData.lastNumEmployee
-        } + labourerPopData.resourceFactoryMap.values.fold(0.0) { acc, mutableResourceFactoryData ->
-            acc + mutableResourceFactoryData.lastNumEmployee
-        }
+        val actualNumEmployee: Double =
+            labourerPopData.fuelFactoryMap.values.fold(0.0) { acc, mutableFuelFactoryData ->
+                acc + mutableFuelFactoryData.lastNumEmployee
+            } + labourerPopData.resourceFactoryMap.values.fold(0.0) { acc, mutableResourceFactoryData ->
+                acc + mutableResourceFactoryData.lastNumEmployee
+            }
 
         // Compute unemployment rate
-        labourerPopData.commonPopData.unemploymentRate = (1.0 - actualNumEmployee / availableEmployee)
+        labourerPopData.commonPopData.unemploymentRate =
+            (1.0 - actualNumEmployee / availableEmployee)
     }
 
     fun updateScholarEmployment(
@@ -358,9 +361,10 @@ object Employment : Mechanism() {
         val availableEmployee: Double = scholarPopData.commonPopData.adultPopulation
 
         // Maximum scholar employee in institutes
-        val maxInstituteEmployee: Double = scholarPopData.instituteMap.values.fold(0.0) { acc, mutableInstituteData ->
-            acc + mutableInstituteData.maxNumEmployee
-        }
+        val maxInstituteEmployee: Double =
+            scholarPopData.instituteMap.values.fold(0.0) { acc, mutableInstituteData ->
+                acc + mutableInstituteData.maxNumEmployee
+            }
 
 
         // Compute fractions of employee if number of available employees is not enough
@@ -403,12 +407,14 @@ object Employment : Mechanism() {
         }
 
         // Actual number of employee, for computation of unemployment rate
-        val actualNumEmployee: Double = scholarPopData.instituteMap.values.fold(0.0) { acc, mutableInstituteData ->
-            acc + mutableInstituteData.lastNumEmployee
-        }
+        val actualNumEmployee: Double =
+            scholarPopData.instituteMap.values.fold(0.0) { acc, mutableInstituteData ->
+                acc + mutableInstituteData.lastNumEmployee
+            }
 
         // Compute unemployment rate
-        scholarPopData.commonPopData.unemploymentRate = (1.0 - actualNumEmployee / availableEmployee)
+        scholarPopData.commonPopData.unemploymentRate =
+            (1.0 - actualNumEmployee / availableEmployee)
     }
 
 
@@ -427,9 +433,10 @@ object Employment : Mechanism() {
         val availableEmployee: Double = engineerPopData.commonPopData.adultPopulation
 
         // Maximum scholar employee in laboratories
-        val maxLaboratoryEmployee: Double = engineerPopData.laboratoryMap.values.fold(0.0) { acc, mutableLaboratoryData ->
-            acc + mutableLaboratoryData.maxNumEmployee
-        }
+        val maxLaboratoryEmployee: Double =
+            engineerPopData.laboratoryMap.values.fold(0.0) { acc, mutableLaboratoryData ->
+                acc + mutableLaboratoryData.maxNumEmployee
+            }
 
 
         // Compute fractions of employee if number of available employees is not enough
@@ -472,12 +479,14 @@ object Employment : Mechanism() {
         }
 
         // Actual number of employee, for computation of unemployment rate
-        val actualNumEmployee: Double = engineerPopData.laboratoryMap.values.fold(0.0) { acc, mutableLaboratoryData ->
-            acc + mutableLaboratoryData.lastNumEmployee
-        }
+        val actualNumEmployee: Double =
+            engineerPopData.laboratoryMap.values.fold(0.0) { acc, mutableLaboratoryData ->
+                acc + mutableLaboratoryData.lastNumEmployee
+            }
 
         // Compute unemployment rate
-        engineerPopData.commonPopData.unemploymentRate = (1.0 - actualNumEmployee / availableEmployee)
+        engineerPopData.commonPopData.unemploymentRate =
+            (1.0 - actualNumEmployee / availableEmployee)
     }
 
     /**
@@ -504,7 +513,8 @@ object Employment : Mechanism() {
             soldierPopData.commonPopData.unemploymentRate = 0.0
 
             // Update military base employment
-            soldierPopData.militaryBaseData.lastNumEmployee = soldierPopData.commonPopData.adultPopulation
+            soldierPopData.militaryBaseData.lastNumEmployee =
+                soldierPopData.commonPopData.adultPopulation
 
             // Pay salary and tax here
             fuelRestMassData.production -= maxPayWithTax

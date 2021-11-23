@@ -57,7 +57,8 @@ data class PopSystemData(
     fun numCarrier() = carrierDataMap.values.size
 }
 
-@Serializable @SerialName("PopSystemData")
+@Serializable
+@SerialName("PopSystemData")
 data class MutablePopSystemData(
     val carrierDataMap: MutableMap<Int, MutableCarrierData> = mutableMapOf(),
 ) : MutableDefaultPlayerDataComponent() {

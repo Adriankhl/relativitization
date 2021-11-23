@@ -31,7 +31,8 @@ data class ResourceFactoryData(
     val lastNumEmployee: Double = 0.0,
 ) {
     fun maxInputAmount(resourceType: ResourceType): Double {
-        val amountPerUnit: Double = resourceFactoryInternalData.inputResourceMap[resourceType]?.amountPerOutputUnit ?: 0.0
+        val amountPerUnit: Double =
+            resourceFactoryInternalData.inputResourceMap[resourceType]?.amountPerOutputUnit ?: 0.0
         return amountPerUnit * resourceFactoryInternalData.maxOutputAmount * numBuilding
     }
 }
@@ -49,11 +50,13 @@ data class MutableResourceFactoryData(
     var lastNumEmployee: Double = 0.0,
 ) {
     fun maxInputAmount(resourceType: ResourceType): Double {
-        val amountPerUnit: Double = resourceFactoryInternalData.inputResourceMap[resourceType]?.amountPerOutputUnit ?: 0.0
+        val amountPerUnit: Double =
+            resourceFactoryInternalData.inputResourceMap[resourceType]?.amountPerOutputUnit ?: 0.0
         return amountPerUnit * resourceFactoryInternalData.maxOutputAmount * numBuilding
     }
 
-    fun employeeFraction(): Double = lastNumEmployee / (resourceFactoryInternalData.maxNumEmployee * numBuilding)
+    fun employeeFraction(): Double =
+        lastNumEmployee / (resourceFactoryInternalData.maxNumEmployee * numBuilding)
 }
 
 /**
@@ -69,7 +72,8 @@ data class InputResourceData(
     val amountPerOutputUnit: Double = 1.0,
 ) {
     fun squareDiff(other: InputResourceData): Double {
-        val qualityDiff: Double = maxInputResourceQualityData.squareDiff(other.maxInputResourceQualityData)
+        val qualityDiff: Double =
+            maxInputResourceQualityData.squareDiff(other.maxInputResourceQualityData)
 
         val amountDiff: Double = (amountPerOutputUnit - other.amountPerOutputUnit).pow(2)
 
@@ -77,7 +81,8 @@ data class InputResourceData(
     }
 
     fun squareDiff(other: MutableInputResourceData): Double {
-        val qualityDiff: Double = maxInputResourceQualityData.squareDiff(other.maxInputResourceQualityData)
+        val qualityDiff: Double =
+            maxInputResourceQualityData.squareDiff(other.maxInputResourceQualityData)
 
         val amountDiff: Double = (amountPerOutputUnit - other.amountPerOutputUnit).pow(2)
 
@@ -91,7 +96,8 @@ data class MutableInputResourceData(
     var amountPerOutputUnit: Double = 1.0,
 ) {
     fun squareDiff(other: MutableInputResourceData): Double {
-        val qualityDiff: Double = maxInputResourceQualityData.squareDiff(other.maxInputResourceQualityData)
+        val qualityDiff: Double =
+            maxInputResourceQualityData.squareDiff(other.maxInputResourceQualityData)
 
         val amountDiff: Double = (amountPerOutputUnit - other.amountPerOutputUnit).pow(2)
 
@@ -140,7 +146,8 @@ data class ResourceFactoryInternalData(
             }
         }.sumOf { it }
 
-        val consumptionDiff: Double = (fuelRestMassConsumptionRate - other.fuelRestMassConsumptionRate).pow(2)
+        val consumptionDiff: Double =
+            (fuelRestMassConsumptionRate - other.fuelRestMassConsumptionRate).pow(2)
 
         val employeeDiff: Double = (maxNumEmployee - other.maxNumEmployee).pow(2)
 
@@ -170,7 +177,8 @@ data class ResourceFactoryInternalData(
             }
         }.sumOf { it }
 
-        val consumptionDiff: Double = (fuelRestMassConsumptionRate - other.fuelRestMassConsumptionRate).pow(2)
+        val consumptionDiff: Double =
+            (fuelRestMassConsumptionRate - other.fuelRestMassConsumptionRate).pow(2)
 
         val employeeDiff: Double = (maxNumEmployee - other.maxNumEmployee).pow(2)
 
@@ -211,7 +219,8 @@ data class MutableResourceFactoryInternalData(
             }
         }.sumOf { it }
 
-        val consumptionDiff: Double = (fuelRestMassConsumptionRate - other.fuelRestMassConsumptionRate).pow(2)
+        val consumptionDiff: Double =
+            (fuelRestMassConsumptionRate - other.fuelRestMassConsumptionRate).pow(2)
 
         val employeeDiff: Double = (maxNumEmployee - other.maxNumEmployee).pow(2)
 

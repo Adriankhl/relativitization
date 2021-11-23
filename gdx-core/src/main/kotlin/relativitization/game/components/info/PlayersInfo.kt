@@ -96,7 +96,8 @@ class PlayersInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
     private fun updateTable() {
         table.clear()
 
-        val headerLabel = createLabel("Selected: player ${playerData.playerId}", gdxSettings.bigFontSize)
+        val headerLabel =
+            createLabel("Selected: player ${playerData.playerId}", gdxSettings.bigFontSize)
 
         table.add(headerLabel)
 
@@ -179,11 +180,14 @@ class PlayersInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
             game.universeClient.mapCenterPlayerId = playerData.playerId
         }
 
-        nestedTable.add(previousPlayerIdButton).size(40f * gdxSettings.imageScale, 40f * gdxSettings.imageScale)
+        nestedTable.add(previousPlayerIdButton)
+            .size(40f * gdxSettings.imageScale, 40f * gdxSettings.imageScale)
 
-        nestedTable.add(playerImageStack).size(128f * gdxSettings.imageScale, 128f * gdxSettings.imageScale)
+        nestedTable.add(playerImageStack)
+            .size(128f * gdxSettings.imageScale, 128f * gdxSettings.imageScale)
 
-        nestedTable.add(nextPlayerIdButton).size(40f * gdxSettings.imageScale, 40f * gdxSettings.imageScale)
+        nestedTable.add(nextPlayerIdButton)
+            .size(40f * gdxSettings.imageScale, 40f * gdxSettings.imageScale)
 
         return nestedTable
     }
@@ -217,7 +221,8 @@ class PlayersInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
             fontSize = gdxSettings.smallFontSize,
             soundVolume = gdxSettings.soundEffectsVolume,
         ) {
-            game.universeClient.primarySelectedPlayerId = playerData.playerInternalData.directLeaderId
+            game.universeClient.primarySelectedPlayerId =
+                playerData.playerInternalData.directLeaderId
         }
 
         nestedTable.add(directLeaderIdLabel)
@@ -229,7 +234,8 @@ class PlayersInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
     private fun createDirectSubordinateIdTable(): Table {
         val nestedTable = Table()
 
-        val directSubordinateIdLabel = createLabel("Direct subordinate Id: ", gdxSettings.smallFontSize)
+        val directSubordinateIdLabel =
+            createLabel("Direct subordinate Id: ", gdxSettings.smallFontSize)
 
         val directSubordinateIdSelectBox = createSelectBox(
             itemList = playerData.playerInternalData.directSubordinateIdList,

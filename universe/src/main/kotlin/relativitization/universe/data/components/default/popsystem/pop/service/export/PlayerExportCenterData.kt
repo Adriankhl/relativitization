@@ -25,14 +25,14 @@ data class MutablePlayerExportCenterData(
         }
 
 
-        return if(hasData) {
+        return if (hasData) {
             exportDataList.first {
                 (it.targetPlayerId == targetPlayerId) &&
                         (it.resourceType == resourceType) &&
                         (it.resourceQualityClass == resourceQualityClass)
             }
         } else {
-            val default =  MutablePlayerSingleExportData(
+            val default = MutablePlayerSingleExportData(
                 targetPlayerId = targetPlayerId,
                 resourceType = resourceType,
                 resourceQualityClass = resourceQualityClass,

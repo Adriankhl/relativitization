@@ -11,7 +11,8 @@ import relativitization.game.utils.Assets
 import relativitization.game.utils.TableScreen
 import relativitization.universe.utils.RelativitizationLogManager
 
-class ClientSettingsScreen(val game: RelativitizationGame, private val inGame: Boolean) : TableScreen(game.assets) {
+class ClientSettingsScreen(val game: RelativitizationGame, private val inGame: Boolean) :
+    TableScreen(game.assets) {
     private val gdxSettings = game.gdxSettings
     private val universeClientSettings = game.universeClient.universeClientSettings
 
@@ -106,7 +107,8 @@ class ClientSettingsScreen(val game: RelativitizationGame, private val inGame: B
 
         table.row().space(20f)
 
-        val universeClientSettingsLabel = createLabel("Universe Client Settings:", gdxSettings.hugeFontSize)
+        val universeClientSettingsLabel =
+            createLabel("Universe Client Settings:", gdxSettings.hugeFontSize)
 
         table.add(universeClientSettingsLabel).colspan(2).space(20f)
 
@@ -256,7 +258,7 @@ class ClientSettingsScreen(val game: RelativitizationGame, private val inGame: B
             gdxSettings.normalFontSize
         ) { mapZoomFactor, _ ->
             try {
-                gdxSettings.mapZoomFactor =  mapZoomFactor.toFloat()
+                gdxSettings.mapZoomFactor = mapZoomFactor.toFloat()
             } catch (e: NumberFormatException) {
                 logger.error("Invalid zoom factor")
             }
@@ -271,7 +273,7 @@ class ClientSettingsScreen(val game: RelativitizationGame, private val inGame: B
             gdxSettings.normalFontSize
         ) { imageScale, _ ->
             try {
-                gdxSettings.imageScale =  imageScale.toFloat()
+                gdxSettings.imageScale = imageScale.toFloat()
             } catch (e: NumberFormatException) {
                 logger.error("Invalid image scale")
             }
@@ -287,7 +289,7 @@ class ClientSettingsScreen(val game: RelativitizationGame, private val inGame: B
             gdxSettings.normalFontSize
         ) { knowledgeMapZoomFactor, _ ->
             try {
-                gdxSettings.knowledgeMapZoomRelativeToFullMap =  knowledgeMapZoomFactor.toFloat()
+                gdxSettings.knowledgeMapZoomRelativeToFullMap = knowledgeMapZoomFactor.toFloat()
             } catch (e: NumberFormatException) {
                 logger.error("Invalid knowledge map zoom")
             }
@@ -302,7 +304,7 @@ class ClientSettingsScreen(val game: RelativitizationGame, private val inGame: B
             gdxSettings.normalFontSize
         ) { knowledgeMapIconZoom, _ ->
             try {
-                gdxSettings.knowledgeMapProjectIconZoom =  knowledgeMapIconZoom.toFloat()
+                gdxSettings.knowledgeMapProjectIconZoom = knowledgeMapIconZoom.toFloat()
             } catch (e: NumberFormatException) {
                 logger.error("Invalid knowledge map icon zoom")
             }
@@ -329,7 +331,7 @@ class ClientSettingsScreen(val game: RelativitizationGame, private val inGame: B
             gdxSettings.normalFontSize
         ) { worldMapAndInfoSplitAmount, _ ->
             try {
-                gdxSettings.worldMapAndInfoSplitAmount =  worldMapAndInfoSplitAmount.toFloat()
+                gdxSettings.worldMapAndInfoSplitAmount = worldMapAndInfoSplitAmount.toFloat()
             } catch (e: NumberFormatException) {
                 logger.error("Invalid worldMapAndInfoSplitAmount")
             }
@@ -356,7 +358,8 @@ class ClientSettingsScreen(val game: RelativitizationGame, private val inGame: B
             gdxSettings.normalFontSize
         ) { upperInfoAndBottomCommandSplitAmount, _ ->
             try {
-                gdxSettings.upperInfoAndBottomCommandSplitAmount =  upperInfoAndBottomCommandSplitAmount.toFloat()
+                gdxSettings.upperInfoAndBottomCommandSplitAmount =
+                    upperInfoAndBottomCommandSplitAmount.toFloat()
             } catch (e: NumberFormatException) {
                 logger.error("Invalid worldMapAndInfoSplitAmount")
             }

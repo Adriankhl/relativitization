@@ -46,20 +46,22 @@ object UpdateDesire : Mechanism() {
                     popType
                 )
 
-                val desireResourceMap: Map<ResourceType, relativitization.universe.data.components.default.popsystem.pop.MutableResourceDesireData> = desireResourceTypeList.map {
-                    val desireQualityData: MutableResourceQualityData = computeDesireResourceQuality(
-                        gamma = gamma,
-                        mutableCommonPopData = mutableCommonPopData,
-                        resourceType = it,
-                        desireQualityUpdateFactor = desireQualityUpdateFactor,
-                        desireQualityUpdateMinDiff = desireQualityUpdateDiff,
-                    )
+                val desireResourceMap: Map<ResourceType, relativitization.universe.data.components.default.popsystem.pop.MutableResourceDesireData> =
+                    desireResourceTypeList.map {
+                        val desireQualityData: MutableResourceQualityData =
+                            computeDesireResourceQuality(
+                                gamma = gamma,
+                                mutableCommonPopData = mutableCommonPopData,
+                                resourceType = it,
+                                desireQualityUpdateFactor = desireQualityUpdateFactor,
+                                desireQualityUpdateMinDiff = desireQualityUpdateDiff,
+                            )
 
-                    it to relativitization.universe.data.components.default.popsystem.pop.MutableResourceDesireData(
-                        desireAmount,
-                        desireQualityData
-                    )
-                }.toMap()
+                        it to relativitization.universe.data.components.default.popsystem.pop.MutableResourceDesireData(
+                            desireAmount,
+                            desireQualityData
+                        )
+                    }.toMap()
 
                 updateSatisfaction(
                     gamma = gamma,
@@ -263,7 +265,7 @@ object UpdateDesire : Mechanism() {
         // Compute the change of satisfaction by piecewise function
         val deltaSatisfaction: Double = Piecewise.quadLogistic(
             x = overallFactor,
-            yMin = - satisfactionMaxDecreaseFactor * originalSatisfaction,
+            yMin = -satisfactionMaxDecreaseFactor * originalSatisfaction,
             yMax = satisfactionMaxIncreaseDelta,
             logisticSlope1 = 1.0
         )

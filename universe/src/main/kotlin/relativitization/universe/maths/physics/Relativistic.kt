@@ -86,12 +86,12 @@ object Relativistic {
     }
 
     /**
-    * @param initialRestMass initial rest mass
-    * @param deltaRestMass change of rest mass
-    * @param initialVelocity initial velocity
-    * @param targetDirection the target direction
-    * @param speedOfLight speed of light
-    */
+     * @param initialRestMass initial rest mass
+     * @param deltaRestMass change of rest mass
+     * @param initialVelocity initial velocity
+     * @param targetDirection the target direction
+     * @param speedOfLight speed of light
+     */
     fun canTargetVelocityAtDirectionByPhotonRocket(
         initialRestMass: Double,
         deltaRestMass: Double,
@@ -255,7 +255,10 @@ object Relativistic {
         val initialGamma: Double = gamma(initialVelocity, speedOfLight)
         val finalGamma: Double = gamma(targetVelocity, speedOfLight)
         val a: Double = speedOfLight2
-        val b: Double = -2.0 * initialGamma * finalGamma * initialRestMass * (speedOfLight2 - initialVelocity.dot(targetVelocity))
+        val b: Double =
+            -2.0 * initialGamma * finalGamma * initialRestMass * (speedOfLight2 - initialVelocity.dot(
+                targetVelocity
+            ))
         val c: Double = initialRestMass * initialRestMass * speedOfLight2
 
         // Solution of final rest mass
@@ -305,14 +308,15 @@ object Relativistic {
                 zeroVelocityDeltaRestMass
             )
         } else {
-            val originalTargetVelocityData: TargetVelocityData = targetVelocityAtDirectionPhotonRocket(
-                initialRestMass = initialRestMass,
-                deltaRestMass = maxDeltaRestMass,
-                initialVelocity = initialVelocity,
-                targetDirection = initialVelocity.scaleVelocity(1.0),
-                accelerate = false,
-                speedOfLight = speedOfLight
-            )
+            val originalTargetVelocityData: TargetVelocityData =
+                targetVelocityAtDirectionPhotonRocket(
+                    initialRestMass = initialRestMass,
+                    deltaRestMass = maxDeltaRestMass,
+                    initialVelocity = initialVelocity,
+                    targetDirection = initialVelocity.scaleVelocity(1.0),
+                    accelerate = false,
+                    speedOfLight = speedOfLight
+                )
 
             if (originalTargetVelocityData.targetVelocityType == TargetVelocityType.FAIL) {
                 logger.error("decelerateByPhotonRocket fail, something is wrong")
@@ -361,14 +365,15 @@ object Relativistic {
             )
         } else {
             // Try to change to the correct direction and accelerate / decelerate
-            val toDirectionTargetVelocityData: TargetVelocityData = targetVelocityAtDirectionPhotonRocket(
-                initialRestMass = initialRestMass,
-                deltaRestMass = maxDeltaRestMass,
-                initialVelocity = initialVelocity,
-                targetDirection = targetVelocity,
-                accelerate = initialVelocity.squareMag() < targetVelocity.squareMag(),
-                speedOfLight = speedOfLight
-            )
+            val toDirectionTargetVelocityData: TargetVelocityData =
+                targetVelocityAtDirectionPhotonRocket(
+                    initialRestMass = initialRestMass,
+                    deltaRestMass = maxDeltaRestMass,
+                    initialVelocity = initialVelocity,
+                    targetDirection = targetVelocity,
+                    accelerate = initialVelocity.squareMag() < targetVelocity.squareMag(),
+                    speedOfLight = speedOfLight
+                )
             if (toDirectionTargetVelocityData.targetVelocityType == TargetVelocityType.CHANGE_DIRECTION) {
                 toDirectionTargetVelocityData
             } else {

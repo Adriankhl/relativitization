@@ -84,10 +84,11 @@ object GenerateUniverseMethodCollection {
     }
 
     fun generate(settings: GenerateSettings): UniverseData {
-        val generateMethod: GenerateUniverseMethod =  generateMethodMap.getOrElse(settings.generateMethod) {
-            logger.error("Generate method doesn't exist, using default method")
-            TestingFixedMinimal
-        }
+        val generateMethod: GenerateUniverseMethod =
+            generateMethodMap.getOrElse(settings.generateMethod) {
+                logger.error("Generate method doesn't exist, using default method")
+                TestingFixedMinimal
+            }
 
         return generateMethod.generate(settings)
     }

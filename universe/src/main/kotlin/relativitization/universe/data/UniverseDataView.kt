@@ -19,10 +19,12 @@ data class UniverseData3DAtGrid(
 ) {
     fun idToUniverseData3DAtPlayer(): Map<Int, UniverseData3DAtPlayer> {
         // group by group id
-        val playerGroups: List<List<PlayerData>> = centerPlayerDataList.groupBy { it.groupId }.values.toList()
+        val playerGroups: List<List<PlayerData>> =
+            centerPlayerDataList.groupBy { it.groupId }.values.toList()
 
         return playerGroups.map { group ->
-            val prioritizedPlayerDataMap: Map<Int, PlayerData> = group.associateBy { it2 -> it2.playerId }
+            val prioritizedPlayerDataMap: Map<Int, PlayerData> =
+                group.associateBy { it2 -> it2.playerId }
 
             val recentPrioritizedDataMap: Map<Int, PlayerData> = prioritizedPlayerDataMap.filter {
                 val hasPlayerInHistory: Boolean = playerDataMap.containsKey(it.key)
@@ -56,15 +58,16 @@ data class UniverseData3DAtGrid(
             }
 
             // Group playerId in 3D grid by groupId
-            val groupPlayerId3DMap: List<List<List<Map<Int, List<Int>>>>> = groupPlayerId3D.map { yList ->
-                yList.map { zList ->
-                    zList.map { playerList ->
-                        playerList.groupBy { playerId ->
-                            groupPlayerDataMap.getValue(playerId).groupId
+            val groupPlayerId3DMap: List<List<List<Map<Int, List<Int>>>>> =
+                groupPlayerId3D.map { yList ->
+                    yList.map { zList ->
+                        zList.map { playerList ->
+                            playerList.groupBy { playerId ->
+                                groupPlayerDataMap.getValue(playerId).groupId
+                            }
                         }
                     }
                 }
-            }
 
             group.filter {
                 // Prevent turning after image to UniverseData3DAtPlayer
@@ -159,8 +162,11 @@ data class UniverseData3DAtPlayer(
         val int3D: Int3D = currentPlayer.int4D.toInt3D()
 
         return (max(int3D.x - range, 0)..min(int3D.x + range, universeSettings.xDim - 1)).map { x ->
-            (max(int3D.y - range, 0)..min(int3D.y + range, universeSettings.yDim - 1)).map {  y ->
-                (max(int3D.z - range, 0)..min(int3D.z + range, universeSettings.zDim - 1)).map { z ->
+            (max(int3D.y - range, 0)..min(int3D.y + range, universeSettings.yDim - 1)).map { y ->
+                (max(int3D.z - range, 0)..min(
+                    int3D.z + range,
+                    universeSettings.zDim - 1
+                )).map { z ->
                     get(Int3D(x, y, z)).values
                 }
             }
@@ -223,7 +229,10 @@ class PlanDataAtPlayer(
         if (playerId == thisPlayerData.playerId) {
             thisPlayerData = DataSerializer.copy(universeData3DAtPlayer.getCurrentPlayerData())
             commandList.forEach {
-                it.checkAndSelfExecuteBeforeSend(thisPlayerData, universeData3DAtPlayer.universeSettings)
+                it.checkAndSelfExecuteBeforeSend(
+                    thisPlayerData,
+                    universeData3DAtPlayer.universeSettings
+                )
             }
         } else {
             playerDataMap[playerId] = DataSerializer.copy(universeData3DAtPlayer.get(playerId))
@@ -242,7 +251,11 @@ class PlanDataAtPlayer(
         if (playerData.playerId == -1) {
             logger.error("Add command error: Player id -1")
         } else {
-            if(command.checkAndSelfExecuteBeforeSend(thisPlayerData, universeData3DAtPlayer.universeSettings).canSend) {
+            if (command.checkAndSelfExecuteBeforeSend(
+                    thisPlayerData,
+                    universeData3DAtPlayer.universeSettings
+                ).canSend
+            ) {
                 command.checkAndExecute(playerData, universeData3DAtPlayer.universeSettings)
                 commandList.add(command)
             } else {

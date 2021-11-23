@@ -13,7 +13,7 @@ object Piecewise {
         x: Double,
         yMin: Double,
         yMax: Double,
-        logisticSlope1: Double = - yMin * 2.0
+        logisticSlope1: Double = -yMin * 2.0
     ): Double = when {
         x < 0.0 -> 0.0
         x < 1.0 -> Quadratic.standard(

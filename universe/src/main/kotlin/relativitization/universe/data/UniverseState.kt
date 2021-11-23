@@ -11,7 +11,7 @@ data class UniverseState(
 ) {
     fun getCurrentTime(): Int = currentTime
 
-    fun updateTime() = currentTime ++
+    fun updateTime() = currentTime++
 
     fun getCurrentMaxId(): Int = maxPlayerId
 

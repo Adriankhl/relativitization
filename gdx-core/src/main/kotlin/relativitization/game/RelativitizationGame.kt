@@ -12,9 +12,13 @@ import relativitization.game.utils.Assets
 import relativitization.server.UniverseServer
 import relativitization.universe.utils.RelativitizationLogManager
 
-class RelativitizationGame(val universeClient: UniverseClient, private val universeServer: UniverseServer) : Game() {
+class RelativitizationGame(
+    val universeClient: UniverseClient,
+    private val universeServer: UniverseServer
+) : Game() {
 
-    val gdxSettings: GdxSettings = GdxSettings.loadOrDefault(universeClient.universeClientSettings.programDir)
+    val gdxSettings: GdxSettings =
+        GdxSettings.loadOrDefault(universeClient.universeClientSettings.programDir)
     val onGdxSettingsChangeFunctionList: MutableList<() -> Unit> = mutableListOf()
 
     // call when gdx setting is changed
@@ -60,9 +64,12 @@ class RelativitizationGame(val universeClient: UniverseClient, private val unive
             Gdx.graphics.setWindowedMode(gdxSettings.windowsWidth, gdxSettings.windowsHeight)
 
             if (Gdx.graphics.width != gdxSettings.windowsWidth ||
-                Gdx.graphics.height != gdxSettings.windowsHeight) {
-                logger.debug("Cannot adjust the width and height to the value in settings," +
-                        "store the current value")
+                Gdx.graphics.height != gdxSettings.windowsHeight
+            ) {
+                logger.debug(
+                    "Cannot adjust the width and height to the value in settings," +
+                            "store the current value"
+                )
 
                 // Set graphics height
                 gdxSettings.windowsWidth = Gdx.app.graphics.width

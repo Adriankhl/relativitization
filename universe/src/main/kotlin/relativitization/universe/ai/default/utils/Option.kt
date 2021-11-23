@@ -15,7 +15,8 @@ abstract class Option : AINode {
 
     protected open fun updateStatus(
         planDataAtPlayer: PlanDataAtPlayer, planState: PlanState
-    ) {}
+    ) {
+    }
 
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
         logger.debug("${this::class.simpleName} (CommandListOption) updating data")
@@ -51,10 +52,10 @@ abstract class Option : AINode {
                 it.getDualUtilityData(planDataAtPlayer, planState)
             }
 
-            val totalAddend: Double = utilityDataList.fold(0.0) { acc, data->
+            val totalAddend: Double = utilityDataList.fold(0.0) { acc, data ->
                 acc + data.bonus
             }
-            val totalMultiplier: Double = utilityDataList.fold(1.0) { acc, data->
+            val totalMultiplier: Double = utilityDataList.fold(1.0) { acc, data ->
                 acc * data.multiplier
             }
 
@@ -77,5 +78,5 @@ class EmptyOption : Option() {
     override fun getCommandList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
-    ): List<Command>  = listOf()
+    ): List<Command> = listOf()
 }

@@ -36,8 +36,9 @@ data class UniverseData(
     private fun isStateValid(): Boolean {
         // Not a valid test
         // val currentTimeCheck: Boolean = universeData4D.getTSizeList()[0] >= universeState.getCurrentTime()
-        val currentIdCheck: Boolean = (getLatestPlayerDataList().maxOfOrNull { it.playerId } ?: 0) <=
-                universeState.getCurrentMaxId()
+        val currentIdCheck: Boolean =
+            (getLatestPlayerDataList().maxOfOrNull { it.playerId } ?: 0) <=
+                    universeState.getCurrentMaxId()
         return currentIdCheck
     }
 
@@ -46,7 +47,8 @@ data class UniverseData(
      */
     private fun isPlayerDataValid(): Boolean {
         val playerDataList: List<PlayerData> = getLatestPlayerDataList()
-        val playerDataCheckList: List<Boolean> = playerDataList.map { it.isValid(universeState.getCurrentTime()) }
+        val playerDataCheckList: List<Boolean> =
+            playerDataList.map { it.isValid(universeState.getCurrentTime()) }
         return !playerDataCheckList.contains(false)
     }
 
@@ -88,7 +90,12 @@ data class UniverseData(
         val currentTime = universeState.getCurrentTime()
         val tDim = universeSettings.tDim
         return if (isInt4DValid(int4D)) {
-            universeData4D.getPlayerDataList(int4D.t - currentTime + tDim - 1, int4D.x, int4D.y, int4D.z)
+            universeData4D.getPlayerDataList(
+                int4D.t - currentTime + tDim - 1,
+                int4D.x,
+                int4D.y,
+                int4D.z
+            )
         } else {
             logger.debug("Getting player data at invalid coordinate")
             listOf()
@@ -109,8 +116,8 @@ data class UniverseData(
      * Get all player data which is within the view of current player
      */
     fun getAllVisiblePlayerData(): List<PlayerData> {
-        val tSize: Int =  intDelay(
-            Int3D(0, 0,0),
+        val tSize: Int = intDelay(
+            Int3D(0, 0, 0),
             Int3D(universeSettings.xDim - 1, universeSettings.yDim - 1, universeSettings.zDim - 1),
             universeSettings.speedOfLight
         )
@@ -126,7 +133,8 @@ data class UniverseData(
         for (i in 0 until universeSettings.xDim) {
             for (j in 0 until universeSettings.yDim) {
                 for (k in 0 until universeSettings.zDim) {
-                    val delay = intDelay(center.toInt3D(), Int3D(i, j, k), universeSettings.speedOfLight)
+                    val delay =
+                        intDelay(center.toInt3D(), Int3D(i, j, k), universeSettings.speedOfLight)
                     val int4D = Int4D(center.t - delay, i, j, k)
                     val playerDataList = getPlayerDataListAt(int4D)
 
@@ -162,8 +170,10 @@ data class UniverseData(
      * only player data with maximum t is included
      */
     fun getLatestPlayerDataList(): List<PlayerData> {
-        val playerDataList: List<PlayerData> = universeData4D.getLatest().flatten().flatten().flatten()
-        return playerDataList.groupBy { it.playerId }.map { (_, v) -> v.maxByOrNull { it.int4D.t } }.filterNotNull()
+        val playerDataList: List<PlayerData> =
+            universeData4D.getLatest().flatten().flatten().flatten()
+        return playerDataList.groupBy { it.playerId }.map { (_, v) -> v.maxByOrNull { it.int4D.t } }
+            .filterNotNull()
     }
 
     /**
@@ -261,12 +271,12 @@ data class UniverseData4D(
     /**
      * Get the y dimension of playerData4D as list
      */
-    internal fun getYSizeList(): List<Int> = playerData4D.flatten().map{ it.size }
+    internal fun getYSizeList(): List<Int> = playerData4D.flatten().map { it.size }
 
     /**
      * Get the z dimension of playerData4D as list
      */
-    internal fun getZSizeList(): List<Int> = playerData4D.flatten().flatten().map{ it.size }
+    internal fun getZSizeList(): List<Int> = playerData4D.flatten().flatten().map { it.size }
 
     companion object {
         private val logger = RelativitizationLogManager.getLogger()
@@ -320,7 +330,11 @@ data class MutableUniverseData4D(
         }
 
         // Default group player id should be player id itself
-        if (mutablePlayerData.groupId != double4DToGroupId(mutablePlayerData.double4D, edgeLength)) {
+        if (mutablePlayerData.groupId != double4DToGroupId(
+                mutablePlayerData.double4D,
+                edgeLength
+            )
+        ) {
             mutablePlayerData.groupId = double4DToGroupId(mutablePlayerData.double4D, edgeLength)
             logger.debug("Default the group id to ${mutablePlayerData.groupId}")
         }

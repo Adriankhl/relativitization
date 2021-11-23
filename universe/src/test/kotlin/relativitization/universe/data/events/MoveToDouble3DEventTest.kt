@@ -63,7 +63,10 @@ internal class MoveToDouble3DEventTest {
         }
 
         val view: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
-        assert(view.get(2).double4D.toDouble3D() == view.get(3).groupCenterDouble3D(view.universeSettings.groupEdgeLength))
+        assert(
+            view.get(2).double4D.toDouble3D() == view.get(3)
+                .groupCenterDouble3D(view.universeSettings.groupEdgeLength)
+        )
     }
 
     @Test

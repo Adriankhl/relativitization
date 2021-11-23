@@ -36,9 +36,10 @@ object Educate : Mechanism() {
             ).satisfaction
 
             PopType.values().forEach { popType ->
-                val commonPopData: MutableCommonPopData = mutableCarrierData.allPopData.getCommonPopData(
-                    popType
-                )
+                val commonPopData: MutableCommonPopData =
+                    mutableCarrierData.allPopData.getCommonPopData(
+                        popType
+                    )
                 val newEducationLevel: Double = computeNewEducationLevel(
                     gamma = gamma,
                     originalEducationLevel = commonPopData.educationLevel,
@@ -76,7 +77,8 @@ object Educate : Mechanism() {
         )
 
         // Adjusted by time dilation
-        val educationLevelChange: Double = (relativeNewEducationLevel - maxDeltaEducationLevel) / gamma
+        val educationLevelChange: Double =
+            (relativeNewEducationLevel - maxDeltaEducationLevel) / gamma
 
         val tempEducationLevel: Double = originalEducationLevel + educationLevelChange
 

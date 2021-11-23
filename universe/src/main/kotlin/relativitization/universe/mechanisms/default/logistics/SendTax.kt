@@ -19,7 +19,8 @@ object SendTax : Mechanism() {
 
         val fraction: Double = 0.5
 
-        val fuelRestMass: Double = mutablePlayerData.playerInternalData.economyData().taxData.storedFuelRestMass
+        val fuelRestMass: Double =
+            mutablePlayerData.playerInternalData.economyData().taxData.storedFuelRestMass
 
         // Repair empty leader list
         if (mutablePlayerData.playerInternalData.leaderIdList.isEmpty()) {

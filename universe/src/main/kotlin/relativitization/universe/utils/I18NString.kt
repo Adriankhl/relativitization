@@ -60,7 +60,7 @@ data class I18NString(
                     ""
                 }
             }
-        }.reduce { acc, s ->  acc + s }
+        }.reduce { acc, s -> acc + s }
 
         return listOf(listOf(s1) + arg) + (next?.toMessageFormat() ?: listOf())
     }

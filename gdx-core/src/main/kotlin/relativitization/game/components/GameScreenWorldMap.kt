@@ -14,7 +14,8 @@ import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.math.abs
 import kotlin.math.min
 
-class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.assets) {
+class GameScreenWorldMap(val game: RelativitizationGame) :
+    ScreenComponent<ScrollPane>(game.assets) {
     private val gdxSettings = game.gdxSettings
 
     private val allImageGroup: Group = Group()
@@ -57,8 +58,10 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
             // oldScrollX * zoomRatio: scroll to the correct lower left corner
             // scrollPane.scrollWidth * (zoomRatio - 1.0f) / 2: scroll a bit more/less to compensate the
             // moved center due to the scroll
-            scrollPane.scrollX = oldScrollX * zoomRatio + scrollPane.scrollWidth * (zoomRatio - 1.0f) / 2
-            scrollPane.scrollY = oldScrollY * zoomRatio + scrollPane.scrollHeight * (zoomRatio - 1.0f) / 2
+            scrollPane.scrollX =
+                oldScrollX * zoomRatio + scrollPane.scrollWidth * (zoomRatio - 1.0f) / 2
+            scrollPane.scrollY =
+                oldScrollY * zoomRatio + scrollPane.scrollHeight * (zoomRatio - 1.0f) / 2
 
             logger.debug("zoom: new x = ${scrollPane.scrollX}, new y = ${scrollPane.scrollY}")
 
@@ -118,7 +121,10 @@ class GameScreenWorldMap(val game: RelativitizationGame) : ScreenComponent<Scrol
 
     private fun actualZoom(): Float {
         // Actual zoom when mapZoomRelativeToFullMap equals 1.0
-        val zoomOne = min(scrollPane.width / data3D2DProjection.width, scrollPane.height / data3D2DProjection.height)
+        val zoomOne = min(
+            scrollPane.width / data3D2DProjection.width,
+            scrollPane.height / data3D2DProjection.height
+        )
         return zoomOne * gdxSettings.mapZoomRelativeToFullMap
     }
 

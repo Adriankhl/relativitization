@@ -52,7 +52,12 @@ object Projections {
         return { rectangleIndex ->
             val x = rectangleIndex % numDivision
             val y = rectangleIndex / numDivision
-            IntRectangle(xOffSet + scaledWidth * x, yOffSet + scaledHeight * y, scaledWidth, scaledHeight)
+            IntRectangle(
+                xOffSet + scaledWidth * x,
+                yOffSet + scaledHeight * y,
+                scaledWidth,
+                scaledHeight
+            )
         }
     }
 
@@ -255,7 +260,7 @@ object Projections {
     ): Int {
         return data3D.flatten().flatten().map { gridMap ->
             // multiply by two to insert spacing
-            val gridDivision: Int = numDivisionInGroup(gridMap.size * 2 )
+            val gridDivision: Int = numDivisionInGroup(gridMap.size * 2)
             val maxInnerDivision: Int = gridMap.values.map { idList ->
                 numDivisionInGroup(idList.size)
             }.maxOrNull() ?: 1
@@ -307,37 +312,39 @@ object Projections {
             }
         }
 
-        val data3DToRectangleFunction: List<List<List<(Int, Int) -> IntRectangle>>> = int3DRectangleData.mapIndexed { x, yList ->
-            yList.mapIndexed { y, zList ->
-                zList.mapIndexed { z, rectangle ->
-                    idAtGridToRectangleFunction(
-                        gridMap = data3D[x][y][z],
-                        imageWidth = imageWidth,
-                        imageHeight = imageHeight,
-                        gridWidth = rectangle.width,
-                        gridHeight = rectangle.height,
-                        xOffSet = rectangle.xPos,
-                        yOffSet = rectangle.yPos,
-                    )
+        val data3DToRectangleFunction: List<List<List<(Int, Int) -> IntRectangle>>> =
+            int3DRectangleData.mapIndexed { x, yList ->
+                yList.mapIndexed { y, zList ->
+                    zList.mapIndexed { z, rectangle ->
+                        idAtGridToRectangleFunction(
+                            gridMap = data3D[x][y][z],
+                            imageWidth = imageWidth,
+                            imageHeight = imageHeight,
+                            gridWidth = rectangle.width,
+                            gridHeight = rectangle.height,
+                            xOffSet = rectangle.xPos,
+                            yOffSet = rectangle.yPos,
+                        )
+                    }
                 }
             }
-        }
 
-        val positionToIdAtData3DFunction: List<List<List<(Int, Int) -> Int>>> = int3DRectangleData.mapIndexed { x, yList ->
-            yList.mapIndexed { y, zList ->
-                zList.mapIndexed { z, rectangle ->
-                    positionToIdAtGridFunction(
-                        gridMap = data3D[x][y][z],
-                        imageWidth = imageWidth,
-                        imageHeight = imageHeight,
-                        gridWidth = rectangle.width,
-                        gridHeight = rectangle.height,
-                        xOffSet = rectangle.xPos,
-                        yOffSet = rectangle.yPos,
-                    )
+        val positionToIdAtData3DFunction: List<List<List<(Int, Int) -> Int>>> =
+            int3DRectangleData.mapIndexed { x, yList ->
+                yList.mapIndexed { y, zList ->
+                    zList.mapIndexed { z, rectangle ->
+                        positionToIdAtGridFunction(
+                            gridMap = data3D[x][y][z],
+                            imageWidth = imageWidth,
+                            imageHeight = imageHeight,
+                            gridWidth = rectangle.width,
+                            gridHeight = rectangle.height,
+                            xOffSet = rectangle.xPos,
+                            yOffSet = rectangle.yPos,
+                        )
+                    }
                 }
             }
-        }
 
 
         val int3DToRectangle: (Int3D) -> IntRectangle = { int3D ->
@@ -347,12 +354,13 @@ object Projections {
             int3DRectangleData[int3D.x][int3D.y][int3D.z]
         }
 
-        val data3DToRectangle: (Int3D, Int, Int) -> IntRectangle = { int3D: Int3D, mapId: Int, id:Int ->
-            if (!isInt3DValid(int3D, data3D)) {
-                logger.error("data3DToRectangle: Invalid int3D")
+        val data3DToRectangle: (Int3D, Int, Int) -> IntRectangle =
+            { int3D: Int3D, mapId: Int, id: Int ->
+                if (!isInt3DValid(int3D, data3D)) {
+                    logger.error("data3DToRectangle: Invalid int3D")
+                }
+                data3DToRectangleFunction[int3D.x][int3D.y][int3D.z](mapId, id)
             }
-            data3DToRectangleFunction[int3D.x][int3D.y][int3D.z](mapId, id)
-        }
 
         val positionToInt3D: (Int, Int) -> Int3D = { xPos, yPos ->
             val x: Int = (xPos - xOffSet) / xyFullSpace

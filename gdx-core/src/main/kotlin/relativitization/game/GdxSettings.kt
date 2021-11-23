@@ -65,7 +65,7 @@ enum class ShowingInfoType {
     SCIENCE,
 }
 
-enum class Language(private val value: String)  {
+enum class Language(private val value: String) {
     ENGLISH("English"),
     TRADITIONAL_CHINESE("Traditional Chinese"),
     SIMPLIFIED_CHINESE("Simplified Chinese"),

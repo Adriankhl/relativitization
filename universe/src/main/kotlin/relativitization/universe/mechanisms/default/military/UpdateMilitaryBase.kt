@@ -89,7 +89,8 @@ object UpdateMilitaryBase : Mechanism() {
             soldierPopData.commonPopData.satisfaction
         }
 
-        val maxShield: Double = soldierPopData.militaryBaseData.lastNumEmployee * satisfactionFactor * playerScienceData.playerScienceApplicationData.militaryBaseShieldFactor * maxShieldFactor
+        val maxShield: Double =
+            soldierPopData.militaryBaseData.lastNumEmployee * satisfactionFactor * playerScienceData.playerScienceApplicationData.militaryBaseShieldFactor * maxShieldFactor
 
         // Compute the change in two ways: fraction of the difference or fraction of the max shield
         // take the larger one

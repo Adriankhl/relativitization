@@ -11,7 +11,8 @@ internal class PlayerInternalDataTest {
         val l2: List<PlayerDataComponent> = DataSerializer.copy(l1)
         assert(l1 == l2)
 
-        val l3: List<MutablePlayerDataComponent> = listOf(MutablePhysicsData(), MutableEconomyData())
+        val l3: List<MutablePlayerDataComponent> =
+            listOf(MutablePhysicsData(), MutableEconomyData())
         val l4: List<MutablePlayerDataComponent> = DataSerializer.copy(l3)
         assert(l3 == l4)
 

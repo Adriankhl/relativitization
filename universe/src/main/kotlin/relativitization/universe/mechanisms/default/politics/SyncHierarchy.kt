@@ -25,11 +25,15 @@ object SyncHierarchy : Mechanism() {
             listOf()
         } else {
 
-            val directLeaderData: PlayerData = universeData3DAtPlayer.get(mutablePlayerData.playerInternalData.directLeaderId)
+            val directLeaderData: PlayerData =
+                universeData3DAtPlayer.get(mutablePlayerData.playerInternalData.directLeaderId)
 
             mutablePlayerData.changeDirectLeaderId(directLeaderData.playerInternalData.leaderIdList)
 
-            if (directLeaderData.playerInternalData.directSubordinateIdList.contains(mutablePlayerData.playerId)) {
+            if (directLeaderData.playerInternalData.directSubordinateIdList.contains(
+                    mutablePlayerData.playerId
+                )
+            ) {
                 listOf()
             } else {
                 listOf(
@@ -43,15 +47,17 @@ object SyncHierarchy : Mechanism() {
         }
 
         // Clear direct subordinate
-        val toRemoveDirectIdList: List<Int> = mutablePlayerData.playerInternalData.directSubordinateIdList.filter {
-            universeData3DAtPlayer.get(it).playerInternalData.directLeaderId != mutablePlayerData.playerId
-        }
+        val toRemoveDirectIdList: List<Int> =
+            mutablePlayerData.playerInternalData.directSubordinateIdList.filter {
+                universeData3DAtPlayer.get(it).playerInternalData.directLeaderId != mutablePlayerData.playerId
+            }
         mutablePlayerData.playerInternalData.directSubordinateIdList.removeAll(toRemoveDirectIdList)
 
         // Clear subordinate
-        val toRemoveIdList: List<Int> = mutablePlayerData.playerInternalData.directSubordinateIdList.filter {
-            universeData3DAtPlayer.get(it).isLeaderOrSelf(mutablePlayerData.playerId)
-        }
+        val toRemoveIdList: List<Int> =
+            mutablePlayerData.playerInternalData.directSubordinateIdList.filter {
+                universeData3DAtPlayer.get(it).isLeaderOrSelf(mutablePlayerData.playerId)
+            }
         mutablePlayerData.playerInternalData.subordinateIdList.removeAll(toRemoveIdList)
 
 

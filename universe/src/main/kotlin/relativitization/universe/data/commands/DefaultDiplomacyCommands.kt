@@ -43,14 +43,16 @@ data class DeclareWarCommand(
             I18NString("Target is leader. ")
         }
 
-        val isNotInWar: Boolean = !playerData.playerInternalData.diplomacyData().warData.warStateMap.containsKey(toId)
+        val isNotInWar: Boolean =
+            !playerData.playerInternalData.diplomacyData().warData.warStateMap.containsKey(toId)
         val isNotInWarI18NString: I18NString = if (isNotInWar) {
             I18NString("")
         } else {
             I18NString("Target is in war with you. ")
         }
 
-        val isNotInPeaceTreaty: Boolean = !playerData.playerInternalData.modifierData().diplomacyModifierData.canDeclareWar(toId)
+        val isNotInPeaceTreaty: Boolean =
+            !playerData.playerInternalData.modifierData().diplomacyModifierData.canDeclareWar(toId)
         val isNotInPeaceTreatyI18NString: I18NString = if (isNotInPeaceTreaty) {
             I18NString("")
         } else {
@@ -147,7 +149,8 @@ data class DeclareIndependenceCommand(
             I18NString("Cannot declare war on self. ")
         }
 
-        val isNotInWar: Boolean = !playerData.playerInternalData.diplomacyData().warData.warStateMap.containsKey(toId)
+        val isNotInWar: Boolean =
+            !playerData.playerInternalData.diplomacyData().warData.warStateMap.containsKey(toId)
         val isNotInWarI18NString: I18NString = if (isNotInWar) {
             I18NString("")
         } else {

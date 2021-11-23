@@ -151,13 +151,16 @@ object Movement {
     ): TargetVelocityData {
 
         val distance: Double = distance(initialDouble3D, targetDouble3D)
-        val originalTargetVelocity: Velocity = displacementToVelocity(initialDouble3D, targetDouble3D, speedOfLight)
-        val maxSpeedByDistance: Double = min(maxSpeed, maxSpeedToStopByPhotonRocket(
-            initialRestMass = initialRestMass,
-            maxDeltaRestMass = maxDeltaRestMass,
-            distance = distance,
-            speedOfLight = speedOfLight,
-        ))
+        val originalTargetVelocity: Velocity =
+            displacementToVelocity(initialDouble3D, targetDouble3D, speedOfLight)
+        val maxSpeedByDistance: Double = min(
+            maxSpeed, maxSpeedToStopByPhotonRocket(
+                initialRestMass = initialRestMass,
+                maxDeltaRestMass = maxDeltaRestMass,
+                distance = distance,
+                speedOfLight = speedOfLight,
+            )
+        )
 
         val targetVelocity: Velocity = if (originalTargetVelocity.mag() > maxSpeedByDistance) {
             originalTargetVelocity.scaleVelocity(maxSpeedByDistance)
@@ -226,7 +229,10 @@ object Movement {
         speedOfLight: Double,
     ): Double {
 
-        val maxVelocity: Velocity = displacementToVelocity(initialDouble3D, targetDouble3D, speedOfLight).scaleVelocity(maxSpeed)
+        val maxVelocity: Velocity =
+            displacementToVelocity(initialDouble3D, targetDouble3D, speedOfLight).scaleVelocity(
+                maxSpeed
+            )
         val requiredDeltaMass1: Double = deltaMassByPhotonRocket(
             initialRestMass = initialRestMass,
             initialVelocity = initialVelocity,
@@ -339,7 +345,10 @@ object Movement {
             initialRestMass - testMovementFinalState.restMass
         } else {
             // First stop to zero velocity, then accelerate to max speed, then stop to zero again
-            val maxVelocity: Velocity = displacementToVelocity(initialDouble3D, targetDouble3D, speedOfLight).scaleVelocity(maxSpeed)
+            val maxVelocity: Velocity =
+                displacementToVelocity(initialDouble3D, targetDouble3D, speedOfLight).scaleVelocity(
+                    maxSpeed
+                )
             val requiredDeltaMass1: Double = deltaMassByPhotonRocket(
                 initialRestMass = initialRestMass,
                 initialVelocity = initialVelocity,
@@ -396,7 +405,7 @@ object Movement {
             speedOfLight = speedOfLight,
             numIteration = Int.MAX_VALUE,
 
-        )
+            )
         return initialRestMass - currentMovementState.restMass
     }
 }

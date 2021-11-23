@@ -29,7 +29,8 @@ object ABMFlockingAI : AI() {
 
         val avoidBoundaryDouble3D = avoidBoundary(universeData3DAtPlayer)
 
-        val weightedDouble3D = cohesionDouble3D * 1.0 + alignmentDouble3D * 1.0 + separationDouble3D * 2.0 + avoidBoundaryDouble3D * 10.0
+        val weightedDouble3D =
+            cohesionDouble3D * 1.0 + alignmentDouble3D * 1.0 + separationDouble3D * 2.0 + avoidBoundaryDouble3D * 10.0
 
         val originalVelocity = universeData3DAtPlayer.getCurrentPlayerData().velocity
 
@@ -54,10 +55,14 @@ object ABMFlockingAI : AI() {
 
     private fun cohesion(universeData3DAtPlayer: UniverseData3DAtPlayer, radius: Double): Double3D {
         val selfDouble4D = universeData3DAtPlayer.getCurrentPlayerData().double4D
-        val nearByPlayerData: List<PlayerData> = universeData3DAtPlayer.playerDataMap.values.filter {
-            val otherDouble4D = it.double4D
-            distance(selfDouble4D, otherDouble4D) < radius && (it.playerId != universeData3DAtPlayer.getCurrentPlayerData().playerId)
-        }
+        val nearByPlayerData: List<PlayerData> =
+            universeData3DAtPlayer.playerDataMap.values.filter {
+                val otherDouble4D = it.double4D
+                distance(
+                    selfDouble4D,
+                    otherDouble4D
+                ) < radius && (it.playerId != universeData3DAtPlayer.getCurrentPlayerData().playerId)
+            }
 
         return if (nearByPlayerData.isEmpty()) {
             Double3D(0.0, 0.0, 0.0)
@@ -78,12 +83,19 @@ object ABMFlockingAI : AI() {
         }
     }
 
-    private fun alignment(universeData3DAtPlayer: UniverseData3DAtPlayer, radius: Double): Double3D {
+    private fun alignment(
+        universeData3DAtPlayer: UniverseData3DAtPlayer,
+        radius: Double
+    ): Double3D {
         val selfDouble4D = universeData3DAtPlayer.getCurrentPlayerData().double4D
-        val nearByPlayerData: List<PlayerData> = universeData3DAtPlayer.playerDataMap.values.filter {
-            val otherDouble4D = it.double4D
-            distance(selfDouble4D, otherDouble4D) < radius && (it.playerId != universeData3DAtPlayer.getCurrentPlayerData().playerId)
-        }
+        val nearByPlayerData: List<PlayerData> =
+            universeData3DAtPlayer.playerDataMap.values.filter {
+                val otherDouble4D = it.double4D
+                distance(
+                    selfDouble4D,
+                    otherDouble4D
+                ) < radius && (it.playerId != universeData3DAtPlayer.getCurrentPlayerData().playerId)
+            }
 
 
         return if (nearByPlayerData.isEmpty()) {
@@ -105,13 +117,17 @@ object ABMFlockingAI : AI() {
         }
     }
 
-    private fun separation(universeData3DAtPlayer: UniverseData3DAtPlayer, desiredSeparation: Double): Double3D {
+    private fun separation(
+        universeData3DAtPlayer: UniverseData3DAtPlayer,
+        desiredSeparation: Double
+    ): Double3D {
         val selfDouble4D = universeData3DAtPlayer.getCurrentPlayerData().double4D
-        val nearByPlayerData: List<PlayerData> = universeData3DAtPlayer.playerDataMap.values.filter {
-            val otherDouble4D = it.double4D
-            val distance = distance(selfDouble4D, otherDouble4D)
-            (distance < desiredSeparation) && (distance > 0.0) && (it.playerId != universeData3DAtPlayer.getCurrentPlayerData().playerId)
-        }
+        val nearByPlayerData: List<PlayerData> =
+            universeData3DAtPlayer.playerDataMap.values.filter {
+                val otherDouble4D = it.double4D
+                val distance = distance(selfDouble4D, otherDouble4D)
+                (distance < desiredSeparation) && (distance > 0.0) && (it.playerId != universeData3DAtPlayer.getCurrentPlayerData().playerId)
+            }
 
         return if (nearByPlayerData.isEmpty()) {
             Double3D(0.0, 0.0, 0.0)

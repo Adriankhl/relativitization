@@ -12,10 +12,14 @@ import relativitization.game.RelativitizationGame
 import relativitization.game.utils.TableScreen
 import relativitization.universe.UniverseClientSettings
 
-class RegisterPlayerScreen(val game: RelativitizationGame) : TableScreen(game.assets)  {
+class RegisterPlayerScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
     private val gdxSettings = game.gdxSettings
 
-    private val registerPlayerButton: TextButton = createTextButton("Register", gdxSettings.normalFontSize, gdxSettings.soundEffectsVolume) { button ->
+    private val registerPlayerButton: TextButton = createTextButton(
+        "Register",
+        gdxSettings.normalFontSize,
+        gdxSettings.soundEffectsVolume
+    ) { button ->
         if (game.universeClient.universeClientSettings.playerId >= 0) {
             runBlocking {
                 val httpCode = game.universeClient.httpPostRegisterPlayer()
@@ -50,30 +54,31 @@ class RegisterPlayerScreen(val game: RelativitizationGame) : TableScreen(game.as
         val nestedTable = Table()
 
         val startStatusLabel = createLabel("", gdxSettings.normalFontSize)
-        val startButton: TextButton = createTextButton("Start", gdxSettings.bigFontSize, gdxSettings.soundEffectsVolume) {
-            if (registerPlayerButton.touchable == Touchable.disabled) {
-                runBlocking {
-                    if (game.universeClient.getCurrentServerStatus().isUniverseRunning) {
-                        // Not showing because it is too fast?
-                        startStatusLabel.setText("Universe already running, waiting universe data")
-                        game.screen = GameScreen(game)
-                        dispose()
-                    } else {
-                        val httpCode = game.universeClient.httpPostRunUniverse()
-                        if (httpCode == HttpStatusCode.OK) {
+        val startButton: TextButton =
+            createTextButton("Start", gdxSettings.bigFontSize, gdxSettings.soundEffectsVolume) {
+                if (registerPlayerButton.touchable == Touchable.disabled) {
+                    runBlocking {
+                        if (game.universeClient.getCurrentServerStatus().isUniverseRunning) {
                             // Not showing because it is too fast?
-                            startStatusLabel.setText("Run universe success, waiting universe data")
+                            startStatusLabel.setText("Universe already running, waiting universe data")
                             game.screen = GameScreen(game)
                             dispose()
                         } else {
-                            startStatusLabel.setText("Can't start universe")
+                            val httpCode = game.universeClient.httpPostRunUniverse()
+                            if (httpCode == HttpStatusCode.OK) {
+                                // Not showing because it is too fast?
+                                startStatusLabel.setText("Run universe success, waiting universe data")
+                                game.screen = GameScreen(game)
+                                dispose()
+                            } else {
+                                startStatusLabel.setText("Can't start universe")
+                            }
                         }
                     }
+                } else {
+                    startStatusLabel.setText("Please register a player id")
                 }
-            } else {
-                startStatusLabel.setText("Please register a player id")
             }
-        }
 
         val cancelButton = createTextButton(
             "Cancel",
@@ -117,40 +122,42 @@ class RegisterPlayerScreen(val game: RelativitizationGame) : TableScreen(game.as
             idList.getOrElse(0) { -1 },
             gdxSettings.normalFontSize
         ) { id, _ ->
-            val newUniverseClientSettings: UniverseClientSettings = game.universeClient.universeClientSettings.copy(
-                playerId = id
-            )
+            val newUniverseClientSettings: UniverseClientSettings =
+                game.universeClient.universeClientSettings.copy(
+                    playerId = id
+                )
             runBlocking {
                 game.universeClient.setUniverseClientSettings(newUniverseClientSettings)
             }
         }
 
-        val updateButton = createTextButton("Update", gdxSettings.normalFontSize, gdxSettings.soundEffectsVolume) {
-            when (getPlayerTypeSelectBox.selected) {
-                "All" -> {
-                    runBlocking {
-                        idList = game.universeClient.httpGetAvailableIdList()
+        val updateButton =
+            createTextButton("Update", gdxSettings.normalFontSize, gdxSettings.soundEffectsVolume) {
+                when (getPlayerTypeSelectBox.selected) {
+                    "All" -> {
+                        runBlocking {
+                            idList = game.universeClient.httpGetAvailableIdList()
+                        }
+                    }
+                    "Human only" -> {
+                        runBlocking {
+                            idList = game.universeClient.httpGetAvailableHumanIdList()
+                        }
+                    }
+                    else -> {
+                        runBlocking {
+                            idList = game.universeClient.httpGetAvailableIdList()
+                        }
                     }
                 }
-                "Human only" -> {
-                    runBlocking {
-                        idList = game.universeClient.httpGetAvailableHumanIdList()
-                    }
-                }
-                else -> {
-                    runBlocking {
-                        idList = game.universeClient.httpGetAvailableIdList()
-                    }
-                }
-            }
 
-            // Prevent null pointer exception at playerIdSelectBox
-            if (idList.isEmpty()) {
-                idList = listOf(-1)
-            }
+                // Prevent null pointer exception at playerIdSelectBox
+                if (idList.isEmpty()) {
+                    idList = listOf(-1)
+                }
 
-            playerIdSelectBox.items = Array(idList.sorted().toTypedArray())
-        }
+                playerIdSelectBox.items = Array(idList.sorted().toTypedArray())
+            }
         table.add(updateButton).colspan(2)
 
         table.row().space(10f)
@@ -161,14 +168,20 @@ class RegisterPlayerScreen(val game: RelativitizationGame) : TableScreen(game.as
         table.row().space(10f)
 
 
-        table.add(createLabel("Password (for holding your player id): ", gdxSettings.normalFontSize))
+        table.add(
+            createLabel(
+                "Password (for holding your player id): ",
+                gdxSettings.normalFontSize
+            )
+        )
         val passwordTextField = createTextField(
             game.universeClient.universeClientSettings.password,
             gdxSettings.normalFontSize
         ) { password, _ ->
-            val newUniverseClientSettings: UniverseClientSettings = game.universeClient.universeClientSettings.copy(
-                password = password
-            )
+            val newUniverseClientSettings: UniverseClientSettings =
+                game.universeClient.universeClientSettings.copy(
+                    password = password
+                )
             runBlocking {
                 game.universeClient.setUniverseClientSettings(newUniverseClientSettings)
             }
@@ -178,7 +191,12 @@ class RegisterPlayerScreen(val game: RelativitizationGame) : TableScreen(game.as
         table.row().space(10f)
 
 
-        table.add(createLabel("Register player id, can only register once: ", gdxSettings.normalFontSize))
+        table.add(
+            createLabel(
+                "Register player id, can only register once: ",
+                gdxSettings.normalFontSize
+            )
+        )
         table.add(registerPlayerButton)
 
         table.row().space(10f)

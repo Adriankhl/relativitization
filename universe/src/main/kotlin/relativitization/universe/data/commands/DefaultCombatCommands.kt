@@ -38,10 +38,13 @@ data class DamageCommand(
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
         // Disable military base recovery by 1 turn
-        playerData.playerInternalData.modifierData().combatModifierData.disableMilitaryBaseRecoveryByTime(1)
+        playerData.playerInternalData.modifierData().combatModifierData.disableMilitaryBaseRecoveryByTime(
+            1
+        )
 
         val carrierIdList: MutableList<Int> =
-            playerData.playerInternalData.popSystemData().carrierDataMap.keys.shuffled().toMutableList()
+            playerData.playerInternalData.popSystemData().carrierDataMap.keys.shuffled()
+                .toMutableList()
 
         // Use attack to destroy carrier, until used up or no carrier left
         var attackAcc: Double = attack

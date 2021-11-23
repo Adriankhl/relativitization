@@ -1,6 +1,5 @@
 package relativitization.universe.mechanisms
 
-import relativitization.universe.mechanisms.default.politics.SyncHierarchy
 import relativitization.universe.mechanisms.default.combat.AutoCombat
 import relativitization.universe.mechanisms.default.dead.ClearDeadPlayer
 import relativitization.universe.mechanisms.default.diplomacy.UpdateDiplomaticRelation
@@ -14,6 +13,7 @@ import relativitization.universe.mechanisms.default.logistics.SendTax
 import relativitization.universe.mechanisms.default.military.UpdateMilitaryBase
 import relativitization.universe.mechanisms.default.modifier.UpdateModifierTime
 import relativitization.universe.mechanisms.default.politics.MergePlayer
+import relativitization.universe.mechanisms.default.politics.SyncHierarchy
 import relativitization.universe.mechanisms.default.politics.SyncPoliticsData
 import relativitization.universe.mechanisms.default.pop.*
 import relativitization.universe.mechanisms.default.production.BaseStellarFuelProduction

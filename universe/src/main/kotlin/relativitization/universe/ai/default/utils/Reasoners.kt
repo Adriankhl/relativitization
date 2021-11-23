@@ -15,7 +15,8 @@ abstract class SequenceReasoner : Reasoner() {
 
     protected open fun updateStatus(
         planDataAtPlayer: PlanDataAtPlayer, planState: PlanState
-    ) {}
+    ) {
+    }
 
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
         logger.debug("${this::class.simpleName} (SequenceReasoner) updating data")
@@ -39,7 +40,8 @@ abstract class DualUtilityReasoner : Reasoner() {
 
     protected open fun updateStatus(
         planDataAtPlayer: PlanDataAtPlayer, planState: PlanState
-    ) {}
+    ) {
+    }
 
     override fun getSubNodeList(
         planDataAtPlayer: PlanDataAtPlayer,

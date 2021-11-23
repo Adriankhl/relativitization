@@ -35,27 +35,29 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
     // If true, the latest selected project is basic project, otherwise it is applied project
     private var isLatestSelectedBasic: Boolean = true
 
-    private var selectedBasicResearchProjectData: BasicResearchProjectData = BasicResearchProjectData(
-        basicResearchId = 0,
-        basicResearchField = BasicResearchField.MATHEMATICS,
-        xCor = 0.0,
-        yCor = 0.0,
-        difficulty = 0.0,
-        significance = 0.0,
-        referenceBasicResearchIdList = listOf(),
-        referenceAppliedResearchIdList = listOf()
-    )
+    private var selectedBasicResearchProjectData: BasicResearchProjectData =
+        BasicResearchProjectData(
+            basicResearchId = 0,
+            basicResearchField = BasicResearchField.MATHEMATICS,
+            xCor = 0.0,
+            yCor = 0.0,
+            difficulty = 0.0,
+            significance = 0.0,
+            referenceBasicResearchIdList = listOf(),
+            referenceAppliedResearchIdList = listOf()
+        )
 
-    private var selectedAppliedResearchProjectData: AppliedResearchProjectData = AppliedResearchProjectData(
-        appliedResearchId = 0,
-        appliedResearchField = AppliedResearchField.ENERGY_TECHNOLOGY,
-        xCor = 0.0,
-        yCor = 0.0,
-        difficulty = 0.0,
-        significance = 0.0,
-        referenceBasicResearchIdList = listOf(),
-        referenceAppliedResearchIdList = listOf()
-    )
+    private var selectedAppliedResearchProjectData: AppliedResearchProjectData =
+        AppliedResearchProjectData(
+            appliedResearchId = 0,
+            appliedResearchField = AppliedResearchField.ENERGY_TECHNOLOGY,
+            xCor = 0.0,
+            yCor = 0.0,
+            difficulty = 0.0,
+            significance = 0.0,
+            referenceBasicResearchIdList = listOf(),
+            referenceAppliedResearchIdList = listOf()
+        )
 
     // zoom in knowledge map, fix icon size
     private val zoomInButton: ImageButton = createImageButton(
@@ -212,14 +214,19 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
     private fun updateKnowledgeBar() {
         knowledgeBar.clear()
 
-        val headerLabel = createLabel("Science: player ${playerData.playerId}", gdxSettings.bigFontSize)
+        val headerLabel =
+            createLabel("Science: player ${playerData.playerId}", gdxSettings.bigFontSize)
 
         val controlTable: Table = Table()
 
-        controlTable.add(zoomInButton).size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
-        controlTable.add(zoomOutButton).size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
-        controlTable.add(plusButton).size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
-        controlTable.add(minusButton).size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
+        controlTable.add(zoomInButton)
+            .size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
+        controlTable.add(zoomOutButton)
+            .size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
+        controlTable.add(plusButton)
+            .size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
+        controlTable.add(minusButton)
+            .size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
         controlTable.add(knowledgeProjectTable).pad(20f)
 
         val controlScrollPane: ScrollPane = createScrollPane(controlTable)
@@ -243,8 +250,9 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
             game.universeClient.selectedKnowledgeDouble2D
         )
 
-        val selectedKnowledgeMapDouble2D: Label = createLabel("Position: (" +
-                "%.2f, %.2f)".format(knowledgeMapPosition.x, knowledgeMapPosition.y),
+        val selectedKnowledgeMapDouble2D: Label = createLabel(
+            "Position: (" +
+                    "%.2f, %.2f)".format(knowledgeMapPosition.x, knowledgeMapPosition.y),
             gdxSettings.normalFontSize
         )
 
@@ -685,15 +693,17 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
         return dim * gdxSettings.knowledgeMapProjectIconZoom
     }
 
-   /**
+    /**
      * Min x coordinate of the knowledge map
      */
     private fun knowledgeMapMinX(): Double {
         // Compute the dimension of knowledge map
-       val allBasicProject = playerData.playerInternalData.playerScienceData().doneBasicResearchProjectList +
-               playerData.playerInternalData.playerScienceData().knownBasicResearchProjectList
-       val allAppliedProject = playerData.playerInternalData.playerScienceData().doneAppliedResearchProjectList +
-               playerData.playerInternalData.playerScienceData().knownAppliedResearchProjectList
+        val allBasicProject =
+            playerData.playerInternalData.playerScienceData().doneBasicResearchProjectList +
+                    playerData.playerInternalData.playerScienceData().knownBasicResearchProjectList
+        val allAppliedProject =
+            playerData.playerInternalData.playerScienceData().doneAppliedResearchProjectList +
+                    playerData.playerInternalData.playerScienceData().knownAppliedResearchProjectList
         val minBasicX: Double = allBasicProject.minOfOrNull {
             it.xCor
         } ?: -1.0
@@ -709,10 +719,12 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
      */
     private fun knowledgeMapMaxX(): Double {
         // Compute the dimension of knowledge map
-        val allBasicProject = playerData.playerInternalData.playerScienceData().doneBasicResearchProjectList +
-                playerData.playerInternalData.playerScienceData().knownBasicResearchProjectList
-        val allAppliedProject = playerData.playerInternalData.playerScienceData().doneAppliedResearchProjectList +
-                playerData.playerInternalData.playerScienceData().knownAppliedResearchProjectList
+        val allBasicProject =
+            playerData.playerInternalData.playerScienceData().doneBasicResearchProjectList +
+                    playerData.playerInternalData.playerScienceData().knownBasicResearchProjectList
+        val allAppliedProject =
+            playerData.playerInternalData.playerScienceData().doneAppliedResearchProjectList +
+                    playerData.playerInternalData.playerScienceData().knownAppliedResearchProjectList
         val maxBasicX: Double = allBasicProject.maxOfOrNull {
             it.xCor
         } ?: 1.0
@@ -728,10 +740,12 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
      */
     private fun knowledgeMapMinY(): Double {
         // Compute the dimension of knowledge map
-        val allBasicProject = playerData.playerInternalData.playerScienceData().doneBasicResearchProjectList +
-                playerData.playerInternalData.playerScienceData().knownBasicResearchProjectList
-        val allAppliedProject = playerData.playerInternalData.playerScienceData().doneAppliedResearchProjectList +
-                playerData.playerInternalData.playerScienceData().knownAppliedResearchProjectList
+        val allBasicProject =
+            playerData.playerInternalData.playerScienceData().doneBasicResearchProjectList +
+                    playerData.playerInternalData.playerScienceData().knownBasicResearchProjectList
+        val allAppliedProject =
+            playerData.playerInternalData.playerScienceData().doneAppliedResearchProjectList +
+                    playerData.playerInternalData.playerScienceData().knownAppliedResearchProjectList
         val minBasicY: Double = allBasicProject.minOfOrNull {
             it.yCor
         } ?: -1.0
@@ -748,10 +762,12 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
      */
     private fun knowledgeMapMaxY(): Double {
         // Compute the dimension of knowledge map
-        val allBasicProject = playerData.playerInternalData.playerScienceData().doneBasicResearchProjectList +
-                playerData.playerInternalData.playerScienceData().knownBasicResearchProjectList
-        val allAppliedProject = playerData.playerInternalData.playerScienceData().doneAppliedResearchProjectList +
-                playerData.playerInternalData.playerScienceData().knownAppliedResearchProjectList
+        val allBasicProject =
+            playerData.playerInternalData.playerScienceData().doneBasicResearchProjectList +
+                    playerData.playerInternalData.playerScienceData().knownBasicResearchProjectList
+        val allAppliedProject =
+            playerData.playerInternalData.playerScienceData().doneAppliedResearchProjectList +
+                    playerData.playerInternalData.playerScienceData().knownAppliedResearchProjectList
         val maxBasicY: Double = allBasicProject.maxOfOrNull {
             it.yCor
         } ?: 1.0
@@ -801,12 +817,14 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
     /**
      * The knowledge map width with margin
      */
-    private fun knowledgeMapWidthWithMargin(): Double = knowledgeMapWidth() + 2 * knowledgeMapMargin()
+    private fun knowledgeMapWidthWithMargin(): Double =
+        knowledgeMapWidth() + 2 * knowledgeMapMargin()
 
     /**
      * The knowledge map height with margin
      */
-    private fun knowledgeMapHeightWithMargin(): Double = knowledgeMapHeight() + 2 * knowledgeMapMargin()
+    private fun knowledgeMapHeightWithMargin(): Double =
+        knowledgeMapHeight() + 2 * knowledgeMapMargin()
 
 
     /**

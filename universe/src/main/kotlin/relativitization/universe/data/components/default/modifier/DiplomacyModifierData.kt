@@ -44,7 +44,7 @@ data class MutableDiplomacyModifierData(
      */
     fun updateByUniverseTime() {
         val toRemoveTreaty: Set<Int> = peaceTreaty.filter {
-            it.value <=0
+            it.value <= 0
         }.keys
         toRemoveTreaty.forEach { peaceTreaty.remove(it) }
 
@@ -121,7 +121,7 @@ data class MutableDiplomacyModifierData(
             MutableSingleRelationModifier(
                 change = relationChange,
                 durationLeft = duration
-        )
+            )
         )
     }
 }
@@ -147,7 +147,7 @@ data class RelationModifier(
 
         return when {
             totalChange > maxReceiveFuelChange -> maxReceiveFuelChange
-            totalChange < -maxReceiveFuelChange -> - maxReceiveFuelChange
+            totalChange < -maxReceiveFuelChange -> -maxReceiveFuelChange
             else -> totalChange
         }
     }
@@ -185,7 +185,7 @@ data class MutableRelationModifier(
 
         return when {
             totalChange > maxReceiveFuelChange -> maxReceiveFuelChange
-            totalChange < -maxReceiveFuelChange -> - maxReceiveFuelChange
+            totalChange < -maxReceiveFuelChange -> -maxReceiveFuelChange
             else -> totalChange
         }
     }

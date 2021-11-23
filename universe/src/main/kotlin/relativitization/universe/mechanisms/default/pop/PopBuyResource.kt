@@ -76,10 +76,11 @@ object PopBuyResource : Mechanism() {
                     (amount >= desireData.desireAmount / gamma) && (availableFuelPerResource >= price * desireData.desireAmount / gamma)
                 } ?: ResourceQualityClass.THIRD
 
-            val selectedQuality: MutableResourceQualityData = economyData.resourceData.getResourceQuality(
-                resourceType = resourceType,
-                resourceQualityClass = selectedClass,
-            )
+            val selectedQuality: MutableResourceQualityData =
+                economyData.resourceData.getResourceQuality(
+                    resourceType = resourceType,
+                    resourceQualityClass = selectedClass,
+                )
 
             val selectedPrice: Double = economyData.resourceData.getResourcePrice(
                 resourceType = resourceType,

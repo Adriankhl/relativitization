@@ -37,7 +37,8 @@ object GlobalMechanismCollection {
     fun globalProcess(
         universeData: UniverseData
     ) {
-        val mutableUniverseGlobalData: MutableUniverseGlobalData = DataSerializer.copy(universeData.universeGlobalData)
+        val mutableUniverseGlobalData: MutableUniverseGlobalData =
+            DataSerializer.copy(universeData.universeGlobalData)
 
         globalMechanismListMap.getOrElse(universeData.universeSettings.globalMechanismCollectionName) {
             logger.error("No global mechanism name matched, use empty mechanism")

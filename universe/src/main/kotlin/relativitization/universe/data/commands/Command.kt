@@ -52,14 +52,20 @@ sealed class Command {
     /**
      * Check if the player (sender) can send the command
      */
-    protected abstract fun canSend(playerData: MutablePlayerData, universeSettings: UniverseSettings): CanSendCheckMessage
+    protected abstract fun canSend(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): CanSendCheckMessage
 
     /**
      * Check if can send and have command
      *
      * @param playerData the player data to send this command
      */
-    fun canSendFromPlayer(playerData: MutablePlayerData, universeSettings: UniverseSettings): CanSendCheckMessage {
+    fun canSendFromPlayer(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): CanSendCheckMessage {
         val hasCommand: Boolean = CommandCollection.hasCommand(universeSettings, this)
         val hasCommandI18NString: I18NString = if (hasCommand) {
             I18NString("")
@@ -76,7 +82,7 @@ sealed class Command {
             )
         }
 
-        val canSendMessage: CanSendCheckMessage =  canSend(playerData, universeSettings)
+        val canSendMessage: CanSendCheckMessage = canSend(playerData, universeSettings)
 
         val isFromInt4DValid: Boolean = playerData.int4D.toInt4D() == fromInt4D
         val isFromInt4DValidI18NString: I18NString = if (isFromInt4DValid) {
@@ -125,12 +131,14 @@ sealed class Command {
 
         return CanSendCheckMessage(
             hasCommand && canSendMessage.canSend && isFromInt4DValid && isFromIdValid,
-            I18NString.combine(listOf(
-                hasCommandI18NString,
-                canSendMessage.message,
-                isFromInt4DValidI18NString,
-                isFromIdValidI18NString
-            ))
+            I18NString.combine(
+                listOf(
+                    hasCommandI18NString,
+                    canSendMessage.message,
+                    isFromInt4DValidI18NString,
+                    isFromIdValidI18NString
+                )
+            )
         )
     }
 
@@ -140,7 +148,8 @@ sealed class Command {
     protected open fun selfExecuteBeforeSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ) {}
+    ) {
+    }
 
     /**
      * Check and self execute
@@ -163,20 +172,24 @@ sealed class Command {
             val reasonI18NString = I18NString("Reason: ")
             CanSendCheckMessage(
                 false,
-                I18NString.combine(listOf(
-                    reasonI18NString,
-                    canSendFromPlayer(playerData, universeSettings).message
-                ))
+                I18NString.combine(
+                    listOf(
+                        reasonI18NString,
+                        canSendFromPlayer(playerData, universeSettings).message
+                    )
+                )
             )
         }
     }
 
 
-
     /**
      * Check if the player can receive the command
      */
-    protected abstract fun canExecute(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean
+    protected abstract fun canExecute(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): Boolean
 
     /**
      * Check if can execute and have command
@@ -184,7 +197,10 @@ sealed class Command {
      * @param playerData the command execute on this player
      * @param universeSettings universe setting, e.g., have
      */
-    fun canExecuteOnPlayer(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean {
+    fun canExecuteOnPlayer(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): Boolean {
         val hasCommand: Boolean = CommandCollection.hasCommand(universeSettings, this)
         val correctId: Boolean = checkToId(playerData)
         val canExecute: Boolean = canExecute(playerData, universeSettings)
@@ -195,7 +211,10 @@ sealed class Command {
     /**
      * Execute on playerData, for AI/human planning and action
      */
-    protected abstract fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings)
+    protected abstract fun execute(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    )
 
 
     /**

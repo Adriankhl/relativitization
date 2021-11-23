@@ -62,10 +62,10 @@ object AutoCombat : Mechanism() {
         // Neighbor that views the player as enemy
         val neighborViewEnemyList: List<PlayerData> =
             neighbors.filter { playerData ->
-                    playerData.playerInternalData.diplomacyData().isEnemyOf(
-                        mutablePlayerData
-                    )
-                }
+                playerData.playerInternalData.diplomacyData().isEnemyOf(
+                    mutablePlayerData
+                )
+            }
 
 
         // Neighbor that this player views as enemy

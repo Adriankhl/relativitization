@@ -13,14 +13,14 @@ internal class GridsTest {
         }.flatten().flatten()
 
         val testList = listOf(
-            Int3D(x=0, y=0, z=0),
-            Int3D(x=0, y=0, z=1),
-            Int3D(x=0, y=1, z=0),
-            Int3D(x=0, y=1, z=1),
-            Int3D(x=1, y=0, z=0),
-            Int3D(x=1, y=0, z=1),
-            Int3D(x=1, y=1, z=0),
-            Int3D(x=1, y=1, z=1)
+            Int3D(x = 0, y = 0, z = 0),
+            Int3D(x = 0, y = 0, z = 1),
+            Int3D(x = 0, y = 1, z = 0),
+            Int3D(x = 0, y = 1, z = 1),
+            Int3D(x = 1, y = 0, z = 0),
+            Int3D(x = 1, y = 0, z = 1),
+            Int3D(x = 1, y = 1, z = 0),
+            Int3D(x = 1, y = 1, z = 1)
         )
 
         assert(list3D == testList)

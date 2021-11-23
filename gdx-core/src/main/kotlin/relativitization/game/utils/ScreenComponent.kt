@@ -14,7 +14,7 @@ import relativitization.universe.utils.I18NString
 import kotlin.math.PI
 import kotlin.math.atan2
 
-abstract class ScreenComponent<out T : Actor>(val assets: Assets){
+abstract class ScreenComponent<out T : Actor>(val assets: Assets) {
     val skin: Skin = assets.getSkin()
 
     private val allChildScreenComponentList: MutableList<ScreenComponent<Actor>> = mutableListOf()
@@ -125,7 +125,8 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets){
     /**
      * Create split pane
      */
-    fun createSplitPane(actor1: Actor, actor2: Actor, vertical: Boolean): SplitPane = ActorFunction.createSplitPane(skin, actor1, actor2, vertical)
+    fun createSplitPane(actor1: Actor, actor2: Actor, vertical: Boolean): SplitPane =
+        ActorFunction.createSplitPane(skin, actor1, actor2, vertical)
 
 
     /**
@@ -153,7 +154,17 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets){
         height: Float,
         soundVolume: Float,
         function: (Image) -> Unit = {}
-    ): Image = ActorFunction.createImage(assets, id, name, xPos, yPos, width, height, soundVolume, function)
+    ): Image = ActorFunction.createImage(
+        assets,
+        id,
+        name,
+        xPos,
+        yPos,
+        width,
+        height,
+        soundVolume,
+        function
+    )
 
 
     /**
@@ -171,7 +182,20 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets){
         a: Float,
         soundVolume: Float,
         function: (Image) -> Unit = {}
-    ): Image = ActorFunction.createImage(assets, name, xPos, yPos, width, height, r, g, b, a, soundVolume, function)
+    ): Image = ActorFunction.createImage(
+        assets,
+        name,
+        xPos,
+        yPos,
+        width,
+        height,
+        r,
+        g,
+        b,
+        a,
+        soundVolume,
+        function
+    )
 
     /**
      * Create image button
@@ -218,7 +242,8 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets){
      * @param text text to display
      * @param fontSize size of the font
      */
-    fun createLabel(text: String, fontSize: Int): Label = ActorFunction.createLabel(skin, assets, text, fontSize)
+    fun createLabel(text: String, fontSize: Int): Label =
+        ActorFunction.createLabel(skin, assets, text, fontSize)
 
 
     /**
@@ -227,7 +252,8 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets){
      * @param text text to display
      * @param fontSize size of the font
      */
-    fun createLabel(text: I18NString, fontSize: Int): Label = ActorFunction.createLabel(skin, assets, text, fontSize)
+    fun createLabel(text: I18NString, fontSize: Int): Label =
+        ActorFunction.createLabel(skin, assets, text, fontSize)
 
 
     /**
@@ -242,7 +268,8 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets){
         fontSize: Int,
         soundVolume: Float,
         function: (TextButton) -> Unit = {},
-    ): TextButton = ActorFunction.createTextButton(skin, assets, text, fontSize, soundVolume, function)
+    ): TextButton =
+        ActorFunction.createTextButton(skin, assets, text, fontSize, soundVolume, function)
 
     /**
      * Create check box
@@ -284,7 +311,8 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets){
         itemList: List<T>,
         fontSize: Int,
         crossinline function: (T, com.badlogic.gdx.scenes.scene2d.ui.List<T>) -> Unit = { _, _ -> },
-    ): com.badlogic.gdx.scenes.scene2d.ui.List<T> = ActorFunction.createList(skin, assets, itemList, fontSize, function)
+    ): com.badlogic.gdx.scenes.scene2d.ui.List<T> =
+        ActorFunction.createList(skin, assets, itemList, fontSize, function)
 
     /**
      * Create select box
@@ -299,7 +327,8 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets){
         default: T = itemList[0],
         fontSize: Int,
         crossinline function: (T, SelectBox<T>) -> Unit = { _, _ -> },
-    ): SelectBox<T> = ActorFunction.createSelectBox(skin, assets, itemList, default, fontSize, function)
+    ): SelectBox<T> =
+        ActorFunction.createSelectBox(skin, assets, itemList, default, fontSize, function)
 
 
     /**
@@ -332,7 +361,8 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets){
         function: (Image) -> Unit
     ): Image {
         // Create new nine patch and edit this
-        val arrowNinePatch: NinePatch = NinePatch(assets.getNinePatch("basic/white-right-arrow-tight"))
+        val arrowNinePatch: NinePatch =
+            NinePatch(assets.getNinePatch("basic/white-right-arrow-tight"))
 
         // arrow length depends on the end point
         val arrowLength: Float = Intervals.distance(from, to).toFloat()
@@ -346,7 +376,7 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets){
         val image: Image = Image(arrowNinePatch)
 
         // Rotate and set position by the center of the image
-        val rotation: Double = atan2( to.y - from.y, to.x - from.x) * 0.5 / PI * 360
+        val rotation: Double = atan2(to.y - from.y, to.x - from.x) * 0.5 / PI * 360
         val xCenter: Float = ((from.x + to.x) * 0.5).toFloat()
         val yCenter: Float = ((from.y + to.y) * 0.5).toFloat()
         image.setOrigin(Align.center)
@@ -371,7 +401,10 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets){
     fun enableActor(actor: Actor) = ActorFunction.enableActor(actor)
 
     companion object {
-        fun <T : Actor> addComponentToClient(game: RelativitizationGame, component: ScreenComponent<T>) {
+        fun <T : Actor> addComponentToClient(
+            game: RelativitizationGame,
+            component: ScreenComponent<T>
+        ) {
             game.onGdxSettingsChangeFunctionList.add(component::onGdxSettingsChange)
 
             val universeClient = game.universeClient
@@ -397,7 +430,10 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets){
             universeClient.onSelectedKnowledgeDouble2D.add(component::onSelectedKnowledgeDouble2DChange)
         }
 
-        fun <T : Actor> addAllComponentToClient(game: RelativitizationGame, component: ScreenComponent<T>) {
+        fun <T : Actor> addAllComponentToClient(
+            game: RelativitizationGame,
+            component: ScreenComponent<T>
+        ) {
             component.getScreenComponentList().forEach { addComponentToClient(game, it) }
         }
     }

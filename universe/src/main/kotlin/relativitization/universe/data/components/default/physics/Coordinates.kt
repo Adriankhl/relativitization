@@ -7,23 +7,39 @@ import kotlin.math.sqrt
 @Serializable
 data class Int4D(val t: Int, val x: Int, val y: Int, val z: Int) {
     constructor(time: Int, int3D: Int3D) : this(time, int3D.x, int3D.y, int3D.z)
-    constructor(mutableInt4D: MutableInt4D) : this(mutableInt4D.t, mutableInt4D.x, mutableInt4D.y, mutableInt4D.z)
+    constructor(mutableInt4D: MutableInt4D) : this(
+        mutableInt4D.t,
+        mutableInt4D.x,
+        mutableInt4D.y,
+        mutableInt4D.z
+    )
 
     fun toInt3D() = Int3D(x, y, z)
     fun toDouble4D() = Double4D(t.toDouble(), x.toDouble(), y.toDouble(), z.toDouble())
-    fun toDouble4DCenter() = Double4D(t.toDouble(), x.toDouble() + 0.5, y.toDouble() + 0.5, z.toDouble() + 0.5)
+    fun toDouble4DCenter() =
+        Double4D(t.toDouble(), x.toDouble() + 0.5, y.toDouble() + 0.5, z.toDouble() + 0.5)
+
     fun toDouble3D() = Double3D(x.toDouble(), y.toDouble(), z.toDouble())
 }
 
 @Serializable
 data class MutableInt4D(var t: Int, var x: Int, var y: Int, var z: Int) {
-    constructor(mutableInt4D: MutableInt4D) : this(mutableInt4D.t, mutableInt4D.x, mutableInt4D.y, mutableInt4D.z)
+    constructor(mutableInt4D: MutableInt4D) : this(
+        mutableInt4D.t,
+        mutableInt4D.x,
+        mutableInt4D.y,
+        mutableInt4D.z
+    )
 
     fun toInt3D() = Int3D(x, y, z)
     fun toInt4D() = Int4D(t, x, y, z)
     fun toMutableInt3D() = MutableInt3D(x, y, z)
-    fun toMutableDouble4D() = MutableDouble4D(t.toDouble(), x.toDouble(), y.toDouble(), z.toDouble())
-    fun toMutableDouble4DCenter() = MutableDouble4D(t.toDouble(), x.toDouble() + 0.5, y.toDouble() + 0.5, z.toDouble() + 0.5)
+    fun toMutableDouble4D() =
+        MutableDouble4D(t.toDouble(), x.toDouble(), y.toDouble(), z.toDouble())
+
+    fun toMutableDouble4DCenter() =
+        MutableDouble4D(t.toDouble(), x.toDouble() + 0.5, y.toDouble() + 0.5, z.toDouble() + 0.5)
+
     fun toDouble4D() = Double4D(t.toDouble(), x.toDouble(), y.toDouble(), z.toDouble())
     fun toDouble3D() = Double3D(x.toDouble(), y.toDouble(), z.toDouble())
 }
@@ -66,7 +82,8 @@ data class Int3D(val x: Int, val y: Int, val z: Int) {
         return Double3D(x.toDouble() + 0.5, y.toDouble() + 0.5, z.toDouble() + 0.5)
     }
 
-    operator fun plus(double3D: Double3D): Double3D = Double3D(x + double3D.x, y + double3D.y, z + double3D.z)
+    operator fun plus(double3D: Double3D): Double3D =
+        Double3D(x + double3D.x, y + double3D.y, z + double3D.z)
 }
 
 @Serializable
@@ -90,9 +107,11 @@ data class Double3D(val x: Double, val y: Double, val z: Double) {
 
     operator fun times(double: Double): Double3D = Double3D(x * double, y * double, z * double)
 
-    operator fun plus(double3D: Double3D): Double3D = Double3D(x + double3D.x, y + double3D.y, z + double3D.z)
+    operator fun plus(double3D: Double3D): Double3D =
+        Double3D(x + double3D.x, y + double3D.y, z + double3D.z)
 
-    operator fun minus(double3D: Double3D): Double3D = Double3D(x - double3D.x, y - double3D.y, z - double3D.z)
+    operator fun minus(double3D: Double3D): Double3D =
+        Double3D(x - double3D.x, y - double3D.y, z - double3D.z)
 }
 
 @Serializable

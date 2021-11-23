@@ -46,7 +46,10 @@ data class AddEventCommand(
     /**
      * Whether this player can send the event depends on the event
      */
-    override fun canSend(playerData: MutablePlayerData, universeSettings: UniverseSettings): CanSendCheckMessage {
+    override fun canSend(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): CanSendCheckMessage {
 
         val isIdValid: Boolean = isEventPlayerIdValid()
         val isIdValidI18NString: I18NString = if (isIdValid) {
@@ -57,7 +60,7 @@ data class AddEventCommand(
             )
         }
         val canAdd: Boolean = canAddEvent(universeSettings, event)
-        val canAddI18NString: I18NString = if(canAdd) {
+        val canAddI18NString: I18NString = if (canAdd) {
             I18NString("")
         } else {
             I18NString(
@@ -70,16 +73,21 @@ data class AddEventCommand(
 
         return CanSendCheckMessage(
             canAdd && isIdValid && canSendEventMessage.canSend,
-            I18NString.combine(listOf(
-                isIdValidI18NString, canAddI18NString, canSendEventMessage.message
-            ))
+            I18NString.combine(
+                listOf(
+                    isIdValidI18NString, canAddI18NString, canSendEventMessage.message
+                )
+            )
         )
     }
 
     /**
      * Whether the event can be added to the player depends on the event
      */
-    override fun canExecute(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean {
+    override fun canExecute(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): Boolean {
         return canAddEvent(universeSettings, event) &&
                 event.canExecute(playerData, universeSettings)
     }
@@ -151,7 +159,10 @@ data class SelectEventChoiceCommand(
         ),
     )
 
-    override fun canSend(playerData: MutablePlayerData, universeSettings: UniverseSettings): CanSendCheckMessage {
+    override fun canSend(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): CanSendCheckMessage {
         val sameId: Boolean = playerData.playerId == toId
         return if (sameId) {
             CanSendCheckMessage(true)
@@ -163,12 +174,16 @@ data class SelectEventChoiceCommand(
         }
     }
 
-    override fun canExecute(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean {
+    override fun canExecute(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): Boolean {
         return playerData.playerId == fromId
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
-        val eventDataMap: MutableMap<Int, MutableEventData> = playerData.playerInternalData.eventDataMap
+        val eventDataMap: MutableMap<Int, MutableEventData> =
+            playerData.playerInternalData.eventDataMap
 
         // Check if eventIndex is in range
         if (eventDataMap.containsKey(eventKey)) {

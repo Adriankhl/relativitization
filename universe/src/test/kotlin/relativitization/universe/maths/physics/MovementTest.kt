@@ -200,7 +200,7 @@ internal class MovementTest {
             initialVelocity = Velocity(0.0, 0.0, 0.0),
             maxSpeed = 0.2,
             initialDouble3D = Double3D(0.0, 0.0, 0.0),
-            targetDouble3D =  Double3D(1.0, 0.0, 0.0),
+            targetDouble3D = Double3D(1.0, 0.0, 0.0),
             speedOfLight = 1.0
         )
 
@@ -237,7 +237,7 @@ internal class MovementTest {
             initialVelocity = Velocity(0.0, -0.3, 0.0),
             maxSpeed = 0.2,
             initialDouble3D = Double3D(0.0, 0.0, 0.0),
-            targetDouble3D =  Double3D(1.0, 0.0, 0.0),
+            targetDouble3D = Double3D(1.0, 0.0, 0.0),
             speedOfLight = 1.0
         )
 

@@ -76,7 +76,7 @@ data class MutablePlayerScienceData(
     ) {
         if (doneBasicResearchProjectList.any {
                 it.basicResearchId == basicResearchProjectData.basicResearchId
-        }) {
+            }) {
             logger.error("Duplicate done basic research id: ${basicResearchProjectData.basicResearchId}, skipping")
         } else {
             knownBasicResearchProjectList.removeAll {

@@ -20,14 +20,20 @@ data class DummyCommand(
         listOf(),
     )
 
-    override fun canSend(playerData: MutablePlayerData, universeSettings: UniverseSettings): CanSendCheckMessage {
+    override fun canSend(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): CanSendCheckMessage {
         return CanSendCheckMessage(
             false,
             I18NString("This is dummy. ")
         )
     }
 
-    override fun canExecute(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean {
+    override fun canExecute(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): Boolean {
         return true
     }
 
@@ -53,7 +59,10 @@ data class CannotSendCommand(
         universeSettings: UniverseSettings
     ): CanSendCheckMessage = CanSendCheckMessage(false)
 
-    override fun canExecute(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean {
+    override fun canExecute(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): Boolean {
         return true
     }
 

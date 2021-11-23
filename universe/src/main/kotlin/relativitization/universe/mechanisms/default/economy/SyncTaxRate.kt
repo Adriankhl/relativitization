@@ -24,7 +24,7 @@ object SyncTaxRate : Mechanism() {
             )
 
             mutablePlayerData.playerInternalData.economyData().taxData.taxRateData =
-                    DataSerializer.copy(directLeader.playerInternalData.economyData().taxData.taxRateData)
+                DataSerializer.copy(directLeader.playerInternalData.economyData().taxData.taxRateData)
 
         }
 

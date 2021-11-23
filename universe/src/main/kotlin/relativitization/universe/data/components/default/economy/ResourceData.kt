@@ -75,7 +75,8 @@ data class ResourceData(
     fun getResourceQuality(
         resourceType: ResourceType,
         resourceQualityClass: ResourceQualityClass
-    ): ResourceQualityData = getSingleResourceData(resourceType, resourceQualityClass).resourceQuality
+    ): ResourceQualityData =
+        getSingleResourceData(resourceType, resourceQualityClass).resourceQuality
 
     /**
      * Get resource quality lower bound
@@ -83,7 +84,8 @@ data class ResourceData(
     fun getResourceQualityLowerBound(
         resourceType: ResourceType,
         resourceQualityClass: ResourceQualityClass
-    ): ResourceQualityData = getSingleResourceData(resourceType, resourceQualityClass).resourceQualityLowerBound
+    ): ResourceQualityData =
+        getSingleResourceData(resourceType, resourceQualityClass).resourceQualityLowerBound
 
     /**
      * Get total resource amount data
@@ -132,7 +134,8 @@ data class ResourceData(
     fun getResourceTargetAmountData(
         resourceType: ResourceType,
         resourceQualityClass: ResourceQualityClass
-    ): ResourceAmountData = getSingleResourceData(resourceType, resourceQualityClass).resourceTargetAmount
+    ): ResourceAmountData =
+        getSingleResourceData(resourceType, resourceQualityClass).resourceTargetAmount
 
     /**
      * Get resource price
@@ -170,7 +173,8 @@ data class MutableResourceData(
     fun getResourceQuality(
         resourceType: ResourceType,
         resourceQualityClass: ResourceQualityClass
-    ): MutableResourceQualityData = getSingleResourceData(resourceType, resourceQualityClass).resourceQuality
+    ): MutableResourceQualityData =
+        getSingleResourceData(resourceType, resourceQualityClass).resourceQuality
 
     /**
      * Get resource quality lower bound
@@ -178,7 +182,8 @@ data class MutableResourceData(
     fun getResourceQualityLowerBound(
         resourceType: ResourceType,
         resourceQualityClass: ResourceQualityClass
-    ): MutableResourceQualityData = getSingleResourceData(resourceType, resourceQualityClass).resourceQualityLowerBound
+    ): MutableResourceQualityData =
+        getSingleResourceData(resourceType, resourceQualityClass).resourceQualityLowerBound
 
     /**
      * Get total resource amount data
@@ -186,7 +191,8 @@ data class MutableResourceData(
     fun getResourceAmountData(
         resourceType: ResourceType,
         resourceQualityClass: ResourceQualityClass
-    ): MutableResourceAmountData = getSingleResourceData(resourceType, resourceQualityClass).resourceAmount
+    ): MutableResourceAmountData =
+        getSingleResourceData(resourceType, resourceQualityClass).resourceAmount
 
 
     /**
@@ -228,7 +234,8 @@ data class MutableResourceData(
     fun getResourceTargetAmountData(
         resourceType: ResourceType,
         resourceQualityClass: ResourceQualityClass
-    ): MutableResourceAmountData = getSingleResourceData(resourceType, resourceQualityClass).resourceTargetAmount
+    ): MutableResourceAmountData =
+        getSingleResourceData(resourceType, resourceQualityClass).resourceTargetAmount
 
 
     /**
@@ -248,11 +255,12 @@ data class MutableResourceData(
         amount: Double,
         targetQuality: MutableResourceQualityData,
     ): ResourceQualityClass {
-        val satisfyList: List<Pair<ResourceQualityClass, Boolean>> = ResourceQualityClass.values().toList().map {
-            val b1: Boolean = getResourceQuality(resourceType, it).geq(targetQuality)
-            val b2: Boolean = getProductionResourceAmount(resourceType, it) >= amount
-            it to (b1 && b2)
-        }
+        val satisfyList: List<Pair<ResourceQualityClass, Boolean>> =
+            ResourceQualityClass.values().toList().map {
+                val b1: Boolean = getResourceQuality(resourceType, it).geq(targetQuality)
+                val b2: Boolean = getProductionResourceAmount(resourceType, it) >= amount
+                it to (b1 && b2)
+            }
         return satisfyList.firstOrNull { it.second }?.first ?: run {
             ResourceQualityClass.values().maxByOrNull {
                 getProductionResourceAmount(resourceType, it)
@@ -339,17 +347,19 @@ data class MutableResourceQualityData(
     var quality2: Double = 0.0,
     var quality3: Double = 0.0,
 ) {
-    operator fun plus(other: MutableResourceQualityData): MutableResourceQualityData = MutableResourceQualityData(
-        quality1 + other.quality1,
-        quality2 + other.quality2,
-        quality3 + other.quality3,
-    )
+    operator fun plus(other: MutableResourceQualityData): MutableResourceQualityData =
+        MutableResourceQualityData(
+            quality1 + other.quality1,
+            quality2 + other.quality2,
+            quality3 + other.quality3,
+        )
 
-    operator fun minus(other: MutableResourceQualityData): MutableResourceQualityData = MutableResourceQualityData(
-        quality1 - other.quality1,
-        quality2 - other.quality2,
-        quality3 - other.quality3,
-    )
+    operator fun minus(other: MutableResourceQualityData): MutableResourceQualityData =
+        MutableResourceQualityData(
+            quality1 - other.quality1,
+            quality2 - other.quality2,
+            quality3 - other.quality3,
+        )
 
     operator fun times(d: Double): MutableResourceQualityData = MutableResourceQualityData(
         quality1 * d,
@@ -381,7 +391,7 @@ data class MutableResourceQualityData(
             quality3 = 1.0 * delta1.quality3.sign,
         ) * minChange
 
-        val deltaQuality1: Double = if(abs(delta1.quality1) > minChange) {
+        val deltaQuality1: Double = if (abs(delta1.quality1) > minChange) {
             delta1.quality1
         } else if (abs(delta2.quality1) > minChange) {
             delta3.quality1
@@ -389,7 +399,7 @@ data class MutableResourceQualityData(
             delta2.quality1
         }
 
-        val deltaQuality2: Double = if(abs(delta1.quality2) > minChange) {
+        val deltaQuality2: Double = if (abs(delta1.quality2) > minChange) {
             delta1.quality2
         } else if (abs(delta2.quality2) > minChange) {
             delta3.quality2
@@ -397,7 +407,7 @@ data class MutableResourceQualityData(
             delta2.quality2
         }
 
-        val deltaQuality3: Double = if(abs(delta1.quality3) > minChange) {
+        val deltaQuality3: Double = if (abs(delta1.quality3) > minChange) {
             delta1.quality3
         } else if (abs(delta2.quality3) > minChange) {
             delta3.quality3

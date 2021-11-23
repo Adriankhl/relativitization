@@ -210,7 +210,8 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
     private fun updateTable() {
         table.clear()
 
-        val headerLabel = createLabel("Physics: player ${playerData.playerId}", gdxSettings.bigFontSize)
+        val headerLabel =
+            createLabel("Physics: player ${playerData.playerId}", gdxSettings.bigFontSize)
 
         table.add(headerLabel).pad(20f)
 
@@ -274,7 +275,7 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         nestedTable.row().space(10f)
 
         val double4DTLabel = createLabel(
-            "t: ${playerData.double4D.t.toString()}",
+            "t: ${playerData.double4D.t}",
             gdxSettings.smallFontSize
         )
         nestedTable.add(double4DTLabel)
@@ -282,7 +283,7 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         nestedTable.row().space(10f)
 
         val double4DXLabel = createLabel(
-            "x: ${playerData.double4D.x.toString()}",
+            "x: ${playerData.double4D.x}",
             gdxSettings.smallFontSize
         )
         nestedTable.add(double4DXLabel)
@@ -290,7 +291,7 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         nestedTable.row().space(10f)
 
         val double4DYLabel = createLabel(
-            "y: ${playerData.double4D.y.toString()}",
+            "y: ${playerData.double4D.y}",
             gdxSettings.smallFontSize
         )
         nestedTable.add(double4DYLabel)
@@ -298,7 +299,7 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         nestedTable.row().space(10f)
 
         val double4DZLabel = createLabel(
-            "z: ${playerData.double4D.z.toString()}",
+            "z: ${playerData.double4D.z}",
             gdxSettings.smallFontSize
         )
         nestedTable.add(double4DZLabel)
@@ -315,7 +316,7 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         nestedTable.row().space(10f)
 
         val velocityXLabel = createLabel(
-            "vx: ${playerData.velocity.vx.toString()}",
+            "vx: ${playerData.velocity.vx}",
             gdxSettings.smallFontSize
         )
         nestedTable.add(velocityXLabel)
@@ -323,7 +324,7 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         nestedTable.row().space(10f)
 
         val velocityYLabel = createLabel(
-            "vy: ${playerData.velocity.vy.toString()}",
+            "vy: ${playerData.velocity.vy}",
             gdxSettings.smallFontSize
         )
         nestedTable.add(velocityYLabel)
@@ -331,7 +332,7 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         nestedTable.row().space(10f)
 
         val velocityZLabel = createLabel(
-            "vz: ${playerData.velocity.vz.toString()}",
+            "vz: ${playerData.velocity.vz}",
             gdxSettings.smallFontSize
         )
         nestedTable.add(velocityZLabel)

@@ -36,7 +36,10 @@ data class ChangeVelocityCommand(
     /**
      * Can only send to subordinate
      */
-    override fun canSend(playerData: MutablePlayerData, universeSettings: UniverseSettings): CanSendCheckMessage {
+    override fun canSend(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): CanSendCheckMessage {
         val isSubordinateOrSelf: Boolean = playerData.isSubOrdinateOrSelf(toId)
         val isSubordinateOrSelfI18NString: I18NString = if (isSubordinateOrSelf) {
             I18NString("")
@@ -57,7 +60,10 @@ data class ChangeVelocityCommand(
     /**
      * Can execute only if it is from the leader
      */
-    override fun canExecute(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean {
+    override fun canExecute(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): Boolean {
         return playerData.isLeaderOrSelf(fromId)
     }
 

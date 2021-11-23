@@ -31,7 +31,7 @@ data class MutableCombatModifierData(
     /**
      * Update the time by proper (dilated) time of the player
      */
-    fun updateByProperTime(@Suppress("UNUSED_PARAMETER") gamma: Double) {  }
+    fun updateByProperTime(@Suppress("UNUSED_PARAMETER") gamma: Double) {}
 
     /**
      * Disable fuel increase (e.g., production, transfer) by time

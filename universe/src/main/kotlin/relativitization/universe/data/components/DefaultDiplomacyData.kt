@@ -20,7 +20,8 @@ data class DiplomacyData(
 
     fun getRelation(id: Int): Double = getDiplomaticRelationData(id).relation
 
-    fun getRelationState(id: Int): DiplomaticRelationState = getDiplomaticRelationData(id).diplomaticRelationState
+    fun getRelationState(id: Int): DiplomaticRelationState =
+        getDiplomaticRelationData(id).diplomaticRelationState
 
     /**
      * Whether this player is a enemy of other player
@@ -45,7 +46,8 @@ data class MutableDiplomacyData(
     fun getRelation(id: Int): Double = getDiplomaticRelationData(id).relation
 
 
-    fun getRelationState(id: Int): DiplomaticRelationState = getDiplomaticRelationData(id).diplomaticRelationState
+    fun getRelationState(id: Int): DiplomaticRelationState =
+        getDiplomaticRelationData(id).diplomaticRelationState
 
     /**
      * Clear relation with neutral player and zero relation

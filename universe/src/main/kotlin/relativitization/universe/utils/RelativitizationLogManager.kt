@@ -47,7 +47,6 @@ object AndroidLogger : Logger {
     }
 
 
-
     override fun catching(level: Level?, throwable: Throwable?) {
     }
 

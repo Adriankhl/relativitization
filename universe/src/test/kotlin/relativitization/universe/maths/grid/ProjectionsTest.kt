@@ -19,8 +19,8 @@ internal class ProjectionsTest {
             yOffSet = 200
         )
 
-        assert(iFunc(2) == IntRectangle(xPos=2148, yPos=200, width=1024, height=1024))
-        assert(iFunc(5) == IntRectangle(xPos=1124, yPos=1224, width=1024, height=1024))
+        assert(iFunc(2) == IntRectangle(xPos = 2148, yPos = 200, width = 1024, height = 1024))
+        assert(iFunc(5) == IntRectangle(xPos = 1124, yPos = 1224, width = 1024, height = 1024))
     }
 
     @Test
@@ -52,7 +52,7 @@ internal class ProjectionsTest {
             yOffSet = 200
         )
 
-        assert(iFunc(3, 1) == IntRectangle(xPos=2148, yPos=2248, width=1024, height=1024))
+        assert(iFunc(3, 1) == IntRectangle(xPos = 2148, yPos = 2248, width = 1024, height = 1024))
     }
 
 

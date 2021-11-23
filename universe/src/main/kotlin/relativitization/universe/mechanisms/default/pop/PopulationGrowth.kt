@@ -37,9 +37,10 @@ object PopulationGrowth : Mechanism() {
             )
 
             PopType.values().forEach { popType ->
-                val commonPopData: MutableCommonPopData = mutableCarrierData.allPopData.getCommonPopData(
-                    popType
-                )
+                val commonPopData: MutableCommonPopData =
+                    mutableCarrierData.allPopData.getCommonPopData(
+                        popType
+                    )
 
                 val newPopulation: Double = computeNewPop(
                     gamma = gamma,
@@ -104,17 +105,19 @@ object PopulationGrowth : Mechanism() {
         // Always add 100 population to avoid 0 population
         val basePopulationGrowth: Double = 100.0
 
-        val educationFactor: Double = if (popType == PopType.SCHOLAR || popType == PopType.ENGINEER) {
-            (educationLevel - 0.5) * 2.0
-        } else {
-            1.0
-        }
+        val educationFactor: Double =
+            if (popType == PopType.SCHOLAR || popType == PopType.ENGINEER) {
+                (educationLevel - 0.5) * 2.0
+            } else {
+                1.0
+            }
 
-        val totalPopulationFactor: Double = if (currentTotalPopulation > idealTotalPopulation * 0.5) {
-            (0.5).pow(currentPopulation / idealTotalPopulation - 1.0)
-        } else {
-            5.0 * (1.0 - currentPopulation / idealTotalPopulation)
-        }
+        val totalPopulationFactor: Double =
+            if (currentTotalPopulation > idealTotalPopulation * 0.5) {
+                (0.5).pow(currentPopulation / idealTotalPopulation - 1.0)
+            } else {
+                5.0 * (1.0 - currentPopulation / idealTotalPopulation)
+            }
 
         // the new population compare to maxPopulationChange
         val relativeNewPopulation: Double = min(

@@ -44,12 +44,13 @@ data class UniverseSettings(
     val otherSettings: Map<String, String> = mapOf(),
 ) {
     private fun isTDimBigEnough(): Boolean {
-        return tDim > intDelay(Int3D(0, 0,0), Int3D(xDim - 1, yDim - 1, zDim - 1), speedOfLight)
+        return tDim > intDelay(Int3D(0, 0, 0), Int3D(xDim - 1, yDim - 1, zDim - 1), speedOfLight)
     }
 
     private fun isPlayerAfterImageDurationValid(): Boolean {
         return (playerAfterImageDuration >= maxDelayAfterMove(speedOfLight)) && (playerAfterImageDuration < tDim)
     }
+
     private fun isPlayerHistoricalInt4DLengthValid(): Boolean {
         return playerHistoricalInt4DLength >= playerAfterImageDuration
     }

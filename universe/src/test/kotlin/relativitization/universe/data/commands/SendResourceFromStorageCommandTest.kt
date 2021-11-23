@@ -21,8 +21,18 @@ internal class SendResourceFromStorageCommandTest {
         val resourceData1 = playerData1.playerInternalData.economyData().resourceData
         val resourceData2 = playerData2.playerInternalData.economyData().resourceData
 
-        assert(resourceData1.getTradeResourceAmount(ResourceType.PLANT, ResourceQualityClass.FIRST) == 5.0)
-        assert(resourceData2.getTradeResourceAmount(ResourceType.PLANT, ResourceQualityClass.FIRST) == 0.0)
+        assert(
+            resourceData1.getTradeResourceAmount(
+                ResourceType.PLANT,
+                ResourceQualityClass.FIRST
+            ) == 5.0
+        )
+        assert(
+            resourceData2.getTradeResourceAmount(
+                ResourceType.PLANT,
+                ResourceQualityClass.FIRST
+            ) == 0.0
+        )
 
         val command = SendResourceFromStorageCommand(
             toId = 2,
@@ -30,15 +40,20 @@ internal class SendResourceFromStorageCommandTest {
             fromInt4D = playerData1.int4D,
             resourceType = ResourceType.PLANT,
             resourceQualityClass = ResourceQualityClass.FIRST,
-            resourceQualityData = resourceData1.getResourceQuality(ResourceType.PLANT, ResourceQualityClass.FIRST),
+            resourceQualityData = resourceData1.getResourceQuality(
+                ResourceType.PLANT,
+                ResourceQualityClass.FIRST
+            ),
             amount = 3.0,
             senderResourceLossFractionPerDistance = playerData1.playerInternalData.playerScienceData().playerScienceApplicationData.resourceLogisticsLossFractionPerDistance
         )
 
 
         runBlocking {
-            universe.postProcessUniverse(mapOf(
-                1 to listOf(command)),
+            universe.postProcessUniverse(
+                mapOf(
+                    1 to listOf(command)
+                ),
                 mapOf(
                     2 to listOf(),
                     3 to listOf(),
@@ -56,8 +71,18 @@ internal class SendResourceFromStorageCommandTest {
         val newResourceData1 = newPlayerData1.playerInternalData.economyData().resourceData
         val newResourceData2 = newPlayerData2.playerInternalData.economyData().resourceData
 
-        assert(newResourceData1.getTradeResourceAmount(ResourceType.PLANT, ResourceQualityClass.FIRST) == 2.0)
-        assert(newResourceData2.getTradeResourceAmount(ResourceType.PLANT, ResourceQualityClass.FIRST) == 3.0)
+        assert(
+            newResourceData1.getTradeResourceAmount(
+                ResourceType.PLANT,
+                ResourceQualityClass.FIRST
+            ) == 2.0
+        )
+        assert(
+            newResourceData2.getTradeResourceAmount(
+                ResourceType.PLANT,
+                ResourceQualityClass.FIRST
+            ) == 3.0
+        )
 
     }
 }

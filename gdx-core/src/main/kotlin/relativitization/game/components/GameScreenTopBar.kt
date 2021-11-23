@@ -392,7 +392,8 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         default = game.universeClient.universeClientSettings.viewCenter.x,
         fontSize = gdxSettings.smallFontSize
     ) { x, _ ->
-        game.universeClient.primarySelectedInt3D = game.universeClient.primarySelectedInt3D.copy(x = x)
+        game.universeClient.primarySelectedInt3D =
+            game.universeClient.primarySelectedInt3D.copy(x = x)
     }
 
     private val yCoordinateSelectBox: SelectBox<Int> = createSelectBox(
@@ -400,7 +401,8 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         default = game.universeClient.universeClientSettings.viewCenter.y,
         fontSize = gdxSettings.smallFontSize
     ) { y, _ ->
-        game.universeClient.primarySelectedInt3D = game.universeClient.primarySelectedInt3D.copy(y = y)
+        game.universeClient.primarySelectedInt3D =
+            game.universeClient.primarySelectedInt3D.copy(y = y)
     }
 
     private val zCoordinateSelectBox: SelectBox<Int> = createSelectBox(
@@ -408,12 +410,16 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         default = game.universeClient.universeClientSettings.viewCenter.z,
         fontSize = gdxSettings.smallFontSize
     ) { z, _ ->
-        game.universeClient.primarySelectedInt3D = game.universeClient.primarySelectedInt3D.copy(z = z)
+        game.universeClient.primarySelectedInt3D =
+            game.universeClient.primarySelectedInt3D.copy(z = z)
     }
 
     private val zLimitSelectBox: SelectBox<Int> = createSelectBox(
         itemList = (1..game.universeClient.getUniverseData3D().universeSettings.zDim).toList(),
-        default = min(game.universeClient.universeClientSettings.zLimit, game.universeClient.getUniverseData3D().universeSettings.zDim),
+        default = min(
+            game.universeClient.universeClientSettings.zLimit,
+            game.universeClient.getUniverseData3D().universeSettings.zDim
+        ),
         fontSize = gdxSettings.smallFontSize
     ) { zLimit, _ ->
         game.universeClient.universeClientSettings.zLimit = zLimit
@@ -435,9 +441,9 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         aChecked = 1.0f,
         soundVolume = gdxSettings.soundEffectsVolume
     ) {
-        game.universeClient.universeClientSettings.viewCenter.x  = xCoordinateSelectBox.selected
-        game.universeClient.universeClientSettings.viewCenter.y  = yCoordinateSelectBox.selected
-        game.universeClient.universeClientSettings.viewCenter.z  = zCoordinateSelectBox.selected
+        game.universeClient.universeClientSettings.viewCenter.x = xCoordinateSelectBox.selected
+        game.universeClient.universeClientSettings.viewCenter.y = yCoordinateSelectBox.selected
+        game.universeClient.universeClientSettings.viewCenter.z = zCoordinateSelectBox.selected
         game.universeClient.changeUniverseDataView()
     }
 
@@ -513,7 +519,7 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
 
     // Tables
     private val viewControlTable: Table = createViewControlTable()
-    private val currentUniverseDataTable: Table =  createCurrentUniverseDataTable()
+    private val currentUniverseDataTable: Table = createCurrentUniverseDataTable()
     private val serverStatusTable: Table = createServerStatusTable()
     private val stopWaitingTable: Table = createStopWaitingTable()
     private val runOrStopUniverseTable: Table = createRunStopUniverseTable()
@@ -538,9 +544,11 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
 
         table.add(planButton).size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
 
-        table.add(clearSelectedButton).size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
+        table.add(clearSelectedButton)
+            .size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
 
-        table.add(clearCommandListButton).size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
+        table.add(clearCommandListButton)
+            .size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
 
         table.add(playersInfoButton).pad(10f)
 
@@ -556,7 +564,8 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
 
         table.add(scienceInfoButton).pad(10f)
 
-        table.add(bottomCommandInfoButton).size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
+        table.add(bottomCommandInfoButton)
+            .size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
 
         table.add(serverStatusTable).pad(10f)
 
@@ -564,7 +573,8 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
 
         table.add(runOrStopUniverseTable).pad(10f)
 
-        table.add(updateToLatestButton).size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
+        table.add(updateToLatestButton)
+            .size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
 
         table.add(uploadButton).size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
 
@@ -651,10 +661,14 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
 
         bottomTable.add(createLabel("z limit:", gdxSettings.smallFontSize))
         bottomTable.add(zLimitSelectBox).space(10f)
-        bottomTable.add(confirmViewButton).size(40f * gdxSettings.imageScale, 40f * gdxSettings.imageScale)
-        bottomTable.add(zoomInButton).size(40f * gdxSettings.imageScale, 40f * gdxSettings.imageScale)
-        bottomTable.add(zoomOutButton).size(40f * gdxSettings.imageScale, 40f * gdxSettings.imageScale)
-        bottomTable.add(zoomToFullMapButton).size(40f * gdxSettings.imageScale, 40f * gdxSettings.imageScale)
+        bottomTable.add(confirmViewButton)
+            .size(40f * gdxSettings.imageScale, 40f * gdxSettings.imageScale)
+        bottomTable.add(zoomInButton)
+            .size(40f * gdxSettings.imageScale, 40f * gdxSettings.imageScale)
+        bottomTable.add(zoomOutButton)
+            .size(40f * gdxSettings.imageScale, 40f * gdxSettings.imageScale)
+        bottomTable.add(zoomToFullMapButton)
+            .size(40f * gdxSettings.imageScale, 40f * gdxSettings.imageScale)
 
         nestedTable.add(topTable)
 
@@ -693,13 +707,15 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
 
         val bottomTable: Table = Table()
 
-        topTable.add(previousButton).size(30f * gdxSettings.imageScale, 30f * gdxSettings.imageScale)
+        topTable.add(previousButton)
+            .size(30f * gdxSettings.imageScale, 30f * gdxSettings.imageScale)
 
         topTable.add(universeDataSelectBox)
 
         topTable.add(nextButton).size(30f * gdxSettings.imageScale, 30f * gdxSettings.imageScale)
 
-        bottomTable.add(clearOldDataButton).size(30f * gdxSettings.imageScale, 30f * gdxSettings.imageScale)
+        bottomTable.add(clearOldDataButton)
+            .size(30f * gdxSettings.imageScale, 30f * gdxSettings.imageScale)
 
         nestedTable.add(topTable)
 
@@ -731,7 +747,8 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
      * Update the text label showing the current time slice
      */
     private fun updateCurrentUniverseDataLabel() {
-        val currentUniverseName: String = game.universeClient.getUniverseData3D().universeSettings.universeName
+        val currentUniverseName: String =
+            game.universeClient.getUniverseData3D().universeSettings.universeName
         val currentUniverseTime: Int = game.universeClient.getUniverseData3D().center.t
 
         currentUniverseDataLabel.setText("Current data: $currentUniverseName - $currentUniverseTime")
@@ -787,7 +804,8 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
      */
     private fun updateUniverseDataSelectionBox() {
         runBlocking {
-            universeDataSelectBox.items = Array(game.universeClient.getAvailableData3DName().toTypedArray())
+            universeDataSelectBox.items =
+                Array(game.universeClient.getAvailableData3DName().toTypedArray())
             universeDataSelectBox.selected = game.universeClient.getCurrentData3DName()
         }
     }

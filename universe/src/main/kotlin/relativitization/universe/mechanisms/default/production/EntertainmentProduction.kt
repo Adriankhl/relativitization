@@ -25,7 +25,8 @@ object EntertainmentProduction : Mechanism() {
         )
 
         mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.forEach { mutableCarrierData ->
-            val entertainerPopData: MutableEntertainerPopData = mutableCarrierData.allPopData.entertainerPopData
+            val entertainerPopData: MutableEntertainerPopData =
+                mutableCarrierData.allPopData.entertainerPopData
 
             val amount: Double = entertainerPopData.commonPopData.adultPopulation * 20.0 / gamma
 

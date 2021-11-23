@@ -51,8 +51,14 @@ class Assets(val gdxSettings: GdxSettings) {
 
     private val languageMap: Map<Language, TranslationData> = mapOf(
         Language.ENGLISH to TranslationData("English", Locale.ENGLISH),
-        Language.TRADITIONAL_CHINESE to TranslationData("Traditional_Chinese", Locale.TRADITIONAL_CHINESE),
-        Language.SIMPLIFIED_CHINESE to TranslationData("Simplified_Chinese", Locale.SIMPLIFIED_CHINESE)
+        Language.TRADITIONAL_CHINESE to TranslationData(
+            "Traditional_Chinese",
+            Locale.TRADITIONAL_CHINESE
+        ),
+        Language.SIMPLIFIED_CHINESE to TranslationData(
+            "Simplified_Chinese",
+            Locale.SIMPLIFIED_CHINESE
+        )
     )
 
     /**
@@ -84,7 +90,8 @@ class Assets(val gdxSettings: GdxSettings) {
 
     fun loadFont(fontSize: Int) {
         // Unload fonts that are not required
-        val unloadList: List<Int> = loadedFontMap.keys.filter { !allRequiredFontSize().contains(it) }
+        val unloadList: List<Int> =
+            loadedFontMap.keys.filter { !allRequiredFontSize().contains(it) }
         unloadList.forEach {
             try {
                 manager.unload(loadedFontMap[it])
@@ -110,7 +117,7 @@ class Assets(val gdxSettings: GdxSettings) {
         fontLoaderParameter.fontParameters.characters = allCharacters()
 
         val name = "NotoSansCJKsc-Regular$fontSize.ttf"
-        manager.load(name , BitmapFont::class.java, fontLoaderParameter)
+        manager.load(name, BitmapFont::class.java, fontLoaderParameter)
         loadedFontMap[fontSize] = name
     }
 
@@ -250,7 +257,7 @@ class Assets(val gdxSettings: GdxSettings) {
         val r = random.nextFloat()
         val g = random.nextFloat()
         val b = random.nextFloat()
-        val image = getImage(name,r, g, b, 1.0f)
+        val image = getImage(name, r, g, b, 1.0f)
         image.setPosition(xPos, yPos)
         image.setSize(width, height)
         return image

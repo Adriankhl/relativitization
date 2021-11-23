@@ -136,7 +136,8 @@ data class SendFuelFromStorageCommand(
         val remainAmount: Double = remainFraction * amount
 
         // Improve diplomatic relation by sending fuel
-        val originalTotalAmount: Double = playerData.playerInternalData.physicsData().fuelRestMassData.total()
+        val originalTotalAmount: Double =
+            playerData.playerInternalData.physicsData().fuelRestMassData.total()
         val changeFraction: Double = if (originalTotalAmount > 0.0) {
             remainAmount / originalTotalAmount
         } else {

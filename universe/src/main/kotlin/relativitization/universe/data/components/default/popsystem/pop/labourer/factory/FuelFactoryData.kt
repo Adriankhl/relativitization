@@ -35,7 +35,8 @@ data class MutableFuelFactoryData(
     var lastOutputAmount: Double = 0.0,
     var lastNumEmployee: Double = 0.0,
 ) {
-    fun employeeFraction(): Double = lastNumEmployee / (fuelFactoryInternalData.maxNumEmployee * numBuilding)
+    fun employeeFraction(): Double =
+        lastNumEmployee / (fuelFactoryInternalData.maxNumEmployee * numBuilding)
 }
 
 /**

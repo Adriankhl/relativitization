@@ -60,7 +60,8 @@ class EventsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(g
     private fun updateTable() {
         table.clear()
 
-        val headerLabel = createLabel("Event list: player ${playerData.playerId}", gdxSettings.bigFontSize)
+        val headerLabel =
+            createLabel("Event list: player ${playerData.playerId}", gdxSettings.bigFontSize)
 
         table.add(headerLabel)
 
@@ -86,7 +87,8 @@ class EventsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(g
 
         nestedTable.row().space(10f)
 
-        val eventDescriptionLabel = createLabel(eventData.event.description, gdxSettings.smallFontSize)
+        val eventDescriptionLabel =
+            createLabel(eventData.event.description, gdxSettings.smallFontSize)
         eventDescriptionLabel.wrap = true
         nestedTable.add(eventDescriptionLabel).colspan(2).growX()
 
@@ -112,7 +114,8 @@ class EventsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(g
                     eventName = eventData.event.name(),
                     choice = choice.key,
                     fromId = game.universeClient.getUniverseData3D().id,
-                    fromInt4D = game.universeClient.getUniverseData3D().getCurrentPlayerData().int4D,
+                    fromInt4D = game.universeClient.getUniverseData3D()
+                        .getCurrentPlayerData().int4D,
                     toId = playerData.playerId
                 )
 

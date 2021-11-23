@@ -37,8 +37,10 @@ internal class BuildForeignResourceFactoryCommandTest {
         )
 
         runBlocking {
-            universe.postProcessUniverse(mapOf(
-                1 to listOf(command)),
+            universe.postProcessUniverse(
+                mapOf(
+                    1 to listOf(command)
+                ),
                 mapOf(
                     2 to listOf(),
                     3 to listOf(),
@@ -50,7 +52,8 @@ internal class BuildForeignResourceFactoryCommandTest {
 
         val view8: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
         val newPlayerData = view8.get(1)
-        val factoryMap = newPlayerData.playerInternalData.popSystemData().carrierDataMap.getValue(0).allPopData.labourerPopData.resourceFactoryMap
+        val factoryMap =
+            newPlayerData.playerInternalData.popSystemData().carrierDataMap.getValue(0).allPopData.labourerPopData.resourceFactoryMap
         println(factoryMap)
         assert(factoryMap.size == 1)
     }

@@ -62,9 +62,11 @@ data class Velocity(val vx: Double, val vy: Double, val vz: Double) {
 
     operator fun times(double: Double) = Velocity(vx * double, vy * double, vz * double)
 
-    operator fun plus(velocity: Velocity) = Velocity(vx + velocity.vx, vy + velocity.vy, vz + velocity.vz)
+    operator fun plus(velocity: Velocity) =
+        Velocity(vx + velocity.vx, vy + velocity.vy, vz + velocity.vz)
 
-    operator fun minus(velocity: Velocity) = Velocity(vx - velocity.vx, vy - velocity.vy, vz - velocity.vz)
+    operator fun minus(velocity: Velocity) =
+        Velocity(vx - velocity.vx, vy - velocity.vy, vz - velocity.vz)
 }
 
 @Serializable

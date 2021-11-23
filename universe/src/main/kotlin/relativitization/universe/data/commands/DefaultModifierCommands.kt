@@ -27,7 +27,10 @@ data class DisableFuelIncreaseCommand(
         ),
     )
 
-    override fun canSend(playerData: MutablePlayerData, universeSettings: UniverseSettings): CanSendCheckMessage {
+    override fun canSend(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): CanSendCheckMessage {
         val sameId: Boolean = playerData.playerId == toId
         return if (sameId) {
             CanSendCheckMessage(true)
@@ -39,7 +42,10 @@ data class DisableFuelIncreaseCommand(
         }
     }
 
-    override fun canExecute(playerData: MutablePlayerData, universeSettings: UniverseSettings): Boolean {
+    override fun canExecute(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): Boolean {
         return playerData.playerId == fromId
     }
 

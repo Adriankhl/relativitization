@@ -82,7 +82,8 @@ object PlayerImage {
         soundVolume: Float,
         function: (Image) -> Unit = {}
     ): Stack {
-        val imageList = getPlayerImages(playerData, assets, 0f, 0f, width, height, soundVolume, function)
+        val imageList =
+            getPlayerImages(playerData, assets, 0f, 0f, width, height, soundVolume, function)
         val stack = Stack()
         for (image in imageList) {
             stack.add(image)
@@ -114,31 +115,37 @@ object PlayerImage {
         } else if (maxComponent.first == 'x') {
             if (velocity.vx > 0) {
                 val primaryDirection: Float = 90f
-                val adjusted: Float = (- velocity.vy / magMaxComponent * 15 - velocity.vz / magMaxComponent * 5).toFloat()
+                val adjusted: Float =
+                    (-velocity.vy / magMaxComponent * 15 - velocity.vz / magMaxComponent * 5).toFloat()
                 primaryDirection + adjusted
-            } else  {
+            } else {
                 val primaryDirection: Float = 270f
-                val adjusted: Float = (velocity.vy / magMaxComponent * 15 + velocity.vz / magMaxComponent * 5).toFloat()
+                val adjusted: Float =
+                    (velocity.vy / magMaxComponent * 15 + velocity.vz / magMaxComponent * 5).toFloat()
                 primaryDirection + adjusted
             }
         } else if (maxComponent.first == 'y') {
             if (velocity.vy > 0) {
                 val primaryDirection: Float = 0f
-                val adjusted: Float = (velocity.vx / magMaxComponent * 15 + velocity.vz / magMaxComponent * 5).toFloat()
+                val adjusted: Float =
+                    (velocity.vx / magMaxComponent * 15 + velocity.vz / magMaxComponent * 5).toFloat()
                 primaryDirection + adjusted
-            } else  {
+            } else {
                 val primaryDirection: Float = 180f
-                val adjusted: Float = (- velocity.vx / magMaxComponent * 15 - velocity.vz / magMaxComponent * 5).toFloat()
+                val adjusted: Float =
+                    (-velocity.vx / magMaxComponent * 15 - velocity.vz / magMaxComponent * 5).toFloat()
                 primaryDirection + adjusted
             }
         } else if (maxComponent.first == 'z') {
             if (velocity.vz > 0) {
                 val primaryDirection: Float = 45f
-                val adjusted: Float = (velocity.vx / magMaxComponent * 15 - velocity.vy / magMaxComponent * 5).toFloat()
+                val adjusted: Float =
+                    (velocity.vx / magMaxComponent * 15 - velocity.vy / magMaxComponent * 5).toFloat()
                 primaryDirection + adjusted
-            } else  {
+            } else {
                 val primaryDirection: Float = 225f
-                val adjusted: Float = (- velocity.vx / magMaxComponent * 15 + velocity.vy / magMaxComponent * 5).toFloat()
+                val adjusted: Float =
+                    (-velocity.vx / magMaxComponent * 15 + velocity.vy / magMaxComponent * 5).toFloat()
                 primaryDirection + adjusted
             }
         } else {

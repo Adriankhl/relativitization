@@ -59,7 +59,8 @@ class OverviewInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>
     private fun updateTable() {
         table.clear()
 
-        val headerLabel = createLabel("Overview: player ${playerData.playerId}", gdxSettings.bigFontSize)
+        val headerLabel =
+            createLabel("Overview: player ${playerData.playerId}", gdxSettings.bigFontSize)
 
         table.add(headerLabel)
 
@@ -75,6 +76,7 @@ class OverviewInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>
             game.universeClient.mapCenterPlayerId = playerData.playerId
         }
 
-        table.add(playerImageStack).size(128f * gdxSettings.imageScale, 128f * gdxSettings.imageScale)
+        table.add(playerImageStack)
+            .size(128f * gdxSettings.imageScale, 128f * gdxSettings.imageScale)
     }
 }

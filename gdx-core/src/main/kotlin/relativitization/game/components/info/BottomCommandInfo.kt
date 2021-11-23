@@ -107,11 +107,13 @@ class BottomCommandInfo(val game: RelativitizationGame) : ScreenComponent<Scroll
     private fun createHeaderTable(): Table {
         val nestedTable: Table = Table()
 
-        nestedTable.add(previousCommandButton).size(40f * gdxSettings.imageScale, 40f * gdxSettings.imageScale)
+        nestedTable.add(previousCommandButton)
+            .size(40f * gdxSettings.imageScale, 40f * gdxSettings.imageScale)
 
         nestedTable.add(commandNameLabel)
 
-        nestedTable.add(nextCommandButton).size(40f * gdxSettings.imageScale, 40f * gdxSettings.imageScale)
+        nestedTable.add(nextCommandButton)
+            .size(40f * gdxSettings.imageScale, 40f * gdxSettings.imageScale)
 
         return nestedTable
     }

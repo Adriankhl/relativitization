@@ -5,7 +5,7 @@ import relativitization.universe.ai.default.utils.PlanState
 import relativitization.universe.ai.default.utils.SequenceReasoner
 import relativitization.universe.data.PlanDataAtPlayer
 
-class EventReasoner() : SequenceReasoner() {
+class EventReasoner : SequenceReasoner() {
     override fun getSubNodeList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState

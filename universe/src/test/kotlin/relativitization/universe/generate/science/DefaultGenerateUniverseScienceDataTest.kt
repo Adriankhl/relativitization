@@ -11,22 +11,29 @@ internal class DefaultGenerateUniverseScienceDataTest {
     fun testGenerateDefaultField() {
         val universeScienceData: UniverseScienceData = UniverseScienceData()
 
-        val newUniverseScienceData: UniverseScienceData = DefaultGenerateUniverseScienceData.generate(
-            universeScienceData,
-            10,
-            10
-        )
+        val newUniverseScienceData: UniverseScienceData =
+            DefaultGenerateUniverseScienceData.generate(
+                universeScienceData,
+                10,
+                10
+            )
 
         newUniverseScienceData.basicResearchProjectDataMap.forEach {
             assert(it.value.basicResearchField == BasicResearchField.MATHEMATICS)
         }
 
-        assert(newUniverseScienceData.basicResearchProjectDataMap.keys.toList().sorted() == (0..9).toList())
+        assert(
+            newUniverseScienceData.basicResearchProjectDataMap.keys.toList()
+                .sorted() == (0..9).toList()
+        )
 
         newUniverseScienceData.appliedResearchProjectDataMap.forEach {
             assert(it.value.appliedResearchField == AppliedResearchField.ENERGY_TECHNOLOGY)
         }
 
-        assert(newUniverseScienceData.appliedResearchProjectDataMap.keys.toList().sorted() == (0..9).toList())
+        assert(
+            newUniverseScienceData.appliedResearchProjectDataMap.keys.toList()
+                .sorted() == (0..9).toList()
+        )
     }
 }

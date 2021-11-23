@@ -23,7 +23,8 @@ object UpdateUniverseScienceData : GlobalMechanism() {
         val maxAppliedProject: Int = 30
 
         // Update universe common sense
-        val mutableUniverseScienceData: MutableUniverseScienceData = mutableUniverseGlobalData.universeScienceData()
+        val mutableUniverseScienceData: MutableUniverseScienceData =
+            mutableUniverseGlobalData.universeScienceData()
 
         val allVisiblePlayerData: List<PlayerData> = universeData.getAllVisiblePlayerData()
 

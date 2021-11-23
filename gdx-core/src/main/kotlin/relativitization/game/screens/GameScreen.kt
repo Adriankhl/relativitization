@@ -34,7 +34,8 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
 
     private val worldMap: GameScreenWorldMap = GameScreenWorldMap(game)
     private val info: GameScreenInfo = GameScreenInfo(game)
-    private val worldMapAndInfo = createSplitPane(worldMap.getScreenComponent(), info.getScreenComponent(), false)
+    private val worldMapAndInfo =
+        createSplitPane(worldMap.getScreenComponent(), info.getScreenComponent(), false)
     private val topBar: GameScreenTopBar = GameScreenTopBar(game)
 
     // Button to trigger gdx settings change
@@ -106,7 +107,9 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
         worldMapAndInfo.splitAmount = gdxSettings.worldMapAndInfoSplitAmount
 
         // Fix minimal top Bar height to preferred height
-        root.add(topBar.getScreenComponent()).growX().top().minHeight(topBar.getScreenComponent().prefHeight).maxHeight(topBar.getScreenComponent().prefHeight)
+        root.add(topBar.getScreenComponent()).growX().top()
+            .minHeight(topBar.getScreenComponent().prefHeight)
+            .maxHeight(topBar.getScreenComponent().prefHeight)
 
         root.row()
 
@@ -187,7 +190,10 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
         gdxSettings.showingInfoType = ShowingInfoType.KNOWLEDGE_MAP
         game.changeGdxSettings()
 
-        helloUniverseButton.setPosition(Gdx.graphics.width / 2.0f - helloUniverseButton.width / 2, Gdx.graphics.height / 2.0f - helloUniverseButton.height / 2)
+        helloUniverseButton.setPosition(
+            Gdx.graphics.width / 2.0f - helloUniverseButton.width / 2,
+            Gdx.graphics.height / 2.0f - helloUniverseButton.height / 2
+        )
         stage.addActor(helloUniverseButtonBackground)
         stage.addActor(helloUniverseButton)
     }
@@ -197,7 +203,10 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
         topBar.render()
 
         if (game.universeClient.isPlayerDead) {
-            playerDeadButton.setPosition(Gdx.graphics.width / 2.0f - playerDeadButton.width / 2, Gdx.graphics.height / 2.0f - playerDeadButton.height / 2)
+            playerDeadButton.setPosition(
+                Gdx.graphics.width / 2.0f - playerDeadButton.width / 2,
+                Gdx.graphics.height / 2.0f - playerDeadButton.height / 2
+            )
             stage.addActor(playerDeadBackground)
             stage.addActor(playerDeadButton)
         }
