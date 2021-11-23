@@ -20,10 +20,6 @@ data class CarrierData(
 data class MutableCarrierData(
     var carrierType: CarrierType = CarrierType.SPACESHIP,
     var carrierInternalData: MutableCarrierInternalData = MutableCarrierInternalData(),
-    var coreRestMass: Double = 1.0,
-    var maxMovementDeltaFuelRestMass: Double = 0.0,
-    var size: Double = 100.0,
-    var idealPopulation: Double = 100.0,
     var allPopData: MutableAllPopData = MutableAllPopData(),
 )
 

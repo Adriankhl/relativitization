@@ -55,10 +55,10 @@ object TestingFixedMinimal : TestingGenerateUniverseMethod() {
         playerData3.playerInternalData.popSystemData().addStellarSystem(2E30)
 
         // Add spaceShip
-        playerData1.playerInternalData.popSystemData().addSpaceShip(1.0, 100.0)
-        playerData2.playerInternalData.popSystemData().addSpaceShip(1.0, 100.0)
-        playerData3.playerInternalData.popSystemData().addSpaceShip(1.0, 100.0)
-        playerData4.playerInternalData.popSystemData().addSpaceShip(1.0, 100.0)
+        playerData1.playerInternalData.popSystemData().addSpaceShip(1.0, 100.0, 1000.0)
+        playerData2.playerInternalData.popSystemData().addSpaceShip(1.0, 100.0, 1000.0)
+        playerData3.playerInternalData.popSystemData().addSpaceShip(1.0, 100.0, 1000.0)
+        playerData4.playerInternalData.popSystemData().addSpaceShip(1.0, 100.0, 1000.0)
 
         // Add fuel rest mass
         playerData1.playerInternalData.physicsData().fuelRestMassData.movement = 100.0

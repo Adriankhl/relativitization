@@ -50,7 +50,7 @@ object PopulationGrowth : Mechanism() {
                     educationLevel = commonPopData.educationLevel,
                     currentPopulation = commonPopData.adultPopulation,
                     currentTotalPopulation = totalPopulation,
-                    idealTotalPopulation = mutableCarrierData.idealPopulation,
+                    idealTotalPopulation = mutableCarrierData.carrierInternalData.idealPopulation,
                 )
 
                 commonPopData.adultPopulation = newPopulation

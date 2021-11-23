@@ -41,7 +41,7 @@ object ABMFlockingGenerate : ABMGenerateUniverseMethod() {
             playerData.int4D.z = Random.nextInt(0, universeSettings.zDim)
 
             playerData.playerInternalData.popSystemData().addSpaceShip(
-                1.0, 1E5
+                1.0, 1E5, 1E6
             )
 
             // Add fuel rest mass

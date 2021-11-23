@@ -65,7 +65,7 @@ data class MutablePopSystemData(
     val carrierDataMap: MutableMap<Int, MutableCarrierData> = mutableMapOf(),
 ) : MutableDefaultPlayerDataComponent() {
     fun totalCoreRestMass(): Double {
-        return carrierDataMap.values.sumOf { it.coreRestMass }
+        return carrierDataMap.values.sumOf { it.carrierInternalData.coreRestMass }
     }
 
     fun totalOtherRestMass(): Double {
@@ -101,7 +101,7 @@ data class MutablePopSystemData(
     }
 
     fun totalMaxMovementDeltaFuelRestMass(): Double {
-        return carrierDataMap.values.sumOf { it.maxMovementDeltaFuelRestMass }
+        return carrierDataMap.values.sumOf { it.carrierInternalData.maxMovementDeltaFuelRestMass }
     }
 
     /**
@@ -112,12 +112,12 @@ data class MutablePopSystemData(
     }
 
     fun addRandomStellarSystem() {
-        val restMass = Random.nextDouble(1.0e30, 2.5e30)
+        val coreRestMass = Random.nextDouble(1.0e30, 2.5e30)
         val newCarrierInternalData = MutableCarrierInternalData(
-            coreRestMass = restMass,
+            coreRestMass = coreRestMass,
             maxMovementDeltaFuelRestMass = 0.0,
             size = 100.0,
-            idealPopulation = restMass / 1E10
+            idealPopulation = coreRestMass / 1E10
         )
         val newCarrier =
             MutableCarrierData(
@@ -128,12 +128,18 @@ data class MutablePopSystemData(
     }
 
     fun addStellarSystem(
-        coreRestMass: Double
+        coreRestMass: Double,
     ) {
+        val newCarrierInternalData = MutableCarrierInternalData(
+            coreRestMass = coreRestMass,
+            maxMovementDeltaFuelRestMass = 0.0,
+            size = 100.0,
+            idealPopulation = coreRestMass / 1E10
+        )
         val newCarrier =
             MutableCarrierData(
-                coreRestMass = coreRestMass,
-                carrierType = CarrierType.STELLAR
+                carrierType = CarrierType.STELLAR,
+                carrierInternalData = newCarrierInternalData
             )
         carrierDataMap[newCarrierId()] = newCarrier
 
@@ -141,13 +147,19 @@ data class MutablePopSystemData(
 
     fun addSpaceShip(
         coreRestMass: Double,
-        maxDeltaFuelRestMass: Double
+        maxDeltaFuelRestMass: Double,
+        idealPopulation: Double
     ) {
+        val newCarrierInternalData = MutableCarrierInternalData(
+            coreRestMass = coreRestMass,
+            maxMovementDeltaFuelRestMass = maxDeltaFuelRestMass,
+            size = 100.0,
+            idealPopulation = idealPopulation,
+        )
         val newCarrier =
             MutableCarrierData(
-                coreRestMass = coreRestMass,
                 carrierType = CarrierType.SPACESHIP,
-                maxMovementDeltaFuelRestMass = maxDeltaFuelRestMass
+                carrierInternalData = newCarrierInternalData,
             )
         carrierDataMap[newCarrierId()] = newCarrier
     }
