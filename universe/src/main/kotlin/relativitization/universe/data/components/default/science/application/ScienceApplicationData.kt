@@ -213,6 +213,78 @@ data class MutableScienceApplicationData(
     var militaryBaseAttackFactor: Double = 1.0,
     var militaryBaseShieldFactor: Double = 1.0,
 ) {
+    fun newShipInternalData(
+        qualityLevel: Double
+    ): MutableCarrierInternalData {
+        val actualQualityLevel: Double = when {
+            qualityLevel > 1.0 -> {
+                logger.error("quality level greater than 1.0")
+                1.0
+            }
+            qualityLevel < 0.0 -> {
+                logger.error("quality level smaller than 0.0")
+                0.0
+            }
+            else -> {
+                qualityLevel
+            }
+        }
+
+
+        // Reduce core rest mass
+        val coreRestMass: Double = idealShip.coreRestMass * Quadratic.standard(
+            x = actualQualityLevel,
+            xMin = 0.0,
+            xMax = 1.0,
+            yMin = 0.2,
+            yMax = 1.0,
+            increasing = true,
+            accelerate = true
+        )
+
+        // Reduce the number of employee needed
+        val maxMovementDeltaFuelRestMass: Double =
+            idealShip.maxMovementDeltaFuelRestMass * Quadratic.standard(
+                x = actualQualityLevel,
+                xMin = 0.0,
+                xMax = 1.0,
+                yMin = 0.2,
+                yMax = 1.0,
+                increasing = true,
+                accelerate = false
+            )
+
+        // Reduce size
+        val size: Double = idealShip.size * Quadratic.standard(
+            x = actualQualityLevel,
+            xMin = 0.0,
+            xMax = 1.0,
+            yMin = 0.2,
+            yMax = 1.0,
+            increasing = true,
+            accelerate = true
+        )
+
+        // Reduce size
+        val idealPopulation: Double = idealShip.idealPopulation * Quadratic.standard(
+            x = actualQualityLevel,
+            xMin = 0.0,
+            xMax = 1.0,
+            yMin = 0.2,
+            yMax = 1.0,
+            increasing = false,
+            accelerate = true
+        )
+
+        return MutableCarrierInternalData(
+            coreRestMass = coreRestMass,
+            maxMovementDeltaFuelRestMass = maxMovementDeltaFuelRestMass,
+            size = size,
+            idealPopulation = idealPopulation
+        )
+    }
+
+
     fun newFuelFactoryInternalData(
         qualityLevel: Double
     ): MutableFuelFactoryInternalData {
