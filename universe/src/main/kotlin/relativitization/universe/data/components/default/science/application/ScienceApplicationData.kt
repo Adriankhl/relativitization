@@ -287,7 +287,7 @@ data class MutableScienceApplicationData(
     /**
      * The fuel rest mass needed to construct a new space ship
      */
-    fun newSpaceShipNeededByConstruction(
+    fun newSpaceshipFuelNeededByConstruction(
         qualityLevel: Double
     ): Double {
         val carrierInternalData: MutableCarrierInternalData = newSpaceshipInternalData(

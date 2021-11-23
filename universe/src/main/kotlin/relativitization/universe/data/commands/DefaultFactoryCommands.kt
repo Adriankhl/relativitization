@@ -442,7 +442,7 @@ data class BuildLocalFuelFactoryCommand(
                 qualityLevel = qualityLevel
             )
         val hasFuel: Boolean =
-            playerData.playerInternalData.physicsData().fuelRestMassData.production > -requiredFuel
+            playerData.playerInternalData.physicsData().fuelRestMassData.production > requiredFuel
 
         return isLeader && canSenderBuild && canLeaderBuild && hasCarrier && hasFuel
     }
@@ -574,7 +574,7 @@ data class BuildLocalResourceFactoryCommand(
                 qualityLevel = qualityLevel
             )
         val hasFuel: Boolean =
-            playerData.playerInternalData.physicsData().fuelRestMassData.production > -requiredFuel
+            playerData.playerInternalData.physicsData().fuelRestMassData.production > requiredFuel
 
         return isLeader && canSenderBuild && canLeaderBuild && hasCarrier && hasFuel
     }
