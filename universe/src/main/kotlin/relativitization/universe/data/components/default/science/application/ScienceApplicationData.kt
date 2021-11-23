@@ -265,7 +265,7 @@ data class MutableScienceApplicationData(
             accelerate = true
         )
 
-        // Reduce size
+        // Reduce ideal population
         val idealPopulation: Double = idealShip.idealPopulation * Quadratic.standard(
             x = actualQualityLevel,
             xMin = 0.0,
