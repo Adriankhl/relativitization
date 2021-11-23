@@ -290,11 +290,11 @@ data class MutableScienceApplicationData(
     fun newSpaceShipNeededByConstruction(
         qualityLevel: Double
     ): Double {
-        val fuelFactoryInternalData: MutableFuelFactoryInternalData = newFuelFactoryInternalData(
+        val carrierInternalData: MutableCarrierInternalData = newSpaceshipInternalData(
             qualityLevel
         )
 
-        return fuelFactoryInternalData.maxOutputAmount * 20
+        return carrierInternalData.coreRestMass * 5.0
     }
 
     fun newFuelFactoryInternalData(
