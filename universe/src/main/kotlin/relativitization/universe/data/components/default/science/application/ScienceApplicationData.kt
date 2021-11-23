@@ -308,10 +308,10 @@ data class MutableScienceApplicationData(
             x = actualQualityLevel,
             xMin = 0.0,
             xMax = 1.0,
-            yMin = 1.0,
-            yMax = 5.0,
-            increasing = false,
-            accelerate = true
+            yMin = 0.2,
+            yMax = 1.0,
+            increasing = true,
+            accelerate = false
         )
 
         // Reduce the number of employee needed
