@@ -41,6 +41,7 @@
 * Sync economy data to subordinate [x]
 * Stop war after long period of time [x]
 * Adjust attack and export by time dilation [x]
+* Limit fuel produced in a single unit space cube to prevent unlimited population
 
 # AI TODO List
 * Default AI
