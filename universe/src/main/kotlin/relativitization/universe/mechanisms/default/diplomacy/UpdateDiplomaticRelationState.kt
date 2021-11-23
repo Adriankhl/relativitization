@@ -5,7 +5,6 @@ import relativitization.universe.data.PlayerData
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
-import relativitization.universe.data.components.default.diplomacy.DiplomaticRelationData
 import relativitization.universe.data.components.default.diplomacy.DiplomaticRelationState
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.mechanisms.Mechanism
@@ -60,57 +59,26 @@ object UpdateDiplomaticRelationState : Mechanism() {
             val inLeaderRelationSet: Set<Int> =
                 directLeader.playerInternalData.diplomacyData().relationMap.keys
 
-            // Sync enemy
-            inLeaderRelationSet.filter {
+            // Sync leader enemy
+            // Add self enemy
+            val allWarList: List<Int> = inLeaderRelationSet.filter {
                 directLeader.playerInternalData.diplomacyData()
                     .getRelationState(it) == DiplomaticRelationState.ENEMY
-            }.forEach {
+            } + inSelfWarSet
+            allWarList.forEach {
                 mutablePlayerData.playerInternalData.diplomacyData()
                     .getDiplomaticRelationData(it).diplomaticRelationState =
                     DiplomaticRelationState.ENEMY
             }
 
-
-
-            val (prioritizeSelf, prioritizeDirectLeader) = mutablePlayerData.playerInternalData.diplomacyData().relationMap.keys.partition {
-                val topLeaderId: Int = universeData3DAtPlayer.get(it).topLeaderId()
-                if (topLeaderId == mutablePlayerData.topLeaderId()) {
-                    directLeader.playerInternalData.directSubordinateIdList.contains(it)
-                } else {
-                    true
-                }
-            }
-
-            // Same direct leader or not the same top leader
-            // the relation depends on their war status, follow the direct leader if no war
-            prioritizeSelf.forEach { otherId ->
-                // Allow internal war
-                if (mutablePlayerData.playerInternalData.diplomacyData().warData.warStateMap.containsKey(
-                        otherId
-                    )
-                ) {
-                    mutablePlayerData.playerInternalData.diplomacyData().getDiplomaticRelationData(
-                        otherId
-                    ).diplomaticRelationState = DiplomaticRelationState.ENEMY
-                } else {
-                    val leaderRelationData: DiplomaticRelationData =
-                        directLeader.playerInternalData.diplomacyData()
-                            .getDiplomaticRelationData(otherId)
-
-                    mutablePlayerData.playerInternalData.diplomacyData().getDiplomaticRelationData(
-                        otherId
-                    ).diplomaticRelationState = leaderRelationData.diplomaticRelationState
-                }
-            }
-
-            prioritizeDirectLeader.forEach { otherId ->
-                val leaderRelationData: DiplomaticRelationData =
-                    directLeader.playerInternalData.diplomacyData()
-                        .getDiplomaticRelationData(otherId)
-
-                mutablePlayerData.playerInternalData.diplomacyData().getDiplomaticRelationData(
-                    otherId
-                ).diplomaticRelationState = leaderRelationData.diplomaticRelationState
+            // Change not in war player from enemy to neutral
+            inSelfRelationSet.filter {
+                !allWarList.contains(it) && mutablePlayerData.playerInternalData.diplomacyData()
+                    .getRelationState(it) == DiplomaticRelationState.ENEMY
+            }.forEach {
+                mutablePlayerData.playerInternalData.diplomacyData()
+                    .getDiplomaticRelationData(it).diplomaticRelationState =
+                    DiplomaticRelationState.NEUTRAL
             }
         }
 
