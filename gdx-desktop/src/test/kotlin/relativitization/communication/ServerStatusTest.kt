@@ -35,7 +35,7 @@ internal class ServerStatusTest {
             launch {
                 universeServer.start()
             }
-            while(universeClient.httpPostNewUniverse() != HttpStatusCode.OK) {
+            while (universeClient.httpPostNewUniverse() != HttpStatusCode.OK) {
                 delay(1000)
             }
             val status = universeClient.httpGetUniverseServerStatus()

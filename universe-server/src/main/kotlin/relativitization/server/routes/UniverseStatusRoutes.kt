@@ -10,7 +10,10 @@ fun Route.universeStatueRouting(universeServerInternal: UniverseServerInternal) 
     // General status
     route("/status") {
         get {
-            call.respond(status = HttpStatusCode.OK, universeServerInternal.getUniverseStatusMessage())
+            call.respond(
+                status = HttpStatusCode.OK,
+                universeServerInternal.getUniverseStatusMessage()
+            )
         }
     }
 
@@ -24,7 +27,10 @@ fun Route.universeStatueRouting(universeServerInternal: UniverseServerInternal) 
     // Get all available ids
     route("/status/human-ids") {
         get {
-            call.respond(status = HttpStatusCode.OK, universeServerInternal.getAvailableHumanIdList())
+            call.respond(
+                status = HttpStatusCode.OK,
+                universeServerInternal.getAvailableHumanIdList()
+            )
         }
     }
 

@@ -12,15 +12,17 @@ internal class CommandInputMessageTest {
         val message = CommandInputMessage(
             1,
             "abc",
-            listOf(ChangeVelocityCommand(
-                targetVelocity = Velocity(0.3, 0.3, 0.3),
-                toId = 1,
-                fromId = 1,
-                fromInt4D = Int4D(0,0,0,0),
-            ))
+            listOf(
+                ChangeVelocityCommand(
+                    targetVelocity = Velocity(0.3, 0.3, 0.3),
+                    toId = 1,
+                    fromId = 1,
+                    fromInt4D = Int4D(0, 0, 0, 0),
+                )
+            )
         )
 
-        val message2: CommandInputMessage= DataSerializer.copy(message)
+        val message2: CommandInputMessage = DataSerializer.copy(message)
         assert(message2.password == "abc")
     }
 }

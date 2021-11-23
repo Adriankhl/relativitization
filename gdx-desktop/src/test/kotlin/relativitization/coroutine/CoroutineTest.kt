@@ -32,11 +32,12 @@ internal class CoroutineTest {
             for (i in 1..100) {
                 println("New Job")
                 launch {
-                    val response: HttpResponse = universeClient.ktorClient.get("http://127.0.0.1:29979/status/hello") {
-                        timeout {
-                            requestTimeoutMillis = 1000
+                    val response: HttpResponse =
+                        universeClient.ktorClient.get("http://127.0.0.1:29979/status/hello") {
+                            timeout {
+                                requestTimeoutMillis = 1000
+                            }
                         }
-                    }
                     println("$i " + response.readText())
                 }
             }
@@ -109,15 +110,16 @@ internal class CoroutineTest {
             universeClient.httpPostNewUniverse()
             println("posted normal")
             val status: HttpStatusCode = try {
-                val response: HttpResponse = universeClient.ktorClient.post("http://127.0.0.1:29979/create/new") {
-                    contentType(ContentType.Application.Json)
-                    body = "sdfsdf"
-                    timeout {
-                        requestTimeoutMillis = 1000
-                        connectTimeoutMillis = 1000
-                        socketTimeoutMillis = 1000
+                val response: HttpResponse =
+                    universeClient.ktorClient.post("http://127.0.0.1:29979/create/new") {
+                        contentType(ContentType.Application.Json)
+                        body = "sdfsdf"
+                        timeout {
+                            requestTimeoutMillis = 1000
+                            connectTimeoutMillis = 1000
+                            socketTimeoutMillis = 1000
+                        }
                     }
-                }
                 response.status
             } catch (cause: ResponseException) {
                 cause.response.status
@@ -141,7 +143,7 @@ internal class CoroutineTest {
             try {
                 val response: HttpResponse = universeClient.ktorClient.get("http://127.0.0.1:123")
                 println(response)
-            } catch(cause: Throwable) {
+            } catch (cause: Throwable) {
                 println("Error: $cause")
             }
             println("After")

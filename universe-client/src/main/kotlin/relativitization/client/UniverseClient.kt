@@ -50,7 +50,8 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
     private var universeClientRunJob: Job = Job()
 
     // for generate universe
-    var generateSettings: GenerateSettings = GenerateSettings.loadOrDefault(universeClientSettings.programDir)
+    var generateSettings: GenerateSettings =
+        GenerateSettings.loadOrDefault(universeClientSettings.programDir)
 
     // For changing server setting
     var universeServerSettings: UniverseServerSettings = UniverseServerSettings(
@@ -107,6 +108,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
     var primarySelectedPlayerId: Int by Delegates.observable(currentUniverseData3DAtPlayer.id) { _, _, _ ->
         onPrimarySelectedPlayerIdChangeFunctionList.forEach { it() }
     }
+
     // Display mutable player data from planDataAtPlayer or not
     var showMutablePlayerDataFromPlan: Boolean by Delegates.observable(true) { _, _, _ ->
         onPrimarySelectedPlayerIdChangeFunctionList.forEach { it() }
@@ -214,7 +216,8 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
     private fun shouldUpdateCache(universeServerStatusMessage: UniverseServerStatusMessage): Boolean {
         val differentName =
             universeServerStatusMessage.universeName != universeData3DCache.universeSettings.universeName
-        val differentTime = universeServerStatusMessage.currentUniverseTime != universeData3DCache.center.t
+        val differentTime =
+            universeServerStatusMessage.currentUniverseTime != universeData3DCache.center.t
         return (universeServerStatusMessage.success &&
                 universeServerStatusMessage.isUniverseRunning &&
                 universeServerStatusMessage.hasUniverse &&
@@ -318,7 +321,8 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
      */
     private suspend fun updateUniverseData3DMap() {
         universeData3DMapMutex.withLock {
-            val name: String = universeData3DName(universeData3DCache, universeData3DMap.keys.toList())
+            val name: String =
+                universeData3DName(universeData3DCache, universeData3DMap.keys.toList())
             universeData3DMap[name] = universeData3DCache
             isNewDataReady.set(true)
         }
@@ -421,7 +425,11 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
      */
     suspend fun getCurrentData3DName(): String {
         universeData3DMapMutex.withLock {
-            return universeData3DMap.keys.elementAt(universeData3DMap.values.indexOf(currentUniverseData3DAtPlayer))
+            return universeData3DMap.keys.elementAt(
+                universeData3DMap.values.indexOf(
+                    currentUniverseData3DAtPlayer
+                )
+            )
         }
     }
 
@@ -690,14 +698,15 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
             val serverAddress = universeClientSettings.serverAddress
             val serverPort = universeClientSettings.serverPort
             val adminPassword = universeClientSettings.adminPassword
-            val response: HttpResponse = ktorClient.post("http://$serverAddress:$serverPort/create/new") {
-                contentType(ContentType.Application.Json)
-                body = NewUniverseMessage(adminPassword, generateSettings)
-                timeout {
-                    connectTimeoutMillis = universeClientSettings.httpConnectTimeout
-                    requestTimeoutMillis = universeClientSettings.httpRequestTimeout
+            val response: HttpResponse =
+                ktorClient.post("http://$serverAddress:$serverPort/create/new") {
+                    contentType(ContentType.Application.Json)
+                    body = NewUniverseMessage(adminPassword, generateSettings)
+                    timeout {
+                        connectTimeoutMillis = universeClientSettings.httpConnectTimeout
+                        requestTimeoutMillis = universeClientSettings.httpRequestTimeout
+                    }
                 }
-            }
             logger.debug("Create new universe status: ${response.status}")
             response.status
         } catch (cause: ResponseException) {
@@ -714,14 +723,15 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
             val serverAddress = universeClientSettings.serverAddress
             val serverPort = universeClientSettings.serverPort
             val adminPassword = universeClientSettings.adminPassword
-            val response: HttpResponse = ktorClient.post("http://$serverAddress:$serverPort/create/load") {
-                contentType(ContentType.Application.Json)
-                body = LoadUniverseMessage(adminPassword, universeName)
-                timeout {
-                    connectTimeoutMillis = universeClientSettings.httpConnectTimeout
-                    requestTimeoutMillis = universeClientSettings.httpRequestTimeout
+            val response: HttpResponse =
+                ktorClient.post("http://$serverAddress:$serverPort/create/load") {
+                    contentType(ContentType.Application.Json)
+                    body = LoadUniverseMessage(adminPassword, universeName)
+                    timeout {
+                        connectTimeoutMillis = universeClientSettings.httpConnectTimeout
+                        requestTimeoutMillis = universeClientSettings.httpRequestTimeout
+                    }
                 }
-            }
 
             logger.debug("Create new universe status: ${response.status}")
             response.status
@@ -740,14 +750,15 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
             val serverPort = universeClientSettings.serverPort
             val playerId = universeClientSettings.playerId
             val password = universeClientSettings.password
-            val response: HttpResponse = ktorClient.post("http://$serverAddress:$serverPort/run/register") {
-                contentType(ContentType.Application.Json)
-                body = RegisterPlayerMessage(playerId, password)
-                timeout {
-                    connectTimeoutMillis = universeClientSettings.httpConnectTimeout
-                    requestTimeoutMillis = universeClientSettings.httpRequestTimeout
+            val response: HttpResponse =
+                ktorClient.post("http://$serverAddress:$serverPort/run/register") {
+                    contentType(ContentType.Application.Json)
+                    body = RegisterPlayerMessage(playerId, password)
+                    timeout {
+                        connectTimeoutMillis = universeClientSettings.httpConnectTimeout
+                        requestTimeoutMillis = universeClientSettings.httpRequestTimeout
+                    }
                 }
-            }
 
             logger.debug("Register player universe status: ${response.status}")
             response.status
@@ -765,14 +776,15 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
             val serverAddress = universeClientSettings.serverAddress
             val serverPort = universeClientSettings.serverPort
             val adminPassword = universeClientSettings.adminPassword
-            val response: HttpResponse = ktorClient.post("http://$serverAddress:$serverPort/run/universe-run") {
-                contentType(ContentType.Application.Json)
-                body = RunUniverseMessage(adminPassword)
-                timeout {
-                    connectTimeoutMillis = universeClientSettings.httpConnectTimeout
-                    requestTimeoutMillis = universeClientSettings.httpRequestTimeout
+            val response: HttpResponse =
+                ktorClient.post("http://$serverAddress:$serverPort/run/universe-run") {
+                    contentType(ContentType.Application.Json)
+                    body = RunUniverseMessage(adminPassword)
+                    timeout {
+                        connectTimeoutMillis = universeClientSettings.httpConnectTimeout
+                        requestTimeoutMillis = universeClientSettings.httpRequestTimeout
+                    }
                 }
-            }
             logger.debug("Run universe: ${response.status}")
             response.status
         } catch (cause: ResponseException) {
@@ -790,14 +802,15 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
             val serverAddress = universeClientSettings.serverAddress
             val serverPort = universeClientSettings.serverPort
             val adminPassword = universeClientSettings.adminPassword
-            val response: HttpResponse = ktorClient.post("http://$serverAddress:$serverPort/run/universe-stop") {
-                contentType(ContentType.Application.Json)
-                body = StopUniverseMessage(adminPassword)
-                timeout {
-                    connectTimeoutMillis = universeClientSettings.httpConnectTimeout
-                    requestTimeoutMillis = universeClientSettings.httpRequestTimeout
+            val response: HttpResponse =
+                ktorClient.post("http://$serverAddress:$serverPort/run/universe-stop") {
+                    contentType(ContentType.Application.Json)
+                    body = StopUniverseMessage(adminPassword)
+                    timeout {
+                        connectTimeoutMillis = universeClientSettings.httpConnectTimeout
+                        requestTimeoutMillis = universeClientSettings.httpRequestTimeout
+                    }
                 }
-            }
             logger.debug("Stop universe: ${response.status}")
             response.status
         } catch (cause: ResponseException) {
@@ -816,14 +829,15 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
             val serverPort = universeClientSettings.serverPort
             val playerId = universeClientSettings.playerId
             val password = universeClientSettings.password
-            val response: HttpResponse = ktorClient.post("http://$serverAddress:$serverPort/run/input") {
-                contentType(ContentType.Application.Json)
-                body = CommandInputMessage(playerId, password, planDataAtPlayer.commandList)
-                timeout {
-                    connectTimeoutMillis = universeClientSettings.httpConnectTimeout
-                    requestTimeoutMillis = universeClientSettings.httpRequestTimeout
+            val response: HttpResponse =
+                ktorClient.post("http://$serverAddress:$serverPort/run/input") {
+                    contentType(ContentType.Application.Json)
+                    body = CommandInputMessage(playerId, password, planDataAtPlayer.commandList)
+                    timeout {
+                        connectTimeoutMillis = universeClientSettings.httpConnectTimeout
+                        requestTimeoutMillis = universeClientSettings.httpRequestTimeout
+                    }
                 }
-            }
             logger.debug("Human command input: ${response.status}")
             response.status
         } catch (cause: ResponseException) {
@@ -840,14 +854,15 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
             val serverAddress = universeClientSettings.serverAddress
             val serverPort = universeClientSettings.serverPort
             val adminPassword = universeClientSettings.adminPassword
-            val response: HttpResponse = ktorClient.post("http://$serverAddress:$serverPort/run/stop-waiting") {
-                contentType(ContentType.Application.Json)
-                body = StopWaitingMessage(adminPassword)
-                timeout {
-                    connectTimeoutMillis = universeClientSettings.httpConnectTimeout
-                    requestTimeoutMillis = universeClientSettings.httpRequestTimeout
+            val response: HttpResponse =
+                ktorClient.post("http://$serverAddress:$serverPort/run/stop-waiting") {
+                    contentType(ContentType.Application.Json)
+                    body = StopWaitingMessage(adminPassword)
+                    timeout {
+                        connectTimeoutMillis = universeClientSettings.httpConnectTimeout
+                        requestTimeoutMillis = universeClientSettings.httpRequestTimeout
+                    }
                 }
-            }
             logger.debug("Stop waiting: ${response.status}")
             response.status
         } catch (cause: ResponseException) {

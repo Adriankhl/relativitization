@@ -46,7 +46,11 @@ class UniverseServer(
                 install(StatusPages) {
                     exception<Throwable> {
                         logger.warn("Wrong request causing exception in server")
-                        call.respondText("Something wrong in the request", ContentType.Text.Plain, HttpStatusCode.InternalServerError)
+                        call.respondText(
+                            "Something wrong in the request",
+                            ContentType.Text.Plain,
+                            HttpStatusCode.InternalServerError
+                        )
                     }
                 }
                 registerUniverseStatusRoutes(universeServerInternal)

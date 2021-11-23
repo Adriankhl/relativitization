@@ -84,7 +84,7 @@ class UniverseServerInternal(
                 }
 
                 if (!isServerWaitingInput.isTrue() && !isProcessDone.isTrue()) {
-                   // Post-process then pre-process since the universe accept input in the middle of game turn
+                    // Post-process then pre-process since the universe accept input in the middle of game turn
                     universe.postProcessUniverse(humanCommandMap, aiCommandMap)
                     universe.preProcessUniverse()
 
@@ -171,7 +171,8 @@ class UniverseServerInternal(
         val oldIdList = humanIdPasswordMap.keys.toList()
 
         // Don't clear dead player
-        val toRemoveIdList = oldIdList.filter { id -> !availableHumanIdList.contains(id) && !deadIdList.contains(id)}
+        val toRemoveIdList =
+            oldIdList.filter { id -> !availableHumanIdList.contains(id) && !deadIdList.contains(id) }
         for (id in toRemoveIdList) {
             humanIdPasswordMap.remove(id)
         }
@@ -370,7 +371,7 @@ class UniverseServerInternal(
     /**
      * Run universe, compute the ai command in the first turn without entering the main loop
      */
-    suspend fun runUniverse()  {
+    suspend fun runUniverse() {
         mutex.withLock {
             // Skip universe process in the first round
             isProcessDone.set(true)

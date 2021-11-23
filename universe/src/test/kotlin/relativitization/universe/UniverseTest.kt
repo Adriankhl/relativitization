@@ -16,7 +16,7 @@ internal class UniverseTest {
             universeSettings = MutableUniverseSettings(universeName = "save-load-test")
         )
         val universeData = GenerateUniverseMethodCollection.generate(generateSetting)
-        val universe = Universe(universeData = universeData, programDir= ".")
+        val universe = Universe(universeData = universeData, programDir = ".")
         universe.saveAll()
         val universeLoad = Universe.loadUniverseLatest("save-load-test", ".")
         println(universeLoad)

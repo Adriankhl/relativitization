@@ -22,13 +22,16 @@ fun Route.createUniverseRouting(universeServerInternal: UniverseServerInternal) 
             val newUniverseMessage: NewUniverseMessage = call.receive()
             if (newUniverseMessage.adminPassword == universeServerInternal.universeServerSettings.adminPassword) {
                 logger.debug("Start generating universe")
-                val universeData: UniverseData = GenerateUniverseMethodCollection.generate(newUniverseMessage.generateSettings)
+                val universeData: UniverseData =
+                    GenerateUniverseMethodCollection.generate(newUniverseMessage.generateSettings)
                 logger.debug("Done generating universe")
 
                 if (universeData.isUniverseValid()) {
-                    universeServerInternal.setUniverse(Universe(
-                        universeData, universeServerInternal.universeServerSettings.programDir
-                    ))
+                    universeServerInternal.setUniverse(
+                        Universe(
+                            universeData, universeServerInternal.universeServerSettings.programDir
+                        )
+                    )
                     call.respondText("Created Universe", ContentType.Text.Plain, HttpStatusCode.OK)
                 } else {
                     call.respondText(
@@ -36,7 +39,7 @@ fun Route.createUniverseRouting(universeServerInternal: UniverseServerInternal) 
                         ContentType.Text.Plain,
                         HttpStatusCode.NotAcceptable
                     )
-                } 
+                }
             } else {
                 call.respondText(
                     "Create Universe Failed, wrong admin password",
@@ -64,11 +67,13 @@ fun Route.createUniverseRouting(universeServerInternal: UniverseServerInternal) 
                     programDir = universeServerInternal.universeServerSettings.programDir,
                 )
                 if (universeData.isUniverseValid()) {
-                    universeServerInternal.setUniverse(Universe(
-                        universeData = universeData,
-                        programDir = universeServerInternal.universeServerSettings.programDir,
-                        saveWhenInit = false,
-                    ))
+                    universeServerInternal.setUniverse(
+                        Universe(
+                            universeData = universeData,
+                            programDir = universeServerInternal.universeServerSettings.programDir,
+                            saveWhenInit = false,
+                        )
+                    )
                     call.respondText("Loaded Universe", ContentType.Text.Plain, HttpStatusCode.OK)
                 } else {
                     call.respondText(

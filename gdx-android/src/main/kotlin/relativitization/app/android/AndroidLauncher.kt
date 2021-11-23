@@ -51,7 +51,8 @@ class AndroidLauncher : AppCompatActivity(), AndroidFragmentApplication.Callback
         )
         val universeClient: UniverseClient = UniverseClient(universeClientSettings)
 
-        val relativitizationGameFragment = RelativitizationGameFragment(universeClient, universeServer)
+        val relativitizationGameFragment =
+            RelativitizationGameFragment(universeClient, universeServer)
 
         val trans: FragmentTransaction = supportFragmentManager.beginTransaction()
 

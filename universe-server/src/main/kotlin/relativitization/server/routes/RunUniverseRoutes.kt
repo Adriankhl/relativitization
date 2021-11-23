@@ -14,9 +14,17 @@ fun Route.runUniverseRouting(universeServerInternal: UniverseServerInternal) {
             val universeServerSettingsMessage: UniverseServerSettingsMessage = call.receive()
             if (universeServerSettingsMessage.adminPassword == universeServerInternal.universeServerSettings.adminPassword) {
                 universeServerInternal.setUniverseServerSettings(universeServerSettingsMessage.universeServerSettings)
-                call.respondText("Update server settings succeed", ContentType.Text.Plain, HttpStatusCode.OK)
+                call.respondText(
+                    "Update server settings succeed",
+                    ContentType.Text.Plain,
+                    HttpStatusCode.OK
+                )
             } else {
-                call.respondText("Can't update server settings, please use the correct admin password", ContentType.Text.Plain, HttpStatusCode.Unauthorized)
+                call.respondText(
+                    "Can't update server settings, please use the correct admin password",
+                    ContentType.Text.Plain,
+                    HttpStatusCode.Unauthorized
+                )
             }
         }
     }
@@ -24,11 +32,16 @@ fun Route.runUniverseRouting(universeServerInternal: UniverseServerInternal) {
     route("/run/register") {
         post {
             val registerPlayerMessage: RegisterPlayerMessage = call.receive()
-            val successfulRegister: Boolean = universeServerInternal.registerPlayer(registerPlayerMessage)
+            val successfulRegister: Boolean =
+                universeServerInternal.registerPlayer(registerPlayerMessage)
             if (successfulRegister) {
                 call.respondText("Registered player", ContentType.Text.Plain, HttpStatusCode.OK)
             } else {
-                call.respondText("Can't register, try another id", ContentType.Text.Plain, HttpStatusCode.NotAcceptable)
+                call.respondText(
+                    "Can't register, try another id",
+                    ContentType.Text.Plain,
+                    HttpStatusCode.NotAcceptable
+                )
             }
         }
     }
@@ -39,7 +52,11 @@ fun Route.runUniverseRouting(universeServerInternal: UniverseServerInternal) {
             if (!universeServerInternal.getUniverseStatusMessage().isUniverseRunning) {
                 if (runUniverseMessage.adminPassword == universeServerInternal.universeServerSettings.adminPassword) {
                     universeServerInternal.runUniverse()
-                    call.respondText("Run universe succeed", ContentType.Text.Plain, HttpStatusCode.OK)
+                    call.respondText(
+                        "Run universe succeed",
+                        ContentType.Text.Plain,
+                        HttpStatusCode.OK
+                    )
                 } else {
                     call.respondText(
                         "Can't run universe, please use the correct admin password",
@@ -48,7 +65,11 @@ fun Route.runUniverseRouting(universeServerInternal: UniverseServerInternal) {
                     )
                 }
             } else {
-                call.respondText("Universe already running", ContentType.Text.Plain, HttpStatusCode.OK)
+                call.respondText(
+                    "Universe already running",
+                    ContentType.Text.Plain,
+                    HttpStatusCode.OK
+                )
             }
         }
     }
@@ -60,7 +81,11 @@ fun Route.runUniverseRouting(universeServerInternal: UniverseServerInternal) {
             if (universeServerInternal.getUniverseStatusMessage().isUniverseRunning) {
                 if (runUniverseMessage.adminPassword == universeServerInternal.universeServerSettings.adminPassword) {
                     universeServerInternal.stopUniverse()
-                    call.respondText("Stop universe succeed", ContentType.Text.Plain, HttpStatusCode.OK)
+                    call.respondText(
+                        "Stop universe succeed",
+                        ContentType.Text.Plain,
+                        HttpStatusCode.OK
+                    )
                 } else {
                     call.respondText(
                         "Can't stop universe, please use the correct admin password",
@@ -69,7 +94,11 @@ fun Route.runUniverseRouting(universeServerInternal: UniverseServerInternal) {
                     )
                 }
             } else {
-                call.respondText("Universe already stopped", ContentType.Text.Plain, HttpStatusCode.OK)
+                call.respondText(
+                    "Universe already stopped",
+                    ContentType.Text.Plain,
+                    HttpStatusCode.OK
+                )
             }
         }
     }
@@ -81,7 +110,11 @@ fun Route.runUniverseRouting(universeServerInternal: UniverseServerInternal) {
             if (successfulInput) {
                 call.respondText("Command input succeed", ContentType.Text.Plain, HttpStatusCode.OK)
             } else {
-                call.respondText("Command input fail", ContentType.Text.Plain, HttpStatusCode.NotAcceptable)
+                call.respondText(
+                    "Command input fail",
+                    ContentType.Text.Plain,
+                    HttpStatusCode.NotAcceptable
+                )
             }
         }
     }
@@ -90,7 +123,10 @@ fun Route.runUniverseRouting(universeServerInternal: UniverseServerInternal) {
     route("/run/view") {
         get {
             val universeData3DMessage: UniverseData3DMessage = call.receive()
-            call.respond(status = HttpStatusCode.OK, universeServerInternal.getUniverseData3D(universeData3DMessage))
+            call.respond(
+                status = HttpStatusCode.OK,
+                universeServerInternal.getUniverseData3D(universeData3DMessage)
+            )
         }
     }
 
@@ -102,7 +138,11 @@ fun Route.runUniverseRouting(universeServerInternal: UniverseServerInternal) {
                 universeServerInternal.isServerWaitingInput.set(false)
                 call.respondText("Stop waiting success", ContentType.Text.Plain, HttpStatusCode.OK)
             } else {
-                call.respondText("Stop waiting fail, please use the correct admin password", ContentType.Text.Plain, HttpStatusCode.Unauthorized)
+                call.respondText(
+                    "Stop waiting fail, please use the correct admin password",
+                    ContentType.Text.Plain,
+                    HttpStatusCode.Unauthorized
+                )
             }
         }
     }
@@ -111,7 +151,10 @@ fun Route.runUniverseRouting(universeServerInternal: UniverseServerInternal) {
     route("/run/dead") {
         get {
             val checkIsPlayerDeadMessage: CheckIsPlayerDeadMessage = call.receive()
-            call.respond(status = HttpStatusCode.OK, universeServerInternal.isPlayerDead(checkIsPlayerDeadMessage))
+            call.respond(
+                status = HttpStatusCode.OK,
+                universeServerInternal.isPlayerDead(checkIsPlayerDeadMessage)
+            )
         }
     }
 }
