@@ -21,7 +21,7 @@ object UpdateScienceApplicationData : Mechanism() {
         val scienceData: MutablePlayerScienceData =
             mutablePlayerData.playerInternalData.playerScienceData()
 
-        scienceData.playerScienceApplicationData.idealShip =
+        scienceData.playerScienceApplicationData.idealSpaceship =
             computeIdealShip(scienceData.playerKnowledgeData)
 
         return listOf()

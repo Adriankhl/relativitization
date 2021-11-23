@@ -12,7 +12,7 @@ import relativitization.universe.utils.RelativitizationLogManager
 
 @Serializable
 data class ScienceApplicationData(
-    val idealShip: CarrierInternalData = CarrierInternalData(),
+    val idealSpaceship: CarrierInternalData = CarrierInternalData(),
     val idealFuelFactory: FuelFactoryInternalData = FuelFactoryInternalData(),
     val idealResourceFactoryMap: Map<ResourceType, ResourceFactoryInternalData> = mapOf(),
     val fuelLogisticsLossFractionPerDistance: Double = 0.9,
@@ -204,7 +204,7 @@ data class ScienceApplicationData(
 
 @Serializable
 data class MutableScienceApplicationData(
-    var idealShip: MutableCarrierInternalData = MutableCarrierInternalData(),
+    var idealSpaceship: MutableCarrierInternalData = MutableCarrierInternalData(),
     var idealFuelFactory: MutableFuelFactoryInternalData = MutableFuelFactoryInternalData(),
     var idealResourceFactoryMap: MutableMap<ResourceType, MutableResourceFactoryInternalData> = mutableMapOf(),
     var fuelLogisticsLossFractionPerDistance: Double = 0.9,
@@ -213,7 +213,7 @@ data class MutableScienceApplicationData(
     var militaryBaseAttackFactor: Double = 1.0,
     var militaryBaseShieldFactor: Double = 1.0,
 ) {
-    fun newShipInternalData(
+    fun newSpaceshipInternalData(
         qualityLevel: Double
     ): MutableCarrierInternalData {
         val actualQualityLevel: Double = when {
@@ -232,7 +232,7 @@ data class MutableScienceApplicationData(
 
 
         // Reduce core rest mass
-        val coreRestMass: Double = idealShip.coreRestMass * Quadratic.standard(
+        val coreRestMass: Double = idealSpaceship.coreRestMass * Quadratic.standard(
             x = actualQualityLevel,
             xMin = 0.0,
             xMax = 1.0,
@@ -244,7 +244,7 @@ data class MutableScienceApplicationData(
 
         // Reduce the number of employee needed
         val maxMovementDeltaFuelRestMass: Double =
-            idealShip.maxMovementDeltaFuelRestMass * Quadratic.standard(
+            idealSpaceship.maxMovementDeltaFuelRestMass * Quadratic.standard(
                 x = actualQualityLevel,
                 xMin = 0.0,
                 xMax = 1.0,
@@ -255,7 +255,7 @@ data class MutableScienceApplicationData(
             )
 
         // Reduce size
-        val size: Double = idealShip.size * Quadratic.standard(
+        val size: Double = idealSpaceship.size * Quadratic.standard(
             x = actualQualityLevel,
             xMin = 0.0,
             xMax = 1.0,
@@ -266,7 +266,7 @@ data class MutableScienceApplicationData(
         )
 
         // Reduce ideal population
-        val idealPopulation: Double = idealShip.idealPopulation * Quadratic.standard(
+        val idealPopulation: Double = idealSpaceship.idealPopulation * Quadratic.standard(
             x = actualQualityLevel,
             xMin = 0.0,
             xMax = 1.0,
@@ -284,6 +284,18 @@ data class MutableScienceApplicationData(
         )
     }
 
+    /**
+     * The fuel rest mass needed to construct a new space ship
+     */
+    fun newSpaceShipNeededByConstruction(
+        qualityLevel: Double
+    ): Double {
+        val fuelFactoryInternalData: MutableFuelFactoryInternalData = newFuelFactoryInternalData(
+            qualityLevel
+        )
+
+        return fuelFactoryInternalData.maxOutputAmount * 20
+    }
 
     fun newFuelFactoryInternalData(
         qualityLevel: Double
