@@ -16,8 +16,20 @@ object UpdateWarState : Mechanism() {
     ): List<Command> {
         // Parameters
         val peaceTreatyLength: Int = 15
+        val maxWarLength: Int = 100
 
-        val toChangeSet: Set<Int> =
+        // Invalid internal war, is leader or subordinate
+        val invalidWarSet: Set<Int> =
+            mutablePlayerData.playerInternalData.diplomacyData().warData.warStateMap.filter { (id, warState) ->
+                mutablePlayerData.isLeaderOrSelf(id) || mutablePlayerData.isSubOrdinateOrSelf(id)
+            }.keys
+
+        invalidWarSet.forEach {
+            mutablePlayerData.playerInternalData.diplomacyData().warData.warStateMap.remove(it)
+        }
+
+        // Both have accepted peace or this player accepted peace and other war state has disappeared
+        val acceptedPeaceSet: Set<Int> =
             mutablePlayerData.playerInternalData.diplomacyData().warData.warStateMap.filter { (id, warState) ->
                 val otherHasWarState: Boolean =
                     universeData3DAtPlayer.get(id).playerInternalData.diplomacyData().warData.warStateMap.containsKey(
@@ -33,7 +45,33 @@ object UpdateWarState : Mechanism() {
                 (warState.proposePeace) && (!otherHasWarState || otherHasProposePeace)
             }.keys
 
-        toChangeSet.forEach {
+        acceptedPeaceSet.forEach {
+            mutablePlayerData.playerInternalData.diplomacyData().warData.warStateMap.remove(it)
+            mutablePlayerData.playerInternalData.modifierData().diplomacyModifierData.setPeaceTreatyWithLength(
+                it,
+                peaceTreatyLength
+            )
+        }
+
+        // Force the war to stop if the length is too long
+        val warTooLongSet: Set<Int> =
+            mutablePlayerData.playerInternalData.diplomacyData().warData.warStateMap.filter { (id, warState) ->
+                val otherHasWarState: Boolean =
+                    universeData3DAtPlayer.get(id).playerInternalData.diplomacyData().warData.warStateMap.containsKey(
+                        mutablePlayerData.playerId
+                    )
+                val otherWarTooLong: Boolean = if (otherHasWarState) {
+                    val otherStartTime: Int =
+                        universeData3DAtPlayer.get(id).playerInternalData.diplomacyData().warData.warStateMap.getValue(
+                            id
+                        ).startTime
+                    mutablePlayerData.int4D.t - otherStartTime > maxWarLength
+                } else {
+                    true
+                }
+                (mutablePlayerData.int4D.t - warState.startTime > maxWarLength) && (!otherHasWarState || otherWarTooLong)
+            }.keys
+        warTooLongSet.forEach {
             mutablePlayerData.playerInternalData.diplomacyData().warData.warStateMap.remove(it)
             mutablePlayerData.playerInternalData.modifierData().diplomacyModifierData.setPeaceTreatyWithLength(
                 it,
