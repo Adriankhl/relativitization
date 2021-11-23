@@ -157,7 +157,7 @@ data class UniverseData3DAtPlayer(
      * @param range half of the length of the cube
      *
      */
-    fun getNeighbour(range: Int): List<PlayerData> {
+    fun getNeighbourAndSelf(range: Int): List<PlayerData> {
         val currentPlayer: PlayerData = getCurrentPlayerData()
         val int3D: Int3D = currentPlayer.int4D.toInt3D()
 
@@ -170,10 +170,23 @@ data class UniverseData3DAtPlayer(
                     get(Int3D(x, y, z)).values
                 }
             }
-        }.flatten().flatten().flatten().flatten().filter {
+        }.flatten().flatten().flatten().flatten()
+    }
+
+    /**
+     * Get neighbour player within a cube containing current player, excluding self
+     *
+     * @param range half of the length of the cube
+     *
+     */
+    fun getNeighbour(range: Int): List<PlayerData> {
+        val currentPlayer: PlayerData = getCurrentPlayerData()
+        return getNeighbourAndSelf(range).filter {
             it.playerId != currentPlayer.playerId
         }
     }
+
+
 
     /**
      * Get set of player id by Int3D

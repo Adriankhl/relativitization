@@ -18,6 +18,12 @@ object FuelFactoryProduction : Mechanism() {
         universeSettings: UniverseSettings,
         universeGlobalData: UniverseGlobalData
     ): List<Command> {
+        // Parameters
+        // max fuel produced per cube in space, prevent unlimited fuel and population
+        val maxFuelPerCube: Double = 1E9
+
+        universeData3DAtPlayer.getNeighbour()
+
         val gamma: Double = Relativistic.gamma(
             universeData3DAtPlayer.getCurrentPlayerData().velocity,
             universeSettings.speedOfLight
