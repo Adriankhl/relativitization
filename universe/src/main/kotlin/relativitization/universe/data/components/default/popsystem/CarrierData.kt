@@ -1,6 +1,8 @@
 package relativitization.universe.data.components.default.popsystem
 
 import kotlinx.serialization.Serializable
+import relativitization.universe.data.components.default.popsystem.pop.AllPopData
+import relativitization.universe.data.components.default.popsystem.pop.MutableAllPopData
 
 @Serializable
 data class CarrierData(
@@ -9,7 +11,7 @@ data class CarrierData(
     val size: Double = 100.0,
     val idealPopulation: Double = 100.0,
     val carrierType: CarrierType = CarrierType.SPACESHIP,
-    val allPopData: relativitization.universe.data.components.default.popsystem.pop.AllPopData = relativitization.universe.data.components.default.popsystem.pop.AllPopData(),
+    val allPopData: AllPopData = AllPopData(),
 )
 
 @Serializable
@@ -19,7 +21,7 @@ data class MutableCarrierData(
     var size: Double = 100.0,
     var idealPopulation: Double = 100.0,
     var carrierType: CarrierType = CarrierType.SPACESHIP,
-    var allPopData: relativitization.universe.data.components.default.popsystem.pop.MutableAllPopData = relativitization.universe.data.components.default.popsystem.pop.MutableAllPopData(),
+    var allPopData: MutableAllPopData = MutableAllPopData(),
 )
 
 enum class CarrierType {

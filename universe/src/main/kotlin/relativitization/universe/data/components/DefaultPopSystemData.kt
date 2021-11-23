@@ -2,6 +2,7 @@ package relativitization.universe.data.components
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import relativitization.universe.data.components.default.popsystem.CarrierData
 import relativitization.universe.data.components.default.popsystem.CarrierType
 import relativitization.universe.data.components.default.popsystem.MutableCarrierData
 import relativitization.universe.data.components.default.popsystem.pop.PopType
@@ -11,7 +12,7 @@ import kotlin.random.Random
 @Serializable
 @SerialName("PopSystemData")
 data class PopSystemData(
-    val carrierDataMap: Map<Int, relativitization.universe.data.components.default.popsystem.CarrierData> = mapOf(),
+    val carrierDataMap: Map<Int, CarrierData> = mapOf(),
 ) : DefaultPlayerDataComponent() {
     fun totalCoreRestMass(): Double {
         return carrierDataMap.values.sumOf { it.coreRestMass }
