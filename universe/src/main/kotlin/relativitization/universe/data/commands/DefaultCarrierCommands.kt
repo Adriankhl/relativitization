@@ -4,12 +4,16 @@ import kotlinx.serialization.Serializable
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.components.default.physics.Int4D
+import relativitization.universe.data.components.default.popsystem.CarrierType
+import relativitization.universe.data.components.default.popsystem.MutableCarrierData
+import relativitization.universe.data.components.default.popsystem.MutableCarrierInternalData
+import relativitization.universe.data.components.default.popsystem.pop.labourer.factory.MutableResourceFactoryInternalData
 import relativitization.universe.utils.I18NString
 import relativitization.universe.utils.IntString
 import relativitization.universe.utils.RealString
 
 /**
- * Build a new carrier locally
+ * Build a new carrier locally, can only send to self
  */
 @Serializable
 data class BuildLocalCarrierCommands(
@@ -32,7 +36,7 @@ data class BuildLocalCarrierCommands(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): CanSendCheckMessage {
-        val isSelf: Boolean = playerData.playerId == fromId
+        val isSelf: Boolean = playerData.playerId == toId
         val isSelfI18String: I18NString = if (isSelf) {
             I18NString("")
         } else {
@@ -45,13 +49,15 @@ data class BuildLocalCarrierCommands(
             )
         val hasFuel: Boolean =
             playerData.playerInternalData.physicsData().fuelRestMassData.production > requiredFuel
+        val hasFuelI18String: I18NString = I18NString("Not enough fuel")
 
 
         return CanSendCheckMessage(
-            isSelf,
+            isSelf && hasFuel,
             I18NString.combine(
                 listOf(
-                    isSelfI18String
+                    isSelfI18String,
+                    hasFuelI18String
                 )
             )
         )
@@ -61,10 +67,35 @@ data class BuildLocalCarrierCommands(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): Boolean {
-        TODO("Not yet implemented")
+        val isSelf: Boolean = playerData.playerId == fromId
+        val requiredFuel: Double =
+            playerData.playerInternalData.playerScienceData().playerScienceApplicationData.newSpaceshipFuelNeededByConstruction(
+                qualityLevel = qualityLevel
+            )
+        val hasFuel: Boolean =
+            playerData.playerInternalData.physicsData().fuelRestMassData.production > requiredFuel
+
+        return isSelf && hasFuel
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
-        TODO("Not yet implemented")
+
+        val newCarrierInternalData: MutableCarrierInternalData =
+            playerData.playerInternalData.playerScienceData().playerScienceApplicationData.newSpaceshipInternalData(
+                qualityLevel = qualityLevel
+            )
+        val newCarrier: MutableCarrierData = MutableCarrierData(
+            carrierType = CarrierType.SPACESHIP,
+            carrierInternalData = newCarrierInternalData
+        )
+
+        val requiredFuel: Double =
+            playerData.playerInternalData.playerScienceData().playerScienceApplicationData.newSpaceshipFuelNeededByConstruction(
+                qualityLevel = qualityLevel
+            )
+
+        playerData.playerInternalData.physicsData().fuelRestMassData.production -= requiredFuel
+
+        playerData.playerInternalData.popSystemData().addCarrier(newCarrier)
     }
 }
