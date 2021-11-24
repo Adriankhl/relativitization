@@ -5,3 +5,6 @@
 * basicResearchId
 * appliedResearchId
 * factory map key
+* export center map key
+* institute map key
+* laboratory map key
