@@ -1,27 +1,16 @@
-# Basic
-* Fuel: Factory can produce fuel, but it is stored in PhysicsData, the Fuel in EconomyData is
-only for convenience in intermediate processes.
+# Fuel
+* Fuel is used for all types of production, and it is distinct from other resources
 
-# Raw
+# Primary resource
 * Plant
 * Animal
 * Metal
+* Plastic
 
-# Intermediate
-* Electronic
-* Construction material
-* Machine element
-* Optical element
-
-# Final
-* Robot
-* Laser
-* Medicine
-* Transportation
-* Ammunition
-* Cloth
-* Food
-* Household good
-* Software
-* Entertainment
-* Research equipment
+# Secondary, and its dependency on primary resource
+* Food: animal, plant
+* Cloth: animal, plastic
+* Research equipment: animal, metal
+* Household good: plant, plastic
+* Medicine: plant, metal
+* Ammunition: metal, plastic

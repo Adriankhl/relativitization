@@ -10,21 +10,14 @@ enum class ResourceType(val value: String) {
     PLANT("Plant"), // Raw material
     ANIMAL("Animal"),
     METAL("Metal"),
-    ELECTRONIC("Electrical equipment"), // Intermediate material
-    MACHINE_ELEMENT("Machine element"),
-    CONSTRUCTION_MATERIAL("Construction material"),
-    OPTICAL_ELEMENT("Optical element"),
+    PLASTIC("Plastic"),
     FOOD("Food"), // Final product
     CLOTH("Cloth"),
     HOUSEHOLD_GOOD("Household good"),
-    ENTERTAINMENT("Entertainment"),
-    SOFTWARE("Software"),
     RESEARCH_EQUIPMENT("Research equipment"),
     MEDICINE("Medicine"),
-    TRANSPORTATION("Transportation"),
     AMMUNITION("Ammunition"),
-    LASER("Laser"),
-    ROBOT("Robot"),
+    ENTERTAINMENT("Entertainment"),
     ;
 
     override fun toString(): String {
