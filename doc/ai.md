@@ -3,7 +3,7 @@
 * Integrating AI for Turn-Based 4X Strategy Game
 
 # Default AI
-* Consist of DecisionData, Reasoner, Option, Consideration, DualUtilityData
-* Reasoner is an option, and contains multiple options
-* Option contains multiple consideration, leaf option contains list of command
-* Consideration check universe 3d data and return DualUtilityData
+* Consist of AINode, Reasoner, DualUtilityOption, DualUtilityConsideration, DualUtilityData
+* Reasoner is an node, and contains multiple sub node
+* DualUtilityOption contains multiple DualUtilityConsideration, return a list of commands
+* DualUtilityConsideration check universe 3D data and return DualUtilityData

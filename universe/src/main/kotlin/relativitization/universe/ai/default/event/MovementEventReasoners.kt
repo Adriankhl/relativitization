@@ -1,8 +1,8 @@
 package relativitization.universe.ai.default.event
 
-import relativitization.universe.ai.default.consideration.HierarchyConsideration
-import relativitization.universe.ai.default.consideration.RelationConsideration
-import relativitization.universe.ai.default.utils.Consideration
+import relativitization.universe.ai.default.consideration.HierarchyDualUtilityConsideration
+import relativitization.universe.ai.default.consideration.RelationDualUtilityConsideration
+import relativitization.universe.ai.default.utils.DualUtilityConsideration
 import relativitization.universe.ai.default.utils.DualUtilityOption
 import relativitization.universe.ai.default.utils.DualUtilityReasoner
 import relativitization.universe.ai.default.utils.PlanState
@@ -68,7 +68,7 @@ class PickMoveToDouble3DEventDualUtilityOption(
     override fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
-    ): List<Consideration> {
+    ): List<DualUtilityConsideration> {
         val movementEventMap: Map<Int, EventData> =
             planDataAtPlayer.universeData3DAtPlayer.getCurrentPlayerData().playerInternalData.eventDataMap.filter {
                 // Filter out MoveToDouble3DEvent
@@ -77,10 +77,10 @@ class PickMoveToDouble3DEventDualUtilityOption(
 
         return if (movementEventMap.containsKey(keepEventIndex)) {
             listOf(
-                RelationConsideration(
+                RelationDualUtilityConsideration(
                     playerId = movementEventMap.getValue(keepEventIndex).event.fromId,
                 ),
-                HierarchyConsideration(
+                HierarchyDualUtilityConsideration(
                     playerId = movementEventMap.getValue(keepEventIndex).event.fromId,
                 )
             )

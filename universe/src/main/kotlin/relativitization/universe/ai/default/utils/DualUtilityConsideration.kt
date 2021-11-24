@@ -2,7 +2,7 @@ package relativitization.universe.ai.default.utils
 
 import relativitization.universe.data.PlanDataAtPlayer
 
-interface Consideration {
+interface DualUtilityConsideration {
     fun getDualUtilityData(
         planDataAtPlayer: PlanDataAtPlayer, planState: PlanState
     ): DualUtilityData

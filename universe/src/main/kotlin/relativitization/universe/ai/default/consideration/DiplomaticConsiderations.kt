@@ -1,6 +1,6 @@
 package relativitization.universe.ai.default.consideration
 
-import relativitization.universe.ai.default.utils.Consideration
+import relativitization.universe.ai.default.utils.DualUtilityConsideration
 import relativitization.universe.ai.default.utils.DualUtilityData
 import relativitization.universe.ai.default.utils.PlanState
 import relativitization.universe.data.PlanDataAtPlayer
@@ -16,12 +16,12 @@ import kotlin.math.exp
  * @property multiplier the multiplier of the DualUtilityData
  * @property normalizeRelation the normalization to scale the bonus of relation
  */
-class RelationConsideration(
+class RelationDualUtilityConsideration(
     val playerId: Int,
     private val rank: Int = 1,
     private val multiplier: Double = 1.0,
     private val normalizeRelation: Double = 100.0,
-) : Consideration {
+) : DualUtilityConsideration {
 
     override fun getDualUtilityData(
         planDataAtPlayer: PlanDataAtPlayer,
@@ -50,7 +50,7 @@ class RelationConsideration(
  * @property otherRank the rank of the DualUtilityData if the player has no hierarchical relation
  * @property multiplier the multiplier of the DualUtilityData
  */
-class HierarchyConsideration(
+class HierarchyDualUtilityConsideration(
     val playerId: Int,
     private val selfRank: Int = 4,
     private val directLeaderRank: Int = 3,
@@ -60,7 +60,7 @@ class HierarchyConsideration(
     private val otherRank: Int = 1,
     private val multiplier: Double = 1.0,
     private val bonus: Double = 1.0,
-) : Consideration {
+) : DualUtilityConsideration {
 
     override fun getDualUtilityData(
         planDataAtPlayer: PlanDataAtPlayer,

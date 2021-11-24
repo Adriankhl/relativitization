@@ -7,7 +7,7 @@ import relativitization.universe.utils.RelativitizationLogManager
 abstract class DualUtilityOption : AINode {
     abstract fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer, planState: PlanState
-    ): List<Consideration>
+    ): List<DualUtilityConsideration>
 
     protected abstract fun getCommandList(
         planDataAtPlayer: PlanDataAtPlayer, planState: PlanState
@@ -73,7 +73,7 @@ class EmptyDualUtilityOption : DualUtilityOption() {
     override fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
-    ): List<Consideration> = listOf()
+    ): List<DualUtilityConsideration> = listOf()
 
     override fun getCommandList(
         planDataAtPlayer: PlanDataAtPlayer,
