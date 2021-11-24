@@ -36,7 +36,7 @@ abstract class DualUtilityReasoner : Reasoner() {
     abstract fun getOptionList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
-    ): List<Option>
+    ): List<DualUtilityOption>
 
     protected open fun updateStatus(
         planDataAtPlayer: PlanDataAtPlayer, planState: PlanState
@@ -53,37 +53,37 @@ abstract class DualUtilityReasoner : Reasoner() {
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
         logger.debug("${this::class.java.simpleName} (DualUtilityReasoner) updating data")
 
-        val selectedOption: Option = selectOption(planDataAtPlayer, planState)
+        val selectedDualUtilityOption: DualUtilityOption = selectOption(planDataAtPlayer, planState)
 
-        selectedOption.updatePlan(planDataAtPlayer, planState)
+        selectedDualUtilityOption.updatePlan(planDataAtPlayer, planState)
 
         updateStatus(planDataAtPlayer, planState)
     }
 
-    private fun selectOption(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState): Option {
-        val optionList: List<Option> = getOptionList(planDataAtPlayer, planState)
-        val optionWeightMap: Map<Option, Double> = optionList.associateWith {
+    private fun selectOption(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState): DualUtilityOption {
+        val dualUtilityOptionList: List<DualUtilityOption> = getOptionList(planDataAtPlayer, planState)
+        val dualUtilityOptionWeightMap: Map<DualUtilityOption, Double> = dualUtilityOptionList.associateWith {
             it.getWeight(planDataAtPlayer, planState)
         }
-        val validOptionWeightMap: Map<Option, Double> = optionWeightMap.filterValues { it > 0.0 }
+        val validDualUtilityOptionWeightMap: Map<DualUtilityOption, Double> = dualUtilityOptionWeightMap.filterValues { it > 0.0 }
 
-        return if (validOptionWeightMap.isNotEmpty()) {
-            val maxRank: Int = validOptionWeightMap.maxOf {
+        return if (validDualUtilityOptionWeightMap.isNotEmpty()) {
+            val maxRank: Int = validDualUtilityOptionWeightMap.maxOf {
                 it.key.getRank(planDataAtPlayer, planState)
             }
 
-            val maxRankValidOptionWeightMap: Map<Option, Double> = validOptionWeightMap.filterKeys {
+            val maxRankValidDualUtilityOptionWeightMap: Map<DualUtilityOption, Double> = validDualUtilityOptionWeightMap.filterKeys {
                 it.getRank(planDataAtPlayer, planState) == maxRank
             }
 
             WeightedReservoir.aRes(
                 1,
-                maxRankValidOptionWeightMap.keys.toList(),
+                maxRankValidDualUtilityOptionWeightMap.keys.toList(),
             ) {
-                maxRankValidOptionWeightMap.getValue(it)
+                maxRankValidDualUtilityOptionWeightMap.getValue(it)
             }.first()
         } else {
-            EmptyOption()
+            EmptyDualUtilityOption()
         }
     }
 

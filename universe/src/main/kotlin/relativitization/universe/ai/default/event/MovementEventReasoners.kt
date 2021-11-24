@@ -4,7 +4,7 @@ import relativitization.universe.ai.default.consideration.HierarchyConsideration
 import relativitization.universe.ai.default.consideration.RelationConsideration
 import relativitization.universe.ai.default.utils.Consideration
 import relativitization.universe.ai.default.utils.DualUtilityReasoner
-import relativitization.universe.ai.default.utils.Option
+import relativitization.universe.ai.default.utils.DualUtilityOption
 import relativitization.universe.ai.default.utils.PlanState
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.commands.Command
@@ -21,7 +21,7 @@ class PickMoveToDouble3DEventReasoner : DualUtilityReasoner() {
     override fun getOptionList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
-    ): List<Option> {
+    ): List<DualUtilityOption> {
         val movementEventKeyList: List<Int> =
             planDataAtPlayer.universeData3DAtPlayer.getCurrentPlayerData(
             ).playerInternalData.eventDataMap.filter {
@@ -30,7 +30,7 @@ class PickMoveToDouble3DEventReasoner : DualUtilityReasoner() {
             }.keys.toList()
 
         return movementEventKeyList.map {
-            PickMoveToDouble3DEventOption(
+            PickMoveToDouble3DEventDualUtilityOption(
                 it,
             )
         }
@@ -40,9 +40,9 @@ class PickMoveToDouble3DEventReasoner : DualUtilityReasoner() {
 /**
  * Cancel all MoveToDouble3D beside event at keepEventIndex
  */
-class PickMoveToDouble3DEventOption(
+class PickMoveToDouble3DEventDualUtilityOption(
     private val keepEventIndex: Int,
-) : Option() {
+) : DualUtilityOption() {
 
     override fun getCommandList(
         planDataAtPlayer: PlanDataAtPlayer,
