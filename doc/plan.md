@@ -34,14 +34,14 @@
 * Export center [x]
 * Basic diplomacy [x]
 * Merge carrier [x]
-* New carrier
+* New carrier [x]
 * New player [x]
 * Basic military: Soldier [x]
 * Sync leader data to subordinate, e.g., enemy [x]
 * Sync economy data to subordinate [x]
 * Stop war after long period of time [x]
 * Adjust attack and export by time dilation [x]
-* Limit fuel produced in a single unit space cube to prevent unlimited population
+* Limit fuel produced in a single unit space cube to prevent unlimited population [x]
 
 # AI TODO List
 * Default AI
