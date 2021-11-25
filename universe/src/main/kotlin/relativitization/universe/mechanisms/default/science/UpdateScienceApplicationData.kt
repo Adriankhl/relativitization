@@ -26,9 +26,6 @@ object UpdateScienceApplicationData : Mechanism() {
         val scienceData: MutablePlayerScienceData =
             mutablePlayerData.playerInternalData.playerScienceData()
 
-        // Remove ideal entertainment factory, the resource should be produced by entertainer directly
-        scienceData.playerScienceApplicationData.idealResourceFactoryMap.remove(ResourceType.ENTERTAINMENT)
-
         // Update ideal ship
         scienceData.playerScienceApplicationData.idealSpaceship =
             computeIdealShip(scienceData.playerKnowledgeData)
@@ -36,6 +33,24 @@ object UpdateScienceApplicationData : Mechanism() {
         // Update ideal fuel factory
         scienceData.playerScienceApplicationData.idealFuelFactory =
             computeIdealFuelFactory(scienceData.playerKnowledgeData)
+
+        // Update all ideal resource factories, ensure loop through all resource type
+        // Entertainment does not have factory, rely on entertainer pop
+        ResourceType.values().forEach {
+            scienceData.playerScienceApplicationData.idealResourceFactoryMap[it] = when(it) {
+                ResourceType.PLANT -> computeIdealPlantFactory(scienceData.playerKnowledgeData)
+                ResourceType.ANIMAL -> TODO()
+                ResourceType.METAL -> TODO()
+                ResourceType.PLASTIC -> TODO()
+                ResourceType.FOOD -> TODO()
+                ResourceType.CLOTH -> TODO()
+                ResourceType.HOUSEHOLD_GOOD -> TODO()
+                ResourceType.RESEARCH_EQUIPMENT -> TODO()
+                ResourceType.MEDICINE -> TODO()
+                ResourceType.AMMUNITION -> TODO()
+                ResourceType.ENTERTAINMENT -> MutableResourceFactoryInternalData()
+            }
+        }
 
         return listOf()
     }
