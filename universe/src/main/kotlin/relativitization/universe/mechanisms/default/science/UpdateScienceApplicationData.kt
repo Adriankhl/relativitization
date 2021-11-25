@@ -87,6 +87,12 @@ object UpdateScienceApplicationData : Mechanism() {
     }
 
     fun computeIdealPlantFactory(mutableKnowledgeData: MutableKnowledgeData): MutableResourceFactoryInternalData {
+        val maxOutputResourceQualityData: MutableResourceQualityData = MutableResourceQualityData(
+            tanh(mutableKnowledgeData.appliedResearchData.environmentalTechnologyLevel),
+            0.0,
+            0.0
+        )
+
         return MutableResourceFactoryInternalData(
             outputResource = ResourceType.PLANT,
             maxOutputResourceQualityData = MutableResourceQualityData(),

@@ -272,8 +272,8 @@ data class MutableScienceApplicationData(
             xMax = 1.0,
             yMin = 0.2,
             yMax = 1.0,
-            increasing = false,
-            accelerate = true
+            increasing = true,
+            accelerate = false
         )
 
         return MutableCarrierInternalData(
