@@ -55,7 +55,7 @@ object DefaultMechanismList : MechanismList() {
         UpdateTaxRate,
         UpdatePoliticsData,
         SyncPlayerScienceData,
-        UpdateScienceApplicationData,
+        //UpdateScienceApplicationData,
         UpdateModifierTime,
     )
 }
