@@ -13,6 +13,7 @@ import relativitization.universe.data.components.default.popsystem.pop.labourer.
 import relativitization.universe.data.components.default.science.knowledge.MutableKnowledgeData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.mechanisms.Mechanism
+import kotlin.math.log2
 import kotlin.math.tanh
 
 object UpdateScienceApplicationData : Mechanism() {
@@ -37,7 +38,7 @@ object UpdateScienceApplicationData : Mechanism() {
         // Update all ideal resource factories, ensure loop through all resource type
         // Entertainment does not have factory, rely on entertainer pop
         ResourceType.values().forEach {
-            scienceData.playerScienceApplicationData.idealResourceFactoryMap[it] = when(it) {
+            scienceData.playerScienceApplicationData.idealResourceFactoryMap[it] = when (it) {
                 ResourceType.PLANT -> computeIdealPlantFactory(scienceData.playerKnowledgeData)
                 ResourceType.ANIMAL -> TODO()
                 ResourceType.METAL -> TODO()
@@ -75,9 +76,10 @@ object UpdateScienceApplicationData : Mechanism() {
 
     fun computeIdealFuelFactory(mutableKnowledgeData: MutableKnowledgeData): MutableFuelFactoryInternalData {
 
-        val maxOutputAmount: Double = mutableKnowledgeData.appliedResearchData.energyTechnologyLevel * 1E6
+        val maxOutputAmount: Double = 1E6
 
-        val maxNumEmployee: Double = maxOutputAmount
+        val maxNumEmployee: Double =
+            maxOutputAmount / log2(mutableKnowledgeData.appliedResearchData.energyTechnologyLevel / 100.0 + 2.0)
 
         return MutableFuelFactoryInternalData(
             maxOutputAmount = maxOutputAmount,
