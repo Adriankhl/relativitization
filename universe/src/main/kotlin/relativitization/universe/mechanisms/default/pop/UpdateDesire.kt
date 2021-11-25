@@ -264,11 +264,11 @@ object UpdateDesire : Mechanism() {
         val overallFactor: Double = amountFactor * qualityFactor
 
         // Compute the change of satisfaction by piecewise function
-        val deltaSatisfaction: Double = Piecewise.quadLogistic(
+        val deltaSatisfaction: Double = Piecewise.quadTanh(
             x = overallFactor,
             yMin = -satisfactionMaxDecreaseFactor * originalSatisfaction,
             yMax = satisfactionMaxIncreaseDelta,
-            logisticSlope1 = 1.0
+            tanhSlope1 = 1.0
         )
 
         mutableCommonPopData.satisfaction += (deltaSatisfaction / gamma)

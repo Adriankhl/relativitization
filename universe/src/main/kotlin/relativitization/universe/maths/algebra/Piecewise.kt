@@ -1,19 +1,21 @@
 package relativitization.universe.maths.algebra
 
+import kotlin.math.tanh
+
 object Piecewise {
     /**
-     * Combining quadratic and logistic function
+     * Combining quadratic and hyperbolic tan function
      *
      * @param x x value from 0 to infinity
      * @param yMin minimum value of y, should be negative
      * @param yMax maximum value of y, should be positive
-     * @param logisticSlope1 slope of the logistic curve at x = 1, default having a smooth derivative
+     * @param tanhSlope1 slope of the logistic curve at x = 1, default having a smooth derivative
      */
-    fun quadLogistic(
+    fun quadTanh(
         x: Double,
         yMin: Double,
         yMax: Double,
-        logisticSlope1: Double = -yMin * 2.0
+        tanhSlope1: Double = -yMin * 2.0
     ): Double = when {
         x < 0.0 -> 0.0
         x < 1.0 -> Quadratic.standard(
@@ -25,10 +27,6 @@ object Piecewise {
             increasing = true,
             accelerate = true
         )
-        else -> Logistic.scaledLogistic(
-            x = x - 1.0,
-            slope0 = logisticSlope1,
-            yMax = yMax * 2.0,
-        ) - yMax
+        else -> tanh((x - 1.0) * tanhSlope1 / yMax) * yMax
     }
 }
