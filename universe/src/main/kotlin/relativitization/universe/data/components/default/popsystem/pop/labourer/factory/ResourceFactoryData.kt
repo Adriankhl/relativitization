@@ -22,7 +22,7 @@ import kotlin.math.pow
 data class ResourceFactoryData(
     val ownerPlayerId: Int = -1,
     val resourceFactoryInternalData: ResourceFactoryInternalData = ResourceFactoryInternalData(),
-    val numBuilding: Int = 1,
+    val numBuilding: Double = 1.0,
     val isOpened: Boolean = true,
     val storedFuelRestMass: Double = 0.0,
     val lastOutputAmount: Double = 0.0,
@@ -41,7 +41,7 @@ data class ResourceFactoryData(
 data class MutableResourceFactoryData(
     var ownerPlayerId: Int = -1,
     var resourceFactoryInternalData: MutableResourceFactoryInternalData = MutableResourceFactoryInternalData(),
-    var numBuilding: Int = 1,
+    var numBuilding: Double = 1.0,
     var isOpened: Boolean = true,
     var storedFuelRestMass: Double = 0.0,
     var lastOutputAmount: Double = 0.0,

@@ -166,7 +166,7 @@ data class BuildForeignFuelFactoryCommand(
             MutableFuelFactoryData(
                 ownerPlayerId = ownerId,
                 fuelFactoryInternalData = DataSerializer.copy(fuelFactoryInternalData),
-                numBuilding = 1,
+                numBuilding = 1.0,
                 isOpened = true,
                 storedFuelRestMass = storedFuelRestMass,
                 lastOutputAmount = 0.0,
@@ -341,7 +341,7 @@ data class BuildForeignResourceFactoryCommand(
             MutableResourceFactoryData(
                 ownerPlayerId = ownerId,
                 resourceFactoryInternalData = DataSerializer.copy(resourceFactoryInternalData),
-                numBuilding = 1,
+                numBuilding = 1.0,
                 isOpened = true,
                 lastOutputAmount = 0.0,
                 lastInputAmountMap = mutableMapOf(),
@@ -470,7 +470,7 @@ data class BuildLocalFuelFactoryCommand(
             MutableFuelFactoryData(
                 ownerPlayerId = toId,
                 fuelFactoryInternalData = newFuelFactoryInternalData,
-                numBuilding = 1,
+                numBuilding = 1.0,
                 isOpened = true,
                 storedFuelRestMass = 0.0,
                 lastOutputAmount = 0.0,
@@ -604,7 +604,7 @@ data class BuildLocalResourceFactoryCommand(
             MutableResourceFactoryData(
                 ownerPlayerId = toId,
                 resourceFactoryInternalData = newResourceFactoryInternalData,
-                numBuilding = 1,
+                numBuilding = 1.0,
                 isOpened = true,
                 lastOutputAmount = 0.0,
                 lastInputAmountMap = mutableMapOf(),

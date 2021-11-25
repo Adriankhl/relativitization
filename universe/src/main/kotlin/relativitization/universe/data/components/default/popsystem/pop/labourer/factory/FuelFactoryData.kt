@@ -18,7 +18,7 @@ import kotlin.math.pow
 data class FuelFactoryData(
     val ownerPlayerId: Int = -1,
     val fuelFactoryInternalData: FuelFactoryInternalData = FuelFactoryInternalData(),
-    val numBuilding: Int = 1,
+    val numBuilding: Double = 1.0,
     val isOpened: Boolean = true,
     val storedFuelRestMass: Double = 0.0,
     val lastOutputAmount: Double = 0.0,
@@ -29,7 +29,7 @@ data class FuelFactoryData(
 data class MutableFuelFactoryData(
     var ownerPlayerId: Int = -1,
     var fuelFactoryInternalData: MutableFuelFactoryInternalData = MutableFuelFactoryInternalData(),
-    var numBuilding: Int = 1,
+    var numBuilding: Double = 1.0,
     var isOpened: Boolean = true,
     var storedFuelRestMass: Double = 0.0,
     var lastOutputAmount: Double = 0.0,

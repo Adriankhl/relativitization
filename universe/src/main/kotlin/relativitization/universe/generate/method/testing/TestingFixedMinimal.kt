@@ -259,7 +259,7 @@ object TestingFixedMinimal : TestingGenerateUniverseMethod() {
                 maxNumEmployee = 100.0,
                 size = 3.0,
             ),
-            numBuilding = 1,
+            numBuilding = 1.0,
             isOpened = true,
             storedFuelRestMass = 0.0,
             lastOutputAmount = 0.0,
