@@ -13,7 +13,6 @@ import relativitization.universe.mechanisms.default.logistics.SendTax
 import relativitization.universe.mechanisms.default.military.UpdateMilitaryBase
 import relativitization.universe.mechanisms.default.modifier.UpdateModifierTime
 import relativitization.universe.mechanisms.default.politics.MergePlayer
-import relativitization.universe.mechanisms.default.politics.SyncHierarchy
 import relativitization.universe.mechanisms.default.politics.UpdatePoliticsData
 import relativitization.universe.mechanisms.default.pop.*
 import relativitization.universe.mechanisms.default.production.BaseStellarFuelProduction
@@ -22,9 +21,10 @@ import relativitization.universe.mechanisms.default.production.FuelFactoryProduc
 import relativitization.universe.mechanisms.default.production.ResourceFactoryProduction
 import relativitization.universe.mechanisms.default.research.DiscoverKnowledge
 import relativitization.universe.mechanisms.default.research.KnowledgeDiffusion
-import relativitization.universe.mechanisms.default.science.SyncPlayerScienceData
 import relativitization.universe.mechanisms.default.science.UpdateScienceApplicationData
+import relativitization.universe.mechanisms.default.sync.SyncHierarchy
 import relativitization.universe.mechanisms.default.sync.SyncPlayerData
+import relativitization.universe.mechanisms.default.sync.SyncPlayerScienceData
 
 object DefaultMechanismList : MechanismList() {
     override val mechanismList: List<Mechanism> = listOf(
