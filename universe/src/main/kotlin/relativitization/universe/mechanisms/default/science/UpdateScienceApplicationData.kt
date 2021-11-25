@@ -56,12 +56,14 @@ object UpdateScienceApplicationData : Mechanism() {
 
     fun computeIdealFuelFactory(mutableKnowledgeData: MutableKnowledgeData): MutableFuelFactoryInternalData {
 
+        val maxOutputAmount: Double = mutableKnowledgeData.appliedResearchData.energyTechnologyLevel * 1E6
 
+        val maxNumEmployee: Double = maxOutputAmount
 
         return MutableFuelFactoryInternalData(
-            maxOutputAmount = 0.0,
-            maxNumEmployee = 0.0,
-            size = 0.0
+            maxOutputAmount = maxOutputAmount,
+            maxNumEmployee = maxNumEmployee,
+            size = 100.0
         )
     }
 }
