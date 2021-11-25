@@ -7,9 +7,9 @@ import relativitization.universe.data.commands.Command
 import relativitization.universe.data.components.MutablePlayerScienceData
 import relativitization.universe.data.components.default.economy.ResourceType
 import relativitization.universe.data.components.default.popsystem.MutableCarrierInternalData
+import relativitization.universe.data.components.default.popsystem.pop.labourer.factory.MutableFuelFactoryInternalData
 import relativitization.universe.data.components.default.science.knowledge.MutableKnowledgeData
 import relativitization.universe.data.global.UniverseGlobalData
-import relativitization.universe.maths.algebra.Logistic
 import relativitization.universe.mechanisms.Mechanism
 import kotlin.math.tanh
 
@@ -30,14 +30,18 @@ object UpdateScienceApplicationData : Mechanism() {
         scienceData.playerScienceApplicationData.idealSpaceship =
             computeIdealShip(scienceData.playerKnowledgeData)
 
+        scienceData.playerScienceApplicationData.idealFuelFactory =
+            computeIdealFuelFactory(scienceData.playerKnowledgeData)
+
         return listOf()
     }
 
     fun computeIdealShip(mutableKnowledgeData: MutableKnowledgeData): MutableCarrierInternalData {
 
-        val coreRestMass: Double = mutableKnowledgeData.appliedResearchData.architectureTechnologyLevel * 1E6
+        val coreRestMass: Double =
+            mutableKnowledgeData.appliedResearchData.architectureTechnologyLevel * 1E6
 
-        val maxMovementDeltaFuelRestMass : Double = coreRestMass *
+        val maxMovementDeltaFuelRestMass: Double = coreRestMass *
                 tanh(mutableKnowledgeData.appliedResearchData.energyTechnologyLevel / 100.0)
 
         val idealPopulation: Double = coreRestMass
@@ -47,6 +51,17 @@ object UpdateScienceApplicationData : Mechanism() {
             maxMovementDeltaFuelRestMass = maxMovementDeltaFuelRestMass,
             size = 100.0,
             idealPopulation = idealPopulation
+        )
+    }
+
+    fun computeIdealFuelFactory(mutableKnowledgeData: MutableKnowledgeData): MutableFuelFactoryInternalData {
+
+
+
+        return MutableFuelFactoryInternalData(
+            maxOutputAmount = 0.0,
+            maxNumEmployee = 0.0,
+            size = 0.0
         )
     }
 }
