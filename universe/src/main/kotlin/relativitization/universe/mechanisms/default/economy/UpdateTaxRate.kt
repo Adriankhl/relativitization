@@ -9,7 +9,7 @@ import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.mechanisms.Mechanism
 
-object SyncTaxRate : Mechanism() {
+object UpdateTaxRate : Mechanism() {
     override fun process(
         mutablePlayerData: MutablePlayerData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,

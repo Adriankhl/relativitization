@@ -10,7 +10,7 @@ import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.mechanisms.Mechanism
 
-object SyncPoliticsData : Mechanism() {
+object UpdatePoliticsData : Mechanism() {
     override fun process(
         mutablePlayerData: MutablePlayerData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,

@@ -5,7 +5,7 @@ import relativitization.universe.mechanisms.default.dead.ClearDeadPlayer
 import relativitization.universe.mechanisms.default.diplomacy.UpdateDiplomaticRelation
 import relativitization.universe.mechanisms.default.diplomacy.UpdateDiplomaticRelationState
 import relativitization.universe.mechanisms.default.diplomacy.UpdateWarState
-import relativitization.universe.mechanisms.default.economy.SyncTaxRate
+import relativitization.universe.mechanisms.default.economy.UpdateTaxRate
 import relativitization.universe.mechanisms.default.events.AutoEventCollection
 import relativitization.universe.mechanisms.default.events.ProcessEvents
 import relativitization.universe.mechanisms.default.logistics.ExportResource
@@ -14,7 +14,7 @@ import relativitization.universe.mechanisms.default.military.UpdateMilitaryBase
 import relativitization.universe.mechanisms.default.modifier.UpdateModifierTime
 import relativitization.universe.mechanisms.default.politics.MergePlayer
 import relativitization.universe.mechanisms.default.politics.SyncHierarchy
-import relativitization.universe.mechanisms.default.politics.SyncPoliticsData
+import relativitization.universe.mechanisms.default.politics.UpdatePoliticsData
 import relativitization.universe.mechanisms.default.pop.*
 import relativitization.universe.mechanisms.default.production.BaseStellarFuelProduction
 import relativitization.universe.mechanisms.default.production.EntertainmentProduction
@@ -52,8 +52,8 @@ object DefaultMechanismList : MechanismList() {
         SyncHierarchy,
         AutoCombat,
         MergePlayer,
-        SyncTaxRate,
-        SyncPoliticsData,
+        UpdateTaxRate,
+        UpdatePoliticsData,
         SyncPlayerScienceData,
         UpdateScienceApplicationData,
         UpdateModifierTime,
