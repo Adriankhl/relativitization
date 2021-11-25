@@ -117,7 +117,7 @@ data class MutablePopSystemData(
             coreRestMass = coreRestMass,
             maxMovementDeltaFuelRestMass = 0.0,
             size = 100.0,
-            idealPopulation = coreRestMass / 1E10
+            idealPopulation = coreRestMass / 1E20
         )
         val newCarrier =
             MutableCarrierData(
@@ -134,7 +134,7 @@ data class MutablePopSystemData(
             coreRestMass = coreRestMass,
             maxMovementDeltaFuelRestMass = 0.0,
             size = 100.0,
-            idealPopulation = coreRestMass / 1E10
+            idealPopulation = coreRestMass / 1E20
         )
         val newCarrier =
             MutableCarrierData(
