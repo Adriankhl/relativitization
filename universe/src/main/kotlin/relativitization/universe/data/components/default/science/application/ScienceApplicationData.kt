@@ -314,44 +314,10 @@ data class MutableScienceApplicationData(
             }
         }
 
-
-        // Max increase to 5 times
-        val maxOutputAmount: Double = idealFuelFactory.maxOutputAmount * Quadratic.standard(
-            x = actualQualityLevel,
-            xMin = 0.0,
-            xMax = 1.0,
-            yMin = 0.2,
-            yMax = 1.0,
-            increasing = true,
-            accelerate = false
-        )
-
-        // Reduce the number of employee needed
-        val maxNumEmployee: Double = idealFuelFactory.maxNumEmployee * Quadratic.standard(
-            x = actualQualityLevel,
-            xMin = 0.0,
-            xMax = 1.0,
-            yMin = 0.2,
-            yMax = 1.0,
-            increasing = true,
-            accelerate = true
-        )
-
-        // Reduce size
-        val size: Double = idealFuelFactory.size * Quadratic.standard(
-            x = actualQualityLevel,
-            xMin = 0.0,
-            xMax = 1.0,
-            yMin = 0.2,
-            yMax = 1.0,
-            increasing = true,
-            accelerate = true
-        )
-
         return MutableFuelFactoryInternalData(
-            maxOutputAmount = maxOutputAmount,
-            maxNumEmployee = maxNumEmployee,
-            size = size
+            maxOutputAmount = idealFuelFactory.maxOutputAmount * actualQualityLevel,
+            maxNumEmployee = idealFuelFactory.maxNumEmployee * actualQualityLevel,
+            size = idealFuelFactory.size * actualQualityLevel
         )
     }
 
