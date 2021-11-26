@@ -47,9 +47,9 @@ object UpdateScienceApplicationData : Mechanism() {
                 ResourceType.FOOD -> computeIdealFoodFactory(scienceData.playerKnowledgeData)
                 ResourceType.CLOTH -> computeIdealClothFactory(scienceData.playerKnowledgeData)
                 ResourceType.HOUSEHOLD_GOOD -> computeIdealHouseholdGoodFactory(scienceData.playerKnowledgeData)
-                ResourceType.RESEARCH_EQUIPMENT -> TODO()
-                ResourceType.MEDICINE -> TODO()
-                ResourceType.AMMUNITION -> TODO()
+                ResourceType.RESEARCH_EQUIPMENT -> computeIdealResearchEquipmentFactory(scienceData.playerKnowledgeData)
+                ResourceType.MEDICINE -> computeIdealMedicineFactory(scienceData.playerKnowledgeData)
+                ResourceType.AMMUNITION -> computeIdealAmmunitionFactory(scienceData.playerKnowledgeData)
                 ResourceType.ENTERTAINMENT -> MutableResourceFactoryInternalData()
             }
         }
@@ -334,6 +334,147 @@ object UpdateScienceApplicationData : Mechanism() {
 
         return MutableResourceFactoryInternalData(
             outputResource = ResourceType.HOUSEHOLD_GOOD,
+            maxOutputResourceQualityData = maxOutputResourceQualityData,
+            maxOutputAmount = maxOutputAmount,
+            inputResourceMap = inputResourceMap,
+            fuelRestMassConsumptionRate = fuelRestMassConsumptionRate,
+            maxNumEmployee = maxNumEmployee,
+            size = 100.0,
+        )
+    }
+
+    fun computeIdealResearchEquipmentFactory(mutableKnowledgeData: MutableKnowledgeData): MutableResourceFactoryInternalData {
+        val maxOutputResourceQualityData: MutableResourceQualityData = MutableResourceQualityData(
+            quality1 = log2(mutableKnowledgeData.appliedResearchData.materialTechnologyLevel),
+            quality2 = 0.0,
+            quality3 = 0.0
+        )
+
+        val maxOutputAmount: Double = 1E6
+
+        val fuelRestMassConsumptionRate = 0.1 * maxOutputAmount / log2(
+            mutableKnowledgeData.appliedResearchData.materialTechnologyLevel / 100.0 + 2.0
+        )
+
+        val maxNumEmployee: Double = maxOutputAmount / log2(
+            mutableKnowledgeData.appliedResearchData.materialTechnologyLevel / 100.0 + 2.0
+        )
+
+        val inputResourceMap: MutableMap<ResourceType, MutableInputResourceData> = mutableMapOf(
+            ResourceType.ANIMAL to MutableInputResourceData(
+                maxInputResourceQualityData = MutableResourceQualityData(
+                    quality1 = log2(mutableKnowledgeData.appliedResearchData.materialTechnologyLevel),
+                    quality2 = 0.0,
+                    quality3 = 0.0,
+                ),
+                amountPerOutputUnit = 0.5
+            ),
+            ResourceType.METAL to MutableInputResourceData(
+                maxInputResourceQualityData = MutableResourceQualityData(
+                    quality1 = log2(mutableKnowledgeData.appliedResearchData.materialTechnologyLevel),
+                    quality2 = 0.0,
+                    quality3 = 0.0,
+                ),
+                amountPerOutputUnit = 0.5
+            ),
+        )
+
+        return MutableResourceFactoryInternalData(
+            outputResource = ResourceType.RESEARCH_EQUIPMENT,
+            maxOutputResourceQualityData = maxOutputResourceQualityData,
+            maxOutputAmount = maxOutputAmount,
+            inputResourceMap = inputResourceMap,
+            fuelRestMassConsumptionRate = fuelRestMassConsumptionRate,
+            maxNumEmployee = maxNumEmployee,
+            size = 100.0,
+        )
+    }
+
+    fun computeIdealMedicineFactory(mutableKnowledgeData: MutableKnowledgeData): MutableResourceFactoryInternalData {
+        val maxOutputResourceQualityData: MutableResourceQualityData = MutableResourceQualityData(
+            quality1 = log2(mutableKnowledgeData.appliedResearchData.biomedicalTechnologyLevel),
+            quality2 = 0.0,
+            quality3 = 0.0
+        )
+
+        val maxOutputAmount: Double = 1E6
+
+        val fuelRestMassConsumptionRate = 0.1 * maxOutputAmount / log2(
+            mutableKnowledgeData.appliedResearchData.biomedicalTechnologyLevel / 100.0 + 2.0
+        )
+
+        val maxNumEmployee: Double = maxOutputAmount / log2(
+            mutableKnowledgeData.appliedResearchData.biomedicalTechnologyLevel / 100.0 + 2.0
+        )
+
+        val inputResourceMap: MutableMap<ResourceType, MutableInputResourceData> = mutableMapOf(
+            ResourceType.PLANT to MutableInputResourceData(
+                maxInputResourceQualityData = MutableResourceQualityData(
+                    quality1 = log2(mutableKnowledgeData.appliedResearchData.biomedicalTechnologyLevel),
+                    quality2 = 0.0,
+                    quality3 = 0.0,
+                ),
+                amountPerOutputUnit = 0.5
+            ),
+            ResourceType.METAL to MutableInputResourceData(
+                maxInputResourceQualityData = MutableResourceQualityData(
+                    quality1 = log2(mutableKnowledgeData.appliedResearchData.biomedicalTechnologyLevel),
+                    quality2 = 0.0,
+                    quality3 = 0.0,
+                ),
+                amountPerOutputUnit = 0.5
+            ),
+        )
+
+        return MutableResourceFactoryInternalData(
+            outputResource = ResourceType.MEDICINE,
+            maxOutputResourceQualityData = maxOutputResourceQualityData,
+            maxOutputAmount = maxOutputAmount,
+            inputResourceMap = inputResourceMap,
+            fuelRestMassConsumptionRate = fuelRestMassConsumptionRate,
+            maxNumEmployee = maxNumEmployee,
+            size = 100.0,
+        )
+    }
+
+    fun computeIdealAmmunitionFactory(mutableKnowledgeData: MutableKnowledgeData): MutableResourceFactoryInternalData {
+        val maxOutputResourceQualityData: MutableResourceQualityData = MutableResourceQualityData(
+            quality1 = log2(mutableKnowledgeData.appliedResearchData.militaryTechnologyLevel),
+            quality2 = 0.0,
+            quality3 = 0.0
+        )
+
+        val maxOutputAmount: Double = 1E6
+
+        val fuelRestMassConsumptionRate = 0.1 * maxOutputAmount / log2(
+            mutableKnowledgeData.appliedResearchData.militaryTechnologyLevel / 100.0 + 2.0
+        )
+
+        val maxNumEmployee: Double = maxOutputAmount / log2(
+            mutableKnowledgeData.appliedResearchData.militaryTechnologyLevel / 100.0 + 2.0
+        )
+
+        val inputResourceMap: MutableMap<ResourceType, MutableInputResourceData> = mutableMapOf(
+            ResourceType.METAL to MutableInputResourceData(
+                maxInputResourceQualityData = MutableResourceQualityData(
+                    quality1 = log2(mutableKnowledgeData.appliedResearchData.militaryTechnologyLevel),
+                    quality2 = 0.0,
+                    quality3 = 0.0,
+                ),
+                amountPerOutputUnit = 0.5
+            ),
+            ResourceType.PLASTIC to MutableInputResourceData(
+                maxInputResourceQualityData = MutableResourceQualityData(
+                    quality1 = log2(mutableKnowledgeData.appliedResearchData.militaryTechnologyLevel),
+                    quality2 = 0.0,
+                    quality3 = 0.0,
+                ),
+                amountPerOutputUnit = 0.5
+            ),
+        )
+
+        return MutableResourceFactoryInternalData(
+            outputResource = ResourceType.AMMUNITION,
             maxOutputResourceQualityData = maxOutputResourceQualityData,
             maxOutputAmount = maxOutputAmount,
             inputResourceMap = inputResourceMap,
