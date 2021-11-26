@@ -78,8 +78,9 @@ object UpdateScienceApplicationData : Mechanism() {
 
         val maxOutputAmount: Double = 1E6
 
-        val maxNumEmployee: Double =
-            maxOutputAmount / log2(mutableKnowledgeData.appliedResearchData.energyTechnologyLevel / 100.0 + 2.0)
+        val maxNumEmployee: Double = maxOutputAmount / log2(
+            mutableKnowledgeData.appliedResearchData.energyTechnologyLevel / 100.0 + 2.0
+        )
 
         return MutableFuelFactoryInternalData(
             maxOutputAmount = maxOutputAmount,
@@ -90,19 +91,30 @@ object UpdateScienceApplicationData : Mechanism() {
 
     fun computeIdealPlantFactory(mutableKnowledgeData: MutableKnowledgeData): MutableResourceFactoryInternalData {
         val maxOutputResourceQualityData: MutableResourceQualityData = MutableResourceQualityData(
-            tanh(mutableKnowledgeData.appliedResearchData.environmentalTechnologyLevel),
+            log2(mutableKnowledgeData.appliedResearchData.environmentalTechnologyLevel),
             0.0,
             0.0
         )
 
+        val maxOutputAmount: Double = 1E6
+
+        val fuelRestMassConsumptionRate = 0.1 * maxOutputAmount / log2(
+            mutableKnowledgeData.appliedResearchData.environmentalTechnologyLevel / 100.0 + 2.0
+        )
+
+        val maxNumEmployee: Double = maxOutputAmount / log2(
+            mutableKnowledgeData.appliedResearchData.environmentalTechnologyLevel / 100.0 + 2.0
+        )
+
+
         return MutableResourceFactoryInternalData(
             outputResource = ResourceType.PLANT,
-            maxOutputResourceQualityData = MutableResourceQualityData(),
-            maxOutputAmount = 0.0,
+            maxOutputResourceQualityData = maxOutputResourceQualityData,
+            maxOutputAmount = maxOutputAmount,
             inputResourceMap = mutableMapOf(),
-            fuelRestMassConsumptionRate = 0.0,
-            maxNumEmployee = 0.0,
-            size = 0.0
+            fuelRestMassConsumptionRate = fuelRestMassConsumptionRate,
+            maxNumEmployee = maxNumEmployee,
+            size = 100.0,
         )
     }
 }

@@ -31,4 +31,4 @@
   
 ## Consumption
 * Population desire resource amount = population size
-* Ideal fuel factory production = 1 per employee per turn, employee required is reduced by tech
+* Ideal fuel factory production = 1 per employee per time, employee required is reduced by tech
