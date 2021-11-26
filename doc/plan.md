@@ -30,7 +30,7 @@
 * Entertainment production: entertainer [x]
 * Tax and tariff, send to leaders [x]
 * Research [x]
-* How research affect product
+* How research affect product [x]
 * Export center [x]
 * Basic diplomacy [x]
 * Merge carrier [x]
