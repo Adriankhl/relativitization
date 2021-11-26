@@ -58,13 +58,17 @@ object UpdateScienceApplicationData : Mechanism() {
         scienceData.playerScienceApplicationData.idealEntertainmentQuality =
             computeIdealEntertainmentQuality(scienceData.playerKnowledgeData)
 
-
-        // Change logistic data
+        // Update logistic tech
         scienceData.playerScienceApplicationData.fuelLogisticsLossFractionPerDistance =
             computeFuelLogisticsLoss(scienceData.playerKnowledgeData)
         scienceData.playerScienceApplicationData.resourceLogisticsLossFractionPerDistance =
             computeResourceLogisticsLoss(scienceData.playerKnowledgeData)
 
+        // Update military tech
+        scienceData.playerScienceApplicationData.militaryBaseAttackFactor =
+            computeMilitaryBaseAttackFactor(scienceData.playerKnowledgeData)
+        scienceData.playerScienceApplicationData.militaryBaseShieldFactor =
+            computeMilitaryBaseShieldFactor(scienceData.playerKnowledgeData)
 
         return listOf()
     }
@@ -510,5 +514,13 @@ object UpdateScienceApplicationData : Mechanism() {
 
     fun computeResourceLogisticsLoss(mutableKnowledgeData: MutableKnowledgeData): Double {
         return 0.1 + 0.8 / (mutableKnowledgeData.appliedResearchData.informationTechnologyLevel / 100.0 + 1.0)
+    }
+
+    fun computeMilitaryBaseAttackFactor(mutableKnowledgeData: MutableKnowledgeData): Double {
+        return log2(mutableKnowledgeData.appliedResearchData.militaryTechnologyLevel / 10.0 + 2.0)
+    }
+
+    fun computeMilitaryBaseShieldFactor(mutableKnowledgeData: MutableKnowledgeData): Double {
+        return log2(mutableKnowledgeData.appliedResearchData.militaryTechnologyLevel / 10.0 + 2.0)
     }
 }
