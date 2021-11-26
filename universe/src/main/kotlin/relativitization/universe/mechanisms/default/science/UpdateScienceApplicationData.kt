@@ -54,6 +54,12 @@ object UpdateScienceApplicationData : Mechanism() {
             }
         }
 
+        // Change logistic data
+        scienceData.playerScienceApplicationData.fuelLogisticsLossFractionPerDistance =
+            computeFuelLogisticsLoss(scienceData.playerKnowledgeData)
+        scienceData.playerScienceApplicationData.resourceLogisticsLossFractionPerDistance =
+            computeResourceLogisticsLoss(scienceData.playerKnowledgeData)
+
         return listOf()
     }
 
@@ -482,5 +488,13 @@ object UpdateScienceApplicationData : Mechanism() {
             maxNumEmployee = maxNumEmployee,
             size = 100.0,
         )
+    }
+
+    fun computeFuelLogisticsLoss(mutableKnowledgeData: MutableKnowledgeData): Double {
+        return 0.1 + 0.8 / (mutableKnowledgeData.appliedResearchData.energyTechnologyLevel / 100.0 + 1.0)
+    }
+
+    fun computeResourceLogisticsLoss(mutableKnowledgeData: MutableKnowledgeData): Double {
+        return 0.1 + 0.8 / (mutableKnowledgeData.appliedResearchData.informationTechnologyLevel / 100.0 + 1.0)
     }
 }
