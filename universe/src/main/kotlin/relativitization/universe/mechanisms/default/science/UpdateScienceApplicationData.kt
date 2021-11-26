@@ -108,7 +108,7 @@ object UpdateScienceApplicationData : Mechanism() {
 
     fun computeIdealPlantFactory(mutableKnowledgeData: MutableKnowledgeData): MutableResourceFactoryInternalData {
         val maxOutputResourceQualityData: MutableResourceQualityData = MutableResourceQualityData(
-            log2(mutableKnowledgeData.appliedResearchData.environmentalTechnologyLevel),
+            log2(mutableKnowledgeData.appliedResearchData.environmentalTechnologyLevel + 2.0),
             0.0,
             0.0
         )
@@ -136,7 +136,7 @@ object UpdateScienceApplicationData : Mechanism() {
 
     fun computeIdealAnimalFactory(mutableKnowledgeData: MutableKnowledgeData): MutableResourceFactoryInternalData {
         val maxOutputResourceQualityData: MutableResourceQualityData = MutableResourceQualityData(
-            log2(mutableKnowledgeData.appliedResearchData.biomedicalTechnologyLevel),
+            log2(mutableKnowledgeData.appliedResearchData.biomedicalTechnologyLevel + 2.0),
             0.0,
             0.0
         )
@@ -164,7 +164,7 @@ object UpdateScienceApplicationData : Mechanism() {
 
     fun computeIdealMetalFactory(mutableKnowledgeData: MutableKnowledgeData): MutableResourceFactoryInternalData {
         val maxOutputResourceQualityData: MutableResourceQualityData = MutableResourceQualityData(
-            log2(mutableKnowledgeData.appliedResearchData.machineryTechnologyLevel),
+            log2(mutableKnowledgeData.appliedResearchData.machineryTechnologyLevel + 2.0),
             0.0,
             0.0
         )
@@ -192,7 +192,7 @@ object UpdateScienceApplicationData : Mechanism() {
 
     fun computeIdealPlasticFactory(mutableKnowledgeData: MutableKnowledgeData): MutableResourceFactoryInternalData {
         val maxOutputResourceQualityData: MutableResourceQualityData = MutableResourceQualityData(
-            log2(mutableKnowledgeData.appliedResearchData.chemicalTechnologyLevel),
+            log2(mutableKnowledgeData.appliedResearchData.chemicalTechnologyLevel + 2.0),
             0.0,
             0.0
         )
@@ -220,7 +220,7 @@ object UpdateScienceApplicationData : Mechanism() {
 
     fun computeIdealFoodFactory(mutableKnowledgeData: MutableKnowledgeData): MutableResourceFactoryInternalData {
         val maxOutputResourceQualityData: MutableResourceQualityData = MutableResourceQualityData(
-            quality1 = log2(mutableKnowledgeData.appliedResearchData.foodTechnologyLevel),
+            quality1 = log2(mutableKnowledgeData.appliedResearchData.foodTechnologyLevel + 2.0),
             quality2 = 0.0,
             quality3 = 0.0
         )
@@ -238,7 +238,7 @@ object UpdateScienceApplicationData : Mechanism() {
         val inputResourceMap: MutableMap<ResourceType, MutableInputResourceData> = mutableMapOf(
             ResourceType.ANIMAL to MutableInputResourceData(
                 maxInputResourceQualityData = MutableResourceQualityData(
-                    quality1 = log2(mutableKnowledgeData.appliedResearchData.foodTechnologyLevel),
+                    quality1 = log2(mutableKnowledgeData.appliedResearchData.foodTechnologyLevel + 2.0),
                     quality2 = 0.0,
                     quality3 = 0.0,
                 ),
@@ -246,7 +246,7 @@ object UpdateScienceApplicationData : Mechanism() {
             ),
             ResourceType.PLANT to MutableInputResourceData(
                 maxInputResourceQualityData = MutableResourceQualityData(
-                    quality1 = log2(mutableKnowledgeData.appliedResearchData.foodTechnologyLevel),
+                    quality1 = log2(mutableKnowledgeData.appliedResearchData.foodTechnologyLevel + 2.0),
                     quality2 = 0.0,
                     quality3 = 0.0,
                 ),
@@ -267,7 +267,7 @@ object UpdateScienceApplicationData : Mechanism() {
 
     fun computeIdealClothFactory(mutableKnowledgeData: MutableKnowledgeData): MutableResourceFactoryInternalData {
         val maxOutputResourceQualityData: MutableResourceQualityData = MutableResourceQualityData(
-            quality1 = log2(mutableKnowledgeData.appliedResearchData.materialTechnologyLevel),
+            quality1 = log2(mutableKnowledgeData.appliedResearchData.materialTechnologyLevel + 2.0),
             quality2 = 0.0,
             quality3 = 0.0
         )
@@ -285,7 +285,7 @@ object UpdateScienceApplicationData : Mechanism() {
         val inputResourceMap: MutableMap<ResourceType, MutableInputResourceData> = mutableMapOf(
             ResourceType.ANIMAL to MutableInputResourceData(
                 maxInputResourceQualityData = MutableResourceQualityData(
-                    quality1 = log2(mutableKnowledgeData.appliedResearchData.materialTechnologyLevel),
+                    quality1 = log2(mutableKnowledgeData.appliedResearchData.materialTechnologyLevel + 2.0),
                     quality2 = 0.0,
                     quality3 = 0.0,
                 ),
@@ -293,7 +293,7 @@ object UpdateScienceApplicationData : Mechanism() {
             ),
             ResourceType.PLASTIC to MutableInputResourceData(
                 maxInputResourceQualityData = MutableResourceQualityData(
-                    quality1 = log2(mutableKnowledgeData.appliedResearchData.materialTechnologyLevel),
+                    quality1 = log2(mutableKnowledgeData.appliedResearchData.materialTechnologyLevel + 2.0),
                     quality2 = 0.0,
                     quality3 = 0.0,
                 ),
@@ -314,7 +314,7 @@ object UpdateScienceApplicationData : Mechanism() {
 
     fun computeIdealHouseholdGoodFactory(mutableKnowledgeData: MutableKnowledgeData): MutableResourceFactoryInternalData {
         val maxOutputResourceQualityData: MutableResourceQualityData = MutableResourceQualityData(
-            quality1 = log2(mutableKnowledgeData.appliedResearchData.artTechnologyLevel),
+            quality1 = log2(mutableKnowledgeData.appliedResearchData.artTechnologyLevel + 2.0),
             quality2 = 0.0,
             quality3 = 0.0
         )
@@ -332,7 +332,7 @@ object UpdateScienceApplicationData : Mechanism() {
         val inputResourceMap: MutableMap<ResourceType, MutableInputResourceData> = mutableMapOf(
             ResourceType.PLANT to MutableInputResourceData(
                 maxInputResourceQualityData = MutableResourceQualityData(
-                    quality1 = log2(mutableKnowledgeData.appliedResearchData.artTechnologyLevel),
+                    quality1 = log2(mutableKnowledgeData.appliedResearchData.artTechnologyLevel + 2.0),
                     quality2 = 0.0,
                     quality3 = 0.0,
                 ),
@@ -340,7 +340,7 @@ object UpdateScienceApplicationData : Mechanism() {
             ),
             ResourceType.PLASTIC to MutableInputResourceData(
                 maxInputResourceQualityData = MutableResourceQualityData(
-                    quality1 = log2(mutableKnowledgeData.appliedResearchData.artTechnologyLevel),
+                    quality1 = log2(mutableKnowledgeData.appliedResearchData.artTechnologyLevel + 2.0),
                     quality2 = 0.0,
                     quality3 = 0.0,
                 ),
@@ -361,7 +361,7 @@ object UpdateScienceApplicationData : Mechanism() {
 
     fun computeIdealResearchEquipmentFactory(mutableKnowledgeData: MutableKnowledgeData): MutableResourceFactoryInternalData {
         val maxOutputResourceQualityData: MutableResourceQualityData = MutableResourceQualityData(
-            quality1 = log2(mutableKnowledgeData.appliedResearchData.materialTechnologyLevel),
+            quality1 = log2(mutableKnowledgeData.appliedResearchData.materialTechnologyLevel + 2.0),
             quality2 = 0.0,
             quality3 = 0.0
         )
@@ -379,7 +379,7 @@ object UpdateScienceApplicationData : Mechanism() {
         val inputResourceMap: MutableMap<ResourceType, MutableInputResourceData> = mutableMapOf(
             ResourceType.ANIMAL to MutableInputResourceData(
                 maxInputResourceQualityData = MutableResourceQualityData(
-                    quality1 = log2(mutableKnowledgeData.appliedResearchData.materialTechnologyLevel),
+                    quality1 = log2(mutableKnowledgeData.appliedResearchData.materialTechnologyLevel + 2.0),
                     quality2 = 0.0,
                     quality3 = 0.0,
                 ),
@@ -387,7 +387,7 @@ object UpdateScienceApplicationData : Mechanism() {
             ),
             ResourceType.METAL to MutableInputResourceData(
                 maxInputResourceQualityData = MutableResourceQualityData(
-                    quality1 = log2(mutableKnowledgeData.appliedResearchData.materialTechnologyLevel),
+                    quality1 = log2(mutableKnowledgeData.appliedResearchData.materialTechnologyLevel + 2.0),
                     quality2 = 0.0,
                     quality3 = 0.0,
                 ),
@@ -408,7 +408,7 @@ object UpdateScienceApplicationData : Mechanism() {
 
     fun computeIdealMedicineFactory(mutableKnowledgeData: MutableKnowledgeData): MutableResourceFactoryInternalData {
         val maxOutputResourceQualityData: MutableResourceQualityData = MutableResourceQualityData(
-            quality1 = log2(mutableKnowledgeData.appliedResearchData.biomedicalTechnologyLevel),
+            quality1 = log2(mutableKnowledgeData.appliedResearchData.biomedicalTechnologyLevel + 2.0),
             quality2 = 0.0,
             quality3 = 0.0
         )
@@ -426,7 +426,7 @@ object UpdateScienceApplicationData : Mechanism() {
         val inputResourceMap: MutableMap<ResourceType, MutableInputResourceData> = mutableMapOf(
             ResourceType.PLANT to MutableInputResourceData(
                 maxInputResourceQualityData = MutableResourceQualityData(
-                    quality1 = log2(mutableKnowledgeData.appliedResearchData.biomedicalTechnologyLevel),
+                    quality1 = log2(mutableKnowledgeData.appliedResearchData.biomedicalTechnologyLevel + 2.0),
                     quality2 = 0.0,
                     quality3 = 0.0,
                 ),
@@ -434,7 +434,7 @@ object UpdateScienceApplicationData : Mechanism() {
             ),
             ResourceType.METAL to MutableInputResourceData(
                 maxInputResourceQualityData = MutableResourceQualityData(
-                    quality1 = log2(mutableKnowledgeData.appliedResearchData.biomedicalTechnologyLevel),
+                    quality1 = log2(mutableKnowledgeData.appliedResearchData.biomedicalTechnologyLevel + 2.0),
                     quality2 = 0.0,
                     quality3 = 0.0,
                 ),
@@ -455,7 +455,7 @@ object UpdateScienceApplicationData : Mechanism() {
 
     fun computeIdealAmmunitionFactory(mutableKnowledgeData: MutableKnowledgeData): MutableResourceFactoryInternalData {
         val maxOutputResourceQualityData: MutableResourceQualityData = MutableResourceQualityData(
-            quality1 = log2(mutableKnowledgeData.appliedResearchData.militaryTechnologyLevel),
+            quality1 = log2(mutableKnowledgeData.appliedResearchData.militaryTechnologyLevel + 2.0),
             quality2 = 0.0,
             quality3 = 0.0
         )
@@ -473,7 +473,7 @@ object UpdateScienceApplicationData : Mechanism() {
         val inputResourceMap: MutableMap<ResourceType, MutableInputResourceData> = mutableMapOf(
             ResourceType.METAL to MutableInputResourceData(
                 maxInputResourceQualityData = MutableResourceQualityData(
-                    quality1 = log2(mutableKnowledgeData.appliedResearchData.militaryTechnologyLevel),
+                    quality1 = log2(mutableKnowledgeData.appliedResearchData.militaryTechnologyLevel + 2.0),
                     quality2 = 0.0,
                     quality3 = 0.0,
                 ),
@@ -481,7 +481,7 @@ object UpdateScienceApplicationData : Mechanism() {
             ),
             ResourceType.PLASTIC to MutableInputResourceData(
                 maxInputResourceQualityData = MutableResourceQualityData(
-                    quality1 = log2(mutableKnowledgeData.appliedResearchData.militaryTechnologyLevel),
+                    quality1 = log2(mutableKnowledgeData.appliedResearchData.militaryTechnologyLevel + 2.0),
                     quality2 = 0.0,
                     quality3 = 0.0,
                 ),
@@ -502,7 +502,7 @@ object UpdateScienceApplicationData : Mechanism() {
 
     fun computeIdealEntertainmentQuality(mutableKnowledgeData: MutableKnowledgeData): MutableResourceQualityData {
         return MutableResourceQualityData(
-            quality1 = log2(mutableKnowledgeData.appliedResearchData.informationTechnologyLevel),
+            quality1 = log2(mutableKnowledgeData.appliedResearchData.informationTechnologyLevel + 2.0),
             quality2 = 0.0,
             quality3 = 0.0,
         )
