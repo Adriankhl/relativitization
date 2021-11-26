@@ -54,13 +54,17 @@ object UpdateScienceApplicationData : Mechanism() {
             }
         }
 
+        // Update ideal entertainment quality
+        scienceData.playerScienceApplicationData.idealEntertainmentQuality =
+            computeIdealEntertainmentQuality(scienceData.playerKnowledgeData)
+
+
         // Change logistic data
         scienceData.playerScienceApplicationData.fuelLogisticsLossFractionPerDistance =
             computeFuelLogisticsLoss(scienceData.playerKnowledgeData)
         scienceData.playerScienceApplicationData.resourceLogisticsLossFractionPerDistance =
             computeResourceLogisticsLoss(scienceData.playerKnowledgeData)
 
-        // Update ideal entertain
 
         return listOf()
     }
@@ -489,6 +493,14 @@ object UpdateScienceApplicationData : Mechanism() {
             fuelRestMassConsumptionRate = fuelRestMassConsumptionRate,
             maxNumEmployee = maxNumEmployee,
             size = 100.0,
+        )
+    }
+
+    fun computeIdealEntertainmentQuality(mutableKnowledgeData: MutableKnowledgeData): MutableResourceQualityData {
+        return MutableResourceQualityData(
+            quality1 = log2(mutableKnowledgeData.appliedResearchData.informationTechnologyLevel),
+            quality2 = 0.0,
+            quality3 = 0.0,
         )
     }
 
