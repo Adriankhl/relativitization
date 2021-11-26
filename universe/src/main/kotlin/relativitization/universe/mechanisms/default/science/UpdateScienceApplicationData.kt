@@ -9,6 +9,7 @@ import relativitization.universe.data.components.default.economy.MutableResource
 import relativitization.universe.data.components.default.economy.ResourceType
 import relativitization.universe.data.components.default.popsystem.MutableCarrierInternalData
 import relativitization.universe.data.components.default.popsystem.pop.labourer.factory.MutableFuelFactoryInternalData
+import relativitization.universe.data.components.default.popsystem.pop.labourer.factory.MutableInputResourceData
 import relativitization.universe.data.components.default.popsystem.pop.labourer.factory.MutableResourceFactoryInternalData
 import relativitization.universe.data.components.default.science.knowledge.MutableKnowledgeData
 import relativitization.universe.data.global.UniverseGlobalData
@@ -43,7 +44,7 @@ object UpdateScienceApplicationData : Mechanism() {
                 ResourceType.ANIMAL -> computeIdealAnimalFactory(scienceData.playerKnowledgeData)
                 ResourceType.METAL -> computeIdealMetalFactory(scienceData.playerKnowledgeData)
                 ResourceType.PLASTIC -> computeIdealPlasticFactory(scienceData.playerKnowledgeData)
-                ResourceType.FOOD -> TODO()
+                ResourceType.FOOD -> computeIdealFoodFactory(scienceData.playerKnowledgeData)
                 ResourceType.CLOTH -> TODO()
                 ResourceType.HOUSEHOLD_GOOD -> TODO()
                 ResourceType.RESEARCH_EQUIPMENT -> TODO()
@@ -195,6 +196,53 @@ object UpdateScienceApplicationData : Mechanism() {
             maxOutputResourceQualityData = maxOutputResourceQualityData,
             maxOutputAmount = maxOutputAmount,
             inputResourceMap = mutableMapOf(),
+            fuelRestMassConsumptionRate = fuelRestMassConsumptionRate,
+            maxNumEmployee = maxNumEmployee,
+            size = 100.0,
+        )
+    }
+
+    fun computeIdealFoodFactory(mutableKnowledgeData: MutableKnowledgeData): MutableResourceFactoryInternalData {
+        val maxOutputResourceQualityData: MutableResourceQualityData = MutableResourceQualityData(
+            quality1 = log2(mutableKnowledgeData.appliedResearchData.foodTechnologyLevel),
+            quality2 = 0.0,
+            quality3 = 0.0
+        )
+
+        val maxOutputAmount: Double = 1E6
+
+        val fuelRestMassConsumptionRate = 0.1 * maxOutputAmount / log2(
+            mutableKnowledgeData.appliedResearchData.foodTechnologyLevel / 100.0 + 2.0
+        )
+
+        val maxNumEmployee: Double = maxOutputAmount / log2(
+            mutableKnowledgeData.appliedResearchData.foodTechnologyLevel / 100.0 + 2.0
+        )
+
+        val inputResourceMap: MutableMap<ResourceType, MutableInputResourceData> = mutableMapOf(
+            ResourceType.ANIMAL to MutableInputResourceData(
+                maxInputResourceQualityData = MutableResourceQualityData(
+                    quality1 = log2(mutableKnowledgeData.appliedResearchData.foodTechnologyLevel),
+                    quality2 = 0.0,
+                    quality3 = 0.0,
+                ),
+                amountPerOutputUnit = 0.5
+            ),
+            ResourceType.PLANT to MutableInputResourceData(
+                maxInputResourceQualityData = MutableResourceQualityData(
+                    quality1 = log2(mutableKnowledgeData.appliedResearchData.foodTechnologyLevel),
+                    quality2 = 0.0,
+                    quality3 = 0.0,
+                ),
+                amountPerOutputUnit = 0.5
+            ),
+        )
+
+        return MutableResourceFactoryInternalData(
+            outputResource = ResourceType.PLASTIC,
+            maxOutputResourceQualityData = maxOutputResourceQualityData,
+            maxOutputAmount = maxOutputAmount,
+            inputResourceMap = inputResourceMap,
             fuelRestMassConsumptionRate = fuelRestMassConsumptionRate,
             maxNumEmployee = maxNumEmployee,
             size = 100.0,
