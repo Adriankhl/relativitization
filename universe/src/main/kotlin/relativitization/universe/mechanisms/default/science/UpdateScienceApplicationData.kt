@@ -60,6 +60,8 @@ object UpdateScienceApplicationData : Mechanism() {
         scienceData.playerScienceApplicationData.resourceLogisticsLossFractionPerDistance =
             computeResourceLogisticsLoss(scienceData.playerKnowledgeData)
 
+        // Update ideal entertain
+
         return listOf()
     }
 

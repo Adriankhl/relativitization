@@ -15,9 +15,9 @@ data class ScienceApplicationData(
     val idealSpaceship: CarrierInternalData = CarrierInternalData(),
     val idealFuelFactory: FuelFactoryInternalData = FuelFactoryInternalData(),
     val idealResourceFactoryMap: Map<ResourceType, ResourceFactoryInternalData> = mapOf(),
+    val idealEntertainmentQuality: ResourceQualityData = ResourceQualityData(),
     val fuelLogisticsLossFractionPerDistance: Double = 0.9,
     val resourceLogisticsLossFractionPerDistance: Double = 0.9,
-    val idealEntertainmentQuality: ResourceQualityData = ResourceQualityData(),
     val militaryBaseAttackFactor: Double = 1.0,
     val militaryBaseShieldFactor: Double = 1.0,
 ) {
@@ -207,9 +207,9 @@ data class MutableScienceApplicationData(
     var idealSpaceship: MutableCarrierInternalData = MutableCarrierInternalData(),
     var idealFuelFactory: MutableFuelFactoryInternalData = MutableFuelFactoryInternalData(),
     var idealResourceFactoryMap: MutableMap<ResourceType, MutableResourceFactoryInternalData> = mutableMapOf(),
+    var idealEntertainmentQuality: MutableResourceQualityData = MutableResourceQualityData(),
     var fuelLogisticsLossFractionPerDistance: Double = 0.9,
     var resourceLogisticsLossFractionPerDistance: Double = 0.9,
-    var idealEntertainmentQuality: MutableResourceQualityData = MutableResourceQualityData(),
     var militaryBaseAttackFactor: Double = 1.0,
     var militaryBaseShieldFactor: Double = 1.0,
 ) {
