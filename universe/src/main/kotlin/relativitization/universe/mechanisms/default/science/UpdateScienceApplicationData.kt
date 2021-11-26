@@ -45,8 +45,8 @@ object UpdateScienceApplicationData : Mechanism() {
                 ResourceType.METAL -> computeIdealMetalFactory(scienceData.playerKnowledgeData)
                 ResourceType.PLASTIC -> computeIdealPlasticFactory(scienceData.playerKnowledgeData)
                 ResourceType.FOOD -> computeIdealFoodFactory(scienceData.playerKnowledgeData)
-                ResourceType.CLOTH -> TODO()
-                ResourceType.HOUSEHOLD_GOOD -> TODO()
+                ResourceType.CLOTH -> computeIdealClothFactory(scienceData.playerKnowledgeData)
+                ResourceType.HOUSEHOLD_GOOD -> computeIdealHouseholdGoodFactory(scienceData.playerKnowledgeData)
                 ResourceType.RESEARCH_EQUIPMENT -> TODO()
                 ResourceType.MEDICINE -> TODO()
                 ResourceType.AMMUNITION -> TODO()
@@ -239,7 +239,101 @@ object UpdateScienceApplicationData : Mechanism() {
         )
 
         return MutableResourceFactoryInternalData(
-            outputResource = ResourceType.PLASTIC,
+            outputResource = ResourceType.FOOD,
+            maxOutputResourceQualityData = maxOutputResourceQualityData,
+            maxOutputAmount = maxOutputAmount,
+            inputResourceMap = inputResourceMap,
+            fuelRestMassConsumptionRate = fuelRestMassConsumptionRate,
+            maxNumEmployee = maxNumEmployee,
+            size = 100.0,
+        )
+    }
+
+    fun computeIdealClothFactory(mutableKnowledgeData: MutableKnowledgeData): MutableResourceFactoryInternalData {
+        val maxOutputResourceQualityData: MutableResourceQualityData = MutableResourceQualityData(
+            quality1 = log2(mutableKnowledgeData.appliedResearchData.materialTechnologyLevel),
+            quality2 = 0.0,
+            quality3 = 0.0
+        )
+
+        val maxOutputAmount: Double = 1E6
+
+        val fuelRestMassConsumptionRate = 0.1 * maxOutputAmount / log2(
+            mutableKnowledgeData.appliedResearchData.materialTechnologyLevel / 100.0 + 2.0
+        )
+
+        val maxNumEmployee: Double = maxOutputAmount / log2(
+            mutableKnowledgeData.appliedResearchData.materialTechnologyLevel / 100.0 + 2.0
+        )
+
+        val inputResourceMap: MutableMap<ResourceType, MutableInputResourceData> = mutableMapOf(
+            ResourceType.ANIMAL to MutableInputResourceData(
+                maxInputResourceQualityData = MutableResourceQualityData(
+                    quality1 = log2(mutableKnowledgeData.appliedResearchData.materialTechnologyLevel),
+                    quality2 = 0.0,
+                    quality3 = 0.0,
+                ),
+                amountPerOutputUnit = 0.5
+            ),
+            ResourceType.PLASTIC to MutableInputResourceData(
+                maxInputResourceQualityData = MutableResourceQualityData(
+                    quality1 = log2(mutableKnowledgeData.appliedResearchData.materialTechnologyLevel),
+                    quality2 = 0.0,
+                    quality3 = 0.0,
+                ),
+                amountPerOutputUnit = 0.5
+            ),
+        )
+
+        return MutableResourceFactoryInternalData(
+            outputResource = ResourceType.CLOTH,
+            maxOutputResourceQualityData = maxOutputResourceQualityData,
+            maxOutputAmount = maxOutputAmount,
+            inputResourceMap = inputResourceMap,
+            fuelRestMassConsumptionRate = fuelRestMassConsumptionRate,
+            maxNumEmployee = maxNumEmployee,
+            size = 100.0,
+        )
+    }
+
+    fun computeIdealHouseholdGoodFactory(mutableKnowledgeData: MutableKnowledgeData): MutableResourceFactoryInternalData {
+        val maxOutputResourceQualityData: MutableResourceQualityData = MutableResourceQualityData(
+            quality1 = log2(mutableKnowledgeData.appliedResearchData.artTechnologyLevel),
+            quality2 = 0.0,
+            quality3 = 0.0
+        )
+
+        val maxOutputAmount: Double = 1E6
+
+        val fuelRestMassConsumptionRate = 0.1 * maxOutputAmount / log2(
+            mutableKnowledgeData.appliedResearchData.artTechnologyLevel / 100.0 + 2.0
+        )
+
+        val maxNumEmployee: Double = maxOutputAmount / log2(
+            mutableKnowledgeData.appliedResearchData.artTechnologyLevel / 100.0 + 2.0
+        )
+
+        val inputResourceMap: MutableMap<ResourceType, MutableInputResourceData> = mutableMapOf(
+            ResourceType.PLANT to MutableInputResourceData(
+                maxInputResourceQualityData = MutableResourceQualityData(
+                    quality1 = log2(mutableKnowledgeData.appliedResearchData.artTechnologyLevel),
+                    quality2 = 0.0,
+                    quality3 = 0.0,
+                ),
+                amountPerOutputUnit = 0.5
+            ),
+            ResourceType.PLASTIC to MutableInputResourceData(
+                maxInputResourceQualityData = MutableResourceQualityData(
+                    quality1 = log2(mutableKnowledgeData.appliedResearchData.artTechnologyLevel),
+                    quality2 = 0.0,
+                    quality3 = 0.0,
+                ),
+                amountPerOutputUnit = 0.5
+            ),
+        )
+
+        return MutableResourceFactoryInternalData(
+            outputResource = ResourceType.HOUSEHOLD_GOOD,
             maxOutputResourceQualityData = maxOutputResourceQualityData,
             maxOutputAmount = maxOutputAmount,
             inputResourceMap = inputResourceMap,

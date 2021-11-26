@@ -13,8 +13,8 @@
 # Secondary resource produced by factory, and its dependency on primary resource
 * Food: animal, plant
 * Cloth: animal, plastic
-* Research equipment: animal, metal
 * Household good: plant, plastic
+* Research equipment: animal, metal
 * Medicine: plant, metal
 * Ammunition: metal, plastic
 
@@ -27,8 +27,8 @@
 * Plastic: chemical
 * Food: food
 * Cloth: material
-* Research equipment: material
 * Household good: art
+* Research equipment: material
 * Medicine: biomedical
 * Ammunition: military
 * Entertainment: information technology
