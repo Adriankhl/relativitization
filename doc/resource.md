@@ -18,6 +18,21 @@
 * Medicine: plant, metal
 * Ammunition: metal, plastic
 
+# Tech impact
+* Ship: architecture, energy
+* Fuel: energy
+* Plant: environment
+* Animal: biomedical
+* Metal: machinery
+* Plastic: chemical
+* Food: food
+* Cloth: material
+* Research equipment: material
+* Household good: art
+* Medicine: biomedical
+* Ammunition: military
+* Entertainment: information technology
+
 # Amount mechanism design
 
 ## System
