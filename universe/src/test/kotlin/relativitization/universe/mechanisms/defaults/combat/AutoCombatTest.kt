@@ -37,5 +37,15 @@ internal class AutoCombatTest {
             )
             universe.preProcessUniverse()
         }
+
+        runBlocking {
+            for (i in 1..4) {
+                universe.postProcessUniverse(
+                    mapOf(),
+                    mapOf()
+                )
+                universe.preProcessUniverse()
+            }
+        }
     }
 }

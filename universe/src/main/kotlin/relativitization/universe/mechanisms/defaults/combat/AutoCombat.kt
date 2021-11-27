@@ -38,12 +38,13 @@ object AutoCombat : Mechanism() {
                 val targetEnemy: PlayerData = sameCubeEnemy[Random.nextInt(sameCubeEnemy.size)]
 
                 // Adjust damage by time dilation
-                DamageCommand(
+                val command = DamageCommand(
                     toId = targetEnemy.playerId,
                     fromId = mutablePlayerData.playerId,
                     fromInt4D = mutablePlayerData.int4D.toInt4D(),
                     attack = it.allPopData.soldierPopData.militaryBaseData.attack / gamma
                 )
+                command
             }
         } else {
             listOf()
