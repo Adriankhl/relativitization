@@ -5,9 +5,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.PlayerData
-import relativitization.universe.data.components.default.science.knowledge.AppliedResearchData
-import relativitization.universe.data.components.default.science.knowledge.BasicResearchData
-import relativitization.universe.data.components.default.science.knowledge.KnowledgeData
+import relativitization.universe.data.components.defaults.science.knowledge.AppliedResearchData
+import relativitization.universe.data.components.defaults.science.knowledge.BasicResearchData
+import relativitization.universe.data.components.defaults.science.knowledge.KnowledgeData
 
 class ScienceInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.assets) {
 

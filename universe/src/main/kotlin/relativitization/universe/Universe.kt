@@ -4,8 +4,8 @@ import kotlinx.coroutines.coroutineScope
 import relativitization.universe.ai.AICollection
 import relativitization.universe.data.*
 import relativitization.universe.data.commands.Command
-import relativitization.universe.data.components.default.physics.Int3D
-import relativitization.universe.data.components.default.physics.Int4D
+import relativitization.universe.data.components.defaults.physics.Int3D
+import relativitization.universe.data.components.defaults.physics.Int4D
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.data.serializer.DataSerializer.decode
 import relativitization.universe.data.serializer.DataSerializer.encode

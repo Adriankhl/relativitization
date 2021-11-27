@@ -2,10 +2,10 @@ package relativitization.universe
 
 import kotlinx.coroutines.runBlocking
 import relativitization.universe.data.*
-import relativitization.universe.data.components.default.physics.Int4D
-import relativitization.universe.data.components.default.physics.MutableDouble4D
-import relativitization.universe.data.components.default.physics.MutableVelocity
-import relativitization.universe.data.components.default.physics.Velocity
+import relativitization.universe.data.components.defaults.physics.Int4D
+import relativitization.universe.data.components.defaults.physics.MutableDouble4D
+import relativitization.universe.data.components.defaults.physics.MutableVelocity
+import relativitization.universe.data.components.defaults.physics.Velocity
 import relativitization.universe.data.serializer.DataSerializer.copy
 import relativitization.universe.maths.grid.Grids.create3DGrid
 import relativitization.universe.maths.grid.Grids.double4DToGroupId

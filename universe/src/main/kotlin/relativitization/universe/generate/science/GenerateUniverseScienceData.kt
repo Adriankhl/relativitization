@@ -1,14 +1,14 @@
 package relativitization.universe.generate.science
 
-import relativitization.universe.data.components.default.science.knowledge.AppliedResearchField
-import relativitization.universe.data.components.default.science.knowledge.AppliedResearchProjectData
-import relativitization.universe.data.components.default.science.knowledge.BasicResearchField
-import relativitization.universe.data.components.default.science.knowledge.BasicResearchProjectData
+import relativitization.universe.data.components.defaults.science.knowledge.AppliedResearchField
+import relativitization.universe.data.components.defaults.science.knowledge.AppliedResearchProjectData
+import relativitization.universe.data.components.defaults.science.knowledge.BasicResearchField
+import relativitization.universe.data.components.defaults.science.knowledge.BasicResearchProjectData
 import relativitization.universe.data.global.components.MutableUniverseScienceData
 import relativitization.universe.data.global.components.UniverseScienceData
-import relativitization.universe.data.global.components.default.science.knowledge.MutableAppliedResearchProjectGenerationData
-import relativitization.universe.data.global.components.default.science.knowledge.MutableBasicResearchProjectGenerationData
-import relativitization.universe.data.global.components.default.science.knowledge.MutableProjectGenerationData
+import relativitization.universe.data.global.components.defaults.science.knowledge.MutableAppliedResearchProjectGenerationData
+import relativitization.universe.data.global.components.defaults.science.knowledge.MutableBasicResearchProjectGenerationData
+import relativitization.universe.data.global.components.defaults.science.knowledge.MutableProjectGenerationData
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.maths.physics.Intervals
 import relativitization.universe.maths.sampling.WeightedReservoir

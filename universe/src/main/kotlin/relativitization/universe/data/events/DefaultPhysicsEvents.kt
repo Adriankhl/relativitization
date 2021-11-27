@@ -6,7 +6,7 @@ import relativitization.universe.data.PlayerData
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.*
-import relativitization.universe.data.components.default.physics.Double3D
+import relativitization.universe.data.components.defaults.physics.Double3D
 import relativitization.universe.maths.physics.Movement
 import relativitization.universe.maths.physics.Movement.targetDouble3DByPhotonRocket
 import relativitization.universe.maths.physics.TargetVelocityData

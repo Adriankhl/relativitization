@@ -8,9 +8,9 @@ import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.commands.AddEventCommand
 import relativitization.universe.data.commands.ChangeVelocityCommand
-import relativitization.universe.data.components.default.physics.Double3D
-import relativitization.universe.data.components.default.physics.Int3D
-import relativitization.universe.data.components.default.physics.Velocity
+import relativitization.universe.data.components.defaults.physics.Double3D
+import relativitization.universe.data.components.defaults.physics.Int3D
+import relativitization.universe.data.components.defaults.physics.Velocity
 import relativitization.universe.data.events.MoveToDouble3DEvent
 import relativitization.universe.maths.physics.Movement.displacementToVelocity
 import relativitization.universe.utils.RelativitizationLogManager

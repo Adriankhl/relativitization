@@ -2,8 +2,8 @@ package relativitization.universe.data.components
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import relativitization.universe.data.components.default.physics.FuelRestMassData
-import relativitization.universe.data.components.default.physics.MutableFuelRestMassData
+import relativitization.universe.data.components.defaults.physics.FuelRestMassData
+import relativitization.universe.data.components.defaults.physics.MutableFuelRestMassData
 
 /**
  * Player data related to physics

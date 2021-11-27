@@ -2,11 +2,11 @@ package relativitization.universe.data.components
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import relativitization.universe.data.components.default.popsystem.CarrierData
-import relativitization.universe.data.components.default.popsystem.CarrierType
-import relativitization.universe.data.components.default.popsystem.MutableCarrierData
-import relativitization.universe.data.components.default.popsystem.MutableCarrierInternalData
-import relativitization.universe.data.components.default.popsystem.pop.PopType
+import relativitization.universe.data.components.defaults.popsystem.CarrierData
+import relativitization.universe.data.components.defaults.popsystem.CarrierType
+import relativitization.universe.data.components.defaults.popsystem.MutableCarrierData
+import relativitization.universe.data.components.defaults.popsystem.MutableCarrierInternalData
+import relativitization.universe.data.components.defaults.popsystem.pop.PopType
 import relativitization.universe.maths.collection.ListFind
 import kotlin.random.Random
 

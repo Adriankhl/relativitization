@@ -1,7 +1,7 @@
 package relativitization.universe.maths.physics
 
-import relativitization.universe.data.components.default.physics.Double3D
-import relativitization.universe.data.components.default.physics.Velocity
+import relativitization.universe.data.components.defaults.physics.Double3D
+import relativitization.universe.data.components.defaults.physics.Velocity
 import relativitization.universe.maths.physics.Movement.deltaMassTargetDouble3DByPhotonRocket
 import relativitization.universe.maths.physics.Movement.estimateRequiredDeltaMass
 import relativitization.universe.maths.physics.Movement.isSameDirection

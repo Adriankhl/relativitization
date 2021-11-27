@@ -2,9 +2,9 @@ package relativitization.universe.data.components
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import relativitization.universe.data.components.default.science.application.MutableScienceApplicationData
-import relativitization.universe.data.components.default.science.application.ScienceApplicationData
-import relativitization.universe.data.components.default.science.knowledge.*
+import relativitization.universe.data.components.defaults.science.application.MutableScienceApplicationData
+import relativitization.universe.data.components.defaults.science.application.ScienceApplicationData
+import relativitization.universe.data.components.defaults.science.knowledge.*
 import relativitization.universe.data.global.components.UniverseScienceData
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.utils.RelativitizationLogManager

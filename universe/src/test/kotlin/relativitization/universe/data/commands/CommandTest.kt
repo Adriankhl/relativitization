@@ -1,7 +1,7 @@
 package relativitization.universe.data.commands
 
-import relativitization.universe.data.components.default.physics.Int4D
-import relativitization.universe.data.components.default.physics.Velocity
+import relativitization.universe.data.components.defaults.physics.Int4D
+import relativitization.universe.data.components.defaults.physics.Velocity
 import kotlin.test.Test
 
 internal class CommandTest {
