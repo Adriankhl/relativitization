@@ -37,11 +37,7 @@ internal class MoveToDouble3DEventTest {
                 mapOf(
                     1 to listOf(command)
                 ),
-                mapOf(
-                    2 to listOf(),
-                    3 to listOf(),
-                    4 to listOf()
-                )
+                mapOf()
             )
             universe.preProcessUniverse()
         }
@@ -50,13 +46,8 @@ internal class MoveToDouble3DEventTest {
         runBlocking {
             for (i in 1..20) {
                 universe.postProcessUniverse(
-                    mapOf(
-                        1 to listOf()
-                    ),
-                    mapOf(
-                        2 to listOf(),
-                        3 to listOf(),
-                    )
+                    mapOf(),
+                    mapOf()
                 )
                 universe.preProcessUniverse()
             }
@@ -97,11 +88,7 @@ internal class MoveToDouble3DEventTest {
                 mapOf(
                     1 to listOf(command)
                 ),
-                mapOf(
-                    2 to listOf(),
-                    3 to listOf(),
-                    4 to listOf()
-                )
+                mapOf()
             )
             universe.preProcessUniverse()
         }
@@ -112,13 +99,8 @@ internal class MoveToDouble3DEventTest {
         runBlocking {
             for (i in 1..20) {
                 universe.postProcessUniverse(
-                    mapOf(
-                        1 to listOf()
-                    ),
-                    mapOf(
-                        2 to listOf(),
-                        3 to listOf(),
-                    )
+                    mapOf(),
+                    mapOf()
                 )
                 universe.preProcessUniverse()
             }

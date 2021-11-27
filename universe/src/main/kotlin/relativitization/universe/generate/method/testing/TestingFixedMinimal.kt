@@ -40,7 +40,7 @@ object TestingFixedMinimal : TestingGenerateUniverseMethod() {
 
         val universeState = UniverseState(
             currentTime = universeSettings.tDim - 1,
-            maxPlayerId = 4,
+            maxPlayerId = 6,
         )
 
         val playerData1 = MutablePlayerData(1)
@@ -64,6 +64,8 @@ object TestingFixedMinimal : TestingGenerateUniverseMethod() {
         // Add one stellar to players
         playerData1.playerInternalData.popSystemData().addStellarSystem(1E30)
         playerData3.playerInternalData.popSystemData().addStellarSystem(2E30)
+        playerData5.playerInternalData.popSystemData().addStellarSystem(1.5E30)
+        playerData6.playerInternalData.popSystemData().addStellarSystem(1.5E30)
 
         // Add spaceShip
         playerData1.playerInternalData.popSystemData().addSpaceShip(1.0, 100.0, 1000.0)

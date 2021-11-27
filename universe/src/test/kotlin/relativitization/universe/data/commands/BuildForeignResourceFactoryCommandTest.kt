@@ -41,11 +41,7 @@ internal class BuildForeignResourceFactoryCommandTest {
                 mapOf(
                     1 to listOf(command)
                 ),
-                mapOf(
-                    2 to listOf(),
-                    3 to listOf(),
-                    4 to listOf()
-                )
+                mapOf()
             )
             universe.preProcessUniverse()
         }

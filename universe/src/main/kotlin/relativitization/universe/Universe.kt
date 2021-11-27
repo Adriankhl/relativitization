@@ -304,17 +304,20 @@ class Universe(
         originalAiInputCommands: Map<Int, List<Command>>
     ) {
         // Filter out non existing player
-        val humanInputCommands = originalHumanInputCommands.filter {
+        val humanInputCommands: Map<Int, List<Command>> = originalHumanInputCommands.filter {
             playerCollection.hasPlayer(it.key)
         }
-        val aiInputCommands = originalAiInputCommands.filter {
+        val aiInputCommands: Map<Int, List<Command>> = originalAiInputCommands.filter {
             playerCollection.hasPlayer(it.key)
         }
 
         // Add two input command map, prefer human input commands
+        // Add empty command list to player in playerCollection when there is no input
         val inputCommands: Map<Int, List<Command>> = aiInputCommands.filter { (id, _) ->
             !humanInputCommands.containsKey(id)
-        } + humanInputCommands
+        } + humanInputCommands + playerCollection.getIdList().filter {
+            !humanInputCommands.containsKey(it) && !aiInputCommands.containsKey(it)
+        }.map { it to listOf() }
 
         // Default all player type to Ai
         for ((id, _) in aiInputCommands) {

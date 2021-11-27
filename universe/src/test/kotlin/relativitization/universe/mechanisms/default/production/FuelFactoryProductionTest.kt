@@ -15,14 +15,8 @@ internal class FuelFactoryProductionTest {
 
         runBlocking {
             universe.postProcessUniverse(
-                mapOf(
-                    1 to listOf()
-                ),
-                mapOf(
-                    2 to listOf(),
-                    3 to listOf(),
-                    4 to listOf()
-                )
+                mapOf(),
+                mapOf()
             )
             universe.preProcessUniverse()
         }
