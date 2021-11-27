@@ -317,7 +317,10 @@ class Universe(
             !humanInputCommands.containsKey(id)
         } + humanInputCommands + playerCollection.getIdList().filter {
             !humanInputCommands.containsKey(it) && !aiInputCommands.containsKey(it)
-        }.map { it to listOf() }
+        }.map {
+            logger.debug("Player $it has no input command")
+            it to listOf()
+        }
 
         // Default all player type to Ai
         for ((id, _) in aiInputCommands) {
