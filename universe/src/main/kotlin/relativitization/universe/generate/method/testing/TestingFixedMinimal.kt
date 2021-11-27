@@ -5,6 +5,7 @@ import relativitization.universe.ai.name
 import relativitization.universe.data.*
 import relativitization.universe.data.components.default.economy.MutableResourceQualityData
 import relativitization.universe.data.components.default.economy.ResourceType
+import relativitization.universe.data.components.default.physics.MutableDouble4D
 import relativitization.universe.data.components.default.physics.MutableInt4D
 import relativitization.universe.data.components.default.popsystem.pop.engineer.laboratory.MutableLaboratoryData
 import relativitization.universe.data.components.default.popsystem.pop.labourer.factory.MutableFuelFactoryData
@@ -46,9 +47,19 @@ object TestingFixedMinimal : TestingGenerateUniverseMethod() {
         val playerData2 = MutablePlayerData(2)
         val playerData3 = MutablePlayerData(3)
         val playerData4 = MutablePlayerData(4)
+        val playerData5 = MutablePlayerData(5)
+        val playerData6 = MutablePlayerData(6)
 
+        // Only player 1 is human
         playerData1.playerType = PlayerType.HUMAN
+
+        // Move player 3 to (0, 0, 1)
         playerData3.int4D = MutableInt4D(0, 0, 0, 1)
+
+        // Move player 5 and 6 to (1, 0, 0), and different group id
+        playerData5.int4D = MutableInt4D(0, 1, 0, 0)
+        playerData6.int4D = MutableInt4D(0, 1, 0, 0)
+        playerData6.double4D = MutableDouble4D(0.0, 1.4, 0.0, 0.0)
 
         // Add one stellar to players
         playerData1.playerInternalData.popSystemData().addStellarSystem(1E30)
@@ -291,6 +302,18 @@ object TestingFixedMinimal : TestingGenerateUniverseMethod() {
         )
         data.addPlayerDataToLatestWithAfterImage(
             playerData4,
+            universeState.getCurrentTime(),
+            universeSettings.groupEdgeLength,
+            universeSettings.playerAfterImageDuration
+        )
+        data.addPlayerDataToLatestWithAfterImage(
+            playerData5,
+            universeState.getCurrentTime(),
+            universeSettings.groupEdgeLength,
+            universeSettings.playerAfterImageDuration
+        )
+        data.addPlayerDataToLatestWithAfterImage(
+            playerData6,
             universeState.getCurrentTime(),
             universeSettings.groupEdgeLength,
             universeSettings.playerAfterImageDuration
