@@ -68,6 +68,13 @@ data class PlayerData(
         return playerInternalData.leaderIdList.firstOrNull() ?: playerId
     }
 
+    /**
+     * Is player the top leader
+     */
+    fun isTopLeader(): Boolean {
+        return topLeaderId() == playerId
+    }
+
     fun isValid(currentTime: Int): Boolean {
         val isTValid: Boolean = currentTime == int4D.t
         val isRestMassValid: Boolean = (playerInternalData.physicsData().coreRestMass > 0.0) &&
