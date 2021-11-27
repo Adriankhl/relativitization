@@ -84,19 +84,19 @@ data class MutableUniverseScienceData(
         basicProjectFunction: (BasicResearchProjectData, MutableBasicResearchData) -> Unit,
         appliedProjectFunction: (AppliedResearchProjectData, MutableAppliedResearchData) -> Unit,
     ) {
-        basicResearchProjectDataMap.filter { it.key <= newStartFromBasicResearchId }.forEach {
+        basicResearchProjectDataMap.filter { it.key < newStartFromBasicResearchId }.forEach {
             basicProjectFunction(it.value, commonSenseKnowledgeData.basicResearchData)
         }
 
-        appliedResearchProjectDataMap.filter { it.key <= newStartFromAppliedResearchId }.forEach {
+        appliedResearchProjectDataMap.filter { it.key < newStartFromAppliedResearchId }.forEach {
             appliedProjectFunction(it.value, commonSenseKnowledgeData.appliedResearchData)
         }
 
         // Clear old projects
-        basicResearchProjectDataMap.keys.filter { it <= newStartFromBasicResearchId }.forEach {
+        basicResearchProjectDataMap.keys.filter { it < newStartFromBasicResearchId }.forEach {
             basicResearchProjectDataMap.remove(it)
         }
-        appliedResearchProjectDataMap.keys.filter { it <= newStartFromAppliedResearchId }.forEach {
+        appliedResearchProjectDataMap.keys.filter { it < newStartFromAppliedResearchId }.forEach {
             appliedResearchProjectDataMap.remove(it)
         }
 
