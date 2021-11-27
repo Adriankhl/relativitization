@@ -107,6 +107,8 @@ object TestingFixedMinimal : TestingGenerateUniverseMethod() {
         playerData2.playerInternalData.aiData().aiName = EmptyAI.name()
         playerData3.playerInternalData.aiData().aiName = EmptyAI.name()
         playerData4.playerInternalData.aiData().aiName = EmptyAI.name()
+        playerData5.playerInternalData.aiData().aiName = EmptyAI.name()
+        playerData6.playerInternalData.aiData().aiName = EmptyAI.name()
 
         // Create basic and applied project
         val basic0 = BasicResearchProjectData(
