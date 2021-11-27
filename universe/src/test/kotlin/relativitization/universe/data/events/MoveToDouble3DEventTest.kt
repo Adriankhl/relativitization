@@ -64,9 +64,9 @@ internal class MoveToDouble3DEventTest {
     fun fixedMinimalStrangeCaseTest() {
         val universe = Universe(GenerateUniverseMethodCollection.generate(GenerateSettings()), ".")
         val view7: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
-        assert(view7.get(1).int4D == Int4D(7, 0, 0, 0))
+        assert(view7.getCurrentPlayerData().int4D == Int4D(7, 0, 0, 0))
 
-        val originalDouble4D: Double4D = view7.get(1).double4D
+        val originalDouble4D: Double4D = view7.getCurrentPlayerData().double4D
 
         val event = MoveToDouble3DEvent(
             toId = 1,
@@ -94,7 +94,7 @@ internal class MoveToDouble3DEventTest {
         }
 
         val view8: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
-        assert(view8.get(1).playerInternalData.eventDataMap.isEmpty())
+        assert(view8.getCurrentPlayerData().playerInternalData.eventDataMap.isEmpty())
 
         runBlocking {
             for (i in 1..20) {
@@ -106,7 +106,6 @@ internal class MoveToDouble3DEventTest {
             }
         }
         val finalView: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
-        // Moved a little
-        assert(finalView.get(1).double4D.toDouble3D() != originalDouble4D.toDouble3D())
+        assert(finalView.getCurrentPlayerData().double4D.toDouble3D() == originalDouble4D.toDouble3D())
     }
 }

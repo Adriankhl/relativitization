@@ -218,7 +218,7 @@ object DiscoverKnowledge : Mechanism() {
     ): Boolean {
 
         // Minimum range is 0.25
-        val area: Double = if (organizationRange > 0.25) {
+        val area: Double = if (organizationRange >= 0.25) {
             organizationRange * organizationRange * PI
         } else {
             logger.error("Institute range smaller than 0.25")

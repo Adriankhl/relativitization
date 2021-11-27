@@ -5,6 +5,7 @@ import relativitization.universe.ai.name
 import relativitization.universe.data.*
 import relativitization.universe.data.components.defaults.economy.MutableResourceQualityData
 import relativitization.universe.data.components.defaults.economy.ResourceType
+import relativitization.universe.data.components.defaults.physics.Double4D
 import relativitization.universe.data.components.defaults.physics.MutableDouble4D
 import relativitization.universe.data.components.defaults.physics.MutableInt4D
 import relativitization.universe.data.components.defaults.popsystem.pop.engineer.laboratory.MutableLaboratoryData
@@ -53,6 +54,9 @@ object TestingFixedMinimal : TestingGenerateUniverseMethod() {
         // Only player 1 is human
         playerData1.playerType = PlayerType.HUMAN
 
+        // Move player 1 to (0.1, 0.1, 0.1) to avoid boundary
+        playerData1.double4D = MutableDouble4D(0.0, 0.1, 0.1, 0.1)
+
         // Move player 3 to (0, 0, 1)
         playerData3.int4D = MutableInt4D(0, 0, 0, 1)
 
@@ -74,7 +78,7 @@ object TestingFixedMinimal : TestingGenerateUniverseMethod() {
         playerData4.playerInternalData.popSystemData().addSpaceShip(1.0, 100.0, 1000.0)
 
         // Add fuel rest mass
-        playerData1.playerInternalData.physicsData().fuelRestMassData.movement = 100.0
+        playerData1.playerInternalData.physicsData().fuelRestMassData.movement = 0.0
         playerData2.playerInternalData.physicsData().fuelRestMassData.movement = 100.0
         playerData3.playerInternalData.physicsData().fuelRestMassData.movement = 100.0
         playerData4.playerInternalData.physicsData().fuelRestMassData.movement = 100.0
