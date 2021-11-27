@@ -67,7 +67,9 @@
 * Available commands
 
 # Test TODO List
-* Declare war, combat, and propose pease
+* Declare war
+* Combat
+* Propose peace
 * New player
 * Merge player
 
