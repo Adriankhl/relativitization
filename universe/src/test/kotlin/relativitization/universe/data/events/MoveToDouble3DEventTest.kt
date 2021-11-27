@@ -106,6 +106,7 @@ internal class MoveToDouble3DEventTest {
             }
         }
         val finalView: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
-        assert(finalView.get(1).double4D.toDouble3D() == originalDouble4D.toDouble3D())
+        // Moved a little
+        assert(finalView.get(1).double4D.toDouble3D() != originalDouble4D.toDouble3D())
     }
 }

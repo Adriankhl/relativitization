@@ -13,5 +13,6 @@ internal class AutoCombatTest {
         val view7At6 = universe.getUniverse3DViewAtPlayer(6)
 
         assert(view7At6.getCurrentPlayerData().isTopLeader())
+        assert(view7At6.getCurrentPlayerData().playerInternalData.diplomacyData().warData.warStateMap.isEmpty())
     }
 }

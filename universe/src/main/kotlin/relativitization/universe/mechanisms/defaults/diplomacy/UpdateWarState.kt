@@ -37,7 +37,7 @@ object UpdateWarState : Mechanism() {
                     )
                 val otherHasProposePeace: Boolean = if (otherHasWarState) {
                     universeData3DAtPlayer.get(id).playerInternalData.diplomacyData().warData.warStateMap.getValue(
-                        id
+                        mutablePlayerData.playerId
                     ).proposePeace
                 } else {
                     true
@@ -63,7 +63,7 @@ object UpdateWarState : Mechanism() {
                 val otherWarTooLong: Boolean = if (otherHasWarState) {
                     val otherStartTime: Int =
                         universeData3DAtPlayer.get(id).playerInternalData.diplomacyData().warData.warStateMap.getValue(
-                            id
+                            mutablePlayerData.playerId
                         ).startTime
                     mutablePlayerData.int4D.t - otherStartTime > maxWarLength
                 } else {

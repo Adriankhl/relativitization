@@ -309,7 +309,14 @@ data class MutableUniverseData4D(
         val int4D = mutablePlayerData.int4D
         if (!mutablePlayerData.double4D.atInt4D(int4D)) {
             logger.debug("Add player ${mutablePlayerData.playerId}: force changing new player double4D")
-            mutablePlayerData.double4D = int4D.toMutableDouble4DCenter()
+
+            if (mutablePlayerData.double4D.toMutableDouble3D().atInt3D(int4D.toMutableInt3D())) {
+                logger.debug("Force change t only")
+                mutablePlayerData.double4D.t = int4D.t.toDouble()
+            } else {
+                logger.debug("Force change double4D")
+                mutablePlayerData.double4D = int4D.toMutableDouble4DCenter()
+            }
         }
 
         // get the player data list at the grid, or empty list if the coordinate is not correct

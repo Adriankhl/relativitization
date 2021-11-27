@@ -269,7 +269,7 @@ class Universe(
                     universeData.universeSettings.speedOfLight
                 )
                 val timeDiff: Int = playerInt4D.t - it.fromInt4D.t
-                timeDiff <= timeDelay
+                timeDiff >= timeDelay
             }
 
             // Remove the command to be executed
@@ -489,7 +489,7 @@ class Universe(
         ) {
             val listGroup: Map<Int, List<Command>> = commandList.groupBy { it.toId }
             listGroup.map { (id, commands) ->
-                commandMap.getOrDefault(id, mutableListOf()).addAll(commands)
+                commandMap.getOrPut(id) { mutableListOf() }.addAll(commands)
             }
         }
     }

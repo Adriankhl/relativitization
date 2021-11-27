@@ -61,6 +61,9 @@ data class Double4D(val t: Double, val x: Double, val y: Double, val z: Double) 
 data class MutableDouble4D(var t: Double, var x: Double, var y: Double, var z: Double) {
     fun toMutableInt4D() = MutableInt4D(t.toInt(), x.toInt(), y.toInt(), z.toInt())
     fun toDouble3D() = Double3D(x, y, z)
+    fun toMutableDouble3D() = MutableDouble3D(x, y, z)
+    fun toInt3D() = Int3D(x.toInt(), y.toInt(), z.toInt())
+    fun toMutableInt3D() = MutableInt3D(x.toInt(), y.toInt(), z.toInt())
     fun atInt4D(int4D: MutableInt4D): Boolean {
         return (t.toInt() == int4D.t) && (x.toInt() == int4D.x) && (y.toInt() == int4D.y) && (z.toInt() == int4D.z)
     }
@@ -68,6 +71,9 @@ data class MutableDouble4D(var t: Double, var x: Double, var y: Double, var z: D
 
 @Serializable
 data class Int3D(val x: Int, val y: Int, val z: Int) {
+    operator fun plus(double3D: Double3D): Double3D =
+        Double3D(x + double3D.x, y + double3D.y, z + double3D.z)
+
     fun isNearby(int3D: Int3D): Boolean {
         val xDistance = abs(x - int3D.x)
         val yDistance = abs(y - int3D.y)
@@ -81,9 +87,6 @@ data class Int3D(val x: Int, val y: Int, val z: Int) {
     fun toDouble3DCenter(): Double3D {
         return Double3D(x.toDouble() + 0.5, y.toDouble() + 0.5, z.toDouble() + 0.5)
     }
-
-    operator fun plus(double3D: Double3D): Double3D =
-        Double3D(x + double3D.x, y + double3D.y, z + double3D.z)
 }
 
 @Serializable
@@ -93,6 +96,13 @@ data class MutableInt3D(var x: Int, var y: Int, var z: Int) {
 
 @Serializable
 data class Double3D(val x: Double, val y: Double, val z: Double) {
+    operator fun times(double: Double): Double3D = Double3D(x * double, y * double, z * double)
+
+    operator fun plus(double3D: Double3D): Double3D =
+        Double3D(x + double3D.x, y + double3D.y, z + double3D.z)
+
+    operator fun minus(double3D: Double3D): Double3D =
+        Double3D(x - double3D.x, y - double3D.y, z - double3D.z)
 
     fun squareMag(): Double = x * x + y * y + z * z
 
@@ -104,18 +114,14 @@ data class Double3D(val x: Double, val y: Double, val z: Double) {
             Double3D(x / magnitude, y / magnitude, z / magnitude)
         }
     }
-
-    operator fun times(double: Double): Double3D = Double3D(x * double, y * double, z * double)
-
-    operator fun plus(double3D: Double3D): Double3D =
-        Double3D(x + double3D.x, y + double3D.y, z + double3D.z)
-
-    operator fun minus(double3D: Double3D): Double3D =
-        Double3D(x - double3D.x, y - double3D.y, z - double3D.z)
 }
 
 @Serializable
-data class MutableDouble3D(var x: Double, var y: Double, var z: Double)
+data class MutableDouble3D(var x: Double, var y: Double, var z: Double) {
+    fun atInt3D(int3D: MutableInt3D): Boolean {
+        return (x.toInt() == int3D.x) && (y.toInt() == int3D.y) && (z.toInt() == int3D.z)
+    }
+}
 
 @Serializable
 data class Int2D(val x: Int, val y: Int)
