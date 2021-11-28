@@ -51,12 +51,17 @@ object MechanismCollection {
             logger.error("No mechanism name matched, use empty mechanism")
             EmptyMechanismList
         }.mechanismList.map { mechanism ->
-            mechanism.process(
-                mutablePlayerData,
-                universeData3DAtPlayer,
-                universeData.universeSettings,
-                universeData.universeGlobalData
-            )
+            if (mutablePlayerData.playerInternalData.isAlive) {
+                mechanism.process(
+                    mutablePlayerData,
+                    universeData3DAtPlayer,
+                    universeData.universeSettings,
+                    universeData.universeGlobalData
+                )
+            } else {
+                logger.debug("Player ${mutablePlayerData.playerId} is not alive, mechanism not ")
+                listOf()
+            }
         }.flatten()
     }
 }
