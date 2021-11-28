@@ -115,6 +115,9 @@ data class DeclareWarCommand(
     }
 }
 
+/**
+ * Declare independence war on direct leader
+ */
 @Serializable
 data class DeclareIndependenceCommand(
     override val toId: Int,
@@ -136,14 +139,14 @@ data class DeclareIndependenceCommand(
         universeSettings: UniverseSettings
     ): CanSendCheckMessage {
         val isDirectLeader: Boolean = playerData.playerInternalData.directLeaderId == toId
-        val isNotLeaderI18NString: I18NString = if (isDirectLeader) {
+        val isDirectLeaderI18NString: I18NString = if (isDirectLeader) {
             I18NString("")
         } else {
             I18NString("Target is not direct leader. ")
         }
 
         val isNotSelf: Boolean = playerData.playerId != toId
-        val isNotSubordinateI18NString: I18NString = if (isNotSelf) {
+        val isNotSelfI18NString: I18NString = if (isNotSelf) {
             I18NString("")
         } else {
             I18NString("Cannot declare war on self. ")
@@ -161,8 +164,8 @@ data class DeclareIndependenceCommand(
             isDirectLeader && isNotSelf && isNotInWar,
             I18NString.combine(
                 listOf(
-                    isNotLeaderI18NString,
-                    isNotSubordinateI18NString,
+                    isDirectLeaderI18NString,
+                    isNotSelfI18NString,
                     isNotInWarI18NString,
                 )
             )
@@ -173,10 +176,20 @@ data class DeclareIndependenceCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ) {
+        // Change direct leader and leader id list
+        val newLeaderIdList: List<Int> = playerData.playerInternalData.leaderIdList.filter {
+            (it != playerData.playerId) && (it != toId)
+        }
+        playerData.changeDirectLeaderId(
+            newLeaderIdList
+        )
+
+        // Change diplomatic relation state
         playerData.playerInternalData.diplomacyData().getDiplomaticRelationData(
             toId
         ).diplomaticRelationState = DiplomaticRelationState.ENEMY
 
+        // Add war state
         playerData.playerInternalData.diplomacyData().warData.getWarStateData(
             toId
         ).initialSubordinateList = playerData.playerInternalData.subordinateIdList
@@ -196,10 +209,15 @@ data class DeclareIndependenceCommand(
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+        // Remove subordinate
+        playerData.removeSubordinate(fromId)
+
+        // Change diplomatic relation state
         playerData.playerInternalData.diplomacyData().getDiplomaticRelationData(
             fromId
         ).diplomaticRelationState = DiplomaticRelationState.ENEMY
 
+        // Add war state
         playerData.playerInternalData.diplomacyData().warData.getWarStateData(
             fromId
         ).initialSubordinateList = playerData.playerInternalData.subordinateIdList

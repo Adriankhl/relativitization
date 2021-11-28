@@ -197,6 +197,14 @@ data class MutablePlayerData(
         }
     }
 
+    /**
+     * Remove subordinate
+     */
+    fun removeSubordinate(subordinateId: Int) {
+        playerInternalData.subordinateIdList.remove(subordinateId)
+        playerInternalData.directSubordinateIdList.remove(subordinateId)
+    }
+
     companion object {
         private val logger = RelativitizationLogManager.getLogger()
     }
