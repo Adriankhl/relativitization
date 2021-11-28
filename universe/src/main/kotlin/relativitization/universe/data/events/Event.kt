@@ -92,13 +92,12 @@ fun <T : Event> KClass<T>.name(): String = this.simpleName.toString()
  * Unit of event data
  *
  * @property event the event
- * @property hasChoice the player has a choice (instead of the default choice)
- * @property choice choice of the player
- * @property stayCounter number of turns the event has been stayed in the player data
+ * @property eventRecordData the record of the event data, e.g., choice and counder
  */
 @Serializable
 data class EventData(
     val event: Event,
+    val eventRecordData: EventRecordData = EventRecordData(),
     val hasChoice: Boolean = false,
     val choice: Int = 0,
     val stayCounter: Int = 0
@@ -107,6 +106,28 @@ data class EventData(
 @Serializable
 data class MutableEventData(
     val event: Event,
+    var eventRecordData: MutableEventRecordData = MutableEventRecordData(),
+    var hasChoice: Boolean = false,
+    var choice: Int = 0,
+    var stayCounter: Int = 0
+)
+
+/**
+ * Record of the event, including the choice and counter
+ *
+ * @property hasChoice the player has a choice (instead of the default choice)
+ * @property choice choice of the player
+ * @property stayCounter number of turns the event has been stayed in the player data
+ */
+@Serializable
+data class EventRecordData(
+    val hasChoice: Boolean = false,
+    val choice: Int = 0,
+    val stayCounter: Int = 0
+)
+
+@Serializable
+data class MutableEventRecordData(
     var hasChoice: Boolean = false,
     var choice: Int = 0,
     var stayCounter: Int = 0
