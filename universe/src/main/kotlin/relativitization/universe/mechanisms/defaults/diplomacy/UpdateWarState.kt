@@ -4,7 +4,9 @@ import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
+import relativitization.universe.data.components.defaults.physics.Int4D
 import relativitization.universe.data.global.UniverseGlobalData
+import relativitization.universe.maths.physics.Intervals
 import relativitization.universe.mechanisms.Mechanism
 
 object UpdateWarState : Mechanism() {
@@ -40,7 +42,16 @@ object UpdateWarState : Mechanism() {
                         mutablePlayerData.playerId
                     ).proposePeace
                 } else {
-                    true
+                    // Assume the other player has proposed peace if the war state has disappeared,
+                    // unless the time from war start time is too short, i.e., the declare war statement
+                    // may not reached the other player or this player can view it yet
+                    val timeDelay: Int = Intervals.intDelay(
+                        universeData3DAtPlayer.get(id).int4D.toInt3D(),
+                        mutablePlayerData.int4D.toInt3D(),
+                        universeSettings.speedOfLight
+                    )
+                    val timeDiff: Int = mutablePlayerData.int4D.t - warState.startTime
+                    timeDiff > 2 * timeDelay
                 }
                 (warState.proposePeace) && (!otherHasWarState || otherHasProposePeace)
             }.keys
