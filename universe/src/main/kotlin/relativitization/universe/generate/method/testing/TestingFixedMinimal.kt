@@ -5,7 +5,6 @@ import relativitization.universe.ai.name
 import relativitization.universe.data.*
 import relativitization.universe.data.components.defaults.economy.MutableResourceQualityData
 import relativitization.universe.data.components.defaults.economy.ResourceType
-import relativitization.universe.data.components.defaults.physics.Double4D
 import relativitization.universe.data.components.defaults.physics.MutableDouble4D
 import relativitization.universe.data.components.defaults.physics.MutableInt4D
 import relativitization.universe.data.components.defaults.popsystem.pop.engineer.laboratory.MutableLaboratoryData
@@ -17,10 +16,7 @@ import relativitization.universe.data.components.defaults.science.knowledge.Appl
 import relativitization.universe.data.components.defaults.science.knowledge.AppliedResearchProjectData
 import relativitization.universe.data.components.defaults.science.knowledge.BasicResearchField
 import relativitization.universe.data.components.defaults.science.knowledge.BasicResearchProjectData
-import relativitization.universe.data.global.UniverseGlobalData
-import relativitization.universe.data.global.components.GlobalDataComponentMap
-import relativitization.universe.data.global.components.MutableUniverseScienceData
-import relativitization.universe.data.global.components.UniverseScienceData
+import relativitization.universe.data.global.MutableUniverseGlobalData
 import relativitization.universe.data.serializer.DataSerializer.copy
 import relativitization.universe.generate.method.GenerateSettings
 import relativitization.universe.global.defaults.science.UpdateUniverseScienceData
@@ -30,7 +26,7 @@ object TestingFixedMinimal : TestingGenerateUniverseMethod() {
     override fun generate(settings: GenerateSettings): UniverseData {
         val universeSettings: UniverseSettings = copy(settings.universeSettings)
 
-        val data = MutableUniverseData4D(
+        val mutableUniverseData4D = MutableUniverseData4D(
             create4DGrid(
                 universeSettings.tDim,
                 universeSettings.xDim,
@@ -39,80 +35,8 @@ object TestingFixedMinimal : TestingGenerateUniverseMethod() {
             ) { _, _, _, _ -> mutableListOf() }
         )
 
-        val universeState = UniverseState(
-            currentTime = universeSettings.tDim - 1,
-            maxPlayerId = 6,
-        )
-
-        val playerData1 = MutablePlayerData(1)
-        val playerData2 = MutablePlayerData(2)
-        val playerData3 = MutablePlayerData(3)
-        val playerData4 = MutablePlayerData(4)
-        val playerData5 = MutablePlayerData(5)
-        val playerData6 = MutablePlayerData(6)
-
-        // Only player 1 is human
-        playerData1.playerType = PlayerType.HUMAN
-
-        // Move player 1 to (0.1, 0.1, 0.1) to avoid boundary
-        playerData1.double4D = MutableDouble4D(0.0, 0.1, 0.1, 0.1)
-
-        // Move player 3 to (0, 0, 1)
-        playerData3.int4D = MutableInt4D(0, 0, 0, 1)
-
-        // Move player 5 and 6 to (1, 0, 0), and different group id
-        playerData5.int4D = MutableInt4D(0, 1, 0, 0)
-        playerData6.int4D = MutableInt4D(0, 1, 0, 0)
-        playerData6.double4D = MutableDouble4D(0.0, 1.4, 0.0, 0.0)
-
-        // Add one stellar to players
-        playerData1.playerInternalData.popSystemData().addStellarSystem(1E30)
-        playerData3.playerInternalData.popSystemData().addStellarSystem(2E30)
-        playerData5.playerInternalData.popSystemData().addStellarSystem(1.5E30)
-        playerData6.playerInternalData.popSystemData().addStellarSystem(1.5E30)
-
-        // Add spaceShip
-        playerData1.playerInternalData.popSystemData().addSpaceShip(1.0, 100.0, 1000.0)
-        playerData2.playerInternalData.popSystemData().addSpaceShip(1.0, 100.0, 1000.0)
-        playerData3.playerInternalData.popSystemData().addSpaceShip(1.0, 100.0, 1000.0)
-        playerData4.playerInternalData.popSystemData().addSpaceShip(1.0, 100.0, 1000.0)
-
-        // Add fuel rest mass
-        playerData1.playerInternalData.physicsData().fuelRestMassData.movement = 0.0
-        playerData2.playerInternalData.physicsData().fuelRestMassData.movement = 100.0
-        playerData3.playerInternalData.physicsData().fuelRestMassData.movement = 100.0
-        playerData4.playerInternalData.physicsData().fuelRestMassData.movement = 100.0
-
-        playerData1.playerInternalData.physicsData().fuelRestMassData.production = 30.0
-
-        // Add resource to player 1
-        playerData1.playerInternalData.economyData().resourceData.addNewResource(
-            ResourceType.PLANT,
-            MutableResourceQualityData(
-                1.0,
-                2.0,
-                3.0
-            ),
-            5.0,
-        )
-
-
-        // player 1 is a leader of player 2
-        playerData2.changeDirectLeaderId(
-            playerData1.playerInternalData.leaderIdList
-        )
-        playerData1.addDirectSubordinateId(playerData2.playerId)
-
-        // player 4 is a dead player
-        playerData4.playerInternalData.isAlive = false
-
-        // Change AI to EmptyAI
-        playerData1.playerInternalData.aiData().aiName = EmptyAI.name()
-        playerData2.playerInternalData.aiData().aiName = EmptyAI.name()
-        playerData3.playerInternalData.aiData().aiName = EmptyAI.name()
-        playerData4.playerInternalData.aiData().aiName = EmptyAI.name()
-        playerData5.playerInternalData.aiData().aiName = EmptyAI.name()
-        playerData6.playerInternalData.aiData().aiName = EmptyAI.name()
+        // Global data first
+        val mutableUniverseGlobalData = MutableUniverseGlobalData()
 
         // Create basic and applied project
         val basic0 = BasicResearchProjectData(
@@ -176,8 +100,66 @@ object TestingFixedMinimal : TestingGenerateUniverseMethod() {
             referenceAppliedResearchIdList = listOf(0, 1)
         )
 
-        // Add mathematics and energy project to player
-        // Also need to add to universe science data later
+        // Add project to universe science data
+        val mutableUniverseScienceData = mutableUniverseGlobalData.universeScienceData()
+        mutableUniverseScienceData.addBasicResearchProjectData(basic0)
+        mutableUniverseScienceData.addBasicResearchProjectData(basic1)
+        mutableUniverseScienceData.addBasicResearchProjectData(basic2)
+        mutableUniverseScienceData.addAppliedResearchProjectData(applied0)
+        mutableUniverseScienceData.addAppliedResearchProjectData(applied1)
+        mutableUniverseScienceData.addAppliedResearchProjectData(applied2)
+
+
+        // Totally 6 player
+        val universeState = UniverseState(
+            currentTime = universeSettings.tDim - 1,
+            maxPlayerId = 6,
+        )
+        val playerData1 = MutablePlayerData(1)
+        val playerData2 = MutablePlayerData(2)
+        val playerData3 = MutablePlayerData(3)
+        val playerData4 = MutablePlayerData(4)
+        val playerData5 = MutablePlayerData(5)
+        val playerData6 = MutablePlayerData(6)
+
+
+        // Change AI to EmptyAI to for deterministic testing
+        playerData1.playerInternalData.aiData().aiName = EmptyAI.name()
+        playerData2.playerInternalData.aiData().aiName = EmptyAI.name()
+        playerData3.playerInternalData.aiData().aiName = EmptyAI.name()
+        playerData4.playerInternalData.aiData().aiName = EmptyAI.name()
+        playerData5.playerInternalData.aiData().aiName = EmptyAI.name()
+        playerData6.playerInternalData.aiData().aiName = EmptyAI.name()
+
+
+        // Player 1 data
+
+        // Only player 1 is human
+        playerData1.playerType = PlayerType.HUMAN
+
+        // Move player 1 to (0.1, 0.1, 0.1) to avoid boundary
+        playerData1.double4D = MutableDouble4D(0.0, 0.1, 0.1, 0.1)
+
+        // Add carrier system to player 1
+        playerData1.playerInternalData.popSystemData().addStellarSystem(1E30)
+        playerData1.playerInternalData.popSystemData().addSpaceShip(1.0, 100.0, 1000.0)
+
+        // Add fuel and resource to player 1
+        playerData1.playerInternalData.physicsData().fuelRestMassData.production = 30.0
+        playerData1.playerInternalData.economyData().resourceData.addNewResource(
+            ResourceType.PLANT,
+            MutableResourceQualityData(
+                1.0,
+                2.0,
+                3.0
+            ),
+            5.0,
+        )
+
+        // Player 2 is a subordinate of player 1
+        playerData1.addDirectSubordinateId(playerData2.playerId)
+
+        // Add mathematics and energy project to player 1
         playerData1.playerInternalData.playerScienceData().doneBasicResearchProject(
             basic0,
             UpdateUniverseScienceData.basicResearchProjectFunction()
@@ -232,6 +214,7 @@ object TestingFixedMinimal : TestingGenerateUniverseMethod() {
         playerData1.playerInternalData.popSystemData().carrierDataMap.getValue(
             0
         ).allPopData.engineerPopData.addLaboratory(mutableLaboratoryData)
+
 
 
         // Add ideal fuel factory to player 1
@@ -289,67 +272,104 @@ object TestingFixedMinimal : TestingGenerateUniverseMethod() {
             0
         ).allPopData.labourerPopData.addFuelFactory(fuelFactory1)
 
+        // Player 2
 
-        data.addPlayerDataToLatestWithAfterImage(
+        // Add spaceship to player 2
+        playerData2.playerInternalData.popSystemData().addSpaceShip(1.0, 100.0, 1000.0)
+
+        // Add fuel to player 2 for movement
+        playerData2.playerInternalData.physicsData().fuelRestMassData.movement = 100.0
+
+        // player 1 is a leader of player 2
+        playerData2.changeDirectLeaderId(
+            playerData1.playerInternalData.leaderIdList
+        )
+
+        // Player 3
+
+        // Move player 3 to (0, 0, 1)
+        playerData3.int4D = MutableInt4D(0, 0, 0, 1)
+
+        // Add carrier system to player 3
+        playerData3.playerInternalData.popSystemData().addStellarSystem(2E30)
+        playerData3.playerInternalData.popSystemData().addSpaceShip(1.0, 100.0, 1000.0)
+
+        // Add fuel to player 3
+        playerData3.playerInternalData.physicsData().fuelRestMassData.movement = 100.0
+
+        // Player 4
+
+        // Add spaceShip to player 4
+        playerData4.playerInternalData.popSystemData().addSpaceShip(1.0, 100.0, 1000.0)
+
+        // Add fuel to player 4
+        playerData4.playerInternalData.physicsData().fuelRestMassData.movement = 100.0
+
+        // player 4 is a dead player
+        playerData4.playerInternalData.isAlive = false
+
+        // Player 5
+
+        // Move player 5 to (1, 0, 0)
+        playerData5.int4D = MutableInt4D(0, 1, 0, 0)
+
+        // Add stellar system to player 5
+        playerData5.playerInternalData.popSystemData().addStellarSystem(1.5E30)
+
+        // Player 6
+
+        // Move player 6 to (1.4, 0, 0)
+        playerData6.int4D = MutableInt4D(0, 1, 0, 0)
+        playerData6.double4D = MutableDouble4D(0.0, 1.4, 0.0, 0.0)
+
+        // Add stellar system to player 6
+        playerData6.playerInternalData.popSystemData().addStellarSystem(1.5E30)
+
+
+        // Add player data to universe data 4D
+        mutableUniverseData4D.addPlayerDataToLatestWithAfterImage(
             playerData1,
             universeState.getCurrentTime(),
             universeSettings.groupEdgeLength,
             universeSettings.playerAfterImageDuration
         )
-        data.addPlayerDataToLatestWithAfterImage(
+        mutableUniverseData4D.addPlayerDataToLatestWithAfterImage(
             playerData2,
             universeState.getCurrentTime(),
             universeSettings.groupEdgeLength,
             universeSettings.playerAfterImageDuration
         )
-        data.addPlayerDataToLatestWithAfterImage(
+        mutableUniverseData4D.addPlayerDataToLatestWithAfterImage(
             playerData3,
             universeState.getCurrentTime(),
             universeSettings.groupEdgeLength,
             universeSettings.playerAfterImageDuration
         )
-        data.addPlayerDataToLatestWithAfterImage(
+        mutableUniverseData4D.addPlayerDataToLatestWithAfterImage(
             playerData4,
             universeState.getCurrentTime(),
             universeSettings.groupEdgeLength,
             universeSettings.playerAfterImageDuration
         )
-        data.addPlayerDataToLatestWithAfterImage(
+        mutableUniverseData4D.addPlayerDataToLatestWithAfterImage(
             playerData5,
             universeState.getCurrentTime(),
             universeSettings.groupEdgeLength,
             universeSettings.playerAfterImageDuration
         )
-        data.addPlayerDataToLatestWithAfterImage(
+        mutableUniverseData4D.addPlayerDataToLatestWithAfterImage(
             playerData6,
             universeState.getCurrentTime(),
             universeSettings.groupEdgeLength,
             universeSettings.playerAfterImageDuration
         )
 
-        // Add project to universe science data
-        val mutableUniverseScienceData = MutableUniverseScienceData()
-        mutableUniverseScienceData.addBasicResearchProjectData(basic0)
-        mutableUniverseScienceData.addBasicResearchProjectData(basic1)
-        mutableUniverseScienceData.addBasicResearchProjectData(basic2)
-        mutableUniverseScienceData.addAppliedResearchProjectData(applied0)
-        mutableUniverseScienceData.addAppliedResearchProjectData(applied1)
-        mutableUniverseScienceData.addAppliedResearchProjectData(applied2)
-
-        val universeScienceData: UniverseScienceData = copy(mutableUniverseScienceData)
-
         return UniverseData(
-            universeData4D = copy(data),
+            universeData4D = copy(mutableUniverseData4D),
             universeSettings = universeSettings,
             universeState = universeState,
             commandMap = mutableMapOf(),
-            universeGlobalData = UniverseGlobalData(
-                GlobalDataComponentMap(
-                    listOf(
-                        universeScienceData
-                    )
-                )
-            ),
+            universeGlobalData = copy(mutableUniverseGlobalData),
         )
     }
 }
