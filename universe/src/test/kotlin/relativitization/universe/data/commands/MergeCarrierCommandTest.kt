@@ -65,6 +65,9 @@ internal class MergeCarrierCommandTest {
             universe.preProcessUniverse()
         }
 
+        val view9At1 = universe.getUniverse3DViewAtPlayer(1)
+
         assert(!universe.availablePlayers().contains(2))
+        assert(view9At1.getCurrentPlayerData().playerInternalData.popSystemData().carrierDataMap.size == 3)
     }
 }
