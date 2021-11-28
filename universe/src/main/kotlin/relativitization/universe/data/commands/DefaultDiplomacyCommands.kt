@@ -85,7 +85,7 @@ data class DeclareWarCommand(
         ).initialSubordinateList = playerData.playerInternalData.subordinateIdList
 
         playerData.playerInternalData.diplomacyData().warData.getWarStateData(
-            fromId
+            toId
         ).startTime = playerData.int4D.t
     }
 
@@ -195,7 +195,7 @@ data class DeclareIndependenceCommand(
         ).initialSubordinateList = playerData.playerInternalData.subordinateIdList
 
         playerData.playerInternalData.diplomacyData().warData.getWarStateData(
-            fromId
+            toId
         ).startTime = playerData.int4D.t
     }
 

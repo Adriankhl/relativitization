@@ -300,6 +300,11 @@ object TestingFixedMinimal : TestingGenerateUniverseMethod() {
         // Add fuel to player 3
         playerData3.playerInternalData.physicsData().fuelRestMassData.movement = 100.0
 
+        // Add shield
+        playerData3.playerInternalData.popSystemData().carrierDataMap.getValue(
+            0
+        ).allPopData.soldierPopData.militaryBaseData.shield = 1E6
+
         // Player 4
 
         // Add spaceShip to player 4
@@ -328,7 +333,7 @@ object TestingFixedMinimal : TestingGenerateUniverseMethod() {
         ).allPopData.soldierPopData.commonPopData.satisfaction = 100.0
         playerData5.playerInternalData.popSystemData().carrierDataMap.getValue(
             0
-        ).allPopData.soldierPopData.militaryBaseData.shield = 100.0
+        ).allPopData.soldierPopData.militaryBaseData.shield = 1E6
 
         // Player 6
 
@@ -340,7 +345,7 @@ object TestingFixedMinimal : TestingGenerateUniverseMethod() {
         playerData6.playerInternalData.popSystemData().addStellarSystem(1.5E30)
 
         // Add shield
-        playerData5.playerInternalData.popSystemData().carrierDataMap.getValue(
+        playerData6.playerInternalData.popSystemData().carrierDataMap.getValue(
             0
         ).allPopData.soldierPopData.militaryBaseData.shield = 2000.0
 
