@@ -110,13 +110,13 @@ class EventsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(g
                 gdxSettings.soundEffectsVolume
             ) {
                 val selectEventDataCommand = SelectEventChoiceCommand(
-                    eventKey = eventKey,
-                    eventName = eventData.event.name(),
-                    choice = choice.key,
+                    toId = playerData.playerId,
                     fromId = game.universeClient.getUniverseData3D().id,
                     fromInt4D = game.universeClient.getUniverseData3D()
                         .getCurrentPlayerData().int4D,
-                    toId = playerData.playerId
+                    eventKey = eventKey,
+                    eventName = eventData.event.name(),
+                    choice = choice.key
                 )
 
                 game.universeClient.currentCommand = selectEventDataCommand

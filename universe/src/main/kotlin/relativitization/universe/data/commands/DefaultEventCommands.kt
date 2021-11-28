@@ -134,12 +134,12 @@ data class AddEventCommand(
  */
 @Serializable
 data class SelectEventChoiceCommand(
+    override val toId: Int,
+    override val fromId: Int,
+    override val fromInt4D: Int4D,
     val eventKey: Int,
     val eventName: String,
     val choice: Int,
-    override val fromId: Int,
-    override val fromInt4D: Int4D,
-    override val toId: Int,
 ) : DefaultCommand() {
 
     override val description: I18NString = I18NString(

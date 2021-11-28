@@ -178,7 +178,7 @@ data class MoveToDouble3DEvent(
         mutableEventData: MutableEventData,
         universeData3DAtPlayer: UniverseData3DAtPlayer
     ): Boolean {
-        return if (mutableEventData.choice == 1) {
+        return if (mutableEventData.hasChoice && (mutableEventData.choice == 1)) {
             true
         } else {
             val sameDouble3D: Boolean =

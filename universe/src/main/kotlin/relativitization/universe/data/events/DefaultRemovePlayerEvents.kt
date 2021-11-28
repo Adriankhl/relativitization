@@ -43,7 +43,8 @@ data class AskToMergeCarrierEvent(
         mutableEventData: MutableEventData,
         universeData3DAtPlayer: UniverseData3DAtPlayer
     ): Boolean {
-        return mutableEventData.hasChoice
+        // Only cancel this event if the player agree to merge
+        return universeData3DAtPlayer.getCurrentPlayerData().playerInternalData.politicsData().agreeMerge
     }
 
     override fun defaultChoice(eventId: Int, universeData3DAtPlayer: UniverseData3DAtPlayer): Int {

@@ -55,12 +55,12 @@ class PickMoveToDouble3DEventDualUtilityOption(
             }
         return movementEventMap.filter { it.key != keepEventIndex }.map {
             SelectEventChoiceCommand(
+                toId = planDataAtPlayer.universeData3DAtPlayer.id,
+                fromId = planDataAtPlayer.universeData3DAtPlayer.id,
+                fromInt4D = planDataAtPlayer.universeData3DAtPlayer.getCurrentPlayerData().int4D,
                 eventKey = it.key,
                 eventName = it.value.event.name(),
                 choice = 1,
-                fromId = planDataAtPlayer.universeData3DAtPlayer.id,
-                fromInt4D = planDataAtPlayer.universeData3DAtPlayer.getCurrentPlayerData().int4D,
-                toId = planDataAtPlayer.universeData3DAtPlayer.id,
             )
         }
     }

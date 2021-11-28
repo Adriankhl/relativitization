@@ -50,12 +50,12 @@ internal class SelectEventChoiceCommandTest {
         val view8: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(2)
 
         val selectEventChoiceCommand = SelectEventChoiceCommand(
-            eventKey = 0,
-            eventName = view8.getCurrentPlayerData().playerInternalData.eventDataMap.getValue(0).event.name(),
-            choice = 1,
+            toId = view8.id,
             fromId = view8.id,
             fromInt4D = view8.getCurrentPlayerData().int4D,
-            toId = view8.id
+            eventKey = 0,
+            eventName = view8.getCurrentPlayerData().playerInternalData.eventDataMap.getValue(0).event.name(),
+            choice = 1
 
         )
 
