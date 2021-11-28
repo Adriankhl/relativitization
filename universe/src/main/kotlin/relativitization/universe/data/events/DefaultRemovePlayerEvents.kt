@@ -72,7 +72,8 @@ data class AskToMergeCarrierEvent(
         mutableEventRecordData: MutableEventRecordData,
         universeData3DAtPlayer: UniverseData3DAtPlayer
     ): List<Command> {
-        return if (mutableEventRecordData.choice == 0) {
+        // only if counter > 0, skip first turn to allow player choose
+        return if ((mutableEventRecordData.stayCounter > 0) && (mutableEventRecordData.choice == 0)) {
             listOf(
                 AgreeMergeCommand(
                     toId = toId,

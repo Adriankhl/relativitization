@@ -97,13 +97,14 @@ data class MoveToDouble3DEvent(
         mutableEventRecordData: MutableEventRecordData,
         universeData3DAtPlayer: UniverseData3DAtPlayer
     ): List<Command> {
-        val playerData: PlayerData = universeData3DAtPlayer.getCurrentPlayerData()
+        // only if counter > 0, skip first turn to allow player choose
+        return if ((mutableEventRecordData.stayCounter > 0) && (mutableEventRecordData.choice == 0)) {
+            val playerData: PlayerData = universeData3DAtPlayer.getCurrentPlayerData()
 
-        if (maxSpeed > universeData3DAtPlayer.universeSettings.speedOfLight) {
-            logger.error("maxSpeed greater than the speed of light")
-        }
+            if (maxSpeed > universeData3DAtPlayer.universeSettings.speedOfLight) {
+                logger.error("maxSpeed greater than the speed of light")
+            }
 
-        return if (mutableEventRecordData.choice == 0) {
             // disable fuel production by one turn
             val disableFuelIncreaseCommand = DisableFuelIncreaseCommand(
                 disableFuelIncreaseTimeLimit = 1,
