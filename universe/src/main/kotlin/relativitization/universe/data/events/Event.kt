@@ -29,6 +29,23 @@ sealed class Event {
     abstract val choiceDescription: Map<Int, I18NString>
 
     /**
+     * Whether the player can send this event to other player
+     */
+    abstract fun canSend(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): CanSendCheckMessage
+
+
+    /**
+     * Whether this event can be added to the player
+     */
+    abstract fun canExecute(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): Boolean
+
+    /**
      * Whether this event should be cancel, such as the player made a choice or some condition has been met
      *
      * @param mutableEventData the event data of this event
@@ -48,23 +65,6 @@ sealed class Event {
         eventId: Int,
         universeData3DAtPlayer: UniverseData3DAtPlayer
     ): Int
-
-    /**
-     * Whether the player can send this event to other player
-     */
-    abstract fun canSend(
-        playerData: MutablePlayerData,
-        universeSettings: UniverseSettings
-    ): CanSendCheckMessage
-
-
-    /**
-     * Whether this event can be added to the player
-     */
-    abstract fun canExecute(
-        playerData: MutablePlayerData,
-        universeSettings: UniverseSettings
-    ): Boolean
 
     /**
      * Generate commands once per turn

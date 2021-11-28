@@ -39,22 +39,6 @@ data class AskToMergeCarrierEvent(
         1 to I18NString("Reject")
     )
 
-    override fun shouldCancelThisEvent(
-        mutableEventData: MutableEventData,
-        universeData3DAtPlayer: UniverseData3DAtPlayer
-    ): Boolean {
-        // Only cancel this event if the player agree to merge
-        return universeData3DAtPlayer.getCurrentPlayerData().playerInternalData.politicsData().agreeMerge
-    }
-
-    override fun defaultChoice(eventId: Int, universeData3DAtPlayer: UniverseData3DAtPlayer): Int {
-        return when (universeData3DAtPlayer.getCurrentPlayerData().playerType) {
-            PlayerType.HUMAN -> 1
-            PlayerType.NONE -> 0
-            PlayerType.AI -> 1
-        }
-    }
-
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
@@ -82,6 +66,23 @@ data class AskToMergeCarrierEvent(
     ): Boolean {
         return (playerData.playerInternalData.directLeaderId == fromId) && !playerData.isTopLeader()
     }
+
+    override fun shouldCancelThisEvent(
+        mutableEventData: MutableEventData,
+        universeData3DAtPlayer: UniverseData3DAtPlayer
+    ): Boolean {
+        // Only cancel this event if the player agree to merge
+        return universeData3DAtPlayer.getCurrentPlayerData().playerInternalData.politicsData().agreeMerge
+    }
+
+    override fun defaultChoice(eventId: Int, universeData3DAtPlayer: UniverseData3DAtPlayer): Int {
+        return when (universeData3DAtPlayer.getCurrentPlayerData().playerType) {
+            PlayerType.HUMAN -> 1
+            PlayerType.NONE -> 0
+            PlayerType.AI -> 1
+        }
+    }
+
 
     override fun generateCommands(
         eventId: Int,
