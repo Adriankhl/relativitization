@@ -172,15 +172,15 @@ class PlayerCollection(
      * Add new player from playerData and clear newPlayerList
      */
     fun addNewPlayerFromPlayerData(universeState: UniverseState) {
-        playerMap.forEach { (_, playerData) ->
-            playerData.newPlayerList.forEach { mutableNewPlayerInternalData ->
+        val newPlayerList: List<PlayerData> = playerMap.map { (_, playerData) ->
+            playerData.newPlayerList.map { mutableNewPlayerInternalData ->
 
                 val newPlayerInternalData: PlayerInternalData = copy(mutableNewPlayerInternalData)
                 val playerId: Int = runBlocking {
                     universeState.getNewPlayerId()
                 }
                 val name = randomPlayerName(newPlayerInternalData)
-                val newPlayerData: PlayerData = PlayerData(
+                PlayerData(
                     playerId = playerId,
                     name = name,
                     playerType = PlayerType.AI,
@@ -190,8 +190,11 @@ class PlayerCollection(
                     velocity = copy(playerData.velocity),
                     playerInternalData = newPlayerInternalData
                 )
-                addPlayer(newPlayerData)
             }
+        }.flatten()
+
+        newPlayerList.forEach {
+            addPlayer(it)
         }
 
         // Clean all newPlayerList
