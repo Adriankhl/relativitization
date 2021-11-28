@@ -47,18 +47,20 @@ object SyncHierarchy : Mechanism() {
         }
 
         // Clear direct subordinate
-        val toRemoveDirectIdList: List<Int> =
+        val toRemoveDirectSubordinateIdList: List<Int> =
             mutablePlayerData.playerInternalData.directSubordinateIdList.filter {
                 universeData3DAtPlayer.get(it).playerInternalData.directLeaderId != mutablePlayerData.playerId
             }
-        mutablePlayerData.playerInternalData.directSubordinateIdList.removeAll(toRemoveDirectIdList)
+        mutablePlayerData.playerInternalData.directSubordinateIdList.removeAll(
+            toRemoveDirectSubordinateIdList
+        )
 
         // Clear subordinate
-        val toRemoveIdList: List<Int> =
-            mutablePlayerData.playerInternalData.directSubordinateIdList.filter {
-                universeData3DAtPlayer.get(it).isLeaderOrSelf(mutablePlayerData.playerId)
+        val toRemoveSubordinateIdList: List<Int> =
+            mutablePlayerData.playerInternalData.subordinateIdList.filter {
+                !universeData3DAtPlayer.get(it).isLeaderOrSelf(mutablePlayerData.playerId)
             }
-        mutablePlayerData.playerInternalData.subordinateIdList.removeAll(toRemoveIdList)
+        mutablePlayerData.playerInternalData.subordinateIdList.removeAll(toRemoveSubordinateIdList)
 
 
         // Add all subordinates of direct subordinates
@@ -68,6 +70,14 @@ object SyncHierarchy : Mechanism() {
             mutablePlayerData.addSubordinateId(it)
         }
 
+        // Add all leaders of direct leader
+        if (!mutablePlayerData.isTopLeader()) {
+            mutablePlayerData.changeDirectLeaderId(
+                universeData3DAtPlayer.get(
+                    mutablePlayerData.playerInternalData.directLeaderId
+                ).playerInternalData.leaderIdList
+            )
+        }
 
 
         return toDirectLeaderCommandList

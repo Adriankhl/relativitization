@@ -39,7 +39,7 @@ internal class AutoCombatTest {
         }
 
         runBlocking {
-            for (i in 1..4) {
+            for (i in 1..10) {
                 universe.postProcessUniverse(
                     mapOf(),
                     mapOf()
@@ -47,5 +47,12 @@ internal class AutoCombatTest {
                 universe.preProcessUniverse()
             }
         }
+
+
+        val finalViewAt5 = universe.getUniverse3DViewAtPlayer(5)
+        val finalViewAt6 = universe.getUniverse3DViewAtPlayer(6)
+        assert(finalViewAt5.getCurrentPlayerData().isSubOrdinateOrSelf(6))
+        assert(!finalViewAt6.getCurrentPlayerData().isTopLeader())
+        assert(finalViewAt6.getCurrentPlayerData().playerInternalData.directLeaderId == 5)
     }
 }

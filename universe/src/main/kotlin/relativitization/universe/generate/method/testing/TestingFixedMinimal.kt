@@ -319,6 +319,17 @@ object TestingFixedMinimal : TestingGenerateUniverseMethod() {
         // Add stellar system to player 5
         playerData5.playerInternalData.popSystemData().addStellarSystem(1.5E30)
 
+        // Add soldier and military base
+        playerData5.playerInternalData.popSystemData().carrierDataMap.getValue(
+            0
+        ).allPopData.soldierPopData.commonPopData.adultPopulation = 1000.0
+        playerData5.playerInternalData.popSystemData().carrierDataMap.getValue(
+            0
+        ).allPopData.soldierPopData.commonPopData.satisfaction = 100.0
+        playerData5.playerInternalData.popSystemData().carrierDataMap.getValue(
+            0
+        ).allPopData.soldierPopData.militaryBaseData.shield = 100.0
+
         // Player 6
 
         // Move player 6 to (1.4, 0, 0)
@@ -327,6 +338,11 @@ object TestingFixedMinimal : TestingGenerateUniverseMethod() {
 
         // Add stellar system to player 6
         playerData6.playerInternalData.popSystemData().addStellarSystem(1.5E30)
+
+        // Add shield
+        playerData5.playerInternalData.popSystemData().carrierDataMap.getValue(
+            0
+        ).allPopData.soldierPopData.militaryBaseData.shield = 2000.0
 
 
         // Add player data to universe data 4D
