@@ -94,8 +94,11 @@ class EventsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(g
 
         nestedTable.row().space(10f)
 
-        val selectedChoiceLabel = if (eventData.hasChoice) {
-            createLabel("Selected choice: ${eventData.choice}", gdxSettings.smallFontSize)
+        val selectedChoiceLabel = if (eventData.eventRecordData.hasChoice) {
+            createLabel(
+                "Selected choice: ${eventData.eventRecordData.choice}",
+                gdxSettings.smallFontSize
+            )
         } else {
             createLabel("Selected choice: default", gdxSettings.smallFontSize)
         }

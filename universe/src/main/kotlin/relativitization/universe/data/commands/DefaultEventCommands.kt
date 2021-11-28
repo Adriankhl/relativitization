@@ -189,8 +189,8 @@ data class SelectEventChoiceCommand(
         if (eventDataMap.containsKey(eventKey)) {
             val eventData: MutableEventData = eventDataMap.getValue(eventKey)
             if (eventData.event.name() == eventName) {
-                eventData.hasChoice = true
-                eventData.choice = choice
+                eventData.eventRecordData.hasChoice = true
+                eventData.eventRecordData.choice = choice
             } else {
                 logger.error("Can't select event choice, wrong event name")
             }

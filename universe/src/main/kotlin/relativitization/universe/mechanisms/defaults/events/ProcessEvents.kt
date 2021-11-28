@@ -16,14 +16,18 @@ object ProcessEvents : Mechanism() {
     ): List<Command> {
         // Remove all outdated event
         mutablePlayerData.playerInternalData.eventDataMap.filter {
-            it.value.stayCounter > it.value.event.stayTime
+            it.value.eventRecordData.stayCounter > it.value.event.stayTime
         }.keys.forEach {
             mutablePlayerData.playerInternalData.eventDataMap.remove(it)
         }
 
         // Remove if the event should be canceled
-        mutablePlayerData.playerInternalData.eventDataMap.filter {
-            it.value.event.shouldCancelThisEvent(it.value, universeData3DAtPlayer)
+        mutablePlayerData.playerInternalData.eventDataMap.filter { (eventId, mutableEventData) ->
+            mutableEventData.event.shouldCancelThisEvent(
+                eventId,
+                mutableEventData.eventRecordData,
+                universeData3DAtPlayer
+            )
         }.keys.forEach {
             mutablePlayerData.playerInternalData.eventDataMap.remove(it)
         }
@@ -31,16 +35,24 @@ object ProcessEvents : Mechanism() {
         // Get the command list
         val commandList: List<Command> =
             mutablePlayerData.playerInternalData.eventDataMap.map { (eventId, mutableEventData) ->
-                if (mutableEventData.hasChoice) {
+                if (mutableEventData.eventRecordData.hasChoice) {
                     mutableEventData.event.generateCommands(
                         eventId,
-                        mutableEventData.choice,
+                        mutableEventData.eventRecordData,
                         universeData3DAtPlayer
                     )
                 } else {
+                    // change the choice if there is choice from player
+                    mutableEventData.eventRecordData.choice =
+                        mutableEventData.event.defaultChoice(
+                            eventId,
+                            mutableEventData.eventRecordData,
+                            universeData3DAtPlayer
+                        )
+
                     mutableEventData.event.generateCommands(
                         eventId,
-                        mutableEventData.event.defaultChoice(eventId, universeData3DAtPlayer),
+                        mutableEventData.eventRecordData,
                         universeData3DAtPlayer
                     )
                 }
@@ -58,7 +70,7 @@ object ProcessEvents : Mechanism() {
 
         // Increase stayCounter for each event
         mutablePlayerData.playerInternalData.eventDataMap.forEach {
-            it.value.stayCounter++
+            it.value.eventRecordData.stayCounter++
         }
         return otherCommandList
     }

@@ -67,29 +67,12 @@ data class AskToMergeCarrierEvent(
         return (playerData.playerInternalData.directLeaderId == fromId) && !playerData.isTopLeader()
     }
 
-    override fun shouldCancelThisEvent(
-        mutableEventData: MutableEventData,
-        universeData3DAtPlayer: UniverseData3DAtPlayer
-    ): Boolean {
-        // Only cancel this event if the player agree to merge
-        return universeData3DAtPlayer.getCurrentPlayerData().playerInternalData.politicsData().agreeMerge
-    }
-
-    override fun defaultChoice(eventId: Int, universeData3DAtPlayer: UniverseData3DAtPlayer): Int {
-        return when (universeData3DAtPlayer.getCurrentPlayerData().playerType) {
-            PlayerType.HUMAN -> 1
-            PlayerType.NONE -> 0
-            PlayerType.AI -> 1
-        }
-    }
-
-
     override fun generateCommands(
         eventId: Int,
-        choice: Int,
+        mutableEventRecordData: MutableEventRecordData,
         universeData3DAtPlayer: UniverseData3DAtPlayer
     ): List<Command> {
-        return if (choice == 0) {
+        return if (mutableEventRecordData.choice == 0) {
             listOf(
                 AgreeMergeCommand(
                     toId = toId,
@@ -100,5 +83,26 @@ data class AskToMergeCarrierEvent(
         } else {
             listOf()
         }
+    }
+
+    override fun defaultChoice(
+        eventId: Int,
+        mutableEventRecordData: MutableEventRecordData,
+        universeData3DAtPlayer: UniverseData3DAtPlayer
+    ): Int {
+        return when (universeData3DAtPlayer.getCurrentPlayerData().playerType) {
+            PlayerType.HUMAN -> 1
+            PlayerType.NONE -> 0
+            PlayerType.AI -> 1
+        }
+    }
+
+    override fun shouldCancelThisEvent(
+        eventId: Int,
+        mutableEventRecordData: MutableEventRecordData,
+        universeData3DAtPlayer: UniverseData3DAtPlayer
+    ): Boolean {
+        // Only cancel this event if the player agree to merge
+        return universeData3DAtPlayer.getCurrentPlayerData().playerInternalData.politicsData().agreeMerge
     }
 }

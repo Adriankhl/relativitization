@@ -46,38 +46,43 @@ sealed class Event {
     ): Boolean
 
     /**
-     * Whether this event should be cancel, such as the player made a choice or some condition has been met
-     *
-     * @param mutableEventData the event data of this event
-     * @param universeData3DAtPlayer the universe data view by the player having this event
-     */
-    abstract fun shouldCancelThisEvent(
-        mutableEventData: MutableEventData,
-        universeData3DAtPlayer: UniverseData3DAtPlayer
-    ): Boolean
-
-    /**
-     * Generate default choice if no choice is decided, i.e., choice = 0
-     * @param eventId the id of this event in eventMap
-     * @param universeData3DAtPlayer the 3d data to determine the generated command
-     */
-    abstract fun defaultChoice(
-        eventId: Int,
-        universeData3DAtPlayer: UniverseData3DAtPlayer
-    ): Int
-
-    /**
      * Generate commands once per turn
      *
      * @param eventId the id of this event in eventMap
-     * @param choice the choice of this event
+     * @param mutableEventRecordData the record data of this event
      * @param universeData3DAtPlayer the 3d data to determine the generated command
      */
     abstract fun generateCommands(
         eventId: Int,
-        choice: Int,
+        mutableEventRecordData: MutableEventRecordData,
         universeData3DAtPlayer: UniverseData3DAtPlayer
     ): List<Command>
+
+    /**
+     * Generate default choice if no choice is decided, i.e., choice = 0
+     *
+     * @param eventId the id of this event in eventMap
+     * @param mutableEventRecordData the record data of this event
+     * @param universeData3DAtPlayer the 3d data to determine the generated command
+     */
+    abstract fun defaultChoice(
+        eventId: Int,
+        mutableEventRecordData: MutableEventRecordData,
+        universeData3DAtPlayer: UniverseData3DAtPlayer
+    ): Int
+
+    /**
+     * Whether this event should be cancel, such as the player made a choice or some condition has been met
+     *
+     * @param eventId the id of this event in eventMap
+     * @param mutableEventRecordData the record data of this event
+     * @param universeData3DAtPlayer the universe data view by the player having this event
+     */
+    abstract fun shouldCancelThisEvent(
+        eventId: Int,
+        mutableEventRecordData: MutableEventRecordData,
+        universeData3DAtPlayer: UniverseData3DAtPlayer
+    ): Boolean
 
     companion object {
         private val logger = RelativitizationLogManager.getLogger()
@@ -92,24 +97,18 @@ fun <T : Event> KClass<T>.name(): String = this.simpleName.toString()
  * Unit of event data
  *
  * @property event the event
- * @property eventRecordData the record of the event data, e.g., choice and counder
+ * @property eventRecordData the record of the event data, e.g., choice and counter
  */
 @Serializable
 data class EventData(
     val event: Event,
     val eventRecordData: EventRecordData = EventRecordData(),
-    val hasChoice: Boolean = false,
-    val choice: Int = 0,
-    val stayCounter: Int = 0
 )
 
 @Serializable
 data class MutableEventData(
     val event: Event,
     var eventRecordData: MutableEventRecordData = MutableEventRecordData(),
-    var hasChoice: Boolean = false,
-    var choice: Int = 0,
-    var stayCounter: Int = 0
 )
 
 /**

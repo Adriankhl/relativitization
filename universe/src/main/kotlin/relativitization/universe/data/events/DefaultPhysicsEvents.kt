@@ -94,7 +94,7 @@ data class MoveToDouble3DEvent(
 
     override fun generateCommands(
         eventId: Int,
-        choice: Int,
+        mutableEventRecordData: MutableEventRecordData,
         universeData3DAtPlayer: UniverseData3DAtPlayer
     ): List<Command> {
         val playerData: PlayerData = universeData3DAtPlayer.getCurrentPlayerData()
@@ -103,7 +103,7 @@ data class MoveToDouble3DEvent(
             logger.error("maxSpeed greater than the speed of light")
         }
 
-        return if (choice == 0) {
+        return if (mutableEventRecordData.choice == 0) {
             // disable fuel production by one turn
             val disableFuelIncreaseCommand = DisableFuelIncreaseCommand(
                 disableFuelIncreaseTimeLimit = 1,
@@ -137,6 +137,7 @@ data class MoveToDouble3DEvent(
 
     override fun defaultChoice(
         eventId: Int,
+        mutableEventRecordData: MutableEventRecordData,
         universeData3DAtPlayer: UniverseData3DAtPlayer
     ): Int {
         val eventDataMap: Map<Int, EventData> =
@@ -148,7 +149,7 @@ data class MoveToDouble3DEvent(
         return if (otherMovementEvents.isEmpty()) {
             0
         } else {
-            if (otherMovementEvents.any { it.value.hasChoice }) {
+            if (otherMovementEvents.any { it.value.eventRecordData.hasChoice }) {
                 1
             } else {
                 val leaderIdList: List<Int> =
@@ -175,10 +176,11 @@ data class MoveToDouble3DEvent(
     }
 
     override fun shouldCancelThisEvent(
-        mutableEventData: MutableEventData,
+        eventId: Int,
+        mutableEventRecordData: MutableEventRecordData,
         universeData3DAtPlayer: UniverseData3DAtPlayer
     ): Boolean {
-        return if (mutableEventData.hasChoice && (mutableEventData.choice == 1)) {
+        return if (mutableEventRecordData.hasChoice && (mutableEventRecordData.choice == 1)) {
             true
         } else {
             val sameDouble3D: Boolean =
