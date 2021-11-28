@@ -274,6 +274,9 @@ object TestingFixedMinimal : TestingGenerateUniverseMethod() {
 
         // Player 2
 
+        // Move player 2 to (0.1, 0.1, 0.1) to avoid boundary
+        playerData2.double4D = MutableDouble4D(0.0, 0.1, 0.1, 0.1)
+
         // Add spaceship to player 2
         playerData2.playerInternalData.popSystemData().addSpaceShip(1.0, 100.0, 1000.0)
 

@@ -19,7 +19,7 @@ internal class BuildForeignResourceFactoryCommandTest {
         val originalFuelRestMassData = playerData.playerInternalData.physicsData().fuelRestMassData
 
         assert(originalFuelRestMassData.production == 30.0)
-        assert(originalFuelRestMassData.trade == 1.0)
+        assert(originalFuelRestMassData.trade == 0.0)
 
         val command = BuildForeignResourceFactoryCommand(
             toId = 1,

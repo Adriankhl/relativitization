@@ -36,10 +36,10 @@ data class MutablePhysicsData(
 
     fun addFuel(restMass: Double) {
         when {
-            fuelRestMassData.movement <= targetFuelRestMassData.movement -> {
+            fuelRestMassData.movement < targetFuelRestMassData.movement -> {
                 fuelRestMassData.movement += restMass
             }
-            fuelRestMassData.production <= targetFuelRestMassData.production -> {
+            fuelRestMassData.production < targetFuelRestMassData.production -> {
                 fuelRestMassData.production += restMass
             }
             else -> {
