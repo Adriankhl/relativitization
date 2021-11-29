@@ -52,11 +52,9 @@
 * Expand Factory
 * Change economy policy, e.g., tax, storage
 * Change salary
-* Improve diplomatic relation by sending resource
-* Declare war, declare independence
-* Surrender
-* Retract direct subordinate of subordinate
-* Merge direct subordinate at exactly the same position
+* Improve diplomatic relation by sending resource [x]
+* Declare war, declare independence [x]
+* Merge direct subordinate at exactly the same position [x]
 
 # Generate universe TODO List
 * One stellar per player generation
@@ -70,11 +68,12 @@
 * Declare war [x]
 * Combat [x]
 * Propose peace [x]
-* New player
-* Merge player
+* New player [x]
+* Merge player [x]
 
 # Far future TODO List
 * Science era, e.g., Biology era favour nation with more biologist
 * Optimize afterimage and load saved universe to reduce memory usage
 * Transfer player and transfer carrier commands
 * Surrender, alliance
+* Retract or transfer subordinate
