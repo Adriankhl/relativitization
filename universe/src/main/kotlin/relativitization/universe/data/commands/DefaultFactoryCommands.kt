@@ -366,6 +366,7 @@ data class BuildForeignResourceFactoryCommand(
  *
  * @property targetCarrierId build factory on that carrier
  * @property qualityLevel the quality of the factory, relative to tech level
+ * @property numBuilding number of building in this factory
  */
 @Serializable
 data class BuildLocalFuelFactoryCommand(
@@ -374,6 +375,7 @@ data class BuildLocalFuelFactoryCommand(
     override val fromInt4D: Int4D,
     val targetCarrierId: Int,
     val qualityLevel: Double,
+    val numBuilding: Double,
 ) : DefaultCommand() {
     override val description: I18NString = I18NString(
         listOf(
@@ -444,7 +446,7 @@ data class BuildLocalFuelFactoryCommand(
         val requiredFuel: Double =
             playerData.playerInternalData.playerScienceData().playerScienceApplicationData.newFuelFactoryFuelNeededByConstruction(
                 qualityLevel = qualityLevel
-            )
+            ) * numBuilding
         val hasFuel: Boolean =
             playerData.playerInternalData.physicsData().fuelRestMassData.production > requiredFuel
 
@@ -466,7 +468,7 @@ data class BuildLocalFuelFactoryCommand(
         val requiredFuel: Double =
             playerData.playerInternalData.playerScienceData().playerScienceApplicationData.newFuelFactoryFuelNeededByConstruction(
                 qualityLevel = qualityLevel
-            )
+            ) * numBuilding
 
         playerData.playerInternalData.physicsData().fuelRestMassData.production -= requiredFuel
 
@@ -474,7 +476,7 @@ data class BuildLocalFuelFactoryCommand(
             MutableFuelFactoryData(
                 ownerPlayerId = toId,
                 fuelFactoryInternalData = newFuelFactoryInternalData,
-                numBuilding = 1.0,
+                numBuilding = numBuilding,
                 isOpened = true,
                 storedFuelRestMass = 0.0,
                 lastOutputAmount = 0.0,
