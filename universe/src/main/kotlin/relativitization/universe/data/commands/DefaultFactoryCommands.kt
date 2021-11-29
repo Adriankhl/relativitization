@@ -1000,7 +1000,9 @@ data class RemoveLocalResourceFactoryCommand(
                     targetCarrierId
                 )
 
-            carrier.allPopData.labourerPopData.resourceFactoryMap.containsKey(targetResourceFactoryId)
+            carrier.allPopData.labourerPopData.resourceFactoryMap.containsKey(
+                targetResourceFactoryId
+            )
         } else {
             false
         }
@@ -1059,7 +1061,9 @@ data class RemoveLocalResourceFactoryCommand(
                     targetCarrierId
                 )
 
-            carrier.allPopData.labourerPopData.resourceFactoryMap.containsKey(targetResourceFactoryId)
+            carrier.allPopData.labourerPopData.resourceFactoryMap.containsKey(
+                targetResourceFactoryId
+            )
         } else {
             false
         }
@@ -1155,6 +1159,13 @@ data class SupplyForeignFuelFactoryCommand(
         )
     }
 
+    override fun selfExecuteBeforeSend(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ) {
+        playerData.playerInternalData.physicsData().fuelRestMassData.production -= amount
+    }
+
     override fun canExecute(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
@@ -1173,20 +1184,10 @@ data class SupplyForeignFuelFactoryCommand(
             false
         }
 
-        val isOwner: Boolean = if (hasFuelFactory) {
-            val carrier: MutableCarrierData =
-                playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
-                    targetCarrierId
-                )
+        val isFuelIncreaseEnable: Boolean =
+            playerData.playerInternalData.modifierData().physicsModifierData.disableRestMassIncreaseTimeLimit <= 0
 
-            carrier.allPopData.labourerPopData.fuelFactoryMap.getValue(
-                targetFuelFactoryId
-            ).ownerPlayerId == fromId
-        } else {
-            false
-        }
-
-        return hasCarrier && hasFuelFactory && isOwner
+        return hasCarrier && hasFuelFactory && isFuelIncreaseEnable
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
@@ -1195,6 +1196,8 @@ data class SupplyForeignFuelFactoryCommand(
                 targetCarrierId
             )
 
-        carrier.allPopData.labourerPopData.fuelFactoryMap.remove(targetFuelFactoryId)
+        carrier.allPopData.labourerPopData.fuelFactoryMap.getValue(
+            targetFuelFactoryId
+        ).storedFuelRestMass += amount
     }
 }
