@@ -105,6 +105,23 @@ data class MutablePopExportCenterData(
             default
         }
     }
+
+    fun clearExportData() {
+        exportDataMap.values.forEach { popMap ->
+            popMap.values.forEach { exportDataList ->
+                exportDataList.removeIf { exportData ->
+                    exportData.storedFuelRestMass <= 0.0
+                }
+            }
+
+            val popKeyToRemove: Set<PopType> = popMap.filter { it.value.isEmpty() }.keys
+            popKeyToRemove.forEach {
+                popMap.remove(it)
+            }
+        }
+        val carrierIdToRemove: Set<Int> = exportDataMap.filter { it.value.isEmpty() }.keys
+        carrierIdToRemove.forEach { exportDataMap.remove(it) }
+    }
 }
 
 @Serializable

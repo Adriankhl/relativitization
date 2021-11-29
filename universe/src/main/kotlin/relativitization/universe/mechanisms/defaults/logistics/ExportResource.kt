@@ -29,6 +29,11 @@ object ExportResource : Mechanism() {
             universeSettings.speedOfLight
         )
 
+        // Clear export center with zero fuel rest mass left
+        mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.forEach { mutableCarrierData ->
+            mutableCarrierData.allPopData.servicePopData.exportData.clearExportCenterData()
+        }
+
         val exportToPlayerCommandList: List<Command> =
             mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.map {
                 val mutableServicePopData: MutableServicePopData = it.allPopData.servicePopData

@@ -38,4 +38,27 @@ data class MutableExportData(
 
         return playerExportAmount + popExportAmount
     }
+
+    fun clearExportCenterData() {
+
+        // Clear export center of player and pop
+        playerExportCenterMap.values.forEach { it.clearExportData() }
+        popExportCenterMap.values.forEach { it.clearExportData() }
+
+        // Clear empty player export center
+        val playerExportCenterToRemove: Set<Int> = playerExportCenterMap.filter { (_, exportCenter) ->
+            exportCenter.exportDataList.isEmpty()
+        }.keys
+        playerExportCenterToRemove.forEach {
+            playerExportCenterMap.remove(it)
+        }
+
+        // Clear empty pop export center
+        val popExportCenterToRemove: Set<Int> = playerExportCenterMap.filter { (_, exportCenter) ->
+            exportCenter.exportDataList.isEmpty()
+        }.keys
+        popExportCenterToRemove.forEach {
+            popExportCenterMap.remove(it)
+        }
+    }
 }

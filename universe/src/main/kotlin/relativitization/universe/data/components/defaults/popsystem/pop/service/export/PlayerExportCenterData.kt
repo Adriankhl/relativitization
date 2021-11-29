@@ -45,6 +45,12 @@ data class MutablePlayerExportCenterData(
             default
         }
     }
+
+    fun clearExportData() {
+        exportDataList.removeIf {
+            it.storedFuelRestMass <= 0.0
+        }
+    }
 }
 
 /**
