@@ -498,6 +498,7 @@ data class BuildLocalFuelFactoryCommand(
  * @property outputResourceType the resource type of this factory
  * @property targetCarrierId build factory on that carrier
  * @property qualityLevel the quality of the factory, relative to tech level
+ * @property numBuilding number of building in this factory
  */
 @Serializable
 data class BuildLocalResourceFactoryCommand(
@@ -507,6 +508,7 @@ data class BuildLocalResourceFactoryCommand(
     val outputResourceType: ResourceType,
     val targetCarrierId: Int,
     val qualityLevel: Double,
+    val numBuilding: Double,
 ) : DefaultCommand() {
     override val description: I18NString = I18NString(
         listOf(
@@ -581,7 +583,7 @@ data class BuildLocalResourceFactoryCommand(
             playerData.playerInternalData.playerScienceData().playerScienceApplicationData.newResourceFactoryFuelNeededByConstruction(
                 outputResourceType = outputResourceType,
                 qualityLevel = qualityLevel
-            )
+            ) * numBuilding
         val hasFuel: Boolean =
             playerData.playerInternalData.physicsData().fuelRestMassData.production > requiredFuel
 
@@ -605,7 +607,7 @@ data class BuildLocalResourceFactoryCommand(
             playerData.playerInternalData.playerScienceData().playerScienceApplicationData.newResourceFactoryFuelNeededByConstruction(
                 outputResourceType = outputResourceType,
                 qualityLevel = qualityLevel
-            )
+            ) * numBuilding
 
         playerData.playerInternalData.physicsData().fuelRestMassData.production -= requiredFuel
 
@@ -613,7 +615,7 @@ data class BuildLocalResourceFactoryCommand(
             MutableResourceFactoryData(
                 ownerPlayerId = toId,
                 resourceFactoryInternalData = newResourceFactoryInternalData,
-                numBuilding = 1.0,
+                numBuilding = numBuilding,
                 isOpened = true,
                 lastOutputAmount = 0.0,
                 lastInputAmountMap = mutableMapOf(),
