@@ -619,3 +619,54 @@ data class BuildLocalResourceFactoryCommand(
         private val logger = RelativitizationLogManager.getLogger()
     }
 }
+
+
+/**
+ * Remove a fuel factory on foreign player
+ *
+ * @property targetCarrierId remove the factory on that carrier
+ * @property targetFuelFactoryId remove the factory with that Id
+ */
+@Serializable
+data class RemoveForeignFuelFactoryCommand(
+    override val toId: Int,
+    override val fromId: Int,
+    override val fromInt4D: Int4D,
+    val targetCarrierId: Int,
+    val targetFuelFactoryId: Int
+) : DefaultCommand() {
+    override val description: I18NString = I18NString(
+        listOf(
+            RealString("Remove a local factory with Id "),
+            IntString(0),
+            RealString(" at carrier "),
+            IntString(1),
+            RealString(" of player "),
+            IntString(2),
+        ),
+        listOf(
+            targetFuelFactoryId.toString(),
+            targetCarrierId.toString(),
+            toId.toString(),
+        )
+    )
+
+    override fun canSend(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): CanSendCheckMessage {
+        TODO("Not yet implemented")
+    }
+
+    override fun canExecute(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): Boolean {
+        TODO("Not yet implemented")
+    }
+
+    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+        TODO("Not yet implemented")
+    }
+
+}
