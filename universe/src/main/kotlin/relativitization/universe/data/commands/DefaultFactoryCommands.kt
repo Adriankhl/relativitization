@@ -794,7 +794,7 @@ data class RemoveForeignResourceFactoryCommand(
  * @property targetFuelFactoryId remove factory with that id
  */
 @Serializable
-data class RemoveLocalResourceFactoryCommand(
+data class RemoveLocalFuelFactoryCommand(
     override val toId: Int,
     override val fromId: Int,
     override val fromInt4D: Int4D,
