@@ -101,9 +101,9 @@ data class BuildForeignFuelFactoryCommand(
             playerData.playerInternalData.playerScienceData().playerScienceApplicationData.newFuelFactoryFuelNeededByConstruction(
                 qualityLevel
             )
-        val enoughFuelRestMass: Boolean =
+        val hasFuel: Boolean =
             playerData.playerInternalData.physicsData().fuelRestMassData.production >= fuelNeeded + storedFuelRestMass
-        val enoughFuelRestMassI18NString: I18NString = if (enoughFuelRestMass) {
+        val hasFuelI18NString: I18NString = if (hasFuel) {
             I18NString("")
         } else {
             I18NString("Not enough fuel rest mass. ")
@@ -111,13 +111,13 @@ data class BuildForeignFuelFactoryCommand(
 
 
         return CanSendCheckMessage(
-            sameTopLeaderId && allowConstruction && validFactoryInternalData && enoughFuelRestMass,
+            sameTopLeaderId && allowConstruction && validFactoryInternalData && hasFuel,
             I18NString.combine(
                 listOf(
                     sameTopLeaderIdI18NString,
                     allowConstructionI18NString,
                     validFactoryInternalDataI18NString,
-                    enoughFuelRestMassI18NString
+                    hasFuelI18NString
                 )
             )
         )
@@ -275,9 +275,9 @@ data class BuildForeignResourceFactoryCommand(
                 resourceFactoryInternalData.outputResource,
                 qualityLevel
             )
-        val enoughFuelRestMass: Boolean =
+        val hasFuel: Boolean =
             playerData.playerInternalData.physicsData().fuelRestMassData.production >= fuelNeeded + storedFuelRestMass
-        val enoughFuelRestMassI18NString: I18NString = if (enoughFuelRestMass) {
+        val hasFuelI18NString: I18NString = if (hasFuel) {
             I18NString("")
         } else {
             I18NString("Not enough fuel rest mass. ")
@@ -285,13 +285,13 @@ data class BuildForeignResourceFactoryCommand(
 
 
         return CanSendCheckMessage(
-            sameTopLeaderId && allowConstruction && validFactoryInternalData && enoughFuelRestMass,
+            sameTopLeaderId && allowConstruction && validFactoryInternalData && hasFuel,
             I18NString.combine(
                 listOf(
                     sameTopLeaderIdI18NString,
                     allowConstructionI18NString,
                     validFactoryInternalDataI18NString,
-                    enoughFuelRestMassI18NString
+                    hasFuelI18NString
                 )
             )
         )
@@ -1094,5 +1094,107 @@ data class RemoveLocalResourceFactoryCommand(
 
     companion object {
         private val logger = RelativitizationLogManager.getLogger()
+    }
+}
+
+/**
+ * Supply fuel to a fuel factory in foreign player
+ *
+ * @property targetCarrierId supply the factory from that carrier
+ * @property targetFuelFactoryId supply the factory with that Id
+ * @property amount the amount of fuel supplied to the factory
+ */
+@Serializable
+data class SupplyForeignFuelFactoryCommand(
+    override val toId: Int,
+    override val fromId: Int,
+    override val fromInt4D: Int4D,
+    val targetCarrierId: Int,
+    val targetFuelFactoryId: Int,
+    val amount: Double
+) : DefaultCommand() {
+    override val description: I18NString = I18NString(
+        listOf(
+            RealString("Send "),
+            IntString(0),
+            RealString(" fuel to the foreign fuel factory with Id "),
+            IntString(1),
+            RealString(" at carrier "),
+            IntString(2),
+            RealString(" of player "),
+            IntString(3),
+        ),
+        listOf(
+            amount.toString(),
+            targetFuelFactoryId.toString(),
+            targetCarrierId.toString(),
+            toId.toString(),
+        )
+    )
+
+    override fun canSend(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): CanSendCheckMessage {
+
+        val hasFuel: Boolean =
+            playerData.playerInternalData.physicsData().fuelRestMassData.production >= amount
+        val hasFuelI18NString: I18NString = if (hasFuel) {
+            I18NString("")
+        } else {
+            I18NString("Not enough fuel rest mass. ")
+        }
+
+        return CanSendCheckMessage(
+            hasFuel,
+            I18NString.combine(
+                listOf(
+                    hasFuelI18NString
+                )
+            )
+        )
+    }
+
+    override fun canExecute(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): Boolean {
+        val hasCarrier: Boolean =
+            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(targetCarrierId)
+
+        val hasFuelFactory: Boolean = if (hasCarrier) {
+            val carrier: MutableCarrierData =
+                playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
+                    targetCarrierId
+                )
+
+            carrier.allPopData.labourerPopData.fuelFactoryMap.containsKey(targetFuelFactoryId)
+        } else {
+            false
+        }
+
+        val isOwner: Boolean = if (hasFuelFactory) {
+            val carrier: MutableCarrierData =
+                playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
+                    targetCarrierId
+                )
+
+            carrier.allPopData.labourerPopData.fuelFactoryMap.getValue(
+                targetFuelFactoryId
+            ).ownerPlayerId == fromId
+        } else {
+            false
+        }
+
+        return hasCarrier && hasFuelFactory && isOwner
+    }
+
+    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+        val carrier: MutableCarrierData =
+            playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
+                targetCarrierId
+            )
+
+        carrier.allPopData.labourerPopData.fuelFactoryMap.remove(targetFuelFactoryId)
     }
 }
