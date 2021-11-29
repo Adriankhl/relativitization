@@ -292,6 +292,17 @@ data class CanSendCheckMessage(
 )
 
 object CanSendCheckMessageI18NStringFactory {
+    fun isNotTopLeader(playerId: Int): I18NString = I18NString(
+        listOf(
+            RealString("Player "),
+            IntString(0),
+            RealString(" is not a top leader"),
+        ),
+        listOf(
+            playerId.toString(),
+        )
+    )
+
     fun isNotDirectSubordinate(playerId: Int, toId: Int): I18NString = I18NString(
         listOf(
             RealString("Player "),
