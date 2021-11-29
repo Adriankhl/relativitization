@@ -33,7 +33,8 @@ internal class BuildForeignResourceFactoryCommandTest {
                 qualityLevel = 1.0
             ),
             qualityLevel = 1.0,
-            storedFuelRestMass = 0.0
+            storedFuelRestMass = 0.0,
+            numBuilding = 1.0,
         )
 
         runBlocking {

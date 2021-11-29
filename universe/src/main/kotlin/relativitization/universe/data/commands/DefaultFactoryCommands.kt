@@ -193,6 +193,7 @@ data class BuildForeignFuelFactoryCommand(
  * @property resourceFactoryInternalData data of the factory
  * @property qualityLevel the quality of the factory, relative to tech level
  * @property storedFuelRestMass fuel stored in the newly built factory
+ * @property numBuilding number of building in this factory
  */
 @Serializable
 data class BuildForeignResourceFactoryCommand(
@@ -205,6 +206,7 @@ data class BuildForeignResourceFactoryCommand(
     val resourceFactoryInternalData: ResourceFactoryInternalData,
     val qualityLevel: Double,
     val storedFuelRestMass: Double,
+    val numBuilding: Double,
 ) : DefaultCommand() {
     override val description: I18NString = I18NString(
         listOf(
@@ -276,7 +278,7 @@ data class BuildForeignResourceFactoryCommand(
             storedFuelRestMass + playerData.playerInternalData.playerScienceData().playerScienceApplicationData.newResourceFactoryFuelNeededByConstruction(
                 resourceFactoryInternalData.outputResource,
                 qualityLevel
-            )
+            ) * numBuilding
         val hasFuel: Boolean =
             playerData.playerInternalData.physicsData().fuelRestMassData.production >= fuelNeeded + storedFuelRestMass
         val hasFuelI18NString: I18NString = if (hasFuel) {
@@ -307,7 +309,7 @@ data class BuildForeignResourceFactoryCommand(
             storedFuelRestMass + playerData.playerInternalData.playerScienceData().playerScienceApplicationData.newResourceFactoryFuelNeededByConstruction(
                 resourceFactoryInternalData.outputResource,
                 qualityLevel
-            )
+            ) * numBuilding
         playerData.playerInternalData.physicsData().fuelRestMassData.production -= fuelNeeded + storedFuelRestMass
 
     }
@@ -343,7 +345,7 @@ data class BuildForeignResourceFactoryCommand(
             MutableResourceFactoryData(
                 ownerPlayerId = ownerId,
                 resourceFactoryInternalData = DataSerializer.copy(resourceFactoryInternalData),
-                numBuilding = 1.0,
+                numBuilding = numBuilding,
                 isOpened = true,
                 lastOutputAmount = 0.0,
                 lastInputAmountMap = mutableMapOf(),
