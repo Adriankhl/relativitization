@@ -19,6 +19,8 @@
 * Trade history
 * Centralization
 * Ally
+* Player specific tariff
+* Fuel tariff
 
 # Mechanism TODO list
 * Basic resource output from stellar system [x]
@@ -50,7 +52,6 @@
 # Command TODO List
 * Destroy factory [x]
 * Send fuel to foreign factory [x]
-* Expand Factory
 * Change economy policy, e.g., tax, storage
 * Change politics data
 * Change salary
