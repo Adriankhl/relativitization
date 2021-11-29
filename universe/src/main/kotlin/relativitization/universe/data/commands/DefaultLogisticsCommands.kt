@@ -20,7 +20,10 @@ import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.math.pow
 
 /**
- * Send fuel from yourself to another player, also improve relation modifier
+ * Send fuel from your storage to another player, also improve relation modifier
+ *
+ * @property amount the amount of fuel to send
+ * @property senderFuelLossFractionPerDistance the loss fraction, determined by player science data
  */
 @Serializable
 data class SendFuelFromStorageCommand(
@@ -166,7 +169,13 @@ data class SendFuelFromStorageCommand(
 
 
 /**
- * Send resource from yourself to another player
+ * Send resource from your storage to another player
+ *
+ * @property resourceType the type of resource
+ * @property resourceQualityClass the quality class of the resource
+ * @property resourceQualityData the quality data of the resource
+ * @property amount the amount of resource to send
+ * @property senderResourceLossFractionPerDistance the loss fraction, determined by player science data
  */
 @Serializable
 data class SendResourceFromStorageCommand(
@@ -332,7 +341,10 @@ data class SendResourceFromStorageCommand(
 }
 
 /**
- * Generic send fuel, cannot be sent by player directly
+ * Send fuel to a player, should be sent by mechanism only
+ *
+ * @property amount the amount of resource to send
+ * @property senderFuelLossFractionPerDistance the loss fraction, determined by player science data
  */
 @Serializable
 data class SendFuelCommand(
@@ -385,7 +397,12 @@ data class SendFuelCommand(
 
 
 /**
- * Generic send resource, cannot be sent by player directly
+ * Send resource to a player, should be sent by mechanism only
+ *
+ * @property resourceType the type of resource to send
+ * @property resourceQualityData the quality of the resource to send
+ * @property amount the amount of resource to send
+ * @property senderResourceLossFractionPerDistance the loss fraction, determined by player science data
  */
 @Serializable
 data class SendResourceCommand(
@@ -444,8 +461,14 @@ data class SendResourceCommand(
 
 
 /**
- * Send resource to a pop
- * Should be handled by mechanism only, cannot be sent by player manually
+ * Send resource to a pop, should be sent by mechanism only
+ *
+ * @property targetCarrierId the id of the carrier where the pop is located
+ * @property targetPopType the type of the pop
+ * @property resourceType the type of resource to send
+ * @property resourceQualityData the quality of the resource to send
+ * @property amount the amount of resource to send
+ * @property senderResourceLossFractionPerDistance the loss fraction, determined by player science data
  */
 @Serializable
 data class SendResourceToPopCommand(
@@ -509,17 +532,26 @@ data class SendResourceToPopCommand(
 }
 
 /**
- * Send fuel to PopExportCenter to buy resource
- * Should be handled by mechanism only, cannot be sent by player manually
+ * Send fuel to PopExportCenter to buy resource, should be sent by mechanism only
+ *
+ * @property fromCarrierId sent from the carrier with this id
+ * @property fromPopType sent from this pop type
+ * @property targetTopLeaderId the top leader id of the target player
+ * @property targetCarrierId the id of the carrier to build the pop export center
+ * @property resourceType the type of resource to buy
+ * @property resourceQualityClass the quality class of the resource to buy
+ * @property fuelRestMassAmount the amount of fuel to the center to buy the reosurce
+ * @property amountPerTime the amount of resource to buy per time
+ * @property senderFuelLossFractionPerDistance the loss fraction, determined by player science data
  */
 @Serializable
 data class PopBuyResourceCommand(
     override val toId: Int,
     override val fromId: Int,
     override val fromInt4D: Int4D,
-    val receiverTopLeaderId: Int,
     val fromCarrierId: Int,
     val fromPopType: PopType,
+    val targetTopLeaderId: Int,
     val targetCarrierId: Int,
     val resourceType: ResourceType,
     val resourceQualityClass: ResourceQualityClass,
@@ -538,7 +570,7 @@ data class PopBuyResourceCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): Boolean {
-        val validTopLeaderId: Boolean = (playerData.topLeaderId() == receiverTopLeaderId)
+        val validTopLeaderId: Boolean = (playerData.topLeaderId() == targetTopLeaderId)
 
         val isFuelIncreaseEnable: Boolean =
             playerData.playerInternalData.modifierData().physicsModifierData.disableRestMassIncreaseTimeLimit <= 0
@@ -596,11 +628,11 @@ data class PopBuyResourceCommand(
 }
 
 /**
- * Send fuel from yourself to another player
+ * Send fuel to player export center to buy resource
  *
- * @property receiverTopLeaderId top leader id of the receiver
+ * @property targetTopLeaderId top leader id of the target player
  * @property targetCarrierId build export center at that carrier
- * @property buyResourceTargetId export to this player
+ * @property targetPlayerIdOfExportCenter export to this player
  * @property resourceType type of the resource
  * @property fuelRestMassAmount fuel rest mass to buy resource
  * @property amountPerTime the amount to buy per turn
@@ -611,9 +643,9 @@ data class PlayerBuyResourceCommand(
     override val toId: Int,
     override val fromId: Int,
     override val fromInt4D: Int4D,
-    val receiverTopLeaderId: Int,
+    val targetTopLeaderId: Int,
     val targetCarrierId: Int,
-    val buyResourceTargetId: Int,
+    val targetPlayerIdOfExportCenter: Int,
     val resourceType: ResourceType,
     val resourceQualityClass: ResourceQualityClass,
     val fuelRestMassAmount: Double,
@@ -651,14 +683,14 @@ data class PlayerBuyResourceCommand(
         universeSettings: UniverseSettings
     ): CanSendCheckMessage {
         // Whether the receiver has the same top leader
-        val sameTopLeaderId: Boolean = (playerData.topLeaderId() == receiverTopLeaderId)
+        val sameTopLeaderId: Boolean = (playerData.topLeaderId() == targetTopLeaderId)
 
         // Compute import tariff
         val tariffFactor: Double = if (sameTopLeaderId) {
             0.0
         } else {
             playerData.playerInternalData.economyData().taxData.taxRateData.importTariff.getResourceTariffRate(
-                topLeaderId = receiverTopLeaderId, resourceType = resourceType
+                topLeaderId = targetTopLeaderId, resourceType = resourceType
             )
         }
 
@@ -718,14 +750,14 @@ data class PlayerBuyResourceCommand(
         universeSettings: UniverseSettings
     ) {
         // Whether the receiver has the same top leader
-        val sameTopLeaderId: Boolean = (playerData.topLeaderId() == receiverTopLeaderId)
+        val sameTopLeaderId: Boolean = (playerData.topLeaderId() == targetTopLeaderId)
 
         // Compute import tariff
         val tariffFactor: Double = if (sameTopLeaderId) {
             0.0
         } else {
             playerData.playerInternalData.economyData().taxData.taxRateData.importTariff.getResourceTariffRate(
-                topLeaderId = receiverTopLeaderId, resourceType = resourceType
+                topLeaderId = targetTopLeaderId, resourceType = resourceType
             )
         }
 
@@ -740,7 +772,7 @@ data class PlayerBuyResourceCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): Boolean {
-        val validTopLeaderId: Boolean = (playerData.topLeaderId() == receiverTopLeaderId)
+        val validTopLeaderId: Boolean = (playerData.topLeaderId() == targetTopLeaderId)
 
         val isFuelIncreaseEnable: Boolean =
             playerData.playerInternalData.modifierData().physicsModifierData.disableRestMassIncreaseTimeLimit <= 0
@@ -780,7 +812,7 @@ data class PlayerBuyResourceCommand(
             ) {
                 MutablePlayerExportCenterData()
             }.getSingleExportData(
-                targetPlayerId = buyResourceTargetId,
+                targetPlayerId = targetPlayerIdOfExportCenter,
                 resourceType = resourceType,
                 resourceQualityClass = resourceQualityClass
             )
