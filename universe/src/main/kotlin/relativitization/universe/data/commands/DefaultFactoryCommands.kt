@@ -655,18 +655,49 @@ data class RemoveForeignFuelFactoryCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): CanSendCheckMessage {
-        TODO("Not yet implemented")
+        return CanSendCheckMessage(true)
     }
 
     override fun canExecute(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): Boolean {
-        TODO("Not yet implemented")
+        val hasCarrier: Boolean =
+            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(targetCarrierId)
+
+        val hasFuelFactory: Boolean = if (hasCarrier) {
+            val carrier: MutableCarrierData =
+                playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
+                    targetCarrierId
+                )
+
+            carrier.allPopData.labourerPopData.fuelFactoryMap.containsKey(targetFuelFactoryId)
+        } else {
+            false
+        }
+
+        val isOwner: Boolean = if (hasFuelFactory) {
+            val carrier: MutableCarrierData =
+                playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
+                    targetCarrierId
+                )
+
+            carrier.allPopData.labourerPopData.fuelFactoryMap.getValue(
+                targetFuelFactoryId
+            ).ownerPlayerId == fromId
+        } else {
+            false
+        }
+
+        return hasCarrier && hasFuelFactory && isOwner
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
-        TODO("Not yet implemented")
-    }
+        val carrier: MutableCarrierData =
+            playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
+                targetCarrierId
+            )
 
+        carrier.allPopData.labourerPopData.fuelFactoryMap.remove(targetFuelFactoryId)
+    }
 }
