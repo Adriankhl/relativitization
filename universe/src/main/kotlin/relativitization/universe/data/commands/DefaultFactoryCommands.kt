@@ -373,7 +373,7 @@ data class BuildLocalFuelFactoryCommand(
 ) : DefaultCommand() {
     override val description: I18NString = I18NString(
         listOf(
-            RealString("Build a local factory with quality level "),
+            RealString("Build a local fuel factory with quality level "),
             IntString(0),
             RealString(" at carrier "),
             IntString(1),
@@ -504,14 +504,17 @@ data class BuildLocalResourceFactoryCommand(
 ) : DefaultCommand() {
     override val description: I18NString = I18NString(
         listOf(
-            RealString("Build a local factory with quality level "),
+            RealString("Build a local "),
             IntString(0),
-            RealString(" at carrier "),
+            RealString(" factory with quality level "),
             IntString(1),
-            RealString(" of player "),
+            RealString(" at carrier "),
             IntString(2),
+            RealString(" of player "),
+            IntString(3),
         ),
         listOf(
+            outputResourceType.toString(),
             qualityLevel.toString(),
             targetCarrierId.toString(),
             toId.toString(),
@@ -780,5 +783,138 @@ data class RemoveForeignResourceFactoryCommand(
             )
 
         carrier.allPopData.labourerPopData.resourceFactoryMap.remove(targetResourceFactoryId)
+    }
+}
+
+
+/**
+ * Remove a fuel factory locally on player
+ *
+ * @property targetCarrierId remove factory on that carrier
+ * @property targetFuelFactoryId remove factory with that id
+ */
+@Serializable
+data class RemoveLocalResourceFactoryCommand(
+    override val toId: Int,
+    override val fromId: Int,
+    override val fromInt4D: Int4D,
+    val targetCarrierId: Int,
+    val targetFuelFactoryId: Int
+) : DefaultCommand() {
+    override val description: I18NString = I18NString(
+        listOf(
+            RealString("Remove a local factory with id "),
+            IntString(0),
+            RealString(" at carrier "),
+            IntString(1),
+            RealString(" of player "),
+            IntString(2),
+        ),
+        listOf(
+            targetFuelFactoryId.toString(),
+            targetCarrierId.toString(),
+            toId.toString(),
+        )
+    )
+
+    override fun canSend(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): CanSendCheckMessage {
+
+        val isSelf: Boolean = playerData.playerId == toId
+        val isSelfI18NString: I18NString = if (isSelf) {
+            I18NString("")
+        } else {
+            CanSendCheckMessageI18NStringFactory.isNotToSelf(fromId, toId)
+        }
+
+        val isTopLeader: Boolean = playerData.isTopLeader()
+        val allowSubordinateConstruction: Boolean =
+            isTopLeader || playerData.playerInternalData.politicsData().allowSubordinateBuildFactory
+        val allowSubordinateConstructionI18NString: I18NString = if (allowSubordinateConstruction) {
+            I18NString("")
+        } else {
+            I18NString("Not allow to build factory, not a top leader")
+        }
+
+
+        return CanSendCheckMessage(
+            isSelf,
+            I18NString.combine(
+                listOf(
+                    isSelfI18NString,
+                )
+            )
+        )
+    }
+
+    override fun canExecute(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): Boolean {
+        val isLeader: Boolean = playerData.isLeaderOrSelf(fromId)
+        val isSelf: Boolean = playerData.playerId == fromId
+
+        val isSenderTopLeader: Boolean = fromId == playerData.topLeaderId()
+        val canSenderBuild: Boolean = (isSenderTopLeader ||
+                playerData.playerInternalData.politicsData().allowSubordinateBuildFactory)
+
+        val canLeaderBuild: Boolean = (isSelf ||
+                playerData.playerInternalData.politicsData().allowLeaderBuildLocalFactory)
+
+
+        val hasCarrier: Boolean =
+            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(targetCarrierId)
+
+        val requiredFuel: Double =
+            playerData.playerInternalData.playerScienceData().playerScienceApplicationData.newResourceFactoryFuelNeededByConstruction(
+                outputResourceType = outputResourceType,
+                qualityLevel = qualityLevel
+            )
+        val hasFuel: Boolean =
+            playerData.playerInternalData.physicsData().fuelRestMassData.production > requiredFuel
+
+        return isLeader && canSenderBuild && canLeaderBuild && hasCarrier && hasFuel
+    }
+
+    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+
+        val carrier: MutableCarrierData =
+            playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
+                targetCarrierId
+            )
+
+        val newResourceFactoryInternalData: MutableResourceFactoryInternalData =
+            playerData.playerInternalData.playerScienceData().playerScienceApplicationData.newResourceFactoryInternalData(
+                outputResourceType = outputResourceType,
+                qualityLevel = qualityLevel
+            )
+
+        val requiredFuel: Double =
+            playerData.playerInternalData.playerScienceData().playerScienceApplicationData.newResourceFactoryFuelNeededByConstruction(
+                outputResourceType = outputResourceType,
+                qualityLevel = qualityLevel
+            )
+
+        playerData.playerInternalData.physicsData().fuelRestMassData.production -= requiredFuel
+
+        carrier.allPopData.labourerPopData.addResourceFactory(
+            MutableResourceFactoryData(
+                ownerPlayerId = toId,
+                resourceFactoryInternalData = newResourceFactoryInternalData,
+                numBuilding = 1.0,
+                isOpened = true,
+                lastOutputAmount = 0.0,
+                lastInputAmountMap = mutableMapOf(),
+                storedFuelRestMass = 0.0,
+                lastNumEmployee = 0.0
+            )
+        )
+    }
+
+
+    companion object {
+        private val logger = RelativitizationLogManager.getLogger()
     }
 }

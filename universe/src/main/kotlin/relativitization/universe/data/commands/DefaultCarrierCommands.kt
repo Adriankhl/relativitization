@@ -36,7 +36,7 @@ data class BuildLocalCarrierCommands(
         universeSettings: UniverseSettings
     ): CanSendCheckMessage {
         val isSelf: Boolean = playerData.playerId == toId
-        val isSelfI18String: I18NString = if (isSelf) {
+        val isSelfI18NString: I18NString = if (isSelf) {
             I18NString("")
         } else {
             CanSendCheckMessageI18NStringFactory.isNotToSelf(fromId, toId)
@@ -55,7 +55,7 @@ data class BuildLocalCarrierCommands(
             isSelf && hasFuel,
             I18NString.combine(
                 listOf(
-                    isSelfI18String,
+                    isSelfI18NString,
                     hasFuelI18String
                 )
             )
