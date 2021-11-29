@@ -298,7 +298,7 @@ object CanSendCheckMessageI18NStringFactory {
             IntString(0),
             RealString(" not a direct subordinate of player "),
             IntString(1),
-            RealString(".")
+            RealString(". ")
         ),
         listOf(
             toId.toString(),
@@ -312,7 +312,7 @@ object CanSendCheckMessageI18NStringFactory {
             IntString(0),
             RealString(" not a subordinate of player "),
             IntString(1),
-            RealString(".")
+            RealString(". ")
         ),
         listOf(
             toId.toString(),
@@ -326,7 +326,7 @@ object CanSendCheckMessageI18NStringFactory {
             IntString(0),
             RealString(" the same as toId "),
             IntString(1),
-            RealString(".")
+            RealString(". ")
         ),
         listOf(
             playerId.toString(),

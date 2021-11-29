@@ -755,7 +755,9 @@ data class RemoveForeignResourceFactoryCommand(
                     targetCarrierId
                 )
 
-            carrier.allPopData.labourerPopData.resourceFactoryMap.containsKey(targetResourceFactoryId)
+            carrier.allPopData.labourerPopData.resourceFactoryMap.containsKey(
+                targetResourceFactoryId
+            )
         } else {
             false
         }
@@ -829,21 +831,59 @@ data class RemoveLocalFuelFactoryCommand(
             CanSendCheckMessageI18NStringFactory.isNotToSelf(fromId, toId)
         }
 
-        val isTopLeader: Boolean = playerData.isTopLeader()
-        val allowSubordinateConstruction: Boolean =
-            isTopLeader || playerData.playerInternalData.politicsData().allowSubordinateBuildFactory
-        val allowSubordinateConstructionI18NString: I18NString = if (allowSubordinateConstruction) {
+        val hasCarrier: Boolean =
+            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(targetCarrierId)
+        val hasCarrierI18NString: I18NString = if (hasCarrier) {
             I18NString("")
         } else {
-            I18NString("Not allow to build factory, not a top leader")
+            I18NString("Carrier does not exist. ")
         }
 
 
+        val hasFuelFactory: Boolean = if (hasCarrier) {
+            val carrier: MutableCarrierData =
+                playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
+                    targetCarrierId
+                )
+
+            carrier.allPopData.labourerPopData.fuelFactoryMap.containsKey(targetFuelFactoryId)
+        } else {
+            false
+        }
+        val hasFuelFactoryI18NString: I18NString = if (hasFuelFactory) {
+            I18NString("")
+        } else {
+            I18NString("Fuel factory does not exist. ")
+        }
+
+        val isOwnerNotLeaderOfSelf: Boolean = if (hasFuelFactory) {
+            val carrier: MutableCarrierData =
+                playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
+                    targetCarrierId
+                )
+
+            val ownerId: Int = carrier.allPopData.labourerPopData.fuelFactoryMap.getValue(
+                targetFuelFactoryId
+            ).ownerPlayerId
+
+            !playerData.isLeader(ownerId)
+        } else {
+            false
+        }
+        val isOwnerNotLeaderOfSelfI18NString: I18NString = if (isOwnerNotLeaderOfSelf) {
+            I18NString("")
+        } else {
+            I18NString("Owner is leader. ")
+        }
+
         return CanSendCheckMessage(
-            isSelf,
+            isSelf && hasCarrier && hasFuelFactory && isOwnerNotLeaderOfSelf,
             I18NString.combine(
                 listOf(
                     isSelfI18NString,
+                    hasCarrierI18NString,
+                    hasFuelFactoryI18NString,
+                    isOwnerNotLeaderOfSelfI18NString,
                 )
             )
         )
@@ -853,64 +893,48 @@ data class RemoveLocalFuelFactoryCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): Boolean {
-        val isLeader: Boolean = playerData.isLeaderOrSelf(fromId)
-        val isSelf: Boolean = playerData.playerId == fromId
 
-        val isSenderTopLeader: Boolean = fromId == playerData.topLeaderId()
-        val canSenderBuild: Boolean = (isSenderTopLeader ||
-                playerData.playerInternalData.politicsData().allowSubordinateBuildFactory)
-
-        val canLeaderBuild: Boolean = (isSelf ||
-                playerData.playerInternalData.politicsData().allowLeaderBuildLocalFactory)
-
+        val isSelf: Boolean = playerData.playerId == toId
 
         val hasCarrier: Boolean =
             playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(targetCarrierId)
 
-        val requiredFuel: Double =
-            playerData.playerInternalData.playerScienceData().playerScienceApplicationData.newResourceFactoryFuelNeededByConstruction(
-                outputResourceType = outputResourceType,
-                qualityLevel = qualityLevel
-            )
-        val hasFuel: Boolean =
-            playerData.playerInternalData.physicsData().fuelRestMassData.production > requiredFuel
+        val hasFuelFactory: Boolean = if (hasCarrier) {
+            val carrier: MutableCarrierData =
+                playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
+                    targetCarrierId
+                )
 
-        return isLeader && canSenderBuild && canLeaderBuild && hasCarrier && hasFuel
+            carrier.allPopData.labourerPopData.fuelFactoryMap.containsKey(targetFuelFactoryId)
+        } else {
+            false
+        }
+
+        val isOwnerNotLeaderOfSelf: Boolean = if (hasFuelFactory) {
+            val carrier: MutableCarrierData =
+                playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
+                    targetCarrierId
+                )
+
+            val ownerId: Int = carrier.allPopData.labourerPopData.fuelFactoryMap.getValue(
+                targetFuelFactoryId
+            ).ownerPlayerId
+
+            !playerData.isLeader(ownerId)
+        } else {
+            false
+        }
+
+        return isSelf && hasCarrier && hasFuelFactory && isOwnerNotLeaderOfSelf
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
-
         val carrier: MutableCarrierData =
             playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
                 targetCarrierId
             )
 
-        val newResourceFactoryInternalData: MutableResourceFactoryInternalData =
-            playerData.playerInternalData.playerScienceData().playerScienceApplicationData.newResourceFactoryInternalData(
-                outputResourceType = outputResourceType,
-                qualityLevel = qualityLevel
-            )
-
-        val requiredFuel: Double =
-            playerData.playerInternalData.playerScienceData().playerScienceApplicationData.newResourceFactoryFuelNeededByConstruction(
-                outputResourceType = outputResourceType,
-                qualityLevel = qualityLevel
-            )
-
-        playerData.playerInternalData.physicsData().fuelRestMassData.production -= requiredFuel
-
-        carrier.allPopData.labourerPopData.addResourceFactory(
-            MutableResourceFactoryData(
-                ownerPlayerId = toId,
-                resourceFactoryInternalData = newResourceFactoryInternalData,
-                numBuilding = 1.0,
-                isOpened = true,
-                lastOutputAmount = 0.0,
-                lastInputAmountMap = mutableMapOf(),
-                storedFuelRestMass = 0.0,
-                lastNumEmployee = 0.0
-            )
-        )
+        carrier.allPopData.labourerPopData.fuelFactoryMap.remove(targetFuelFactoryId)
     }
 
 

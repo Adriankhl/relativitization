@@ -132,6 +132,15 @@ data class MutablePlayerData(
         return (otherPlayerId == playerId) || playerInternalData.leaderIdList.contains(otherPlayerId)
     }
 
+
+    /**
+     * @param otherPlayerId whether this id is one of the leaders of the player
+     */
+    fun isLeader(otherPlayerId: Int): Boolean {
+        return (otherPlayerId != playerId) && playerInternalData.leaderIdList.contains(otherPlayerId)
+    }
+
+
     /**
      * The top leader id
      */
