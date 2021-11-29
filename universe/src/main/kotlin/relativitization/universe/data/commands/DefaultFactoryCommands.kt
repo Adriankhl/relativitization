@@ -718,7 +718,7 @@ data class RemoveForeignResourceFactoryCommand(
 ) : DefaultCommand() {
     override val description: I18NString = I18NString(
         listOf(
-            RealString("Remove a foeign resource factory with Id "),
+            RealString("Remove a foreign resource factory with Id "),
             IntString(0),
             RealString(" at carrier "),
             IntString(1),
