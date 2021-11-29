@@ -48,10 +48,12 @@
 * AI state store last command to subordinate
 
 # Command TODO List
-* Destroy factory
+* Destroy factory [x]
 * Expand Factory
 * Change economy policy, e.g., tax, storage
+* Change politics data
 * Change salary
+* Build institute and laboratory
 * Improve diplomatic relation by sending resource [x]
 * Declare war, declare independence [x]
 * Merge direct subordinate at exactly the same position [x]
@@ -63,6 +65,7 @@
 # GUI TODO List
 * Display information
 * Available commands
+* Map mode
 
 # Test TODO List
 * Declare war [x]
