@@ -22,6 +22,7 @@ import relativitization.universe.utils.RelativitizationLogManager
  * @property fuelFactoryInternalData data of the factory
  * @property qualityLevel the quality of the factory, relative to tech level
  * @property storedFuelRestMass fuel stored in the newly built factory
+ * @property numBuilding number of building in this factory
  */
 @Serializable
 data class BuildForeignFuelFactoryCommand(
@@ -34,6 +35,7 @@ data class BuildForeignFuelFactoryCommand(
     val fuelFactoryInternalData: FuelFactoryInternalData,
     val qualityLevel: Double,
     val storedFuelRestMass: Double,
+    val numBuilding: Double,
 ) : DefaultCommand() {
     override val description: I18NString = I18NString(
         listOf(
@@ -100,7 +102,7 @@ data class BuildForeignFuelFactoryCommand(
         val fuelNeeded: Double =
             playerData.playerInternalData.playerScienceData().playerScienceApplicationData.newFuelFactoryFuelNeededByConstruction(
                 qualityLevel
-            )
+            ) * numBuilding
         val hasFuel: Boolean =
             playerData.playerInternalData.physicsData().fuelRestMassData.production >= fuelNeeded + storedFuelRestMass
         val hasFuelI18NString: I18NString = if (hasFuel) {
@@ -130,7 +132,7 @@ data class BuildForeignFuelFactoryCommand(
         val fuelNeeded: Double =
             playerData.playerInternalData.playerScienceData().playerScienceApplicationData.newFuelFactoryFuelNeededByConstruction(
                 qualityLevel
-            )
+            ) * numBuilding
         playerData.playerInternalData.physicsData().fuelRestMassData.production -= fuelNeeded + storedFuelRestMass
 
     }
@@ -166,7 +168,7 @@ data class BuildForeignFuelFactoryCommand(
             MutableFuelFactoryData(
                 ownerPlayerId = ownerId,
                 fuelFactoryInternalData = DataSerializer.copy(fuelFactoryInternalData),
-                numBuilding = 1.0,
+                numBuilding = numBuilding,
                 isOpened = true,
                 storedFuelRestMass = storedFuelRestMass,
                 lastOutputAmount = 0.0,
