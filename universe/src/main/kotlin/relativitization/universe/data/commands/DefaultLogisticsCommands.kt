@@ -819,6 +819,8 @@ data class PlayerBuyResourceCommand(
 
             centerData.amountPerTime = amountPerTime
             centerData.storedFuelRestMass += fuelRestMassAmount * remainFraction
+        } else {
+            logger.debug("No such carrier")
         }
     }
 
