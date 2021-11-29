@@ -625,9 +625,9 @@ data class BuildLocalResourceFactoryCommand(
 
 
 /**
- * Remove a fuel factory on foreign player
+ * Remove a fuel factory from foreign player
  *
- * @property targetCarrierId remove the factory on that carrier
+ * @property targetCarrierId remove the factory from that carrier
  * @property targetFuelFactoryId remove the factory with that Id
  */
 @Serializable
@@ -706,9 +706,9 @@ data class RemoveForeignFuelFactoryCommand(
 }
 
 /**
- * Remove a resource factory on foreign player
+ * Remove a resource factory from foreign player
  *
- * @property targetCarrierId remove the factory on that carrier
+ * @property targetCarrierId remove the factory from that carrier
  * @property targetResourceFactoryId remove the factory with that Id
  */
 @Serializable
@@ -790,9 +790,9 @@ data class RemoveForeignResourceFactoryCommand(
 
 
 /**
- * Remove a fuel factory locally on player
+ * Remove a fuel factory locally from player
  *
- * @property targetCarrierId remove factory on that carrier
+ * @property targetCarrierId remove factory from that carrier
  * @property targetFuelFactoryId remove factory with that id
  */
 @Serializable
@@ -935,6 +935,160 @@ data class RemoveLocalFuelFactoryCommand(
             )
 
         carrier.allPopData.labourerPopData.fuelFactoryMap.remove(targetFuelFactoryId)
+    }
+
+
+    companion object {
+        private val logger = RelativitizationLogManager.getLogger()
+    }
+}
+
+/**
+ * Remove a resource factory locally from player
+ *
+ * @property targetCarrierId remove factory from that carrier
+ * @property targetResourceFactoryId remove factory with that id
+ */
+@Serializable
+data class RemoveLocalResourceFactoryCommand(
+    override val toId: Int,
+    override val fromId: Int,
+    override val fromInt4D: Int4D,
+    val targetCarrierId: Int,
+    val targetResourceFactoryId: Int
+) : DefaultCommand() {
+    override val description: I18NString = I18NString(
+        listOf(
+            RealString("Remove a resource factory with id "),
+            IntString(0),
+            RealString(" at carrier "),
+            IntString(1),
+            RealString(" of player "),
+            IntString(2),
+        ),
+        listOf(
+            targetResourceFactoryId.toString(),
+            targetCarrierId.toString(),
+            toId.toString(),
+        )
+    )
+
+    override fun canSend(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): CanSendCheckMessage {
+
+        val isSelf: Boolean = playerData.playerId == toId
+        val isSelfI18NString: I18NString = if (isSelf) {
+            I18NString("")
+        } else {
+            CanSendCheckMessageI18NStringFactory.isNotToSelf(fromId, toId)
+        }
+
+        val hasCarrier: Boolean =
+            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(targetCarrierId)
+        val hasCarrierI18NString: I18NString = if (hasCarrier) {
+            I18NString("")
+        } else {
+            I18NString("Carrier does not exist. ")
+        }
+
+
+        val hasResourceFactory: Boolean = if (hasCarrier) {
+            val carrier: MutableCarrierData =
+                playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
+                    targetCarrierId
+                )
+
+            carrier.allPopData.labourerPopData.resourceFactoryMap.containsKey(targetResourceFactoryId)
+        } else {
+            false
+        }
+        val hasResourceFactoryI18NString: I18NString = if (hasResourceFactory) {
+            I18NString("")
+        } else {
+            I18NString("Resource factory does not exist. ")
+        }
+
+        val isOwnerNotLeaderOfSelf: Boolean = if (hasResourceFactory) {
+            val carrier: MutableCarrierData =
+                playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
+                    targetCarrierId
+                )
+
+            val ownerId: Int = carrier.allPopData.labourerPopData.resourceFactoryMap.getValue(
+                targetResourceFactoryId
+            ).ownerPlayerId
+
+            !playerData.isLeader(ownerId)
+        } else {
+            false
+        }
+        val isOwnerNotLeaderOfSelfI18NString: I18NString = if (isOwnerNotLeaderOfSelf) {
+            I18NString("")
+        } else {
+            I18NString("Owner is leader. ")
+        }
+
+        return CanSendCheckMessage(
+            isSelf && hasCarrier && hasResourceFactory && isOwnerNotLeaderOfSelf,
+            I18NString.combine(
+                listOf(
+                    isSelfI18NString,
+                    hasCarrierI18NString,
+                    hasResourceFactoryI18NString,
+                    isOwnerNotLeaderOfSelfI18NString,
+                )
+            )
+        )
+    }
+
+    override fun canExecute(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): Boolean {
+
+        val isSelf: Boolean = playerData.playerId == toId
+
+        val hasCarrier: Boolean =
+            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(targetCarrierId)
+
+        val hasResourceFactory: Boolean = if (hasCarrier) {
+            val carrier: MutableCarrierData =
+                playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
+                    targetCarrierId
+                )
+
+            carrier.allPopData.labourerPopData.resourceFactoryMap.containsKey(targetResourceFactoryId)
+        } else {
+            false
+        }
+
+        val isOwnerNotLeaderOfSelf: Boolean = if (hasResourceFactory) {
+            val carrier: MutableCarrierData =
+                playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
+                    targetCarrierId
+                )
+
+            val ownerId: Int = carrier.allPopData.labourerPopData.resourceFactoryMap.getValue(
+                targetResourceFactoryId
+            ).ownerPlayerId
+
+            !playerData.isLeader(ownerId)
+        } else {
+            false
+        }
+
+        return isSelf && hasCarrier && hasResourceFactory && isOwnerNotLeaderOfSelf
+    }
+
+    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+        val carrier: MutableCarrierData =
+            playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
+                targetCarrierId
+            )
+
+        carrier.allPopData.labourerPopData.resourceFactoryMap.remove(targetResourceFactoryId)
     }
 
 
