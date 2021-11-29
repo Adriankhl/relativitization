@@ -49,7 +49,7 @@
 
 # Command TODO List
 * Destroy factory [x]
-* Send fuel to foreign factory
+* Send fuel to foreign factory [x]
 * Expand Factory
 * Change economy policy, e.g., tax, storage
 * Change politics data
