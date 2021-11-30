@@ -25,14 +25,11 @@ data class ChangeDefaultImportTariffCommand(
 ) : DefaultCommand() {
     override val description: I18NString = I18NString(
         listOf(
-            RealString("Change default import tariff rate of "),
-            IntString(0),
-            RealString(" to "),
+            RealString("Change default import tariff rate of $resourceType to "),
             IntString(1),
             RealString(". ")
         ),
         listOf(
-            resourceType.toString(),
             rate.toString(),
         )
     )
@@ -94,14 +91,11 @@ data class ChangeDefaultExportTariffCommand(
 ) : DefaultCommand() {
     override val description: I18NString = I18NString(
         listOf(
-            RealString("Change default export tariff rate of "),
+            RealString("Change default export tariff rate of $resourceType to "),
             IntString(0),
-            RealString(" to "),
-            IntString(1),
             RealString(". ")
         ),
         listOf(
-            resourceType.toString(),
             rate.toString(),
         )
     )
@@ -504,5 +498,33 @@ data class ChangeMiddleHighBoundaryCommand(
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
         playerData.playerInternalData.economyData()
             .taxData.taxRateData.incomeTax.middleHighBoundary = boundary
+    }
+}
+
+@Serializable
+data class TransferResourceToProductionCommand(
+    override val toId: Int,
+    override val fromId: Int,
+    override val fromInt4D: Int4D
+) : DefaultCommand() {
+    override val description: I18NString
+        get() = TODO("Not yet implemented")
+
+    override fun canSend(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): CanSendCheckMessage {
+        TODO("Not yet implemented")
+    }
+
+    override fun canExecute(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): Boolean {
+        TODO("Not yet implemented")
+    }
+
+    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+        TODO("Not yet implemented")
     }
 }
