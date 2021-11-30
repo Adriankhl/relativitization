@@ -511,6 +511,13 @@ data class ChangeMiddleHighBoundaryCommand(
     }
 }
 
+/**
+ * Transfer resource from storage to production
+ *
+ * @property resourceType the type of the resource to be transferred
+ * @property resourceQualityClass the class of the resource to be transferred
+ * @property amount the amount of resource to transfer
+ */
 @Serializable
 data class TransferResourceToProductionCommand(
     override val toId: Int,
@@ -595,6 +602,13 @@ data class TransferResourceToProductionCommand(
     }
 }
 
+/**
+ * Transfer resource from storage to trade
+ *
+ * @property resourceType the type of the resource to be transferred
+ * @property resourceQualityClass the class of the resource to be transferred
+ * @property amount the amount of resource to transfer
+ */
 @Serializable
 data class TransferResourceToTradeCommand(
     override val toId: Int,
