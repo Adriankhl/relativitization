@@ -29,18 +29,18 @@ data class DeclareWarCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): CanSendCheckMessage {
-        val isNotLeader: Boolean = !playerData.isLeaderOrSelf(toId)
-        val isNotLeaderI18NString: I18NString = if (isNotLeader) {
+        val isNotLeaderOrSelf: Boolean = !playerData.isLeaderOrSelf(toId)
+        val isNotLeaderOrSelfI18NString: I18NString = if (isNotLeaderOrSelf) {
             I18NString("")
         } else {
             I18NString("Target is leader. ")
         }
 
-        val isNotSubordinate: Boolean = !playerData.isLeaderOrSelf(toId)
-        val isNotSubordinateI18NString: I18NString = if (isNotSubordinate) {
+        val isNotSubordinateOrSelf: Boolean = !playerData.isSubOrdinateOrSelf(toId)
+        val isNotSubordinateOrSelfI18NString: I18NString = if (isNotSubordinateOrSelf) {
             I18NString("")
         } else {
-            I18NString("Target is leader. ")
+            I18NString("Target is subordinate. ")
         }
 
         val isNotInWar: Boolean =
@@ -60,10 +60,10 @@ data class DeclareWarCommand(
         }
 
         return CanSendCheckMessage(
-            isNotLeader && isNotSubordinate && isNotInWar && isNotInPeaceTreaty,
+            isNotLeaderOrSelf && isNotSubordinateOrSelf && isNotInWar && isNotInPeaceTreaty,
             listOf(
-                isNotLeaderI18NString,
-                isNotSubordinateI18NString,
+                isNotLeaderOrSelfI18NString,
+                isNotSubordinateOrSelfI18NString,
                 isNotInWarI18NString,
                 isNotInPeaceTreatyI18NString,
             )
