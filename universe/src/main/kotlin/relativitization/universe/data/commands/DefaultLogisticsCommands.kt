@@ -15,7 +15,7 @@ import relativitization.universe.data.components.defaults.popsystem.pop.service.
 import relativitization.universe.maths.physics.Intervals
 import relativitization.universe.utils.I18NString
 import relativitization.universe.utils.IntString
-import relativitization.universe.utils.RealString
+import relativitization.universe.utils.NormalString
 import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.math.pow
 
@@ -35,11 +35,11 @@ data class SendFuelFromStorageCommand(
 ) : DefaultCommand() {
     override val description: I18NString = I18NString(
         listOf(
-            RealString("Send "),
+            NormalString("Send "),
             IntString(0),
-            RealString(" fuel from player "),
+            NormalString(" fuel from player "),
             IntString(1),
-            RealString(" to "),
+            NormalString(" to "),
             IntString(2),
         ),
         listOf(
@@ -60,11 +60,11 @@ data class SendFuelFromStorageCommand(
         } else {
             I18NString(
                 listOf(
-                    RealString("Trade fuel amount "),
+                    NormalString("Trade fuel amount "),
                     IntString(0),
-                    RealString(" is less than "),
+                    NormalString(" is less than "),
                     IntString(1),
-                    RealString(". ")
+                    NormalString(". ")
                 ),
                 listOf(
                     playerData.playerInternalData.physicsData().fuelRestMassData.trade.toString(),
@@ -80,11 +80,11 @@ data class SendFuelFromStorageCommand(
         } else {
             I18NString(
                 listOf(
-                    RealString("Sender fuel loss fraction per distance"),
+                    NormalString("Sender fuel loss fraction per distance"),
                     IntString(0),
-                    RealString(" is greater than "),
+                    NormalString(" is greater than "),
                     IntString(1),
-                    RealString(". ")
+                    NormalString(". ")
                 ),
                 listOf(
                     playerData.playerInternalData.playerScienceData().playerScienceApplicationData.fuelLogisticsLossFractionPerDistance.toString(),
@@ -188,15 +188,15 @@ data class SendResourceFromStorageCommand(
 ) : DefaultCommand() {
     override val description: I18NString = I18NString(
         listOf(
-            RealString("Send "),
+            NormalString("Send "),
             IntString(0),
-            RealString(" "),
+            NormalString(" "),
             IntString(1),
-            RealString(" (class: "),
+            NormalString(" (class: "),
             IntString(2),
-            RealString(") from player "),
+            NormalString(") from player "),
             IntString(3),
-            RealString(" to "),
+            NormalString(" to "),
             IntString(4),
         ),
         listOf(
@@ -221,11 +221,11 @@ data class SendResourceFromStorageCommand(
         } else {
             I18NString(
                 listOf(
-                    RealString("Trade resource amount "),
+                    NormalString("Trade resource amount "),
                     IntString(0),
-                    RealString(" is less than "),
+                    NormalString(" is less than "),
                     IntString(1),
-                    RealString(". ")
+                    NormalString(". ")
                 ),
                 listOf(
                     playerData.playerInternalData.economyData().resourceData.getTradeResourceAmount(
@@ -245,11 +245,11 @@ data class SendResourceFromStorageCommand(
         } else {
             I18NString(
                 listOf(
-                    RealString("Resource quality "),
+                    NormalString("Resource quality "),
                     IntString(0),
-                    RealString(" is not similar to "),
+                    NormalString(" is not similar to "),
                     IntString(1),
-                    RealString(". ")
+                    NormalString(". ")
                 ),
                 listOf(
                     playerData.playerInternalData.economyData().resourceData.getResourceQuality(
@@ -267,11 +267,11 @@ data class SendResourceFromStorageCommand(
         } else {
             I18NString(
                 listOf(
-                    RealString("Sender resource loss fraction per distance"),
+                    NormalString("Sender resource loss fraction per distance"),
                     IntString(0),
-                    RealString(" is greater than "),
+                    NormalString(" is greater than "),
                     IntString(1),
-                    RealString(". ")
+                    NormalString(". ")
                 ),
                 listOf(
                     playerData.playerInternalData.playerScienceData().playerScienceApplicationData.resourceLogisticsLossFractionPerDistance.toString(),
@@ -650,19 +650,19 @@ data class PlayerBuyResourceCommand(
 ) : DefaultCommand() {
     override val description: I18NString = I18NString(
         listOf(
-            RealString("Send "),
+            NormalString("Send "),
             IntString(0),
-            RealString(" fuel from player "),
+            NormalString(" fuel from player "),
             IntString(1),
-            RealString(" to "),
+            NormalString(" to "),
             IntString(2),
-            RealString(" to buy "),
+            NormalString(" to buy "),
             IntString(3),
-            RealString(" "),
+            NormalString(" "),
             IntString(4),
-            RealString(" of class "),
+            NormalString(" of class "),
             IntString(5),
-            RealString(" per time.")
+            NormalString(" per time.")
         ),
         listOf(
             fuelRestMassAmount.toString(),
@@ -697,11 +697,11 @@ data class PlayerBuyResourceCommand(
         } else {
             I18NString(
                 listOf(
-                    RealString("Trade fuel amount "),
+                    NormalString("Trade fuel amount "),
                     IntString(0),
-                    RealString(" is less than "),
+                    NormalString(" is less than "),
                     IntString(1),
-                    RealString(". ")
+                    NormalString(". ")
                 ),
                 listOf(
                     playerData.playerInternalData.physicsData().fuelRestMassData.trade.toString(),
@@ -717,11 +717,11 @@ data class PlayerBuyResourceCommand(
         } else {
             I18NString(
                 listOf(
-                    RealString("Sender fuel loss fraction per distance"),
+                    NormalString("Sender fuel loss fraction per distance"),
                     IntString(0),
-                    RealString(" is greater than "),
+                    NormalString(" is greater than "),
                     IntString(1),
-                    RealString(". ")
+                    NormalString(". ")
                 ),
                 listOf(
                     playerData.playerInternalData.playerScienceData().playerScienceApplicationData.fuelLogisticsLossFractionPerDistance.toString(),

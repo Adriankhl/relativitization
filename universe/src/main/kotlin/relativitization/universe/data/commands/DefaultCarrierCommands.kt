@@ -9,7 +9,7 @@ import relativitization.universe.data.components.defaults.popsystem.MutableCarri
 import relativitization.universe.data.components.defaults.popsystem.MutableCarrierInternalData
 import relativitization.universe.utils.I18NString
 import relativitization.universe.utils.IntString
-import relativitization.universe.utils.RealString
+import relativitization.universe.utils.NormalString
 
 /**
  * Build a new carrier locally, can only send to self
@@ -23,7 +23,7 @@ data class BuildLocalCarrierCommands(
 ) : DefaultCommand() {
     override val description: I18NString = I18NString(
         listOf(
-            RealString("Build a new carrier with quality level "),
+            NormalString("Build a new carrier with quality level "),
             IntString(0),
         ),
         listOf(

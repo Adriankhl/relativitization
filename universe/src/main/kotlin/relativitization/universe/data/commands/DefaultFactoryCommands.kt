@@ -10,7 +10,7 @@ import relativitization.universe.data.components.defaults.popsystem.pop.labourer
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.utils.I18NString
 import relativitization.universe.utils.IntString
-import relativitization.universe.utils.RealString
+import relativitization.universe.utils.NormalString
 import relativitization.universe.utils.RelativitizationLogManager
 
 /**
@@ -39,13 +39,13 @@ data class BuildForeignFuelFactoryCommand(
 ) : DefaultCommand() {
     override val description: I18NString = I18NString(
         listOf(
-            RealString("Build a foreign fuel factory with quality level "),
+            NormalString("Build a foreign fuel factory with quality level "),
             IntString(0),
-            RealString(" owned by "),
+            NormalString(" owned by "),
             IntString(1),
-            RealString(" at carrier "),
+            NormalString(" at carrier "),
             IntString(2),
-            RealString(" of player "),
+            NormalString(" of player "),
             IntString(3),
         ),
         listOf(
@@ -66,11 +66,11 @@ data class BuildForeignFuelFactoryCommand(
         } else {
             I18NString(
                 listOf(
-                    RealString("Top leader id "),
+                    NormalString("Top leader id "),
                     IntString(0),
-                    RealString(" is not equal to "),
+                    NormalString(" is not equal to "),
                     IntString(1),
-                    RealString(". ")
+                    NormalString(". ")
                 ),
                 listOf(
                     senderTopLeaderId.toString(),
@@ -208,15 +208,15 @@ data class BuildForeignResourceFactoryCommand(
 ) : DefaultCommand() {
     override val description: I18NString = I18NString(
         listOf(
-            RealString("Build a foreign resource factory with quality level "),
+            NormalString("Build a foreign resource factory with quality level "),
             IntString(0),
-            RealString(" owned by "),
+            NormalString(" owned by "),
             IntString(1),
-            RealString(" at carrier "),
+            NormalString(" at carrier "),
             IntString(2),
-            RealString(" of player "),
+            NormalString(" of player "),
             IntString(3),
-            RealString(". Initial stored fuel rest mass: "),
+            NormalString(". Initial stored fuel rest mass: "),
             IntString(4),
         ),
         listOf(
@@ -238,11 +238,11 @@ data class BuildForeignResourceFactoryCommand(
         } else {
             I18NString(
                 listOf(
-                    RealString("Top leader id "),
+                    NormalString("Top leader id "),
                     IntString(0),
-                    RealString(" is not equal to "),
+                    NormalString(" is not equal to "),
                     IntString(1),
-                    RealString(". ")
+                    NormalString(". ")
                 ),
                 listOf(
                     senderTopLeaderId.toString(),
@@ -375,11 +375,11 @@ data class BuildLocalFuelFactoryCommand(
 ) : DefaultCommand() {
     override val description: I18NString = I18NString(
         listOf(
-            RealString("Build a local fuel factory with quality level "),
+            NormalString("Build a local fuel factory with quality level "),
             IntString(0),
-            RealString(" at carrier "),
+            NormalString(" at carrier "),
             IntString(1),
-            RealString(" of player "),
+            NormalString(" of player "),
             IntString(2),
         ),
         listOf(
@@ -506,13 +506,13 @@ data class BuildLocalResourceFactoryCommand(
 ) : DefaultCommand() {
     override val description: I18NString = I18NString(
         listOf(
-            RealString("Build a local "),
+            NormalString("Build a local "),
             IntString(0),
-            RealString(" factory with quality level "),
+            NormalString(" factory with quality level "),
             IntString(1),
-            RealString(" at carrier "),
+            NormalString(" at carrier "),
             IntString(2),
-            RealString(" of player "),
+            NormalString(" of player "),
             IntString(3),
         ),
         listOf(
@@ -640,11 +640,11 @@ data class RemoveForeignFuelFactoryCommand(
 ) : DefaultCommand() {
     override val description: I18NString = I18NString(
         listOf(
-            RealString("Remove a foreign fuel factory with Id "),
+            NormalString("Remove a foreign fuel factory with Id "),
             IntString(0),
-            RealString(" at carrier "),
+            NormalString(" at carrier "),
             IntString(1),
-            RealString(" of player "),
+            NormalString(" of player "),
             IntString(2),
         ),
         listOf(
@@ -721,11 +721,11 @@ data class RemoveForeignResourceFactoryCommand(
 ) : DefaultCommand() {
     override val description: I18NString = I18NString(
         listOf(
-            RealString("Remove a foreign resource factory with Id "),
+            NormalString("Remove a foreign resource factory with Id "),
             IntString(0),
-            RealString(" at carrier "),
+            NormalString(" at carrier "),
             IntString(1),
-            RealString(" of player "),
+            NormalString(" of player "),
             IntString(2),
         ),
         listOf(
@@ -805,11 +805,11 @@ data class RemoveLocalFuelFactoryCommand(
 ) : DefaultCommand() {
     override val description: I18NString = I18NString(
         listOf(
-            RealString("Remove a local factory with id "),
+            NormalString("Remove a local factory with id "),
             IntString(0),
-            RealString(" at carrier "),
+            NormalString(" at carrier "),
             IntString(1),
-            RealString(" of player "),
+            NormalString(" of player "),
             IntString(2),
         ),
         listOf(
@@ -957,11 +957,11 @@ data class RemoveLocalResourceFactoryCommand(
 ) : DefaultCommand() {
     override val description: I18NString = I18NString(
         listOf(
-            RealString("Remove a resource factory with id "),
+            NormalString("Remove a resource factory with id "),
             IntString(0),
-            RealString(" at carrier "),
+            NormalString(" at carrier "),
             IntString(1),
-            RealString(" of player "),
+            NormalString(" of player "),
             IntString(2),
         ),
         listOf(
@@ -1115,13 +1115,13 @@ data class SupplyForeignFuelFactoryCommand(
 ) : DefaultCommand() {
     override val description: I18NString = I18NString(
         listOf(
-            RealString("Send "),
+            NormalString("Send "),
             IntString(0),
-            RealString(" fuel to the foreign fuel factory with Id "),
+            NormalString(" fuel to the foreign fuel factory with Id "),
             IntString(1),
-            RealString(" at carrier "),
+            NormalString(" at carrier "),
             IntString(2),
-            RealString(" of player "),
+            NormalString(" of player "),
             IntString(3),
         ),
         listOf(
@@ -1214,13 +1214,13 @@ data class SupplyForeignResourceFactoryCommand(
 ) : DefaultCommand() {
     override val description: I18NString = I18NString(
         listOf(
-            RealString("Send "),
+            NormalString("Send "),
             IntString(0),
-            RealString(" fuel to the foreign resource factory with Id "),
+            NormalString(" fuel to the foreign resource factory with Id "),
             IntString(1),
-            RealString(" at carrier "),
+            NormalString(" at carrier "),
             IntString(2),
-            RealString(" of player "),
+            NormalString(" of player "),
             IntString(3),
         ),
         listOf(

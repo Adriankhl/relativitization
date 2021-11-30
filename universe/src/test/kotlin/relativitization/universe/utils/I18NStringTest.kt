@@ -7,7 +7,7 @@ internal class I18NStringTest {
     fun normalStringTest() {
         val i1 = I18NString(
             listOf(
-                RealString("Hello"),
+                NormalString("Hello"),
                 IntString(0)
             ),
             listOf(" world")
@@ -17,7 +17,7 @@ internal class I18NStringTest {
 
         val i2 = I18NString(
             listOf(
-                RealString("Hello"),
+                NormalString("Hello"),
                 IntString(1)
             ),
             listOf(" world")
@@ -30,7 +30,7 @@ internal class I18NStringTest {
     fun messageFormatTest() {
         val i1 = I18NString(
             listOf(
-                RealString("Hello "),
+                NormalString("Hello "),
                 IntString(0)
             ),
             listOf("world")

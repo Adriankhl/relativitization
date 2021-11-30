@@ -8,7 +8,7 @@ import relativitization.universe.data.components.defaults.economy.ResourceType
 import relativitization.universe.data.components.defaults.physics.Int4D
 import relativitization.universe.utils.I18NString
 import relativitization.universe.utils.IntString
-import relativitization.universe.utils.RealString
+import relativitization.universe.utils.NormalString
 
 /**
  * Change import tariff rate of self
@@ -26,9 +26,9 @@ data class ChangeDefaultImportTariffCommand(
 ) : DefaultCommand() {
     override val description: I18NString = I18NString(
         listOf(
-            RealString("Change default import tariff rate of $resourceType to "),
+            NormalString("Change default import tariff rate of $resourceType to "),
             IntString(1),
-            RealString(". ")
+            NormalString(". ")
         ),
         listOf(
             rate.toString(),
@@ -92,9 +92,9 @@ data class ChangeDefaultExportTariffCommand(
 ) : DefaultCommand() {
     override val description: I18NString = I18NString(
         listOf(
-            RealString("Change default export tariff rate of $resourceType to "),
+            NormalString("Change default export tariff rate of $resourceType to "),
             IntString(0),
-            RealString(". ")
+            NormalString(". ")
         ),
         listOf(
             rate.toString(),
@@ -156,9 +156,9 @@ data class ChangeLowIncomeTaxCommand(
 ) : DefaultCommand() {
     override val description: I18NString = I18NString(
         listOf(
-            RealString("Change low income tax rate to "),
+            NormalString("Change low income tax rate to "),
             IntString(0),
-            RealString(". ")
+            NormalString(". ")
         ),
         listOf(
             rate.toString(),
@@ -228,9 +228,9 @@ data class ChangeMiddleIncomeTaxCommand(
 ) : DefaultCommand() {
     override val description: I18NString = I18NString(
         listOf(
-            RealString("Change middle income tax rate to "),
+            NormalString("Change middle income tax rate to "),
             IntString(0),
-            RealString(". ")
+            NormalString(". ")
         ),
         listOf(
             rate.toString(),
@@ -300,9 +300,9 @@ data class ChangeHighIncomeTaxCommand(
 ) : DefaultCommand() {
     override val description: I18NString = I18NString(
         listOf(
-            RealString("Change high income tax rate to "),
+            NormalString("Change high income tax rate to "),
             IntString(0),
-            RealString(". ")
+            NormalString(". ")
         ),
         listOf(
             rate.toString(),
@@ -372,9 +372,9 @@ data class ChangeLowMiddleBoundaryCommand(
 ) : DefaultCommand() {
     override val description: I18NString = I18NString(
         listOf(
-            RealString("Change the boundary between low and middle income to "),
+            NormalString("Change the boundary between low and middle income to "),
             IntString(0),
-            RealString(". ")
+            NormalString(". ")
         ),
         listOf(
             boundary.toString(),
@@ -444,9 +444,9 @@ data class ChangeMiddleHighBoundaryCommand(
 ) : DefaultCommand() {
     override val description: I18NString = I18NString(
         listOf(
-            RealString("Change the boundary between middle and high income to "),
+            NormalString("Change the boundary between middle and high income to "),
             IntString(0),
-            RealString(". ")
+            NormalString(". ")
         ),
         listOf(
             boundary.toString(),
@@ -513,7 +513,7 @@ data class TransferResourceToProductionCommand(
 ) : DefaultCommand() {
     override val description: I18NString = I18NString(
         listOf(
-            RealString("Transfer "),
+            NormalString("Transfer "),
         ),
         listOf(),
     )

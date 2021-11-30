@@ -5,7 +5,7 @@ import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.components.defaults.physics.Int4D
 import relativitization.universe.utils.I18NString
-import relativitization.universe.utils.RealString
+import relativitization.universe.utils.NormalString
 
 
 @Serializable
@@ -16,7 +16,7 @@ data class DummyCommand(
 ) : DefaultCommand() {
 
     override val description: I18NString = I18NString(
-        listOf(RealString("Do nothing")),
+        listOf(NormalString("Do nothing")),
         listOf(),
     )
 

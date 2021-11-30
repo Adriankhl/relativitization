@@ -9,8 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.badlogic.gdx.utils.Array
-import relativitization.universe.utils.I18NString
-import relativitization.universe.utils.RelativitizationLogManager
+import relativitization.universe.utils.*
 import com.badlogic.gdx.scenes.scene2d.ui.List as GdxList
 
 object ActorFunction {
@@ -35,12 +34,31 @@ object ActorFunction {
 
     fun translate(text: I18NString, assets: Assets): String {
         val i18NBundle = assets.getI18NBundle()
-        val messageFormatList: List<List<String>> = text.toMessageFormat()
+        val messageFormatList: List<MessageFormatData> = text.toMessageFormat()
         val normalStringList: List<String> = text.toNormalString()
 
-        return messageFormatList.mapIndexed { index, strList ->
+        return messageFormatList.mapIndexed { index, data ->
             try {
-                val trText: String = i18NBundle.format(strList[0], *strList.drop(1).toTypedArray())
+                val translatedVariableList: List<String> = data.variableList.map {
+                    when (it) {
+                        is NoTranslateString -> it.str
+                        is TranslateString -> {
+                            val trVar: String = i18NBundle.format(it.str)
+                            if (trVar.isNotEmpty()) {
+                                trVar
+                            } else {
+                                logger.debug("Empty translated variable: $trVar")
+                                it.str
+                            }
+                        }
+                    }
+                }
+
+                val trText: String = i18NBundle.format(
+                    data.template,
+                    *translatedVariableList.toTypedArray()
+                )
+
                 if (trText.isNotEmpty()) {
                     trText
                 } else {

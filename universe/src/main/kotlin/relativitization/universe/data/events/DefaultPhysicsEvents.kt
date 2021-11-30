@@ -12,7 +12,7 @@ import relativitization.universe.maths.physics.Movement.targetDouble3DByPhotonRo
 import relativitization.universe.maths.physics.TargetVelocityData
 import relativitization.universe.utils.I18NString
 import relativitization.universe.utils.IntString
-import relativitization.universe.utils.RealString
+import relativitization.universe.utils.NormalString
 import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.math.min
 
@@ -31,9 +31,9 @@ data class MoveToDouble3DEvent(
 
     override val description: I18NString = I18NString(
         listOf(
-            RealString("Player "),
+            NormalString("Player "),
             IntString(0),
-            RealString(" moving to "),
+            NormalString(" moving to "),
             IntString(1),
         ),
         listOf(
@@ -45,7 +45,7 @@ data class MoveToDouble3DEvent(
     override val choiceDescription: Map<Int, I18NString> = mapOf(
         0 to I18NString(
             listOf(
-                RealString("Moving to position "),
+                NormalString("Moving to position "),
                 IntString(0),
             ),
             listOf(
@@ -53,7 +53,7 @@ data class MoveToDouble3DEvent(
             )
         ),
         1 to I18NString(
-            listOf(RealString("Cancel this command")),
+            listOf(NormalString("Cancel this command")),
             listOf()
         )
     )

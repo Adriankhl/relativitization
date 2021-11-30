@@ -7,7 +7,7 @@ import relativitization.universe.data.components.defaults.diplomacy.DiplomaticRe
 import relativitization.universe.data.components.defaults.physics.Int4D
 import relativitization.universe.utils.I18NString
 import relativitization.universe.utils.IntString
-import relativitization.universe.utils.RealString
+import relativitization.universe.utils.NormalString
 
 @Serializable
 data class DeclareWarCommand(
@@ -17,7 +17,7 @@ data class DeclareWarCommand(
 ) : DefaultCommand() {
     override val description: I18NString = I18NString(
         listOf(
-            RealString("Declare war on "),
+            NormalString("Declare war on "),
             IntString(0),
         ),
         listOf(
@@ -124,7 +124,7 @@ data class DeclareIndependenceCommand(
 ) : DefaultCommand() {
     override val description: I18NString = I18NString(
         listOf(
-            RealString("Declare independence and war on "),
+            NormalString("Declare independence and war on "),
             IntString(0),
         ),
         listOf(
@@ -239,7 +239,7 @@ data class ProposePeaceCommand(
 ) : DefaultCommand() {
     override val description: I18NString = I18NString(
         listOf(
-            RealString("Propose peace with "),
+            NormalString("Propose peace with "),
             IntString(0),
         ),
         listOf(

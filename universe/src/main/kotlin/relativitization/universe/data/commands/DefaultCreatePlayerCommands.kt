@@ -9,7 +9,7 @@ import relativitization.universe.data.components.defaults.physics.Int4D
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.utils.I18NString
 import relativitization.universe.utils.IntString
-import relativitization.universe.utils.RealString
+import relativitization.universe.utils.NormalString
 
 /**
  * Split carrier to create new player
@@ -27,7 +27,7 @@ data class SplitCarrierCommand(
 ) : DefaultCommand() {
     override val description: I18NString = I18NString(
         listOf(
-            RealString("Create new player with carriers: "),
+            NormalString("Create new player with carriers: "),
             IntString(0),
         ),
         listOf(

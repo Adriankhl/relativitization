@@ -6,7 +6,7 @@ import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.components.defaults.physics.Int4D
 import relativitization.universe.utils.I18NString
 import relativitization.universe.utils.IntString
-import relativitization.universe.utils.RealString
+import relativitization.universe.utils.NormalString
 import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.reflect.KClass
 
@@ -72,9 +72,9 @@ sealed class Command {
         } else {
             I18NString(
                 listOf(
-                    RealString("No such command: "),
+                    NormalString("No such command: "),
                     IntString(0),
-                    RealString(". ")
+                    NormalString(". ")
                 ),
                 listOf(
                     this.toString()
@@ -90,11 +90,11 @@ sealed class Command {
         } else {
             I18NString(
                 listOf(
-                    RealString("Player coordinate "),
+                    NormalString("Player coordinate "),
                     IntString(0),
-                    RealString(" is not the same as the coordinate "),
+                    NormalString(" is not the same as the coordinate "),
                     IntString(1),
-                    RealString(" in this command. ")
+                    NormalString(" in this command. ")
                 ),
                 listOf(
                     playerData.int4D.toInt4D().toString(),
@@ -109,11 +109,11 @@ sealed class Command {
         } else {
             I18NString(
                 listOf(
-                    RealString("Player id "),
+                    NormalString("Player id "),
                     IntString(0),
-                    RealString(" is not the same as the id "),
+                    NormalString(" is not the same as the id "),
                     IntString(1),
-                    RealString(" in this command. ")
+                    NormalString(" in this command. ")
                 ),
                 listOf(
                     playerData.playerId.toString(),
@@ -295,9 +295,9 @@ data class CanSendCheckMessage(
 object CommandI18NStringFactory {
     fun isNotTopLeader(playerId: Int): I18NString = I18NString(
         listOf(
-            RealString("Player "),
+            NormalString("Player "),
             IntString(0),
-            RealString(" is not a top leader. "),
+            NormalString(" is not a top leader. "),
         ),
         listOf(
             playerId.toString(),
@@ -306,11 +306,11 @@ object CommandI18NStringFactory {
 
     fun isNotDirectSubordinate(playerId: Int, toId: Int): I18NString = I18NString(
         listOf(
-            RealString("Player "),
+            NormalString("Player "),
             IntString(0),
-            RealString(" not a direct subordinate of player "),
+            NormalString(" not a direct subordinate of player "),
             IntString(1),
-            RealString(". ")
+            NormalString(". ")
         ),
         listOf(
             toId.toString(),
@@ -320,11 +320,11 @@ object CommandI18NStringFactory {
 
     fun isNotSubordinate(playerId: Int, toId: Int): I18NString = I18NString(
         listOf(
-            RealString("Player "),
+            NormalString("Player "),
             IntString(0),
-            RealString(" not a subordinate of player "),
+            NormalString(" not a subordinate of player "),
             IntString(1),
-            RealString(". ")
+            NormalString(". ")
         ),
         listOf(
             toId.toString(),
@@ -334,11 +334,11 @@ object CommandI18NStringFactory {
 
     fun isNotToSelf(playerId: Int, toId: Int): I18NString = I18NString(
         listOf(
-            RealString("Player id "),
+            NormalString("Player id "),
             IntString(0),
-            RealString(" is not the same as toId "),
+            NormalString(" is not the same as toId "),
             IntString(1),
-            RealString(". ")
+            NormalString(". ")
         ),
         listOf(
             playerId.toString(),
@@ -348,11 +348,11 @@ object CommandI18NStringFactory {
 
     fun isTopLeaderIdWrong(playerTopLeaderId: Int, topLeaderId: Int): I18NString = I18NString(
         listOf(
-            RealString("Player top leader id "),
+            NormalString("Player top leader id "),
             IntString(0),
-            RealString("the same as "),
+            NormalString("the same as "),
             IntString(1),
-            RealString(". ")
+            NormalString(". ")
         ),
         listOf(
             playerTopLeaderId.toString(),

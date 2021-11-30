@@ -9,7 +9,7 @@ import relativitization.universe.maths.physics.Relativistic.targetVelocityByPhot
 import relativitization.universe.maths.physics.TargetVelocityData
 import relativitization.universe.utils.I18NString
 import relativitization.universe.utils.IntString
-import relativitization.universe.utils.RealString
+import relativitization.universe.utils.NormalString
 import relativitization.universe.utils.RelativitizationLogManager
 
 @Serializable
@@ -22,9 +22,9 @@ data class ChangeVelocityCommand(
 
     override val description: I18NString = I18NString(
         listOf(
-            RealString("Try to change velocity of player "),
+            NormalString("Try to change velocity of player "),
             IntString(0),
-            RealString(" to "),
+            NormalString(" to "),
             IntString(1),
         ),
         listOf(

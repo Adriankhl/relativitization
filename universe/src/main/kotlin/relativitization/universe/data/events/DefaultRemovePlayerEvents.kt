@@ -11,7 +11,7 @@ import relativitization.universe.data.commands.Command
 import relativitization.universe.data.commands.CommandI18NStringFactory
 import relativitization.universe.utils.I18NString
 import relativitization.universe.utils.IntString
-import relativitization.universe.utils.RealString
+import relativitization.universe.utils.NormalString
 
 /**
  * Ask to merge this player to its direct leader
@@ -26,7 +26,7 @@ data class AskToMergeCarrierEvent(
 
     override val description: I18NString = I18NString(
         listOf(
-            RealString("Merge all your carriers to player "),
+            NormalString("Merge all your carriers to player "),
             IntString(0)
         ),
         listOf(

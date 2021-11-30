@@ -9,7 +9,7 @@ import relativitization.universe.data.events.MutableEventData
 import relativitization.universe.data.events.name
 import relativitization.universe.utils.I18NString
 import relativitization.universe.utils.IntString
-import relativitization.universe.utils.RealString
+import relativitization.universe.utils.NormalString
 import relativitization.universe.utils.RelativitizationLogManager
 
 /**
@@ -27,13 +27,13 @@ data class AddEventCommand(
 
     override val description: I18NString = I18NString(
         listOf(
-            RealString("Add event ("),
+            NormalString("Add event ("),
             IntString(0),
-            RealString(") to player "),
+            NormalString(") to player "),
             IntString(1),
-            RealString(" from player "),
+            NormalString(" from player "),
             IntString(2),
-            RealString(". Event description: ")
+            NormalString(". Event description: ")
         ),
         listOf(
             event.name(),
@@ -144,13 +144,13 @@ data class SelectEventChoiceCommand(
 
     override val description: I18NString = I18NString(
         listOf(
-            RealString("Select choice "),
+            NormalString("Select choice "),
             IntString(0),
-            RealString(" for event "),
+            NormalString(" for event "),
             IntString(1),
-            RealString(" ("),
+            NormalString(" ("),
             IntString(2),
-            RealString(")")
+            NormalString(")")
         ),
         listOf(
             choice.toString(),

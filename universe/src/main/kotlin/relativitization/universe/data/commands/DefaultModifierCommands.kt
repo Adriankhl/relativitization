@@ -6,7 +6,7 @@ import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.components.defaults.physics.Int4D
 import relativitization.universe.utils.I18NString
 import relativitization.universe.utils.IntString
-import relativitization.universe.utils.RealString
+import relativitization.universe.utils.NormalString
 
 @Serializable
 data class DisableFuelIncreaseCommand(
@@ -18,9 +18,9 @@ data class DisableFuelIncreaseCommand(
 
     override val description: I18NString = I18NString(
         listOf(
-            RealString("Disable fuel increase for "),
+            NormalString("Disable fuel increase for "),
             IntString(0),
-            RealString(" turn"),
+            NormalString(" turn"),
         ),
         listOf(
             disableFuelIncreaseTimeLimit.toString(),
