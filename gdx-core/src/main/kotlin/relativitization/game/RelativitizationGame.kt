@@ -85,8 +85,6 @@ class RelativitizationGame(
     }
 
     private fun startMusic() {
-        if (gdxSettings.musicVolume < 0.01) return
-
         backgroundMusic = assets.getBackgroundMusic()
 
         backgroundMusic.isLooping = true

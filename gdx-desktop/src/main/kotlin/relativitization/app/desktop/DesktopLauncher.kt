@@ -67,7 +67,7 @@ fun main() {
             try {
                 Lwjgl3Application(game, config)
             } finally {
-                game.dispose()
+                //game.dispose()
             }
         }
 
