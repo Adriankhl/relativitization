@@ -4,7 +4,9 @@ import kotlinx.serialization.Serializable
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.components.defaults.physics.Int4D
+import relativitization.universe.data.components.defaults.popsystem.pop.scholar.institute.InstituteInternalData
 import relativitization.universe.data.components.defaults.popsystem.pop.scholar.institute.MutableInstituteData
+import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.utils.I18NString
 import relativitization.universe.utils.IntString
 import relativitization.universe.utils.NormalString
@@ -18,11 +20,7 @@ data class BuildInstituteCommand(
     override val fromId: Int,
     override val fromInt4D: Int4D,
     val carrierId: Int,
-    val xCor: Double = 0.0,
-    val yCor: Double = 0.0,
-    val range: Double = 1.0,
-    val researchEquipmentPerTime: Double = 0.0,
-    val maxNumEmployee: Double = 0.0,
+    val instituteInternalData: InstituteInternalData,
 ) : DefaultCommand() {
     override val description: I18NString = I18NString(
         listOf(
@@ -42,11 +40,11 @@ data class BuildInstituteCommand(
         ),
         listOf(
             carrierId.toString(),
-            xCor.toString(),
-            yCor.toString(),
-            range.toString(),
-            researchEquipmentPerTime.toString(),
-            maxNumEmployee.toString(),
+            instituteInternalData.xCor.toString(),
+            instituteInternalData.yCor.toString(),
+            instituteInternalData.range.toString(),
+            instituteInternalData.researchEquipmentPerTime.toString(),
+            instituteInternalData.maxNumEmployee.toString(),
         ),
     )
 
@@ -69,11 +67,19 @@ data class BuildInstituteCommand(
             I18NString("Carrier does not exist. ")
         }
 
+        val isRangeValid: Boolean = instituteInternalData.range >= 0.25
+        val isRangeValidI18NString: I18NString = if (isRangeValid) {
+            I18NString("")
+        } else {
+            I18NString("Range should be smaller than 0.25")
+        }
+
         return CanSendCheckMessage(
-            isSelf && hasCarrier,
+            isSelf && hasCarrier && isRangeValid,
             listOf(
                 isSelfI18NString,
                 hasCarrierI18NString,
+                isRangeValidI18NString,
             )
         )
     }
@@ -95,13 +101,9 @@ data class BuildInstituteCommand(
             carrierId
         ).allPopData.scholarPopData.addInstitute(
             MutableInstituteData(
-                xCor = xCor,
-                yCor = yCor,
-                range = range,
+                instituteInternalData = DataSerializer.copy(instituteInternalData),
                 strength = 0.0,
                 reputation = 0.0,
-                researchEquipmentPerTime = researchEquipmentPerTime,
-                maxNumEmployee = maxNumEmployee,
                 lastNumEmployee = 0.0,
                 size = 0.0
             )

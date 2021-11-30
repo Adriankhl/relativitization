@@ -109,7 +109,8 @@ object DiscoverKnowledge : Mechanism() {
         mutableInstituteData: MutableInstituteData,
         mutableResourceData: MutableResourceData
     ) {
-        val requiredEquipmentAmount: Double = mutableInstituteData.researchEquipmentPerTime / gamma
+        val requiredEquipmentAmount: Double =
+            mutableInstituteData.instituteInternalData.researchEquipmentPerTime / gamma
 
         val resourceAmountMap: Map<ResourceQualityClass, Double> =
             ResourceQualityClass.values().map {
@@ -308,9 +309,9 @@ object DiscoverKnowledge : Mechanism() {
                 projectDifficulty = basicResearchProjectData.difficulty,
                 projectReferenceBasicResearchIdList = basicResearchProjectData.referenceBasicResearchIdList,
                 projectReferenceAppliedResearchIdList = basicResearchProjectData.referenceAppliedResearchIdList,
-                organizationXCor = mutableInstituteData.xCor,
-                organizationYCor = mutableInstituteData.yCor,
-                organizationRange = mutableInstituteData.range,
+                organizationXCor = mutableInstituteData.instituteInternalData.xCor,
+                organizationYCor = mutableInstituteData.instituteInternalData.yCor,
+                organizationRange = mutableInstituteData.instituteInternalData.range,
                 organizationStrength = mutableInstituteData.strength,
                 playerScienceData = playerScienceData,
             )
@@ -340,9 +341,9 @@ object DiscoverKnowledge : Mechanism() {
                 projectDifficulty = basicResearchProjectData.difficulty,
                 projectReferenceBasicResearchIdList = basicResearchProjectData.referenceBasicResearchIdList,
                 projectReferenceAppliedResearchIdList = basicResearchProjectData.referenceAppliedResearchIdList,
-                organizationXCor = mutableInstituteData.xCor,
-                organizationYCor = mutableInstituteData.yCor,
-                organizationRange = mutableInstituteData.range,
+                organizationXCor = mutableInstituteData.instituteInternalData.xCor,
+                organizationYCor = mutableInstituteData.instituteInternalData.yCor,
+                organizationRange = mutableInstituteData.instituteInternalData.range,
                 organizationStrength = mutableInstituteData.strength,
                 playerScienceData = playerScienceData,
                 strengthFactor = 4.0,

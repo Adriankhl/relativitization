@@ -363,7 +363,7 @@ object Employment : Mechanism() {
         // Maximum scholar employee in institutes
         val maxInstituteEmployee: Double =
             scholarPopData.instituteMap.values.fold(0.0) { acc, mutableInstituteData ->
-                acc + mutableInstituteData.maxNumEmployee
+                acc + mutableInstituteData.instituteInternalData.maxNumEmployee
             }
 
 
@@ -384,7 +384,7 @@ object Employment : Mechanism() {
 
         scholarPopData.instituteMap.values.forEach {
 
-            val maxNumEmployee: Double = it.maxNumEmployee
+            val maxNumEmployee: Double = it.instituteInternalData.maxNumEmployee
             val newNumEmployee: Double = maxNumEmployee * instituteEmployeeFraction
             val pay: Double = newNumEmployee * salary
             val tax: Double = pay * incomeTax
@@ -394,7 +394,7 @@ object Employment : Mechanism() {
             // Decide employee and payment based on the remaining scholar and fuel
             if (availableFuel - payWithTax >= 0.0) {
                 // Update number of employee
-                it.lastNumEmployee = it.maxNumEmployee
+                it.lastNumEmployee = it.instituteInternalData.maxNumEmployee
 
                 // Pay salary and tax here
                 fuelRestMassData.production -= payWithTax

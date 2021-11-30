@@ -12,6 +12,7 @@ import relativitization.universe.data.components.defaults.popsystem.pop.labourer
 import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.MutableFuelFactoryInternalData
 import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.MutableResourceFactoryInternalData
 import relativitization.universe.data.components.defaults.popsystem.pop.scholar.institute.MutableInstituteData
+import relativitization.universe.data.components.defaults.popsystem.pop.scholar.institute.MutableInstituteInternalData
 import relativitization.universe.data.components.defaults.science.knowledge.AppliedResearchField
 import relativitization.universe.data.components.defaults.science.knowledge.AppliedResearchProjectData
 import relativitization.universe.data.components.defaults.science.knowledge.BasicResearchField
@@ -185,13 +186,15 @@ object TestingFixedMinimal : TestingGenerateUniverseMethod() {
 
         // Add a research institute with high research power to player 1
         val mutableInstitute: MutableInstituteData = MutableInstituteData(
-            xCor = -1.0,
-            yCor = 2.0,
-            range = 0.25,
+            instituteInternalData = MutableInstituteInternalData(
+                xCor = -1.0,
+                yCor = 2.0,
+                range = 2.0,
+                researchEquipmentPerTime = 0.0,
+                maxNumEmployee = Double.MAX_VALUE * 0.5,
+            ),
             strength = 1.0,
             reputation = 0.0,
-            researchEquipmentPerTime = 0.0,
-            maxNumEmployee = Double.MAX_VALUE * 0.5,
             lastNumEmployee = 0.0,
             size = 0.0
         )
