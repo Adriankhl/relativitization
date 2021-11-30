@@ -562,7 +562,7 @@ data class TransferResourceToProductionCommand(
         val hasStorageI18NString: I18NString = if (hasStorage) {
             I18NString("")
         } else {
-            I18NString("Not enough fuel in storage. ")
+            I18NString("Not enough resource in storage. ")
         }
 
         return CanSendCheckMessage(
@@ -653,7 +653,7 @@ data class TransferResourceToTradeCommand(
         val hasStorageI18NString: I18NString = if (hasStorage) {
             I18NString("")
         } else {
-            I18NString("Not enough fuel in storage. ")
+            I18NString("Not enough resource in storage. ")
         }
 
         return CanSendCheckMessage(

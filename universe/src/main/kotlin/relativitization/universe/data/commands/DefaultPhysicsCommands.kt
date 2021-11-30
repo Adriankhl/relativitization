@@ -3,9 +3,8 @@ package relativitization.universe.data.commands
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseSettings
-import relativitization.universe.data.components.defaults.economy.MutableResourceAmountData
-import relativitization.universe.data.components.defaults.economy.ResourceType
 import relativitization.universe.data.components.defaults.physics.Int4D
+import relativitization.universe.data.components.defaults.physics.MutableFuelRestMassData
 import relativitization.universe.data.components.defaults.physics.Velocity
 import relativitization.universe.maths.physics.Relativistic.targetVelocityByPhotonRocket
 import relativitization.universe.maths.physics.TargetVelocityData
@@ -93,7 +92,7 @@ data class ChangeVelocityCommand(
 }
 
 /**
- * Transfer fuel from trade to production
+ * Transfer fuel from storage to production
  *
  * @property amount the amount of resource to transfer
  */
@@ -108,7 +107,7 @@ data class TransferFuelToProductionCommand(
         listOf(
             NormalString("Transfer "),
             IntString(0),
-            NormalString(" of fuel from movement to production. "),
+            NormalString(" of fuel from storage to production. "),
         ),
         listOf(
             amount.toString(),
@@ -127,7 +126,7 @@ data class TransferFuelToProductionCommand(
         }
 
         val hasStorage: Boolean =
-            playerData.playerInternalData.physicsData().fuelRestMassData.movement <= amount
+            playerData.playerInternalData.physicsData().fuelRestMassData.storage >= amount
         val hasStorageI18NString: I18NString = if (hasStorage) {
             I18NString("")
         } else {
@@ -150,20 +149,16 @@ data class TransferFuelToProductionCommand(
         val isSelf: Boolean = playerData.playerId == toId
 
         val hasStorage: Boolean =
-            playerData.playerInternalData.economyData().resourceData.getStorageResourceAmount(
-            ) <= amount
+            playerData.playerInternalData.physicsData().fuelRestMassData.storage >= amount
 
         return isSelf && hasStorage
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
-        val amountData: MutableResourceAmountData =
-            playerData.playerInternalData.economyData().resourceData.getResourceAmountData(
-                resourceType,
-                resourceQualityClass
-            )
+        val fuelData: MutableFuelRestMassData =
+            playerData.playerInternalData.physicsData().fuelRestMassData
 
-        amountData.storage -= amount
-        amountData.production += amount
+        fuelData.storage -= amount
+        fuelData.production += amount
     }
 }

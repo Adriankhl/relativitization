@@ -36,6 +36,9 @@ data class MutablePhysicsData(
 
     fun addFuel(restMass: Double) {
         when {
+            fuelRestMassData.storage < targetFuelRestMassData.storage -> {
+                fuelRestMassData.storage += restMass
+            }
             fuelRestMassData.movement < targetFuelRestMassData.movement -> {
                 fuelRestMassData.movement += restMass
             }
