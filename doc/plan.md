@@ -53,9 +53,9 @@
 * Destroy factory [x]
 * Send fuel to foreign factory [x]
 * Change economy policy, e.g., tax, storage [x]
-* Change politics data
+* Change politics data [x]
 * Change salary [x]
-* Build institute and laboratory
+* Build institute and laboratory [x]
 * Improve diplomatic relation by sending resource [x]
 * Declare war, declare independence [x]
 * Merge direct subordinate at exactly the same position [x]
