@@ -146,7 +146,7 @@ data class TransferFuelToMovementCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): Boolean {
-        val isSelf: Boolean = playerData.playerId == toId
+        val isSelf: Boolean = playerData.playerId == fromId
 
         val hasStorage: Boolean =
             playerData.playerInternalData.physicsData().fuelRestMassData.storage >= amount
@@ -218,7 +218,7 @@ data class TransferFuelToProductionCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): Boolean {
-        val isSelf: Boolean = playerData.playerId == toId
+        val isSelf: Boolean = playerData.playerId == fromId
 
         val hasStorage: Boolean =
             playerData.playerInternalData.physicsData().fuelRestMassData.storage >= amount
@@ -290,7 +290,7 @@ data class TransferFuelToTradeCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): Boolean {
-        val isSelf: Boolean = playerData.playerId == toId
+        val isSelf: Boolean = playerData.playerId == fromId
 
         val hasStorage: Boolean =
             playerData.playerInternalData.physicsData().fuelRestMassData.storage >= amount
@@ -354,7 +354,7 @@ data class ChangeStorageFuelTargetCommand(
         universeSettings: UniverseSettings
     ): Boolean {
 
-        return playerData.playerId == toId
+        return playerData.playerId == fromId
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
@@ -412,7 +412,7 @@ data class ChangeMovementFuelTargetCommand(
         universeSettings: UniverseSettings
     ): Boolean {
 
-        return playerData.playerId == toId
+        return playerData.playerId == fromId
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
@@ -470,7 +470,7 @@ data class ChangeProductionFuelTargetCommand(
         universeSettings: UniverseSettings
     ): Boolean {
 
-        return playerData.playerId == toId
+        return playerData.playerId == fromId
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
