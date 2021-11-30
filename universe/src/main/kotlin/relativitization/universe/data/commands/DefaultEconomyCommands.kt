@@ -152,3 +152,69 @@ data class ChangeDefaultExportTariffCommand(
     }
 
 }
+
+/**
+ * Change the low income tax
+ *
+ * @property rate the new tax rate
+ */
+@Serializable
+data class ChangeLowIncomeTaxCommand(
+    override val toId: Int,
+    override val fromId: Int,
+    override val fromInt4D: Int4D,
+    val rate: Double,
+) : DefaultCommand() {
+    override val description: I18NString = I18NString(
+        listOf(
+            RealString("Change low income tax rate to "),
+            IntString(0),
+            RealString(". ")
+        ),
+        listOf(
+            rate.toString(),
+        )
+    )
+
+    override fun canSend(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): CanSendCheckMessage {
+
+        val isSelf: Boolean = playerData.playerId == toId
+        val isSelfI18NString: I18NString = if (isSelf) {
+            I18NString("")
+        } else {
+            CanSendCheckMessageI18NStringFactory.isNotToSelf(fromId, toId)
+        }
+
+        val isRateValid: Boolean = (rate >= 0.0) && (rate <= 1.0)
+        val isRateValidI18NString: I18NString = if (isRateValid) {
+            I18NString("")
+        } else {
+            I18NString("Rate should be between 0 and 1. ")
+        }
+
+        return CanSendCheckMessage(
+            isSelf && isRateValid,
+            I18NString.combine(
+                listOf(
+                    isSelfI18NString,
+                    isRateValidI18NString
+                )
+            )
+        )
+    }
+
+    override fun canExecute(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): Boolean {
+        TODO("Not yet implemented")
+    }
+
+    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+        TODO("Not yet implemented")
+    }
+
+}

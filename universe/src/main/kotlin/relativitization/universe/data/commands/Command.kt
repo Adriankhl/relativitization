@@ -296,7 +296,7 @@ object CanSendCheckMessageI18NStringFactory {
         listOf(
             RealString("Player "),
             IntString(0),
-            RealString(" is not a top leader"),
+            RealString(" is not a top leader. "),
         ),
         listOf(
             playerId.toString(),
@@ -335,7 +335,7 @@ object CanSendCheckMessageI18NStringFactory {
         listOf(
             RealString("Player id "),
             IntString(0),
-            RealString(" the same as toId "),
+            RealString(" is not the same as toId "),
             IntString(1),
             RealString(". ")
         ),
@@ -351,7 +351,7 @@ object CanSendCheckMessageI18NStringFactory {
             IntString(0),
             RealString("the same as "),
             IntString(1),
-            RealString(".")
+            RealString(". ")
         ),
         listOf(
             playerTopLeaderId.toString(),
