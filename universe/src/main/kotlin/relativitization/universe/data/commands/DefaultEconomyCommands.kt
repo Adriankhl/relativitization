@@ -8,6 +8,7 @@ import relativitization.universe.data.components.defaults.economy.ResourceQualit
 import relativitization.universe.data.components.defaults.economy.ResourceQualityData
 import relativitization.universe.data.components.defaults.economy.ResourceType
 import relativitization.universe.data.components.defaults.physics.Int4D
+import relativitization.universe.data.components.defaults.popsystem.pop.PopType
 import relativitization.universe.utils.I18NString
 import relativitization.universe.utils.IntString
 import relativitization.universe.utils.IntTranslateString
@@ -897,5 +898,85 @@ data class ChangeResourceClassBoundCommand(
             resourceType,
             resourceQualityClass
         ).resourceQualityLowerBound = lowerBound.toMutableResourceQualityData()
+    }
+}
+
+/**
+ * Change the salary of pop
+ *
+ * @property carrierId the id of the carrier where the pop is located
+ * @property popType the type of the pop
+ * @property salary the new salary
+ */
+@Serializable
+data class ChangeSalaryCommand(
+    override val toId: Int,
+    override val fromId: Int,
+    override val fromInt4D: Int4D,
+    val carrierId: Int,
+    val popType: PopType,
+    val salary: Double,
+) : DefaultCommand() {
+    override val description: I18NString = I18NString(
+        listOf(
+            NormalString("Change the salary of pop "),
+            IntTranslateString(0),
+            NormalString(" in carrier "),
+            IntString(1),
+            NormalString(" to "),
+            IntString(2),
+            NormalString(". ")
+        ),
+        listOf(
+            popType.toString(),
+            carrierId.toString(),
+            salary.toString(),
+        ),
+    )
+
+    override fun canSend(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): CanSendCheckMessage {
+        val isSelf: Boolean = playerData.playerId == toId
+        val isSelfI18NString: I18NString = if (isSelf) {
+            I18NString("")
+        } else {
+            CommandI18NStringFactory.isNotToSelf(fromId, toId)
+        }
+
+        val hasCarrier: Boolean =
+            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(carrierId)
+        val hasCarrierI18NString: I18NString = if (hasCarrier) {
+            I18NString("")
+        } else {
+            I18NString("Carrier does not exist. ")
+        }
+
+        return CanSendCheckMessage(
+            isSelf && hasCarrier,
+            listOf(
+                isSelfI18NString,
+                hasCarrierI18NString,
+            )
+        )
+    }
+
+    override fun canExecute(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): Boolean {
+        val isSelf: Boolean = playerData.playerId == toId
+
+        val hasCarrier: Boolean =
+            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(carrierId)
+
+        return isSelf && hasCarrier
+    }
+
+    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+        playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
+            carrierId
+        ).allPopData.getCommonPopData(popType).salary = salary
     }
 }

@@ -133,7 +133,7 @@ object Employment : Mechanism() {
         economyData: EconomyData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
     ) {
-        val salary: Double = labourerPopData.commonPopData.salary * gamma
+        val salary: Double = labourerPopData.commonPopData.salary / gamma
 
         val incomeTax: Double = economyData.taxData.taxRateData.incomeTax.getIncomeTax(salary)
 
@@ -353,7 +353,7 @@ object Employment : Mechanism() {
         mutableEconomyData: MutableEconomyData,
         economyData: EconomyData,
     ) {
-        val salary: Double = scholarPopData.commonPopData.salary * gamma
+        val salary: Double = scholarPopData.commonPopData.salary / gamma
 
         val incomeTax: Double = economyData.taxData.taxRateData.incomeTax.getIncomeTax(salary)
 
@@ -425,7 +425,7 @@ object Employment : Mechanism() {
         mutableEconomyData: MutableEconomyData,
         economyData: EconomyData,
     ) {
-        val salary: Double = engineerPopData.commonPopData.salary * gamma
+        val salary: Double = engineerPopData.commonPopData.salary / gamma
 
         val incomeTax: Double = economyData.taxData.taxRateData.incomeTax.getIncomeTax(salary)
 
@@ -499,7 +499,7 @@ object Employment : Mechanism() {
         mutableEconomyData: MutableEconomyData,
         economyData: EconomyData,
     ) {
-        val salary: Double = soldierPopData.commonPopData.salary * gamma
+        val salary: Double = soldierPopData.commonPopData.salary / gamma
 
         val incomeTax: Double = economyData.taxData.taxRateData.incomeTax.getIncomeTax(salary)
 
@@ -538,7 +538,7 @@ object Employment : Mechanism() {
         mutableEconomyData: MutableEconomyData,
         economyData: EconomyData,
     ) {
-        val salary: Double = commonPopData.salary * gamma
+        val salary: Double = commonPopData.salary / gamma
 
         val incomeTax: Double = economyData.taxData.taxRateData.incomeTax.getIncomeTax(salary)
 

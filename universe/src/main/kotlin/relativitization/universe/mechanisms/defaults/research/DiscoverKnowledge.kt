@@ -109,7 +109,7 @@ object DiscoverKnowledge : Mechanism() {
         mutableInstituteData: MutableInstituteData,
         mutableResourceData: MutableResourceData
     ) {
-        val requiredEquipmentAmount: Double = mutableInstituteData.researchEquipmentPerTime * gamma
+        val requiredEquipmentAmount: Double = mutableInstituteData.researchEquipmentPerTime / gamma
 
         val resourceAmountMap: Map<ResourceQualityClass, Double> =
             ResourceQualityClass.values().map {
@@ -159,7 +159,7 @@ object DiscoverKnowledge : Mechanism() {
         mutableLaboratoryData: MutableLaboratoryData,
         mutableResourceData: MutableResourceData
     ) {
-        val requiredEquipmentAmount: Double = mutableLaboratoryData.researchEquipmentPerTime * gamma
+        val requiredEquipmentAmount: Double = mutableLaboratoryData.researchEquipmentPerTime / gamma
 
         val resourceAmountMap: Map<ResourceQualityClass, Double> =
             ResourceQualityClass.values().map {
