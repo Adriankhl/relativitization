@@ -92,6 +92,78 @@ data class ChangeVelocityCommand(
 }
 
 /**
+ * Transfer fuel from storage to movement
+ *
+ * @property amount the amount of resource to transfer
+ */
+@Serializable
+data class TransferFuelToMovementCommand(
+    override val toId: Int,
+    override val fromId: Int,
+    override val fromInt4D: Int4D,
+    val amount: Double,
+) : DefaultCommand() {
+    override val description: I18NString = I18NString(
+        listOf(
+            NormalString("Transfer "),
+            IntString(0),
+            NormalString(" of fuel from storage to movement. "),
+        ),
+        listOf(
+            amount.toString(),
+        ),
+    )
+
+    override fun canSend(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): CanSendCheckMessage {
+        val isSelf: Boolean = playerData.playerId == toId
+        val isSelfI18NString: I18NString = if (isSelf) {
+            I18NString("")
+        } else {
+            CommandI18NStringFactory.isNotToSelf(fromId, toId)
+        }
+
+        val hasStorage: Boolean =
+            playerData.playerInternalData.physicsData().fuelRestMassData.storage >= amount
+        val hasStorageI18NString: I18NString = if (hasStorage) {
+            I18NString("")
+        } else {
+            I18NString("Not enough fuel in storage. ")
+        }
+
+        return CanSendCheckMessage(
+            isSelf && hasStorage,
+            listOf(
+                isSelfI18NString,
+                hasStorageI18NString,
+            )
+        )
+    }
+
+    override fun canExecute(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): Boolean {
+        val isSelf: Boolean = playerData.playerId == toId
+
+        val hasStorage: Boolean =
+            playerData.playerInternalData.physicsData().fuelRestMassData.storage >= amount
+
+        return isSelf && hasStorage
+    }
+
+    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+        val fuelData: MutableFuelRestMassData =
+            playerData.playerInternalData.physicsData().fuelRestMassData
+
+        fuelData.storage -= amount
+        fuelData.movement += amount
+    }
+}
+
+/**
  * Transfer fuel from storage to production
  *
  * @property amount the amount of resource to transfer
