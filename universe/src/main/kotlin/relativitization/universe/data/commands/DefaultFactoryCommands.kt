@@ -856,7 +856,7 @@ data class RemoveLocalFuelFactoryCommand(
             I18NString("Fuel factory does not exist. ")
         }
 
-        val isOwnerNotLeaderOfSelf: Boolean = if (hasFuelFactory) {
+        val isRemoveAllowed: Boolean = if (hasFuelFactory) {
             val carrier: MutableCarrierData =
                 playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
                     targetCarrierId
@@ -866,23 +866,25 @@ data class RemoveLocalFuelFactoryCommand(
                 targetFuelFactoryId
             ).ownerPlayerId
 
-            !playerData.isLeader(ownerId)
+            // Allow removal of local factory if the owner is not leader
+            // or leader is not allowed to build
+            !playerData.isLeader(ownerId) || !playerData.playerInternalData.politicsData().allowLeaderBuildLocalFactory
         } else {
             false
         }
-        val isOwnerNotLeaderOfSelfI18NString: I18NString = if (isOwnerNotLeaderOfSelf) {
+        val isRemoveAllowedI18NString: I18NString = if (isRemoveAllowed) {
             I18NString("")
         } else {
-            I18NString("Owner is leader. ")
+            I18NString("Not allow to remove this factory. ")
         }
 
         return CanSendCheckMessage(
-            isSelf && hasCarrier && hasFuelFactory && isOwnerNotLeaderOfSelf,
+            isSelf && hasCarrier && hasFuelFactory && isRemoveAllowed,
             listOf(
                 isSelfI18NString,
                 hasCarrierI18NString,
                 hasFuelFactoryI18NString,
-                isOwnerNotLeaderOfSelfI18NString,
+                isRemoveAllowedI18NString,
             )
         )
     }
@@ -908,7 +910,7 @@ data class RemoveLocalFuelFactoryCommand(
             false
         }
 
-        val isOwnerNotLeaderOfSelf: Boolean = if (hasFuelFactory) {
+        val isRemoveAllowed: Boolean = if (hasFuelFactory) {
             val carrier: MutableCarrierData =
                 playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
                     targetCarrierId
@@ -918,12 +920,14 @@ data class RemoveLocalFuelFactoryCommand(
                 targetFuelFactoryId
             ).ownerPlayerId
 
-            !playerData.isLeader(ownerId)
+            // Allow removal of local factory if the owner is not leader
+            // or leader is not allowed to build
+            !playerData.isLeader(ownerId) || !playerData.playerInternalData.politicsData().allowLeaderBuildLocalFactory
         } else {
             false
         }
 
-        return isSelf && hasCarrier && hasFuelFactory && isOwnerNotLeaderOfSelf
+        return isSelf && hasCarrier && hasFuelFactory && isRemoveAllowed
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
@@ -1010,7 +1014,7 @@ data class RemoveLocalResourceFactoryCommand(
             I18NString("Resource factory does not exist. ")
         }
 
-        val isOwnerNotLeaderOfSelf: Boolean = if (hasResourceFactory) {
+        val isRemoveAllowed: Boolean = if (hasResourceFactory) {
             val carrier: MutableCarrierData =
                 playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
                     targetCarrierId
@@ -1020,23 +1024,25 @@ data class RemoveLocalResourceFactoryCommand(
                 targetResourceFactoryId
             ).ownerPlayerId
 
-            !playerData.isLeader(ownerId)
+            // Allow removal of local factory if the owner is not leader
+            // or leader is not allowed to build
+            !playerData.isLeader(ownerId) || !playerData.playerInternalData.politicsData().allowLeaderBuildLocalFactory
         } else {
             false
         }
-        val isOwnerNotLeaderOfSelfI18NString: I18NString = if (isOwnerNotLeaderOfSelf) {
+        val isRemoveAllowedI18NString: I18NString = if (isRemoveAllowed) {
             I18NString("")
         } else {
-            I18NString("Owner is leader. ")
+            I18NString("Not allow to remove this factory. ")
         }
 
         return CanSendCheckMessage(
-            isSelf && hasCarrier && hasResourceFactory && isOwnerNotLeaderOfSelf,
+            isSelf && hasCarrier && hasResourceFactory && isRemoveAllowed,
             listOf(
                 isSelfI18NString,
                 hasCarrierI18NString,
                 hasResourceFactoryI18NString,
-                isOwnerNotLeaderOfSelfI18NString,
+                isRemoveAllowedI18NString,
             )
         )
     }
@@ -1064,7 +1070,7 @@ data class RemoveLocalResourceFactoryCommand(
             false
         }
 
-        val isOwnerNotLeaderOfSelf: Boolean = if (hasResourceFactory) {
+        val isRemoveAllowed: Boolean = if (hasResourceFactory) {
             val carrier: MutableCarrierData =
                 playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
                     targetCarrierId
@@ -1074,12 +1080,14 @@ data class RemoveLocalResourceFactoryCommand(
                 targetResourceFactoryId
             ).ownerPlayerId
 
-            !playerData.isLeader(ownerId)
+            // Allow removal of local factory if the owner is not leader
+            // or leader is not allowed to build
+            !playerData.isLeader(ownerId) || !playerData.playerInternalData.politicsData().allowLeaderBuildLocalFactory
         } else {
             false
         }
 
-        return isSelf && hasCarrier && hasResourceFactory && isOwnerNotLeaderOfSelf
+        return isSelf && hasCarrier && hasResourceFactory && isRemoveAllowed
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
