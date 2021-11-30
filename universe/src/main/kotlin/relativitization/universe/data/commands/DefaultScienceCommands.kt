@@ -278,9 +278,6 @@ data class RemoveInstituteCommand(
             I18NString("Institute does not exist. ")
         }
 
-
-
-
         return CanSendCheckMessage(
             isSelf && hasCarrier && hasInstitute,
             listOf(
