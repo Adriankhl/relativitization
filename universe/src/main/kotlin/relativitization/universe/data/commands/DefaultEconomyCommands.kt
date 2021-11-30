@@ -580,7 +580,7 @@ data class TransferResourceToProductionCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): Boolean {
-        val isSelf: Boolean = playerData.playerId == toId
+        val isSelf: Boolean = playerData.playerId == fromId
 
         val hasStorage: Boolean =
             playerData.playerInternalData.economyData().resourceData.getStorageResourceAmount(
@@ -671,7 +671,7 @@ data class TransferResourceToTradeCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): Boolean {
-        val isSelf: Boolean = playerData.playerId == toId
+        val isSelf: Boolean = playerData.playerId == fromId
 
         val hasStorage: Boolean =
             playerData.playerInternalData.economyData().resourceData.getStorageResourceAmount(
@@ -750,7 +750,7 @@ data class ChangeStorageResourceTargetCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): Boolean {
-        return playerData.playerId == toId
+        return playerData.playerId == fromId
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
@@ -820,7 +820,7 @@ data class ChangeProductionResourceTargetCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): Boolean {
-        return playerData.playerId == toId
+        return playerData.playerId == fromId
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
@@ -890,7 +890,7 @@ data class ChangeResourceClassBoundCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): Boolean {
-        return playerData.playerId == toId
+        return playerData.playerId == fromId
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
@@ -966,7 +966,7 @@ data class ChangeSalaryCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): Boolean {
-        val isSelf: Boolean = playerData.playerId == toId
+        val isSelf: Boolean = playerData.playerId == fromId
 
         val hasCarrier: Boolean =
             playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(carrierId)

@@ -258,10 +258,20 @@ data class ProposePeaceCommand(
             I18NString("Is not sending to self. ")
         }
 
+        val isInWar: Boolean = playerData.playerInternalData.diplomacyData().warData.warStateMap.containsKey(
+            targetPlayerId
+        )
+        val isInWarI18NString: I18NString = if (isInWar) {
+            I18NString("")
+        } else {
+            I18NString("Is not in war with target. ")
+        }
+
         return CanSendCheckMessage(
-            isSelf,
+            isSelf && isInWar,
             listOf(
                 isSelfI18NString,
+                isInWarI18NString
             )
         )
     }
@@ -270,9 +280,13 @@ data class ProposePeaceCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): Boolean {
-        return playerData.playerInternalData.diplomacyData().warData.warStateMap.containsKey(
+        val isSelf: Boolean = playerData.playerId == fromId
+
+        val isInWar: Boolean = playerData.playerInternalData.diplomacyData().warData.warStateMap.containsKey(
             targetPlayerId
         )
+
+        return isSelf && isInWar
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
