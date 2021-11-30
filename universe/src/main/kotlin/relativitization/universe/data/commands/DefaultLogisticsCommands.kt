@@ -95,11 +95,9 @@ data class SendFuelFromStorageCommand(
 
         return CanSendCheckMessage(
             hasAmount && isLossFractionValid,
-            I18NString.combine(
-                listOf(
-                    hasAmountI18NString,
-                    isLossFractionValidI18NString,
-                )
+            listOf(
+                hasAmountI18NString,
+                isLossFractionValidI18NString,
             )
         )
     }
@@ -284,12 +282,10 @@ data class SendResourceFromStorageCommand(
 
         return CanSendCheckMessage(
             hasAmount && isQualityValid && isLossFractionValid,
-            I18NString.combine(
-                listOf(
-                    hasAmountI18NString,
-                    isQualityValidI18NString,
-                    isLossFractionValidI18NString,
-                )
+            listOf(
+                hasAmountI18NString,
+                isQualityValidI18NString,
+                isLossFractionValidI18NString,
             )
         )
     }
@@ -735,12 +731,10 @@ data class PlayerBuyResourceCommand(
         }
 
         return CanSendCheckMessage(
-            canSend = hasAmount && isLossFractionValid,
-            message = I18NString.combine(
-                listOf(
-                    hasAmountI18NString,
-                    isLossFractionValidI18NString,
-                )
+            hasAmount && isLossFractionValid,
+            listOf(
+                hasAmountI18NString,
+                isLossFractionValidI18NString,
             )
         )
     }

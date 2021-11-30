@@ -39,7 +39,7 @@ data class BuildLocalCarrierCommands(
         val isSelfI18NString: I18NString = if (isSelf) {
             I18NString("")
         } else {
-            CanSendCheckMessageI18NStringFactory.isNotToSelf(fromId, toId)
+            CommandI18NStringFactory.isNotToSelf(fromId, toId)
         }
 
         val requiredFuel: Double =
@@ -53,11 +53,9 @@ data class BuildLocalCarrierCommands(
 
         return CanSendCheckMessage(
             isSelf && hasFuel,
-            I18NString.combine(
-                listOf(
-                    isSelfI18NString,
-                    hasFuelI18String
-                )
+            listOf(
+                isSelfI18NString,
+                hasFuelI18String
             )
         )
     }

@@ -43,7 +43,7 @@ data class SplitCarrierCommand(
         val isToSelfI18NString: I18NString = if (isToSelf) {
             I18NString("")
         } else {
-            CanSendCheckMessageI18NStringFactory.isNotToSelf(fromId, toId)
+            CommandI18NStringFactory.isNotToSelf(fromId, toId)
         }
 
         val isCarrierIdValid: Boolean = carrierIdList.all {
@@ -65,12 +65,10 @@ data class SplitCarrierCommand(
 
         return CanSendCheckMessage(
             isToSelf && isCarrierIdValid && isResourceFractionValid,
-            I18NString.combine(
-                listOf(
-                    isToSelfI18NString,
-                    isCarrierIdValidI18String,
-                    isResourceFractionValidI18String,
-                )
+            listOf(
+                isToSelfI18NString,
+                isCarrierIdValidI18String,
+                isResourceFractionValidI18String,
             )
         )
     }

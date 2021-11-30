@@ -46,23 +46,21 @@ data class ChangeDefaultImportTariffCommand(
         val isSelfI18NString: I18NString = if (isSelf) {
             I18NString("")
         } else {
-            CanSendCheckMessageI18NStringFactory.isNotToSelf(fromId, toId)
+            CommandI18NStringFactory.isNotToSelf(fromId, toId)
         }
 
         val isTopLeader: Boolean = playerData.isTopLeader()
         val isTopLeaderI18NString: I18NString = if (isTopLeader) {
             I18NString("")
         } else {
-            CanSendCheckMessageI18NStringFactory.isNotTopLeader(playerData.playerId)
+            CommandI18NStringFactory.isNotTopLeader(playerData.playerId)
         }
 
         return CanSendCheckMessage(
             isSelf && isTopLeader,
-            I18NString.combine(
-                listOf(
-                    isSelfI18NString,
-                    isTopLeaderI18NString,
-                )
+            listOf(
+                isSelfI18NString,
+                isTopLeaderI18NString,
             )
         )
     }
@@ -118,23 +116,21 @@ data class ChangeDefaultExportTariffCommand(
         val isSelfI18NString: I18NString = if (isSelf) {
             I18NString("")
         } else {
-            CanSendCheckMessageI18NStringFactory.isNotToSelf(fromId, toId)
+            CommandI18NStringFactory.isNotToSelf(fromId, toId)
         }
 
         val isTopLeader: Boolean = playerData.isTopLeader()
         val isTopLeaderI18NString: I18NString = if (isTopLeader) {
             I18NString("")
         } else {
-            CanSendCheckMessageI18NStringFactory.isNotTopLeader(playerData.playerId)
+            CommandI18NStringFactory.isNotTopLeader(playerData.playerId)
         }
 
         return CanSendCheckMessage(
             isSelf && isTopLeader,
-            I18NString.combine(
-                listOf(
-                    isSelfI18NString,
-                    isTopLeaderI18NString,
-                )
+            listOf(
+                isSelfI18NString,
+                isTopLeaderI18NString,
             )
         )
     }
@@ -185,7 +181,7 @@ data class ChangeLowIncomeTaxCommand(
         val isSelfI18NString: I18NString = if (isSelf) {
             I18NString("")
         } else {
-            CanSendCheckMessageI18NStringFactory.isNotToSelf(fromId, toId)
+            CommandI18NStringFactory.isNotToSelf(fromId, toId)
         }
 
         val isRateValid: Boolean = (rate >= 0.0) && (rate <= 1.0)
@@ -197,11 +193,9 @@ data class ChangeLowIncomeTaxCommand(
 
         return CanSendCheckMessage(
             isSelf && isRateValid,
-            I18NString.combine(
-                listOf(
-                    isSelfI18NString,
-                    isRateValidI18NString
-                )
+            listOf(
+                isSelfI18NString,
+                isRateValidI18NString
             )
         )
     }

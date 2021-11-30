@@ -114,13 +114,11 @@ data class BuildForeignFuelFactoryCommand(
 
         return CanSendCheckMessage(
             sameTopLeaderId && allowConstruction && validFactoryInternalData && hasFuel,
-            I18NString.combine(
-                listOf(
-                    sameTopLeaderIdI18NString,
-                    allowConstructionI18NString,
-                    validFactoryInternalDataI18NString,
-                    hasFuelI18NString
-                )
+            listOf(
+                sameTopLeaderIdI18NString,
+                allowConstructionI18NString,
+                validFactoryInternalDataI18NString,
+                hasFuelI18NString
             )
         )
     }
@@ -290,13 +288,11 @@ data class BuildForeignResourceFactoryCommand(
 
         return CanSendCheckMessage(
             sameTopLeaderId && allowConstruction && validFactoryInternalData && hasFuel,
-            I18NString.combine(
-                listOf(
-                    sameTopLeaderIdI18NString,
-                    allowConstructionI18NString,
-                    validFactoryInternalDataI18NString,
-                    hasFuelI18NString
-                )
+            listOf(
+                sameTopLeaderIdI18NString,
+                allowConstructionI18NString,
+                validFactoryInternalDataI18NString,
+                hasFuelI18NString
             )
         )
     }
@@ -416,11 +412,9 @@ data class BuildLocalFuelFactoryCommand(
 
         return CanSendCheckMessage(
             isSubordinateOrSelf && allowSubordinateConstruction,
-            I18NString.combine(
-                listOf(
-                    isSubordinateOrSelfI18NString,
-                    allowSubordinateConstructionI18NString
-                )
+            listOf(
+                isSubordinateOrSelfI18NString,
+                allowSubordinateConstructionI18NString
             )
         )
     }
@@ -552,11 +546,9 @@ data class BuildLocalResourceFactoryCommand(
 
         return CanSendCheckMessage(
             isSubordinateOrSelf && allowSubordinateConstruction,
-            I18NString.combine(
-                listOf(
-                    isSubordinateOrSelfI18NString,
-                    allowSubordinateConstructionI18NString
-                )
+            listOf(
+                isSubordinateOrSelfI18NString,
+                allowSubordinateConstructionI18NString
             )
         )
     }
@@ -836,7 +828,7 @@ data class RemoveLocalFuelFactoryCommand(
         val isSelfI18NString: I18NString = if (isSelf) {
             I18NString("")
         } else {
-            CanSendCheckMessageI18NStringFactory.isNotToSelf(fromId, toId)
+            CommandI18NStringFactory.isNotToSelf(fromId, toId)
         }
 
         val hasCarrier: Boolean =
@@ -886,13 +878,11 @@ data class RemoveLocalFuelFactoryCommand(
 
         return CanSendCheckMessage(
             isSelf && hasCarrier && hasFuelFactory && isOwnerNotLeaderOfSelf,
-            I18NString.combine(
-                listOf(
-                    isSelfI18NString,
-                    hasCarrierI18NString,
-                    hasFuelFactoryI18NString,
-                    isOwnerNotLeaderOfSelfI18NString,
-                )
+            listOf(
+                isSelfI18NString,
+                hasCarrierI18NString,
+                hasFuelFactoryI18NString,
+                isOwnerNotLeaderOfSelfI18NString,
             )
         )
     }
@@ -990,7 +980,7 @@ data class RemoveLocalResourceFactoryCommand(
         val isSelfI18NString: I18NString = if (isSelf) {
             I18NString("")
         } else {
-            CanSendCheckMessageI18NStringFactory.isNotToSelf(fromId, toId)
+            CommandI18NStringFactory.isNotToSelf(fromId, toId)
         }
 
         val hasCarrier: Boolean =
@@ -1042,13 +1032,11 @@ data class RemoveLocalResourceFactoryCommand(
 
         return CanSendCheckMessage(
             isSelf && hasCarrier && hasResourceFactory && isOwnerNotLeaderOfSelf,
-            I18NString.combine(
-                listOf(
-                    isSelfI18NString,
-                    hasCarrierI18NString,
-                    hasResourceFactoryI18NString,
-                    isOwnerNotLeaderOfSelfI18NString,
-                )
+            listOf(
+                isSelfI18NString,
+                hasCarrierI18NString,
+                hasResourceFactoryI18NString,
+                isOwnerNotLeaderOfSelfI18NString,
             )
         )
     }
@@ -1159,10 +1147,8 @@ data class SupplyForeignFuelFactoryCommand(
 
         return CanSendCheckMessage(
             hasFuel,
-            I18NString.combine(
-                listOf(
-                    hasFuelI18NString
-                )
+            listOf(
+                hasFuelI18NString
             )
         )
     }
@@ -1260,10 +1246,8 @@ data class SupplyForeignResourceFactoryCommand(
 
         return CanSendCheckMessage(
             hasFuel,
-            I18NString.combine(
-                listOf(
-                    hasFuelI18NString
-                )
+            listOf(
+                hasFuelI18NString
             )
         )
     }
@@ -1288,7 +1272,9 @@ data class SupplyForeignResourceFactoryCommand(
                     targetCarrierId
                 )
 
-            carrier.allPopData.labourerPopData.resourceFactoryMap.containsKey(targetResourceFactoryId)
+            carrier.allPopData.labourerPopData.resourceFactoryMap.containsKey(
+                targetResourceFactoryId
+            )
         } else {
             false
         }

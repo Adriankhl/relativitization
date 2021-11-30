@@ -7,8 +7,8 @@ import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.AgreeMergeCommand
 import relativitization.universe.data.commands.CanSendCheckMessage
-import relativitization.universe.data.commands.CanSendCheckMessageI18NStringFactory
 import relativitization.universe.data.commands.Command
+import relativitization.universe.data.commands.CommandI18NStringFactory
 import relativitization.universe.utils.I18NString
 import relativitization.universe.utils.IntString
 import relativitization.universe.utils.RealString
@@ -46,16 +46,14 @@ data class AskToMergeCarrierEvent(
         val isDirectSubordinate: Boolean =
             playerData.playerInternalData.directSubordinateIdList.contains(toId)
         val isDirectSubordinateI18NString: I18NString =
-            CanSendCheckMessageI18NStringFactory.isNotDirectSubordinate(
+            CommandI18NStringFactory.isNotDirectSubordinate(
                 playerId = fromId, toId = toId
             )
 
         return CanSendCheckMessage(
             isDirectSubordinate,
-            I18NString.combine(
-                listOf(
-                    isDirectSubordinateI18NString
-                )
+            listOf(
+                isDirectSubordinateI18NString
             )
         )
     }

@@ -63,14 +63,18 @@ data class MoveToDouble3DEvent(
         universeSettings: UniverseSettings
     ): CanSendCheckMessage {
         val isSubOrdinateOrSelf: Boolean = playerData.isSubOrdinateOrSelf(toId)
-        return if (isSubOrdinateOrSelf) {
-            CanSendCheckMessage(true)
+        val isSubOrdinateOrSelfI18NString: I18NString = if (isSubOrdinateOrSelf) {
+            I18NString("")
         } else {
-            CanSendCheckMessage(
-                false,
-                CanSendCheckMessageI18NStringFactory.isNotSubordinate(playerData.playerId, toId)
-            )
+            CommandI18NStringFactory.isNotSubordinate(playerData.playerId, toId)
         }
+
+        return CanSendCheckMessage(
+            isSubOrdinateOrSelf,
+            listOf(
+                isSubOrdinateOrSelfI18NString
+            )
+        )
     }
 
     override fun canExecute(

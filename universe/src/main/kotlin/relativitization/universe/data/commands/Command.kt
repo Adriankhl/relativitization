@@ -131,13 +131,11 @@ sealed class Command {
 
         return CanSendCheckMessage(
             hasCommand && canSendMessage.canSend && isFromInt4DValid && isFromIdValid,
-            I18NString.combine(
-                listOf(
-                    hasCommandI18NString,
-                    canSendMessage.message,
-                    isFromInt4DValidI18NString,
-                    isFromIdValidI18NString
-                )
+            listOf(
+                hasCommandI18NString,
+                canSendMessage.message,
+                isFromInt4DValidI18NString,
+                isFromIdValidI18NString
             )
         )
     }
@@ -172,11 +170,9 @@ sealed class Command {
             val reasonI18NString = I18NString("Reason: ")
             CanSendCheckMessage(
                 false,
-                I18NString.combine(
-                    listOf(
-                        reasonI18NString,
-                        canSendFromPlayer(playerData, universeSettings).message
-                    )
+                listOf(
+                    reasonI18NString,
+                    canSendFromPlayer(playerData, universeSettings).message
                 )
             )
         }
@@ -289,9 +285,14 @@ object CommandCollection {
 data class CanSendCheckMessage(
     val canSend: Boolean,
     val message: I18NString = I18NString(listOf(), listOf())
-)
+) {
+    constructor(canSend: Boolean, i18NStringList: List<I18NString>) : this(
+        canSend,
+        I18NString.combine(i18NStringList)
+    )
+}
 
-object CanSendCheckMessageI18NStringFactory {
+object CommandI18NStringFactory {
     fun isNotTopLeader(playerId: Int): I18NString = I18NString(
         listOf(
             RealString("Player "),

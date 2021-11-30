@@ -49,10 +49,8 @@ data class ChangeVelocityCommand(
 
         return CanSendCheckMessage(
             isSubordinateOrSelf,
-            I18NString.combine(
-                listOf(
-                    isSubordinateOrSelfI18NString
-                )
+            listOf(
+                isSubordinateOrSelfI18NString
             )
         )
     }

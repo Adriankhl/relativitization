@@ -73,10 +73,10 @@ data class AddEventCommand(
 
         return CanSendCheckMessage(
             canAdd && isIdValid && canSendEventMessage.canSend,
-            I18NString.combine(
-                listOf(
-                    isIdValidI18NString, canAddI18NString, canSendEventMessage.message
-                )
+            listOf(
+                isIdValidI18NString,
+                canAddI18NString,
+                canSendEventMessage.message
             )
         )
     }
@@ -169,7 +169,7 @@ data class SelectEventChoiceCommand(
         } else {
             CanSendCheckMessage(
                 false,
-                CanSendCheckMessageI18NStringFactory.isNotToSelf(playerData.playerId, toId)
+                CommandI18NStringFactory.isNotToSelf(playerData.playerId, toId)
             )
         }
     }

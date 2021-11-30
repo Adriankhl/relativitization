@@ -61,13 +61,11 @@ data class DeclareWarCommand(
 
         return CanSendCheckMessage(
             isNotLeader && isNotSubordinate && isNotInWar && isNotInPeaceTreaty,
-            I18NString.combine(
-                listOf(
-                    isNotLeaderI18NString,
-                    isNotSubordinateI18NString,
-                    isNotInWarI18NString,
-                    isNotInPeaceTreatyI18NString,
-                )
+            listOf(
+                isNotLeaderI18NString,
+                isNotSubordinateI18NString,
+                isNotInWarI18NString,
+                isNotInPeaceTreatyI18NString,
             )
         )
     }
@@ -162,12 +160,10 @@ data class DeclareIndependenceCommand(
 
         return CanSendCheckMessage(
             isDirectLeader && isNotSelf && isNotInWar,
-            I18NString.combine(
-                listOf(
-                    isDirectLeaderI18NString,
-                    isNotSelfI18NString,
-                    isNotInWarI18NString,
-                )
+            listOf(
+                isDirectLeaderI18NString,
+                isNotSelfI18NString,
+                isNotInWarI18NString,
             )
         )
     }
@@ -264,10 +260,8 @@ data class ProposePeaceCommand(
 
         return CanSendCheckMessage(
             isSelf,
-            I18NString.combine(
-                listOf(
-                    isSelfI18NString,
-                )
+            listOf(
+                isSelfI18NString,
             )
         )
     }
