@@ -13,29 +13,17 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class LaboratoryData(
     val laboratoryInternalData: LaboratoryInternalData = LaboratoryInternalData(),
-    val xCor: Double = 0.0,
-    val yCor: Double = 0.0,
-    val range: Double = 0.0,
     val strength: Double = 0.0,
     val reputation: Double = 0.0,
-    val researchEquipmentPerTime: Double = 0.0,
-    val maxNumEmployee: Double = 0.0,
     val lastNumEmployee: Double = 0.0,
-    val size: Double = 0.0,
 )
 
 @Serializable
 data class MutableLaboratoryData(
     var laboratoryInternalData: MutableLaboratoryInternalData = MutableLaboratoryInternalData(),
-    var xCor: Double = 0.0,
-    var yCor: Double = 0.0,
-    var range: Double = 0.0,
     var strength: Double = 0.0,
     var reputation: Double = 0.0,
-    var researchEquipmentPerTime: Double = 0.0,
-    var maxNumEmployee: Double = 0.0,
     var lastNumEmployee: Double = 0.0,
-    var size: Double = 0.0,
 )
 
 /**

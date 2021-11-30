@@ -8,6 +8,7 @@ import relativitization.universe.data.components.defaults.economy.ResourceType
 import relativitization.universe.data.components.defaults.physics.MutableDouble4D
 import relativitization.universe.data.components.defaults.physics.MutableInt4D
 import relativitization.universe.data.components.defaults.popsystem.pop.engineer.laboratory.MutableLaboratoryData
+import relativitization.universe.data.components.defaults.popsystem.pop.engineer.laboratory.MutableLaboratoryInternalData
 import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.MutableFuelFactoryData
 import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.MutableFuelFactoryInternalData
 import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.MutableResourceFactoryInternalData
@@ -204,15 +205,17 @@ object TestingFixedMinimal : TestingGenerateUniverseMethod() {
 
         // Add a laboratory to player 1
         val mutableLaboratoryData: MutableLaboratoryData = MutableLaboratoryData(
-            xCor = 1.0,
-            yCor = 2.0,
-            range = 0.25,
+            laboratoryInternalData = MutableLaboratoryInternalData(
+                xCor = 1.0,
+                yCor = 2.0,
+                range = 0.25,
+                researchEquipmentPerTime = 0.0,
+                maxNumEmployee = Double.MAX_VALUE * 0.5,
+                size = 0.0
+            ),
             strength = 0.0,
             reputation = 0.0,
-            researchEquipmentPerTime = 0.0,
-            maxNumEmployee = Double.MAX_VALUE * 0.5,
             lastNumEmployee = 0.0,
-            size = 0.0
         )
         playerData1.playerInternalData.popSystemData().carrierDataMap.getValue(
             0

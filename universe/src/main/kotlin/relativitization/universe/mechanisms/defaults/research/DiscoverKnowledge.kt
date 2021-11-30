@@ -160,7 +160,8 @@ object DiscoverKnowledge : Mechanism() {
         mutableLaboratoryData: MutableLaboratoryData,
         mutableResourceData: MutableResourceData
     ) {
-        val requiredEquipmentAmount: Double = mutableLaboratoryData.researchEquipmentPerTime / gamma
+        val requiredEquipmentAmount: Double =
+            mutableLaboratoryData.laboratoryInternalData.researchEquipmentPerTime / gamma
 
         val resourceAmountMap: Map<ResourceQualityClass, Double> =
             ResourceQualityClass.values().map {
@@ -381,9 +382,9 @@ object DiscoverKnowledge : Mechanism() {
                 projectDifficulty = appliedResearchProjectData.difficulty,
                 projectReferenceBasicResearchIdList = appliedResearchProjectData.referenceBasicResearchIdList,
                 projectReferenceAppliedResearchIdList = appliedResearchProjectData.referenceAppliedResearchIdList,
-                organizationXCor = mutableLaboratoryData.xCor,
-                organizationYCor = mutableLaboratoryData.yCor,
-                organizationRange = mutableLaboratoryData.range,
+                organizationXCor = mutableLaboratoryData.laboratoryInternalData.xCor,
+                organizationYCor = mutableLaboratoryData.laboratoryInternalData.yCor,
+                organizationRange = mutableLaboratoryData.laboratoryInternalData.range,
                 organizationStrength = mutableLaboratoryData.strength,
                 playerScienceData = playerScienceData,
             )
@@ -413,9 +414,9 @@ object DiscoverKnowledge : Mechanism() {
                 projectDifficulty = appliedResearchProjectData.difficulty,
                 projectReferenceBasicResearchIdList = appliedResearchProjectData.referenceBasicResearchIdList,
                 projectReferenceAppliedResearchIdList = appliedResearchProjectData.referenceAppliedResearchIdList,
-                organizationXCor = mutableLaboratoryData.xCor,
-                organizationYCor = mutableLaboratoryData.yCor,
-                organizationRange = mutableLaboratoryData.range,
+                organizationXCor = mutableLaboratoryData.laboratoryInternalData.xCor,
+                organizationYCor = mutableLaboratoryData.laboratoryInternalData.yCor,
+                organizationRange = mutableLaboratoryData.laboratoryInternalData.range,
                 organizationStrength = mutableLaboratoryData.strength,
                 playerScienceData = playerScienceData,
                 strengthFactor = 4.0,
