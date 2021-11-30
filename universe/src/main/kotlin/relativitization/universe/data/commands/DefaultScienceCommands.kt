@@ -4,6 +4,7 @@ import kotlinx.serialization.Serializable
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.components.defaults.physics.Int4D
+import relativitization.universe.data.components.defaults.popsystem.MutableCarrierData
 import relativitization.universe.data.components.defaults.popsystem.pop.engineer.laboratory.LaboratoryInternalData
 import relativitization.universe.data.components.defaults.popsystem.pop.engineer.laboratory.MutableLaboratoryData
 import relativitization.universe.data.components.defaults.popsystem.pop.scholar.institute.InstituteInternalData
@@ -214,5 +215,105 @@ data class BuildLaboratoryCommand(
                 lastNumEmployee = 0.0,
             )
         )
+    }
+}
+
+/**
+ * Remove a research institute
+ *
+ * @property carrierId the id of the carrier where this institute is located at
+ * @property instituteId the id of this institute
+ */
+@Serializable
+data class RemoveInstituteCommand(
+    override val toId: Int,
+    override val fromId: Int,
+    override val fromInt4D: Int4D,
+    val carrierId: Int,
+    val instituteId: Int,
+) : DefaultCommand() {
+    override val description: I18NString = I18NString(
+        listOf(
+            NormalString("Remove institute "),
+            IntString(0),
+            NormalString(" in carrier "),
+            IntString(1),
+            NormalString(". "),
+        ),
+        listOf(
+            instituteId.toString(),
+            carrierId.toString(),
+        ),
+    )
+
+    override fun canSend(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): CanSendCheckMessage {
+        val isSelf: Boolean = playerData.playerId == toId
+        val isSelfI18NString: I18NString = if (isSelf) {
+            I18NString("")
+        } else {
+            CommandI18NStringFactory.isNotToSelf(fromId, toId)
+        }
+
+        val hasCarrier: Boolean =
+            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(carrierId)
+        val hasCarrierI18NString: I18NString = if (hasCarrier) {
+            I18NString("")
+        } else {
+            I18NString("Carrier does not exist. ")
+        }
+
+        val hasInstitute: Boolean = if (hasCarrier) {
+            val carrier: MutableCarrierData =
+                playerData.playerInternalData.popSystemData().carrierDataMap.getValue(carrierId)
+            carrier.allPopData.scholarPopData.instituteMap.containsKey(instituteId)
+        } else {
+            false
+        }
+        val hasInstituteI18NString: I18NString = if (hasInstitute) {
+            I18NString("")
+        } else {
+            I18NString("Institute does not exist. ")
+        }
+
+
+
+
+        return CanSendCheckMessage(
+            isSelf && hasCarrier && hasInstitute,
+            listOf(
+                isSelfI18NString,
+                hasCarrierI18NString,
+                hasInstituteI18NString,
+            )
+        )
+    }
+
+    override fun canExecute(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): Boolean {
+        val isSelf: Boolean = playerData.playerId == fromId
+
+        val hasCarrier: Boolean =
+            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(carrierId)
+
+        val hasInstitute: Boolean = if (hasCarrier) {
+            val carrier: MutableCarrierData =
+                playerData.playerInternalData.popSystemData().carrierDataMap.getValue(carrierId)
+            carrier.allPopData.scholarPopData.instituteMap.containsKey(instituteId)
+        } else {
+            false
+        }
+
+        return isSelf && hasCarrier && hasInstitute
+    }
+
+    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+        playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
+            carrierId
+        ).allPopData.scholarPopData.instituteMap.remove(instituteId)
     }
 }
