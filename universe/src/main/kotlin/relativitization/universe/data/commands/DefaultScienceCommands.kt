@@ -317,3 +317,101 @@ data class RemoveInstituteCommand(
         ).allPopData.scholarPopData.instituteMap.remove(instituteId)
     }
 }
+
+/**
+ * Remove a research laboratory
+ *
+ * @property carrierId the id of the carrier where this institute is located at
+ * @property laboratoryId the id of this laboratory
+ */
+@Serializable
+data class RemoveLaboratoryCommand(
+    override val toId: Int,
+    override val fromId: Int,
+    override val fromInt4D: Int4D,
+    val carrierId: Int,
+    val laboratoryId: Int,
+) : DefaultCommand() {
+    override val description: I18NString = I18NString(
+        listOf(
+            NormalString("Remove laboratory "),
+            IntString(0),
+            NormalString(" in carrier "),
+            IntString(1),
+            NormalString(". "),
+        ),
+        listOf(
+            laboratoryId.toString(),
+            carrierId.toString(),
+        ),
+    )
+
+    override fun canSend(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): CanSendCheckMessage {
+        val isSelf: Boolean = playerData.playerId == toId
+        val isSelfI18NString: I18NString = if (isSelf) {
+            I18NString("")
+        } else {
+            CommandI18NStringFactory.isNotToSelf(fromId, toId)
+        }
+
+        val hasCarrier: Boolean =
+            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(carrierId)
+        val hasCarrierI18NString: I18NString = if (hasCarrier) {
+            I18NString("")
+        } else {
+            I18NString("Carrier does not exist. ")
+        }
+
+        val hasLaboratory: Boolean = if (hasCarrier) {
+            val carrier: MutableCarrierData =
+                playerData.playerInternalData.popSystemData().carrierDataMap.getValue(carrierId)
+            carrier.allPopData.engineerPopData.laboratoryMap.containsKey(laboratoryId)
+        } else {
+            false
+        }
+        val hasLaboratoryI18NString: I18NString = if (hasLaboratory) {
+            I18NString("")
+        } else {
+            I18NString("Laboratory does not exist. ")
+        }
+
+
+        return CanSendCheckMessage(
+            isSelf && hasCarrier && hasLaboratory,
+            listOf(
+                isSelfI18NString,
+                hasCarrierI18NString,
+                hasLaboratoryI18NString,
+            )
+        )
+    }
+
+    override fun canExecute(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): Boolean {
+        val isSelf: Boolean = playerData.playerId == fromId
+
+        val hasCarrier: Boolean =
+            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(carrierId)
+
+        val hasLaboratory: Boolean = if (hasCarrier) {
+            val carrier: MutableCarrierData =
+                playerData.playerInternalData.popSystemData().carrierDataMap.getValue(carrierId)
+            carrier.allPopData.engineerPopData.laboratoryMap.containsKey(laboratoryId)
+        } else {
+            false
+        }
+
+        return isSelf && hasCarrier && hasLaboratory
+    }
+
+    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+        playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
+            carrierId
+        ).allPopData.engineerPopData.laboratoryMap.remove(laboratoryId)
+    }
+}
