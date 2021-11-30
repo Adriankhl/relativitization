@@ -693,14 +693,14 @@ data class TransferResourceToTradeCommand(
 }
 
 /**
- * Change the production resource target amount
+ * Change the storage resource target amount
  *
  * @property resourceType the type of the resource
  * @property resourceQualityClass the class of the resource
  * @property targetAmount the target amount of the resource
  */
 @Serializable
-data class ChangeProductionResourceTargetCommand(
+data class ChangeStorageResourceTargetCommand(
     override val toId: Int,
     override val fromId: Int,
     override val fromInt4D: Int4D,
@@ -714,7 +714,7 @@ data class ChangeProductionResourceTargetCommand(
             IntTranslateString(0),
             NormalString(" of class "),
             IntTranslateString(1),
-            NormalString(" in production to "),
+            NormalString(" for storage to "),
             IntString(2),
             NormalString(". ")
         ),
@@ -748,9 +748,79 @@ data class ChangeProductionResourceTargetCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): Boolean {
-        val isSelf: Boolean = playerData.playerId == toId
 
-        return isSelf
+        return playerData.playerId == toId
+    }
+
+    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+        val targetAmountData: MutableResourceAmountData =
+            playerData.playerInternalData.economyData().resourceData.getResourceTargetAmountData(
+                resourceType,
+                resourceQualityClass
+            )
+
+        targetAmountData.storage = targetAmount
+    }
+}
+
+/**
+ * Change the production resource target amount
+ *
+ * @property resourceType the type of the resource
+ * @property resourceQualityClass the class of the resource
+ * @property targetAmount the target amount of the resource
+ */
+@Serializable
+data class ChangeProductionResourceTargetCommand(
+    override val toId: Int,
+    override val fromId: Int,
+    override val fromInt4D: Int4D,
+    val resourceType: ResourceType,
+    val resourceQualityClass: ResourceQualityClass,
+    val targetAmount: Double,
+) : DefaultCommand() {
+    override val description: I18NString = I18NString(
+        listOf(
+            NormalString("Change the target amount of "),
+            IntTranslateString(0),
+            NormalString(" of class "),
+            IntTranslateString(1),
+            NormalString(" for production to "),
+            IntString(2),
+            NormalString(". ")
+        ),
+        listOf(
+            resourceType.toString(),
+            resourceQualityClass.toString(),
+            targetAmount.toString(),
+        ),
+    )
+
+    override fun canSend(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): CanSendCheckMessage {
+        val isSelf: Boolean = playerData.playerId == toId
+        val isSelfI18NString: I18NString = if (isSelf) {
+            I18NString("")
+        } else {
+            CommandI18NStringFactory.isNotToSelf(fromId, toId)
+        }
+
+        return CanSendCheckMessage(
+            isSelf,
+            listOf(
+                isSelfI18NString,
+            )
+        )
+    }
+
+    override fun canExecute(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): Boolean {
+
+        return playerData.playerId == toId
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
