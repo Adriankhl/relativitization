@@ -4,6 +4,7 @@ import kotlinx.serialization.Serializable
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.components.defaults.physics.Int4D
+import relativitization.universe.data.components.defaults.popsystem.pop.scholar.institute.MutableInstituteData
 import relativitization.universe.utils.I18NString
 import relativitization.universe.utils.IntString
 import relativitization.universe.utils.NormalString
@@ -53,17 +54,57 @@ data class BuildInstituteCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): CanSendCheckMessage {
-        TODO("Not yet implemented")
+        val isSelf: Boolean = playerData.playerId == toId
+        val isSelfI18NString: I18NString = if (isSelf) {
+            I18NString("")
+        } else {
+            CommandI18NStringFactory.isNotToSelf(fromId, toId)
+        }
+
+        val hasCarrier: Boolean =
+            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(carrierId)
+        val hasCarrierI18NString: I18NString = if (hasCarrier) {
+            I18NString("")
+        } else {
+            I18NString("Carrier does not exist. ")
+        }
+
+        return CanSendCheckMessage(
+            isSelf && hasCarrier,
+            listOf(
+                isSelfI18NString,
+                hasCarrierI18NString,
+            )
+        )
     }
 
     override fun canExecute(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): Boolean {
-        TODO("Not yet implemented")
+        val isSelf: Boolean = playerData.playerId == fromId
+
+        val hasCarrier: Boolean =
+            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(carrierId)
+
+        return isSelf && hasCarrier
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
-        TODO("Not yet implemented")
+        playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
+            carrierId
+        ).allPopData.scholarPopData.addInstitute(
+            MutableInstituteData(
+                xCor = xCor,
+                yCor = yCor,
+                range = range,
+                strength = 0.0,
+                reputation = 0.0,
+                researchEquipmentPerTime = researchEquipmentPerTime,
+                maxNumEmployee = maxNumEmployee,
+                lastNumEmployee = 0.0,
+                size = 0.0
+            )
+        )
     }
 }
