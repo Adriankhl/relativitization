@@ -54,7 +54,7 @@
 * Send fuel to foreign factory [x]
 * Change economy policy, e.g., tax, storage [x]
 * Change politics data
-* Change salary
+* Change salary [x]
 * Build institute and laboratory
 * Improve diplomatic relation by sending resource [x]
 * Declare war, declare independence [x]
