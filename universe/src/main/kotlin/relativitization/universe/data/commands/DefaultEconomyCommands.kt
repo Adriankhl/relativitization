@@ -594,3 +594,87 @@ data class TransferResourceToProductionCommand(
         amountData.production += amount
     }
 }
+
+@Serializable
+data class TransferResourceToTradeCommand(
+    override val toId: Int,
+    override val fromId: Int,
+    override val fromInt4D: Int4D,
+    val resourceType: ResourceType,
+    val resourceQualityClass: ResourceQualityClass,
+    val amount: Double,
+) : DefaultCommand() {
+    override val description: I18NString = I18NString(
+        listOf(
+            NormalString("Transfer "),
+            IntString(0),
+            NormalString(" of "),
+            IntTranslateString(1),
+            NormalString(" of class "),
+            IntTranslateString(2),
+            NormalString(" from storage to trade. ")
+        ),
+        listOf(
+            amount.toString(),
+            resourceType.toString(),
+            resourceQualityClass.toString(),
+        ),
+    )
+
+    override fun canSend(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): CanSendCheckMessage {
+        val isSelf: Boolean = playerData.playerId == toId
+        val isSelfI18NString: I18NString = if (isSelf) {
+            I18NString("")
+        } else {
+            CommandI18NStringFactory.isNotToSelf(fromId, toId)
+        }
+
+        val hasStorage: Boolean =
+            playerData.playerInternalData.economyData().resourceData.getStorageResourceAmount(
+                resourceType,
+                resourceQualityClass
+            ) <= amount
+        val hasStorageI18NString: I18NString = if (hasStorage) {
+            I18NString("")
+        } else {
+            I18NString("Not enough fuel in storage. ")
+        }
+
+        return CanSendCheckMessage(
+            isSelf && hasStorage,
+            listOf(
+                isSelfI18NString,
+                hasStorageI18NString,
+            )
+        )
+    }
+
+    override fun canExecute(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): Boolean {
+        val isSelf: Boolean = playerData.playerId == toId
+
+        val hasStorage: Boolean =
+            playerData.playerInternalData.economyData().resourceData.getStorageResourceAmount(
+                resourceType,
+                resourceQualityClass
+            ) <= amount
+
+        return isSelf && hasStorage
+    }
+
+    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+        val amountData: MutableResourceAmountData =
+            playerData.playerInternalData.economyData().resourceData.getResourceAmountData(
+                resourceType,
+                resourceQualityClass
+            )
+
+        amountData.storage -= amount
+        amountData.trade += amount
+    }
+}
