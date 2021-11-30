@@ -8,6 +8,7 @@ import relativitization.universe.data.components.defaults.economy.ResourceType
 import relativitization.universe.data.components.defaults.physics.Int4D
 import relativitization.universe.utils.I18NString
 import relativitization.universe.utils.IntString
+import relativitization.universe.utils.IntTranslateString
 import relativitization.universe.utils.NormalString
 
 /**
@@ -26,11 +27,14 @@ data class ChangeDefaultImportTariffCommand(
 ) : DefaultCommand() {
     override val description: I18NString = I18NString(
         listOf(
-            NormalString("Change default import tariff rate of $resourceType to "),
+            NormalString("Change default import tariff rate of "),
+            IntTranslateString(0),
+            NormalString(" to "),
             IntString(1),
             NormalString(". ")
         ),
         listOf(
+            resourceType.toString(),
             rate.toString(),
         )
     )
@@ -92,11 +96,14 @@ data class ChangeDefaultExportTariffCommand(
 ) : DefaultCommand() {
     override val description: I18NString = I18NString(
         listOf(
-            NormalString("Change default export tariff rate of $resourceType to "),
-            IntString(0),
+            NormalString("Change default export tariff rate of "),
+            IntTranslateString(0),
+            NormalString(" to "),
+            IntString(1),
             NormalString(". ")
         ),
         listOf(
+            resourceType.toString(),
             rate.toString(),
         )
     )

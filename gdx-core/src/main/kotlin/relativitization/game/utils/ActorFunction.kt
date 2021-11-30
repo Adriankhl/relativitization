@@ -37,9 +37,9 @@ object ActorFunction {
         val messageFormatList: List<MessageFormatData> = text.toMessageFormat()
         val normalStringList: List<String> = text.toNormalString()
 
-        return messageFormatList.mapIndexed { index, data ->
+        return messageFormatList.mapIndexed { index, varData ->
             try {
-                val translatedVariableList: List<String> = data.variableList.map {
+                val translatedVariableList: List<String> = varData.variableList.map {
                     when (it) {
                         is NoTranslateString -> it.str
                         is TranslateString -> {
@@ -55,7 +55,7 @@ object ActorFunction {
                 }
 
                 val trText: String = i18NBundle.format(
-                    data.template,
+                    varData.template,
                     *translatedVariableList.toTypedArray()
                 )
 
