@@ -52,7 +52,7 @@
 # Command TODO List
 * Destroy factory [x]
 * Send fuel to foreign factory [x]
-* Change economy policy, e.g., tax, storage
+* Change economy policy, e.g., tax, storage [x]
 * Change politics data
 * Change salary
 * Build institute and laboratory
