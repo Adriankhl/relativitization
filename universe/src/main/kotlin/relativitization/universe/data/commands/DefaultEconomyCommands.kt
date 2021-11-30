@@ -5,6 +5,7 @@ import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.components.defaults.economy.MutableResourceAmountData
 import relativitization.universe.data.components.defaults.economy.ResourceQualityClass
+import relativitization.universe.data.components.defaults.economy.ResourceQualityData
 import relativitization.universe.data.components.defaults.economy.ResourceType
 import relativitization.universe.data.components.defaults.physics.Int4D
 import relativitization.universe.utils.I18NString
@@ -748,7 +749,6 @@ data class ChangeStorageResourceTargetCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): Boolean {
-
         return playerData.playerId == toId
     }
 
@@ -819,7 +819,6 @@ data class ChangeProductionResourceTargetCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): Boolean {
-
         return playerData.playerId == toId
     }
 
@@ -831,5 +830,72 @@ data class ChangeProductionResourceTargetCommand(
             )
 
         targetAmountData.production = targetAmount
+    }
+}
+
+/**
+ * Change the lower bound of the resource quality of a quality class
+ *
+ * @property resourceType change the bound of this resource type
+ * @property resourceQualityClass change the bound of this class
+ * @property lowerBound the new resource quality lower bound
+ */
+@Serializable
+data class ChangeResourceClassBoundCommand(
+    override val toId: Int,
+    override val fromId: Int,
+    override val fromInt4D: Int4D,
+    val resourceType: ResourceType,
+    val resourceQualityClass: ResourceQualityClass,
+    val lowerBound: ResourceQualityData,
+) : DefaultCommand() {
+    override val description: I18NString = I18NString(
+        listOf(
+            NormalString("Change the lower quality bound of "),
+            IntTranslateString(0),
+            NormalString(" of class "),
+            IntTranslateString(1),
+            NormalString(" to "),
+            IntString(2),
+            NormalString(" (quality1). ")
+        ),
+        listOf(
+            resourceType.toString(),
+            resourceQualityClass.toString(),
+            lowerBound.quality1.toString(),
+        ),
+    )
+
+    override fun canSend(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): CanSendCheckMessage {
+        val isSelf: Boolean = playerData.playerId == toId
+        val isSelfI18NString: I18NString = if (isSelf) {
+            I18NString("")
+        } else {
+            CommandI18NStringFactory.isNotToSelf(fromId, toId)
+        }
+
+        return CanSendCheckMessage(
+            isSelf,
+            listOf(
+                isSelfI18NString,
+            )
+        )
+    }
+
+    override fun canExecute(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): Boolean {
+        return playerData.playerId == toId
+    }
+
+    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+        playerData.playerInternalData.economyData().resourceData.getSingleResourceData(
+            resourceType,
+            resourceQualityClass
+        ).resourceQualityLowerBound = lowerBound.toMutableResourceQualityData()
     }
 }
