@@ -423,7 +423,7 @@ data class BuildLocalFuelFactoryCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): Boolean {
-        val isLeader: Boolean = playerData.isLeaderOrSelf(fromId)
+        val isLeaderOrSelf: Boolean = playerData.isLeaderOrSelf(fromId)
         val isSelf: Boolean = playerData.playerId == fromId
 
         val isSenderTopLeader: Boolean = fromId == playerData.topLeaderId()
@@ -444,7 +444,7 @@ data class BuildLocalFuelFactoryCommand(
         val hasFuel: Boolean =
             playerData.playerInternalData.physicsData().fuelRestMassData.production > requiredFuel
 
-        return isLeader && canSenderBuild && canLeaderBuild && hasCarrier && hasFuel
+        return isLeaderOrSelf && canSenderBuild && canLeaderBuild && hasCarrier && hasFuel
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
@@ -557,7 +557,7 @@ data class BuildLocalResourceFactoryCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): Boolean {
-        val isLeader: Boolean = playerData.isLeaderOrSelf(fromId)
+        val isLeaderOrSelf: Boolean = playerData.isLeaderOrSelf(fromId)
         val isSelf: Boolean = playerData.playerId == fromId
 
         val isSenderTopLeader: Boolean = fromId == playerData.topLeaderId()
@@ -579,7 +579,7 @@ data class BuildLocalResourceFactoryCommand(
         val hasFuel: Boolean =
             playerData.playerInternalData.physicsData().fuelRestMassData.production > requiredFuel
 
-        return isLeader && canSenderBuild && canLeaderBuild && hasCarrier && hasFuel
+        return isLeaderOrSelf && canSenderBuild && canLeaderBuild && hasCarrier && hasFuel
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
