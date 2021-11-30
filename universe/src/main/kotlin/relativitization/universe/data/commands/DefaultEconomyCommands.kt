@@ -558,7 +558,7 @@ data class TransferResourceToProductionCommand(
             playerData.playerInternalData.economyData().resourceData.getStorageResourceAmount(
                 resourceType,
                 resourceQualityClass
-            ) <= amount
+            ) >= amount
         val hasStorageI18NString: I18NString = if (hasStorage) {
             I18NString("")
         } else {
@@ -584,7 +584,7 @@ data class TransferResourceToProductionCommand(
             playerData.playerInternalData.economyData().resourceData.getStorageResourceAmount(
                 resourceType,
                 resourceQualityClass
-            ) <= amount
+            ) >= amount
 
         return isSelf && hasStorage
     }
@@ -649,7 +649,7 @@ data class TransferResourceToTradeCommand(
             playerData.playerInternalData.economyData().resourceData.getStorageResourceAmount(
                 resourceType,
                 resourceQualityClass
-            ) <= amount
+            ) >= amount
         val hasStorageI18NString: I18NString = if (hasStorage) {
             I18NString("")
         } else {
@@ -675,7 +675,7 @@ data class TransferResourceToTradeCommand(
             playerData.playerInternalData.economyData().resourceData.getStorageResourceAmount(
                 resourceType,
                 resourceQualityClass
-            ) <= amount
+            ) >= amount
 
         return isSelf && hasStorage
     }
