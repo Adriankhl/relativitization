@@ -460,14 +460,14 @@ data class MutableResourceQualityData(
  * Amount of resource in different usage
  *
  * @property storage not for use
- * @property trade for trade
  * @property production for production
+ * @property trade for trade
  */
 @Serializable
 data class ResourceAmountData(
     val storage: Double = 0.0,
-    val trade: Double = 0.0,
     val production: Double = 0.0,
+    val trade: Double = 0.0,
 ) {
     fun total(): Double = storage + trade + production
 }
@@ -475,8 +475,8 @@ data class ResourceAmountData(
 @Serializable
 data class MutableResourceAmountData(
     var storage: Double = 0.0,
-    var trade: Double = 0.0,
     var production: Double = 0.0,
+    var trade: Double = 0.0,
 ) {
     fun total(): Double = storage + trade + production
 }

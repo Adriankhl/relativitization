@@ -3,14 +3,13 @@ package relativitization.universe.data.commands
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseSettings
+import relativitization.universe.data.components.defaults.economy.MutableResourceAmountData
+import relativitization.universe.data.components.defaults.economy.ResourceType
 import relativitization.universe.data.components.defaults.physics.Int4D
 import relativitization.universe.data.components.defaults.physics.Velocity
 import relativitization.universe.maths.physics.Relativistic.targetVelocityByPhotonRocket
 import relativitization.universe.maths.physics.TargetVelocityData
-import relativitization.universe.utils.I18NString
-import relativitization.universe.utils.IntString
-import relativitization.universe.utils.NormalString
-import relativitization.universe.utils.RelativitizationLogManager
+import relativitization.universe.utils.*
 
 @Serializable
 data class ChangeVelocityCommand(
@@ -90,5 +89,81 @@ data class ChangeVelocityCommand(
 
     companion object {
         private val logger = RelativitizationLogManager.getLogger()
+    }
+}
+
+/**
+ * Transfer fuel from trade to production
+ *
+ * @property amount the amount of resource to transfer
+ */
+@Serializable
+data class TransferFuelToProductionCommand(
+    override val toId: Int,
+    override val fromId: Int,
+    override val fromInt4D: Int4D,
+    val amount: Double,
+) : DefaultCommand() {
+    override val description: I18NString = I18NString(
+        listOf(
+            NormalString("Transfer "),
+            IntString(0),
+            NormalString(" of fuel from movement to production. "),
+        ),
+        listOf(
+            amount.toString(),
+        ),
+    )
+
+    override fun canSend(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): CanSendCheckMessage {
+        val isSelf: Boolean = playerData.playerId == toId
+        val isSelfI18NString: I18NString = if (isSelf) {
+            I18NString("")
+        } else {
+            CommandI18NStringFactory.isNotToSelf(fromId, toId)
+        }
+
+        val hasStorage: Boolean =
+            playerData.playerInternalData.physicsData().fuelRestMassData.movement <= amount
+        val hasStorageI18NString: I18NString = if (hasStorage) {
+            I18NString("")
+        } else {
+            I18NString("Not enough fuel in storage. ")
+        }
+
+        return CanSendCheckMessage(
+            isSelf && hasStorage,
+            listOf(
+                isSelfI18NString,
+                hasStorageI18NString,
+            )
+        )
+    }
+
+    override fun canExecute(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): Boolean {
+        val isSelf: Boolean = playerData.playerId == toId
+
+        val hasStorage: Boolean =
+            playerData.playerInternalData.economyData().resourceData.getStorageResourceAmount(
+            ) <= amount
+
+        return isSelf && hasStorage
+    }
+
+    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+        val amountData: MutableResourceAmountData =
+            playerData.playerInternalData.economyData().resourceData.getResourceAmountData(
+                resourceType,
+                resourceQualityClass
+            )
+
+        amountData.storage -= amount
+        amountData.production += amount
     }
 }
