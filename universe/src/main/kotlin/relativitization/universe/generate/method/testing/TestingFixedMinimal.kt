@@ -192,11 +192,11 @@ object TestingFixedMinimal : TestingGenerateUniverseMethod() {
                 range = 2.0,
                 researchEquipmentPerTime = 0.0,
                 maxNumEmployee = Double.MAX_VALUE * 0.5,
+                size = 0.0,
             ),
             strength = 1.0,
             reputation = 0.0,
             lastNumEmployee = 0.0,
-            size = 0.0
         )
         playerData1.playerInternalData.popSystemData().carrierDataMap.getValue(
             0

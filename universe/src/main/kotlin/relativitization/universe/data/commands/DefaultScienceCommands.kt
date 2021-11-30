@@ -105,7 +105,6 @@ data class BuildInstituteCommand(
                 strength = 0.0,
                 reputation = 0.0,
                 lastNumEmployee = 0.0,
-                size = 0.0
             )
         )
     }

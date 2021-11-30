@@ -9,7 +9,6 @@ import kotlinx.serialization.Serializable
  * @property strength how good is this institute
  * @property reputation reputation of this institute
  * @property lastNumEmployee number of employee in the last round
- * @property size the size of this institute
  */
 @Serializable
 data class InstituteData(
@@ -17,7 +16,6 @@ data class InstituteData(
     val strength: Double = 0.0,
     val reputation: Double = 0.0,
     val lastNumEmployee: Double = 0.0,
-    val size: Double = 0.0,
 )
 
 @Serializable
@@ -26,7 +24,6 @@ data class MutableInstituteData(
     var strength: Double = 0.0,
     var reputation: Double = 0.0,
     var lastNumEmployee: Double = 0.0,
-    var size: Double = 0.0,
 )
 
 /**
@@ -37,6 +34,7 @@ data class MutableInstituteData(
  * @property range how far the institute cover the knowledge plane
  * @property researchEquipmentPerTime amount of research equipment provided per time
  * @property maxNumEmployee maximum number ofBuildInstituteCommand employee
+ * @property size the size of this institute
  */
 @Serializable
 data class InstituteInternalData(
@@ -45,6 +43,7 @@ data class InstituteInternalData(
     val range: Double = 1.0,
     val researchEquipmentPerTime: Double = 0.0,
     val maxNumEmployee: Double = 0.0,
+    val size: Double = 0.0,
 )
 
 @Serializable
@@ -54,4 +53,5 @@ data class MutableInstituteInternalData(
     var range: Double = 1.0,
     var researchEquipmentPerTime: Double = 0.0,
     var maxNumEmployee: Double = 0.0,
+    var size: Double = 0.0,
 )
