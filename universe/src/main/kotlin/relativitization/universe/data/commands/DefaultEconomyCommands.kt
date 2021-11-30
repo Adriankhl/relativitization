@@ -434,3 +434,75 @@ data class ChangeLowMiddleBoundaryCommand(
             .taxData.taxRateData.incomeTax.lowMiddleBoundary = boundary
     }
 }
+
+/**
+ * Change the boundary between middle and high income
+ *
+ * @property boundary income higher than this is qualified as high income
+ */
+@Serializable
+data class ChangeMiddleHighBoundaryCommand(
+    override val toId: Int,
+    override val fromId: Int,
+    override val fromInt4D: Int4D,
+    val boundary: Double,
+) : DefaultCommand() {
+    override val description: I18NString = I18NString(
+        listOf(
+            RealString("Change the boundary between middle and high income to "),
+            IntString(0),
+            RealString(". ")
+        ),
+        listOf(
+            boundary.toString(),
+        )
+    )
+
+    override fun canSend(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): CanSendCheckMessage {
+
+        val isSelf: Boolean = playerData.playerId == toId
+        val isSelfI18NString: I18NString = if (isSelf) {
+            I18NString("")
+        } else {
+            CommandI18NStringFactory.isNotToSelf(fromId, toId)
+        }
+
+        val isTopLeader: Boolean = playerData.isTopLeader()
+        val isTopLeaderI18NString: I18NString = if (isTopLeader) {
+            I18NString("")
+        } else {
+            CommandI18NStringFactory.isNotTopLeader(playerData.playerId)
+        }
+
+        val isBoundaryValid: Boolean = (boundary >= 0.0)
+        val isBoundaryValidI18NString: I18NString = if (isBoundaryValid) {
+            I18NString("")
+        } else {
+            I18NString("Boundary should be larger than 0. ")
+        }
+
+        return CanSendCheckMessage(
+            isSelf && isTopLeader && isBoundaryValid,
+            listOf(
+                isSelfI18NString,
+                isTopLeaderI18NString,
+                isBoundaryValidI18NString
+            )
+        )
+    }
+
+    override fun canExecute(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): Boolean {
+        return (playerData.playerId == fromId)
+    }
+
+    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+        playerData.playerInternalData.economyData()
+            .taxData.taxRateData.incomeTax.middleHighBoundary = boundary
+    }
+}
