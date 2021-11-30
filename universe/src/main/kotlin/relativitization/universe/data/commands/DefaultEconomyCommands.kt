@@ -76,7 +76,6 @@ data class ChangeDefaultImportTariffCommand(
         playerData.playerInternalData.economyData().taxData.taxRateData
             .importTariff.defaultTariffRate.resourceTariffRateMap[resourceType] = rate
     }
-
 }
 
 /**
@@ -146,7 +145,6 @@ data class ChangeDefaultExportTariffCommand(
         playerData.playerInternalData.economyData().taxData.taxRateData
             .exportTariff.defaultTariffRate.resourceTariffRateMap[resourceType] = rate
     }
-
 }
 
 /**
@@ -184,6 +182,13 @@ data class ChangeLowIncomeTaxCommand(
             CommandI18NStringFactory.isNotToSelf(fromId, toId)
         }
 
+        val isTopLeader: Boolean = playerData.isTopLeader()
+        val isTopLeaderI18NString: I18NString = if (isTopLeader) {
+            I18NString("")
+        } else {
+            CommandI18NStringFactory.isNotTopLeader(playerData.playerId)
+        }
+
         val isRateValid: Boolean = (rate >= 0.0) && (rate <= 1.0)
         val isRateValidI18NString: I18NString = if (isRateValid) {
             I18NString("")
@@ -192,9 +197,10 @@ data class ChangeLowIncomeTaxCommand(
         }
 
         return CanSendCheckMessage(
-            isSelf && isRateValid,
+            isSelf && isTopLeader && isRateValid,
             listOf(
                 isSelfI18NString,
+                isTopLeaderI18NString,
                 isRateValidI18NString
             )
         )
@@ -204,11 +210,11 @@ data class ChangeLowIncomeTaxCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): Boolean {
-        TODO("Not yet implemented")
+        return (playerData.playerId == fromId)
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
-        TODO("Not yet implemented")
+        playerData.playerInternalData.economyData()
+            .taxData.taxRateData.incomeTax.lowIncomeTaxRate = rate
     }
-
 }
