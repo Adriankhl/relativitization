@@ -238,9 +238,11 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
      * Stop the client
      */
     suspend fun stop() {
+        logger.debug("Stopping client")
         clear()
         universeClientRunJob.cancelAndJoin()
         ktorClient.close()
+        logger.debug("Client stopped")
     }
 
     /**

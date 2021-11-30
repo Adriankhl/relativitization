@@ -16,6 +16,7 @@ import relativitization.server.routes.registerUniverseStatusRoutes
 import relativitization.universe.UniverseServerSettings
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.utils.RelativitizationLogManager
+import kotlin.math.log
 
 
 class UniverseServer(
@@ -76,8 +77,10 @@ class UniverseServer(
     }
 
     suspend fun stop() {
+        logger.debug("Stopping server")
         universeServerInternal.stop(universeServerInternalJob)
         ktorServer.stop(1000, 1000)
+        logger.debug("Server stopped")
     }
 
 

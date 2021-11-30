@@ -83,7 +83,7 @@ class BottomCommandInfo(val game: RelativitizationGame) : ScreenComponent<Scroll
 
         update()
 
-        table.add(createHeaderTable()).spaceTop(10f)
+        table.add(createHeaderTable()).spaceTop(10f).growX()
         table.row()
         table.add(commandTimeLabel)
 
@@ -110,7 +110,7 @@ class BottomCommandInfo(val game: RelativitizationGame) : ScreenComponent<Scroll
         nestedTable.add(previousCommandButton)
             .size(40f * gdxSettings.imageScale, 40f * gdxSettings.imageScale)
 
-        nestedTable.add(commandNameLabel)
+        nestedTable.add(createScrollPane(commandNameLabel)).expandX()
 
         nestedTable.add(nextCommandButton)
             .size(40f * gdxSettings.imageScale, 40f * gdxSettings.imageScale)

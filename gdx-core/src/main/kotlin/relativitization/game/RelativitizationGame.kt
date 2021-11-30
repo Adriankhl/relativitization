@@ -46,6 +46,7 @@ class RelativitizationGame(
 
 
     override fun dispose() {
+        logger.debug("Stopping game")
         clear()
         runBlocking {
             backgroundMusic.stop()
@@ -53,6 +54,7 @@ class RelativitizationGame(
             universeClient.stop()
             universeServer.stop()
         }
+        logger.debug("Game stopped")
     }
 
 
