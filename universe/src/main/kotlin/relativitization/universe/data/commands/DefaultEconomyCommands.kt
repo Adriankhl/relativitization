@@ -3,6 +3,7 @@ package relativitization.universe.data.commands
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseSettings
+import relativitization.universe.data.components.defaults.economy.ResourceQualityClass
 import relativitization.universe.data.components.defaults.economy.ResourceType
 import relativitization.universe.data.components.defaults.physics.Int4D
 import relativitization.universe.utils.I18NString
@@ -505,10 +506,17 @@ data class ChangeMiddleHighBoundaryCommand(
 data class TransferResourceToProductionCommand(
     override val toId: Int,
     override val fromId: Int,
-    override val fromInt4D: Int4D
+    override val fromInt4D: Int4D,
+    val resourceType: ResourceType,
+    val resourceQualityClass: ResourceQualityClass,
+    val amount: Double,
 ) : DefaultCommand() {
-    override val description: I18NString
-        get() = TODO("Not yet implemented")
+    override val description: I18NString = I18NString(
+        listOf(
+            RealString("Transfer "),
+        ),
+        listOf(),
+    )
 
     override fun canSend(
         playerData: MutablePlayerData,
