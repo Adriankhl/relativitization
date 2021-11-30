@@ -306,3 +306,62 @@ data class TransferFuelToTradeCommand(
         fuelData.trade += amount
     }
 }
+
+/**
+ * Change the storage fuel target amount
+ *
+ * @property targetAmount the target amount of fuel
+ */
+@Serializable
+data class ChangeStorageFuelTargetCommand(
+    override val toId: Int,
+    override val fromId: Int,
+    override val fromInt4D: Int4D,
+    val targetAmount: Double,
+) : DefaultCommand() {
+    override val description: I18NString = I18NString(
+        listOf(
+            NormalString("Change the target amount of fuel for storage to "),
+            IntString(0),
+            NormalString(". "),
+        ),
+        listOf(
+            targetAmount.toString(),
+        ),
+    )
+
+    override fun canSend(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): CanSendCheckMessage {
+        val isSelf: Boolean = playerData.playerId == toId
+        val isSelfI18NString: I18NString = if (isSelf) {
+            I18NString("")
+        } else {
+            CommandI18NStringFactory.isNotToSelf(fromId, toId)
+        }
+
+        return CanSendCheckMessage(
+            isSelf,
+            listOf(
+                isSelfI18NString,
+            )
+        )
+    }
+
+    override fun canExecute(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): Boolean {
+        val isSelf: Boolean = playerData.playerId == toId
+
+        return isSelf
+    }
+
+    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+        val targetFuelData: MutableFuelRestMassData =
+            playerData.playerInternalData.physicsData().targetFuelRestMassData
+
+        targetFuelData.storage = targetAmount
+    }
+}
