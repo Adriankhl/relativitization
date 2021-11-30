@@ -82,3 +82,4 @@
 * Transfer player and transfer carrier commands
 * Surrender, alliance
 * Retract or transfer subordinate
+* Decrease relation when a factory is removed
