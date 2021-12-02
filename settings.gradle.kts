@@ -1,5 +1,13 @@
 rootProject.name = "relativitization"
-include("gdx-android", "gdx-core", "gdx-desktop", "universe", "universe-server", "universe-client")
+include(
+    "gdx-android",
+    "gdx-core",
+    "gdx-desktop",
+    "simulations",
+    "universe",
+    "universe-server",
+    "universe-client"
+)
 
 pluginManagement {
     repositories {
