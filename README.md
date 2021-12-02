@@ -66,3 +66,9 @@ The generated `~/.wine/drive_c/relativitization-output/relativitization-win` fol
 
 # Generate html doc
 `./gradlew dokkaHtml`
+
+
+# Run simulation
+Change `relativitization.abm.AllDefaultKt` to the main class of your simulation:
+`./gradlew :simulation:run -PmainClass=relativitization.abm.AllDefaultKt`
+note that there is an additional `Kt` after the file name in kotlin convention.
