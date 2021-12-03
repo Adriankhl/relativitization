@@ -29,11 +29,6 @@ object UpdateDesire : Mechanism() {
         val satisfactionMaxIncreaseDelta: Double = 3.0
 
 
-        val gamma: Double = Relativistic.gamma(
-            universeData3DAtPlayer.getCurrentPlayerData().velocity,
-            universeSettings.speedOfLight
-        )
-
         mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.forEach { carrier ->
             PopType.values().forEach { popType ->
                 val mutableCommonPopData: MutableCommonPopData =
@@ -51,7 +46,6 @@ object UpdateDesire : Mechanism() {
                     desireResourceTypeList.map {
                         val desireQualityData: MutableResourceQualityData =
                             computeDesireResourceQuality(
-                                gamma = gamma,
                                 mutableCommonPopData = mutableCommonPopData,
                                 resourceType = it,
                                 desireQualityUpdateFactor = desireQualityUpdateFactor,
@@ -65,7 +59,6 @@ object UpdateDesire : Mechanism() {
                     }.toMap()
 
                 updateSatisfaction(
-                    gamma = gamma,
                     mutableCommonPopData = mutableCommonPopData,
                     desireResourceTypeList = desireResourceTypeList,
                     satisfactionMaxDecreaseFactor = satisfactionMaxDecreaseFactor,
@@ -157,7 +150,6 @@ object UpdateDesire : Mechanism() {
      * Compute the new desire resource quality, adjusted by time dilation
      */
     fun computeDesireResourceQuality(
-        gamma: Double,
         mutableCommonPopData: MutableCommonPopData,
         resourceType: ResourceType,
         desireQualityUpdateFactor: Double,
@@ -178,17 +170,17 @@ object UpdateDesire : Mechanism() {
         // If sufficient amount, get close to the input quality
         // else decrease the desire quality
         // Adjusted by time dilation
-        return if (inputDesire.desireAmount > (originalDesire.desireAmount / gamma)) {
+        return if (inputDesire.desireAmount > (originalDesire.desireAmount)) {
             originalDesire.desireQuality.changeTo(
                 inputDesire.desireQuality,
-                desireQualityUpdateFactor / gamma,
-                desireQualityUpdateMinDiff / gamma,
+                desireQualityUpdateFactor,
+                desireQualityUpdateMinDiff,
             )
         } else {
             originalDesire.desireQuality.changeTo(
                 MutableResourceQualityData(0.0, 0.0, 0.0),
-                desireQualityUpdateFactor / gamma,
-                desireQualityUpdateMinDiff / gamma,
+                desireQualityUpdateFactor,
+                desireQualityUpdateMinDiff,
             )
         }
     }
@@ -197,7 +189,6 @@ object UpdateDesire : Mechanism() {
      * Compute satisfaction, adjusted by time dilation
      */
     fun updateSatisfaction(
-        gamma: Double,
         mutableCommonPopData: MutableCommonPopData,
         desireResourceTypeList: List<ResourceType>,
         satisfactionMaxDecreaseFactor: Double,
@@ -217,7 +208,7 @@ object UpdateDesire : Mechanism() {
                 )
 
             if (originalDesire.desireAmount > 0.0) {
-                inputDesire.desireAmount / (originalDesire.desireAmount / gamma)
+                inputDesire.desireAmount / (originalDesire.desireAmount)
             } else {
                 1.0
             }
@@ -271,6 +262,6 @@ object UpdateDesire : Mechanism() {
             tanhSlope1 = 1.0
         )
 
-        mutableCommonPopData.satisfaction += (deltaSatisfaction / gamma)
+        mutableCommonPopData.satisfaction += deltaSatisfaction
     }
 }

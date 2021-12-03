@@ -20,11 +20,6 @@ object AutoCombat : Mechanism() {
         universeGlobalData: UniverseGlobalData
     ): List<Command> {
 
-        val gamma: Double = Relativistic.gamma(
-            universeData3DAtPlayer.getCurrentPlayerData().velocity,
-            universeSettings.speedOfLight
-        )
-
         // enemy in the same cube
         val sameCubeEnemy: List<PlayerData> = computeEnemyList(
             mutablePlayerData,
@@ -42,7 +37,7 @@ object AutoCombat : Mechanism() {
                     toId = targetEnemy.playerId,
                     fromId = mutablePlayerData.playerId,
                     fromInt4D = mutablePlayerData.int4D.toInt4D(),
-                    attack = it.allPopData.soldierPopData.militaryBaseData.attack / gamma
+                    attack = it.allPopData.soldierPopData.militaryBaseData.attack
                 )
                 command
             }

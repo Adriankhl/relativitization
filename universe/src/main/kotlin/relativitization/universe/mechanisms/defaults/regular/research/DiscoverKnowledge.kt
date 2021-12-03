@@ -39,22 +39,16 @@ object DiscoverKnowledge : Mechanism() {
         universeSettings: UniverseSettings,
         universeGlobalData: UniverseGlobalData
     ): List<Command> {
-        val gamma: Double = Relativistic.gamma(
-            universeData3DAtPlayer.getCurrentPlayerData().velocity,
-            universeSettings.speedOfLight
-        )
 
         mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.forEach { mutableCarrierData ->
             mutableCarrierData.allPopData.scholarPopData.instituteMap.values.forEach { mutableInstituteData ->
                 updateInstituteStrength(
-                    gamma,
                     mutableCarrierData.allPopData.scholarPopData,
                     mutableInstituteData,
                     mutablePlayerData.playerInternalData.economyData().resourceData
                 )
 
                 updateBasicResearchDiscovery(
-                    gamma = gamma,
                     mutableInstituteData = mutableInstituteData,
                     mutablePlayerScienceData = mutablePlayerData.playerInternalData.playerScienceData(),
                     playerScienceData = universeData3DAtPlayer.getCurrentPlayerData().playerInternalData.playerScienceData(),
@@ -67,14 +61,12 @@ object DiscoverKnowledge : Mechanism() {
         mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.forEach { mutableCarrierData ->
             mutableCarrierData.allPopData.engineerPopData.laboratoryMap.values.forEach { mutableLaboratoryData ->
                 updateLaboratoryStrength(
-                    gamma,
                     mutableCarrierData.allPopData.engineerPopData,
                     mutableLaboratoryData,
                     mutablePlayerData.playerInternalData.economyData().resourceData
                 )
 
                 updateAppliedResearchDiscovery(
-                    gamma = gamma,
                     mutableLaboratoryData = mutableLaboratoryData,
                     mutablePlayerScienceData = mutablePlayerData.playerInternalData.playerScienceData(),
                     playerScienceData = universeData3DAtPlayer.getCurrentPlayerData().playerInternalData.playerScienceData(),
@@ -104,13 +96,12 @@ object DiscoverKnowledge : Mechanism() {
      * Update research institute strength
      */
     fun updateInstituteStrength(
-        gamma: Double,
         mutableScholarPopData: MutableScholarPopData,
         mutableInstituteData: MutableInstituteData,
         mutableResourceData: MutableResourceData
     ) {
         val requiredEquipmentAmount: Double =
-            mutableInstituteData.instituteInternalData.researchEquipmentPerTime / gamma
+            mutableInstituteData.instituteInternalData.researchEquipmentPerTime
 
         val resourceAmountMap: Map<ResourceQualityClass, Double> =
             ResourceQualityClass.values().map {
@@ -155,13 +146,12 @@ object DiscoverKnowledge : Mechanism() {
      * Update laboratory strength
      */
     fun updateLaboratoryStrength(
-        gamma: Double,
         mutableEngineerPopData: MutableEngineerPopData,
         mutableLaboratoryData: MutableLaboratoryData,
         mutableResourceData: MutableResourceData
     ) {
         val requiredEquipmentAmount: Double =
-            mutableLaboratoryData.laboratoryInternalData.researchEquipmentPerTime / gamma
+            mutableLaboratoryData.laboratoryInternalData.researchEquipmentPerTime
 
         val resourceAmountMap: Map<ResourceQualityClass, Double> =
             ResourceQualityClass.values().map {
@@ -205,7 +195,6 @@ object DiscoverKnowledge : Mechanism() {
      * Whether this project can be discovered
      */
     fun isResearchSuccess(
-        gamma: Double,
         projectXCor: Double,
         projectYCor: Double,
         projectDifficulty: Double,
@@ -277,11 +266,7 @@ object DiscoverKnowledge : Mechanism() {
             0.0
         }
 
-        // Probability adjusted by time dilation
-        val actualProb: Double = 1.0 - (1.0 - prob).pow(1.0 / gamma)
-
-        // The probability is affected by time dilation, i.e. gamma
-        val success: Boolean = Random.nextDouble() < actualProb
+        val success: Boolean = Random.nextDouble() < prob
 
         return inRange && success
     }
@@ -291,7 +276,6 @@ object DiscoverKnowledge : Mechanism() {
      * Update basic research discovery
      */
     fun updateBasicResearchDiscovery(
-        gamma: Double,
         mutableInstituteData: MutableInstituteData,
         mutablePlayerScienceData: MutablePlayerScienceData,
         playerScienceData: PlayerScienceData,
@@ -304,7 +288,6 @@ object DiscoverKnowledge : Mechanism() {
             }
         }.forEach { basicResearchProjectData ->
             val success: Boolean = isResearchSuccess(
-                gamma = gamma,
                 projectXCor = basicResearchProjectData.xCor,
                 projectYCor = basicResearchProjectData.yCor,
                 projectDifficulty = basicResearchProjectData.difficulty,
@@ -336,7 +319,6 @@ object DiscoverKnowledge : Mechanism() {
             }
         }.forEach { basicResearchProjectData ->
             val success: Boolean = isResearchSuccess(
-                gamma = gamma,
                 projectXCor = basicResearchProjectData.xCor,
                 projectYCor = basicResearchProjectData.yCor,
                 projectDifficulty = basicResearchProjectData.difficulty,
@@ -363,7 +345,6 @@ object DiscoverKnowledge : Mechanism() {
      * Update basic research discovery
      */
     fun updateAppliedResearchDiscovery(
-        gamma: Double,
         mutableLaboratoryData: MutableLaboratoryData,
         mutablePlayerScienceData: MutablePlayerScienceData,
         playerScienceData: PlayerScienceData,
@@ -376,7 +357,6 @@ object DiscoverKnowledge : Mechanism() {
             }
         }.forEach { appliedResearchProjectData ->
             val success: Boolean = isResearchSuccess(
-                gamma = gamma,
                 projectXCor = appliedResearchProjectData.xCor,
                 projectYCor = appliedResearchProjectData.yCor,
                 projectDifficulty = appliedResearchProjectData.difficulty,
@@ -408,7 +388,6 @@ object DiscoverKnowledge : Mechanism() {
             }
         }.forEach { appliedResearchProjectData ->
             val success: Boolean = isResearchSuccess(
-                gamma = gamma,
                 projectXCor = appliedResearchProjectData.xCor,
                 projectYCor = appliedResearchProjectData.yCor,
                 projectDifficulty = appliedResearchProjectData.difficulty,

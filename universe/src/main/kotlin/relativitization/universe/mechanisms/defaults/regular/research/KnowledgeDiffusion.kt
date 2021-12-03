@@ -22,28 +22,17 @@ object KnowledgeDiffusion : Mechanism() {
         universeSettings: UniverseSettings,
         universeGlobalData: UniverseGlobalData
     ): List<Command> {
-        val gamma: Double = Relativistic.gamma(
-            universeData3DAtPlayer.getCurrentPlayerData().velocity,
-            universeSettings.speedOfLight
-        )
-
 
         // The size of the cube where diffusion happen
         val diffusionRange: Int = 1
 
+        // Diffusion probability
         val basicResearchDiffusionProb: Double = 0.01
         val appliedResearchDiffusionProb: Double = 0.001
 
-        val actualBasicResearchDiffusionProb: Double =
-            1.0 - (1.0 - basicResearchDiffusionProb).pow(1.0 / gamma)
-
-        val actualAppliedResearchDiffusionProb: Double =
-            1.0 - (1.0 - appliedResearchDiffusionProb).pow(1.0 / gamma)
-
-
         universeData3DAtPlayer.getNeighbour(diffusionRange).forEach { playerData ->
             computeBasicResearchDiffusion(
-                actualBasicResearchDiffusionProb,
+                basicResearchDiffusionProb,
                 mutablePlayerData.playerInternalData.playerScienceData(),
                 playerData.playerInternalData.playerScienceData(),
             ).forEach {
@@ -54,7 +43,7 @@ object KnowledgeDiffusion : Mechanism() {
             }
 
             computeAppliedResearchDiffusion(
-                actualAppliedResearchDiffusionProb,
+                appliedResearchDiffusionProb,
                 mutablePlayerData.playerInternalData.playerScienceData(),
                 playerData.playerInternalData.playerScienceData(),
             ).forEach {

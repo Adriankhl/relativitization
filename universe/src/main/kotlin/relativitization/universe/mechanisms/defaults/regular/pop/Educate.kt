@@ -19,11 +19,6 @@ object Educate : Mechanism() {
         universeGlobalData: UniverseGlobalData
     ): List<Command> {
 
-        val gamma: Double = Relativistic.gamma(
-            universeData3DAtPlayer.getCurrentPlayerData().velocity,
-            universeSettings.speedOfLight
-        )
-
         mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.forEach { mutableCarrierData ->
             val totalPopulation: Double = mutableCarrierData.allPopData.totalAdultPopulation()
 
@@ -41,7 +36,6 @@ object Educate : Mechanism() {
                         popType
                     )
                 val newEducationLevel: Double = computeNewEducationLevel(
-                    gamma = gamma,
                     originalEducationLevel = commonPopData.educationLevel,
                     educatorSatisfaction = educatorSatisfaction,
                     educatorPopulation = educatorPopulation,
@@ -57,7 +51,6 @@ object Educate : Mechanism() {
     }
 
     fun computeNewEducationLevel(
-        gamma: Double,
         originalEducationLevel: Double,
         educatorSatisfaction: Double,
         educatorPopulation: Double,
@@ -78,7 +71,7 @@ object Educate : Mechanism() {
 
         // Adjusted by time dilation
         val educationLevelChange: Double =
-            (relativeNewEducationLevel - maxDeltaEducationLevel) / gamma
+            (relativeNewEducationLevel - maxDeltaEducationLevel)
 
         val tempEducationLevel: Double = originalEducationLevel + educationLevelChange
 

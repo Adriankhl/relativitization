@@ -24,11 +24,6 @@ object ExportResource : Mechanism() {
         universeGlobalData: UniverseGlobalData
     ): List<Command> {
 
-        val gamma: Double = Relativistic.gamma(
-            universeData3DAtPlayer.getCurrentPlayerData().velocity,
-            universeSettings.speedOfLight
-        )
-
         // Clear export center with zero fuel rest mass left
         mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.forEach { mutableCarrierData ->
             mutableCarrierData.allPopData.servicePopData.exportData.clearExportCenterData()
@@ -41,7 +36,6 @@ object ExportResource : Mechanism() {
                     mutableServicePopData = mutableServicePopData,
                     mutablePlayerData = mutablePlayerData,
                     universeData3DAtPlayer = universeData3DAtPlayer,
-                    gamma = gamma,
                 )
             }.flatten()
 
@@ -53,7 +47,6 @@ object ExportResource : Mechanism() {
                     mutableServicePopData = mutableServicePopData,
                     mutablePlayerData = mutablePlayerData,
                     universeData3DAtPlayer = universeData3DAtPlayer,
-                    gamma = gamma,
                 )
             }.flatten()
 
@@ -69,7 +62,6 @@ object ExportResource : Mechanism() {
         mutablePlayerSingleExportData: MutablePlayerSingleExportData,
         mutablePlayerData: MutablePlayerData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
-        gamma: Double,
     ): Double {
         val targetTopLeaderId: Int = universeData3DAtPlayer.get(
             mutablePlayerSingleExportData.targetPlayerId
@@ -90,7 +82,7 @@ object ExportResource : Mechanism() {
         val educationLevelMultiplier: Double =
             (mutableServicePopData.commonPopData.educationLevel * 9.0) + 1.0
         val employeeFraction: Double = if (totalExportAmount > 0.0) {
-            numEmployee * educationLevelMultiplier / totalExportAmount / gamma
+            numEmployee * educationLevelMultiplier / totalExportAmount
         } else {
             1.0
         }
@@ -139,7 +131,6 @@ object ExportResource : Mechanism() {
         ownerPlayerId: Int,
         mutablePlayerData: MutablePlayerData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
-        gamma: Double,
     ): Double {
         val targetTopLeaderId: Int = universeData3DAtPlayer.get(
             ownerPlayerId
@@ -160,7 +151,7 @@ object ExportResource : Mechanism() {
         val educationLevelMultiplier: Double =
             (mutableServicePopData.commonPopData.educationLevel * 9.0) + 1.0
         val employeeFraction: Double = if (totalExportAmount > 0.0) {
-            numEmployee * educationLevelMultiplier / totalExportAmount / gamma
+            numEmployee * educationLevelMultiplier / totalExportAmount
         } else {
             1.0
         }
@@ -206,7 +197,6 @@ object ExportResource : Mechanism() {
         mutableServicePopData: MutableServicePopData,
         mutablePlayerData: MutablePlayerData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
-        gamma: Double,
     ): List<Command> {
 
         return mutableServicePopData.exportData.playerExportCenterMap.map { (_, exportCenterData) ->
@@ -235,7 +225,6 @@ object ExportResource : Mechanism() {
                     mutablePlayerSingleExportData = mutablePlayerSingleExportData,
                     mutablePlayerData = mutablePlayerData,
                     universeData3DAtPlayer = universeData3DAtPlayer,
-                    gamma = gamma,
                 )
 
                 val amount: Double = mutablePlayerSingleExportData.amountPerTime * exportFraction
@@ -281,7 +270,6 @@ object ExportResource : Mechanism() {
         mutableServicePopData: MutableServicePopData,
         mutablePlayerData: MutablePlayerData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
-        gamma: Double,
     ): List<Command> {
 
         return mutableServicePopData.exportData.popExportCenterMap.map { (ownerPlayerId, exportCenterData) ->
@@ -315,7 +303,6 @@ object ExportResource : Mechanism() {
                             ownerPlayerId = ownerPlayerId,
                             mutablePlayerData = mutablePlayerData,
                             universeData3DAtPlayer = universeData3DAtPlayer,
-                            gamma = gamma,
                         )
 
                         val amount: Double =

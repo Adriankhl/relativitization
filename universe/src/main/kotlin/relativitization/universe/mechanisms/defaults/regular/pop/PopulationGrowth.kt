@@ -24,11 +24,6 @@ object PopulationGrowth : Mechanism() {
         universeGlobalData: UniverseGlobalData
     ): List<Command> {
 
-        val gamma: Double = Relativistic.gamma(
-            universeData3DAtPlayer.getCurrentPlayerData().velocity,
-            universeSettings.speedOfLight
-        )
-
         mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.forEach { mutableCarrierData ->
             val totalPopulation: Double = mutableCarrierData.allPopData.totalAdultPopulation()
             val medicFactor: Double = computeMedicFactor(
@@ -43,7 +38,6 @@ object PopulationGrowth : Mechanism() {
                     )
 
                 val newPopulation: Double = computeNewPop(
-                    gamma = gamma,
                     popType = popType,
                     medicFactor = medicFactor,
                     satisfaction = commonPopData.satisfaction,
@@ -90,7 +84,6 @@ object PopulationGrowth : Mechanism() {
      * Compute new population
      */
     fun computeNewPop(
-        gamma: Double,
         popType: PopType,
         medicFactor: Double,
         satisfaction: Double,
@@ -126,7 +119,7 @@ object PopulationGrowth : Mechanism() {
         )
 
         // Adjusted by time dilation
-        val populationChange: Double = (relativeNewPopulation - maxPopulationChange) / gamma
+        val populationChange: Double = (relativeNewPopulation - maxPopulationChange)
 
         return currentPopulation + populationChange
     }

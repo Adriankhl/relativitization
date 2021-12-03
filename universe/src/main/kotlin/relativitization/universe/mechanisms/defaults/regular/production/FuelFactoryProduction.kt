@@ -37,12 +37,6 @@ object FuelFactoryProduction : Mechanism() {
             1.0
         }
 
-        val gamma: Double = Relativistic.gamma(
-            universeData3DAtPlayer.getCurrentPlayerData().velocity,
-            universeSettings.speedOfLight
-        )
-
-
         // Do self factory production first if it is not disabled
         if (mutablePlayerData.playerInternalData.modifierData().physicsModifierData.disableRestMassIncreaseTimeLimit <= 0) {
             mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.forEach { carrier ->
@@ -52,7 +46,6 @@ object FuelFactoryProduction : Mechanism() {
                     updateResourceData(
                         factory,
                         mutablePlayerData.playerInternalData.physicsData(),
-                        gamma,
                         maxFuelPerCubeFactor,
                     )
                 }
@@ -68,7 +61,6 @@ object FuelFactoryProduction : Mechanism() {
                     computeSendFuelCommand(
                         factory,
                         mutablePlayerData,
-                        gamma,
                         maxFuelPerCubeFactor,
                     )
                 }
@@ -102,13 +94,11 @@ object FuelFactoryProduction : Mechanism() {
      *
      * @param mutableFuelFactoryData the factory producing this resource
      * @param physicsData physics data of the player
-     * @param gamma Lorentz factor
      * @param maxFuelPerCubeFactor affected by how many fuel factory in a space unit
      */
     fun updateResourceData(
         mutableFuelFactoryData: MutableFuelFactoryData,
         physicsData: MutablePhysicsData,
-        gamma: Double,
         maxFuelPerCubeFactor: Double,
     ) {
         val amountFraction: Double = productAmountFraction(
@@ -118,7 +108,7 @@ object FuelFactoryProduction : Mechanism() {
 
         val outputAmount: Double =
             mutableFuelFactoryData.fuelFactoryInternalData.maxOutputAmount * amountFraction *
-                    mutableFuelFactoryData.numBuilding * maxFuelPerCubeFactor / gamma
+                    mutableFuelFactoryData.numBuilding * maxFuelPerCubeFactor
 
         mutableFuelFactoryData.lastOutputAmount = outputAmount
 
@@ -131,12 +121,10 @@ object FuelFactoryProduction : Mechanism() {
      *
      * @param mutableFuelFactoryData the factory to produce resource
      * @param mutablePlayerData the player of that factory
-     * @param gamma Lorentz factor
      */
     fun computeSendFuelCommand(
         mutableFuelFactoryData: MutableFuelFactoryData,
         mutablePlayerData: MutablePlayerData,
-        gamma: Double,
         maxFuelPerCubeFactor: Double,
     ): Command {
         val toId: Int = mutableFuelFactoryData.ownerPlayerId
@@ -149,7 +137,7 @@ object FuelFactoryProduction : Mechanism() {
 
         val outputAmount: Double =
             mutableFuelFactoryData.fuelFactoryInternalData.maxOutputAmount * amountFraction *
-                    mutableFuelFactoryData.numBuilding * maxFuelPerCubeFactor / gamma
+                    mutableFuelFactoryData.numBuilding * maxFuelPerCubeFactor
 
         mutableFuelFactoryData.lastOutputAmount = outputAmount
 

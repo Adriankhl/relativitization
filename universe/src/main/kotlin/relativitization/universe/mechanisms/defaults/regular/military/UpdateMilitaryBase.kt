@@ -20,11 +20,6 @@ object UpdateMilitaryBase : Mechanism() {
         universeGlobalData: UniverseGlobalData
     ): List<Command> {
 
-        val gamma: Double = Relativistic.gamma(
-            universeData3DAtPlayer.getCurrentPlayerData().velocity,
-            universeSettings.speedOfLight
-        )
-
         // Affect the size of the shield compare to typical attack
         val maxShieldFactor: Double = 5.0
         // Affect how fast the shield recharge
@@ -42,7 +37,6 @@ object UpdateMilitaryBase : Mechanism() {
                 maxShieldFactor = maxShieldFactor,
                 shieldChangeFactor = shieldChangeFactor,
                 combatModifierData = mutablePlayerData.playerInternalData.modifierData().combatModifierData,
-                gamma = gamma,
             )
 
             mutableCarrierData.allPopData.soldierPopData.militaryBaseData.attack = newAttack
@@ -78,7 +72,6 @@ object UpdateMilitaryBase : Mechanism() {
         maxShieldFactor: Double = 5.0,
         shieldChangeFactor: Double,
         combatModifierData: MutableCombatModifierData,
-        gamma: Double,
     ): Double {
 
         val originalShield: Double = soldierPopData.militaryBaseData.shield
@@ -111,6 +104,6 @@ object UpdateMilitaryBase : Mechanism() {
         }
 
         // Adjusted by time dilation
-        return originalShield + (change / gamma)
+        return originalShield + change
     }
 }

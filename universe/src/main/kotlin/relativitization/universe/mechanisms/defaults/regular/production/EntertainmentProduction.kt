@@ -19,16 +19,11 @@ object EntertainmentProduction : Mechanism() {
         universeGlobalData: UniverseGlobalData
     ): List<Command> {
 
-        val gamma: Double = Relativistic.gamma(
-            universeData3DAtPlayer.getCurrentPlayerData().velocity,
-            universeSettings.speedOfLight
-        )
-
         mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.forEach { mutableCarrierData ->
             val entertainerPopData: MutableEntertainerPopData =
                 mutableCarrierData.allPopData.entertainerPopData
 
-            val amount: Double = entertainerPopData.commonPopData.adultPopulation * 20.0 / gamma
+            val amount: Double = entertainerPopData.commonPopData.adultPopulation * 20.0
 
             val qualityData: MutableResourceQualityData = computeEntertainmentQuality(
                 entertainerPopData,
