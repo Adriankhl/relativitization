@@ -39,7 +39,6 @@ object DefaultMechanismLists : MechanismLists() {
         PopBuyResource,
         UpdateDesire,
         UpdateMilitaryBase,
-        BaseStellarFuelProduction,
         FuelFactoryProduction,
         ResourceFactoryProduction,
         EntertainmentProduction,
@@ -61,6 +60,7 @@ object DefaultMechanismLists : MechanismLists() {
 
     override val dilatedMechanismList: List<Mechanism> = listOf(
         Employment,
+        BaseStellarFuelProduction,
         UpdateModifierByProperTime,
     )
 }

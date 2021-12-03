@@ -23,16 +23,10 @@ object BaseStellarFuelProduction : Mechanism() {
 
         // Produce if only fuel increase is not disable
         if (mutablePlayerData.playerInternalData.modifierData().physicsModifierData.disableRestMassIncreaseTimeLimit <= 0) {
-            val gamma: Double = Relativistic.gamma(
-                universeData3DAtPlayer.getCurrentPlayerData().velocity,
-                universeSettings.speedOfLight
-            )
-
             val fuelList: List<Double> =
                 mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.map {
                     baseFuelProduction(
                         mutableCarrierData = it,
-                        gamma
                     )
                 }
 
@@ -46,11 +40,10 @@ object BaseStellarFuelProduction : Mechanism() {
 
     fun baseFuelProduction(
         mutableCarrierData: MutableCarrierData,
-        gamma: Double,
     ): Double {
         return if (mutableCarrierData.carrierType == CarrierType.STELLAR) {
             // Estimate the relation between star mass and energy received by planet
-            mutableCarrierData.carrierInternalData.coreRestMass / 1E24 / gamma
+            mutableCarrierData.carrierInternalData.coreRestMass / 1E24
         } else {
             0.0
         }
