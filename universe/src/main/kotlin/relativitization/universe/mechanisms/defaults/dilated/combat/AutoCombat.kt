@@ -1,4 +1,4 @@
-package relativitization.universe.mechanisms.defaults.regular.combat
+package relativitization.universe.mechanisms.defaults.dilated.combat
 
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.PlayerData
@@ -8,7 +8,6 @@ import relativitization.universe.data.commands.Command
 import relativitization.universe.data.commands.DamageCommand
 import relativitization.universe.data.components.defaults.diplomacy.DiplomaticRelationState
 import relativitization.universe.data.global.UniverseGlobalData
-import relativitization.universe.maths.physics.Relativistic
 import relativitization.universe.mechanisms.Mechanism
 import kotlin.random.Random
 

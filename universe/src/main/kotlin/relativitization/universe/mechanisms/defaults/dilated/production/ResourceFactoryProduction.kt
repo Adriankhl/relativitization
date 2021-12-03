@@ -1,4 +1,4 @@
-package relativitization.universe.mechanisms.defaults.regular.production
+package relativitization.universe.mechanisms.defaults.dilated.production
 
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseData3DAtPlayer
@@ -13,7 +13,6 @@ import relativitization.universe.data.components.defaults.economy.ResourceType
 import relativitization.universe.data.components.defaults.popsystem.pop.labourer.MutableLabourerPopData
 import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.MutableResourceFactoryData
 import relativitization.universe.data.global.UniverseGlobalData
-import relativitization.universe.maths.physics.Relativistic
 import relativitization.universe.mechanisms.Mechanism
 import kotlin.math.max
 

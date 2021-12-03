@@ -1,4 +1,4 @@
-package relativitization.universe.mechanisms.defaults.regular.pop
+package relativitization.universe.mechanisms.defaults.dilated.pop
 
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseData3DAtPlayer
@@ -11,7 +11,6 @@ import relativitization.universe.data.components.defaults.economy.ResourceQualit
 import relativitization.universe.data.components.defaults.popsystem.pop.MutableCommonPopData
 import relativitization.universe.data.components.defaults.popsystem.pop.PopType
 import relativitization.universe.data.global.UniverseGlobalData
-import relativitization.universe.maths.physics.Relativistic
 import relativitization.universe.mechanisms.Mechanism
 
 /**

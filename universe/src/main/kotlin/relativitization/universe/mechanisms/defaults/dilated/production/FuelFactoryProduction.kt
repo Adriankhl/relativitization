@@ -1,4 +1,4 @@
-package relativitization.universe.mechanisms.defaults.regular.production
+package relativitization.universe.mechanisms.defaults.dilated.production
 
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseData3DAtPlayer
@@ -8,7 +8,6 @@ import relativitization.universe.data.commands.SendFuelCommand
 import relativitization.universe.data.components.MutablePhysicsData
 import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.MutableFuelFactoryData
 import relativitization.universe.data.global.UniverseGlobalData
-import relativitization.universe.maths.physics.Relativistic
 import relativitization.universe.mechanisms.Mechanism
 
 object FuelFactoryProduction : Mechanism() {

@@ -1,4 +1,4 @@
-package relativitization.universe.mechanisms.defaults.regular.research
+package relativitization.universe.mechanisms.defaults.dilated.research
 
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseData3DAtPlayer
@@ -10,9 +10,7 @@ import relativitization.universe.data.components.defaults.science.knowledge.Appl
 import relativitization.universe.data.components.defaults.science.knowledge.BasicResearchProjectData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.global.defaults.science.UpdateUniverseScienceData
-import relativitization.universe.maths.physics.Relativistic
 import relativitization.universe.mechanisms.Mechanism
-import kotlin.math.pow
 import kotlin.random.Random
 
 object KnowledgeDiffusion : Mechanism() {

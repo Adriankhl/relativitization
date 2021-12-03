@@ -1,4 +1,4 @@
-package relativitization.universe.mechanisms.defaults.regular.military
+package relativitization.universe.mechanisms.defaults.dilated.military
 
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseData3DAtPlayer
@@ -8,7 +8,6 @@ import relativitization.universe.data.components.MutablePlayerScienceData
 import relativitization.universe.data.components.defaults.modifier.MutableCombatModifierData
 import relativitization.universe.data.components.defaults.popsystem.pop.soldier.MutableSoldierPopData
 import relativitization.universe.data.global.UniverseGlobalData
-import relativitization.universe.maths.physics.Relativistic
 import relativitization.universe.mechanisms.Mechanism
 import kotlin.math.min
 

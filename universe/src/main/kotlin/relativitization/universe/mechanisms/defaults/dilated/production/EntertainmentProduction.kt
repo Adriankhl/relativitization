@@ -1,4 +1,4 @@
-package relativitization.universe.mechanisms.defaults.regular.production
+package relativitization.universe.mechanisms.defaults.dilated.production
 
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseData3DAtPlayer
@@ -8,7 +8,6 @@ import relativitization.universe.data.components.defaults.economy.MutableResourc
 import relativitization.universe.data.components.defaults.economy.ResourceType
 import relativitization.universe.data.components.defaults.popsystem.pop.entertainer.MutableEntertainerPopData
 import relativitization.universe.data.global.UniverseGlobalData
-import relativitization.universe.maths.physics.Relativistic
 import relativitization.universe.mechanisms.Mechanism
 
 object EntertainmentProduction : Mechanism() {

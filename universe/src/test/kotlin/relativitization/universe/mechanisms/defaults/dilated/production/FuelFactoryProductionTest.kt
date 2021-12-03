@@ -1,4 +1,4 @@
-package relativitization.universe.mechanisms.defaults.regular.production
+package relativitization.universe.mechanisms.defaults.dilated.production
 
 import kotlinx.coroutines.runBlocking
 import relativitization.universe.Universe

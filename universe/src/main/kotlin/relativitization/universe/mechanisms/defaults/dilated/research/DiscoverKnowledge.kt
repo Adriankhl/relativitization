@@ -1,4 +1,4 @@
-package relativitization.universe.mechanisms.defaults.regular.research
+package relativitization.universe.mechanisms.defaults.dilated.research
 
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseData3DAtPlayer
@@ -21,13 +21,11 @@ import relativitization.universe.data.global.components.UniverseScienceData
 import relativitization.universe.global.defaults.science.UpdateUniverseScienceData
 import relativitization.universe.maths.algebra.Logistic
 import relativitization.universe.maths.physics.Intervals
-import relativitization.universe.maths.physics.Relativistic
 import relativitization.universe.mechanisms.Mechanism
 import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.math.PI
 import kotlin.math.log2
 import kotlin.math.min
-import kotlin.math.pow
 import kotlin.random.Random
 
 object DiscoverKnowledge : Mechanism() {

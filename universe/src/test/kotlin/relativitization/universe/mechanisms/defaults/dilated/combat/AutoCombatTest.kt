@@ -1,4 +1,4 @@
-package relativitization.universe.mechanisms.defaults.regular.combat
+package relativitization.universe.mechanisms.defaults.dilated.combat
 
 import kotlinx.coroutines.runBlocking
 import relativitization.universe.Universe

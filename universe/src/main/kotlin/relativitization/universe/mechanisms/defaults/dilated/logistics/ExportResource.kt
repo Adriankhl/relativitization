@@ -1,4 +1,4 @@
-package relativitization.universe.mechanisms.defaults.regular.logistics
+package relativitization.universe.mechanisms.defaults.dilated.logistics
 
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseData3DAtPlayer
@@ -12,7 +12,6 @@ import relativitization.universe.data.components.defaults.popsystem.pop.service.
 import relativitization.universe.data.components.defaults.popsystem.pop.service.export.MutablePlayerSingleExportData
 import relativitization.universe.data.components.defaults.popsystem.pop.service.export.MutablePopSingleExportData
 import relativitization.universe.data.global.UniverseGlobalData
-import relativitization.universe.maths.physics.Relativistic
 import relativitization.universe.mechanisms.Mechanism
 import kotlin.math.max
 
