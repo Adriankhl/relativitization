@@ -20,17 +20,9 @@ data class MutableModifierData(
     var diplomacyModifierData: MutableDiplomacyModifierData = MutableDiplomacyModifierData(),
 ) : MutableDefaultPlayerDataComponent() {
     /**
-     * Decrease time of modifiers
-     */
-    fun updateModifierTime(gamma: Double) {
-        updateByUniverseTime()
-        updateByProperTime(gamma)
-    }
-
-    /**
      * Update the time by universe time
      */
-    private fun updateByUniverseTime() {
+    fun updateByUniverseTime() {
         physicsModifierData.updateByUniverseTime()
         combatModifierData.updateByUniverseTime()
         diplomacyModifierData.updateByUniverseTime()
@@ -40,9 +32,9 @@ data class MutableModifierData(
     /**
      * Update the time by proper (dilated) time of the player
      */
-    private fun updateByProperTime(gamma: Double) {
-        physicsModifierData.updateByProperTime(gamma)
-        combatModifierData.updateByProperTime(gamma)
-        diplomacyModifierData.updateByProperTime(gamma)
+    fun updateByProperTime() {
+        physicsModifierData.updateByProperTime()
+        combatModifierData.updateByProperTime()
+        diplomacyModifierData.updateByProperTime()
     }
 }

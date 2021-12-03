@@ -59,8 +59,8 @@ data class MutableDiplomacyModifierData(
     /**
      * Update the time by proper (dilated) time of the player
      */
-    fun updateByProperTime(gamma: Double) {
-        relationModifierMap.values.forEach { it.updateByProperTime(gamma) }
+    fun updateByProperTime() {
+        relationModifierMap.values.forEach { it.updateByProperTime() }
     }
 
 
@@ -160,14 +160,14 @@ data class MutableRelationModifier(
     /**
      * Update the time by proper (dilated) time of the player
      */
-    fun updateByProperTime(gamma: Double) {
+    fun updateByProperTime() {
         // Clear modifier when time left is smaller than 0
         receiveFuelList.removeIf {
             it.durationLeft < 0.0
         }
 
         receiveFuelList.forEach {
-            it.durationLeft -= 1.0 / gamma
+            it.durationLeft -= 1.0
         }
     }
 
