@@ -27,16 +27,10 @@ object PopBuyResource : Mechanism() {
         universeGlobalData: UniverseGlobalData
     ): List<Command> {
 
-        val gamma: Double = Relativistic.gamma(
-            universeData3DAtPlayer.getCurrentPlayerData().velocity,
-            universeSettings.speedOfLight
-        )
-
         mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.forEach { mutableCarrierData ->
             PopType.values().forEach { popType ->
                 val commonPopData = mutableCarrierData.allPopData.getCommonPopData(popType)
                 buyFromThisPlayer(
-                    gamma,
                     mutablePlayerData.playerInternalData.physicsData(),
                     commonPopData,
                     mutablePlayerData.playerInternalData.economyData(),
@@ -48,7 +42,6 @@ object PopBuyResource : Mechanism() {
     }
 
     fun buyFromThisPlayer(
-        gamma: Double,
         physicsData: MutablePhysicsData,
         commonPopData: MutableCommonPopData,
         economyData: MutableEconomyData,
@@ -73,7 +66,7 @@ object PopBuyResource : Mechanism() {
 
                     // Pick the resource class with sufficient amount and sufficiently cheap
                     // Adjusted by time dilation
-                    (amount >= desireData.desireAmount / gamma) && (availableFuelPerResource >= price * desireData.desireAmount / gamma)
+                    (amount >= desireData.desireAmount ) && (availableFuelPerResource >= price * desireData.desireAmount)
                 } ?: ResourceQualityClass.THIRD
 
             val selectedQuality: MutableResourceQualityData =
@@ -89,7 +82,7 @@ object PopBuyResource : Mechanism() {
 
             val totalAmount: Double = if (selectedPrice > 0.0) {
                 listOf(
-                    desireData.desireAmount / gamma,
+                    desireData.desireAmount,
                     economyData.resourceData.getTradeResourceAmount(
                         resourceType,
                         selectedClass,
@@ -98,7 +91,7 @@ object PopBuyResource : Mechanism() {
                 ).minOf { it }
             } else {
                 listOf(
-                    desireData.desireAmount / gamma,
+                    desireData.desireAmount,
                     economyData.resourceData.getTradeResourceAmount(
                         resourceType,
                         selectedClass,
