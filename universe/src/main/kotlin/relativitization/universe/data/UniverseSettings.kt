@@ -8,7 +8,7 @@ import relativitization.universe.global.DefaultGlobalMechanismList
 import relativitization.universe.global.name
 import relativitization.universe.maths.physics.Intervals.intDelay
 import relativitization.universe.maths.physics.Intervals.maxDelayAfterMove
-import relativitization.universe.mechanisms.DefaultMechanismList
+import relativitization.universe.mechanisms.DefaultMechanismLists
 import relativitization.universe.mechanisms.name
 
 /**
@@ -30,7 +30,7 @@ import relativitization.universe.mechanisms.name
 @Serializable
 data class UniverseSettings(
     val universeName: String = "Test",
-    val mechanismCollectionName: String = DefaultMechanismList.name(),
+    val mechanismCollectionName: String = DefaultMechanismLists.name(),
     val commandCollectionName: String = DefaultCommandAvailability.name(),
     val globalMechanismCollectionName: String = DefaultGlobalMechanismList.name(),
     val speedOfLight: Double = 1.0,
@@ -64,7 +64,7 @@ data class UniverseSettings(
 @Serializable
 data class MutableUniverseSettings(
     var universeName: String = "Test",
-    var mechanismCollectionName: String = DefaultMechanismList.name(),
+    var mechanismCollectionName: String = DefaultMechanismLists.name(),
     var commandCollectionName: String = DefaultCommandAvailability.name(),
     var globalMechanismCollectionName: String = DefaultGlobalMechanismList.name(),
     var speedOfLight: Double = 1.0,

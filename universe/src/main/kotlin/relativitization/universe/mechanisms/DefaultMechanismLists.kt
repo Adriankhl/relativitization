@@ -26,7 +26,7 @@ import relativitization.universe.mechanisms.defaults.sync.SyncHierarchy
 import relativitization.universe.mechanisms.defaults.sync.SyncPlayerData
 import relativitization.universe.mechanisms.defaults.sync.SyncPlayerScienceData
 
-object DefaultMechanismList : MechanismList() {
+object DefaultMechanismLists : MechanismLists() {
     override val regularMechanismList: List<Mechanism> = listOf(
         SyncPlayerData,
         ClearDeadPlayer,
