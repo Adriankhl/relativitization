@@ -25,18 +25,12 @@ object Employment : Mechanism() {
         universeGlobalData: UniverseGlobalData
     ): List<Command> {
 
-        val gamma: Double = Relativistic.gamma(
-            universeData3DAtPlayer.getCurrentPlayerData().velocity,
-            universeSettings.speedOfLight
-        )
-
 
         val fuelRestMassData: MutableFuelRestMassData =
             mutablePlayerData.playerInternalData.physicsData().fuelRestMassData
 
         mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.forEach {
             updateEmployment(
-                gamma,
                 it,
                 fuelRestMassData,
                 mutablePlayerData.playerInternalData.economyData(),
@@ -48,14 +42,12 @@ object Employment : Mechanism() {
     }
 
     fun updateEmployment(
-        gamma: Double,
         carrierData: MutableCarrierData,
         fuelRestMassData: MutableFuelRestMassData,
         mutableEconomyData: MutableEconomyData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
     ) {
         updateLabourerEmployment(
-            gamma,
             carrierData.allPopData.labourerPopData,
             fuelRestMassData,
             mutableEconomyData,
@@ -64,7 +56,6 @@ object Employment : Mechanism() {
         )
 
         updateSoldierEmployment(
-            gamma,
             carrierData.allPopData.soldierPopData,
             fuelRestMassData,
             mutableEconomyData,
@@ -72,7 +63,6 @@ object Employment : Mechanism() {
         )
 
         updateCommonEmployment(
-            gamma,
             carrierData.allPopData.entertainerPopData.commonPopData,
             fuelRestMassData,
             mutableEconomyData,
@@ -80,7 +70,6 @@ object Employment : Mechanism() {
         )
 
         updateCommonEmployment(
-            gamma,
             carrierData.allPopData.servicePopData.commonPopData,
             fuelRestMassData,
             mutableEconomyData,
@@ -88,7 +77,6 @@ object Employment : Mechanism() {
         )
 
         updateCommonEmployment(
-            gamma,
             carrierData.allPopData.medicPopData.commonPopData,
             fuelRestMassData,
             mutableEconomyData,
@@ -96,7 +84,6 @@ object Employment : Mechanism() {
         )
 
         updateCommonEmployment(
-            gamma,
             carrierData.allPopData.educatorPopData.commonPopData,
             fuelRestMassData,
             mutableEconomyData,
@@ -104,7 +91,6 @@ object Employment : Mechanism() {
         )
 
         updateEngineerEmployment(
-            gamma,
             carrierData.allPopData.engineerPopData,
             fuelRestMassData,
             mutableEconomyData,
@@ -112,7 +98,6 @@ object Employment : Mechanism() {
         )
 
         updateScholarEmployment(
-            gamma,
             carrierData.allPopData.scholarPopData,
             fuelRestMassData,
             mutableEconomyData,
@@ -126,14 +111,13 @@ object Employment : Mechanism() {
      * Prioritize self factories than other factories, fuel factories than resource factories
      */
     fun updateLabourerEmployment(
-        gamma: Double,
         labourerPopData: MutableLabourerPopData,
         fuelRestMassData: MutableFuelRestMassData,
         mutableEconomyData: MutableEconomyData,
         economyData: EconomyData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
     ) {
-        val salary: Double = labourerPopData.commonPopData.salary / gamma
+        val salary: Double = labourerPopData.commonPopData.salary
 
         val incomeTax: Double = economyData.taxData.taxRateData.incomeTax.getIncomeTax(salary)
 
@@ -347,13 +331,12 @@ object Employment : Mechanism() {
     }
 
     fun updateScholarEmployment(
-        gamma: Double,
         scholarPopData: MutableScholarPopData,
         fuelRestMassData: MutableFuelRestMassData,
         mutableEconomyData: MutableEconomyData,
         economyData: EconomyData,
     ) {
-        val salary: Double = scholarPopData.commonPopData.salary / gamma
+        val salary: Double = scholarPopData.commonPopData.salary
 
         val incomeTax: Double = economyData.taxData.taxRateData.incomeTax.getIncomeTax(salary)
 
@@ -419,13 +402,12 @@ object Employment : Mechanism() {
 
 
     fun updateEngineerEmployment(
-        gamma: Double,
         engineerPopData: MutableEngineerPopData,
         fuelRestMassData: MutableFuelRestMassData,
         mutableEconomyData: MutableEconomyData,
         economyData: EconomyData,
     ) {
-        val salary: Double = engineerPopData.commonPopData.salary / gamma
+        val salary: Double = engineerPopData.commonPopData.salary
 
         val incomeTax: Double = economyData.taxData.taxRateData.incomeTax.getIncomeTax(salary)
 
@@ -493,13 +475,12 @@ object Employment : Mechanism() {
      * Update soldier employment
      */
     fun updateSoldierEmployment(
-        gamma: Double,
         soldierPopData: MutableSoldierPopData,
         fuelRestMassData: MutableFuelRestMassData,
         mutableEconomyData: MutableEconomyData,
         economyData: EconomyData,
     ) {
-        val salary: Double = soldierPopData.commonPopData.salary / gamma
+        val salary: Double = soldierPopData.commonPopData.salary
 
         val incomeTax: Double = economyData.taxData.taxRateData.incomeTax.getIncomeTax(salary)
 
@@ -532,13 +513,12 @@ object Employment : Mechanism() {
      * Generic salary payment, pay all or nothing
      */
     fun updateCommonEmployment(
-        gamma: Double,
         commonPopData: MutableCommonPopData,
         fuelRestMassData: MutableFuelRestMassData,
         mutableEconomyData: MutableEconomyData,
         economyData: EconomyData,
     ) {
-        val salary: Double = commonPopData.salary / gamma
+        val salary: Double = commonPopData.salary
 
         val incomeTax: Double = economyData.taxData.taxRateData.incomeTax.getIncomeTax(salary)
 

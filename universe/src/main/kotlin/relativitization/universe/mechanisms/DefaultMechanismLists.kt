@@ -36,7 +36,6 @@ object DefaultMechanismLists : MechanismLists() {
         UpdateWarState,
         UpdateDiplomaticRelation,
         UpdateDiplomaticRelationState,
-        Employment,
         PopBuyResource,
         UpdateDesire,
         UpdateMilitaryBase,
@@ -61,6 +60,7 @@ object DefaultMechanismLists : MechanismLists() {
     )
 
     override val dilatedMechanismList: List<Mechanism> = listOf(
+        Employment,
         UpdateModifierByProperTime,
     )
 }
