@@ -1,5 +1,7 @@
 package relativitization.universe.mechanisms
 
 object EmptyMechanismList : MechanismList() {
-    override val mechanismList: List<Mechanism> = listOf()
+    override val regularMechanismList: List<Mechanism> = listOf()
+
+    override val dilatedMechanismList: List<Mechanism> = listOf()
 }

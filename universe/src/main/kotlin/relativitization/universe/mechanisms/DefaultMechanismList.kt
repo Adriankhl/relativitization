@@ -27,7 +27,7 @@ import relativitization.universe.mechanisms.defaults.sync.SyncPlayerData
 import relativitization.universe.mechanisms.defaults.sync.SyncPlayerScienceData
 
 object DefaultMechanismList : MechanismList() {
-    override val mechanismList: List<Mechanism> = listOf(
+    override val regularMechanismList: List<Mechanism> = listOf(
         SyncPlayerData,
         ClearDeadPlayer,
         AutoEventCollection,
@@ -58,4 +58,6 @@ object DefaultMechanismList : MechanismList() {
         UpdateScienceApplicationData,
         UpdateModifierTime,
     )
+
+    override val dilatedMechanismList: List<Mechanism> = listOf()
 }

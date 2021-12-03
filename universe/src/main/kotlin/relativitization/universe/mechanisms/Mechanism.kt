@@ -26,7 +26,11 @@ abstract class Mechanism {
 }
 
 sealed class MechanismList {
-    abstract val mechanismList: List<Mechanism>
+    // Mechanisms that are not affected by time dilation
+    abstract val regularMechanismList: List<Mechanism>
+
+    // Mechanisms that are affected by time dilation
+    abstract val dilatedMechanismList: List<Mechanism>
 }
 
 fun MechanismList.name(): String = this::class.simpleName.toString()
@@ -50,7 +54,7 @@ object MechanismCollection {
         return mechanismListMap.getOrElse(universeData.universeSettings.mechanismCollectionName) {
             logger.error("No mechanism name matched, use empty mechanism")
             EmptyMechanismList
-        }.mechanismList.map { mechanism ->
+        }.regularMechanismList.map { mechanism ->
             if (mutablePlayerData.playerInternalData.isAlive) {
                 mechanism.process(
                     mutablePlayerData,
