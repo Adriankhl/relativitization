@@ -1,5 +1,6 @@
 package relativitization.game.screens
 
+import com.badlogic.gdx.scenes.scene2d.ui.Table
 import io.ktor.http.*
 import kotlinx.coroutines.runBlocking
 import relativitization.game.RelativitizationGame
@@ -37,10 +38,10 @@ class LoadUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asse
 
         root.row().space(10f)
 
-        val loadFailLabel = createLabel("", gdxSettings.normalFontSize)
+        val loadFailLabel = createLabel("", gdxSettings.bigFontSize)
         val loadButton = createTextButton(
             "Load",
-            gdxSettings.normalFontSize,
+            gdxSettings.bigFontSize,
             gdxSettings.soundEffectsVolume
         ) {
             runBlocking {
@@ -53,7 +54,23 @@ class LoadUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asse
                 }
             }
         }
-        root.add(loadButton)
+
+        val cancelButton = createTextButton(
+            "Cancel",
+            gdxSettings.bigFontSize,
+            gdxSettings.soundEffectsVolume
+        ) {
+            game.screen = MainMenuScreen(game)
+            dispose()
+        }
+
+        val buttonTable = Table()
+
+        buttonTable.add(loadButton).space(10f)
+
+        buttonTable.add(cancelButton).space(10f)
+
+        root.add(buttonTable)
         root.row().space(10f)
         root.add(loadFailLabel)
     }
