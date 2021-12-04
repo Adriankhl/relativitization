@@ -5,7 +5,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Container
 import com.badlogic.gdx.scenes.scene2d.ui.SplitPane
 import relativitization.game.RelativitizationGame
 import relativitization.game.ShowingInfoType
-import relativitization.game.components.info.*
+import relativitization.game.components.bottom.BottomCommandInfo
+import relativitization.game.components.upper.*
 import relativitization.game.utils.ScreenComponent
 
 class GameScreenInfo(val game: RelativitizationGame) : ScreenComponent<SplitPane>(game.assets) {

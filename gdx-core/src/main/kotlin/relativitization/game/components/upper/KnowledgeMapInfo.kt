@@ -1,4 +1,4 @@
-package relativitization.game.components.info
+package relativitization.game.components.upper
 
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.scenes.scene2d.Group

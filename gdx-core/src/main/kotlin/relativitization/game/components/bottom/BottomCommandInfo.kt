@@ -1,4 +1,4 @@
-package relativitization.game.components.info
+package relativitization.game.components.bottom
 
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
