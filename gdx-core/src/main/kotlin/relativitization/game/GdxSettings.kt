@@ -56,6 +56,7 @@ data class GdxSettings(
 }
 
 enum class ShowingInfoType {
+    AI,
     PLAYERS,
     OVERVIEW,
     PHYSICS,

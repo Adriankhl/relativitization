@@ -210,8 +210,10 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
     private fun updateTable() {
         table.clear()
 
-        val headerLabel =
-            createLabel("Physics: player ${playerData.playerId}", gdxSettings.bigFontSize)
+        val headerLabel = createLabel(
+            "Physics: player ${playerData.playerId}",
+            gdxSettings.bigFontSize
+        )
 
         table.add(headerLabel).pad(20f)
 

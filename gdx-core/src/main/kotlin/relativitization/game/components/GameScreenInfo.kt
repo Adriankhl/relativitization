@@ -11,6 +11,7 @@ import relativitization.game.utils.ScreenComponent
 class GameScreenInfo(val game: RelativitizationGame) : ScreenComponent<SplitPane>(game.assets) {
     private val gdxSettings = game.gdxSettings
 
+    private val aiInfo: AIInfo = AIInfo(game)
     private val playersInfo: PlayersInfo = PlayersInfo(game)
     private val overviewInfo: OverviewInfo = OverviewInfo(game)
     private val physicsInfo: PhysicsInfo = PhysicsInfo(game)
@@ -32,6 +33,7 @@ class GameScreenInfo(val game: RelativitizationGame) : ScreenComponent<SplitPane
     init {
         // Add child screen component
         addChildScreenComponent(bottomCommandInfo)
+        addChildScreenComponent(aiInfo)
         addChildScreenComponent(playersInfo)
         addChildScreenComponent(overviewInfo)
         addChildScreenComponent(physicsInfo)
@@ -52,13 +54,13 @@ class GameScreenInfo(val game: RelativitizationGame) : ScreenComponent<SplitPane
     override fun onGdxSettingsChange() {
         // Show info type based on setting
         when (gdxSettings.showingInfoType) {
+            ShowingInfoType.AI -> upperInfoContainer.actor = aiInfo.getScreenComponent()
             ShowingInfoType.PLAYERS -> upperInfoContainer.actor = playersInfo.getScreenComponent()
             ShowingInfoType.OVERVIEW -> upperInfoContainer.actor = overviewInfo.getScreenComponent()
             ShowingInfoType.PHYSICS -> upperInfoContainer.actor = physicsInfo.getScreenComponent()
             ShowingInfoType.EVENTS -> upperInfoContainer.actor = eventsInfo.getScreenComponent()
             ShowingInfoType.COMMANDS -> upperInfoContainer.actor = commandsInfo.getScreenComponent()
-            ShowingInfoType.KNOWLEDGE_MAP -> upperInfoContainer.actor =
-                knowledgeMapInfo.getScreenComponent()
+            ShowingInfoType.KNOWLEDGE_MAP -> upperInfoContainer.actor = knowledgeMapInfo.getScreenComponent()
             ShowingInfoType.SCIENCE -> upperInfoContainer.actor = scienceInfo.getScreenComponent()
         }
 

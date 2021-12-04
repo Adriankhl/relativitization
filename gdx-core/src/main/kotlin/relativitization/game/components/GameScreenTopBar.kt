@@ -270,6 +270,23 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         game.changeGdxSettings()
     }
 
+    private val aiInfoButton: TextButton = createTextButton(
+        text = "AI",
+        fontSize = gdxSettings.normalFontSize,
+        soundVolume = gdxSettings.soundEffectsVolume
+    ) {
+        // If hiding, show the panel
+        if ((gdxSettings.showingInfoType == ShowingInfoType.AI) && gdxSettings.showingInfo) {
+            gdxSettings.showingInfo = false
+            gdxSettings.showingInfoType = ShowingInfoType.AI
+        } else {
+            gdxSettings.showingInfo = true
+            gdxSettings.showingInfoType = ShowingInfoType.AI
+        }
+        game.changeGdxSettings()
+    }
+
+
     private val playersInfoButton: TextButton = createTextButton(
         text = "Players",
         fontSize = gdxSettings.normalFontSize,
@@ -549,6 +566,8 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
 
         table.add(clearCommandListButton)
             .size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
+
+        table.add(aiInfoButton).pad(10f)
 
         table.add(playersInfoButton).pad(10f)
 
