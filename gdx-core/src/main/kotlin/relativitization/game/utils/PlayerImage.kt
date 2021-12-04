@@ -39,19 +39,33 @@ object PlayerImage {
         }
 
         if (playerData.playerType != PlayerType.NONE) {
-            val playerShipImage: Image = ActorFunction.createImage(
-                assets,
-                playerId,
-                "system/ship1",
-                xPos,
-                yPos,
-                width,
-                height,
-                soundVolume,
-            )
+            val playerShipImage: Image = if (playerData.isTopLeader()) {
+                ActorFunction.createImage(
+                    assets,
+                    playerId,
+                    "system/ship2",
+                    xPos,
+                    yPos,
+                    width,
+                    height,
+                    soundVolume,
+                )
+            } else {
+                ActorFunction.createImage(
+                    assets,
+                    playerId,
+                    "system/ship1",
+                    xPos,
+                    yPos,
+                    width,
+                    height,
+                    soundVolume,
+                )
+            }
             playerShipImage.setOrigin(Align.center)
             playerShipImage.rotation = rotationByVelocity(playerData)
             imageList.add(playerShipImage)
+
         }
 
         // Add an transparent square on top for selecting player
