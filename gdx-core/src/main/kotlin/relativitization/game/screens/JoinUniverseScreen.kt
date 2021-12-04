@@ -1,10 +1,9 @@
 package relativitization.game.screens
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
-import com.badlogic.gdx.scenes.scene2d.ui.TextField
+import kotlinx.coroutines.runBlocking
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.TableScreen
 import relativitization.universe.utils.RelativitizationLogManager
@@ -16,9 +15,13 @@ class JoinUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asse
         super.show()
 
         root.add(createUniverseClientSettingsScrollPane()).pad(20f).growX()
+
+        root.row().space(20f)
+
+        root.add(createButtonTable())
     }
 
-    fun createUniverseClientSettingsScrollPane(): ScrollPane {
+    private fun createUniverseClientSettingsScrollPane(): ScrollPane {
         val table = Table()
 
         table.add(createLabel(
@@ -67,6 +70,45 @@ class JoinUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asse
         scrollPane.setOverscroll(false, false)
 
         return scrollPane
+    }
+
+    private fun createButtonTable(): Table {
+        val table = Table()
+
+        val joinFailLabel = createLabel("", gdxSettings.normalFontSize)
+        val joinUniverseButton = createTextButton(
+            "Join",
+            gdxSettings.bigFontSize,
+            gdxSettings.soundEffectsVolume
+        ) {
+            runBlocking {
+                val universeStatus = game.universeClient.httpGetUniverseServerStatus()
+                if (universeStatus.hasUniverse) {
+                    game.screen = ServerSettingsScreen(game)
+                    dispose()
+                } else {
+                    joinFailLabel.setText("Cannot join, no universe available.")
+                }
+            }
+        }
+
+        val cancelButton = createTextButton(
+            "Cancel",
+            gdxSettings.bigFontSize,
+            gdxSettings.soundEffectsVolume
+        ) {
+            game.screen = MainMenuScreen(game)
+            dispose()
+        }
+
+        table.add(joinUniverseButton).space(10f)
+        table.add(cancelButton).space(10f)
+
+        table.row().space(10f)
+
+        table.add(joinFailLabel).colspan(2)
+
+        return table
     }
 
 

@@ -35,27 +35,30 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
 
         // Add Generate button
         val generateFailLabel = createLabel("", gdxSettings.normalFontSize)
-        val generateButton =
-            createTextButton("Generate", gdxSettings.bigFontSize, gdxSettings.soundEffectsVolume) {
-                if (GenerateUniverseMethodCollection.isSettingValid(game.universeClient.generateSettings)) {
-                    logger.info("Generate settings: " + game.universeClient.generateSettings)
-                    runBlocking {
-                        val httpCode = game.universeClient.httpPostNewUniverse()
-                        if (httpCode == HttpStatusCode.OK) {
-                            // Save generate setting for the next generation
-                            game.universeClient.generateSettings.save(
-                                game.universeClient.universeClientSettings.programDir
-                            )
-                            game.screen = ServerSettingsScreen(game)
-                            dispose()
-                        } else {
-                            generateFailLabel.setText("Generate universe fail, http code: $httpCode")
-                        }
+        val generateButton = createTextButton(
+            "Generate",
+            gdxSettings.bigFontSize,
+            gdxSettings.soundEffectsVolume
+        ) {
+            if (GenerateUniverseMethodCollection.isSettingValid(game.universeClient.generateSettings)) {
+                logger.info("Generate settings: " + game.universeClient.generateSettings)
+                runBlocking {
+                    val httpCode = game.universeClient.httpPostNewUniverse()
+                    if (httpCode == HttpStatusCode.OK) {
+                        // Save generate setting for the next generation
+                        game.universeClient.generateSettings.save(
+                            game.universeClient.universeClientSettings.programDir
+                        )
+                        game.screen = ServerSettingsScreen(game)
+                        dispose()
+                    } else {
+                        generateFailLabel.setText("Generate universe fail, http code: $httpCode")
                     }
-                } else {
-                    generateFailLabel.setText("Generate universe fail, some setting is wrong")
                 }
+            } else {
+                generateFailLabel.setText("Generate universe fail, some setting is wrong")
             }
+        }
 
         val cancelButton = createTextButton(
             "Cancel",
