@@ -304,6 +304,15 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         )
         nestedTable.add(double4DZLabel)
 
+        nestedTable.row().space(10f)
+
+        val dilatedTimeResidueLabel = createLabel(
+            "dilated time residue: ${playerData.dilatedTimeResidue}",
+            gdxSettings.smallFontSize
+        )
+
+        nestedTable.add(dilatedTimeResidueLabel)
+
         return nestedTable
     }
 
