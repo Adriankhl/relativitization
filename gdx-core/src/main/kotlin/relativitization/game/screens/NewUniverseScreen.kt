@@ -63,6 +63,7 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
             gdxSettings.soundEffectsVolume
         ) {
             game.screen = MainMenuScreen(game)
+            dispose()
         }
         nestedTable.add(generateButton).space(10f)
         nestedTable.add(cancelButton).space(10f)
