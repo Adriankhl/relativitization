@@ -588,12 +588,12 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
 
         table.add(serverStatusTable).pad(10f)
 
+        table.add(updateToLatestButton)
+            .size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
+
         table.add(stopWaitingTable).pad(10f)
 
         table.add(runOrStopUniverseTable).pad(10f)
-
-        table.add(updateToLatestButton)
-            .size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
 
         table.add(uploadButton).size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
 
