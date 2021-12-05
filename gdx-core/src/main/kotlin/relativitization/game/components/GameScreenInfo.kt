@@ -18,6 +18,7 @@ class GameScreenInfo(val game: RelativitizationGame) : ScreenComponent<SplitPane
     private val physicsInfo: PhysicsInfo = PhysicsInfo(game)
     private val eventsInfo: EventsInfo = EventsInfo(game)
     private val commandsInfo: CommandsInfo = CommandsInfo(game)
+    private val diplomacyInfo: DiplomacyInfo = DiplomacyInfo(game)
     private val knowledgeMapInfo: KnowledgeMapInfo = KnowledgeMapInfo(game)
     private val scienceInfo: ScienceInfo = ScienceInfo(game)
 
@@ -40,6 +41,7 @@ class GameScreenInfo(val game: RelativitizationGame) : ScreenComponent<SplitPane
         addChildScreenComponent(physicsInfo)
         addChildScreenComponent(eventsInfo)
         addChildScreenComponent(commandsInfo)
+        addChildScreenComponent(diplomacyInfo)
         addChildScreenComponent(knowledgeMapInfo)
         addChildScreenComponent(scienceInfo)
 
@@ -61,6 +63,7 @@ class GameScreenInfo(val game: RelativitizationGame) : ScreenComponent<SplitPane
             ShowingInfoType.PHYSICS -> upperInfoContainer.actor = physicsInfo.getScreenComponent()
             ShowingInfoType.EVENTS -> upperInfoContainer.actor = eventsInfo.getScreenComponent()
             ShowingInfoType.COMMANDS -> upperInfoContainer.actor = commandsInfo.getScreenComponent()
+            ShowingInfoType.DIPLOMACY -> upperInfoContainer.actor = diplomacyInfo.getScreenComponent()
             ShowingInfoType.KNOWLEDGE_MAP -> upperInfoContainer.actor = knowledgeMapInfo.getScreenComponent()
             ShowingInfoType.SCIENCE -> upperInfoContainer.actor = scienceInfo.getScreenComponent()
         }

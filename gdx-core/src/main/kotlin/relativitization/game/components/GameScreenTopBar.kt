@@ -367,6 +367,23 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         game.changeGdxSettings()
     }
 
+    private val diplomacyInfoButton: TextButton = createTextButton(
+        text = "Diplomacy",
+        fontSize = gdxSettings.normalFontSize,
+        soundVolume = gdxSettings.soundEffectsVolume
+    ) {
+        // If hiding, show the panel
+        if ((gdxSettings.showingInfoType == ShowingInfoType.DIPLOMACY) && gdxSettings.showingInfo) {
+            gdxSettings.showingInfo = false
+            gdxSettings.showingInfoType = ShowingInfoType.DIPLOMACY
+        } else {
+            gdxSettings.showingInfo = true
+            gdxSettings.showingInfoType = ShowingInfoType.DIPLOMACY
+        }
+        game.changeGdxSettings()
+    }
+
+
     private val knowledgeMapInfoButton: TextButton = createTextButton(
         text = "Knowledge Map",
         fontSize = gdxSettings.normalFontSize,
@@ -578,6 +595,8 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         table.add(eventsInfoButton).pad(10f)
 
         table.add(commandsInfoButton).pad(10f)
+
+        table.add(diplomacyInfoButton).pad(10f)
 
         table.add(knowledgeMapInfoButton).pad(10f)
 
