@@ -31,6 +31,11 @@ object PlayerImage {
                 it.value.carrierType == CarrierType.STELLAR
             }
 
+        val hasSpaceship: Boolean =
+            playerData.playerInternalData.popSystemData().carrierDataMap.any {
+                it.value.carrierType == CarrierType.SPACESHIP
+            }
+
         if (hasStellarSystem) {
             val stellarImage: Image = ActorFunction.createImage(assets, "system/sun", soundVolume)
             stellarImage.setPosition(xPos, yPos)
@@ -39,28 +44,54 @@ object PlayerImage {
         }
 
         if (playerData.playerType != PlayerType.NONE) {
-            val playerShipImage: Image = if (playerData.isTopLeader()) {
-                ActorFunction.createImage(
-                    assets,
-                    playerId,
-                    "system/ship2",
-                    xPos,
-                    yPos,
-                    width,
-                    height,
-                    soundVolume,
-                )
+            val playerShipImage: Image = if (hasSpaceship) {
+                if (playerData.isTopLeader()) {
+                    ActorFunction.createImage(
+                        assets,
+                        playerId,
+                        "system/ship2",
+                        xPos,
+                        yPos,
+                        width,
+                        height,
+                        soundVolume,
+                    )
+                } else {
+                    ActorFunction.createImage(
+                        assets,
+                        playerId,
+                        "system/ship1",
+                        xPos,
+                        yPos,
+                        width,
+                        height,
+                        soundVolume,
+                    )
+                }
             } else {
-                ActorFunction.createImage(
-                    assets,
-                    playerId,
-                    "system/ship1",
-                    xPos,
-                    yPos,
-                    width,
-                    height,
-                    soundVolume,
-                )
+                if (playerData.isTopLeader()) {
+                    ActorFunction.createImage(
+                        assets,
+                        playerId,
+                        "system/no-ship2",
+                        xPos,
+                        yPos,
+                        width,
+                        height,
+                        soundVolume,
+                    )
+                } else {
+                    ActorFunction.createImage(
+                        assets,
+                        playerId,
+                        "system/no-ship1",
+                        xPos,
+                        yPos,
+                        width,
+                        height,
+                        soundVolume,
+                    )
+                }
             }
             playerShipImage.setOrigin(Align.center)
             playerShipImage.rotation = rotationByVelocity(playerData)
