@@ -18,9 +18,13 @@ class GameScreenInfo(val game: RelativitizationGame) : ScreenComponent<SplitPane
     private val physicsInfo: PhysicsInfo = PhysicsInfo(game)
     private val eventsInfo: EventsInfo = EventsInfo(game)
     private val commandsInfo: CommandsInfo = CommandsInfo(game)
+    private val popSystemInfo: PopSystemInfo = PopSystemInfo(game)
+    private val politicsInfo: PoliticsInfo = PoliticsInfo(game)
     private val diplomacyInfo: DiplomacyInfo = DiplomacyInfo(game)
+    private val economyInfo: EconomyInfo = EconomyInfo(game)
     private val knowledgeMapInfo: KnowledgeMapInfo = KnowledgeMapInfo(game)
     private val scienceInfo: ScienceInfo = ScienceInfo(game)
+    private val modifierInfo: ModifierInfo = ModifierInfo(game)
 
     private val upperInfoContainer: Container<Actor> = Container(overviewInfo.getScreenComponent())
     private val bottomCommandInfo: BottomCommandInfo = BottomCommandInfo(game)
@@ -41,9 +45,13 @@ class GameScreenInfo(val game: RelativitizationGame) : ScreenComponent<SplitPane
         addChildScreenComponent(physicsInfo)
         addChildScreenComponent(eventsInfo)
         addChildScreenComponent(commandsInfo)
+        addChildScreenComponent(popSystemInfo)
+        addChildScreenComponent(politicsInfo)
         addChildScreenComponent(diplomacyInfo)
+        addChildScreenComponent(economyInfo)
         addChildScreenComponent(knowledgeMapInfo)
         addChildScreenComponent(scienceInfo)
+        addChildScreenComponent(modifierInfo)
 
         upperInfoContainer.fill()
 
@@ -63,9 +71,13 @@ class GameScreenInfo(val game: RelativitizationGame) : ScreenComponent<SplitPane
             ShowingInfoType.PHYSICS -> upperInfoContainer.actor = physicsInfo.getScreenComponent()
             ShowingInfoType.EVENTS -> upperInfoContainer.actor = eventsInfo.getScreenComponent()
             ShowingInfoType.COMMANDS -> upperInfoContainer.actor = commandsInfo.getScreenComponent()
+            ShowingInfoType.POP_SYSTEM -> upperInfoContainer.actor = popSystemInfo.getScreenComponent()
+            ShowingInfoType.POLITICS -> upperInfoContainer.actor = politicsInfo.getScreenComponent()
             ShowingInfoType.DIPLOMACY -> upperInfoContainer.actor = diplomacyInfo.getScreenComponent()
+            ShowingInfoType.ECONOMY -> upperInfoContainer.actor = economyInfo.getScreenComponent()
             ShowingInfoType.KNOWLEDGE_MAP -> upperInfoContainer.actor = knowledgeMapInfo.getScreenComponent()
             ShowingInfoType.SCIENCE -> upperInfoContainer.actor = scienceInfo.getScreenComponent()
+            ShowingInfoType.MODIFIER -> upperInfoContainer.actor = modifierInfo.getScreenComponent()
         }
 
         // Show bottom command or not

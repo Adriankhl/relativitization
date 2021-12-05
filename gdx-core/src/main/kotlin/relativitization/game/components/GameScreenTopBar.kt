@@ -367,6 +367,39 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         game.changeGdxSettings()
     }
 
+    private val popSystemInfoButton: TextButton = createTextButton(
+        text = "Pop System",
+        fontSize = gdxSettings.normalFontSize,
+        soundVolume = gdxSettings.soundEffectsVolume
+    ) {
+        // If hiding, show the panel
+        if ((gdxSettings.showingInfoType == ShowingInfoType.POP_SYSTEM) && gdxSettings.showingInfo) {
+            gdxSettings.showingInfo = false
+            gdxSettings.showingInfoType = ShowingInfoType.POP_SYSTEM
+        } else {
+            gdxSettings.showingInfo = true
+            gdxSettings.showingInfoType = ShowingInfoType.POP_SYSTEM
+        }
+        game.changeGdxSettings()
+    }
+
+    private val politicsInfoButton: TextButton = createTextButton(
+        text = "Politics",
+        fontSize = gdxSettings.normalFontSize,
+        soundVolume = gdxSettings.soundEffectsVolume
+    ) {
+        // If hiding, show the panel
+        if ((gdxSettings.showingInfoType == ShowingInfoType.POLITICS) && gdxSettings.showingInfo) {
+            gdxSettings.showingInfo = false
+            gdxSettings.showingInfoType = ShowingInfoType.POLITICS
+        } else {
+            gdxSettings.showingInfo = true
+            gdxSettings.showingInfoType = ShowingInfoType.POLITICS
+        }
+        game.changeGdxSettings()
+    }
+
+
     private val diplomacyInfoButton: TextButton = createTextButton(
         text = "Diplomacy",
         fontSize = gdxSettings.normalFontSize,
@@ -379,6 +412,22 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         } else {
             gdxSettings.showingInfo = true
             gdxSettings.showingInfoType = ShowingInfoType.DIPLOMACY
+        }
+        game.changeGdxSettings()
+    }
+
+    private val economyInfoButton: TextButton = createTextButton(
+        text = "Economy",
+        fontSize = gdxSettings.normalFontSize,
+        soundVolume = gdxSettings.soundEffectsVolume
+    ) {
+        // If hiding, show the panel
+        if ((gdxSettings.showingInfoType == ShowingInfoType.ECONOMY) && gdxSettings.showingInfo) {
+            gdxSettings.showingInfo = false
+            gdxSettings.showingInfoType = ShowingInfoType.ECONOMY
+        } else {
+            gdxSettings.showingInfo = true
+            gdxSettings.showingInfoType = ShowingInfoType.ECONOMY
         }
         game.changeGdxSettings()
     }
@@ -415,6 +464,23 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         }
         game.changeGdxSettings()
     }
+
+    private val modifierInfoButton: TextButton = createTextButton(
+        text = "Modifier",
+        fontSize = gdxSettings.normalFontSize,
+        soundVolume = gdxSettings.soundEffectsVolume
+    ) {
+        // If hiding, show the panel
+        if ((gdxSettings.showingInfoType == ShowingInfoType.MODIFIER) && gdxSettings.showingInfo) {
+            gdxSettings.showingInfo = false
+            gdxSettings.showingInfoType = ShowingInfoType.MODIFIER
+        } else {
+            gdxSettings.showingInfo = true
+            gdxSettings.showingInfoType = ShowingInfoType.MODIFIER
+        }
+        game.changeGdxSettings()
+    }
+
 
     private val tCoordinateLabel = createLabel(
         text = "t: ${game.universeClient.getUniverseData3D().center.t}",
@@ -596,11 +662,19 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
 
         table.add(commandsInfoButton).pad(10f)
 
+        table.add(popSystemInfoButton).pad(10f)
+
+        table.add(politicsInfoButton).pad(10f)
+
         table.add(diplomacyInfoButton).pad(10f)
+
+        table.add(economyInfoButton).pad(10f)
 
         table.add(knowledgeMapInfoButton).pad(10f)
 
         table.add(scienceInfoButton).pad(10f)
+
+        table.add(modifierInfoButton).pad(10f)
 
         table.add(bottomCommandInfoButton)
             .size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)

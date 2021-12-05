@@ -62,9 +62,13 @@ enum class ShowingInfoType {
     PHYSICS,
     EVENTS,
     COMMANDS,
+    POP_SYSTEM,
+    POLITICS,
     DIPLOMACY,
+    ECONOMY,
     KNOWLEDGE_MAP,
     SCIENCE,
+    MODIFIER,
 }
 
 enum class Language(private val value: String) {
