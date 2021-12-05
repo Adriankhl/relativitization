@@ -13,6 +13,7 @@ import relativitization.universe.data.components.defaults.physics.Int3D
 import relativitization.universe.data.components.defaults.physics.Velocity
 import relativitization.universe.data.events.MoveToDouble3DEvent
 import relativitization.universe.maths.physics.Movement.displacementToVelocity
+import relativitization.universe.maths.physics.Relativistic
 import relativitization.universe.utils.RelativitizationLogManager
 
 class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.assets) {
@@ -254,6 +255,10 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
 
         table.row().space(20f)
 
+        table.add(createTimeDilationTable())
+
+        table.row().space(20f)
+
         table.add(createChangeVelocityTable())
 
         table.row().space(20f)
@@ -306,15 +311,6 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         )
         nestedTable.add(double4DZLabel)
 
-        nestedTable.row().space(10f)
-
-        val dilatedTimeResidueLabel = createLabel(
-            "dilated time residue: ${playerData.dilatedTimeResidue}",
-            gdxSettings.smallFontSize
-        )
-
-        nestedTable.add(dilatedTimeResidueLabel)
-
         return nestedTable
     }
 
@@ -347,6 +343,33 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
             gdxSettings.smallFontSize
         )
         nestedTable.add(velocityZLabel)
+
+        return nestedTable
+    }
+
+    private fun createTimeDilationTable(): Table {
+        val nestedTable: Table = Table()
+
+        val gamma: Double = Relativistic.gamma(
+            playerData.velocity,
+            game.universeClient.getUniverseData3D().universeSettings.speedOfLight,
+        )
+
+        val dilatedTimeResidueLabel = createLabel(
+            "dilated time residue: ${playerData.dilatedTimeResidue}",
+            gdxSettings.smallFontSize
+        )
+
+        nestedTable.add(dilatedTimeResidueLabel)
+
+        nestedTable.row().space(10f)
+
+        val newDilatedTimeResidueLabel = createLabel(
+            "New dilated time residue: ${playerData.dilatedTimeResidue + 1.0 / gamma}",
+            gdxSettings.smallFontSize
+        )
+
+        nestedTable.add(newDilatedTimeResidueLabel)
 
         return nestedTable
     }
