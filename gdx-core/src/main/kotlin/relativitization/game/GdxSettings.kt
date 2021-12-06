@@ -27,6 +27,7 @@ data class GdxSettings(
     var showingBottomCommand: Boolean = true,
     var upperInfoAndBottomCommandSplitAmount: Float = 0.8f,
     var showingInfoType: ShowingInfoType = ShowingInfoType.OVERVIEW,
+    var mapMode: MapMode = MapMode.ONE_COLOR_PER_PLAYER,
     var language: Language = Language.ENGLISH,
 ) {
     fun save(programDir: String) {
@@ -70,6 +71,16 @@ enum class ShowingInfoType {
     SCIENCE,
     MODIFIER,
     MAP_MODE,
+}
+
+enum class MapMode(private val value: String) {
+    ONE_COLOR_PER_PLAYER("One color per player"),
+    TOP_LEADER("Top leader")
+    ;
+
+    override fun toString(): String {
+        return value
+    }
 }
 
 enum class Language(private val value: String) {
