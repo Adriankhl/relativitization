@@ -14,8 +14,10 @@ import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.math.abs
 import kotlin.math.min
 
-class GameScreenWorldMap(val game: RelativitizationGame) :
-    ScreenComponent<ScrollPane>(game.assets) {
+class GameScreenWorldMap(
+    val game: RelativitizationGame,
+) : ScreenComponent<ScrollPane>(game.assets) {
+
     private val gdxSettings = game.gdxSettings
 
     private val allImageGroup: Group = Group()
@@ -166,13 +168,14 @@ class GameScreenWorldMap(val game: RelativitizationGame) :
             println("player rectangle: $playerRectangle")
 
             val images = getPlayerImages(
-                game.universeClient.getUniverseData3D().get(id),
-                assets,
-                playerRectangle.xPos.toFloat() * actualZoom(),
-                playerRectangle.yPos.toFloat() * actualZoom(),
-                playerRectangle.width.toFloat() * actualZoom(),
-                playerRectangle.height.toFloat() * actualZoom(),
-                gdxSettings.soundEffectsVolume,
+                playerData = game.universeClient.getUniverseData3D().get(id),
+                assets = assets,
+                xPos = playerRectangle.xPos.toFloat() * actualZoom(),
+                yPos = playerRectangle.yPos.toFloat() * actualZoom(),
+                width = playerRectangle.width.toFloat() * actualZoom(),
+                height = playerRectangle.height.toFloat() * actualZoom(),
+                soundVolume = gdxSettings.soundEffectsVolume,
+                mapPlayerColorMode = gdxSettings.mapPlayerColorMode,
             ) {
                 game.universeClient.newSelectedPlayerId = id
             }

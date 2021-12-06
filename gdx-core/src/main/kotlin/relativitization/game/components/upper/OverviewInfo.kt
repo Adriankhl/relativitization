@@ -71,7 +71,8 @@ class OverviewInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>
             assets = assets,
             width = 128f,
             height = 128f,
-            soundVolume = gdxSettings.soundEffectsVolume
+            soundVolume = gdxSettings.soundEffectsVolume,
+            mapPlayerColorMode = gdxSettings.mapPlayerColorMode
         ) {
             game.universeClient.mapCenterPlayerId = playerData.playerId
         }

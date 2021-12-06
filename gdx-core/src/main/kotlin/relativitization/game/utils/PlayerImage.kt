@@ -3,6 +3,7 @@ package relativitization.game.utils
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Stack
 import com.badlogic.gdx.utils.Align
+import relativitization.game.MapPlayerColorMode
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.PlayerType
 import relativitization.universe.data.components.defaults.popsystem.CarrierType
@@ -19,6 +20,7 @@ object PlayerImage {
         width: Float,
         height: Float,
         soundVolume: Float,
+        mapPlayerColorMode: MapPlayerColorMode,
         function: (Image) -> Unit = {}
     ): List<Image> {
 
@@ -125,10 +127,20 @@ object PlayerImage {
         width: Float,
         height: Float,
         soundVolume: Float,
+        mapPlayerColorMode: MapPlayerColorMode,
         function: (Image) -> Unit = {}
     ): Stack {
-        val imageList =
-            getPlayerImages(playerData, assets, 0f, 0f, width, height, soundVolume, function)
+        val imageList = getPlayerImages(
+            playerData = playerData,
+            assets = assets,
+            xPos = 0f,
+            yPos = 0f,
+            width = width,
+            height = height,
+            soundVolume = soundVolume,
+            mapPlayerColorMode = mapPlayerColorMode,
+            function = function
+        )
         val stack = Stack()
         for (image in imageList) {
             stack.add(image)
