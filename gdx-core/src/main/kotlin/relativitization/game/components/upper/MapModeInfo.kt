@@ -2,6 +2,7 @@ package relativitization.game.components.upper
 
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
+import relativitization.game.MapPlayerColorMode
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.PlayerData
@@ -13,9 +14,6 @@ class MapModeInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
     private var table: Table = Table()
 
     private val scrollPane: ScrollPane = createScrollPane(table)
-
-    private var playerData: PlayerData = PlayerData(-1)
-
 
     init {
 
@@ -29,7 +27,6 @@ class MapModeInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         scrollPane.setOverscroll(false, false)
 
 
-        updatePlayerData()
         updateTable()
     }
 
@@ -37,26 +34,9 @@ class MapModeInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         return scrollPane
     }
 
-
-    override fun onUniverseData3DChange() {
-        updatePlayerData()
+    override fun onGdxSettingsChange() {
         updateTable()
     }
-
-    override fun onPrimarySelectedPlayerIdChange() {
-        updatePlayerData()
-        updateTable()
-    }
-
-
-    private fun updatePlayerData() {
-        playerData = if (game.universeClient.isPrimarySelectedPlayerIdValid()) {
-            game.universeClient.getPrimarySelectedPlayerData()
-        } else {
-            game.universeClient.getUniverseData3D().getCurrentPlayerData()
-        }
-    }
-
 
     private fun updateTable() {
         table.clear()
@@ -69,5 +49,28 @@ class MapModeInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         table.add(headerLabel).pad(20f)
 
         table.row().space(20f)
+
+        table.add(createMapColorModeTable())
+    }
+
+    private fun createMapColorModeTable(): Table {
+        val nestedTable = Table()
+
+        nestedTable.add(createLabel("Map color mode: ", gdxSettings.smallFontSize))
+
+        val mapColorModeSelectBox = createSelectBox(
+            MapPlayerColorMode.values().toList(),
+            gdxSettings.mapPlayerColorMode,
+            gdxSettings.smallFontSize
+        ) { mapPlayerColorMode, _ ->
+            if (gdxSettings.mapPlayerColorMode != mapPlayerColorMode) {
+                gdxSettings.mapPlayerColorMode = mapPlayerColorMode
+                game.changeGdxSettings()
+            }
+        }
+
+        nestedTable.add(mapColorModeSelectBox)
+
+        return nestedTable
     }
 }
