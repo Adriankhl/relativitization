@@ -26,7 +26,11 @@ object PlayerImage {
 
         val imageList: MutableList<Image> = mutableListOf()
 
-        val playerId = playerData.playerId
+        // Id to determine the color of the player image
+        val colorId: Int = when (mapPlayerColorMode) {
+            MapPlayerColorMode.ONE_COLOR_PER_PLAYER -> playerData.playerId
+            MapPlayerColorMode.TOP_LEADER -> playerData.topLeaderId()
+        }
 
         val hasStellarSystem: Boolean =
             playerData.playerInternalData.popSystemData().carrierDataMap.any {
@@ -50,7 +54,7 @@ object PlayerImage {
                 if (playerData.isTopLeader()) {
                     ActorFunction.createImage(
                         assets,
-                        playerId,
+                        colorId,
                         "system/ship2",
                         xPos,
                         yPos,
@@ -61,7 +65,7 @@ object PlayerImage {
                 } else {
                     ActorFunction.createImage(
                         assets,
-                        playerId,
+                        colorId,
                         "system/ship1",
                         xPos,
                         yPos,
@@ -74,7 +78,7 @@ object PlayerImage {
                 if (playerData.isTopLeader()) {
                     ActorFunction.createImage(
                         assets,
-                        playerId,
+                        colorId,
                         "system/no-ship2",
                         xPos,
                         yPos,
@@ -85,7 +89,7 @@ object PlayerImage {
                 } else {
                     ActorFunction.createImage(
                         assets,
-                        playerId,
+                        colorId,
                         "system/no-ship1",
                         xPos,
                         yPos,

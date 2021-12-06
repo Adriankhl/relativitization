@@ -63,10 +63,8 @@ class MapModeInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
             gdxSettings.mapPlayerColorMode,
             gdxSettings.smallFontSize
         ) { mapPlayerColorMode, _ ->
-            if (gdxSettings.mapPlayerColorMode != mapPlayerColorMode) {
-                gdxSettings.mapPlayerColorMode = mapPlayerColorMode
-                game.changeGdxSettings()
-            }
+            gdxSettings.mapPlayerColorMode = mapPlayerColorMode
+            game.changeGdxSettings()
         }
 
         nestedTable.add(mapColorModeSelectBox)

@@ -70,6 +70,9 @@ class GameScreenWorldMap(
             oldActualZoom = actualZoom()
 
             scrollPane.updateVisualScroll()
+        } else {
+            // Update to change the map, e.g., color
+            updateGroup()
         }
     }
 
