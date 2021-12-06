@@ -69,6 +69,7 @@ enum class ShowingInfoType {
     KNOWLEDGE_MAP,
     SCIENCE,
     MODIFIER,
+    MAP_MODE,
 }
 
 enum class Language(private val value: String) {

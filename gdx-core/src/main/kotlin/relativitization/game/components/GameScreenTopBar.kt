@@ -482,6 +482,25 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
     }
 
 
+    private val mapModeInfoButton: TextButton = createTextButton(
+        text = "Map Mode",
+        fontSize = gdxSettings.normalFontSize,
+        soundVolume = gdxSettings.soundEffectsVolume
+    ) {
+        // If hiding, show the panel
+        if ((gdxSettings.showingInfoType == ShowingInfoType.MAP_MODE) && gdxSettings.showingInfo) {
+            gdxSettings.showingInfo = false
+            gdxSettings.showingInfoType = ShowingInfoType.MAP_MODE
+        } else {
+            gdxSettings.showingInfo = true
+            gdxSettings.showingInfoType = ShowingInfoType.MAP_MODE
+        }
+        game.changeGdxSettings()
+    }
+
+
+
+
     private val tCoordinateLabel = createLabel(
         text = "t: ${game.universeClient.getUniverseData3D().center.t}",
         fontSize = gdxSettings.smallFontSize
@@ -675,6 +694,8 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         table.add(scienceInfoButton).pad(10f)
 
         table.add(modifierInfoButton).pad(10f)
+
+        table.add(mapModeInfoButton).pad(10f)
 
         table.add(bottomCommandInfoButton)
             .size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
