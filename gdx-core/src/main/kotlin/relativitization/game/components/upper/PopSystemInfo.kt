@@ -5,6 +5,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.PlayerData
+import relativitization.universe.data.components.defaults.popsystem.CarrierData
+import relativitization.universe.data.components.defaults.popsystem.CarrierInternalData
+import relativitization.universe.data.components.defaults.popsystem.pop.PopType
 
 class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.assets) {
 
@@ -20,6 +23,8 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
     private var carrierId: Int = -1
 
     private var carrierTable: Table = Table()
+
+    private var popType: PopType = PopType.LABOURER
 
 
     init {
@@ -80,8 +85,9 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             gdxSettings.smallFontSize,
         ) { id, _ ->
             carrierId = id
-            carrierTable.clear()
-            updateCarrierTable()
+            if (playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(carrierId)) {
+                updateCarrierTable()
+            }
         }
         table.add(carrierSelectBox)
 
@@ -91,6 +97,17 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
     }
 
     private fun updateCarrierTable() {
+        carrierTable.clear()
 
+        val carrier: CarrierData =
+            playerData.playerInternalData.popSystemData().carrierDataMap.getValue(carrierId)
+
+
+    }
+
+    private fun createCarrierInternalDataTable(carrierInternalData: CarrierInternalData): Table {
+        val nestedTable = Table()
+
+        return nestedTable
     }
 }
