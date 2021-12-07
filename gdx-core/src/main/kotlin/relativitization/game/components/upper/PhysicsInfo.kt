@@ -17,6 +17,7 @@ import relativitization.universe.maths.physics.Movement.displacementToVelocity
 import relativitization.universe.maths.physics.Relativistic
 import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.math.abs
+import kotlin.properties.Delegates
 
 class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.assets) {
 
@@ -29,66 +30,18 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
     private var playerData: PlayerData = PlayerData(-1)
 
     // variables for command generation
-    private var maxSpeed: Double =
+    private val onMaxSpeedChangeFunctionList: MutableList<() -> Unit> = mutableListOf()
+    private var maxSpeed: Double by Delegates.observable(
         game.universeClient.getUniverseData3D().universeSettings.speedOfLight
+    ) { _, _, _ ->
+        onMaxSpeedChangeFunctionList.forEach { it() }
+    }
     private var targetX: Double = playerData.double4D.x
     private var targetY: Double = playerData.double4D.y
     private var targetZ: Double = playerData.double4D.z
     private var targetVelocityX: Double = playerData.velocity.vx
     private var targetVelocityY: Double = playerData.velocity.vy
     private var targetVelocityZ: Double = playerData.velocity.vz
-
-
-
-    private val targetXTextField = createTextField(
-        default = "${playerData.double4D.x}",
-        fontSize = gdxSettings.smallFontSize
-    )
-
-    private val targetYTextField = createTextField(
-        default = "${playerData.double4D.y}",
-        fontSize = gdxSettings.smallFontSize
-    )
-
-    private val targetZTextField = createTextField(
-        default = "${playerData.double4D.z}",
-        fontSize = gdxSettings.smallFontSize
-    )
-
-    private val maxSpeedTextField = createTextField(
-        default = "0.2",
-        fontSize = gdxSettings.smallFontSize
-    )
-
-    private val moveToDouble3DEventCommandTextButton = createTextButton(
-        text = "Move to location",
-        fontSize = gdxSettings.normalFontSize,
-        soundVolume = gdxSettings.soundEffectsVolume
-    ) {
-        try {
-            val x = targetXTextField.text.toDouble()
-            val y = targetYTextField.text.toDouble()
-            val z = targetZTextField.text.toDouble()
-            val maxSpeed = maxSpeedTextField.text.toDouble()
-
-            val moveToDouble3DEvent = MoveToDouble3DEvent(
-                toId = playerData.playerId,
-                fromId = game.universeClient.getUniverseData3D().getCurrentPlayerData().playerId,
-                stayTime = Int.MAX_VALUE,
-                targetDouble3D = Double3D(x, y, z),
-                maxSpeed = maxSpeed,
-            )
-
-            val addEventCommand = AddEventCommand(
-                event = moveToDouble3DEvent,
-                fromInt4D = game.universeClient.getUniverseData3D().getCurrentPlayerData().int4D,
-            )
-
-            game.universeClient.currentCommand = addEventCommand
-        } catch (e: NumberFormatException) {
-            logger.error("Invalid target velocity")
-        }
-    }
 
     init {
 
@@ -141,10 +94,10 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         targetVelocityY = targetVelocity.vy
         targetVelocityZ = targetVelocity.vz
 
-        // Change target position text
-        targetXTextField.text = targetDouble3D.x.toString()
-        targetYTextField.text = targetDouble3D.y.toString()
-        targetZTextField.text = targetDouble3D.z.toString()
+        // Change target position
+        targetX = targetDouble3D.x
+        targetY = targetDouble3D.y
+        targetZ = targetDouble3D.z
     }
 
     override fun onSelectedPlayerIdListChange() {
@@ -167,10 +120,11 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
             targetVelocityY = targetVelocity.vy
             targetVelocityZ = targetVelocity.vz
 
-            // Change target position text
-            targetXTextField.text = targetDouble3D.x.toString()
-            targetYTextField.text = targetDouble3D.y.toString()
-            targetZTextField.text = targetDouble3D.z.toString()
+
+            // Change target position
+            targetX = targetDouble3D.x
+            targetY = targetDouble3D.y
+            targetZ = targetDouble3D.z
         }
     }
 
@@ -384,19 +338,26 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
             )
         )
 
-        val onMaxSpeedTextFieldChange: MutableList<() -> Unit> = mutableListOf()
         val maxSpeedTextField = createTextField(
             default = "$maxSpeed",
             fontSize = gdxSettings.smallFontSize
         ) { s, _ ->
-            maxSpeed = try {
+            val speedOfLight: Double =
+                game.universeClient.getUniverseData3D().universeSettings.speedOfLight
+
+            val newSpeed: Double = try {
                 s.toDouble()
             } catch (e: NumberFormatException) {
                 logger.debug("Invalid max speed")
                 maxSpeed
             }
 
-            onMaxSpeedTextFieldChange.forEach { it() }
+            if (abs(maxSpeed - newSpeed) > 0.0001 * speedOfLight) {
+                maxSpeed = newSpeed
+            }
+        }
+        onMaxSpeedChangeFunctionList.add {
+            maxSpeedTextField.text = maxSpeed.toString()
         }
         nestedTable.add(maxSpeedTextField)
 
@@ -415,10 +376,9 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
 
             if (abs(maxSpeed - newSpeed) > 0.0001 * speedOfLight) {
                 maxSpeed = newSpeed
-                maxSpeedTextField.text = maxSpeed.toString()
             }
         }
-        onMaxSpeedTextFieldChange.add {
+        onMaxSpeedChangeFunctionList.add {
             maxSpeedSlider.value = maxSpeed.toFloat()
         }
         nestedTable.add(maxSpeedSlider).colspan(2)
@@ -444,7 +404,6 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
             game.universeClient.currentCommand = changeVelocityCommand
         }
 
-        val onTargetVelocityXTextFieldChange: MutableList<() -> Unit> = mutableListOf()
         val targetVelocityXTextField = createTextField(
             default = "$targetVelocityX",
             fontSize = gdxSettings.smallFontSize
@@ -455,11 +414,8 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
                 logger.debug("Invalid target velocity X")
                 targetVelocityX
             }
-
-            onTargetVelocityXTextFieldChange.forEach { it() }
         }
 
-        val onTargetVelocityYTextFieldChange: MutableList<() -> Unit> = mutableListOf()
         val targetVelocityYTextField = createTextField(
             default = "$targetVelocityY",
             fontSize = gdxSettings.smallFontSize
@@ -470,11 +426,8 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
                 logger.debug("Invalid target velocity Y")
                 targetVelocityY
             }
-
-            onTargetVelocityYTextFieldChange.forEach { it() }
         }
 
-        val onTargetVelocityZTextFieldChange: MutableList<() -> Unit> = mutableListOf()
         val targetVelocityZTextField = createTextField(
             default = "$targetVelocityZ",
             fontSize = gdxSettings.smallFontSize
@@ -485,18 +438,18 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
                 logger.debug("Invalid target velocity Z")
                 targetVelocityZ
             }
-
-            onTargetVelocityZTextFieldChange.forEach { it() }
         }
 
         nestedTable.add(changeVelocityCommandTextButton).colspan(2)
 
         nestedTable.row().space(10f)
 
-        nestedTable.add(createLabel(
-            "Target vx: ",
-            gdxSettings.smallFontSize
-        ))
+        nestedTable.add(
+            createLabel(
+                "Target vx: ",
+                gdxSettings.smallFontSize
+            )
+        )
 
         nestedTable.add(targetVelocityXTextField)
 
@@ -519,6 +472,64 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
     private fun createMoveToDouble3DTable(): Table {
         val nestedTable = Table()
 
+        val moveToDouble3DEventCommandTextButton = createTextButton(
+            text = "Move to location",
+            fontSize = gdxSettings.normalFontSize,
+            soundVolume = gdxSettings.soundEffectsVolume
+        ) {
+            val moveToDouble3DEvent = MoveToDouble3DEvent(
+                toId = playerData.playerId,
+                fromId = game.universeClient.getUniverseData3D().getCurrentPlayerData().playerId,
+                stayTime = Int.MAX_VALUE,
+                targetDouble3D = Double3D(targetX, targetY, targetZ),
+                maxSpeed = maxSpeed,
+            )
+
+            val addEventCommand = AddEventCommand(
+                event = moveToDouble3DEvent,
+                fromInt4D = game.universeClient.getUniverseData3D().getCurrentPlayerData().int4D,
+            )
+
+            game.universeClient.currentCommand = addEventCommand
+        }
+
+        val targetXTextField = createTextField(
+            default = "$targetX",
+            fontSize = gdxSettings.smallFontSize
+        ){ s, _ ->
+            targetX = try {
+                s.toDouble()
+            } catch (e: NumberFormatException) {
+                logger.debug("Invalid target X")
+                targetX
+            }
+        }
+
+        val targetYTextField = createTextField(
+            default = "$targetY",
+            fontSize = gdxSettings.smallFontSize
+        ){ s, _ ->
+            targetY = try {
+                s.toDouble()
+            } catch (e: NumberFormatException) {
+                logger.debug("Invalid target Y")
+                targetY
+            }
+        }
+
+        val targetZTextField = createTextField(
+            default = "$targetZ",
+            fontSize = gdxSettings.smallFontSize
+        ){ s, _ ->
+            targetZ = try {
+                s.toDouble()
+            } catch (e: NumberFormatException) {
+                logger.debug("Invalid target Z")
+                targetZ
+            }
+        }
+
+
         nestedTable.add(moveToDouble3DEventCommandTextButton).colspan(2)
 
         nestedTable.row().space(10f)
@@ -538,12 +549,6 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         val targetZLabel = createLabel("Target z: ", gdxSettings.smallFontSize)
         nestedTable.add(targetZLabel)
         nestedTable.add(targetZTextField)
-
-        nestedTable.row().space(10f)
-
-        val maxSpeedLabel = createLabel("Max. speed: ", gdxSettings.smallFontSize)
-        nestedTable.add(maxSpeedLabel)
-        nestedTable.add(maxSpeedTextField)
 
         return nestedTable
     }
