@@ -87,9 +87,9 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         table.row().space(20f)
 
-        table.add(createLabel("Carrier:", gdxSettings.smallFontSize))
+        table.add(createLabel("Carrier:", gdxSettings.normalFontSize))
 
-        table.row().space(10f)
+        table.row()
 
         val carrierSelectBox = createSelectBox(
             playerData.playerInternalData.popSystemData().carrierDataMap.keys.toList(),
@@ -124,9 +124,9 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         carrierTable.row().space(30f)
 
-        carrierTable.add(createLabel("Pop:", gdxSettings.smallFontSize))
+        carrierTable.add(createLabel("Pop:", gdxSettings.normalFontSize))
 
-        carrierTable.row().space(10f)
+        carrierTable.row()
 
         val popTypeSelectBox = createSelectBox(
             PopType.values().toList(),
@@ -188,6 +188,17 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
     private fun createCommonPopTable(commonPopData: CommonPopData): Table {
         val nestedTable = Table()
+
+        nestedTable.add(createLabel("Common pop data: ", gdxSettings.normalFontSize))
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(createLabel(
+            "Adult population: ${commonPopData.adultPopulation}",
+            gdxSettings.smallFontSize
+        ))
+
+        nestedTable.row().space(10f)
 
         return nestedTable
     }
