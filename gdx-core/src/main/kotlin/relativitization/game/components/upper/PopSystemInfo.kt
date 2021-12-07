@@ -97,6 +97,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             gdxSettings.smallFontSize,
         ) { id, _ ->
             carrierId = id
+            updateCarrierTable()
         }
         table.add(carrierSelectBox)
 
@@ -134,6 +135,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             gdxSettings.smallFontSize,
         ) { type, _ ->
             popType = type
+            updateCarrierTable()
         }
         carrierTable.add(popTypeSelectBox)
 
