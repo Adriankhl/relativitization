@@ -200,6 +200,27 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         nestedTable.row().space(10f)
 
+        nestedTable.add(createLabel(
+            "Unemployment rate: ${commonPopData.unemploymentRate}",
+            gdxSettings.smallFontSize
+        ))
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(createLabel(
+            "Satisfaction: ${commonPopData.satisfaction}",
+            gdxSettings.smallFontSize
+        ))
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(createLabel(
+            "Salary: ${commonPopData.salary}",
+            gdxSettings.smallFontSize
+        ))
+
+        nestedTable.row().space(10f)
+
         return nestedTable
     }
 }
