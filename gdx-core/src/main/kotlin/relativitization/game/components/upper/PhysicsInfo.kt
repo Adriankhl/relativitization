@@ -12,9 +12,11 @@ import relativitization.universe.data.components.defaults.physics.Double3D
 import relativitization.universe.data.components.defaults.physics.Int3D
 import relativitization.universe.data.components.defaults.physics.Velocity
 import relativitization.universe.data.events.MoveToDouble3DEvent
+import relativitization.universe.maths.number.Round
 import relativitization.universe.maths.physics.Movement.displacementToVelocity
 import relativitization.universe.maths.physics.Relativistic
 import relativitization.universe.utils.RelativitizationLogManager
+import kotlin.math.abs
 
 class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.assets) {
 
@@ -25,6 +27,16 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
     private val scrollPane: ScrollPane = createScrollPane(table)
 
     private var playerData: PlayerData = PlayerData(-1)
+
+    // variables for command generation
+    private var maxSpeed: Double =
+        game.universeClient.getUniverseData3D().universeSettings.speedOfLight
+    private var targetX: Double = playerData.double4D.x
+    private var targetY: Double = playerData.double4D.y
+    private var targetZ: Double = playerData.double4D.z
+    private var targetVelocityX: Double = playerData.velocity.vx
+    private var targetVelocityY: Double = playerData.velocity.vy
+    private var targetVelocityZ: Double = playerData.velocity.vz
 
     private val targetVelocityXTextField = createTextField(
         default = "${playerData.velocity.vx}",
@@ -42,7 +54,7 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
     )
 
     private val changeVelocityCommandTextButton = createTextButton(
-        text = "Change Velocity Command",
+        text = "Change Velocity",
         fontSize = gdxSettings.normalFontSize,
         soundVolume = gdxSettings.soundEffectsVolume
     ) {
@@ -211,39 +223,39 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
     private fun updateTable() {
         table.clear()
 
-        val headerLabel = createLabel(
-            "Physics: player ${playerData.playerId}",
-            gdxSettings.bigFontSize
-        )
-
-        table.add(headerLabel).pad(20f)
+        table.add(
+            createLabel(
+                "Physics: player ${playerData.playerId}",
+                gdxSettings.bigFontSize
+            )
+        ).pad(20f)
 
         table.row().space(20f)
 
-        val massLabel = createLabel(
-            "Core rest mass: ${playerData.playerInternalData.physicsData().coreRestMass}",
-            gdxSettings.smallFontSize
+        table.add(
+            createLabel(
+                "Core rest mass: ${playerData.playerInternalData.physicsData().coreRestMass}",
+                gdxSettings.smallFontSize
+            )
         )
-
-        table.add(massLabel)
 
         table.row().space(10f)
 
-        val energyLabel = createLabel(
-            "Total fuel rest mass: ${playerData.playerInternalData.physicsData().fuelRestMassData.total()}",
-            gdxSettings.smallFontSize
+        table.add(
+            createLabel(
+                "Total fuel rest mass: ${playerData.playerInternalData.physicsData().fuelRestMassData.total()}",
+                gdxSettings.smallFontSize
+            )
         )
-
-        table.add(energyLabel)
 
         table.row().space(10f)
 
-        val moveMaxPowerLabel = createLabel(
-            "Max. movement fuel delta: ${playerData.playerInternalData.physicsData().fuelRestMassData.maxMovementDelta}",
-            gdxSettings.smallFontSize
+        table.add(
+            createLabel(
+                "Max. movement fuel delta: ${playerData.playerInternalData.physicsData().fuelRestMassData.maxMovementDelta}",
+                gdxSettings.smallFontSize
+            )
         )
-
-        table.add(moveMaxPowerLabel)
 
         table.row().space(10f)
 
@@ -256,6 +268,19 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         table.row().space(20f)
 
         table.add(createTimeDilationTable())
+
+        table.row().space(30f)
+
+        table.add(
+            createLabel(
+                "Movement Commands:",
+                gdxSettings.normalFontSize
+            )
+        )
+
+        table.row().space(20f)
+
+        table.add(createMaxSpeedTable())
 
         table.row().space(20f)
 
@@ -382,6 +407,58 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         )
 
         nestedTable.add(newDilatedTimeResidueLabel)
+
+        return nestedTable
+    }
+
+    private fun createMaxSpeedTable(): Table {
+        val nestedTable = Table()
+
+        nestedTable.add(
+            createLabel(
+                "Max speed: ",
+                gdxSettings.smallFontSize,
+            )
+        )
+
+        val onMaxSpeedTextFieldChange: MutableList<() -> Unit> = mutableListOf()
+        val maxSpeedTextField = createTextField(
+            default = "$maxSpeed",
+            fontSize = gdxSettings.smallFontSize
+        ) { s, _ ->
+            maxSpeed = try {
+                s.toDouble()
+            } catch (e: NumberFormatException) {
+                logger.debug("Invalid max speed")
+                maxSpeed
+            }
+
+            onMaxSpeedTextFieldChange.forEach { it() }
+        }
+        nestedTable.add(maxSpeedTextField)
+
+        nestedTable.row().space(10f)
+
+        val maxSpeedSlider = createSlider(
+            min = 0f,
+            max = game.universeClient.getUniverseData3D().universeSettings.speedOfLight.toFloat(),
+            stepSize = 0.01f,
+            default = maxSpeed.toFloat(),
+        ) { fl, _ ->
+            val speedOfLight: Double =
+                game.universeClient.getUniverseData3D().universeSettings.speedOfLight
+
+            val newSpeed: Double = Round.roundDecimal(fl.toDouble(), 2)
+
+            if (abs(maxSpeed - newSpeed) > 0.0001 * speedOfLight) {
+                maxSpeed = newSpeed
+                maxSpeedTextField.text = maxSpeed.toString()
+            }
+        }
+        onMaxSpeedTextFieldChange.add {
+            maxSpeedSlider.value = maxSpeed.toFloat()
+        }
+        nestedTable.add(maxSpeedSlider).colspan(2)
 
         return nestedTable
     }
