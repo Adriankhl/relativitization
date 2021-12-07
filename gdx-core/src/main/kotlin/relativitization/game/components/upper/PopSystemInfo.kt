@@ -8,6 +8,7 @@ import relativitization.universe.data.PlayerData
 import relativitization.universe.data.components.defaults.popsystem.CarrierData
 import relativitization.universe.data.components.defaults.popsystem.CarrierInternalData
 import relativitization.universe.data.components.defaults.popsystem.pop.AllPopData
+import relativitization.universe.data.components.defaults.popsystem.pop.CommonPopData
 import relativitization.universe.data.components.defaults.popsystem.pop.PopType
 
 class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.assets) {
@@ -178,6 +179,14 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
     }
 
     private fun createPopTable(allPopType: AllPopData): Table {
+        val nestedTable = Table()
+
+        nestedTable.add(createCommonPopTable(allPopType.getCommonPopData(popType)))
+
+        return nestedTable
+    }
+
+    private fun createCommonPopTable(commonPopData: CommonPopData): Table {
         val nestedTable = Table()
 
         return nestedTable
