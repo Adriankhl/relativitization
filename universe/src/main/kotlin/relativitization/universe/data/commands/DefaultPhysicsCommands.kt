@@ -45,10 +45,18 @@ data class ChangeVelocityCommand(
             I18NString("Not subordinate or self.")
         }
 
+        val isVelocityValid: Boolean = targetVelocity.mag() <= universeSettings.speedOfLight
+        val isVelocityValidI18NString: I18NString = if (isVelocityValid) {
+            I18NString("")
+        } else {
+            I18NString("Target speed is larger than the speed of light")
+        }
+
         return CanSendCheckMessage(
-            isSubordinateOrSelf,
+            isSubordinateOrSelf && isVelocityValid,
             listOf(
-                isSubordinateOrSelfI18NString
+                isSubordinateOrSelfI18NString,
+                isVelocityValidI18NString,
             )
         )
     }

@@ -429,6 +429,21 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
     private fun createChangeVelocityTable(): Table {
         val nestedTable = Table()
 
+        val changeVelocityCommandTextButton = createTextButton(
+            text = "Change Velocity",
+            fontSize = gdxSettings.normalFontSize,
+            soundVolume = gdxSettings.soundEffectsVolume
+        ) {
+            val changeVelocityCommand = ChangeVelocityCommand(
+                targetVelocity = Velocity(targetVelocityX, targetVelocityY, targetVelocityZ),
+                toId = playerData.playerId,
+                fromId = game.universeClient.getUniverseData3D().getCurrentPlayerData().playerId,
+                fromInt4D = game.universeClient.getUniverseData3D().getCurrentPlayerData().int4D,
+            )
+
+            game.universeClient.currentCommand = changeVelocityCommand
+        }
+
         val onTargetVelocityXTextFieldChange: MutableList<() -> Unit> = mutableListOf()
         val targetVelocityXTextField = createTextField(
             default = "$targetVelocityX",
@@ -474,20 +489,6 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
             onTargetVelocityZTextFieldChange.forEach { it() }
         }
 
-        val changeVelocityCommandTextButton = createTextButton(
-            text = "Change Velocity",
-            fontSize = gdxSettings.normalFontSize,
-            soundVolume = gdxSettings.soundEffectsVolume
-        ) {
-            val changeVelocityCommand: ChangeVelocityCommand = ChangeVelocityCommand(
-                targetVelocity = Velocity(targetVelocityX, targetVelocityY, targetVelocityZ),
-                toId = playerData.playerId,
-                fromId = game.universeClient.getUniverseData3D().getCurrentPlayerData().playerId,
-                fromInt4D = game.universeClient.getUniverseData3D().getCurrentPlayerData().int4D,
-            )
-
-            game.universeClient.currentCommand = changeVelocityCommand
-        }
         nestedTable.add(changeVelocityCommandTextButton).colspan(2)
 
         nestedTable.row().space(10f)
