@@ -274,7 +274,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
                 targetSalary
             }
 
-            if (abs(targetSalary - newTargetSalary) > 0.0001) {
+            if (abs(newTargetSalary - targetSalary) > 0.0001 * newTargetSalary) {
                 targetSalary = newTargetSalary
             }
         }

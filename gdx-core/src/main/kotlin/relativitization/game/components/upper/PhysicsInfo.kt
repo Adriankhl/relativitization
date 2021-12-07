@@ -72,6 +72,9 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         default = "$targetX",
         fontSize = gdxSettings.smallFontSize
     ) { s, _ ->
+        val groupEdgeLength: Double =
+            game.universeClient.getUniverseData3D().universeSettings.groupEdgeLength
+
         val newTargetX: Double = try {
             s.toDouble()
         } catch (e: NumberFormatException) {
@@ -79,7 +82,7 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
             targetX
         }
 
-        if (abs(newTargetX - targetX) > 0.0001) {
+        if (abs(newTargetX - targetX) > 0.0001 * groupEdgeLength) {
             targetX = newTargetX
         }
     }
@@ -88,6 +91,9 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         default = "$targetY",
         fontSize = gdxSettings.smallFontSize
     ) { s, _ ->
+        val groupEdgeLength: Double =
+            game.universeClient.getUniverseData3D().universeSettings.groupEdgeLength
+
         val newTargetY: Double = try {
             s.toDouble()
         } catch (e: NumberFormatException) {
@@ -95,7 +101,7 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
             targetY
         }
 
-        if (abs(newTargetY - targetY) > 0.0001) {
+        if (abs(newTargetY - targetY) > 0.0001 * groupEdgeLength) {
             targetY = newTargetY
         }
     }
@@ -104,6 +110,9 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         default = "$targetZ",
         fontSize = gdxSettings.smallFontSize
     ) { s, _ ->
+        val groupEdgeLength: Double =
+            game.universeClient.getUniverseData3D().universeSettings.groupEdgeLength
+
         val newTargetZ: Double = try {
             s.toDouble()
         } catch (e: NumberFormatException) {
@@ -111,7 +120,7 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
             targetZ
         }
 
-        if (abs(newTargetZ - targetZ) > 0.0001) {
+        if (abs(newTargetZ - targetZ) > 0.0001 * groupEdgeLength) {
             targetZ = newTargetZ
         }
     }
