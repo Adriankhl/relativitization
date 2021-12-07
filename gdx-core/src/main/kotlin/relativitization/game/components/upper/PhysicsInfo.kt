@@ -38,43 +38,6 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
     private var targetVelocityY: Double = playerData.velocity.vy
     private var targetVelocityZ: Double = playerData.velocity.vz
 
-    private val targetVelocityXTextField = createTextField(
-        default = "${playerData.velocity.vx}",
-        fontSize = gdxSettings.smallFontSize
-    )
-
-    private val targetVelocityYTextField = createTextField(
-        default = "${playerData.velocity.vy}",
-        fontSize = gdxSettings.smallFontSize
-    )
-
-    private val targetVelocityZTextField = createTextField(
-        default = "${playerData.velocity.vz}",
-        fontSize = gdxSettings.smallFontSize
-    )
-
-    private val changeVelocityCommandTextButton = createTextButton(
-        text = "Change Velocity",
-        fontSize = gdxSettings.normalFontSize,
-        soundVolume = gdxSettings.soundEffectsVolume
-    ) {
-        try {
-            val vx = targetVelocityXTextField.text.toDouble()
-            val vy = targetVelocityYTextField.text.toDouble()
-            val vz = targetVelocityZTextField.text.toDouble()
-
-            val changeVelocityCommand: ChangeVelocityCommand = ChangeVelocityCommand(
-                targetVelocity = Velocity(vx, vy, vz),
-                toId = playerData.playerId,
-                fromId = game.universeClient.getUniverseData3D().getCurrentPlayerData().playerId,
-                fromInt4D = game.universeClient.getUniverseData3D().getCurrentPlayerData().int4D,
-            )
-
-            game.universeClient.currentCommand = changeVelocityCommand
-        } catch (e: NumberFormatException) {
-            logger.error("Invalid target velocity")
-        }
-    }
 
 
     private val targetXTextField = createTextField(
@@ -171,12 +134,12 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
             playerData.double4D.toDouble3D(),
             targetDouble3D,
             game.universeClient.getUniverseData3D().universeSettings.speedOfLight
-        )
+        ).scaleVelocity(maxSpeed)
 
-        // Change target velocity text
-        targetVelocityXTextField.text = targetVelocity.vx.toString()
-        targetVelocityYTextField.text = targetVelocity.vy.toString()
-        targetVelocityZTextField.text = targetVelocity.vz.toString()
+        // Change target velocity
+        targetVelocityX = targetVelocity.vx
+        targetVelocityY = targetVelocity.vy
+        targetVelocityZ = targetVelocity.vz
 
         // Change target position text
         targetXTextField.text = targetDouble3D.x.toString()
@@ -197,12 +160,12 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
                 playerData.double4D.toDouble3D(),
                 targetDouble3D,
                 game.universeClient.getUniverseData3D().universeSettings.speedOfLight
-            )
+            ).scaleVelocity(maxSpeed)
 
-            // Change target velocity text
-            targetVelocityXTextField.text = targetVelocity.vx.toString()
-            targetVelocityYTextField.text = targetVelocity.vy.toString()
-            targetVelocityZTextField.text = targetVelocity.vz.toString()
+            // Change target velocity
+            targetVelocityX = targetVelocity.vx
+            targetVelocityY = targetVelocity.vy
+            targetVelocityZ = targetVelocity.vz
 
             // Change target position text
             targetXTextField.text = targetDouble3D.x.toString()
@@ -299,7 +262,7 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
     }
 
     private fun createDouble4DTable(): Table {
-        val nestedTable: Table = Table()
+        val nestedTable = Table()
 
         val double4DHeaderLabel = createLabel("Coordinates: ", gdxSettings.smallFontSize)
         nestedTable.add(double4DHeaderLabel)
@@ -340,7 +303,7 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
     }
 
     private fun createVelocityTable(): Table {
-        val nestedTable: Table = Table()
+        val nestedTable = Table()
 
         val velocityHeaderLabel = createLabel("Velocity: ", gdxSettings.smallFontSize)
         nestedTable.add(velocityHeaderLabel)
@@ -373,7 +336,7 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
     }
 
     private fun createTimeDilationTable(): Table {
-        val nestedTable: Table = Table()
+        val nestedTable = Table()
 
         val gamma: Double = Relativistic.gamma(
             playerData.velocity,
@@ -464,14 +427,76 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
     }
 
     private fun createChangeVelocityTable(): Table {
-        val nestedTable: Table = Table()
+        val nestedTable = Table()
 
+        val onTargetVelocityXTextFieldChange: MutableList<() -> Unit> = mutableListOf()
+        val targetVelocityXTextField = createTextField(
+            default = "$targetVelocityX",
+            fontSize = gdxSettings.smallFontSize
+        ) { s, _ ->
+            targetVelocityX = try {
+                s.toDouble()
+            } catch (e: NumberFormatException) {
+                logger.debug("Invalid target velocity X")
+                targetVelocityX
+            }
+
+            onTargetVelocityXTextFieldChange.forEach { it() }
+        }
+
+        val onTargetVelocityYTextFieldChange: MutableList<() -> Unit> = mutableListOf()
+        val targetVelocityYTextField = createTextField(
+            default = "$targetVelocityY",
+            fontSize = gdxSettings.smallFontSize
+        ) { s, _ ->
+            targetVelocityY = try {
+                s.toDouble()
+            } catch (e: NumberFormatException) {
+                logger.debug("Invalid target velocity Y")
+                targetVelocityY
+            }
+
+            onTargetVelocityYTextFieldChange.forEach { it() }
+        }
+
+        val onTargetVelocityZTextFieldChange: MutableList<() -> Unit> = mutableListOf()
+        val targetVelocityZTextField = createTextField(
+            default = "$targetVelocityZ",
+            fontSize = gdxSettings.smallFontSize
+        ) { s, _ ->
+            targetVelocityZ = try {
+                s.toDouble()
+            } catch (e: NumberFormatException) {
+                logger.debug("Invalid target velocity Z")
+                targetVelocityZ
+            }
+
+            onTargetVelocityZTextFieldChange.forEach { it() }
+        }
+
+        val changeVelocityCommandTextButton = createTextButton(
+            text = "Change Velocity",
+            fontSize = gdxSettings.normalFontSize,
+            soundVolume = gdxSettings.soundEffectsVolume
+        ) {
+            val changeVelocityCommand: ChangeVelocityCommand = ChangeVelocityCommand(
+                targetVelocity = Velocity(targetVelocityX, targetVelocityY, targetVelocityZ),
+                toId = playerData.playerId,
+                fromId = game.universeClient.getUniverseData3D().getCurrentPlayerData().playerId,
+                fromInt4D = game.universeClient.getUniverseData3D().getCurrentPlayerData().int4D,
+            )
+
+            game.universeClient.currentCommand = changeVelocityCommand
+        }
         nestedTable.add(changeVelocityCommandTextButton).colspan(2)
 
         nestedTable.row().space(10f)
 
-        val targetVelocityXLabel = createLabel("Target vx: ", gdxSettings.smallFontSize)
-        nestedTable.add(targetVelocityXLabel)
+        nestedTable.add(createLabel(
+            "Target vx: ",
+            gdxSettings.smallFontSize
+        ))
+
         nestedTable.add(targetVelocityXTextField)
 
         nestedTable.row().space(10f)
@@ -491,7 +516,7 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
     }
 
     private fun createMoveToDouble3DTable(): Table {
-        val nestedTable: Table = Table()
+        val nestedTable = Table()
 
         nestedTable.add(moveToDouble3DEventCommandTextButton).colspan(2)
 
