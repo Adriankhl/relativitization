@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.Align
 import relativitization.game.MapPlayerColorMode
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.PlayerType
+import relativitization.universe.data.components.defaults.diplomacy.DiplomaticRelationState
 import relativitization.universe.data.components.defaults.popsystem.CarrierType
 import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.random.Random
@@ -46,10 +47,27 @@ object PlayerImage {
                 Color(r, g, b, 1f)
             }
             MapPlayerColorMode.WAR_STATE -> {
-                if (playerData.playerId == primaryPlayerData.playerId) {
-                    Color(0f, 0.7f, 0f, 1f)
-                } else {
-                    Color(0f, 0.5f, 0f, 1f)
+                when {
+                    playerData.playerId == primaryPlayerData.playerId -> {
+                        Color(0f, 1f, 0f, 1f)
+                    }
+                    primaryPlayerData.isLeader(playerData.playerId) -> {
+                        Color(0f, 0.5f, 0f, 1f)
+                    }
+                    primaryPlayerData.isSubOrdinate(playerData.playerId) -> {
+                        Color(0f, 0.8f, 0f, 1f)
+                    }
+                    primaryPlayerData.playerInternalData.diplomacyData().getRelationState(
+                        playerData.playerId
+                    ) == DiplomaticRelationState.ENEMY -> {
+                        Color(1f, 0f, 0f, 1f)
+                    }
+                    primaryPlayerData.playerInternalData.diplomacyData().isEnemyOf(playerData) -> {
+                        Color(0.5f, 0f, 0f, 1f)
+                    }
+                    else -> {
+                        Color(0f, 0f ,0f, 1f)
+                    }
                 }
             }
         }

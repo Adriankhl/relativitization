@@ -49,10 +49,28 @@ data class PlayerData(
     val newPlayerList: List<PlayerInternalData> = listOf()
 ) {
     /**
-     * @param otherPlayerId whether this id is the player or one the subordinates of the player
+     * @param otherPlayerId whether this id is the player or one of the subordinates of the player
      */
     fun isSubOrdinateOrSelf(otherPlayerId: Int): Boolean {
         return (otherPlayerId == playerId) || playerInternalData.subordinateIdList.contains(
+            otherPlayerId
+        )
+    }
+
+    /**
+     * @param otherPlayerId whether this id is one of the direct subordinates of the player
+     */
+    fun isDirectSubOrdinate(otherPlayerId: Int): Boolean {
+        return (otherPlayerId != playerId) && playerInternalData.directSubordinateIdList.contains(
+            otherPlayerId
+        )
+    }
+
+    /**
+     * @param otherPlayerId whether this id is one of the subordinates of the player
+     */
+    fun isSubOrdinate(otherPlayerId: Int): Boolean {
+        return (otherPlayerId != playerId) && playerInternalData.subordinateIdList.contains(
             otherPlayerId
         )
     }
@@ -62,6 +80,13 @@ data class PlayerData(
      */
     fun isLeaderOrSelf(otherPlayerId: Int): Boolean {
         return (otherPlayerId == playerId) || playerInternalData.leaderIdList.contains(otherPlayerId)
+    }
+
+    /**
+     * @param otherPlayerId whether this id is one of the leaders of the player
+     */
+    fun isLeader(otherPlayerId: Int): Boolean {
+        return (otherPlayerId != playerId) && playerInternalData.leaderIdList.contains(otherPlayerId)
     }
 
     /**
@@ -125,6 +150,25 @@ data class MutablePlayerData(
      */
     fun isSubOrdinateOrSelf(otherPlayerId: Int): Boolean {
         return (otherPlayerId == playerId) || playerInternalData.subordinateIdList.contains(
+            otherPlayerId
+        )
+    }
+
+
+    /**
+     * @param otherPlayerId whether this id is one of the direct subordinates of the player
+     */
+    fun isDirectSubOrdinate(otherPlayerId: Int): Boolean {
+        return (otherPlayerId != playerId) && playerInternalData.directSubordinateIdList.contains(
+            otherPlayerId
+        )
+    }
+
+    /**
+     * @param otherPlayerId whether this id is one of the subordinates of the player
+     */
+    fun isSubOrdinate(otherPlayerId: Int): Boolean {
+        return (otherPlayerId != playerId) && playerInternalData.subordinateIdList.contains(
             otherPlayerId
         )
     }

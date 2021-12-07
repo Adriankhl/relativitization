@@ -30,10 +30,7 @@ object SyncHierarchy : Mechanism() {
 
             mutablePlayerData.changeDirectLeaderId(directLeaderData.playerInternalData.leaderIdList)
 
-            if (directLeaderData.playerInternalData.directSubordinateIdList.contains(
-                    mutablePlayerData.playerId
-                )
-            ) {
+            if (directLeaderData.isDirectSubOrdinate(mutablePlayerData.playerId)) {
                 listOf()
             } else {
                 listOf(

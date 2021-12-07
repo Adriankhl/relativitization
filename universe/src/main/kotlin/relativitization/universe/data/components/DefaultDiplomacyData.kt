@@ -3,6 +3,7 @@ package relativitization.universe.data.components
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.MutablePlayerData
+import relativitization.universe.data.PlayerData
 import relativitization.universe.data.components.defaults.diplomacy.*
 
 /**
@@ -27,8 +28,17 @@ data class DiplomacyData(
      * Whether this player is a enemy of other player
      *
      */
-    fun isEnemyOf(mutablePlayerData: MutablePlayerData): Boolean =
-        mutablePlayerData.playerInternalData.leaderIdList.any {
+    fun isEnemyOf(playerData: PlayerData): Boolean =
+        playerData.playerInternalData.leaderIdList.any {
+            getRelationState(it) == DiplomaticRelationState.ENEMY
+        }
+
+    /**
+     * Whether this player is a enemy of other player
+     *
+     */
+    fun isEnemyOf(playerData: MutablePlayerData): Boolean =
+        playerData.playerInternalData.leaderIdList.any {
             getRelationState(it) == DiplomaticRelationState.ENEMY
         }
 }

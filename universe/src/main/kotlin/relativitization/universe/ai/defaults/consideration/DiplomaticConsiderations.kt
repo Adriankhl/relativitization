@@ -79,17 +79,17 @@ class HierarchyDualUtilityConsideration(
                 multiplier = multiplier,
                 bonus = bonus
             )
-            playerData.playerInternalData.leaderIdList.contains(playerId) -> DualUtilityData(
+            playerData.isLeader(playerId) -> DualUtilityData(
                 rank = otherLeaderRank,
                 multiplier = multiplier,
                 bonus = bonus
             )
-            playerData.playerInternalData.directSubordinateIdList.contains(playerId) -> DualUtilityData(
+            playerData.isDirectSubOrdinate(playerId) -> DualUtilityData(
                 rank = directSubordinateRank,
                 multiplier = multiplier,
                 bonus = bonus
             )
-            playerData.playerInternalData.subordinateIdList.contains(playerId) -> DualUtilityData(
+            playerData.isSubOrdinate(playerId) -> DualUtilityData(
                 rank = otherSubordinateRank,
                 multiplier = multiplier,
                 bonus = bonus
