@@ -91,6 +91,7 @@ class GameScreenWorldMap(
     }
 
     override fun onPrimarySelectedPlayerIdChange() {
+        updateGroup()
         drawSelected()
     }
 
