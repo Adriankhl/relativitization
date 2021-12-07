@@ -79,11 +79,12 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
     private fun updateTable() {
         table.clear()
 
-        val headerLabel = createLabel(
-            "Pop system: player ${playerData.playerId}",
-            gdxSettings.bigFontSize
+        table.add(
+            createLabel(
+                "Pop system: player ${playerData.playerId}",
+                gdxSettings.bigFontSize
+            )
         )
-        table.add(headerLabel).pad(20f)
 
         table.row().space(20f)
 
@@ -115,9 +116,12 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         val carrier: CarrierData =
             playerData.playerInternalData.popSystemData().carrierDataMap.getValue(carrierId)
 
-        val carrierTypeLabel =
-            createLabel("Carrier type: ${carrier.carrierType}", gdxSettings.smallFontSize)
-        carrierTable.add(carrierTypeLabel)
+        carrierTable.add(
+            createLabel(
+                "Carrier type: ${carrier.carrierType}",
+                gdxSettings.smallFontSize
+            )
+        )
 
         carrierTable.row().space(30f)
 
@@ -195,31 +199,39 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         nestedTable.row().space(10f)
 
-        nestedTable.add(createLabel(
-            "Adult population: ${commonPopData.adultPopulation}",
-            gdxSettings.smallFontSize
-        ))
+        nestedTable.add(
+            createLabel(
+                "Adult population: ${commonPopData.adultPopulation}",
+                gdxSettings.smallFontSize
+            )
+        )
 
         nestedTable.row().space(10f)
 
-        nestedTable.add(createLabel(
-            "Unemployment rate: ${commonPopData.unemploymentRate}",
-            gdxSettings.smallFontSize
-        ))
+        nestedTable.add(
+            createLabel(
+                "Unemployment rate: ${commonPopData.unemploymentRate}",
+                gdxSettings.smallFontSize
+            )
+        )
 
         nestedTable.row().space(10f)
 
-        nestedTable.add(createLabel(
-            "Satisfaction: ${commonPopData.satisfaction}",
-            gdxSettings.smallFontSize
-        ))
+        nestedTable.add(
+            createLabel(
+                "Satisfaction: ${commonPopData.satisfaction}",
+                gdxSettings.smallFontSize
+            )
+        )
 
         nestedTable.row().space(10f)
 
-        nestedTable.add(createLabel(
-            "Salary: ${commonPopData.salary}",
-            gdxSettings.smallFontSize
-        ))
+        nestedTable.add(
+            createLabel(
+                "Salary: ${commonPopData.salary}",
+                gdxSettings.smallFontSize
+            )
+        )
 
         nestedTable.row().space(10f)
 
