@@ -16,6 +16,11 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
     private var playerData: PlayerData = PlayerData(-1)
 
+    // The id of the carrier to show in the info
+    private var carrierId: Int = -1
+
+    private var carrierTable: Table = Table()
+
 
     init {
 
@@ -65,9 +70,27 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             "Pop system: player ${playerData.playerId}",
             gdxSettings.bigFontSize
         )
-
         table.add(headerLabel).pad(20f)
 
         table.row().space(20f)
+
+        val carrierSelectBox = createSelectBox(
+            playerData.playerInternalData.popSystemData().carrierDataMap.keys.toList(),
+            playerData.playerInternalData.popSystemData().carrierDataMap.keys.firstOrNull() ?: -1,
+            gdxSettings.smallFontSize,
+        ) { id, _ ->
+            carrierId = id
+            carrierTable.clear()
+            updateCarrierTable()
+        }
+        table.add(carrierSelectBox)
+
+        table.row().space(20f)
+
+        table.add(carrierTable)
+    }
+
+    private fun updateCarrierTable() {
+
     }
 }
