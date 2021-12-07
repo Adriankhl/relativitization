@@ -112,13 +112,23 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             createLabel("Carrier type: ${carrier.carrierType}", gdxSettings.smallFontSize)
         carrierTable.add(carrierTypeLabel)
 
-        carrierTable.row().space(10f)
+        carrierTable.row().space(30f)
 
         carrierTable.add(createCarrierInternalDataTable(carrier.carrierInternalData))
+
+        carrierTable.row().space(10f)
     }
 
     private fun createCarrierInternalDataTable(carrierInternalData: CarrierInternalData): Table {
         val nestedTable = Table()
+
+        val internalDataLabel = createLabel(
+            "Carrier internal data:",
+            gdxSettings.normalFontSize
+        )
+        nestedTable.add(internalDataLabel)
+
+        nestedTable.row().space(10f)
 
         val coreMassLabel = createLabel(
             "Core rest mass: ${carrierInternalData.coreRestMass}",
