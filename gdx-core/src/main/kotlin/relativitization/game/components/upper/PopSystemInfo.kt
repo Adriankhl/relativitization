@@ -14,6 +14,8 @@ import relativitization.universe.data.components.defaults.popsystem.pop.AllPopDa
 import relativitization.universe.data.components.defaults.popsystem.pop.CommonPopData
 import relativitization.universe.data.components.defaults.popsystem.pop.PopType
 import relativitization.universe.utils.RelativitizationLogManager
+import kotlin.math.abs
+import kotlin.properties.Delegates
 
 class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.assets) {
 
@@ -249,7 +251,10 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
     private fun createTargetSalaryTable(defaultSalary: Double): Table {
         val nestedTable = Table()
 
-        var targetSalary: Double = defaultSalary
+        val onTargetSalaryChangeFunctionList: MutableList<() -> Unit> = mutableListOf()
+        var targetSalary: Double by Delegates.observable(defaultSalary) { _, _, _ ->
+            onTargetSalaryChangeFunctionList.forEach { it() }
+        }
 
         nestedTable.add(
             createLabel(
@@ -269,7 +274,12 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
                 targetSalary
             }
 
-            targetSalary = newTargetSalary
+            if (abs(targetSalary - newTargetSalary) > 0.0001) {
+                targetSalary = newTargetSalary
+            }
+        }
+        onTargetSalaryChangeFunctionList.add {
+            targetSalaryTextField.text = targetSalary.toString()
         }
         nestedTable.add(targetSalaryTextField)
 
