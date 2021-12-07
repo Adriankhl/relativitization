@@ -1,19 +1,24 @@
 package relativitization.game.utils
 
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Stack
 import com.badlogic.gdx.utils.Align
 import relativitization.game.MapPlayerColorMode
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.PlayerType
+import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.components.defaults.popsystem.CarrierType
 import relativitization.universe.utils.RelativitizationLogManager
+import kotlin.random.Random
 
 object PlayerImage {
     private val logger = RelativitizationLogManager.getLogger()
 
     fun getPlayerImages(
         playerData: PlayerData,
+        primaryPlayerData: PlayerData,
+        universeData3DAtPlayer: UniverseData3DAtPlayer,
         assets: Assets,
         xPos: Float,
         yPos: Float,
@@ -26,10 +31,29 @@ object PlayerImage {
 
         val imageList: MutableList<Image> = mutableListOf()
 
-        // Id to determine the color of the player image
-        val colorId: Int = when (mapPlayerColorMode) {
-            MapPlayerColorMode.ONE_COLOR_PER_PLAYER -> playerData.playerId
-            MapPlayerColorMode.TOP_LEADER -> playerData.topLeaderId()
+        // determine the color of the player image by map mode and player data
+        val playerColor: Color = when (mapPlayerColorMode) {
+            MapPlayerColorMode.ONE_COLOR_PER_PLAYER -> {
+                val random = Random(playerData.playerId)
+                val r = random.nextFloat()
+                val g = random.nextFloat()
+                val b = random.nextFloat()
+                Color(r, g, b, 1f)
+            }
+            MapPlayerColorMode.TOP_LEADER -> {
+                val random = Random(playerData.topLeaderId())
+                val r = random.nextFloat()
+                val g = random.nextFloat()
+                val b = random.nextFloat()
+                Color(r, g, b, 1f)
+            }
+            MapPlayerColorMode.WAR_STATE -> {
+                if (playerData.playerId == primaryPlayerData.playerId) {
+                    Color(0f, 0.7f, 0f, 1f)
+                } else {
+                    Color(0f, 0.5f, 0f, 1f)
+                }
+            }
         }
 
         val hasStellarSystem: Boolean =
@@ -53,49 +77,61 @@ object PlayerImage {
             val playerShipImage: Image = if (hasSpaceship) {
                 if (playerData.isTopLeader()) {
                     ActorFunction.createImage(
-                        assets,
-                        colorId,
-                        "system/ship2",
-                        xPos,
-                        yPos,
-                        width,
-                        height,
-                        soundVolume,
+                        assets = assets,
+                        name = "system/ship2",
+                        xPos = xPos,
+                        yPos = yPos,
+                        width = width,
+                        height = height,
+                        r = playerColor.r,
+                        g = playerColor.g,
+                        b = playerColor.b,
+                        a = playerColor.a,
+                        soundVolume = soundVolume,
                     )
                 } else {
                     ActorFunction.createImage(
-                        assets,
-                        colorId,
-                        "system/ship1",
-                        xPos,
-                        yPos,
-                        width,
-                        height,
-                        soundVolume,
+                        assets = assets,
+                        name = "system/ship1",
+                        xPos = xPos,
+                        yPos = yPos,
+                        width = width,
+                        height = height,
+                        r = playerColor.r,
+                        g = playerColor.g,
+                        b = playerColor.b,
+                        a = playerColor.a,
+                        soundVolume = soundVolume,
                     )
                 }
             } else {
                 if (playerData.isTopLeader()) {
                     ActorFunction.createImage(
-                        assets,
-                        colorId,
-                        "system/no-ship2",
-                        xPos,
-                        yPos,
-                        width,
-                        height,
-                        soundVolume,
+                        assets = assets,
+                        name = "system/no-ship2",
+                        xPos = xPos,
+                        yPos = yPos,
+                        width = width,
+                        height = height,
+                        r = playerColor.r,
+                        g = playerColor.g,
+                        b = playerColor.b,
+                        a = playerColor.a,
+                        soundVolume = soundVolume,
                     )
                 } else {
                     ActorFunction.createImage(
-                        assets,
-                        colorId,
-                        "system/no-ship1",
-                        xPos,
-                        yPos,
-                        width,
-                        height,
-                        soundVolume,
+                        assets = assets,
+                        name = "system/no-ship1",
+                        xPos = xPos,
+                        yPos = yPos,
+                        width = width,
+                        height = height,
+                        r = playerColor.r,
+                        g = playerColor.g,
+                        b = playerColor.b,
+                        a = playerColor.a,
+                        soundVolume = soundVolume,
                     )
                 }
             }
@@ -107,18 +143,18 @@ object PlayerImage {
 
         // Add an transparent square on top for selecting player
         val transparentSquare: Image = ActorFunction.createImage(
-            assets,
-            "basic/white-pixel",
-            xPos,
-            yPos,
-            width,
-            height,
-            0.0f,
-            0.0f,
-            0.0f,
-            0.0f,
-            soundVolume,
-            function
+            assets = assets,
+            name = "basic/white-pixel",
+            xPos = xPos,
+            yPos = yPos,
+            width = width,
+            height = height,
+            r = 0.0f,
+            g = 0.0f,
+            b = 0.0f,
+            a = 0.0f,
+            soundVolume = soundVolume,
+            function = function
         )
         imageList.add(transparentSquare)
 
@@ -127,6 +163,8 @@ object PlayerImage {
 
     fun getPlayerImageStack(
         playerData: PlayerData,
+        primaryPlayerData: PlayerData,
+        universeData3DAtPlayer: UniverseData3DAtPlayer,
         assets: Assets,
         width: Float,
         height: Float,
@@ -136,6 +174,8 @@ object PlayerImage {
     ): Stack {
         val imageList = getPlayerImages(
             playerData = playerData,
+            primaryPlayerData = primaryPlayerData,
+            universeData3DAtPlayer = universeData3DAtPlayer,
             assets = assets,
             xPos = 0f,
             yPos = 0f,

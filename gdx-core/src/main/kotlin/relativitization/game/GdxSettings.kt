@@ -75,7 +75,8 @@ enum class ShowingInfoType {
 
 enum class MapPlayerColorMode(private val value: String) {
     ONE_COLOR_PER_PLAYER("One color per player"),
-    TOP_LEADER("Top leader")
+    TOP_LEADER("Top leader"),
+    WAR_STATE("War state"),
     ;
 
     override fun toString(): String {
