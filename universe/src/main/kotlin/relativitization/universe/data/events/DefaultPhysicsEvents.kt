@@ -69,10 +69,18 @@ data class MoveToDouble3DEvent(
             CommandI18NStringFactory.isNotSubordinate(playerData.playerId, toId)
         }
 
+        val isMaxSpeedValid: Boolean = maxSpeed <= universeSettings.speedOfLight
+        val isMaxSpeedValidI18NString: I18NString = if (isMaxSpeedValid) {
+            I18NString("")
+        } else {
+            I18NString("Target max. speed is larger than the speed of light")
+        }
+
         return CanSendCheckMessage(
-            isSubOrdinateOrSelf,
+            isSubOrdinateOrSelf && isMaxSpeedValid,
             listOf(
-                isSubOrdinateOrSelfI18NString
+                isSubOrdinateOrSelfI18NString,
+                isMaxSpeedValidI18NString,
             )
         )
     }
