@@ -65,6 +65,12 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         } else {
             game.universeClient.getUniverseData3D().getCurrentPlayerData()
         }
+
+
+        if (!playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(carrierId)) {
+            carrierId = playerData.playerInternalData
+                .popSystemData().carrierDataMap.keys.firstOrNull() ?: -1
+        }
     }
 
 
@@ -81,18 +87,18 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         val carrierSelectBox = createSelectBox(
             playerData.playerInternalData.popSystemData().carrierDataMap.keys.toList(),
-            playerData.playerInternalData.popSystemData().carrierDataMap.keys.firstOrNull() ?: -1,
+            carrierId,
             gdxSettings.smallFontSize,
         ) { id, _ ->
             carrierId = id
-            if (playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(carrierId)) {
-                updateCarrierTable()
-            }
         }
         table.add(carrierSelectBox)
 
         table.row().space(20f)
 
+        if (playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(carrierId)) {
+            updateCarrierTable()
+        }
         table.add(carrierTable)
     }
 
@@ -102,7 +108,13 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         val carrier: CarrierData =
             playerData.playerInternalData.popSystemData().carrierDataMap.getValue(carrierId)
 
+        val carrierTypeLabel =
+            createLabel("Carrier type: ${carrier.carrierType}", gdxSettings.smallFontSize)
+        carrierTable.add(carrierTypeLabel)
 
+        carrierTable.row().space(10f)
+
+        carrierTable.add(createCarrierInternalDataTable(carrier.carrierInternalData))
     }
 
     private fun createCarrierInternalDataTable(carrierInternalData: CarrierInternalData): Table {
