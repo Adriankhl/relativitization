@@ -120,6 +120,28 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
     private fun createCarrierInternalDataTable(carrierInternalData: CarrierInternalData): Table {
         val nestedTable = Table()
 
+        val coreMassLabel = createLabel(
+            "Core rest mass: ${carrierInternalData.coreRestMass}",
+            gdxSettings.smallFontSize
+        )
+        nestedTable.add(coreMassLabel)
+
+        nestedTable.row().space(10f)
+
+        val moveMaxPowerLabel = createLabel(
+            "Max. movement fuel delta: ${carrierInternalData.maxMovementDeltaFuelRestMass}",
+            gdxSettings.smallFontSize
+        )
+        nestedTable.add(moveMaxPowerLabel)
+
+        nestedTable.row().space(10f)
+
+        val idealPopulationLabel = createLabel(
+            "Ideal population: ${carrierInternalData.idealPopulation}",
+            gdxSettings.smallFontSize
+        )
+        nestedTable.add(idealPopulationLabel)
+
         return nestedTable
     }
 }
