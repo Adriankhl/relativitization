@@ -7,7 +7,6 @@ import com.badlogic.gdx.utils.Align
 import relativitization.game.MapPlayerColorMode
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.PlayerType
-import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.components.defaults.popsystem.CarrierType
 import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.random.Random
@@ -18,7 +17,6 @@ object PlayerImage {
     fun getPlayerImages(
         playerData: PlayerData,
         primaryPlayerData: PlayerData,
-        universeData3DAtPlayer: UniverseData3DAtPlayer,
         assets: Assets,
         xPos: Float,
         yPos: Float,
@@ -164,7 +162,6 @@ object PlayerImage {
     fun getPlayerImageStack(
         playerData: PlayerData,
         primaryPlayerData: PlayerData,
-        universeData3DAtPlayer: UniverseData3DAtPlayer,
         assets: Assets,
         width: Float,
         height: Float,
@@ -175,7 +172,6 @@ object PlayerImage {
         val imageList = getPlayerImages(
             playerData = playerData,
             primaryPlayerData = primaryPlayerData,
-            universeData3DAtPlayer = universeData3DAtPlayer,
             assets = assets,
             xPos = 0f,
             yPos = 0f,
