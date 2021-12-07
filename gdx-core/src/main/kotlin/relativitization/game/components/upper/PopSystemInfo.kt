@@ -7,6 +7,7 @@ import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.components.defaults.popsystem.CarrierData
 import relativitization.universe.data.components.defaults.popsystem.CarrierInternalData
+import relativitization.universe.data.components.defaults.popsystem.pop.AllPopData
 import relativitization.universe.data.components.defaults.popsystem.pop.PopType
 
 class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.assets) {
@@ -136,6 +137,8 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         carrierTable.add(popTypeSelectBox)
 
         carrierTable.row().space(30f)
+
+        carrierTable.add(createPopTable(carrier.allPopData))
     }
 
     private fun createCarrierInternalDataTable(carrierInternalData: CarrierInternalData): Table {
@@ -170,6 +173,12 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             gdxSettings.smallFontSize
         )
         nestedTable.add(idealPopulationLabel)
+
+        return nestedTable
+    }
+
+    private fun createPopTable(allPopType: AllPopData): Table {
+        val nestedTable = Table()
 
         return nestedTable
     }
