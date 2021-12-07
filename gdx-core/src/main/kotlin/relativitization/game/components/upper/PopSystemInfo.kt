@@ -221,6 +221,16 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         nestedTable.row().space(10f)
 
+        nestedTable.add(createTargetSalaryTable(commonPopData.salary))
+
+        nestedTable.row().space(10f)
+
+        return nestedTable
+    }
+
+    private fun createTargetSalaryTable(default: Double): Table {
+        val nestedTable = Table()
+
         return nestedTable
     }
 }
