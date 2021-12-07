@@ -355,11 +355,23 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
             game.universeClient.getUniverseData3D().universeSettings.speedOfLight,
         )
 
+        val gammaLabel = createLabel("Gamma: $gamma", gdxSettings.smallFontSize)
+        nestedTable.add(gammaLabel)
+
+        nestedTable.row().space(10f)
+
+        val gammaInverseLabel = createLabel(
+            "Gamma inverse: ${1.0 / gamma}",
+            gdxSettings.smallFontSize
+        )
+        nestedTable.add(gammaInverseLabel)
+
+        nestedTable.row().space(10f)
+
         val dilatedTimeResidueLabel = createLabel(
             "dilated time residue: ${playerData.dilatedTimeResidue}",
             gdxSettings.smallFontSize
         )
-
         nestedTable.add(dilatedTimeResidueLabel)
 
         nestedTable.row().space(10f)
