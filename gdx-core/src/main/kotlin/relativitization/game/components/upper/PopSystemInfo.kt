@@ -5,11 +5,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.PlayerData
+import relativitization.universe.data.commands.ChangeSalaryCommand
+import relativitization.universe.data.components.defaults.physics.Int3D
+import relativitization.universe.data.components.defaults.physics.Int4D
 import relativitization.universe.data.components.defaults.popsystem.CarrierData
 import relativitization.universe.data.components.defaults.popsystem.CarrierInternalData
 import relativitization.universe.data.components.defaults.popsystem.pop.AllPopData
 import relativitization.universe.data.components.defaults.popsystem.pop.CommonPopData
 import relativitization.universe.data.components.defaults.popsystem.pop.PopType
+import relativitization.universe.utils.RelativitizationLogManager
 
 class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.assets) {
 
@@ -242,9 +246,57 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         return nestedTable
     }
 
-    private fun createTargetSalaryTable(default: Double): Table {
+    private fun createTargetSalaryTable(defaultSalary: Double): Table {
         val nestedTable = Table()
 
+        var targetSalary: Double = defaultSalary
+
+        nestedTable.add(
+            createLabel(
+                "Target salary: ",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        val targetSalaryTextField = createTextField(
+            targetSalary.toString(),
+            gdxSettings.smallFontSize
+        ) { s, _ ->
+            val newTargetSalary: Double = try {
+                s.toDouble()
+            } catch (e: NumberFormatException) {
+                logger.debug("Invalid target salary")
+                targetSalary
+            }
+
+            targetSalary = newTargetSalary
+        }
+        nestedTable.add(targetSalaryTextField)
+
+        nestedTable.row().space(10f)
+
+        val changeSalaryTextButton = createTextButton(
+            text = "Change salary",
+            fontSize = gdxSettings.smallFontSize,
+            soundVolume = gdxSettings.soundEffectsVolume
+        ) {
+            val changeSalaryCommand = ChangeSalaryCommand(
+                toId = playerData.playerId,
+                fromId = game.universeClient.getUniverseData3D().getCurrentPlayerData().playerId,
+                fromInt4D = game.universeClient.getUniverseData3D().getCurrentPlayerData().int4D,
+                carrierId = carrierId,
+                popType = popType,
+                salary = targetSalary,
+            )
+
+            game.universeClient.currentCommand = changeSalaryCommand
+        }
+        nestedTable.add(changeSalaryTextButton).colspan(2)
+
         return nestedTable
+    }
+
+    companion object {
+        private val logger = RelativitizationLogManager.getLogger()
     }
 }
