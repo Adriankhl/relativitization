@@ -195,7 +195,6 @@ data class MutableCommonPopData(
         )
 
         desireData.desireAmount += resourceAmount
-
     }
 
 

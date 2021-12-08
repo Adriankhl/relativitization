@@ -35,5 +35,5 @@ data class ScientificNotation(
     val coefficient: Double,
     val exponent: Int,
 ) {
-    fun toDouble(): Double = coefficient * 10.0.pow(exponent)
+    fun toDouble(): Double = "${coefficient}E${exponent}".toDouble()
 }
