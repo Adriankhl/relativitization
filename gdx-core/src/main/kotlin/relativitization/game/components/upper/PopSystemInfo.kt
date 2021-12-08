@@ -6,15 +6,16 @@ import relativitization.game.RelativitizationGame
 import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.commands.ChangeSalaryCommand
-import relativitization.universe.data.components.defaults.physics.Int3D
-import relativitization.universe.data.components.defaults.physics.Int4D
 import relativitization.universe.data.components.defaults.popsystem.CarrierData
 import relativitization.universe.data.components.defaults.popsystem.CarrierInternalData
 import relativitization.universe.data.components.defaults.popsystem.pop.AllPopData
 import relativitization.universe.data.components.defaults.popsystem.pop.CommonPopData
 import relativitization.universe.data.components.defaults.popsystem.pop.PopType
+import relativitization.universe.maths.number.Notation
+import relativitization.universe.maths.number.ScientificNotation
 import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.math.abs
+import kotlin.math.roundToInt
 import kotlin.properties.Delegates
 
 class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.assets) {
@@ -291,17 +292,44 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             0.01f,
             1f,
         ) { fl, _ ->
-            val newCoefficient: Double = fl.toDouble()
-            val newTargetSalary: Double = targetSalary
+            val newCoefficient: Double = Notation.roundDecimal(fl.toDouble(), 2)
+            val originalSalary: ScientificNotation = Notation.toScientificNotation(targetSalary)
+            val originalCoefficient: Double = originalSalary.coefficient
+
+            if (abs(newCoefficient - originalCoefficient) > 0.0001) {
+                val newSalary: ScientificNotation =
+                    originalSalary.copy(coefficient = newCoefficient)
+                targetSalary = newSalary.toDouble()
+            }
+        }
+        onTargetSalaryChangeFunctionList.add {
+            targetSalaryCoefficientSlider.value =
+                Notation.toScientificNotation(targetSalary).coefficient.toFloat()
         }
 
-        val targetSalaryPowerSlider = createSlider(
+        val targetSalaryExponentSlider = createSlider(
             -300f,
             300f,
             1f,
             0f,
-        ) { fl, _ ->  }
+        ) { fl, _ ->
+            val newExponent: Int = fl.roundToInt()
+            val originalSalary: ScientificNotation = Notation.toScientificNotation(targetSalary)
+            val originalExponent: Int = originalSalary.exponent
 
+            if (newExponent != originalExponent) {
+                val newSalary: ScientificNotation = originalSalary.copy(exponent = newExponent)
+                targetSalary = newSalary.toDouble()
+            }
+        }
+        onTargetSalaryChangeFunctionList.add {
+            targetSalaryCoefficientSlider.value =
+                Notation.toScientificNotation(targetSalary).exponent.toFloat()
+        }
+
+        nestedTable.add(targetSalaryCoefficientSlider)
+
+        nestedTable.add(targetSalaryExponentSlider)
 
         nestedTable.row().space(10f)
 
