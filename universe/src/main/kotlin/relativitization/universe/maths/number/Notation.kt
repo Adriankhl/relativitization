@@ -15,12 +15,16 @@ object Notation {
      * Turn a double number to scientific notation
      */
     fun toScientificNotation(num: Double): ScientificNotation {
-        val sign: Double = num.sign
-        val logNum: Double = log10(num * sign)
-        val exponent: Int = logNum.toInt()
-        val coefficient: Double = sign * 10.0.pow(logNum - exponent)
+        return if (num != 0.0) {
+            val sign: Double = num.sign
+            val logNum: Double = log10(num * sign)
+            val exponent: Int = logNum.toInt()
+            val coefficient: Double = sign * 10.0.pow(logNum - exponent)
 
-        return ScientificNotation(coefficient, exponent)
+            ScientificNotation(coefficient, exponent)
+        } else {
+            toScientificNotation(1.0 / Double.MAX_VALUE)
+        }
     }
 }
 
