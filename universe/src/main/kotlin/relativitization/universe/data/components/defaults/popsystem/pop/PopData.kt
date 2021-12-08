@@ -119,13 +119,13 @@ data class MutableAllPopData(
  * @property childPopulation amount of child population
  * @property adultPopulation amount of adult population
  * @property elderlyPopulation amount of elderly population
- * @property unemploymentRate rate of unemployed adult
- * @property satisfaction how satisfy is the population
- * @property salary the total amount of salary per turn of the employed population
- * @property unemploymentBenefit the total amount of the unemployment benefit of the unemployed population
- * @property saving saving of the population in fuel rest mass
- * @property desireResourceMap the desire resources of the population
  * @property educationLevel the education level of the population
+ * @property unemploymentRate rate of unemployed adult
+ * @property unemploymentBenefit the total amount of the unemployment benefit of the unemployed population
+ * @property satisfaction how satisfy is the population
+ * @property saving saving of the population in fuel rest mass
+ * @property salary the total amount of salary per turn of the employed population
+ * @property desireResourceMap the desire resources of the population
  * @property resourceInputMap the resource input to this population to fulfill the desire
  */
 @Serializable
@@ -133,13 +133,13 @@ data class CommonPopData(
     val childPopulation: Double = 0.0,
     val adultPopulation: Double = 100.0,
     val elderlyPopulation: Double = 0.0,
-    val unemploymentRate: Double = 0.0,
-    val satisfaction: Double = 0.0,
-    val salary: Double = 0.0,
-    val unemploymentBenefit: Double = 0.0,
-    val saving: Double = 1.0,
-    val desireResourceMap: Map<ResourceType, ResourceDesireData> = mapOf(),
     val educationLevel: Double = 1.0,
+    val unemploymentRate: Double = 0.0,
+    val unemploymentBenefit: Double = 0.0,
+    val satisfaction: Double = 0.0,
+    val saving: Double = 1.0,
+    val salary: Double = 0.0,
+    val desireResourceMap: Map<ResourceType, ResourceDesireData> = mapOf(),
     val resourceInputMap: Map<ResourceType, ResourceDesireData> = mapOf(),
 )
 
@@ -148,13 +148,13 @@ data class MutableCommonPopData(
     var childPopulation: Double = 0.0,
     var adultPopulation: Double = 100.0,
     var elderlyPopulation: Double = 0.0,
-    var unemploymentRate: Double = 0.0,
-    var satisfaction: Double = 0.0,
-    var salary: Double = 0.0,
-    var unemploymentBenefit: Double = 0.0,
-    var saving: Double = 0.0,
-    var desireResourceMap: MutableMap<ResourceType, MutableResourceDesireData> = mutableMapOf(),
     var educationLevel: Double = 1.0,
+    var unemploymentRate: Double = 0.0,
+    var unemploymentBenefit: Double = 0.0,
+    var satisfaction: Double = 0.0,
+    var saving: Double = 0.0,
+    var salary: Double = 0.0,
+    var desireResourceMap: MutableMap<ResourceType, MutableResourceDesireData> = mutableMapOf(),
     var resourceInputMap: MutableMap<ResourceType, MutableResourceDesireData> = mutableMapOf(),
 ) {
     fun numEmployee(): Double = when {
