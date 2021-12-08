@@ -220,6 +220,15 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         nestedTable.add(
             createLabel(
+                "Education level: ${commonPopData.educationLevel}",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
                 "Unemployment rate: ${commonPopData.unemploymentRate}",
                 gdxSettings.smallFontSize
             )
@@ -238,6 +247,15 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         nestedTable.add(
             createLabel(
+                "Saving: ${commonPopData.saving}",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
                 "Salary: ${commonPopData.salary}",
                 gdxSettings.smallFontSize
             )
@@ -246,25 +264,6 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         nestedTable.row().space(10f)
 
         nestedTable.add(createTargetSalaryTable(commonPopData.salary))
-
-        nestedTable.row().space(10f)
-
-        nestedTable.add(
-            createLabel(
-                "Saving: ${commonPopData.saving}",
-                gdxSettings.smallFontSize
-            )
-        )
-
-        nestedTable.row().space(10f)
-
-
-        nestedTable.add(
-            createLabel(
-                "Education level: ${commonPopData.educationLevel}",
-                gdxSettings.smallFontSize
-            )
-        )
 
         nestedTable.row().space(10f)
 
