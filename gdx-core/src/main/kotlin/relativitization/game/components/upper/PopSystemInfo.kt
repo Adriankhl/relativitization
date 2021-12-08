@@ -7,11 +7,13 @@ import relativitization.game.RelativitizationGame
 import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.commands.ChangeSalaryCommand
+import relativitization.universe.data.components.defaults.economy.ResourceType
 import relativitization.universe.data.components.defaults.popsystem.CarrierData
 import relativitization.universe.data.components.defaults.popsystem.CarrierInternalData
 import relativitization.universe.data.components.defaults.popsystem.pop.AllPopData
 import relativitization.universe.data.components.defaults.popsystem.pop.CommonPopData
 import relativitization.universe.data.components.defaults.popsystem.pop.PopType
+import relativitization.universe.data.components.defaults.popsystem.pop.ResourceDesireData
 import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.properties.Delegates
 
@@ -112,12 +114,6 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             updateCarrierTable()
         }
         table.add(carrierTable)
-
-
-        // Add empty space for Android keyboard input
-        val emptyLabel = createLabel("", gdxSettings.smallFontSize)
-        emptyLabel.height = Gdx.graphics.height.toFloat()
-        table.add(emptyLabel).minHeight(Gdx.graphics.height.toFloat())
     }
 
     private fun updateCarrierTable() {
@@ -156,6 +152,13 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         carrierTable.row().space(30f)
 
         carrierTable.add(createPopTable(carrier.allPopData))
+
+        carrierTable.row()
+
+        // Add empty space for Android keyboard input
+        val emptyLabel = createLabel("", gdxSettings.smallFontSize)
+        emptyLabel.height = Gdx.graphics.height.toFloat()
+        carrierTable.add(emptyLabel).minHeight(Gdx.graphics.height.toFloat())
     }
 
     private fun createCarrierInternalDataTable(carrierInternalData: CarrierInternalData): Table {
@@ -267,6 +270,21 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         nestedTable.row().space(10f)
 
+        nestedTable.add(createLabel("Pop desire: ", gdxSettings.smallFontSize))
+
+        nestedTable.row().space(10f)
+
+        commonPopData.desireResourceMap.forEach { (resourceType, desireData) ->
+            nestedTable.add(
+                createPopDesireTable(
+                    resourceType,
+                    desireData
+                )
+            )
+
+            nestedTable.row().space(10f)
+        }
+
         return nestedTable
     }
 
@@ -339,6 +357,40 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             game.universeClient.currentCommand = changeSalaryCommand
         }
         nestedTable.add(changeSalaryTextButton).colspan(2)
+
+        return nestedTable
+    }
+
+    private fun createPopDesireTable(
+        resourceType: ResourceType,
+        resourceDesireData: ResourceDesireData
+    ): Table {
+        val nestedTable = Table()
+
+        nestedTable.add(
+            createLabel(
+                "Resource: $resourceType",
+                gdxSettings.smallFontSize
+            ),
+        )
+
+        nestedTable.row()
+
+        nestedTable.add(
+            createLabel(
+                "Amount: ${resourceDesireData.desireAmount}",
+                gdxSettings.smallFontSize
+            ),
+        )
+
+        nestedTable.row()
+        nestedTable.add(
+            createLabel(
+                "Quality: ${resourceDesireData.desireQuality.quality1}",
+                gdxSettings.smallFontSize
+            ),
+        )
+
 
         return nestedTable
     }
