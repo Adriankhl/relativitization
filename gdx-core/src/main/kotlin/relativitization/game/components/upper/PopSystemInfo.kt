@@ -285,6 +285,26 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         nestedTable.row().space(10f)
 
+        val targetSalaryCoefficientSlider = createSlider(
+            1f,
+            10f,
+            0.01f,
+            1f,
+        ) { fl, _ ->
+            val newCoefficient: Double = fl.toDouble()
+            val newTargetSalary: Double = targetSalary
+        }
+
+        val targetSalaryPowerSlider = createSlider(
+            -300f,
+            300f,
+            1f,
+            0f,
+        ) { fl, _ ->  }
+
+
+        nestedTable.row().space(10f)
+
         val changeSalaryTextButton = createTextButton(
             text = "Change salary",
             fontSize = gdxSettings.smallFontSize,

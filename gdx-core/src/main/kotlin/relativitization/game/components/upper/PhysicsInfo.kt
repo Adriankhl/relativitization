@@ -12,7 +12,7 @@ import relativitization.universe.data.components.defaults.physics.Double3D
 import relativitization.universe.data.components.defaults.physics.Int3D
 import relativitization.universe.data.components.defaults.physics.Velocity
 import relativitization.universe.data.events.MoveToDouble3DEvent
-import relativitization.universe.maths.number.Round
+import relativitization.universe.maths.number.Notation
 import relativitization.universe.maths.physics.Movement.displacementToVelocity
 import relativitization.universe.maths.physics.Relativistic
 import relativitization.universe.utils.RelativitizationLogManager
@@ -153,7 +153,7 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         val speedOfLight: Double =
             game.universeClient.getUniverseData3D().universeSettings.speedOfLight
 
-        val newSpeed: Double = Round.roundDecimal(fl.toDouble(), 2)
+        val newSpeed: Double = Notation.roundDecimal(fl.toDouble(), 2)
 
         if (abs(maxSpeed - newSpeed) > 0.0001 * speedOfLight) {
             maxSpeed = newSpeed
