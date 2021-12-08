@@ -10,21 +10,22 @@ object Notation {
         val multiplier: Double = 10.0.pow(decimalPlace)
         return round(num * multiplier) / multiplier
     }
+}
 
-    /**
-     * Turn a double number to scientific notation
-     */
-    fun toScientificNotation(num: Double): ScientificNotation {
-        return if (num != 0.0) {
-            val sign: Double = num.sign
-            val logNum: Double = log10(num * sign)
-            val exponent: Int = logNum.toInt()
-            val coefficient: Double = sign * 10.0.pow(logNum - exponent)
 
-            ScientificNotation(coefficient, exponent)
-        } else {
-            toScientificNotation(1.0 / Double.MAX_VALUE)
-        }
+/**
+ * Turn a double number to scientific notation
+ */
+fun Double.toScientificNotation(): ScientificNotation {
+    return if (this != 0.0) {
+        val sign: Double = this.sign
+        val logNum: Double = log10(this * sign)
+        val exponent: Int = logNum.toInt()
+        val coefficient: Double = sign * 10.0.pow(logNum - exponent)
+
+        ScientificNotation(coefficient, exponent)
+    } else {
+        ScientificNotation(0.0, 0)
     }
 }
 

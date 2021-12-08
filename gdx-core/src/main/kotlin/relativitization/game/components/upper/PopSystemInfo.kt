@@ -1,5 +1,6 @@
 package relativitization.game.components.upper
 
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.RelativitizationGame
@@ -13,8 +14,8 @@ import relativitization.universe.data.components.defaults.popsystem.pop.CommonPo
 import relativitization.universe.data.components.defaults.popsystem.pop.PopType
 import relativitization.universe.maths.number.Notation
 import relativitization.universe.maths.number.ScientificNotation
+import relativitization.universe.maths.number.toScientificNotation
 import relativitization.universe.utils.RelativitizationLogManager
-import kotlin.math.roundToInt
 import kotlin.properties.Delegates
 
 class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.assets) {
@@ -290,9 +291,9 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             1f,
             10f,
             0.01f,
-            Notation.toScientificNotation(defaultSalary).coefficient.toFloat(),
+            defaultSalary.toScientificNotation().coefficient.toFloat(),
         ) { fl, _ ->
-            val originalSalary: ScientificNotation = Notation.toScientificNotation(targetSalary)
+            val originalSalary: ScientificNotation = targetSalary.toScientificNotation()
             val newCoefficient: Double = Notation.roundDecimal(fl.toDouble(), 2)
             val newExponent: Int = originalSalary.exponent
 
@@ -304,14 +305,53 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             targetSalary = newSalary.toDouble()
         }
 
-        val targetSalaryExponentSlider = createSlider(
-            -300f,
-            300f,
-            1f,
-            Notation.toScientificNotation(defaultSalary).exponent.toFloat(),
-        ) { fl, _ ->
-            val originalSalary: ScientificNotation = Notation.toScientificNotation(targetSalary)
-            val newExponent: Int = fl.roundToInt()
+        val targetSalaryExponentPlusButton: ImageButton = createImageButton(
+            name = "basic/white-plus",
+            rUp = 1.0f,
+            gUp = 1.0f,
+            bUp = 1.0f,
+            aUp = 1.0f,
+            rDown = 1.0f,
+            gDown = 1.0f,
+            bDown = 1.0f,
+            aDown = 0.7f,
+            rChecked = 1.0f,
+            gChecked = 1.0f,
+            bChecked = 1.0f,
+            aChecked = 1.0f,
+            soundVolume = gdxSettings.soundEffectsVolume
+        ) {
+            val originalSalary: ScientificNotation = targetSalary.toScientificNotation()
+            val newExponent: Int = originalSalary.exponent + 1
+            val newCoefficient: Double = Notation.roundDecimal(originalSalary.coefficient, 2)
+
+            logger.debug("New target salary exponent: $newExponent")
+            val newSalary = ScientificNotation(
+                newCoefficient,
+                newExponent,
+            )
+            targetSalary = newSalary.toDouble()
+        }
+
+
+        val targetSalaryExponentMinusButton: ImageButton = createImageButton(
+            name = "basic/white-minus",
+            rUp = 1.0f,
+            gUp = 1.0f,
+            bUp = 1.0f,
+            aUp = 1.0f,
+            rDown = 1.0f,
+            gDown = 1.0f,
+            bDown = 1.0f,
+            aDown = 0.7f,
+            rChecked = 1.0f,
+            gChecked = 1.0f,
+            bChecked = 1.0f,
+            aChecked = 1.0f,
+            soundVolume = gdxSettings.soundEffectsVolume
+        ) {
+            val originalSalary: ScientificNotation = targetSalary.toScientificNotation()
+            val newExponent: Int = originalSalary.exponent - 1
             val newCoefficient: Double = Notation.roundDecimal(originalSalary.coefficient, 2)
 
             logger.debug("New target salary exponent: $newExponent")
@@ -324,7 +364,15 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         nestedTable.add(targetSalaryCoefficientSlider)
 
-        nestedTable.add(targetSalaryExponentSlider)
+        nestedTable.add(targetSalaryExponentMinusButton).size(
+            40f * gdxSettings.imageScale,
+            40f * gdxSettings.imageScale
+        )
+
+        nestedTable.add(targetSalaryExponentPlusButton).size(
+            40f * gdxSettings.imageScale,
+            40f * gdxSettings.imageScale
+        )
 
         nestedTable.row().space(10f)
 
