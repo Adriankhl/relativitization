@@ -1,5 +1,6 @@
 package relativitization.game.components.upper
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.RelativitizationGame
@@ -111,6 +112,12 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             updateCarrierTable()
         }
         table.add(carrierTable)
+
+
+        // Add empty space for Android keyboard input
+        val emptyLabel = createLabel("", gdxSettings.smallFontSize)
+        emptyLabel.height = Gdx.graphics.height.toFloat()
+        table.add(emptyLabel).minHeight(Gdx.graphics.height.toFloat())
     }
 
     private fun updateCarrierTable() {
