@@ -9,6 +9,9 @@ import com.badlogic.gdx.utils.Align
 import kotlinx.coroutines.runBlocking
 import relativitization.game.RelativitizationGame
 import relativitization.universe.data.components.defaults.physics.Double2D
+import relativitization.universe.maths.number.Notation
+import relativitization.universe.maths.number.ScientificNotation
+import relativitization.universe.maths.number.toScientificNotation
 import relativitization.universe.maths.physics.Intervals
 import relativitization.universe.utils.I18NString
 import kotlin.math.PI
@@ -358,7 +361,7 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets) {
         b: Float,
         a: Float,
         soundVolume: Float,
-        function: (Image) -> Unit
+        function: (Image) -> Unit = { }
     ): Image {
         // Create new nine patch and edit this
         val arrowNinePatch: NinePatch =
@@ -394,6 +397,117 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets) {
         })
 
         return image
+    }
+
+    /**
+     * Create a slider, a minus button and a plus button to change arbitrary Double number
+     *
+     * @param default the default value
+     * @param sliderStepSize the step size of the slider
+     * @param sliderDecimalPlace the decimal place of the slider
+     * @param buttonSize the size of the button
+     * @param buttonSoundVolume the sound volume of the button
+     * @param currentValue the current value of the Double variable to be changed
+     * @param function the function to change the Double variable
+     */
+    fun createDoubleSliderButtonTable(
+        default: Double,
+        sliderStepSize: Float,
+        sliderDecimalPlace: Int,
+        buttonSize: Float,
+        buttonSoundVolume: Float,
+        currentValue: () -> Double,
+        function: (Double) -> Unit = { },
+    ): Table {
+        val nestedTable = Table()
+
+        val coefficientSlider = createSlider(
+            1f,
+            10f,
+            sliderStepSize,
+            default.toScientificNotation().coefficient.toFloat(),
+        ) { fl, _ ->
+            val originalValue: ScientificNotation = currentValue().toScientificNotation()
+            val newCoefficient: Double = Notation.roundDecimal(fl.toDouble(), sliderDecimalPlace)
+            val newExponent: Int = originalValue.exponent
+
+            val newValue = ScientificNotation(
+                newCoefficient,
+                newExponent
+            )
+
+            function(newValue.toDouble())
+        }
+
+        val exponentMinusButton: ImageButton = createImageButton(
+            name = "basic/white-minus",
+            rUp = 1.0f,
+            gUp = 1.0f,
+            bUp = 1.0f,
+            aUp = 1.0f,
+            rDown = 1.0f,
+            gDown = 1.0f,
+            bDown = 1.0f,
+            aDown = 0.7f,
+            rChecked = 1.0f,
+            gChecked = 1.0f,
+            bChecked = 1.0f,
+            aChecked = 1.0f,
+            soundVolume = buttonSoundVolume
+        ) {
+            val originalValue: ScientificNotation = currentValue().toScientificNotation()
+            val newExponent: Int = originalValue.exponent - 1
+            val newCoefficient: Double = Notation.roundDecimal(originalValue.coefficient, sliderDecimalPlace)
+
+            val newValue = ScientificNotation(
+                newCoefficient,
+                newExponent,
+            )
+
+            function(newValue.toDouble())
+        }
+
+        val exponentPlusButton: ImageButton = createImageButton(
+            name = "basic/white-plus",
+            rUp = 1.0f,
+            gUp = 1.0f,
+            bUp = 1.0f,
+            aUp = 1.0f,
+            rDown = 1.0f,
+            gDown = 1.0f,
+            bDown = 1.0f,
+            aDown = 0.7f,
+            rChecked = 1.0f,
+            gChecked = 1.0f,
+            bChecked = 1.0f,
+            aChecked = 1.0f,
+            soundVolume = buttonSoundVolume
+        ) {
+            val originalValue: ScientificNotation = currentValue().toScientificNotation()
+            val newExponent: Int = originalValue.exponent + 1
+            val newCoefficient: Double = Notation.roundDecimal(originalValue.coefficient, sliderDecimalPlace)
+
+            val newValue = ScientificNotation(
+                newCoefficient,
+                newExponent,
+            )
+
+            function(newValue.toDouble())
+        }
+
+        nestedTable.add(coefficientSlider)
+
+        nestedTable.add(exponentMinusButton).size(
+            buttonSize,
+            buttonSize
+        )
+
+        nestedTable.add(exponentPlusButton).size(
+            buttonSize,
+            buttonSize
+        )
+
+        return nestedTable
     }
 
     fun disableActor(actor: Actor) = ActorFunction.disableActor(actor)
