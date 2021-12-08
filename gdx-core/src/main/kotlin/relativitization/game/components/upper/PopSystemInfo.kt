@@ -255,14 +255,6 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         var targetSalary: Double by Delegates.observable(defaultSalary) { _, _, _ ->
             onTargetSalaryChangeFunctionList.forEach { it() }
         }
-
-        nestedTable.add(
-            createLabel(
-                "Target salary: ",
-                gdxSettings.smallFontSize
-            )
-        )
-
         val targetSalaryTextField = createTextField(
             targetSalary.toString(),
             gdxSettings.smallFontSize
@@ -282,6 +274,14 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         onTargetSalaryChangeFunctionList.add {
             targetSalaryTextField.text = targetSalary.toString()
         }
+
+        nestedTable.add(
+            createLabel(
+                "Target salary: ",
+                gdxSettings.smallFontSize
+            )
+        )
+
         nestedTable.add(targetSalaryTextField)
 
         nestedTable.row().space(10f)
