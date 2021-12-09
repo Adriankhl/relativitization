@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.PlayerData
+import relativitization.universe.data.commands.BuildForeignFuelFactoryCommand
 import relativitization.universe.data.commands.ChangeSalaryCommand
 import relativitization.universe.data.components.defaults.economy.ResourceType
 import relativitization.universe.data.components.defaults.popsystem.CarrierData
@@ -413,13 +414,109 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
     private fun createLabourerTable(labourerPopData: LabourerPopData): Table {
         val nestedTable = Table()
 
+        val onQualityLevelChangeFunctionList: MutableList<() -> Unit> = mutableListOf()
+        var qualityLevel: Double by Delegates.observable(1.0) { _, _, _ ->
+            onQualityLevelChangeFunctionList.forEach { it() }
+        }
+        val qualityLevelTextField = createTextField(
+            default = qualityLevel.toString(),
+            fontSize = gdxSettings.smallFontSize,
+        ) { s, _ ->
+            val newQualityLevel: Double = try {
+                s.toDouble()
+            } catch (e: NumberFormatException) {
+                logger.debug("Invalid quality level")
+                qualityLevel
+            }
+
+            if (newQualityLevel != qualityLevel) {
+                logger.debug("New quality level: $newQualityLevel")
+                qualityLevel = newQualityLevel
+            }
+        }
+        onQualityLevelChangeFunctionList.add {
+            qualityLevelTextField.text = qualityLevel.toString()
+        }
+
+        val onOwnerIdChangeFunctionList: MutableList<() -> Unit> = mutableListOf()
+        var ownerId: Int by Delegates.observable(1) { _, _, _ ->
+            onOwnerIdChangeFunctionList.forEach { it() }
+        }
+        val ownerIdTextField = createTextField(
+            default = playerData.playerId.toString(),
+            fontSize = gdxSettings.smallFontSize,
+        ) { s, _ ->
+            val newOwnerId: Int = try {
+                s.toInt()
+            } catch (e: NumberFormatException) {
+                logger.debug("Invalid ownerId")
+                ownerId
+            }
+
+            if (newOwnerId != ownerId) {
+                logger.debug("New ownerId: $newOwnerId")
+                ownerId = newOwnerId
+            }
+        }
+        onOwnerIdChangeFunctionList.add {
+            ownerIdTextField.text = ownerId.toString()
+        }
+
+
         nestedTable.add(
             createLabel(
                 "Labourer:",
                 gdxSettings.normalFontSize
             )
+        ).colspan(2)
+
+        nestedTable.row().space(20f)
+
+        nestedTable.add(
+            createLabel(
+                "New factory owner: ",
+                gdxSettings.smallFontSize
+            )
         )
 
+        nestedTable.add(ownerIdTextField)
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "New factory quality level: ",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.add(qualityLevelTextField)
+
+        nestedTable.row().space(10f)
+
+        val buildForeignFuelFactoryTextButton = createTextButton(
+            "Build factory",
+            gdxSettings.smallFontSize,
+            gdxSettings.soundEffectsVolume,
+        ) {
+            val buildForeignFuelFactoryCommand = BuildForeignFuelFactoryCommand(
+                toId = playerData.playerId,
+                fromId = game.universeClient.getUniverseData3D().getCurrentPlayerData().playerId,
+                fromInt4D = game.universeClient.getUniverseData3D().getCurrentPlayerData().int4D,
+                senderTopLeaderId = game.universeClient.getUniverseData3D()
+                    .getCurrentPlayerData().topLeaderId(),
+                targetCarrierId = carrierId,
+                ownerId = ownerId,
+                fuelFactoryInternalData = playerData.playerInternalData.playerScienceData()
+                    .playerScienceApplicationData.newFuelFactoryInternalData(qualityLevel),
+                qualityLevel = qualityLevel,
+                storedFuelRestMass = 0.0,
+                numBuilding = 0.0
+            )
+
+            game.universeClient.currentCommand = buildForeignFuelFactoryCommand
+        }
+        nestedTable.add(buildForeignFuelFactoryTextButton).colspan(2)
 
 
         return nestedTable
