@@ -14,6 +14,7 @@ import relativitization.universe.data.components.defaults.popsystem.pop.AllPopDa
 import relativitization.universe.data.components.defaults.popsystem.pop.CommonPopData
 import relativitization.universe.data.components.defaults.popsystem.pop.PopType
 import relativitization.universe.data.components.defaults.popsystem.pop.ResourceDesireData
+import relativitization.universe.data.components.defaults.popsystem.pop.labourer.LabourerPopData
 import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.properties.Delegates
 
@@ -202,6 +203,20 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         nestedTable.add(createCommonPopTable(allPopType.getCommonPopData(popType)))
 
+        nestedTable.row().space(30f)
+
+        when (popType) {
+            PopType.LABOURER -> nestedTable.add(createLabourerTable(allPopType.labourerPopData))
+            PopType.ENGINEER -> nestedTable.add(Table())
+            PopType.SCHOLAR -> nestedTable.add(Table())
+            PopType.EDUCATOR -> nestedTable.add(Table())
+            PopType.MEDIC -> nestedTable.add(Table())
+            PopType.SERVICE_WORKER -> nestedTable.add(Table())
+            PopType.ENTERTAINER -> nestedTable.add(Table())
+            PopType.SOLDIER -> nestedTable.add(Table())
+        }
+
+
         return nestedTable
     }
 
@@ -283,17 +298,6 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             )
 
             nestedTable.row().space(10f)
-        }
-
-        when (popType) {
-            PopType.LABOURER -> nestedTable.add(Table())
-            PopType.ENGINEER -> nestedTable.add(Table())
-            PopType.SCHOLAR -> nestedTable.add(Table())
-            PopType.EDUCATOR -> nestedTable.add(Table())
-            PopType.MEDIC -> nestedTable.add(Table())
-            PopType.SERVICE_WORKER -> nestedTable.add(Table())
-            PopType.ENTERTAINER -> nestedTable.add(Table())
-            PopType.SOLDIER -> nestedTable.add(Table())
         }
 
         return nestedTable
@@ -401,6 +405,21 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
                 gdxSettings.smallFontSize
             ),
         )
+
+
+        return nestedTable
+    }
+
+    private fun createLabourerTable(labourerPopData: LabourerPopData): Table {
+        val nestedTable = Table()
+
+        nestedTable.add(
+            createLabel(
+                "Labourer:",
+                gdxSettings.normalFontSize
+            )
+        )
+
 
 
         return nestedTable

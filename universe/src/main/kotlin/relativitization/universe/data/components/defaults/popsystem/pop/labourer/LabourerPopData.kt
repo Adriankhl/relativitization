@@ -12,15 +12,15 @@ import relativitization.universe.maths.collection.ListFind
 @Serializable
 data class LabourerPopData(
     val commonPopData: CommonPopData = CommonPopData(),
-    val resourceFactoryMap: Map<Int, ResourceFactoryData> = mapOf(),
     val fuelFactoryMap: Map<Int, FuelFactoryData> = mapOf(),
+    val resourceFactoryMap: Map<Int, ResourceFactoryData> = mapOf(),
 )
 
 @Serializable
 data class MutableLabourerPopData(
     var commonPopData: MutableCommonPopData = MutableCommonPopData(),
-    val resourceFactoryMap: MutableMap<Int, MutableResourceFactoryData> = mutableMapOf(),
     val fuelFactoryMap: MutableMap<Int, MutableFuelFactoryData> = mutableMapOf(),
+    val resourceFactoryMap: MutableMap<Int, MutableResourceFactoryData> = mutableMapOf(),
 ) {
     fun addResourceFactory(mutableResourceFactoryData: MutableResourceFactoryData) {
         val allIdList: List<Int> = resourceFactoryMap.keys.toList()
