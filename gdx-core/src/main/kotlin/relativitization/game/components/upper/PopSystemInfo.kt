@@ -6,10 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.PlayerData
-import relativitization.universe.data.commands.BuildForeignFuelFactoryCommand
-import relativitization.universe.data.commands.BuildForeignResourceFactoryCommand
-import relativitization.universe.data.commands.BuildLocalFuelFactoryCommand
-import relativitization.universe.data.commands.ChangeSalaryCommand
+import relativitization.universe.data.commands.*
 import relativitization.universe.data.components.defaults.economy.ResourceType
 import relativitization.universe.data.components.defaults.popsystem.CarrierData
 import relativitization.universe.data.components.defaults.popsystem.CarrierInternalData
@@ -425,6 +422,10 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         nestedTable.add(createBuildLocalFuelFactoryTable())
 
+        nestedTable.row().space(10f)
+
+        nestedTable.add(createBuildLocalResourceFactoryTable())
+
         return nestedTable
     }
 
@@ -777,6 +778,137 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         return nestedTable
     }
 
+    private fun createBuildLocalResourceFactoryTable(): Table {
+        val nestedTable = Table()
+
+        val qualityLevel = createDoubleTextField(
+            1.0,
+            gdxSettings.smallFontSize
+        )
+
+        val storedFuelRestMass = createDoubleTextField(
+            0.0,
+            gdxSettings.smallFontSize
+        )
+
+        val numBuilding = createDoubleTextField(
+            1.0,
+            gdxSettings.smallFontSize
+        )
+
+        val outputResourceSelectBox = createSelectBox(
+            ResourceType.values().toList(),
+            ResourceType.values().first(),
+            gdxSettings.smallFontSize
+        )
+
+        val buildForeignFuelFactoryTextButton = createTextButton(
+            "Build resource factory",
+            gdxSettings.smallFontSize,
+            gdxSettings.soundEffectsVolume,
+        ) {
+            val buildLocalResourceFactoryCommand = BuildLocalResourceFactoryCommand(
+                toId = playerData.playerId,
+                fromId = game.universeClient.getCurrentPlayerData().playerId,
+                fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
+                outputResourceType = outputResourceSelectBox.selected,
+                targetCarrierId = carrierId,
+                qualityLevel = qualityLevel.value,
+                numBuilding = numBuilding.value
+            )
+
+            game.universeClient.currentCommand = buildLocalResourceFactoryCommand
+        }
+        nestedTable.add(buildForeignFuelFactoryTextButton).colspan(2)
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "Output resource: ",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.add(outputResourceSelectBox)
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "New factory quality level: ",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.add(qualityLevel.textField)
+
+        nestedTable.row().space(10f)
+
+        val qualityLevelSlider = createSlider(
+            0f,
+            1f,
+            0.01f,
+            1f
+        ) { fl, _ ->
+            qualityLevel.value = Notation.roundDecimal(fl.toDouble(), 2)
+        }
+        nestedTable.add(qualityLevelSlider).colspan(2)
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "New factory stored fuel: ",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.add(storedFuelRestMass.textField)
+
+        nestedTable.row().space(10f)
+
+        val storedFuelRestMassDoubleSliderButton = createDoubleSliderButtonTable(
+            default = storedFuelRestMass.value,
+            sliderStepSize = 0.01f,
+            sliderDecimalPlace = 2,
+            buttonSize = 40f * gdxSettings.imageScale,
+            buttonSoundVolume = gdxSettings.soundEffectsVolume,
+            currentValue = { storedFuelRestMass.value },
+        ) {
+            storedFuelRestMass.value = it
+        }
+
+        nestedTable.add(storedFuelRestMassDoubleSliderButton).colspan(2)
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "New factory num building: ",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.add(numBuilding.textField)
+
+        nestedTable.row().space(10f)
+
+        val numBuildingDoubleSliderButton = createDoubleSliderButtonTable(
+            default = numBuilding.value,
+            sliderStepSize = 0.01f,
+            sliderDecimalPlace = 2,
+            buttonSize = 40f * gdxSettings.imageScale,
+            buttonSoundVolume = gdxSettings.soundEffectsVolume,
+            currentValue = { numBuilding.value },
+        ) {
+            numBuilding.value = it
+        }
+
+        nestedTable.add(numBuildingDoubleSliderButton).colspan(2)
+
+        return nestedTable
+    }
 
     companion object {
         private val logger = RelativitizationLogManager.getLogger()
