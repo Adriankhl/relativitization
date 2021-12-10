@@ -468,6 +468,31 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         }
 
 
+        val onStoredFuelRestMassChangeFunctionList: MutableList<() -> Unit> = mutableListOf()
+        var storedFuelRestMass: Double by Delegates.observable(0.0) { _, _, _ ->
+            onQualityLevelChangeFunctionList.forEach { it() }
+        }
+        val storedFuelRestMassTextField = createTextField(
+            default = storedFuelRestMass.toString(),
+            fontSize = gdxSettings.smallFontSize,
+        ) { s, _ ->
+            val newQualityLevel: Double = try {
+                s.toDouble()
+            } catch (e: NumberFormatException) {
+                logger.debug("Invalid stored fuel rest mass")
+                storedFuelRestMass
+            }
+
+            if (newQualityLevel != qualityLevel) {
+                logger.debug("New quality level: $newQualityLevel")
+                storedFuelRestMass = newQualityLevel
+            }
+        }
+        onStoredFuelRestMassChangeFunctionList.add {
+            storedFuelRestMassTextField.text = storedFuelRestMass.toString()
+        }
+
+
         nestedTable.add(
             createLabel(
                 "Labourer data:",
