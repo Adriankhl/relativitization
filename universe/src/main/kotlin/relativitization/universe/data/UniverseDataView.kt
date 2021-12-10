@@ -311,6 +311,7 @@ class PlanDataAtPlayer(
                 command.checkAndExecute(targetPlayerData, universeData3DAtPlayer.universeSettings)
                 commandList.add(command)
             } else {
+                executeOnCurrentPlayerData()
                 logger.error("Cannot add command: $command")
             }
         }
