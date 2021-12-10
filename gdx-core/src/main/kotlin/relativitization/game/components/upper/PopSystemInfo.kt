@@ -442,7 +442,8 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
                     .getCurrentPlayerData().topLeaderId(),
                 targetCarrierId = carrierId,
                 ownerId = ownerId.num,
-                fuelFactoryInternalData = playerData.playerInternalData.playerScienceData()
+                fuelFactoryInternalData = game.universeClient.getUniverseData3D()
+                    .getCurrentPlayerData().playerInternalData.playerScienceData()
                     .playerScienceApplicationData.newFuelFactoryInternalData(qualityLevel.num),
                 qualityLevel = qualityLevel.num,
                 storedFuelRestMass = storedFuelRestMass.num,

@@ -152,7 +152,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
             onCurrentCommandChangeFunctionList.forEach { it() }
         } else {
             val canSendCheckMessage: CanSendCheckMessage = newValue.canSendFromPlayer(
-                planDataAtPlayer.thisPlayerData,
+                planDataAtPlayer.getCurrentMutablePlayerData(),
                 planDataAtPlayer.universeData3DAtPlayer.universeSettings
             )
 

@@ -203,7 +203,6 @@ data class UniverseData3DAtPlayer(
     fun getPlanDataAtPlayer(onCommandListChange: () -> Unit): PlanDataAtPlayer {
         return PlanDataAtPlayer(
             this,
-            DataSerializer.copy(getCurrentPlayerData()),
             onCommandListChange,
         )
     }
@@ -219,7 +218,6 @@ data class UniverseData3DAtPlayer(
  */
 class PlanDataAtPlayer(
     val universeData3DAtPlayer: UniverseData3DAtPlayer,
-    var thisPlayerData: MutablePlayerData,
     var onCommandListChange: () -> Unit,
     val playerDataMap: MutableMap<Int, MutablePlayerData> = mutableMapOf(),
     val commandList: MutableList<Command> = mutableListOf(),
@@ -232,44 +230,51 @@ class PlanDataAtPlayer(
         }
     }
 
+    fun getCurrentPlayerData(): PlayerData {
+        return getPlayerData(universeData3DAtPlayer.getCurrentPlayerData().playerId)
+    }
+
     fun getMutablePlayerData(id: Int): MutablePlayerData {
         return playerDataMap.getOrPut(id) {
             DataSerializer.copy(universeData3DAtPlayer.get(id))
         }
     }
 
+    fun getCurrentMutablePlayerData(): MutablePlayerData {
+        return getMutablePlayerData(universeData3DAtPlayer.getCurrentPlayerData().playerId)
+    }
+
     fun resetPlayerData(playerId: Int) {
-        if (playerId == thisPlayerData.playerId) {
-            thisPlayerData = DataSerializer.copy(universeData3DAtPlayer.getCurrentPlayerData())
-            commandList.forEach {
+        playerDataMap[playerId] = DataSerializer.copy(universeData3DAtPlayer.get(playerId))
+
+        val playerData: MutablePlayerData = getMutablePlayerData(playerId)
+
+        commandList.forEach {
+            if (playerId == universeData3DAtPlayer.getCurrentPlayerData().playerId) {
                 it.checkAndSelfExecuteBeforeSend(
-                    thisPlayerData,
+                    playerData,
                     universeData3DAtPlayer.universeSettings
                 )
             }
-        } else {
-            playerDataMap[playerId] = DataSerializer.copy(universeData3DAtPlayer.get(playerId))
-            val playerData: MutablePlayerData = playerDataMap.getValue(playerId)
-            commandList.filter {
-                it.toId == playerId
-            }.forEach {
+
+            if (it.toId == playerId) {
                 it.checkAndExecute(playerData, universeData3DAtPlayer.universeSettings)
             }
         }
     }
 
     private fun addSingleCommand(command: Command) {
-        val playerData: MutablePlayerData = getMutablePlayerData(command.toId)
+        val targetPlayerData: MutablePlayerData = getMutablePlayerData(command.toId)
 
-        if (playerData.playerId == -1) {
+        if (targetPlayerData.playerId == -1) {
             logger.error("Add command error: Player id -1")
         } else {
             if (command.checkAndSelfExecuteBeforeSend(
-                    thisPlayerData,
+                    getCurrentMutablePlayerData(),
                     universeData3DAtPlayer.universeSettings
                 ).canSend
             ) {
-                command.checkAndExecute(playerData, universeData3DAtPlayer.universeSettings)
+                command.checkAndExecute(targetPlayerData, universeData3DAtPlayer.universeSettings)
                 commandList.add(command)
             } else {
                 logger.error("Cannot add command: $command")
@@ -299,9 +304,9 @@ class PlanDataAtPlayer(
 
     fun removeAllCommand(commandListToRemove: List<Command>) {
         commandList.removeAll(commandListToRemove)
-        val playerIdToReset: List<Int> = listOf(thisPlayerData.playerId) + commandListToRemove.map {
+        val playerIdToReset: Set<Int> = (commandListToRemove.map {
             it.toId
-        }.toSet()
+        } + universeData3DAtPlayer.getCurrentPlayerData().playerId).toSet()
 
         playerIdToReset.forEach {
             resetPlayerData(it)
@@ -312,7 +317,6 @@ class PlanDataAtPlayer(
     fun clearCommand() {
         commandList.clear()
         playerDataMap.clear()
-        resetPlayerData(thisPlayerData.playerId)
         onCommandListChange()
     }
 
