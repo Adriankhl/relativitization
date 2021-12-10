@@ -6,10 +6,10 @@ import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.properties.Delegates
 
 class DoubleTextField(
-    default: Double,
-    fontSize: Int,
     skin: Skin,
     assets: Assets,
+    default: Double,
+    fontSize: Int,
 ) {
     private val onNumChangeFunctionList: MutableList<() -> Unit> = mutableListOf()
     var num: Double by Delegates.observable(default) { _, _, _ ->
@@ -45,10 +45,10 @@ class DoubleTextField(
 }
 
 class IntTextField(
-    default: Int,
-    fontSize: Int,
     skin: Skin,
     assets: Assets,
+    default: Int,
+    fontSize: Int,
 ) {
     private val onNumChangeFunctionList: MutableList<() -> Unit> = mutableListOf()
     var num: Int by Delegates.observable(default) { _, _, _ ->

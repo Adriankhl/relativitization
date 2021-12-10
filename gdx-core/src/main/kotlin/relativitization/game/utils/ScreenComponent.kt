@@ -510,6 +510,17 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets) {
         return nestedTable
     }
 
+    fun createDoubleTextField(
+        default: Double,
+        fontSize: Int,
+    ): DoubleTextField = DoubleTextField(skin, assets, default, fontSize)
+
+
+    fun createIntTextField(
+        default: Int,
+        fontSize: Int,
+    ): IntTextField = IntTextField(skin, assets, default, fontSize)
+
     fun disableActor(actor: Actor) = ActorFunction.disableActor(actor)
 
     fun enableActor(actor: Actor) = ActorFunction.enableActor(actor)
