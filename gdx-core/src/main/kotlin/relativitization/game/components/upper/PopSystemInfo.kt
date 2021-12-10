@@ -332,7 +332,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
                 fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
                 carrierId = carrierId,
                 popType = popType,
-                salary = targetSalary.num,
+                salary = targetSalary.value,
             )
 
             game.universeClient.currentCommand = changeSalaryCommand
@@ -353,14 +353,14 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         nestedTable.row().space(10f)
 
         val targetSalarySliderButtonTable = createDoubleSliderButtonTable(
-            default = targetSalary.num,
+            default = targetSalary.value,
             sliderStepSize = 0.01f,
             sliderDecimalPlace = 2,
             buttonSize = 40f * gdxSettings.imageScale,
             buttonSoundVolume = gdxSettings.soundEffectsVolume,
-            currentValue = { targetSalary.num }
+            currentValue = { targetSalary.value }
         ) {
-            targetSalary.num = it
+            targetSalary.value = it
         }
         nestedTable.add(targetSalarySliderButtonTable).colspan(2)
 
@@ -448,8 +448,8 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
                 fuelFactoryInternalData = game.universeClient.getCurrentPlayerData()
                     .playerInternalData.playerScienceData()
                     .playerScienceApplicationData.newFuelFactoryInternalData(),
-                storedFuelRestMass = storedFuelRestMass.num,
-                numBuilding = numBuilding.num
+                storedFuelRestMass = storedFuelRestMass.value,
+                numBuilding = numBuilding.value
             )
 
             game.universeClient.currentCommand = buildForeignFuelFactoryCommand
@@ -486,7 +486,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             0.01f,
             1f
         ) { fl, _ ->
-            qualityLevel.num = Notation.roundDecimal(fl.toDouble(), 2)
+            qualityLevel.value = Notation.roundDecimal(fl.toDouble(), 2)
         }
         nestedTable.add(qualityLevelSlider).colspan(2)
 
@@ -504,14 +504,14 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         nestedTable.row().space(10f)
 
         val storedFuelRestMassDoubleSliderButton = createDoubleSliderButtonTable(
-            default = storedFuelRestMass.num,
+            default = storedFuelRestMass.value,
             sliderStepSize = 0.01f,
             sliderDecimalPlace = 2,
             buttonSize = 40f * gdxSettings.imageScale,
             buttonSoundVolume = gdxSettings.soundEffectsVolume,
-            currentValue = { storedFuelRestMass.num },
+            currentValue = { storedFuelRestMass.value },
         ) {
-            storedFuelRestMass.num = it
+            storedFuelRestMass.value = it
         }
 
         nestedTable.add(storedFuelRestMassDoubleSliderButton).colspan(2)
@@ -530,14 +530,14 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         nestedTable.row().space(10f)
 
         val numBuildingDoubleSliderButton = createDoubleSliderButtonTable(
-            default = numBuilding.num,
+            default = numBuilding.value,
             sliderStepSize = 0.01f,
             sliderDecimalPlace = 2,
             buttonSize = 40f * gdxSettings.imageScale,
             buttonSoundVolume = gdxSettings.soundEffectsVolume,
-            currentValue = { numBuilding.num },
+            currentValue = { numBuilding.value },
         ) {
-            numBuilding.num = it
+            numBuilding.value = it
         }
 
         nestedTable.add(numBuildingDoubleSliderButton).colspan(2)

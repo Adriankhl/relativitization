@@ -12,7 +12,7 @@ class DoubleTextField(
     fontSize: Int,
 ) {
     private val onNumChangeFunctionList: MutableList<() -> Unit> = mutableListOf()
-    var num: Double by Delegates.observable(default) { _, _, _ ->
+    var value: Double by Delegates.observable(default) { _, _, _ ->
         onNumChangeFunctionList.forEach { it() }
     }
     val textField: TextField = ActorFunction.createTextField(
@@ -25,17 +25,17 @@ class DoubleTextField(
             s.toDouble()
         } catch (e: NumberFormatException) {
             logger.debug("Invalid Double")
-            num
+            value
         }
 
-        if (newNum != num) {
+        if (newNum != value) {
             logger.debug("New Double num: $newNum")
-            num = newNum
+            value = newNum
         }
     }
     init {
         onNumChangeFunctionList.add {
-            textField.text = num.toString()
+            textField.text = value.toString()
         }
     }
 
