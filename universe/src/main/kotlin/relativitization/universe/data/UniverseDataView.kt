@@ -187,7 +187,6 @@ data class UniverseData3DAtPlayer(
     }
 
 
-
     /**
      * Get set of player id by Int3D
      */
@@ -244,21 +243,53 @@ class PlanDataAtPlayer(
         return getMutablePlayerData(universeData3DAtPlayer.getCurrentPlayerData().playerId)
     }
 
-    fun resetPlayerData(playerId: Int) {
-        playerDataMap[playerId] = DataSerializer.copy(universeData3DAtPlayer.get(playerId))
-
-        val playerData: MutablePlayerData = getMutablePlayerData(playerId)
+    /**
+     * Reset the current player data and do all the self execute
+     */
+    private fun resetCurrentPlayerDataSelfExecute() {
+        playerDataMap[universeData3DAtPlayer.getCurrentPlayerData().playerId] =
+            DataSerializer.copy(universeData3DAtPlayer.getCurrentPlayerData())
 
         commandList.forEach {
-            if (playerId == universeData3DAtPlayer.getCurrentPlayerData().playerId) {
-                it.checkAndSelfExecuteBeforeSend(
+            it.checkAndSelfExecuteBeforeSend(
+                getCurrentMutablePlayerData(),
+                universeData3DAtPlayer.universeSettings
+            )
+        }
+    }
+
+    /**
+     * Execute all commands to current player data
+     */
+    private fun executeOnCurrentPlayerData() {
+        val playerData: MutablePlayerData = getCurrentMutablePlayerData()
+
+        commandList.filter {
+            it.toId == playerData.playerId
+        }.forEach {
+            it.checkAndExecute(
+                playerData,
+                universeData3DAtPlayer.universeSettings
+            )
+        }
+    }
+
+    fun resetPlayerData(playerId: Int) {
+        if (playerId == universeData3DAtPlayer.getCurrentPlayerData().playerId) {
+            resetCurrentPlayerDataSelfExecute()
+            executeOnCurrentPlayerData()
+        } else {
+            playerDataMap[playerId] = DataSerializer.copy(universeData3DAtPlayer.get(playerId))
+
+            val playerData: MutablePlayerData = getMutablePlayerData(playerId)
+
+            commandList.filter {
+                it.toId == playerId
+            }.forEach {
+                it.checkAndExecute(
                     playerData,
                     universeData3DAtPlayer.universeSettings
                 )
-            }
-
-            if (it.toId == playerId) {
-                it.checkAndExecute(playerData, universeData3DAtPlayer.universeSettings)
             }
         }
     }
@@ -269,11 +300,14 @@ class PlanDataAtPlayer(
         if (targetPlayerData.playerId == -1) {
             logger.error("Add command error: Player id -1")
         } else {
+            resetCurrentPlayerDataSelfExecute()
+
             if (command.checkAndSelfExecuteBeforeSend(
                     getCurrentMutablePlayerData(),
                     universeData3DAtPlayer.universeSettings
                 ).canSend
             ) {
+                executeOnCurrentPlayerData()
                 command.checkAndExecute(targetPlayerData, universeData3DAtPlayer.universeSettings)
                 commandList.add(command)
             } else {
