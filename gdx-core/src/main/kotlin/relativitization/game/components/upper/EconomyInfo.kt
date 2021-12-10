@@ -48,6 +48,10 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         updateTable()
     }
 
+    override fun onCommandListChange() {
+        updatePlayerData()
+        updateTable()
+    }
 
     private fun updatePlayerData() {
         playerData = if (game.universeClient.isPrimarySelectedPlayerIdValid()) {
