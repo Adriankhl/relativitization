@@ -14,7 +14,7 @@ object Versions {
     const val log4jVersion = "2.14.1"
     const val kotlinFakerVersion = "1.9.0"
 
-    const val androidGradlePluginVersion = "7.0.3"
+    const val androidGradlePluginVersion = "7.0.4"
     const val androidAppCompatVersion = "1.4.0"
     const val androidLifeCycleKtxVersion = "2.4.0"
     const val androidFragmentKtxVersion = "1.4.0"
