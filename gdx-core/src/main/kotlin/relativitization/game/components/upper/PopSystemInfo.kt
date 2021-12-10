@@ -68,6 +68,10 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         updateTable()
     }
 
+    override fun onSelectedPlayerIdListChange() {
+        updateTable()
+    }
+
 
     private fun updatePlayerData() {
         playerData = if (game.universeClient.isPrimarySelectedPlayerIdValid()) {
@@ -443,7 +447,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             onOwnerIdChangeFunctionList.forEach { it() }
         }
         val ownerIdTextField = createTextField(
-            default = playerData.playerId.toString(),
+            default = game.universeClient.newSelectedPlayerId.toString(),
             fontSize = gdxSettings.smallFontSize,
         ) { s, _ ->
             val newOwnerId: Int = try {
