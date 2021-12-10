@@ -21,62 +21,12 @@ data class ScienceApplicationData(
     val militaryBaseAttackFactor: Double = 1.0,
     val militaryBaseShieldFactor: Double = 1.0,
 ) {
-    fun newFuelFactoryInternalData(
-        qualityLevel: Double
-    ): FuelFactoryInternalData {
-        val actualQualityLevel: Double = when {
-            qualityLevel > 1.0 -> {
-                logger.error("quality level greater than 1.0")
-                1.0
-            }
-            qualityLevel < 0.0 -> {
-                logger.error("quality level smaller than 0.0")
-                0.0
-            }
-            else -> {
-                qualityLevel
-            }
-        }
 
-
-        // Max increase to 5 times
-        val maxOutputAmount: Double = idealFuelFactory.maxOutputAmount * Quadratic.standard(
-            x = actualQualityLevel,
-            xMin = 0.0,
-            xMax = 1.0,
-            yMin = 1.0,
-            yMax = 5.0,
-            increasing = false,
-            accelerate = true
-        )
-
-        // Reduce the number of employee needed
-        val maxNumEmployee: Double = idealFuelFactory.maxNumEmployee * Quadratic.standard(
-            x = actualQualityLevel,
-            xMin = 0.0,
-            xMax = 1.0,
-            yMin = 0.2,
-            yMax = 1.0,
-            increasing = true,
-            accelerate = true
-        )
-
-        // Reduce size
-        val size: Double = idealFuelFactory.size * Quadratic.standard(
-            x = actualQualityLevel,
-            xMin = 0.0,
-            xMax = 1.0,
-            yMin = 0.2,
-            yMax = 1.0,
-            increasing = true,
-            accelerate = true
-        )
-
-        return FuelFactoryInternalData(
-            maxOutputAmount = maxOutputAmount,
-            maxNumEmployee = maxNumEmployee,
-            size = size
-        )
+    /**
+     * Fuel factory should depends on num building only
+     */
+    fun newFuelFactoryInternalData(): FuelFactoryInternalData {
+        return idealFuelFactory
     }
 
     fun getIdealResourceFactory(resourceType: ResourceType): ResourceFactoryInternalData {
@@ -297,39 +247,16 @@ data class MutableScienceApplicationData(
         return carrierInternalData.coreRestMass * 5.0
     }
 
-    fun newFuelFactoryInternalData(
-        qualityLevel: Double
-    ): MutableFuelFactoryInternalData {
-        val actualQualityLevel: Double = when {
-            qualityLevel > 1.0 -> {
-                logger.error("quality level greater than 1.0")
-                1.0
-            }
-            qualityLevel < 0.0 -> {
-                logger.error("quality level smaller than 0.0")
-                0.0
-            }
-            else -> {
-                qualityLevel
-            }
-        }
-
-        return MutableFuelFactoryInternalData(
-            maxOutputAmount = idealFuelFactory.maxOutputAmount * actualQualityLevel,
-            maxNumEmployee = idealFuelFactory.maxNumEmployee * actualQualityLevel,
-            size = idealFuelFactory.size * actualQualityLevel
-        )
+    fun newFuelFactoryInternalData(): MutableFuelFactoryInternalData {
+        return idealFuelFactory
     }
 
     /**
      * The fuel rest mass needed to construct a new factory
      */
     fun newFuelFactoryFuelNeededByConstruction(
-        qualityLevel: Double
     ): Double {
-        val fuelFactoryInternalData: MutableFuelFactoryInternalData = newFuelFactoryInternalData(
-            qualityLevel
-        )
+        val fuelFactoryInternalData: MutableFuelFactoryInternalData = newFuelFactoryInternalData()
 
         return fuelFactoryInternalData.maxOutputAmount * 20
     }
