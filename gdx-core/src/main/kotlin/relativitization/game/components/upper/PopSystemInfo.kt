@@ -416,7 +416,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         )
 
         val numBuilding = createDoubleTextField(
-            0.0,
+            1.0,
             gdxSettings.smallFontSize
         )
 
