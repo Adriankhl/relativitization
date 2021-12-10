@@ -37,7 +37,7 @@ data class BuildForeignFuelFactoryCommand(
 ) : DefaultCommand() {
     override val description: I18NString = I18NString(
         listOf(
-            NormalString("Build a foreign fuel factory owned by "),
+            NormalString("Build a foreign fuel factory owned by player "),
             IntString(0),
             NormalString(" at carrier "),
             IntString(1),
@@ -215,7 +215,7 @@ data class BuildForeignResourceFactoryCommand(
             IntString(0),
             NormalString(" factory with quality level "),
             IntString(1),
-            NormalString(" owned by "),
+            NormalString(" owned by player "),
             IntString(2),
             NormalString(" at carrier "),
             IntString(3),

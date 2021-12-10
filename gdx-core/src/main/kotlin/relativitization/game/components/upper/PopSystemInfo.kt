@@ -404,6 +404,25 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
     private fun createLabourerTable(labourerPopData: LabourerPopData): Table {
         val nestedTable = Table()
 
+        nestedTable.add(
+            createLabel(
+                "Labourer data:",
+                gdxSettings.normalFontSize
+            )
+        )
+
+        nestedTable.row().space(20f)
+
+        nestedTable.add(createBuildForeignFuelFactoryTable())
+
+        nestedTable.row().space(10f)
+
+        return nestedTable
+    }
+
+    private fun createBuildForeignFuelFactoryTable(): Table {
+        val nestedTable = Table()
+
         val ownerId = createIntTextField(
             playerData.playerId,
             gdxSettings.smallFontSize
@@ -424,16 +443,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             gdxSettings.smallFontSize
         )
 
-        nestedTable.add(
-            createLabel(
-                "Labourer data:",
-                gdxSettings.normalFontSize
-            )
-        ).colspan(2)
-
-        nestedTable.row().space(20f)
-
-        val buildForeignFuelFactoryTextButton = createTextButton(
+       val buildForeignFuelFactoryTextButton = createTextButton(
             "Build factory",
             gdxSettings.smallFontSize,
             gdxSettings.soundEffectsVolume,
@@ -542,11 +552,10 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         nestedTable.add(numBuildingDoubleSliderButton).colspan(2)
 
-
         return nestedTable
     }
 
-    companion object {
+        companion object {
         private val logger = RelativitizationLogManager.getLogger()
     }
 }
