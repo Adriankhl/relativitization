@@ -16,6 +16,7 @@ import relativitization.universe.data.components.defaults.popsystem.pop.CommonPo
 import relativitization.universe.data.components.defaults.popsystem.pop.PopType
 import relativitization.universe.data.components.defaults.popsystem.pop.ResourceDesireData
 import relativitization.universe.data.components.defaults.popsystem.pop.labourer.LabourerPopData
+import relativitization.universe.maths.number.Notation
 import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.properties.Delegates
 
@@ -418,30 +419,6 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
     private fun createLabourerTable(labourerPopData: LabourerPopData): Table {
         val nestedTable = Table()
 
-        val onQualityLevelChangeFunctionList: MutableList<() -> Unit> = mutableListOf()
-        var qualityLevel: Double by Delegates.observable(1.0) { _, _, _ ->
-            onQualityLevelChangeFunctionList.forEach { it() }
-        }
-        val qualityLevelTextField = createTextField(
-            default = qualityLevel.toString(),
-            fontSize = gdxSettings.smallFontSize,
-        ) { s, _ ->
-            val newQualityLevel: Double = try {
-                s.toDouble()
-            } catch (e: NumberFormatException) {
-                logger.debug("Invalid quality level")
-                qualityLevel
-            }
-
-            if (newQualityLevel != qualityLevel) {
-                logger.debug("New quality level: $newQualityLevel")
-                qualityLevel = newQualityLevel
-            }
-        }
-        onQualityLevelChangeFunctionList.add {
-            qualityLevelTextField.text = qualityLevel.toString()
-        }
-
         val onOwnerIdChangeFunctionList: MutableList<() -> Unit> = mutableListOf()
         var ownerId: Int by Delegates.observable(1) { _, _, _ ->
             onOwnerIdChangeFunctionList.forEach { it() }
@@ -466,37 +443,39 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             ownerIdTextField.text = ownerId.toString()
         }
 
+        val onQualityLevelChangeFunctionList: MutableList<() -> Unit> = mutableListOf()
+        var qualityLevel: Double by Delegates.observable(1.0) { _, _, _ ->
+            onQualityLevelChangeFunctionList.forEach { it() }
+        }
+        val qualityLevelTextField = createTextField(
+            default = qualityLevel.toString(),
+            fontSize = gdxSettings.smallFontSize,
+        ) { s, _ ->
+            val newQualityLevel: Double = try {
+                s.toDouble()
+            } catch (e: NumberFormatException) {
+                logger.debug("Invalid quality level")
+                qualityLevel
+            }
+
+            if (newQualityLevel != qualityLevel) {
+                logger.debug("New quality level: $newQualityLevel")
+                qualityLevel = newQualityLevel
+            }
+        }
+        onQualityLevelChangeFunctionList.add {
+            qualityLevelTextField.text = qualityLevel.toString()
+        }
+
 
         nestedTable.add(
             createLabel(
-                "Labourer:",
+                "Labourer data:",
                 gdxSettings.normalFontSize
             )
         ).colspan(2)
 
         nestedTable.row().space(20f)
-
-        nestedTable.add(
-            createLabel(
-                "New factory owner: ",
-                gdxSettings.smallFontSize
-            )
-        )
-
-        nestedTable.add(ownerIdTextField)
-
-        nestedTable.row().space(10f)
-
-        nestedTable.add(
-            createLabel(
-                "New factory quality level: ",
-                gdxSettings.smallFontSize
-            )
-        )
-
-        nestedTable.add(qualityLevelTextField)
-
-        nestedTable.row().space(10f)
 
         val buildForeignFuelFactoryTextButton = createTextButton(
             "Build factory",
@@ -521,6 +500,40 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             game.universeClient.currentCommand = buildForeignFuelFactoryCommand
         }
         nestedTable.add(buildForeignFuelFactoryTextButton).colspan(2)
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "New factory owner: ",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.add(ownerIdTextField)
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "New factory quality level: ",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.add(qualityLevelTextField)
+
+        nestedTable.row().space(10f)
+
+        val qualityLevelSlider = createSlider(
+            0f,
+            1f,
+            0.01f,
+            1f
+        ) { fl, _ ->
+            qualityLevel = Notation.roundDecimal(fl.toDouble(), 2)
+        }
+        nestedTable.add(qualityLevelSlider).colspan(2)
 
 
         return nestedTable
