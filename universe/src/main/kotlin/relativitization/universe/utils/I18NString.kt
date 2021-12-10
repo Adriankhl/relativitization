@@ -43,7 +43,7 @@ data class MessageFormatData(
 data class I18NString(
     val message: List<MessageString>,
     val arg: List<String>,
-    val next: I18NString? = null
+    private var next: I18NString? = null
 ) {
     constructor(singleMessage: String, next: I18NString? = null) : this(
         message = listOf(NormalString(singleMessage)),
@@ -109,13 +109,16 @@ data class I18NString(
                 (next?.toMessageFormat() ?: listOf())
     }
 
+    fun last(): I18NString = next?.last() ?: this
+
     companion object {
         private val logger = RelativitizationLogManager.getLogger()
 
         fun combine(i18NStringList: List<I18NString>): I18NString = i18NStringList.foldRight(
             I18NString("")
         ) { i18NString, acc ->
-            i18NString.copy(next = acc)
+            i18NString.last().next = acc
+            i18NString
         }
     }
 }
