@@ -460,7 +460,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
                 fuelFactorySelectBox.selected
             )
 
-            nestedTable.add(createFuelFactoryTable(fuelFactory))
+            nestedTable.add(createFuelFactoryTable(fuelFactory)).colspan(2)
         }
 
         return nestedTable
@@ -468,6 +468,71 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
     private fun createFuelFactoryTable(fuelFactoryData: FuelFactoryData): Table {
         val nestedTable = Table()
+
+        nestedTable.add(
+            createLabel(
+                "Owner: ${fuelFactoryData.ownerPlayerId}",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "Max. output: ${fuelFactoryData.fuelFactoryInternalData.maxOutputAmount * fuelFactoryData.numBuilding}",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "Last output: ${fuelFactoryData.lastOutputAmount}",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "Max. employee: ${fuelFactoryData.fuelFactoryInternalData.maxOutputAmount * fuelFactoryData.numBuilding}",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "Last employee: ${fuelFactoryData.lastNumEmployee}",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "Stored fuel: ${fuelFactoryData.storedFuelRestMass}",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.row().space(10f)
+
+
+        nestedTable.add(
+            createLabel(
+                "Number of building: ${fuelFactoryData.numBuilding}",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.row().space(10f)
+
 
         return nestedTable
     }
@@ -490,7 +555,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             gdxSettings.smallFontSize
         )
 
-       val buildForeignFuelFactoryTextButton = createTextButton(
+        val buildForeignFuelFactoryTextButton = createTextButton(
             "Build fuel factory",
             gdxSettings.smallFontSize,
             gdxSettings.soundEffectsVolume,
