@@ -18,7 +18,6 @@ import relativitization.universe.data.components.defaults.popsystem.pop.Resource
 import relativitization.universe.data.components.defaults.popsystem.pop.labourer.LabourerPopData
 import relativitization.universe.maths.number.Notation
 import relativitization.universe.utils.RelativitizationLogManager
-import kotlin.properties.Delegates
 
 class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.assets) {
 
@@ -312,54 +311,11 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
     private fun createTargetSalaryTable(defaultSalary: Double): Table {
         val nestedTable = Table()
 
-        val onTargetSalaryChangeFunctionList: MutableList<() -> Unit> = mutableListOf()
-        var targetSalary: Double by Delegates.observable(defaultSalary) { _, _, _ ->
-            onTargetSalaryChangeFunctionList.forEach { it() }
-        }
-        val targetSalaryTextField = createTextField(
-            targetSalary.toString(),
-            gdxSettings.smallFontSize
-        ) { s, _ ->
-            val newTargetSalary: Double = try {
-                s.toDouble()
-            } catch (e: NumberFormatException) {
-                logger.debug("Invalid target salary")
-                targetSalary
-            }
-
-            if (newTargetSalary != targetSalary) {
-                logger.debug("New target salary: $newTargetSalary")
-                targetSalary = newTargetSalary
-            }
-        }
-        onTargetSalaryChangeFunctionList.add {
-            targetSalaryTextField.text = targetSalary.toString()
-        }
-
-        nestedTable.add(
-            createLabel(
-                "Target salary: ",
-                gdxSettings.smallFontSize
-            )
+        val targetSalary = createDoubleTextField(
+            default = defaultSalary,
+            fontSize = gdxSettings.smallFontSize
         )
 
-        nestedTable.add(targetSalaryTextField)
-
-        nestedTable.row().space(10f)
-
-        val targetSalarySliderButtonTable = createDoubleSliderButtonTable(
-            default = targetSalary,
-            sliderStepSize = 0.01f,
-            sliderDecimalPlace = 2,
-            buttonSize = 40f * gdxSettings.imageScale,
-            buttonSoundVolume = gdxSettings.soundEffectsVolume,
-            currentValue = { targetSalary }
-        ) {
-            targetSalary = it
-        }
-        nestedTable.add(targetSalarySliderButtonTable).colspan(2)
-
-        nestedTable.row().space(10f)
 
         val changeSalaryTextButton = createTextButton(
             text = "Change salary",
@@ -372,12 +328,37 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
                 fromInt4D = game.universeClient.getUniverseData3D().getCurrentPlayerData().int4D,
                 carrierId = carrierId,
                 popType = popType,
-                salary = targetSalary,
+                salary = targetSalary.num,
             )
 
             game.universeClient.currentCommand = changeSalaryCommand
         }
         nestedTable.add(changeSalaryTextButton).colspan(2)
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "Target salary: ",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.add(targetSalary.textField)
+
+        nestedTable.row().space(10f)
+
+        val targetSalarySliderButtonTable = createDoubleSliderButtonTable(
+            default = targetSalary.num,
+            sliderStepSize = 0.01f,
+            sliderDecimalPlace = 2,
+            buttonSize = 40f * gdxSettings.imageScale,
+            buttonSoundVolume = gdxSettings.soundEffectsVolume,
+            currentValue = { targetSalary.num }
+        ) {
+            targetSalary.num = it
+        }
+        nestedTable.add(targetSalarySliderButtonTable).colspan(2)
 
         return nestedTable
     }
@@ -419,79 +400,25 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
     private fun createLabourerTable(labourerPopData: LabourerPopData): Table {
         val nestedTable = Table()
 
-        val onOwnerIdChangeFunctionList: MutableList<() -> Unit> = mutableListOf()
-        var ownerId: Int by Delegates.observable(1) { _, _, _ ->
-            onOwnerIdChangeFunctionList.forEach { it() }
-        }
-        val ownerIdTextField = createTextField(
-            default = game.universeClient.newSelectedPlayerId.toString(),
-            fontSize = gdxSettings.smallFontSize,
-        ) { s, _ ->
-            val newOwnerId: Int = try {
-                s.toInt()
-            } catch (e: NumberFormatException) {
-                logger.debug("Invalid ownerId")
-                ownerId
-            }
+        val ownerId = createIntTextField(
+            playerData.playerId,
+            gdxSettings.smallFontSize
+        )
 
-            if (newOwnerId != ownerId) {
-                logger.debug("New ownerId: $newOwnerId")
-                ownerId = newOwnerId
-            }
-        }
-        onOwnerIdChangeFunctionList.add {
-            ownerIdTextField.text = ownerId.toString()
-        }
+        val qualityLevel = createDoubleTextField(
+            1.0,
+            gdxSettings.smallFontSize
+        )
 
-        val onQualityLevelChangeFunctionList: MutableList<() -> Unit> = mutableListOf()
-        var qualityLevel: Double by Delegates.observable(1.0) { _, _, _ ->
-            onQualityLevelChangeFunctionList.forEach { it() }
-        }
-        val qualityLevelTextField = createTextField(
-            default = qualityLevel.toString(),
-            fontSize = gdxSettings.smallFontSize,
-        ) { s, _ ->
-            val newQualityLevel: Double = try {
-                s.toDouble()
-            } catch (e: NumberFormatException) {
-                logger.debug("Invalid quality level")
-                qualityLevel
-            }
+        val storedFuelRestMass = createDoubleTextField(
+            0.0,
+            gdxSettings.smallFontSize
+        )
 
-            if (newQualityLevel != qualityLevel) {
-                logger.debug("New quality level: $newQualityLevel")
-                qualityLevel = newQualityLevel
-            }
-        }
-        onQualityLevelChangeFunctionList.add {
-            qualityLevelTextField.text = qualityLevel.toString()
-        }
-
-
-        val onStoredFuelRestMassChangeFunctionList: MutableList<() -> Unit> = mutableListOf()
-        var storedFuelRestMass: Double by Delegates.observable(0.0) { _, _, _ ->
-            onQualityLevelChangeFunctionList.forEach { it() }
-        }
-        val storedFuelRestMassTextField = createTextField(
-            default = storedFuelRestMass.toString(),
-            fontSize = gdxSettings.smallFontSize,
-        ) { s, _ ->
-            val newQualityLevel: Double = try {
-                s.toDouble()
-            } catch (e: NumberFormatException) {
-                logger.debug("Invalid stored fuel rest mass")
-                storedFuelRestMass
-            }
-
-            if (newQualityLevel != qualityLevel) {
-                logger.debug("New quality level: $newQualityLevel")
-                storedFuelRestMass = newQualityLevel
-            }
-        }
-        onStoredFuelRestMassChangeFunctionList.add {
-            storedFuelRestMassTextField.text = storedFuelRestMass.toString()
-        }
-
+        val numBuilding = createDoubleTextField(
+            0.0,
+            gdxSettings.smallFontSize
+        )
 
         nestedTable.add(
             createLabel(
@@ -514,12 +441,12 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
                 senderTopLeaderId = game.universeClient.getUniverseData3D()
                     .getCurrentPlayerData().topLeaderId(),
                 targetCarrierId = carrierId,
-                ownerId = ownerId,
+                ownerId = ownerId.num,
                 fuelFactoryInternalData = playerData.playerInternalData.playerScienceData()
-                    .playerScienceApplicationData.newFuelFactoryInternalData(qualityLevel),
-                qualityLevel = qualityLevel,
-                storedFuelRestMass = 0.0,
-                numBuilding = 0.0
+                    .playerScienceApplicationData.newFuelFactoryInternalData(qualityLevel.num),
+                qualityLevel = qualityLevel.num,
+                storedFuelRestMass = storedFuelRestMass.num,
+                numBuilding = numBuilding.num
             )
 
             game.universeClient.currentCommand = buildForeignFuelFactoryCommand
@@ -535,7 +462,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             )
         )
 
-        nestedTable.add(ownerIdTextField)
+        nestedTable.add(ownerId.textField)
 
         nestedTable.row().space(10f)
 
@@ -546,7 +473,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             )
         )
 
-        nestedTable.add(qualityLevelTextField)
+        nestedTable.add(qualityLevel.textField)
 
         nestedTable.row().space(10f)
 
@@ -556,9 +483,61 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             0.01f,
             1f
         ) { fl, _ ->
-            qualityLevel = Notation.roundDecimal(fl.toDouble(), 2)
+            qualityLevel.num = Notation.roundDecimal(fl.toDouble(), 2)
         }
         nestedTable.add(qualityLevelSlider).colspan(2)
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "New factory stored fuel: ",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.add(storedFuelRestMass.textField)
+
+        nestedTable.row().space(10f)
+
+        val storedFuelRestMassDoubleSliderButton = createDoubleSliderButtonTable(
+            default = storedFuelRestMass.num,
+            sliderStepSize = 0.01f,
+            sliderDecimalPlace = 2,
+            buttonSize = 40f * gdxSettings.imageScale,
+            buttonSoundVolume = gdxSettings.soundEffectsVolume,
+            currentValue = { storedFuelRestMass.num },
+        ) {
+            storedFuelRestMass.num = it
+        }
+
+        nestedTable.add(storedFuelRestMassDoubleSliderButton).colspan(2)
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "New factory num building: ",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.add(numBuilding.textField)
+
+        nestedTable.row().space(10f)
+
+        val numBuildingDoubleSliderButton = createDoubleSliderButtonTable(
+            default = numBuilding.num,
+            sliderStepSize = 0.01f,
+            sliderDecimalPlace = 2,
+            buttonSize = 40f * gdxSettings.imageScale,
+            buttonSoundVolume = gdxSettings.soundEffectsVolume,
+            currentValue = { numBuilding.num },
+        ) {
+            numBuilding.num = it
+        }
+
+        nestedTable.add(numBuildingDoubleSliderButton).colspan(2)
 
 
         return nestedTable
