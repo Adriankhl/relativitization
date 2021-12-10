@@ -299,7 +299,7 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         playerData = if (game.universeClient.isPrimarySelectedPlayerIdValid()) {
             game.universeClient.getPrimarySelectedPlayerData()
         } else {
-            game.universeClient.getUniverseData3D().getCurrentPlayerData()
+            game.universeClient.getCurrentPlayerData()
         }
     }
 

@@ -189,7 +189,7 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
         playerData = if (game.universeClient.isPrimarySelectedPlayerIdValid()) {
             game.universeClient.getPrimarySelectedPlayerData()
         } else {
-            game.universeClient.getUniverseData3D().getCurrentPlayerData()
+            game.universeClient.getCurrentPlayerData()
         }
     }
 

@@ -556,6 +556,17 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
         }
     }
 
+    /**
+     * Get current player
+     */
+    fun getCurrentPlayerData(): PlayerData {
+        return if (planDataAtPlayer.universeData3DAtPlayer.center.t == getUniverseData3D().center.t) {
+            planDataAtPlayer.getCurrentPlayerData()
+        } else {
+            getUniverseData3D().getCurrentPlayerData()
+        }
+    }
+
 
     suspend fun setUniverseClientSettings(newUniverseClientSettings: UniverseClientSettings) {
         mutex.withLock {

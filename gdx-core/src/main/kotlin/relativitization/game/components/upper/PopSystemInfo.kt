@@ -77,7 +77,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         playerData = if (game.universeClient.isPrimarySelectedPlayerIdValid()) {
             game.universeClient.getPrimarySelectedPlayerData()
         } else {
-            game.universeClient.getUniverseData3D().getCurrentPlayerData()
+            game.universeClient.getCurrentPlayerData()
         }
 
 
@@ -324,8 +324,8 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         ) {
             val changeSalaryCommand = ChangeSalaryCommand(
                 toId = playerData.playerId,
-                fromId = game.universeClient.getUniverseData3D().getCurrentPlayerData().playerId,
-                fromInt4D = game.universeClient.getUniverseData3D().getCurrentPlayerData().int4D,
+                fromId = game.universeClient.getCurrentPlayerData().playerId,
+                fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
                 carrierId = carrierId,
                 popType = popType,
                 salary = targetSalary.num,
@@ -436,14 +436,13 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         ) {
             val buildForeignFuelFactoryCommand = BuildForeignFuelFactoryCommand(
                 toId = playerData.playerId,
-                fromId = game.universeClient.getUniverseData3D().getCurrentPlayerData().playerId,
-                fromInt4D = game.universeClient.getUniverseData3D().getCurrentPlayerData().int4D,
-                senderTopLeaderId = game.universeClient.getUniverseData3D()
-                    .getCurrentPlayerData().topLeaderId(),
+                fromId = game.universeClient.getCurrentPlayerData().playerId,
+                fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
+                senderTopLeaderId = game.universeClient.getCurrentPlayerData().topLeaderId(),
                 targetCarrierId = carrierId,
                 ownerId = ownerId.num,
-                fuelFactoryInternalData = game.universeClient.getUniverseData3D()
-                    .getCurrentPlayerData().playerInternalData.playerScienceData()
+                fuelFactoryInternalData = game.universeClient.getCurrentPlayerData()
+                    .playerInternalData.playerScienceData()
                     .playerScienceApplicationData.newFuelFactoryInternalData(qualityLevel.num),
                 qualityLevel = qualityLevel.num,
                 storedFuelRestMass = storedFuelRestMass.num,
