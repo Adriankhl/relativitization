@@ -47,6 +47,10 @@ data class BuildForeignFuelFactoryCommand(
             IntString(3),
             NormalString(", number of building: "),
             IntString(4),
+            NormalString(", max. output: "),
+            IntString(5),
+            NormalString(", max. employee: "),
+            IntString(6),
             NormalString(". "),
         ),
         listOf(
@@ -55,6 +59,8 @@ data class BuildForeignFuelFactoryCommand(
             toId.toString(),
             storedFuelRestMass.toString(),
             numBuilding.toString(),
+            (numBuilding * fuelFactoryInternalData.maxOutputAmount).toString(),
+            (numBuilding * fuelFactoryInternalData.maxNumEmployee).toString(),
         )
     )
 
@@ -205,27 +211,36 @@ data class BuildForeignResourceFactoryCommand(
 ) : DefaultCommand() {
     override val description: I18NString = I18NString(
         listOf(
-            NormalString("Build a foreign resource factory with quality level "),
+            NormalString("Build a foreign "),
             IntString(0),
-            NormalString(" owned by "),
+            NormalString(" factory with quality level "),
             IntString(1),
-            NormalString(" at carrier "),
+            NormalString(" owned by "),
             IntString(2),
-            NormalString(" of player "),
+            NormalString(" at carrier "),
             IntString(3),
-            NormalString(". Initial stored fuel rest mass: "),
+            NormalString(" of player "),
             IntString(4),
-            NormalString(", number of building: "),
+            NormalString(". Initial stored fuel rest mass: "),
             IntString(5),
+            NormalString(", number of building: "),
+            IntString(6),
+            NormalString(", output amount: "),
+            IntString(7),
+            NormalString(", output quality: "),
+            IntString(8),
             NormalString(". "),
         ),
         listOf(
+            resourceFactoryInternalData.outputResource.toString(),
             qualityLevel.toString(),
             ownerId.toString(),
             targetCarrierId.toString(),
             toId.toString(),
             storedFuelRestMass.toString(),
             numBuilding.toString(),
+            (resourceFactoryInternalData.maxOutputAmount * numBuilding).toString(),
+            resourceFactoryInternalData.maxOutputResourceQualityData.quality1.toString(),
         )
     )
 
