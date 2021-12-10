@@ -15,6 +15,7 @@ import relativitization.universe.data.components.defaults.popsystem.pop.CommonPo
 import relativitization.universe.data.components.defaults.popsystem.pop.PopType
 import relativitization.universe.data.components.defaults.popsystem.pop.ResourceDesireData
 import relativitization.universe.data.components.defaults.popsystem.pop.labourer.LabourerPopData
+import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.FuelFactoryData
 import relativitization.universe.maths.number.Notation
 import relativitization.universe.utils.RelativitizationLogManager
 
@@ -412,6 +413,10 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         nestedTable.row().space(20f)
 
+        nestedTable.add(createFuelFactoryMapTable(labourerPopData))
+
+        nestedTable.row().space(20f)
+
         nestedTable.add(createBuildForeignFuelFactoryTable())
 
         nestedTable.row().space(10f)
@@ -425,6 +430,44 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         nestedTable.row().space(10f)
 
         nestedTable.add(createBuildLocalResourceFactoryTable())
+
+        return nestedTable
+    }
+
+    private fun createFuelFactoryMapTable(labourerPopData: LabourerPopData): Table {
+        val nestedTable = Table()
+
+        nestedTable.add(
+            createLabel(
+                "Fuel factory: ",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        val fuelFactorySelectBox = createSelectBox(
+            labourerPopData.fuelFactoryMap.keys.toList(),
+            labourerPopData.fuelFactoryMap.keys.firstOrNull() ?: -1,
+            gdxSettings.smallFontSize
+        ) { _, _ ->
+            updateCarrierTable()
+        }
+        nestedTable.add(fuelFactorySelectBox)
+
+        nestedTable.row().space(10f)
+
+        if (labourerPopData.fuelFactoryMap.containsKey(fuelFactorySelectBox.selected)) {
+            val fuelFactory: FuelFactoryData = labourerPopData.fuelFactoryMap.getValue(
+                fuelFactorySelectBox.selected
+            )
+
+            nestedTable.add(createFuelFactoryTable(fuelFactory))
+        }
+
+        return nestedTable
+    }
+
+    private fun createFuelFactoryTable(fuelFactoryData: FuelFactoryData): Table {
+        val nestedTable = Table()
 
         return nestedTable
     }
