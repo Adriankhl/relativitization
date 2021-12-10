@@ -7,6 +7,7 @@ import relativitization.game.RelativitizationGame
 import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.commands.BuildForeignFuelFactoryCommand
+import relativitization.universe.data.commands.BuildForeignResourceFactoryCommand
 import relativitization.universe.data.commands.ChangeSalaryCommand
 import relativitization.universe.data.components.defaults.economy.ResourceType
 import relativitization.universe.data.components.defaults.popsystem.CarrierData
@@ -417,6 +418,8 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         nestedTable.row().space(10f)
 
+        nestedTable.add(createBuildForeignResourceFactoryTable())
+
         return nestedTable
     }
 
@@ -425,11 +428,6 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         val ownerId = createIntTextField(
             playerData.playerId,
-            gdxSettings.smallFontSize
-        )
-
-        val qualityLevel = createDoubleTextField(
-            1.0,
             gdxSettings.smallFontSize
         )
 
@@ -444,7 +442,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         )
 
        val buildForeignFuelFactoryTextButton = createTextButton(
-            "Build factory",
+            "Build fuel factory",
             gdxSettings.smallFontSize,
             gdxSettings.soundEffectsVolume,
         ) {
@@ -476,6 +474,139 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         )
 
         nestedTable.add(ownerId.textField)
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "New factory stored fuel: ",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.add(storedFuelRestMass.textField)
+
+        nestedTable.row().space(10f)
+
+        val storedFuelRestMassDoubleSliderButton = createDoubleSliderButtonTable(
+            default = storedFuelRestMass.value,
+            sliderStepSize = 0.01f,
+            sliderDecimalPlace = 2,
+            buttonSize = 40f * gdxSettings.imageScale,
+            buttonSoundVolume = gdxSettings.soundEffectsVolume,
+            currentValue = { storedFuelRestMass.value },
+        ) {
+            storedFuelRestMass.value = it
+        }
+
+        nestedTable.add(storedFuelRestMassDoubleSliderButton).colspan(2)
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "New factory num building: ",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.add(numBuilding.textField)
+
+        nestedTable.row().space(10f)
+
+        val numBuildingDoubleSliderButton = createDoubleSliderButtonTable(
+            default = numBuilding.value,
+            sliderStepSize = 0.01f,
+            sliderDecimalPlace = 2,
+            buttonSize = 40f * gdxSettings.imageScale,
+            buttonSoundVolume = gdxSettings.soundEffectsVolume,
+            currentValue = { numBuilding.value },
+        ) {
+            numBuilding.value = it
+        }
+
+        nestedTable.add(numBuildingDoubleSliderButton).colspan(2)
+
+        return nestedTable
+    }
+
+    private fun createBuildForeignResourceFactoryTable(): Table {
+        val nestedTable = Table()
+
+        val ownerId = createIntTextField(
+            playerData.playerId,
+            gdxSettings.smallFontSize
+        )
+
+        val qualityLevel = createDoubleTextField(
+            1.0,
+            gdxSettings.smallFontSize
+        )
+
+        val storedFuelRestMass = createDoubleTextField(
+            0.0,
+            gdxSettings.smallFontSize
+        )
+
+        val numBuilding = createDoubleTextField(
+            1.0,
+            gdxSettings.smallFontSize
+        )
+
+        val outputResourceSelectBox = createSelectBox(
+            ResourceType.values().toList(),
+            ResourceType.values().first(),
+            gdxSettings.smallFontSize
+        )
+
+        val buildForeignFuelFactoryTextButton = createTextButton(
+            "Build resource factory",
+            gdxSettings.smallFontSize,
+            gdxSettings.soundEffectsVolume,
+        ) {
+            val buildForeignResourceFactoryCommand = BuildForeignResourceFactoryCommand(
+                toId = playerData.playerId,
+                fromId = game.universeClient.getCurrentPlayerData().playerId,
+                fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
+                senderTopLeaderId = game.universeClient.getCurrentPlayerData().topLeaderId(),
+                targetCarrierId = carrierId,
+                ownerId = ownerId.num,
+                resourceFactoryInternalData = game.universeClient.getCurrentPlayerData()
+                    .playerInternalData.playerScienceData()
+                    .playerScienceApplicationData.newResourceFactoryInternalData(
+                        outputResourceSelectBox.selected,
+                        qualityLevel.value,
+                    ),
+                qualityLevel = qualityLevel.value,
+                storedFuelRestMass = storedFuelRestMass.value,
+                numBuilding = numBuilding.value
+            )
+
+            game.universeClient.currentCommand = buildForeignResourceFactoryCommand
+        }
+        nestedTable.add(buildForeignFuelFactoryTextButton).colspan(2)
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "New factory owner: ",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.add(ownerId.textField)
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "Output resource: ",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.add(outputResourceSelectBox)
 
         nestedTable.row().space(10f)
 
@@ -555,7 +686,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         return nestedTable
     }
 
-        companion object {
+    companion object {
         private val logger = RelativitizationLogManager.getLogger()
     }
 }
