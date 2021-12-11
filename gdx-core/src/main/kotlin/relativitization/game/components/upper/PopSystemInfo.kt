@@ -792,7 +792,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         nestedTable.row().space(10f)
 
         resourceFactoryData.resourceFactoryInternalData.inputResourceMap.forEach { (resourceType, inputResource) ->
-            
+
         }
 
         nestedTable.row().space(10f)

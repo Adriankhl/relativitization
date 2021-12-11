@@ -237,20 +237,20 @@ object UpdateScienceApplicationData : Mechanism() {
 
         val inputResourceMap: MutableMap<ResourceType, MutableInputResourceData> = mutableMapOf(
             ResourceType.ANIMAL to MutableInputResourceData(
-                maxInputResourceQualityData = MutableResourceQualityData(
+                qualityData = MutableResourceQualityData(
                     quality1 = log2(mutableKnowledgeData.appliedResearchData.foodTechnologyLevel + 2.0),
                     quality2 = 0.0,
                     quality3 = 0.0,
                 ),
-                amountPerOutputUnit = 0.5
+                amount = 0.5
             ),
             ResourceType.PLANT to MutableInputResourceData(
-                maxInputResourceQualityData = MutableResourceQualityData(
+                qualityData = MutableResourceQualityData(
                     quality1 = log2(mutableKnowledgeData.appliedResearchData.foodTechnologyLevel + 2.0),
                     quality2 = 0.0,
                     quality3 = 0.0,
                 ),
-                amountPerOutputUnit = 0.5
+                amount = 0.5
             ),
         )
 
@@ -284,20 +284,20 @@ object UpdateScienceApplicationData : Mechanism() {
 
         val inputResourceMap: MutableMap<ResourceType, MutableInputResourceData> = mutableMapOf(
             ResourceType.ANIMAL to MutableInputResourceData(
-                maxInputResourceQualityData = MutableResourceQualityData(
+                qualityData = MutableResourceQualityData(
                     quality1 = log2(mutableKnowledgeData.appliedResearchData.materialTechnologyLevel + 2.0),
                     quality2 = 0.0,
                     quality3 = 0.0,
                 ),
-                amountPerOutputUnit = 0.5
+                amount = 0.5
             ),
             ResourceType.PLASTIC to MutableInputResourceData(
-                maxInputResourceQualityData = MutableResourceQualityData(
+                qualityData = MutableResourceQualityData(
                     quality1 = log2(mutableKnowledgeData.appliedResearchData.materialTechnologyLevel + 2.0),
                     quality2 = 0.0,
                     quality3 = 0.0,
                 ),
-                amountPerOutputUnit = 0.5
+                amount = 0.5
             ),
         )
 
@@ -331,20 +331,20 @@ object UpdateScienceApplicationData : Mechanism() {
 
         val inputResourceMap: MutableMap<ResourceType, MutableInputResourceData> = mutableMapOf(
             ResourceType.PLANT to MutableInputResourceData(
-                maxInputResourceQualityData = MutableResourceQualityData(
+                qualityData = MutableResourceQualityData(
                     quality1 = log2(mutableKnowledgeData.appliedResearchData.artTechnologyLevel + 2.0),
                     quality2 = 0.0,
                     quality3 = 0.0,
                 ),
-                amountPerOutputUnit = 0.5
+                amount = 0.5
             ),
             ResourceType.PLASTIC to MutableInputResourceData(
-                maxInputResourceQualityData = MutableResourceQualityData(
+                qualityData = MutableResourceQualityData(
                     quality1 = log2(mutableKnowledgeData.appliedResearchData.artTechnologyLevel + 2.0),
                     quality2 = 0.0,
                     quality3 = 0.0,
                 ),
-                amountPerOutputUnit = 0.5
+                amount = 0.5
             ),
         )
 
@@ -378,20 +378,20 @@ object UpdateScienceApplicationData : Mechanism() {
 
         val inputResourceMap: MutableMap<ResourceType, MutableInputResourceData> = mutableMapOf(
             ResourceType.ANIMAL to MutableInputResourceData(
-                maxInputResourceQualityData = MutableResourceQualityData(
+                qualityData = MutableResourceQualityData(
                     quality1 = log2(mutableKnowledgeData.appliedResearchData.materialTechnologyLevel + 2.0),
                     quality2 = 0.0,
                     quality3 = 0.0,
                 ),
-                amountPerOutputUnit = 0.5
+                amount = 0.5
             ),
             ResourceType.METAL to MutableInputResourceData(
-                maxInputResourceQualityData = MutableResourceQualityData(
+                qualityData = MutableResourceQualityData(
                     quality1 = log2(mutableKnowledgeData.appliedResearchData.materialTechnologyLevel + 2.0),
                     quality2 = 0.0,
                     quality3 = 0.0,
                 ),
-                amountPerOutputUnit = 0.5
+                amount = 0.5
             ),
         )
 
@@ -425,20 +425,20 @@ object UpdateScienceApplicationData : Mechanism() {
 
         val inputResourceMap: MutableMap<ResourceType, MutableInputResourceData> = mutableMapOf(
             ResourceType.PLANT to MutableInputResourceData(
-                maxInputResourceQualityData = MutableResourceQualityData(
+                qualityData = MutableResourceQualityData(
                     quality1 = log2(mutableKnowledgeData.appliedResearchData.biomedicalTechnologyLevel + 2.0),
                     quality2 = 0.0,
                     quality3 = 0.0,
                 ),
-                amountPerOutputUnit = 0.5
+                amount = 0.5
             ),
             ResourceType.METAL to MutableInputResourceData(
-                maxInputResourceQualityData = MutableResourceQualityData(
+                qualityData = MutableResourceQualityData(
                     quality1 = log2(mutableKnowledgeData.appliedResearchData.biomedicalTechnologyLevel + 2.0),
                     quality2 = 0.0,
                     quality3 = 0.0,
                 ),
-                amountPerOutputUnit = 0.5
+                amount = 0.5
             ),
         )
 
@@ -472,20 +472,20 @@ object UpdateScienceApplicationData : Mechanism() {
 
         val inputResourceMap: MutableMap<ResourceType, MutableInputResourceData> = mutableMapOf(
             ResourceType.METAL to MutableInputResourceData(
-                maxInputResourceQualityData = MutableResourceQualityData(
+                qualityData = MutableResourceQualityData(
                     quality1 = log2(mutableKnowledgeData.appliedResearchData.militaryTechnologyLevel + 2.0),
                     quality2 = 0.0,
                     quality3 = 0.0,
                 ),
-                amountPerOutputUnit = 0.5
+                amount = 0.5
             ),
             ResourceType.PLASTIC to MutableInputResourceData(
-                maxInputResourceQualityData = MutableResourceQualityData(
+                qualityData = MutableResourceQualityData(
                     quality1 = log2(mutableKnowledgeData.appliedResearchData.militaryTechnologyLevel + 2.0),
                     quality2 = 0.0,
                     quality3 = 0.0,
                 ),
-                amountPerOutputUnit = 0.5
+                amount = 0.5
             ),
         )
 

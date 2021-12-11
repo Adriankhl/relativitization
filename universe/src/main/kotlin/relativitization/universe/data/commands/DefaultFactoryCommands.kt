@@ -360,7 +360,7 @@ data class BuildForeignResourceFactoryCommand(
                 numBuilding = numBuilding,
                 isOpened = true,
                 lastOutputAmount = 0.0,
-                lastInputAmountMap = mutableMapOf(),
+                lastInputResourceMap = mutableMapOf(),
                 storedFuelRestMass = storedFuelRestMass,
                 lastNumEmployee = 0.0
             )
@@ -624,7 +624,7 @@ data class BuildLocalResourceFactoryCommand(
                 numBuilding = numBuilding,
                 isOpened = true,
                 lastOutputAmount = 0.0,
-                lastInputAmountMap = mutableMapOf(),
+                lastInputResourceMap = mutableMapOf(),
                 storedFuelRestMass = 0.0,
                 lastNumEmployee = 0.0
             )

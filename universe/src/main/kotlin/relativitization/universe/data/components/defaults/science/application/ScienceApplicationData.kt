@@ -97,8 +97,8 @@ data class ScienceApplicationData(
                 )
 
                 InputResourceData(
-                    maxInputResourceQualityData = inputResourceData.maxInputResourceQualityData * qualityFactor,
-                    amountPerOutputUnit = inputResourceData.amountPerOutputUnit * amountFactor
+                    qualityData = inputResourceData.qualityData * qualityFactor,
+                    amount = inputResourceData.amount * amountFactor
                 )
             }
 
@@ -329,8 +329,8 @@ data class MutableScienceApplicationData(
                 )
 
                 MutableInputResourceData(
-                    maxInputResourceQualityData = inputResourceData.maxInputResourceQualityData * qualityFactor,
-                    amountPerOutputUnit = inputResourceData.amountPerOutputUnit * amountFactor
+                    qualityData = inputResourceData.qualityData * qualityFactor,
+                    amount = inputResourceData.amount * amountFactor
                 )
             }.toMutableMap()
 

@@ -15,7 +15,7 @@ import kotlin.math.pow
  * @property isOpened whether this factory is opened
  * @property storedFuelRestMass stored fuel to be consumed if this is owned by foreign player
  * @property lastOutputAmount the output amount in the latest turn
- * @property lastInputAmountMap the input amount in the latest turn
+ * @property lastInputResourceMap the input resource in the latest turn
  * @property lastNumEmployee number of employee in the last turn
  */
 @Serializable
@@ -27,12 +27,12 @@ data class ResourceFactoryData(
     val storedFuelRestMass: Double = 0.0,
     val lastOutputAmount: Double = 0.0,
     val lastOutputQuality: ResourceQualityData = ResourceQualityData(),
-    val lastInputAmountMap: Map<ResourceType, Double> = mapOf(),
+    val lastInputResourceMap: Map<ResourceType, InputResourceData> = mapOf(),
     val lastNumEmployee: Double = 0.0,
 ) {
     fun maxInputAmount(resourceType: ResourceType): Double {
         val amountPerUnit: Double =
-            resourceFactoryInternalData.inputResourceMap[resourceType]?.amountPerOutputUnit ?: 0.0
+            resourceFactoryInternalData.inputResourceMap[resourceType]?.amount ?: 0.0
         return amountPerUnit * resourceFactoryInternalData.maxOutputAmount * numBuilding
     }
 }
@@ -46,12 +46,12 @@ data class MutableResourceFactoryData(
     var storedFuelRestMass: Double = 0.0,
     var lastOutputAmount: Double = 0.0,
     var lastOutputQuality: MutableResourceQualityData = MutableResourceQualityData(),
-    val lastInputAmountMap: MutableMap<ResourceType, Double> = mutableMapOf(),
+    val lastInputResourceMap: MutableMap<ResourceType, MutableInputResourceData> = mutableMapOf(),
     var lastNumEmployee: Double = 0.0,
 ) {
     fun maxInputAmount(resourceType: ResourceType): Double {
         val amountPerUnit: Double =
-            resourceFactoryInternalData.inputResourceMap[resourceType]?.amountPerOutputUnit ?: 0.0
+            resourceFactoryInternalData.inputResourceMap[resourceType]?.amount ?: 0.0
         return amountPerUnit * resourceFactoryInternalData.maxOutputAmount * numBuilding
     }
 
@@ -62,29 +62,29 @@ data class MutableResourceFactoryData(
 /**
  * Input resource related data
  *
- * @property maxInputResourceQualityData maximum input resource quality, quality exceeding this
+ * @property qualityData maximum input resource quality, quality exceeding this
  * won't improve the output quality
- * @property amountPerOutputUnit amount of resource required to produce one unit of output resource
+ * @property amount amount of resource required to produce one unit of output resource
  */
 @Serializable
 data class InputResourceData(
-    val maxInputResourceQualityData: ResourceQualityData = ResourceQualityData(),
-    val amountPerOutputUnit: Double = 1.0,
+    val qualityData: ResourceQualityData = ResourceQualityData(),
+    val amount: Double = 1.0,
 ) {
     fun squareDiff(other: InputResourceData): Double {
         val qualityDiff: Double =
-            maxInputResourceQualityData.squareDiff(other.maxInputResourceQualityData)
+            qualityData.squareDiff(other.qualityData)
 
-        val amountDiff: Double = (amountPerOutputUnit - other.amountPerOutputUnit).pow(2)
+        val amountDiff: Double = (amount - other.amount).pow(2)
 
         return qualityDiff + amountDiff
     }
 
     fun squareDiff(other: MutableInputResourceData): Double {
         val qualityDiff: Double =
-            maxInputResourceQualityData.squareDiff(other.maxInputResourceQualityData)
+            qualityData.squareDiff(other.qualityData)
 
-        val amountDiff: Double = (amountPerOutputUnit - other.amountPerOutputUnit).pow(2)
+        val amountDiff: Double = (amount - other.amount).pow(2)
 
         return qualityDiff + amountDiff
     }
@@ -92,14 +92,14 @@ data class InputResourceData(
 
 @Serializable
 data class MutableInputResourceData(
-    var maxInputResourceQualityData: MutableResourceQualityData = MutableResourceQualityData(),
-    var amountPerOutputUnit: Double = 1.0,
+    var qualityData: MutableResourceQualityData = MutableResourceQualityData(),
+    var amount: Double = 1.0,
 ) {
     fun squareDiff(other: MutableInputResourceData): Double {
         val qualityDiff: Double =
-            maxInputResourceQualityData.squareDiff(other.maxInputResourceQualityData)
+            qualityData.squareDiff(other.qualityData)
 
-        val amountDiff: Double = (amountPerOutputUnit - other.amountPerOutputUnit).pow(2)
+        val amountDiff: Double = (amount - other.amount).pow(2)
 
         return qualityDiff + amountDiff
     }
