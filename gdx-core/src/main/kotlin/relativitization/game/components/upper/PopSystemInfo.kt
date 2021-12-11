@@ -3,11 +3,14 @@ package relativitization.game.components.upper
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.commands.*
 import relativitization.universe.data.components.defaults.economy.ResourceType
+import relativitization.universe.data.components.defaults.physics.Int3D
+import relativitization.universe.data.components.defaults.physics.Int4D
 import relativitization.universe.data.components.defaults.popsystem.CarrierData
 import relativitization.universe.data.components.defaults.popsystem.CarrierInternalData
 import relativitization.universe.data.components.defaults.popsystem.pop.AllPopData
@@ -469,14 +472,62 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
                 fuelFactorySelectBox.selected
             )
 
-            nestedTable.add(createFuelFactoryTable(fuelFactory)).colspan(2)
+            nestedTable.add(createFuelFactoryTable(
+                fuelFactorySelectBox.selected,
+                fuelFactory
+            )).colspan(2)
         }
 
         return nestedTable
     }
 
-    private fun createFuelFactoryTable(fuelFactoryData: FuelFactoryData): Table {
+    private fun createFuelFactoryTable(
+        fuelFactoryId: Int,
+        fuelFactoryData: FuelFactoryData
+    ): Table {
         val nestedTable = Table()
+
+        // Depending on whether this is a foreign player or not, use remove foreign / local command
+        if (playerData.playerId == game.universeClient.getCurrentPlayerData().playerId) {
+
+            val removeLocalFuelFactoryTextButton = createTextButton(
+                text = "Remove factory",
+                fontSize = gdxSettings.smallFontSize,
+                soundVolume = gdxSettings.soundEffectsVolume,
+            ) {
+                val removeLocalFuelFactoryCommand = RemoveLocalFuelFactoryCommand(
+                    toId = playerData.playerId,
+                    fromId = game.universeClient.getCurrentPlayerData().playerId,
+                    fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
+                    targetCarrierId = carrierId,
+                    targetFuelFactoryId = fuelFactoryId
+                )
+
+                game.universeClient.currentCommand = removeLocalFuelFactoryCommand
+            }
+
+            nestedTable.add(removeLocalFuelFactoryTextButton)
+        } else {
+            val removeForeignFuelFactoryTextButton = createTextButton(
+                text = "Remove factory",
+                fontSize = gdxSettings.smallFontSize,
+                soundVolume = gdxSettings.soundEffectsVolume,
+            ) {
+                val removeForeignFuelFactoryCommand = RemoveForeignFuelFactoryCommand(
+                    toId = playerData.playerId,
+                    fromId = game.universeClient.getCurrentPlayerData().playerId,
+                    fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
+                    targetCarrierId = carrierId,
+                    targetFuelFactoryId = fuelFactoryId
+                )
+
+                game.universeClient.currentCommand = removeForeignFuelFactoryCommand
+            }
+
+            nestedTable.add(removeForeignFuelFactoryTextButton)
+        }
+
+        nestedTable.row().space(10f)
 
         nestedTable.add(
             createLabel(
