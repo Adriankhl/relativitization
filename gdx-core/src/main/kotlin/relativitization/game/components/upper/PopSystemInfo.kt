@@ -483,10 +483,12 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
                 fuelFactorySelectBox.selected
             )
 
-            nestedTable.add(createFuelFactoryTable(
-                fuelFactorySelectBox.selected,
-                fuelFactory
-            )).colspan(2)
+            nestedTable.add(
+                createFuelFactoryTable(
+                    fuelFactorySelectBox.selected,
+                    fuelFactory
+                )
+            ).colspan(2)
         }
 
         return nestedTable
@@ -551,6 +553,15 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         nestedTable.add(
             createLabel(
+                "Number of building: ${fuelFactoryData.numBuilding}",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
                 "Max. output: ${fuelFactoryData.fuelFactoryInternalData.maxOutputAmount * fuelFactoryData.numBuilding}",
                 gdxSettings.smallFontSize
             )
@@ -593,17 +604,6 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         )
 
         nestedTable.row().space(10f)
-
-
-        nestedTable.add(
-            createLabel(
-                "Number of building: ${fuelFactoryData.numBuilding}",
-                gdxSettings.smallFontSize
-            )
-        )
-
-        nestedTable.row().space(10f)
-
 
         return nestedTable
     }
@@ -658,10 +658,12 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
                 resourceFactorySelectBox.selected
             )
 
-            nestedTable.add(createResourceFactoryTable(
-                resourceFactorySelectBox.selected,
-                resourceFactory
-            )).colspan(2)
+            nestedTable.add(
+                createResourceFactoryTable(
+                    resourceFactorySelectBox.selected,
+                    resourceFactory
+                )
+            ).colspan(2)
         }
 
         return nestedTable
@@ -726,6 +728,15 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         nestedTable.add(
             createLabel(
+                "Number of building: ${resourceFactoryData.numBuilding}",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
                 "Max. output: ${resourceFactoryData.resourceFactoryInternalData.maxOutputAmount * resourceFactoryData.numBuilding}",
                 gdxSettings.smallFontSize
             )
@@ -741,6 +752,26 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         )
 
         nestedTable.row().space(10f)
+
+
+        nestedTable.add(
+            createLabel(
+                "Max. quality: ${resourceFactoryData.resourceFactoryInternalData.maxOutputResourceQualityData.quality1}",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "Last quality: ${resourceFactoryData.lastOutputQuality.quality1}",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.row().space(10f)
+
 
         nestedTable.add(
             createLabel(
@@ -760,19 +791,24 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         nestedTable.row().space(10f)
 
+        resourceFactoryData.resourceFactoryInternalData.inputResourceMap.forEach { (resourceType, inputResource) ->
+            
+        }
+
+        nestedTable.row().space(10f)
+
         nestedTable.add(
             createLabel(
-                "Stored fuel: ${resourceFactoryData.storedFuelRestMass}",
+                "Max. fuel consumption: ${resourceFactoryData.resourceFactoryInternalData.fuelRestMassConsumptionRate * resourceFactoryData.numBuilding}",
                 gdxSettings.smallFontSize
             )
         )
 
         nestedTable.row().space(10f)
 
-
         nestedTable.add(
             createLabel(
-                "Number of building: ${resourceFactoryData.numBuilding}",
+                "Stored fuel: ${resourceFactoryData.storedFuelRestMass}",
                 gdxSettings.smallFontSize
             )
         )
