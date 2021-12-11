@@ -606,6 +606,11 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         nestedTable.row().space(10f)
 
+        // Add supply fuel button if this factory is not self factory
+        if (playerData.playerId != game.universeClient.getCurrentPlayerData().playerId) {
+
+        }
+
         return nestedTable
     }
 

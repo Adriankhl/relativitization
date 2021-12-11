@@ -12,6 +12,7 @@
 
 # Currently unused data
 * Size of factory and institute
+* Open and close factory
 * Size of carrier
 * Child and elder population
 * Quality 2 and 3 of resources
@@ -67,7 +68,7 @@
 # GUI TODO List
 * Display information
 * Available commands
-* Map mode
+* Map mode [x]
 
 # Test TODO List
 * Declare war [x]
