@@ -352,10 +352,10 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
     }
 
     /**
-     * Goto stored previous universe data
+     * Return stored previous universe data, if not previous data, return the current data
      */
-    suspend fun previousUniverseData3D() {
-        val currentData = universeData3DMapMutex.withLock {
+    suspend fun getPreviousUniverseData3D(): UniverseData3DAtPlayer {
+        return universeData3DMapMutex.withLock {
             if (universeData3DMap.values.contains(currentUniverseData3DAtPlayer)) {
                 val currentIndex = universeData3DMap.values.indexOf(currentUniverseData3DAtPlayer)
                 if (universeData3DMap.values.indices.contains(currentIndex - 1)) {
@@ -369,15 +369,13 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
                 currentUniverseData3DAtPlayer
             }
         }
-        // set this outside of the lock to prevent dead lock
-        currentUniverseData3DAtPlayer = currentData
     }
 
     /**
-     * Goto stored next universe data
+     * Return stored next universe data, if not next data, return the current data
      */
-    suspend fun nextUniverseData3D() {
-        val currentData = universeData3DMapMutex.withLock {
+    suspend fun getNextUniverseData3D(): UniverseData3DAtPlayer {
+        return universeData3DMapMutex.withLock {
             if (universeData3DMap.values.contains(currentUniverseData3DAtPlayer)) {
                 val currentIndex = universeData3DMap.values.indexOf(currentUniverseData3DAtPlayer)
                 if (universeData3DMap.values.indices.contains(currentIndex + 1)) {
@@ -391,8 +389,20 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
                 currentUniverseData3DAtPlayer
             }
         }
-        // set this outside of lock to prevent deadlock
-        currentUniverseData3DAtPlayer = currentData
+    }
+
+    /**
+     * Goto previous universe data
+     */
+    suspend fun previousUniverseData3D() {
+        currentUniverseData3DAtPlayer = getPreviousUniverseData3D()
+    }
+
+    /**
+     * Goto previous universe data
+     */
+    suspend fun nextUniverseData3D() {
+        currentUniverseData3DAtPlayer = getNextUniverseData3D()
     }
 
 
@@ -549,7 +559,9 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
      * Get player data from universe view or plan
      */
     fun getPrimarySelectedPlayerData(): PlayerData {
-        return if (showMutablePlayerDataFromPlan) {
+        return if (showMutablePlayerDataFromPlan &&
+            (planDataAtPlayer.universeData3DAtPlayer.center.t == getUniverseData3D().center.t)
+        ) {
             planDataAtPlayer.getPlayerData(primarySelectedPlayerId)
         } else {
             getUniverseData3D().get(primarySelectedPlayerId)

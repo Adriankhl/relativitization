@@ -21,7 +21,7 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
     private val currentUniverseDataLabel: Label = createLabel("", gdxSettings.smallFontSize)
 
     // button to select previous time
-    private val previousButton: ImageButton = createImageButton(
+    private val previousUniverseData3DButton: ImageButton = createImageButton(
         name = "basic/white-left-arrow",
         rUp = 1.0f,
         gUp = 1.0f,
@@ -39,11 +39,12 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
     ) {
         runBlocking {
             game.universeClient.previousUniverseData3D()
+            updatePreviousNextUniverseDataButton()
         }
     }
 
     // button to select next time
-    private val nextButton: ImageButton = createImageButton(
+    private val nextUniverseData3DButton: ImageButton = createImageButton(
         name = "basic/white-right-arrow",
         rUp = 1.0f,
         gUp = 1.0f,
@@ -61,6 +62,7 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
     ) {
         runBlocking {
             game.universeClient.nextUniverseData3D()
+            updatePreviousNextUniverseDataButton()
         }
     }
 
@@ -137,6 +139,8 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
             game.universeClient.pickLatestUniverseData3D()
 
             updateUpdateToLatestButton()
+
+            updatePreviousNextUniverseDataButton()
         }
     }
 
@@ -498,8 +502,6 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
     }
 
 
-
-
     private val tCoordinateLabel = createLabel(
         text = "t: ${game.universeClient.getUniverseData3D().center.t}",
         fontSize = gdxSettings.smallFontSize
@@ -723,7 +725,10 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
     fun render() {
         updateServerStatusLabels()
         updateRunAndStopButton()
-        updateUpdateToLatestButton()
+        runBlocking {
+            updatePreviousNextUniverseDataButton()
+            updateUpdateToLatestButton()
+        }
     }
 
     override fun onServerStatusChange() {
@@ -741,7 +746,9 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
     override fun onUniverseData3DChange() {
         updateServerStatusLabels()
         updateCurrentUniverseDataLabel()
-        updateUpdateToLatestButton()
+        runBlocking {
+            updateUpdateToLatestButton()
+        }
         updateUniverseDataSelectionBox()
     }
 
@@ -839,12 +846,13 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
 
         val bottomTable: Table = Table()
 
-        topTable.add(previousButton)
+        topTable.add(previousUniverseData3DButton)
             .size(30f * gdxSettings.imageScale, 30f * gdxSettings.imageScale)
 
         topTable.add(universeDataSelectBox)
 
-        topTable.add(nextButton).size(30f * gdxSettings.imageScale, 30f * gdxSettings.imageScale)
+        topTable.add(nextUniverseData3DButton)
+            .size(30f * gdxSettings.imageScale, 30f * gdxSettings.imageScale)
 
         bottomTable.add(clearOldDataButton)
             .size(30f * gdxSettings.imageScale, 30f * gdxSettings.imageScale)
@@ -921,14 +929,36 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
     /**
      * Set updateToLatestButton
      */
-    private fun updateUpdateToLatestButton() {
-        if (runBlocking { game.universeClient.isNewDataReady.isTrue() }) {
+    private suspend fun updateUpdateToLatestButton() {
+        if (game.universeClient.isNewDataReady.isTrue()) {
             enableActor(updateToLatestButton)
             updateToLatestButton.setColor(1.0f, 1.0f, 1.0f, 1.0f)
         } else {
             disableActor(updateToLatestButton)
             updateToLatestButton.setColor(1.0f, 1.0f, 1.0f, 0.5f)
         }
+    }
+
+    /**
+     * Update next and previous universe data button
+     */
+    private suspend fun updatePreviousNextUniverseDataButton() {
+        if (game.universeClient.getPreviousUniverseData3D() == game.universeClient.getUniverseData3D()) {
+            disableActor(previousUniverseData3DButton)
+            previousUniverseData3DButton.setColor(1.0f, 1.0f, 1.0f, 0.5f)
+        } else {
+            enableActor(previousUniverseData3DButton)
+            previousUniverseData3DButton.setColor(1.0f, 1.0f, 1.0f, 1.0f)
+        }
+
+        if (game.universeClient.getNextUniverseData3D() == game.universeClient.getUniverseData3D()) {
+            disableActor(nextUniverseData3DButton)
+            nextUniverseData3DButton.setColor(1.0f, 1.0f, 1.0f, 0.5f)
+        } else {
+            enableActor(nextUniverseData3DButton)
+            nextUniverseData3DButton.setColor(1.0f, 1.0f, 1.0f, 1.0f)
+        }
+
     }
 
     /**
