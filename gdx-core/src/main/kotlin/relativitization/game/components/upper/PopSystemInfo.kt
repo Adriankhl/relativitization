@@ -38,6 +38,12 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
     private var popType: PopType = PopType.LABOURER
 
+    private var fuelFactoryId: Int = -1
+
+    private var resourceFactoryType: ResourceType = ResourceType.PLANT
+
+    private var resourceFactoryId: Int = -1
+
 
     init {
 
@@ -470,9 +476,10 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         val fuelFactorySelectBox = createSelectBox(
             labourerPopData.fuelFactoryMap.keys.toList(),
-            labourerPopData.fuelFactoryMap.keys.firstOrNull() ?: -1,
+            fuelFactoryId,
             gdxSettings.smallFontSize
-        ) { _, _ ->
+        ) { id, _ ->
+            fuelFactoryId = id
             updateCarrierTable()
         }
         nestedTable.add(fuelFactorySelectBox)
@@ -630,7 +637,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         val supplyFuelTextTable = Table()
         supplyFuelTextTable.add(
-            createTextField(
+            createLabel(
                 "Supply fuel: ",
                 gdxSettings.smallFontSize
             )
@@ -662,9 +669,10 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         val resourceTypeSelectBox = createSelectBox(
             ResourceType.values().toList(),
-            ResourceType.values().first(),
+            resourceFactoryType,
             gdxSettings.smallFontSize,
-        ) { _, _ ->
+        ) { type, _ ->
+            resourceFactoryType = type
             updateCarrierTable()
         }
 
@@ -683,11 +691,10 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             labourerPopData.resourceFactoryMap.filter {
                 it.value.resourceFactoryInternalData.outputResource == resourceTypeSelectBox.selected
             }.keys.toList(),
-            labourerPopData.resourceFactoryMap.filter {
-                it.value.resourceFactoryInternalData.outputResource == resourceTypeSelectBox.selected
-            }.keys.firstOrNull() ?: -1,
+            resourceFactoryId,
             gdxSettings.smallFontSize
-        ) { _, _ ->
+        ) { id, _ ->
+            resourceFactoryId = id
             updateCarrierTable()
         }
 
@@ -924,7 +931,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         val supplyFuelTextTable = Table()
         supplyFuelTextTable.add(
-            createTextField(
+            createLabel(
                 "Supply fuel: ",
                 gdxSettings.smallFontSize
             )
