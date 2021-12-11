@@ -59,6 +59,7 @@ object DefaultMechanismLists : MechanismLists() {
         ExportResource,
         Educate,
         PopulationGrowth,
+        Migration,
         SendTax,
         KnowledgeDiffusion,
         DiscoverKnowledge,

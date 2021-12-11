@@ -222,7 +222,18 @@ data class MutableCommonPopData(
         )
 
         desireData.desireAmount += resourceAmount
+    }
 
+    fun addAdultPopulation(
+        otherPopulation: Double,
+        otherEducationLevel: Double,
+        otherSatisfaction: Double,
+        otherSaving: Double
+    ) {
+        educationLevel = adultPopulation * educationLevel + otherPopulation * otherEducationLevel
+        satisfaction = adultPopulation * satisfaction + otherPopulation * otherSatisfaction
+        saving += otherSaving
+        adultPopulation += otherPopulation
     }
 
     companion object {
