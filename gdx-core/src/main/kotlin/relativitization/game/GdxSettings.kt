@@ -64,11 +64,11 @@ enum class ShowingInfoType {
     EVENTS,
     COMMANDS,
     POP_SYSTEM,
+    KNOWLEDGE_MAP,
+    SCIENCE,
     POLITICS,
     DIPLOMACY,
     ECONOMY,
-    KNOWLEDGE_MAP,
-    SCIENCE,
     MODIFIER,
     MAP_MODE,
 }

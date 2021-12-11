@@ -383,6 +383,38 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         game.changeGdxSettings()
     }
 
+    private val knowledgeMapInfoButton: TextButton = createTextButton(
+        text = "Knowledge Map",
+        fontSize = gdxSettings.normalFontSize,
+        soundVolume = gdxSettings.soundEffectsVolume
+    ) {
+        // If hiding, show the panel
+        if ((gdxSettings.showingInfoType == ShowingInfoType.KNOWLEDGE_MAP) && gdxSettings.showingInfo) {
+            gdxSettings.showingInfo = false
+            gdxSettings.showingInfoType = ShowingInfoType.KNOWLEDGE_MAP
+        } else {
+            gdxSettings.showingInfo = true
+            gdxSettings.showingInfoType = ShowingInfoType.KNOWLEDGE_MAP
+        }
+        game.changeGdxSettings()
+    }
+
+    private val scienceInfoButton: TextButton = createTextButton(
+        text = "Science",
+        fontSize = gdxSettings.normalFontSize,
+        soundVolume = gdxSettings.soundEffectsVolume
+    ) {
+        // If hiding, show the panel
+        if ((gdxSettings.showingInfoType == ShowingInfoType.SCIENCE) && gdxSettings.showingInfo) {
+            gdxSettings.showingInfo = false
+            gdxSettings.showingInfoType = ShowingInfoType.SCIENCE
+        } else {
+            gdxSettings.showingInfo = true
+            gdxSettings.showingInfoType = ShowingInfoType.SCIENCE
+        }
+        game.changeGdxSettings()
+    }
+
     private val politicsInfoButton: TextButton = createTextButton(
         text = "Politics",
         fontSize = gdxSettings.normalFontSize,
@@ -428,39 +460,6 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         } else {
             gdxSettings.showingInfo = true
             gdxSettings.showingInfoType = ShowingInfoType.ECONOMY
-        }
-        game.changeGdxSettings()
-    }
-
-
-    private val knowledgeMapInfoButton: TextButton = createTextButton(
-        text = "Knowledge Map",
-        fontSize = gdxSettings.normalFontSize,
-        soundVolume = gdxSettings.soundEffectsVolume
-    ) {
-        // If hiding, show the panel
-        if ((gdxSettings.showingInfoType == ShowingInfoType.KNOWLEDGE_MAP) && gdxSettings.showingInfo) {
-            gdxSettings.showingInfo = false
-            gdxSettings.showingInfoType = ShowingInfoType.KNOWLEDGE_MAP
-        } else {
-            gdxSettings.showingInfo = true
-            gdxSettings.showingInfoType = ShowingInfoType.KNOWLEDGE_MAP
-        }
-        game.changeGdxSettings()
-    }
-
-    private val scienceInfoButton: TextButton = createTextButton(
-        text = "Science",
-        fontSize = gdxSettings.normalFontSize,
-        soundVolume = gdxSettings.soundEffectsVolume
-    ) {
-        // If hiding, show the panel
-        if ((gdxSettings.showingInfoType == ShowingInfoType.SCIENCE) && gdxSettings.showingInfo) {
-            gdxSettings.showingInfo = false
-            gdxSettings.showingInfoType = ShowingInfoType.SCIENCE
-        } else {
-            gdxSettings.showingInfo = true
-            gdxSettings.showingInfoType = ShowingInfoType.SCIENCE
         }
         game.changeGdxSettings()
     }
@@ -683,15 +682,15 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
 
         table.add(popSystemInfoButton).pad(10f)
 
+        table.add(knowledgeMapInfoButton).pad(10f)
+
+        table.add(scienceInfoButton).pad(10f)
+
         table.add(politicsInfoButton).pad(10f)
 
         table.add(diplomacyInfoButton).pad(10f)
 
         table.add(economyInfoButton).pad(10f)
-
-        table.add(knowledgeMapInfoButton).pad(10f)
-
-        table.add(scienceInfoButton).pad(10f)
 
         table.add(modifierInfoButton).pad(10f)
 
