@@ -406,12 +406,12 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         nestedTable.add(
             createLabel(
-                "Labourer data:",
+                "Labourer data: ",
                 gdxSettings.normalFontSize
             )
         )
 
-        nestedTable.row().space(20f)
+        nestedTable.row().space(30f)
 
         nestedTable.add(createFuelFactoryMapTable(labourerPopData))
 
@@ -436,6 +436,15 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
     private fun createFuelFactoryMapTable(labourerPopData: LabourerPopData): Table {
         val nestedTable = Table()
+
+        nestedTable.add(
+            createLabel(
+                "Factories: ",
+                gdxSettings.normalFontSize
+            )
+        ).colspan(2)
+
+        nestedTable.row().space(10f)
 
         nestedTable.add(
             createLabel(
