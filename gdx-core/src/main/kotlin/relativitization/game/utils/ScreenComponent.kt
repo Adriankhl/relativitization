@@ -457,11 +457,16 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets) {
         ) {
             val originalValue: ScientificNotation = currentValue().toScientificNotation()
             val newExponent: Int = originalValue.exponent - 1
+            val actualNewExponent: Int = if (newExponent < -300) {
+                300
+            } else {
+                newExponent
+            }
             val newCoefficient: Double = Notation.roundDecimal(originalValue.coefficient, sliderDecimalPlace)
 
             val newValue = ScientificNotation(
                 newCoefficient,
-                newExponent,
+                actualNewExponent,
             )
 
             function(newValue.toDouble())
@@ -485,11 +490,16 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets) {
         ) {
             val originalValue: ScientificNotation = currentValue().toScientificNotation()
             val newExponent: Int = originalValue.exponent + 1
+            val actualNewExponent: Int = if (newExponent > 300) {
+                300
+            } else {
+                newExponent
+            }
             val newCoefficient: Double = Notation.roundDecimal(originalValue.coefficient, sliderDecimalPlace)
 
             val newValue = ScientificNotation(
                 newCoefficient,
-                newExponent,
+                actualNewExponent,
             )
 
             function(newValue.toDouble())
