@@ -1,6 +1,7 @@
 package relativitization.universe.data.commands
 
 import kotlinx.serialization.Serializable
+import relativitization.universe.communication.CommandInputMessage
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.components.defaults.physics.Int4D
@@ -35,27 +36,25 @@ data class BuildLocalCarrierCommands(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): CommandMessage {
-        val isSelf: Boolean = playerData.playerId == toId
-        val isSelfI18NString: I18NString = if (isSelf) {
-            I18NString("")
-        } else {
+        val isSelf = CommandMessage(
+            playerData.playerId == toId,
             CommandI18NStringFactory.isNotToSelf(fromId, toId)
-        }
+        )
 
         val requiredFuel: Double =
             playerData.playerInternalData.playerScienceData().playerScienceApplicationData.newSpaceshipFuelNeededByConstruction(
                 qualityLevel = qualityLevel
             )
-        val hasFuel: Boolean =
-            playerData.playerInternalData.physicsData().fuelRestMassData.production > requiredFuel
-        val hasFuelI18String: I18NString = I18NString("Not enough fuel")
+        val hasFuel = CommandMessage(
+            playerData.playerInternalData.physicsData().fuelRestMassData.production > requiredFuel,
+            I18NString("Not enough fuel")
+        )
 
 
         return CommandMessage(
-            isSelf && hasFuel,
             listOf(
-                isSelfI18NString,
-                hasFuelI18String
+                isSelf,
+                hasFuel
             )
         )
     }
