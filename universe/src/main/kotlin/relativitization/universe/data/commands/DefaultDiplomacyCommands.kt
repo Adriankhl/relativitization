@@ -28,7 +28,7 @@ data class DeclareWarCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CanSendCheckMessage {
+    ): CommandMessage {
         val isNotLeaderOrSelf: Boolean = !playerData.isLeaderOrSelf(toId)
         val isNotLeaderOrSelfI18NString: I18NString = if (isNotLeaderOrSelf) {
             I18NString("")
@@ -59,7 +59,7 @@ data class DeclareWarCommand(
             I18NString("Target is in peace with you. ")
         }
 
-        return CanSendCheckMessage(
+        return CommandMessage(
             isNotLeaderOrSelf && isNotSubordinateOrSelf && isNotInWar && isNotInPeaceTreaty,
             listOf(
                 isNotLeaderOrSelfI18NString,
@@ -135,7 +135,7 @@ data class DeclareIndependenceCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CanSendCheckMessage {
+    ): CommandMessage {
         val isDirectLeader: Boolean = playerData.playerInternalData.directLeaderId == toId
         val isDirectLeaderI18NString: I18NString = if (isDirectLeader) {
             I18NString("")
@@ -158,7 +158,7 @@ data class DeclareIndependenceCommand(
             I18NString("Target is in war with you. ")
         }
 
-        return CanSendCheckMessage(
+        return CommandMessage(
             isDirectLeader && isNotSelf && isNotInWar,
             listOf(
                 isDirectLeaderI18NString,
@@ -250,7 +250,7 @@ data class ProposePeaceCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CanSendCheckMessage {
+    ): CommandMessage {
         val isSelf: Boolean = playerData.playerId == toId
         val isSelfI18NString: I18NString = if (isSelf) {
             I18NString("")
@@ -267,7 +267,7 @@ data class ProposePeaceCommand(
             I18NString("Is not in war with target. ")
         }
 
-        return CanSendCheckMessage(
+        return CommandMessage(
             isSelf && isInWar,
             listOf(
                 isSelfI18NString,

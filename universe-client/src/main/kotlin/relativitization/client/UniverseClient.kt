@@ -18,7 +18,7 @@ import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
-import relativitization.universe.data.commands.CanSendCheckMessage
+import relativitization.universe.data.commands.CommandMessage
 import relativitization.universe.data.commands.CannotSendCommand
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.commands.DummyCommand
@@ -151,16 +151,16 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
         if (newValue is CannotSendCommand) {
             onCurrentCommandChangeFunctionList.forEach { it() }
         } else {
-            val canSendCheckMessage: CanSendCheckMessage = newValue.canSendFromPlayer(
+            val commandMessage: CommandMessage = newValue.canSendFromPlayer(
                 planDataAtPlayer.getCurrentMutablePlayerData(),
                 planDataAtPlayer.universeData3DAtPlayer.universeSettings
             )
 
-            if (canSendCheckMessage.canSend) {
+            if (commandMessage.success) {
                 onCurrentCommandChangeFunctionList.forEach { it() }
             } else {
                 currentCommand = CannotSendCommand(
-                    canSendCheckMessage.message
+                    commandMessage.errorMessage
                 )
             }
         }

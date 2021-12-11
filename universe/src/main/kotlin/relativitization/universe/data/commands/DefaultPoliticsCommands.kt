@@ -45,7 +45,7 @@ data class ChangeFactoryPolicyCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CanSendCheckMessage {
+    ): CommandMessage {
 
         val isSelf: Boolean = playerData.playerId == toId
         val isSelfI18NString: I18NString = if (isSelf) {
@@ -61,7 +61,7 @@ data class ChangeFactoryPolicyCommand(
             CommandI18NStringFactory.isNotTopLeader(playerData.playerId)
         }
 
-        return CanSendCheckMessage(
+        return CommandMessage(
             isSelf && isTopLeader,
             listOf(
                 isSelfI18NString,

@@ -49,7 +49,7 @@ data class AddEventCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CanSendCheckMessage {
+    ): CommandMessage {
 
         val isIdValid: Boolean = isEventPlayerIdValid()
         val isIdValidI18NString: I18NString = if (isIdValid) {
@@ -68,15 +68,15 @@ data class AddEventCommand(
             )
         }
 
-        val canSendEventMessage: CanSendCheckMessage = event.canSend(playerData, universeSettings)
+        val canSendEventMessage: CommandMessage = event.canSend(playerData, universeSettings)
 
 
-        return CanSendCheckMessage(
-            canAdd && isIdValid && canSendEventMessage.canSend,
+        return CommandMessage(
+            canAdd && isIdValid && canSendEventMessage.success,
             listOf(
                 isIdValidI18NString,
                 canAddI18NString,
-                canSendEventMessage.message
+                canSendEventMessage.errorMessage
             )
         )
     }
@@ -162,12 +162,12 @@ data class SelectEventChoiceCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CanSendCheckMessage {
+    ): CommandMessage {
         val sameId: Boolean = playerData.playerId == toId
         return if (sameId) {
-            CanSendCheckMessage(true)
+            CommandMessage(true)
         } else {
-            CanSendCheckMessage(
+            CommandMessage(
                 false,
                 CommandI18NStringFactory.isNotToSelf(playerData.playerId, toId)
             )

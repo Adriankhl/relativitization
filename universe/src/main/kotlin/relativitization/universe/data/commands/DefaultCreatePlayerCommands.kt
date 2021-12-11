@@ -38,7 +38,7 @@ data class SplitCarrierCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CanSendCheckMessage {
+    ): CommandMessage {
         val isToSelf: Boolean = playerData.playerId == toId
         val isToSelfI18NString: I18NString = if (isToSelf) {
             I18NString("")
@@ -63,7 +63,7 @@ data class SplitCarrierCommand(
             I18NString("Invalid resource fraction. ")
         }
 
-        return CanSendCheckMessage(
+        return CommandMessage(
             isToSelf && isCarrierIdValid && isResourceFractionValid,
             listOf(
                 isToSelfI18NString,

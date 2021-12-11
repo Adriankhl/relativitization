@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
-import relativitization.universe.data.commands.CanSendCheckMessage
+import relativitization.universe.data.commands.CommandMessage
 import relativitization.universe.data.commands.Command
 import relativitization.universe.utils.I18NString
 import relativitization.universe.utils.RelativitizationLogManager
@@ -34,7 +34,7 @@ sealed class Event {
     abstract fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CanSendCheckMessage
+    ): CommandMessage
 
 
     /**

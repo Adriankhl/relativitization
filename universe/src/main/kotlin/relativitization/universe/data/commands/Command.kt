@@ -55,7 +55,7 @@ sealed class Command {
     protected abstract fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CanSendCheckMessage
+    ): CommandMessage
 
     /**
      * Check if can send and have command
@@ -65,7 +65,7 @@ sealed class Command {
     fun canSendFromPlayer(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CanSendCheckMessage {
+    ): CommandMessage {
         val hasCommand: Boolean = CommandCollection.hasCommand(universeSettings, this)
         val hasCommandI18NString: I18NString = if (hasCommand) {
             I18NString("")
@@ -82,7 +82,7 @@ sealed class Command {
             )
         }
 
-        val canSendMessage: CanSendCheckMessage = canSend(playerData, universeSettings)
+        val canSendMessage: CommandMessage = canSend(playerData, universeSettings)
 
         val isFromInt4DValid: Boolean = playerData.int4D.toInt4D() == fromInt4D
         val isFromInt4DValidI18NString: I18NString = if (isFromInt4DValid) {
@@ -124,16 +124,16 @@ sealed class Command {
 
 
 
-        if (!hasCommand || !(canSendMessage.canSend) || !isFromInt4DValid || !isFromIdValid) {
+        if (!hasCommand || !(canSendMessage.success) || !isFromInt4DValid || !isFromIdValid) {
             val className = this::class.qualifiedName
             logger.error("${className}: cannot send command")
         }
 
-        return CanSendCheckMessage(
-            hasCommand && canSendMessage.canSend && isFromInt4DValid && isFromIdValid,
+        return CommandMessage(
+            hasCommand && canSendMessage.success && isFromInt4DValid && isFromIdValid,
             listOf(
                 hasCommandI18NString,
-                canSendMessage.message,
+                canSendMessage.errorMessage,
                 isFromInt4DValidI18NString,
                 isFromIdValidI18NString
             )
@@ -155,11 +155,11 @@ sealed class Command {
     fun checkAndSelfExecuteBeforeSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CanSendCheckMessage {
-        return if (canSendFromPlayer(playerData, universeSettings).canSend) {
+    ): CommandMessage {
+        return if (canSendFromPlayer(playerData, universeSettings).success) {
             try {
                 selfExecuteBeforeSend(playerData, universeSettings)
-                CanSendCheckMessage(true)
+                CommandMessage(true)
             } catch (e: Throwable) {
                 logger.error("checkAndSelfExecuteBeforeSend fail, throwable $e")
                 throw e
@@ -168,11 +168,11 @@ sealed class Command {
             val className = this::class.qualifiedName
             logger.info("$className cannot be sent by $fromId")
             val reasonI18NString = I18NString("Reason: ")
-            CanSendCheckMessage(
+            CommandMessage(
                 false,
                 listOf(
                     reasonI18NString,
-                    canSendFromPlayer(playerData, universeSettings).message
+                    canSendFromPlayer(playerData, universeSettings).errorMessage
                 )
             )
         }
@@ -282,13 +282,18 @@ object CommandCollection {
 }
 
 @Serializable
-data class CanSendCheckMessage(
-    val canSend: Boolean,
-    val message: I18NString = I18NString(listOf(), listOf())
+data class CommandMessage(
+    val success: Boolean,
+    val errorMessage: I18NString = I18NString(listOf(), listOf())
 ) {
     constructor(canSend: Boolean, i18NStringList: List<I18NString>) : this(
         canSend,
         I18NString.combine(i18NStringList)
+    )
+
+    constructor(commandMessageList: List<CommandMessage>): this(
+        commandMessageList.any { !it.success },
+        commandMessageList.filter { !it.success }.map { it.errorMessage }
     )
 }
 

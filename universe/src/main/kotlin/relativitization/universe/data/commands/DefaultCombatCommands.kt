@@ -25,8 +25,8 @@ data class DamageCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CanSendCheckMessage {
-        return CanSendCheckMessage(false)
+    ): CommandMessage {
+        return CommandMessage(false)
     }
 
     override fun canExecute(

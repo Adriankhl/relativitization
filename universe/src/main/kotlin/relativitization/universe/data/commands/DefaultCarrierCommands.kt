@@ -34,7 +34,7 @@ data class BuildLocalCarrierCommands(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CanSendCheckMessage {
+    ): CommandMessage {
         val isSelf: Boolean = playerData.playerId == toId
         val isSelfI18NString: I18NString = if (isSelf) {
             I18NString("")
@@ -51,7 +51,7 @@ data class BuildLocalCarrierCommands(
         val hasFuelI18String: I18NString = I18NString("Not enough fuel")
 
 
-        return CanSendCheckMessage(
+        return CommandMessage(
             isSelf && hasFuel,
             listOf(
                 isSelfI18NString,

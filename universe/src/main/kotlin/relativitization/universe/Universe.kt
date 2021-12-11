@@ -347,7 +347,7 @@ class Universe(
                 command.checkAndSelfExecuteBeforeSend(
                     playerData,
                     universeData.universeSettings
-                ).canSend
+                ).success
             }
         }
 

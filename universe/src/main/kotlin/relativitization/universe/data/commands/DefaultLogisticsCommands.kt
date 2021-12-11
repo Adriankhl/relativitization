@@ -52,7 +52,7 @@ data class SendFuelFromStorageCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CanSendCheckMessage {
+    ): CommandMessage {
         val hasAmount: Boolean =
             playerData.playerInternalData.physicsData().fuelRestMassData.trade >= amount
         val hasAmountI18NString: I18NString = if (hasAmount) {
@@ -93,7 +93,7 @@ data class SendFuelFromStorageCommand(
             )
         }
 
-        return CanSendCheckMessage(
+        return CommandMessage(
             hasAmount && isLossFractionValid,
             listOf(
                 hasAmountI18NString,
@@ -211,7 +211,7 @@ data class SendResourceFromStorageCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CanSendCheckMessage {
+    ): CommandMessage {
         val hasAmount: Boolean =
             playerData.playerInternalData.economyData().resourceData.getTradeResourceAmount(
                 resourceType, resourceQualityClass
@@ -280,7 +280,7 @@ data class SendResourceFromStorageCommand(
             )
         }
 
-        return CanSendCheckMessage(
+        return CommandMessage(
             hasAmount && isQualityValid && isLossFractionValid,
             listOf(
                 hasAmountI18NString,
@@ -355,7 +355,7 @@ data class SendFuelCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CanSendCheckMessage = CanSendCheckMessage(false)
+    ): CommandMessage = CommandMessage(false)
 
     override fun canExecute(
         playerData: MutablePlayerData,
@@ -415,7 +415,7 @@ data class SendResourceCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CanSendCheckMessage = CanSendCheckMessage(false)
+    ): CommandMessage = CommandMessage(false)
 
     override fun canExecute(
         playerData: MutablePlayerData,
@@ -483,7 +483,7 @@ data class SendResourceToPopCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CanSendCheckMessage = CanSendCheckMessage(false)
+    ): CommandMessage = CommandMessage(false)
 
     override fun canExecute(
         playerData: MutablePlayerData,
@@ -560,7 +560,7 @@ data class PopBuyResourceCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CanSendCheckMessage = CanSendCheckMessage(false)
+    ): CommandMessage = CommandMessage(false)
 
     override fun canExecute(
         playerData: MutablePlayerData,
@@ -677,7 +677,7 @@ data class PlayerBuyResourceCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CanSendCheckMessage {
+    ): CommandMessage {
         // Whether the receiver has the same top leader
         val sameTopLeaderId: Boolean = (playerData.topLeaderId() == targetTopLeaderId)
 
@@ -730,7 +730,7 @@ data class PlayerBuyResourceCommand(
             )
         }
 
-        return CanSendCheckMessage(
+        return CommandMessage(
             hasAmount && isLossFractionValid,
             listOf(
                 hasAmountI18NString,

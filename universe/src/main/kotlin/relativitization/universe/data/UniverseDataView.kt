@@ -308,7 +308,7 @@ class PlanDataAtPlayer(
         if (command.checkAndSelfExecuteBeforeSend(
                 getCurrentMutablePlayerData(),
                 universeData3DAtPlayer.universeSettings
-            ).canSend
+            ).success
         ) {
             executeOnCurrentPlayerData()
             command.checkAndExecute(targetPlayerData, universeData3DAtPlayer.universeSettings)

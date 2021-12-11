@@ -45,7 +45,7 @@ data class ChangeDefaultImportTariffCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CanSendCheckMessage {
+    ): CommandMessage {
 
         val isSelf: Boolean = playerData.playerId == toId
         val isSelfI18NString: I18NString = if (isSelf) {
@@ -61,7 +61,7 @@ data class ChangeDefaultImportTariffCommand(
             CommandI18NStringFactory.isNotTopLeader(playerData.playerId)
         }
 
-        return CanSendCheckMessage(
+        return CommandMessage(
             isSelf && isTopLeader,
             listOf(
                 isSelfI18NString,
@@ -114,7 +114,7 @@ data class ChangeDefaultExportTariffCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CanSendCheckMessage {
+    ): CommandMessage {
 
         val isSelf: Boolean = playerData.playerId == toId
         val isSelfI18NString: I18NString = if (isSelf) {
@@ -130,7 +130,7 @@ data class ChangeDefaultExportTariffCommand(
             CommandI18NStringFactory.isNotTopLeader(playerData.playerId)
         }
 
-        return CanSendCheckMessage(
+        return CommandMessage(
             isSelf && isTopLeader,
             listOf(
                 isSelfI18NString,
@@ -178,7 +178,7 @@ data class ChangeLowIncomeTaxCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CanSendCheckMessage {
+    ): CommandMessage {
 
         val isSelf: Boolean = playerData.playerId == toId
         val isSelfI18NString: I18NString = if (isSelf) {
@@ -201,7 +201,7 @@ data class ChangeLowIncomeTaxCommand(
             I18NString("Rate should be between 0 and 1. ")
         }
 
-        return CanSendCheckMessage(
+        return CommandMessage(
             isSelf && isTopLeader && isRateValid,
             listOf(
                 isSelfI18NString,
@@ -250,7 +250,7 @@ data class ChangeMiddleIncomeTaxCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CanSendCheckMessage {
+    ): CommandMessage {
 
         val isSelf: Boolean = playerData.playerId == toId
         val isSelfI18NString: I18NString = if (isSelf) {
@@ -273,7 +273,7 @@ data class ChangeMiddleIncomeTaxCommand(
             I18NString("Rate should be between 0 and 1. ")
         }
 
-        return CanSendCheckMessage(
+        return CommandMessage(
             isSelf && isTopLeader && isRateValid,
             listOf(
                 isSelfI18NString,
@@ -322,7 +322,7 @@ data class ChangeHighIncomeTaxCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CanSendCheckMessage {
+    ): CommandMessage {
 
         val isSelf: Boolean = playerData.playerId == toId
         val isSelfI18NString: I18NString = if (isSelf) {
@@ -345,7 +345,7 @@ data class ChangeHighIncomeTaxCommand(
             I18NString("Rate should be between 0 and 1. ")
         }
 
-        return CanSendCheckMessage(
+        return CommandMessage(
             isSelf && isTopLeader && isRateValid,
             listOf(
                 isSelfI18NString,
@@ -394,7 +394,7 @@ data class ChangeLowMiddleBoundaryCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CanSendCheckMessage {
+    ): CommandMessage {
 
         val isSelf: Boolean = playerData.playerId == toId
         val isSelfI18NString: I18NString = if (isSelf) {
@@ -417,7 +417,7 @@ data class ChangeLowMiddleBoundaryCommand(
             I18NString("Boundary should be larger than 0. ")
         }
 
-        return CanSendCheckMessage(
+        return CommandMessage(
             isSelf && isTopLeader && isBoundaryValid,
             listOf(
                 isSelfI18NString,
@@ -466,7 +466,7 @@ data class ChangeMiddleHighBoundaryCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CanSendCheckMessage {
+    ): CommandMessage {
 
         val isSelf: Boolean = playerData.playerId == toId
         val isSelfI18NString: I18NString = if (isSelf) {
@@ -489,7 +489,7 @@ data class ChangeMiddleHighBoundaryCommand(
             I18NString("Boundary should be larger than 0. ")
         }
 
-        return CanSendCheckMessage(
+        return CommandMessage(
             isSelf && isTopLeader && isBoundaryValid,
             listOf(
                 isSelfI18NString,
@@ -548,7 +548,7 @@ data class TransferResourceToProductionCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CanSendCheckMessage {
+    ): CommandMessage {
         val isSelf: Boolean = playerData.playerId == toId
         val isSelfI18NString: I18NString = if (isSelf) {
             I18NString("")
@@ -567,7 +567,7 @@ data class TransferResourceToProductionCommand(
             I18NString("Not enough resource in storage. ")
         }
 
-        return CanSendCheckMessage(
+        return CommandMessage(
             isSelf && hasStorage,
             listOf(
                 isSelfI18NString,
@@ -639,7 +639,7 @@ data class TransferResourceToTradeCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CanSendCheckMessage {
+    ): CommandMessage {
         val isSelf: Boolean = playerData.playerId == toId
         val isSelfI18NString: I18NString = if (isSelf) {
             I18NString("")
@@ -658,7 +658,7 @@ data class TransferResourceToTradeCommand(
             I18NString("Not enough resource in storage. ")
         }
 
-        return CanSendCheckMessage(
+        return CommandMessage(
             isSelf && hasStorage,
             listOf(
                 isSelfI18NString,
@@ -730,7 +730,7 @@ data class ChangeStorageResourceTargetCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CanSendCheckMessage {
+    ): CommandMessage {
         val isSelf: Boolean = playerData.playerId == toId
         val isSelfI18NString: I18NString = if (isSelf) {
             I18NString("")
@@ -738,7 +738,7 @@ data class ChangeStorageResourceTargetCommand(
             CommandI18NStringFactory.isNotToSelf(fromId, toId)
         }
 
-        return CanSendCheckMessage(
+        return CommandMessage(
             isSelf,
             listOf(
                 isSelfI18NString,
@@ -800,7 +800,7 @@ data class ChangeProductionResourceTargetCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CanSendCheckMessage {
+    ): CommandMessage {
         val isSelf: Boolean = playerData.playerId == toId
         val isSelfI18NString: I18NString = if (isSelf) {
             I18NString("")
@@ -808,7 +808,7 @@ data class ChangeProductionResourceTargetCommand(
             CommandI18NStringFactory.isNotToSelf(fromId, toId)
         }
 
-        return CanSendCheckMessage(
+        return CommandMessage(
             isSelf,
             listOf(
                 isSelfI18NString,
@@ -870,7 +870,7 @@ data class ChangeResourceClassBoundCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CanSendCheckMessage {
+    ): CommandMessage {
         val isSelf: Boolean = playerData.playerId == toId
         val isSelfI18NString: I18NString = if (isSelf) {
             I18NString("")
@@ -878,7 +878,7 @@ data class ChangeResourceClassBoundCommand(
             CommandI18NStringFactory.isNotToSelf(fromId, toId)
         }
 
-        return CanSendCheckMessage(
+        return CommandMessage(
             isSelf,
             listOf(
                 isSelfI18NString,
@@ -937,7 +937,7 @@ data class ChangeSalaryCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CanSendCheckMessage {
+    ): CommandMessage {
         val isSelf: Boolean = playerData.playerId == toId
         val isSelfI18NString: I18NString = if (isSelf) {
             I18NString("")
@@ -953,7 +953,7 @@ data class ChangeSalaryCommand(
             I18NString("Carrier does not exist. ")
         }
 
-        return CanSendCheckMessage(
+        return CommandMessage(
             isSelf && hasCarrier,
             listOf(
                 isSelfI18NString,
