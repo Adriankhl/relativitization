@@ -15,5 +15,5 @@ data class UniverseServerSettings(
     var adminPassword: String,
     val programDir: String = ".",
     var clearInactivePerTurn: Boolean = false,
-    var waitTimeLimit: Int = 60,
+    var waitTimeLimit: Int = 600,
 )
