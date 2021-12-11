@@ -606,10 +606,53 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         nestedTable.row().space(10f)
 
-        // Add supply fuel button if this factory is not self factory
-        if (playerData.playerId != game.universeClient.getCurrentPlayerData().playerId) {
+        val supplyFuelAmount = createDoubleTextField(0.0, gdxSettings.smallFontSize)
 
+        val supplyFuelButton = createTextButton(
+            "Supply Fuel",
+            gdxSettings.smallFontSize,
+            gdxSettings.soundEffectsVolume,
+        ) {
+            val supplyForeignFuelFactoryCommand = SupplyForeignFuelFactoryCommand(
+                toId = playerData.playerId,
+                fromId = game.universeClient.getCurrentPlayerData().playerId,
+                fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
+                targetCarrierId = carrierId,
+                targetFuelFactoryId = fuelFactoryId,
+                amount = supplyFuelAmount.value
+            )
+            game.universeClient.currentCommand = supplyForeignFuelFactoryCommand
         }
+
+        nestedTable.add(supplyFuelButton)
+
+        nestedTable.row().space(10f)
+
+        val supplyFuelTextTable = Table()
+        supplyFuelTextTable.add(
+            createTextField(
+                "Supply fuel: ",
+                gdxSettings.smallFontSize
+            )
+        )
+        supplyFuelTextTable.add(supplyFuelAmount.textField)
+
+        nestedTable.add(supplyFuelTextTable)
+
+        nestedTable.row().space(10f)
+
+        val supplyFuelSliderButton = createDoubleSliderButtonTable(
+            default = supplyFuelAmount.value,
+            sliderStepSize = 0.01f,
+            sliderDecimalPlace = 2,
+            buttonSize = 40f * gdxSettings.imageScale,
+            buttonSoundVolume = gdxSettings.soundEffectsVolume,
+            currentValue = { supplyFuelAmount.value },
+        ) {
+            supplyFuelAmount.value = it
+        }
+
+        nestedTable.add(supplyFuelSliderButton)
 
         return nestedTable
     }
@@ -857,6 +900,53 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         nestedTable.row().space(10f)
 
+        val supplyFuelAmount = createDoubleTextField(0.0, gdxSettings.smallFontSize)
+
+        val supplyFuelButton = createTextButton(
+            "Supply Fuel",
+            gdxSettings.smallFontSize,
+            gdxSettings.soundEffectsVolume,
+        ) {
+            val supplyForeignResourceFactoryCommand = SupplyForeignResourceFactoryCommand(
+                toId = playerData.playerId,
+                fromId = game.universeClient.getCurrentPlayerData().playerId,
+                fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
+                targetCarrierId = carrierId,
+                targetResourceFactoryId = resourceFactoryId,
+                amount = supplyFuelAmount.value
+            )
+            game.universeClient.currentCommand = supplyForeignResourceFactoryCommand
+        }
+
+        nestedTable.add(supplyFuelButton)
+
+        nestedTable.row().space(10f)
+
+        val supplyFuelTextTable = Table()
+        supplyFuelTextTable.add(
+            createTextField(
+                "Supply fuel: ",
+                gdxSettings.smallFontSize
+            )
+        )
+        supplyFuelTextTable.add(supplyFuelAmount.textField)
+
+        nestedTable.add(supplyFuelTextTable)
+
+        nestedTable.row().space(10f)
+
+        val supplyFuelSliderButton = createDoubleSliderButtonTable(
+            default = supplyFuelAmount.value,
+            sliderStepSize = 0.01f,
+            sliderDecimalPlace = 2,
+            buttonSize = 40f * gdxSettings.imageScale,
+            buttonSoundVolume = gdxSettings.soundEffectsVolume,
+            currentValue = { supplyFuelAmount.value },
+        ) {
+            supplyFuelAmount.value = it
+        }
+
+        nestedTable.add(supplyFuelSliderButton)
 
         return nestedTable
     }
