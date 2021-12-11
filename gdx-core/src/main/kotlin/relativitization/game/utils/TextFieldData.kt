@@ -51,7 +51,7 @@ class IntTextField(
     fontSize: Int,
 ) {
     private val onNumChangeFunctionList: MutableList<() -> Unit> = mutableListOf()
-    var num: Int by Delegates.observable(default) { _, _, _ ->
+    var value: Int by Delegates.observable(default) { _, _, _ ->
         onNumChangeFunctionList.forEach { it() }
     }
     val textField: TextField = ActorFunction.createTextField(
@@ -64,17 +64,17 @@ class IntTextField(
             s.toInt()
         } catch (e: NumberFormatException) {
             logger.debug("Invalid Int")
-            num
+            value
         }
 
-        if (newNum != num) {
+        if (newNum != value) {
             logger.debug("New Int num: $newNum")
-            num = newNum
+            value = newNum
         }
     }
     init {
         onNumChangeFunctionList.add {
-            textField.text = num.toString()
+            textField.text = value.toString()
         }
     }
 

@@ -962,7 +962,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         val nestedTable = Table()
 
         val ownerId = createIntTextField(
-            playerData.playerId,
+            game.universeClient.getCurrentPlayerData().playerId,
             gdxSettings.smallFontSize
         )
 
@@ -987,7 +987,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
                 fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
                 senderTopLeaderId = game.universeClient.getCurrentPlayerData().topLeaderId(),
                 targetCarrierId = carrierId,
-                ownerId = ownerId.num,
+                ownerId = ownerId.value,
                 fuelFactoryInternalData = game.universeClient.getCurrentPlayerData()
                     .playerInternalData.playerScienceData()
                     .playerScienceApplicationData.newFuelFactoryInternalData(),
@@ -1069,7 +1069,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         val nestedTable = Table()
 
         val ownerId = createIntTextField(
-            playerData.playerId,
+            game.universeClient.getCurrentPlayerData().playerId,
             gdxSettings.smallFontSize
         )
 
@@ -1105,7 +1105,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
                 fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
                 senderTopLeaderId = game.universeClient.getCurrentPlayerData().topLeaderId(),
                 targetCarrierId = carrierId,
-                ownerId = ownerId.num,
+                ownerId = ownerId.value,
                 resourceFactoryInternalData = game.universeClient.getCurrentPlayerData()
                     .playerInternalData.playerScienceData()
                     .playerScienceApplicationData.newResourceFactoryInternalData(
