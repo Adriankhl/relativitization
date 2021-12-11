@@ -246,7 +246,7 @@ class PlanDataAtPlayer(
     /**
      * Reset the current player data and do all the self execute
      */
-    private fun resetCurrentPlayerDataSelfExecute() {
+    private fun resetCurrentPlayerDataAndSelfExecute() {
         playerDataMap[universeData3DAtPlayer.getCurrentPlayerData().playerId] =
             DataSerializer.copy(universeData3DAtPlayer.getCurrentPlayerData())
 
@@ -276,7 +276,7 @@ class PlanDataAtPlayer(
 
     fun resetPlayerData(playerId: Int) {
         if (playerId == universeData3DAtPlayer.getCurrentPlayerData().playerId) {
-            resetCurrentPlayerDataSelfExecute()
+            resetCurrentPlayerDataAndSelfExecute()
             executeOnCurrentPlayerData()
         } else {
             playerDataMap[playerId] = DataSerializer.copy(universeData3DAtPlayer.get(playerId))
@@ -295,25 +295,27 @@ class PlanDataAtPlayer(
     }
 
     private fun addSingleCommand(command: Command) {
+        // Reset first since target player data can be self
+        resetCurrentPlayerDataAndSelfExecute()
+
         val targetPlayerData: MutablePlayerData = getMutablePlayerData(command.toId)
 
         if (targetPlayerData.playerId == -1) {
             logger.error("Add command error: Player id -1")
-        } else {
-            resetCurrentPlayerDataSelfExecute()
 
-            if (command.checkAndSelfExecuteBeforeSend(
-                    getCurrentMutablePlayerData(),
-                    universeData3DAtPlayer.universeSettings
-                ).canSend
-            ) {
-                executeOnCurrentPlayerData()
-                command.checkAndExecute(targetPlayerData, universeData3DAtPlayer.universeSettings)
-                commandList.add(command)
-            } else {
-                executeOnCurrentPlayerData()
-                logger.error("Cannot add command: $command")
-            }
+        }
+
+        if (command.checkAndSelfExecuteBeforeSend(
+                getCurrentMutablePlayerData(),
+                universeData3DAtPlayer.universeSettings
+            ).canSend
+        ) {
+            executeOnCurrentPlayerData()
+            command.checkAndExecute(targetPlayerData, universeData3DAtPlayer.universeSettings)
+            commandList.add(command)
+        } else {
+            executeOnCurrentPlayerData()
+            logger.error("Cannot add command: $command")
         }
     }
 
