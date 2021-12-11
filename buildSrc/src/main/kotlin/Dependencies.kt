@@ -11,7 +11,7 @@ object Versions {
     const val dokkaVersion = "1.6.0"
 
     const val gdxVersion = "1.10.0"
-    const val log4jVersion = "2.14.1"
+    const val log4jVersion = "2.15.0"
     const val kotlinFakerVersion = "1.9.0"
 
     const val androidGradlePluginVersion = "7.0.4"
