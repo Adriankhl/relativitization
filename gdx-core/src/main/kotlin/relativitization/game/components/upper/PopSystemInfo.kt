@@ -685,7 +685,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             }.keys.toList(),
             labourerPopData.resourceFactoryMap.filter {
                 it.value.resourceFactoryInternalData.outputResource == resourceTypeSelectBox.selected
-            }.keys.first(),
+            }.keys.firstOrNull() ?: -1,
             gdxSettings.smallFontSize
         ) { _, _ ->
             updateCarrierTable()
