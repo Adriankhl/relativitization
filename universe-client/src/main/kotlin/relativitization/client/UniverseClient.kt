@@ -857,7 +857,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
             val response: HttpResponse =
                 ktorClient.post("http://$serverAddress:$serverPort/run/input") {
                     contentType(ContentType.Application.Json)
-                    body = CommandInputMessage(playerId, password, planDataAtPlayer.commandList)
+                    body = PlayerActionMessage(playerId, password, planDataAtPlayer.commandList)
                     timeout {
                         connectTimeoutMillis = universeClientSettings.httpConnectTimeout
                         requestTimeoutMillis = universeClientSettings.httpRequestTimeout

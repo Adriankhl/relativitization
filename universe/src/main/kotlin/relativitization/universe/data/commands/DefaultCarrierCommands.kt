@@ -1,7 +1,6 @@
 package relativitization.universe.data.commands
 
 import kotlinx.serialization.Serializable
-import relativitization.universe.communication.CommandInputMessage
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.components.defaults.physics.Int4D

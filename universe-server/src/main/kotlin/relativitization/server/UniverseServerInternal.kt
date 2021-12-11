@@ -222,14 +222,14 @@ class UniverseServerInternal(
      *
      * @return successful input or not
      */
-    suspend fun humanInput(commandInputMessage: CommandInputMessage): Boolean {
+    suspend fun humanInput(playerActionMessage: PlayerActionMessage): Boolean {
         mutex.withLock {
             return if (
-                (humanIdPasswordMap.keys.contains(commandInputMessage.id)) &&
-                (humanIdPasswordMap.getValue(commandInputMessage.id) == commandInputMessage.password) &&
+                (humanIdPasswordMap.keys.contains(playerActionMessage.id)) &&
+                (humanIdPasswordMap.getValue(playerActionMessage.id) == playerActionMessage.password) &&
                 (isServerWaitingInput.isTrue())
             ) {
-                humanCommandMap[commandInputMessage.id] = commandInputMessage.commandList
+                humanCommandMap[playerActionMessage.id] = playerActionMessage.commandList
                 true
             } else {
                 false

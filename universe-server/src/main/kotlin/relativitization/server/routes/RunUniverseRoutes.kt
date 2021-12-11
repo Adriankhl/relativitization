@@ -105,8 +105,8 @@ fun Route.runUniverseRouting(universeServerInternal: UniverseServerInternal) {
 
     route("/run/input") {
         post {
-            val commandInputMessage: CommandInputMessage = call.receive()
-            val successfulInput: Boolean = universeServerInternal.humanInput(commandInputMessage)
+            val playerActionMessage: PlayerActionMessage = call.receive()
+            val successfulInput: Boolean = universeServerInternal.humanInput(playerActionMessage)
             if (successfulInput) {
                 call.respondText("Command input succeed", ContentType.Text.Plain, HttpStatusCode.OK)
             } else {

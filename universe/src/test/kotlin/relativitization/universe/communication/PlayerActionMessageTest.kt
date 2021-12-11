@@ -6,10 +6,10 @@ import relativitization.universe.data.components.defaults.physics.Velocity
 import relativitization.universe.data.serializer.DataSerializer
 import kotlin.test.Test
 
-internal class CommandInputMessageTest {
+internal class PlayerActionMessageTest {
     @Test
     fun serialize() {
-        val message = CommandInputMessage(
+        val message = PlayerActionMessage(
             1,
             "abc",
             listOf(
@@ -22,7 +22,7 @@ internal class CommandInputMessageTest {
             )
         )
 
-        val message2: CommandInputMessage = DataSerializer.copy(message)
+        val message2: PlayerActionMessage = DataSerializer.copy(message)
         assert(message2.password == "abc")
     }
 }
