@@ -16,6 +16,7 @@ import relativitization.universe.data.components.defaults.popsystem.pop.PopType
 import relativitization.universe.data.components.defaults.popsystem.pop.ResourceDesireData
 import relativitization.universe.data.components.defaults.popsystem.pop.labourer.LabourerPopData
 import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.FuelFactoryData
+import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.InputResourceData
 import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.ResourceFactoryData
 import relativitization.universe.maths.number.Notation
 import relativitization.universe.utils.RelativitizationLogManager
@@ -772,6 +773,48 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         nestedTable.row().space(10f)
 
+        resourceFactoryData.resourceFactoryInternalData.inputResourceMap.forEach { (resourceType, inputResource) ->
+            val lastInputResource: InputResourceData = resourceFactoryData.lastInputResourceMap
+                .getOrDefault(resourceType, InputResourceData())
+
+            nestedTable.add(
+                createLabel(
+                    "Max. $resourceType input: ${inputResource.amount * resourceFactoryData.numBuilding}",
+                    gdxSettings.smallFontSize
+                )
+            )
+
+            nestedTable.row().space(10f)
+
+            nestedTable.add(
+                createLabel(
+                    "Last $resourceType input: ${lastInputResource.amount}",
+                    gdxSettings.smallFontSize
+                )
+            )
+
+            nestedTable.row().space(10f)
+
+
+            nestedTable.add(
+                createLabel(
+                    "Max. $resourceType input quality: ${inputResource.qualityData.quality1}",
+                    gdxSettings.smallFontSize
+                )
+            )
+
+            nestedTable.row().space(10f)
+
+            nestedTable.add(
+                createLabel(
+                    "Last $resourceType input quality: ${lastInputResource.qualityData.quality1}",
+                    gdxSettings.smallFontSize
+                )
+            )
+
+            nestedTable.row().space(10f)
+        }
+
 
         nestedTable.add(
             createLabel(
@@ -788,12 +831,6 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
                 gdxSettings.smallFontSize
             )
         )
-
-        nestedTable.row().space(10f)
-
-        resourceFactoryData.resourceFactoryInternalData.inputResourceMap.forEach { (resourceType, inputResource) ->
-
-        }
 
         nestedTable.row().space(10f)
 
