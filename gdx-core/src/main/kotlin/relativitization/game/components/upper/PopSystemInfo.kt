@@ -3,14 +3,11 @@ package relativitization.game.components.upper
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.commands.*
 import relativitization.universe.data.components.defaults.economy.ResourceType
-import relativitization.universe.data.components.defaults.physics.Int3D
-import relativitization.universe.data.components.defaults.physics.Int4D
 import relativitization.universe.data.components.defaults.popsystem.CarrierData
 import relativitization.universe.data.components.defaults.popsystem.CarrierInternalData
 import relativitization.universe.data.components.defaults.popsystem.pop.AllPopData
@@ -19,6 +16,7 @@ import relativitization.universe.data.components.defaults.popsystem.pop.PopType
 import relativitization.universe.data.components.defaults.popsystem.pop.ResourceDesireData
 import relativitization.universe.data.components.defaults.popsystem.pop.labourer.LabourerPopData
 import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.FuelFactoryData
+import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.ResourceFactoryData
 import relativitization.universe.maths.number.Notation
 import relativitization.universe.utils.RelativitizationLogManager
 
@@ -416,9 +414,31 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         nestedTable.row().space(30f)
 
+        nestedTable.add(
+            createLabel(
+                "Factories: ",
+                gdxSettings.normalFontSize
+            )
+        )
+
+        nestedTable.row().space(10f)
+
         nestedTable.add(createFuelFactoryMapTable(labourerPopData))
 
+        nestedTable.row().space(10f)
+
+        nestedTable.add(createResourceFactoryMapTable(labourerPopData))
+
         nestedTable.row().space(20f)
+
+        nestedTable.add(
+            createLabel(
+                "Build factory commands: ",
+                gdxSettings.normalFontSize
+            )
+        )
+
+        nestedTable.row().space(10f)
 
         nestedTable.add(createBuildForeignFuelFactoryTable())
 
@@ -439,15 +459,6 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
     private fun createFuelFactoryMapTable(labourerPopData: LabourerPopData): Table {
         val nestedTable = Table()
-
-        nestedTable.add(
-            createLabel(
-                "Factories: ",
-                gdxSettings.normalFontSize
-            )
-        ).colspan(2)
-
-        nestedTable.row().space(10f)
 
         nestedTable.add(
             createLabel(
@@ -558,7 +569,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         nestedTable.add(
             createLabel(
-                "Max. employee: ${fuelFactoryData.fuelFactoryInternalData.maxOutputAmount * fuelFactoryData.numBuilding}",
+                "Max. employee: ${fuelFactoryData.fuelFactoryInternalData.maxNumEmployee * fuelFactoryData.numBuilding}",
                 gdxSettings.smallFontSize
             )
         )
@@ -587,6 +598,181 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         nestedTable.add(
             createLabel(
                 "Number of building: ${fuelFactoryData.numBuilding}",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.row().space(10f)
+
+
+        return nestedTable
+    }
+
+    private fun createResourceFactoryMapTable(labourerPopData: LabourerPopData): Table {
+        val nestedTable = Table()
+
+        val resourceTypeSelectBox = createSelectBox(
+            ResourceType.values().toList(),
+            ResourceType.values().first(),
+            gdxSettings.smallFontSize,
+        ) { _, _ ->
+            updateCarrierTable()
+        }
+
+        nestedTable.add(
+            createLabel(
+                "Resource: ",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.add(resourceTypeSelectBox)
+
+        nestedTable.row().space(10f)
+
+        val resourceFactorySelectBox = createSelectBox(
+            labourerPopData.resourceFactoryMap.filter {
+                it.value.resourceFactoryInternalData.outputResource == resourceTypeSelectBox.selected
+            }.keys.toList(),
+            labourerPopData.resourceFactoryMap.filter {
+                it.value.resourceFactoryInternalData.outputResource == resourceTypeSelectBox.selected
+            }.keys.first(),
+            gdxSettings.smallFontSize
+        ) { _, _ ->
+            updateCarrierTable()
+        }
+
+        nestedTable.add(
+            createLabel(
+                "Resource factory: ",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.add(resourceFactorySelectBox)
+
+        nestedTable.row().space(10f)
+
+        if (labourerPopData.resourceFactoryMap.containsKey(resourceFactorySelectBox.selected)) {
+            val resourceFactory: ResourceFactoryData = labourerPopData.resourceFactoryMap.getValue(
+                resourceFactorySelectBox.selected
+            )
+
+            nestedTable.add(createResourceFactoryTable(
+                resourceFactorySelectBox.selected,
+                resourceFactory
+            )).colspan(2)
+        }
+
+        return nestedTable
+    }
+
+    private fun createResourceFactoryTable(
+        resourceFactoryId: Int,
+        resourceFactoryData: ResourceFactoryData
+    ): Table {
+        val nestedTable = Table()
+
+        // Depending on whether this is a foreign player or not, use remove foreign / local command
+        if (playerData.playerId == game.universeClient.getCurrentPlayerData().playerId) {
+
+            val removeLocalResourceFactoryTextButton = createTextButton(
+                text = "Remove factory",
+                fontSize = gdxSettings.smallFontSize,
+                soundVolume = gdxSettings.soundEffectsVolume,
+            ) {
+                val removeLocalResourceFactoryCommand = RemoveLocalResourceFactoryCommand(
+                    toId = playerData.playerId,
+                    fromId = game.universeClient.getCurrentPlayerData().playerId,
+                    fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
+                    targetCarrierId = carrierId,
+                    targetResourceFactoryId = resourceFactoryId,
+                )
+
+                game.universeClient.currentCommand = removeLocalResourceFactoryCommand
+            }
+
+            nestedTable.add(removeLocalResourceFactoryTextButton)
+        } else {
+            val removeForeignResourceFactoryTextButton = createTextButton(
+                text = "Remove factory",
+                fontSize = gdxSettings.smallFontSize,
+                soundVolume = gdxSettings.soundEffectsVolume,
+            ) {
+                val removeForeignResourceFactoryCommand = RemoveForeignResourceFactoryCommand(
+                    toId = playerData.playerId,
+                    fromId = game.universeClient.getCurrentPlayerData().playerId,
+                    fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
+                    targetCarrierId = carrierId,
+                    targetResourceFactoryId = resourceFactoryId
+                )
+
+                game.universeClient.currentCommand = removeForeignResourceFactoryCommand
+            }
+
+            nestedTable.add(removeForeignResourceFactoryTextButton)
+        }
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "Owner: ${resourceFactoryData.ownerPlayerId}",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "Max. output: ${resourceFactoryData.resourceFactoryInternalData.maxOutputAmount * resourceFactoryData.numBuilding}",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "Last output: ${resourceFactoryData.lastOutputAmount}",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "Max. employee: ${resourceFactoryData.resourceFactoryInternalData.maxNumEmployee * resourceFactoryData.numBuilding}",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "Last employee: ${resourceFactoryData.lastNumEmployee}",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "Stored fuel: ${resourceFactoryData.storedFuelRestMass}",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.row().space(10f)
+
+
+        nestedTable.add(
+            createLabel(
+                "Number of building: ${resourceFactoryData.numBuilding}",
                 gdxSettings.smallFontSize
             )
         )
