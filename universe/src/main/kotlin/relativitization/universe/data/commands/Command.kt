@@ -351,17 +351,17 @@ object CommandI18NStringFactory {
         )
     )
 
-    fun isTopLeaderIdWrong(playerTopLeaderId: Int, topLeaderId: Int): I18NString = I18NString(
+    fun isTopLeaderIdWrong(commandTopLeaderId: Int, playerTopLeaderId: Int): I18NString = I18NString(
         listOf(
-            NormalString("Player top leader id "),
+            NormalString("Command top leader id "),
             IntString(0),
-            NormalString("the same as "),
+            NormalString("is not the same as player top leader id "),
             IntString(1),
             NormalString(". ")
         ),
         listOf(
-            playerTopLeaderId.toString(),
-            topLeaderId.toString()
+            commandTopLeaderId.toString(),
+            playerTopLeaderId.toString()
         )
     )
 }

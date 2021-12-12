@@ -68,61 +68,39 @@ data class BuildForeignFuelFactoryCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): CommandSuccessMessage {
-        val sameTopLeaderId: Boolean = playerData.topLeaderId() == senderTopLeaderId
-        val sameTopLeaderIdI18NString: I18NString = if (sameTopLeaderId) {
-            I18NString("")
-        } else {
-            I18NString(
-                listOf(
-                    NormalString("Top leader id "),
-                    IntString(0),
-                    NormalString(" is not equal to "),
-                    IntString(1),
-                    NormalString(". ")
-                ),
-                listOf(
-                    senderTopLeaderId.toString(),
-                    playerData.topLeaderId().toString(),
-                ),
-            )
-        }
+        val sameTopLeaderId = CommandSuccessMessage(
+            playerData.topLeaderId() == senderTopLeaderId,
+            CommandI18NStringFactory.isTopLeaderIdWrong(senderTopLeaderId, playerData.topLeaderId())
+        )
 
         val isTopLeader: Boolean = playerData.isTopLeader()
-        val allowConstruction: Boolean =
-            isTopLeader || playerData.playerInternalData.politicsData().allowSubordinateBuildFactory
-        val allowConstructionI18NString: I18NString = if (allowConstruction) {
-            I18NString("")
-        } else {
+        val allowConstruction = CommandSuccessMessage(
+            isTopLeader || playerData.playerInternalData.politicsData().allowSubordinateBuildFactory,
             I18NString("Not allow to build factory, not a top leader")
-        }
+        )
 
-        val validFactoryInternalData: Boolean = fuelFactoryInternalData.squareDiff(
-            playerData.playerInternalData.playerScienceData().playerScienceApplicationData.newFuelFactoryInternalData()
-        ) < 0.1
-        val validFactoryInternalDataI18NString: I18NString = if (validFactoryInternalData) {
-            I18NString("")
-        } else {
+        val validFactoryInternalData = CommandSuccessMessage(
+            fuelFactoryInternalData.squareDiff(
+                playerData.playerInternalData.playerScienceData()
+                    .playerScienceApplicationData.newFuelFactoryInternalData()
+            ) < 0.1,
             I18NString("Factory internal data is not valid. ")
-        }
+        )
 
         val fuelNeeded: Double = playerData.playerInternalData.playerScienceData()
             .playerScienceApplicationData.newFuelFactoryFuelNeededByConstruction() * numBuilding
-        val hasFuel: Boolean =
-            playerData.playerInternalData.physicsData().fuelRestMassData.production >= fuelNeeded + storedFuelRestMass
-        val hasFuelI18NString: I18NString = if (hasFuel) {
-            I18NString("")
-        } else {
+        val hasFuel = CommandSuccessMessage(
+            playerData.playerInternalData.physicsData().fuelRestMassData.production >= fuelNeeded + storedFuelRestMass,
             I18NString("Not enough fuel rest mass. ")
-        }
+        )
 
 
         return CommandSuccessMessage(
-            sameTopLeaderId && allowConstruction && validFactoryInternalData && hasFuel,
             listOf(
-                sameTopLeaderIdI18NString,
-                allowConstructionI18NString,
-                validFactoryInternalDataI18NString,
-                hasFuelI18NString
+                sameTopLeaderId,
+                allowConstruction,
+                validFactoryInternalData,
+                hasFuel,
             )
         )
     }
