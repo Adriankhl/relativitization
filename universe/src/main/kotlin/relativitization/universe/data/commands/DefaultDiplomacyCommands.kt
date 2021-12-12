@@ -81,7 +81,16 @@ data class DeclareWarCommand(
         universeSettings: UniverseSettings
     ): Boolean {
         // Not already in war
-        return !playerData.playerInternalData.diplomacyData().warData.warStateMap.containsKey(fromId)
+        val isNotInWar = CommandErrorMessage(
+            !playerData.playerInternalData.diplomacyData().warData.warStateMap.containsKey(fromId),
+            I18NString("Target is in war with you. ")
+        )
+
+        return CommandErrorMessage(
+            listOf(
+                isNotInWar
+            )
+        ).success
     }
 
     override fun execute(
@@ -184,7 +193,16 @@ data class DeclareIndependenceCommand(
         universeSettings: UniverseSettings
     ): Boolean {
         // Not already in war
-        return !playerData.playerInternalData.diplomacyData().warData.warStateMap.containsKey(fromId)
+        val isNotInWar = CommandErrorMessage(
+            !playerData.playerInternalData.diplomacyData().warData.warStateMap.containsKey(fromId),
+            I18NString("Target is in war with you. ")
+        )
+
+        return CommandErrorMessage(
+            listOf(
+                isNotInWar
+            )
+        ).success
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
@@ -258,14 +276,22 @@ data class ProposePeaceCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): Boolean {
-        val isSelf: Boolean = playerData.playerId == fromId
+        val isSelf = CommandErrorMessage(
+            playerData.playerId == fromId,
+            CommandI18NStringFactory.isNotFromSelf(playerData.playerId, toId)
+        )
 
-        val isInWar: Boolean =
-            playerData.playerInternalData.diplomacyData().warData.warStateMap.containsKey(
-                targetPlayerId
+        val isNotInWar = CommandErrorMessage(
+            !playerData.playerInternalData.diplomacyData().warData.warStateMap.containsKey(targetPlayerId),
+            I18NString("Target is in war with you. ")
+        )
+
+        return CommandErrorMessage(
+            listOf(
+                isSelf,
+                isNotInWar,
             )
-
-        return isSelf && isInWar
+        ).success
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
