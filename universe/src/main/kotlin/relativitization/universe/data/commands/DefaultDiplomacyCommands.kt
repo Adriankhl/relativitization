@@ -278,18 +278,18 @@ data class ProposePeaceCommand(
     ): Boolean {
         val isSelf = CommandErrorMessage(
             playerData.playerId == fromId,
-            CommandI18NStringFactory.isNotFromSelf(playerData.playerId, toId)
+            CommandI18NStringFactory.isNotFromSelf(playerData.playerId, fromId)
         )
 
-        val isNotInWar = CommandErrorMessage(
-            !playerData.playerInternalData.diplomacyData().warData.warStateMap.containsKey(targetPlayerId),
-            I18NString("Target is in war with you. ")
+        val isInWar = CommandErrorMessage(
+            playerData.playerInternalData.diplomacyData().warData.warStateMap.containsKey(targetPlayerId),
+            I18NString("Target is not in war with you. ")
         )
 
         return CommandErrorMessage(
             listOf(
                 isSelf,
-                isNotInWar,
+                isInWar,
             )
         ).success
     }
