@@ -191,11 +191,46 @@ sealed class Command {
     fun canExecuteOnPlayer(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): Boolean {
-        val hasCommand: Boolean = CommandCollection.hasCommand(universeSettings, this)
-        val correctId: Boolean = checkToId(playerData)
-        val canExecute: Boolean = canExecute(playerData, universeSettings).success
-        return hasCommand && correctId && canExecute
+    ): CommandErrorMessage {
+        val hasCommand = CommandErrorMessage(
+            CommandCollection.hasCommand(universeSettings, this),
+            I18NString(
+                listOf(
+                    NormalString("No such command: "),
+                    IntString(0),
+                    NormalString(". ")
+                ),
+                listOf(
+                    this.toString()
+                ),
+            )
+        )
+
+        val isToIdValid = CommandErrorMessage(
+            checkToId(playerData),
+            I18NString(
+                listOf(
+                    NormalString("Player id "),
+                    IntString(0),
+                    NormalString(" is not the same as the toId "),
+                    IntString(1),
+                    NormalString(" in this command. ")
+                ),
+                listOf(
+                    playerData.playerId.toString(),
+                    toId.toString(),
+                ),
+            )
+        )
+
+        val canExecute = canExecute(playerData, universeSettings)
+        return CommandErrorMessage(
+            listOf(
+                hasCommand,
+                isToIdValid,
+                canExecute,
+            )
+        )
     }
 
 
@@ -215,7 +250,7 @@ sealed class Command {
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): Boolean {
-        return if (canExecuteOnPlayer(playerData, universeSettings)) {
+        return if (canExecuteOnPlayer(playerData, universeSettings).success) {
             try {
                 execute(playerData, universeSettings)
                 true
