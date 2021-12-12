@@ -68,7 +68,16 @@ data class ChangeFactoryPolicyCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): Boolean {
-        return playerData.playerId == fromId
+        val isSelf = CommandErrorMessage(
+            playerData.playerId == fromId,
+            CommandI18NStringFactory.isNotFromSelf(playerData.playerId, fromId)
+        )
+
+        return CommandErrorMessage(
+            listOf(
+                isSelf,
+            )
+        ).success
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
