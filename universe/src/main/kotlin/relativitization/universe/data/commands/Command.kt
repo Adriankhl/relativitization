@@ -249,11 +249,11 @@ sealed class Command {
     fun checkAndExecute(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): Boolean {
-        return if (canExecuteOnPlayer(playerData, universeSettings).success) {
+    ): CommandErrorMessage {
+        val executeMessage: CommandErrorMessage = canExecuteOnPlayer(playerData, universeSettings)
+        if (executeMessage.success) {
             try {
                 execute(playerData, universeSettings)
-                true
             } catch (e: Throwable) {
                 logger.error("checkAndExecute fail, throwable $e")
                 throw e
@@ -261,8 +261,9 @@ sealed class Command {
         } else {
             val className = this::class.qualifiedName
             logger.info("$className cannot be executed on $toId")
-            false
         }
+
+        return executeMessage
     }
 
     companion object {
