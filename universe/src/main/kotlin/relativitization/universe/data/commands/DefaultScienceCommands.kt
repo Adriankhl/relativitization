@@ -86,12 +86,22 @@ data class BuildInstituteCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): Boolean {
-        val isSelf: Boolean = playerData.playerId == fromId
+        val isSelf = CommandErrorMessage(
+            playerData.playerId == fromId,
+            CommandI18NStringFactory.isNotFromSelf(playerData.playerId, fromId)
+        )
 
-        val hasCarrier: Boolean =
-            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(carrierId)
+        val hasCarrier = CommandErrorMessage(
+            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(carrierId),
+            I18NString("Carrier does not exist. ")
+        )
 
-        return isSelf && hasCarrier
+        return CommandErrorMessage(
+            listOf(
+                isSelf,
+                hasCarrier,
+            )
+        ).success
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
@@ -180,12 +190,22 @@ data class BuildLaboratoryCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): Boolean {
-        val isSelf: Boolean = playerData.playerId == fromId
+        val isSelf = CommandErrorMessage(
+            playerData.playerId == fromId,
+            CommandI18NStringFactory.isNotFromSelf(playerData.playerId, fromId)
+        )
 
-        val hasCarrier: Boolean =
-            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(carrierId)
+        val hasCarrier = CommandErrorMessage(
+            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(carrierId),
+            I18NString("Carrier does not exist. ")
+        )
 
-        return isSelf && hasCarrier
+        return CommandErrorMessage(
+            listOf(
+                isSelf,
+                hasCarrier,
+            )
+        ).success
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
@@ -268,20 +288,34 @@ data class RemoveInstituteCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): Boolean {
-        val isSelf: Boolean = playerData.playerId == fromId
+        val isSelf = CommandErrorMessage(
+            playerData.playerId == fromId,
+            CommandI18NStringFactory.isNotFromSelf(playerData.playerId, fromId)
+        )
 
-        val hasCarrier: Boolean =
-            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(carrierId)
+        val hasCarrier = CommandErrorMessage(
+            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(carrierId),
+            I18NString("Carrier does not exist. ")
+        )
 
-        val hasInstitute: Boolean = if (hasCarrier) {
-            val carrier: MutableCarrierData =
-                playerData.playerInternalData.popSystemData().carrierDataMap.getValue(carrierId)
-            carrier.allPopData.scholarPopData.instituteMap.containsKey(instituteId)
-        } else {
-            false
-        }
+        val hasInstitute = CommandErrorMessage(
+            if (hasCarrier.success) {
+                val carrier: MutableCarrierData =
+                    playerData.playerInternalData.popSystemData().carrierDataMap.getValue(carrierId)
+                carrier.allPopData.scholarPopData.instituteMap.containsKey(instituteId)
+            } else {
+                false
+            },
+            I18NString("Institute does not exist. ")
+        )
 
-        return isSelf && hasCarrier && hasInstitute
+        return CommandErrorMessage(
+            listOf(
+                isSelf,
+                hasCarrier,
+                hasInstitute,
+            )
+        ).success
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
@@ -358,20 +392,34 @@ data class RemoveLaboratoryCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): Boolean {
-        val isSelf: Boolean = playerData.playerId == fromId
+        val isSelf = CommandErrorMessage(
+            playerData.playerId == fromId,
+            CommandI18NStringFactory.isNotFromSelf(playerData.playerId, fromId)
+        )
 
-        val hasCarrier: Boolean =
-            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(carrierId)
+        val hasCarrier = CommandErrorMessage(
+            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(carrierId),
+            I18NString("Carrier does not exist. ")
+        )
 
-        val hasLaboratory: Boolean = if (hasCarrier) {
-            val carrier: MutableCarrierData =
-                playerData.playerInternalData.popSystemData().carrierDataMap.getValue(carrierId)
-            carrier.allPopData.engineerPopData.laboratoryMap.containsKey(laboratoryId)
-        } else {
-            false
-        }
+        val hasLaboratory = CommandErrorMessage(
+            if (hasCarrier.success) {
+                val carrier: MutableCarrierData =
+                    playerData.playerInternalData.popSystemData().carrierDataMap.getValue(carrierId)
+                carrier.allPopData.engineerPopData.laboratoryMap.containsKey(laboratoryId)
+            } else {
+                false
+            },
+            I18NString("Laboratory does not exist. ")
+        )
 
-        return isSelf && hasCarrier && hasLaboratory
+        return CommandErrorMessage(
+            listOf(
+                isSelf,
+                hasCarrier,
+                hasLaboratory,
+            )
+        ).success
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
