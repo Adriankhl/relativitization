@@ -18,6 +18,11 @@ object MergePlayer : Mechanism() {
         universeGlobalData: UniverseGlobalData
     ): List<Command> {
 
+        // Change agree merge state to false if the player is a top leader
+        if (mutablePlayerData.isTopLeader()) {
+            mutablePlayerData.playerInternalData.politicsData().agreeMerge = false
+        }
+
         return if ((mutablePlayerData.playerInternalData.politicsData().agreeMerge) &&
             (!mutablePlayerData.isTopLeader())
         ) {
