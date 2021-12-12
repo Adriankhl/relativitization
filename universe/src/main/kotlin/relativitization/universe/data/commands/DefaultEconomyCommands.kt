@@ -47,25 +47,20 @@ data class ChangeDefaultImportTariffCommand(
         universeSettings: UniverseSettings
     ): CommandMessage {
 
-        val isSelf: Boolean = playerData.playerId == toId
-        val isSelfI18NString: I18NString = if (isSelf) {
-            I18NString("")
-        } else {
+        val isSelf = CommandMessage(
+            playerData.playerId == toId,
             CommandI18NStringFactory.isNotToSelf(fromId, toId)
-        }
+        )
 
-        val isTopLeader: Boolean = playerData.isTopLeader()
-        val isTopLeaderI18NString: I18NString = if (isTopLeader) {
-            I18NString("")
-        } else {
+        val isTopLeader = CommandMessage(
+            playerData.isTopLeader(),
             CommandI18NStringFactory.isNotTopLeader(playerData.playerId)
-        }
+        )
 
         return CommandMessage(
-            isSelf && isTopLeader,
             listOf(
-                isSelfI18NString,
-                isTopLeaderI18NString,
+                isSelf,
+                isTopLeader,
             )
         )
     }
@@ -116,25 +111,20 @@ data class ChangeDefaultExportTariffCommand(
         universeSettings: UniverseSettings
     ): CommandMessage {
 
-        val isSelf: Boolean = playerData.playerId == toId
-        val isSelfI18NString: I18NString = if (isSelf) {
-            I18NString("")
-        } else {
+        val isSelf = CommandMessage(
+            playerData.playerId == toId,
             CommandI18NStringFactory.isNotToSelf(fromId, toId)
-        }
+        )
 
-        val isTopLeader: Boolean = playerData.isTopLeader()
-        val isTopLeaderI18NString: I18NString = if (isTopLeader) {
-            I18NString("")
-        } else {
+        val isTopLeader = CommandMessage(
+            playerData.isTopLeader(),
             CommandI18NStringFactory.isNotTopLeader(playerData.playerId)
-        }
+        )
 
         return CommandMessage(
-            isSelf && isTopLeader,
             listOf(
-                isSelfI18NString,
-                isTopLeaderI18NString,
+                isSelf,
+                isTopLeader,
             )
         )
     }
@@ -180,33 +170,26 @@ data class ChangeLowIncomeTaxCommand(
         universeSettings: UniverseSettings
     ): CommandMessage {
 
-        val isSelf: Boolean = playerData.playerId == toId
-        val isSelfI18NString: I18NString = if (isSelf) {
-            I18NString("")
-        } else {
+        val isSelf = CommandMessage(
+            playerData.playerId == toId,
             CommandI18NStringFactory.isNotToSelf(fromId, toId)
-        }
+        )
 
-        val isTopLeader: Boolean = playerData.isTopLeader()
-        val isTopLeaderI18NString: I18NString = if (isTopLeader) {
-            I18NString("")
-        } else {
+        val isTopLeader = CommandMessage(
+            playerData.isTopLeader(),
             CommandI18NStringFactory.isNotTopLeader(playerData.playerId)
-        }
+        )
 
-        val isRateValid: Boolean = (rate >= 0.0) && (rate <= 1.0)
-        val isRateValidI18NString: I18NString = if (isRateValid) {
-            I18NString("")
-        } else {
+        val isRateValid = CommandMessage(
+            (rate >= 0.0) && (rate <= 1.0),
             I18NString("Rate should be between 0 and 1. ")
-        }
+        )
 
         return CommandMessage(
-            isSelf && isTopLeader && isRateValid,
             listOf(
-                isSelfI18NString,
-                isTopLeaderI18NString,
-                isRateValidI18NString
+                isSelf,
+                isTopLeader,
+                isRateValid,
             )
         )
     }
@@ -252,33 +235,26 @@ data class ChangeMiddleIncomeTaxCommand(
         universeSettings: UniverseSettings
     ): CommandMessage {
 
-        val isSelf: Boolean = playerData.playerId == toId
-        val isSelfI18NString: I18NString = if (isSelf) {
-            I18NString("")
-        } else {
+        val isSelf = CommandMessage(
+            playerData.playerId == toId,
             CommandI18NStringFactory.isNotToSelf(fromId, toId)
-        }
+        )
 
-        val isTopLeader: Boolean = playerData.isTopLeader()
-        val isTopLeaderI18NString: I18NString = if (isTopLeader) {
-            I18NString("")
-        } else {
+        val isTopLeader = CommandMessage(
+            playerData.isTopLeader(),
             CommandI18NStringFactory.isNotTopLeader(playerData.playerId)
-        }
+        )
 
-        val isRateValid: Boolean = (rate >= 0.0) && (rate <= 1.0)
-        val isRateValidI18NString: I18NString = if (isRateValid) {
-            I18NString("")
-        } else {
+        val isRateValid = CommandMessage(
+            (rate >= 0.0) && (rate <= 1.0),
             I18NString("Rate should be between 0 and 1. ")
-        }
+        )
 
         return CommandMessage(
-            isSelf && isTopLeader && isRateValid,
             listOf(
-                isSelfI18NString,
-                isTopLeaderI18NString,
-                isRateValidI18NString
+                isSelf,
+                isTopLeader,
+                isRateValid,
             )
         )
     }
@@ -323,34 +299,26 @@ data class ChangeHighIncomeTaxCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): CommandMessage {
-
-        val isSelf: Boolean = playerData.playerId == toId
-        val isSelfI18NString: I18NString = if (isSelf) {
-            I18NString("")
-        } else {
+        val isSelf = CommandMessage(
+            playerData.playerId == toId,
             CommandI18NStringFactory.isNotToSelf(fromId, toId)
-        }
+        )
 
-        val isTopLeader: Boolean = playerData.isTopLeader()
-        val isTopLeaderI18NString: I18NString = if (isTopLeader) {
-            I18NString("")
-        } else {
+        val isTopLeader = CommandMessage(
+            playerData.isTopLeader(),
             CommandI18NStringFactory.isNotTopLeader(playerData.playerId)
-        }
+        )
 
-        val isRateValid: Boolean = (rate >= 0.0) && (rate <= 1.0)
-        val isRateValidI18NString: I18NString = if (isRateValid) {
-            I18NString("")
-        } else {
+        val isRateValid = CommandMessage(
+            (rate >= 0.0) && (rate <= 1.0),
             I18NString("Rate should be between 0 and 1. ")
-        }
+        )
 
         return CommandMessage(
-            isSelf && isTopLeader && isRateValid,
             listOf(
-                isSelfI18NString,
-                isTopLeaderI18NString,
-                isRateValidI18NString
+                isSelf,
+                isTopLeader,
+                isRateValid,
             )
         )
     }
@@ -395,34 +363,26 @@ data class ChangeLowMiddleBoundaryCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): CommandMessage {
-
-        val isSelf: Boolean = playerData.playerId == toId
-        val isSelfI18NString: I18NString = if (isSelf) {
-            I18NString("")
-        } else {
+        val isSelf = CommandMessage(
+            playerData.playerId == toId,
             CommandI18NStringFactory.isNotToSelf(fromId, toId)
-        }
+        )
 
-        val isTopLeader: Boolean = playerData.isTopLeader()
-        val isTopLeaderI18NString: I18NString = if (isTopLeader) {
-            I18NString("")
-        } else {
+        val isTopLeader = CommandMessage(
+            playerData.isTopLeader(),
             CommandI18NStringFactory.isNotTopLeader(playerData.playerId)
-        }
+        )
 
-        val isBoundaryValid: Boolean = (boundary >= 0.0)
-        val isBoundaryValidI18NString: I18NString = if (isBoundaryValid) {
-            I18NString("")
-        } else {
+        val isBoundaryValid = CommandMessage(
+            (boundary >= 0.0),
             I18NString("Boundary should be larger than 0. ")
-        }
+        )
 
         return CommandMessage(
-            isSelf && isTopLeader && isBoundaryValid,
             listOf(
-                isSelfI18NString,
-                isTopLeaderI18NString,
-                isBoundaryValidI18NString
+                isSelf,
+                isTopLeader,
+                isBoundaryValid,
             )
         )
     }
@@ -467,34 +427,26 @@ data class ChangeMiddleHighBoundaryCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): CommandMessage {
-
-        val isSelf: Boolean = playerData.playerId == toId
-        val isSelfI18NString: I18NString = if (isSelf) {
-            I18NString("")
-        } else {
+        val isSelf = CommandMessage(
+            playerData.playerId == toId,
             CommandI18NStringFactory.isNotToSelf(fromId, toId)
-        }
+        )
 
-        val isTopLeader: Boolean = playerData.isTopLeader()
-        val isTopLeaderI18NString: I18NString = if (isTopLeader) {
-            I18NString("")
-        } else {
+        val isTopLeader = CommandMessage(
+            playerData.isTopLeader(),
             CommandI18NStringFactory.isNotTopLeader(playerData.playerId)
-        }
+        )
 
-        val isBoundaryValid: Boolean = (boundary >= 0.0)
-        val isBoundaryValidI18NString: I18NString = if (isBoundaryValid) {
-            I18NString("")
-        } else {
+        val isBoundaryValid = CommandMessage(
+            (boundary >= 0.0),
             I18NString("Boundary should be larger than 0. ")
-        }
+        )
 
         return CommandMessage(
-            isSelf && isTopLeader && isBoundaryValid,
             listOf(
-                isSelfI18NString,
-                isTopLeaderI18NString,
-                isBoundaryValidI18NString
+                isSelf,
+                isTopLeader,
+                isBoundaryValid,
             )
         )
     }
@@ -549,29 +501,23 @@ data class TransferResourceToProductionCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): CommandMessage {
-        val isSelf: Boolean = playerData.playerId == toId
-        val isSelfI18NString: I18NString = if (isSelf) {
-            I18NString("")
-        } else {
+        val isSelf = CommandMessage(
+            playerData.playerId == toId,
             CommandI18NStringFactory.isNotToSelf(fromId, toId)
-        }
+        )
 
-        val hasStorage: Boolean =
+        val hasStorage = CommandMessage(
             playerData.playerInternalData.economyData().resourceData.getStorageResourceAmount(
                 resourceType,
                 resourceQualityClass
-            ) >= amount
-        val hasStorageI18NString: I18NString = if (hasStorage) {
-            I18NString("")
-        } else {
+            ) >= amount,
             I18NString("Not enough resource in storage. ")
-        }
+        )
 
         return CommandMessage(
-            isSelf && hasStorage,
             listOf(
-                isSelfI18NString,
-                hasStorageI18NString,
+                isSelf,
+                hasStorage,
             )
         )
     }
@@ -640,29 +586,23 @@ data class TransferResourceToTradeCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): CommandMessage {
-        val isSelf: Boolean = playerData.playerId == toId
-        val isSelfI18NString: I18NString = if (isSelf) {
-            I18NString("")
-        } else {
+        val isSelf = CommandMessage(
+            playerData.playerId == toId,
             CommandI18NStringFactory.isNotToSelf(fromId, toId)
-        }
+        )
 
-        val hasStorage: Boolean =
+        val hasStorage = CommandMessage(
             playerData.playerInternalData.economyData().resourceData.getStorageResourceAmount(
                 resourceType,
                 resourceQualityClass
-            ) >= amount
-        val hasStorageI18NString: I18NString = if (hasStorage) {
-            I18NString("")
-        } else {
+            ) >= amount,
             I18NString("Not enough resource in storage. ")
-        }
+        )
 
         return CommandMessage(
-            isSelf && hasStorage,
             listOf(
-                isSelfI18NString,
-                hasStorageI18NString,
+                isSelf,
+                hasStorage,
             )
         )
     }
@@ -731,17 +671,14 @@ data class ChangeStorageResourceTargetCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): CommandMessage {
-        val isSelf: Boolean = playerData.playerId == toId
-        val isSelfI18NString: I18NString = if (isSelf) {
-            I18NString("")
-        } else {
+        val isSelf = CommandMessage(
+            playerData.playerId == toId,
             CommandI18NStringFactory.isNotToSelf(fromId, toId)
-        }
+        )
 
         return CommandMessage(
-            isSelf,
             listOf(
-                isSelfI18NString,
+                isSelf,
             )
         )
     }
@@ -801,17 +738,14 @@ data class ChangeProductionResourceTargetCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): CommandMessage {
-        val isSelf: Boolean = playerData.playerId == toId
-        val isSelfI18NString: I18NString = if (isSelf) {
-            I18NString("")
-        } else {
+        val isSelf = CommandMessage(
+            playerData.playerId == toId,
             CommandI18NStringFactory.isNotToSelf(fromId, toId)
-        }
+        )
 
         return CommandMessage(
-            isSelf,
             listOf(
-                isSelfI18NString,
+                isSelf,
             )
         )
     }
@@ -871,17 +805,14 @@ data class ChangeResourceClassBoundCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): CommandMessage {
-        val isSelf: Boolean = playerData.playerId == toId
-        val isSelfI18NString: I18NString = if (isSelf) {
-            I18NString("")
-        } else {
+        val isSelf = CommandMessage(
+            playerData.playerId == toId,
             CommandI18NStringFactory.isNotToSelf(fromId, toId)
-        }
+        )
 
         return CommandMessage(
-            isSelf,
             listOf(
-                isSelfI18NString,
+                isSelf,
             )
         )
     }
@@ -938,26 +869,20 @@ data class ChangeSalaryCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): CommandMessage {
-        val isSelf: Boolean = playerData.playerId == toId
-        val isSelfI18NString: I18NString = if (isSelf) {
-            I18NString("")
-        } else {
+        val isSelf = CommandMessage(
+            playerData.playerId == toId,
             CommandI18NStringFactory.isNotToSelf(fromId, toId)
-        }
+        )
 
-        val hasCarrier: Boolean =
-            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(carrierId)
-        val hasCarrierI18NString: I18NString = if (hasCarrier) {
-            I18NString("")
-        } else {
+        val hasCarrier = CommandMessage(
+            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(carrierId),
             I18NString("Carrier does not exist. ")
-        }
+        )
 
         return CommandMessage(
-            isSelf && hasCarrier,
             listOf(
-                isSelfI18NString,
-                hasCarrierI18NString,
+                isSelf,
+                hasCarrier
             )
         )
     }
