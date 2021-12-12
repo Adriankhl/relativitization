@@ -106,7 +106,16 @@ data class SendFuelFromStorageCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): Boolean {
-        return playerData.playerInternalData.modifierData().physicsModifierData.disableRestMassIncreaseTimeLimit <= 0
+        val isFuelIncreaseEnable = CommandErrorMessage(
+            playerData.playerInternalData.modifierData().physicsModifierData.disableRestMassIncreaseTimeLimit <= 0,
+            I18NString("Fuel increase is disabled. ")
+        )
+
+        return CommandErrorMessage(
+            listOf(
+                isFuelIncreaseEnable,
+            )
+        ).success
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
@@ -287,7 +296,7 @@ data class SendResourceFromStorageCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): Boolean {
-        return true
+        return CommandErrorMessage(true).success
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
@@ -345,7 +354,16 @@ data class SendFuelCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): Boolean {
-        return playerData.playerInternalData.modifierData().physicsModifierData.disableRestMassIncreaseTimeLimit <= 0
+        val isFuelIncreaseEnable = CommandErrorMessage(
+            playerData.playerInternalData.modifierData().physicsModifierData.disableRestMassIncreaseTimeLimit <= 0,
+            I18NString("Fuel increase is disabled. ")
+        )
+
+        return CommandErrorMessage(
+            listOf(
+                isFuelIncreaseEnable,
+            )
+        ).success
     }
 
 
@@ -405,7 +423,7 @@ data class SendResourceCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): Boolean {
-        return true
+        return CommandErrorMessage(true).success
     }
 
 
@@ -473,7 +491,7 @@ data class SendResourceToPopCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): Boolean {
-        return true
+        return CommandErrorMessage(true).success
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
@@ -550,12 +568,22 @@ data class PopBuyResourceCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): Boolean {
-        val validTopLeaderId: Boolean = (playerData.topLeaderId() == targetTopLeaderId)
+        val validTopLeaderId = CommandErrorMessage(
+            playerData.topLeaderId() == targetTopLeaderId,
+            I18NString("Top leader id is wrong. ")
+        )
 
-        val isFuelIncreaseEnable: Boolean =
-            playerData.playerInternalData.modifierData().physicsModifierData.disableRestMassIncreaseTimeLimit <= 0
+        val isFuelIncreaseEnable = CommandErrorMessage(
+            playerData.playerInternalData.modifierData().physicsModifierData.disableRestMassIncreaseTimeLimit <= 0,
+            I18NString("Fuel increase is disabled. ")
+        )
 
-        return validTopLeaderId && isFuelIncreaseEnable
+        return CommandErrorMessage(
+            listOf(
+                validTopLeaderId,
+                isFuelIncreaseEnable,
+            )
+        ).success
     }
 
 
@@ -743,12 +771,22 @@ data class PlayerBuyResourceCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): Boolean {
-        val validTopLeaderId: Boolean = (playerData.topLeaderId() == targetTopLeaderId)
+        val validTopLeaderId = CommandErrorMessage(
+            playerData.topLeaderId() == targetTopLeaderId,
+            I18NString("Top leader id is wrong. ")
+        )
 
-        val isFuelIncreaseEnable: Boolean =
-            playerData.playerInternalData.modifierData().physicsModifierData.disableRestMassIncreaseTimeLimit <= 0
+        val isFuelIncreaseEnable = CommandErrorMessage(
+            playerData.playerInternalData.modifierData().physicsModifierData.disableRestMassIncreaseTimeLimit <= 0,
+            I18NString("Fuel increase is disabled. ")
+        )
 
-        return validTopLeaderId && isFuelIncreaseEnable
+        return CommandErrorMessage(
+            listOf(
+                validTopLeaderId,
+                isFuelIncreaseEnable,
+            )
+        ).success
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {

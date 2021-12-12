@@ -1031,7 +1031,6 @@ data class RemoveLocalResourceFactoryCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
-
         val isSelf = CommandErrorMessage(
             playerData.playerId == toId,
             CommandI18NStringFactory.isNotToSelf(fromId, toId)
@@ -1202,7 +1201,6 @@ data class SupplyForeignFuelFactoryCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
-
         val hasFuel = CommandErrorMessage(
             playerData.playerInternalData.physicsData().fuelRestMassData.production >= amount,
             I18NString("Not enough fuel rest mass. ")
@@ -1226,7 +1224,6 @@ data class SupplyForeignFuelFactoryCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): Boolean {
-
         val hasCarrier = CommandErrorMessage(
             playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(targetCarrierId),
             I18NString("Carrier does not exist. ")
@@ -1311,7 +1308,6 @@ data class SupplyForeignResourceFactoryCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
-
         val hasFuel = CommandErrorMessage(
             playerData.playerInternalData.physicsData().fuelRestMassData.production >= amount,
             I18NString("Not enough fuel rest mass. ")
