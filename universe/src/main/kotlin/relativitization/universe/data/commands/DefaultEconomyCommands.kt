@@ -69,7 +69,16 @@ data class ChangeDefaultImportTariffCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): Boolean {
-        return (fromId == playerData.playerId)
+        val isSelf = CommandErrorMessage(
+            playerData.playerId == fromId,
+            CommandI18NStringFactory.isNotFromSelf(playerData.playerId, fromId)
+        )
+
+        return CommandErrorMessage(
+            listOf(
+                isSelf
+            )
+        ).success
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
@@ -110,7 +119,6 @@ data class ChangeDefaultExportTariffCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
-
         val isSelf = CommandErrorMessage(
             playerData.playerId == toId,
             CommandI18NStringFactory.isNotToSelf(fromId, toId)
@@ -133,7 +141,16 @@ data class ChangeDefaultExportTariffCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): Boolean {
-        return (fromId == playerData.playerId)
+        val isSelf = CommandErrorMessage(
+            playerData.playerId == fromId,
+            CommandI18NStringFactory.isNotFromSelf(playerData.playerId, fromId)
+        )
+
+        return CommandErrorMessage(
+            listOf(
+                isSelf
+            )
+        ).success
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
@@ -198,7 +215,16 @@ data class ChangeLowIncomeTaxCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): Boolean {
-        return (playerData.playerId == fromId)
+        val isSelf = CommandErrorMessage(
+            playerData.playerId == fromId,
+            CommandI18NStringFactory.isNotFromSelf(playerData.playerId, fromId)
+        )
+
+        return CommandErrorMessage(
+            listOf(
+                isSelf
+            )
+        ).success
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
@@ -263,7 +289,16 @@ data class ChangeMiddleIncomeTaxCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): Boolean {
-        return (playerData.playerId == fromId)
+        val isSelf = CommandErrorMessage(
+            playerData.playerId == fromId,
+            CommandI18NStringFactory.isNotFromSelf(playerData.playerId, fromId)
+        )
+
+        return CommandErrorMessage(
+            listOf(
+                isSelf
+            )
+        ).success
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
@@ -327,7 +362,16 @@ data class ChangeHighIncomeTaxCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): Boolean {
-        return (playerData.playerId == fromId)
+        val isSelf = CommandErrorMessage(
+            playerData.playerId == fromId,
+            CommandI18NStringFactory.isNotFromSelf(playerData.playerId, fromId)
+        )
+
+        return CommandErrorMessage(
+            listOf(
+                isSelf
+            )
+        ).success
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
@@ -391,7 +435,16 @@ data class ChangeLowMiddleBoundaryCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): Boolean {
-        return (playerData.playerId == fromId)
+        val isSelf = CommandErrorMessage(
+            playerData.playerId == fromId,
+            CommandI18NStringFactory.isNotFromSelf(playerData.playerId, fromId)
+        )
+
+        return CommandErrorMessage(
+            listOf(
+                isSelf
+            )
+        ).success
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
@@ -455,7 +508,16 @@ data class ChangeMiddleHighBoundaryCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): Boolean {
-        return (playerData.playerId == fromId)
+        val isSelf = CommandErrorMessage(
+            playerData.playerId == fromId,
+            CommandI18NStringFactory.isNotFromSelf(playerData.playerId, fromId)
+        )
+
+        return CommandErrorMessage(
+            listOf(
+                isSelf
+            )
+        ).success
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
@@ -526,15 +588,25 @@ data class TransferResourceToProductionCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): Boolean {
-        val isSelf: Boolean = playerData.playerId == fromId
+        val isSelf = CommandErrorMessage(
+            playerData.playerId == fromId,
+            CommandI18NStringFactory.isNotFromSelf(playerData.playerId, fromId)
+        )
 
-        val hasStorage: Boolean =
+        val hasStorage = CommandErrorMessage(
             playerData.playerInternalData.economyData().resourceData.getStorageResourceAmount(
                 resourceType,
                 resourceQualityClass
-            ) >= amount
+            ) >= amount,
+            I18NString("Not enough resource in storage. ")
+        )
 
-        return isSelf && hasStorage
+        return CommandErrorMessage(
+            listOf(
+                isSelf,
+                hasStorage,
+            )
+        ).success
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
@@ -611,15 +683,25 @@ data class TransferResourceToTradeCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): Boolean {
-        val isSelf: Boolean = playerData.playerId == fromId
+        val isSelf = CommandErrorMessage(
+            playerData.playerId == fromId,
+            CommandI18NStringFactory.isNotFromSelf(playerData.playerId, fromId)
+        )
 
-        val hasStorage: Boolean =
+        val hasStorage = CommandErrorMessage(
             playerData.playerInternalData.economyData().resourceData.getStorageResourceAmount(
                 resourceType,
                 resourceQualityClass
-            ) >= amount
+            ) >= amount,
+            I18NString("Not enough resource in storage. ")
+        )
 
-        return isSelf && hasStorage
+        return CommandErrorMessage(
+            listOf(
+                isSelf,
+                hasStorage,
+            )
+        ).success
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
@@ -687,7 +769,16 @@ data class ChangeStorageResourceTargetCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): Boolean {
-        return playerData.playerId == fromId
+        val isSelf = CommandErrorMessage(
+            playerData.playerId == fromId,
+            CommandI18NStringFactory.isNotFromSelf(playerData.playerId, fromId)
+        )
+
+        return CommandErrorMessage(
+            listOf(
+                isSelf
+            )
+        ).success
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
@@ -754,7 +845,16 @@ data class ChangeProductionResourceTargetCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): Boolean {
-        return playerData.playerId == fromId
+        val isSelf = CommandErrorMessage(
+            playerData.playerId == fromId,
+            CommandI18NStringFactory.isNotFromSelf(playerData.playerId, fromId)
+        )
+
+        return CommandErrorMessage(
+            listOf(
+                isSelf
+            )
+        ).success
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
@@ -821,7 +921,16 @@ data class ChangeResourceClassBoundCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): Boolean {
-        return playerData.playerId == fromId
+        val isSelf = CommandErrorMessage(
+            playerData.playerId == fromId,
+            CommandI18NStringFactory.isNotFromSelf(playerData.playerId, fromId)
+        )
+
+        return CommandErrorMessage(
+            listOf(
+                isSelf
+            )
+        ).success
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
@@ -891,12 +1000,22 @@ data class ChangeSalaryCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): Boolean {
-        val isSelf: Boolean = playerData.playerId == fromId
+        val isSelf = CommandErrorMessage(
+            playerData.playerId == fromId,
+            CommandI18NStringFactory.isNotFromSelf(playerData.playerId, fromId)
+        )
 
-        val hasCarrier: Boolean =
-            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(carrierId)
+        val hasCarrier = CommandErrorMessage(
+            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(carrierId),
+            I18NString("Carrier does not exist. ")
+        )
 
-        return isSelf && hasCarrier
+        return CommandErrorMessage(
+            listOf(
+                isSelf,
+                hasCarrier,
+            )
+        ).success
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
