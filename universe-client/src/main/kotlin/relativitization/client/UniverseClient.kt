@@ -160,7 +160,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
                 onCurrentCommandChangeFunctionList.forEach { it() }
             } else {
                 currentCommand = CannotSendCommand(
-                    commandMessage.errorMessage
+                    reason = commandMessage.errorMessage
                 )
             }
         }

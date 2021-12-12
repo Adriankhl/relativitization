@@ -46,10 +46,10 @@ data class DummyCommand(
  */
 @Serializable
 data class CannotSendCommand(
-    val reason: I18NString,
     override val toId: Int = -1,
     override val fromId: Int = -1,
     override val fromInt4D: Int4D = Int4D(0, 0, 0, 0),
+    val reason: I18NString,
 ) : DefaultCommand() {
 
     override val description: I18NString = reason
