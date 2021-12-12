@@ -52,8 +52,8 @@ data class SendFuelFromStorageCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CommandSuccessMessage {
-        val hasAmount = CommandSuccessMessage(
+    ): CommandErrorMessage {
+        val hasAmount = CommandErrorMessage(
             playerData.playerInternalData.physicsData().fuelRestMassData.trade >= amount,
             I18NString(
                 listOf(
@@ -70,7 +70,7 @@ data class SendFuelFromStorageCommand(
             )
         )
 
-        val isLossFractionValid = CommandSuccessMessage(
+        val isLossFractionValid = CommandErrorMessage(
             playerData.playerInternalData.playerScienceData().playerScienceApplicationData.fuelLogisticsLossFractionPerDistance <= senderFuelLossFractionPerDistance,
             I18NString(
                 listOf(
@@ -87,7 +87,7 @@ data class SendFuelFromStorageCommand(
             )
         )
 
-        return CommandSuccessMessage(
+        return CommandErrorMessage(
             listOf(
                 hasAmount,
                 isLossFractionValid
@@ -204,8 +204,8 @@ data class SendResourceFromStorageCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CommandSuccessMessage {
-        val hasAmount = CommandSuccessMessage(
+    ): CommandErrorMessage {
+        val hasAmount = CommandErrorMessage(
             playerData.playerInternalData.economyData().resourceData.getTradeResourceAmount(
                 resourceType, resourceQualityClass
             ) >= amount,
@@ -226,7 +226,7 @@ data class SendResourceFromStorageCommand(
             )
         )
 
-        val isQualityValid = CommandSuccessMessage(
+        val isQualityValid = CommandErrorMessage(
             playerData.playerInternalData.economyData().resourceData.getResourceQuality(
                 resourceType, resourceQualityClass
             ).toResourceQualityData().squareDiff(resourceQualityData) <= 0.1,
@@ -248,7 +248,7 @@ data class SendResourceFromStorageCommand(
         )
 
 
-        val isLossFractionValid = CommandSuccessMessage(
+        val isLossFractionValid = CommandErrorMessage(
             playerData.playerInternalData.playerScienceData().playerScienceApplicationData.resourceLogisticsLossFractionPerDistance <= senderResourceLossFractionPerDistance,
             I18NString(
                 listOf(
@@ -265,7 +265,7 @@ data class SendResourceFromStorageCommand(
             )
         )
 
-        return CommandSuccessMessage(
+        return CommandErrorMessage(
             listOf(
                 hasAmount,
                 isQualityValid,
@@ -339,7 +339,7 @@ data class SendFuelCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CommandSuccessMessage = CommandSuccessMessage(false)
+    ): CommandErrorMessage = CommandErrorMessage(false)
 
     override fun canExecute(
         playerData: MutablePlayerData,
@@ -399,7 +399,7 @@ data class SendResourceCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CommandSuccessMessage = CommandSuccessMessage(false)
+    ): CommandErrorMessage = CommandErrorMessage(false)
 
     override fun canExecute(
         playerData: MutablePlayerData,
@@ -467,7 +467,7 @@ data class SendResourceToPopCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CommandSuccessMessage = CommandSuccessMessage(false)
+    ): CommandErrorMessage = CommandErrorMessage(false)
 
     override fun canExecute(
         playerData: MutablePlayerData,
@@ -544,7 +544,7 @@ data class PopBuyResourceCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CommandSuccessMessage = CommandSuccessMessage(false)
+    ): CommandErrorMessage = CommandErrorMessage(false)
 
     override fun canExecute(
         playerData: MutablePlayerData,
@@ -661,7 +661,7 @@ data class PlayerBuyResourceCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CommandSuccessMessage {
+    ): CommandErrorMessage {
         // Whether the receiver has the same top leader
         val sameTopLeaderId: Boolean = (playerData.topLeaderId() == targetTopLeaderId)
 
@@ -674,7 +674,7 @@ data class PlayerBuyResourceCommand(
             )
         }
 
-        val hasAmount = CommandSuccessMessage(
+        val hasAmount = CommandErrorMessage(
             playerData.playerInternalData.physicsData().fuelRestMassData.trade >= fuelRestMassAmount * (1.0 + tariffFactor),
             I18NString(
                 listOf(
@@ -691,7 +691,7 @@ data class PlayerBuyResourceCommand(
             )
         )
 
-        val isLossFractionValid = CommandSuccessMessage(
+        val isLossFractionValid = CommandErrorMessage(
             playerData.playerInternalData.playerScienceData().playerScienceApplicationData.fuelLogisticsLossFractionPerDistance <= senderFuelLossFractionPerDistance,
             I18NString(
                 listOf(
@@ -708,7 +708,7 @@ data class PlayerBuyResourceCommand(
             )
         )
 
-        return CommandSuccessMessage(
+        return CommandErrorMessage(
             listOf(
                 hasAmount,
                 isLossFractionValid,

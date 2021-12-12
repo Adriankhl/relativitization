@@ -34,8 +34,8 @@ data class BuildLocalCarrierCommands(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CommandSuccessMessage {
-        val isSelf = CommandSuccessMessage(
+    ): CommandErrorMessage {
+        val isSelf = CommandErrorMessage(
             playerData.playerId == toId,
             CommandI18NStringFactory.isNotToSelf(fromId, toId)
         )
@@ -44,13 +44,13 @@ data class BuildLocalCarrierCommands(
             playerData.playerInternalData.playerScienceData().playerScienceApplicationData.newSpaceshipFuelNeededByConstruction(
                 qualityLevel = qualityLevel
             )
-        val hasFuel = CommandSuccessMessage(
+        val hasFuel = CommandErrorMessage(
             playerData.playerInternalData.physicsData().fuelRestMassData.production > requiredFuel,
             I18NString("Not enough fuel")
         )
 
 
-        return CommandSuccessMessage(
+        return CommandErrorMessage(
             listOf(
                 isSelf,
                 hasFuel

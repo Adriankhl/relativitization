@@ -49,14 +49,14 @@ data class AddEventCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CommandSuccessMessage {
+    ): CommandErrorMessage {
 
-        val isIdValid = CommandSuccessMessage(
+        val isIdValid = CommandErrorMessage(
             isEventPlayerIdValid(),
             I18NString("Event player id is not valid. ")
         )
 
-        val canAdd = CommandSuccessMessage(
+        val canAdd = CommandErrorMessage(
             canAddEvent(universeSettings, event),
             I18NString("Cannot add this event by command. ")
         )
@@ -64,7 +64,7 @@ data class AddEventCommand(
         val canSendEvent = event.canSend(playerData, universeSettings)
 
 
-        return CommandSuccessMessage(
+        return CommandErrorMessage(
             listOf(
                 isIdValid,
                 canAdd,
@@ -154,13 +154,13 @@ data class SelectEventChoiceCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CommandSuccessMessage {
-        val isSelf = CommandSuccessMessage(
+    ): CommandErrorMessage {
+        val isSelf = CommandErrorMessage(
             playerData.playerId == toId,
             CommandI18NStringFactory.isNotToSelf(fromId, toId)
         )
 
-        return CommandSuccessMessage(
+        return CommandErrorMessage(
             listOf(
                 isSelf
             )

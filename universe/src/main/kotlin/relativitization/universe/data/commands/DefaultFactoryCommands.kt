@@ -67,19 +67,19 @@ data class BuildForeignFuelFactoryCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CommandSuccessMessage {
-        val sameTopLeaderId = CommandSuccessMessage(
+    ): CommandErrorMessage {
+        val sameTopLeaderId = CommandErrorMessage(
             playerData.topLeaderId() == senderTopLeaderId,
             CommandI18NStringFactory.isTopLeaderIdWrong(senderTopLeaderId, playerData.topLeaderId())
         )
 
         val isTopLeader: Boolean = playerData.isTopLeader()
-        val allowConstruction = CommandSuccessMessage(
+        val allowConstruction = CommandErrorMessage(
             isTopLeader || playerData.playerInternalData.politicsData().allowSubordinateBuildFactory,
             I18NString("Not allow to build factory, not a top leader")
         )
 
-        val validFactoryInternalData = CommandSuccessMessage(
+        val validFactoryInternalData = CommandErrorMessage(
             fuelFactoryInternalData.squareDiff(
                 playerData.playerInternalData.playerScienceData()
                     .playerScienceApplicationData.newFuelFactoryInternalData()
@@ -89,13 +89,13 @@ data class BuildForeignFuelFactoryCommand(
 
         val fuelNeeded: Double = playerData.playerInternalData.playerScienceData()
             .playerScienceApplicationData.newFuelFactoryFuelNeededByConstruction() * numBuilding
-        val hasFuel = CommandSuccessMessage(
+        val hasFuel = CommandErrorMessage(
             playerData.playerInternalData.physicsData().fuelRestMassData.production >= fuelNeeded + storedFuelRestMass,
             I18NString("Not enough fuel rest mass. ")
         )
 
 
-        return CommandSuccessMessage(
+        return CommandErrorMessage(
             listOf(
                 sameTopLeaderId,
                 allowConstruction,
@@ -225,19 +225,19 @@ data class BuildForeignResourceFactoryCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CommandSuccessMessage {
-        val sameTopLeaderId = CommandSuccessMessage(
+    ): CommandErrorMessage {
+        val sameTopLeaderId = CommandErrorMessage(
             playerData.topLeaderId() == senderTopLeaderId,
             CommandI18NStringFactory.isTopLeaderIdWrong(senderTopLeaderId, playerData.topLeaderId())
         )
 
         val isTopLeader: Boolean = playerData.isTopLeader()
-        val allowConstruction = CommandSuccessMessage(
+        val allowConstruction = CommandErrorMessage(
             isTopLeader || playerData.playerInternalData.politicsData().allowSubordinateBuildFactory,
             I18NString("Not allow to build factory, not a top leader")
         )
 
-        val validFactoryInternalData = CommandSuccessMessage(
+        val validFactoryInternalData = CommandErrorMessage(
             resourceFactoryInternalData.squareDiff(
                 playerData.playerInternalData.playerScienceData().playerScienceApplicationData
                     .newResourceFactoryInternalData(
@@ -253,13 +253,13 @@ data class BuildForeignResourceFactoryCommand(
                 resourceFactoryInternalData.outputResource,
                 qualityLevel
             ) * numBuilding
-        val hasFuel = CommandSuccessMessage(
+        val hasFuel = CommandErrorMessage(
             playerData.playerInternalData.physicsData().fuelRestMassData.production >= fuelNeeded + storedFuelRestMass,
             I18NString("Not enough fuel rest mass. ")
         )
 
 
-        return CommandSuccessMessage(
+        return CommandErrorMessage(
             listOf(
                 sameTopLeaderId,
                 allowConstruction,
@@ -363,19 +363,19 @@ data class BuildLocalFuelFactoryCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CommandSuccessMessage {
-        val isSubordinateOrSelf = CommandSuccessMessage(
+    ): CommandErrorMessage {
+        val isSubordinateOrSelf = CommandErrorMessage(
             playerData.isSubOrdinateOrSelf(toId),
             I18NString("Not subordinate or self.")
         )
 
         val isTopLeader: Boolean = playerData.isTopLeader()
-        val allowSubordinateConstruction = CommandSuccessMessage(
+        val allowSubordinateConstruction = CommandErrorMessage(
             isTopLeader || playerData.playerInternalData.politicsData().allowSubordinateBuildFactory,
             I18NString("Not allow to build factory, not a top leader")
         )
 
-        return CommandSuccessMessage(
+        return CommandErrorMessage(
             listOf(
                 isSubordinateOrSelf,
                 allowSubordinateConstruction,
@@ -489,19 +489,19 @@ data class BuildLocalResourceFactoryCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CommandSuccessMessage {
-        val isSubordinateOrSelf = CommandSuccessMessage(
+    ): CommandErrorMessage {
+        val isSubordinateOrSelf = CommandErrorMessage(
             playerData.isSubOrdinateOrSelf(toId),
             I18NString("Not subordinate or self.")
         )
 
         val isTopLeader: Boolean = playerData.isTopLeader()
-        val allowSubordinateConstruction = CommandSuccessMessage(
+        val allowSubordinateConstruction = CommandErrorMessage(
             isTopLeader || playerData.playerInternalData.politicsData().allowSubordinateBuildFactory,
             I18NString("Not allow to build factory, not a top leader")
         )
 
-        return CommandSuccessMessage(
+        return CommandErrorMessage(
             listOf(
                 isSubordinateOrSelf,
                 allowSubordinateConstruction,
@@ -613,8 +613,8 @@ data class RemoveForeignFuelFactoryCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CommandSuccessMessage {
-        return CommandSuccessMessage(true)
+    ): CommandErrorMessage {
+        return CommandErrorMessage(true)
     }
 
     override fun canExecute(
@@ -694,8 +694,8 @@ data class RemoveForeignResourceFactoryCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CommandSuccessMessage {
-        return CommandSuccessMessage(true)
+    ): CommandErrorMessage {
+        return CommandErrorMessage(true)
     }
 
     override fun canExecute(
@@ -778,19 +778,19 @@ data class RemoveLocalFuelFactoryCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CommandSuccessMessage {
+    ): CommandErrorMessage {
 
-        val isSelf = CommandSuccessMessage(
+        val isSelf = CommandErrorMessage(
             playerData.playerId == toId,
             CommandI18NStringFactory.isNotToSelf(fromId, toId)
         )
 
-        val hasCarrier = CommandSuccessMessage(
+        val hasCarrier = CommandErrorMessage(
             playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(targetCarrierId),
             I18NString("Carrier does not exist. ")
         )
 
-        val hasFuelFactory = CommandSuccessMessage(
+        val hasFuelFactory = CommandErrorMessage(
             if (hasCarrier.success) {
                 val carrier: MutableCarrierData =
                     playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
@@ -804,7 +804,7 @@ data class RemoveLocalFuelFactoryCommand(
             I18NString("Fuel factory does not exist. ")
         )
 
-        val isRemoveAllowed = CommandSuccessMessage(
+        val isRemoveAllowed = CommandErrorMessage(
             if (hasFuelFactory.success) {
                 val carrier: MutableCarrierData =
                     playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
@@ -824,7 +824,7 @@ data class RemoveLocalFuelFactoryCommand(
             I18NString("Not allow to remove this factory. ")
         )
 
-        return CommandSuccessMessage(
+        return CommandErrorMessage(
             listOf(
                 isSelf,
                 hasCarrier,
@@ -923,19 +923,19 @@ data class RemoveLocalResourceFactoryCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CommandSuccessMessage {
+    ): CommandErrorMessage {
 
-        val isSelf = CommandSuccessMessage(
+        val isSelf = CommandErrorMessage(
             playerData.playerId == toId,
             CommandI18NStringFactory.isNotToSelf(fromId, toId)
         )
 
-        val hasCarrier = CommandSuccessMessage(
+        val hasCarrier = CommandErrorMessage(
             playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(targetCarrierId),
             I18NString("Carrier does not exist. ")
         )
 
-        val hasResourceFactory = CommandSuccessMessage(
+        val hasResourceFactory = CommandErrorMessage(
             if (hasCarrier.success) {
                 val carrier: MutableCarrierData =
                     playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
@@ -951,7 +951,7 @@ data class RemoveLocalResourceFactoryCommand(
             I18NString("Resource factory does not exist. ")
         )
 
-        val isRemoveAllowed = CommandSuccessMessage(
+        val isRemoveAllowed = CommandErrorMessage(
             if (hasResourceFactory.success) {
                 val carrier: MutableCarrierData =
                     playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
@@ -971,7 +971,7 @@ data class RemoveLocalResourceFactoryCommand(
             I18NString("Not allow to remove this factory. ")
         )
 
-        return CommandSuccessMessage(
+        return CommandErrorMessage(
             listOf(
                 isSelf,
                 hasCarrier,
@@ -1077,14 +1077,14 @@ data class SupplyForeignFuelFactoryCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CommandSuccessMessage {
+    ): CommandErrorMessage {
 
-        val hasFuel = CommandSuccessMessage(
+        val hasFuel = CommandErrorMessage(
             playerData.playerInternalData.physicsData().fuelRestMassData.production >= amount,
             I18NString("Not enough fuel rest mass. ")
         )
 
-        return CommandSuccessMessage(
+        return CommandErrorMessage(
             listOf(
                 hasFuel
             )
@@ -1172,14 +1172,14 @@ data class SupplyForeignResourceFactoryCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CommandSuccessMessage {
+    ): CommandErrorMessage {
 
-        val hasFuel = CommandSuccessMessage(
+        val hasFuel = CommandErrorMessage(
             playerData.playerInternalData.physicsData().fuelRestMassData.production >= amount,
             I18NString("Not enough fuel rest mass. ")
         )
 
-        return CommandSuccessMessage(
+        return CommandErrorMessage(
             listOf(
                 hasFuel
             )

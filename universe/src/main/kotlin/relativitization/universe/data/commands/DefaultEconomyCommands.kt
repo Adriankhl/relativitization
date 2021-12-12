@@ -45,19 +45,19 @@ data class ChangeDefaultImportTariffCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CommandSuccessMessage {
+    ): CommandErrorMessage {
 
-        val isSelf = CommandSuccessMessage(
+        val isSelf = CommandErrorMessage(
             playerData.playerId == toId,
             CommandI18NStringFactory.isNotToSelf(fromId, toId)
         )
 
-        val isTopLeader = CommandSuccessMessage(
+        val isTopLeader = CommandErrorMessage(
             playerData.isTopLeader(),
             CommandI18NStringFactory.isNotTopLeader(playerData.playerId)
         )
 
-        return CommandSuccessMessage(
+        return CommandErrorMessage(
             listOf(
                 isSelf,
                 isTopLeader,
@@ -109,19 +109,19 @@ data class ChangeDefaultExportTariffCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CommandSuccessMessage {
+    ): CommandErrorMessage {
 
-        val isSelf = CommandSuccessMessage(
+        val isSelf = CommandErrorMessage(
             playerData.playerId == toId,
             CommandI18NStringFactory.isNotToSelf(fromId, toId)
         )
 
-        val isTopLeader = CommandSuccessMessage(
+        val isTopLeader = CommandErrorMessage(
             playerData.isTopLeader(),
             CommandI18NStringFactory.isNotTopLeader(playerData.playerId)
         )
 
-        return CommandSuccessMessage(
+        return CommandErrorMessage(
             listOf(
                 isSelf,
                 isTopLeader,
@@ -168,24 +168,24 @@ data class ChangeLowIncomeTaxCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CommandSuccessMessage {
+    ): CommandErrorMessage {
 
-        val isSelf = CommandSuccessMessage(
+        val isSelf = CommandErrorMessage(
             playerData.playerId == toId,
             CommandI18NStringFactory.isNotToSelf(fromId, toId)
         )
 
-        val isTopLeader = CommandSuccessMessage(
+        val isTopLeader = CommandErrorMessage(
             playerData.isTopLeader(),
             CommandI18NStringFactory.isNotTopLeader(playerData.playerId)
         )
 
-        val isRateValid = CommandSuccessMessage(
+        val isRateValid = CommandErrorMessage(
             (rate >= 0.0) && (rate <= 1.0),
             I18NString("Rate should be between 0 and 1. ")
         )
 
-        return CommandSuccessMessage(
+        return CommandErrorMessage(
             listOf(
                 isSelf,
                 isTopLeader,
@@ -233,24 +233,24 @@ data class ChangeMiddleIncomeTaxCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CommandSuccessMessage {
+    ): CommandErrorMessage {
 
-        val isSelf = CommandSuccessMessage(
+        val isSelf = CommandErrorMessage(
             playerData.playerId == toId,
             CommandI18NStringFactory.isNotToSelf(fromId, toId)
         )
 
-        val isTopLeader = CommandSuccessMessage(
+        val isTopLeader = CommandErrorMessage(
             playerData.isTopLeader(),
             CommandI18NStringFactory.isNotTopLeader(playerData.playerId)
         )
 
-        val isRateValid = CommandSuccessMessage(
+        val isRateValid = CommandErrorMessage(
             (rate >= 0.0) && (rate <= 1.0),
             I18NString("Rate should be between 0 and 1. ")
         )
 
-        return CommandSuccessMessage(
+        return CommandErrorMessage(
             listOf(
                 isSelf,
                 isTopLeader,
@@ -298,23 +298,23 @@ data class ChangeHighIncomeTaxCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CommandSuccessMessage {
-        val isSelf = CommandSuccessMessage(
+    ): CommandErrorMessage {
+        val isSelf = CommandErrorMessage(
             playerData.playerId == toId,
             CommandI18NStringFactory.isNotToSelf(fromId, toId)
         )
 
-        val isTopLeader = CommandSuccessMessage(
+        val isTopLeader = CommandErrorMessage(
             playerData.isTopLeader(),
             CommandI18NStringFactory.isNotTopLeader(playerData.playerId)
         )
 
-        val isRateValid = CommandSuccessMessage(
+        val isRateValid = CommandErrorMessage(
             (rate >= 0.0) && (rate <= 1.0),
             I18NString("Rate should be between 0 and 1. ")
         )
 
-        return CommandSuccessMessage(
+        return CommandErrorMessage(
             listOf(
                 isSelf,
                 isTopLeader,
@@ -362,23 +362,23 @@ data class ChangeLowMiddleBoundaryCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CommandSuccessMessage {
-        val isSelf = CommandSuccessMessage(
+    ): CommandErrorMessage {
+        val isSelf = CommandErrorMessage(
             playerData.playerId == toId,
             CommandI18NStringFactory.isNotToSelf(fromId, toId)
         )
 
-        val isTopLeader = CommandSuccessMessage(
+        val isTopLeader = CommandErrorMessage(
             playerData.isTopLeader(),
             CommandI18NStringFactory.isNotTopLeader(playerData.playerId)
         )
 
-        val isBoundaryValid = CommandSuccessMessage(
+        val isBoundaryValid = CommandErrorMessage(
             (boundary >= 0.0),
             I18NString("Boundary should be larger than 0. ")
         )
 
-        return CommandSuccessMessage(
+        return CommandErrorMessage(
             listOf(
                 isSelf,
                 isTopLeader,
@@ -426,23 +426,23 @@ data class ChangeMiddleHighBoundaryCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CommandSuccessMessage {
-        val isSelf = CommandSuccessMessage(
+    ): CommandErrorMessage {
+        val isSelf = CommandErrorMessage(
             playerData.playerId == toId,
             CommandI18NStringFactory.isNotToSelf(fromId, toId)
         )
 
-        val isTopLeader = CommandSuccessMessage(
+        val isTopLeader = CommandErrorMessage(
             playerData.isTopLeader(),
             CommandI18NStringFactory.isNotTopLeader(playerData.playerId)
         )
 
-        val isBoundaryValid = CommandSuccessMessage(
+        val isBoundaryValid = CommandErrorMessage(
             (boundary >= 0.0),
             I18NString("Boundary should be larger than 0. ")
         )
 
-        return CommandSuccessMessage(
+        return CommandErrorMessage(
             listOf(
                 isSelf,
                 isTopLeader,
@@ -500,13 +500,13 @@ data class TransferResourceToProductionCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CommandSuccessMessage {
-        val isSelf = CommandSuccessMessage(
+    ): CommandErrorMessage {
+        val isSelf = CommandErrorMessage(
             playerData.playerId == toId,
             CommandI18NStringFactory.isNotToSelf(fromId, toId)
         )
 
-        val hasStorage = CommandSuccessMessage(
+        val hasStorage = CommandErrorMessage(
             playerData.playerInternalData.economyData().resourceData.getStorageResourceAmount(
                 resourceType,
                 resourceQualityClass
@@ -514,7 +514,7 @@ data class TransferResourceToProductionCommand(
             I18NString("Not enough resource in storage. ")
         )
 
-        return CommandSuccessMessage(
+        return CommandErrorMessage(
             listOf(
                 isSelf,
                 hasStorage,
@@ -585,13 +585,13 @@ data class TransferResourceToTradeCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CommandSuccessMessage {
-        val isSelf = CommandSuccessMessage(
+    ): CommandErrorMessage {
+        val isSelf = CommandErrorMessage(
             playerData.playerId == toId,
             CommandI18NStringFactory.isNotToSelf(fromId, toId)
         )
 
-        val hasStorage = CommandSuccessMessage(
+        val hasStorage = CommandErrorMessage(
             playerData.playerInternalData.economyData().resourceData.getStorageResourceAmount(
                 resourceType,
                 resourceQualityClass
@@ -599,7 +599,7 @@ data class TransferResourceToTradeCommand(
             I18NString("Not enough resource in storage. ")
         )
 
-        return CommandSuccessMessage(
+        return CommandErrorMessage(
             listOf(
                 isSelf,
                 hasStorage,
@@ -670,13 +670,13 @@ data class ChangeStorageResourceTargetCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CommandSuccessMessage {
-        val isSelf = CommandSuccessMessage(
+    ): CommandErrorMessage {
+        val isSelf = CommandErrorMessage(
             playerData.playerId == toId,
             CommandI18NStringFactory.isNotToSelf(fromId, toId)
         )
 
-        return CommandSuccessMessage(
+        return CommandErrorMessage(
             listOf(
                 isSelf,
             )
@@ -737,13 +737,13 @@ data class ChangeProductionResourceTargetCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CommandSuccessMessage {
-        val isSelf = CommandSuccessMessage(
+    ): CommandErrorMessage {
+        val isSelf = CommandErrorMessage(
             playerData.playerId == toId,
             CommandI18NStringFactory.isNotToSelf(fromId, toId)
         )
 
-        return CommandSuccessMessage(
+        return CommandErrorMessage(
             listOf(
                 isSelf,
             )
@@ -804,13 +804,13 @@ data class ChangeResourceClassBoundCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CommandSuccessMessage {
-        val isSelf = CommandSuccessMessage(
+    ): CommandErrorMessage {
+        val isSelf = CommandErrorMessage(
             playerData.playerId == toId,
             CommandI18NStringFactory.isNotToSelf(fromId, toId)
         )
 
-        return CommandSuccessMessage(
+        return CommandErrorMessage(
             listOf(
                 isSelf,
             )
@@ -868,18 +868,18 @@ data class ChangeSalaryCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CommandSuccessMessage {
-        val isSelf = CommandSuccessMessage(
+    ): CommandErrorMessage {
+        val isSelf = CommandErrorMessage(
             playerData.playerId == toId,
             CommandI18NStringFactory.isNotToSelf(fromId, toId)
         )
 
-        val hasCarrier = CommandSuccessMessage(
+        val hasCarrier = CommandErrorMessage(
             playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(carrierId),
             I18NString("Carrier does not exist. ")
         )
 
-        return CommandSuccessMessage(
+        return CommandErrorMessage(
             listOf(
                 isSelf,
                 hasCarrier
