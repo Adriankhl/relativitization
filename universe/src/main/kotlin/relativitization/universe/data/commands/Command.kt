@@ -66,10 +66,8 @@ sealed class Command {
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
-        val hasCommand: Boolean = CommandCollection.hasCommand(universeSettings, this)
-        val hasCommandI18NString: I18NString = if (hasCommand) {
-            I18NString("")
-        } else {
+        val hasCommand = CommandErrorMessage(
+            CommandCollection.hasCommand(universeSettings, this),
             I18NString(
                 listOf(
                     NormalString("No such command: "),
@@ -80,33 +78,10 @@ sealed class Command {
                     this.toString()
                 ),
             )
-        }
+        )
 
-        val canSendErrorMessage: CommandErrorMessage = canSend(playerData, universeSettings)
-
-        val isFromInt4DValid: Boolean = playerData.int4D.toInt4D() == fromInt4D
-        val isFromInt4DValidI18NString: I18NString = if (isFromInt4DValid) {
-            I18NString("")
-        } else {
-            I18NString(
-                listOf(
-                    NormalString("Player coordinate "),
-                    IntString(0),
-                    NormalString(" is not the same as the coordinate "),
-                    IntString(1),
-                    NormalString(" in this command. ")
-                ),
-                listOf(
-                    playerData.int4D.toInt4D().toString(),
-                    fromInt4D.toString(),
-                ),
-            )
-        }
-
-        val isFromIdValid: Boolean = checkFromId(playerData)
-        val isFromIdValidI18NString: I18NString = if (isFromIdValid) {
-            I18NString("")
-        } else {
+        val isFromIdValid = CommandErrorMessage(
+            checkFromId(playerData),
             I18NString(
                 listOf(
                     NormalString("Player id "),
@@ -120,22 +95,42 @@ sealed class Command {
                     fromId.toString(),
                 ),
             )
-        }
+        )
 
+        val isFromInt4DValid = CommandErrorMessage(
+            playerData.int4D.toInt4D() == fromInt4D,
+            I18NString(
+                listOf(
+                    NormalString("Player coordinate "),
+                    IntString(0),
+                    NormalString(" is not the same as the coordinate "),
+                    IntString(1),
+                    NormalString(" in this command. ")
+                ),
+                listOf(
+                    playerData.int4D.toInt4D().toString(),
+                    fromInt4D.toString(),
+                ),
+            )
+        )
 
+        val canSendErrorMessage: CommandErrorMessage = canSend(playerData, universeSettings)
 
-        if (!hasCommand || !(canSendErrorMessage.success) || !isFromInt4DValid || !isFromIdValid) {
+        if (!hasCommand.success ||
+            !isFromIdValid.success ||
+            !isFromInt4DValid.success ||
+            !(canSendErrorMessage.success)
+        ) {
             val className = this::class.qualifiedName
             logger.error("${className}: cannot send command")
         }
 
         return CommandErrorMessage(
-            hasCommand && canSendErrorMessage.success && isFromInt4DValid && isFromIdValid,
             listOf(
-                hasCommandI18NString,
-                canSendErrorMessage.errorMessage,
-                isFromInt4DValidI18NString,
-                isFromIdValidI18NString
+                hasCommand,
+                isFromIdValid,
+                isFromInt4DValid,
+                canSendErrorMessage,
             )
         )
     }
