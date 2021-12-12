@@ -37,7 +37,7 @@ data class BuildLocalCarrierCommands(
     ): CommandErrorMessage {
         val isSelf = CommandErrorMessage(
             playerData.playerId == toId,
-            CommandI18NStringFactory.isNotToSelf(fromId, toId)
+            CommandI18NStringFactory.isNotToSelf(playerData.playerId, toId)
         )
 
         val requiredFuel: Double =
@@ -46,7 +46,7 @@ data class BuildLocalCarrierCommands(
             )
         val hasFuel = CommandErrorMessage(
             playerData.playerInternalData.physicsData().fuelRestMassData.production > requiredFuel,
-            I18NString("Not enough fuel")
+            I18NString("Not enough fuel. ")
         )
 
 
@@ -62,15 +62,26 @@ data class BuildLocalCarrierCommands(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): Boolean {
-        val isSelf: Boolean = playerData.playerId == fromId
+        val isSelf = CommandErrorMessage(
+            playerData.playerId == fromId,
+            CommandI18NStringFactory.isNotFromSelf(playerData.playerId, toId)
+        )
+
         val requiredFuel: Double =
             playerData.playerInternalData.playerScienceData().playerScienceApplicationData.newSpaceshipFuelNeededByConstruction(
                 qualityLevel = qualityLevel
             )
-        val hasFuel: Boolean =
-            playerData.playerInternalData.physicsData().fuelRestMassData.production > requiredFuel
+        val hasFuel = CommandErrorMessage(
+            playerData.playerInternalData.physicsData().fuelRestMassData.production > requiredFuel,
+            I18NString("Not enough fuel. ")
+        )
 
-        return isSelf && hasFuel
+        return CommandErrorMessage(
+            listOf(
+                isSelf,
+                hasFuel
+            )
+        ).success
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {

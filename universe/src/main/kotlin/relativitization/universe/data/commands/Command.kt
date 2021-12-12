@@ -354,6 +354,21 @@ object CommandI18NStringFactory {
         )
     )
 
+
+    fun isNotFromSelf(playerId: Int, fromId: Int): I18NString = I18NString(
+        listOf(
+            NormalString("Player id "),
+            IntString(0),
+            NormalString(" is not the same as fromId "),
+            IntString(1),
+            NormalString(". ")
+        ),
+        listOf(
+            playerId.toString(),
+            fromId.toString(),
+        )
+    )
+
     fun isTopLeaderIdWrong(commandTopLeaderId: Int, playerTopLeaderId: Int): I18NString = I18NString(
         listOf(
             NormalString("Command top leader id "),
