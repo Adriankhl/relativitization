@@ -339,7 +339,7 @@ class Universe(
         val noneTypePlayerIdList: List<Int> = playerCollection.getNoneIdList()
 
         // Check whether the command is valid, self execute the command
-        val validNoneSelfCommands: Map<Int, List<Command>> = inputCommands.filter { (id, _) ->
+        val validOtherCommands: Map<Int, List<Command>> = inputCommands.filter { (id, _) ->
             !noneTypePlayerIdList.contains(id)
         }.mapValues { (id, commandList) ->
             val playerData: MutablePlayerData = playerCollection.getPlayer(id)
@@ -349,8 +349,8 @@ class Universe(
                     universeData.universeSettings
                 ).success
 
-                // self executeCommand
-                if (command.toId == playerData.playerId) {
+                // self execute Command
+                if (success && (command.toId == playerData.playerId)) {
                     command.checkAndExecute(
                         playerCollection.getPlayer(command.toId),
                         universeData.universeSettings
@@ -368,7 +368,7 @@ class Universe(
             val playerIdAtGrid: List<Int> = playerId3D[int3D.x][int3D.y][int3D.z]
             val commandPairList: List<Pair<List<Command>, List<Command>>> =
                 playerIdAtGrid.map { fromId ->
-                    val otherCommandList: List<Command> = validNoneSelfCommands.getValue(fromId)
+                    val otherCommandList: List<Command> = validOtherCommands.getValue(fromId)
 
                     val (sameGroupCommandList, commandStoreList) = otherCommandList.partition { command ->
                         val inGrid: Boolean = playerIdAtGrid.contains(command.toId)
