@@ -44,7 +44,7 @@ data class ChangeVelocityCommand(
         )
 
         val isVelocityValid = CommandErrorMessage(
-            targetVelocity.mag() <= universeSettings.speedOfLight,
+            targetVelocity.mag() < universeSettings.speedOfLight,
             I18NString("Target speed is larger than the speed of light")
         )
 
