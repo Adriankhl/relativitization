@@ -66,3 +66,29 @@ data class CannotSendCommand(
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) { }
 }
+
+/**
+ * For informing that the proposed command might not be executed
+ */
+@Serializable
+data class ExecuteWarningCommand(
+    override val toId: Int = -1,
+    override val fromId: Int = -1,
+    override val fromInt4D: Int4D = Int4D(0, 0, 0, 0),
+    val reason: I18NString,
+) : DefaultCommand() {
+
+    override val description: I18NString = reason
+
+    override fun canSend(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): CommandErrorMessage = CommandErrorMessage(false)
+
+    override fun canExecute(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): CommandErrorMessage = CommandErrorMessage(true)
+
+    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) { }
+}
