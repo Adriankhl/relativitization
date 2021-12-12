@@ -21,8 +21,8 @@ data class AddDirectSubordinateCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CommandMessage {
-        return CommandMessage(false)
+    ): CommandSuccessMessage {
+        return CommandSuccessMessage(false)
     }
 
     override fun canExecute(

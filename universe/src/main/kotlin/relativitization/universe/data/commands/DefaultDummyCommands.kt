@@ -23,8 +23,8 @@ data class DummyCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CommandMessage {
-        return CommandMessage(
+    ): CommandSuccessMessage {
+        return CommandSuccessMessage(
             false,
             I18NString("This is dummy. ")
         )
@@ -57,7 +57,7 @@ data class CannotSendCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CommandMessage = CommandMessage(false)
+    ): CommandSuccessMessage = CommandSuccessMessage(false)
 
     override fun canExecute(
         playerData: MutablePlayerData,

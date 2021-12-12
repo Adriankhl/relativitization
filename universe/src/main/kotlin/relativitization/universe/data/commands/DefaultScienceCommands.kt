@@ -57,7 +57,7 @@ data class BuildInstituteCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CommandMessage {
+    ): CommandSuccessMessage {
         val isSelf: Boolean = playerData.playerId == toId
         val isSelfI18NString: I18NString = if (isSelf) {
             I18NString("")
@@ -80,7 +80,7 @@ data class BuildInstituteCommand(
             I18NString("Range should be smaller than 0.25")
         }
 
-        return CommandMessage(
+        return CommandSuccessMessage(
             isSelf && hasCarrier && isRangeValid,
             listOf(
                 isSelfI18NString,
@@ -159,7 +159,7 @@ data class BuildLaboratoryCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CommandMessage {
+    ): CommandSuccessMessage {
         val isSelf: Boolean = playerData.playerId == toId
         val isSelfI18NString: I18NString = if (isSelf) {
             I18NString("")
@@ -182,7 +182,7 @@ data class BuildLaboratoryCommand(
             I18NString("Range should be smaller than 0.25")
         }
 
-        return CommandMessage(
+        return CommandSuccessMessage(
             isSelf && hasCarrier && isRangeValid,
             listOf(
                 isSelfI18NString,
@@ -249,7 +249,7 @@ data class RemoveInstituteCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CommandMessage {
+    ): CommandSuccessMessage {
         val isSelf: Boolean = playerData.playerId == toId
         val isSelfI18NString: I18NString = if (isSelf) {
             I18NString("")
@@ -278,7 +278,7 @@ data class RemoveInstituteCommand(
             I18NString("Institute does not exist. ")
         }
 
-        return CommandMessage(
+        return CommandSuccessMessage(
             isSelf && hasCarrier && hasInstitute,
             listOf(
                 isSelfI18NString,
@@ -346,7 +346,7 @@ data class RemoveLaboratoryCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CommandMessage {
+    ): CommandSuccessMessage {
         val isSelf: Boolean = playerData.playerId == toId
         val isSelfI18NString: I18NString = if (isSelf) {
             I18NString("")
@@ -376,7 +376,7 @@ data class RemoveLaboratoryCommand(
         }
 
 
-        return CommandMessage(
+        return CommandSuccessMessage(
             isSelf && hasCarrier && hasLaboratory,
             listOf(
                 isSelfI18NString,

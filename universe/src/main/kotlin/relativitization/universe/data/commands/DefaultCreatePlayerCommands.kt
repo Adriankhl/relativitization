@@ -38,26 +38,26 @@ data class SplitCarrierCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CommandMessage {
-        val isSelf = CommandMessage(
+    ): CommandSuccessMessage {
+        val isSelf = CommandSuccessMessage(
             playerData.playerId == toId,
 
             CommandI18NStringFactory.isNotToSelf(fromId, toId)
         )
 
-        val isCarrierIdValid = CommandMessage(
+        val isCarrierIdValid = CommandSuccessMessage(
             carrierIdList.all {
                 playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(it)
             },
             I18NString("Invalid carrier id. ")
         )
 
-        val isResourceFractionValid = CommandMessage(
+        val isResourceFractionValid = CommandSuccessMessage(
             (resourceFraction >= 0.0) && (resourceFraction <= 1.0),
             I18NString("Invalid resource fraction. ")
         )
 
-        return CommandMessage(
+        return CommandSuccessMessage(
             listOf(
                 isSelf,
                 isCarrierIdValid,

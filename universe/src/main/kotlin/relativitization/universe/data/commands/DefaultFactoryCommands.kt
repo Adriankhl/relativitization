@@ -67,7 +67,7 @@ data class BuildForeignFuelFactoryCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CommandMessage {
+    ): CommandSuccessMessage {
         val sameTopLeaderId: Boolean = playerData.topLeaderId() == senderTopLeaderId
         val sameTopLeaderIdI18NString: I18NString = if (sameTopLeaderId) {
             I18NString("")
@@ -116,7 +116,7 @@ data class BuildForeignFuelFactoryCommand(
         }
 
 
-        return CommandMessage(
+        return CommandSuccessMessage(
             sameTopLeaderId && allowConstruction && validFactoryInternalData && hasFuel,
             listOf(
                 sameTopLeaderIdI18NString,
@@ -247,7 +247,7 @@ data class BuildForeignResourceFactoryCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CommandMessage {
+    ): CommandSuccessMessage {
         val sameTopLeaderId: Boolean = playerData.topLeaderId() == senderTopLeaderId
         val sameTopLeaderIdI18NString: I18NString = if (sameTopLeaderId) {
             I18NString("")
@@ -302,7 +302,7 @@ data class BuildForeignResourceFactoryCommand(
         }
 
 
-        return CommandMessage(
+        return CommandSuccessMessage(
             sameTopLeaderId && allowConstruction && validFactoryInternalData && hasFuel,
             listOf(
                 sameTopLeaderIdI18NString,
@@ -407,7 +407,7 @@ data class BuildLocalFuelFactoryCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CommandMessage {
+    ): CommandSuccessMessage {
         val isSubordinateOrSelf: Boolean = playerData.isSubOrdinateOrSelf(toId)
         val isSubordinateOrSelfI18NString: I18NString = if (isSubordinateOrSelf) {
             I18NString("")
@@ -425,7 +425,7 @@ data class BuildLocalFuelFactoryCommand(
         }
 
 
-        return CommandMessage(
+        return CommandSuccessMessage(
             isSubordinateOrSelf && allowSubordinateConstruction,
             listOf(
                 isSubordinateOrSelfI18NString,
@@ -540,7 +540,7 @@ data class BuildLocalResourceFactoryCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CommandMessage {
+    ): CommandSuccessMessage {
         val isSubordinateOrSelf: Boolean = playerData.isSubOrdinateOrSelf(toId)
         val isSubordinateOrSelfI18NString: I18NString = if (isSubordinateOrSelf) {
             I18NString("")
@@ -558,7 +558,7 @@ data class BuildLocalResourceFactoryCommand(
         }
 
 
-        return CommandMessage(
+        return CommandSuccessMessage(
             isSubordinateOrSelf && allowSubordinateConstruction,
             listOf(
                 isSubordinateOrSelfI18NString,
@@ -671,8 +671,8 @@ data class RemoveForeignFuelFactoryCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CommandMessage {
-        return CommandMessage(true)
+    ): CommandSuccessMessage {
+        return CommandSuccessMessage(true)
     }
 
     override fun canExecute(
@@ -752,8 +752,8 @@ data class RemoveForeignResourceFactoryCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CommandMessage {
-        return CommandMessage(true)
+    ): CommandSuccessMessage {
+        return CommandSuccessMessage(true)
     }
 
     override fun canExecute(
@@ -836,7 +836,7 @@ data class RemoveLocalFuelFactoryCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CommandMessage {
+    ): CommandSuccessMessage {
 
         val isSelf: Boolean = playerData.playerId == toId
         val isSelfI18NString: I18NString = if (isSelf) {
@@ -892,7 +892,7 @@ data class RemoveLocalFuelFactoryCommand(
             I18NString("Not allow to remove this factory. ")
         }
 
-        return CommandMessage(
+        return CommandSuccessMessage(
             isSelf && hasCarrier && hasFuelFactory && isRemoveAllowed,
             listOf(
                 isSelfI18NString,
@@ -992,7 +992,7 @@ data class RemoveLocalResourceFactoryCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CommandMessage {
+    ): CommandSuccessMessage {
 
         val isSelf: Boolean = playerData.playerId == toId
         val isSelfI18NString: I18NString = if (isSelf) {
@@ -1050,7 +1050,7 @@ data class RemoveLocalResourceFactoryCommand(
             I18NString("Not allow to remove this factory. ")
         }
 
-        return CommandMessage(
+        return CommandSuccessMessage(
             isSelf && hasCarrier && hasResourceFactory && isRemoveAllowed,
             listOf(
                 isSelfI18NString,
@@ -1157,7 +1157,7 @@ data class SupplyForeignFuelFactoryCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CommandMessage {
+    ): CommandSuccessMessage {
 
         val hasFuel: Boolean =
             playerData.playerInternalData.physicsData().fuelRestMassData.production >= amount
@@ -1167,7 +1167,7 @@ data class SupplyForeignFuelFactoryCommand(
             I18NString("Not enough fuel rest mass. ")
         }
 
-        return CommandMessage(
+        return CommandSuccessMessage(
             hasFuel,
             listOf(
                 hasFuelI18NString
@@ -1256,7 +1256,7 @@ data class SupplyForeignResourceFactoryCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CommandMessage {
+    ): CommandSuccessMessage {
 
         val hasFuel: Boolean =
             playerData.playerInternalData.physicsData().fuelRestMassData.production >= amount
@@ -1266,7 +1266,7 @@ data class SupplyForeignResourceFactoryCommand(
             I18NString("Not enough fuel rest mass. ")
         }
 
-        return CommandMessage(
+        return CommandSuccessMessage(
             hasFuel,
             listOf(
                 hasFuelI18NString

@@ -28,28 +28,28 @@ data class DeclareWarCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CommandMessage {
-        val isNotLeaderOrSelf = CommandMessage(
+    ): CommandSuccessMessage {
+        val isNotLeaderOrSelf = CommandSuccessMessage(
             !playerData.isLeaderOrSelf(toId),
             I18NString("Target is leader. ")
         )
 
-        val isNotSubordinateOrSelf = CommandMessage(
+        val isNotSubordinateOrSelf = CommandSuccessMessage(
             !playerData.isSubOrdinateOrSelf(toId),
             I18NString("Target is subordinate. ")
         )
 
-        val isNotInWar = CommandMessage(
+        val isNotInWar = CommandSuccessMessage(
             !playerData.playerInternalData.diplomacyData().warData.warStateMap.containsKey(toId),
             I18NString("Target is in war with you. ")
         )
 
-        val isNotInPeaceTreaty = CommandMessage(
+        val isNotInPeaceTreaty = CommandSuccessMessage(
             !playerData.playerInternalData.modifierData().diplomacyModifierData.canDeclareWar(toId),
             I18NString("Target is in peace with you. ")
         )
 
-        return CommandMessage(
+        return CommandSuccessMessage(
             listOf(
                 isNotLeaderOrSelf,
                 isNotSubordinateOrSelf,
@@ -124,25 +124,25 @@ data class DeclareIndependenceCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CommandMessage {
-        val isDirectLeader = CommandMessage(
+    ): CommandSuccessMessage {
+        val isDirectLeader = CommandSuccessMessage(
             playerData.playerInternalData.directLeaderId == toId,
 
             I18NString("Target is not direct leader. ")
         )
 
-        val isNotSelf = CommandMessage(
+        val isNotSelf = CommandSuccessMessage(
             playerData.playerId != toId,
 
             I18NString("Cannot declare war on self. ")
         )
 
-        val isNotInWar = CommandMessage(
+        val isNotInWar = CommandSuccessMessage(
             !playerData.playerInternalData.diplomacyData().warData.warStateMap.containsKey(toId),
             I18NString("Target is in war with you. ")
         )
 
-        return CommandMessage(
+        return CommandSuccessMessage(
             listOf(
                 isDirectLeader,
                 isNotSelf,
@@ -233,20 +233,20 @@ data class ProposePeaceCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CommandMessage {
-        val isSelf = CommandMessage(
+    ): CommandSuccessMessage {
+        val isSelf = CommandSuccessMessage(
             playerData.playerId == toId,
             I18NString("Is not sending to self. ")
         )
 
-        val isInWar = CommandMessage(
+        val isInWar = CommandSuccessMessage(
             playerData.playerInternalData.diplomacyData().warData.warStateMap.containsKey(
                 targetPlayerId
             ),
             I18NString("Is not in war with target. ")
         )
 
-        return CommandMessage(
+        return CommandSuccessMessage(
             listOf(
                 isSelf,
                 isInWar,

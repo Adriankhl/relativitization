@@ -30,12 +30,12 @@ data class DisableFuelIncreaseCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CommandMessage {
+    ): CommandSuccessMessage {
         val sameId: Boolean = playerData.playerId == toId
         return if (sameId) {
-            CommandMessage(true)
+            CommandSuccessMessage(true)
         } else {
-            CommandMessage(
+            CommandSuccessMessage(
                 false,
                 CommandI18NStringFactory.isNotToSelf(playerData.playerId, toId)
             )

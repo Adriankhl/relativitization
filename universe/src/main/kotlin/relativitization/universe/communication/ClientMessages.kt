@@ -18,7 +18,7 @@ data class LoadUniverseMessage(
 )
 
 @Serializable
-data class PlayerActionMessage(
+data class PlayerInputMessage(
     val id: Int,
     val password: String,
     val commandList: List<Command>,

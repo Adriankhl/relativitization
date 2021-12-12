@@ -27,8 +27,8 @@ data class MergeCarrierCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CommandMessage {
-        return CommandMessage(false)
+    ): CommandSuccessMessage {
+        return CommandSuccessMessage(false)
     }
 
     override fun canExecute(
@@ -62,8 +62,8 @@ data class AgreeMergeCommand(
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CommandMessage {
-        return CommandMessage(false)
+    ): CommandSuccessMessage {
+        return CommandSuccessMessage(false)
     }
 
     override fun canExecute(

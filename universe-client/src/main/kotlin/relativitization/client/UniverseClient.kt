@@ -18,7 +18,7 @@ import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
-import relativitization.universe.data.commands.CommandMessage
+import relativitization.universe.data.commands.CommandSuccessMessage
 import relativitization.universe.data.commands.CannotSendCommand
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.commands.DummyCommand
@@ -151,16 +151,16 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
         if (newValue is CannotSendCommand) {
             onCurrentCommandChangeFunctionList.forEach { it() }
         } else {
-            val commandMessage: CommandMessage = newValue.canSendFromPlayer(
+            val commandSuccessMessage: CommandSuccessMessage = newValue.canSendFromPlayer(
                 planDataAtPlayer.getCurrentMutablePlayerData(),
                 planDataAtPlayer.universeData3DAtPlayer.universeSettings
             )
 
-            if (commandMessage.success) {
+            if (commandSuccessMessage.success) {
                 onCurrentCommandChangeFunctionList.forEach { it() }
             } else {
                 currentCommand = CannotSendCommand(
-                    reason = commandMessage.errorMessage
+                    reason = commandSuccessMessage.errorMessage
                 )
             }
         }
@@ -857,7 +857,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
             val response: HttpResponse =
                 ktorClient.post("http://$serverAddress:$serverPort/run/input") {
                     contentType(ContentType.Application.Json)
-                    body = PlayerActionMessage(playerId, password, planDataAtPlayer.commandList)
+                    body = PlayerInputMessage(playerId, password, planDataAtPlayer.commandList)
                     timeout {
                         connectTimeoutMillis = universeClientSettings.httpConnectTimeout
                         requestTimeoutMillis = universeClientSettings.httpRequestTimeout
