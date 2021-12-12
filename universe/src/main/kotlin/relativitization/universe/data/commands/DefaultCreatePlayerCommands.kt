@@ -39,36 +39,29 @@ data class SplitCarrierCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): CommandMessage {
-        val isToSelf: Boolean = playerData.playerId == toId
-        val isToSelfI18NString: I18NString = if (isToSelf) {
-            I18NString("")
-        } else {
+        val isSelf = CommandMessage(
+            playerData.playerId == toId,
+
             CommandI18NStringFactory.isNotToSelf(fromId, toId)
-        }
+        )
 
-        val isCarrierIdValid: Boolean = carrierIdList.all {
-            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(it)
-        }
-        val isCarrierIdValidI18String: I18NString = if (isCarrierIdValid) {
-            I18NString("")
-        } else {
+        val isCarrierIdValid = CommandMessage(
+            carrierIdList.all {
+                playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(it)
+            },
             I18NString("Invalid carrier id. ")
-        }
+        )
 
-        val isResourceFractionValid: Boolean =
-            (resourceFraction >= 0.0) && (resourceFraction <= 1.0)
-        val isResourceFractionValidI18String: I18NString = if (isCarrierIdValid) {
-            I18NString("")
-        } else {
+        val isResourceFractionValid = CommandMessage(
+            (resourceFraction >= 0.0) && (resourceFraction <= 1.0),
             I18NString("Invalid resource fraction. ")
-        }
+        )
 
         return CommandMessage(
-            isToSelf && isCarrierIdValid && isResourceFractionValid,
             listOf(
-                isToSelfI18NString,
-                isCarrierIdValidI18String,
-                isResourceFractionValidI18String,
+                isSelf,
+                isCarrierIdValid,
+                isResourceFractionValid,
             )
         )
     }

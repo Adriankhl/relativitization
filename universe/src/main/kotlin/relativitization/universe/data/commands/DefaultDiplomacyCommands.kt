@@ -29,43 +29,32 @@ data class DeclareWarCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): CommandMessage {
-        val isNotLeaderOrSelf: Boolean = !playerData.isLeaderOrSelf(toId)
-        val isNotLeaderOrSelfI18NString: I18NString = if (isNotLeaderOrSelf) {
-            I18NString("")
-        } else {
+        val isNotLeaderOrSelf = CommandMessage(
+            !playerData.isLeaderOrSelf(toId),
             I18NString("Target is leader. ")
-        }
+        )
 
-        val isNotSubordinateOrSelf: Boolean = !playerData.isSubOrdinateOrSelf(toId)
-        val isNotSubordinateOrSelfI18NString: I18NString = if (isNotSubordinateOrSelf) {
-            I18NString("")
-        } else {
+        val isNotSubordinateOrSelf = CommandMessage(
+            !playerData.isSubOrdinateOrSelf(toId),
             I18NString("Target is subordinate. ")
-        }
+        )
 
-        val isNotInWar: Boolean =
-            !playerData.playerInternalData.diplomacyData().warData.warStateMap.containsKey(toId)
-        val isNotInWarI18NString: I18NString = if (isNotInWar) {
-            I18NString("")
-        } else {
+        val isNotInWar = CommandMessage(
+            !playerData.playerInternalData.diplomacyData().warData.warStateMap.containsKey(toId),
             I18NString("Target is in war with you. ")
-        }
+        )
 
-        val isNotInPeaceTreaty: Boolean =
-            !playerData.playerInternalData.modifierData().diplomacyModifierData.canDeclareWar(toId)
-        val isNotInPeaceTreatyI18NString: I18NString = if (isNotInPeaceTreaty) {
-            I18NString("")
-        } else {
+        val isNotInPeaceTreaty = CommandMessage(
+            !playerData.playerInternalData.modifierData().diplomacyModifierData.canDeclareWar(toId),
             I18NString("Target is in peace with you. ")
-        }
+        )
 
         return CommandMessage(
-            isNotLeaderOrSelf && isNotSubordinateOrSelf && isNotInWar && isNotInPeaceTreaty,
             listOf(
-                isNotLeaderOrSelfI18NString,
-                isNotSubordinateOrSelfI18NString,
-                isNotInWarI18NString,
-                isNotInPeaceTreatyI18NString,
+                isNotLeaderOrSelf,
+                isNotSubordinateOrSelf,
+                isNotInWar,
+                isNotInPeaceTreaty,
             )
         )
     }
@@ -136,34 +125,28 @@ data class DeclareIndependenceCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): CommandMessage {
-        val isDirectLeader: Boolean = playerData.playerInternalData.directLeaderId == toId
-        val isDirectLeaderI18NString: I18NString = if (isDirectLeader) {
-            I18NString("")
-        } else {
+        val isDirectLeader = CommandMessage(
+            playerData.playerInternalData.directLeaderId == toId,
+
             I18NString("Target is not direct leader. ")
-        }
+        )
 
-        val isNotSelf: Boolean = playerData.playerId != toId
-        val isNotSelfI18NString: I18NString = if (isNotSelf) {
-            I18NString("")
-        } else {
+        val isNotSelf = CommandMessage(
+            playerData.playerId != toId,
+
             I18NString("Cannot declare war on self. ")
-        }
+        )
 
-        val isNotInWar: Boolean =
-            !playerData.playerInternalData.diplomacyData().warData.warStateMap.containsKey(toId)
-        val isNotInWarI18NString: I18NString = if (isNotInWar) {
-            I18NString("")
-        } else {
+        val isNotInWar = CommandMessage(
+            !playerData.playerInternalData.diplomacyData().warData.warStateMap.containsKey(toId),
             I18NString("Target is in war with you. ")
-        }
+        )
 
         return CommandMessage(
-            isDirectLeader && isNotSelf && isNotInWar,
             listOf(
-                isDirectLeaderI18NString,
-                isNotSelfI18NString,
-                isNotInWarI18NString,
+                isDirectLeader,
+                isNotSelf,
+                isNotInWar
             )
         )
     }
@@ -251,27 +234,22 @@ data class ProposePeaceCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): CommandMessage {
-        val isSelf: Boolean = playerData.playerId == toId
-        val isSelfI18NString: I18NString = if (isSelf) {
-            I18NString("")
-        } else {
+        val isSelf = CommandMessage(
+            playerData.playerId == toId,
             I18NString("Is not sending to self. ")
-        }
-
-        val isInWar: Boolean = playerData.playerInternalData.diplomacyData().warData.warStateMap.containsKey(
-            targetPlayerId
         )
-        val isInWarI18NString: I18NString = if (isInWar) {
-            I18NString("")
-        } else {
+
+        val isInWar = CommandMessage(
+            playerData.playerInternalData.diplomacyData().warData.warStateMap.containsKey(
+                targetPlayerId
+            ),
             I18NString("Is not in war with target. ")
-        }
+        )
 
         return CommandMessage(
-            isSelf && isInWar,
             listOf(
-                isSelfI18NString,
-                isInWarI18NString
+                isSelf,
+                isInWar,
             )
         )
     }
@@ -282,9 +260,10 @@ data class ProposePeaceCommand(
     ): Boolean {
         val isSelf: Boolean = playerData.playerId == fromId
 
-        val isInWar: Boolean = playerData.playerInternalData.diplomacyData().warData.warStateMap.containsKey(
-            targetPlayerId
-        )
+        val isInWar: Boolean =
+            playerData.playerInternalData.diplomacyData().warData.warStateMap.containsKey(
+                targetPlayerId
+            )
 
         return isSelf && isInWar
     }
