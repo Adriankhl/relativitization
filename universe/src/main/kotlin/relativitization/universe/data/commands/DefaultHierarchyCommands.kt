@@ -29,7 +29,7 @@ data class AddDirectSubordinateCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): Boolean {
-        return true
+        return CommandErrorMessage(true).success
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
