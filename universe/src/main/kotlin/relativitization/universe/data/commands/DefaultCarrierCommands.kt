@@ -61,7 +61,7 @@ data class BuildLocalCarrierCommands(
     override fun canExecute(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): Boolean {
+    ): CommandErrorMessage {
         val isSelf = CommandErrorMessage(
             playerData.playerId == fromId,
             CommandI18NStringFactory.isNotFromSelf(playerData.playerId, toId)
@@ -81,7 +81,7 @@ data class BuildLocalCarrierCommands(
                 isSelf,
                 hasFuel
             )
-        ).success
+        )
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {

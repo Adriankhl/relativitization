@@ -185,7 +185,7 @@ sealed class Command {
     protected abstract fun canExecute(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): Boolean
+    ): CommandErrorMessage
 
     /**
      * Check if can execute and have command
@@ -199,7 +199,7 @@ sealed class Command {
     ): Boolean {
         val hasCommand: Boolean = CommandCollection.hasCommand(universeSettings, this)
         val correctId: Boolean = checkToId(playerData)
-        val canExecute: Boolean = canExecute(playerData, universeSettings)
+        val canExecute: Boolean = canExecute(playerData, universeSettings).success
         return hasCommand && correctId && canExecute
     }
 

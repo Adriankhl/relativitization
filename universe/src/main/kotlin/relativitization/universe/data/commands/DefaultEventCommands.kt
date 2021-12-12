@@ -79,7 +79,7 @@ data class AddEventCommand(
     override fun canExecute(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): Boolean {
+    ): CommandErrorMessage {
 
         val canAdd = CommandErrorMessage(
             canAddEvent(universeSettings, event),
@@ -93,7 +93,7 @@ data class AddEventCommand(
                 canAdd,
                 canExecuteEvent,
             )
-        ).success
+        )
     }
 
 
@@ -182,7 +182,7 @@ data class SelectEventChoiceCommand(
     override fun canExecute(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): Boolean {
+    ): CommandErrorMessage {
         val isSelf = CommandErrorMessage(
             playerData.playerId == fromId,
             CommandI18NStringFactory.isNotFromSelf(playerData.playerId, fromId)
@@ -192,7 +192,7 @@ data class SelectEventChoiceCommand(
             listOf(
                 isSelf
             )
-        ).success
+        )
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {

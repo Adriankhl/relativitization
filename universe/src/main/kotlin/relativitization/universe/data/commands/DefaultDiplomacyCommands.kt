@@ -79,7 +79,7 @@ data class DeclareWarCommand(
     override fun canExecute(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): Boolean {
+    ): CommandErrorMessage {
         // Not already in war
         val isNotInWar = CommandErrorMessage(
             !playerData.playerInternalData.diplomacyData().warData.warStateMap.containsKey(fromId),
@@ -90,7 +90,7 @@ data class DeclareWarCommand(
             listOf(
                 isNotInWar
             )
-        ).success
+        )
     }
 
     override fun execute(
@@ -191,7 +191,7 @@ data class DeclareIndependenceCommand(
     override fun canExecute(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): Boolean {
+    ): CommandErrorMessage {
         // Not already in war
         val isNotInWar = CommandErrorMessage(
             !playerData.playerInternalData.diplomacyData().warData.warStateMap.containsKey(fromId),
@@ -202,7 +202,7 @@ data class DeclareIndependenceCommand(
             listOf(
                 isNotInWar
             )
-        ).success
+        )
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
@@ -275,7 +275,7 @@ data class ProposePeaceCommand(
     override fun canExecute(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): Boolean {
+    ): CommandErrorMessage {
         val isSelf = CommandErrorMessage(
             playerData.playerId == fromId,
             CommandI18NStringFactory.isNotFromSelf(playerData.playerId, fromId)
@@ -291,7 +291,7 @@ data class ProposePeaceCommand(
                 isSelf,
                 isInWar,
             )
-        ).success
+        )
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {

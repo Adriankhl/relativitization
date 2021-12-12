@@ -119,7 +119,7 @@ data class BuildForeignFuelFactoryCommand(
     override fun canExecute(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): Boolean {
+    ): CommandErrorMessage {
         val sameTopLeaderId: Boolean = playerData.topLeaderId() == senderTopLeaderId
 
         val canForeignInvestorBuild: Boolean = (!sameTopLeaderId &&
@@ -145,7 +145,7 @@ data class BuildForeignFuelFactoryCommand(
                 allowConstruction,
                 hasCarrier,
             )
-        ).success
+        )
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
@@ -294,7 +294,7 @@ data class BuildForeignResourceFactoryCommand(
     override fun canExecute(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): Boolean {
+    ): CommandErrorMessage {
         val sameTopLeaderId: Boolean = playerData.topLeaderId() == senderTopLeaderId
 
         val canForeignInvestorBuild: Boolean = (!sameTopLeaderId &&
@@ -320,7 +320,7 @@ data class BuildForeignResourceFactoryCommand(
                 allowConstruction,
                 hasCarrier,
             )
-        ).success
+        )
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
@@ -404,7 +404,7 @@ data class BuildLocalFuelFactoryCommand(
     override fun canExecute(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): Boolean {
+    ): CommandErrorMessage {
         val isLeaderOrSelf = CommandErrorMessage(
             playerData.isLeaderOrSelf(fromId),
             I18NString("Sender is not leader or self. ")
@@ -446,7 +446,7 @@ data class BuildLocalFuelFactoryCommand(
                 hasCarrier,
                 hasFuel
             )
-        ).success
+        )
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
@@ -552,7 +552,7 @@ data class BuildLocalResourceFactoryCommand(
     override fun canExecute(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): Boolean {
+    ): CommandErrorMessage {
         val isLeaderOrSelf = CommandErrorMessage(
             playerData.isLeaderOrSelf(fromId),
             I18NString("Sender is not leader or self. ")
@@ -597,7 +597,7 @@ data class BuildLocalResourceFactoryCommand(
                 hasCarrier,
                 hasFuel
             )
-        ).success
+        )
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
@@ -682,7 +682,7 @@ data class RemoveForeignFuelFactoryCommand(
     override fun canExecute(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): Boolean {
+    ): CommandErrorMessage {
         val hasCarrier = CommandErrorMessage(
             playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(targetCarrierId),
             I18NString("Carrier does not exist. ")
@@ -724,7 +724,7 @@ data class RemoveForeignFuelFactoryCommand(
                 hasFuelFactory,
                 isOwner,
             )
-        ).success
+        )
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
@@ -777,7 +777,7 @@ data class RemoveForeignResourceFactoryCommand(
     override fun canExecute(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): Boolean {
+    ): CommandErrorMessage {
         val hasCarrier = CommandErrorMessage(
             playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(targetCarrierId),
             I18NString("Carrier does not exist. ")
@@ -821,7 +821,7 @@ data class RemoveForeignResourceFactoryCommand(
                 hasResourceFactory,
                 isOwner,
             )
-        ).success
+        )
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
@@ -927,7 +927,7 @@ data class RemoveLocalFuelFactoryCommand(
     override fun canExecute(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): Boolean {
+    ): CommandErrorMessage {
         val isSelf = CommandErrorMessage(
             playerData.playerId == fromId,
             CommandI18NStringFactory.isNotFromSelf(playerData.playerId, fromId)
@@ -979,7 +979,7 @@ data class RemoveLocalFuelFactoryCommand(
                 hasFuelFactory,
                 isRemoveAllowed,
             )
-        ).success
+        )
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
@@ -1090,7 +1090,7 @@ data class RemoveLocalResourceFactoryCommand(
     override fun canExecute(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): Boolean {
+    ): CommandErrorMessage {
         val isSelf = CommandErrorMessage(
             playerData.playerId == fromId,
             CommandI18NStringFactory.isNotFromSelf(playerData.playerId, fromId)
@@ -1144,7 +1144,7 @@ data class RemoveLocalResourceFactoryCommand(
                 hasResourceFactory,
                 isRemoveAllowed,
             )
-        ).success
+        )
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
@@ -1223,7 +1223,7 @@ data class SupplyForeignFuelFactoryCommand(
     override fun canExecute(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): Boolean {
+    ): CommandErrorMessage {
         val hasCarrier = CommandErrorMessage(
             playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(targetCarrierId),
             I18NString("Carrier does not exist. ")
@@ -1254,7 +1254,7 @@ data class SupplyForeignFuelFactoryCommand(
                 hasFuelFactory,
                 isFuelIncreaseEnable,
             )
-        ).success
+        )
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
@@ -1330,7 +1330,7 @@ data class SupplyForeignResourceFactoryCommand(
     override fun canExecute(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): Boolean {
+    ): CommandErrorMessage {
         val hasCarrier = CommandErrorMessage(
             playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(targetCarrierId),
             I18NString("Carrier does not exist. ")
@@ -1364,7 +1364,7 @@ data class SupplyForeignResourceFactoryCommand(
                 hasResourceFactory,
                 isFuelIncreaseEnable,
             )
-        ).success
+        )
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {

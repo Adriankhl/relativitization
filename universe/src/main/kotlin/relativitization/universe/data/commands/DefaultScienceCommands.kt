@@ -85,7 +85,7 @@ data class BuildInstituteCommand(
     override fun canExecute(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): Boolean {
+    ): CommandErrorMessage {
         val isSelf = CommandErrorMessage(
             playerData.playerId == fromId,
             CommandI18NStringFactory.isNotFromSelf(playerData.playerId, fromId)
@@ -101,7 +101,7 @@ data class BuildInstituteCommand(
                 isSelf,
                 hasCarrier,
             )
-        ).success
+        )
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
@@ -189,7 +189,7 @@ data class BuildLaboratoryCommand(
     override fun canExecute(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): Boolean {
+    ): CommandErrorMessage {
         val isSelf = CommandErrorMessage(
             playerData.playerId == fromId,
             CommandI18NStringFactory.isNotFromSelf(playerData.playerId, fromId)
@@ -205,7 +205,7 @@ data class BuildLaboratoryCommand(
                 isSelf,
                 hasCarrier,
             )
-        ).success
+        )
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
@@ -287,7 +287,7 @@ data class RemoveInstituteCommand(
     override fun canExecute(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): Boolean {
+    ): CommandErrorMessage {
         val isSelf = CommandErrorMessage(
             playerData.playerId == fromId,
             CommandI18NStringFactory.isNotFromSelf(playerData.playerId, fromId)
@@ -315,7 +315,7 @@ data class RemoveInstituteCommand(
                 hasCarrier,
                 hasInstitute,
             )
-        ).success
+        )
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
@@ -391,7 +391,7 @@ data class RemoveLaboratoryCommand(
     override fun canExecute(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): Boolean {
+    ): CommandErrorMessage {
         val isSelf = CommandErrorMessage(
             playerData.playerId == fromId,
             CommandI18NStringFactory.isNotFromSelf(playerData.playerId, fromId)
@@ -419,7 +419,7 @@ data class RemoveLaboratoryCommand(
                 hasCarrier,
                 hasLaboratory,
             )
-        ).success
+        )
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {

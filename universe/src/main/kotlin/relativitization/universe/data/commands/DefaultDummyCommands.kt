@@ -33,8 +33,8 @@ data class DummyCommand(
     override fun canExecute(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): Boolean {
-        return true
+    ): CommandErrorMessage {
+        return CommandErrorMessage(true)
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
@@ -62,7 +62,7 @@ data class CannotSendCommand(
     override fun canExecute(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): Boolean = CommandErrorMessage(true).success
+    ): CommandErrorMessage = CommandErrorMessage(true)
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) { }
 }

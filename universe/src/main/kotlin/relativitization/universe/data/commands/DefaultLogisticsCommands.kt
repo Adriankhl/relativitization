@@ -105,7 +105,7 @@ data class SendFuelFromStorageCommand(
     override fun canExecute(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): Boolean {
+    ): CommandErrorMessage {
         val isFuelIncreaseEnable = CommandErrorMessage(
             playerData.playerInternalData.modifierData().physicsModifierData.disableRestMassIncreaseTimeLimit <= 0,
             I18NString("Fuel increase is disabled. ")
@@ -115,7 +115,7 @@ data class SendFuelFromStorageCommand(
             listOf(
                 isFuelIncreaseEnable,
             )
-        ).success
+        )
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
@@ -295,8 +295,8 @@ data class SendResourceFromStorageCommand(
     override fun canExecute(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): Boolean {
-        return CommandErrorMessage(true).success
+    ): CommandErrorMessage {
+        return CommandErrorMessage(true)
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
@@ -353,7 +353,7 @@ data class SendFuelCommand(
     override fun canExecute(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): Boolean {
+    ): CommandErrorMessage {
         val isFuelIncreaseEnable = CommandErrorMessage(
             playerData.playerInternalData.modifierData().physicsModifierData.disableRestMassIncreaseTimeLimit <= 0,
             I18NString("Fuel increase is disabled. ")
@@ -363,7 +363,7 @@ data class SendFuelCommand(
             listOf(
                 isFuelIncreaseEnable,
             )
-        ).success
+        )
     }
 
 
@@ -422,8 +422,8 @@ data class SendResourceCommand(
     override fun canExecute(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): Boolean {
-        return CommandErrorMessage(true).success
+    ): CommandErrorMessage {
+        return CommandErrorMessage(true)
     }
 
 
@@ -490,8 +490,8 @@ data class SendResourceToPopCommand(
     override fun canExecute(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): Boolean {
-        return CommandErrorMessage(true).success
+    ): CommandErrorMessage {
+        return CommandErrorMessage(true)
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
@@ -567,7 +567,7 @@ data class PopBuyResourceCommand(
     override fun canExecute(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): Boolean {
+    ): CommandErrorMessage {
         val validTopLeaderId = CommandErrorMessage(
             playerData.topLeaderId() == targetTopLeaderId,
             I18NString("Top leader id is wrong. ")
@@ -583,7 +583,7 @@ data class PopBuyResourceCommand(
                 validTopLeaderId,
                 isFuelIncreaseEnable,
             )
-        ).success
+        )
     }
 
 
@@ -770,7 +770,7 @@ data class PlayerBuyResourceCommand(
     override fun canExecute(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): Boolean {
+    ): CommandErrorMessage {
         val validTopLeaderId = CommandErrorMessage(
             playerData.topLeaderId() == targetTopLeaderId,
             I18NString("Top leader id is wrong. ")
@@ -786,7 +786,7 @@ data class PlayerBuyResourceCommand(
                 validTopLeaderId,
                 isFuelIncreaseEnable,
             )
-        ).success
+        )
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {

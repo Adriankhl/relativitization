@@ -34,8 +34,8 @@ data class MergeCarrierCommand(
     override fun canExecute(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): Boolean {
-        return true
+    ): CommandErrorMessage {
+        return CommandErrorMessage(true)
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
@@ -69,8 +69,8 @@ data class AgreeMergeCommand(
     override fun canExecute(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): Boolean {
-        return CommandErrorMessage(true).success
+    ): CommandErrorMessage {
+        return CommandErrorMessage(true)
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
