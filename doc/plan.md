@@ -69,7 +69,7 @@
 * Display information
 * Available commands
 * Map mode [x]
-* Self execute and execute immediate if self command, and fix plan data
+* Show execute warning
 
 # Test TODO List
 * Declare war [x]
