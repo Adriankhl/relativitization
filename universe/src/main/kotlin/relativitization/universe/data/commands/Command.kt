@@ -292,7 +292,7 @@ data class CommandSuccessMessage(
     )
 
     constructor(commandSuccessMessageList: List<CommandSuccessMessage>): this(
-        commandSuccessMessageList.any { !it.success },
+        commandSuccessMessageList.all { it.success },
         commandSuccessMessageList.filter { !it.success }.map { it.errorMessage }
     )
 }
