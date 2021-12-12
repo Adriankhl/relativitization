@@ -243,41 +243,26 @@ class PlanDataAtPlayer(
         return getMutablePlayerData(universeData3DAtPlayer.getCurrentPlayerData().playerId)
     }
 
-    /**
-     * Reset the current player data and do all the self execute
-     */
-    private fun resetCurrentPlayerDataAndSelfExecute() {
-        playerDataMap[universeData3DAtPlayer.getCurrentPlayerData().playerId] =
-            DataSerializer.copy(universeData3DAtPlayer.getCurrentPlayerData())
-
-        commandList.forEach {
-            it.checkAndSelfExecuteBeforeSend(
-                getCurrentMutablePlayerData(),
-                universeData3DAtPlayer.universeSettings
-            )
-        }
-    }
-
-    /**
-     * Execute all commands to current player data
-     */
-    private fun executeOnCurrentPlayerData() {
-        val playerData: MutablePlayerData = getCurrentMutablePlayerData()
-
-        commandList.filter {
-            it.toId == playerData.playerId
-        }.forEach {
-            it.checkAndExecute(
-                playerData,
-                universeData3DAtPlayer.universeSettings
-            )
-        }
-    }
 
     fun resetPlayerData(playerId: Int) {
         if (playerId == universeData3DAtPlayer.getCurrentPlayerData().playerId) {
-            resetCurrentPlayerDataAndSelfExecute()
-            executeOnCurrentPlayerData()
+            playerDataMap[playerId] = DataSerializer.copy(universeData3DAtPlayer.get(playerId))
+            val playerData: MutablePlayerData = getMutablePlayerData(playerId)
+
+            commandList.forEach {
+                it.checkAndSelfExecuteBeforeSend(
+                    playerData,
+                    universeData3DAtPlayer.universeSettings
+                )
+
+                if (it.toId == playerId) {
+                    it.checkAndExecute(
+                        playerData,
+                        universeData3DAtPlayer.universeSettings
+                    )
+                }
+            }
+
         } else {
             playerDataMap[playerId] = DataSerializer.copy(universeData3DAtPlayer.get(playerId))
 
@@ -295,9 +280,6 @@ class PlanDataAtPlayer(
     }
 
     private fun addSingleCommand(command: Command) {
-        // Reset first since target player data can be self
-        resetCurrentPlayerDataAndSelfExecute()
-
         val targetPlayerData: MutablePlayerData = getMutablePlayerData(command.toId)
 
         if (targetPlayerData.playerId == -1) {
@@ -310,11 +292,9 @@ class PlanDataAtPlayer(
                 universeData3DAtPlayer.universeSettings
             ).success
         ) {
-            executeOnCurrentPlayerData()
             command.checkAndExecute(targetPlayerData, universeData3DAtPlayer.universeSettings)
             commandList.add(command)
         } else {
-            executeOnCurrentPlayerData()
             logger.error("Cannot add command: $command")
         }
     }
