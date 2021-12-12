@@ -76,7 +76,7 @@ data class BuildForeignFuelFactoryCommand(
         val isTopLeader: Boolean = playerData.isTopLeader()
         val allowConstruction = CommandErrorMessage(
             isTopLeader || playerData.playerInternalData.politicsData().allowSubordinateBuildFactory,
-            I18NString("Not allow to build factory, not a top leader")
+            I18NString("Not allow to build factory. ")
         )
 
         val validFactoryInternalData = CommandErrorMessage(
@@ -130,13 +130,22 @@ data class BuildForeignFuelFactoryCommand(
         val canSubordinateBuild: Boolean = (!isSenderTopLeader &&
                 playerData.playerInternalData.politicsData().allowSubordinateBuildFactory)
 
-        val allowConstruction: Boolean =
-            isSenderTopLeader || canForeignInvestorBuild || canSubordinateBuild
+        val allowConstruction = CommandErrorMessage(
+            isSenderTopLeader || canForeignInvestorBuild || canSubordinateBuild,
+            I18NString("Not allow to build factory. ")
+        )
 
-        val hasCarrier: Boolean =
-            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(targetCarrierId)
+        val hasCarrier = CommandErrorMessage(
+            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(targetCarrierId),
+            I18NString("Carrier does not exist. ")
+        )
 
-        return allowConstruction && hasCarrier
+        return CommandErrorMessage(
+            listOf(
+                allowConstruction,
+                hasCarrier,
+            )
+        ).success
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
@@ -234,7 +243,7 @@ data class BuildForeignResourceFactoryCommand(
         val isTopLeader: Boolean = playerData.isTopLeader()
         val allowConstruction = CommandErrorMessage(
             isTopLeader || playerData.playerInternalData.politicsData().allowSubordinateBuildFactory,
-            I18NString("Not allow to build factory, not a top leader")
+            I18NString("Not allow to build factory. ")
         )
 
         val validFactoryInternalData = CommandErrorMessage(
@@ -372,7 +381,7 @@ data class BuildLocalFuelFactoryCommand(
         val isTopLeader: Boolean = playerData.isTopLeader()
         val allowSubordinateConstruction = CommandErrorMessage(
             isTopLeader || playerData.playerInternalData.politicsData().allowSubordinateBuildFactory,
-            I18NString("Not allow to build factory, not a top leader")
+            I18NString("Not allow to build factory. ")
         )
 
         return CommandErrorMessage(
@@ -498,7 +507,7 @@ data class BuildLocalResourceFactoryCommand(
         val isTopLeader: Boolean = playerData.isTopLeader()
         val allowSubordinateConstruction = CommandErrorMessage(
             isTopLeader || playerData.playerInternalData.politicsData().allowSubordinateBuildFactory,
-            I18NString("Not allow to build factory, not a top leader")
+            I18NString("Not allow to build factory. ")
         )
 
         return CommandErrorMessage(
