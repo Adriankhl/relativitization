@@ -31,16 +31,7 @@ data class DisableFuelIncreaseCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): CommandSuccessMessage {
-        val isSelf = CommandSuccessMessage(
-            playerData.playerId == toId,
-            CommandI18NStringFactory.isNotToSelf(playerData.playerId, toId)
-        )
-
-        return CommandSuccessMessage(
-            listOf(
-                isSelf
-            )
-        )
+        return CommandSuccessMessage(false)
     }
 
     override fun canExecute(
