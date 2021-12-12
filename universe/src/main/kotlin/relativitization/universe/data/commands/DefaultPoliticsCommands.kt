@@ -46,26 +46,20 @@ data class ChangeFactoryPolicyCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
-
-        val isSelf: Boolean = playerData.playerId == toId
-        val isSelfI18NString: I18NString = if (isSelf) {
-            I18NString("")
-        } else {
+        val isSelf = CommandErrorMessage(
+            playerData.playerId == toId,
             CommandI18NStringFactory.isNotToSelf(fromId, toId)
-        }
+        )
 
-        val isTopLeader: Boolean = playerData.isTopLeader()
-        val isTopLeaderI18NString: I18NString = if (isTopLeader) {
-            I18NString("")
-        } else {
+        val isTopLeader = CommandErrorMessage(
+            playerData.isTopLeader(),
             CommandI18NStringFactory.isNotTopLeader(playerData.playerId)
-        }
+        )
 
         return CommandErrorMessage(
-            isSelf && isTopLeader,
             listOf(
-                isSelfI18NString,
-                isTopLeaderI18NString,
+                isSelf,
+                isTopLeader,
             )
         )
     }
