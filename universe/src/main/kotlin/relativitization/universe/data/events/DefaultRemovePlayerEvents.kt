@@ -60,8 +60,23 @@ data class AskToMergeCarrierEvent(
     override fun canExecute(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): Boolean {
-        return (playerData.playerInternalData.directLeaderId == fromId) && !playerData.isTopLeader()
+    ): CommandErrorMessage {
+        val isDirectLeader = CommandErrorMessage(
+            playerData.playerInternalData.directLeaderId == fromId,
+            I18NString("Sender is not direct leader. ")
+        )
+
+        val isNotTopLeader = CommandErrorMessage(
+            !playerData.isTopLeader(),
+            CommandI18NStringFactory.isTopLeader(playerData.playerId)
+        )
+
+        return CommandErrorMessage(
+            listOf(
+                isDirectLeader,
+                isNotTopLeader,
+            )
+        )
     }
 
     override fun generateCommands(

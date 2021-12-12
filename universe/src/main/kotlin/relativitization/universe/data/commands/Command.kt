@@ -312,6 +312,17 @@ object CommandI18NStringFactory {
         )
     )
 
+    fun isTopLeader(playerId: Int): I18NString = I18NString(
+        listOf(
+            NormalString("Player "),
+            IntString(0),
+            NormalString(" is a top leader. "),
+        ),
+        listOf(
+            playerId.toString(),
+        )
+    )
+
     fun isNotDirectSubordinate(playerId: Int, toId: Int): I18NString = I18NString(
         listOf(
             NormalString("Player "),

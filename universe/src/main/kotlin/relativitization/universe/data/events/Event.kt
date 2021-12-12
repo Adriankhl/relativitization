@@ -43,7 +43,7 @@ sealed class Event {
     abstract fun canExecute(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): Boolean
+    ): CommandErrorMessage
 
     /**
      * Generate commands once per turn

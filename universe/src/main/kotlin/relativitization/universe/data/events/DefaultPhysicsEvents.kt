@@ -83,7 +83,12 @@ data class MoveToDouble3DEvent(
     override fun canExecute(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): Boolean {
+    ): CommandErrorMessage {
+        val isLeaderOrSelf = CommandErrorMessage(
+            playerData.isLeaderOrSelf(fromId),
+            I18NString("Sender is not leader or self. ")
+        )
+
         val requiredDeltaRestMass: Double = Movement.requiredDeltaRestMassUpperBound(
             initialRestMass = playerData.playerInternalData.physicsData().totalRestMass(),
             maxDeltaRestMass = playerData.playerInternalData.physicsData().fuelRestMassData.maxMovementDelta,
@@ -94,9 +99,19 @@ data class MoveToDouble3DEvent(
             speedOfLight = universeSettings.speedOfLight,
             numIteration = 100
         )
-        return (requiredDeltaRestMass <=
-                playerData.playerInternalData.physicsData().fuelRestMassData.movement) &&
-                (playerData.isLeaderOrSelf(fromId))
+
+        val hasFuel = CommandErrorMessage(
+            requiredDeltaRestMass <= playerData.playerInternalData.physicsData().fuelRestMassData.movement,
+            I18NString("Not enough fuel. ")
+        )
+
+
+        return CommandErrorMessage(
+            listOf(
+                isLeaderOrSelf,
+                hasFuel,
+            )
+        )
     }
 
     override fun generateCommands(
