@@ -62,10 +62,7 @@ data class CannotSendCommand(
     override fun canExecute(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): Boolean {
-        return true
-    }
+    ): Boolean = CommandErrorMessage(true).success
 
-    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
-    }
+    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) { }
 }
