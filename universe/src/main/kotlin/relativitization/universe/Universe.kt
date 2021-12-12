@@ -338,16 +338,27 @@ class Universe(
 
         val noneTypePlayerIdList: List<Int> = playerCollection.getNoneIdList()
 
-        // Filter out none type player, Check whether the command is valid, self execute the command
-        val validCommands: Map<Int, List<Command>> = inputCommands.filter { (id, _) ->
+        // Check whether the command is valid, self execute the command
+        val validNoneSelfCommands: Map<Int, List<Command>> = inputCommands.filter { (id, _) ->
             !noneTypePlayerIdList.contains(id)
         }.mapValues { (id, commandList) ->
             val playerData: MutablePlayerData = playerCollection.getPlayer(id)
             commandList.filter { command ->
-                command.checkAndSelfExecuteBeforeSend(
+                val success: Boolean = command.checkAndSelfExecuteBeforeSend(
                     playerData,
                     universeData.universeSettings
                 ).success
+
+                // self executeCommand
+                if (command.toId == playerData.playerId) {
+                    command.checkAndExecute(
+                        playerCollection.getPlayer(command.toId),
+                        universeData.universeSettings
+                    )
+                    false
+                } else {
+                    success
+                }
             }
         }
 
@@ -357,22 +368,13 @@ class Universe(
             val playerIdAtGrid: List<Int> = playerId3D[int3D.x][int3D.y][int3D.z]
             val commandPairList: List<Pair<List<Command>, List<Command>>> =
                 playerIdAtGrid.map { fromId ->
-                    val commandFromPlayer: List<Command> = validCommands.getValue(fromId)
-                    val (selfCommandList, otherCommandList) = commandFromPlayer.partition { it.toId == fromId }
+                    val otherCommandList: List<Command> = validNoneSelfCommands.getValue(fromId)
 
                     val (sameGroupCommandList, commandStoreList) = otherCommandList.partition { command ->
                         val inGrid: Boolean = playerIdAtGrid.contains(command.toId)
                         val sameGroup: Boolean = (playerCollection.getPlayer(fromId).groupId ==
                                 playerCollection.getPlayer(command.toId).groupId)
                         inGrid && sameGroup
-                    }
-
-                    // Execute self command
-                    for (command in selfCommandList) {
-                        command.checkAndExecute(
-                            playerCollection.getPlayer(command.toId),
-                            universeData.universeSettings
-                        )
                     }
 
                     Pair(sameGroupCommandList, commandStoreList)
