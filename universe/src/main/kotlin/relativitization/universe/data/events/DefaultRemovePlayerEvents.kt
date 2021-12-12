@@ -43,17 +43,16 @@ data class AskToMergeCarrierEvent(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): CommandSuccessMessage {
-        val isDirectSubordinate: Boolean =
-            playerData.playerInternalData.directSubordinateIdList.contains(toId)
-        val isDirectSubordinateI18NString: I18NString =
+        val isDirectSubordinate = CommandSuccessMessage(
+            playerData.playerInternalData.directSubordinateIdList.contains(toId),
             CommandI18NStringFactory.isNotDirectSubordinate(
                 playerId = fromId, toId = toId
             )
+        )
 
         return CommandSuccessMessage(
-            isDirectSubordinate,
             listOf(
-                isDirectSubordinateI18NString
+                isDirectSubordinate
             )
         )
     }

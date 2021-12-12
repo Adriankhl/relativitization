@@ -51,32 +51,24 @@ data class AddEventCommand(
         universeSettings: UniverseSettings
     ): CommandSuccessMessage {
 
-        val isIdValid: Boolean = isEventPlayerIdValid()
-        val isIdValidI18NString: I18NString = if (isIdValid) {
-            I18NString("")
-        } else {
-            I18NString(
-                "Event player id is not valid. "
-            )
-        }
-        val canAdd: Boolean = canAddEvent(universeSettings, event)
-        val canAddI18NString: I18NString = if (canAdd) {
-            I18NString("")
-        } else {
-            I18NString(
-                "Cannot add this event by command. ",
-            )
-        }
+        val isIdValid = CommandSuccessMessage(
+            isEventPlayerIdValid(),
+            I18NString("Event player id is not valid. ")
+        )
 
-        val canSendEventSuccessMessage: CommandSuccessMessage = event.canSend(playerData, universeSettings)
+        val canAdd = CommandSuccessMessage(
+            canAddEvent(universeSettings, event),
+            I18NString("Cannot add this event by command. ")
+        )
+
+        val canSendEvent = event.canSend(playerData, universeSettings)
 
 
         return CommandSuccessMessage(
-            canAdd && isIdValid && canSendEventSuccessMessage.success,
             listOf(
-                isIdValidI18NString,
-                canAddI18NString,
-                canSendEventSuccessMessage.errorMessage
+                isIdValid,
+                canAdd,
+                canSendEvent
             )
         )
     }
@@ -163,15 +155,16 @@ data class SelectEventChoiceCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): CommandSuccessMessage {
-        val sameId: Boolean = playerData.playerId == toId
-        return if (sameId) {
-            CommandSuccessMessage(true)
-        } else {
-            CommandSuccessMessage(
-                false,
-                CommandI18NStringFactory.isNotToSelf(playerData.playerId, toId)
+        val isSelf = CommandSuccessMessage(
+            playerData.playerId == toId,
+            CommandI18NStringFactory.isNotToSelf(fromId, toId)
+        )
+
+        return CommandSuccessMessage(
+            listOf(
+                isSelf
             )
-        }
+        )
     }
 
     override fun canExecute(

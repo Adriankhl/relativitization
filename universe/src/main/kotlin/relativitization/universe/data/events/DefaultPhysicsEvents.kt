@@ -62,25 +62,20 @@ data class MoveToDouble3DEvent(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): CommandSuccessMessage {
-        val isSubOrdinateOrSelf: Boolean = playerData.isSubOrdinateOrSelf(toId)
-        val isSubOrdinateOrSelfI18NString: I18NString = if (isSubOrdinateOrSelf) {
-            I18NString("")
-        } else {
+        val isSubOrdinateOrSelf = CommandSuccessMessage(
+            playerData.isSubOrdinateOrSelf(toId),
             CommandI18NStringFactory.isNotSubordinate(playerData.playerId, toId)
-        }
+        )
 
-        val isMaxSpeedValid: Boolean = maxSpeed <= universeSettings.speedOfLight
-        val isMaxSpeedValidI18NString: I18NString = if (isMaxSpeedValid) {
-            I18NString("")
-        } else {
+        val isMaxSpeedValid = CommandSuccessMessage(
+            maxSpeed <= universeSettings.speedOfLight,
             I18NString("Target max. speed is larger than the speed of light")
-        }
+        )
 
         return CommandSuccessMessage(
-            isSubOrdinateOrSelf && isMaxSpeedValid,
             listOf(
-                isSubOrdinateOrSelfI18NString,
-                isMaxSpeedValidI18NString,
+                isSubOrdinateOrSelf,
+                isMaxSpeedValid,
             )
         )
     }
