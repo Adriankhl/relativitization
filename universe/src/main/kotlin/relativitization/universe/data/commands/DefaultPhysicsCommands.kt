@@ -63,7 +63,16 @@ data class ChangeVelocityCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): Boolean {
-        return playerData.isLeaderOrSelf(fromId)
+        val isLeaderOrSelf = CommandErrorMessage(
+            playerData.isLeaderOrSelf(fromId),
+            I18NString("Sender is not leader or self. ")
+        )
+
+        return CommandErrorMessage(
+            listOf(
+                isLeaderOrSelf
+            )
+        ).success
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings): Unit {
@@ -143,12 +152,22 @@ data class TransferFuelToMovementCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): Boolean {
-        val isSelf: Boolean = playerData.playerId == fromId
+        val isSelf = CommandErrorMessage(
+            playerData.playerId == fromId,
+            CommandI18NStringFactory.isNotFromSelf(playerData.playerId, fromId)
+        )
 
-        val hasStorage: Boolean =
-            playerData.playerInternalData.physicsData().fuelRestMassData.storage >= amount
+        val hasStorage = CommandErrorMessage(
+            playerData.playerInternalData.physicsData().fuelRestMassData.storage >= amount,
+            I18NString("Not enough fuel in storage. ")
+        )
 
-        return isSelf && hasStorage
+        return CommandErrorMessage(
+            listOf(
+                isSelf,
+                hasStorage
+            )
+        ).success
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
@@ -209,12 +228,22 @@ data class TransferFuelToProductionCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): Boolean {
-        val isSelf: Boolean = playerData.playerId == fromId
+        val isSelf = CommandErrorMessage(
+            playerData.playerId == fromId,
+            CommandI18NStringFactory.isNotFromSelf(playerData.playerId, fromId)
+        )
 
-        val hasStorage: Boolean =
-            playerData.playerInternalData.physicsData().fuelRestMassData.storage >= amount
+        val hasStorage = CommandErrorMessage(
+            playerData.playerInternalData.physicsData().fuelRestMassData.storage >= amount,
+            I18NString("Not enough fuel in storage. ")
+        )
 
-        return isSelf && hasStorage
+        return CommandErrorMessage(
+            listOf(
+                isSelf,
+                hasStorage
+            )
+        ).success
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
@@ -275,12 +304,22 @@ data class TransferFuelToTradeCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): Boolean {
-        val isSelf: Boolean = playerData.playerId == fromId
+        val isSelf = CommandErrorMessage(
+            playerData.playerId == fromId,
+            CommandI18NStringFactory.isNotFromSelf(playerData.playerId, fromId)
+        )
 
-        val hasStorage: Boolean =
-            playerData.playerInternalData.physicsData().fuelRestMassData.storage >= amount
+        val hasStorage = CommandErrorMessage(
+            playerData.playerInternalData.physicsData().fuelRestMassData.storage >= amount,
+            I18NString("Not enough fuel in storage. ")
+        )
 
-        return isSelf && hasStorage
+        return CommandErrorMessage(
+            listOf(
+                isSelf,
+                hasStorage
+            )
+        ).success
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
@@ -335,8 +374,16 @@ data class ChangeStorageFuelTargetCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): Boolean {
+        val isSelf = CommandErrorMessage(
+            playerData.playerId == fromId,
+            CommandI18NStringFactory.isNotFromSelf(playerData.playerId, fromId)
+        )
 
-        return playerData.playerId == fromId
+        return CommandErrorMessage(
+            listOf(
+                isSelf,
+            )
+        ).success
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
@@ -390,8 +437,16 @@ data class ChangeMovementFuelTargetCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): Boolean {
+        val isSelf = CommandErrorMessage(
+            playerData.playerId == fromId,
+            CommandI18NStringFactory.isNotFromSelf(playerData.playerId, fromId)
+        )
 
-        return playerData.playerId == fromId
+        return CommandErrorMessage(
+            listOf(
+                isSelf,
+            )
+        ).success
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
@@ -445,8 +500,16 @@ data class ChangeProductionFuelTargetCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): Boolean {
+        val isSelf = CommandErrorMessage(
+            playerData.playerId == fromId,
+            CommandI18NStringFactory.isNotFromSelf(playerData.playerId, fromId)
+        )
 
-        return playerData.playerId == fromId
+        return CommandErrorMessage(
+            listOf(
+                isSelf,
+            )
+        ).success
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
