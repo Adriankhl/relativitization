@@ -226,67 +226,45 @@ data class BuildForeignResourceFactoryCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): CommandSuccessMessage {
-        val sameTopLeaderId: Boolean = playerData.topLeaderId() == senderTopLeaderId
-        val sameTopLeaderIdI18NString: I18NString = if (sameTopLeaderId) {
-            I18NString("")
-        } else {
-            I18NString(
-                listOf(
-                    NormalString("Top leader id "),
-                    IntString(0),
-                    NormalString(" is not equal to "),
-                    IntString(1),
-                    NormalString(". ")
-                ),
-                listOf(
-                    senderTopLeaderId.toString(),
-                    playerData.topLeaderId().toString(),
-                ),
-            )
-        }
+        val sameTopLeaderId = CommandSuccessMessage(
+            playerData.topLeaderId() == senderTopLeaderId,
+            CommandI18NStringFactory.isTopLeaderIdWrong(senderTopLeaderId, playerData.topLeaderId())
+        )
 
         val isTopLeader: Boolean = playerData.isTopLeader()
-        val allowConstruction: Boolean =
-            isTopLeader || playerData.playerInternalData.politicsData().allowSubordinateBuildFactory
-        val allowConstructionI18NString: I18NString = if (allowConstruction) {
-            I18NString("")
-        } else {
+        val allowConstruction = CommandSuccessMessage(
+            isTopLeader || playerData.playerInternalData.politicsData().allowSubordinateBuildFactory,
             I18NString("Not allow to build factory, not a top leader")
-        }
+        )
 
-        val validFactoryInternalData: Boolean = resourceFactoryInternalData.squareDiff(
-            playerData.playerInternalData.playerScienceData().playerScienceApplicationData.newResourceFactoryInternalData(
-                resourceFactoryInternalData.outputResource,
-                qualityLevel
-            )
-        ) < 0.1
-        val validFactoryInternalDataI18NString: I18NString = if (validFactoryInternalData) {
-            I18NString("")
-        } else {
+        val validFactoryInternalData = CommandSuccessMessage(
+            resourceFactoryInternalData.squareDiff(
+                playerData.playerInternalData.playerScienceData().playerScienceApplicationData
+                    .newResourceFactoryInternalData(
+                        resourceFactoryInternalData.outputResource,
+                        qualityLevel
+                    )
+            ) < 0.1,
             I18NString("Factory internal data is not valid. ")
-        }
+        )
 
         val fuelNeeded: Double =
             storedFuelRestMass + playerData.playerInternalData.playerScienceData().playerScienceApplicationData.newResourceFactoryFuelNeededByConstruction(
                 resourceFactoryInternalData.outputResource,
                 qualityLevel
             ) * numBuilding
-        val hasFuel: Boolean =
-            playerData.playerInternalData.physicsData().fuelRestMassData.production >= fuelNeeded + storedFuelRestMass
-        val hasFuelI18NString: I18NString = if (hasFuel) {
-            I18NString("")
-        } else {
+        val hasFuel = CommandSuccessMessage(
+            playerData.playerInternalData.physicsData().fuelRestMassData.production >= fuelNeeded + storedFuelRestMass,
             I18NString("Not enough fuel rest mass. ")
-        }
+        )
 
 
         return CommandSuccessMessage(
-            sameTopLeaderId && allowConstruction && validFactoryInternalData && hasFuel,
             listOf(
-                sameTopLeaderIdI18NString,
-                allowConstructionI18NString,
-                validFactoryInternalDataI18NString,
-                hasFuelI18NString
+                sameTopLeaderId,
+                allowConstruction,
+                validFactoryInternalData,
+                hasFuel,
             )
         )
     }
@@ -386,28 +364,21 @@ data class BuildLocalFuelFactoryCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): CommandSuccessMessage {
-        val isSubordinateOrSelf: Boolean = playerData.isSubOrdinateOrSelf(toId)
-        val isSubordinateOrSelfI18NString: I18NString = if (isSubordinateOrSelf) {
-            I18NString("")
-        } else {
+        val isSubordinateOrSelf = CommandSuccessMessage(
+            playerData.isSubOrdinateOrSelf(toId),
             I18NString("Not subordinate or self.")
-        }
+        )
 
         val isTopLeader: Boolean = playerData.isTopLeader()
-        val allowSubordinateConstruction: Boolean =
-            isTopLeader || playerData.playerInternalData.politicsData().allowSubordinateBuildFactory
-        val allowSubordinateConstructionI18NString: I18NString = if (allowSubordinateConstruction) {
-            I18NString("")
-        } else {
+        val allowSubordinateConstruction = CommandSuccessMessage(
+            isTopLeader || playerData.playerInternalData.politicsData().allowSubordinateBuildFactory,
             I18NString("Not allow to build factory, not a top leader")
-        }
-
+        )
 
         return CommandSuccessMessage(
-            isSubordinateOrSelf && allowSubordinateConstruction,
             listOf(
-                isSubordinateOrSelfI18NString,
-                allowSubordinateConstructionI18NString
+                isSubordinateOrSelf,
+                allowSubordinateConstruction,
             )
         )
     }
@@ -519,28 +490,21 @@ data class BuildLocalResourceFactoryCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): CommandSuccessMessage {
-        val isSubordinateOrSelf: Boolean = playerData.isSubOrdinateOrSelf(toId)
-        val isSubordinateOrSelfI18NString: I18NString = if (isSubordinateOrSelf) {
-            I18NString("")
-        } else {
+        val isSubordinateOrSelf = CommandSuccessMessage(
+            playerData.isSubOrdinateOrSelf(toId),
             I18NString("Not subordinate or self.")
-        }
+        )
 
         val isTopLeader: Boolean = playerData.isTopLeader()
-        val allowSubordinateConstruction: Boolean =
-            isTopLeader || playerData.playerInternalData.politicsData().allowSubordinateBuildFactory
-        val allowSubordinateConstructionI18NString: I18NString = if (allowSubordinateConstruction) {
-            I18NString("")
-        } else {
+        val allowSubordinateConstruction = CommandSuccessMessage(
+            isTopLeader || playerData.playerInternalData.politicsData().allowSubordinateBuildFactory,
             I18NString("Not allow to build factory, not a top leader")
-        }
-
+        )
 
         return CommandSuccessMessage(
-            isSubordinateOrSelf && allowSubordinateConstruction,
             listOf(
-                isSubordinateOrSelfI18NString,
-                allowSubordinateConstructionI18NString
+                isSubordinateOrSelf,
+                allowSubordinateConstruction,
             )
         )
     }
@@ -816,67 +780,56 @@ data class RemoveLocalFuelFactoryCommand(
         universeSettings: UniverseSettings
     ): CommandSuccessMessage {
 
-        val isSelf: Boolean = playerData.playerId == toId
-        val isSelfI18NString: I18NString = if (isSelf) {
-            I18NString("")
-        } else {
+        val isSelf = CommandSuccessMessage(
+            playerData.playerId == toId,
             CommandI18NStringFactory.isNotToSelf(fromId, toId)
-        }
+        )
 
-        val hasCarrier: Boolean =
-            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(targetCarrierId)
-        val hasCarrierI18NString: I18NString = if (hasCarrier) {
-            I18NString("")
-        } else {
+        val hasCarrier = CommandSuccessMessage(
+            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(targetCarrierId),
             I18NString("Carrier does not exist. ")
-        }
+        )
 
+        val hasFuelFactory = CommandSuccessMessage(
+            if (hasCarrier.success) {
+                val carrier: MutableCarrierData =
+                    playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
+                        targetCarrierId
+                    )
 
-        val hasFuelFactory: Boolean = if (hasCarrier) {
-            val carrier: MutableCarrierData =
-                playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
-                    targetCarrierId
-                )
-
-            carrier.allPopData.labourerPopData.fuelFactoryMap.containsKey(targetFuelFactoryId)
-        } else {
-            false
-        }
-        val hasFuelFactoryI18NString: I18NString = if (hasFuelFactory) {
-            I18NString("")
-        } else {
+                carrier.allPopData.labourerPopData.fuelFactoryMap.containsKey(targetFuelFactoryId)
+            } else {
+                false
+            },
             I18NString("Fuel factory does not exist. ")
-        }
+        )
 
-        val isRemoveAllowed: Boolean = if (hasFuelFactory) {
-            val carrier: MutableCarrierData =
-                playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
-                    targetCarrierId
-                )
+        val isRemoveAllowed = CommandSuccessMessage(
+            if (hasFuelFactory.success) {
+                val carrier: MutableCarrierData =
+                    playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
+                        targetCarrierId
+                    )
 
-            val ownerId: Int = carrier.allPopData.labourerPopData.fuelFactoryMap.getValue(
-                targetFuelFactoryId
-            ).ownerPlayerId
+                val ownerId: Int = carrier.allPopData.labourerPopData.fuelFactoryMap.getValue(
+                    targetFuelFactoryId
+                ).ownerPlayerId
 
-            // Allow removal of local factory if the owner is not leader
-            // or leader is not allowed to build
-            !playerData.isLeader(ownerId) || !playerData.playerInternalData.politicsData().allowLeaderBuildLocalFactory
-        } else {
-            false
-        }
-        val isRemoveAllowedI18NString: I18NString = if (isRemoveAllowed) {
-            I18NString("")
-        } else {
+                // Allow removal of local factory if the owner is not leader
+                // or leader is not allowed to build
+                !playerData.isLeader(ownerId) || !playerData.playerInternalData.politicsData().allowLeaderBuildLocalFactory
+            } else {
+                false
+            },
             I18NString("Not allow to remove this factory. ")
-        }
+        )
 
         return CommandSuccessMessage(
-            isSelf && hasCarrier && hasFuelFactory && isRemoveAllowed,
             listOf(
-                isSelfI18NString,
-                hasCarrierI18NString,
-                hasFuelFactoryI18NString,
-                isRemoveAllowedI18NString,
+                isSelf,
+                hasCarrier,
+                hasFuelFactory,
+                isRemoveAllowed,
             )
         )
     }
@@ -972,69 +925,58 @@ data class RemoveLocalResourceFactoryCommand(
         universeSettings: UniverseSettings
     ): CommandSuccessMessage {
 
-        val isSelf: Boolean = playerData.playerId == toId
-        val isSelfI18NString: I18NString = if (isSelf) {
-            I18NString("")
-        } else {
+        val isSelf = CommandSuccessMessage(
+            playerData.playerId == toId,
             CommandI18NStringFactory.isNotToSelf(fromId, toId)
-        }
+        )
 
-        val hasCarrier: Boolean =
-            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(targetCarrierId)
-        val hasCarrierI18NString: I18NString = if (hasCarrier) {
-            I18NString("")
-        } else {
+        val hasCarrier = CommandSuccessMessage(
+            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(targetCarrierId),
             I18NString("Carrier does not exist. ")
-        }
+        )
 
+        val hasResourceFactory = CommandSuccessMessage(
+            if (hasCarrier.success) {
+                val carrier: MutableCarrierData =
+                    playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
+                        targetCarrierId
+                    )
 
-        val hasResourceFactory: Boolean = if (hasCarrier) {
-            val carrier: MutableCarrierData =
-                playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
-                    targetCarrierId
+                carrier.allPopData.labourerPopData.resourceFactoryMap.containsKey(
+                    targetResourceFactoryId
                 )
-
-            carrier.allPopData.labourerPopData.resourceFactoryMap.containsKey(
-                targetResourceFactoryId
-            )
-        } else {
-            false
-        }
-        val hasResourceFactoryI18NString: I18NString = if (hasResourceFactory) {
-            I18NString("")
-        } else {
+            } else {
+                false
+            },
             I18NString("Resource factory does not exist. ")
-        }
+        )
 
-        val isRemoveAllowed: Boolean = if (hasResourceFactory) {
-            val carrier: MutableCarrierData =
-                playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
-                    targetCarrierId
-                )
+        val isRemoveAllowed = CommandSuccessMessage(
+            if (hasResourceFactory.success) {
+                val carrier: MutableCarrierData =
+                    playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
+                        targetCarrierId
+                    )
 
-            val ownerId: Int = carrier.allPopData.labourerPopData.resourceFactoryMap.getValue(
-                targetResourceFactoryId
-            ).ownerPlayerId
+                val ownerId: Int = carrier.allPopData.labourerPopData.resourceFactoryMap.getValue(
+                    targetResourceFactoryId
+                ).ownerPlayerId
 
-            // Allow removal of local factory if the owner is not leader
-            // or leader is not allowed to build
-            !playerData.isLeader(ownerId) || !playerData.playerInternalData.politicsData().allowLeaderBuildLocalFactory
-        } else {
-            false
-        }
-        val isRemoveAllowedI18NString: I18NString = if (isRemoveAllowed) {
-            I18NString("")
-        } else {
+                // Allow removal of local factory if the owner is not leader
+                // or leader is not allowed to build
+                !playerData.isLeader(ownerId) || !playerData.playerInternalData.politicsData().allowLeaderBuildLocalFactory
+            } else {
+                false
+            },
             I18NString("Not allow to remove this factory. ")
-        }
+        )
 
         return CommandSuccessMessage(
-            isSelf && hasCarrier && hasResourceFactory && isRemoveAllowed,
             listOf(
-                isSelfI18NString,
-                hasCarrierI18NString,
-                hasResourceFactoryI18NString,
-                isRemoveAllowedI18NString,
+                isSelf,
+                hasCarrier,
+                hasResourceFactory,
+                isRemoveAllowed,
             )
         )
     }
@@ -1137,18 +1079,14 @@ data class SupplyForeignFuelFactoryCommand(
         universeSettings: UniverseSettings
     ): CommandSuccessMessage {
 
-        val hasFuel: Boolean =
-            playerData.playerInternalData.physicsData().fuelRestMassData.production >= amount
-        val hasFuelI18NString: I18NString = if (hasFuel) {
-            I18NString("")
-        } else {
+        val hasFuel = CommandSuccessMessage(
+            playerData.playerInternalData.physicsData().fuelRestMassData.production >= amount,
             I18NString("Not enough fuel rest mass. ")
-        }
+        )
 
         return CommandSuccessMessage(
-            hasFuel,
             listOf(
-                hasFuelI18NString
+                hasFuel
             )
         )
     }
@@ -1236,18 +1174,14 @@ data class SupplyForeignResourceFactoryCommand(
         universeSettings: UniverseSettings
     ): CommandSuccessMessage {
 
-        val hasFuel: Boolean =
-            playerData.playerInternalData.physicsData().fuelRestMassData.production >= amount
-        val hasFuelI18NString: I18NString = if (hasFuel) {
-            I18NString("")
-        } else {
+        val hasFuel = CommandSuccessMessage(
+            playerData.playerInternalData.physicsData().fuelRestMassData.production >= amount,
             I18NString("Not enough fuel rest mass. ")
-        }
+        )
 
         return CommandSuccessMessage(
-            hasFuel,
             listOf(
-                hasFuelI18NString
+                hasFuel
             )
         )
     }
