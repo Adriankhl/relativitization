@@ -41,7 +41,7 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         gdxSettings.smallFontSize
     )
     private var maxSpeed = createDoubleTextField(
-        game.universeClient.getUniverseData3D().universeSettings.speedOfLight,
+        game.universeClient.getUniverseData3D().universeSettings.speedOfLight * 0.5,
         gdxSettings.smallFontSize,
     )
     private var targetVelocityX = createDoubleTextField(
@@ -355,7 +355,7 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
 
         val maxSpeedSlider = createSlider(
             min = 0f,
-            max = game.universeClient.getUniverseData3D().universeSettings.speedOfLight.toFloat(),
+            max = game.universeClient.getUniverseData3D().universeSettings.speedOfLight.toFloat() - 0.01f,
             stepSize = 0.01f,
             default = maxSpeed.value.toFloat(),
         ) { fl, _ ->
