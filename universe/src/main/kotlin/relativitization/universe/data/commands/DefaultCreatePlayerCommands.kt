@@ -70,7 +70,16 @@ data class SplitCarrierCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): Boolean {
-        return fromId == playerData.playerId
+        val isSelf = CommandErrorMessage(
+            playerData.playerId == fromId,
+            CommandI18NStringFactory.isNotFromSelf(playerData.playerId, toId)
+        )
+
+        return CommandErrorMessage(
+            listOf(
+                isSelf
+            )
+        ).success
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
