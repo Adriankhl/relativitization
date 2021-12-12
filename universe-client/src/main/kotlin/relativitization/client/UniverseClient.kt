@@ -18,10 +18,7 @@ import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
-import relativitization.universe.data.commands.CommandErrorMessage
-import relativitization.universe.data.commands.CannotSendCommand
-import relativitization.universe.data.commands.Command
-import relativitization.universe.data.commands.DummyCommand
+import relativitization.universe.data.commands.*
 import relativitization.universe.data.components.defaults.physics.Double2D
 import relativitization.universe.data.components.defaults.physics.Int3D
 import relativitization.universe.data.serializer.DataSerializer
@@ -148,7 +145,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
     // command showing on GUI, can be new command to be confirmed or old command to be cancelled
     val onCurrentCommandChangeFunctionList: MutableList<() -> Unit> = mutableListOf()
     var currentCommand: Command by Delegates.observable(DummyCommand()) { _, _, newValue ->
-        if (newValue is CannotSendCommand) {
+        if (newValue is CannotSendCommand || newValue is ExecuteWarningCommand) {
             onCurrentCommandChangeFunctionList.forEach { it() }
         } else {
             val commandErrorMessage: CommandErrorMessage = newValue.canSendFromPlayer(
@@ -471,11 +468,17 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
      */
     fun confirmCurrentCommand() {
         if (!isCurrentCommandStored()) {
-            planDataAtPlayer.addCommand(currentCommand)
-            currentCommand = if (planDataAtPlayer.commandList.isEmpty()) {
-                DummyCommand()
+            val executeMessage: CommandErrorMessage = planDataAtPlayer.addCommand(currentCommand)
+            currentCommand = if (executeMessage.success) {
+                if (planDataAtPlayer.commandList.isEmpty()) {
+                    DummyCommand()
+                } else {
+                    planDataAtPlayer.commandList.last()
+                }
             } else {
-                planDataAtPlayer.commandList.last()
+                ExecuteWarningCommand(
+                    reason = executeMessage.errorMessage
+                )
             }
         } else {
             logger.error("Trying to confirm existing command")

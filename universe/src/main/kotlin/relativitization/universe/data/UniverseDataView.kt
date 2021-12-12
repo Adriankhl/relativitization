@@ -2,10 +2,12 @@ package relativitization.universe.data
 
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.commands.Command
+import relativitization.universe.data.commands.CommandErrorMessage
 import relativitization.universe.data.components.defaults.physics.Int3D
 import relativitization.universe.data.components.defaults.physics.Int4D
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.maths.grid.Grids.create3DGrid
+import relativitization.universe.utils.I18NString
 import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.math.max
 import kotlin.math.min
@@ -279,7 +281,7 @@ class PlanDataAtPlayer(
         }
     }
 
-    private fun addSingleCommand(command: Command) {
+    private fun addSingleCommand(command: Command): CommandErrorMessage {
         val targetPlayerData: MutablePlayerData = getMutablePlayerData(command.toId)
 
         if (targetPlayerData.playerId == -1) {
@@ -287,21 +289,28 @@ class PlanDataAtPlayer(
 
         }
 
-        if (command.checkAndSelfExecuteBeforeSend(
+        return if (command.checkAndSelfExecuteBeforeSend(
                 getCurrentMutablePlayerData(),
                 universeData3DAtPlayer.universeSettings
             ).success
         ) {
-            command.checkAndExecute(targetPlayerData, universeData3DAtPlayer.universeSettings)
+            val executeMessage: CommandErrorMessage =
+                command.checkAndExecute(targetPlayerData, universeData3DAtPlayer.universeSettings)
             commandList.add(command)
+            executeMessage
         } else {
             logger.error("Cannot add command: $command")
+            CommandErrorMessage(
+                false,
+                I18NString("Self execute fail. ")
+            )
         }
     }
 
-    fun addCommand(command: Command) {
-        addSingleCommand(command)
+    fun addCommand(command: Command): CommandErrorMessage {
+        val commandErrorMessage: CommandErrorMessage = addSingleCommand(command)
         onCommandListChange()
+        return commandErrorMessage
     }
 
     fun addAllCommand(commandList: List<Command>) {
