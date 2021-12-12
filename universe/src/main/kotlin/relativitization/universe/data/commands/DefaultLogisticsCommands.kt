@@ -53,11 +53,8 @@ data class SendFuelFromStorageCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): CommandSuccessMessage {
-        val hasAmount: Boolean =
-            playerData.playerInternalData.physicsData().fuelRestMassData.trade >= amount
-        val hasAmountI18NString: I18NString = if (hasAmount) {
-            I18NString("")
-        } else {
+        val hasAmount = CommandSuccessMessage(
+            playerData.playerInternalData.physicsData().fuelRestMassData.trade >= amount,
             I18NString(
                 listOf(
                     NormalString("Trade fuel amount "),
@@ -71,13 +68,10 @@ data class SendFuelFromStorageCommand(
                     amount.toString()
                 )
             )
-        }
+        )
 
-        val isLossFractionValid: Boolean =
-            playerData.playerInternalData.playerScienceData().playerScienceApplicationData.fuelLogisticsLossFractionPerDistance <= senderFuelLossFractionPerDistance
-        val isLossFractionValidI18NString: I18NString = if (isLossFractionValid) {
-            I18NString("")
-        } else {
+        val isLossFractionValid = CommandSuccessMessage(
+            playerData.playerInternalData.playerScienceData().playerScienceApplicationData.fuelLogisticsLossFractionPerDistance <= senderFuelLossFractionPerDistance,
             I18NString(
                 listOf(
                     NormalString("Sender fuel loss fraction per distance"),
@@ -91,13 +85,12 @@ data class SendFuelFromStorageCommand(
                     senderFuelLossFractionPerDistance.toString()
                 )
             )
-        }
+        )
 
         return CommandSuccessMessage(
-            hasAmount && isLossFractionValid,
             listOf(
-                hasAmountI18NString,
-                isLossFractionValidI18NString,
+                hasAmount,
+                isLossFractionValid
             )
         )
     }
@@ -212,13 +205,10 @@ data class SendResourceFromStorageCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): CommandSuccessMessage {
-        val hasAmount: Boolean =
+        val hasAmount = CommandSuccessMessage(
             playerData.playerInternalData.economyData().resourceData.getTradeResourceAmount(
                 resourceType, resourceQualityClass
-            ) >= amount
-        val hasAmountI18NString: I18NString = if (hasAmount) {
-            I18NString("")
-        } else {
+            ) >= amount,
             I18NString(
                 listOf(
                     NormalString("Trade resource amount "),
@@ -234,15 +224,12 @@ data class SendResourceFromStorageCommand(
                     amount.toString()
                 )
             )
-        }
+        )
 
-        val isQualityValid: Boolean =
+        val isQualityValid = CommandSuccessMessage(
             playerData.playerInternalData.economyData().resourceData.getResourceQuality(
                 resourceType, resourceQualityClass
-            ).toResourceQualityData().squareDiff(resourceQualityData) <= 0.1
-        val isQualityValidI18NString: I18NString = if (isQualityValid) {
-            I18NString("")
-        } else {
+            ).toResourceQualityData().squareDiff(resourceQualityData) <= 0.1,
             I18NString(
                 listOf(
                     NormalString("Resource quality "),
@@ -258,13 +245,11 @@ data class SendResourceFromStorageCommand(
                     resourceQualityData.toString(),
                 )
             )
-        }
+        )
 
-        val isLossFractionValid: Boolean =
-            playerData.playerInternalData.playerScienceData().playerScienceApplicationData.resourceLogisticsLossFractionPerDistance <= senderResourceLossFractionPerDistance
-        val isLossFractionValidI18NString: I18NString = if (isLossFractionValid) {
-            I18NString("")
-        } else {
+
+        val isLossFractionValid = CommandSuccessMessage(
+            playerData.playerInternalData.playerScienceData().playerScienceApplicationData.resourceLogisticsLossFractionPerDistance <= senderResourceLossFractionPerDistance,
             I18NString(
                 listOf(
                     NormalString("Sender resource loss fraction per distance"),
@@ -278,14 +263,13 @@ data class SendResourceFromStorageCommand(
                     senderResourceLossFractionPerDistance.toString()
                 )
             )
-        }
+        )
 
         return CommandSuccessMessage(
-            hasAmount && isQualityValid && isLossFractionValid,
             listOf(
-                hasAmountI18NString,
-                isQualityValidI18NString,
-                isLossFractionValidI18NString,
+                hasAmount,
+                isQualityValid,
+                isLossFractionValid,
             )
         )
     }
@@ -690,11 +674,8 @@ data class PlayerBuyResourceCommand(
             )
         }
 
-        val hasAmount: Boolean =
-            playerData.playerInternalData.physicsData().fuelRestMassData.trade >= fuelRestMassAmount * (1.0 + tariffFactor)
-        val hasAmountI18NString: I18NString = if (hasAmount) {
-            I18NString("")
-        } else {
+        val hasAmount = CommandSuccessMessage(
+            playerData.playerInternalData.physicsData().fuelRestMassData.trade >= fuelRestMassAmount * (1.0 + tariffFactor),
             I18NString(
                 listOf(
                     NormalString("Trade fuel amount "),
@@ -708,13 +689,10 @@ data class PlayerBuyResourceCommand(
                     fuelRestMassAmount.toString()
                 )
             )
-        }
+        )
 
-        val isLossFractionValid: Boolean =
-            playerData.playerInternalData.playerScienceData().playerScienceApplicationData.fuelLogisticsLossFractionPerDistance <= senderFuelLossFractionPerDistance
-        val isLossFractionValidI18NString: I18NString = if (isLossFractionValid) {
-            I18NString("")
-        } else {
+        val isLossFractionValid = CommandSuccessMessage(
+            playerData.playerInternalData.playerScienceData().playerScienceApplicationData.fuelLogisticsLossFractionPerDistance <= senderFuelLossFractionPerDistance,
             I18NString(
                 listOf(
                     NormalString("Sender fuel loss fraction per distance"),
@@ -728,13 +706,12 @@ data class PlayerBuyResourceCommand(
                     senderFuelLossFractionPerDistance.toString()
                 )
             )
-        }
+        )
 
         return CommandSuccessMessage(
-            hasAmount && isLossFractionValid,
             listOf(
-                hasAmountI18NString,
-                isLossFractionValidI18NString,
+                hasAmount,
+                isLossFractionValid,
             )
         )
     }
