@@ -1513,6 +1513,78 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
     ): Table {
         val nestedTable = Table()
 
+        val removeInstituteButton = createTextButton(
+            "Remove institute",
+            gdxSettings.smallFontSize,
+            gdxSettings.soundEffectsVolume
+        ) {
+            val removeInstituteCommand = RemoveInstituteCommand(
+                toId = playerData.playerId,
+                fromId = game.universeClient.getCurrentPlayerData().playerId,
+                fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
+                carrierId = carrierId,
+                instituteId = instituteId
+            )
+
+            game.universeClient.currentCommand = removeInstituteCommand
+        }
+        nestedTable.add(removeInstituteButton)
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "Knowledge x: ${instituteData.instituteInternalData.xCor}",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "Knowledge y: ${instituteData.instituteInternalData.yCor}",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "Max. equipment consumption: ${instituteData.instituteInternalData.researchEquipmentPerTime}",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "Max. employee: ${instituteData.instituteInternalData.maxNumEmployee}",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "Last employee: ${instituteData.lastNumEmployee}",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "Strength: ${instituteData.strength}",
+                gdxSettings.smallFontSize
+            )
+        )
+
+
         return nestedTable
     }
 
