@@ -19,6 +19,7 @@ import relativitization.universe.data.components.defaults.popsystem.pop.labourer
 import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.InputResourceData
 import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.ResourceFactoryData
 import relativitization.universe.data.components.defaults.popsystem.pop.scholar.ScholarPopData
+import relativitization.universe.data.components.defaults.popsystem.pop.scholar.institute.InstituteData
 import relativitization.universe.maths.number.Notation
 import relativitization.universe.utils.RelativitizationLogManager
 
@@ -45,6 +46,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
     private var resourceFactoryId: Int = -1
 
+    private var instituteId: Int = -1
 
     init {
 
@@ -470,7 +472,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         nestedTable.add(
             createLabel(
-                "Fuel factory: ",
+                "Fuel factory id: ",
                 gdxSettings.smallFontSize
             )
         )
@@ -701,7 +703,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         nestedTable.add(
             createLabel(
-                "Resource factory: ",
+                "Resource factory id: ",
                 gdxSettings.smallFontSize
             )
         )
@@ -1467,6 +1469,48 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
     }
 
     private fun createInstituteMapTable(scholarPopData: ScholarPopData): Table {
+        val nestedTable = Table()
+
+        nestedTable.add(
+            createLabel(
+                "Institute id: ",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        val instituteSelectBox = createSelectBox(
+            scholarPopData.instituteMap.keys.toList(),
+            instituteId,
+            gdxSettings.smallFontSize
+        ) { id, _ ->
+            instituteId = id
+            updateCarrierTable()
+        }
+        nestedTable.add(instituteSelectBox)
+
+        nestedTable.row().space(10f)
+
+        if (scholarPopData.instituteMap.containsKey(instituteSelectBox.selected)) {
+            val institute: InstituteData = scholarPopData.instituteMap.getValue(
+                instituteSelectBox.selected
+            )
+
+            nestedTable.add(
+                createInstituteTable(
+                    instituteSelectBox.selected,
+                    institute,
+                )
+            ).colspan(2)
+        }
+
+
+        return nestedTable
+    }
+
+    private fun createInstituteTable(
+        instituteId: Int,
+        instituteData: InstituteData,
+    ): Table {
         val nestedTable = Table()
 
         return nestedTable
