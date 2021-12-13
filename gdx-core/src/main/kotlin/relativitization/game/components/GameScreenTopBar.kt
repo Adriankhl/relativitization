@@ -785,35 +785,47 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
      * Create table for controlling view int3D, z limit and zoom
      */
     private fun createViewControlTable(): Table {
-        val nestedTable: Table = Table()
+        val nestedTable = Table()
 
-        val topTable: Table = Table()
-        val bottomTable: Table = Table()
+        val leftTopTable = Table()
+        val leftBottomTable = Table()
+        val leftTable = Table()
 
-        topTable.add(tCoordinateLabel).space(10f)
-        topTable.add(createLabel("x:", gdxSettings.smallFontSize))
-        topTable.add(xCoordinateSelectBox).space(10f)
-        topTable.add(createLabel("y:", gdxSettings.smallFontSize))
-        topTable.add(yCoordinateSelectBox).space(10f)
-        topTable.add(createLabel("z:", gdxSettings.smallFontSize))
-        topTable.add(zCoordinateSelectBox).space(10f)
+        val rightTable = Table()
 
-        bottomTable.add(createLabel("z limit:", gdxSettings.smallFontSize))
-        bottomTable.add(zLimitSelectBox).space(10f)
-        bottomTable.add(confirmViewButton)
-            .size(40f * gdxSettings.imageScale, 40f * gdxSettings.imageScale)
-        bottomTable.add(zoomInButton)
-            .size(40f * gdxSettings.imageScale, 40f * gdxSettings.imageScale)
-        bottomTable.add(zoomOutButton)
-            .size(40f * gdxSettings.imageScale, 40f * gdxSettings.imageScale)
-        bottomTable.add(zoomToFullMapButton)
-            .size(40f * gdxSettings.imageScale, 40f * gdxSettings.imageScale)
+        leftTopTable.add(tCoordinateLabel).space(10f)
 
-        nestedTable.add(topTable)
+        leftTopTable.add(createLabel("z limit:", gdxSettings.smallFontSize))
+        leftTopTable.add(zLimitSelectBox).space(10f)
 
-        nestedTable.row().space(10f)
+        leftBottomTable.add(createLabel("x:", gdxSettings.smallFontSize))
+        leftBottomTable.add(xCoordinateSelectBox).space(10f)
 
-        nestedTable.add(bottomTable)
+        leftBottomTable.add(createLabel("y:", gdxSettings.smallFontSize))
+        leftBottomTable.add(yCoordinateSelectBox).space(10f)
+
+        leftBottomTable.add(createLabel("z:", gdxSettings.smallFontSize))
+        leftBottomTable.add(zCoordinateSelectBox).space(10f)
+
+        rightTable.add(confirmViewButton)
+            .size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
+        rightTable.add(zoomInButton)
+            .size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
+        rightTable.add(zoomOutButton)
+            .size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
+        rightTable.add(zoomToFullMapButton)
+            .size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
+
+
+        leftTable.add(leftTopTable)
+
+        leftTable.row().space(10f)
+
+        leftTable.add(leftBottomTable)
+
+        nestedTable.add(leftTable)
+
+        nestedTable.add(rightTable)
 
         return nestedTable
     }
