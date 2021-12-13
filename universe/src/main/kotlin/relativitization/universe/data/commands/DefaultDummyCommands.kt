@@ -78,12 +78,7 @@ data class ExecuteWarningCommand(
     val reason: I18NString,
 ) : DefaultCommand() {
 
-    override val description: I18NString = I18NString.combine(
-        listOf(
-            I18NString("Execute fail based on the current plan data. "),
-            reason,
-        )
-    )
+    override val description: I18NString = reason
 
     override fun canSend(
         playerData: MutablePlayerData,
