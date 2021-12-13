@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.ScreenComponent
 import relativitization.universe.ai.AI
+import relativitization.universe.ai.AICollection
 import relativitization.universe.ai.DefaultAI
 import relativitization.universe.ai.name
 import relativitization.universe.data.commands.Command
@@ -50,6 +51,11 @@ class AIInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.
         table.row().space(20f)
 
         table.add(createAISelectionTable())
+
+        table.row().space(10f)
+
+        table.add(createAIComputeTable())
+
     }
 
     private fun createAISelectionTable(): Table {
@@ -70,6 +76,28 @@ class AIInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.
             aiName = s
         }
         nestedTable.add(aiSelectBox)
+
+        return nestedTable
+    }
+
+    private fun createAIComputeTable(): Table {
+        val nestedTable = Table()
+
+        val computeButton = createTextButton(
+            "Compute",
+            gdxSettings.smallFontSize,
+            gdxSettings.soundEffectsVolume,
+        ) {
+            val commandList: List<Command> = AICollection.compute(
+                game.universeClient.getUniverseData3D(),
+                aiName
+            )
+
+            aiCommandList.clear()
+
+            aiCommandList.addAll(commandList)
+        }
+        nestedTable.add(computeButton)
 
         return nestedTable
     }

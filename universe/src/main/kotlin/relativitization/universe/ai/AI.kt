@@ -19,13 +19,20 @@ object AICollection {
         it.name() to it
     }.toMap()
 
-    fun compute(universeData3DAtPlayer: UniverseData3DAtPlayer): List<Command> {
-        val aiName: String = universeData3DAtPlayer.get(
-            universeData3DAtPlayer.id
-        ).playerInternalData.aiData().aiName
+    fun compute(
+        universeData3DAtPlayer: UniverseData3DAtPlayer,
+        aiName: String = "",
+    ): List<Command> {
+        val actualAIName: String = if (aiNameMap.containsKey(aiName)) {
+            aiName
+        } else {
+            universeData3DAtPlayer.get(
+                universeData3DAtPlayer.id
+            ).playerInternalData.aiData().aiName
+        }
 
-        val ai: AI = aiNameMap.getOrElse(aiName) {
-            logger.error("No ai name: ${aiName}, using default (empty) ai")
+        val ai: AI = aiNameMap.getOrElse(actualAIName) {
+            logger.error("No ai name: ${actualAIName}, using default (empty) ai")
             EmptyAI
         }
 
