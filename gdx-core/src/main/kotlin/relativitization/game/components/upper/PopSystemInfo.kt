@@ -18,6 +18,7 @@ import relativitization.universe.data.components.defaults.popsystem.pop.labourer
 import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.FuelFactoryData
 import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.InputResourceData
 import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.ResourceFactoryData
+import relativitization.universe.data.components.defaults.popsystem.pop.scholar.ScholarPopData
 import relativitization.universe.maths.number.Notation
 import relativitization.universe.utils.RelativitizationLogManager
 
@@ -215,16 +216,16 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         return nestedTable
     }
 
-    private fun createPopTable(allPopType: AllPopData): Table {
+    private fun createPopTable(allPopData: AllPopData): Table {
         val nestedTable = Table()
 
-        nestedTable.add(createCommonPopTable(allPopType.getCommonPopData(popType)))
+        nestedTable.add(createCommonPopTable(allPopData.getCommonPopData(popType)))
 
         nestedTable.row().space(30f)
 
         when (popType) {
-            PopType.LABOURER -> nestedTable.add(createLabourerTable(allPopType.labourerPopData))
-            PopType.SCHOLAR -> nestedTable.add(Table())
+            PopType.LABOURER -> nestedTable.add(createLabourerTable(allPopData.labourerPopData))
+            PopType.SCHOLAR -> nestedTable.add(createScholarTable(allPopData.scholarPopData))
             PopType.ENGINEER -> nestedTable.add(Table())
             PopType.EDUCATOR -> nestedTable.add(Table())
             PopType.MEDIC -> nestedTable.add(Table())
@@ -1435,6 +1436,12 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         }
 
         nestedTable.add(numBuildingDoubleSliderButton).colspan(2)
+
+        return nestedTable
+    }
+
+    private fun createScholarTable(scholarPopData: ScholarPopData): Table {
+        val nestedTable = Table()
 
         return nestedTable
     }
