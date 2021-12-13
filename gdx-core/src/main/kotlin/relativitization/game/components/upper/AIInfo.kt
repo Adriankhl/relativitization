@@ -7,6 +7,7 @@ import relativitization.game.utils.ScreenComponent
 import relativitization.universe.ai.AI
 import relativitization.universe.ai.DefaultAI
 import relativitization.universe.ai.name
+import relativitization.universe.data.commands.Command
 
 class AIInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.assets) {
     private val gdxSettings = game.gdxSettings
@@ -16,6 +17,8 @@ class AIInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.
     private val scrollPane: ScrollPane = createScrollPane(table)
 
     private var aiName: String = DefaultAI.name()
+
+    private val aiCommandList: MutableList<Command> = mutableListOf()
 
     init {
         // Set background color
@@ -69,5 +72,17 @@ class AIInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.
         nestedTable.add(aiSelectBox)
 
         return nestedTable
+    }
+
+    private fun createAICommandTable(index: Int): Table {
+        val nestedTable = Table()
+
+        return if ((index >= 0) && (index < aiCommandList.size)) {
+            val command: Command = aiCommandList[index]
+
+            nestedTable
+        } else {
+            nestedTable
+        }
     }
 }
