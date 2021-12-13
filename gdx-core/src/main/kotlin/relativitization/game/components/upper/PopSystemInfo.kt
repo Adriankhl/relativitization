@@ -14,6 +14,9 @@ import relativitization.universe.data.components.defaults.popsystem.pop.AllPopDa
 import relativitization.universe.data.components.defaults.popsystem.pop.CommonPopData
 import relativitization.universe.data.components.defaults.popsystem.pop.PopType
 import relativitization.universe.data.components.defaults.popsystem.pop.ResourceDesireData
+import relativitization.universe.data.components.defaults.popsystem.pop.engineer.EngineerPopData
+import relativitization.universe.data.components.defaults.popsystem.pop.engineer.laboratory.LaboratoryData
+import relativitization.universe.data.components.defaults.popsystem.pop.engineer.laboratory.LaboratoryInternalData
 import relativitization.universe.data.components.defaults.popsystem.pop.labourer.LabourerPopData
 import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.FuelFactoryData
 import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.InputResourceData
@@ -48,6 +51,8 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
     private var resourceFactoryId: Int = -1
 
     private var instituteId: Int = -1
+
+    private var laboratoryId: Int = -1
 
     init {
 
@@ -233,7 +238,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         when (popType) {
             PopType.LABOURER -> nestedTable.add(createLabourerTable(allPopData.labourerPopData))
             PopType.SCHOLAR -> nestedTable.add(createScholarTable(allPopData.scholarPopData))
-            PopType.ENGINEER -> nestedTable.add(Table())
+            PopType.ENGINEER -> nestedTable.add(createEngineerTable(allPopData.engineerPopData))
             PopType.EDUCATOR -> nestedTable.add(Table())
             PopType.MEDIC -> nestedTable.add(Table())
             PopType.SERVICE_WORKER -> nestedTable.add(Table())
@@ -1654,7 +1659,6 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
             game.universeClient.currentCommand = buildInstituteCommand
         }
-
         nestedTable.add(buildInstituteButton).colspan(2)
 
         nestedTable.row().space(10f)
@@ -1686,6 +1690,319 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         nestedTable.add(
             createLabel(
                 "New institute knowledge range: ",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.add(range.textField)
+
+        nestedTable.row().space(10f)
+
+        val rangeSliderButtonTable = createDoubleSliderButtonTable(
+            default = range.value,
+            sliderStepSize = 0.01f,
+            sliderDecimalPlace = 2,
+            buttonSize = 40f * gdxSettings.imageScale,
+            buttonSoundVolume = gdxSettings.soundEffectsVolume,
+            currentValue = { range.value }
+        ) {
+            range.value = it
+        }
+        nestedTable.add(rangeSliderButtonTable).colspan(2)
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "Max. equipment consumption: ",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.add(researchEquipmentPerTime.textField)
+
+        nestedTable.row().space(10f)
+
+        val researchEquipmentPerTimeSliderButtonTable = createDoubleSliderButtonTable(
+            default = researchEquipmentPerTime.value,
+            sliderStepSize = 0.01f,
+            sliderDecimalPlace = 2,
+            buttonSize = 40f * gdxSettings.imageScale,
+            buttonSoundVolume = gdxSettings.soundEffectsVolume,
+            currentValue = { researchEquipmentPerTime.value }
+        ) {
+            researchEquipmentPerTime.value = it
+        }
+        nestedTable.add(researchEquipmentPerTimeSliderButtonTable).colspan(2)
+
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "Max. employee: ",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.add(maxNumEmployee.textField)
+
+        nestedTable.row().space(10f)
+
+        val maxNumEmployeeSliderButtonTable = createDoubleSliderButtonTable(
+            default = maxNumEmployee.value,
+            sliderStepSize = 0.01f,
+            sliderDecimalPlace = 2,
+            buttonSize = 40f * gdxSettings.imageScale,
+            buttonSoundVolume = gdxSettings.soundEffectsVolume,
+            currentValue = { maxNumEmployee.value }
+        ) {
+            maxNumEmployee.value = it
+        }
+        nestedTable.add(maxNumEmployeeSliderButtonTable).colspan(2)
+
+        return nestedTable
+    }
+
+
+    private fun createEngineerTable(engineerPopData: EngineerPopData): Table {
+        val nestedTable = Table()
+
+        nestedTable.add(
+            createLabel(
+                "Engineer data: ",
+                gdxSettings.normalFontSize
+            )
+        )
+
+        nestedTable.row().space(30f)
+
+        nestedTable.add(
+            createLabel(
+                "Laboratories: ",
+                gdxSettings.normalFontSize
+            )
+        )
+
+        nestedTable.row().space(30f)
+
+        nestedTable.add(createLaboratoryMapTable(engineerPopData))
+
+        nestedTable.row().space(30f)
+
+        nestedTable.add(createBuildLaboratoryTable())
+
+        return nestedTable
+    }
+
+    private fun createLaboratoryMapTable(engineerPopData: EngineerPopData): Table {
+        val nestedTable = Table()
+
+        nestedTable.add(
+            createLabel(
+                "Laboratory id: ",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        val laboratorySelectBox = createSelectBox(
+            engineerPopData.laboratoryMap.keys.toList(),
+            laboratoryId,
+            gdxSettings.smallFontSize
+        ) { id, _ ->
+            laboratoryId = id
+            updateCarrierTable()
+        }
+        nestedTable.add(laboratorySelectBox)
+
+        nestedTable.row().space(10f)
+
+        if (engineerPopData.laboratoryMap.containsKey(laboratorySelectBox.selected)) {
+            val laboratory: LaboratoryData = engineerPopData.laboratoryMap.getValue(
+                laboratorySelectBox.selected
+            )
+
+            nestedTable.add(
+                createLaboratoryTable(
+                    laboratorySelectBox.selected,
+                    laboratory
+                )
+            ).colspan(2)
+        }
+
+
+        return nestedTable
+    }
+
+    private fun createLaboratoryTable(
+        laboratoryId: Int,
+        laboratoryData: LaboratoryData,
+    ): Table {
+        val nestedTable = Table()
+
+        val removeLaboratoryButton = createTextButton(
+            "Remove laboratory",
+            gdxSettings.smallFontSize,
+            gdxSettings.soundEffectsVolume
+        ) {
+            val removeLaboratoryCommand = RemoveLaboratoryCommand(
+                toId = playerData.playerId,
+                fromId = game.universeClient.getCurrentPlayerData().playerId,
+                fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
+                carrierId = carrierId,
+                laboratoryId = laboratoryId
+            )
+
+            game.universeClient.currentCommand = removeLaboratoryCommand
+        }
+        nestedTable.add(removeLaboratoryButton)
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "Knowledge x: ${laboratoryData.laboratoryInternalData.xCor}",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "Knowledge y: ${laboratoryData.laboratoryInternalData.yCor}",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "Knowledge range: ${laboratoryData.laboratoryInternalData.range}",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "Max. equipment consumption: ${laboratoryData.laboratoryInternalData.researchEquipmentPerTime}",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "Max. employee: ${laboratoryData.laboratoryInternalData.maxNumEmployee}",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "Last employee: ${laboratoryData.lastNumEmployee}",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "Strength: ${laboratoryData.strength}",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        return nestedTable
+    }
+
+    private fun createBuildLaboratoryTable(): Table {
+        val nestedTable = Table()
+
+        val xCor = createDoubleTextField(
+            default = game.universeClient.selectedKnowledgeDouble2D.x,
+            fontSize = gdxSettings.smallFontSize
+        )
+
+        val yCor = createDoubleTextField(
+            default = game.universeClient.selectedKnowledgeDouble2D.y,
+            fontSize = gdxSettings.smallFontSize
+        )
+
+        val range = createDoubleTextField(
+            default = 0.0,
+            fontSize = gdxSettings.smallFontSize
+        )
+
+        val researchEquipmentPerTime = createDoubleTextField(
+            default = 0.25,
+            fontSize = gdxSettings.smallFontSize
+        )
+
+        val maxNumEmployee = createDoubleTextField(
+            default = 0.0,
+            fontSize = gdxSettings.smallFontSize
+        )
+
+        val buildLaboratoryButton = createTextButton(
+            "Build laboratory",
+            gdxSettings.smallFontSize,
+            gdxSettings.soundEffectsVolume,
+        ) {
+            val buildLaboratoryCommand = BuildLaboratoryCommand(
+                toId = playerData.playerId,
+                fromId = game.universeClient.getCurrentPlayerData().playerId,
+                fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
+                carrierId = carrierId,
+                laboratoryInternalData = LaboratoryInternalData(
+                    xCor = xCor.value,
+                    yCor = yCor.value,
+                    range = range.value,
+                    researchEquipmentPerTime = researchEquipmentPerTime.value,
+                    maxNumEmployee = maxNumEmployee.value,
+                )
+            )
+
+            game.universeClient.currentCommand = buildLaboratoryCommand
+        }
+        nestedTable.add(buildLaboratoryButton).colspan(2)
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "New laboratory knowledge x: ",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.add(xCor.textField)
+
+        nestedTable.row().space(10f)
+
+
+        nestedTable.add(
+            createLabel(
+                "New laboratory knowledge y: ",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.add(yCor.textField)
+
+        nestedTable.row().space(10f)
+
+
+        nestedTable.add(
+            createLabel(
+                "New laboratory knowledge range: ",
                 gdxSettings.smallFontSize
             )
         )
