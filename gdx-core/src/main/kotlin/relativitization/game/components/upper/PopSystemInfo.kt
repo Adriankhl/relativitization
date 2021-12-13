@@ -25,6 +25,7 @@ import relativitization.universe.data.components.defaults.popsystem.pop.labourer
 import relativitization.universe.data.components.defaults.popsystem.pop.scholar.ScholarPopData
 import relativitization.universe.data.components.defaults.popsystem.pop.scholar.institute.InstituteData
 import relativitization.universe.data.components.defaults.popsystem.pop.scholar.institute.InstituteInternalData
+import relativitization.universe.data.components.defaults.popsystem.pop.service.ServicePopData
 import relativitization.universe.maths.number.Notation
 import relativitization.universe.utils.RelativitizationLogManager
 
@@ -250,7 +251,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             PopType.ENGINEER -> nestedTable.add(createEngineerTable(allPopData.engineerPopData))
             PopType.EDUCATOR -> nestedTable.add(Table())
             PopType.MEDIC -> nestedTable.add(Table())
-            PopType.SERVICE_WORKER -> nestedTable.add(Table())
+            PopType.SERVICE_WORKER -> nestedTable.add(createServiceTable(allPopData.servicePopData))
             PopType.ENTERTAINER -> nestedTable.add(Table())
             PopType.SOLDIER -> nestedTable.add(Table())
         }
@@ -2082,6 +2083,12 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             maxNumEmployee.value = it
         }
         nestedTable.add(maxNumEmployeeSliderButtonTable).colspan(2)
+
+        return nestedTable
+    }
+
+    private fun createServiceTable(servicePopData: ServicePopData): Table {
+        val nestedTable = Table()
 
         return nestedTable
     }
