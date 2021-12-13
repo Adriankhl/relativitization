@@ -142,6 +142,8 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
 
             updatePreviousNextUniverseDataButton()
         }
+
+        uploadButton.image.setColor(1.0f, 1.0f, 1.0f, 1.0f)
     }
 
     private val clearCommandListButton: ImageButton = createImageButton(
