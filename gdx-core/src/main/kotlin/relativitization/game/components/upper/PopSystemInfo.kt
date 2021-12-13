@@ -20,6 +20,7 @@ import relativitization.universe.data.components.defaults.popsystem.pop.labourer
 import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.ResourceFactoryData
 import relativitization.universe.data.components.defaults.popsystem.pop.scholar.ScholarPopData
 import relativitization.universe.data.components.defaults.popsystem.pop.scholar.institute.InstituteData
+import relativitization.universe.data.components.defaults.popsystem.pop.scholar.institute.InstituteInternalData
 import relativitization.universe.maths.number.Notation
 import relativitization.universe.utils.RelativitizationLogManager
 
@@ -86,6 +87,10 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
     override fun onCommandListChange() {
         updatePlayerData()
         updateTable()
+    }
+
+    override fun onSelectedKnowledgeDouble2DChange() {
+        updateCarrierTable()
     }
 
     private fun updatePlayerData() {
@@ -1465,6 +1470,10 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         nestedTable.add(createInstituteMapTable(scholarPopData))
 
+        nestedTable.row().space(30f)
+
+        nestedTable.add(createBuildInstituteTable())
+
         return nestedTable
     }
 
@@ -1552,6 +1561,15 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         nestedTable.add(
             createLabel(
+                "Knowledge range: ${instituteData.instituteInternalData.range}",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
                 "Max. equipment consumption: ${instituteData.instituteInternalData.researchEquipmentPerTime}",
                 gdxSettings.smallFontSize
             )
@@ -1584,6 +1602,160 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             )
         )
 
+        return nestedTable
+    }
+
+    private fun createBuildInstituteTable(): Table {
+        val nestedTable = Table()
+
+        val xCor = createDoubleTextField(
+            default = game.universeClient.selectedKnowledgeDouble2D.x,
+            fontSize = gdxSettings.smallFontSize
+        )
+
+        val yCor = createDoubleTextField(
+            default = game.universeClient.selectedKnowledgeDouble2D.y,
+            fontSize = gdxSettings.smallFontSize
+        )
+
+        val range = createDoubleTextField(
+            default = 0.0,
+            fontSize = gdxSettings.smallFontSize
+        )
+
+        val researchEquipmentPerTime = createDoubleTextField(
+            default = 0.25,
+            fontSize = gdxSettings.smallFontSize
+        )
+
+        val maxNumEmployee = createDoubleTextField(
+            default = 0.0,
+            fontSize = gdxSettings.smallFontSize
+        )
+
+        val buildInstituteButton = createTextButton(
+            "Build institute",
+            gdxSettings.smallFontSize,
+            gdxSettings.soundEffectsVolume,
+        ) {
+            val buildInstituteCommand = BuildInstituteCommand(
+                toId = playerData.playerId,
+                fromId = game.universeClient.getCurrentPlayerData().playerId,
+                fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
+                carrierId = carrierId,
+                instituteInternalData = InstituteInternalData(
+                    xCor = xCor.value,
+                    yCor = yCor.value,
+                    range = range.value,
+                    researchEquipmentPerTime = researchEquipmentPerTime.value,
+                    maxNumEmployee = maxNumEmployee.value,
+                )
+            )
+
+            game.universeClient.currentCommand = buildInstituteCommand
+        }
+
+        nestedTable.add(buildInstituteButton).colspan(2)
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "New institute knowledge x: ",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.add(xCor.textField)
+
+        nestedTable.row().space(10f)
+
+
+        nestedTable.add(
+            createLabel(
+                "New institute knowledge y: ",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.add(yCor.textField)
+
+        nestedTable.row().space(10f)
+
+
+        nestedTable.add(
+            createLabel(
+                "New institute knowledge range: ",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.add(range.textField)
+
+        nestedTable.row().space(10f)
+
+        val rangeSliderButtonTable = createDoubleSliderButtonTable(
+            default = range.value,
+            sliderStepSize = 0.01f,
+            sliderDecimalPlace = 2,
+            buttonSize = 40f * gdxSettings.imageScale,
+            buttonSoundVolume = gdxSettings.soundEffectsVolume,
+            currentValue = { range.value }
+        ) {
+            range.value = it
+        }
+        nestedTable.add(rangeSliderButtonTable).colspan(2)
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "Max. equipment consumption: ",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.add(researchEquipmentPerTime.textField)
+
+        nestedTable.row().space(10f)
+
+        val researchEquipmentPerTimeSliderButtonTable = createDoubleSliderButtonTable(
+            default = researchEquipmentPerTime.value,
+            sliderStepSize = 0.01f,
+            sliderDecimalPlace = 2,
+            buttonSize = 40f * gdxSettings.imageScale,
+            buttonSoundVolume = gdxSettings.soundEffectsVolume,
+            currentValue = { researchEquipmentPerTime.value }
+        ) {
+            researchEquipmentPerTime.value = it
+        }
+        nestedTable.add(researchEquipmentPerTimeSliderButtonTable).colspan(2)
+
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "Max. employee: ",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.add(maxNumEmployee.textField)
+
+        nestedTable.row().space(10f)
+
+        val maxNumEmployeeSliderButtonTable = createDoubleSliderButtonTable(
+            default = maxNumEmployee.value,
+            sliderStepSize = 0.01f,
+            sliderDecimalPlace = 2,
+            buttonSize = 40f * gdxSettings.imageScale,
+            buttonSoundVolume = gdxSettings.soundEffectsVolume,
+            currentValue = { maxNumEmployee.value }
+        ) {
+            maxNumEmployee.value = it
+        }
+        nestedTable.add(maxNumEmployeeSliderButtonTable).colspan(2)
 
         return nestedTable
     }
