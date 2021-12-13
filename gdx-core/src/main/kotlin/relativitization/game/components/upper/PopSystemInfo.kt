@@ -27,6 +27,7 @@ import relativitization.universe.data.components.defaults.popsystem.pop.scholar.
 import relativitization.universe.data.components.defaults.popsystem.pop.scholar.institute.InstituteInternalData
 import relativitization.universe.data.components.defaults.popsystem.pop.service.ServicePopData
 import relativitization.universe.data.components.defaults.popsystem.pop.service.export.PlayerExportCenterData
+import relativitization.universe.data.components.defaults.popsystem.pop.service.export.PlayerSingleExportData
 import relativitization.universe.maths.number.Notation
 import relativitization.universe.utils.RelativitizationLogManager
 
@@ -2205,6 +2206,49 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         nestedTable.add(exportCenterResourceQualityClassSelectBox)
 
         nestedTable.row().space(10f)
+
+        if (servicePopData.exportData.playerExportCenterMap.containsKey(exportCenterOwnerId)) {
+            val exportCenterData: PlayerExportCenterData = servicePopData
+                .exportData.playerExportCenterMap.getValue(
+                    exportCenterOwnerId
+                )
+
+            val singleExportList: List<PlayerSingleExportData> = exportCenterData.getExportDataList(
+                targetPlayerId = exportCenterTargetId,
+                resourceType = exportCenterResourceType,
+                resourceQualityClass = exportCenterResourceQualityClass,
+            )
+
+            singleExportList.forEach {
+                nestedTable.add(
+                    createSingleExportDataTable(it)
+                ).colspan(2)
+
+                nestedTable.row().space(20f)
+            }
+        }
+
+        return nestedTable
+    }
+
+    private fun createSingleExportDataTable(playerSingleExportData: PlayerSingleExportData): Table {
+        val nestedTable = Table()
+
+        nestedTable.add(
+            createLabel(
+                "Amount per time: ${playerSingleExportData.amountPerTime}",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "Stored fuel: ${playerSingleExportData.storedFuelRestMass}",
+                gdxSettings.smallFontSize
+            )
+        )
 
         return nestedTable
     }
