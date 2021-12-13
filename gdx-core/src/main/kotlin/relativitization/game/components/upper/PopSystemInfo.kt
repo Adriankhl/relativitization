@@ -26,6 +26,7 @@ import relativitization.universe.data.components.defaults.popsystem.pop.scholar.
 import relativitization.universe.data.components.defaults.popsystem.pop.scholar.institute.InstituteData
 import relativitization.universe.data.components.defaults.popsystem.pop.scholar.institute.InstituteInternalData
 import relativitization.universe.data.components.defaults.popsystem.pop.service.ServicePopData
+import relativitization.universe.data.components.defaults.popsystem.pop.service.export.PlayerExportCenterData
 import relativitization.universe.maths.number.Notation
 import relativitization.universe.utils.RelativitizationLogManager
 
@@ -2134,6 +2135,76 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
     private fun createExportCenterMapTable(servicePopData: ServicePopData): Table {
         val nestedTable = Table()
 
+        nestedTable.add(
+            createLabel(
+                "Export center owner id: ",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        val exportCenterOwnerIdSelectBox = createSelectBox(
+            servicePopData.exportData.playerExportCenterMap.keys.toList(),
+            exportCenterOwnerId,
+            gdxSettings.smallFontSize
+        ) { id, _ ->
+            exportCenterOwnerId = id
+            updateCarrierTable()
+        }
+        nestedTable.add(exportCenterOwnerIdSelectBox)
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "Export center target id: ",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        val exportCenterTargetIdSelectBox = createSelectBox(
+            servicePopData.exportData.playerExportCenterMap.getOrDefault(
+                exportCenterOwnerId,
+                PlayerExportCenterData()
+            ).exportDataList.map { it.targetPlayerId },
+            exportCenterTargetId,
+            gdxSettings.smallFontSize
+        ) { id, _ ->
+            exportCenterTargetId = id
+            updateCarrierTable()
+        }
+        nestedTable.add(exportCenterTargetIdSelectBox)
+
+        nestedTable.row().space(10f)
+
+        val exportCenterResourceTypeSelectBox = createSelectBox(
+            servicePopData.exportData.playerExportCenterMap.getOrDefault(
+                exportCenterOwnerId,
+                PlayerExportCenterData()
+            ).getResourceTypeList(exportCenterTargetId),
+            exportCenterResourceType,
+            gdxSettings.smallFontSize
+        ) { type, _ ->
+            exportCenterResourceType = type
+            updateCarrierTable()
+        }
+        nestedTable.add(exportCenterResourceTypeSelectBox)
+
+        nestedTable.row().space(10f)
+
+        val exportCenterResourceQualityClassSelectBox = createSelectBox(
+            servicePopData.exportData.playerExportCenterMap.getOrDefault(
+                exportCenterOwnerId,
+                PlayerExportCenterData()
+            ).getResourceQualityClassList(exportCenterTargetId, exportCenterResourceType),
+            exportCenterResourceQualityClass,
+            gdxSettings.smallFontSize
+        ) { qualityClass, _ ->
+            exportCenterResourceQualityClass = qualityClass
+            updateCarrierTable()
+        }
+        nestedTable.add(exportCenterResourceQualityClassSelectBox)
+
+        nestedTable.row().space(10f)
 
         return nestedTable
     }
