@@ -473,7 +473,9 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
                 val sound = assets.getSound("click1.ogg")
                 sound.play(gdxSettings.soundEffectsVolume)
 
-                game.universeClient.selectedKnowledgeDouble2D = Double2D(x.toDouble(), y.toDouble())
+                game.universeClient.selectedKnowledgeDouble2D = convertKnowledgeGroupPosition(
+                    Double2D(x.toDouble(), y.toDouble())
+                )
             }
         }))
 
