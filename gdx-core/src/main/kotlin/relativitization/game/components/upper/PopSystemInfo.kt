@@ -2316,6 +2316,89 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         }
         nestedTable.add(buyButton).colspan(2)
 
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "Export to: ",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.add(targetPlayerId.textField)
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "Resource: ",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.add(resourceTypeSelectBox)
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "Quality class: ",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.add(resourceQualityClassSelectBox)
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "Send fuel amount: ",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.add(fuelRestMass.textField)
+
+        nestedTable.row().space(10f)
+
+        val fuelRestMassSliderButtonTable = createDoubleSliderButtonTable(
+            default = fuelRestMass.value,
+            sliderStepSize = 0.01f,
+            sliderDecimalPlace = 2,
+            buttonSize = 40f * gdxSettings.imageScale,
+            buttonSoundVolume = gdxSettings.soundEffectsVolume,
+            currentValue = { fuelRestMass.value }
+        ) {
+            fuelRestMass.value = it
+        }
+        nestedTable.add(fuelRestMassSliderButtonTable).colspan(2)
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "Amount per time: ",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.add(amountPerTime.textField)
+
+        nestedTable.row().space(10f)
+
+        val amountPerTimeSliderButtonTable = createDoubleSliderButtonTable(
+            default = amountPerTime.value,
+            sliderStepSize = 0.01f,
+            sliderDecimalPlace = 2,
+            buttonSize = 40f * gdxSettings.imageScale,
+            buttonSoundVolume = gdxSettings.soundEffectsVolume,
+            currentValue = { amountPerTime.value }
+        ) {
+            amountPerTime.value = it
+        }
+        nestedTable.add(amountPerTimeSliderButtonTable).colspan(2)
+
         return nestedTable
     }
 
