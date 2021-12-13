@@ -59,7 +59,7 @@ class AIInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.
 
         table.row().space(20f)
 
-        table.add(createAllAICommandTable())
+        table.add(createAllAICommandTable()).growX()
     }
 
     private fun createAISelectionTable(): Table {
@@ -105,6 +105,22 @@ class AIInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.
         }
         nestedTable.add(computeButton)
 
+        nestedTable.row().space(20f)
+
+        val useButton = createTextButton(
+            "Use",
+            gdxSettings.smallFontSize,
+            gdxSettings.soundEffectsVolume
+        ) {
+            game.universeClient.clearCommandList()
+
+            aiCommandList.forEach {
+                game.universeClient.currentCommand = it
+                game.universeClient.confirmCurrentCommand()
+            }
+        }
+        nestedTable.add(useButton)
+
         return nestedTable
     }
 
@@ -112,7 +128,7 @@ class AIInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.
         val nestedTable = Table()
 
         aiCommandList.forEach {
-            nestedTable.add(createAICommandTable(it))
+            nestedTable.add(createAICommandTable(it)).growX()
 
             nestedTable.row().space(20f)
         }
