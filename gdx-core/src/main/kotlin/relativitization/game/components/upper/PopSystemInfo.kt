@@ -7,6 +7,7 @@ import relativitization.game.RelativitizationGame
 import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.commands.*
+import relativitization.universe.data.components.defaults.economy.ResourceQualityClass
 import relativitization.universe.data.components.defaults.economy.ResourceType
 import relativitization.universe.data.components.defaults.popsystem.CarrierData
 import relativitization.universe.data.components.defaults.popsystem.CarrierInternalData
@@ -53,6 +54,14 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
     private var instituteId: Int = -1
 
     private var laboratoryId: Int = -1
+
+    private var exportCenterOwnerId: Int = -1
+
+    private var exportCenterTargetId: Int = -1
+
+    private var exportCenterResourceType: ResourceType = ResourceType.PLANT
+
+    private var exportCenterResourceQualityClass: ResourceQualityClass = ResourceQualityClass.FIRST
 
     init {
 
