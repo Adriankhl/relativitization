@@ -7,7 +7,47 @@ import relativitization.universe.data.components.defaults.economy.ResourceType
 @Serializable
 data class PlayerExportCenterData(
     val exportDataList: List<PlayerSingleExportData> = listOf()
-)
+) {
+    /**
+     * Get resource type by target player id, empty list if export data does not exist
+     */
+    fun getResourceTypeList(
+        targetPlayerId: Int,
+    ): List<ResourceType> {
+        return exportDataList.filter {
+            it.targetPlayerId == targetPlayerId
+        }.map { it.resourceType }.toSet().toList()
+    }
+
+    /**
+     * Get resource type by target player id and resource type,
+     * empty list if export data does not exist
+     */
+    fun getResourceQualityClassList(
+        targetPlayerId: Int,
+        resourceType: ResourceType
+    ): List<ResourceQualityClass> {
+        return exportDataList.filter {
+            (it.targetPlayerId == targetPlayerId) && (it.resourceType == resourceType)
+        }.map { it.resourceQualityClass }.toSet().toList()
+    }
+
+    /**
+     * Get resource type by target player id and resource type,
+     * empty list if export data does not exist
+     */
+    fun getExportDataList(
+        targetPlayerId: Int,
+        resourceType: ResourceType,
+        resourceQualityClass: ResourceQualityClass
+    ): List<PlayerSingleExportData> {
+        return exportDataList.filter {
+            (it.targetPlayerId == targetPlayerId) &&
+                    (it.resourceType == resourceType) &&
+                    (it.resourceQualityClass == resourceQualityClass)
+        }
+    }
+}
 
 @Serializable
 data class MutablePlayerExportCenterData(
