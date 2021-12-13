@@ -27,8 +27,8 @@ import relativitization.universe.utils.RelativitizationLogManager
  */
 enum class PopType(val value: String) {
     LABOURER("Labourer"),
-    ENGINEER("Engineer"),
     SCHOLAR("Scholar"),
+    ENGINEER("Engineer"),
     EDUCATOR("Educator"),
     MEDIC("Medic"),
     SERVICE_WORKER("Service worker"),
@@ -57,8 +57,8 @@ data class AllPopData(
 ) {
     fun getCommonPopData(popType: PopType): CommonPopData = when (popType) {
         PopType.LABOURER -> labourerPopData.commonPopData
-        PopType.ENGINEER -> engineerPopData.commonPopData
         PopType.SCHOLAR -> scholarPopData.commonPopData
+        PopType.ENGINEER -> engineerPopData.commonPopData
         PopType.EDUCATOR -> educatorPopData.commonPopData
         PopType.MEDIC -> medicPopData.commonPopData
         PopType.SERVICE_WORKER -> servicePopData.commonPopData
@@ -84,8 +84,8 @@ data class MutableAllPopData(
 ) {
     fun getCommonPopData(popType: PopType): MutableCommonPopData = when (popType) {
         PopType.LABOURER -> labourerPopData.commonPopData
-        PopType.ENGINEER -> engineerPopData.commonPopData
         PopType.SCHOLAR -> scholarPopData.commonPopData
+        PopType.ENGINEER -> engineerPopData.commonPopData
         PopType.EDUCATOR -> educatorPopData.commonPopData
         PopType.MEDIC -> medicPopData.commonPopData
         PopType.SERVICE_WORKER -> servicePopData.commonPopData

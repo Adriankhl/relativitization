@@ -224,8 +224,8 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         when (popType) {
             PopType.LABOURER -> nestedTable.add(createLabourerTable(allPopType.labourerPopData))
-            PopType.ENGINEER -> nestedTable.add(Table())
             PopType.SCHOLAR -> nestedTable.add(Table())
+            PopType.ENGINEER -> nestedTable.add(Table())
             PopType.EDUCATOR -> nestedTable.add(Table())
             PopType.MEDIC -> nestedTable.add(Table())
             PopType.SERVICE_WORKER -> nestedTable.add(Table())

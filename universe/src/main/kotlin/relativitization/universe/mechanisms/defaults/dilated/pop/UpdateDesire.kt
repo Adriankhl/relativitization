@@ -89,13 +89,13 @@ object UpdateDesire : Mechanism() {
                 ResourceType.HOUSEHOLD_GOOD,
                 ResourceType.ENTERTAINMENT,
             )
-            PopType.ENGINEER -> listOf(
+            PopType.SCHOLAR -> listOf(
                 ResourceType.FOOD,
                 ResourceType.CLOTH,
                 ResourceType.HOUSEHOLD_GOOD,
                 ResourceType.ENTERTAINMENT,
             )
-            PopType.SCHOLAR -> listOf(
+            PopType.ENGINEER -> listOf(
                 ResourceType.FOOD,
                 ResourceType.CLOTH,
                 ResourceType.HOUSEHOLD_GOOD,
