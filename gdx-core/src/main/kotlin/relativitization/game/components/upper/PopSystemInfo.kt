@@ -2139,6 +2139,8 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             )
         )
 
+        nestedTable.row().space(10f)
+
         nestedTable.add(createPlayerBuyResourceTable())
 
         return nestedTable
@@ -2188,6 +2190,13 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         nestedTable.row().space(10f)
 
+        nestedTable.add(
+            createLabel(
+                "Export center resource: ",
+                gdxSettings.smallFontSize
+            )
+        )
+
         val exportCenterResourceTypeSelectBox = createSelectBox(
             servicePopData.exportData.playerExportCenterMap.getOrDefault(
                 exportCenterOwnerId,
@@ -2202,6 +2211,13 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         nestedTable.add(exportCenterResourceTypeSelectBox)
 
         nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "Export center resource quality class: ",
+                gdxSettings.smallFontSize
+            )
+        )
 
         val exportCenterResourceQualityClassSelectBox = createSelectBox(
             servicePopData.exportData.playerExportCenterMap.getOrDefault(
