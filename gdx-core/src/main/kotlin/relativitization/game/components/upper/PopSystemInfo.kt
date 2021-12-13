@@ -2130,6 +2130,17 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         nestedTable.add(createExportCenterMapTable(servicePopData))
 
+        nestedTable.row().space(30f)
+
+        nestedTable.add(
+            createLabel(
+                "Buy resource commands: ",
+                gdxSettings.normalFontSize
+            )
+        )
+
+        nestedTable.add(createPlayerBuyResourceTable())
+
         return nestedTable
     }
 
@@ -2205,8 +2216,6 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         }
         nestedTable.add(exportCenterResourceQualityClassSelectBox)
 
-        nestedTable.row().space(10f)
-
         if (servicePopData.exportData.playerExportCenterMap.containsKey(exportCenterOwnerId)) {
             val exportCenterData: PlayerExportCenterData = servicePopData
                 .exportData.playerExportCenterMap.getValue(
@@ -2220,11 +2229,11 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             )
 
             singleExportList.forEach {
+                nestedTable.row().space(20f)
+
                 nestedTable.add(
                     createSingleExportDataTable(it)
                 ).colspan(2)
-
-                nestedTable.row().space(20f)
             }
         }
 
@@ -2249,6 +2258,63 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
                 gdxSettings.smallFontSize
             )
         )
+
+        return nestedTable
+    }
+
+    private fun createPlayerBuyResourceTable(): Table {
+        val nestedTable = Table()
+
+        val targetPlayerId = createIntTextField(
+            game.universeClient.getCurrentPlayerData().playerId,
+            gdxSettings.smallFontSize
+        )
+
+        val resourceTypeSelectBox = createSelectBox(
+            ResourceType.values().toList(),
+            ResourceType.values().first(),
+            gdxSettings.smallFontSize
+        )
+
+        val resourceQualityClassSelectBox = createSelectBox(
+            ResourceQualityClass.values().toList(),
+            ResourceQualityClass.values().first(),
+            gdxSettings.smallFontSize
+        )
+
+        val fuelRestMass = createDoubleTextField(
+            0.0,
+            gdxSettings.smallFontSize
+        )
+
+        val amountPerTime = createDoubleTextField(
+            0.0,
+            gdxSettings.smallFontSize
+        )
+
+        val buyButton = createTextButton(
+            "Buy",
+            gdxSettings.smallFontSize,
+            gdxSettings.soundEffectsVolume,
+        ) {
+            val playerBuyResourceCommand = PlayerBuyResourceCommand(
+                toId = playerData.playerId,
+                fromId = game.universeClient.getCurrentPlayerData().playerId,
+                fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
+                targetTopLeaderId = playerData.topLeaderId(),
+                targetCarrierId = carrierId,
+                targetPlayerIdOfExportCenter = targetPlayerId.value,
+                resourceType = resourceTypeSelectBox.selected,
+                resourceQualityClass = resourceQualityClassSelectBox.selected,
+                fuelRestMassAmount = fuelRestMass.value,
+                amountPerTime = amountPerTime.value,
+                senderFuelLossFractionPerDistance = playerData.playerInternalData.playerScienceData()
+                    .playerScienceApplicationData.fuelLogisticsLossFractionPerDistance,
+            )
+
+            game.universeClient.currentCommand = playerBuyResourceCommand
+        }
+        nestedTable.add(buyButton).colspan(2)
 
         return nestedTable
     }
