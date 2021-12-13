@@ -1443,6 +1443,32 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
     private fun createScholarTable(scholarPopData: ScholarPopData): Table {
         val nestedTable = Table()
 
+        nestedTable.add(
+            createLabel(
+                "Scholar data: ",
+                gdxSettings.normalFontSize
+            )
+        )
+
+        nestedTable.row().space(30f)
+
+        nestedTable.add(
+            createLabel(
+                "Institutes: ",
+                gdxSettings.normalFontSize
+            )
+        )
+
+        nestedTable.row().space(30f)
+
+        nestedTable.add(createInstituteMapTable(scholarPopData))
+
+        return nestedTable
+    }
+
+    private fun createInstituteMapTable(scholarPopData: ScholarPopData): Table {
+        val nestedTable = Table()
+
         return nestedTable
     }
 
