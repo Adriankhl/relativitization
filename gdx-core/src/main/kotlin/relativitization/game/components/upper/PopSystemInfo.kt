@@ -1487,6 +1487,15 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         nestedTable.row().space(30f)
 
+        nestedTable.add(
+            createLabel(
+                "Build institute commands: ",
+                gdxSettings.normalFontSize
+            )
+        )
+
+        nestedTable.row().space(10f)
+
         nestedTable.add(createBuildInstituteTable())
 
         return nestedTable
@@ -1800,6 +1809,15 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         nestedTable.row().space(30f)
 
+        nestedTable.add(
+            createLabel(
+                "Build laboratory commands: ",
+                gdxSettings.normalFontSize
+            )
+        )
+
+        nestedTable.row().space(10f)
+
         nestedTable.add(createBuildLaboratoryTable())
 
         return nestedTable
@@ -2089,6 +2107,33 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
     private fun createServiceTable(servicePopData: ServicePopData): Table {
         val nestedTable = Table()
+
+        nestedTable.add(
+            createLabel(
+                "Service worker data: ",
+                gdxSettings.normalFontSize
+            )
+        )
+
+        nestedTable.row().space(30f)
+
+        nestedTable.add(
+            createLabel(
+                "Export centers: ",
+                gdxSettings.normalFontSize
+            )
+        )
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(createExportCenterMapTable(servicePopData))
+
+        return nestedTable
+    }
+
+    private fun createExportCenterMapTable(servicePopData: ServicePopData): Table {
+        val nestedTable = Table()
+
 
         return nestedTable
     }
