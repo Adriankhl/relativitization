@@ -15,7 +15,7 @@ class CommandsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>
 
     private val scrollPane: ScrollPane = createScrollPane(table)
 
-    private var commandList: List<Command> = listOf()
+    private val commandList: MutableList<Command> = mutableListOf()
 
     init {
         table.background = assets.getBackgroundColor(0.2f, 0.2f, 0.2f, 1.0f)
@@ -33,7 +33,8 @@ class CommandsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>
     }
 
     override fun onCommandListChange() {
-        commandList = game.universeClient.planDataAtPlayer.commandList
+        commandList.clear()
+        commandList.addAll(game.universeClient.planDataAtPlayer.commandList)
         updateTable()
     }
 
@@ -50,7 +51,7 @@ class CommandsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>
             val commandTable = createCommandTable(command)
             table.add(commandTable).growX()
 
-            table.row().space(20f)
+            table.row().space(30f)
         }
     }
 
@@ -92,8 +93,6 @@ class CommandsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>
         nestedTable.row().space(10f)
 
         nestedTable.add(commandDescriptionLabel).colspan(2).growX().left()
-
-        nestedTable.row().space(10f)
 
         return nestedTable
     }

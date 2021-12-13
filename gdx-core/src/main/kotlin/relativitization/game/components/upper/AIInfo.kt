@@ -9,6 +9,7 @@ import relativitization.universe.ai.AICollection
 import relativitization.universe.ai.DefaultAI
 import relativitization.universe.ai.name
 import relativitization.universe.data.commands.Command
+import relativitization.universe.data.commands.name
 
 class AIInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.assets) {
     private val gdxSettings = game.gdxSettings
@@ -56,6 +57,9 @@ class AIInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.
 
         table.add(createAIComputeTable())
 
+        table.row().space(20f)
+
+        table.add(createAllAICommandTable())
     }
 
     private fun createAISelectionTable(): Table {
@@ -96,21 +100,40 @@ class AIInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.
             aiCommandList.clear()
 
             aiCommandList.addAll(commandList)
+
+            updateTable()
         }
         nestedTable.add(computeButton)
 
         return nestedTable
     }
 
-    private fun createAICommandTable(index: Int): Table {
+    private fun createAllAICommandTable(): Table {
         val nestedTable = Table()
 
-        return if ((index >= 0) && (index < aiCommandList.size)) {
-            val command: Command = aiCommandList[index]
+        aiCommandList.forEach {
+            nestedTable.add(createAICommandTable(it))
 
-            nestedTable
-        } else {
-            nestedTable
+            nestedTable.row().space(20f)
         }
+
+        return nestedTable
+    }
+
+    private fun createAICommandTable(command: Command): Table {
+        val nestedTable = Table()
+
+        nestedTable.background = assets.getBackgroundColor(0.25f, 0.25f, 0.25f, 1.0f)
+
+        val commandNameLabel = createLabel(command.name(), gdxSettings.normalFontSize)
+        nestedTable.add(commandNameLabel).growX()
+
+        nestedTable.row().space(10f)
+
+        val commandDescriptionLabel = createLabel(command.description, gdxSettings.smallFontSize)
+        commandDescriptionLabel.wrap = true
+        nestedTable.add(commandDescriptionLabel).growX()
+
+        return nestedTable
     }
 }
