@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.PlayerData
+import relativitization.universe.data.components.defaults.science.application.ScienceApplicationData
 import relativitization.universe.data.components.defaults.science.knowledge.AppliedResearchData
 import relativitization.universe.data.components.defaults.science.knowledge.BasicResearchData
 import relativitization.universe.data.components.defaults.science.knowledge.KnowledgeData
@@ -62,28 +63,62 @@ class ScienceInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
     private fun updateTable() {
         table.clear()
 
-        val headerLabel =
-            createLabel("Science: player ${playerData.playerId}", gdxSettings.bigFontSize)
-
-        table.add(headerLabel)
+        table.add(
+            createLabel(
+                "Science: player ${playerData.playerId}",
+                gdxSettings.bigFontSize
+            )
+        )
 
         table.row().space(20f)
 
         val playerKnowledgeDataLabel = createLabel("Player knowledge: ", gdxSettings.normalFontSize)
-        table.add(playerKnowledgeDataLabel)
+        table.add(
+            createLabel(
+                "Player knowledge: ",
+                gdxSettings.normalFontSize
+            )
+        )
 
         table.row().space(10f)
 
-        table.add(createKnowledgeDataTable(playerData.playerInternalData.playerScienceData().playerKnowledgeData))
+        table.add(
+            createKnowledgeDataTable(
+                playerData.playerInternalData.playerScienceData().playerKnowledgeData
+            )
+        )
 
         table.row().space(20f)
 
-        val commonSenseLabel = createLabel("Common sense: ", gdxSettings.normalFontSize)
-        table.add(commonSenseLabel)
+        table.add(
+            createLabel(
+                "Common sense: ",
+                gdxSettings.normalFontSize
+            )
+        )
 
         table.row().space(10f)
 
-        table.add(createKnowledgeDataTable(playerData.playerInternalData.playerScienceData().commonSenseKnowledgeData))
+        table.add(
+            createKnowledgeDataTable(
+                playerData.playerInternalData.playerScienceData().commonSenseKnowledgeData
+            )
+        )
+
+        table.row().space(20f)
+
+        table.add(
+            createLabel(
+                "Science application: ",
+                gdxSettings.normalFontSize
+            )
+        )
+
+        table.add(
+            createScienceApplicationDataTable(
+                playerData.playerInternalData.playerScienceData().playerScienceApplicationData
+            )
+        )
     }
 
     private fun createKnowledgeDataTable(knowledgeData: KnowledgeData): Table {
@@ -261,6 +296,14 @@ class ScienceInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         nestedTable.add(militaryTechnologyLevelLabel)
 
         nestedTable.row().space(10f)
+
+        return nestedTable
+    }
+
+    private fun createScienceApplicationDataTable(
+        scienceApplicationData: ScienceApplicationData
+    ): Table {
+        val nestedTable = Table()
 
         return nestedTable
     }
