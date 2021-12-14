@@ -760,17 +760,40 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
         val allBasicProject =
             playerData.playerInternalData.playerScienceData().doneBasicResearchProjectList +
                     playerData.playerInternalData.playerScienceData().knownBasicResearchProjectList
-        val allAppliedProject =
-            playerData.playerInternalData.playerScienceData().doneAppliedResearchProjectList +
-                    playerData.playerInternalData.playerScienceData().knownAppliedResearchProjectList
         val minBasicX: Double = allBasicProject.minOfOrNull {
             it.xCor
         } ?: -1.0
+
+        val allAppliedProject =
+            playerData.playerInternalData.playerScienceData().doneAppliedResearchProjectList +
+                    playerData.playerInternalData.playerScienceData().knownAppliedResearchProjectList
+
         val minAppliedX: Double = allAppliedProject.minOfOrNull {
             it.xCor
         } ?: -1.0
 
-        return min(minBasicX, minAppliedX)
+        val allInstitute = playerData.playerInternalData.popSystemData().carrierDataMap.values.map {
+            it.allPopData.scholarPopData.instituteMap.values
+        }.flatten()
+
+        val minInstituteX: Double = allInstitute.minOfOrNull {
+            it.instituteInternalData.xCor
+        } ?: -1.0
+
+        val allLaboratory = playerData.playerInternalData.popSystemData().carrierDataMap.values.map {
+            it.allPopData.engineerPopData.laboratoryMap.values
+        }.flatten()
+
+        val minLaboratoryX: Double = allLaboratory.minOfOrNull {
+            it.laboratoryInternalData.xCor
+        } ?: -1.0
+
+        return listOf(
+            minBasicX,
+            minAppliedX,
+            minInstituteX,
+            minLaboratoryX,
+        ).minOf { it }
     }
 
     /**
@@ -781,17 +804,41 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
         val allBasicProject =
             playerData.playerInternalData.playerScienceData().doneBasicResearchProjectList +
                     playerData.playerInternalData.playerScienceData().knownBasicResearchProjectList
-        val allAppliedProject =
-            playerData.playerInternalData.playerScienceData().doneAppliedResearchProjectList +
-                    playerData.playerInternalData.playerScienceData().knownAppliedResearchProjectList
+
         val maxBasicX: Double = allBasicProject.maxOfOrNull {
             it.xCor
         } ?: 1.0
+
+        val allAppliedProject =
+            playerData.playerInternalData.playerScienceData().doneAppliedResearchProjectList +
+                    playerData.playerInternalData.playerScienceData().knownAppliedResearchProjectList
+
         val maxAppliedX: Double = allAppliedProject.maxOfOrNull {
             it.xCor
         } ?: 1.0
 
-        return max(maxBasicX, maxAppliedX)
+        val allInstitute = playerData.playerInternalData.popSystemData().carrierDataMap.values.map {
+            it.allPopData.scholarPopData.instituteMap.values
+        }.flatten()
+
+        val maxInstituteX: Double = allInstitute.maxOfOrNull {
+            it.instituteInternalData.xCor
+        } ?: 1.0
+
+        val allLaboratory = playerData.playerInternalData.popSystemData().carrierDataMap.values.map {
+            it.allPopData.engineerPopData.laboratoryMap.values
+        }.flatten()
+
+        val maxLaboratoryX: Double = allLaboratory.maxOfOrNull {
+            it.laboratoryInternalData.xCor
+        } ?: 1.0
+
+        return listOf(
+            maxBasicX,
+            maxAppliedX,
+            maxInstituteX,
+            maxLaboratoryX,
+        ).maxOf { it }
     }
 
     /**
@@ -802,17 +849,41 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
         val allBasicProject =
             playerData.playerInternalData.playerScienceData().doneBasicResearchProjectList +
                     playerData.playerInternalData.playerScienceData().knownBasicResearchProjectList
-        val allAppliedProject =
-            playerData.playerInternalData.playerScienceData().doneAppliedResearchProjectList +
-                    playerData.playerInternalData.playerScienceData().knownAppliedResearchProjectList
+
         val minBasicY: Double = allBasicProject.minOfOrNull {
             it.yCor
         } ?: -1.0
+
+        val allAppliedProject =
+            playerData.playerInternalData.playerScienceData().doneAppliedResearchProjectList +
+                    playerData.playerInternalData.playerScienceData().knownAppliedResearchProjectList
+
         val minAppliedY: Double = allAppliedProject.minOfOrNull {
             it.yCor
         } ?: -1.0
 
-        return min(minBasicY, minAppliedY)
+        val allInstitute = playerData.playerInternalData.popSystemData().carrierDataMap.values.map {
+            it.allPopData.scholarPopData.instituteMap.values
+        }.flatten()
+
+        val minInstituteY: Double = allInstitute.minOfOrNull {
+            it.instituteInternalData.yCor
+        } ?: -1.0
+
+        val allLaboratory = playerData.playerInternalData.popSystemData().carrierDataMap.values.map {
+            it.allPopData.engineerPopData.laboratoryMap.values
+        }.flatten()
+
+        val minLaboratoryY: Double = allLaboratory.minOfOrNull {
+            it.laboratoryInternalData.yCor
+        } ?: -1.0
+
+        return listOf(
+            minBasicY,
+            minAppliedY,
+            minInstituteY,
+            minLaboratoryY,
+        ).minOf { it }
     }
 
 
@@ -824,17 +895,41 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
         val allBasicProject =
             playerData.playerInternalData.playerScienceData().doneBasicResearchProjectList +
                     playerData.playerInternalData.playerScienceData().knownBasicResearchProjectList
-        val allAppliedProject =
-            playerData.playerInternalData.playerScienceData().doneAppliedResearchProjectList +
-                    playerData.playerInternalData.playerScienceData().knownAppliedResearchProjectList
+
         val maxBasicY: Double = allBasicProject.maxOfOrNull {
             it.yCor
         } ?: 1.0
+
+        val allAppliedProject =
+            playerData.playerInternalData.playerScienceData().doneAppliedResearchProjectList +
+                    playerData.playerInternalData.playerScienceData().knownAppliedResearchProjectList
+
         val maxAppliedY: Double = allAppliedProject.maxOfOrNull {
             it.yCor
         } ?: 1.0
 
-        return max(maxBasicY, maxAppliedY)
+        val allInstitute = playerData.playerInternalData.popSystemData().carrierDataMap.values.map {
+            it.allPopData.scholarPopData.instituteMap.values
+        }.flatten()
+
+        val maxInstituteY: Double = allInstitute.maxOfOrNull {
+            it.instituteInternalData.yCor
+        } ?: 1.0
+
+        val allLaboratory = playerData.playerInternalData.popSystemData().carrierDataMap.values.map {
+            it.allPopData.engineerPopData.laboratoryMap.values
+        }.flatten()
+
+        val maxLaboratoryY: Double = allLaboratory.maxOfOrNull {
+            it.laboratoryInternalData.yCor
+        } ?: 1.0
+
+        return listOf(
+            maxBasicY,
+            maxAppliedY,
+            maxInstituteY,
+            maxLaboratoryY,
+        ).maxOf { it }
     }
 
     /**
