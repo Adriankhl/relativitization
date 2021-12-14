@@ -141,7 +141,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         table.row()
 
-        val carrierSelectBox = createSelectBox(
+        val carrierIdSelectBox = createSelectBox(
             playerData.playerInternalData.popSystemData().carrierDataMap.keys.toList(),
             carrierId,
             gdxSettings.smallFontSize,
@@ -149,7 +149,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             carrierId = id
             updateCarrierTable()
         }
-        table.add(carrierSelectBox)
+        table.add(carrierIdSelectBox)
 
         table.row().space(20f)
 
@@ -2474,6 +2474,12 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             newCarrierQuality.value = Notation.roundDecimal(fl.toDouble(), 2)
         }
         nestedTable.add(newCarrierQualitySlider).colspan(2)
+
+        return nestedTable
+    }
+
+    private fun createNewPlayerTable(): Table {
+        val nestedTable = Table()
 
         return nestedTable
     }
