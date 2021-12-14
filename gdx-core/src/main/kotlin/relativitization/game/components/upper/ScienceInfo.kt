@@ -1,11 +1,13 @@
 package relativitization.game.components.upper
 
+import com.badlogic.gdx.scenes.scene2d.ui.Container
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.components.defaults.economy.ResourceType
+import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.ResourceFactoryInternalData
 import relativitization.universe.data.components.defaults.science.application.ScienceApplicationData
 import relativitization.universe.data.components.defaults.science.knowledge.AppliedResearchData
 import relativitization.universe.data.components.defaults.science.knowledge.BasicResearchData
@@ -460,6 +462,13 @@ class ScienceInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
     private fun createIdealResourceFactoryMapTable(): Table {
         val nestedTable = Table()
 
+        val container = Container(
+            createIdealResourceFactoryTable(
+                ResourceType.PLANT,
+                playerData.playerInternalData.playerScienceData().playerScienceApplicationData
+            )
+        )
+
         nestedTable.add(
             createLabel(
                 "Resource: ",
@@ -472,8 +481,36 @@ class ScienceInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
             ResourceType.values().toList() - ResourceType.ENTERTAINMENT,
             ResourceType.values().first(),
             gdxSettings.smallFontSize
-        )
+        ) { resourceType, _ ->
+            container.actor = createIdealResourceFactoryTable(
+                resourceType,
+                playerData.playerInternalData.playerScienceData().playerScienceApplicationData
+            )
+        }
         nestedTable.add(idealResourceFactorySelectBox)
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(container).colspan(2)
+
+        return nestedTable
+    }
+
+    private fun createIdealResourceFactoryTable(
+        resourceType: ResourceType,
+        scienceApplicationData: ScienceApplicationData,
+    ): Table {
+        val nestedTable = Table()
+
+        val idealFactory: ResourceFactoryInternalData =
+            scienceApplicationData.getIdealResourceFactory(resourceType)
+
+        nestedTable.add(
+            createLabel(
+                "Output resource: ${idealFactory.outputResource}",
+                gdxSettings.smallFontSize
+            )
+        )
 
         return nestedTable
     }
