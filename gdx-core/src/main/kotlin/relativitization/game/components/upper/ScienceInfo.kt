@@ -512,6 +512,62 @@ class ScienceInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
             )
         )
 
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "Output quality: ${idealFactory.maxOutputResourceQualityData.quality1}",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "Output amount: ${idealFactory.maxOutputAmount}",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        idealFactory.inputResourceMap.forEach { (resourceType, inputResourceData) ->
+            nestedTable.row().space(10f)
+
+            nestedTable.add(
+                createLabel(
+                    "Input $resourceType quality: ${inputResourceData.qualityData.quality1}",
+                    gdxSettings.smallFontSize
+                )
+            )
+
+            nestedTable.row().space(10f)
+
+            nestedTable.add(
+                createLabel(
+                    "Input $resourceType amount: ${inputResourceData.amount}",
+                    gdxSettings.smallFontSize
+                )
+            )
+        }
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "Fuel consumption rate: ${idealFactory.fuelRestMassConsumptionRate}",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "Employee: ${idealFactory.maxNumEmployee}",
+                gdxSettings.smallFontSize
+            )
+        )
+
         return nestedTable
     }
 }
