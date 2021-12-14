@@ -388,7 +388,7 @@ class ScienceInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
 
         nestedTable.add(
             createLabel(
-                "",
+                "Ideal entertainment quality: ${scienceApplicationData.idealEntertainmentQuality.quality1}",
                 gdxSettings.smallFontSize
             )
         )
@@ -397,7 +397,7 @@ class ScienceInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
 
         nestedTable.add(
             createLabel(
-                "",
+                "Logistic fuel loss: ${scienceApplicationData.fuelLogisticsLossFractionPerDistance}",
                 gdxSettings.smallFontSize
             )
         )
@@ -406,7 +406,7 @@ class ScienceInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
 
         nestedTable.add(
             createLabel(
-                "",
+                "Logistic resource loss: ${scienceApplicationData.resourceLogisticsLossFractionPerDistance}",
                 gdxSettings.smallFontSize
             )
         )
@@ -415,7 +415,7 @@ class ScienceInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
 
         nestedTable.add(
             createLabel(
-                "",
+                "Military base attack factor: ${scienceApplicationData.militaryBaseAttackFactor}",
                 gdxSettings.smallFontSize
             )
         )
@@ -424,34 +424,7 @@ class ScienceInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
 
         nestedTable.add(
             createLabel(
-                "",
-                gdxSettings.smallFontSize
-            )
-        )
-
-        nestedTable.row().space(10f)
-
-        nestedTable.add(
-            createLabel(
-                "",
-                gdxSettings.smallFontSize
-            )
-        )
-
-        nestedTable.row().space(10f)
-
-        nestedTable.add(
-            createLabel(
-                "",
-                gdxSettings.smallFontSize
-            )
-        )
-
-        nestedTable.row().space(10f)
-
-        nestedTable.add(
-            createLabel(
-                "",
+                "Military base shield factor: ${scienceApplicationData.militaryBaseShieldFactor}",
                 gdxSettings.smallFontSize
             )
         )
