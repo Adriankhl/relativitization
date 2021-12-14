@@ -861,25 +861,6 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         nestedTable.add(
             createLabel(
-                "Max. output: ${resourceFactoryData.resourceFactoryInternalData.maxOutputAmount * resourceFactoryData.numBuilding}",
-                gdxSettings.smallFontSize
-            )
-        )
-
-        nestedTable.row().space(10f)
-
-        nestedTable.add(
-            createLabel(
-                "Last output: ${resourceFactoryData.lastOutputAmount}",
-                gdxSettings.smallFontSize
-            )
-        )
-
-        nestedTable.row().space(10f)
-
-
-        nestedTable.add(
-            createLabel(
                 "Max. quality: ${resourceFactoryData.resourceFactoryInternalData.maxOutputResourceQualityData.quality1}",
                 gdxSettings.smallFontSize
             )
@@ -896,28 +877,27 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         nestedTable.row().space(10f)
 
+        nestedTable.add(
+            createLabel(
+                "Max. output: ${resourceFactoryData.resourceFactoryInternalData.maxOutputAmount * resourceFactoryData.numBuilding}",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "Last output: ${resourceFactoryData.lastOutputAmount}",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.row().space(10f)
+
         resourceFactoryData.resourceFactoryInternalData.inputResourceMap.forEach { (resourceType, inputResource) ->
             val lastInputResource: InputResourceData = resourceFactoryData.lastInputResourceMap
                 .getOrDefault(resourceType, InputResourceData())
-
-            nestedTable.add(
-                createLabel(
-                    "Max. $resourceType input: ${inputResource.amount * resourceFactoryData.numBuilding}",
-                    gdxSettings.smallFontSize
-                )
-            )
-
-            nestedTable.row().space(10f)
-
-            nestedTable.add(
-                createLabel(
-                    "Last $resourceType input: ${lastInputResource.amount}",
-                    gdxSettings.smallFontSize
-                )
-            )
-
-            nestedTable.row().space(10f)
-
 
             nestedTable.add(
                 createLabel(
@@ -931,6 +911,24 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             nestedTable.add(
                 createLabel(
                     "Last $resourceType input quality: ${lastInputResource.qualityData.quality1}",
+                    gdxSettings.smallFontSize
+                )
+            )
+
+            nestedTable.row().space(10f)
+
+            nestedTable.add(
+                createLabel(
+                    "Max. $resourceType input: ${inputResource.amount * resourceFactoryData.numBuilding}",
+                    gdxSettings.smallFontSize
+                )
+            )
+
+            nestedTable.row().space(10f)
+
+            nestedTable.add(
+                createLabel(
+                    "Last $resourceType input: ${lastInputResource.amount}",
                     gdxSettings.smallFontSize
                 )
             )
