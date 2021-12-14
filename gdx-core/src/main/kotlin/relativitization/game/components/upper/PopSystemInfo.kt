@@ -157,6 +157,17 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             updateCarrierTable()
         }
         table.add(carrierTable)
+
+        table.row().space(30f)
+
+        table.add(createNewCarrierTable())
+
+        table.row().space(30f)
+
+        // Add empty space for Android keyboard input
+        val emptyLabel = createLabel("", gdxSettings.smallFontSize)
+        emptyLabel.height = Gdx.graphics.height.toFloat()
+        table.add(emptyLabel).minHeight(Gdx.graphics.height.toFloat())
     }
 
     private fun updateCarrierTable() {
@@ -172,54 +183,11 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             )
         ).colspan(2)
 
-        carrierTable.row().space(30f)
+        carrierTable.row().space(10f)
 
         carrierTable.add(createCarrierInternalDataTable(carrier.carrierInternalData)).colspan(2)
 
-        carrierTable.row().space(10f)
-
-        val newCarrierQuality = createDoubleTextField(1.0, gdxSettings.smallFontSize)
-        val buildCarrierButton = createTextButton(
-            "Build carrier",
-            gdxSettings.smallFontSize,
-            gdxSettings.soundEffectsVolume
-        ) {
-            val buildLocalCarrierCommand = BuildLocalCarrierCommand(
-                toId = playerData.playerId,
-                fromId = game.universeClient.getCurrentPlayerData().playerId,
-                fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
-                qualityLevel = newCarrierQuality.value,
-            )
-
-            game.universeClient.currentCommand = buildLocalCarrierCommand
-        }
-
-        carrierTable.add(buildCarrierButton).colspan(2)
-
-        carrierTable.row().space(10f)
-
-        carrierTable.add(
-            createLabel(
-                "Quality: ",
-                gdxSettings.smallFontSize
-            )
-        )
-
-        carrierTable.add(newCarrierQuality.textField)
-
-        carrierTable.row().space(10f)
-
-        val newCarrierQualitySlider = createSlider(
-            0f,
-            1f,
-            0.01f,
-            1f
-        ) { fl, _ ->
-            newCarrierQuality.value = Notation.roundDecimal(fl.toDouble(), 2)
-        }
-        carrierTable.add(newCarrierQualitySlider).colspan(2)
-
-        carrierTable.row().space(30f)
+        carrierTable.row().space(20f)
 
         carrierTable.add(createLabel("Pop:", gdxSettings.normalFontSize)).colspan(2)
 
@@ -238,13 +206,6 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         carrierTable.row().space(30f)
 
         carrierTable.add(createPopTable(carrier.allPopData)).colspan(2)
-
-        carrierTable.row()
-
-        // Add empty space for Android keyboard input
-        val emptyLabel = createLabel("", gdxSettings.smallFontSize)
-        emptyLabel.height = Gdx.graphics.height.toFloat()
-        carrierTable.add(emptyLabel).minHeight(Gdx.graphics.height.toFloat()).colspan(2)
     }
 
     private fun createCarrierInternalDataTable(carrierInternalData: CarrierInternalData): Table {
@@ -2457,6 +2418,62 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             amountPerTime.value = it
         }
         nestedTable.add(amountPerTimeSliderButtonTable).colspan(2)
+
+        return nestedTable
+    }
+
+    private fun createNewCarrierTable(): Table {
+        val nestedTable = Table()
+
+        nestedTable.add(
+            createLabel(
+                "New carrier command: ",
+                gdxSettings.normalFontSize
+            )
+        ).colspan(2)
+
+        nestedTable.row().space(10f)
+
+        val newCarrierQuality = createDoubleTextField(1.0, gdxSettings.smallFontSize)
+        val buildCarrierButton = createTextButton(
+            "Build carrier",
+            gdxSettings.smallFontSize,
+            gdxSettings.soundEffectsVolume
+        ) {
+            val buildLocalCarrierCommand = BuildLocalCarrierCommand(
+                toId = playerData.playerId,
+                fromId = game.universeClient.getCurrentPlayerData().playerId,
+                fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
+                qualityLevel = newCarrierQuality.value,
+            )
+
+            game.universeClient.currentCommand = buildLocalCarrierCommand
+        }
+
+        nestedTable.add(buildCarrierButton).colspan(2)
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "Quality: ",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.add(newCarrierQuality.textField)
+
+        nestedTable.row().space(10f)
+
+        val newCarrierQualitySlider = createSlider(
+            0f,
+            1f,
+            0.01f,
+            1f
+        ) { fl, _ ->
+            newCarrierQuality.value = Notation.roundDecimal(fl.toDouble(), 2)
+        }
+        nestedTable.add(newCarrierQualitySlider).colspan(2)
 
         return nestedTable
     }
