@@ -341,11 +341,20 @@ class ScienceInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
             )
         )
 
+        nestedTable.row().space(20f)
+
+        nestedTable.add(
+            createLabel(
+                "Ideal fuel factory: ",
+                gdxSettings.normalFontSize
+            )
+        )
+
         nestedTable.row().space(10f)
 
         nestedTable.add(
             createLabel(
-                "",
+                "Max. output: ${scienceApplicationData.idealFuelFactory.maxOutputAmount}",
                 gdxSettings.smallFontSize
             )
         )
@@ -354,16 +363,7 @@ class ScienceInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
 
         nestedTable.add(
             createLabel(
-                "",
-                gdxSettings.smallFontSize
-            )
-        )
-
-        nestedTable.row().space(10f)
-
-        nestedTable.add(
-            createLabel(
-                "",
+                "Max. employee: ${scienceApplicationData.idealFuelFactory.maxNumEmployee}",
                 gdxSettings.smallFontSize
             )
         )
