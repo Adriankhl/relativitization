@@ -360,12 +360,12 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
                         playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
                             selectedCarrierId
                         ).allPopData.scholarPopData.instituteMap.getValue(selectedInstituteId)
-                    createTextField(
+                    createLabel(
                         "Institute carrier id: $selectedCarrierId. Institute id: $selectedInstituteId. Strength: ${institute.strength}. ",
                         gdxSettings.normalFontSize
                     )
                 } else {
-                    createTextField("", gdxSettings.normalFontSize)
+                    createLabel("", gdxSettings.normalFontSize)
                 }
             }
             !isInstituteSelected && isLaboratorySelected  -> {
@@ -374,22 +374,22 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
                         playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
                             selectedCarrierId
                         ).allPopData.engineerPopData.laboratoryMap.getValue(selectedLaboratoryId)
-                    createTextField(
+                    createLabel(
                         "Laboratory carrier id: $selectedCarrierId. Laboratory id: $selectedInstituteId. Strength: ${laboratory.strength}. ",
                         gdxSettings.normalFontSize
                     )
                 } else {
-                    createTextField("", gdxSettings.normalFontSize)
+                    createLabel("", gdxSettings.normalFontSize)
                 }
             }
             isInstituteSelected && isLaboratorySelected  -> {
-                createTextField(
+                createLabel(
                     "Error: too many selected building. ",
                     gdxSettings.normalFontSize
                 )
             }
             else -> {
-                createTextField(
+                createLabel(
                     "Error: No selected building. ",
                     gdxSettings.normalFontSize
                 )
@@ -585,6 +585,33 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
             }
         }
 
+        if (showInstituteAndLaboratory) {
+            playerData.playerInternalData.popSystemData().carrierDataMap.forEach { (carrierId, carrier) ->
+                carrier.allPopData.scholarPopData.instituteMap.forEach { instituteId, institute ->
+                    val imageList: List<Image> = createInstituteImageList(
+                        carrierId,
+                        instituteId,
+                        institute,
+                    )
+                    imageList.forEach {
+                        knowledgeGroup.addActor(it)
+                    }
+                }
+            }
+
+            playerData.playerInternalData.popSystemData().carrierDataMap.forEach { (carrierId, carrier) ->
+                carrier.allPopData.engineerPopData.laboratoryMap.forEach { (laboratoryId, laboratory) ->
+                    val imageList: List<Image> = createLaboratoryImageList(
+                        carrierId,
+                        laboratoryId,
+                        laboratory
+                    )
+                    imageList.forEach {
+                        knowledgeGroup.addActor(it)
+                    }
+                }
+            }
+        }
 
         knowledgeGroup.addListener((object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
