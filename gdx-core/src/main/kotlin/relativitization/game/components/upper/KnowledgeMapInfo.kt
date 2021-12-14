@@ -74,7 +74,7 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
     private var isLaboratorySelected: Boolean = true
 
     // The selected carrier, institute and laboratory
-    private var selectedCarrier: Int = -1
+    private var selectedCarrierId: Int = -1
     private var selectedInstituteId: Int = -1
     private var selectedLaboratoryId: Int = -1
 
@@ -254,7 +254,7 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
             text = "Show institute/laboratory",
             default = showInstituteAndLaboratory,
             fontSize = gdxSettings.smallFontSize,
-        ){ b, _ ->
+        ) { b, _ ->
             showInstituteAndLaboratory = b
             updateKnowledgeGroup()
         }
@@ -277,7 +277,7 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
     private fun updateKnowledgeProjectTable() {
         knowledgeProjectTable.clear()
 
-        val selectedKnowledgeMapDouble2D: Label = createLabel(
+        val selectedKnowledgeMapDouble2DLabel: Label = createLabel(
             "Position: (%.2f, %.2f)".format(
                 game.universeClient.selectedKnowledgeDouble2D.x,
                 game.universeClient.selectedKnowledgeDouble2D.y,
@@ -292,7 +292,7 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
                     gdxSettings.normalFontSize
                 )
             }
-            isAppliedProjectSelected && !isBasicProjectSelected -> {
+            !isBasicProjectSelected && isAppliedProjectSelected -> {
                 createLabel(
                     "Applied Project Id: ${selectedAppliedResearchProjectData.appliedResearchId}",
                     gdxSettings.normalFontSize
@@ -316,7 +316,7 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
                     gdxSettings.normalFontSize
                 )
             }
-            isAppliedProjectSelected && !isBasicProjectSelected -> {
+            !isBasicProjectSelected && isAppliedProjectSelected -> {
                 createLabel(
                     "Significance: %.2f".format(selectedAppliedResearchProjectData.significance),
                     gdxSettings.normalFontSize
@@ -336,11 +336,73 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
             }
         }
 
-        knowledgeProjectTable.add(selectedKnowledgeMapDouble2D).pad(10f)
+        val hasCarrier: Boolean = playerData.playerInternalData.popSystemData()
+            .carrierDataMap.containsKey(selectedCarrierId)
+        val hasInstitute: Boolean = if (hasCarrier) {
+            playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
+                selectedCarrierId
+            ).allPopData.scholarPopData.instituteMap.containsKey(selectedInstituteId)
+        } else {
+            false
+        }
+        val hasLaboratory: Boolean = if (hasCarrier) {
+            playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
+                selectedCarrierId
+            ).allPopData.engineerPopData.laboratoryMap.containsKey(selectedLaboratoryId)
+        } else {
+            false
+        }
+
+        val selectedBuildingLabel = when {
+            isInstituteSelected && !isLaboratorySelected -> {
+                if (hasInstitute) {
+                    val institute: InstituteData =
+                        playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
+                            selectedCarrierId
+                        ).allPopData.scholarPopData.instituteMap.getValue(selectedInstituteId)
+                    createTextField(
+                        "Institute carrier id: $selectedCarrierId. Institute id: $selectedInstituteId. Strength: ${institute.strength}. ",
+                        gdxSettings.normalFontSize
+                    )
+                } else {
+                    createTextField("", gdxSettings.normalFontSize)
+                }
+            }
+            !isInstituteSelected && isLaboratorySelected  -> {
+                if (hasLaboratory) {
+                    val laboratory: LaboratoryData =
+                        playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
+                            selectedCarrierId
+                        ).allPopData.engineerPopData.laboratoryMap.getValue(selectedLaboratoryId)
+                    createTextField(
+                        "Laboratory carrier id: $selectedCarrierId. Laboratory id: $selectedInstituteId. Strength: ${laboratory.strength}. ",
+                        gdxSettings.normalFontSize
+                    )
+                } else {
+                    createTextField("", gdxSettings.normalFontSize)
+                }
+            }
+            isInstituteSelected && isLaboratorySelected  -> {
+                createTextField(
+                    "Error: too many selected building. ",
+                    gdxSettings.normalFontSize
+                )
+            }
+            else -> {
+                createTextField(
+                    "Error: No selected building. ",
+                    gdxSettings.normalFontSize
+                )
+            }
+        }
+
+        knowledgeProjectTable.add(selectedKnowledgeMapDouble2DLabel).pad(10f)
 
         knowledgeProjectTable.add(selectedProjectIdLabel).pad(20f)
 
         knowledgeProjectTable.add(selectedProjectSignificanceLabel).pad(20f)
+
+        knowledgeProjectTable.add(selectedBuildingLabel).pad(20f)
     }
 
     private fun updateKnowledgeGroup() {
@@ -781,9 +843,10 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
             it.instituteInternalData.xCor
         } ?: -1.0
 
-        val allLaboratory = playerData.playerInternalData.popSystemData().carrierDataMap.values.map {
-            it.allPopData.engineerPopData.laboratoryMap.values
-        }.flatten()
+        val allLaboratory =
+            playerData.playerInternalData.popSystemData().carrierDataMap.values.map {
+                it.allPopData.engineerPopData.laboratoryMap.values
+            }.flatten()
 
         val minLaboratoryX: Double = allLaboratory.minOfOrNull {
             it.laboratoryInternalData.xCor
@@ -826,9 +889,10 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
             it.instituteInternalData.xCor
         } ?: 1.0
 
-        val allLaboratory = playerData.playerInternalData.popSystemData().carrierDataMap.values.map {
-            it.allPopData.engineerPopData.laboratoryMap.values
-        }.flatten()
+        val allLaboratory =
+            playerData.playerInternalData.popSystemData().carrierDataMap.values.map {
+                it.allPopData.engineerPopData.laboratoryMap.values
+            }.flatten()
 
         val maxLaboratoryX: Double = allLaboratory.maxOfOrNull {
             it.laboratoryInternalData.xCor
@@ -871,9 +935,10 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
             it.instituteInternalData.yCor
         } ?: -1.0
 
-        val allLaboratory = playerData.playerInternalData.popSystemData().carrierDataMap.values.map {
-            it.allPopData.engineerPopData.laboratoryMap.values
-        }.flatten()
+        val allLaboratory =
+            playerData.playerInternalData.popSystemData().carrierDataMap.values.map {
+                it.allPopData.engineerPopData.laboratoryMap.values
+            }.flatten()
 
         val minLaboratoryY: Double = allLaboratory.minOfOrNull {
             it.laboratoryInternalData.yCor
@@ -917,9 +982,10 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
             it.instituteInternalData.yCor
         } ?: 1.0
 
-        val allLaboratory = playerData.playerInternalData.popSystemData().carrierDataMap.values.map {
-            it.allPopData.engineerPopData.laboratoryMap.values
-        }.flatten()
+        val allLaboratory =
+            playerData.playerInternalData.popSystemData().carrierDataMap.values.map {
+                it.allPopData.engineerPopData.laboratoryMap.values
+            }.flatten()
 
         val maxLaboratoryY: Double = allLaboratory.maxOfOrNull {
             it.laboratoryInternalData.yCor
