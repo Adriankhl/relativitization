@@ -33,7 +33,7 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
     private var playerData: PlayerData = PlayerData(-1)
 
     // If true, the latest selected project is basic project, otherwise it is applied project
-    private var isLatestSelectedBasic: Boolean = true
+    private var isLatestSelectedBasicProject: Boolean = true
 
     private var selectedBasicResearchProjectData: BasicResearchProjectData =
         BasicResearchProjectData(
@@ -246,17 +246,15 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
     private fun updateKnowledgeProjectTable() {
         knowledgeProjectTable.clear()
 
-        val knowledgeMapPosition: Double2D = convertKnowledgeGroupPosition(
-            game.universeClient.selectedKnowledgeDouble2D
-        )
-
         val selectedKnowledgeMapDouble2D: Label = createLabel(
-            "Position: (" +
-                    "%.2f, %.2f)".format(knowledgeMapPosition.x, knowledgeMapPosition.y),
+            "Position: (%.2f, %.2f)".format(
+                game.universeClient.selectedKnowledgeDouble2D.x,
+                game.universeClient.selectedKnowledgeDouble2D.y,
+            ),
             gdxSettings.normalFontSize
         )
 
-        val selectedProjectIdLabel: Label = if (isLatestSelectedBasic) {
+        val selectedProjectIdLabel: Label = if (isLatestSelectedBasicProject) {
             createLabel(
                 "Basic Project Id: ${selectedBasicResearchProjectData.basicResearchId}",
                 gdxSettings.normalFontSize
@@ -268,7 +266,7 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
             )
         }
 
-        val selectedProjectSignificanceLabel: Label = if (isLatestSelectedBasic) {
+        val selectedProjectSignificanceLabel: Label = if (isLatestSelectedBasicProject) {
             createLabel(
                 "Significance: %.2f".format(selectedBasicResearchProjectData.significance),
                 gdxSettings.normalFontSize
@@ -519,7 +517,7 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
             soundVolume = gdxSettings.soundEffectsVolume
         ) {
             selectedBasicResearchProjectData = project
-            isLatestSelectedBasic = true
+            isLatestSelectedBasicProject = true
             updateKnowledgeProjectTable()
         }
     }
@@ -567,7 +565,7 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
             soundVolume = gdxSettings.soundEffectsVolume
         ) {
             selectedAppliedResearchProjectData = project
-            isLatestSelectedBasic = false
+            isLatestSelectedBasicProject = false
             updateKnowledgeProjectTable()
         }
     }
