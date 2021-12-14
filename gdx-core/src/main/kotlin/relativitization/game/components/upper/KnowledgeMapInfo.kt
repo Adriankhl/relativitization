@@ -32,8 +32,11 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
     // the currently viewing player data
     private var playerData: PlayerData = PlayerData(-1)
 
-    // If true, the latest selected project is basic project, otherwise it is applied project
-    private var isLatestSelectedBasicProject: Boolean = true
+    // If true, the latest selected project is basic project
+    private var isBasicProjectSelected: Boolean = true
+
+    // If true, the latest selected project is applied project
+    private var isAppliedProjectSelected: Boolean = false
 
     private var selectedBasicResearchProjectData: BasicResearchProjectData =
         BasicResearchProjectData(
@@ -254,28 +257,55 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
             gdxSettings.normalFontSize
         )
 
-        val selectedProjectIdLabel: Label = if (isLatestSelectedBasicProject) {
-            createLabel(
-                "Basic Project Id: ${selectedBasicResearchProjectData.basicResearchId}",
-                gdxSettings.normalFontSize
-            )
-        } else {
-            createLabel(
-                "Applied Project Id: ${selectedAppliedResearchProjectData.appliedResearchId}",
-                gdxSettings.normalFontSize
-            )
+        val selectedProjectIdLabel: Label = when {
+            isBasicProjectSelected && !isAppliedProjectSelected -> {
+                createLabel(
+                    "Basic Project Id: ${selectedBasicResearchProjectData.basicResearchId}",
+                    gdxSettings.normalFontSize
+                )
+            }
+            isAppliedProjectSelected && !isBasicProjectSelected -> {
+                createLabel(
+                    "Applied Project Id: ${selectedAppliedResearchProjectData.appliedResearchId}",
+                    gdxSettings.normalFontSize
+                )
+            }
+            isBasicProjectSelected && isAppliedProjectSelected -> {
+                createLabel(
+                    "Error: Both basic project and applied project are selected. ",
+                    gdxSettings.normalFontSize
+                )
+            }
+            else -> {
+                createLabel("No selected project. ", gdxSettings.normalFontSize)
+            }
         }
 
-        val selectedProjectSignificanceLabel: Label = if (isLatestSelectedBasicProject) {
-            createLabel(
-                "Significance: %.2f".format(selectedBasicResearchProjectData.significance),
-                gdxSettings.normalFontSize
-            )
-        } else {
-            createLabel(
-                "Significance: %.2f".format(selectedAppliedResearchProjectData.significance),
-                gdxSettings.normalFontSize
-            )
+        val selectedProjectSignificanceLabel: Label = when {
+            isBasicProjectSelected && !isAppliedProjectSelected -> {
+                createLabel(
+                    "Significance: %.2f".format(selectedBasicResearchProjectData.significance),
+                    gdxSettings.normalFontSize
+                )
+            }
+            isAppliedProjectSelected && !isBasicProjectSelected -> {
+                createLabel(
+                    "Significance: %.2f".format(selectedAppliedResearchProjectData.significance),
+                    gdxSettings.normalFontSize
+                )
+            }
+            isBasicProjectSelected && isAppliedProjectSelected -> {
+                createLabel(
+                    "",
+                    gdxSettings.normalFontSize
+                )
+            }
+            else -> {
+                createLabel(
+                    "",
+                    gdxSettings.normalFontSize
+                )
+            }
         }
 
         knowledgeProjectTable.add(selectedKnowledgeMapDouble2D).pad(10f)
@@ -517,7 +547,8 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
             soundVolume = gdxSettings.soundEffectsVolume
         ) {
             selectedBasicResearchProjectData = project
-            isLatestSelectedBasicProject = true
+            isBasicProjectSelected = true
+            isAppliedProjectSelected = false
             updateKnowledgeProjectTable()
         }
     }
@@ -565,7 +596,8 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
             soundVolume = gdxSettings.soundEffectsVolume
         ) {
             selectedAppliedResearchProjectData = project
-            isLatestSelectedBasicProject = false
+            isBasicProjectSelected = false
+            isAppliedProjectSelected = true
             updateKnowledgeProjectTable()
         }
     }
