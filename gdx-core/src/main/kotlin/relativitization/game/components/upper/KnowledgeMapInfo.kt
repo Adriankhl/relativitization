@@ -73,9 +73,10 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
     // If true, a laboratory is selected by mouse
     private var isLaboratorySelected: Boolean = true
 
-    private var selectedInstituteData: InstituteData = InstituteData()
-
-    private var selectedLaboratoryData: LaboratoryData = LaboratoryData()
+    // The selected carrier, institute and laboratory
+    private var selectedCarrier: Int = -1
+    private var selectedInstituteId: Int = -1
+    private var selectedLaboratoryId: Int = -1
 
     // zoom in knowledge map, fix icon size
     private val zoomInButton: ImageButton = createImageButton(
