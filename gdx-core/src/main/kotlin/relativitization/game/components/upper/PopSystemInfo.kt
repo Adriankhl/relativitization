@@ -1156,8 +1156,9 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             gdxSettings.smallFontSize
         )
 
+        // entertainment resource is not produced by factory
         val outputResourceSelectBox = createSelectBox(
-            ResourceType.values().toList(),
+            ResourceType.values().toList() - ResourceType.ENTERTAINMENT,
             ResourceType.values().first(),
             gdxSettings.smallFontSize
         )
@@ -1393,8 +1394,9 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             gdxSettings.smallFontSize
         )
 
+        // Entertainment resource is not produced by factory
         val outputResourceSelectBox = createSelectBox(
-            ResourceType.values().toList(),
+            ResourceType.values().toList() - ResourceType.ENTERTAINMENT,
             ResourceType.values().first(),
             gdxSettings.smallFontSize
         )

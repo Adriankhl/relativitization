@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.PlayerData
+import relativitization.universe.data.components.defaults.economy.ResourceType
 import relativitization.universe.data.components.defaults.science.application.ScienceApplicationData
 import relativitization.universe.data.components.defaults.science.knowledge.AppliedResearchData
 import relativitization.universe.data.components.defaults.science.knowledge.BasicResearchData
@@ -368,6 +369,19 @@ class ScienceInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
             )
         )
 
+        nestedTable.row().space(20f)
+
+        nestedTable.add(
+            createLabel(
+                "Ideal resource factory: ",
+                gdxSettings.normalFontSize
+            )
+        )
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(createIdealResourceFactoryMapTable())
+
         nestedTable.row().space(10f)
 
         nestedTable.add(
@@ -440,14 +454,26 @@ class ScienceInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
             )
         )
 
-        nestedTable.row().space(10f)
+        return nestedTable
+    }
+
+    private fun createIdealResourceFactoryMapTable(): Table {
+        val nestedTable = Table()
 
         nestedTable.add(
             createLabel(
-                "",
+                "Resource: ",
                 gdxSettings.smallFontSize
             )
         )
+
+        // Entertainment resource is not produced by factory
+        val idealResourceFactorySelectBox = createSelectBox(
+            ResourceType.values().toList() - ResourceType.ENTERTAINMENT,
+            ResourceType.values().first(),
+            gdxSettings.smallFontSize
+        )
+        nestedTable.add(idealResourceFactorySelectBox)
 
         return nestedTable
     }
