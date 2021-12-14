@@ -10,6 +10,8 @@ import relativitization.game.utils.ActorFunction
 import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.components.defaults.physics.Double2D
+import relativitization.universe.data.components.defaults.popsystem.pop.engineer.laboratory.LaboratoryData
+import relativitization.universe.data.components.defaults.popsystem.pop.scholar.institute.InstituteData
 import relativitization.universe.data.components.defaults.science.knowledge.AppliedResearchField
 import relativitization.universe.data.components.defaults.science.knowledge.AppliedResearchProjectData
 import relativitization.universe.data.components.defaults.science.knowledge.BasicResearchField
@@ -61,6 +63,19 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
             referenceBasicResearchIdList = listOf(),
             referenceAppliedResearchIdList = listOf()
         )
+
+    // If true, show institutes and laboratory on the knowledge map
+    private var showInstituteAndLaboratory: Boolean = false
+
+    // If true, a institute is selected by mouse
+    private var isInstituteSelected: Boolean = true
+
+    // If true, a laboratory is selected by mouse
+    private var isLaboratorySelected: Boolean = true
+
+    private var selectedInstituteData: InstituteData = InstituteData()
+
+    private var selectedLaboratoryData: LaboratoryData = LaboratoryData()
 
     // zoom in knowledge map, fix icon size
     private val zoomInButton: ImageButton = createImageButton(
