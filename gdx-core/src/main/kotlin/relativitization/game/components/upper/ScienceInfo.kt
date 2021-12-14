@@ -107,7 +107,7 @@ class ScienceInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
             )
         )
 
-        table.row().space(20f)
+        table.row().space(40f)
 
         table.add(
             createLabel(
@@ -116,7 +116,7 @@ class ScienceInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
             )
         )
 
-        table.row().space(20f)
+        table.row().space(10f)
 
         table.add(
             createScienceApplicationDataTable(
@@ -311,7 +311,7 @@ class ScienceInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
 
         nestedTable.add(
             createLabel(
-                "Ideal spaceship: ",
+                "Ideal spaceship",
                 gdxSettings.normalFontSize
             )
         )
@@ -348,7 +348,7 @@ class ScienceInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
 
         nestedTable.add(
             createLabel(
-                "Ideal fuel factory: ",
+                "Ideal fuel factory",
                 gdxSettings.normalFontSize
             )
         )
@@ -388,8 +388,26 @@ class ScienceInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
 
         nestedTable.add(
             createLabel(
+                "Other production",
+                gdxSettings.normalFontSize
+            )
+        )
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
                 "Ideal entertainment quality: ${scienceApplicationData.idealEntertainmentQuality.quality1}",
                 gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "Logistic",
+                gdxSettings.normalFontSize
             )
         )
 
@@ -408,6 +426,15 @@ class ScienceInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
             createLabel(
                 "Logistic resource loss: ${scienceApplicationData.resourceLogisticsLossFractionPerDistance}",
                 gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "Military",
+                gdxSettings.normalFontSize
             )
         )
 
