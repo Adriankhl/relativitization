@@ -69,7 +69,7 @@ class ScienceInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
 
         table.row().space(20f)
 
-        val playerKnowledgeDataLabel = createLabel("Common Sense", gdxSettings.normalFontSize)
+        val playerKnowledgeDataLabel = createLabel("Player knowledge: ", gdxSettings.normalFontSize)
         table.add(playerKnowledgeDataLabel)
 
         table.row().space(10f)
@@ -78,7 +78,7 @@ class ScienceInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
 
         table.row().space(20f)
 
-        val commonSenseLabel = createLabel("Common Sense", gdxSettings.normalFontSize)
+        val commonSenseLabel = createLabel("Common sense: ", gdxSettings.normalFontSize)
         table.add(commonSenseLabel)
 
         table.row().space(10f)
