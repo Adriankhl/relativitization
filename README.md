@@ -69,6 +69,9 @@ The generated `~/.wine/drive_c/relativitization-output/relativitization-win` fol
 
 
 # Run simulation
-Change `relativitization.abm.AllDefaultKt` to the main class of your simulation:
+`./simulations/src/main/kotlin/relativitization/abm/AllDefault.kt` is a simulation example. You can run the main function by:
+
 `./gradlew :simulation:run -PmainClass=relativitization.abm.AllDefaultKt`
-note that there is an additional `Kt` after the file name in kotlin convention.
+
+You can change `relativitization.abm.AllDefaultKt` to the main class of your simulation.
+Note that there is an additional `Kt` after the file name in kotlin convention.
