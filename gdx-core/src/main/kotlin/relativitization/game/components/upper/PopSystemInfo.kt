@@ -164,6 +164,10 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         table.row().space(30f)
 
+        table.add(createNewPlayerTable())
+
+        table.row()
+
         // Add empty space for Android keyboard input
         val emptyLabel = createLabel("", gdxSettings.smallFontSize)
         emptyLabel.height = Gdx.graphics.height.toFloat()
@@ -2480,6 +2484,24 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
     private fun createNewPlayerTable(): Table {
         val nestedTable = Table()
+
+        nestedTable.add(
+            createLabel(
+                "New player command",
+                gdxSettings.normalFontSize
+            )
+        )
+
+        val newPlayerCarrierIdSet: MutableSet<Int> = mutableSetOf()
+
+        val newPlayerCarrierIdLabel = createLabel(
+            "Carriers in new player: $newPlayerCarrierIdSet",
+            gdxSettings.smallFontSize
+        )
+        newPlayerCarrierIdLabel.wrap = true
+        nestedTable.add(newPlayerCarrierIdLabel)
+
+        nestedTable.row().space(10f)
 
         return nestedTable
     }

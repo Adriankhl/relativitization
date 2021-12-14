@@ -57,11 +57,17 @@ data class SplitCarrierCommand(
             I18NString("Invalid resource fraction. ")
         )
 
+        val isCarrierListNotEmpty = CommandErrorMessage(
+            carrierIdList.isNotEmpty(),
+            I18NString("Carrier list is empty. ")
+        )
+
         return CommandErrorMessage(
             listOf(
                 isSelf,
                 isCarrierIdValid,
                 isResourceFractionValid,
+                isCarrierListNotEmpty,
             )
         )
     }
