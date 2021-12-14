@@ -1,6 +1,7 @@
 package relativitization.game.components.upper
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.scenes.scene2d.ui.Container
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.RelativitizationGame
@@ -2490,9 +2491,19 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
                 "New player commands: ",
                 gdxSettings.normalFontSize
             )
-        )
+        ).colspan(2)
+
+        nestedTable.row().space(10f)
 
         val newPlayerCarrierIdSet: MutableSet<Int> = mutableSetOf()
+
+        val newPlayerCarrierIdSelectBoxContainer = Container(
+            createSelectBox(
+                newPlayerCarrierIdSet.toList(),
+                newPlayerCarrierIdSet.firstOrNull() ?: -1,
+                gdxSettings.smallFontSize
+            )
+        )
 
         val resourceFraction = createDoubleTextField(
             1.0,
@@ -2511,9 +2522,11 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
                 carrierIdList = newPlayerCarrierIdSet.toList(),
                 resourceFraction = resourceFraction.value,
             )
+
+            game.universeClient.currentCommand = splitCarrierCommand
         }
 
-        nestedTable.add(splitCarrierButton)
+        nestedTable.add(splitCarrierButton).colspan(2)
 
         nestedTable.row().space(10f)
 
@@ -2522,9 +2535,66 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             gdxSettings.smallFontSize
         )
         newPlayerCarrierIdLabel.wrap = true
-        nestedTable.add(newPlayerCarrierIdLabel)
+        nestedTable.add(newPlayerCarrierIdLabel).colspan(2).left()
 
         nestedTable.row().space(10f)
+
+        val addButton = createTextButton(
+            "Add",
+            gdxSettings.smallFontSize,
+            gdxSettings.soundEffectsVolume
+        ) {
+            newPlayerCarrierIdSet.add(carrierId)
+            newPlayerCarrierIdLabel.setText("Carriers in new player: $newPlayerCarrierIdSet")
+            newPlayerCarrierIdSelectBoxContainer.actor = createSelectBox(
+                newPlayerCarrierIdSet.toList(),
+                newPlayerCarrierIdSet.firstOrNull() ?: -1,
+                gdxSettings.smallFontSize
+            )
+        }
+        nestedTable.add(addButton).colspan(2)
+
+        nestedTable.row().space(10f)
+
+        val removeButton = createTextButton(
+            "Remove",
+            gdxSettings.smallFontSize,
+            gdxSettings.soundEffectsVolume
+        ) {
+            newPlayerCarrierIdSet.remove(newPlayerCarrierIdSelectBoxContainer.actor.selected)
+            newPlayerCarrierIdLabel.setText("Carriers in new player: $newPlayerCarrierIdSet")
+            newPlayerCarrierIdSelectBoxContainer.actor = createSelectBox(
+                newPlayerCarrierIdSet.toList(),
+                newPlayerCarrierIdSet.firstOrNull() ?: -1,
+                gdxSettings.smallFontSize
+            )
+        }
+        nestedTable.add(removeButton)
+
+        nestedTable.add(newPlayerCarrierIdSelectBoxContainer)
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "Resource fraction: ",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.add(resourceFraction.textField)
+
+        nestedTable.row().space(10f)
+
+        val resourceFractionSlider = createSlider(
+            0f,
+            1f,
+            0.01f,
+            0.2f,
+        ) { fl, _ ->
+            resourceFraction.value = Notation.roundDecimal(fl.toDouble(), 2)
+        }
+        nestedTable.add(resourceFractionSlider).colspan(2)
 
         return nestedTable
     }

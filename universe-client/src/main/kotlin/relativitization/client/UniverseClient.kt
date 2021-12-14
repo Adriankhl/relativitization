@@ -145,21 +145,26 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
     // command showing on GUI, can be new command to be confirmed or old command to be cancelled
     val onCurrentCommandChangeFunctionList: MutableList<() -> Unit> = mutableListOf()
     var currentCommand: Command by Delegates.observable(DummyCommand()) { _, _, newValue ->
-        if (newValue is CannotSendCommand || newValue is ExecuteWarningCommand) {
-            onCurrentCommandChangeFunctionList.forEach { it() }
-        } else {
-            val commandErrorMessage: CommandErrorMessage = newValue.canSendFromPlayer(
-                planDataAtPlayer.getCurrentMutablePlayerData(),
-                planDataAtPlayer.universeData3DAtPlayer.universeSettings
-            )
-
-            if (commandErrorMessage.success) {
+        // Only check command canSend if the command is new
+        if (currentCommand != newValue) {
+            if (newValue is CannotSendCommand || newValue is ExecuteWarningCommand) {
                 onCurrentCommandChangeFunctionList.forEach { it() }
             } else {
-                currentCommand = CannotSendCommand(
-                    reason = commandErrorMessage.errorMessage
+                val commandErrorMessage: CommandErrorMessage = newValue.canSendFromPlayer(
+                    planDataAtPlayer.getCurrentMutablePlayerData(),
+                    planDataAtPlayer.universeData3DAtPlayer.universeSettings
                 )
+
+                if (commandErrorMessage.success) {
+                    onCurrentCommandChangeFunctionList.forEach { it() }
+                } else {
+                    currentCommand = CannotSendCommand(
+                        reason = commandErrorMessage.errorMessage
+                    )
+                }
             }
+        } else {
+            onCurrentCommandChangeFunctionList.forEach { it() }
         }
     }
 
