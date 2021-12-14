@@ -113,6 +113,8 @@ class ScienceInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
             )
         )
 
+        table.row().space(20f)
+
         table.add(
             createScienceApplicationDataTable(
                 playerData.playerInternalData.playerScienceData().playerScienceApplicationData
@@ -303,6 +305,149 @@ class ScienceInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         scienceApplicationData: ScienceApplicationData
     ): Table {
         val nestedTable = Table()
+
+        nestedTable.add(
+            createLabel(
+                "Ideal spaceship: ",
+                gdxSettings.normalFontSize
+            )
+        )
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "Core rest mass: ${scienceApplicationData.idealSpaceship.coreRestMass}",
+                gdxSettings.smallFontSize
+            )
+        )
+
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "Max. movement fuel delta: ${scienceApplicationData.idealSpaceship.maxMovementDeltaFuelRestMass}",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "Ideal population: ${scienceApplicationData.idealSpaceship.idealPopulation}",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "",
+                gdxSettings.smallFontSize
+            )
+        )
 
         return nestedTable
     }
