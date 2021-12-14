@@ -247,6 +247,18 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
             .size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
         controlTable.add(knowledgeProjectTable).pad(20f)
 
+        controlTable.row()
+
+        val showInstituteAndLaboratoryCheckBox = createCheckBox(
+            text = "Show institute/laboratory",
+            default = showInstituteAndLaboratory,
+            fontSize = gdxSettings.smallFontSize,
+        ){ b, _ ->
+            showInstituteAndLaboratory = b
+            updateKnowledgeGroup()
+        }
+        controlTable.add(showInstituteAndLaboratoryCheckBox).colspan(5).pad(20f).left()
+
         val controlScrollPane: ScrollPane = createScrollPane(controlTable)
 
         // Configure scroll pane
