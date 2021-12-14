@@ -623,13 +623,13 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
         return createImage(
             name = "science/book1",
             xPos = ((project.xCor - knowledgeMapMinX() + knowledgeMapMargin()) * actualZoom() -
-                    projectImageDimension() * 0.5
+                    basicProjectImageDimension() * 0.5
                     ).toFloat(),
             yPos = ((project.yCor - knowledgeMapMinY() + knowledgeMapMargin()) * actualZoom() -
-                    projectImageDimension() * 0.5
+                    basicProjectImageDimension() * 0.5
                     ).toFloat(),
-            width = projectImageDimension().toFloat(),
-            height = projectImageDimension().toFloat(),
+            width = basicProjectImageDimension().toFloat(),
+            height = basicProjectImageDimension().toFloat(),
             r = rgb.r,
             g = rgb.g,
             b = rgb.b,
@@ -672,13 +672,13 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
         return createImage(
             name = "science/wrench1",
             xPos = ((project.xCor - knowledgeMapMinX() + knowledgeMapMargin()) * actualZoom() -
-                    projectImageDimension() * 0.5
+                    appliedProjectImageDimension() * 0.5
                     ).toFloat(),
             yPos = ((project.yCor - knowledgeMapMinY() + knowledgeMapMargin()) * actualZoom() -
-                    projectImageDimension() * 0.5
+                    appliedProjectImageDimension() * 0.5
                     ).toFloat(),
-            width = projectImageDimension().toFloat(),
-            height = projectImageDimension().toFloat(),
+            width = appliedProjectImageDimension().toFloat(),
+            height = appliedProjectImageDimension().toFloat(),
             r = rgb.r,
             g = rgb.g,
             b = rgb.b,
@@ -805,12 +805,80 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
         ) {}
     }
 
+    /**
+     * Create list of institute image, including a circle representing the range
+     *
+     * @param carrierId the id of the carrier containing this institute
+     * @param instituteId the id of the institute
+     * @param instituteData the data of the institute
+     */
+    private fun createInstituteImageList(
+        carrierId: Int,
+        instituteId: Int,
+        instituteData: InstituteData,
+    ): List<Image> {
+
+        val instituteImage = createImage(
+            name = "science/book1",
+            xPos = ((instituteData.instituteInternalData.xCor - knowledgeMapMinX() + knowledgeMapMargin()) * actualZoom() -
+                    instituteImageDimension() * 0.5
+                    ).toFloat(),
+            yPos = ((instituteData.instituteInternalData.yCor - knowledgeMapMinY() + knowledgeMapMargin()) * actualZoom() -
+                    instituteImageDimension() * 0.5
+                    ).toFloat(),
+            width = instituteImageDimension().toFloat(),
+            height = instituteImageDimension().toFloat(),
+            r = 1.0f,
+            g = 1.0f,
+            b = 1.0f,
+            a = 1.0f,
+            soundVolume = gdxSettings.soundEffectsVolume
+        ) {
+            selectedCarrierId = carrierId
+            selectedInstituteId = instituteId
+            isInstituteSelected = true
+            isLaboratorySelected = false
+            updateKnowledgeProjectTable()
+        }
+
+        return listOf(instituteImage, )
+    }
+
 
     /**
      * The dimension of the icon of a knowledge project
      */
-    private fun projectImageDimension(): Double {
+    private fun basicProjectImageDimension(): Double {
         val image = ActorFunction.createImage(assets, "science/book1", 0.0f)
+        val dim: Double = max(image.width, image.height).toDouble()
+        return dim * gdxSettings.knowledgeMapProjectIconZoom
+    }
+
+
+    /**
+     * The dimension of the icon of a knowledge project
+     */
+    private fun appliedProjectImageDimension(): Double {
+        val image = ActorFunction.createImage(assets, "science/wrench1", 0.0f)
+        val dim: Double = max(image.width, image.height).toDouble()
+        return dim * gdxSettings.knowledgeMapProjectIconZoom
+    }
+
+
+    /**
+     * The dimension of the icon of a knowledge project
+     */
+    private fun instituteImageDimension(): Double {
+        val image = ActorFunction.createImage(assets, "science/institute1", 0.0f)
+        val dim: Double = max(image.width, image.height).toDouble()
+        return dim * gdxSettings.knowledgeMapProjectIconZoom
+    }
+
+    /**
+     * The dimension of the icon of a knowledge project
+     */
+    private fun laboratoryImageDimension(): Double {
+        val image = ActorFunction.createImage(assets, "science/laboratory1", 0.0f)
         val dim: Double = max(image.width, image.height).toDouble()
         return dim * gdxSettings.knowledgeMapProjectIconZoom
     }
