@@ -818,8 +818,25 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
         instituteData: InstituteData,
     ): List<Image> {
 
+        val rangeImage = createImage(
+            name = "basic/white-circle",
+            xPos = ((instituteData.instituteInternalData.xCor - knowledgeMapMinX() + knowledgeMapMargin()) * actualZoom() -
+                    rangeImageDimension(instituteData.instituteInternalData.range) * 0.5
+                    ).toFloat(),
+            yPos = ((instituteData.instituteInternalData.yCor - knowledgeMapMinY() + knowledgeMapMargin()) * actualZoom() -
+                    rangeImageDimension(instituteData.instituteInternalData.range) * 0.5
+                    ).toFloat(),
+            width = rangeImageDimension(instituteData.instituteInternalData.range).toFloat(),
+            height = rangeImageDimension(instituteData.instituteInternalData.range).toFloat(),
+            r = 1.0f,
+            g = 1.0f,
+            b = 1.0f,
+            a = 0.5f,
+            soundVolume = gdxSettings.soundEffectsVolume
+        )
+
         val instituteImage = createImage(
-            name = "science/book1",
+            name = "science/institute1",
             xPos = ((instituteData.instituteInternalData.xCor - knowledgeMapMinX() + knowledgeMapMargin()) * actualZoom() -
                     instituteImageDimension() * 0.5
                     ).toFloat(),
@@ -841,7 +858,65 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
             updateKnowledgeProjectTable()
         }
 
-        return listOf(instituteImage, )
+
+        return listOf(rangeImage, instituteImage)
+    }
+
+    /**
+     * Create list of laboratory image, including a circle representing the range
+     *
+     * @param carrierId the id of the carrier containing this institute
+     * @param laboratoryId the id of the laboratory
+     * @param laboratoryData the data of the laboratory
+     */
+    private fun createLaboratoryImageList(
+        carrierId: Int,
+        laboratoryId: Int,
+        laboratoryData: LaboratoryData,
+    ): List<Image> {
+
+        val rangeImage = createImage(
+            name = "basic/white-circle",
+            xPos = ((laboratoryData.laboratoryInternalData.xCor - knowledgeMapMinX() + knowledgeMapMargin()) * actualZoom() -
+                    rangeImageDimension(laboratoryData.laboratoryInternalData.range) * 0.5
+                    ).toFloat(),
+            yPos = ((laboratoryData.laboratoryInternalData.yCor - knowledgeMapMinY() + knowledgeMapMargin()) * actualZoom() -
+                    rangeImageDimension(laboratoryData.laboratoryInternalData.range) * 0.5
+                    ).toFloat(),
+            width = rangeImageDimension(laboratoryData.laboratoryInternalData.range).toFloat(),
+            height = rangeImageDimension(laboratoryData.laboratoryInternalData.range).toFloat(),
+            r = 1.0f,
+            g = 1.0f,
+            b = 1.0f,
+            a = 0.5f,
+            soundVolume = gdxSettings.soundEffectsVolume
+        )
+
+        val laboratoryImage = createImage(
+            name = "science/laboratory1",
+            xPos = ((laboratoryData.laboratoryInternalData.xCor - knowledgeMapMinX() + knowledgeMapMargin()) * actualZoom() -
+                    laboratoryImageDimension() * 0.5
+                    ).toFloat(),
+            yPos = ((laboratoryData.laboratoryInternalData.yCor - knowledgeMapMinY() + knowledgeMapMargin()) * actualZoom() -
+                    laboratoryImageDimension() * 0.5
+                    ).toFloat(),
+            width = laboratoryImageDimension().toFloat(),
+            height = laboratoryImageDimension().toFloat(),
+            r = 1.0f,
+            g = 1.0f,
+            b = 1.0f,
+            a = 1.0f,
+            soundVolume = gdxSettings.soundEffectsVolume
+        ) {
+            selectedCarrierId = carrierId
+            selectedLaboratoryId = laboratoryId
+            isInstituteSelected = false
+            isLaboratorySelected = true
+            updateKnowledgeProjectTable()
+        }
+
+
+        return listOf(rangeImage, laboratoryImage)
     }
 
 
@@ -864,9 +939,18 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
         return dim * gdxSettings.knowledgeMapProjectIconZoom
     }
 
+    /**
+     * The dimension of the circle representing a range
+     */
+    private fun rangeImageDimension(
+        range: Double,
+    ): Double {
+        // range equals to half the dimension
+        return range * 2 * actualZoom()
+    }
 
     /**
-     * The dimension of the icon of a knowledge project
+     * The dimension of the icon of an institute
      */
     private fun instituteImageDimension(): Double {
         val image = ActorFunction.createImage(assets, "science/institute1", 0.0f)
@@ -875,7 +959,7 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
     }
 
     /**
-     * The dimension of the icon of a knowledge project
+     * The dimension of the icon of a laboratory
      */
     private fun laboratoryImageDimension(): Double {
         val image = ActorFunction.createImage(assets, "science/laboratory1", 0.0f)
