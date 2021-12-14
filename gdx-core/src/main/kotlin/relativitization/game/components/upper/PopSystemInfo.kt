@@ -2431,7 +2431,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         nestedTable.add(
             createLabel(
-                "New carrier command: ",
+                "New carrier commands: ",
                 gdxSettings.normalFontSize
             )
         ).colspan(2)
@@ -2487,12 +2487,35 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         nestedTable.add(
             createLabel(
-                "New player command",
+                "New player commands: ",
                 gdxSettings.normalFontSize
             )
         )
 
         val newPlayerCarrierIdSet: MutableSet<Int> = mutableSetOf()
+
+        val resourceFraction = createDoubleTextField(
+            1.0,
+            gdxSettings.smallFontSize
+        )
+
+        val splitCarrierButton = createTextButton(
+            "Split carrier",
+            gdxSettings.smallFontSize,
+            gdxSettings.soundEffectsVolume
+        ) {
+            val splitCarrierCommand = SplitCarrierCommand(
+                toId = playerData.playerId,
+                fromId = game.universeClient.getCurrentPlayerData().playerId,
+                fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
+                carrierIdList = newPlayerCarrierIdSet.toList(),
+                resourceFraction = resourceFraction.value,
+            )
+        }
+
+        nestedTable.add(splitCarrierButton)
+
+        nestedTable.row().space(10f)
 
         val newPlayerCarrierIdLabel = createLabel(
             "Carriers in new player: $newPlayerCarrierIdSet",
