@@ -72,7 +72,6 @@ class ScienceInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
 
         table.row().space(20f)
 
-        val playerKnowledgeDataLabel = createLabel("Player knowledge: ", gdxSettings.normalFontSize)
         table.add(
             createLabel(
                 "Player knowledge: ",
