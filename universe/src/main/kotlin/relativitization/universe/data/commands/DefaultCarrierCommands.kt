@@ -15,7 +15,7 @@ import relativitization.universe.utils.NormalString
  * Build a new carrier locally, can only send to self
  */
 @Serializable
-data class BuildLocalCarrierCommands(
+data class BuildLocalCarrierCommand(
     override val toId: Int,
     override val fromId: Int,
     override val fromInt4D: Int4D,
@@ -25,6 +25,7 @@ data class BuildLocalCarrierCommands(
         listOf(
             NormalString("Build a new carrier with quality level "),
             IntString(0),
+            NormalString(". "),
         ),
         listOf(
             qualityLevel.toString()
