@@ -26,9 +26,13 @@ object UpdateDiplomaticRelationState : Mechanism() {
             val inWarSet: Set<Int> =
                 mutablePlayerData.playerInternalData.diplomacyData().warData.warStateMap.keys
 
-            val allEnemy: Set<Int> = inWarSet.map {
-                universeData3DAtPlayer.get(it).playerInternalData.subordinateIdList
-            }.flatten().toSet()
+            // Include subordinates of war target as enemy
+            val allEnemy: Set<Int> = (inWarSet + inWarSet.map { inWarId ->
+                // Enemy should not include self or subordinate
+                universeData3DAtPlayer.get(inWarId).playerInternalData.subordinateIdList.filter {
+                    !mutablePlayerData.isSubOrdinateOrSelf(it)
+                }
+            }.flatten()).toSet()
 
             val inRelationSet: Set<Int> =
                 mutablePlayerData.playerInternalData.diplomacyData().relationMap.keys
