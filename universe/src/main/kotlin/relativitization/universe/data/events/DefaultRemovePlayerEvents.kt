@@ -5,13 +5,13 @@ import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.PlayerType
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
-import relativitization.universe.data.commands.AgreeMergeCommand
-import relativitization.universe.data.commands.CommandErrorMessage
-import relativitization.universe.data.commands.Command
-import relativitization.universe.data.commands.CommandI18NStringFactory
+import relativitization.universe.data.commands.*
+import relativitization.universe.data.components.defaults.physics.Int3D
+import relativitization.universe.data.components.defaults.physics.Int4D
 import relativitization.universe.utils.I18NString
 import relativitization.universe.utils.IntString
 import relativitization.universe.utils.NormalString
+import kotlin.random.Random
 
 /**
  * Ask to merge this player to its direct leader
@@ -94,7 +94,13 @@ data class AskToMergeCarrierEvent(
                 )
             )
         } else {
-            listOf()
+            listOf(
+                DeclareIndependenceCommand(
+                    toId = fromId,
+                    fromId = toId,
+                    fromInt4D = universeData3DAtPlayer.getCurrentPlayerData().int4D
+                )
+            )
         }
     }
 
@@ -106,7 +112,7 @@ data class AskToMergeCarrierEvent(
         return when (universeData3DAtPlayer.getCurrentPlayerData().playerType) {
             PlayerType.HUMAN -> 1
             PlayerType.NONE -> 0
-            PlayerType.AI -> 1
+            PlayerType.AI -> Random.nextInt(0, 2)
         }
     }
 

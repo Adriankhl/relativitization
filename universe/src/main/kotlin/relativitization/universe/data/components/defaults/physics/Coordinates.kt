@@ -14,6 +14,7 @@ data class Int4D(val t: Int, val x: Int, val y: Int, val z: Int) {
         mutableInt4D.z
     )
 
+    fun toMutableInt4D() = Int4D(t, x, y, z)
     fun toInt3D() = Int3D(x, y, z)
     fun toDouble4D() = Double4D(t.toDouble(), x.toDouble(), y.toDouble(), z.toDouble())
     fun toDouble4DCenter() =
