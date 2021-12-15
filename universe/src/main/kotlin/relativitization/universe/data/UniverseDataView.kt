@@ -25,8 +25,14 @@ data class UniverseData3DAtGrid(
             centerPlayerDataList.groupBy { it.groupId }.values.toList()
 
         return playerGroups.map { group ->
-            val prioritizedPlayerDataMap: Map<Int, PlayerData> =
-                group.associateBy { it2 -> it2.playerId }
+            val allGroupId: Set<Int> = group.map { it.playerId }.toSet()
+
+            val prioritizedPlayerDataMap: Map<Int, PlayerData> = allGroupId.map { id ->
+                val playerData: PlayerData = group.filter { it.playerId == id }.maxByOrNull {
+                    it.int4D.t
+                }!!
+                id to playerData
+            }.toMap()
 
             val recentPrioritizedDataMap: Map<Int, PlayerData> = prioritizedPlayerDataMap.filter {
                 val hasPlayerInHistory: Boolean = playerDataMap.containsKey(it.key)
@@ -39,9 +45,10 @@ data class UniverseData3DAtGrid(
                 }
             }
 
-            val groupPlayerDataMap = recentPrioritizedDataMap + playerDataMap.filter {
-                !recentPrioritizedDataMap.containsKey(it.key)
-            }
+            val groupPlayerDataMap: Map<Int, PlayerData> =
+                recentPrioritizedDataMap + playerDataMap.filter {
+                    !recentPrioritizedDataMap.containsKey(it.key)
+                }
 
             val groupPlayerId3D: List<List<List<MutableList<Int>>>> = create3DGrid(
                 universeSettings.xDim,
