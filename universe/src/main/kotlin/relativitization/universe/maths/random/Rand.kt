@@ -1,10 +1,10 @@
 package relativitization.universe.maths.random
 
+import kotlinx.datetime.Clock
 import kotlin.random.Random
-import kotlin.system.measureNanoTime
 
 object Rand {
-    private var default = Random(measureNanoTime { println("Get default time") })
+    private var default = Random(Clock.System.now().epochSeconds)
 
     fun rand() = default
 }
