@@ -23,6 +23,10 @@ class ScienceInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
 
     private var playerData: PlayerData = PlayerData(-1)
 
+    // Show common sense or player knowledge
+    private var showCommonSense: Boolean = false
+    private var showPlayerKnowledge: Boolean = true
+
     init {
         table.background = assets.getBackgroundColor(0.2f, 0.2f, 0.2f, 1.0f)
 
@@ -75,37 +79,46 @@ class ScienceInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
 
         table.row().space(20f)
 
-        table.add(
-            createLabel(
-                "Player knowledge: ",
-                gdxSettings.normalFontSize
+        table.add(createShowKnowledgeOptionTable())
+
+        if (showPlayerKnowledge) {
+
+            table.row().space(20f)
+
+            table.add(
+                createLabel(
+                    "Player knowledge: ",
+                    gdxSettings.normalFontSize
+                )
             )
-        )
 
-        table.row().space(10f)
+            table.row().space(10f)
 
-        table.add(
-            createKnowledgeDataTable(
-                playerData.playerInternalData.playerScienceData().playerKnowledgeData
+            table.add(
+                createKnowledgeDataTable(
+                    playerData.playerInternalData.playerScienceData().playerKnowledgeData
+                )
             )
-        )
+        }
 
-        table.row().space(20f)
+        if (showCommonSense) {
+            table.row().space(20f)
 
-        table.add(
-            createLabel(
-                "Common sense: ",
-                gdxSettings.normalFontSize
+            table.add(
+                createLabel(
+                    "Common sense: ",
+                    gdxSettings.normalFontSize
+                )
             )
-        )
 
-        table.row().space(10f)
+            table.row().space(10f)
 
-        table.add(
-            createKnowledgeDataTable(
-                playerData.playerInternalData.playerScienceData().commonSenseKnowledgeData
+            table.add(
+                createKnowledgeDataTable(
+                    playerData.playerInternalData.playerScienceData().commonSenseKnowledgeData
+                )
             )
-        )
+        }
 
         table.row().space(40f)
 
@@ -123,6 +136,36 @@ class ScienceInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
                 playerData.playerInternalData.playerScienceData().playerScienceApplicationData
             )
         )
+    }
+
+    private fun createShowKnowledgeOptionTable(): Table {
+        val nestedTable = Table()
+
+        val playerKnowledgeButton = createTextButton(
+            "Player knowledge",
+            gdxSettings.smallFontSize,
+            gdxSettings.soundEffectsVolume
+        ) {
+            showPlayerKnowledge = true
+            showCommonSense = false
+            updateTable()
+        }
+
+        nestedTable.add(playerKnowledgeButton).pad(20f)
+
+        val commonSenseButton = createTextButton(
+            "Common sense",
+            gdxSettings.smallFontSize,
+            gdxSettings.soundEffectsVolume
+        ) {
+            showPlayerKnowledge = false
+            showCommonSense = true
+            updateTable()
+        }
+
+        nestedTable.add(commonSenseButton).pad(20f)
+
+        return nestedTable
     }
 
     private fun createKnowledgeDataTable(knowledgeData: KnowledgeData): Table {
