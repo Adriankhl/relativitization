@@ -7,4 +7,8 @@ object Rand {
     private var default = Random(Clock.System.now().epochSeconds)
 
     fun rand() = default
+
+    fun setSeed(seed: Long) {
+        default = Random(seed)
+    }
 }
