@@ -6,12 +6,10 @@ import relativitization.universe.data.PlayerType
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.*
-import relativitization.universe.data.components.defaults.physics.Int3D
-import relativitization.universe.data.components.defaults.physics.Int4D
+import relativitization.universe.maths.random.Rand
 import relativitization.universe.utils.I18NString
 import relativitization.universe.utils.IntString
 import relativitization.universe.utils.NormalString
-import relativitization.universe.maths.random.Rand
 
 /**
  * Ask to merge this player to its direct leader
@@ -79,7 +77,8 @@ data class AskToMergeCarrierEvent(
         )
     }
 
-    override fun generateCommands(
+    override fun choiceAction(
+        mutablePlayerData: MutablePlayerData,
         eventId: Int,
         mutableEventRecordData: MutableEventRecordData,
         universeData3DAtPlayer: UniverseData3DAtPlayer
@@ -87,21 +86,31 @@ data class AskToMergeCarrierEvent(
         // only if counter > 0, skip first turn to allow player choose
         return if (mutableEventRecordData.stayCounter > 0) {
             if (mutableEventRecordData.choice == 0) {
-                listOf(
-                    AgreeMergeCommand(
-                        toId = toId,
-                        fromId = toId,
-                        fromInt4D = universeData3DAtPlayer.getCurrentPlayerData().int4D
-                    )
+                val agreeMergeCommand = AgreeMergeCommand(
+                    toId = toId,
+                    fromId = toId,
+                    fromInt4D = universeData3DAtPlayer.getCurrentPlayerData().int4D
                 )
+
+                agreeMergeCommand.checkAndExecute(
+                    mutablePlayerData,
+                    universeData3DAtPlayer.universeSettings
+                )
+
+                listOf()
             } else {
-                listOf(
-                    DeclareIndependenceCommand(
-                        toId = fromId,
-                        fromId = toId,
-                        fromInt4D = universeData3DAtPlayer.getCurrentPlayerData().int4D
-                    )
+                val declareIndependenceCommand = DeclareIndependenceCommand(
+                    toId = fromId,
+                    fromId = toId,
+                    fromInt4D = universeData3DAtPlayer.getCurrentPlayerData().int4D
                 )
+
+                declareIndependenceCommand.checkAndSelfExecuteBeforeSend(
+                    mutablePlayerData,
+                    universeData3DAtPlayer.universeSettings
+                )
+
+                listOf(declareIndependenceCommand)
             }
         } else {
             listOf()
@@ -109,6 +118,7 @@ data class AskToMergeCarrierEvent(
     }
 
     override fun defaultChoice(
+        mutablePlayerData: MutablePlayerData,
         eventId: Int,
         mutableEventRecordData: MutableEventRecordData,
         universeData3DAtPlayer: UniverseData3DAtPlayer

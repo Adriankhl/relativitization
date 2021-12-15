@@ -46,13 +46,15 @@ sealed class Event {
     ): CommandErrorMessage
 
     /**
-     * Generate commands once per turn
+     * Action and generate commands depending on the choice
      *
+     * @param mutablePlayerData the player data containing this event
      * @param eventId the id of this event in eventMap
      * @param mutableEventRecordData the record data of this event
      * @param universeData3DAtPlayer the 3d data to determine the generated command
      */
-    abstract fun generateCommands(
+    abstract fun choiceAction(
+        mutablePlayerData: MutablePlayerData,
         eventId: Int,
         mutableEventRecordData: MutableEventRecordData,
         universeData3DAtPlayer: UniverseData3DAtPlayer
@@ -61,11 +63,13 @@ sealed class Event {
     /**
      * Generate default choice if no choice is decided, i.e., choice = 0
      *
+     * @param mutablePlayerData the player data containing this event
      * @param eventId the id of this event in eventMap
      * @param mutableEventRecordData the record data of this event
      * @param universeData3DAtPlayer the 3d data to determine the generated command
      */
     abstract fun defaultChoice(
+        mutablePlayerData: MutablePlayerData,
         eventId: Int,
         mutableEventRecordData: MutableEventRecordData,
         universeData3DAtPlayer: UniverseData3DAtPlayer

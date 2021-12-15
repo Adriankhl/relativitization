@@ -114,7 +114,8 @@ data class MoveToDouble3DEvent(
         )
     }
 
-    override fun generateCommands(
+    override fun choiceAction(
+        mutablePlayerData: MutablePlayerData,
         eventId: Int,
         mutableEventRecordData: MutableEventRecordData,
         universeData3DAtPlayer: UniverseData3DAtPlayer
@@ -151,7 +152,17 @@ data class MoveToDouble3DEvent(
                 fromInt4D = universeData3DAtPlayer.get(toId).int4D,
                 targetVelocity = targetVelocityData.newVelocity
             )
-            listOf(changeVelocityCommand, disableFuelIncreaseCommand)
+
+            changeVelocityCommand.checkAndExecute(
+                mutablePlayerData,
+                universeData3DAtPlayer.universeSettings
+            )
+            disableFuelIncreaseCommand.checkAndExecute(
+                mutablePlayerData,
+                universeData3DAtPlayer.universeSettings
+            )
+
+            listOf()
         } else {
             listOf()
         }
@@ -159,6 +170,7 @@ data class MoveToDouble3DEvent(
 
 
     override fun defaultChoice(
+        mutablePlayerData: MutablePlayerData,
         eventId: Int,
         mutableEventRecordData: MutableEventRecordData,
         universeData3DAtPlayer: UniverseData3DAtPlayer

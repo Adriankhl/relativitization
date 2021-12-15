@@ -30,7 +30,8 @@ object ProcessEvents : Mechanism() {
         val commandList: List<Command> =
             mutablePlayerData.playerInternalData.eventDataMap.map { (eventId, mutableEventData) ->
                 if (mutableEventData.eventRecordData.hasChoice) {
-                    mutableEventData.event.generateCommands(
+                    mutableEventData.event.choiceAction(
+                        mutablePlayerData,
                         eventId,
                         mutableEventData.eventRecordData,
                         universeData3DAtPlayer
@@ -39,34 +40,20 @@ object ProcessEvents : Mechanism() {
                     // change the choice if there is choice from player
                     mutableEventData.eventRecordData.choice =
                         mutableEventData.event.defaultChoice(
+                            mutablePlayerData,
                             eventId,
                             mutableEventData.eventRecordData,
                             universeData3DAtPlayer
                         )
 
-                    mutableEventData.event.generateCommands(
+                    mutableEventData.event.choiceAction(
+                        mutablePlayerData,
                         eventId,
                         mutableEventData.eventRecordData,
                         universeData3DAtPlayer
                     )
                 }
             }.flatten()
-
-        // Separate self commands and other commands
-        val (selfCommandList, otherCommandList) = commandList.partition {
-            it.toId == mutablePlayerData.playerId
-        }
-
-        // Execute self commands
-        selfCommandList.forEach {
-            it.checkAndSelfExecuteBeforeSend(mutablePlayerData, universeData3DAtPlayer.universeSettings)
-            it.checkAndExecute(mutablePlayerData, universeData3DAtPlayer.universeSettings)
-        }
-
-        // Self execute other commands
-        otherCommandList.forEach {
-            it.checkAndSelfExecuteBeforeSend(mutablePlayerData, universeData3DAtPlayer.universeSettings)
-        }
 
         // Increase stayCounter for each event
         mutablePlayerData.playerInternalData.eventDataMap.forEach {
@@ -80,6 +67,6 @@ object ProcessEvents : Mechanism() {
         }.keys.forEach {
             mutablePlayerData.playerInternalData.eventDataMap.remove(it)
         }
-        return otherCommandList
+        return commandList
     }
 }
