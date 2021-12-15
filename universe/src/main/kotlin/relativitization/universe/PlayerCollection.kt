@@ -180,6 +180,12 @@ class PlayerCollection(
                     universeState.getNewPlayerId()
                 }
                 val name = randomPlayerName(newPlayerInternalData)
+
+                // Add new player as direct subordinate if it is the direct leader
+                if (newPlayerInternalData.directLeaderId == playerData.playerId) {
+                    playerData.addDirectSubordinateId(playerId)
+                }
+
                 PlayerData(
                     playerId = playerId,
                     name = name,
