@@ -16,6 +16,9 @@ class DiplomacyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
     private var playerData: PlayerData = PlayerData(-1)
 
+    // For choosing the diplomatic relation between player with this Id and the primary player
+    // Update by select box or select new player
+    private var otherPlayerId: Int = -1
 
     init {
 
@@ -48,6 +51,11 @@ class DiplomacyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         updateTable()
     }
 
+    override fun onSelectedPlayerIdListChange() {
+        otherPlayerId = game.universeClient.newSelectedPlayerId
+        updateTable()
+    }
+
     override fun onCommandListChange() {
         updatePlayerData()
         updateTable()
@@ -73,6 +81,53 @@ class DiplomacyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         table.add(headerLabel).pad(20f)
 
+        table.row().space(10f)
+
+        table.add(createSelectOtherPlayerTable())
+
         table.row().space(20f)
+
+        table.add(createDiplomaticRelationTable())
+    }
+
+    private fun createSelectOtherPlayerTable(): Table {
+        val nestedTable = Table()
+
+        nestedTable.add(
+            createLabel(
+                "Other player Id: ${otherPlayerId}",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.row().space(10f)
+
+        val otherPlayerIdSelectBox = createSelectBox(
+            (playerData.playerInternalData.diplomacyData().relationMap.keys +
+                    playerData.playerInternalData.diplomacyData().warData.warStateMap.keys).toList(),
+            otherPlayerId,
+            gdxSettings.smallFontSize
+        ) { i, _ ->
+            otherPlayerId = i
+        }
+        nestedTable.add(otherPlayerIdSelectBox).colspan(2)
+
+        return nestedTable
+    }
+
+    private fun createDiplomaticRelationTable(): Table {
+        val nestedTable = Table()
+
+        nestedTable.add(
+            createLabel(
+                "Diplomatic relation: ",
+                gdxSettings.normalFontSize
+            )
+        ).colspan(2)
+
+        nestedTable.row().space(10f)
+
+
+        return nestedTable
     }
 }
