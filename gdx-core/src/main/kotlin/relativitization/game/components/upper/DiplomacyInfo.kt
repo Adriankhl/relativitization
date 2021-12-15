@@ -115,6 +115,7 @@ class DiplomacyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             gdxSettings.smallFontSize
         ) { i, _ ->
             otherPlayerId = i
+            updateTable()
         }
         nestedTable.add(otherPlayerIdSelectBox).colspan(2)
 
