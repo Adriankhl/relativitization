@@ -227,8 +227,14 @@ class Universe(
             // In principle, this shouldn't contain self commands since they should be integrated in the mechanism process
             val (commandExecuteList, commandStoreList) = commandListAtGrid.partition {
                 val inGrid: Boolean = playerIdAtGrid.contains(it.toId)
-                val sameGroup: Boolean = (playerCollection.getPlayer(it.fromId).groupId ==
-                        playerCollection.getPlayer(it.toId).groupId)
+                // prevent get non existing player
+                val sameGroup: Boolean = if (inGrid) {
+                    playerCollection.getPlayer(
+                        it.fromId
+                    ).groupId == playerCollection.getPlayer(it.toId).groupId
+                } else {
+                    false
+                }
                 inGrid && sameGroup
             }
 

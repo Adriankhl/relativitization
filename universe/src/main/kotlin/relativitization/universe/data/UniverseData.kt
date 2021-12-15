@@ -154,7 +154,9 @@ data class UniverseData(
             }
         }
 
-        val centerPlayerDataList: List<PlayerData> = getPlayerDataListAt(center)
+        val centerPlayerDataList: List<PlayerData> = getPlayerDataListAt(center).filter {
+            it.int4D.t == center.t
+        }
 
         return UniverseData3DAtGrid(
             center,
