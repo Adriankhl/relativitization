@@ -17,11 +17,14 @@ android {
  
             manifest.srcFile("AndroidManifest.xml")
             res.srcDir("res")
-            aidl.srcDir("src/main/kotlin")
-            renderscript.srcDir("src/main/kotlin")
-            java.srcDir("src/main/kotlin")
             assets.srcDir("../../relativitization-art/assets")
             jniLibs.srcDir("libs")
+
+            // Comment these out, since kotlin paths should be supported by android gradle plugin, no extra setting is required
+            //aidl.srcDir("src/main/kotlin")
+            //renderscript.srcDir("src/main/kotlin")
+            //java.srcDir("src/main/kotlin")
+
 
             dependencies {
                 implementation(project(":gdx-core"))
