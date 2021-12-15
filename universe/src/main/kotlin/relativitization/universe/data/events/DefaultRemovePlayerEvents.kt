@@ -116,7 +116,7 @@ data class AskToMergeCarrierEvent(
         return when (universeData3DAtPlayer.getCurrentPlayerData().playerType) {
             PlayerType.HUMAN -> 1
             PlayerType.NONE -> 0
-            PlayerType.AI -> 1//Rand.rand().nextInt(0, 2)
+            PlayerType.AI -> Rand.rand().nextInt(0, 2)
         }
     }
 
