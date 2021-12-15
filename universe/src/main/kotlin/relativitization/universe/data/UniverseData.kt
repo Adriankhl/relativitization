@@ -154,6 +154,7 @@ data class UniverseData(
             }
         }
 
+        // Filter out afterimage
         val centerPlayerDataList: List<PlayerData> = getPlayerDataListAt(center).filter {
             it.int4D.t == center.t
         }
