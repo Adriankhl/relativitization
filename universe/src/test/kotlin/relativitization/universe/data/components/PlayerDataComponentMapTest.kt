@@ -15,8 +15,8 @@ internal class PlayerDataComponentMapTest {
     @Test
     fun getOrDefaultTest() {
         val d = PlayerDataComponentMap(
-            listOf(AIData("Hello"))
+            listOf(AIData(AITask.EMPTY))
         )
-        assert(d.getOrDefault(AIData::class, AIData()) == AIData("Hello"))
+        assert(d.getOrDefault(AIData::class, AIData()) == AIData(AITask.EMPTY))
     }
 }
