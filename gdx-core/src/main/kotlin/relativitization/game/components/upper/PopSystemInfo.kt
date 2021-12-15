@@ -29,6 +29,7 @@ import relativitization.universe.data.components.defaults.popsystem.pop.scholar.
 import relativitization.universe.data.components.defaults.popsystem.pop.service.ServicePopData
 import relativitization.universe.data.components.defaults.popsystem.pop.service.export.PlayerExportCenterData
 import relativitization.universe.data.components.defaults.popsystem.pop.service.export.PlayerSingleExportData
+import relativitization.universe.data.components.defaults.popsystem.pop.soldier.SoldierPopData
 import relativitization.universe.maths.number.Notation
 import relativitization.universe.utils.RelativitizationLogManager
 
@@ -264,7 +265,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             PopType.MEDIC -> nestedTable.add(Table())
             PopType.SERVICE_WORKER -> nestedTable.add(createServiceTable(allPopData.servicePopData))
             PopType.ENTERTAINER -> nestedTable.add(Table())
-            PopType.SOLDIER -> nestedTable.add(Table())
+            PopType.SOLDIER -> nestedTable.add(createSoldierTable(allPopData.soldierPopData))
         }
 
 
@@ -2423,6 +2424,48 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             amountPerTime.value = it
         }
         nestedTable.add(amountPerTimeSliderButtonTable).colspan(2)
+
+        return nestedTable
+    }
+
+    private fun createSoldierTable(soldierPopData: SoldierPopData): Table {
+        val nestedTable = Table()
+
+        nestedTable.add(
+            createLabel(
+                "Soldier data: ",
+                gdxSettings.normalFontSize
+            )
+        )
+
+        nestedTable.row().space(20f)
+
+        nestedTable.add(
+            createLabel(
+                "Attack: ${soldierPopData.militaryBaseData.attack}",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.row().space(10f)
+
+
+        nestedTable.add(
+            createLabel(
+                "Shield: ${soldierPopData.militaryBaseData.shield}",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.row().space(10f)
+
+
+        nestedTable.add(
+            createLabel(
+                "Last employee: ${soldierPopData.militaryBaseData.lastNumEmployee}",
+                gdxSettings.smallFontSize
+            )
+        )
 
         return nestedTable
     }
