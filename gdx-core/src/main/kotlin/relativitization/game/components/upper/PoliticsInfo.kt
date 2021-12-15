@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.PlayerData
+import relativitization.universe.data.events.AskToMergeCarrierEvent
 
 class PoliticsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.assets) {
 
@@ -73,5 +74,31 @@ class PoliticsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>
         table.add(headerLabel).pad(20f)
 
         table.row().space(20f)
+    }
+
+    private fun createMergePlayerTable(): Table {
+        val nestedTable = Table()
+
+        nestedTable.add(
+            createLabel(
+                "Waiting to merge: ${playerData.playerInternalData.politicsData().agreeMerge}",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.row().space(10f)
+
+        val askToMergeButton = createTextButton(
+            "Ast to merge",
+            gdxSettings.smallFontSize,
+            gdxSettings.soundEffectsVolume
+        ) {
+            val askToMergeEvent = AskToMergeCarrierEvent(
+                toId = playerData.playerId,
+                fromId = game.universeClient.getUniverseData3D().getCurrentPlayerData().playerId,
+            )
+        }
+
+        return nestedTable
     }
 }

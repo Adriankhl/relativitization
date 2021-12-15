@@ -14,10 +14,10 @@ internal class PlayerInputMessageTest {
             "abc",
             listOf(
                 ChangeVelocityCommand(
-                    targetVelocity = Velocity(0.3, 0.3, 0.3),
                     toId = 1,
                     fromId = 1,
                     fromInt4D = Int4D(0, 0, 0, 0),
+                    targetVelocity = Velocity(0.3, 0.3, 0.3),
                 )
             )
         )

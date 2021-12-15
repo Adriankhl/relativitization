@@ -12,10 +12,10 @@ import relativitization.universe.utils.*
 
 @Serializable
 data class ChangeVelocityCommand(
-    val targetVelocity: Velocity,
     override val toId: Int,
     override val fromId: Int,
     override val fromInt4D: Int4D,
+    val targetVelocity: Velocity,
 ) : DefaultCommand() {
 
     override val description: I18NString = I18NString(

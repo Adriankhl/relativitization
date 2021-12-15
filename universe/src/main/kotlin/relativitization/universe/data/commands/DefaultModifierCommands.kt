@@ -10,10 +10,10 @@ import relativitization.universe.utils.NormalString
 
 @Serializable
 data class DisableFuelIncreaseCommand(
-    val disableFuelIncreaseTimeLimit: Int,
     override val toId: Int,
     override val fromId: Int,
     override val fromInt4D: Int4D,
+    val disableFuelIncreaseTimeLimit: Int,
 ) : DefaultCommand() {
 
     override val description: I18NString = I18NString(

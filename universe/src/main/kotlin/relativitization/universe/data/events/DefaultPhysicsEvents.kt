@@ -129,10 +129,10 @@ data class MoveToDouble3DEvent(
 
             // disable fuel production by one turn
             val disableFuelIncreaseCommand = DisableFuelIncreaseCommand(
-                disableFuelIncreaseTimeLimit = 1,
                 toId = playerData.playerId,
                 fromId = playerData.playerId,
                 fromInt4D = playerData.int4D,
+                disableFuelIncreaseTimeLimit = 1,
             )
 
             val targetVelocityData: TargetVelocityData = targetDouble3DByPhotonRocket(
@@ -146,10 +146,10 @@ data class MoveToDouble3DEvent(
             )
 
             val changeVelocityCommand = ChangeVelocityCommand(
-                targetVelocity = targetVelocityData.newVelocity,
                 toId = toId,
                 fromId = toId,
-                fromInt4D = universeData3DAtPlayer.get(toId).int4D
+                fromInt4D = universeData3DAtPlayer.get(toId).int4D,
+                targetVelocity = targetVelocityData.newVelocity
             )
             listOf(changeVelocityCommand, disableFuelIncreaseCommand)
         } else {

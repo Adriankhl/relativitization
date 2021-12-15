@@ -377,14 +377,14 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
             soundVolume = gdxSettings.soundEffectsVolume
         ) {
             val changeVelocityCommand = ChangeVelocityCommand(
+                toId = playerData.playerId,
+                fromId = game.universeClient.getUniverseData3D().getCurrentPlayerData().playerId,
+                fromInt4D = game.universeClient.getUniverseData3D().getCurrentPlayerData().int4D,
                 targetVelocity = Velocity(
                     targetVelocityX.value,
                     targetVelocityY.value,
                     targetVelocityZ.value
                 ),
-                toId = playerData.playerId,
-                fromId = game.universeClient.getUniverseData3D().getCurrentPlayerData().playerId,
-                fromInt4D = game.universeClient.getUniverseData3D().getCurrentPlayerData().int4D,
             )
 
             game.universeClient.currentCommand = changeVelocityCommand

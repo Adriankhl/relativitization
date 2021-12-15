@@ -44,10 +44,10 @@ object ABMFlockingAI : AI() {
         val weightedVelocity = originalVelocity * ratio + targetVelocity * ratio
 
         val changeVelocityCommand = ChangeVelocityCommand(
-            targetVelocity = weightedVelocity,
             toId = universeData3DAtPlayer.id,
             fromId = universeData3DAtPlayer.id,
             fromInt4D = universeData3DAtPlayer.getCurrentPlayerData().int4D,
+            targetVelocity = weightedVelocity,
         )
 
         return listOf(changeVelocityCommand)
