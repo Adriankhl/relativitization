@@ -6,6 +6,7 @@ object Versions {
     const val kotlinVersion = "1.6.10"
     const val kotlinxCoroutineVersion = "1.5.2"
     const val kotlinxSerializationVersion = "1.3.1"
+    const val kotlinxDateTimeVersion = "0.3.1"
     const val ktorVersion = "1.6.7"
 
     const val dokkaVersion = "1.6.0"

@@ -12,6 +12,7 @@ kotlin {
             dependencies {
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.kotlinxSerializationVersion}")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.kotlinxCoroutineVersion}")
+                implementation("org.jetbrains.kotlinx:kotlinx-datetime:${Versions.kotlinxDateTimeVersion}")
                 implementation("org.jetbrains.kotlin:kotlin-reflect:${Versions.kotlinVersion}")
                 implementation("org.apache.logging.log4j:log4j-api:${Versions.log4jVersion}")
                 implementation("org.apache.logging.log4j:log4j-core:${Versions.log4jVersion}")
