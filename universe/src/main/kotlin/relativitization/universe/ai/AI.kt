@@ -28,7 +28,7 @@ object AICollection {
         } else {
             universeData3DAtPlayer.get(
                 universeData3DAtPlayer.id
-            ).playerInternalData.aiData().aiName
+            ).playerInternalData.aiName
         }
 
         val ai: AI = aiNameMap.getOrElse(actualAIName) {

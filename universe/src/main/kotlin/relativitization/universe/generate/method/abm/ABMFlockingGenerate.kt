@@ -56,7 +56,7 @@ object ABMFlockingGenerate : ABMGenerateUniverseMethod() {
             playerData.velocity = MutableVelocity(vx, vy, vz).scaleVelocity(0.5)
 
             // Use flocking ai
-            playerData.playerInternalData.aiData().aiName = ABMFlockingAI.name()
+            playerData.playerInternalData.aiName = ABMFlockingAI.name()
 
             data.addPlayerDataToLatestWithAfterImage(
                 playerData,

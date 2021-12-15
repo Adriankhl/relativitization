@@ -126,12 +126,12 @@ object TestingFixedMinimal : TestingGenerateUniverseMethod() {
 
 
         // Change AI to EmptyAI to for deterministic testing
-        playerData1.playerInternalData.aiData().aiName = EmptyAI.name()
-        playerData2.playerInternalData.aiData().aiName = EmptyAI.name()
-        playerData3.playerInternalData.aiData().aiName = EmptyAI.name()
-        playerData4.playerInternalData.aiData().aiName = EmptyAI.name()
-        playerData5.playerInternalData.aiData().aiName = EmptyAI.name()
-        playerData6.playerInternalData.aiData().aiName = EmptyAI.name()
+        playerData1.playerInternalData.aiName = EmptyAI.name()
+        playerData2.playerInternalData.aiName = EmptyAI.name()
+        playerData3.playerInternalData.aiName = EmptyAI.name()
+        playerData4.playerInternalData.aiName = EmptyAI.name()
+        playerData5.playerInternalData.aiName = EmptyAI.name()
+        playerData6.playerInternalData.aiName = EmptyAI.name()
 
 
         // Player 1 data

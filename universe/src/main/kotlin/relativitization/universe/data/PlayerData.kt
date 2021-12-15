@@ -1,6 +1,8 @@
 package relativitization.universe.data
 
 import kotlinx.serialization.Serializable
+import relativitization.universe.ai.DefaultAI
+import relativitization.universe.ai.name
 import relativitization.universe.data.components.*
 import relativitization.universe.data.components.MutablePlayerScienceData
 import relativitization.universe.data.components.MutablePoliticsData
@@ -284,15 +286,9 @@ enum class PlayerType {
  * @property leaderIdList list of player ids of leader, leader of leader, etc., from -1 to direct leader
  * @property subordinateIdList list of player ids of the subordinates of this player
  * @property isAlive whether the player is alive or dead
- * @property aiData data for ai computation, e.g. name, cool down
+ * @property aiName the name of the ai
  * @property eventDataMap list of current event on this player
- * @property physicsData physics-related data
- * @property popSystemData population system related data
- * @property playerScienceData research related data
- * @property politicsData political related data
- * @property diplomacyData diplomatic relation data
- * @property economyData economy related data
- * @property modifierData player modifier, e.g. disable certain action for a time limit
+ * @property playerDataComponentMap the map to store addition data component
  */
 @Serializable
 data class PlayerInternalData(
@@ -301,6 +297,7 @@ data class PlayerInternalData(
     val directSubordinateIdList: List<Int> = listOf(),
     val subordinateIdList: List<Int> = listOf(),
     val isAlive: Boolean = true,
+    val aiName: String = DefaultAI.name(),
     val eventDataMap: Map<Int, EventData> = mapOf(),
     val playerDataComponentMap: PlayerDataComponentMap = PlayerDataComponentMap(
         DefaultPlayerDataComponent::class.sealedSubclasses.map { it.createInstance() }
@@ -341,6 +338,7 @@ data class MutablePlayerInternalData(
     var directSubordinateIdList: MutableList<Int> = mutableListOf(),
     var subordinateIdList: MutableList<Int> = mutableListOf(),
     var isAlive: Boolean = true,
+    var aiName: String = DefaultAI.name(),
     var eventDataMap: MutableMap<Int, MutableEventData> = mutableMapOf(),
     var playerDataComponentMap: MutablePlayerDataComponentMap = MutablePlayerDataComponentMap(
         MutableDefaultPlayerDataComponent::class.sealedSubclasses.map { it.createInstance() }
