@@ -85,22 +85,26 @@ data class AskToMergeCarrierEvent(
         universeData3DAtPlayer: UniverseData3DAtPlayer
     ): List<Command> {
         // only if counter > 0, skip first turn to allow player choose
-        return if ((mutableEventRecordData.stayCounter > 0) && (mutableEventRecordData.choice == 0)) {
-            listOf(
-                AgreeMergeCommand(
-                    toId = toId,
-                    fromId = toId,
-                    fromInt4D = universeData3DAtPlayer.getCurrentPlayerData().int4D
+        return if (mutableEventRecordData.stayCounter > 0) {
+            if (mutableEventRecordData.choice == 0) {
+                listOf(
+                    AgreeMergeCommand(
+                        toId = toId,
+                        fromId = toId,
+                        fromInt4D = universeData3DAtPlayer.getCurrentPlayerData().int4D
+                    )
                 )
-            )
+            } else {
+                listOf(
+                    DeclareIndependenceCommand(
+                        toId = fromId,
+                        fromId = toId,
+                        fromInt4D = universeData3DAtPlayer.getCurrentPlayerData().int4D
+                    )
+                )
+            }
         } else {
-            listOf(
-                DeclareIndependenceCommand(
-                    toId = fromId,
-                    fromId = toId,
-                    fromInt4D = universeData3DAtPlayer.getCurrentPlayerData().int4D
-                )
-            )
+            listOf()
         }
     }
 

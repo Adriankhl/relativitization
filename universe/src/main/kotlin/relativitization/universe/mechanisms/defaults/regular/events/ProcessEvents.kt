@@ -14,14 +14,8 @@ object ProcessEvents : Mechanism() {
         universeSettings: UniverseSettings,
         universeGlobalData: UniverseGlobalData
     ): List<Command> {
-        // Remove all outdated event
-        mutablePlayerData.playerInternalData.eventDataMap.filter {
-            it.value.eventRecordData.stayCounter > it.value.event.stayTime
-        }.keys.forEach {
-            mutablePlayerData.playerInternalData.eventDataMap.remove(it)
-        }
 
-        // Remove if the event should be canceled
+        // Remove if the event should be canceled, before the event generate any commands
         mutablePlayerData.playerInternalData.eventDataMap.filter { (eventId, mutableEventData) ->
             mutableEventData.event.shouldCancelThisEvent(
                 eventId,
@@ -65,12 +59,26 @@ object ProcessEvents : Mechanism() {
 
         // Execute self commands
         selfCommandList.forEach {
+            it.checkAndSelfExecuteBeforeSend(mutablePlayerData, universeData3DAtPlayer.universeSettings)
             it.checkAndExecute(mutablePlayerData, universeData3DAtPlayer.universeSettings)
+        }
+
+        // Self execute other commands
+        otherCommandList.forEach {
+            it.checkAndSelfExecuteBeforeSend(mutablePlayerData, universeData3DAtPlayer.universeSettings)
         }
 
         // Increase stayCounter for each event
         mutablePlayerData.playerInternalData.eventDataMap.forEach {
             it.value.eventRecordData.stayCounter++
+        }
+
+
+        // Remove all outdated event, after the command is generated from event
+        mutablePlayerData.playerInternalData.eventDataMap.filter {
+            it.value.eventRecordData.stayCounter > it.value.event.stayTime
+        }.keys.forEach {
+            mutablePlayerData.playerInternalData.eventDataMap.remove(it)
         }
         return otherCommandList
     }
