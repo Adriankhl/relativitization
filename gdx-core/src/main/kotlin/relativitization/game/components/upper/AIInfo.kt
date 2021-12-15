@@ -74,7 +74,7 @@ class AIInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.
 
         val aiSelectBox = createSelectBox(
             AI::class.sealedSubclasses.map { it.objectInstance!!.name() },
-            DefaultAI.name(),
+            aiName,
             gdxSettings.smallFontSize
         ) { s, _ ->
             aiName = s
@@ -107,8 +107,8 @@ class AIInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.
 
         nestedTable.row().space(20f)
 
-        val useButton = createTextButton(
-            "Use",
+        val useAllButton = createTextButton(
+            "Use all",
             gdxSettings.smallFontSize,
             gdxSettings.soundEffectsVolume
         ) {
@@ -119,7 +119,7 @@ class AIInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.
                 game.universeClient.confirmCurrentCommand()
             }
         }
-        nestedTable.add(useButton)
+        nestedTable.add(useAllButton)
 
         return nestedTable
     }
@@ -142,13 +142,39 @@ class AIInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.
         nestedTable.background = assets.getBackgroundColor(0.25f, 0.25f, 0.25f, 1.0f)
 
         val commandNameLabel = createLabel(command.name(), gdxSettings.normalFontSize)
-        nestedTable.add(commandNameLabel).growX()
+        nestedTable.add(commandNameLabel).growX().colspan(2)
 
         nestedTable.row().space(10f)
 
         val commandDescriptionLabel = createLabel(command.description, gdxSettings.smallFontSize)
         commandDescriptionLabel.wrap = true
-        nestedTable.add(commandDescriptionLabel).growX()
+        nestedTable.add(commandDescriptionLabel).growX().colspan(2)
+
+        nestedTable.row().space(10f)
+
+        val addButton = createTextButton(
+            "Add",
+            gdxSettings.smallFontSize,
+            gdxSettings.soundEffectsVolume,
+        ) {
+            aiCommandList.remove(command)
+            game.universeClient.currentCommand = command
+            game.universeClient.confirmCurrentCommand()
+            updateTable()
+        }
+
+        nestedTable.add(addButton)
+
+        val cancelButton = createTextButton(
+            "Remove",
+            gdxSettings.smallFontSize,
+            gdxSettings.soundEffectsVolume
+        ) {
+            aiCommandList.remove(command)
+            updateTable()
+        }
+
+        nestedTable.add(cancelButton)
 
         return nestedTable
     }
