@@ -159,6 +159,7 @@ data class SplitCarrierCommand(
             !carrierIdList.contains(it)
         }
         toRemoveCarrierId.forEach { newPopSystemData.carrierDataMap.remove(it) }
+        newPlayerInternalData.popSystemData(newPopSystemData)
 
         val toRemoveOriginalCarrierId: List<Int> =
             playerData.playerInternalData.popSystemData().carrierDataMap.keys.filter {
