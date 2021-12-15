@@ -5,6 +5,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.PlayerData
+import relativitization.universe.data.components.defaults.diplomacy.DiplomaticRelationData
+import relativitization.universe.data.components.defaults.diplomacy.WarStateData
 
 class DiplomacyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.assets) {
 
@@ -88,6 +90,10 @@ class DiplomacyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         table.row().space(20f)
 
         table.add(createDiplomaticRelationTable())
+
+        table.row().space(20f)
+
+        table.add(createWarStateTable())
     }
 
     private fun createSelectOtherPlayerTable(): Table {
@@ -118,14 +124,60 @@ class DiplomacyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
     private fun createDiplomaticRelationTable(): Table {
         val nestedTable = Table()
 
+        val diplomaticRelationData: DiplomaticRelationData =
+            playerData.playerInternalData.diplomacyData().getDiplomaticRelationData(otherPlayerId)
+
         nestedTable.add(
             createLabel(
-                "Diplomatic relation: ",
-                gdxSettings.normalFontSize
+                "Relation: ${diplomaticRelationData.relation}",
+                gdxSettings.smallFontSize
             )
-        ).colspan(2)
+        )
 
         nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "Diplomatic state: ${diplomaticRelationData.diplomaticRelationState}",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        return nestedTable
+    }
+
+    private fun createWarStateTable(): Table {
+        val nestedTable = Table()
+
+        if (playerData.playerInternalData.diplomacyData().warData.warStateMap.containsKey(otherPlayerId)) {
+            val warState: WarStateData =
+                playerData.playerInternalData.diplomacyData().warData.getWarStateData(otherPlayerId)
+
+            nestedTable.add(
+                createLabel(
+                    "In war",
+                    gdxSettings.normalFontSize
+                )
+            )
+
+            nestedTable.row().space(10f)
+
+            nestedTable.add(
+                createLabel(
+                    "War start time: ${warState.startTime}",
+                    gdxSettings.smallFontSize
+                )
+            )
+
+            nestedTable.row().space(10f)
+
+            nestedTable.add(
+                createLabel(
+                    "Proposed peace: ${warState.proposePeace}",
+                    gdxSettings.smallFontSize
+                )
+            )
+        }
 
 
         return nestedTable

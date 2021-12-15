@@ -5,7 +5,12 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class WarData(
     val warStateMap: Map<Int, WarStateData> = mapOf(),
-)
+) {
+    fun getWarStateData(id: Int): WarStateData = warStateMap.getOrDefault(
+        id,
+        WarStateData()
+    )
+}
 
 @Serializable
 data class MutableWarData(
