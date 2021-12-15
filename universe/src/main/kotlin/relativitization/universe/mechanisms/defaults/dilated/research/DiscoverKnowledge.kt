@@ -26,7 +26,7 @@ import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.math.PI
 import kotlin.math.log2
 import kotlin.math.min
-import kotlin.random.Random
+import relativitization.universe.maths.random.Rand
 
 object DiscoverKnowledge : Mechanism() {
     private val logger = RelativitizationLogManager.getLogger()
@@ -264,7 +264,7 @@ object DiscoverKnowledge : Mechanism() {
             0.0
         }
 
-        val success: Boolean = Random.nextDouble() < prob
+        val success: Boolean = Rand.rand().nextDouble() < prob
 
         return inRange && success
     }

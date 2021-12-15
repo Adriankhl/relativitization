@@ -18,7 +18,7 @@ import relativitization.universe.UniverseServerSettings
 import relativitization.universe.utils.AndroidLogger
 import relativitization.universe.utils.RelativitizationLogManager
 import relativitization.utils.ServerPort
-import kotlin.random.Random
+import relativitization.universe.maths.random.Rand
 
 class AndroidLauncher : AppCompatActivity(), AndroidFragmentApplication.Callbacks {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,7 +27,7 @@ class AndroidLauncher : AppCompatActivity(), AndroidFragmentApplication.Callback
 
         super.onCreate(savedInstanceState)
 
-        val adminPassword: String = List(10) { Random.nextInt(0, 10) }.joinToString(separator = "")
+        val adminPassword: String = List(10) { Rand.rand().nextInt(0, 10) }.joinToString(separator = "")
 
         val serverAddress: String = "127.0.0.1"
         val serverPort: Int = ServerPort.findAvailablePort()

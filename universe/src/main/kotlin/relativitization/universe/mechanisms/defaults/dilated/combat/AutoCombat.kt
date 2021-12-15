@@ -9,7 +9,7 @@ import relativitization.universe.data.commands.DamageCommand
 import relativitization.universe.data.components.defaults.diplomacy.DiplomaticRelationState
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.mechanisms.Mechanism
-import kotlin.random.Random
+import relativitization.universe.maths.random.Rand
 
 object AutoCombat : Mechanism() {
     override fun process(
@@ -29,7 +29,7 @@ object AutoCombat : Mechanism() {
         return if (sameCubeEnemy.isNotEmpty()) {
             mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.map {
                 // Randomly pick target enemy
-                val targetEnemy: PlayerData = sameCubeEnemy[Random.nextInt(sameCubeEnemy.size)]
+                val targetEnemy: PlayerData = sameCubeEnemy[Rand.rand().nextInt(sameCubeEnemy.size)]
 
                 // Adjust damage by time dilation
                 val command = DamageCommand(

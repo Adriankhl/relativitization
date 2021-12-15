@@ -11,7 +11,7 @@ import relativitization.universe.data.components.defaults.science.knowledge.Basi
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.global.defaults.science.UpdateUniverseScienceData
 import relativitization.universe.mechanisms.Mechanism
-import kotlin.random.Random
+import relativitization.universe.maths.random.Rand
 
 object KnowledgeDiffusion : Mechanism() {
     override fun process(
@@ -65,7 +65,7 @@ object KnowledgeDiffusion : Mechanism() {
                 thisProject.basicResearchId == otherProject.basicResearchId
             }
         }.filter {
-            Random.nextDouble() < diffusionProb
+            Rand.rand().nextDouble() < diffusionProb
         }
     }
 
@@ -79,7 +79,7 @@ object KnowledgeDiffusion : Mechanism() {
                 thisProject.appliedResearchId == otherProject.appliedResearchId
             }
         }.filter {
-            Random.nextDouble() < diffusionProb
+            Rand.rand().nextDouble() < diffusionProb
         }
     }
 }

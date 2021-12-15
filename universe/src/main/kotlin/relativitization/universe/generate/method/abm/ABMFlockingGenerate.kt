@@ -8,7 +8,7 @@ import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.generate.method.GenerateSettings
 import relativitization.universe.maths.grid.Grids.create4DGrid
-import kotlin.random.Random
+import relativitization.universe.maths.random.Rand
 
 object ABMFlockingGenerate : ABMGenerateUniverseMethod() {
     override fun generate(settings: GenerateSettings): UniverseData {
@@ -36,9 +36,9 @@ object ABMFlockingGenerate : ABMGenerateUniverseMethod() {
                 playerData.playerType = PlayerType.HUMAN
             }
 
-            playerData.int4D.x = Random.nextInt(0, universeSettings.xDim)
-            playerData.int4D.y = Random.nextInt(0, universeSettings.yDim)
-            playerData.int4D.z = Random.nextInt(0, universeSettings.zDim)
+            playerData.int4D.x = Rand.rand().nextInt(0, universeSettings.xDim)
+            playerData.int4D.y = Rand.rand().nextInt(0, universeSettings.yDim)
+            playerData.int4D.z = Rand.rand().nextInt(0, universeSettings.zDim)
 
             playerData.playerInternalData.popSystemData().addSpaceShip(
                 1.0, 1E5, 1E6
@@ -48,9 +48,9 @@ object ABMFlockingGenerate : ABMGenerateUniverseMethod() {
             playerData.playerInternalData.physicsData().fuelRestMassData.movement = 1E6
 
 
-            val vx = Random.nextDouble(-1.0, 1.0)
-            val vy = Random.nextDouble(-1.0, 1.0)
-            val vz = Random.nextDouble(-1.0, 1.0)
+            val vx = Rand.rand().nextDouble(-1.0, 1.0)
+            val vy = Rand.rand().nextDouble(-1.0, 1.0)
+            val vz = Rand.rand().nextDouble(-1.0, 1.0)
 
             // Constant velocity 0.5
             playerData.velocity = MutableVelocity(vx, vy, vz).scaleVelocity(0.5)

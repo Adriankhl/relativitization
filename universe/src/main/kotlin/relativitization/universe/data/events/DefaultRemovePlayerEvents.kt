@@ -11,7 +11,7 @@ import relativitization.universe.data.components.defaults.physics.Int4D
 import relativitization.universe.utils.I18NString
 import relativitization.universe.utils.IntString
 import relativitization.universe.utils.NormalString
-import kotlin.random.Random
+import relativitization.universe.maths.random.Rand
 
 /**
  * Ask to merge this player to its direct leader
@@ -116,7 +116,7 @@ data class AskToMergeCarrierEvent(
         return when (universeData3DAtPlayer.getCurrentPlayerData().playerType) {
             PlayerType.HUMAN -> 1
             PlayerType.NONE -> 0
-            PlayerType.AI -> Random.nextInt(0, 2)
+            PlayerType.AI -> Rand.rand().nextInt(0, 2)
         }
     }
 

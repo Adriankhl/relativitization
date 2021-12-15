@@ -2,7 +2,7 @@ package relativitization.universe.maths.sampling
 
 import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.math.pow
-import kotlin.random.Random
+import relativitization.universe.maths.random.Rand
 
 object WeightedReservoir {
     private val logger = RelativitizationLogManager.getLogger()
@@ -30,7 +30,7 @@ object WeightedReservoir {
         } else {
             val pairList: List<Pair<T, Double>> = itemList.map {
                 val weight: Double = weightFunction(it)
-                val random: Double = Random.nextDouble()
+                val random: Double = Rand.rand().nextDouble()
 
                 if (weight <= 0.0) {
                     logger.error("Weight smaller than 0.0, setting weightto 1E-9")

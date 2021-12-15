@@ -9,7 +9,7 @@ import relativitization.universe.data.components.defaults.popsystem.pop.PopType
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.mechanisms.Mechanism
 import kotlin.math.min
-import kotlin.random.Random
+import relativitization.universe.maths.random.Rand
 
 /**
  * Population migrate from higher salary place to lower salary place
@@ -40,7 +40,7 @@ object Migration : Mechanism() {
 
                     commonPopMap.remove(emigrateId)
 
-                    val immigrateId: Int = commonPopMap.keys.elementAt(Random.nextInt(commonPopMap.size))
+                    val immigrateId: Int = commonPopMap.keys.elementAt(Rand.rand().nextInt(commonPopMap.size))
 
                     val immigrateCommonPop: MutableCommonPopData = commonPopMap.getValue(immigrateId)
 
