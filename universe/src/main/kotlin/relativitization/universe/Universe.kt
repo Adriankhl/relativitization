@@ -240,7 +240,8 @@ class Universe(
                 )
             }
 
-            commandStoreList
+            // filter out dead player
+            commandStoreList.filter { playerCollection.hasPlayer(it.toId) }
         }.flatten()
 
         addToCommandMap(universeData.commandMap, commandList)
@@ -278,7 +279,7 @@ class Universe(
             // Check and execute command
             for (command in commandExecuteList) {
                 command.checkAndExecute(
-                    playerCollection.getPlayer(command.toId),
+                    playerCollection.getPlayer(id),
                     universeData.universeSettings
                 )
             }
@@ -306,9 +307,19 @@ class Universe(
         // Filter out non existing player
         val humanInputCommands: Map<Int, List<Command>> = originalHumanInputCommands.filter {
             playerCollection.hasPlayer(it.key)
+        }.mapValues { (_, commandList) ->
+            // Filter out commands to dead player
+            commandList.filter {
+                playerCollection.hasPlayer(it.toId)
+            }
         }
         val aiInputCommands: Map<Int, List<Command>> = originalAiInputCommands.filter {
             playerCollection.hasPlayer(it.key)
+        }.mapValues { (_, commandList) ->
+            // Filter out commands to dead player
+            commandList.filter {
+                playerCollection.hasPlayer(it.toId)
+            }
         }
 
         // Add two input command map, prefer human input commands
