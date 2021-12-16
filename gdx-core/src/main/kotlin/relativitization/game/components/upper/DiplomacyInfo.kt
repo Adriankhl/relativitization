@@ -5,7 +5,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.PlayerData
+import relativitization.universe.data.commands.DeclareIndependenceCommand
 import relativitization.universe.data.commands.DeclareWarCommand
+import relativitization.universe.data.commands.ProposePeaceCommand
 import relativitization.universe.data.components.defaults.diplomacy.DiplomaticRelationData
 import relativitization.universe.data.components.defaults.diplomacy.WarStateData
 
@@ -106,7 +108,7 @@ class DiplomacyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         nestedTable.add(
             createLabel(
-                "Other player Id: ${otherPlayerId}",
+                "Other player Id: $otherPlayerId",
                 gdxSettings.smallFontSize
             )
         )
@@ -225,6 +227,39 @@ class DiplomacyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         nestedTable.add(declareWarButton)
 
         nestedTable.row().space(10f)
+
+        val declareIndependenceButton = createTextButton(
+            "Declare independence",
+            gdxSettings.smallFontSize,
+            gdxSettings.soundEffectsVolume
+        ) {
+            val declareIndependenceCommand = DeclareIndependenceCommand(
+                toId = playerData.topLeaderId(),
+                fromId = game.universeClient.getUniverseData3D().getCurrentPlayerData().playerId,
+                fromInt4D = game.universeClient.getUniverseData3D().getCurrentPlayerData().int4D,
+            )
+
+            game.universeClient.currentCommand = declareIndependenceCommand
+        }
+        nestedTable.add(declareIndependenceButton)
+
+        nestedTable.row().space(10f)
+
+        val proposePeaceButton = createTextButton(
+            "Propose peace",
+            gdxSettings.smallFontSize,
+            gdxSettings.soundEffectsVolume
+        ) {
+            val proposePeaceCommand = ProposePeaceCommand(
+                toId = game.universeClient.getUniverseData3D().getCurrentPlayerData().playerId,
+                fromId = game.universeClient.getUniverseData3D().getCurrentPlayerData().playerId,
+                fromInt4D = game.universeClient.getUniverseData3D().getCurrentPlayerData().int4D,
+                targetPlayerId = otherPlayerId
+            )
+
+            game.universeClient.currentCommand = proposePeaceCommand
+        }
+        nestedTable.add(proposePeaceButton)
 
         return nestedTable
     }
