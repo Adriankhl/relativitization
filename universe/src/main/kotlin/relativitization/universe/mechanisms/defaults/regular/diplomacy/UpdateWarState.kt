@@ -1,6 +1,7 @@
 package relativitization.universe.mechanisms.defaults.regular.diplomacy
 
 import relativitization.universe.data.MutablePlayerData
+import relativitization.universe.data.PlayerData
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
@@ -34,10 +35,6 @@ object UpdateWarState : Mechanism() {
                 !universeData3DAtPlayer.playerDataMap.containsKey(id)
             }.keys
 
-        noPlayerWarSet.forEach {
-            mutablePlayerData.playerInternalData.diplomacyData().warData.warStateMap.remove(it)
-        }
-
         // Both have accepted peace or this player accepted peace and other war state has disappeared
         val acceptedPeaceSet: Set<Int> =
             mutablePlayerData.playerInternalData.diplomacyData().warData.warStateMap.filter { (id, warState) ->
@@ -64,13 +61,6 @@ object UpdateWarState : Mechanism() {
                 (warState.proposePeace) && (!otherHasWarState || otherHasProposePeace)
             }.keys
 
-        acceptedPeaceSet.forEach {
-            mutablePlayerData.playerInternalData.diplomacyData().warData.warStateMap.remove(it)
-            mutablePlayerData.playerInternalData.modifierData().diplomacyModifierData.setPeaceTreatyWithLength(
-                it,
-                peaceTreatyLength
-            )
-        }
 
         // Force the war to stop if the length is too long
         val warTooLongSet: Set<Int> =
@@ -91,12 +81,40 @@ object UpdateWarState : Mechanism() {
                 (mutablePlayerData.int4D.t - warState.startTime > maxWarLength) && (!otherHasWarState || otherWarTooLong)
             }.keys
 
-        warTooLongSet.forEach {
-            mutablePlayerData.playerInternalData.diplomacyData().warData.warStateMap.remove(it)
-            mutablePlayerData.playerInternalData.modifierData().diplomacyModifierData.setPeaceTreatyWithLength(
-                it,
-                peaceTreatyLength
-            )
+        // All player to get peace treaty
+        val allPeaceSet: Set<Int> = noPlayerWarSet + acceptedPeaceSet + warTooLongSet
+        allPeaceSet.forEach { warId ->
+            val warTopLeaderId: Int = mutablePlayerData.playerInternalData.diplomacyData()
+                .warData.warStateMap.getValue(warId).warTargetTopLeaderId + warId
+
+            val subordinateSet: Set<Int> = universeData3DAtPlayer.get(warId)
+                .playerInternalData.subordinateIdList.toSet()
+
+            val topLeaderSubordinateSet: Set<Int> = if (warTopLeaderId != mutablePlayerData.topLeaderId()) {
+                universeData3DAtPlayer.get(warTopLeaderId).playerInternalData.subordinateIdList.toSet() + warTopLeaderId
+            } else {
+                setOf()
+            }
+
+
+            val peaceTreatyIdSet: Set<Int> = (subordinateSet + topLeaderSubordinateSet).filter {
+                it != mutablePlayerData.playerId
+            }.toSet()
+
+
+            peaceTreatyIdSet.forEach {
+                mutablePlayerData.playerInternalData.modifierData().diplomacyModifierData.setPeaceTreatyWithLength(
+                    it,
+                    peaceTreatyLength
+                )
+            }
+
+            mutablePlayerData.playerInternalData.diplomacyData().warData.warStateMap.remove(warId)
+        }
+
+        // Update war target top leader id
+        mutablePlayerData.playerInternalData.diplomacyData().warData.warStateMap.forEach { (id, warState) ->
+            warState.warTargetTopLeaderId = universeData3DAtPlayer.get(id).topLeaderId()
         }
 
         return listOf()

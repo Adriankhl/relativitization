@@ -29,12 +29,14 @@ data class MutableWarData(
  * @property initialSubordinateList the initial subordinate list at the beginning of war
  * @property proposePeace whether this player desire peace for this war
  * @property startTime what integer time does this war start
+ * @property warTargetTopLeaderId the top leader Id of the war target, should be detected by mechanism
  */
 @Serializable
 data class WarStateData(
     val initialSubordinateList: List<Int> = listOf(),
     val proposePeace: Boolean = false,
     val startTime: Int = 0,
+    val warTargetTopLeaderId: Int = -1,
 )
 
 @Serializable
@@ -42,4 +44,5 @@ data class MutableWarStateData(
     var initialSubordinateList: MutableList<Int> = mutableListOf(),
     var proposePeace: Boolean = false,
     var startTime: Int = 0,
+    var warTargetTopLeaderId: Int = -1,
 )
