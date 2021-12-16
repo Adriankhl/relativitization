@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.PlayerData
+import relativitization.universe.data.commands.DeclareWarCommand
 import relativitization.universe.data.components.defaults.diplomacy.DiplomaticRelationData
 import relativitization.universe.data.components.defaults.diplomacy.WarStateData
 
@@ -159,7 +160,10 @@ class DiplomacyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
     private fun createWarStateTable(): Table {
         val nestedTable = Table()
 
-        if (playerData.playerInternalData.diplomacyData().warData.warStateMap.containsKey(otherPlayerId)) {
+        if (playerData.playerInternalData.diplomacyData().warData.warStateMap.containsKey(
+                otherPlayerId
+            )
+        ) {
             val warState: WarStateData =
                 playerData.playerInternalData.diplomacyData().warData.getWarStateData(otherPlayerId)
 
@@ -202,6 +206,23 @@ class DiplomacyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
                 gdxSettings.normalFontSize
             )
         )
+
+        nestedTable.row().space(10f)
+
+        val declareWarButton = createTextButton(
+            "Declare war",
+            gdxSettings.smallFontSize,
+            gdxSettings.soundEffectsVolume
+        ) {
+            val declareWarCommand = DeclareWarCommand(
+                toId = playerData.playerId,
+                fromId = game.universeClient.getUniverseData3D().getCurrentPlayerData().playerId,
+                fromInt4D = game.universeClient.getUniverseData3D().getCurrentPlayerData().int4D,
+            )
+
+            game.universeClient.currentCommand = declareWarCommand
+        }
+        nestedTable.add(declareWarButton)
 
         nestedTable.row().space(10f)
 
