@@ -27,8 +27,9 @@ import kotlin.reflect.full.createInstance
  * @property int4D 4D coordinate of the player
  * @property int4DHistory historical coordinate of the player
  * @property double4D the accurate 4D coordinate of the player in floating point
- * @property dilatedTimeResidue for the computation of mechanism that depends on the dilated time
- * should be between 0.0 and 1.0
+ * @property dilatedTimeResidue depends on the time dilation, should be between 0.0 and 1.0, for
+ * computation of isDilationTUrn
+ * @property isDilationActionTurn whether this turn should execute time dilated actions
  * @property groupId the id of the group where the player can instantly communicate with
  * @property velocity the velocity of the player
  * @property playerInternalData the internal data of this player
@@ -43,6 +44,7 @@ data class PlayerData(
     val int4DHistory: List<Int4D> = listOf(),
     val double4D: Double4D = int4D.toDouble4D(),
     val dilatedTimeResidue: Double = 0.0,
+    val isDilationActionTurn: Boolean = true,
     val groupId: Int = double4DToGroupId(double4D, 0.01),
     val velocity: Velocity = Velocity(0.0, 0.0, 0.0),
     val playerInternalData: PlayerInternalData = PlayerInternalData(
@@ -133,6 +135,7 @@ data class MutablePlayerData(
     val int4DHistory: MutableList<Int4D> = mutableListOf(),
     var double4D: MutableDouble4D = int4D.toMutableDouble4D(),
     var dilatedTimeResidue: Double = 0.0,
+    var isDilationActionTurn: Boolean = true,
     var groupId: Int = double4DToGroupId(double4D, 0.01),
     var velocity: MutableVelocity = MutableVelocity(0.0, 0.0, 0.0),
     var playerInternalData: MutablePlayerInternalData = MutablePlayerInternalData(

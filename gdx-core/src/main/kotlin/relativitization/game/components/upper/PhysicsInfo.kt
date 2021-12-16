@@ -329,12 +329,21 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
 
         nestedTable.row().space(10f)
 
-        val newDilatedTimeResidueLabel = createLabel(
-            "New dilated time residue: ${playerData.dilatedTimeResidue + 1.0 / gamma}",
+        val dilationTurnLabel = createLabel(
+            "Is dilation action turn: ${playerData.isDilationActionTurn}",
+            gdxSettings.smallFontSize
+        )
+        nestedTable.add(dilationTurnLabel)
+
+        nestedTable.row().space(10f)
+
+        val newDilationTurnLabel = createLabel(
+            "Is next dilation action turn: ${playerData.dilatedTimeResidue + 1.0 / gamma >= 1.0}",
             gdxSettings.smallFontSize
         )
 
-        nestedTable.add(newDilatedTimeResidueLabel)
+        nestedTable.add(newDilationTurnLabel)
+
 
         return nestedTable
     }

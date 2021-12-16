@@ -12,6 +12,7 @@ import relativitization.universe.data.serializer.DataSerializer.encode
 import relativitization.universe.global.GlobalMechanismCollection
 import relativitization.universe.maths.grid.Grids.create3DGrid
 import relativitization.universe.maths.physics.Intervals.intDelay
+import relativitization.universe.maths.physics.Relativistic
 import relativitization.universe.mechanisms.MechanismCollection.processMechanismCollection
 import relativitization.universe.utils.RelativitizationLogManager
 import relativitization.universe.utils.pmap
@@ -193,6 +194,32 @@ class Universe(
 
         // Also save the latest slice, setting, state, commandMap
         saveLatest()
+    }
+
+    /**
+     * Compute the time dilation residue and isDilationTurn
+     */
+    private suspend fun processTimeDilation() {
+        playerCollection.getIdList().pmap {
+            val mutablePlayerData: MutablePlayerData = playerCollection.getPlayer(it)
+
+            val gamma: Double = Relativistic.gamma(
+                mutablePlayerData.velocity.toVelocity(),
+                universeData.universeSettings.speedOfLight
+            )
+
+            // Update dilated time residue
+            mutablePlayerData.dilatedTimeResidue += 1.0 / gamma
+
+            // Check whether this should be a time dilation action turn
+            // the residue should always be smaller than 1
+            if (mutablePlayerData.dilatedTimeResidue >= 1.0) {
+                mutablePlayerData.dilatedTimeResidue -= 1.0
+                mutablePlayerData.isDilationActionTurn = true
+            } else {
+                mutablePlayerData.isDilationActionTurn = false
+            }
+        }
     }
 
     /**
@@ -420,6 +447,7 @@ class Universe(
     suspend fun preProcessUniverse() {
         // beginning of the turn
         GlobalMechanismCollection.globalProcess(universeData)
+        processTimeDilation()
         processMechanism()
         processCommandMap()
         processDeadAndNewPlayer()

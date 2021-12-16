@@ -6,7 +6,6 @@ import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.global.UniverseGlobalData
-import relativitization.universe.maths.physics.Relativistic
 import relativitization.universe.utils.RelativitizationLogManager
 
 abstract class Mechanism {
@@ -51,15 +50,6 @@ object MechanismCollection {
         universeData3DAtPlayer: UniverseData3DAtPlayer,
         universeData: UniverseData,
     ): List<Command> {
-
-        val gamma: Double = Relativistic.gamma(
-            universeData3DAtPlayer.getCurrentPlayerData().velocity,
-            universeData.universeSettings.speedOfLight
-        )
-
-        // Update dilated time residue
-        mutablePlayerData.dilatedTimeResidue += 1.0 / gamma
-
         val mechanismLists: MechanismLists =
             mechanismListsMap.getOrElse(universeData.universeSettings.mechanismCollectionName) {
                 logger.error("No mechanism name matched, use empty mechanism")
@@ -81,12 +71,9 @@ object MechanismCollection {
                 }
             }.flatten()
 
-        // Only process dilated mechanisms if dilated time residue is bigger than or equal to 1.0
+        // Only process dilated mechanisms if this is the dilation action turn
         val dilatedMechanismCommandList: List<Command> =
-            if (mutablePlayerData.dilatedTimeResidue >= 1.0) {
-                // Compute the residue, should be always smaller than 1
-                mutablePlayerData.dilatedTimeResidue -= 1.0
-
+            if (mutablePlayerData.isDilationActionTurn) {
                 mechanismLists.dilatedMechanismList.map { mechanism ->
                     if (mutablePlayerData.playerInternalData.isAlive) {
                         mechanism.process(
