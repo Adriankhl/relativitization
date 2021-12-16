@@ -29,6 +29,15 @@ object UpdateWarState : Mechanism() {
             mutablePlayerData.playerInternalData.diplomacyData().warData.warStateMap.remove(it)
         }
 
+        val noPlayerWarSet: Set<Int> =
+            mutablePlayerData.playerInternalData.diplomacyData().warData.warStateMap.filter { (id, _) ->
+                !universeData3DAtPlayer.playerDataMap.containsKey(id)
+            }.keys
+
+        noPlayerWarSet.forEach {
+            mutablePlayerData.playerInternalData.diplomacyData().warData.warStateMap.remove(it)
+        }
+
         // Both have accepted peace or this player accepted peace and other war state has disappeared
         val acceptedPeaceSet: Set<Int> =
             mutablePlayerData.playerInternalData.diplomacyData().warData.warStateMap.filter { (id, warState) ->
@@ -81,7 +90,7 @@ object UpdateWarState : Mechanism() {
                 }
                 (mutablePlayerData.int4D.t - warState.startTime > maxWarLength) && (!otherHasWarState || otherWarTooLong)
             }.keys
-        
+
         warTooLongSet.forEach {
             mutablePlayerData.playerInternalData.diplomacyData().warData.warStateMap.remove(it)
             mutablePlayerData.playerInternalData.modifierData().diplomacyModifierData.setPeaceTreatyWithLength(
