@@ -20,25 +20,39 @@ object UpdateDiplomaticRelationState : Mechanism() {
         universeGlobalData: UniverseGlobalData
     ): List<Command> {
 
-        // Determine top leader relation state by war
-        // Only do the sync if the player is not a top leader
+        // Treat top leader and subordinate differently
         if (mutablePlayerData.isTopLeader()) {
             val inWarSet: Set<Int> =
                 mutablePlayerData.playerInternalData.diplomacyData().warData.warStateMap.keys
 
-            // Include subordinates of war target as enemy
-            val allEnemy: Set<Int> = (inWarSet + inWarSet.map { inWarId ->
-                // Enemy should not include self or subordinate
-                universeData3DAtPlayer.get(inWarId).playerInternalData.subordinateIdList.filter {
-                    !mutablePlayerData.isSubOrdinateOrSelf(it)
-                }
-            }.flatten()).toSet()
+            val inSubordinateWarSet: Set<Int> = mutablePlayerData.playerInternalData
+                .subordinateIdList.map { id ->
+                    universeData3DAtPlayer.get(id).playerInternalData.diplomacyData()
+                        .warData.warStateMap.keys
+                }.flatten().toSet()
+
+            val allWarSet: Set<Int> = (inWarSet + inSubordinateWarSet).filter {
+                // Exclude subordinate
+                !mutablePlayerData.isSubOrdinateOrSelf(it)
+            }.toSet()
+
+            val allWarTopLeaderSet: Set<Int> = allWarSet.map {
+                universeData3DAtPlayer.get(it).topLeaderId()
+            }.toSet()
+
+            // Compute the enemy by getting all the subordinates of the war target and their top leader
+            val allEnemySet: Set<Int> = (allWarSet + allWarTopLeaderSet).map {
+                universeData3DAtPlayer.get(it).playerInternalData.subordinateIdList + it
+            }.flatten().filter {
+                // Exclude subordinate
+                !mutablePlayerData.isSubOrdinateOrSelf(it)
+            }.toSet()
 
             val inRelationSet: Set<Int> =
                 mutablePlayerData.playerInternalData.diplomacyData().relationMap.keys
 
             // Change in war player to enemy
-            allEnemy.forEach {
+            allEnemySet.forEach {
                 mutablePlayerData.playerInternalData.diplomacyData()
                     .getDiplomaticRelationData(it).diplomaticRelationState =
                     DiplomaticRelationState.ENEMY
@@ -46,7 +60,7 @@ object UpdateDiplomaticRelationState : Mechanism() {
 
             // Change not in war player from enemy to neutral
             inRelationSet.filter {
-                !allEnemy.contains(it) && (mutablePlayerData.playerInternalData.diplomacyData()
+                !allEnemySet.contains(it) && (mutablePlayerData.playerInternalData.diplomacyData()
                     .getRelationState(it) == DiplomaticRelationState.ENEMY)
             }.forEach {
                 mutablePlayerData.playerInternalData.diplomacyData()
@@ -54,6 +68,7 @@ object UpdateDiplomaticRelationState : Mechanism() {
                     DiplomaticRelationState.NEUTRAL
             }
         } else {
+            // Sync direct leader enemy if the player is not a top leader
             val directLeader: PlayerData = universeData3DAtPlayer.get(
                 mutablePlayerData.playerInternalData.directLeaderId
             )
@@ -73,11 +88,15 @@ object UpdateDiplomaticRelationState : Mechanism() {
 
             // Sync leader enemy
             // Add self enemy
-            val allEnemyList: List<Int> = inLeaderRelationSet.filter {
+            val allEnemySet: Set<Int> = (inLeaderRelationSet.filter {
                 directLeader.playerInternalData.diplomacyData()
                     .getRelationState(it) == DiplomaticRelationState.ENEMY
-            } + allSelfEnemySet
-            allEnemyList.forEach {
+            }.toSet() + allSelfEnemySet).filter {
+                // Exclude subordinate
+                !mutablePlayerData.isSubOrdinateOrSelf(it)
+            }.toSet()
+
+            allEnemySet.forEach {
                 mutablePlayerData.playerInternalData.diplomacyData()
                     .getDiplomaticRelationData(it).diplomaticRelationState =
                     DiplomaticRelationState.ENEMY
@@ -85,7 +104,7 @@ object UpdateDiplomaticRelationState : Mechanism() {
 
             // Change not in war player from enemy to neutral
             inSelfRelationSet.filter {
-                !allEnemyList.contains(it) && mutablePlayerData.playerInternalData.diplomacyData()
+                !allEnemySet.contains(it) && mutablePlayerData.playerInternalData.diplomacyData()
                     .getRelationState(it) == DiplomaticRelationState.ENEMY
             }.forEach {
                 mutablePlayerData.playerInternalData.diplomacyData()
