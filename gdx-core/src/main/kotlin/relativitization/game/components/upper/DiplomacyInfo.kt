@@ -110,7 +110,8 @@ class DiplomacyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         val otherPlayerIdSelectBox = createSelectBox(
             (playerData.playerInternalData.diplomacyData().relationMap.keys +
-                    playerData.playerInternalData.diplomacyData().warData.warStateMap.keys).toList(),
+                    playerData.playerInternalData.diplomacyData().warData.warStateMap.keys +
+                    playerData.playerId).toList(),
             otherPlayerId,
             gdxSettings.smallFontSize
         ) { i, _ ->
@@ -125,24 +126,28 @@ class DiplomacyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
     private fun createDiplomaticRelationTable(): Table {
         val nestedTable = Table()
 
-        val diplomaticRelationData: DiplomaticRelationData =
-            playerData.playerInternalData.diplomacyData().getDiplomaticRelationData(otherPlayerId)
+        // Only show this information if the other player is not self
+        if (playerData.playerId != otherPlayerId) {
+            val diplomaticRelationData: DiplomaticRelationData =
+                playerData.playerInternalData.diplomacyData()
+                    .getDiplomaticRelationData(otherPlayerId)
 
-        nestedTable.add(
-            createLabel(
-                "Relation: ${diplomaticRelationData.relation}",
-                gdxSettings.smallFontSize
+            nestedTable.add(
+                createLabel(
+                    "Relation: ${diplomaticRelationData.relation}",
+                    gdxSettings.smallFontSize
+                )
             )
-        )
 
-        nestedTable.row().space(10f)
+            nestedTable.row().space(10f)
 
-        nestedTable.add(
-            createLabel(
-                "Diplomatic state: ${diplomaticRelationData.diplomaticRelationState}",
-                gdxSettings.smallFontSize
+            nestedTable.add(
+                createLabel(
+                    "Diplomatic state: ${diplomaticRelationData.diplomaticRelationState}",
+                    gdxSettings.smallFontSize
+                )
             )
-        )
+        }
 
         return nestedTable
     }
