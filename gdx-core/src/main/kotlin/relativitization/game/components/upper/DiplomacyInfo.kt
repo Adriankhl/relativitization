@@ -94,6 +94,10 @@ class DiplomacyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         table.row().space(20f)
 
         table.add(createWarStateTable())
+
+        table.row().space(20f)
+
+        table.add(createWarCommandTable())
     }
 
     private fun createSelectOtherPlayerTable(): Table {
@@ -185,6 +189,21 @@ class DiplomacyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             )
         }
 
+
+        return nestedTable
+    }
+
+    private fun createWarCommandTable(): Table {
+        val nestedTable = Table()
+
+        nestedTable.add(
+            createLabel(
+                "War commands: ",
+                gdxSettings.normalFontSize
+            )
+        )
+
+        nestedTable.row().space(10f)
 
         return nestedTable
     }
