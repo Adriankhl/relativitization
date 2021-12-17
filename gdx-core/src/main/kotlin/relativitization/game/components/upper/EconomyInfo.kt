@@ -78,9 +78,57 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
             )
         ).pad(20f)
 
+        table.row().space(10f)
+
+        table.add(createInfoOptionTable())
+
         table.row().space(20f)
 
-        table.add(createFuelRestMassTable())
+        if (showFuelData) {
+            table.add(createFuelRestMassTable())
+        }
+    }
+
+    private fun createInfoOptionTable(): Table {
+        val nestedTable = Table()
+
+        val fuelButton = createTextButton(
+            "Fuel info",
+            gdxSettings.smallFontSize,
+            gdxSettings.soundEffectsVolume
+        ) {
+            showFuelData = true
+            showResourceData = false
+            showTaxData = false
+            updateTable()
+        }
+        nestedTable.add(fuelButton).pad(10f)
+
+        val resourceButton = createTextButton(
+            "Resource info",
+            gdxSettings.smallFontSize,
+            gdxSettings.soundEffectsVolume
+        ) {
+            showFuelData = false
+            showResourceData = true
+            showTaxData = false
+            updateTable()
+        }
+        nestedTable.add(resourceButton).pad(10f)
+
+        val taxButton = createTextButton(
+            "Tax info",
+            gdxSettings.smallFontSize,
+            gdxSettings.soundEffectsVolume
+        ) {
+            showFuelData = false
+            showResourceData = false
+            showTaxData = true
+            updateTable()
+        }
+        nestedTable.add(taxButton).pad(10f)
+
+        return nestedTable
     }
 
     private fun createFuelRestMassTable(): Table {
