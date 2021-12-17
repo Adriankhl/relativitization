@@ -161,7 +161,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         table.row().space(10f)
 
-        table.add(createInfoChoiceTable())
+        table.add(createInfoOptionTable())
 
         table.row().space(20f)
 
@@ -194,7 +194,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         table.add(emptyLabel).minHeight(Gdx.graphics.height.toFloat())
     }
 
-    private fun createInfoChoiceTable(): Table {
+    private fun createInfoOptionTable(): Table {
         val nestedTable = Table()
 
         val showCarrierInfoButton = createTextButton(

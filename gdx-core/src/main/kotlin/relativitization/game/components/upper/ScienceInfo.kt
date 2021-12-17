@@ -24,8 +24,9 @@ class ScienceInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
     private var playerData: PlayerData = PlayerData(-1)
 
     // Show common sense or player knowledge
-    private var showCommonSense: Boolean = false
-    private var showPlayerKnowledge: Boolean = true
+    private var showCommonSenseInfo: Boolean = true
+    private var showPlayerKnowledgeInfo: Boolean = false
+    private var showScienceApplicationInfo: Boolean = false
 
     init {
         table.background = assets.getBackgroundColor(0.2f, 0.2f, 0.2f, 1.0f)
@@ -79,31 +80,11 @@ class ScienceInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
 
         table.row().space(20f)
 
-        table.add(createShowKnowledgeOptionTable())
+        table.add(createInfoOptionTable())
 
-        if (showPlayerKnowledge) {
+        table.row().space(20f)
 
-            table.row().space(20f)
-
-            table.add(
-                createLabel(
-                    "Player knowledge: ",
-                    gdxSettings.normalFontSize
-                )
-            )
-
-            table.row().space(10f)
-
-            table.add(
-                createKnowledgeDataTable(
-                    playerData.playerInternalData.playerScienceData().playerKnowledgeData
-                )
-            )
-        }
-
-        if (showCommonSense) {
-            table.row().space(20f)
-
+        if (showCommonSenseInfo) {
             table.add(
                 createLabel(
                     "Common sense: ",
@@ -118,52 +99,87 @@ class ScienceInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
                     playerData.playerInternalData.playerScienceData().commonSenseKnowledgeData
                 )
             )
+
+            table.row().space(20f)
         }
 
-        table.row().space(40f)
-
-        table.add(
-            createLabel(
-                "Science application: ",
-                gdxSettings.normalFontSize
+        if (showPlayerKnowledgeInfo) {
+            table.add(
+                createLabel(
+                    "Player knowledge: ",
+                    gdxSettings.normalFontSize
+                )
             )
-        )
 
-        table.row().space(10f)
+            table.row().space(10f)
 
-        table.add(
-            createScienceApplicationDataTable(
-                playerData.playerInternalData.playerScienceData().playerScienceApplicationData
+            table.add(
+                createKnowledgeDataTable(
+                    playerData.playerInternalData.playerScienceData().playerKnowledgeData
+                )
             )
-        )
+
+            table.row().space(20f)
+        }
+
+        if (showScienceApplicationInfo) {
+            table.add(
+                createLabel(
+                    "Science application: ",
+                    gdxSettings.normalFontSize
+                )
+            )
+
+            table.row().space(10f)
+
+            table.add(
+                createScienceApplicationDataTable(
+                    playerData.playerInternalData.playerScienceData().playerScienceApplicationData
+                )
+            )
+
+            table.row().space(20f)
+        }
     }
 
-    private fun createShowKnowledgeOptionTable(): Table {
+    private fun createInfoOptionTable(): Table {
         val nestedTable = Table()
-
-        val playerKnowledgeButton = createTextButton(
-            "Player knowledge",
-            gdxSettings.smallFontSize,
-            gdxSettings.soundEffectsVolume
-        ) {
-            showPlayerKnowledge = true
-            showCommonSense = false
-            updateTable()
-        }
-
-        nestedTable.add(playerKnowledgeButton).pad(20f)
 
         val commonSenseButton = createTextButton(
             "Common sense",
             gdxSettings.smallFontSize,
             gdxSettings.soundEffectsVolume
         ) {
-            showPlayerKnowledge = false
-            showCommonSense = true
+            showCommonSenseInfo = true
+            showPlayerKnowledgeInfo = false
+            showScienceApplicationInfo = false
             updateTable()
         }
+        nestedTable.add(commonSenseButton).pad(10f)
 
-        nestedTable.add(commonSenseButton).pad(20f)
+        val playerKnowledgeButton = createTextButton(
+            "Player knowledge",
+            gdxSettings.smallFontSize,
+            gdxSettings.soundEffectsVolume
+        ) {
+            showCommonSenseInfo = false
+            showPlayerKnowledgeInfo = true
+            showScienceApplicationInfo = false
+            updateTable()
+        }
+        nestedTable.add(playerKnowledgeButton).pad(10f)
+
+        val scienceApplicationButton = createTextButton(
+            "Science application",
+            gdxSettings.smallFontSize,
+            gdxSettings.soundEffectsVolume
+        ) {
+            showCommonSenseInfo = false
+            showPlayerKnowledgeInfo = false
+            showScienceApplicationInfo = true
+            updateTable()
+        }
+        nestedTable.add(scienceApplicationButton).pad(10f)
 
         return nestedTable
     }
