@@ -16,6 +16,8 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
 
     private var playerData: PlayerData = PlayerData(-1)
 
+    private var otherPlayerId: Int = -1
+
 
     init {
 
@@ -48,6 +50,11 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         updateTable()
     }
 
+    override fun onSelectedPlayerIdListChange() {
+        otherPlayerId = game.universeClient.newSelectedPlayerId
+        updateTable()
+    }
+
     override fun onCommandListChange() {
         updatePlayerData()
         updateTable()
@@ -65,13 +72,23 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
     private fun updateTable() {
         table.clear()
 
-        val headerLabel = createLabel(
-            "Economy: player ${playerData.playerId}",
-            gdxSettings.bigFontSize
-        )
-
-        table.add(headerLabel).pad(20f)
+        table.add(
+            createLabel(
+                "Economy: player ${playerData.playerId}",
+                gdxSettings.bigFontSize
+            )
+        ).pad(20f)
 
         table.row().space(20f)
+
+        table.add(createFuelRestMassTable())
+
+        table.row().space(20f)
+    }
+
+    private fun createFuelRestMassTable(): Table {
+        val nestedTable = Table()
+
+        return nestedTable
     }
 }
