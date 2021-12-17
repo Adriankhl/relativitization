@@ -23,7 +23,10 @@ class DiplomacyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
     // For choosing the diplomatic relation between player with this Id and the primary player
     // Update by select box or select new player
-    private var otherPlayerId: Int = -1
+    private val otherPlayerId = createIntTextField(
+        -1,
+        gdxSettings.smallFontSize
+    )
 
     init {
 
@@ -57,7 +60,7 @@ class DiplomacyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
     }
 
     override fun onSelectedPlayerIdListChange() {
-        otherPlayerId = game.universeClient.newSelectedPlayerId
+        otherPlayerId.value = game.universeClient.newSelectedPlayerId
         updateTable()
     }
 
@@ -108,21 +111,30 @@ class DiplomacyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         nestedTable.add(
             createLabel(
-                "Other player Id: $otherPlayerId",
+                "Other player Id: ",
                 gdxSettings.smallFontSize
             )
         )
 
+        nestedTable.add(otherPlayerId.textField)
+
         nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "In-relation player",
+                gdxSettings.smallFontSize
+            )
+        )
 
         val otherPlayerIdSelectBox = createSelectBox(
             (playerData.playerInternalData.diplomacyData().relationMap.keys +
                     playerData.playerInternalData.diplomacyData().warData.warStateMap.keys +
                     playerData.playerId).toList(),
-            otherPlayerId,
+            otherPlayerId.value,
             gdxSettings.smallFontSize
         ) { i, _ ->
-            otherPlayerId = i
+            otherPlayerId.value = i
             updateTable()
         }
         nestedTable.add(otherPlayerIdSelectBox).colspan(2)
@@ -134,10 +146,10 @@ class DiplomacyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         val nestedTable = Table()
 
         // Only show this information if the other player is not self
-        if (playerData.playerId != otherPlayerId) {
+        if (playerData.playerId != otherPlayerId.value) {
             val diplomaticRelationData: DiplomaticRelationData =
                 playerData.playerInternalData.diplomacyData()
-                    .getDiplomaticRelationData(otherPlayerId)
+                    .getDiplomaticRelationData(otherPlayerId.value)
 
             nestedTable.add(
                 createLabel(
@@ -163,11 +175,11 @@ class DiplomacyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         val nestedTable = Table()
 
         if (playerData.playerInternalData.diplomacyData().warData.warStateMap.containsKey(
-                otherPlayerId
+                otherPlayerId.value
             )
         ) {
             val warState: WarStateData =
-                playerData.playerInternalData.diplomacyData().warData.getWarStateData(otherPlayerId)
+                playerData.playerInternalData.diplomacyData().warData.getWarStateData(otherPlayerId.value)
 
             nestedTable.add(
                 createLabel(
@@ -254,7 +266,7 @@ class DiplomacyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
                 toId = game.universeClient.getCurrentPlayerData().playerId,
                 fromId = game.universeClient.getCurrentPlayerData().playerId,
                 fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
-                targetPlayerId = otherPlayerId
+                targetPlayerId = otherPlayerId.value
             )
 
             game.universeClient.currentCommand = proposePeaceCommand
