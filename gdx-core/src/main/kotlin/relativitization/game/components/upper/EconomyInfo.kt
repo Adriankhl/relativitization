@@ -277,11 +277,6 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
             fontSize = gdxSettings.smallFontSize,
         )
 
-        val newTargetFuelTrade = createDoubleTextField(
-            playerData.playerInternalData.physicsData().targetFuelRestMassData.trade,
-            fontSize = gdxSettings.smallFontSize,
-        )
-
         nestedTable.add(
             createLabel(
                 "Target storage: ${playerData.playerInternalData.physicsData().targetFuelRestMassData.storage}",
@@ -302,6 +297,8 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
                 fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
                 targetAmount = newTargetFuelStorage.value,
             )
+
+            game.universeClient.currentCommand = changeStorageFuelTargetCommand
         }
         nestedTable.add(changeStorageFuelButton).colspan(2)
 
@@ -329,6 +326,110 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
             newTargetFuelStorage.value = it
         }
         nestedTable.add(newTargetFuelStorageButtonSlider).colspan(2)
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "Target movement: ${playerData.playerInternalData.physicsData().targetFuelRestMassData.movement}",
+                gdxSettings.smallFontSize
+            )
+        ).colspan(2)
+
+        nestedTable.row().space(10f)
+
+        val changeMovementFuelButton = createTextButton(
+            "Change target movement",
+            gdxSettings.smallFontSize,
+            gdxSettings.soundEffectsVolume
+        ) {
+            val changeMovementFuelTargetCommand = ChangeMovementFuelTargetCommand(
+                toId = playerData.playerId,
+                fromId = game.universeClient.getCurrentPlayerData().playerId,
+                fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
+                targetAmount = newTargetFuelMovement.value,
+            )
+
+            game.universeClient.currentCommand = changeMovementFuelTargetCommand
+        }
+        nestedTable.add(changeMovementFuelButton).colspan(2)
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "New target movement: ",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.add(newTargetFuelMovement.textField)
+
+        nestedTable.row().space(10f)
+
+        val newTargetFuelMovementButtonSlider = createDoubleSliderButtonTable(
+            newTargetFuelMovement.value,
+            0.01f,
+            2,
+            40f * gdxSettings.imageScale,
+            gdxSettings.soundEffectsVolume,
+            currentValue = { newTargetFuelMovement.value }
+        ) {
+            newTargetFuelMovement.value = it
+        }
+        nestedTable.add(newTargetFuelMovementButtonSlider).colspan(2)
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "Target production: ${playerData.playerInternalData.physicsData().targetFuelRestMassData.production}",
+                gdxSettings.smallFontSize
+            )
+        ).colspan(2)
+
+        nestedTable.row().space(10f)
+
+        val changeProductionFuelButton = createTextButton(
+            "Change target production",
+            gdxSettings.smallFontSize,
+            gdxSettings.soundEffectsVolume
+        ) {
+            val changeProductionFuelTargetCommand = ChangeProductionFuelTargetCommand(
+                toId = playerData.playerId,
+                fromId = game.universeClient.getCurrentPlayerData().playerId,
+                fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
+                targetAmount = newTargetFuelProduction.value,
+            )
+
+            game.universeClient.currentCommand = changeProductionFuelTargetCommand
+        }
+        nestedTable.add(changeProductionFuelButton).colspan(2)
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "New target production: ",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.add(newTargetFuelProduction.textField)
+
+        nestedTable.row().space(10f)
+
+        val newTargetFuelProductionButtonSlider = createDoubleSliderButtonTable(
+            newTargetFuelProduction.value,
+            0.01f,
+            2,
+            40f * gdxSettings.imageScale,
+            gdxSettings.soundEffectsVolume,
+            currentValue = { newTargetFuelProduction.value }
+        ) {
+            newTargetFuelProduction.value = it
+        }
+        nestedTable.add(newTargetFuelProductionButtonSlider).colspan(2)
 
         return nestedTable
     }
