@@ -5,6 +5,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.PlayerData
+import relativitization.universe.data.commands.TransferFuelToMovementCommand
+import relativitization.universe.data.commands.TransferFuelToProductionCommand
+import relativitization.universe.data.commands.TransferFuelToTradeCommand
 
 class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.assets) {
 
@@ -88,6 +91,136 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
 
     private fun createFuelRestMassTable(): Table {
         val nestedTable = Table()
+
+        nestedTable.add(
+            createLabel(
+                "Fuel rest mass data: ",
+                gdxSettings.normalFontSize
+            )
+        ).colspan(2)
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "Storage: ${playerData.playerInternalData.physicsData().fuelRestMassData.storage}",
+                gdxSettings.smallFontSize
+            )
+        ).colspan(2)
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "Movement: ${playerData.playerInternalData.physicsData().fuelRestMassData.movement}",
+                gdxSettings.smallFontSize
+            )
+        ).colspan(2)
+
+        nestedTable.row().space(10f)
+
+        val transferToMovementSlider = createSlider(
+            min = 0f,
+            max = 1f,
+            stepSize = 0.01f,
+            default = 0f,
+        )
+
+        val transferToMovementButton = createTextButton(
+            "Transfer to movement",
+            gdxSettings.smallFontSize,
+            gdxSettings.soundEffectsVolume
+        ) {
+            val transferFuelToMovementCommand = TransferFuelToMovementCommand(
+                toId = playerData.playerId,
+                fromId = game.universeClient.getUniverseData3D().getCurrentPlayerData().playerId,
+                fromInt4D = game.universeClient.getUniverseData3D().getCurrentPlayerData().int4D,
+                amount = playerData.playerInternalData.physicsData().fuelRestMassData.storage * transferToMovementSlider.value
+            )
+
+            game.universeClient.currentCommand = transferFuelToMovementCommand
+        }
+        nestedTable.add(transferToMovementButton).colspan(2)
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(transferToMovementSlider).colspan(2)
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "Production: ${playerData.playerInternalData.physicsData().fuelRestMassData.production}",
+                gdxSettings.smallFontSize
+            )
+        ).colspan(2)
+
+        nestedTable.row().space(10f)
+
+        val transferToProductionSlider = createSlider(
+            min = 0f,
+            max = 1f,
+            stepSize = 0.01f,
+            default = 0f,
+        )
+
+        val transferToProductionButton = createTextButton(
+            "Transfer to production",
+            gdxSettings.smallFontSize,
+            gdxSettings.soundEffectsVolume
+        ) {
+            val transferFuelToProductionCommand = TransferFuelToProductionCommand(
+                toId = playerData.playerId,
+                fromId = game.universeClient.getUniverseData3D().getCurrentPlayerData().playerId,
+                fromInt4D = game.universeClient.getUniverseData3D().getCurrentPlayerData().int4D,
+                amount = playerData.playerInternalData.physicsData().fuelRestMassData.storage * transferToMovementSlider.value
+            )
+
+            game.universeClient.currentCommand = transferFuelToProductionCommand
+        }
+        nestedTable.add(transferToProductionButton).colspan(2)
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(transferToProductionSlider).colspan(2)
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "Trade: ${playerData.playerInternalData.physicsData().fuelRestMassData.trade}",
+                gdxSettings.smallFontSize
+            )
+        ).colspan(2)
+
+        nestedTable.row().space(10f)
+
+        val transferToTradeSlider = createSlider(
+            min = 0f,
+            max = 1f,
+            stepSize = 0.01f,
+            default = 0f,
+        )
+
+        val transferToTradeButton = createTextButton(
+            "Transfer to trade",
+            gdxSettings.smallFontSize,
+            gdxSettings.soundEffectsVolume
+        ) {
+            val transferFuelToTradeCommand = TransferFuelToTradeCommand(
+                toId = playerData.playerId,
+                fromId = game.universeClient.getUniverseData3D().getCurrentPlayerData().playerId,
+                fromInt4D = game.universeClient.getUniverseData3D().getCurrentPlayerData().int4D,
+                amount = playerData.playerInternalData.physicsData().fuelRestMassData.storage * transferToMovementSlider.value
+            )
+
+            game.universeClient.currentCommand = transferFuelToTradeCommand
+        }
+        nestedTable.add(transferToTradeButton).colspan(2)
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(transferToTradeSlider).colspan(2)
 
         return nestedTable
     }
