@@ -578,6 +578,8 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
 
     /**
      * Get current player
+     * Get from plan if plan is at the same time slice as current universe 3d data, else get from
+     * universe 3d data
      */
     fun getCurrentPlayerData(): PlayerData {
         return if (planDataAtPlayer.universeData3DAtPlayer.center.t == getUniverseData3D().center.t) {

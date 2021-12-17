@@ -103,12 +103,12 @@ class PoliticsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>
         ) {
             val askToMergeEvent = AskToMergeCarrierEvent(
                 toId = playerData.playerId,
-                fromId = game.universeClient.getUniverseData3D().getCurrentPlayerData().playerId,
+                fromId = game.universeClient.getCurrentPlayerData().playerId,
             )
 
             val addEventCommand = AddEventCommand(
                 event = askToMergeEvent,
-                fromInt4D = game.universeClient.getUniverseData3D().getCurrentPlayerData().int4D
+                fromInt4D = game.universeClient.getCurrentPlayerData().int4D
             )
 
             game.universeClient.currentCommand = addEventCommand
@@ -182,8 +182,8 @@ class PoliticsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>
         ) {
             val changeFactoryPolicyCommand = ChangeFactoryPolicyCommand(
                 toId = playerData.playerId,
-                fromId = game.universeClient.getUniverseData3D().getCurrentPlayerData().playerId,
-                fromInt4D = game.universeClient.getUniverseData3D().getCurrentPlayerData().int4D,
+                fromId = game.universeClient.getCurrentPlayerData().playerId,
+                fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
                 allowSubordinateBuildFactory = allowSubordinateBuildFactoryCheckBox.isChecked,
                 allowLeaderBuildLocalFactory = allowLeaderBuildLocalFactoryCheckBox.isChecked,
                 allowForeignInvestor = allowForeignInvestorCheckBox.isChecked,

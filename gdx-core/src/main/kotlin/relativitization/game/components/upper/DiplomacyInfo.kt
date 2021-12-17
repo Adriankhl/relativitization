@@ -218,8 +218,8 @@ class DiplomacyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         ) {
             val declareWarCommand = DeclareWarCommand(
                 toId = playerData.playerId,
-                fromId = game.universeClient.getUniverseData3D().getCurrentPlayerData().playerId,
-                fromInt4D = game.universeClient.getUniverseData3D().getCurrentPlayerData().int4D,
+                fromId = game.universeClient.getCurrentPlayerData().playerId,
+                fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
             )
 
             game.universeClient.currentCommand = declareWarCommand
@@ -235,8 +235,8 @@ class DiplomacyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         ) {
             val declareIndependenceCommand = DeclareIndependenceCommand(
                 toId = playerData.topLeaderId(),
-                fromId = game.universeClient.getUniverseData3D().getCurrentPlayerData().playerId,
-                fromInt4D = game.universeClient.getUniverseData3D().getCurrentPlayerData().int4D,
+                fromId = game.universeClient.getCurrentPlayerData().playerId,
+                fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
             )
 
             game.universeClient.currentCommand = declareIndependenceCommand
@@ -251,9 +251,9 @@ class DiplomacyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             gdxSettings.soundEffectsVolume
         ) {
             val proposePeaceCommand = ProposePeaceCommand(
-                toId = game.universeClient.getUniverseData3D().getCurrentPlayerData().playerId,
-                fromId = game.universeClient.getUniverseData3D().getCurrentPlayerData().playerId,
-                fromInt4D = game.universeClient.getUniverseData3D().getCurrentPlayerData().int4D,
+                toId = game.universeClient.getCurrentPlayerData().playerId,
+                fromId = game.universeClient.getCurrentPlayerData().playerId,
+                fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
                 targetPlayerId = otherPlayerId
             )
 

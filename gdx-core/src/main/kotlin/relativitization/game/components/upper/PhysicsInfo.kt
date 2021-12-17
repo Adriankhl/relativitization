@@ -387,8 +387,8 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         ) {
             val changeVelocityCommand = ChangeVelocityCommand(
                 toId = playerData.playerId,
-                fromId = game.universeClient.getUniverseData3D().getCurrentPlayerData().playerId,
-                fromInt4D = game.universeClient.getUniverseData3D().getCurrentPlayerData().int4D,
+                fromId = game.universeClient.getCurrentPlayerData().playerId,
+                fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
                 targetVelocity = Velocity(
                     targetVelocityX.value,
                     targetVelocityY.value,
@@ -439,7 +439,7 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         ) {
             val moveToDouble3DEvent = MoveToDouble3DEvent(
                 toId = playerData.playerId,
-                fromId = game.universeClient.getUniverseData3D().getCurrentPlayerData().playerId,
+                fromId = game.universeClient.getCurrentPlayerData().playerId,
                 stayTime = Int.MAX_VALUE,
                 targetDouble3D = Double3D(targetX.value, targetY.value, targetZ.value),
                 maxSpeed = maxSpeed.value,
@@ -447,7 +447,7 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
 
             val addEventCommand = AddEventCommand(
                 event = moveToDouble3DEvent,
-                fromInt4D = game.universeClient.getUniverseData3D().getCurrentPlayerData().int4D,
+                fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
             )
 
             game.universeClient.currentCommand = addEventCommand

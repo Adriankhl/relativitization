@@ -134,8 +134,8 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         ) {
             val transferFuelToMovementCommand = TransferFuelToMovementCommand(
                 toId = playerData.playerId,
-                fromId = game.universeClient.getUniverseData3D().getCurrentPlayerData().playerId,
-                fromInt4D = game.universeClient.getUniverseData3D().getCurrentPlayerData().int4D,
+                fromId = game.universeClient.getCurrentPlayerData().playerId,
+                fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
                 amount = playerData.playerInternalData.physicsData().fuelRestMassData.storage * transferToMovementSlider.value
             )
 
@@ -172,8 +172,8 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         ) {
             val transferFuelToProductionCommand = TransferFuelToProductionCommand(
                 toId = playerData.playerId,
-                fromId = game.universeClient.getUniverseData3D().getCurrentPlayerData().playerId,
-                fromInt4D = game.universeClient.getUniverseData3D().getCurrentPlayerData().int4D,
+                fromId = game.universeClient.getCurrentPlayerData().playerId,
+                fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
                 amount = playerData.playerInternalData.physicsData().fuelRestMassData.storage * transferToMovementSlider.value
             )
 
@@ -210,8 +210,8 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         ) {
             val transferFuelToTradeCommand = TransferFuelToTradeCommand(
                 toId = playerData.playerId,
-                fromId = game.universeClient.getUniverseData3D().getCurrentPlayerData().playerId,
-                fromInt4D = game.universeClient.getUniverseData3D().getCurrentPlayerData().int4D,
+                fromId = game.universeClient.getCurrentPlayerData().playerId,
+                fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
                 amount = playerData.playerInternalData.physicsData().fuelRestMassData.storage * transferToMovementSlider.value
             )
 
