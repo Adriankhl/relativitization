@@ -5,10 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.PlayerData
-import relativitization.universe.data.commands.SendFuelFromStorageCommand
-import relativitization.universe.data.commands.TransferFuelToMovementCommand
-import relativitization.universe.data.commands.TransferFuelToProductionCommand
-import relativitization.universe.data.commands.TransferFuelToTradeCommand
+import relativitization.universe.data.commands.*
 
 class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.assets) {
 
@@ -87,7 +84,9 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
 
         table.add(createFuelRestMassTable())
 
-        table.row().space(20f)
+        table.row().space(10f)
+
+        table.add(createTargetFuelRestMassTable())
     }
 
     private fun createFuelRestMassTable(): Table {
@@ -256,6 +255,80 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         nestedTable.row().space(10f)
 
         nestedTable.add(sendFuelSlider)
+
+        return nestedTable
+    }
+
+    private fun createTargetFuelRestMassTable(): Table {
+        val nestedTable = Table()
+
+        val newTargetFuelStorage = createDoubleTextField(
+            playerData.playerInternalData.physicsData().targetFuelRestMassData.storage,
+            fontSize = gdxSettings.smallFontSize,
+        )
+
+        val newTargetFuelMovement = createDoubleTextField(
+            playerData.playerInternalData.physicsData().targetFuelRestMassData.movement,
+            fontSize = gdxSettings.smallFontSize,
+        )
+
+        val newTargetFuelProduction = createDoubleTextField(
+            playerData.playerInternalData.physicsData().targetFuelRestMassData.production,
+            fontSize = gdxSettings.smallFontSize,
+        )
+
+        val newTargetFuelTrade = createDoubleTextField(
+            playerData.playerInternalData.physicsData().targetFuelRestMassData.trade,
+            fontSize = gdxSettings.smallFontSize,
+        )
+
+        nestedTable.add(
+            createLabel(
+                "Target storage: ${playerData.playerInternalData.physicsData().targetFuelRestMassData.storage}",
+                gdxSettings.smallFontSize
+            )
+        ).colspan(2)
+
+        nestedTable.row().space(10f)
+
+        val changeStorageFuelButton = createTextButton(
+            "Change target storage",
+            gdxSettings.smallFontSize,
+            gdxSettings.soundEffectsVolume
+        ) {
+            val changeStorageFuelTargetCommand = ChangeStorageFuelTargetCommand(
+                toId = playerData.playerId,
+                fromId = game.universeClient.getCurrentPlayerData().playerId,
+                fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
+                targetAmount = newTargetFuelStorage.value,
+            )
+        }
+        nestedTable.add(changeStorageFuelButton).colspan(2)
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "New target storage: ",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.add(newTargetFuelStorage.textField)
+
+        nestedTable.row().space(10f)
+
+        val newTargetFuelStorageButtonSlider = createDoubleSliderButtonTable(
+            newTargetFuelStorage.value,
+            0.01f,
+            2,
+            40f * gdxSettings.imageScale,
+            gdxSettings.soundEffectsVolume,
+            currentValue = { newTargetFuelStorage.value }
+        ) {
+            newTargetFuelStorage.value = it
+        }
+        nestedTable.add(newTargetFuelStorageButtonSlider).colspan(2)
 
         return nestedTable
     }
