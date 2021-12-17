@@ -101,6 +101,39 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
 
         nestedTable.row().space(10f)
 
+        val sendFuelSlider = createSlider(
+            min = 0f,
+            max = 1f,
+            stepSize = 0.01f,
+            default = 0f,
+        )
+
+        val sendFuelButton = createTextButton(
+            "Send fuel to this player",
+            gdxSettings.smallFontSize,
+            gdxSettings.soundEffectsVolume
+        ) {
+            val sendFuelFromStorageCommand = SendFuelFromStorageCommand(
+                toId = playerData.playerId,
+                fromId = game.universeClient.getCurrentPlayerData().playerId,
+                fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
+                amount = game.universeClient.getCurrentPlayerData().playerInternalData.physicsData()
+                    .fuelRestMassData.storage * sendFuelSlider.value,
+                senderFuelLossFractionPerDistance = game.universeClient.getCurrentPlayerData()
+                    .playerInternalData.playerScienceData()
+                    .playerScienceApplicationData.fuelLogisticsLossFractionPerDistance
+            )
+
+            game.universeClient.currentCommand = sendFuelFromStorageCommand
+        }
+        nestedTable.add(sendFuelButton)
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(sendFuelSlider)
+
+        nestedTable.row().space(10f)
+
         nestedTable.add(
             createLabel(
                 "Storage: ${playerData.playerInternalData.physicsData().fuelRestMassData.storage}",
@@ -173,7 +206,7 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
                 toId = playerData.playerId,
                 fromId = game.universeClient.getCurrentPlayerData().playerId,
                 fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
-                amount = playerData.playerInternalData.physicsData().fuelRestMassData.storage * transferToMovementSlider.value
+                amount = playerData.playerInternalData.physicsData().fuelRestMassData.storage * transferToProductionSlider.value
             )
 
             game.universeClient.currentCommand = transferFuelToProductionCommand
@@ -211,7 +244,7 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
                 toId = playerData.playerId,
                 fromId = game.universeClient.getCurrentPlayerData().playerId,
                 fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
-                amount = playerData.playerInternalData.physicsData().fuelRestMassData.storage * transferToMovementSlider.value
+                amount = playerData.playerInternalData.physicsData().fuelRestMassData.storage * transferToTradeSlider.value
             )
 
             game.universeClient.currentCommand = transferFuelToTradeCommand
@@ -221,40 +254,6 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         nestedTable.row().space(10f)
 
         nestedTable.add(transferToTradeSlider)
-
-
-        nestedTable.row().space(10f)
-
-        val sendFuelSlider = createSlider(
-            min = 0f,
-            max = 1f,
-            stepSize = 0.01f,
-            default = 0f,
-        )
-
-        val sendFuelButton = createTextButton(
-            "Send fuel to this player",
-            gdxSettings.smallFontSize,
-            gdxSettings.soundEffectsVolume
-        ) {
-            val sendFuelFromStorageCommand = SendFuelFromStorageCommand(
-                toId = playerData.playerId,
-                fromId = game.universeClient.getCurrentPlayerData().playerId,
-                fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
-                amount = game.universeClient.getCurrentPlayerData().playerInternalData.physicsData()
-                    .fuelRestMassData.storage * transferToMovementSlider.value,
-                senderFuelLossFractionPerDistance = game.universeClient.getCurrentPlayerData()
-                    .playerInternalData.playerScienceData()
-                    .playerScienceApplicationData.fuelLogisticsLossFractionPerDistance
-            )
-
-            game.universeClient.currentCommand = sendFuelFromStorageCommand
-        }
-        nestedTable.add(sendFuelButton)
-
-        nestedTable.row().space(10f)
-
-        nestedTable.add(sendFuelSlider)
 
         return nestedTable
     }
