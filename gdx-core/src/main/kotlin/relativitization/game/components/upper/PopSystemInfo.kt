@@ -68,6 +68,12 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
     private var exportCenterResourceQualityClass: ResourceQualityClass = ResourceQualityClass.FIRST
 
+    // Variable to determine which information is shown, only one should be true
+    private var showCarrierInfo: Boolean = true
+    private var showNewCarrierInfo: Boolean = false
+    private var showNewPlayerInfo: Boolean = false
+
+
     init {
 
         // Set background color
@@ -153,20 +159,32 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         }
         table.add(carrierIdSelectBox)
 
+        table.row().space(10f)
+
+        table.add(createInfoChoiceTable())
+
         table.row().space(20f)
 
-        if (playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(carrierId)) {
-            updateCarrierTable()
+        if (showCarrierInfo) {
+            if (playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(carrierId)) {
+                updateCarrierTable()
+            }
+            table.add(carrierTable)
+
+            table.row().space(30f)
         }
-        table.add(carrierTable)
 
-        table.row().space(30f)
+        if (showNewCarrierInfo) {
+            table.add(createNewCarrierTable())
 
-        table.add(createNewCarrierTable())
+            table.row().space(30f)
+        }
 
-        table.row().space(30f)
+        if (showNewPlayerInfo) {
+            table.add(createNewPlayerTable())
 
-        table.add(createNewPlayerTable())
+            table.row().space(30f)
+        }
 
         table.row()
 
@@ -174,6 +192,48 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         val emptyLabel = createLabel("", gdxSettings.smallFontSize)
         emptyLabel.height = Gdx.graphics.height.toFloat()
         table.add(emptyLabel).minHeight(Gdx.graphics.height.toFloat())
+    }
+
+    private fun createInfoChoiceTable(): Table {
+        val nestedTable = Table()
+
+        val showCarrierInfoButton = createTextButton(
+            "Carrier info",
+            gdxSettings.smallFontSize,
+            gdxSettings.soundEffectsVolume
+        ) {
+            showCarrierInfo = true
+            showNewCarrierInfo = false
+            showNewPlayerInfo = false
+            updateTable()
+        }
+        nestedTable.add(showCarrierInfoButton).pad(10f)
+
+        val showNewCarrierInfoButton = createTextButton(
+            "New carrier info",
+            gdxSettings.smallFontSize,
+            gdxSettings.soundEffectsVolume
+        ) {
+            showCarrierInfo = false
+            showNewCarrierInfo = true
+            showNewPlayerInfo = false
+            updateTable()
+        }
+        nestedTable.add(showNewCarrierInfoButton).pad(10f)
+
+        val showNewPlayerInfoButton = createTextButton(
+            "New player info",
+            gdxSettings.smallFontSize,
+            gdxSettings.soundEffectsVolume
+        ) {
+            showCarrierInfo = false
+            showNewCarrierInfo = false
+            showNewPlayerInfo = true
+            updateTable()
+        }
+        nestedTable.add(showNewPlayerInfoButton).pad(10f)
+
+        return nestedTable
     }
 
     private fun updateCarrierTable() {
