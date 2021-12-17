@@ -17,7 +17,10 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
 
     private var playerData: PlayerData = PlayerData(-1)
 
-    private var otherPlayerId: Int = -1
+    // Show one of the three data
+    private var showFuelData: Boolean = true
+    private var showResourceData: Boolean = false
+    private var showTaxData: Boolean = false
 
 
     init {
@@ -48,11 +51,6 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
 
     override fun onPrimarySelectedPlayerIdChange() {
         updatePlayerData()
-        updateTable()
-    }
-
-    override fun onSelectedPlayerIdListChange() {
-        otherPlayerId = game.universeClient.newSelectedPlayerId
         updateTable()
     }
 
