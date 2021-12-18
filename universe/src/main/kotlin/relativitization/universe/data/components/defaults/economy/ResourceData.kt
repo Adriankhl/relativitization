@@ -240,19 +240,21 @@ data class MutableResourceData(
     ): Double = getSingleResourceData(resourceType, resourceQualityClass).resourcePrice
 
     /**
-     * Get resource quality class with target quality and amount
+     * Get resource quality class with target quality, amount, and budget for production
      * Default to quality class with maximum amount if none of them satisfy the requirement
      */
     fun productionQualityClass(
         resourceType: ResourceType,
         amount: Double,
         targetQuality: MutableResourceQualityData,
+        budget: Double,
     ): ResourceQualityClass {
         val satisfyList: List<Pair<ResourceQualityClass, Boolean>> =
             ResourceQualityClass.values().toList().map {
                 val b1: Boolean = getResourceQuality(resourceType, it).geq(targetQuality)
                 val b2: Boolean = getProductionResourceAmount(resourceType, it) >= amount
-                it to (b1 && b2)
+                val b3: Boolean = budget >= getResourcePrice(resourceType, it) * amount
+                it to (b1 && b2 && b3)
             }
         return satisfyList.lastOrNull { it.second }?.first ?: run {
             ResourceQualityClass.values().maxByOrNull {
@@ -260,6 +262,31 @@ data class MutableResourceData(
             } ?: ResourceQualityClass.THIRD
         }
     }
+
+    /**
+     * Get resource quality class with target quality, amount and budget for trade
+     * Default to quality class with maximum amount if none of them satisfy the requirement
+     */
+    fun tradeQualityClass(
+        resourceType: ResourceType,
+        amount: Double,
+        targetQuality: MutableResourceQualityData,
+        budget: Double,
+    ): ResourceQualityClass {
+        val satisfyList: List<Pair<ResourceQualityClass, Boolean>> =
+            ResourceQualityClass.values().toList().map {
+                val b1: Boolean = getResourceQuality(resourceType, it).geq(targetQuality)
+                val b2: Boolean = getTradeResourceAmount(resourceType, it) >= amount
+                val b3: Boolean = budget >= getResourcePrice(resourceType, it) * amount
+                it to (b1 && b2 && b3)
+            }
+        return satisfyList.lastOrNull { it.second }?.first ?: run {
+            ResourceQualityClass.values().maxByOrNull {
+                getTradeResourceAmount(resourceType, it)
+            } ?: ResourceQualityClass.THIRD
+        }
+    }
+
 
     /**
      * Add resource to storage, production or trading depending on the target
