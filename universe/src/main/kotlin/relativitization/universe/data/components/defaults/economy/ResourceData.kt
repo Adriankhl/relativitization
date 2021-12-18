@@ -254,7 +254,7 @@ data class MutableResourceData(
                 val b2: Boolean = getProductionResourceAmount(resourceType, it) >= amount
                 it to (b1 && b2)
             }
-        return satisfyList.firstOrNull { it.second }?.first ?: run {
+        return satisfyList.lastOrNull { it.second }?.first ?: run {
             ResourceQualityClass.values().maxByOrNull {
                 getProductionResourceAmount(resourceType, it)
             } ?: ResourceQualityClass.THIRD

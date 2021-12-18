@@ -50,9 +50,9 @@ object PopBuyResource : Mechanism() {
         val availableFuelPerResource: Double = commonPopData.saving / numDesire
 
 
-        commonPopData.desireResourceMap.forEach { resourceType, desireData ->
+        commonPopData.desireResourceMap.forEach { (resourceType, desireData) ->
             val selectedClass: ResourceQualityClass =
-                ResourceQualityClass.values().firstOrNull { resourceQualityClass ->
+                ResourceQualityClass.values().lastOrNull { resourceQualityClass ->
                     val amount: Double = economyData.resourceData.getTradeResourceAmount(
                         resourceType = resourceType,
                         resourceQualityClass = resourceQualityClass
