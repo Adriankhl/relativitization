@@ -7,6 +7,9 @@ import relativitization.game.RelativitizationGame
 import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.commands.*
+import relativitization.universe.data.components.defaults.economy.ResourceQualityClass
+import relativitization.universe.data.components.defaults.economy.ResourceType
+import relativitization.universe.data.components.defaults.economy.SingleResourceData
 
 class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.assets) {
 
@@ -17,6 +20,10 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
     private val scrollPane: ScrollPane = createScrollPane(table)
 
     private var playerData: PlayerData = PlayerData(-1)
+
+    private var selectedResourceType: ResourceType = ResourceType.PLANT
+
+    private var selectedResourceQualityClass: ResourceQualityClass = ResourceQualityClass.FIRST
 
     // Show one of the three data
     private var showFuelData: Boolean = true
@@ -488,6 +495,56 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
 
     private fun createResourceTable(): Table {
         val nestedTable = Table()
+
+        val singleResourceData: SingleResourceData = playerData.playerInternalData.economyData()
+            .resourceData.getSingleResourceData(selectedResourceType, selectedResourceQualityClass)
+
+        nestedTable.add(
+            createLabel(
+                "Resource: ",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        val resourceTypeSelectBox = createSelectBox(
+            ResourceType.values().toList(),
+            selectedResourceType,
+            gdxSettings.smallFontSize
+        ) { resourceType, _ ->
+            selectedResourceType = resourceType
+            updateTable()
+        }
+        nestedTable.add(resourceTypeSelectBox)
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "Quality class: ",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        val resourceQualityClassSelectBox = createSelectBox(
+            ResourceQualityClass.values().toList(),
+            selectedResourceQualityClass,
+            gdxSettings.smallFontSize
+        ) { resourceQualityClass, _ ->
+            selectedResourceQualityClass = resourceQualityClass
+            updateTable()
+        }
+        nestedTable.add(resourceQualityClassSelectBox)
+
+        nestedTable.row().space(20f)
+
+        nestedTable.add(
+            createLabel(
+                "Price: ${singleResourceData.resourcePrice}",
+                gdxSettings.smallFontSize
+            )
+        ).colspan(2)
+
+
 
         return nestedTable
     }
