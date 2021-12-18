@@ -12,7 +12,6 @@ import relativitization.universe.data.components.defaults.economy.*
 data class EconomyData(
     val taxData: TaxData = TaxData(),
     val resourceData: ResourceData = ResourceData(),
-    val tradeHistoryData: TradeHistoryData = TradeHistoryData(),
     val socialSecurityData: SocialSecurityData = SocialSecurityData(),
 ) : DefaultPlayerDataComponent()
 
@@ -21,6 +20,5 @@ data class EconomyData(
 data class MutableEconomyData(
     var taxData: MutableTaxData = MutableTaxData(),
     var resourceData: MutableResourceData = MutableResourceData(),
-    var tradeHistoryData: MutableTradeHistoryData = MutableTradeHistoryData(),
     var socialSecurityData: MutableSocialSecurityData = MutableSocialSecurityData(),
 ) : MutableDefaultPlayerDataComponent()

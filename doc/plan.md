@@ -5,7 +5,6 @@
 * No migration
 * No work at other carrier
 * No minimum wage and unemployment benefit
-* Don't use trade history data to determine price
 * Unused centralization
 * No pop buy resource from other player
 * No alliance
@@ -17,7 +16,6 @@
 * Child and elder population
 * Quality 2 and 3 of resources
 * Reputation of research institute and laboratory
-* Trade history
 * Centralization
 * Ally
 * Player specific tariff
