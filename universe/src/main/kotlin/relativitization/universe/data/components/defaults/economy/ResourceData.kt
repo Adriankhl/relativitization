@@ -240,21 +240,19 @@ data class MutableResourceData(
     ): Double = getSingleResourceData(resourceType, resourceQualityClass).resourcePrice
 
     /**
-     * Get resource quality class with target quality, amount, and budget for production
+     * Get resource quality class with target quality and amount for production
      * Default to quality class with maximum amount if none of them satisfy the requirement
      */
     fun productionQualityClass(
         resourceType: ResourceType,
         amount: Double,
         targetQuality: MutableResourceQualityData,
-        budget: Double,
     ): ResourceQualityClass {
         val satisfyList: List<Pair<ResourceQualityClass, Boolean>> =
             ResourceQualityClass.values().toList().map {
                 val b1: Boolean = getResourceQuality(resourceType, it).geq(targetQuality)
                 val b2: Boolean = getProductionResourceAmount(resourceType, it) >= amount
-                val b3: Boolean = budget >= getResourcePrice(resourceType, it) * amount
-                it to (b1 && b2 && b3)
+                it to (b1 && b2)
             }
         return satisfyList.lastOrNull { it.second }?.first ?: run {
             ResourceQualityClass.values().maxByOrNull {

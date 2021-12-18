@@ -77,7 +77,6 @@ object ResourceFactoryProduction : Mechanism() {
                 type,
                 requiredAmount,
                 requiredQuality,
-                Double.MAX_VALUE,
             )
             type to qualityClass
         }.toMap()
