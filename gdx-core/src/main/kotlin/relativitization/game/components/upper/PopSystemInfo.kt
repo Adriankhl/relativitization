@@ -186,8 +186,6 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             table.row().space(30f)
         }
 
-        table.row()
-
         // Add empty space for Android keyboard input
         val emptyLabel = createLabel("", gdxSettings.smallFontSize)
         emptyLabel.height = Gdx.graphics.height.toFloat()

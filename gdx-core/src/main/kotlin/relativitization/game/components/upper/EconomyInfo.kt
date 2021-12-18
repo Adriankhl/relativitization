@@ -1,5 +1,6 @@
 package relativitization.game.components.upper
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.RelativitizationGame
@@ -86,7 +87,20 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
 
         if (showFuelData) {
             table.add(createFuelRestMassTable())
+
+            table.row().space(30f)
         }
+
+        if (showResourceData) {
+            table.add(createResourceTable())
+
+            table.row().space(30f)
+        }
+
+        // Add empty space for Android keyboard input
+        val emptyLabel = createLabel("", gdxSettings.smallFontSize)
+        emptyLabel.height = Gdx.graphics.height.toFloat()
+        table.add(emptyLabel).minHeight(Gdx.graphics.height.toFloat())
     }
 
     private fun createInfoOptionTable(): Table {
@@ -468,6 +482,12 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         nestedTable.row().space(10f)
 
         nestedTable.add(transferToTradeSlider).colspan(2)
+
+        return nestedTable
+    }
+
+    private fun createResourceTable(): Table {
+        val nestedTable = Table()
 
         return nestedTable
     }
