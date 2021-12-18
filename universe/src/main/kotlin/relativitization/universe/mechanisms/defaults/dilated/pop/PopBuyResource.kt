@@ -51,22 +51,12 @@ object PopBuyResource : Mechanism() {
 
 
         commonPopData.desireResourceMap.forEach { (resourceType, desireData) ->
-            val selectedClass: ResourceQualityClass =
-                ResourceQualityClass.values().lastOrNull { resourceQualityClass ->
-                    val amount: Double = economyData.resourceData.getTradeResourceAmount(
-                        resourceType = resourceType,
-                        resourceQualityClass = resourceQualityClass
-                    )
-
-                    val price: Double = economyData.resourceData.getResourcePrice(
-                        resourceType = resourceType,
-                        resourceQualityClass = resourceQualityClass
-                    )
-
-                    // Pick the resource class with sufficient amount and sufficiently cheap
-                    // Adjusted by time dilation
-                    (amount >= desireData.desireAmount ) && (availableFuelPerResource >= price * desireData.desireAmount)
-                } ?: ResourceQualityClass.THIRD
+            val selectedClass: ResourceQualityClass = economyData.resourceData.tradeQualityClass(
+                resourceType,
+                desireData.desireAmount,
+                desireData.desireQuality,
+                availableFuelPerResource,
+            )
 
             val selectedQuality: MutableResourceQualityData =
                 economyData.resourceData.getResourceQuality(
