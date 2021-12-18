@@ -76,7 +76,8 @@ object ResourceFactoryProduction : Mechanism() {
             val qualityClass: ResourceQualityClass = resourceData.productionQualityClass(
                 type,
                 requiredAmount,
-                requiredQuality
+                requiredQuality,
+                Double.MAX_VALUE,
             )
             type to qualityClass
         }.toMap()
