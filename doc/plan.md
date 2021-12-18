@@ -45,6 +45,7 @@
 * Stop war after long period of time [x]
 * Adjust attack and export by time dilation [x]
 * Limit fuel produced in a single unit space cube to prevent unlimited population [x]
+* Adjust the price and quality bound based on overall desire and trade
 
 # AI TODO List
 * Default AI
