@@ -63,23 +63,55 @@ object ResourceFactoryProduction : Mechanism() {
 
     /**
      * Compute input resource quality class
+     *
+     * @param resourceFactoryData the factory data
+     * @param resourceData the resource date in the economy data
+     * @param buyResource buy resource from the player
      */
     fun computeInputResourceQualityClassMap(
-        mutableResourceFactoryData: MutableResourceFactoryData,
+        resourceFactoryData: MutableResourceFactoryData,
         resourceData: MutableResourceData,
+        buyResource: Boolean = false,
     ): Map<ResourceType, ResourceQualityClass> {
-        return mutableResourceFactoryData.resourceFactoryInternalData.inputResourceMap.map { (type, inputResourceData) ->
-            val requiredAmount: Double =
-                inputResourceData.amount * mutableResourceFactoryData.resourceFactoryInternalData.maxOutputAmount * mutableResourceFactoryData.numBuilding
-            val requiredQuality: MutableResourceQualityData =
-                inputResourceData.qualityData
-            val qualityClass: ResourceQualityClass = resourceData.productionQualityClass(
-                type,
-                requiredAmount,
-                requiredQuality,
-            )
-            type to qualityClass
-        }.toMap()
+        val numInputResource: Int = resourceFactoryData.resourceFactoryInternalData
+            .inputResourceMap.size
+
+        return if (numInputResource > 0) {
+            resourceFactoryData.resourceFactoryInternalData.inputResourceMap.map { (type, inputResourceData) ->
+
+                val fuelConsumption: Double = resourceFactoryData.numBuilding *
+                        resourceFactoryData.resourceFactoryInternalData.fuelRestMassConsumptionRate
+
+                val availableFuel: Double =
+                    resourceFactoryData.storedFuelRestMass - fuelConsumption
+
+                val availableFuelPerResource: Double = availableFuel / numInputResource
+
+                val requiredAmount: Double = inputResourceData.amount *
+                        resourceFactoryData.resourceFactoryInternalData.maxOutputAmount *
+                        resourceFactoryData.numBuilding
+
+                val requiredQuality: MutableResourceQualityData =
+                    inputResourceData.qualityData
+                val qualityClass: ResourceQualityClass = if (buyResource) {
+                    resourceData.tradeQualityClass(
+                        type,
+                        requiredAmount,
+                        requiredQuality,
+                        availableFuelPerResource,
+                    )
+                } else {
+                    resourceData.productionQualityClass(
+                        type,
+                        requiredAmount,
+                        requiredQuality,
+                    )
+                }
+                type to qualityClass
+            }.toMap()
+        } else {
+            mapOf()
+        }
     }
 
     /**

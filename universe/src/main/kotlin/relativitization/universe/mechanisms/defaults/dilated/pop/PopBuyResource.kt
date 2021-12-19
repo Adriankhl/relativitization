@@ -45,63 +45,65 @@ object PopBuyResource : Mechanism() {
         commonPopData: MutableCommonPopData,
         economyData: MutableEconomyData,
     ) {
-        val numDesire: Double = commonPopData.desireResourceMap.size.toDouble()
+        val numDesire: Int = commonPopData.desireResourceMap.size
 
-        val availableFuelPerResource: Double = commonPopData.saving / numDesire
+        if (numDesire > 0) {
+            val availableFuelPerResource: Double = commonPopData.saving / numDesire
 
+            commonPopData.desireResourceMap.forEach { (resourceType, desireData) ->
+                val selectedClass: ResourceQualityClass =
+                    economyData.resourceData.tradeQualityClass(
+                        resourceType,
+                        desireData.desireAmount,
+                        desireData.desireQuality,
+                        availableFuelPerResource,
+                    )
 
-        commonPopData.desireResourceMap.forEach { (resourceType, desireData) ->
-            val selectedClass: ResourceQualityClass = economyData.resourceData.tradeQualityClass(
-                resourceType,
-                desireData.desireAmount,
-                desireData.desireQuality,
-                availableFuelPerResource,
-            )
+                val selectedQuality: MutableResourceQualityData =
+                    economyData.resourceData.getResourceQuality(
+                        resourceType = resourceType,
+                        resourceQualityClass = selectedClass,
+                    )
 
-            val selectedQuality: MutableResourceQualityData =
-                economyData.resourceData.getResourceQuality(
+                val selectedPrice: Double = economyData.resourceData.getResourcePrice(
                     resourceType = resourceType,
-                    resourceQualityClass = selectedClass,
+                    resourceQualityClass = selectedClass
                 )
 
-            val selectedPrice: Double = economyData.resourceData.getResourcePrice(
-                resourceType = resourceType,
-                resourceQualityClass = selectedClass
-            )
+                val totalAmount: Double = if (selectedPrice > 0.0) {
+                    listOf(
+                        desireData.desireAmount,
+                        economyData.resourceData.getTradeResourceAmount(
+                            resourceType,
+                            selectedClass,
+                        ),
+                        availableFuelPerResource / selectedPrice
+                    ).minOf { it }
+                } else {
+                    listOf(
+                        desireData.desireAmount,
+                        economyData.resourceData.getTradeResourceAmount(
+                            resourceType,
+                            selectedClass,
+                        ),
+                    ).minOf { it }
+                }
 
-            val totalAmount: Double = if (selectedPrice > 0.0) {
-                listOf(
-                    desireData.desireAmount,
-                    economyData.resourceData.getTradeResourceAmount(
-                        resourceType,
-                        selectedClass,
-                    ),
-                    availableFuelPerResource / selectedPrice
-                ).minOf { it }
-            } else {
-                listOf(
-                    desireData.desireAmount,
-                    economyData.resourceData.getTradeResourceAmount(
-                        resourceType,
-                        selectedClass,
-                    ),
-                ).minOf { it }
+                val totalPrice: Double = totalAmount * selectedPrice
+
+                // Buy resource
+                economyData.resourceData.getResourceAmountData(
+                    resourceType,
+                    selectedClass
+                ).trade -= totalAmount
+                commonPopData.addDesireResource(
+                    resourceType,
+                    selectedQuality,
+                    totalAmount
+                )
+                commonPopData.saving -= totalPrice
+                physicsData.addNewFuel(totalPrice)
             }
-
-            val totalPrice: Double = totalAmount * selectedPrice
-
-            // Buy resource
-            economyData.resourceData.getResourceAmountData(
-                resourceType,
-                selectedClass
-            ).trade -= totalAmount
-            commonPopData.addDesireResource(
-                resourceType,
-                selectedQuality,
-                totalAmount
-            )
-            commonPopData.saving -= totalPrice
-            physicsData.addNewFuel(totalPrice)
         }
     }
 }
