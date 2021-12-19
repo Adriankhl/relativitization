@@ -4,6 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.components.defaults.physics.FuelRestMassData
 import relativitization.universe.data.components.defaults.physics.MutableFuelRestMassData
+import kotlin.math.min
 
 /**
  * Player data related to physics
@@ -34,19 +35,40 @@ data class MutablePhysicsData(
 ) : MutableDefaultPlayerDataComponent() {
     fun totalRestMass() = coreRestMass + otherRestMass + fuelRestMassData.total()
 
+    /**
+     * Add fuel such that it fulfill the target in the order of storage, movement, production, and
+     * put the rest in trade, by recursion
+     */
     fun addFuel(restMass: Double) {
-        when {
-            fuelRestMassData.storage < targetFuelRestMassData.storage -> {
-                fuelRestMassData.storage += restMass
-            }
-            fuelRestMassData.movement < targetFuelRestMassData.movement -> {
-                fuelRestMassData.movement += restMass
-            }
-            fuelRestMassData.production < targetFuelRestMassData.production -> {
-                fuelRestMassData.production += restMass
-            }
-            else -> {
-                fuelRestMassData.trade += restMass
+        if (restMass > 0.0) {
+            when {
+                fuelRestMassData.storage < targetFuelRestMassData.storage -> {
+                    val actualFuelAdded: Double = min(
+                        restMass,
+                        targetFuelRestMassData.storage - fuelRestMassData.storage
+                    )
+                    fuelRestMassData.storage += actualFuelAdded
+                    addFuel(restMass - actualFuelAdded)
+                }
+                fuelRestMassData.movement < targetFuelRestMassData.movement -> {
+                    val actualFuelAdded: Double = min(
+                        restMass,
+                        targetFuelRestMassData.movement - fuelRestMassData.movement
+                    )
+                    fuelRestMassData.movement += actualFuelAdded
+                    addFuel(restMass - actualFuelAdded)
+                }
+                fuelRestMassData.production < targetFuelRestMassData.production -> {
+                    val actualFuelAdded: Double = min(
+                        restMass,
+                        targetFuelRestMassData.movement - fuelRestMassData.movement
+                    )
+                    fuelRestMassData.production += actualFuelAdded
+                    addFuel(restMass - actualFuelAdded)
+                }
+                else -> {
+                    fuelRestMassData.trade += restMass
+                }
             }
         }
     }
