@@ -337,7 +337,7 @@ object ResourceFactoryProduction : Mechanism() {
             }.sumOf { it } * amountFraction
 
         mutableResourceFactoryData.storedFuelRestMass -= price
-        mutablePlayerData.playerInternalData.physicsData().addFuel(price)
+        mutablePlayerData.playerInternalData.physicsData().addNewFuel(price)
 
 
         // Consume resource

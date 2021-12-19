@@ -246,7 +246,7 @@ object ExportResource : Mechanism() {
                 mutablePlayerSingleExportData.storedFuelRestMass -= price * amount * (1.0 + tariffFactor)
 
                 // Add tariff to player storage
-                mutablePlayerData.playerInternalData.physicsData().addFuel(price * amount)
+                mutablePlayerData.playerInternalData.physicsData().addNewFuel(price * amount)
                 mutablePlayerData.playerInternalData.economyData().taxData.storedFuelRestMass += price * amount * tariffFactor
 
                 SendResourceCommand(
@@ -326,7 +326,7 @@ object ExportResource : Mechanism() {
                         mutablePopSingleExportData.storedFuelRestMass -= price * amount * (1.0 + tariffFactor)
 
                         // Add tariff to player storage
-                        mutablePlayerData.playerInternalData.physicsData().addFuel(price * amount)
+                        mutablePlayerData.playerInternalData.physicsData().addNewFuel(price * amount)
                         mutablePlayerData.playerInternalData.economyData().taxData.storedFuelRestMass += price * amount * tariffFactor
 
                         SendResourceToPopCommand(

@@ -112,7 +112,7 @@ object FuelFactoryProduction : Mechanism() {
         mutableFuelFactoryData.lastOutputAmount = outputAmount
 
         // Produce fuel
-        physicsData.addFuel(outputAmount)
+        physicsData.addNewFuel(outputAmount)
     }
 
     /**

@@ -39,35 +39,35 @@ data class MutablePhysicsData(
      * Add fuel such that it fulfill the target in the order of storage, movement, production, and
      * put the rest in trade, by recursion
      */
-    fun addFuel(restMass: Double) {
-        if (restMass > 0.0) {
+    fun addNewFuel(newFuelRestMass: Double) {
+        if (newFuelRestMass > 0.0) {
             when {
                 fuelRestMassData.storage < targetFuelRestMassData.storage -> {
                     val actualFuelAdded: Double = min(
-                        restMass,
+                        newFuelRestMass,
                         targetFuelRestMassData.storage - fuelRestMassData.storage
                     )
                     fuelRestMassData.storage += actualFuelAdded
-                    addFuel(restMass - actualFuelAdded)
+                    addNewFuel(newFuelRestMass - actualFuelAdded)
                 }
                 fuelRestMassData.movement < targetFuelRestMassData.movement -> {
                     val actualFuelAdded: Double = min(
-                        restMass,
+                        newFuelRestMass,
                         targetFuelRestMassData.movement - fuelRestMassData.movement
                     )
                     fuelRestMassData.movement += actualFuelAdded
-                    addFuel(restMass - actualFuelAdded)
+                    addNewFuel(newFuelRestMass - actualFuelAdded)
                 }
                 fuelRestMassData.production < targetFuelRestMassData.production -> {
                     val actualFuelAdded: Double = min(
-                        restMass,
+                        newFuelRestMass,
                         targetFuelRestMassData.movement - fuelRestMassData.movement
                     )
                     fuelRestMassData.production += actualFuelAdded
-                    addFuel(restMass - actualFuelAdded)
+                    addNewFuel(newFuelRestMass - actualFuelAdded)
                 }
                 else -> {
-                    fuelRestMassData.trade += restMass
+                    fuelRestMassData.trade += newFuelRestMass
                 }
             }
         }

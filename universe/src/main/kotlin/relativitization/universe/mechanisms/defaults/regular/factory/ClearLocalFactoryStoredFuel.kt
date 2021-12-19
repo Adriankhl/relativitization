@@ -21,7 +21,7 @@ object ClearLocalFactoryStoredFuel : Mechanism() {
                 if (fuelFactory.ownerPlayerId == mutablePlayerData.playerId) {
                     val fuel: Double = fuelFactory.storedFuelRestMass
                     fuelFactory.storedFuelRestMass = 0.0
-                    mutablePlayerData.playerInternalData.physicsData().addFuel(fuel)
+                    mutablePlayerData.playerInternalData.physicsData().addNewFuel(fuel)
                 }
             }
 
@@ -29,7 +29,7 @@ object ClearLocalFactoryStoredFuel : Mechanism() {
                 if (resourceFactory.ownerPlayerId == mutablePlayerData.playerId) {
                     val fuel: Double = resourceFactory.storedFuelRestMass
                     resourceFactory.storedFuelRestMass = 0.0
-                    mutablePlayerData.playerInternalData.physicsData().addFuel(fuel)
+                    mutablePlayerData.playerInternalData.physicsData().addNewFuel(fuel)
                 }
             }
         }

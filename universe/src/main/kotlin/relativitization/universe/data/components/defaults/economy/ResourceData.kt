@@ -290,17 +290,17 @@ data class MutableResourceData(
      * Add resource to storage, production or trading depending on the target
      */
     fun addNewResource(
-        resourceType: ResourceType,
+        newResourceType: ResourceType,
         newResourceQuality: MutableResourceQualityData,
-        amount: Double,
+        newResourceAmount: Double,
     ) {
         val qualityClass: ResourceQualityClass = ResourceQualityClass.values().firstOrNull {
-            newResourceQuality.geq(getResourceQualityLowerBound(resourceType, it))
+            newResourceQuality.geq(getResourceQualityLowerBound(newResourceType, it))
         } ?: ResourceQualityClass.THIRD
 
-        getSingleResourceData(resourceType, qualityClass).addNewResource(
+        getSingleResourceData(newResourceType, qualityClass).addNewResource(
             newResourceQuality,
-            amount
+            newResourceAmount
         )
     }
 }
@@ -536,24 +536,24 @@ data class MutableSingleResourceData(
      */
     fun addNewResource(
         newResourceQuality: MutableResourceQualityData,
-        amount: Double,
+        newResourceAmount: Double,
     ) {
         when {
             resourceAmount.storage < resourceTargetAmount.storage -> {
                 val originalAmount: Double = resourceAmount.storage
-                val newAmount: Double = originalAmount + amount
+                val newAmount: Double = originalAmount + newResourceAmount
                 resourceQuality.updateQuality(originalAmount, newAmount, newResourceQuality)
                 resourceAmount.storage = newAmount
             }
             resourceAmount.production < resourceTargetAmount.production -> {
                 val originalAmount: Double = resourceAmount.production
-                val newAmount: Double = originalAmount + amount
+                val newAmount: Double = originalAmount + newResourceAmount
                 resourceQuality.updateQuality(originalAmount, newAmount, newResourceQuality)
                 resourceAmount.production = newAmount
             }
             else -> {
                 val originalAmount: Double = resourceAmount.trade
-                val newAmount: Double = originalAmount + amount
+                val newAmount: Double = originalAmount + newResourceAmount
                 resourceQuality.updateQuality(originalAmount, newAmount, newResourceQuality)
                 resourceAmount.trade = newAmount
             }

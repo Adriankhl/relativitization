@@ -93,7 +93,7 @@ data class MutableAllPopData(
         PopType.SOLDIER -> soldierPopData.commonPopData
     }
 
-    fun addResource(
+    fun addDesireResource(
         popType: PopType,
         resourceType: ResourceType,
         resourceQualityData: ResourceQualityData,

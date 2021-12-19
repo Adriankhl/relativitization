@@ -101,7 +101,7 @@ object PopBuyResource : Mechanism() {
                 totalAmount
             )
             commonPopData.saving -= totalPrice
-            physicsData.addFuel(totalPrice)
+            physicsData.addNewFuel(totalPrice)
         }
     }
 }

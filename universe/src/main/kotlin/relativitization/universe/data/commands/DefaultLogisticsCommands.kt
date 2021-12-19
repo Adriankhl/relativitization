@@ -159,7 +159,7 @@ data class SendFuelFromStorageCommand(
         )
 
         // Add fuel
-        playerData.playerInternalData.physicsData().addFuel(remainAmount)
+        playerData.playerInternalData.physicsData().addNewFuel(remainAmount)
     }
 
     companion object {
@@ -318,9 +318,9 @@ data class SendResourceFromStorageCommand(
         }
 
         playerData.playerInternalData.economyData().resourceData.addNewResource(
-            resourceType = resourceType,
+            newResourceType = resourceType,
             newResourceQuality = resourceQualityData.toMutableResourceQualityData(),
-            amount = amount * remainFraction
+            newResourceAmount = amount * remainFraction
         )
     }
 
@@ -385,7 +385,7 @@ data class SendFuelCommand(
             (1.0 - lossFractionPerDistance).pow(distance)
         }
 
-        playerData.playerInternalData.physicsData().addFuel(amount * remainFraction)
+        playerData.playerInternalData.physicsData().addNewFuel(amount * remainFraction)
     }
 
     companion object {
@@ -446,9 +446,9 @@ data class SendResourceCommand(
         }
 
         playerData.playerInternalData.economyData().resourceData.addNewResource(
-            resourceType = resourceType,
+            newResourceType = resourceType,
             newResourceQuality = resourceQualityData.toMutableResourceQualityData(),
-            amount = amount * remainFraction
+            newResourceAmount = amount * remainFraction
         )
     }
 
@@ -515,7 +515,7 @@ data class SendResourceToPopCommand(
         val carrierDataMap = playerData.playerInternalData.popSystemData().carrierDataMap
 
         if (carrierDataMap.containsKey(targetCarrierId)) {
-            carrierDataMap.getValue(targetCarrierId).allPopData.addResource(
+            carrierDataMap.getValue(targetCarrierId).allPopData.addDesireResource(
                 popType = targetPopType,
                 resourceType = resourceType,
                 resourceQualityData = resourceQualityData,
