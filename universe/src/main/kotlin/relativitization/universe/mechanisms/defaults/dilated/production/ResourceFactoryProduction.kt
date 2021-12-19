@@ -136,15 +136,28 @@ object ResourceFactoryProduction : Mechanism() {
                 val requiredAmount: Double = inputResourceData.amount *
                         resourceFactoryData.resourceFactoryInternalData.maxOutputAmount *
                         resourceFactoryData.numBuilding
+
                 val qualityClass: ResourceQualityClass = inputResourceQualityClassMap.getValue(type)
-                resourceData.getTradeResourceAmount(type, qualityClass) / requiredAmount
+
+                if (requiredAmount > 0.0) {
+                    resourceData.getTradeResourceAmount(type, qualityClass) / requiredAmount
+                } else {
+                    1.0
+                }
             }
         } else {
             resourceFactoryData.resourceFactoryInternalData.inputResourceMap.map { (type, inputResourceData) ->
-                val requiredAmount: Double =
-                    inputResourceData.amount * resourceFactoryData.resourceFactoryInternalData.maxOutputAmount * resourceFactoryData.numBuilding
+                val requiredAmount: Double = inputResourceData.amount *
+                        resourceFactoryData.resourceFactoryInternalData.maxOutputAmount *
+                        resourceFactoryData.numBuilding
+
                 val qualityClass: ResourceQualityClass = inputResourceQualityClassMap.getValue(type)
-                resourceData.getProductionResourceAmount(type, qualityClass) / requiredAmount
+
+                if (requiredAmount > 0.0) {
+                    resourceData.getProductionResourceAmount(type, qualityClass) / requiredAmount
+                } else {
+                    1.0
+                }
             }
         }
 
@@ -169,12 +182,20 @@ object ResourceFactoryProduction : Mechanism() {
             val totalPrice: Double = totalResourcePrice + resourceFactoryData.numBuilding *
                     resourceFactoryData.resourceFactoryInternalData.fuelRestMassConsumptionRate
 
-            resourceFactoryData.storedFuelRestMass / totalPrice
+            if (totalPrice > 0.0) {
+                resourceFactoryData.storedFuelRestMass / totalPrice
+            } else {
+                1.0
+            }
         } else {
             val totalPrice: Double = resourceFactoryData.numBuilding *
                     resourceFactoryData.resourceFactoryInternalData.fuelRestMassConsumptionRate
 
-            physicsData.fuelRestMassData.production / totalPrice
+            if (totalPrice > 0.0) {
+                physicsData.fuelRestMassData.production / totalPrice
+            } else {
+                1.0
+            }
         }
 
         val minFaction: Double = max(
