@@ -71,7 +71,7 @@ object ResourceFactoryProduction : Mechanism() {
     fun computeInputResourceQualityClassMap(
         resourceFactoryData: MutableResourceFactoryData,
         resourceData: MutableResourceData,
-        buyResource: Boolean = false,
+        buyResource: Boolean,
     ): Map<ResourceType, ResourceQualityClass> {
         val numInputResource: Int = resourceFactoryData.resourceFactoryInternalData
             .inputResourceMap.size
@@ -79,21 +79,21 @@ object ResourceFactoryProduction : Mechanism() {
         return if (numInputResource > 0) {
             resourceFactoryData.resourceFactoryInternalData.inputResourceMap.map { (type, inputResourceData) ->
 
-                val fuelConsumption: Double = resourceFactoryData.numBuilding *
-                        resourceFactoryData.resourceFactoryInternalData.fuelRestMassConsumptionRate
-
-                val availableFuel: Double =
-                    resourceFactoryData.storedFuelRestMass - fuelConsumption
-
-                val availableFuelPerResource: Double = availableFuel / numInputResource
-
                 val requiredAmount: Double = inputResourceData.amount *
                         resourceFactoryData.resourceFactoryInternalData.maxOutputAmount *
                         resourceFactoryData.numBuilding
 
                 val requiredQuality: MutableResourceQualityData =
                     inputResourceData.qualityData
+
                 val qualityClass: ResourceQualityClass = if (buyResource) {
+                    val maxFuelConsumption: Double = resourceFactoryData.numBuilding *
+                            resourceFactoryData.resourceFactoryInternalData.fuelRestMassConsumptionRate
+
+                    // Approximate fuel per resource by taking the average
+                    val availableFuelPerResource: Double =
+                        (resourceFactoryData.storedFuelRestMass - maxFuelConsumption) / numInputResource
+
                     resourceData.tradeQualityClass(
                         type,
                         requiredAmount,
@@ -117,49 +117,64 @@ object ResourceFactoryProduction : Mechanism() {
     /**
      * How much productivity is used due to the limitation of resource
      *
-     * @param mutableResourceFactoryData the factory producing this resource
+     * @param resourceFactoryData the factory producing this resource
      * @param inputResourceQualityClassMap the quality of the input resource
      * @param physicsData the physics data of the player which the factory is located
      * @param resourceData the amount of resource of the player which the factory is located
      * @param buyResource buy resource from the player
      */
     fun productAmountFraction(
-        mutableResourceFactoryData: MutableResourceFactoryData,
-        mutableLabourerPopData: MutableLabourerPopData,
+        resourceFactoryData: MutableResourceFactoryData,
+        labourerPopData: MutableLabourerPopData,
         inputResourceQualityClassMap: Map<ResourceType, ResourceQualityClass>,
         physicsData: MutablePhysicsData,
         resourceData: MutableResourceData,
-        buyResource: Boolean = false,
+        buyResource: Boolean,
     ): Double {
-        val inputFractionList: List<Double> =
-            mutableResourceFactoryData.resourceFactoryInternalData.inputResourceMap.map { (type, inputResourceData) ->
+        val inputFractionList: List<Double> = if (buyResource) {
+            resourceFactoryData.resourceFactoryInternalData.inputResourceMap.map { (type, inputResourceData) ->
+                val requiredAmount: Double = inputResourceData.amount *
+                        resourceFactoryData.resourceFactoryInternalData.maxOutputAmount *
+                        resourceFactoryData.numBuilding
+                val qualityClass: ResourceQualityClass = inputResourceQualityClassMap.getValue(type)
+                resourceData.getTradeResourceAmount(type, qualityClass) / requiredAmount
+            }
+        } else {
+            resourceFactoryData.resourceFactoryInternalData.inputResourceMap.map { (type, inputResourceData) ->
                 val requiredAmount: Double =
-                    inputResourceData.amount * mutableResourceFactoryData.resourceFactoryInternalData.maxOutputAmount * mutableResourceFactoryData.numBuilding
+                    inputResourceData.amount * resourceFactoryData.resourceFactoryInternalData.maxOutputAmount * resourceFactoryData.numBuilding
                 val qualityClass: ResourceQualityClass = inputResourceQualityClassMap.getValue(type)
                 resourceData.getProductionResourceAmount(type, qualityClass) / requiredAmount
             }
+        }
 
         val inputFraction: Double = inputFractionList.minOrNull() ?: 1.0
 
-        val employeeFraction: Double = mutableResourceFactoryData.employeeFraction()
+        val employeeFraction: Double = resourceFactoryData.employeeFraction()
 
-        val fuelFraction: Double =
-            physicsData.fuelRestMassData.production / (mutableResourceFactoryData.resourceFactoryInternalData.fuelRestMassConsumptionRate * mutableResourceFactoryData.numBuilding)
+        val fuelFraction: Double = if (buyResource) {
+            val totalResourcePrice: Double = resourceFactoryData.resourceFactoryInternalData
+                .inputResourceMap.keys.fold(0.0) { acc, resourceType ->
+                    val amount: Double = resourceFactoryData.resourceFactoryInternalData
+                        .inputResourceMap.getValue(resourceType).amount
 
-        val buyResourceFraction: Double = if (buyResource) {
-            val totalPrice: Double =
-                mutableResourceFactoryData.resourceFactoryInternalData.inputResourceMap.map { (type, inputResourceData) ->
-                    val requiredAmount: Double =
-                        inputResourceData.amount * mutableResourceFactoryData.resourceFactoryInternalData.maxOutputAmount * mutableResourceFactoryData.numBuilding
-                    val qualityClass: ResourceQualityClass =
-                        inputResourceQualityClassMap.getValue(type)
+                    val price: Double = resourceData.getResourcePrice(
+                        resourceType,
+                        inputResourceQualityClassMap.getValue(resourceType)
+                    )
 
-                    resourceData.getResourcePrice(type, qualityClass) * requiredAmount
-                }.sumOf { it }
+                    acc + amount * price
+                }
 
-            (mutableResourceFactoryData.storedFuelRestMass - mutableResourceFactoryData.resourceFactoryInternalData.fuelRestMassConsumptionRate * mutableResourceFactoryData.numBuilding) / totalPrice
+            val totalPrice: Double = totalResourcePrice + resourceFactoryData.numBuilding *
+                    resourceFactoryData.resourceFactoryInternalData.fuelRestMassConsumptionRate
+
+            resourceFactoryData.storedFuelRestMass / totalPrice
         } else {
-            1.0
+            val totalPrice: Double = resourceFactoryData.numBuilding *
+                    resourceFactoryData.resourceFactoryInternalData.fuelRestMassConsumptionRate
+
+            physicsData.fuelRestMassData.production / totalPrice
         }
 
         val minFaction: Double = max(
@@ -168,13 +183,12 @@ object ResourceFactoryProduction : Mechanism() {
                 inputFraction,
                 employeeFraction,
                 fuelFraction,
-                buyResourceFraction,
             ).minOf { it },
             0.0
         )
 
         // Modifier by education level
-        val educationLevel: Double = (mutableLabourerPopData.commonPopData.educationLevel)
+        val educationLevel: Double = (labourerPopData.commonPopData.educationLevel)
         val educationLevelMultiplier: Double = when {
             educationLevel > 1.0 -> 1.0
             educationLevel < 0.0 -> 0.0
@@ -222,18 +236,18 @@ object ResourceFactoryProduction : Mechanism() {
     /**
      * The quality of the output product
      *
-     * @param mutableResourceFactoryData the factory producing this resource
+     * @param resourceFactoryData the factory producing this resource
      * @param resourceData the amount of resource owned by the player
      */
     fun productQuality(
-        mutableResourceFactoryData: MutableResourceFactoryData,
+        resourceFactoryData: MutableResourceFactoryData,
         inputResourceQualityClassMap: Map<ResourceType, ResourceQualityClass>,
         resourceData: MutableResourceData,
     ): MutableResourceQualityData {
         val fractionList: List<Double> =
-            mutableResourceFactoryData.resourceFactoryInternalData.inputResourceMap.map { (type, inputResourceData) ->
-                val requiredQuality: MutableResourceQualityData =
-                    inputResourceData.qualityData
+            resourceFactoryData.resourceFactoryInternalData.inputResourceMap.map { (type, inputResourceData) ->
+                val requiredQuality: MutableResourceQualityData = inputResourceData.qualityData
+
                 val qualityClass: ResourceQualityClass = inputResourceQualityClassMap.getValue(type)
                 qualityReducedFaction(
                     requiredQuality,
@@ -247,7 +261,7 @@ object ResourceFactoryProduction : Mechanism() {
             fractionList.average()
         }
 
-        return mutableResourceFactoryData.resourceFactoryInternalData.maxOutputResourceQualityData * avgFraction
+        return resourceFactoryData.resourceFactoryInternalData.maxOutputResourceQualityData * avgFraction
     }
 
     /**
@@ -270,6 +284,7 @@ object ResourceFactoryProduction : Mechanism() {
             computeInputResourceQualityClassMap(
                 mutableResourceFactoryData,
                 resourceData,
+                false
             )
 
         val amountFraction: Double = productAmountFraction(
@@ -278,17 +293,27 @@ object ResourceFactoryProduction : Mechanism() {
             qualityClassMap,
             physicsData,
             resourceData,
+            false
         )
 
-        val outputQuality: MutableResourceQualityData =
-            productQuality(mutableResourceFactoryData, qualityClassMap, resourceData)
+        // Output quality
+        val outputQuality: MutableResourceQualityData = productQuality(
+            mutableResourceFactoryData,
+            qualityClassMap,
+            resourceData
+        )
         mutableResourceFactoryData.lastOutputQuality = outputQuality
 
+        // Output amount
+        val outputAmount: Double = amountFraction * mutableResourceFactoryData.numBuilding *
+                mutableResourceFactoryData.resourceFactoryInternalData.maxOutputAmount
+        mutableResourceFactoryData.lastOutputAmount = outputAmount
 
         // Consume resource
         mutableResourceFactoryData.resourceFactoryInternalData.inputResourceMap.forEach { (type, inputResourceData) ->
-            val requiredAmount: Double =
-                inputResourceData.amount * mutableResourceFactoryData.resourceFactoryInternalData.maxOutputAmount * mutableResourceFactoryData.numBuilding
+            val requiredAmount: Double = inputResourceData.amount *
+                    mutableResourceFactoryData.resourceFactoryInternalData.maxOutputAmount *
+                    mutableResourceFactoryData.numBuilding
             val qualityClass: ResourceQualityClass = qualityClassMap.getValue(type)
 
             val inputAmount: Double = requiredAmount * amountFraction
@@ -306,14 +331,11 @@ object ResourceFactoryProduction : Mechanism() {
         }
 
         // Consume fuel
-        physicsData.fuelRestMassData.production -= mutableResourceFactoryData.resourceFactoryInternalData.fuelRestMassConsumptionRate * amountFraction * mutableResourceFactoryData.numBuilding
+        physicsData.fuelRestMassData.production -= amountFraction *
+                mutableResourceFactoryData.numBuilding *
+                mutableResourceFactoryData.resourceFactoryInternalData.fuelRestMassConsumptionRate
 
-        // output amount
-        val outputAmount: Double =
-            mutableResourceFactoryData.resourceFactoryInternalData.maxOutputAmount * amountFraction * mutableResourceFactoryData.numBuilding
-        mutableResourceFactoryData.lastOutputAmount = outputAmount
-
-        // Produce resource
+        // Produce and add resource
         resourceData.addNewResource(
             mutableResourceFactoryData.resourceFactoryInternalData.outputResource,
             outputQuality,
@@ -335,7 +357,6 @@ object ResourceFactoryProduction : Mechanism() {
         // Clear last input amount map
         mutableResourceFactoryData.lastInputResourceMap.clear()
 
-
         val toId: Int = mutableResourceFactoryData.ownerPlayerId
         val resourceData = mutablePlayerData.playerInternalData.economyData().resourceData
         val physicsData = mutablePlayerData.playerInternalData.physicsData()
@@ -344,6 +365,7 @@ object ResourceFactoryProduction : Mechanism() {
             computeInputResourceQualityClassMap(
                 mutableResourceFactoryData,
                 resourceData,
+                true
             )
 
         val amountFraction: Double = productAmountFraction(
@@ -354,15 +376,26 @@ object ResourceFactoryProduction : Mechanism() {
             resourceData,
             true
         )
-        val outputQuality: MutableResourceQualityData =
-            productQuality(mutableResourceFactoryData, qualityClassMap, resourceData)
+
+        // Output quality
+        val outputQuality: MutableResourceQualityData = productQuality(
+            mutableResourceFactoryData,
+            qualityClassMap,
+            resourceData
+        )
         mutableResourceFactoryData.lastOutputQuality = outputQuality
 
+        // Output amount
+        val outputAmount: Double = amountFraction * mutableResourceFactoryData.numBuilding *
+                mutableResourceFactoryData.resourceFactoryInternalData.maxOutputAmount
+        mutableResourceFactoryData.lastOutputAmount = outputAmount
+
         // Pay price
-        val price: Double =
-            mutableResourceFactoryData.resourceFactoryInternalData.inputResourceMap.map { (type, inputResourceData) ->
-                val requiredAmount: Double =
-                    inputResourceData.amount * mutableResourceFactoryData.resourceFactoryInternalData.maxOutputAmount * mutableResourceFactoryData.numBuilding
+        val price: Double = mutableResourceFactoryData.resourceFactoryInternalData.inputResourceMap
+            .map { (type, inputResourceData) ->
+                val requiredAmount: Double = inputResourceData.amount *
+                        mutableResourceFactoryData.resourceFactoryInternalData.maxOutputAmount *
+                        mutableResourceFactoryData.numBuilding
                 val qualityClass: ResourceQualityClass = qualityClassMap.getValue(type)
 
                 resourceData.getResourcePrice(type, qualityClass) * requiredAmount
@@ -374,8 +407,10 @@ object ResourceFactoryProduction : Mechanism() {
 
         // Consume resource
         mutableResourceFactoryData.resourceFactoryInternalData.inputResourceMap.forEach { (type, inputResourceData) ->
-            val requiredAmount: Double =
-                inputResourceData.amount * mutableResourceFactoryData.resourceFactoryInternalData.maxOutputAmount * mutableResourceFactoryData.numBuilding
+            val requiredAmount: Double = inputResourceData.amount *
+                    mutableResourceFactoryData.resourceFactoryInternalData.maxOutputAmount *
+                    mutableResourceFactoryData.numBuilding
+
             val qualityClass: ResourceQualityClass = qualityClassMap.getValue(type)
 
             val inputAmount: Double = requiredAmount * amountFraction
@@ -389,16 +424,13 @@ object ResourceFactoryProduction : Mechanism() {
             resourceData.getResourceAmountData(
                 type,
                 qualityClass
-            ).production -= inputAmount
+            ).trade -= inputAmount
         }
 
         // Consume fuel
-        physicsData.fuelRestMassData.production -= mutableResourceFactoryData.resourceFactoryInternalData.fuelRestMassConsumptionRate * amountFraction * mutableResourceFactoryData.numBuilding
-
-        // output amount
-        val outputAmount: Double =
-            mutableResourceFactoryData.resourceFactoryInternalData.maxOutputAmount * amountFraction * mutableResourceFactoryData.numBuilding
-        mutableResourceFactoryData.lastOutputAmount = outputAmount
+        mutableResourceFactoryData.storedFuelRestMass -= amountFraction *
+                mutableResourceFactoryData.numBuilding *
+                mutableResourceFactoryData.resourceFactoryInternalData.fuelRestMassConsumptionRate
 
 
         return SendResourceCommand(
@@ -408,7 +440,9 @@ object ResourceFactoryProduction : Mechanism() {
             resourceType = mutableResourceFactoryData.resourceFactoryInternalData.outputResource,
             resourceQualityData = outputQuality.toResourceQualityData(),
             amount = outputAmount,
-            senderResourceLossFractionPerDistance = mutablePlayerData.playerInternalData.playerScienceData().playerScienceApplicationData.resourceLogisticsLossFractionPerDistance,
+            senderResourceLossFractionPerDistance = mutablePlayerData.playerInternalData
+                .playerScienceData().playerScienceApplicationData
+                .resourceLogisticsLossFractionPerDistance,
         )
     }
 }

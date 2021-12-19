@@ -114,13 +114,9 @@ object PopBuyResource : Mechanism() {
         }
 
         // If saving is smaller than total price, only buy a fraction
-        val priceFraction: Double = if (totalPrice > 0.0) {
-            min(commonPopData.saving / totalPrice, 1.0)
-        } else {
-            1.0
-        }
+        val priceFraction: Double = min(commonPopData.saving / totalPrice, 1.0)
 
-        commonPopData.desireResourceMap.forEach { (resourceType, desireData) ->
+        commonPopData.desireResourceMap.forEach { (resourceType, _) ->
             val selectedClass: ResourceQualityClass = desireResourceClassMap.getValue(resourceType)
 
             val selectedQuality: MutableResourceQualityData =
