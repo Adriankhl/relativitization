@@ -8,10 +8,12 @@ import relativitization.universe.data.components.MutableEconomyData
 import relativitization.universe.data.components.MutablePhysicsData
 import relativitization.universe.data.components.defaults.economy.MutableResourceQualityData
 import relativitization.universe.data.components.defaults.economy.ResourceQualityClass
+import relativitization.universe.data.components.defaults.economy.ResourceType
 import relativitization.universe.data.components.defaults.popsystem.pop.MutableCommonPopData
 import relativitization.universe.data.components.defaults.popsystem.pop.PopType
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.mechanisms.Mechanism
+import kotlin.math.min
 
 /**
  * Pop buy resource to fulfill their desire
@@ -40,17 +42,17 @@ object PopBuyResource : Mechanism() {
         return listOf()
     }
 
-    fun buyFromThisPlayer(
-        physicsData: MutablePhysicsData,
+    fun computeDesireResourceQualityClassMap(
         commonPopData: MutableCommonPopData,
         economyData: MutableEconomyData,
-    ) {
+    ): Map<ResourceType, ResourceQualityClass> {
         val numDesire: Int = commonPopData.desireResourceMap.size
 
-        if (numDesire > 0) {
+        return if (numDesire > 0) {
+            // Approximate the available fuel per resource by the average
             val availableFuelPerResource: Double = commonPopData.saving / numDesire
 
-            commonPopData.desireResourceMap.forEach { (resourceType, desireData) ->
+            commonPopData.desireResourceMap.map { (resourceType, desireData) ->
                 val selectedClass: ResourceQualityClass =
                     economyData.resourceData.tradeQualityClass(
                         resourceType,
@@ -58,52 +60,90 @@ object PopBuyResource : Mechanism() {
                         desireData.desireQuality,
                         availableFuelPerResource,
                     )
+                resourceType to selectedClass
+            }.toMap()
+        } else {
+            mapOf()
+        }
+    }
 
-                val selectedQuality: MutableResourceQualityData =
-                    economyData.resourceData.getResourceQuality(
-                        resourceType = resourceType,
-                        resourceQualityClass = selectedClass,
-                    )
+    /**
+     * Compute the resource amount, without considering price
+     */
+    fun computeDesireResourceAmountMap(
+        commonPopData: MutableCommonPopData,
+        economyData: MutableEconomyData,
+        desireResourceClassMap: Map<ResourceType, ResourceQualityClass>
+    ): Map<ResourceType, Double> {
 
-                val selectedPrice: Double = economyData.resourceData.getResourcePrice(
-                    resourceType = resourceType,
-                    resourceQualityClass = selectedClass
-                )
-
-                val totalAmount: Double = if (selectedPrice > 0.0) {
-                    listOf(
-                        desireData.desireAmount,
-                        economyData.resourceData.getTradeResourceAmount(
-                            resourceType,
-                            selectedClass,
-                        ),
-                        availableFuelPerResource / selectedPrice
-                    ).minOf { it }
-                } else {
-                    listOf(
-                        desireData.desireAmount,
-                        economyData.resourceData.getTradeResourceAmount(
-                            resourceType,
-                            selectedClass,
-                        ),
-                    ).minOf { it }
-                }
-
-                val totalPrice: Double = totalAmount * selectedPrice
-
-                // Buy resource
-                economyData.resourceData.getResourceAmountData(
+        return commonPopData.desireResourceMap.map { (resourceType, desireData) ->
+            val selectedClass: ResourceQualityClass = desireResourceClassMap.getValue(resourceType)
+            resourceType to min(
+                economyData.resourceData.getTradeResourceAmount(
                     resourceType,
                     selectedClass
-                ).trade -= totalAmount
-                commonPopData.addDesireResource(
-                    resourceType,
-                    selectedQuality,
-                    totalAmount
-                )
-                commonPopData.saving -= totalPrice
-                physicsData.addNewFuel(totalPrice)
-            }
+                ),
+                desireData.desireAmount
+            )
+        }.toMap()
+    }
+
+
+    fun buyFromThisPlayer(
+        physicsData: MutablePhysicsData,
+        commonPopData: MutableCommonPopData,
+        economyData: MutableEconomyData,
+    ) {
+
+        val desireResourceClassMap: Map<ResourceType, ResourceQualityClass> =
+            computeDesireResourceQualityClassMap(commonPopData, economyData)
+
+        val desireResourceAmountMap: Map<ResourceType, Double> =
+            computeDesireResourceAmountMap(
+                commonPopData,
+                economyData,
+                desireResourceClassMap
+            )
+
+        val totalPrice: Double = desireResourceAmountMap.keys.fold(0.0) { acc, resourceType ->
+            val amount: Double = desireResourceAmountMap.getValue(resourceType)
+            val qualityClass: ResourceQualityClass = desireResourceClassMap.getValue(resourceType)
+            val price: Double = economyData.resourceData.getResourcePrice(resourceType, qualityClass)
+
+            acc + amount * price
         }
+
+        // If saving is smaller than total price, only buy a fraction
+        val priceFraction: Double = if (totalPrice > 0.0) {
+            min(commonPopData.saving / totalPrice, 1.0)
+        } else {
+            1.0
+        }
+
+        commonPopData.desireResourceMap.forEach { (resourceType, desireData) ->
+            val selectedClass: ResourceQualityClass = desireResourceClassMap.getValue(resourceType)
+
+            val selectedQuality: MutableResourceQualityData =
+                economyData.resourceData.getResourceQuality(
+                    resourceType = resourceType,
+                    resourceQualityClass = selectedClass,
+                )
+
+            val buyAmount: Double = desireResourceAmountMap.getValue(resourceType) * priceFraction
+
+            // Buy resource
+            economyData.resourceData.getResourceAmountData(
+                resourceType,
+                selectedClass
+            ).trade -= buyAmount
+            commonPopData.addDesireResource(
+                resourceType,
+                selectedQuality,
+                buyAmount
+            )
+        }
+
+        commonPopData.saving -= totalPrice * priceFraction
+        physicsData.addNewFuel(totalPrice * priceFraction)
     }
 }
