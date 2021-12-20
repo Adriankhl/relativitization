@@ -10,12 +10,10 @@ import relativitization.universe.data.components.defaults.popsystem.pop.service.
 data class ServicePopData(
     val commonPopData: CommonPopData = CommonPopData(),
     val exportData: ExportData = ExportData(),
-    val maxEmployee: Double = 100.0,
 )
 
 @Serializable
 data class MutableServicePopData(
     var commonPopData: MutableCommonPopData = MutableCommonPopData(),
     var exportData: MutableExportData = MutableExportData(),
-    var maxEmployee: Double = 100.0,
 )

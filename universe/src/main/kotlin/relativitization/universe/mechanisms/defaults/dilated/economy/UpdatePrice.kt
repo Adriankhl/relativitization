@@ -38,7 +38,7 @@ object UpdatePrice : Mechanism() {
                 }.toMap().toMutableMap()
             }.toMap()
 
-        // Add pop desire
+        // Add trade needed by pop desire
         playerData.playerInternalData.popSystemData().carrierDataMap.values.forEach { carrierData ->
             PopType.values().forEach { popType ->
                 val commonPopData: MutableCommonPopData =
@@ -57,6 +57,71 @@ object UpdatePrice : Mechanism() {
 
                     tradeNeedMap.getValue(resourceType)[qualityClass] =
                         originalAmount + desireData.desireAmount
+                }
+            }
+        }
+
+        // Add trade needed by foreign factory
+        playerData.playerInternalData.popSystemData().carrierDataMap.values.forEach { carrierData ->
+            carrierData.allPopData.labourerPopData.resourceFactoryMap.values.filter {
+                it.ownerPlayerId != playerData.playerId
+            }.forEach { resourceFactory ->
+                val numInputResource: Int =
+                    resourceFactory.resourceFactoryInternalData.inputResourceMap.size
+                // Approximate budge perR
+                val budgetPerResource: Double = if (numInputResource > 0) {
+                    resourceFactory.storedFuelRestMass / numInputResource
+                } else {
+                    0.0
+                }
+
+                resourceFactory.resourceFactoryInternalData.inputResourceMap.keys.forEach { resourceType ->
+                    val qualityClass: ResourceQualityClass =
+                        playerData.playerInternalData.economyData().resourceData.tradeQualityClass(
+                            resourceType = resourceType,
+                            amount = resourceFactory.resourceFactoryInternalData.inputResourceMap
+                                .getValue(resourceType).amount * resourceFactory.numBuilding,
+                            targetQuality = resourceFactory.resourceFactoryInternalData.inputResourceMap
+                                .getValue(resourceType).qualityData,
+                            budget = budgetPerResource
+                        )
+                    val originalAmount: Double =
+                        tradeNeedMap.getValue(resourceType).getValue(qualityClass)
+
+                    tradeNeedMap.getValue(resourceType)[qualityClass] = originalAmount +
+                            resourceFactory.resourceFactoryInternalData.inputResourceMap
+                                .getValue(resourceType).amount * resourceFactory.numBuilding
+                }
+            }
+        }
+
+        // Add trade needed by export center
+        playerData.playerInternalData.popSystemData().carrierDataMap.values.forEach { carrierData ->
+            carrierData.allPopData.servicePopData.exportData.playerExportCenterMap.values.forEach { playerExportCenter ->
+                playerExportCenter.exportDataList.forEach { playerSingleExport ->
+                    val resourceType: ResourceType = playerSingleExport.resourceType
+                    val qualityClass: ResourceQualityClass = playerSingleExport.resourceQualityClass
+
+                    val originalAmount: Double =
+                        tradeNeedMap.getValue(resourceType).getValue(qualityClass)
+
+                    tradeNeedMap.getValue(resourceType)[qualityClass] =
+                        originalAmount + playerSingleExport.amountPerTime
+                }
+            }
+
+            carrierData.allPopData.servicePopData.exportData.popExportCenterMap.values.forEach { popExportCenter ->
+                popExportCenter.exportDataMap.values.flatMap {
+                    it.values
+                }.flatten().forEach { popSingleExport ->
+                    val resourceType: ResourceType = popSingleExport.resourceType
+                    val qualityClass: ResourceQualityClass = popSingleExport.resourceQualityClass
+
+                    val originalAmount: Double =
+                        tradeNeedMap.getValue(resourceType).getValue(qualityClass)
+
+                    tradeNeedMap.getValue(resourceType)[qualityClass] =
+                        originalAmount + popSingleExport.amountPerTime
                 }
             }
         }
