@@ -4,6 +4,7 @@ import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
+import relativitization.universe.data.components.defaults.economy.MutableResourceData
 import relativitization.universe.data.components.defaults.economy.ResourceQualityClass
 import relativitization.universe.data.components.defaults.economy.ResourceType
 import relativitization.universe.data.components.defaults.popsystem.pop.MutableCommonPopData
@@ -18,11 +19,40 @@ object UpdatePrice : Mechanism() {
         universeSettings: UniverseSettings,
         universeGlobalData: UniverseGlobalData
     ): List<Command> {
+        // Parameters
+        val minPrice: Double = 1E-10
+        val maxPrice: Double = 1E10
+        val maxPriceChangeFactor: Double = 2.0
+        val needAvailableFactor: Double = 10.0
 
         val tradeNeedMap: Map<ResourceType, Map<ResourceQualityClass, Double>> =
             computeResourceTradeNeedMap(mutablePlayerData)
 
+        ResourceType.values().forEach { resourceType ->
+            ResourceQualityClass.values().forEach { resourceQualityClass ->
+                val resourceData: MutableResourceData =
+                    mutablePlayerData.playerInternalData.economyData().resourceData
 
+                val newPrice: Double = computeNewPrice(
+                    oldPrice = resourceData.getResourcePrice(resourceType, resourceQualityClass),
+                    amountAvailable = resourceData.getTradeResourceAmount(
+                        resourceType,
+                        resourceQualityClass
+                    ),
+                    amountNeeded = tradeNeedMap.getValue(resourceType)
+                        .getValue(resourceQualityClass),
+                    minPrice = minPrice,
+                    maxPrice = maxPrice,
+                    maxPriceChangeFactor = maxPriceChangeFactor,
+                    needAvailableFactor = needAvailableFactor,
+                )
+
+                resourceData.getSingleResourceData(
+                    resourceType,
+                    resourceQualityClass
+                ).resourcePrice = newPrice
+            }
+        }
 
         return listOf()
     }
