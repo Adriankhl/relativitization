@@ -6,6 +6,8 @@ import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.components.defaults.economy.ResourceQualityClass
 import relativitization.universe.data.components.defaults.economy.ResourceType
+import relativitization.universe.data.components.defaults.popsystem.pop.MutableCommonPopData
+import relativitization.universe.data.components.defaults.popsystem.pop.PopType
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.mechanisms.Mechanism
 
@@ -36,7 +38,28 @@ object UpdatePrice : Mechanism() {
                 }.toMap().toMutableMap()
             }.toMap()
 
+        // Add pop desire
+        playerData.playerInternalData.popSystemData().carrierDataMap.values.forEach { carrierData ->
+            PopType.values().forEach { popType ->
+                val commonPopData: MutableCommonPopData =
+                    carrierData.allPopData.getCommonPopData(popType)
 
+                commonPopData.desireResourceMap.forEach { (resourceType, desireData) ->
+                    val qualityClass: ResourceQualityClass =
+                        playerData.playerInternalData.economyData().resourceData.tradeQualityClass(
+                            resourceType = resourceType,
+                            amount = desireData.desireAmount,
+                            targetQuality = desireData.desireQuality,
+                            budget = commonPopData.saving
+                        )
+                    val originalAmount: Double =
+                        tradeNeedMap.getValue(resourceType).getValue(qualityClass)
+
+                    tradeNeedMap.getValue(resourceType)[qualityClass] =
+                        originalAmount + desireData.desireAmount
+                }
+            }
+        }
 
         return tradeNeedMap
     }
