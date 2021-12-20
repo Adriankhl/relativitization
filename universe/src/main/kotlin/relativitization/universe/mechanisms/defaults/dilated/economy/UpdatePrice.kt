@@ -22,6 +22,8 @@ object UpdatePrice : Mechanism() {
         val tradeNeedMap: Map<ResourceType, Map<ResourceQualityClass, Double>> =
             computeResourceTradeNeedMap(mutablePlayerData)
 
+
+
         return listOf()
     }
 
@@ -127,5 +129,52 @@ object UpdatePrice : Mechanism() {
         }
 
         return tradeNeedMap
+    }
+
+    /**
+     * Compute the new price for a resource
+     *
+     * @param oldPrice the old price of the resource
+     * @param amountAvailable the available amount of the resource for trading
+     * @param amountNeeded the amount of the resource needed
+     * @param minPrice the minimum price of the resource
+     * @param maxPrice the maximum price of the resource
+     * @param maxPriceChangeFactor determine the extent of the price change
+     * @param needAvailableFactor determine how need and available amount should be compared
+     */
+    private fun computeNewPrice(
+        oldPrice: Double,
+        amountAvailable: Double,
+        amountNeeded: Double,
+        minPrice: Double,
+        maxPrice: Double,
+        maxPriceChangeFactor: Double,
+        needAvailableFactor: Double,
+    ): Double {
+        val resourceRatio: Double = if (amountAvailable > 0.0) {
+            amountNeeded * needAvailableFactor / amountAvailable
+        } else {
+            Double.MAX_VALUE / 1E10
+        }
+
+        val actualResourceRatio: Double = when {
+            resourceRatio > maxPriceChangeFactor -> {
+                maxPriceChangeFactor
+            }
+            resourceRatio < 1.0 / maxPriceChangeFactor -> {
+                1.0 / maxPriceChangeFactor
+            }
+            else -> {
+                resourceRatio
+            }
+        }
+
+        val newPrice: Double = oldPrice * actualResourceRatio
+
+        return when {
+            newPrice > maxPrice -> maxPrice
+            newPrice < minPrice -> minPrice
+            else -> newPrice
+        }
     }
 }
