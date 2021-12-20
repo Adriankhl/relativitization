@@ -59,6 +59,7 @@
 * Improve diplomatic relation by sending resource [x]
 * Declare war, declare independence [x]
 * Merge direct subordinate at exactly the same position [x]
+* Open and close factories
 
 # Generate universe TODO List
 * One stellar per player generation
