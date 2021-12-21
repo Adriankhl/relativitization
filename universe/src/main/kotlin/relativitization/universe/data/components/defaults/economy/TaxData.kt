@@ -114,4 +114,14 @@ data class MutableIncomeTaxData(
     var highIncomeTaxRate: Double = 0.0,
     var lowMiddleBoundary: Double = 1.0,
     var middleHighBoundary: Double = 2.0,
-)
+) {
+    fun getIncomeTax(
+        salary: Double
+    ): Double {
+        return when {
+            salary < lowMiddleBoundary -> lowIncomeTaxRate
+            salary < middleHighBoundary -> middleIncomeTaxRate
+            else -> highIncomeTaxRate
+        }
+    }
+}
