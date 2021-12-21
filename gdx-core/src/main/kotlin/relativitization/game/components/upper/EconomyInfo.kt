@@ -210,7 +210,7 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
             )
         ).colspan(2)
 
-        nestedTable.row().space(30f)
+        nestedTable.row().spaceTop(30f)
 
         nestedTable.add(
             createLabel(
@@ -271,7 +271,7 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         }
         nestedTable.add(newTargetFuelStorageButtonSlider).colspan(2)
 
-        nestedTable.row().space(30f)
+        nestedTable.row().spaceTop(30f)
 
         nestedTable.add(
             createLabel(
@@ -361,7 +361,7 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         }
         nestedTable.add(newTargetFuelMovementButtonSlider).colspan(2)
 
-        nestedTable.row().space(30f)
+        nestedTable.row().spaceTop(30f)
 
         nestedTable.add(
             createLabel(
@@ -398,7 +398,6 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         nestedTable.row().space(10f)
 
         nestedTable.add(transferToProductionSlider).colspan(2)
-
 
         nestedTable.row().space(10f)
 
@@ -452,7 +451,7 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         }
         nestedTable.add(newTargetFuelProductionButtonSlider).colspan(2)
 
-        nestedTable.row().space(30f)
+        nestedTable.row().spaceTop(30f)
 
         nestedTable.add(
             createLabel(
@@ -498,6 +497,16 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
 
         val singleResourceData: SingleResourceData = playerData.playerInternalData.economyData()
             .resourceData.getSingleResourceData(selectedResourceType, selectedResourceQualityClass)
+
+        val newTargetResourceStorage = createDoubleTextField(
+            singleResourceData.resourceTargetAmount.storage,
+            gdxSettings.smallFontSize
+        )
+
+        val newTargetResourceProduction = createDoubleTextField(
+            singleResourceData.resourceTargetAmount.production,
+            gdxSettings.smallFontSize
+        )
 
         nestedTable.add(
             createLabel(
@@ -561,6 +570,194 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
                 gdxSettings.smallFontSize
             )
         ).colspan(2)
+
+        nestedTable.row().spaceTop(30f)
+
+        nestedTable.add(
+            createLabel(
+                "Storage: ${singleResourceData.resourceAmount.storage}",
+                gdxSettings.smallFontSize
+            )
+        ).colspan(2)
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "Target storage: ${singleResourceData.resourceTargetAmount.storage}",
+                gdxSettings.smallFontSize
+            )
+        ).colspan(2)
+
+        nestedTable.row().space(10f)
+
+        val changeStorageResourceButton = createTextButton(
+            "Change target storage",
+            gdxSettings.smallFontSize,
+            gdxSettings.soundEffectsVolume
+        ) {
+            val changeStorageResourceTargetCommand = ChangeStorageResourceTargetCommand(
+                toId = playerData.playerId,
+                fromId = game.universeClient.getCurrentPlayerData().playerId,
+                fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
+                resourceType = selectedResourceType,
+                resourceQualityClass = selectedResourceQualityClass,
+                targetAmount = newTargetResourceStorage.value,
+            )
+
+            game.universeClient.currentCommand = changeStorageResourceTargetCommand
+        }
+        nestedTable.add(changeStorageResourceButton).colspan(2)
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "New target storage: ",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.add(newTargetResourceStorage.textField)
+
+        nestedTable.row().space(10f)
+
+        val newTargetResourceStorageButtonSlider = createDoubleSliderButtonTable(
+            newTargetResourceStorage.value,
+            0.01f,
+            2,
+            40f * gdxSettings.imageScale,
+            gdxSettings.soundEffectsVolume,
+            currentValue = { newTargetResourceStorage.value }
+        ) {
+            newTargetResourceStorage.value = it
+        }
+        nestedTable.add(newTargetResourceStorageButtonSlider).colspan(2)
+
+        nestedTable.row().spaceTop(30f)
+
+        nestedTable.add(
+            createLabel(
+                "Production: ${singleResourceData.resourceAmount.production}",
+                gdxSettings.smallFontSize
+            )
+        ).colspan(2)
+
+        nestedTable.row().space(10f)
+
+        val transferToProductionSlider = createSlider(
+            min = 0f,
+            max = 1f,
+            stepSize = 0.01f,
+            default = 0f,
+        )
+
+        val transferToProductionButton = createTextButton(
+            "Transfer to production",
+            gdxSettings.smallFontSize,
+            gdxSettings.soundEffectsVolume
+        ) {
+            val transferResourceToProductionCommand = TransferResourceToProductionCommand(
+                toId = playerData.playerId,
+                fromId = game.universeClient.getCurrentPlayerData().playerId,
+                fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
+                resourceType = selectedResourceType,
+                resourceQualityClass = selectedResourceQualityClass,
+                amount = singleResourceData.resourceAmount.storage * transferToProductionSlider.value,
+            )
+
+            game.universeClient.currentCommand = transferResourceToProductionCommand
+        }
+        nestedTable.add(transferToProductionButton).colspan(2)
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(transferToProductionSlider).colspan(2)
+
+        nestedTable.row().space(10f)
+
+        val changeProductionResourceButton = createTextButton(
+            "Change target production",
+            gdxSettings.smallFontSize,
+            gdxSettings.soundEffectsVolume
+        ) {
+            val changeProductionResourceTargetCommand = ChangeProductionResourceTargetCommand(
+                toId = playerData.playerId,
+                fromId = game.universeClient.getCurrentPlayerData().playerId,
+                fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
+                resourceType = selectedResourceType,
+                resourceQualityClass = selectedResourceQualityClass,
+                targetAmount = newTargetResourceProduction.value,
+            )
+
+            game.universeClient.currentCommand = changeProductionResourceTargetCommand
+        }
+        nestedTable.add(changeProductionResourceButton).colspan(2)
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "New target production: ",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.add(newTargetResourceProduction.textField)
+
+        nestedTable.row().space(10f)
+
+        val newTargetResourceProductionButtonSlider = createDoubleSliderButtonTable(
+            newTargetResourceProduction.value,
+            0.01f,
+            2,
+            40f * gdxSettings.imageScale,
+            gdxSettings.soundEffectsVolume,
+            currentValue = { newTargetResourceProduction.value }
+        ) {
+            newTargetResourceProduction.value = it
+        }
+        nestedTable.add(newTargetResourceProductionButtonSlider).colspan(2)
+
+        nestedTable.row().spaceTop(30f)
+
+        nestedTable.add(
+            createLabel(
+                "Trade: ${singleResourceData.resourceAmount.trade}",
+                gdxSettings.smallFontSize
+            )
+        ).colspan(2)
+
+        nestedTable.row().space(10f)
+
+        val transferToTradeSlider = createSlider(
+            min = 0f,
+            max = 1f,
+            stepSize = 0.01f,
+            default = 0f,
+        )
+
+        val transferToTradeButton = createTextButton(
+            "Transfer to trade",
+            gdxSettings.smallFontSize,
+            gdxSettings.soundEffectsVolume
+        ) {
+            val transferResourceToTradeCommand = TransferResourceToTradeCommand(
+                toId = playerData.playerId,
+                fromId = game.universeClient.getCurrentPlayerData().playerId,
+                fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
+                resourceType = selectedResourceType,
+                resourceQualityClass = selectedResourceQualityClass,
+                amount = singleResourceData.resourceAmount.storage * transferToTradeSlider.value,
+            )
+
+            game.universeClient.currentCommand = transferResourceToTradeCommand
+        }
+        nestedTable.add(transferToTradeButton).colspan(2)
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(transferToTradeSlider).colspan(2)
 
         return nestedTable
     }
