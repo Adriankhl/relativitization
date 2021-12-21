@@ -123,9 +123,21 @@ object Employment : Mechanism() {
         // Available population to work
         val availableEmployee: Double = labourerPopData.commonPopData.adultPopulation
 
+        // Clear employee in closed factory
+        labourerPopData.fuelFactoryMap.values.filter {
+            !it.isOpened
+        }.forEach {
+            it.lastNumEmployee = 0.0
+        }
+        labourerPopData.resourceFactoryMap.values.filter {
+            !it.isOpened
+        }.forEach {
+            it.lastNumEmployee = 0.0
+        }
+
         // Total number of max employee of self fuel factory
         val maxSelfFuelFactoryEmployee: Double = labourerPopData.fuelFactoryMap.values.filter {
-            it.ownerPlayerId == universeData3DAtPlayer.getCurrentPlayerData().playerId
+            (it.ownerPlayerId == universeData3DAtPlayer.getCurrentPlayerData().playerId) && (it.isOpened)
         }.fold(0.0) { acc, mutableFuelFactoryData ->
             acc + mutableFuelFactoryData.fuelFactoryInternalData.maxNumEmployee * mutableFuelFactoryData.numBuilding
         }
@@ -133,14 +145,14 @@ object Employment : Mechanism() {
         // Total number of max employee of self resource factory
         val maxSelfResourceFactoryEmployee: Double =
             labourerPopData.resourceFactoryMap.values.filter {
-                it.ownerPlayerId == universeData3DAtPlayer.getCurrentPlayerData().playerId
+                (it.ownerPlayerId == universeData3DAtPlayer.getCurrentPlayerData().playerId) && (it.isOpened)
             }.fold(0.0) { acc, mutableResourceFactoryData ->
                 acc + mutableResourceFactoryData.resourceFactoryInternalData.maxNumEmployee * mutableResourceFactoryData.numBuilding
             }
 
         // Total number of max employee of other fuel factory
         val maxOtherFuelFactoryEmployee: Double = labourerPopData.fuelFactoryMap.values.filter {
-            it.ownerPlayerId != universeData3DAtPlayer.getCurrentPlayerData().playerId
+            (it.ownerPlayerId != universeData3DAtPlayer.getCurrentPlayerData().playerId) && (it.isOpened)
         }.fold(0.0) { acc, mutableFuelFactoryData ->
             acc + mutableFuelFactoryData.fuelFactoryInternalData.maxNumEmployee * mutableFuelFactoryData.numBuilding
         }
@@ -149,7 +161,7 @@ object Employment : Mechanism() {
         // Total number of max employee of other resource factory
         val maxOtherResourceFactoryEmployee: Double =
             labourerPopData.resourceFactoryMap.values.filter {
-                it.ownerPlayerId != universeData3DAtPlayer.getCurrentPlayerData().playerId
+                (it.ownerPlayerId != universeData3DAtPlayer.getCurrentPlayerData().playerId) && (it.isOpened)
             }.fold(0.0) { acc, mutableResourceFactoryData ->
                 acc + mutableResourceFactoryData.resourceFactoryInternalData.maxNumEmployee * mutableResourceFactoryData.numBuilding
             }
@@ -212,7 +224,7 @@ object Employment : Mechanism() {
 
         // Self factory first
         labourerPopData.fuelFactoryMap.values.filter {
-            it.ownerPlayerId == universeData3DAtPlayer.getCurrentPlayerData().playerId
+            (it.ownerPlayerId == universeData3DAtPlayer.getCurrentPlayerData().playerId) && (it.isOpened)
         }.forEach {
 
             val maxNumEmployee: Double = it.fuelFactoryInternalData.maxNumEmployee * it.numBuilding
@@ -239,7 +251,7 @@ object Employment : Mechanism() {
 
         // Self factory first
         labourerPopData.resourceFactoryMap.values.filter {
-            it.ownerPlayerId == universeData3DAtPlayer.getCurrentPlayerData().playerId
+            (it.ownerPlayerId == universeData3DAtPlayer.getCurrentPlayerData().playerId) && (it.isOpened)
         }.forEach {
 
             val maxNumEmployee: Double =
@@ -267,7 +279,7 @@ object Employment : Mechanism() {
 
         // Other player factory, don't pay from player fuel storage here
         labourerPopData.fuelFactoryMap.values.filter {
-            it.ownerPlayerId != universeData3DAtPlayer.getCurrentPlayerData().playerId
+            (it.ownerPlayerId != universeData3DAtPlayer.getCurrentPlayerData().playerId) && (it.isOpened)
         }.forEach {
 
             val maxNumEmployee: Double = it.fuelFactoryInternalData.maxNumEmployee * it.numBuilding
@@ -292,7 +304,7 @@ object Employment : Mechanism() {
 
         // Other player factory, don't pay from player fuel storage here
         labourerPopData.resourceFactoryMap.values.filter {
-            it.ownerPlayerId != universeData3DAtPlayer.getCurrentPlayerData().playerId
+            (it.ownerPlayerId != universeData3DAtPlayer.getCurrentPlayerData().playerId) && (it.isOpened)
         }.forEach {
 
             val maxNumEmployee: Double =
