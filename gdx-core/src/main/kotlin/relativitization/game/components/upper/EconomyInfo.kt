@@ -104,6 +104,12 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
             table.row().space(30f)
         }
 
+        if (showTaxData) {
+            table.add(createTaxTable())
+
+            table.row().space(30f)
+        }
+
         // Add empty space for Android keyboard input
         val emptyLabel = createLabel("", gdxSettings.smallFontSize)
         emptyLabel.height = Gdx.graphics.height.toFloat()
@@ -758,6 +764,31 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         nestedTable.row().space(10f)
 
         nestedTable.add(transferToTradeSlider).colspan(2)
+
+        return nestedTable
+    }
+
+    private fun createTaxTable(): Table {
+        val nestedTable = Table()
+
+        nestedTable.add(
+            createLabel(
+                "Resource: ",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        val resourceTypeSelectBox = createSelectBox(
+            ResourceType.values().toList(),
+            selectedResourceType,
+            gdxSettings.smallFontSize
+        ) { resourceType, _ ->
+            selectedResourceType = resourceType
+            updateTable()
+        }
+        nestedTable.add(resourceTypeSelectBox)
+
+        nestedTable.row().space(10f)
 
         return nestedTable
     }
