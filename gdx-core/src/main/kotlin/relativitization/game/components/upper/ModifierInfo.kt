@@ -79,15 +79,15 @@ class ModifierInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>
             )
         )
 
-        table.row().space(20f)
+        table.row().spaceTop(30f)
 
         table.add(createPhysicsModifierTable())
 
-        table.row().space(20f)
+        table.row().spaceTop(30f)
 
         table.add(createCombatModifierTable())
 
-        table.row().space(20f)
+        table.row().spaceTop(30f)
 
         table.add(createDiplomacyModifierTable())
     }
@@ -108,7 +108,10 @@ class ModifierInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>
             .physicsModifierData
 
         nestedTable.add(
-            "Disable fuel increase: ${physicsModifier.disableRestMassIncreaseTimeLimit}"
+            createLabel(
+            "Disable fuel increase: ${physicsModifier.disableRestMassIncreaseTimeLimit}",
+                gdxSettings.smallFontSize
+            )
         )
 
         return nestedTable
@@ -130,7 +133,10 @@ class ModifierInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>
             .combatModifierData
 
         nestedTable.add(
-            "Disable military base recovery: ${combatModifier.disableMilitaryBaseRecoveryTimeLimit}"
+            createLabel(
+            "Disable military base recovery: ${combatModifier.disableMilitaryBaseRecoveryTimeLimit}",
+                gdxSettings.smallFontSize
+            )
         )
 
         return nestedTable
@@ -161,6 +167,35 @@ class ModifierInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>
             updateTable()
         }
         nestedTable.add(otherPlayerIdSelectBox).colspan(2)
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "Peace treaty: ${diplomacyModifier.getPeaceTreatyLength(otherPlayerId.value)}",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        diplomacyModifier.getRelationModifier(otherPlayerId.value).receiveFuelList.forEach {
+            nestedTable.row().spaceTop(20f)
+
+            nestedTable.add(
+                createLabel(
+                    "Received fuel: ${it.durationLeft}",
+                    gdxSettings.smallFontSize
+                )
+            )
+
+            nestedTable.row().space(10f)
+
+            nestedTable.add(
+                createLabel(
+                    "Relation change: ${it.change}",
+                    gdxSettings.smallFontSize,
+                )
+            )
+        }
 
         return nestedTable
     }

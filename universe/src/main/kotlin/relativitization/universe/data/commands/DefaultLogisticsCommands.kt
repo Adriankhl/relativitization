@@ -151,7 +151,7 @@ data class SendFuelFromStorageCommand(
         } else {
             100.0 * changeFraction
         }
-        val duration: Double = 10.0
+        val duration: Int = 10
         playerData.playerInternalData.modifierData().diplomacyModifierData.addReceiveFuelToRelationModifier(
             id = fromId,
             relationChange = relationChange,

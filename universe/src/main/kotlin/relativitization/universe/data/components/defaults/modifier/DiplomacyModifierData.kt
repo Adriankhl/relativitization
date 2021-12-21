@@ -118,7 +118,7 @@ data class MutableDiplomacyModifierData(
     fun addReceiveFuelToRelationModifier(
         id: Int,
         relationChange: Double,
-        duration: Double,
+        duration: Int,
     ) {
         relationModifierMap.getOrPut(id) {
             MutableRelationModifier()
@@ -168,11 +168,11 @@ data class MutableRelationModifier(
     fun updateByProperTime() {
         // Clear modifier when time left is smaller than 0
         receiveFuelList.removeIf {
-            it.durationLeft < 0.0
+            it.durationLeft <= 0
         }
 
         receiveFuelList.forEach {
-            it.durationLeft -= 1.0
+            it.durationLeft -= 1
         }
     }
 
@@ -206,11 +206,11 @@ data class MutableRelationModifier(
 @Serializable
 data class SingleRelationModifier(
     val change: Double = 0.0,
-    val durationLeft: Double = 0.0,
+    val durationLeft: Int = 0,
 )
 
 @Serializable
 data class MutableSingleRelationModifier(
     var change: Double = 0.0,
-    var durationLeft: Double = 0.0,
+    var durationLeft: Int = 0,
 )
