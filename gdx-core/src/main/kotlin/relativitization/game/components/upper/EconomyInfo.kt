@@ -10,7 +10,6 @@ import relativitization.universe.data.commands.*
 import relativitization.universe.data.components.defaults.economy.ResourceQualityClass
 import relativitization.universe.data.components.defaults.economy.ResourceType
 import relativitization.universe.data.components.defaults.economy.SingleResourceData
-import relativitization.universe.data.components.defaults.economy.TariffData
 
 class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.assets) {
 
@@ -772,6 +771,32 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
     private fun createTaxTable(): Table {
         val nestedTable = Table()
 
+        val importTariff: Double = playerData.playerInternalData.economyData()
+            .taxData.taxRateData.importTariff.getResourceTariffRate(
+                game.universeClient.getUniverseData3D().get(
+                    game.universeClient.newSelectedPlayerId
+                ).topLeaderId(),
+                selectedResourceType
+            )
+
+        val exportTariff: Double = playerData.playerInternalData.economyData()
+            .taxData.taxRateData.exportTariff.getResourceTariffRate(
+                game.universeClient.getUniverseData3D().get(
+                    game.universeClient.newSelectedPlayerId
+                ).topLeaderId(),
+                selectedResourceType
+            )
+
+        val newImportTariff = createDoubleTextField(
+            importTariff,
+            gdxSettings.smallFontSize
+        )
+
+        val newExportTariff = createDoubleTextField(
+            exportTariff,
+            gdxSettings.smallFontSize
+        )
+
         nestedTable.add(
             createLabel(
                 "Resource: ",
@@ -791,14 +816,6 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
 
         nestedTable.row().space(10f)
 
-        val importTariff: Double = playerData.playerInternalData.economyData()
-            .taxData.taxRateData.importTariff.getResourceTariffRate(
-                game.universeClient.getUniverseData3D().get(
-                    game.universeClient.newSelectedPlayerId
-                ).topLeaderId(),
-                selectedResourceType
-            )
-
         nestedTable.add(
             createLabel(
                 "Import tariff: $importTariff",
@@ -808,13 +825,49 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
 
         nestedTable.row().space(10f)
 
-        val exportTariff: Double = playerData.playerInternalData.economyData()
-            .taxData.taxRateData.exportTariff.getResourceTariffRate(
-                game.universeClient.getUniverseData3D().get(
-                    game.universeClient.newSelectedPlayerId
-                ).topLeaderId(),
-                selectedResourceType
+        val changeImportTariffButton = createTextButton(
+            "Change import tariff",
+            gdxSettings.smallFontSize,
+            gdxSettings.soundEffectsVolume
+        ) {
+            val changeDefaultImportTariffCommand = ChangeDefaultImportTariffCommand(
+                toId = playerData.playerId,
+                fromId = game.universeClient.getCurrentPlayerData().playerId,
+                fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
+                resourceType = selectedResourceType,
+                rate = newImportTariff.value,
             )
+
+            game.universeClient.currentCommand = changeDefaultImportTariffCommand
+        }
+        nestedTable.add(changeImportTariffButton).colspan(2)
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "New import tariff: ",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.add(newImportTariff.textField)
+
+        nestedTable.row().space(10f)
+
+        val newImportTariffButtonSlider = createDoubleSliderButtonTable(
+            newImportTariff.value,
+            0.01f,
+            2,
+            40f * gdxSettings.imageScale,
+            gdxSettings.soundEffectsVolume,
+            currentValue = { newImportTariff.value }
+        ) {
+            newImportTariff.value = it
+        }
+        nestedTable.add(newImportTariffButtonSlider).colspan(2)
+
+        nestedTable.row().spaceTop(30f)
 
         nestedTable.add(
             createLabel(
@@ -823,7 +876,51 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
             )
         )
 
+        nestedTable.row().space(10f)
 
+        val changeExportTariffButton = createTextButton(
+            "Change export tariff",
+            gdxSettings.smallFontSize,
+            gdxSettings.soundEffectsVolume
+        ) {
+            val changeDefaultExportTariffCommand = ChangeDefaultExportTariffCommand(
+                toId = playerData.playerId,
+                fromId = game.universeClient.getCurrentPlayerData().playerId,
+                fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
+                resourceType = selectedResourceType,
+                rate = newExportTariff.value,
+            )
+
+            game.universeClient.currentCommand = changeDefaultExportTariffCommand
+        }
+        nestedTable.add(changeExportTariffButton).colspan(2)
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "New export tariff: ",
+                gdxSettings.smallFontSize
+            )
+        ).colspan(2)
+
+        nestedTable.add(newExportTariff.textField)
+
+        nestedTable.row().space(10f)
+
+        val newExportTariffButtonSlider = createDoubleSliderButtonTable(
+            newExportTariff.value,
+            0.01f,
+            2,
+            40f * gdxSettings.imageScale,
+            gdxSettings.soundEffectsVolume,
+            currentValue = { newExportTariff.value }
+        ) {
+            newExportTariff.value = it
+        }
+        nestedTable.add(newExportTariffButtonSlider).colspan(2)
+
+        nestedTable.row().space(30f)
 
         return nestedTable
     }
