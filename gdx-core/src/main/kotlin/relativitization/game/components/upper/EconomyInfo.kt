@@ -10,6 +10,8 @@ import relativitization.universe.data.commands.*
 import relativitization.universe.data.components.defaults.economy.ResourceQualityClass
 import relativitization.universe.data.components.defaults.economy.ResourceType
 import relativitization.universe.data.components.defaults.economy.SingleResourceData
+import relativitization.universe.data.components.defaults.economy.TaxRateData
+import relativitization.universe.maths.number.Notation
 
 class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.assets) {
 
@@ -771,21 +773,22 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
     private fun createTaxTable(): Table {
         val nestedTable = Table()
 
-        val importTariff: Double = playerData.playerInternalData.economyData()
-            .taxData.taxRateData.importTariff.getResourceTariffRate(
-                game.universeClient.getUniverseData3D().get(
-                    game.universeClient.newSelectedPlayerId
-                ).topLeaderId(),
-                selectedResourceType
-            )
+        val taxRateData: TaxRateData = playerData.playerInternalData.economyData().taxData
+            .taxRateData
 
-        val exportTariff: Double = playerData.playerInternalData.economyData()
-            .taxData.taxRateData.exportTariff.getResourceTariffRate(
-                game.universeClient.getUniverseData3D().get(
-                    game.universeClient.newSelectedPlayerId
-                ).topLeaderId(),
-                selectedResourceType
-            )
+        val importTariff: Double = taxRateData.importTariff.getResourceTariffRate(
+            game.universeClient.getUniverseData3D().get(
+                game.universeClient.newSelectedPlayerId
+            ).topLeaderId(),
+            selectedResourceType
+        )
+
+        val exportTariff: Double = taxRateData.exportTariff.getResourceTariffRate(
+            game.universeClient.getUniverseData3D().get(
+                game.universeClient.newSelectedPlayerId
+            ).topLeaderId(),
+            selectedResourceType
+        )
 
         val newImportTariff = createDoubleTextField(
             importTariff,
@@ -794,6 +797,31 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
 
         val newExportTariff = createDoubleTextField(
             exportTariff,
+            gdxSettings.smallFontSize
+        )
+
+        val newLowIncomeTax = createDoubleTextField(
+            taxRateData.incomeTax.lowIncomeTaxRate,
+            gdxSettings.smallFontSize
+        )
+
+        val newMiddleIncomeTax = createDoubleTextField(
+            taxRateData.incomeTax.middleIncomeTaxRate,
+            gdxSettings.smallFontSize
+        )
+
+        val newHighIncomeTax = createDoubleTextField(
+            taxRateData.incomeTax.highIncomeTaxRate,
+            gdxSettings.smallFontSize
+        )
+
+        val newLowMiddleIncomeBoundary = createDoubleTextField(
+            taxRateData.incomeTax.lowMiddleBoundary,
+            gdxSettings.smallFontSize
+        )
+
+        val newMiddleHighIncomeBoundary = createDoubleTextField(
+            taxRateData.incomeTax.middleHighBoundary,
             gdxSettings.smallFontSize
         )
 
@@ -902,7 +930,7 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
                 "New export tariff: ",
                 gdxSettings.smallFontSize
             )
-        ).colspan(2)
+        )
 
         nestedTable.add(newExportTariff.textField)
 
@@ -920,7 +948,157 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         }
         nestedTable.add(newExportTariffButtonSlider).colspan(2)
 
-        nestedTable.row().space(30f)
+        nestedTable.row().spaceTop(30f)
+
+        nestedTable.add(
+            createLabel(
+                "Low income tax: ${taxRateData.incomeTax.lowIncomeTaxRate}",
+                gdxSettings.smallFontSize
+            )
+        ).colspan(2)
+
+        nestedTable.row().space(10f)
+
+        val changeLowIncomeTaxButton = createTextButton(
+            "Change low income tax",
+            gdxSettings.smallFontSize,
+            gdxSettings.soundEffectsVolume
+        ) {
+            val changeLowIncomeTaxCommand = ChangeLowIncomeTaxCommand(
+                toId = playerData.playerId,
+                fromId = game.universeClient.getCurrentPlayerData().playerId,
+                fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
+                rate = newLowIncomeTax.value,
+            )
+
+            game.universeClient.currentCommand = changeLowIncomeTaxCommand
+        }
+        nestedTable.add(changeLowIncomeTaxButton).colspan(2)
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "New low income tax: ",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.add(newLowIncomeTax.textField)
+
+        nestedTable.row().space(10f)
+
+        val changeLowIncomeTaxSlider = createSlider(
+            min = 0f,
+            max = 1f,
+            stepSize = 0.01f,
+            default = 0f,
+        ) { fl, _ ->
+            newLowIncomeTax.value = Notation.roundDecimal(fl.toDouble(), 2)
+        }
+        nestedTable.add(changeLowIncomeTaxSlider).colspan(2)
+
+        nestedTable.row().spaceTop(30f)
+
+        nestedTable.add(
+            createLabel(
+                "Middle income tax: ${taxRateData.incomeTax.middleIncomeTaxRate}",
+                gdxSettings.smallFontSize
+            )
+        ).colspan(2)
+
+        nestedTable.row().space(10f)
+
+        val changeMiddleIncomeTaxButton = createTextButton(
+            "Change middle income tax",
+            gdxSettings.smallFontSize,
+            gdxSettings.soundEffectsVolume
+        ) {
+            val changeMiddleIncomeTaxCommand = ChangeMiddleIncomeTaxCommand(
+                toId = playerData.playerId,
+                fromId = game.universeClient.getCurrentPlayerData().playerId,
+                fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
+                rate = newMiddleIncomeTax.value,
+            )
+
+            game.universeClient.currentCommand = changeMiddleIncomeTaxCommand
+        }
+        nestedTable.add(changeMiddleIncomeTaxButton).colspan(2)
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "New middle income tax: ",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.add(newMiddleIncomeTax.textField)
+
+        nestedTable.row().space(10f)
+
+        val changeMiddleIncomeTaxSlider = createSlider(
+            min = 0f,
+            max = 1f,
+            stepSize = 0.01f,
+            default = 0f,
+        ) { fl, _ ->
+            newMiddleIncomeTax.value = Notation.roundDecimal(fl.toDouble(), 2)
+        }
+        nestedTable.add(changeMiddleIncomeTaxSlider).colspan(2)
+
+        nestedTable.row().spaceTop(30f)
+
+        nestedTable.add(
+            createLabel(
+                "High income tax: ${taxRateData.incomeTax.highIncomeTaxRate}",
+                gdxSettings.smallFontSize
+            )
+        ).colspan(2)
+
+        nestedTable.row().space(10f)
+
+        val changeHighIncomeTaxButton = createTextButton(
+            "Change high income tax",
+            gdxSettings.smallFontSize,
+            gdxSettings.soundEffectsVolume
+        ) {
+            val changeHighIncomeTaxCommand = ChangeHighIncomeTaxCommand(
+                toId = playerData.playerId,
+                fromId = game.universeClient.getCurrentPlayerData().playerId,
+                fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
+                rate = newHighIncomeTax.value,
+            )
+
+            game.universeClient.currentCommand = changeHighIncomeTaxCommand
+        }
+        nestedTable.add(changeHighIncomeTaxButton).colspan(2)
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "New high income tax: ",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.add(newHighIncomeTax.textField)
+
+        nestedTable.row().space(10f)
+
+        val changeHighIncomeTaxSlider = createSlider(
+            min = 0f,
+            max = 1f,
+            stepSize = 0.01f,
+            default = 0f,
+        ) { fl, _ ->
+            newHighIncomeTax.value = Notation.roundDecimal(fl.toDouble(), 2)
+        }
+        nestedTable.add(changeHighIncomeTaxSlider).colspan(2)
+
+        nestedTable.row().space(10f)
 
         return nestedTable
     }
