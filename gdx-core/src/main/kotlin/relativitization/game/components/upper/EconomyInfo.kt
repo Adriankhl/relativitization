@@ -10,6 +10,7 @@ import relativitization.universe.data.commands.*
 import relativitization.universe.data.components.defaults.economy.ResourceQualityClass
 import relativitization.universe.data.components.defaults.economy.ResourceType
 import relativitization.universe.data.components.defaults.economy.SingleResourceData
+import relativitization.universe.data.components.defaults.economy.TariffData
 
 class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.assets) {
 
@@ -789,6 +790,40 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         nestedTable.add(resourceTypeSelectBox)
 
         nestedTable.row().space(10f)
+
+        val importTariff: Double = playerData.playerInternalData.economyData()
+            .taxData.taxRateData.importTariff.getResourceTariffRate(
+                game.universeClient.getUniverseData3D().get(
+                    game.universeClient.newSelectedPlayerId
+                ).topLeaderId(),
+                selectedResourceType
+            )
+
+        nestedTable.add(
+            createLabel(
+                "Import tariff: $importTariff",
+                gdxSettings.smallFontSize
+            )
+        ).colspan(2)
+
+        nestedTable.row().space(10f)
+
+        val exportTariff: Double = playerData.playerInternalData.economyData()
+            .taxData.taxRateData.exportTariff.getResourceTariffRate(
+                game.universeClient.getUniverseData3D().get(
+                    game.universeClient.newSelectedPlayerId
+                ).topLeaderId(),
+                selectedResourceType
+            )
+
+        nestedTable.add(
+            createLabel(
+                "Export tariff: $exportTariff",
+                gdxSettings.smallFontSize
+            )
+        )
+
+
 
         return nestedTable
     }

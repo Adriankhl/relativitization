@@ -57,10 +57,16 @@ data class ChangeDefaultImportTariffCommand(
             CommandI18NStringFactory.isNotTopLeader(playerData.playerId)
         )
 
+        val isRateValid = CommandErrorMessage(
+            (rate >= 0.0),
+            I18NString("Rate should be greater than 0.  ")
+        )
+
         return CommandErrorMessage(
             listOf(
                 isSelf,
                 isTopLeader,
+                isRateValid,
             )
         )
     }
@@ -129,10 +135,16 @@ data class ChangeDefaultExportTariffCommand(
             CommandI18NStringFactory.isNotTopLeader(playerData.playerId)
         )
 
+        val isRateValid = CommandErrorMessage(
+            (rate >= 0.0),
+            I18NString("Rate should be greater than 0.  ")
+        )
+
         return CommandErrorMessage(
             listOf(
                 isSelf,
                 isTopLeader,
+                isRateValid,
             )
         )
     }
