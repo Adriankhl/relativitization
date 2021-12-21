@@ -5,6 +5,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.PlayerData
+import relativitization.universe.data.components.defaults.modifier.CombatModifierData
+import relativitization.universe.data.components.defaults.modifier.DiplomacyModifierData
+import relativitization.universe.data.components.defaults.modifier.PhysicsModifierData
 
 class ModifierInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.assets) {
 
@@ -65,13 +68,85 @@ class ModifierInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>
     private fun updateTable() {
         table.clear()
 
-        val headerLabel = createLabel(
-            "Modifier: player ${playerData.playerId}",
-            gdxSettings.bigFontSize
+        table.add(
+            createLabel(
+                "Modifier: player ${playerData.playerId}",
+                gdxSettings.bigFontSize
+            )
         )
 
-        table.add(headerLabel).pad(20f)
+        table.row().space(20f)
+
+        table.add(createPhysicsModifierTable())
 
         table.row().space(20f)
+
+        table.add(createCombatModifierTable())
+
+        table.row().space(20f)
+
+        table.add(createDiplomacyModifierTable())
+    }
+
+    private fun createPhysicsModifierTable(): Table {
+        val nestedTable = Table()
+
+        nestedTable.add(
+            createLabel(
+                "Physics modifier: ",
+                gdxSettings.normalFontSize
+            )
+        )
+
+        nestedTable.row().space(20f)
+
+        val physicsModifier: PhysicsModifierData = playerData.playerInternalData.modifierData()
+            .physicsModifierData
+
+        nestedTable.add(
+            "Disable fuel increase: ${physicsModifier.disableRestMassIncreaseTimeLimit}"
+        )
+
+        return nestedTable
+    }
+
+    private fun createCombatModifierTable(): Table {
+        val nestedTable = Table()
+
+        nestedTable.add(
+            createLabel(
+                "Combat modifier: ",
+                gdxSettings.normalFontSize
+            )
+        )
+
+        nestedTable.row().space(20f)
+
+        val combatModifier: CombatModifierData = playerData.playerInternalData.modifierData()
+            .combatModifierData
+
+        nestedTable.add(
+            "Disable military base recovery: ${combatModifier.disableMilitaryBaseRecoveryTimeLimit}"
+        )
+
+        return nestedTable
+    }
+
+    private fun createDiplomacyModifierTable(): Table {
+        val nestedTable = Table()
+
+        nestedTable.add(
+            createLabel(
+                "Diplomacy modifier: ",
+                gdxSettings.normalFontSize
+            )
+        )
+
+        nestedTable.row().space(20f)
+
+        val diplomacyModifier: DiplomacyModifierData = playerData.playerInternalData.modifierData()
+            .diplomacyModifierData
+
+        return nestedTable
     }
 }
