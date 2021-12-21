@@ -502,9 +502,11 @@ data class ChangeMiddleHighBoundaryCommand(
             CommandI18NStringFactory.isNotTopLeader(playerData.playerId)
         )
 
+        val lowMiddleBoundary: Double = playerData.playerInternalData.economyData()
+            .taxData.taxRateData.incomeTax.lowMiddleBoundary
         val isBoundaryValid = CommandErrorMessage(
-            (boundary >= 0.0),
-            I18NString("Boundary should be larger than 0. ")
+            (boundary >= 0.0) && (boundary >= lowMiddleBoundary),
+            I18NString("Boundary should be larger than 0 and low-middle boundary. ")
         )
 
         return CommandErrorMessage(

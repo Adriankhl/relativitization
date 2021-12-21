@@ -1098,7 +1098,109 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         }
         nestedTable.add(changeHighIncomeTaxSlider).colspan(2)
 
+        nestedTable.row().spaceTop(30f)
+
+        nestedTable.add(
+            createLabel(
+                "Low-middle boundary: ${taxRateData.incomeTax.lowMiddleBoundary}",
+                gdxSettings.smallFontSize
+            )
+        ).colspan(2)
+
         nestedTable.row().space(10f)
+
+        val changeLowMiddleBoundaryButton = createTextButton(
+            "Change low-middle boundary",
+            gdxSettings.smallFontSize,
+            gdxSettings.soundEffectsVolume
+        ) {
+            val changeLowMiddleBoundaryCommand = ChangeLowMiddleBoundaryCommand(
+                toId = playerData.playerId,
+                fromId = game.universeClient.getCurrentPlayerData().playerId,
+                fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
+                boundary = newLowMiddleIncomeBoundary.value,
+            )
+
+            game.universeClient.currentCommand = changeLowMiddleBoundaryCommand
+        }
+        nestedTable.add(changeLowMiddleBoundaryButton).colspan(2)
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "New low-middle boundary: ",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.add(newLowMiddleIncomeBoundary.textField)
+
+        nestedTable.row().space(10f)
+
+        val changeLowMiddleBoundarySliderButton = createDoubleSliderButtonTable(
+            newLowMiddleIncomeBoundary.value,
+            0.01f,
+            2,
+            40f * gdxSettings.imageScale,
+            gdxSettings.soundEffectsVolume,
+            currentValue = { newLowMiddleIncomeBoundary.value }
+        ) {
+            newLowMiddleIncomeBoundary.value = it
+        }
+        nestedTable.add(changeLowMiddleBoundarySliderButton).colspan(2)
+
+        nestedTable.row().spaceTop(30f)
+
+        nestedTable.add(
+            createLabel(
+                "Middle-high boundary: ${taxRateData.incomeTax.middleHighBoundary}",
+                gdxSettings.smallFontSize
+            )
+        ).colspan(2)
+
+        nestedTable.row().space(10f)
+
+        val changeMiddleHighBoundaryButton = createTextButton(
+            "Change middle-high boundary",
+            gdxSettings.smallFontSize,
+            gdxSettings.soundEffectsVolume
+        ) {
+            val changeMiddleHighBoundaryCommand = ChangeMiddleHighBoundaryCommand(
+                toId = playerData.playerId,
+                fromId = game.universeClient.getCurrentPlayerData().playerId,
+                fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
+                boundary = newMiddleHighIncomeBoundary.value,
+            )
+
+            game.universeClient.currentCommand = changeMiddleHighBoundaryCommand
+        }
+        nestedTable.add(changeMiddleHighBoundaryButton).colspan(2)
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "New middle-high boundary: ",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.add(newMiddleHighIncomeBoundary.textField)
+
+        nestedTable.row().space(10f)
+
+        val changeMiddleHighBoundarySliderButton = createDoubleSliderButtonTable(
+            newMiddleHighIncomeBoundary.value,
+            0.01f,
+            2,
+            40f * gdxSettings.imageScale,
+            gdxSettings.soundEffectsVolume,
+            currentValue = { newMiddleHighIncomeBoundary.value }
+        ) {
+            newMiddleHighIncomeBoundary.value = it
+        }
+        nestedTable.add(changeMiddleHighBoundarySliderButton).colspan(2)
 
         return nestedTable
     }
