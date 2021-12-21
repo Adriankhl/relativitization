@@ -664,6 +664,7 @@ data class RemoveForeignFuelFactoryCommand(
             IntString(1),
             NormalString(" of player "),
             IntString(2),
+            NormalString(". "),
         ),
         listOf(
             targetFuelFactoryId.toString(),
@@ -759,6 +760,7 @@ data class RemoveForeignResourceFactoryCommand(
             IntString(1),
             NormalString(" of player "),
             IntString(2),
+            NormalString(". "),
         ),
         listOf(
             targetResourceFactoryId.toString(),
@@ -857,6 +859,7 @@ data class RemoveLocalFuelFactoryCommand(
             IntString(1),
             NormalString(" of player "),
             IntString(2),
+            NormalString(". "),
         ),
         listOf(
             targetFuelFactoryId.toString(),
@@ -1019,6 +1022,7 @@ data class RemoveLocalResourceFactoryCommand(
             IntString(1),
             NormalString(" of player "),
             IntString(2),
+            NormalString(". "),
         ),
         listOf(
             targetResourceFactoryId.toString(),
@@ -1188,6 +1192,7 @@ data class SupplyForeignFuelFactoryCommand(
             IntString(2),
             NormalString(" of player "),
             IntString(3),
+            NormalString(". "),
         ),
         listOf(
             amount.toString(),
@@ -1270,6 +1275,258 @@ data class SupplyForeignFuelFactoryCommand(
 }
 
 /**
+ * Open a fuel factory locally from player
+ *
+ * @property targetCarrierId remove factory from that carrier
+ * @property targetFuelFactoryId remove factory with that id
+ */
+@Serializable
+data class OpenLocalFuelFactoryCommand(
+    override val toId: Int,
+    override val fromId: Int,
+    override val fromInt4D: Int4D,
+    val targetCarrierId: Int,
+    val targetFuelFactoryId: Int
+) : DefaultCommand() {
+    override val description: I18NString = I18NString(
+        listOf(
+            NormalString("Open a fuel factory with id "),
+            IntString(0),
+            NormalString(" at carrier "),
+            IntString(1),
+            NormalString(" of player "),
+            IntString(2),
+            NormalString(". "),
+        ),
+        listOf(
+            targetFuelFactoryId.toString(),
+            targetCarrierId.toString(),
+            toId.toString(),
+        )
+    )
+
+    override fun canSend(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): CommandErrorMessage {
+        val isSelf = CommandErrorMessage(
+            playerData.playerId == toId,
+            CommandI18NStringFactory.isNotToSelf(fromId, toId)
+        )
+
+        val hasCarrier = CommandErrorMessage(
+            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(targetCarrierId),
+            I18NString("Carrier does not exist. ")
+        )
+
+        val hasFuelFactory = CommandErrorMessage(
+            if (hasCarrier.success) {
+                val carrier: MutableCarrierData =
+                    playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
+                        targetCarrierId
+                    )
+
+                carrier.allPopData.labourerPopData.fuelFactoryMap.containsKey(
+                    targetFuelFactoryId
+                )
+            } else {
+                false
+            },
+            I18NString("Fuel factory does not exist. ")
+        )
+
+        return CommandErrorMessage(
+            listOf(
+                isSelf,
+                hasCarrier,
+                hasFuelFactory,
+            )
+        )
+    }
+
+    override fun canExecute(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): CommandErrorMessage {
+        val isSelf = CommandErrorMessage(
+            playerData.playerId == fromId,
+            CommandI18NStringFactory.isNotFromSelf(playerData.playerId, fromId)
+        )
+
+        val hasCarrier = CommandErrorMessage(
+            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(targetCarrierId),
+            I18NString("Carrier does not exist. ")
+        )
+
+        val hasFuelFactory = CommandErrorMessage(
+            if (hasCarrier.success) {
+                val carrier: MutableCarrierData =
+                    playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
+                        targetCarrierId
+                    )
+
+                carrier.allPopData.labourerPopData.fuelFactoryMap.containsKey(
+                    targetFuelFactoryId
+                )
+            } else {
+                false
+            },
+            I18NString("Fuel factory does not exist. ")
+        )
+
+        return CommandErrorMessage(
+            listOf(
+                isSelf,
+                hasCarrier,
+                hasFuelFactory,
+            )
+        )
+    }
+
+    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+        val carrier: MutableCarrierData =
+            playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
+                targetCarrierId
+            )
+
+        carrier.allPopData.labourerPopData.fuelFactoryMap.getValue(
+            targetFuelFactoryId
+        ).isOpened = true
+    }
+
+
+    companion object {
+        private val logger = RelativitizationLogManager.getLogger()
+    }
+}
+
+/**
+ * Close a fuel factory locally from player
+ *
+ * @property targetCarrierId remove factory from that carrier
+ * @property targetFuelFactoryId remove factory with that id
+ */
+@Serializable
+data class CloseLocalFuelFactoryCommand(
+    override val toId: Int,
+    override val fromId: Int,
+    override val fromInt4D: Int4D,
+    val targetCarrierId: Int,
+    val targetFuelFactoryId: Int
+) : DefaultCommand() {
+    override val description: I18NString = I18NString(
+        listOf(
+            NormalString("Close a fuel factory with id "),
+            IntString(0),
+            NormalString(" at carrier "),
+            IntString(1),
+            NormalString(" of player "),
+            IntString(2),
+            NormalString(". "),
+        ),
+        listOf(
+            targetFuelFactoryId.toString(),
+            targetCarrierId.toString(),
+            toId.toString(),
+        )
+    )
+
+    override fun canSend(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): CommandErrorMessage {
+        val isSelf = CommandErrorMessage(
+            playerData.playerId == toId,
+            CommandI18NStringFactory.isNotToSelf(fromId, toId)
+        )
+
+        val hasCarrier = CommandErrorMessage(
+            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(targetCarrierId),
+            I18NString("Carrier does not exist. ")
+        )
+
+        val hasFuelFactory = CommandErrorMessage(
+            if (hasCarrier.success) {
+                val carrier: MutableCarrierData =
+                    playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
+                        targetCarrierId
+                    )
+
+                carrier.allPopData.labourerPopData.fuelFactoryMap.containsKey(
+                    targetFuelFactoryId
+                )
+            } else {
+                false
+            },
+            I18NString("Fuel factory does not exist. ")
+        )
+
+        return CommandErrorMessage(
+            listOf(
+                isSelf,
+                hasCarrier,
+                hasFuelFactory,
+            )
+        )
+    }
+
+    override fun canExecute(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): CommandErrorMessage {
+        val isSelf = CommandErrorMessage(
+            playerData.playerId == fromId,
+            CommandI18NStringFactory.isNotFromSelf(playerData.playerId, fromId)
+        )
+
+        val hasCarrier = CommandErrorMessage(
+            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(targetCarrierId),
+            I18NString("Carrier does not exist. ")
+        )
+
+        val hasFuelFactory = CommandErrorMessage(
+            if (hasCarrier.success) {
+                val carrier: MutableCarrierData =
+                    playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
+                        targetCarrierId
+                    )
+
+                carrier.allPopData.labourerPopData.fuelFactoryMap.containsKey(
+                    targetFuelFactoryId
+                )
+            } else {
+                false
+            },
+            I18NString("Fuel factory does not exist. ")
+        )
+
+        return CommandErrorMessage(
+            listOf(
+                isSelf,
+                hasCarrier,
+                hasFuelFactory,
+            )
+        )
+    }
+
+    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+        val carrier: MutableCarrierData =
+            playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
+                targetCarrierId
+            )
+
+        carrier.allPopData.labourerPopData.fuelFactoryMap.getValue(
+            targetFuelFactoryId
+        ).isOpened = false
+    }
+
+
+    companion object {
+        private val logger = RelativitizationLogManager.getLogger()
+    }
+}
+
+/**
  * Supply fuel to a resource factory in foreign player
  *
  * @property targetCarrierId supply the factory from that carrier
@@ -1295,6 +1552,7 @@ data class SupplyForeignResourceFactoryCommand(
             IntString(2),
             NormalString(" of player "),
             IntString(3),
+            NormalString(". "),
         ),
         listOf(
             amount.toString(),
@@ -1376,5 +1634,257 @@ data class SupplyForeignResourceFactoryCommand(
         carrier.allPopData.labourerPopData.resourceFactoryMap.getValue(
             targetResourceFactoryId
         ).storedFuelRestMass += amount
+    }
+}
+
+/**
+ * Open a resource factory locally from player
+ *
+ * @property targetCarrierId remove factory from that carrier
+ * @property targetResourceFactoryId remove factory with that id
+ */
+@Serializable
+data class OpenLocalResourceFactoryCommand(
+    override val toId: Int,
+    override val fromId: Int,
+    override val fromInt4D: Int4D,
+    val targetCarrierId: Int,
+    val targetResourceFactoryId: Int
+) : DefaultCommand() {
+    override val description: I18NString = I18NString(
+        listOf(
+            NormalString("Open a resource factory with id "),
+            IntString(0),
+            NormalString(" at carrier "),
+            IntString(1),
+            NormalString(" of player "),
+            IntString(2),
+            NormalString(". "),
+        ),
+        listOf(
+            targetResourceFactoryId.toString(),
+            targetCarrierId.toString(),
+            toId.toString(),
+        )
+    )
+
+    override fun canSend(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): CommandErrorMessage {
+        val isSelf = CommandErrorMessage(
+            playerData.playerId == toId,
+            CommandI18NStringFactory.isNotToSelf(fromId, toId)
+        )
+
+        val hasCarrier = CommandErrorMessage(
+            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(targetCarrierId),
+            I18NString("Carrier does not exist. ")
+        )
+
+        val hasResourceFactory = CommandErrorMessage(
+            if (hasCarrier.success) {
+                val carrier: MutableCarrierData =
+                    playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
+                        targetCarrierId
+                    )
+
+                carrier.allPopData.labourerPopData.resourceFactoryMap.containsKey(
+                    targetResourceFactoryId
+                )
+            } else {
+                false
+            },
+            I18NString("Resource factory does not exist. ")
+        )
+
+        return CommandErrorMessage(
+            listOf(
+                isSelf,
+                hasCarrier,
+                hasResourceFactory,
+            )
+        )
+    }
+
+    override fun canExecute(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): CommandErrorMessage {
+        val isSelf = CommandErrorMessage(
+            playerData.playerId == fromId,
+            CommandI18NStringFactory.isNotFromSelf(playerData.playerId, fromId)
+        )
+
+        val hasCarrier = CommandErrorMessage(
+            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(targetCarrierId),
+            I18NString("Carrier does not exist. ")
+        )
+
+        val hasResourceFactory = CommandErrorMessage(
+            if (hasCarrier.success) {
+                val carrier: MutableCarrierData =
+                    playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
+                        targetCarrierId
+                    )
+
+                carrier.allPopData.labourerPopData.resourceFactoryMap.containsKey(
+                    targetResourceFactoryId
+                )
+            } else {
+                false
+            },
+            I18NString("Resource factory does not exist. ")
+        )
+
+        return CommandErrorMessage(
+            listOf(
+                isSelf,
+                hasCarrier,
+                hasResourceFactory,
+            )
+        )
+    }
+
+    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+        val carrier: MutableCarrierData =
+            playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
+                targetCarrierId
+            )
+
+        carrier.allPopData.labourerPopData.resourceFactoryMap.getValue(
+            targetResourceFactoryId
+        ).isOpened = true
+    }
+
+
+    companion object {
+        private val logger = RelativitizationLogManager.getLogger()
+    }
+}
+
+/**
+ * Open a resource factory locally from player
+ *
+ * @property targetCarrierId remove factory from that carrier
+ * @property targetResourceFactoryId remove factory with that id
+ */
+@Serializable
+data class CloseLocalResourceFactoryCommand(
+    override val toId: Int,
+    override val fromId: Int,
+    override val fromInt4D: Int4D,
+    val targetCarrierId: Int,
+    val targetResourceFactoryId: Int
+) : DefaultCommand() {
+    override val description: I18NString = I18NString(
+        listOf(
+            NormalString("Close a resource factory with id "),
+            IntString(0),
+            NormalString(" at carrier "),
+            IntString(1),
+            NormalString(" of player "),
+            IntString(2),
+            NormalString(". "),
+        ),
+        listOf(
+            targetResourceFactoryId.toString(),
+            targetCarrierId.toString(),
+            toId.toString(),
+        )
+    )
+
+    override fun canSend(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): CommandErrorMessage {
+        val isSelf = CommandErrorMessage(
+            playerData.playerId == toId,
+            CommandI18NStringFactory.isNotToSelf(fromId, toId)
+        )
+
+        val hasCarrier = CommandErrorMessage(
+            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(targetCarrierId),
+            I18NString("Carrier does not exist. ")
+        )
+
+        val hasResourceFactory = CommandErrorMessage(
+            if (hasCarrier.success) {
+                val carrier: MutableCarrierData =
+                    playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
+                        targetCarrierId
+                    )
+
+                carrier.allPopData.labourerPopData.resourceFactoryMap.containsKey(
+                    targetResourceFactoryId
+                )
+            } else {
+                false
+            },
+            I18NString("Resource factory does not exist. ")
+        )
+
+        return CommandErrorMessage(
+            listOf(
+                isSelf,
+                hasCarrier,
+                hasResourceFactory,
+            )
+        )
+    }
+
+    override fun canExecute(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): CommandErrorMessage {
+        val isSelf = CommandErrorMessage(
+            playerData.playerId == fromId,
+            CommandI18NStringFactory.isNotFromSelf(playerData.playerId, fromId)
+        )
+
+        val hasCarrier = CommandErrorMessage(
+            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(targetCarrierId),
+            I18NString("Carrier does not exist. ")
+        )
+
+        val hasResourceFactory = CommandErrorMessage(
+            if (hasCarrier.success) {
+                val carrier: MutableCarrierData =
+                    playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
+                        targetCarrierId
+                    )
+
+                carrier.allPopData.labourerPopData.resourceFactoryMap.containsKey(
+                    targetResourceFactoryId
+                )
+            } else {
+                false
+            },
+            I18NString("Resource factory does not exist. ")
+        )
+
+        return CommandErrorMessage(
+            listOf(
+                isSelf,
+                hasCarrier,
+                hasResourceFactory,
+            )
+        )
+    }
+
+    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+        val carrier: MutableCarrierData =
+            playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
+                targetCarrierId
+            )
+
+        carrier.allPopData.labourerPopData.resourceFactoryMap.getValue(
+            targetResourceFactoryId
+        ).isOpened = false
+    }
+
+
+    companion object {
+        private val logger = RelativitizationLogManager.getLogger()
     }
 }
