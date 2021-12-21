@@ -14,6 +14,11 @@ data class DiplomacyModifierData(
     val peaceTreaty: Map<Int, Int> = mapOf(),
     val relationModifierMap: Map<Int, RelationModifier> = mapOf(),
 ) {
+    fun getPeaceTreatyLength(playerId: Int): Int = peaceTreaty.getOrDefault(playerId, 0)
+
+    fun getRelationModifier(playerId: Int): RelationModifier =
+        relationModifierMap.getOrDefault(playerId, RelationModifier())
+
     /**
      * Get relation change by modifier
      *

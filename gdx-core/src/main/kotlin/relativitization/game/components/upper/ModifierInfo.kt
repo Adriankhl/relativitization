@@ -19,6 +19,10 @@ class ModifierInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>
 
     private var playerData: PlayerData = PlayerData(-1)
 
+    private var otherPlayerId = createIntTextField(
+        -1,
+        gdxSettings.smallFontSize
+    )
 
     init {
 
@@ -146,6 +150,17 @@ class ModifierInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>
 
         val diplomacyModifier: DiplomacyModifierData = playerData.playerInternalData.modifierData()
             .diplomacyModifierData
+
+        val otherPlayerIdSelectBox = createSelectBox(
+            (diplomacyModifier.peaceTreaty.keys +
+                    diplomacyModifier.relationModifierMap.keys).toList(),
+            otherPlayerId.value,
+            gdxSettings.smallFontSize
+        ) { i, _ ->
+            otherPlayerId.value = i
+            updateTable()
+        }
+        nestedTable.add(otherPlayerIdSelectBox).colspan(2)
 
         return nestedTable
     }
