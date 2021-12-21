@@ -24,13 +24,13 @@ internal class SendResourceFromStorageCommandTest {
         assert(
             resourceData1.getTradeResourceAmount(
                 ResourceType.PLANT,
-                ResourceQualityClass.FIRST
+                ResourceQualityClass.THIRD
             ) == 5.0
         )
         assert(
             resourceData2.getTradeResourceAmount(
                 ResourceType.PLANT,
-                ResourceQualityClass.FIRST
+                ResourceQualityClass.THIRD
             ) == 0.0
         )
 
@@ -39,13 +39,15 @@ internal class SendResourceFromStorageCommandTest {
             fromId = 1,
             fromInt4D = playerData1.int4D,
             resourceType = ResourceType.PLANT,
-            resourceQualityClass = ResourceQualityClass.FIRST,
+            resourceQualityClass = ResourceQualityClass.THIRD,
             resourceQualityData = resourceData1.getResourceQuality(
                 ResourceType.PLANT,
-                ResourceQualityClass.FIRST
+                ResourceQualityClass.THIRD
             ),
             amount = 3.0,
-            senderResourceLossFractionPerDistance = playerData1.playerInternalData.playerScienceData().playerScienceApplicationData.resourceLogisticsLossFractionPerDistance
+            senderResourceLossFractionPerDistance = playerData1.playerInternalData
+                .playerScienceData().playerScienceApplicationData
+                .resourceLogisticsLossFractionPerDistance
         )
 
 
@@ -70,13 +72,13 @@ internal class SendResourceFromStorageCommandTest {
         assert(
             newResourceData1.getTradeResourceAmount(
                 ResourceType.PLANT,
-                ResourceQualityClass.FIRST
+                ResourceQualityClass.THIRD
             ) == 2.0
         )
         assert(
             newResourceData2.getTradeResourceAmount(
                 ResourceType.PLANT,
-                ResourceQualityClass.FIRST
+                ResourceQualityClass.THIRD
             ) == 3.0
         )
 

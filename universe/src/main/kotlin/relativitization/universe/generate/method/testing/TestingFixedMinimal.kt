@@ -4,6 +4,7 @@ import relativitization.universe.ai.EmptyAI
 import relativitization.universe.ai.name
 import relativitization.universe.data.*
 import relativitization.universe.data.components.defaults.economy.MutableResourceQualityData
+import relativitization.universe.data.components.defaults.economy.ResourceQualityClass
 import relativitization.universe.data.components.defaults.economy.ResourceType
 import relativitization.universe.data.components.defaults.physics.MutableDouble4D
 import relativitization.universe.data.components.defaults.physics.MutableInt4D
@@ -148,6 +149,15 @@ object TestingFixedMinimal : TestingGenerateUniverseMethod() {
 
         // Add fuel and resource to player 1
         playerData1.playerInternalData.physicsData().fuelRestMassData.production = 30.0
+        playerData1.playerInternalData.economyData().resourceData.getSingleResourceData(
+            ResourceType.PLANT,
+            ResourceQualityClass.FIRST
+        ).resourceQualityLowerBound += 100.0
+        playerData1.playerInternalData.economyData().resourceData.getSingleResourceData(
+            ResourceType.PLANT,
+            ResourceQualityClass.SECOND
+        ).resourceQualityLowerBound += 50.0
+        // Add to third class
         playerData1.playerInternalData.economyData().resourceData.addResource(
             ResourceType.PLANT,
             MutableResourceQualityData(
@@ -157,6 +167,16 @@ object TestingFixedMinimal : TestingGenerateUniverseMethod() {
             ),
             5.0,
         )
+
+        // Increase player 2 quality bound
+        playerData2.playerInternalData.economyData().resourceData.getSingleResourceData(
+            ResourceType.PLANT,
+            ResourceQualityClass.FIRST
+        ).resourceQualityLowerBound += 100.0
+        playerData2.playerInternalData.economyData().resourceData.getSingleResourceData(
+            ResourceType.PLANT,
+            ResourceQualityClass.SECOND
+        ).resourceQualityLowerBound += 50.0
 
         // Player 2 is a subordinate of player 1
         playerData1.addDirectSubordinateId(playerData2.playerId)
