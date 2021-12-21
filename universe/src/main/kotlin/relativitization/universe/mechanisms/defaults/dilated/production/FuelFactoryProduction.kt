@@ -40,7 +40,7 @@ object FuelFactoryProduction : Mechanism() {
         if (mutablePlayerData.playerInternalData.modifierData().physicsModifierData.disableRestMassIncreaseTimeLimit <= 0) {
             mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.forEach { carrier ->
                 carrier.allPopData.labourerPopData.fuelFactoryMap.values.filter { factory ->
-                    factory.ownerPlayerId == mutablePlayerData.playerId
+                    (factory.ownerPlayerId == mutablePlayerData.playerId) && (factory.isOpened)
                 }.forEach { factory ->
                     updateResourceData(
                         factory,
@@ -55,7 +55,7 @@ object FuelFactoryProduction : Mechanism() {
         val logisticCommandList: List<Command> =
             mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.map { carrier ->
                 carrier.allPopData.labourerPopData.fuelFactoryMap.values.filter { factory ->
-                    factory.ownerPlayerId != mutablePlayerData.playerId
+                    (factory.ownerPlayerId != mutablePlayerData.playerId) && (factory.isOpened)
                 }.map { factory ->
                     computeSendFuelCommand(
                         factory,

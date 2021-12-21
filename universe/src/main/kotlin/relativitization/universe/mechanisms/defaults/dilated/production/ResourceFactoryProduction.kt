@@ -31,7 +31,7 @@ object ResourceFactoryProduction : Mechanism() {
         // Do self factory production first
         mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.forEach { carrier ->
             carrier.allPopData.labourerPopData.resourceFactoryMap.values.filter { factory ->
-                factory.ownerPlayerId == mutablePlayerData.playerId
+                (factory.ownerPlayerId == mutablePlayerData.playerId) && (factory.isOpened)
             }.forEach { factory ->
                 updateResourceData(
                     factory,
@@ -46,7 +46,7 @@ object ResourceFactoryProduction : Mechanism() {
         val logisticCommandList: List<Command> =
             mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.map { carrier ->
                 carrier.allPopData.labourerPopData.resourceFactoryMap.values.filter { factory ->
-                    factory.ownerPlayerId != mutablePlayerData.playerId
+                    (factory.ownerPlayerId != mutablePlayerData.playerId) && (factory.isOpened)
                 }.map { factory ->
                     computeSendResourceCommand(
                         factory,
