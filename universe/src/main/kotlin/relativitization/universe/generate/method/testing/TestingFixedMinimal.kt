@@ -148,7 +148,7 @@ object TestingFixedMinimal : TestingGenerateUniverseMethod() {
 
         // Add fuel and resource to player 1
         playerData1.playerInternalData.physicsData().fuelRestMassData.production = 30.0
-        playerData1.playerInternalData.economyData().resourceData.addNewResource(
+        playerData1.playerInternalData.economyData().resourceData.addResource(
             ResourceType.PLANT,
             MutableResourceQualityData(
                 1.0,

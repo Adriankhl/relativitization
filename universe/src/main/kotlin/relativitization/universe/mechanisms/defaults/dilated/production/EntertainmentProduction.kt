@@ -29,7 +29,7 @@ object EntertainmentProduction : Mechanism() {
                 mutablePlayerData.playerInternalData.playerScienceData().playerScienceApplicationData.idealEntertainmentQuality
             )
 
-            mutablePlayerData.playerInternalData.economyData().resourceData.addNewResource(
+            mutablePlayerData.playerInternalData.economyData().resourceData.addResource(
                 newResourceType = ResourceType.ENTERTAINMENT,
                 newResourceQuality = qualityData,
                 newResourceAmount = amount,

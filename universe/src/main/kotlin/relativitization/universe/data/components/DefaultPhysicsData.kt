@@ -39,7 +39,7 @@ data class MutablePhysicsData(
      * Add fuel such that it fulfill the target in the order of storage, movement, production, and
      * put the rest in trade, by recursion
      */
-    fun addNewFuel(newFuelRestMass: Double) {
+    fun addFuel(newFuelRestMass: Double) {
         if (newFuelRestMass > 0.0) {
             when {
                 fuelRestMassData.storage < targetFuelRestMassData.storage -> {
@@ -48,7 +48,7 @@ data class MutablePhysicsData(
                         targetFuelRestMassData.storage - fuelRestMassData.storage
                     )
                     fuelRestMassData.storage += actualFuelAdded
-                    addNewFuel(newFuelRestMass - actualFuelAdded)
+                    addFuel(newFuelRestMass - actualFuelAdded)
                 }
                 fuelRestMassData.movement < targetFuelRestMassData.movement -> {
                     val actualFuelAdded: Double = min(
@@ -56,7 +56,7 @@ data class MutablePhysicsData(
                         targetFuelRestMassData.movement - fuelRestMassData.movement
                     )
                     fuelRestMassData.movement += actualFuelAdded
-                    addNewFuel(newFuelRestMass - actualFuelAdded)
+                    addFuel(newFuelRestMass - actualFuelAdded)
                 }
                 fuelRestMassData.production < targetFuelRestMassData.production -> {
                     val actualFuelAdded: Double = min(
@@ -64,7 +64,7 @@ data class MutablePhysicsData(
                         targetFuelRestMassData.movement - fuelRestMassData.movement
                     )
                     fuelRestMassData.production += actualFuelAdded
-                    addNewFuel(newFuelRestMass - actualFuelAdded)
+                    addFuel(newFuelRestMass - actualFuelAdded)
                 }
                 else -> {
                     fuelRestMassData.trade += newFuelRestMass

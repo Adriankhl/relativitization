@@ -30,7 +30,7 @@ object BaseStellarFuelProduction : Mechanism() {
                 }
 
             fuelList.forEach {
-                mutablePlayerData.playerInternalData.physicsData().addNewFuel(it)
+                mutablePlayerData.playerInternalData.physicsData().addFuel(it)
             }
         }
 

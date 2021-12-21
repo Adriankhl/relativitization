@@ -159,7 +159,7 @@ data class SendFuelFromStorageCommand(
         )
 
         // Add fuel
-        playerData.playerInternalData.physicsData().addNewFuel(remainAmount)
+        playerData.playerInternalData.physicsData().addFuel(remainAmount)
     }
 
     companion object {
@@ -317,7 +317,7 @@ data class SendResourceFromStorageCommand(
             (1.0 - lossFractionPerDistance).pow(distance)
         }
 
-        playerData.playerInternalData.economyData().resourceData.addNewResource(
+        playerData.playerInternalData.economyData().resourceData.addResource(
             newResourceType = resourceType,
             newResourceQuality = resourceQualityData.toMutableResourceQualityData(),
             newResourceAmount = amount * remainFraction
@@ -385,7 +385,7 @@ data class SendFuelCommand(
             (1.0 - lossFractionPerDistance).pow(distance)
         }
 
-        playerData.playerInternalData.physicsData().addNewFuel(amount * remainFraction)
+        playerData.playerInternalData.physicsData().addFuel(amount * remainFraction)
     }
 
     companion object {
@@ -445,7 +445,7 @@ data class SendResourceCommand(
             (1.0 - lossFractionPerDistance).pow(distance)
         }
 
-        playerData.playerInternalData.economyData().resourceData.addNewResource(
+        playerData.playerInternalData.economyData().resourceData.addResource(
             newResourceType = resourceType,
             newResourceQuality = resourceQualityData.toMutableResourceQualityData(),
             newResourceAmount = amount * remainFraction

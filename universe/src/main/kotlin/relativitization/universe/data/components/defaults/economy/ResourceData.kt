@@ -289,7 +289,7 @@ data class MutableResourceData(
     /**
      * Add resource to storage, production or trading depending on the target
      */
-    fun addNewResource(
+    fun addResource(
         newResourceType: ResourceType,
         newResourceQuality: MutableResourceQualityData,
         newResourceAmount: Double,
@@ -298,7 +298,7 @@ data class MutableResourceData(
             newResourceQuality.geq(getResourceQualityLowerBound(newResourceType, it))
         } ?: ResourceQualityClass.THIRD
 
-        getSingleResourceData(newResourceType, qualityClass).addNewResource(
+        getSingleResourceData(newResourceType, qualityClass).addResource(
             newResourceQuality,
             newResourceAmount
         )
@@ -534,7 +534,7 @@ data class MutableSingleResourceData(
     /**
      * Add resource to this data
      */
-    fun addNewResource(
+    fun addResource(
         newResourceQuality: MutableResourceQualityData,
         newResourceAmount: Double,
     ) {
