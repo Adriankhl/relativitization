@@ -1,10 +1,7 @@
 package relativitization.universe.data.components.defaults.economy
 
 import kotlinx.serialization.Serializable
-import kotlin.math.abs
-import kotlin.math.pow
-import kotlin.math.sign
-import kotlin.math.sqrt
+import kotlin.math.*
 
 enum class ResourceType(val value: String) {
     PLANT("Plant"), // Raw material
@@ -486,6 +483,28 @@ data class MutableResourceQualityData(
      * Resource difference
      */
     fun squareDiff(other: MutableResourceQualityData): Double = (this - other).square()
+
+    /**
+     * Combine min of the qualities
+     */
+    fun combineMin(other: MutableResourceQualityData): MutableResourceQualityData {
+        return MutableResourceQualityData(
+            quality1 = min(quality1, other.quality1),
+            quality2 = min(quality2, other.quality2),
+            quality3 = min(quality3, other.quality3)
+        )
+    }
+
+    /**
+     * Combine max of the qualities
+     */
+    fun combineMax(other: MutableResourceQualityData): MutableResourceQualityData {
+        return MutableResourceQualityData(
+            quality1 = max(quality1, other.quality1),
+            quality2 = max(quality2, other.quality2),
+            quality3 = max(quality3, other.quality3)
+        )
+    }
 }
 
 /**
