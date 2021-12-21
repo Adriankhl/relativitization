@@ -3,6 +3,7 @@ package relativitization.universe.mechanisms
 import relativitization.universe.mechanisms.defaults.dilated.modifier.UpdateModifierByProperTime
 import relativitization.universe.mechanisms.defaults.dilated.combat.AutoCombat
 import relativitization.universe.mechanisms.defaults.dilated.economy.UpdatePrice
+import relativitization.universe.mechanisms.defaults.dilated.economy.UpdateResourceQualityBound
 import relativitization.universe.mechanisms.defaults.regular.dead.ClearDeadPlayer
 import relativitization.universe.mechanisms.defaults.regular.diplomacy.UpdateDiplomaticRelation
 import relativitization.universe.mechanisms.defaults.regular.diplomacy.UpdateDiplomaticRelationState
@@ -59,6 +60,7 @@ object DefaultMechanismLists : MechanismLists() {
         EntertainmentProduction,
         ExportResource,
         UpdatePrice,
+        UpdateResourceQualityBound,
         Educate,
         PopulationGrowth,
         Migration,

@@ -372,6 +372,13 @@ data class MutableResourceQualityData(
             quality3 + other.quality3,
         )
 
+    operator fun plus(num: Double): MutableResourceQualityData =
+        MutableResourceQualityData(
+            quality1 + num,
+            quality2 + num,
+            quality3 + num,
+        )
+
     operator fun minus(other: MutableResourceQualityData): MutableResourceQualityData =
         MutableResourceQualityData(
             quality1 - other.quality1,
@@ -503,6 +510,12 @@ data class MutableResourceAmountData(
     var production: Double = 0.0,
     var trade: Double = 0.0,
 ) {
+    operator fun times(num: Double) = MutableResourceAmountData(
+        storage = storage * num,
+        production = production * num,
+        trade = trade * num
+    )
+
     fun total(): Double = storage + trade + production
 }
 

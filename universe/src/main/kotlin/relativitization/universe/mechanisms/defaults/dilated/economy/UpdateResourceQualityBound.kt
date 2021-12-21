@@ -24,9 +24,8 @@ object UpdateResourceQualityBound : Mechanism() {
         val idealSecondClassAmountRatio: Double = 0.3
         val amountChangeFactor: Double = 0.2
         // Determine how the bound should change
-        val maxFirstClassQualityBoundRatio: Double = 5.0
-        val maxSecondClassQualityBoundRatio: Double = 5.0
-        val minClassQualityBoundRatio: Double = 1.01
+        val maxClassQualityBoundRatio: Double = 5.0
+        val minQualityClassDiff: Double = 0.1
         val qualityBoundChangeFactor: Double = 1.2
 
         ResourceType.values().forEach { resourceType ->
@@ -36,9 +35,10 @@ object UpdateResourceQualityBound : Mechanism() {
                         .resourceData.getSingleResourceData(resourceType, resourceQualityClass)
                 }.toMap()
 
-            val totalAmount: Double = qualityMap.values.fold(0.0) { acc, mutableSingleResourceData ->
-                acc + mutableSingleResourceData.resourceAmount.total()
-            }
+            val totalAmount: Double =
+                qualityMap.values.fold(0.0) { acc, mutableSingleResourceData ->
+                    acc + mutableSingleResourceData.resourceAmount.total()
+                }
 
             // Change quality bound
 
@@ -46,23 +46,131 @@ object UpdateResourceQualityBound : Mechanism() {
             qualityMap.getValue(ResourceQualityClass.THIRD).resourceQualityLowerBound =
                 MutableResourceQualityData()
 
+            // Only do the update when there is resource
             if (totalAmount > 0.0) {
-                val firstRatio: Double = qualityMap.getValue(
-                    ResourceQualityClass.FIRST
-                ).resourceAmount.total() / totalAmount
                 val secondRatio: Double = qualityMap.getValue(
                     ResourceQualityClass.SECOND
                 ).resourceAmount.total() / totalAmount
 
-                if (secondRatio > idealSecondClassAmountRatio) {
+                val firstRatio: Double = qualityMap.getValue(
+                    ResourceQualityClass.FIRST
+                ).resourceAmount.total() / totalAmount
 
-                } else if (secondRatio < idealSecondClassAmountRatio) {
 
+                // Put higher quality resource to lower quality class if there are too many
+                // Do first class first
+                if (firstRatio > idealFirstClassAmountRatio) {
+                    val changeFraction: Double = amountChangeFactor *
+                            (firstRatio - idealFirstClassAmountRatio) / firstRatio
+                    val changeAmount: Double = qualityMap.getValue(
+                        ResourceQualityClass.FIRST
+                    ).resourceAmount.total() * changeFraction
+
+                    // Update second class resource
+                    qualityMap.getValue(
+                        ResourceQualityClass.FIRST
+                    ).resourceAmount *= (1.0 - changeFraction)
+
+                    // Add the amount to second class resource
+                    qualityMap.getValue(ResourceQualityClass.SECOND).addResource(
+                        newResourceQuality = qualityMap.getValue(
+                            ResourceQualityClass.FIRST
+                        ).resourceQuality,
+                        newResourceAmount = changeAmount
+                    )
                 }
+                if (secondRatio > idealSecondClassAmountRatio) {
+                    val changeFraction: Double = amountChangeFactor *
+                            (secondRatio - idealSecondClassAmountRatio) / secondRatio
+                    val changeAmount: Double = qualityMap.getValue(
+                        ResourceQualityClass.SECOND
+                    ).resourceAmount.total() * changeFraction
+
+                    // Update second class resource
+                    qualityMap.getValue(
+                        ResourceQualityClass.SECOND
+                    ).resourceAmount *= (1.0 - changeFraction)
+
+                    // Add the amount to third class resource
+                    qualityMap.getValue(ResourceQualityClass.THIRD).addResource(
+                        newResourceQuality = qualityMap.getValue(
+                            ResourceQualityClass.SECOND
+                        ).resourceQuality,
+                        newResourceAmount = changeAmount
+                    )
+                }
+
+                // Calculate the quality bound of second class
+                // Do second class first
+                val newSecondQualityBound: MutableResourceQualityData = computeQualityBound(
+                    currentBound = qualityMap.getValue(
+                        ResourceQualityClass.SECOND
+                    ).resourceQualityLowerBound,
+                    amountRatio = secondRatio,
+                    idealAmountRatio = idealSecondClassAmountRatio,
+                    qualityBoundChangeFactor = qualityBoundChangeFactor,
+                    minQualityBound = qualityMap.getValue(
+                        ResourceQualityClass.THIRD
+                    ).resourceQuality + minQualityClassDiff,
+                    maxQualityBound = (qualityMap.getValue(
+                        ResourceQualityClass.THIRD
+                    ).resourceQuality + minQualityClassDiff) * maxClassQualityBoundRatio,
+                )
+
+                // Calculate the quality bound of first class
+                val newFirstQualityBound: MutableResourceQualityData = computeQualityBound(
+                    currentBound = qualityMap.getValue(
+                        ResourceQualityClass.FIRST
+                    ).resourceQualityLowerBound,
+                    amountRatio = firstRatio,
+                    idealAmountRatio = idealFirstClassAmountRatio,
+                    qualityBoundChangeFactor = qualityBoundChangeFactor,
+                    minQualityBound = qualityMap.getValue(
+                        ResourceQualityClass.SECOND
+                    ).resourceQuality + minQualityClassDiff,
+                    maxQualityBound = (qualityMap.getValue(
+                        ResourceQualityClass.SECOND
+                    ).resourceQuality + minQualityClassDiff) * maxClassQualityBoundRatio,
+                )
+
+
+                // Update the bound
+                qualityMap.getValue(ResourceQualityClass.SECOND).resourceQualityLowerBound =
+                    newSecondQualityBound
+                qualityMap.getValue(ResourceQualityClass.FIRST).resourceQualityLowerBound =
+                    newFirstQualityBound
+
             }
         }
+
 
         return listOf()
     }
 
+    private fun computeQualityBound(
+        currentBound: MutableResourceQualityData,
+        amountRatio: Double,
+        idealAmountRatio: Double,
+        qualityBoundChangeFactor: Double,
+        minQualityBound: MutableResourceQualityData,
+        maxQualityBound: MutableResourceQualityData,
+    ): MutableResourceQualityData {
+        val newQualityBound: MutableResourceQualityData = when {
+            amountRatio > idealAmountRatio -> {
+                currentBound * qualityBoundChangeFactor
+            }
+            amountRatio < idealAmountRatio -> {
+                currentBound * (1.0 / qualityBoundChangeFactor)
+            }
+            else -> {
+                currentBound * 1.0
+            }
+        }
+
+        return when {
+            newQualityBound.geq(maxQualityBound) -> maxQualityBound.copy()
+            newQualityBound.leq(minQualityBound) -> minQualityBound.copy()
+            else -> newQualityBound
+        }
+    }
 }
