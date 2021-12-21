@@ -544,7 +544,23 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
             )
         ).colspan(2)
 
+        nestedTable.row().space(10f)
 
+        nestedTable.add(
+            createLabel(
+                "Quality: ${singleResourceData.resourceQuality.quality1}",
+                gdxSettings.smallFontSize
+            )
+        ).colspan(2)
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "Quality lower bound: ${singleResourceData.resourceQualityLowerBound.quality1}",
+                gdxSettings.smallFontSize
+            )
+        ).colspan(2)
 
         return nestedTable
     }
