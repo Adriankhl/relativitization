@@ -603,7 +603,6 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         // Depending on whether this is a foreign player or not, use remove foreign / local command
         if (playerData.playerId == game.universeClient.getCurrentPlayerData().playerId) {
-
             val removeLocalFuelFactoryTextButton = createTextButton(
                 text = "Remove factory",
                 fontSize = gdxSettings.smallFontSize,
@@ -619,7 +618,6 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
                 game.universeClient.currentCommand = removeLocalFuelFactoryCommand
             }
-
             nestedTable.add(removeLocalFuelFactoryTextButton)
         } else {
             val removeForeignFuelFactoryTextButton = createTextButton(
@@ -637,9 +635,56 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
                 game.universeClient.currentCommand = removeForeignFuelFactoryCommand
             }
-
             nestedTable.add(removeForeignFuelFactoryTextButton)
         }
+
+        nestedTable.row().space(10f)
+
+        // Depending on whether this factory is open or close, show close/open button
+        if (fuelFactoryData.isOpened) {
+            val closeLocalFuelFactoryTextButton = createTextButton(
+                text = "Close factory",
+                fontSize = gdxSettings.smallFontSize,
+                soundVolume = gdxSettings.soundEffectsVolume,
+            ) {
+                val closeLocalFuelFactoryCommand = CloseLocalFuelFactoryCommand(
+                    toId = playerData.playerId,
+                    fromId = game.universeClient.getCurrentPlayerData().playerId,
+                    fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
+                    targetCarrierId = carrierId,
+                    targetFuelFactoryId = fuelFactoryId
+                )
+
+                game.universeClient.currentCommand = closeLocalFuelFactoryCommand
+            }
+            nestedTable.add(closeLocalFuelFactoryTextButton)
+        } else {
+            val openLocalFuelFactoryTextButton = createTextButton(
+                text = "Open factory",
+                fontSize = gdxSettings.smallFontSize,
+                soundVolume = gdxSettings.soundEffectsVolume,
+            ) {
+                val openLocalFuelFactoryCommand = OpenLocalFuelFactoryCommand(
+                    toId = playerData.playerId,
+                    fromId = game.universeClient.getCurrentPlayerData().playerId,
+                    fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
+                    targetCarrierId = carrierId,
+                    targetFuelFactoryId = fuelFactoryId
+                )
+
+                game.universeClient.currentCommand = openLocalFuelFactoryCommand
+            }
+            nestedTable.add(openLocalFuelFactoryTextButton)
+        }
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "Open: ${fuelFactoryData.isOpened}",
+                gdxSettings.smallFontSize
+            )
+        )
 
         nestedTable.row().space(10f)
 
@@ -826,7 +871,6 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         // Depending on whether this is a foreign player or not, use remove foreign / local command
         if (playerData.playerId == game.universeClient.getCurrentPlayerData().playerId) {
-
             val removeLocalResourceFactoryTextButton = createTextButton(
                 text = "Remove factory",
                 fontSize = gdxSettings.smallFontSize,
@@ -842,7 +886,6 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
                 game.universeClient.currentCommand = removeLocalResourceFactoryCommand
             }
-
             nestedTable.add(removeLocalResourceFactoryTextButton)
         } else {
             val removeForeignResourceFactoryTextButton = createTextButton(
@@ -857,12 +900,58 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
                     targetCarrierId = carrierId,
                     targetResourceFactoryId = resourceFactoryId
                 )
-
                 game.universeClient.currentCommand = removeForeignResourceFactoryCommand
             }
 
             nestedTable.add(removeForeignResourceFactoryTextButton)
         }
+
+        nestedTable.row().space(10f)
+
+        if (resourceFactoryData.isOpened) {
+            val closeLocalResourceFactoryTextButton = createTextButton(
+                text = "Close factory",
+                fontSize = gdxSettings.smallFontSize,
+                soundVolume = gdxSettings.soundEffectsVolume,
+            ) {
+                val closeLocalResourceFactoryCommand = CloseLocalResourceFactoryCommand(
+                    toId = playerData.playerId,
+                    fromId = game.universeClient.getCurrentPlayerData().playerId,
+                    fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
+                    targetCarrierId = carrierId,
+                    targetResourceFactoryId = resourceFactoryId,
+                )
+
+                game.universeClient.currentCommand = closeLocalResourceFactoryCommand
+            }
+            nestedTable.add(closeLocalResourceFactoryTextButton)
+        } else {
+            val openLocalResourceFactoryTextButton = createTextButton(
+                text = "Open factory",
+                fontSize = gdxSettings.smallFontSize,
+                soundVolume = gdxSettings.soundEffectsVolume,
+            ) {
+                val openLocalResourceFactoryCommand = OpenLocalResourceFactoryCommand(
+                    toId = playerData.playerId,
+                    fromId = game.universeClient.getCurrentPlayerData().playerId,
+                    fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
+                    targetCarrierId = carrierId,
+                    targetResourceFactoryId = resourceFactoryId,
+                )
+
+                game.universeClient.currentCommand = openLocalResourceFactoryCommand
+            }
+            nestedTable.add(openLocalResourceFactoryTextButton)
+        }
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "Open: ${resourceFactoryData.isOpened}",
+                gdxSettings.smallFontSize
+            )
+        )
 
         nestedTable.row().space(10f)
 
