@@ -100,6 +100,12 @@ object UpdateResourceQualityBound : Mechanism() {
                     )
                 }
 
+                // The minimum of second quality bound
+                val minSecondQualityBound: MutableResourceQualityData =
+                    qualityMap.getValue(ResourceQualityClass.THIRD).resourceQuality.combineMax(
+                        qualityMap.getValue(ResourceQualityClass.THIRD).resourceQualityLowerBound
+                    ) + minQualityClassDiff
+
                 // Calculate the quality bound of second class
                 // Do second class first
                 val newSecondQualityBound: MutableResourceQualityData = computeQualityBound(
@@ -109,13 +115,15 @@ object UpdateResourceQualityBound : Mechanism() {
                     amountRatio = secondRatio,
                     idealAmountRatio = idealSecondClassAmountRatio,
                     qualityBoundChangeFactor = qualityBoundChangeFactor,
-                    minQualityBound = qualityMap.getValue(
-                        ResourceQualityClass.THIRD
-                    ).resourceQuality + minQualityClassDiff,
-                    maxQualityBound = (qualityMap.getValue(
-                        ResourceQualityClass.THIRD
-                    ).resourceQuality + minQualityClassDiff) * maxClassQualityBoundRatio,
+                    minQualityBound = minSecondQualityBound,
+                    maxQualityBound = minSecondQualityBound * maxClassQualityBoundRatio,
                 )
+
+                // The minimum of second quality bound
+                val minFirstQualityBound: MutableResourceQualityData =
+                    qualityMap.getValue(ResourceQualityClass.SECOND).resourceQuality.combineMax(
+                        qualityMap.getValue(ResourceQualityClass.SECOND).resourceQualityLowerBound
+                    ) + minQualityClassDiff
 
                 // Calculate the quality bound of first class
                 val newFirstQualityBound: MutableResourceQualityData = computeQualityBound(
@@ -125,12 +133,8 @@ object UpdateResourceQualityBound : Mechanism() {
                     amountRatio = firstRatio,
                     idealAmountRatio = idealFirstClassAmountRatio,
                     qualityBoundChangeFactor = qualityBoundChangeFactor,
-                    minQualityBound = qualityMap.getValue(
-                        ResourceQualityClass.SECOND
-                    ).resourceQuality + minQualityClassDiff,
-                    maxQualityBound = (qualityMap.getValue(
-                        ResourceQualityClass.SECOND
-                    ).resourceQuality + minQualityClassDiff) * maxClassQualityBoundRatio,
+                    minQualityBound = minFirstQualityBound,
+                    maxQualityBound = minFirstQualityBound * maxClassQualityBoundRatio,
                 )
 
 
