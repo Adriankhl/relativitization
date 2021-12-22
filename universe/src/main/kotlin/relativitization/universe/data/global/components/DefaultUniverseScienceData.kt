@@ -7,6 +7,14 @@ import relativitization.universe.data.global.components.defaults.science.knowled
 import relativitization.universe.data.global.components.defaults.science.knowledge.UniverseProjectGenerationData
 import relativitization.universe.utils.RelativitizationLogManager
 
+/**
+ * Store science data for the whole universe
+ *
+ * @property commonSenseKnowledgeData the common sense, same for all player
+ * @property basicResearchProjectDataMap basic research project map
+ * @property appliedResearchProjectDataMap applied research project map
+ * @property universeProjectGenerationData determine how new research projects are generated
+ */
 @Serializable
 @SerialName("UniverseScienceData")
 data class UniverseScienceData(

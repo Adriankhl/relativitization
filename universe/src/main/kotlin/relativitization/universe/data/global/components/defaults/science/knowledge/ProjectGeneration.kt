@@ -4,6 +4,23 @@ import kotlinx.serialization.Serializable
 import relativitization.universe.data.components.defaults.science.knowledge.AppliedResearchField
 import relativitization.universe.data.components.defaults.science.knowledge.BasicResearchField
 
+/**
+ * Determine how new projects are generated
+ *
+ * @property basicResearchProjectGenerationDataList determine basic research project generation
+ * @property appliedResearchProjectGenerationDataList determine applied research project generation
+ */
+@Serializable
+data class UniverseProjectGenerationData(
+    val basicResearchProjectGenerationDataList: List<BasicResearchProjectGenerationData> = listOf(),
+    val appliedResearchProjectGenerationDataList: List<AppliedResearchProjectGenerationData> = listOf(),
+)
+
+@Serializable
+data class MutableUniverseProjectGenerationData(
+    val basicResearchProjectGenerationDataList: MutableList<MutableBasicResearchProjectGenerationData> = mutableListOf(),
+    val appliedResearchProjectGenerationDataList: MutableList<MutableAppliedResearchProjectGenerationData> = mutableListOf(),
+)
 
 /**
  * For generating a project of a field
@@ -60,17 +77,4 @@ data class AppliedResearchProjectGenerationData(
 data class MutableAppliedResearchProjectGenerationData(
     var appliedResearchField: AppliedResearchField,
     var projectGenerationData: MutableProjectGenerationData,
-)
-
-
-@Serializable
-data class UniverseProjectGenerationData(
-    val basicResearchProjectGenerationDataList: List<BasicResearchProjectGenerationData> = listOf(),
-    val appliedResearchProjectGenerationDataList: List<AppliedResearchProjectGenerationData> = listOf(),
-)
-
-@Serializable
-data class MutableUniverseProjectGenerationData(
-    val basicResearchProjectGenerationDataList: MutableList<MutableBasicResearchProjectGenerationData> = mutableListOf(),
-    val appliedResearchProjectGenerationDataList: MutableList<MutableAppliedResearchProjectGenerationData> = mutableListOf(),
 )
