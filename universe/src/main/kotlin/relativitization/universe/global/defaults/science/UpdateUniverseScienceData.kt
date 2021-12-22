@@ -43,6 +43,16 @@ object UpdateUniverseScienceData : GlobalMechanism() {
             appliedProjectFunction = appliedResearchProjectFunction(),
         )
 
+        // Difficulty and significance increases as more knowledge in common sense
+        val maxDifficulty: Double =
+            (mutableUniverseScienceData.commonSenseKnowledgeData.startFromBasicResearchId +
+                    mutableUniverseScienceData.commonSenseKnowledgeData.startFromAppliedResearchId).toDouble() *
+                    0.1
+        val maxSignificance: Double =
+            (mutableUniverseScienceData.commonSenseKnowledgeData.startFromBasicResearchId +
+                    mutableUniverseScienceData.commonSenseKnowledgeData.startFromAppliedResearchId).toDouble() *
+                    0.1
+
         // Generate new projects
         val newUniverseScienceData: MutableUniverseScienceData = newUniverseScienceData(
             universeScienceData = DataSerializer.copy(mutableUniverseScienceData),
@@ -50,6 +60,8 @@ object UpdateUniverseScienceData : GlobalMechanism() {
             maxBasicProject = maxBasicProject,
             minAppliedProject = minAppliedProject,
             maxAppliedProject = maxAppliedProject,
+            maxDifficulty = maxDifficulty,
+            maxSignificance = maxSignificance,
         )
 
         mutableUniverseGlobalData.universeScienceData(newUniverseScienceData)
@@ -126,6 +138,8 @@ object UpdateUniverseScienceData : GlobalMechanism() {
         maxBasicProject: Int,
         minAppliedProject: Int,
         maxAppliedProject: Int,
+        maxDifficulty: Double,
+        maxSignificance: Double,
     ): MutableUniverseScienceData {
 
         val numBasicResearchProject: Int = universeScienceData.basicResearchProjectDataMap.size
@@ -137,9 +151,13 @@ object UpdateUniverseScienceData : GlobalMechanism() {
 
         val newScienceData: UniverseScienceData = if (shouldGenerate) {
             DefaultGenerateUniverseScienceData.generate(
-                universeScienceData,
-                max(maxBasicProject - numBasicResearchProject, 0),
-                max(maxAppliedProject - numAppliedResearchProject, 0),
+                universeScienceData = universeScienceData,
+                numBasicResearchProjectGenerate = max(maxBasicProject - numBasicResearchProject, 0),
+                numAppliedResearchProjectGenerate = max(maxAppliedProject - numAppliedResearchProject, 0),
+                maxBasicReference = maxBasicProject / 3,
+                maxAppliedReference = maxAppliedProject / 3,
+                maxDifficulty = maxDifficulty,
+                maxSignificance = maxSignificance,
             )
         } else {
             universeScienceData

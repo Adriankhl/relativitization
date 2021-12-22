@@ -13,9 +13,13 @@ internal class DefaultGenerateUniverseScienceDataTest {
 
         val newUniverseScienceData: UniverseScienceData =
             DefaultGenerateUniverseScienceData.generate(
-                universeScienceData,
-                10,
-                10
+                universeScienceData = universeScienceData,
+                numBasicResearchProjectGenerate = 10,
+                numAppliedResearchProjectGenerate = 10,
+                maxBasicReference = 10,
+                maxAppliedReference = 10,
+                maxDifficulty = 1.0,
+                maxSignificance = 1.0
             )
 
         newUniverseScienceData.basicResearchProjectDataMap.forEach {
