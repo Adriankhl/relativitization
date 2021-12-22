@@ -47,11 +47,11 @@ object UpdateUniverseScienceData : GlobalMechanism() {
         val maxDifficulty: Double =
             (mutableUniverseScienceData.commonSenseKnowledgeData.startFromBasicResearchId +
                     mutableUniverseScienceData.commonSenseKnowledgeData.startFromAppliedResearchId).toDouble() *
-                    0.1
+                    0.1 + 1.0
         val maxSignificance: Double =
             (mutableUniverseScienceData.commonSenseKnowledgeData.startFromBasicResearchId +
                     mutableUniverseScienceData.commonSenseKnowledgeData.startFromAppliedResearchId).toDouble() *
-                    0.1
+                    0.1 + 1.0
 
         // Generate new projects
         val newUniverseScienceData: MutableUniverseScienceData = newUniverseScienceData(
