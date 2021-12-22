@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.coroutineScope
 import com.badlogic.gdx.backends.android.AndroidFragmentApplication
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import relativitization.client.UniverseClient
 import relativitization.game.RelativitizationGame
@@ -20,6 +21,7 @@ import relativitization.universe.utils.RelativitizationLogManager
 import relativitization.utils.ServerPort
 import relativitization.universe.maths.random.Rand
 
+@ExperimentalCoroutinesApi
 class AndroidLauncher : AppCompatActivity(), AndroidFragmentApplication.Callbacks {
     override fun onCreate(savedInstanceState: Bundle?) {
         RelativitizationLogManager.isAndroid = true
@@ -60,7 +62,7 @@ class AndroidLauncher : AppCompatActivity(), AndroidFragmentApplication.Callback
 
         trans.commit()
 
-        lifecycle.coroutineScope.launch(Dispatchers.IO) {
+        lifecycle.coroutineScope.launch(Dispatchers.IO.limitedParallelism(1)) {
             universeServer.start()
         }
 
@@ -69,8 +71,7 @@ class AndroidLauncher : AppCompatActivity(), AndroidFragmentApplication.Callback
         }
     }
 
-    override fun exit() {
-    }
+    override fun exit() { }
 }
 
 class RelativitizationGameFragment(
@@ -82,8 +83,7 @@ class RelativitizationGameFragment(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-
+    ): View {
         return initializeForView(RelativitizationGame(universeClient, universeServer))
     }
 }

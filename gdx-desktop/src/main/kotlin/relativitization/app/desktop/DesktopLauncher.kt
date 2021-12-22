@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.glutils.HdpiMode
 import com.badlogic.gdx.tools.texturepacker.TexturePacker
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.asCoroutineDispatcher
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.apache.logging.log4j.Level
@@ -21,11 +21,11 @@ import relativitization.universe.UniverseServerSettings
 import relativitization.universe.utils.RelativitizationLogManager
 import relativitization.utils.ServerPort
 import java.io.File
-import java.util.concurrent.Executors
 import relativitization.universe.maths.random.Rand
 
 private val logger = RelativitizationLogManager.getLogger()
 
+@ExperimentalCoroutinesApi
 fun main() {
 
     // Set log level
@@ -51,8 +51,6 @@ fun main() {
         serverPort = serverPort,
     )
 
-    val gdxExecutorService = Executors.newSingleThreadExecutor()
-
     runBlocking {
         val universeServer: UniverseServer = UniverseServer(
             universeServerSettings = universeServerSettings,
@@ -61,8 +59,7 @@ fun main() {
         )
         val universeClient: UniverseClient = UniverseClient(universeClientSettings)
 
-
-        launch(gdxExecutorService.asCoroutineDispatcher()) {
+        launch(Dispatchers.Default.limitedParallelism(1)) {
             val game = RelativitizationGame(universeClient, universeServer)
             try {
                 Lwjgl3Application(game, config)
@@ -74,12 +71,10 @@ fun main() {
         launch(Dispatchers.IO) {
             universeServer.start()
         }
-        launch(Dispatchers.IO) {
+        launch(Dispatchers.IO.limitedParallelism(1)) {
             universeClient.start()
         }
     }
-
-    gdxExecutorService.shutdown()
 }
 
 private fun packImages() {
