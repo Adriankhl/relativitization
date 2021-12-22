@@ -7,7 +7,7 @@ import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.generate.method.GenerateSettings
 import relativitization.universe.maths.grid.Grids
 
-object RandomDefaultGenerate : RandomGenerateUniverseMethod() {
+object RandomOneStarPerPlayerGenerate : RandomGenerateUniverseMethod() {
     override fun generate(settings: GenerateSettings): UniverseData {
         val universeSettings: UniverseSettings = DataSerializer.copy(settings.universeSettings)
 
@@ -22,10 +22,15 @@ object RandomDefaultGenerate : RandomGenerateUniverseMethod() {
 
         val mutableUniverseGlobalData = MutableUniverseGlobalData()
 
+        val universeState = UniverseState(
+            currentTime = universeSettings.tDim - 1,
+            maxPlayerId = settings.numPlayer,
+        )
+
         return UniverseData(
             universeData4D = DataSerializer.copy(mutableUniverseData4D),
             universeSettings = universeSettings,
-            universeState = UniverseState(0),
+            universeState = universeState,
             commandMap = mutableMapOf(),
             universeGlobalData = DataSerializer.copy((mutableUniverseGlobalData)),
         )
