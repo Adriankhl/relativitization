@@ -7,7 +7,7 @@ import relativitization.universe.data.UniverseState
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.generate.method.GenerateSettings
 
-object RandomDefault : RandomGenerateUniverseMethod() {
+object RandomDefaultGenerate : RandomGenerateUniverseMethod() {
     override fun generate(settings: GenerateSettings): UniverseData {
         return UniverseData(
             universeData4D = UniverseData4D(mutableListOf()),
