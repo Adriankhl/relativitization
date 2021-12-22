@@ -74,7 +74,7 @@ fun main() {
         launch(Dispatchers.IO) {
             universeServer.start()
         }
-        launch {
+        launch(Dispatchers.IO) {
             universeClient.start()
         }
     }
