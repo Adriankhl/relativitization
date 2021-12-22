@@ -6,6 +6,7 @@ import relativitization.universe.data.UniverseData
 import relativitization.universe.data.serializer.DataSerializer.decode
 import relativitization.universe.data.serializer.DataSerializer.encode
 import relativitization.universe.generate.method.abm.ABMGenerateUniverseMethod
+import relativitization.universe.generate.method.random.RandomGenerateUniverseMethod
 import relativitization.universe.generate.method.testing.TestingFixedMinimal
 import relativitization.universe.generate.method.testing.TestingGenerateUniverseMethod
 import relativitization.universe.utils.RelativitizationLogManager
@@ -60,7 +61,10 @@ fun GenerateUniverseMethod.name(): String = this::class.simpleName.toString()
 object GenerateUniverseMethodCollection {
     private val logger = RelativitizationLogManager.getLogger()
 
-    val generateMethodList: List<GenerateUniverseMethod> =
+    private val generateMethodList: List<GenerateUniverseMethod> =
+        RandomGenerateUniverseMethod::class.sealedSubclasses.map {
+            it.objectInstance!!
+        } +
         TestingGenerateUniverseMethod::class.sealedSubclasses.map {
             it.objectInstance!!
         } + ABMGenerateUniverseMethod::class.sealedSubclasses.map {
