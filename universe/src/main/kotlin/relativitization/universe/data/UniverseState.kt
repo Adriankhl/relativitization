@@ -16,16 +16,15 @@ data class UniverseState(
     fun getCurrentMaxId(): Int = maxPlayerId
 
     suspend fun getNewPlayerId(): Int {
-        GetIdMutex.mutex.withLock {
+        mutex.withLock {
             maxPlayerId++
             return maxPlayerId
         }
     }
-}
 
-/**
- * Adding mutex in the universeState data class throws serialization error, so the mutex is stored in this object
- */
-object GetIdMutex {
-    val mutex: Mutex = Mutex()
+    companion object {
+        // Adding mutex in the universeState data class throws serialization error,
+        // so the mutex is stored in this object
+        private val mutex: Mutex = Mutex()
+    }
 }
