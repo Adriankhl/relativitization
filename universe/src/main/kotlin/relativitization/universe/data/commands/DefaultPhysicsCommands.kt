@@ -18,7 +18,7 @@ data class ChangeVelocityCommand(
     val targetVelocity: Velocity,
 ) : DefaultCommand() {
 
-    override val description: I18NString = I18NString(
+    override fun description(): I18NString = I18NString(
         listOf(
             NormalString("Try to change velocity of player "),
             IntString(0),
@@ -115,7 +115,7 @@ data class TransferFuelToMovementCommand(
     override val fromInt4D: Int4D,
     val amount: Double,
 ) : DefaultCommand() {
-    override val description: I18NString = I18NString(
+    override fun description(): I18NString = I18NString(
         listOf(
             NormalString("Transfer "),
             IntString(0),
@@ -191,7 +191,7 @@ data class TransferFuelToProductionCommand(
     override val fromInt4D: Int4D,
     val amount: Double,
 ) : DefaultCommand() {
-    override val description: I18NString = I18NString(
+    override fun description(): I18NString = I18NString(
         listOf(
             NormalString("Transfer "),
             IntString(0),
@@ -267,7 +267,7 @@ data class TransferFuelToTradeCommand(
     override val fromInt4D: Int4D,
     val amount: Double,
 ) : DefaultCommand() {
-    override val description: I18NString = I18NString(
+    override fun description(): I18NString = I18NString(
         listOf(
             NormalString("Transfer "),
             IntString(0),
@@ -343,7 +343,7 @@ data class ChangeStorageFuelTargetCommand(
     override val fromInt4D: Int4D,
     val targetAmount: Double,
 ) : DefaultCommand() {
-    override val description: I18NString = I18NString(
+    override fun description(): I18NString = I18NString(
         listOf(
             NormalString("Change the target amount of fuel for storage to "),
             IntString(0),
@@ -406,7 +406,7 @@ data class ChangeMovementFuelTargetCommand(
     override val fromInt4D: Int4D,
     val targetAmount: Double,
 ) : DefaultCommand() {
-    override val description: I18NString = I18NString(
+    override fun description(): I18NString = I18NString(
         listOf(
             NormalString("Change the target amount of fuel for movement to "),
             IntString(0),
@@ -469,7 +469,7 @@ data class ChangeProductionFuelTargetCommand(
     override val fromInt4D: Int4D,
     val targetAmount: Double,
 ) : DefaultCommand() {
-    override val description: I18NString = I18NString(
+    override fun description(): I18NString = I18NString(
         listOf(
             NormalString("Change the target amount of fuel for production to "),
             IntString(0),

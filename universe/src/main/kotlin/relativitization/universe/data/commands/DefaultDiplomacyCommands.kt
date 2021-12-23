@@ -15,7 +15,7 @@ data class DeclareWarCommand(
     override val fromId: Int,
     override val fromInt4D: Int4D
 ) : DefaultCommand() {
-    override val description: I18NString = I18NString(
+    override fun description(): I18NString = I18NString(
         listOf(
             NormalString("Declare war on "),
             IntString(0),
@@ -120,7 +120,7 @@ data class DeclareIndependenceCommand(
     override val fromId: Int,
     override val fromInt4D: Int4D
 ) : DefaultCommand() {
-    override val description: I18NString = I18NString(
+    override fun description(): I18NString = I18NString(
         listOf(
             NormalString("Declare independence and war on "),
             IntString(0),
@@ -238,7 +238,7 @@ data class ProposePeaceCommand(
     override val fromInt4D: Int4D,
     val targetPlayerId: Int,
 ) : DefaultCommand() {
-    override val description: I18NString = I18NString(
+    override fun description(): I18NString = I18NString(
         listOf(
             NormalString("Propose peace with "),
             IntString(0),

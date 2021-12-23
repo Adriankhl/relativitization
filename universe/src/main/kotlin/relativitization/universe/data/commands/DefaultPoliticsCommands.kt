@@ -25,7 +25,7 @@ data class ChangeFactoryPolicyCommand(
     val allowLeaderBuildLocalFactory: Boolean = true,
     val allowForeignInvestor: Boolean = true,
 ) : DefaultCommand() {
-    override val description: I18NString = I18NString(
+    override fun description(): I18NString = I18NString(
         listOf(
             NormalString("Change the factory policy: allow subordinate build factory ("),
             IntTranslateString(0),

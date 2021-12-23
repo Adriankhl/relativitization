@@ -88,7 +88,7 @@ class EventsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(g
         nestedTable.row().space(10f)
 
         val eventDescriptionLabel =
-            createLabel(eventData.event.description, gdxSettings.smallFontSize)
+            createLabel(eventData.event.description(), gdxSettings.smallFontSize)
         eventDescriptionLabel.wrap = true
         nestedTable.add(eventDescriptionLabel).colspan(2).growX()
 

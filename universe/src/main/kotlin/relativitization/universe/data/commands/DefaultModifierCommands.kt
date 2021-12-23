@@ -16,7 +16,7 @@ data class DisableFuelIncreaseCommand(
     val disableFuelIncreaseTimeLimit: Int,
 ) : DefaultCommand() {
 
-    override val description: I18NString = I18NString(
+    override fun description(): I18NString = I18NString(
         listOf(
             NormalString("Disable fuel increase for "),
             IntString(0),

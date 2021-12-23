@@ -22,7 +22,7 @@ data class MergeCarrierCommand(
     override val fromInt4D: Int4D,
     val carrierList: List<CarrierData>
 ) : DefaultCommand() {
-    override val description: I18NString = I18NString("")
+    override fun description(): I18NString = I18NString("")
 
     override fun canSend(
         playerData: MutablePlayerData,
@@ -57,7 +57,7 @@ data class AgreeMergeCommand(
     override val fromId: Int,
     override val fromInt4D: Int4D
 ) : DefaultCommand() {
-    override val description: I18NString = I18NString("")
+    override fun description(): I18NString = I18NString("")
 
     override fun canSend(
         playerData: MutablePlayerData,

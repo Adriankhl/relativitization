@@ -22,7 +22,7 @@ data class AskToMergeCarrierEvent(
 
     override val stayTime: Int = 1
 
-    override val description: I18NString = I18NString(
+    override fun description(): I18NString = I18NString(
         listOf(
             NormalString("Merge all your carriers to player "),
             IntString(0)

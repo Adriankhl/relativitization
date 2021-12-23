@@ -23,7 +23,7 @@ sealed class Event {
     abstract val stayTime: Int
 
     // Description of the event
-    abstract val description: I18NString
+    abstract fun description(): I18NString
 
     // Available choice description
     abstract val choiceDescription: Map<Int, I18NString>

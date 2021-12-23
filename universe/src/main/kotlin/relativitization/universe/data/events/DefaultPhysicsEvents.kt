@@ -29,7 +29,7 @@ data class MoveToDouble3DEvent(
     val maxSpeed: Double,
 ) : DefaultEvent() {
 
-    override val description: I18NString = I18NString(
+    override fun description(): I18NString = I18NString(
         listOf(
             NormalString("Player "),
             IntString(0),

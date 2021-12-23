@@ -25,7 +25,7 @@ data class SplitCarrierCommand(
     val carrierIdList: List<Int>,
     val resourceFraction: Double,
 ) : DefaultCommand() {
-    override val description: I18NString = I18NString(
+    override fun description(): I18NString = I18NString(
         listOf(
             NormalString("Create new player with carriers: "),
             IntString(0),

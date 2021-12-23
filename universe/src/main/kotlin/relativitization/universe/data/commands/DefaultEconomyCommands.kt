@@ -28,7 +28,7 @@ data class ChangeDefaultImportTariffCommand(
     val resourceType: ResourceType,
     val rate: Double,
 ) : DefaultCommand() {
-    override val description: I18NString = I18NString(
+    override fun description(): I18NString = I18NString(
         listOf(
             NormalString("Change default import tariff rate of "),
             IntTranslateString(0),
@@ -107,7 +107,7 @@ data class ChangeDefaultExportTariffCommand(
     val resourceType: ResourceType,
     val rate: Double,
 ) : DefaultCommand() {
-    override val description: I18NString = I18NString(
+    override fun description(): I18NString = I18NString(
         listOf(
             NormalString("Change default export tariff rate of "),
             IntTranslateString(0),
@@ -183,7 +183,7 @@ data class ChangeLowIncomeTaxCommand(
     override val fromInt4D: Int4D,
     val rate: Double,
 ) : DefaultCommand() {
-    override val description: I18NString = I18NString(
+    override fun description(): I18NString = I18NString(
         listOf(
             NormalString("Change low income tax rate to "),
             IntString(0),
@@ -257,7 +257,7 @@ data class ChangeMiddleIncomeTaxCommand(
     override val fromInt4D: Int4D,
     val rate: Double,
 ) : DefaultCommand() {
-    override val description: I18NString = I18NString(
+    override fun description(): I18NString = I18NString(
         listOf(
             NormalString("Change middle income tax rate to "),
             IntString(0),
@@ -331,7 +331,7 @@ data class ChangeHighIncomeTaxCommand(
     override val fromInt4D: Int4D,
     val rate: Double,
 ) : DefaultCommand() {
-    override val description: I18NString = I18NString(
+    override fun description(): I18NString = I18NString(
         listOf(
             NormalString("Change high income tax rate to "),
             IntString(0),
@@ -404,7 +404,7 @@ data class ChangeLowMiddleBoundaryCommand(
     override val fromInt4D: Int4D,
     val boundary: Double,
 ) : DefaultCommand() {
-    override val description: I18NString = I18NString(
+    override fun description(): I18NString = I18NString(
         listOf(
             NormalString("Change the boundary between low and middle income to "),
             IntString(0),
@@ -477,7 +477,7 @@ data class ChangeMiddleHighBoundaryCommand(
     override val fromInt4D: Int4D,
     val boundary: Double,
 ) : DefaultCommand() {
-    override val description: I18NString = I18NString(
+    override fun description(): I18NString = I18NString(
         listOf(
             NormalString("Change the boundary between middle and high income to "),
             IntString(0),
@@ -556,7 +556,7 @@ data class TransferResourceToProductionCommand(
     val resourceQualityClass: ResourceQualityClass,
     val amount: Double,
 ) : DefaultCommand() {
-    override val description: I18NString = I18NString(
+    override fun description(): I18NString = I18NString(
         listOf(
             NormalString("Transfer "),
             IntString(0),
@@ -651,7 +651,7 @@ data class TransferResourceToTradeCommand(
     val resourceQualityClass: ResourceQualityClass,
     val amount: Double,
 ) : DefaultCommand() {
-    override val description: I18NString = I18NString(
+    override fun description(): I18NString = I18NString(
         listOf(
             NormalString("Transfer "),
             IntString(0),
@@ -746,7 +746,7 @@ data class ChangeStorageResourceTargetCommand(
     val resourceQualityClass: ResourceQualityClass,
     val targetAmount: Double,
 ) : DefaultCommand() {
-    override val description: I18NString = I18NString(
+    override fun description(): I18NString = I18NString(
         listOf(
             NormalString("Change the target amount of "),
             IntTranslateString(0),
@@ -822,7 +822,7 @@ data class ChangeProductionResourceTargetCommand(
     val resourceQualityClass: ResourceQualityClass,
     val targetAmount: Double,
 ) : DefaultCommand() {
-    override val description: I18NString = I18NString(
+    override fun description(): I18NString = I18NString(
         listOf(
             NormalString("Change the target amount of "),
             IntTranslateString(0),
@@ -898,7 +898,7 @@ data class ChangeSalaryCommand(
     val popType: PopType,
     val salary: Double,
 ) : DefaultCommand() {
-    override val description: I18NString = I18NString(
+    override fun description(): I18NString = I18NString(
         listOf(
             NormalString("Change the salary of pop "),
             IntTranslateString(0),

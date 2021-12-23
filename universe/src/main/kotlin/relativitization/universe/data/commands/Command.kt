@@ -19,7 +19,7 @@ sealed class Command {
     /**
      * Description of the command
      */
-    abstract val description: I18NString
+    abstract fun description(): I18NString
 
 
     /**
