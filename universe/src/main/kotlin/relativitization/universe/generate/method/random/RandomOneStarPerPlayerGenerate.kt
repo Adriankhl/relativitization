@@ -4,31 +4,18 @@ import relativitization.universe.data.*
 import relativitization.universe.data.components.defaults.science.knowledge.AppliedResearchField
 import relativitization.universe.data.components.defaults.science.knowledge.BasicResearchField
 import relativitization.universe.data.global.MutableUniverseGlobalData
+import relativitization.universe.data.global.components.UniverseScienceData
 import relativitization.universe.data.global.components.defaults.science.knowledge.MutableAppliedResearchProjectGenerationData
 import relativitization.universe.data.global.components.defaults.science.knowledge.MutableBasicResearchProjectGenerationData
 import relativitization.universe.data.global.components.defaults.science.knowledge.MutableProjectGenerationData
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.generate.method.GenerateSettings
+import relativitization.universe.generate.science.DefaultGenerateUniverseScienceData
 import relativitization.universe.maths.grid.Grids
 
 object RandomOneStarPerPlayerGenerate : RandomGenerateUniverseMethod() {
     override fun generate(settings: GenerateSettings): UniverseData {
         val universeSettings: UniverseSettings = DataSerializer.copy(settings.universeSettings)
-
-        val mutableUniverseData4D = MutableUniverseData4D(
-            Grids.create4DGrid(
-                universeSettings.tDim,
-                universeSettings.xDim,
-                universeSettings.yDim,
-                universeSettings.zDim
-            ) { _, _, _, _ -> mutableListOf() }
-        )
-
-        // Only consider numPlayer, ignore numExtraStellarSystem
-        val universeState = UniverseState(
-            currentTime = universeSettings.tDim - 1,
-            maxPlayerId = settings.numPlayer,
-        )
 
         val mutableUniverseGlobalData = MutableUniverseGlobalData()
 
@@ -239,6 +226,36 @@ object RandomOneStarPerPlayerGenerate : RandomGenerateUniverseMethod() {
         )
         mutableUniverseGlobalData.universeScienceData().universeProjectGenerationData
             .appliedResearchProjectGenerationDataList.add(militaryProjectGenerationData)
+
+        // Generate science projects and replace the universe science data
+        val newUniverseScienceData: UniverseScienceData =
+            DefaultGenerateUniverseScienceData.generate(
+                universeScienceData = DataSerializer.copy(
+                    mutableUniverseGlobalData.universeScienceData()
+                ),
+                numBasicResearchProjectGenerate = 30,
+                numAppliedResearchProjectGenerate = 30,
+                maxBasicReference = 10,
+                maxAppliedReference = 10,
+                maxDifficulty = 1.0,
+                maxSignificance = 1.0,
+            )
+        mutableUniverseGlobalData.universeScienceData(DataSerializer.copy(newUniverseScienceData))
+
+        val mutableUniverseData4D = MutableUniverseData4D(
+            Grids.create4DGrid(
+                universeSettings.tDim,
+                universeSettings.xDim,
+                universeSettings.yDim,
+                universeSettings.zDim
+            ) { _, _, _, _ -> mutableListOf() }
+        )
+
+        // Only consider numPlayer, ignore numExtraStellarSystem
+        val universeState = UniverseState(
+            currentTime = universeSettings.tDim - 1,
+            maxPlayerId = settings.numPlayer,
+        )
 
         return UniverseData(
             universeData4D = DataSerializer.copy(mutableUniverseData4D),
