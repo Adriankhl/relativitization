@@ -68,10 +68,10 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
     private var showInstituteAndLaboratory: Boolean = false
 
     // If true, a institute is selected by mouse
-    private var isInstituteSelected: Boolean = true
+    private var isInstituteSelected: Boolean = false
 
     // If true, a laboratory is selected by mouse
-    private var isLaboratorySelected: Boolean = true
+    private var isLaboratorySelected: Boolean = false
 
     // The selected carrier, institute and laboratory
     private var selectedCarrierId: Int = -1
@@ -288,13 +288,15 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
         val selectedProjectIdLabel: Label = when {
             isBasicProjectSelected && !isAppliedProjectSelected -> {
                 createLabel(
-                    "Basic Project Id: ${selectedBasicResearchProjectData.basicResearchId}",
+                    "${selectedBasicResearchProjectData.basicResearchField} (basic) " +
+                            "project id: ${selectedBasicResearchProjectData.basicResearchId}",
                     gdxSettings.normalFontSize
                 )
             }
             !isBasicProjectSelected && isAppliedProjectSelected -> {
                 createLabel(
-                    "Applied Project Id: ${selectedAppliedResearchProjectData.appliedResearchId}",
+                    "${selectedAppliedResearchProjectData.appliedResearchField} (applied) " +
+                            "project id: ${selectedAppliedResearchProjectData.appliedResearchId}",
                     gdxSettings.normalFontSize
                 )
             }
@@ -390,7 +392,7 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
             }
             else -> {
                 createLabel(
-                    "Error: No selected building. ",
+                    "No selected building. ",
                     gdxSettings.normalFontSize
                 )
             }
