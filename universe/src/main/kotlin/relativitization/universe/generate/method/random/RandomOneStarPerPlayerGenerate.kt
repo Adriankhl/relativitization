@@ -11,6 +11,7 @@ import relativitization.universe.data.global.components.defaults.science.knowled
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.generate.method.GenerateSettings
 import relativitization.universe.generate.science.DefaultGenerateUniverseScienceData
+import relativitization.universe.global.defaults.science.UpdateUniverseScienceData
 import relativitization.universe.maths.grid.Grids
 import relativitization.universe.maths.random.Rand
 
@@ -268,6 +269,51 @@ object RandomOneStarPerPlayerGenerate : RandomGenerateUniverseMethod() {
 
             // Add random stellar system
             mutablePlayerData.playerInternalData.popSystemData().addRandomStellarSystem()
+
+            // Add random basic and applied projects as done projects
+            mutableUniverseGlobalData.universeScienceData().basicResearchProjectDataMap.values
+                .shuffled().take(5).forEach {
+                    mutablePlayerData.playerInternalData.playerScienceData()
+                        .doneBasicResearchProject(
+                            it,
+                            UpdateUniverseScienceData.basicResearchProjectFunction()
+                        )
+                }
+            mutableUniverseGlobalData.universeScienceData().appliedResearchProjectDataMap.values
+                .shuffled().take(5).forEach {
+                    mutablePlayerData.playerInternalData.playerScienceData()
+                        .doneAppliedResearchProject(
+                            it,
+                            UpdateUniverseScienceData.appliedResearchProjectFunction()
+                        )
+                }
+
+            // Add random basic and applied projects as known projects
+            mutableUniverseGlobalData.universeScienceData().basicResearchProjectDataMap.values
+                .filter { universeProject ->
+                    mutablePlayerData.playerInternalData.playerScienceData()
+                        .doneBasicResearchProjectList.all {
+                            it.basicResearchId != universeProject.basicResearchId
+                        }
+                }.shuffled().take(5).forEach {
+                    mutablePlayerData.playerInternalData.playerScienceData()
+                        .knownBasicResearchProject(
+                            it,
+                        )
+                }
+            mutableUniverseGlobalData.universeScienceData().appliedResearchProjectDataMap.values
+                .filter { universeProject ->
+                    mutablePlayerData.playerInternalData.playerScienceData()
+                        .doneAppliedResearchProjectList.all {
+                            it.appliedResearchId != universeProject.appliedResearchId
+                        }
+                }.shuffled().take(5).forEach {
+                    mutablePlayerData.playerInternalData.playerScienceData()
+                        .knownAppliedResearchProject(
+                            it,
+                        )
+                }
+
 
             mutableUniverseData4D.addPlayerDataToLatestWithAfterImage(
                 mutablePlayerData = mutablePlayerData,
