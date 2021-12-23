@@ -12,6 +12,7 @@ import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.generate.method.GenerateSettings
 import relativitization.universe.generate.science.DefaultGenerateUniverseScienceData
 import relativitization.universe.maths.grid.Grids
+import relativitization.universe.maths.random.Rand
 
 object RandomOneStarPerPlayerGenerate : RandomGenerateUniverseMethod() {
     override fun generate(settings: GenerateSettings): UniverseData {
@@ -256,6 +257,25 @@ object RandomOneStarPerPlayerGenerate : RandomGenerateUniverseMethod() {
             currentTime = universeSettings.tDim - 1,
             maxPlayerId = settings.numPlayer,
         )
+
+        for (playerId in 1..settings.numPlayer) {
+            val mutablePlayerData = MutablePlayerData(playerId)
+
+            // Random location
+            mutablePlayerData.int4D.x = Rand.rand().nextInt(0, universeSettings.xDim)
+            mutablePlayerData.int4D.y = Rand.rand().nextInt(0, universeSettings.yDim)
+            mutablePlayerData.int4D.z = Rand.rand().nextInt(0, universeSettings.zDim)
+
+            // Add random stellar system
+            mutablePlayerData.playerInternalData.popSystemData().addRandomStellarSystem()
+
+            mutableUniverseData4D.addPlayerDataToLatestWithAfterImage(
+                mutablePlayerData = mutablePlayerData,
+                currentTime = universeState.getCurrentTime(),
+                edgeLength = universeSettings.groupEdgeLength,
+                playerAfterImageDuration = universeSettings.playerAfterImageDuration
+            )
+        }
 
         return UniverseData(
             universeData4D = DataSerializer.copy(mutableUniverseData4D),
