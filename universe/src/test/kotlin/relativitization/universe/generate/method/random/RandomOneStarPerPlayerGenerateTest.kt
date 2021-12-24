@@ -3,12 +3,12 @@ package relativitization.universe.generate.method.random
 import kotlinx.coroutines.runBlocking
 import relativitization.universe.Universe
 import relativitization.universe.data.MutableUniverseSettings
-import relativitization.universe.data.commands.ChangeProductionFuelTargetCommand
-import relativitization.universe.data.commands.Command
-import relativitization.universe.data.commands.DefaultCommandAvailability
-import relativitization.universe.data.commands.name
+import relativitization.universe.data.commands.*
+import relativitization.universe.data.components.defaults.economy.ResourceType
 import relativitization.universe.data.components.defaults.physics.Int3D
 import relativitization.universe.data.components.defaults.physics.Int4D
+import relativitization.universe.data.components.defaults.popsystem.pop.PopType
+import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.ResourceFactoryInternalData
 import relativitization.universe.generate.method.GenerateSettings
 import relativitization.universe.generate.method.GenerateUniverseMethodCollection
 import relativitization.universe.generate.method.name
@@ -60,6 +60,49 @@ internal class RandomOneStarPerPlayerGenerateTest {
                 targetAmount = 1E8
             )
         )
+
+        commandList7.add(
+            TransferFuelToProductionCommand(
+                toId = 1,
+                fromId = 1,
+                fromInt4D = view7.get(1).int4D,
+                amount = 5E8,
+            )
+        )
+
+        ResourceType.values().forEach {
+            commandList7.add(
+                BuildForeignResourceFactoryCommand(
+                    toId = 1,
+                    fromId = 1,
+                    fromInt4D = view7.get(1).int4D,
+                    senderTopLeaderId = 1,
+                    targetCarrierId = 0,
+                    ownerId = 1,
+                    resourceFactoryInternalData = view7.get(1).playerInternalData.playerScienceData()
+                        .playerScienceApplicationData.newResourceFactoryInternalData(
+                            it,
+                            1.0
+                        ),
+                    qualityLevel = 1.0,
+                    storedFuelRestMass = 0.0,
+                    numBuilding = 1.0,
+                )
+            )
+        }
+
+        PopType.values().forEach {
+            commandList7.add(
+                ChangeSalaryCommand(
+                    toId = 1,
+                    fromId = 1,
+                    fromInt4D = view7.get(1).int4D,
+                    carrierId = 0,
+                    popType = it,
+                    salary = 1E-4,
+                )
+            )
+        }
 
         runBlocking {
             universe.postProcessUniverse(
