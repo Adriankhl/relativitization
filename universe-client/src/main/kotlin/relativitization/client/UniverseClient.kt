@@ -469,6 +469,13 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
     }
 
     /**
+     * Whether the new selected player Id is valid
+     */
+    fun isNewSelectedPlayerIdValid(): Boolean {
+        return getUniverseData3D().playerDataMap.keys.contains(newSelectedPlayerId)
+    }
+
+    /**
      * Confirm commandToBeConfirm
      */
     fun confirmCurrentCommand() {

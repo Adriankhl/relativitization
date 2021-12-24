@@ -1142,7 +1142,11 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         val nestedTable = Table()
 
         val ownerId = createIntTextField(
-            game.universeClient.newSelectedPlayerId,
+            if (game.universeClient.isNewSelectedPlayerIdValid()) {
+                game.universeClient.newSelectedPlayerId
+            } else {
+                game.universeClient.getCurrentPlayerData().playerId
+            },
             gdxSettings.smallFontSize
         )
 
@@ -1249,7 +1253,11 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         val nestedTable = Table()
 
         val ownerId = createIntTextField(
-            game.universeClient.newSelectedPlayerId,
+            if (game.universeClient.isNewSelectedPlayerIdValid()) {
+                game.universeClient.newSelectedPlayerId
+            } else {
+                game.universeClient.getCurrentPlayerData().playerId
+            },
             gdxSettings.smallFontSize
         )
 
