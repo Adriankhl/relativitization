@@ -18,6 +18,12 @@ object RelativitizationLogManager {
     } else {
         LogManager.getLogger()
     }
+
+    fun getLogger(name: String): Logger = if (isAndroid) {
+        AndroidLogger
+    } else {
+        LogManager.getLogger(name)
+    }
 }
 
 /**

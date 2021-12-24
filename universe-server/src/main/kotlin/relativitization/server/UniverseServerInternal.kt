@@ -395,6 +395,6 @@ class UniverseServerInternal(
     }
 
     companion object {
-        private val logger = RelativitizationLogManager.getLogger()
+        private val logger = RelativitizationLogManager.getLogger("UniverseServerInternal")
     }
 }

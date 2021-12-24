@@ -14,7 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.List as GdxList
 
 object ActorFunction {
 
-    private val logger = RelativitizationLogManager.getLogger()
+    private val logger = RelativitizationLogManager.getLogger("ActorFunction")
 
     fun translate(text: String, assets: Assets): String {
         val i18NBundle = assets.getI18NBundle()

@@ -917,6 +917,6 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
     }
 
     companion object {
-        private val logger = RelativitizationLogManager.getLogger()
+        private val logger = RelativitizationLogManager.getLogger("UniverseClient")
     }
 }
