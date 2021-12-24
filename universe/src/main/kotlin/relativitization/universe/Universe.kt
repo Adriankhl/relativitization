@@ -17,6 +17,7 @@ import relativitization.universe.mechanisms.MechanismCollection.processMechanism
 import relativitization.universe.utils.RelativitizationLogManager
 import relativitization.universe.utils.pmap
 import java.io.File
+import kotlin.math.log
 
 /**
  * Main class representing the 4D universe
@@ -446,21 +447,39 @@ class Universe(
      */
     suspend fun preProcessUniverse() {
         // beginning of the turn
+        logger.debug("Start preProcessUniverse()")
+
+        logger.debug("Run global mechanisms")
         GlobalMechanismCollection.globalProcess(universeData)
+
+        logger.debug("Process time dilation")
         processTimeDilation()
+
+        logger.debug("Process mechanism")
         processMechanism()
+
+        logger.debug("Process command map")
         processCommandMap()
+
+        logger.debug("Process dead players and new players")
         processDeadAndNewPlayer()
 
         // Sync all data component to ensure consistency before universe data update
+        logger.debug("Sync all player data component in preProcessUniverse()")
         playerCollection.syncAllPlayerDataComponent()
 
+        logger.debug("Get new universe slice in preProcessUniverse()")
         val universeSlice = playerCollection.getUniverseSlice(universeData)
+
+        logger.debug("Replace the latest slice of the universe")
         universeData.updateUniverseReplaceLatest(universeSlice)
 
         if (alwaysSaveLatest) {
+            logger.debug("Save latest universe data")
             saveLatest()
         }
+
+        logger.debug("Done preProcessUniverse()")
     }
 
     /**
@@ -471,16 +490,24 @@ class Universe(
         humanInputCommands: Map<Int, List<Command>>,
         aiInputCommands: Map<Int, List<Command>>
     ) {
+        logger.debug("Start postProcessUniverse()")
         processCommandInput(humanInputCommands, aiInputCommands)
 
         // Now the end of the turn
+        logger.debug("Move player in player collection")
         playerCollection.movePlayer(universeData.universeState, universeData.universeSettings)
 
         // Sync all data component to ensure consistency before universe data update
+        logger.debug("Sync all player data component in postProcessUniverse()")
         playerCollection.syncAllPlayerDataComponent()
 
+        logger.debug("Get new universe slice in postProcessUniverse()")
         val universeSlice = playerCollection.getUniverseSlice(universeData)
+
+        logger.debug("Add the latest slice of the universe and drop oldest slice")
         universeData.updateUniverseDropOldest(universeSlice)
+
+        logger.debug("Done postProcessUniverse()")
     }
 
     companion object {
