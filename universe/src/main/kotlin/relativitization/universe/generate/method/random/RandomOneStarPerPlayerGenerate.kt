@@ -4,6 +4,7 @@ import relativitization.universe.data.*
 import relativitization.universe.data.components.defaults.science.knowledge.AppliedResearchField
 import relativitization.universe.data.components.defaults.science.knowledge.BasicResearchField
 import relativitization.universe.data.global.MutableUniverseGlobalData
+import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.data.global.components.UniverseScienceData
 import relativitization.universe.data.global.components.defaults.science.knowledge.MutableAppliedResearchProjectGenerationData
 import relativitization.universe.data.global.components.defaults.science.knowledge.MutableBasicResearchProjectGenerationData
@@ -14,6 +15,9 @@ import relativitization.universe.generate.science.DefaultGenerateUniverseScience
 import relativitization.universe.global.defaults.science.UpdateUniverseScienceData
 import relativitization.universe.maths.grid.Grids
 import relativitization.universe.maths.random.Rand
+import relativitization.universe.mechanisms.defaults.dilated.pop.UpdateDesire
+import relativitization.universe.mechanisms.defaults.regular.science.UpdateScienceApplicationData
+import relativitization.universe.mechanisms.defaults.regular.sync.SyncPlayerScienceData
 
 object RandomOneStarPerPlayerGenerate : RandomGenerateUniverseMethod() {
     override fun generate(settings: GenerateSettings): UniverseData {
@@ -244,6 +248,9 @@ object RandomOneStarPerPlayerGenerate : RandomGenerateUniverseMethod() {
             )
         mutableUniverseGlobalData.universeScienceData(DataSerializer.copy(newUniverseScienceData))
 
+        // Completed universe global data
+        val universeGlobalData: UniverseGlobalData = DataSerializer.copy(mutableUniverseGlobalData)
+
         val mutableUniverseData4D = MutableUniverseData4D(
             Grids.create4DGrid(
                 universeSettings.tDim,
@@ -318,6 +325,33 @@ object RandomOneStarPerPlayerGenerate : RandomGenerateUniverseMethod() {
             mutablePlayerData.playerInternalData.physicsData().targetFuelRestMassData.storage = 1E9
             mutablePlayerData.playerInternalData.physicsData().addFuel(5E7)
 
+            // Use default mechanisms to update player data
+
+            // Sync the science data (e.g., common sense)
+            SyncPlayerScienceData.process(
+                mutablePlayerData = mutablePlayerData,
+                universeData3DAtPlayer = UniverseData3DAtPlayer(),
+                universeSettings = universeSettings,
+                universeGlobalData = universeGlobalData,
+            )
+
+
+            // Update science application data
+            UpdateScienceApplicationData.process(
+                mutablePlayerData = mutablePlayerData,
+                universeData3DAtPlayer = UniverseData3DAtPlayer(),
+                universeSettings = universeSettings,
+                universeGlobalData = universeGlobalData,
+            )
+
+            // Update desire of pop
+            UpdateDesire.process(
+                mutablePlayerData = mutablePlayerData,
+                universeData3DAtPlayer = UniverseData3DAtPlayer(),
+                universeSettings = universeSettings,
+                universeGlobalData = universeGlobalData,
+            )
+
             mutableUniverseData4D.addPlayerDataToLatestWithAfterImage(
                 mutablePlayerData = mutablePlayerData,
                 currentTime = universeState.getCurrentTime(),
@@ -331,7 +365,7 @@ object RandomOneStarPerPlayerGenerate : RandomGenerateUniverseMethod() {
             universeSettings = universeSettings,
             universeState = universeState,
             commandMap = mutableMapOf(),
-            universeGlobalData = DataSerializer.copy((mutableUniverseGlobalData)),
+            universeGlobalData = universeGlobalData,
         )
     }
 }
