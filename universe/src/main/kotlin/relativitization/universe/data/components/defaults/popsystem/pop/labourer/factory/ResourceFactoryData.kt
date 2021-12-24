@@ -123,7 +123,7 @@ data class ResourceFactoryInternalData(
     val maxOutputAmount: Double = 0.0,
     val inputResourceMap: Map<ResourceType, InputResourceData> = mapOf(),
     val fuelRestMassConsumptionRate: Double = 0.0,
-    val maxNumEmployee: Double = 0.0,
+    val maxNumEmployee: Double = 1.0,
     val size: Double = 0.0,
 ) {
     fun squareDiff(other: ResourceFactoryInternalData): Double {
