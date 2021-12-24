@@ -66,7 +66,7 @@ internal class RandomOneStarPerPlayerGenerateTest {
                 toId = 1,
                 fromId = 1,
                 fromInt4D = view7.get(1).int4D,
-                amount = 5E8,
+                amount = 1E7,
             )
         )
 
