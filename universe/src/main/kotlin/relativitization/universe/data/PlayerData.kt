@@ -408,29 +408,17 @@ data class MutablePlayerInternalData(
      * Synchronize different data component to ensure consistency
      */
     fun syncDataComponent() {
-        if (physicsData().coreRestMass !=
+        logger.debug("Sync data component, change core mass")
+        physicsData().coreRestMass =
             popSystemData().totalCoreRestMass()
-        ) {
-            logger.debug("Sync data component, change core mass")
-            physicsData().coreRestMass =
-                popSystemData().totalCoreRestMass()
-        }
 
-        if (physicsData().otherRestMass !=
+        logger.debug("Sync data component, change other rest mass")
+        physicsData().otherRestMass =
             popSystemData().totalOtherRestMass()
-        ) {
-            logger.debug("Sync data component, change other rest mass")
-            physicsData().otherRestMass =
-                popSystemData().totalOtherRestMass()
-        }
 
-        if (physicsData().fuelRestMassData.maxMovementDelta !=
+        logger.debug("Sync data component, change max delta fuel rest mass")
+        physicsData().fuelRestMassData.maxMovementDelta =
             popSystemData().totalMaxMovementDeltaFuelRestMass()
-        ) {
-            logger.debug("Sync data component, change max delta fuel rest mass")
-            physicsData().fuelRestMassData.maxMovementDelta =
-                popSystemData().totalMaxMovementDeltaFuelRestMass()
-        }
     }
 
     companion object {
