@@ -1,6 +1,8 @@
 package relativitization.universe.generate.method.random
 
 import kotlinx.coroutines.runBlocking
+import org.apache.logging.log4j.Level
+import org.apache.logging.log4j.core.config.Configurator
 import relativitization.universe.Universe
 import relativitization.universe.data.MutableUniverseSettings
 import relativitization.universe.data.commands.*

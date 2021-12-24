@@ -1,6 +1,7 @@
 package relativitization.universe.data.components.defaults.economy
 
 import kotlinx.serialization.Serializable
+import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.math.*
 
 enum class ResourceType(val value: String) {
@@ -455,12 +456,16 @@ data class MutableResourceQualityData(
         newAmount: Double,
         newData: MutableResourceQualityData
     ) {
-        quality1 = (originalAmount * quality1 + newAmount * newData.quality1) /
-                (originalAmount + newAmount)
-        quality2 = (originalAmount * quality2 + newAmount * newData.quality2) /
-                (originalAmount + newAmount)
-        quality3 = (originalAmount * quality3 + newAmount * newData.quality3) /
-                (originalAmount + newAmount)
+        if (originalAmount + newAmount > 0.0) {
+            quality1 = (originalAmount * quality1 + newAmount * newData.quality1) /
+                    (originalAmount + newAmount)
+            quality2 = (originalAmount * quality2 + newAmount * newData.quality2) /
+                    (originalAmount + newAmount)
+            quality3 = (originalAmount * quality3 + newAmount * newData.quality3) /
+                    (originalAmount + newAmount)
+        } else {
+            logger.debug("Add 0 new resource to 0 original resource")
+        }
     }
 
     /**
@@ -504,6 +509,10 @@ data class MutableResourceQualityData(
             quality2 = max(quality2, other.quality2),
             quality3 = max(quality3, other.quality3)
         )
+    }
+
+    companion object {
+        val logger = RelativitizationLogManager.getLogger()
     }
 }
 
