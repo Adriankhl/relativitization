@@ -1514,7 +1514,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         )
 
         val buildForeignFuelFactoryTextButton = createTextButton(
-            "Build resource factory",
+            "Build local resource factory",
             gdxSettings.smallFontSize,
             gdxSettings.soundEffectsVolume,
         ) {
