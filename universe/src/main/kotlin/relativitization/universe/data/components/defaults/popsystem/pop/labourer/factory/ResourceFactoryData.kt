@@ -122,7 +122,7 @@ data class ResourceFactoryInternalData(
     val maxOutputResourceQualityData: ResourceQualityData = ResourceQualityData(),
     val maxOutputAmount: Double = 0.0,
     val inputResourceMap: Map<ResourceType, InputResourceData> = mapOf(),
-    val fuelRestMassConsumptionRate: Double = 0.0,
+    val fuelRestMassConsumptionRate: Double = 1.0,
     val maxNumEmployee: Double = 1.0,
     val size: Double = 0.0,
 ) {
@@ -195,7 +195,7 @@ data class MutableResourceFactoryInternalData(
     var maxOutputResourceQualityData: MutableResourceQualityData = MutableResourceQualityData(),
     var maxOutputAmount: Double = 0.0,
     var inputResourceMap: MutableMap<ResourceType, MutableInputResourceData> = mutableMapOf(),
-    var fuelRestMassConsumptionRate: Double = 0.0,
+    var fuelRestMassConsumptionRate: Double = 1.0,
     var maxNumEmployee: Double = 1.0,
     var size: Double = 0.0,
 ) {
