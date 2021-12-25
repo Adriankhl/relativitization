@@ -133,7 +133,7 @@ class AIInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.
                 val successNum: Int = successList.filter { it }.size
                 val failedNum: Int = successList.filter { !it }.size
                 game.universeClient.currentCommand = CannotSendCommand(
-                    reason = I18NString(singleMessage = "Success: $successList, failed: $failedNum")
+                    reason = I18NString(singleMessage = "Success: $successNum, failed: $failedNum")
                 )
             }
         }
