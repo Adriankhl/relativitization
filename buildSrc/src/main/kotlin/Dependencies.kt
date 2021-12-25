@@ -6,7 +6,7 @@ object Versions {
     // Kotlin multiplatform
     const val kotlinVersion = "1.6.10"
     const val kotlinxCoroutineVersion = "1.6.0"
-    const val kotlinxSerializationVersion = "1.3.1"
+    const val kotlinxSerializationVersion = "1.3.2"
     const val kotlinxDateTimeVersion = "0.3.1"
     const val ktorVersion = "1.6.7"
 
@@ -25,5 +25,5 @@ object Versions {
     const val androidFragmentKtxVersion = "1.4.0"
 
     // Unused in relativitization, for ktor
-    const val logbackVersion = "1.2.9"
+    const val logbackVersion = "1.2.10"
 }
