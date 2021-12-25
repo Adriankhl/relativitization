@@ -4,10 +4,9 @@ import relativitization.universe.ai.defaults.utils.AINode
 import relativitization.universe.ai.defaults.utils.PlanState
 import relativitization.universe.ai.defaults.utils.SequenceReasoner
 import relativitization.universe.data.PlanDataAtPlayer
-import relativitization.universe.data.commands.ChangeStorageFuelTargetCommand
-import relativitization.universe.data.commands.TransferFuelToMovementCommand
-import relativitization.universe.data.commands.TransferFuelToProductionCommand
-import relativitization.universe.data.commands.TransferFuelToTradeCommand
+import relativitization.universe.data.commands.*
+import relativitization.universe.data.components.defaults.economy.ResourceQualityClass
+import relativitization.universe.data.components.defaults.economy.ResourceType
 import relativitization.universe.data.components.defaults.popsystem.CarrierType
 
 class BalanceFuelAndResourceReasoner : SequenceReasoner() {
@@ -21,7 +20,7 @@ class BalanceFuelAndResourceReasoner : SequenceReasoner() {
 }
 
 /**
- * Transfer from storage to other categories
+ * Transfer from storage to other fuel usage categories
  */
 class BalanceFuelDataAINode : AINode {
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
@@ -145,6 +144,97 @@ class BalanceFuelTargetDataAINode : AINode {
                     targetAmount = 1E100,
                 )
             )
+        }
+    }
+}
+
+/**
+ * Transfer from storage to other resource usage categories
+ *
+ * @param resourceType the type of the resource
+ * @param resourceQualityClass the quality class of the resource
+ */
+class BalanceResourceDataAINode(
+    val resourceType: ResourceType,
+    val resourceQualityClass: ResourceQualityClass,
+) : AINode {
+    override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
+        val storage: Double = planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData
+            .economyData().resourceData.getStorageResourceAmount(
+                resourceType,
+                resourceQualityClass
+            )
+        val production: Double = planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData
+            .economyData().resourceData.getProductionResourceAmount(
+                resourceType,
+                resourceQualityClass
+            )
+        val trade: Double = planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData
+            .economyData().resourceData.getTradeResourceAmount(
+                resourceType,
+                resourceQualityClass
+            )
+        val totalResource: Double = storage + production + trade
+
+
+        // To compute the fraction target
+        val storageWeight: Double = 1.0
+        val productionWeight: Double = 2.0
+        val tradeWeight: Double = 1.0
+        val totalWeight: Double = storageWeight + productionWeight + tradeWeight
+
+        val storageFraction: Double = storageWeight / totalWeight
+        val productionFraction: Double = productionWeight / totalWeight
+        val tradeFraction: Double = tradeWeight / totalWeight
+
+        // Only balance the resource if storage is sufficient
+        val isStorageEnough: Boolean = if (totalResource > 0.0) {
+            (storage / totalResource) >= storageFraction
+        } else {
+            false
+        }
+
+        if (isStorageEnough) {
+            val availableStorage: Double = storage - totalResource * storageFraction
+
+            // Calculate which category is lacking
+            val productionLack: Double = if ((production / totalResource) < productionFraction) {
+                productionFraction * totalResource - production
+            } else {
+                0.0
+            }
+            val tradeLack: Double = if ((trade / totalResource) < tradeFraction) {
+                tradeFraction * totalResource - trade
+            } else {
+                0.0
+            }
+            val totalLack: Double = productionLack + tradeLack
+
+            if (productionLack > 0.0) {
+                planDataAtPlayer.addCommand(
+                    TransferResourceToProductionCommand(
+                        toId = planDataAtPlayer.universeData3DAtPlayer.getCurrentPlayerData().playerId,
+                        fromId = planDataAtPlayer.universeData3DAtPlayer.getCurrentPlayerData().playerId,
+                        fromInt4D = planDataAtPlayer.universeData3DAtPlayer.getCurrentPlayerData().int4D,
+                        resourceType = resourceType,
+                        resourceQualityClass = resourceQualityClass,
+                        amount = availableStorage * productionLack / totalLack,
+                    )
+                )
+            }
+
+            if (tradeLack > 0.0) {
+                planDataAtPlayer.addCommand(
+                    TransferResourceToTradeCommand(
+                        toId = planDataAtPlayer.universeData3DAtPlayer.getCurrentPlayerData().playerId,
+                        fromId = planDataAtPlayer.universeData3DAtPlayer.getCurrentPlayerData().playerId,
+                        fromInt4D = planDataAtPlayer.universeData3DAtPlayer.getCurrentPlayerData().int4D,
+                        resourceType = resourceType,
+                        resourceQualityClass = resourceQualityClass,
+                        amount = availableStorage * tradeLack / totalLack,
+                    )
+                )
+            }
         }
     }
 }
