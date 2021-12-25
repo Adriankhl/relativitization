@@ -1,6 +1,7 @@
 package relativitization.universe.ai
 
-import relativitization.universe.ai.defaults.event.EventReasoner
+import relativitization.universe.ai.defaults.node.ai.RecordRecentlySentCommandAINode
+import relativitization.universe.ai.defaults.node.event.EventReasoner
 import relativitization.universe.ai.defaults.utils.AINode
 import relativitization.universe.ai.defaults.utils.PlanState
 import relativitization.universe.ai.defaults.utils.SequenceReasoner
@@ -36,6 +37,7 @@ class RootReasoner(
         planState: PlanState
     ): List<AINode> = listOf(
         EventReasoner(),
+        RecordRecentlySentCommandAINode(),
     )
 
     companion object {
