@@ -24,6 +24,7 @@ import relativitization.universe.mechanisms.defaults.dilated.production.FuelFact
 import relativitization.universe.mechanisms.defaults.dilated.production.ResourceFactoryProduction
 import relativitization.universe.mechanisms.defaults.dilated.research.DiscoverKnowledge
 import relativitization.universe.mechanisms.defaults.dilated.research.KnowledgeDiffusion
+import relativitization.universe.mechanisms.defaults.regular.ai.ClearRecentCommand
 import relativitization.universe.mechanisms.defaults.regular.factory.ClearLocalFactoryStoredFuel
 import relativitization.universe.mechanisms.defaults.regular.science.UpdateScienceApplicationData
 import relativitization.universe.mechanisms.defaults.regular.sync.SyncHierarchy
@@ -32,6 +33,7 @@ import relativitization.universe.mechanisms.defaults.regular.sync.SyncPlayerScie
 
 object DefaultMechanismLists : MechanismLists() {
     override val regularMechanismList: List<Mechanism> = listOf(
+        ClearRecentCommand,
         SyncPlayerData,
         ClearDeadPlayer,
         AutoEventCollection,
