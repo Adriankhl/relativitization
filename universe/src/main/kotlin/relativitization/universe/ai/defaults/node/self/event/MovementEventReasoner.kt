@@ -1,4 +1,4 @@
-package relativitization.universe.ai.defaults.node.event
+package relativitization.universe.ai.defaults.node.self.event
 
 import relativitization.universe.ai.defaults.consideration.HierarchyDualUtilityConsideration
 import relativitization.universe.ai.defaults.consideration.RelationDualUtilityConsideration

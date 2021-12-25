@@ -1,8 +1,9 @@
 package relativitization.universe.ai
 
 import relativitization.universe.ai.defaults.node.ai.RecordRecentlySentCommandAINode
-import relativitization.universe.ai.defaults.node.event.EventReasoner
-import relativitization.universe.ai.defaults.node.resource.BalanceFuelAndResourceReasoner
+import relativitization.universe.ai.defaults.node.self.SelfReasoner
+import relativitization.universe.ai.defaults.node.self.event.EventReasoner
+import relativitization.universe.ai.defaults.node.self.resource.BalanceFuelAndResourceReasoner
 import relativitization.universe.ai.defaults.utils.AINode
 import relativitization.universe.ai.defaults.utils.PlanState
 import relativitization.universe.ai.defaults.utils.SequenceReasoner
@@ -37,8 +38,7 @@ class RootReasoner(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<AINode> = listOf(
-        EventReasoner(),
-        BalanceFuelAndResourceReasoner(),
+        SelfReasoner(),
         RecordRecentlySentCommandAINode(),
     )
 
