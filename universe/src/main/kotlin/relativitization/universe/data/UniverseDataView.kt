@@ -309,7 +309,7 @@ class PlanDataAtPlayer(
             logger.error("Cannot add command: $command")
             CommandErrorMessage(
                 false,
-                I18NString("Self execute fail. ")
+                I18NString("Cannot send this command. Self-execute check failed.  ")
             )
         }
     }
