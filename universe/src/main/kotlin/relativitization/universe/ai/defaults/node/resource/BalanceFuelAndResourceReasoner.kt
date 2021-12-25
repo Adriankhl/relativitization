@@ -16,7 +16,20 @@ class BalanceFuelAndResourceReasoner : SequenceReasoner() {
     ): List<AINode> = listOf(
         BalanceFuelDataAINode(),
         BalanceFuelTargetDataAINode(),
-    )
+    ) + ResourceType.values().map { resourceType ->
+        ResourceQualityClass.values().map { resourceQualityClass ->
+            listOf(
+                BalanceResourceDataAINode(
+                    resourceType,
+                    resourceQualityClass
+                ),
+                BalanceResourceTargetDataAINode(
+                    resourceType,
+                    resourceQualityClass
+                )
+            )
+        }
+    }.flatten().flatten()
 }
 
 /**
