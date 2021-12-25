@@ -103,9 +103,9 @@ class BalanceFuelDataAINode : AINode {
             if (movementLack > 0.0) {
                 planDataAtPlayer.addCommand(
                     TransferFuelToMovementCommand(
-                        toId = planDataAtPlayer.universeData3DAtPlayer.getCurrentPlayerData().playerId,
-                        fromId = planDataAtPlayer.universeData3DAtPlayer.getCurrentPlayerData().playerId,
-                        fromInt4D = planDataAtPlayer.universeData3DAtPlayer.getCurrentPlayerData().int4D,
+                        toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+                        fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+                        fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
                         amount = availableStorage * movementLack / totalLack,
                     )
                 )
@@ -115,9 +115,9 @@ class BalanceFuelDataAINode : AINode {
             if (productionLack > 0.0) {
                 planDataAtPlayer.addCommand(
                     TransferFuelToProductionCommand(
-                        toId = planDataAtPlayer.universeData3DAtPlayer.getCurrentPlayerData().playerId,
-                        fromId = planDataAtPlayer.universeData3DAtPlayer.getCurrentPlayerData().playerId,
-                        fromInt4D = planDataAtPlayer.universeData3DAtPlayer.getCurrentPlayerData().int4D,
+                        toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+                        fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+                        fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
                         amount = availableStorage * productionLack / totalLack,
                     )
                 )
@@ -127,9 +127,9 @@ class BalanceFuelDataAINode : AINode {
             if (tradeLack > 0.0) {
                 planDataAtPlayer.addCommand(
                     TransferFuelToTradeCommand(
-                        toId = planDataAtPlayer.universeData3DAtPlayer.getCurrentPlayerData().playerId,
-                        fromId = planDataAtPlayer.universeData3DAtPlayer.getCurrentPlayerData().playerId,
-                        fromInt4D = planDataAtPlayer.universeData3DAtPlayer.getCurrentPlayerData().int4D,
+                        toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+                        fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+                        fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
                         amount = availableStorage * tradeLack / totalLack,
                     )
                 )
@@ -151,9 +151,9 @@ class BalanceFuelTargetDataAINode : AINode {
         if (currentTargetStorage < 1E100) {
             planDataAtPlayer.addCommand(
                 ChangeStorageFuelTargetCommand(
-                    toId = planDataAtPlayer.universeData3DAtPlayer.getCurrentPlayerData().playerId,
-                    fromId = planDataAtPlayer.universeData3DAtPlayer.getCurrentPlayerData().playerId,
-                    fromInt4D = planDataAtPlayer.universeData3DAtPlayer.getCurrentPlayerData().int4D,
+                    toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+                    fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+                    fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
                     targetAmount = 1E100,
                 )
             )
@@ -226,9 +226,9 @@ class BalanceResourceDataAINode(
             if (productionLack > 0.0) {
                 planDataAtPlayer.addCommand(
                     TransferResourceToProductionCommand(
-                        toId = planDataAtPlayer.universeData3DAtPlayer.getCurrentPlayerData().playerId,
-                        fromId = planDataAtPlayer.universeData3DAtPlayer.getCurrentPlayerData().playerId,
-                        fromInt4D = planDataAtPlayer.universeData3DAtPlayer.getCurrentPlayerData().int4D,
+                        toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+                        fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+                        fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
                         resourceType = resourceType,
                         resourceQualityClass = resourceQualityClass,
                         amount = availableStorage * productionLack / totalLack,
@@ -239,9 +239,9 @@ class BalanceResourceDataAINode(
             if (tradeLack > 0.0) {
                 planDataAtPlayer.addCommand(
                     TransferResourceToTradeCommand(
-                        toId = planDataAtPlayer.universeData3DAtPlayer.getCurrentPlayerData().playerId,
-                        fromId = planDataAtPlayer.universeData3DAtPlayer.getCurrentPlayerData().playerId,
-                        fromInt4D = planDataAtPlayer.universeData3DAtPlayer.getCurrentPlayerData().int4D,
+                        toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+                        fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+                        fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
                         resourceType = resourceType,
                         resourceQualityClass = resourceQualityClass,
                         amount = availableStorage * tradeLack / totalLack,
@@ -271,9 +271,9 @@ class BalanceResourceTargetDataAINode(
         if (currentTargetStorage < 1E100) {
             planDataAtPlayer.addCommand(
                 ChangeStorageResourceTargetCommand(
-                    toId = planDataAtPlayer.universeData3DAtPlayer.getCurrentPlayerData().playerId,
-                    fromId = planDataAtPlayer.universeData3DAtPlayer.getCurrentPlayerData().playerId,
-                    fromInt4D = planDataAtPlayer.universeData3DAtPlayer.getCurrentPlayerData().int4D,
+                    toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+                    fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+                    fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
                     resourceType = resourceType,
                     resourceQualityClass = resourceQualityClass,
                     targetAmount = 1E100,
