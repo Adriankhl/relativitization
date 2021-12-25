@@ -4,6 +4,7 @@ import relativitization.universe.ai.defaults.utils.AINode
 import relativitization.universe.ai.defaults.utils.PlanState
 import relativitization.universe.ai.defaults.utils.SequenceReasoner
 import relativitization.universe.data.PlanDataAtPlayer
+import relativitization.universe.data.commands.ChangeStorageFuelTargetCommand
 import relativitization.universe.data.commands.TransferFuelToMovementCommand
 import relativitization.universe.data.commands.TransferFuelToProductionCommand
 import relativitization.universe.data.commands.TransferFuelToTradeCommand
@@ -14,7 +15,8 @@ class BalanceFuelAndResourceReasoner : SequenceReasoner() {
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<AINode> = listOf(
-        BalanceFuelDataAINode()
+        BalanceFuelDataAINode(),
+        BalanceFuelTargetDataAINode(),
     )
 }
 
@@ -120,6 +122,29 @@ class BalanceFuelDataAINode : AINode {
                     )
                 )
             }
+        }
+    }
+}
+
+/**
+ * Change the fuel target data
+ */
+class BalanceFuelTargetDataAINode : AINode {
+    override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
+        // Set the target storage to a high value, which means everything is put into the storage
+        // Do the transfer "manually" by AI
+        val currentTargetStorage: Double = planDataAtPlayer.getCurrentMutablePlayerData()
+            .playerInternalData.physicsData().targetFuelRestMassData.storage
+
+        if (currentTargetStorage < 1E100) {
+            planDataAtPlayer.addCommand(
+                ChangeStorageFuelTargetCommand(
+                    toId = planDataAtPlayer.universeData3DAtPlayer.getCurrentPlayerData().playerId,
+                    fromId = planDataAtPlayer.universeData3DAtPlayer.getCurrentPlayerData().playerId,
+                    fromInt4D = planDataAtPlayer.universeData3DAtPlayer.getCurrentPlayerData().int4D,
+                    targetAmount = 1E100,
+                )
+            )
         }
     }
 }
