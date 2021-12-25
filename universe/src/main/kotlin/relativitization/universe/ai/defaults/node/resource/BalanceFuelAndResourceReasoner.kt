@@ -48,7 +48,7 @@ class BalanceFuelDataAINode : AINode {
         } else {
             1.0
         }
-        val productionWeight: Double = 1.0
+        val productionWeight: Double = 2.0
         val tradeWeight: Double = 1.0
         val totalWeight: Double = storageWeight + movementWeight + productionWeight + tradeWeight
 
@@ -59,9 +59,9 @@ class BalanceFuelDataAINode : AINode {
 
         // Only balance the fuel if storage is sufficient
         val isStorageEnough: Boolean = if (totalFuel > 0.0) {
-            false
-        } else {
             (storage / totalFuel) >= storageFraction
+        } else {
+            false
         }
 
         if (isStorageEnough) {
