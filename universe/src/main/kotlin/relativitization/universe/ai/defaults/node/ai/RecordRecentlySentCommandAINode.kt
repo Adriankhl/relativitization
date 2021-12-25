@@ -13,9 +13,9 @@ class RecordRecentlySentCommandAINode : AINode {
             it != planDataAtPlayer.getCurrentMutablePlayerData().playerId
         }.map {
             AddRecentCommandTimeCommand(
-                planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
+                planDataAtPlayer.universeData3DAtPlayer.getCurrentPlayerData().playerId,
+                planDataAtPlayer.universeData3DAtPlayer.getCurrentPlayerData().playerId,
+                planDataAtPlayer.universeData3DAtPlayer.getCurrentPlayerData().int4D,
                 it,
             )
         }
