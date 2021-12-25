@@ -238,3 +238,34 @@ class BalanceResourceDataAINode(
         }
     }
 }
+
+/**
+ * Change the resource target data
+ */
+class BalanceResourceTargetDataAINode(
+    val resourceType: ResourceType,
+    val resourceQualityClass: ResourceQualityClass,
+)  : AINode {
+    override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
+        // Set the target storage to a high value, which means everything is put into the storage
+        // Do the transfer "manually" by AI
+        val currentTargetStorage: Double = planDataAtPlayer.getCurrentMutablePlayerData()
+            .playerInternalData.economyData().resourceData.getStorageResourceAmount(
+                resourceType,
+                resourceQualityClass
+            )
+
+        if (currentTargetStorage < 1E100) {
+            planDataAtPlayer.addCommand(
+                ChangeStorageResourceTargetCommand(
+                    toId = planDataAtPlayer.universeData3DAtPlayer.getCurrentPlayerData().playerId,
+                    fromId = planDataAtPlayer.universeData3DAtPlayer.getCurrentPlayerData().playerId,
+                    fromInt4D = planDataAtPlayer.universeData3DAtPlayer.getCurrentPlayerData().int4D,
+                    resourceType = resourceType,
+                    resourceQualityClass = resourceQualityClass,
+                    targetAmount = 1E100,
+                )
+            )
+        }
+    }
+}
