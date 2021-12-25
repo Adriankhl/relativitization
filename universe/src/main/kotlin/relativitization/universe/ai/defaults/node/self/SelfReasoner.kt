@@ -1,5 +1,6 @@
 package relativitization.universe.ai.defaults.node.self
 
+import relativitization.universe.ai.defaults.node.self.construction.FactoryReasoner
 import relativitization.universe.ai.defaults.node.self.event.EventReasoner
 import relativitization.universe.ai.defaults.node.self.resource.BalanceFuelAndResourceReasoner
 import relativitization.universe.ai.defaults.utils.AINode
@@ -14,5 +15,6 @@ class SelfReasoner : SequenceReasoner() {
     ): List<AINode> = listOf(
         EventReasoner(),
         BalanceFuelAndResourceReasoner(),
+        FactoryReasoner(),
     )
 }
