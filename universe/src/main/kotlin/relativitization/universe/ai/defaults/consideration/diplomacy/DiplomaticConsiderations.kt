@@ -3,9 +3,11 @@ package relativitization.universe.ai.defaults.consideration.diplomacy
 import relativitization.universe.ai.defaults.utils.DualUtilityConsideration
 import relativitization.universe.ai.defaults.utils.DualUtilityData
 import relativitization.universe.ai.defaults.utils.PlanState
+import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.components.DiplomacyData
+import relativitization.universe.data.components.MutableDiplomacyData
 import kotlin.math.exp
 
 /**
@@ -27,13 +29,13 @@ class RelationConsideration(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): DualUtilityData {
-        val diplomacyData: DiplomacyData =
-            planDataAtPlayer.universeData3DAtPlayer.getCurrentPlayerData().playerInternalData.diplomacyData()
+        val diplomacyData: MutableDiplomacyData = planDataAtPlayer.getCurrentMutablePlayerData()
+            .playerInternalData.diplomacyData()
 
         return DualUtilityData(
             rank = rank,
             multiplier = multiplier,
-            bonus = exp(diplomacyData.getRelation(playerId).toDouble() / normalizeRelation),
+            bonus = exp(diplomacyData.getRelation(playerId) / normalizeRelation),
         )
     }
 }
@@ -66,7 +68,7 @@ class HierarchyConsideration(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): DualUtilityData {
-        val playerData: PlayerData = planDataAtPlayer.universeData3DAtPlayer.getCurrentPlayerData()
+        val playerData: MutablePlayerData = planDataAtPlayer.getCurrentMutablePlayerData()
 
         return when {
             playerData.playerId == playerId -> DualUtilityData(
