@@ -80,3 +80,17 @@ class EmptyDualUtilityOption : DualUtilityOption() {
         planState: PlanState
     ): List<Command> = listOf()
 }
+
+class DoNothingDualUtilityOption : DualUtilityOption() {
+    override fun getConsiderationList(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planState: PlanState
+    ): List<DualUtilityConsideration> = listOf(
+        AllOneDualUtilityConsideration()
+    )
+
+    override fun getCommandList(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planState: PlanState
+    ): List<Command> = listOf()
+}

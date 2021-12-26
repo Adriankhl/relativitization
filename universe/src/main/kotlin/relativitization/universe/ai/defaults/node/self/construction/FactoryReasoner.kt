@@ -22,7 +22,7 @@ class NewResourceFactoryReasoner(
         planState: PlanState
     ): List<DualUtilityOption> = listOf(
         BuildNewResourceFactoryOption(resourceType),
-        NotBuildNewResourceFactoryOption(resourceType),
+        DoNothingDualUtilityOption(),
     )
 }
 
@@ -42,20 +42,4 @@ class BuildNewResourceFactoryOption(
     ): List<Command> {
         TODO("Not yet implemented")
     }
-}
-
-class NotBuildNewResourceFactoryOption(
-    val resourceType: ResourceType
-) : DualUtilityOption() {
-    override fun getConsiderationList(
-        planDataAtPlayer: PlanDataAtPlayer,
-        planState: PlanState
-    ): List<DualUtilityConsideration> {
-        TODO("Not yet implemented")
-    }
-
-    override fun getCommandList(
-        planDataAtPlayer: PlanDataAtPlayer,
-        planState: PlanState
-    ): List<Command> = listOf()
 }
