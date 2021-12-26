@@ -1,5 +1,6 @@
 package relativitization.universe.ai.defaults.node.self.construction
 
+import relativitization.universe.ai.defaults.consideration.building.NoResourceFactoryConsideration
 import relativitization.universe.ai.defaults.utils.*
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.commands.Command
@@ -32,9 +33,14 @@ class BuildNewResourceFactoryOption(
     override fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
-    ): List<DualUtilityConsideration> {
-        TODO("Not yet implemented")
-    }
+    ): List<DualUtilityConsideration> = listOf(
+        NoResourceFactoryConsideration(
+            resourceType = resourceType,
+            rankIfTrue = 5,
+            multiplierIfTrue = 1.0,
+            bonusIfTrue = 1.0
+        )
+    )
 
     override fun getCommandList(
         planDataAtPlayer: PlanDataAtPlayer,

@@ -1,4 +1,4 @@
-package relativitization.universe.ai.defaults.consideration.construction
+package relativitization.universe.ai.defaults.consideration.building
 
 import relativitization.universe.ai.defaults.utils.DualUtilityConsideration
 import relativitization.universe.ai.defaults.utils.DualUtilityData
@@ -9,15 +9,15 @@ import relativitization.universe.data.components.defaults.economy.ResourceType
 /**
  * Check if there is not such a resource library
  *
- * @property trueRank rank of dual utility if this is true
- * @property trueMultiplier multiplier of dual utility if this is true
- * @property trueBonus bonus of dual utility if this is true
+ * @property rankIfTrue rank of dual utility if this is true
+ * @property multiplierIfTrue multiplier of dual utility if this is true
+ * @property bonusIfTrue bonus of dual utility if this is true
  */
 class NoResourceFactoryConsideration(
     val resourceType: ResourceType,
-    private val trueRank: Int,
-    private val trueMultiplier: Double,
-    private val trueBonus: Double,
+    private val rankIfTrue: Int,
+    private val multiplierIfTrue: Double,
+    private val bonusIfTrue: Double,
 ) : DualUtilityConsideration {
     override fun getDualUtilityData(
         planDataAtPlayer: PlanDataAtPlayer,
@@ -33,7 +33,7 @@ class NoResourceFactoryConsideration(
         return if (hasResourceFactory) {
             DualUtilityData(rank = 0, multiplier = 1.0, bonus = 0.0)
         } else {
-            DualUtilityData(rank = trueRank, multiplier = trueMultiplier, bonus = trueBonus)
+            DualUtilityData(rank = rankIfTrue, multiplier = multiplierIfTrue, bonus = bonusIfTrue)
         }
     }
 }
