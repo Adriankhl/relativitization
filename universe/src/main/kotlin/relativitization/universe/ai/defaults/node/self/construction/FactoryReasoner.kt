@@ -5,13 +5,15 @@ import relativitization.universe.ai.defaults.utils.*
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.commands.BuildForeignResourceFactoryCommand
 import relativitization.universe.data.components.defaults.economy.ResourceType
-import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.ResourceFactoryInternalData
+import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.MutableResourceFactoryInternalData
+import relativitization.universe.data.serializer.DataSerializer
+import kotlin.math.min
 
 class FactoryReasoner : SequenceReasoner() {
     override fun getSubNodeList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
-    ): List<AINode> = ResourceType.values().map {
+    ): List<AINode> = (ResourceType.values().toList() - ResourceType.ENTERTAINMENT).map {
         NewResourceFactoryReasoner(it)
     }
 }
@@ -67,17 +69,54 @@ class BuildNewResourceFactoryOption(
     )
 
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
-        val buildForeignResourceFactoryCommand = BuildForeignResourceFactoryCommand(
-            toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-            fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-            fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
-            senderTopLeaderId = planDataAtPlayer.getCurrentMutablePlayerData().topLeaderId(),
-            targetCarrierId = carrierId,
-            ownerId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-            resourceFactoryInternalData = ResourceFactoryInternalData(),
-            qualityLevel = 0.0,
-            storedFuelRestMass = 0.0,
-            numBuilding = 1.0,
+        val idealFactory: MutableResourceFactoryInternalData = planDataAtPlayer
+            .getCurrentMutablePlayerData()
+            .playerInternalData.playerScienceData()
+            .playerScienceApplicationData.newResourceFactoryInternalData(
+                resourceType,
+                1.0
+            )
+
+        val fuelNeededPerBuilding: Double = planDataAtPlayer
+            .getCurrentMutablePlayerData()
+            .playerInternalData.playerScienceData()
+            .playerScienceApplicationData.newResourceFactoryFuelNeededByConstruction(
+                resourceType,
+                1.0
+            )
+
+        val fuelAvailable: Double = planDataAtPlayer.getCurrentMutablePlayerData()
+            .playerInternalData.physicsData().fuelRestMassData.production
+
+        // Don't use all the fuel
+        val maxUsableFuel: Double = fuelAvailable * 0.1
+
+        val numLabourer: Double = planDataAtPlayer.getCurrentMutablePlayerData()
+            .playerInternalData.popSystemData().carrierDataMap.getValue(carrierId).allPopData
+            .labourerPopData.commonPopData.adultPopulation
+
+        // Multiply by 10 to consider pop growth
+        val targetNumLabourerPerResource: Double = numLabourer / ResourceType.values().size * 10.0
+
+        // Compute the numBuilding by considering the available fuel and number of labourer
+        val fuelFraction: Double = maxUsableFuel / fuelNeededPerBuilding
+        val labourerFraction: Double = targetNumLabourerPerResource / idealFactory.maxNumEmployee
+        val numBuilding: Double = min(fuelFraction, labourerFraction)
+
+
+        planDataAtPlayer.addCommand(
+            BuildForeignResourceFactoryCommand(
+                toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+                fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+                fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
+                senderTopLeaderId = planDataAtPlayer.getCurrentMutablePlayerData().topLeaderId(),
+                targetCarrierId = carrierId,
+                ownerId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+                resourceFactoryInternalData = DataSerializer.copy(idealFactory),
+                qualityLevel = 1.0,
+                storedFuelRestMass = 0.0,
+                numBuilding = numBuilding,
+            )
         )
     }
 }
