@@ -5,6 +5,7 @@ import relativitization.universe.ai.defaults.utils.*
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.components.defaults.economy.ResourceType
+import kotlin.reflect.jvm.internal.impl.types.checker.StrictEqualityTypeChecker
 
 class FactoryReasoner : SequenceReasoner() {
     override fun getSubNodeList(
@@ -15,20 +16,43 @@ class FactoryReasoner : SequenceReasoner() {
     }
 }
 
+/**
+ * Iterate all carrier to consider building new factory
+ */
 class NewResourceFactoryReasoner(
     val resourceType: ResourceType
+) : SequenceReasoner() {
+    override fun getSubNodeList(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planState: PlanState
+    ): List<AINode> = planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData
+        .popSystemData().carrierDataMap.keys.map {
+            NewResourceFactoryAtCarrierReasoner(
+                resourceType,
+                it
+            )
+        }
+}
+
+/**
+ * Consider building a resource factory at a carrier
+ */
+class NewResourceFactoryAtCarrierReasoner(
+    val resourceType: ResourceType,
+    val carrierId: Int,
 ) : DualUtilityReasoner() {
     override fun getOptionList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<DualUtilityOption> = listOf(
-        BuildNewResourceFactoryOption(resourceType),
+        BuildNewResourceFactoryOption(resourceType, carrierId),
         DoNothingDualUtilityOption(rank = 1, multiplier = 1.0, bonus = 1.0),
     )
 }
 
 class BuildNewResourceFactoryOption(
-    val resourceType: ResourceType
+    val resourceType: ResourceType,
+    val carrierId: Int,
 ) : DualUtilityOption() {
     override fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer,
@@ -46,6 +70,7 @@ class BuildNewResourceFactoryOption(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<Command> {
-        TODO("Not yet implemented")
+
+        return listOf()
     }
 }
