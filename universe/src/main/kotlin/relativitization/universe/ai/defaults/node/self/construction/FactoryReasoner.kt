@@ -22,7 +22,7 @@ class NewResourceFactoryReasoner(
         planState: PlanState
     ): List<DualUtilityOption> = listOf(
         BuildNewResourceFactoryOption(resourceType),
-        DoNothingDualUtilityOption(),
+        DoNothingDualUtilityOption(rank = 1, multiplier = 1.0, bonus = 1.0),
     )
 }
 

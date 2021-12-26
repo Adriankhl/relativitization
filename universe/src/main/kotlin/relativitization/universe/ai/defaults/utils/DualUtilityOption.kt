@@ -52,14 +52,14 @@ abstract class DualUtilityOption : AINode {
                 it.getDualUtilityData(planDataAtPlayer, planState)
             }
 
-            val totalAddend: Double = utilityDataList.fold(0.0) { acc, data ->
+            val totalBonus: Double = utilityDataList.fold(0.0) { acc, data ->
                 acc + data.bonus
             }
             val totalMultiplier: Double = utilityDataList.fold(1.0) { acc, data ->
                 acc * data.multiplier
             }
 
-            totalMultiplier * totalAddend
+            totalMultiplier * totalBonus
         }
     }
 
@@ -81,12 +81,20 @@ class EmptyDualUtilityOption : DualUtilityOption() {
     ): List<Command> = listOf()
 }
 
-class DoNothingDualUtilityOption : DualUtilityOption() {
+class DoNothingDualUtilityOption(
+    val rank: Int,
+    val multiplier: Double,
+    val bonus: Double,
+) : DualUtilityOption() {
     override fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<DualUtilityConsideration> = listOf(
-        AllOneDualUtilityConsideration()
+        PlainDualUtilityConsideration(
+            rank = rank,
+            multiplier = multiplier,
+            bonus = bonus
+        )
     )
 
     override fun getCommandList(

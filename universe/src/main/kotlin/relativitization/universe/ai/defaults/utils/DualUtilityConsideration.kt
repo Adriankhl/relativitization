@@ -9,16 +9,19 @@ interface DualUtilityConsideration {
 }
 
 /**
- * Basic consideration, all rank, multiplier and bonus equals to one, so it place the option to
- * lowest priority if only with this consideration
+ * Plain consideration, the utility does not depends on the player data
  */
-class AllOneDualUtilityConsideration : DualUtilityConsideration {
+class PlainDualUtilityConsideration(
+    val rank: Int,
+    val multiplier: Double,
+    val bonus: Double,
+) : DualUtilityConsideration {
     override fun getDualUtilityData(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): DualUtilityData = DualUtilityData(
-        rank = 1,
-        multiplier = 1.0,
-        bonus = 1.0
+        rank = rank,
+        multiplier = multiplier,
+        bonus = bonus,
     )
 }
