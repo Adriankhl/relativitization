@@ -17,7 +17,6 @@ import relativitization.universe.data.events.name
  * Reasoner to pick only one MoveToDouble3D event
  */
 class PickMoveToDouble3DEventReasoner : DualUtilityReasoner() {
-
     override fun getOptionList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -44,27 +43,6 @@ class PickMoveToDouble3DEventDualUtilityOption(
     private val keepEventIndex: Int,
 ) : DualUtilityOption() {
 
-    override fun getCommandList(
-        planDataAtPlayer: PlanDataAtPlayer,
-        planState: PlanState
-    ): List<Command> {
-        val movementEventMap: Map<Int, EventData> =
-            planDataAtPlayer.universeData3DAtPlayer.getCurrentPlayerData().playerInternalData.eventDataMap.filter {
-                // Filter out MoveToDouble3DEvent
-                it.value.event is MoveToDouble3DEvent
-            }
-        return movementEventMap.filter { it.key != keepEventIndex }.map {
-            SelectEventChoiceCommand(
-                toId = planDataAtPlayer.universeData3DAtPlayer.id,
-                fromId = planDataAtPlayer.universeData3DAtPlayer.id,
-                fromInt4D = planDataAtPlayer.universeData3DAtPlayer.getCurrentPlayerData().int4D,
-                eventKey = it.key,
-                eventName = it.value.event.name(),
-                choice = 1,
-            )
-        }
-    }
-
     override fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -87,5 +65,25 @@ class PickMoveToDouble3DEventDualUtilityOption(
         } else {
             listOf()
         }
+    }
+
+    override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
+        val movementEventMap: Map<Int, EventData> =
+            planDataAtPlayer.universeData3DAtPlayer.getCurrentPlayerData().playerInternalData.eventDataMap.filter {
+                // Filter out MoveToDouble3DEvent
+                it.value.event is MoveToDouble3DEvent
+            }
+        val commandList: List<Command> = movementEventMap.filter { it.key != keepEventIndex }.map {
+            SelectEventChoiceCommand(
+                toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+                fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+                fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
+                eventKey = it.key,
+                eventName = it.value.event.name(),
+                choice = 1,
+            )
+        }
+
+        planDataAtPlayer.addAllCommand(commandList)
     }
 }

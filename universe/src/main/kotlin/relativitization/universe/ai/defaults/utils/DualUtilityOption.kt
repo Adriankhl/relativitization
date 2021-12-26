@@ -1,32 +1,12 @@
 package relativitization.universe.ai.defaults.utils
 
 import relativitization.universe.data.PlanDataAtPlayer
-import relativitization.universe.data.commands.Command
 import relativitization.universe.utils.RelativitizationLogManager
 
 abstract class DualUtilityOption : AINode {
     abstract fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer, planState: PlanState
     ): List<DualUtilityConsideration>
-
-    protected abstract fun getCommandList(
-        planDataAtPlayer: PlanDataAtPlayer, planState: PlanState
-    ): List<Command>
-
-    protected open fun updateStatus(
-        planDataAtPlayer: PlanDataAtPlayer, planState: PlanState
-    ) {
-    }
-
-    override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
-        logger.debug("${this::class.simpleName} (CommandListOption) updating data")
-
-        val commandList = getCommandList(planDataAtPlayer, planState)
-
-        planDataAtPlayer.addAllCommand(commandList)
-
-        updateStatus(planDataAtPlayer, planState)
-    }
 
     fun getRank(
         planDataAtPlayer: PlanDataAtPlayer, planState: PlanState
@@ -75,10 +55,7 @@ class EmptyDualUtilityOption : DualUtilityOption() {
         planState: PlanState
     ): List<DualUtilityConsideration> = listOf()
 
-    override fun getCommandList(
-        planDataAtPlayer: PlanDataAtPlayer,
-        planState: PlanState
-    ): List<Command> = listOf()
+    override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) { }
 }
 
 class DoNothingDualUtilityOption(
@@ -97,8 +74,6 @@ class DoNothingDualUtilityOption(
         )
     )
 
-    override fun getCommandList(
-        planDataAtPlayer: PlanDataAtPlayer,
-        planState: PlanState
-    ): List<Command> = listOf()
+    override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) { }
 }
+

@@ -3,8 +3,9 @@ package relativitization.universe.ai.defaults.node.self.construction
 import relativitization.universe.ai.defaults.consideration.building.NoResourceFactoryAtPlayerConsideration
 import relativitization.universe.ai.defaults.utils.*
 import relativitization.universe.data.PlanDataAtPlayer
-import relativitization.universe.data.commands.Command
+import relativitization.universe.data.commands.BuildForeignResourceFactoryCommand
 import relativitization.universe.data.components.defaults.economy.ResourceType
+import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.ResourceFactoryInternalData
 
 class FactoryReasoner : SequenceReasoner() {
     override fun getSubNodeList(
@@ -65,11 +66,18 @@ class BuildNewResourceFactoryOption(
         )
     )
 
-    override fun getCommandList(
-        planDataAtPlayer: PlanDataAtPlayer,
-        planState: PlanState
-    ): List<Command> {
-
-        return listOf()
+    override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
+        val buildForeignResourceFactoryCommand = BuildForeignResourceFactoryCommand(
+            toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+            fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+            fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
+            senderTopLeaderId = planDataAtPlayer.getCurrentMutablePlayerData().topLeaderId(),
+            targetCarrierId = carrierId,
+            ownerId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+            resourceFactoryInternalData = ResourceFactoryInternalData(),
+            qualityLevel = 0.0,
+            storedFuelRestMass = 0.0,
+            numBuilding = 1.0,
+        )
     }
 }
