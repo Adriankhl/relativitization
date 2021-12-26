@@ -92,9 +92,13 @@ android {
     }
  
     buildTypes {
-        getByName("release") {
+        release {
             isMinifyEnabled = false
+            isDebuggable = true
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
+        }
+        debug {
+            isDebuggable = true
         }
     }
 }
