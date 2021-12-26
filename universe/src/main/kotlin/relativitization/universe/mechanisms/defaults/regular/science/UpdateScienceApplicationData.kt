@@ -95,7 +95,7 @@ object UpdateScienceApplicationData : Mechanism() {
 
         val maxOutputAmount: Double = 1E6
 
-        val maxNumEmployee: Double = maxOutputAmount / log2(
+        val maxNumEmployee: Double = 0.05 * maxOutputAmount / log2(
             mutableKnowledgeData.appliedResearchData.energyTechnologyLevel / 100.0 + 2.0
         )
 
@@ -119,7 +119,7 @@ object UpdateScienceApplicationData : Mechanism() {
             mutableKnowledgeData.appliedResearchData.environmentalTechnologyLevel / 100.0 + 2.0
         )
 
-        val maxNumEmployee: Double = maxOutputAmount / log2(
+        val maxNumEmployee: Double = 0.05 * maxOutputAmount / log2(
             mutableKnowledgeData.appliedResearchData.environmentalTechnologyLevel / 100.0 + 2.0
         )
 
@@ -147,7 +147,7 @@ object UpdateScienceApplicationData : Mechanism() {
             mutableKnowledgeData.appliedResearchData.biomedicalTechnologyLevel / 100.0 + 2.0
         )
 
-        val maxNumEmployee: Double = maxOutputAmount / log2(
+        val maxNumEmployee: Double = 0.05 * maxOutputAmount / log2(
             mutableKnowledgeData.appliedResearchData.biomedicalTechnologyLevel / 100.0 + 2.0
         )
 
@@ -175,7 +175,7 @@ object UpdateScienceApplicationData : Mechanism() {
             mutableKnowledgeData.appliedResearchData.machineryTechnologyLevel / 100.0 + 2.0
         )
 
-        val maxNumEmployee: Double = maxOutputAmount / log2(
+        val maxNumEmployee: Double = 0.05 * maxOutputAmount / log2(
             mutableKnowledgeData.appliedResearchData.machineryTechnologyLevel / 100.0 + 2.0
         )
 
@@ -203,7 +203,7 @@ object UpdateScienceApplicationData : Mechanism() {
             mutableKnowledgeData.appliedResearchData.chemicalTechnologyLevel / 100.0 + 2.0
         )
 
-        val maxNumEmployee: Double = maxOutputAmount / log2(
+        val maxNumEmployee: Double = 0.05 * maxOutputAmount / log2(
             mutableKnowledgeData.appliedResearchData.chemicalTechnologyLevel / 100.0 + 2.0
         )
 
@@ -231,7 +231,7 @@ object UpdateScienceApplicationData : Mechanism() {
             mutableKnowledgeData.appliedResearchData.foodTechnologyLevel / 100.0 + 2.0
         )
 
-        val maxNumEmployee: Double = maxOutputAmount / log2(
+        val maxNumEmployee: Double = 0.05 * maxOutputAmount / log2(
             mutableKnowledgeData.appliedResearchData.foodTechnologyLevel / 100.0 + 2.0
         )
 
@@ -278,7 +278,7 @@ object UpdateScienceApplicationData : Mechanism() {
             mutableKnowledgeData.appliedResearchData.materialTechnologyLevel / 100.0 + 2.0
         )
 
-        val maxNumEmployee: Double = maxOutputAmount / log2(
+        val maxNumEmployee: Double = 0.05 * maxOutputAmount / log2(
             mutableKnowledgeData.appliedResearchData.materialTechnologyLevel / 100.0 + 2.0
         )
 
@@ -325,7 +325,7 @@ object UpdateScienceApplicationData : Mechanism() {
             mutableKnowledgeData.appliedResearchData.artTechnologyLevel / 100.0 + 2.0
         )
 
-        val maxNumEmployee: Double = maxOutputAmount / log2(
+        val maxNumEmployee: Double = 0.05 * maxOutputAmount / log2(
             mutableKnowledgeData.appliedResearchData.artTechnologyLevel / 100.0 + 2.0
         )
 
@@ -372,7 +372,7 @@ object UpdateScienceApplicationData : Mechanism() {
             mutableKnowledgeData.appliedResearchData.materialTechnologyLevel / 100.0 + 2.0
         )
 
-        val maxNumEmployee: Double = maxOutputAmount / log2(
+        val maxNumEmployee: Double = 0.05 * maxOutputAmount / log2(
             mutableKnowledgeData.appliedResearchData.materialTechnologyLevel / 100.0 + 2.0
         )
 
@@ -419,7 +419,7 @@ object UpdateScienceApplicationData : Mechanism() {
             mutableKnowledgeData.appliedResearchData.biomedicalTechnologyLevel / 100.0 + 2.0
         )
 
-        val maxNumEmployee: Double = maxOutputAmount / log2(
+        val maxNumEmployee: Double = 0.05 * maxOutputAmount / log2(
             mutableKnowledgeData.appliedResearchData.biomedicalTechnologyLevel / 100.0 + 2.0
         )
 
@@ -466,7 +466,7 @@ object UpdateScienceApplicationData : Mechanism() {
             mutableKnowledgeData.appliedResearchData.militaryTechnologyLevel / 100.0 + 2.0
         )
 
-        val maxNumEmployee: Double = maxOutputAmount / log2(
+        val maxNumEmployee: Double = 0.05 * maxOutputAmount / log2(
             mutableKnowledgeData.appliedResearchData.militaryTechnologyLevel / 100.0 + 2.0
         )
 

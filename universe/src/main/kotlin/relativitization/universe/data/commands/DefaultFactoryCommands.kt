@@ -212,10 +212,12 @@ data class BuildForeignResourceFactoryCommand(
             IntString(5),
             NormalString(", number of building: "),
             IntString(6),
-            NormalString(", output amount: "),
+            NormalString(", max. number of employee: "),
             IntString(7),
-            NormalString(", output quality: "),
+            NormalString(", output amount: "),
             IntString(8),
+            NormalString(", output quality: "),
+            IntString(9),
             NormalString(". "),
         ),
         listOf(
@@ -226,6 +228,7 @@ data class BuildForeignResourceFactoryCommand(
             toId.toString(),
             storedFuelRestMass.toString(),
             numBuilding.toString(),
+            (resourceFactoryInternalData.maxNumEmployee * numBuilding).toString(),
             (resourceFactoryInternalData.maxOutputAmount * numBuilding).toString(),
             resourceFactoryInternalData.maxOutputResourceQualityData.quality1.toString(),
         )
