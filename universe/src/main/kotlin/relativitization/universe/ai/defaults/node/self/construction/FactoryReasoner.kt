@@ -1,11 +1,10 @@
 package relativitization.universe.ai.defaults.node.self.construction
 
-import relativitization.universe.ai.defaults.consideration.building.NoResourceFactoryConsideration
+import relativitization.universe.ai.defaults.consideration.building.NoResourceFactoryAtPlayerConsideration
 import relativitization.universe.ai.defaults.utils.*
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.components.defaults.economy.ResourceType
-import kotlin.reflect.jvm.internal.impl.types.checker.StrictEqualityTypeChecker
 
 class FactoryReasoner : SequenceReasoner() {
     override fun getSubNodeList(
@@ -58,7 +57,7 @@ class BuildNewResourceFactoryOption(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<DualUtilityConsideration> = listOf(
-        NoResourceFactoryConsideration(
+        NoResourceFactoryAtPlayerConsideration(
             resourceType = resourceType,
             rankIfTrue = 5,
             multiplierIfTrue = 1.0,

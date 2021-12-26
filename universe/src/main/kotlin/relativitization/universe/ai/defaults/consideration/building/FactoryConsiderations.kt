@@ -13,7 +13,7 @@ import relativitization.universe.data.components.defaults.economy.ResourceType
  * @property multiplierIfTrue multiplier of dual utility if this is true
  * @property bonusIfTrue bonus of dual utility if this is true
  */
-class NoResourceFactoryConsideration(
+class NoResourceFactoryAtPlayerConsideration(
     val resourceType: ResourceType,
     private val rankIfTrue: Int,
     private val multiplierIfTrue: Double,
