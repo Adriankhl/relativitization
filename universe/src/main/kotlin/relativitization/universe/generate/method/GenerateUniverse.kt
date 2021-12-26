@@ -94,13 +94,6 @@ object GenerateUniverseMethodCollection {
                 TestingFixedMinimal
             }
 
-        val newUniverseData: UniverseData = generateMethod.generate(settings)
-
-        if (!newUniverseData.isUniverseValid()) {
-            logger.error("Universe data is invalid")
-            throw Error("Universe data is invalid")
-        }
-
-        return newUniverseData
+        return generateMethod.generate(settings)
     }
 }
