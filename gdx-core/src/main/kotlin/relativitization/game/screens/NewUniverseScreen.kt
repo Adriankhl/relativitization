@@ -8,8 +8,10 @@ import kotlinx.coroutines.runBlocking
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.TableScreen
 import relativitization.universe.data.commands.CommandCollection
+import relativitization.universe.data.components.defaults.physics.Int3D
 import relativitization.universe.generate.method.GenerateUniverseMethodCollection
 import relativitization.universe.global.GlobalMechanismCollection
+import relativitization.universe.maths.physics.Intervals
 import relativitization.universe.mechanisms.MechanismCollection
 import relativitization.universe.utils.RelativitizationLogManager
 
@@ -238,7 +240,7 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
 
         table.add(createLabel("Universe time dimension: ", gdxSettings.normalFontSize))
         val tDimSelectBox = createSelectBox(
-            (1..50).toList(),
+            (1..100).toList(),
             game.universeClient.generateSettings.universeSettings.tDim,
             gdxSettings.normalFontSize
         ) { tDim, _ ->
@@ -255,6 +257,21 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
             gdxSettings.normalFontSize
         ) { xDim, _ ->
             game.universeClient.generateSettings.universeSettings.xDim = xDim
+
+            // Fix tDim if it is too small
+            val maxDelay: Int = Intervals.intDelay(
+                Int3D(0, 0, 0),
+                Int3D(
+                    game.universeClient.generateSettings.universeSettings.xDim - 1,
+                    game.universeClient.generateSettings.universeSettings.yDim - 1,
+                    game.universeClient.generateSettings.universeSettings.zDim - 1
+                ),
+                game.universeClient.generateSettings.universeSettings.speedOfLight
+            )
+
+            if (game.universeClient.generateSettings.universeSettings.tDim <= maxDelay) {
+                tDimSelectBox.selected = maxDelay + 1
+            }
         }
         table.add(xDimSelectBox)
 
@@ -267,6 +284,21 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
             gdxSettings.normalFontSize
         ) { yDim, _ ->
             game.universeClient.generateSettings.universeSettings.yDim = yDim
+
+            // Fix tDim if it is too small
+            val maxDelay: Int = Intervals.intDelay(
+                Int3D(0, 0, 0),
+                Int3D(
+                    game.universeClient.generateSettings.universeSettings.xDim - 1,
+                    game.universeClient.generateSettings.universeSettings.yDim - 1,
+                    game.universeClient.generateSettings.universeSettings.zDim - 1
+                ),
+                game.universeClient.generateSettings.universeSettings.speedOfLight
+            )
+
+            if (game.universeClient.generateSettings.universeSettings.tDim <= maxDelay) {
+                tDimSelectBox.selected = maxDelay + 1
+            }
         }
         table.add(yDimSelectBox)
 
@@ -279,6 +311,21 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
             gdxSettings.normalFontSize
         ) { zDim, _ ->
             game.universeClient.generateSettings.universeSettings.zDim = zDim
+
+            // Fix tDim if it is too small
+            val maxDelay: Int = Intervals.intDelay(
+                Int3D(0, 0, 0),
+                Int3D(
+                    game.universeClient.generateSettings.universeSettings.xDim - 1,
+                    game.universeClient.generateSettings.universeSettings.yDim - 1,
+                    game.universeClient.generateSettings.universeSettings.zDim - 1
+                ),
+                game.universeClient.generateSettings.universeSettings.speedOfLight
+            )
+
+            if (game.universeClient.generateSettings.universeSettings.tDim <= maxDelay) {
+                tDimSelectBox.selected = maxDelay + 1
+            }
         }
         table.add(zDimSelectBox)
 
