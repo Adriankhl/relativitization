@@ -8,11 +8,7 @@ import relativitization.universe.ai.AI
 import relativitization.universe.ai.AICollection
 import relativitization.universe.ai.DefaultAI
 import relativitization.universe.ai.name
-import relativitization.universe.data.commands.CannotSendCommand
-import relativitization.universe.data.commands.Command
-import relativitization.universe.data.commands.name
-import relativitization.universe.data.components.defaults.physics.Int3D
-import relativitization.universe.data.components.defaults.physics.Int4D
+import relativitization.universe.data.commands.*
 import relativitization.universe.utils.I18NString
 
 class AIInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.assets) {
@@ -118,23 +114,29 @@ class AIInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.
         ) {
             game.universeClient.clearCommandList()
 
-            val successList: List<Boolean> = aiCommandList.map {
-                game.universeClient.currentCommand = it
-                if (game.universeClient.currentCommand is CannotSendCommand) {
-                    false
-                } else {
-                    game.universeClient.confirmCurrentCommand()
-                    true
+            val successList: List<CommandErrorMessage> = aiCommandList.map {
+                val message: CommandErrorMessage = it.canSendFromPlayer(
+                    game.universeClient.planDataAtPlayer.getCurrentMutablePlayerData(),
+                    game.universeClient.planDataAtPlayer.universeData3DAtPlayer.universeSettings
+                )
+
+                if (message.success) {
+                    game.universeClient.planDataAtPlayer.addCommand(it)
                 }
+
+                message
             }
 
             // Some commands are not executed successfully
-            if (successList.any { !it }) {
-                val successNum: Int = successList.filter { it }.size
-                val failedNum: Int = successList.filter { !it }.size
+            if (successList.any { !it.success }) {
+                val successNum: Int = successList.filter { it.success }.size
+                val failedNum: Int = successList.filter { !it.success }.size
                 game.universeClient.currentCommand = CannotSendCommand(
                     reason = I18NString(singleMessage = "Success: $successNum, failed: $failedNum")
                 )
+            } else {
+                game.universeClient.currentCommand = game.universeClient.planDataAtPlayer
+                    .commandList.lastOrNull() ?: DummyCommand()
             }
         }
         nestedTable.add(useAllButton)

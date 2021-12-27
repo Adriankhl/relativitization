@@ -320,11 +320,13 @@ class PlanDataAtPlayer(
         return commandErrorMessage
     }
 
-    fun addAllCommand(commandList: List<Command>) {
-        commandList.forEach {
+    fun addAllCommand(commandList: List<Command>): List<CommandErrorMessage> {
+        val commandErrorMessageList: List<CommandErrorMessage> = commandList.map {
             addSingleCommand(it)
         }
         onCommandListChange()
+
+        return commandErrorMessageList
     }
 
 
