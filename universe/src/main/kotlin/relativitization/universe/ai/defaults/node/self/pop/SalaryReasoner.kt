@@ -4,6 +4,7 @@ import relativitization.universe.ai.defaults.utils.AINode
 import relativitization.universe.ai.defaults.utils.PlanState
 import relativitization.universe.ai.defaults.utils.SequenceReasoner
 import relativitization.universe.data.PlanDataAtPlayer
+import relativitization.universe.data.components.defaults.popsystem.pop.MutableCommonPopData
 import relativitization.universe.data.components.defaults.popsystem.pop.PopType
 
 class SalaryReasoner : SequenceReasoner() {
@@ -23,6 +24,8 @@ class AdjustSalaryAINode(
     val popType: PopType,
 ) : AINode {
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
-
+        val commonPopData: MutableCommonPopData = planDataAtPlayer.getCurrentMutablePlayerData()
+            .playerInternalData.popSystemData().carrierDataMap.getValue(carrierId).allPopData
+            .getCommonPopData(popType)
     }
 }

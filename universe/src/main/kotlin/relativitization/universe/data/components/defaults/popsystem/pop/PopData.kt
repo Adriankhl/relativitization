@@ -124,7 +124,7 @@ data class MutableAllPopData(
  * @property unemploymentBenefit the total amount of the unemployment benefit of the unemployed population
  * @property satisfaction how satisfy is the population
  * @property saving saving of the population in fuel rest mass
- * @property salary the total amount of salary per turn of the employed population
+ * @property salary the salary per employee per turn of the employed population
  * @property desireResourceMap the desire resources of the population
  * @property resourceInputMap the resource input to this population to fulfill the desire
  */
