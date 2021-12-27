@@ -104,6 +104,12 @@ data class MutablePopSystemData(
         return carrierDataMap.values.sumOf { it.carrierInternalData.maxMovementDeltaFuelRestMass }
     }
 
+    fun totalAdultPopulation(): Double {
+        return carrierDataMap.values.sumOf {
+            it.allPopData.totalAdultPopulation()
+        }
+    }
+
     /**
      * Find the smallest non-negative carrier id which is not in the carrier list
      */
