@@ -26,7 +26,6 @@ class AIInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.
         // Set background color
         table.background = assets.getBackgroundColor(0.2f, 0.2f, 0.2f, 1.0f)
 
-
         // Configure scroll pane
         scrollPane.fadeScrollBars = false
         scrollPane.setClamp(true)

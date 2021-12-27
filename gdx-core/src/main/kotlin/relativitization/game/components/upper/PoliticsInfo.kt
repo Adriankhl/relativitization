@@ -10,7 +10,6 @@ import relativitization.universe.data.commands.ChangeFactoryPolicyCommand
 import relativitization.universe.data.events.AskToMergeCarrierEvent
 
 class PoliticsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.assets) {
-
     private val gdxSettings = game.gdxSettings
 
     private var table: Table = Table()
@@ -21,7 +20,6 @@ class PoliticsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>
 
 
     init {
-
         // Set background color
         table.background = assets.getBackgroundColor(0.2f, 0.2f, 0.2f, 1.0f)
 

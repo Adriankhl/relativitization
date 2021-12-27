@@ -10,7 +10,6 @@ import relativitization.universe.data.components.defaults.modifier.DiplomacyModi
 import relativitization.universe.data.components.defaults.modifier.PhysicsModifierData
 
 class ModifierInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.assets) {
-
     private val gdxSettings = game.gdxSettings
 
     private var table: Table = Table()
@@ -25,7 +24,6 @@ class ModifierInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>
     )
 
     init {
-
         // Set background color
         table.background = assets.getBackgroundColor(0.2f, 0.2f, 0.2f, 1.0f)
 

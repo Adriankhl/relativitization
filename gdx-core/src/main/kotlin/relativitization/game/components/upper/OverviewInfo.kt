@@ -8,7 +8,6 @@ import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.PlayerData
 
 class OverviewInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.assets) {
-
     private val gdxSettings = game.gdxSettings
 
     private val table: Table = Table()

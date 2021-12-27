@@ -8,7 +8,6 @@ import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.PlayerData
 
 class MapModeInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.assets) {
-
     private val gdxSettings = game.gdxSettings
 
     private var table: Table = Table()
@@ -16,7 +15,6 @@ class MapModeInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
     private val scrollPane: ScrollPane = createScrollPane(table)
 
     init {
-
         // Set background color
         table.background = assets.getBackgroundColor(0.2f, 0.2f, 0.2f, 1.0f)
 

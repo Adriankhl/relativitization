@@ -12,7 +12,6 @@ import relativitization.universe.data.components.defaults.diplomacy.DiplomaticRe
 import relativitization.universe.data.components.defaults.diplomacy.WarStateData
 
 class DiplomacyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.assets) {
-
     private val gdxSettings = game.gdxSettings
 
     private var table: Table = Table()
@@ -29,16 +28,13 @@ class DiplomacyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
     )
 
     init {
-
         // Set background color
         table.background = assets.getBackgroundColor(0.2f, 0.2f, 0.2f, 1.0f)
-
 
         // Configure scroll pane
         scrollPane.fadeScrollBars = false
         scrollPane.setClamp(true)
         scrollPane.setOverscroll(false, false)
-
 
         updatePlayerData()
         updateTable()

@@ -14,7 +14,6 @@ import relativitization.universe.data.components.defaults.economy.TaxRateData
 import relativitization.universe.maths.number.Notation
 
 class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.assets) {
-
     private val gdxSettings = game.gdxSettings
 
     private var table: Table = Table()
@@ -31,7 +30,6 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
     private var showFuelData: Boolean = true
     private var showResourceData: Boolean = false
     private var showTaxData: Boolean = false
-
 
     init {
 

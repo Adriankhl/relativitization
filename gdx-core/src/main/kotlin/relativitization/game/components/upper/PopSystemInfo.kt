@@ -34,7 +34,6 @@ import relativitization.universe.maths.number.Notation
 import relativitization.universe.utils.RelativitizationLogManager
 
 class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.assets) {
-
     private val gdxSettings = game.gdxSettings
 
     private var table: Table = Table()
