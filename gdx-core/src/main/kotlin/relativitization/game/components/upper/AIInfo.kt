@@ -114,25 +114,23 @@ class AIInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.
         ) {
             game.universeClient.clearCommandList()
 
-            val successList: List<CommandErrorMessage> = aiCommandList.map {
-                val message: CommandErrorMessage = it.canSendFromPlayer(
-                    game.universeClient.planDataAtPlayer.getCurrentMutablePlayerData(),
-                    game.universeClient.planDataAtPlayer.universeData3DAtPlayer.universeSettings
-                )
+            val successList: List<CommandErrorMessage> = game.universeClient.planDataAtPlayer
+                .addAllCommand(aiCommandList)
 
-                if (message.success) {
-                    game.universeClient.planDataAtPlayer.addCommand(it)
-                }
-
-                message
+            // Clear added commands, left failed ones
+            val toRemoveList: List<Command> = aiCommandList.filterIndexed { index, _ ->
+                successList[index].success
             }
+            aiCommandList.removeAll(toRemoveList)
+            updateTable()
 
             // Some commands are not executed successfully
             if (successList.any { !it.success }) {
                 val successNum: Int = successList.filter { it.success }.size
                 val failedNum: Int = successList.filter { !it.success }.size
                 game.universeClient.currentCommand = CannotSendCommand(
-                    reason = I18NString(singleMessage = "Success: $successNum, failed: $failedNum")
+                    reason = I18NString(singleMessage = "Success: $successNum, " +
+                            "failed (include execute failure on other player): $failedNum. ")
                 )
             } else {
                 game.universeClient.currentCommand = game.universeClient.planDataAtPlayer
