@@ -62,11 +62,11 @@ class AndroidLauncher : AppCompatActivity(), AndroidFragmentApplication.Callback
 
         trans.commit()
 
-        lifecycle.coroutineScope.launch(Dispatchers.IO.limitedParallelism(1)) {
+        lifecycle.coroutineScope.launch(Dispatchers.IO) {
             universeServer.start()
         }
 
-        lifecycle.coroutineScope.launch(Dispatchers.IO) {
+        lifecycle.coroutineScope.launch(Dispatchers.IO.limitedParallelism(1)) {
             universeClient.start()
         }
     }
