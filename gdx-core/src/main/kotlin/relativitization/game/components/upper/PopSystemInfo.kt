@@ -374,23 +374,23 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         nestedTable.add(
             createLabel(
-                "Saving: ${commonPopData.saving}",
+                "Salary per employee: ${commonPopData.salaryPerEmployee}",
                 gdxSettings.smallFontSize
             )
         )
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(createTargetSalaryTable(commonPopData.salaryPerEmployee))
 
         nestedTable.row().space(10f)
 
         nestedTable.add(
             createLabel(
-                "Salary: ${commonPopData.salary}",
+                "Saving: ${commonPopData.saving}",
                 gdxSettings.smallFontSize
             )
         )
-
-        nestedTable.row().space(10f)
-
-        nestedTable.add(createTargetSalaryTable(commonPopData.salary))
 
         nestedTable.row().space(10f)
 

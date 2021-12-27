@@ -5,7 +5,6 @@ import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.components.defaults.economy.MutableResourceAmountData
 import relativitization.universe.data.components.defaults.economy.ResourceQualityClass
-import relativitization.universe.data.components.defaults.economy.ResourceQualityData
 import relativitization.universe.data.components.defaults.economy.ResourceType
 import relativitization.universe.data.components.defaults.physics.Int4D
 import relativitization.universe.data.components.defaults.popsystem.pop.PopType
@@ -962,6 +961,6 @@ data class ChangeSalaryCommand(
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
         playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
             carrierId
-        ).allPopData.getCommonPopData(popType).salary = salary
+        ).allPopData.getCommonPopData(popType).salaryPerEmployee = salary
     }
 }

@@ -33,7 +33,7 @@ object Migration : Mechanism() {
             for (i in (0..commonPopMap.size)) {
                 if (commonPopMap.size >= 2 ) {
                     val emigrateId: Int = commonPopMap.minByOrNull { (_, commonPop) ->
-                        commonPop.salary * (1.0 - commonPop.unemploymentRate)
+                        commonPop.salaryPerEmployee * (1.0 - commonPop.unemploymentRate)
                     }?.key ?: -1
 
                     val emigrateCommonPop: MutableCommonPopData = commonPopMap.getValue(emigrateId)

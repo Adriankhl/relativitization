@@ -24,7 +24,6 @@ object Employment : Mechanism() {
         universeGlobalData: UniverseGlobalData
     ): List<Command> {
 
-
         val fuelRestMassData: MutableFuelRestMassData =
             mutablePlayerData.playerInternalData.physicsData().fuelRestMassData
 
@@ -116,7 +115,7 @@ object Employment : Mechanism() {
         economyData: EconomyData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
     ) {
-        val salary: Double = labourerPopData.commonPopData.salary
+        val salary: Double = labourerPopData.commonPopData.salaryPerEmployee
 
         val incomeTax: Double = economyData.taxData.taxRateData.incomeTax.getIncomeTax(salary)
 
@@ -347,7 +346,7 @@ object Employment : Mechanism() {
         mutableEconomyData: MutableEconomyData,
         economyData: EconomyData,
     ) {
-        val salary: Double = scholarPopData.commonPopData.salary
+        val salary: Double = scholarPopData.commonPopData.salaryPerEmployee
 
         val incomeTax: Double = economyData.taxData.taxRateData.incomeTax.getIncomeTax(salary)
 
@@ -418,7 +417,7 @@ object Employment : Mechanism() {
         mutableEconomyData: MutableEconomyData,
         economyData: EconomyData,
     ) {
-        val salary: Double = engineerPopData.commonPopData.salary
+        val salary: Double = engineerPopData.commonPopData.salaryPerEmployee
 
         val incomeTax: Double = economyData.taxData.taxRateData.incomeTax.getIncomeTax(salary)
 
@@ -491,7 +490,7 @@ object Employment : Mechanism() {
         mutableEconomyData: MutableEconomyData,
         economyData: EconomyData,
     ) {
-        val salary: Double = soldierPopData.commonPopData.salary
+        val salary: Double = soldierPopData.commonPopData.salaryPerEmployee
 
         val incomeTax: Double = economyData.taxData.taxRateData.incomeTax.getIncomeTax(salary)
 
@@ -529,7 +528,7 @@ object Employment : Mechanism() {
         mutableEconomyData: MutableEconomyData,
         economyData: EconomyData,
     ) {
-        val salary: Double = commonPopData.salary
+        val salary: Double = commonPopData.salaryPerEmployee
 
         val incomeTax: Double = economyData.taxData.taxRateData.incomeTax.getIncomeTax(salary)
 

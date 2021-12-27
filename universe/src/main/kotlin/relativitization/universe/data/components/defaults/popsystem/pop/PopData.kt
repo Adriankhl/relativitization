@@ -124,7 +124,7 @@ data class MutableAllPopData(
  * @property unemploymentBenefit the total amount of the unemployment benefit of the unemployed population
  * @property satisfaction how satisfy is the population
  * @property saving saving of the population in fuel rest mass
- * @property salary the salary per employee per turn of the employed population
+ * @property salaryPerEmployee the salary per employee per turn of the employed population
  * @property desireResourceMap the desire resources of the population
  * @property resourceInputMap the resource input to this population to fulfill the desire
  */
@@ -137,8 +137,8 @@ data class CommonPopData(
     val unemploymentRate: Double = 0.0,
     val unemploymentBenefit: Double = 0.0,
     val satisfaction: Double = 0.0,
+    val salaryPerEmployee: Double = 0.0,
     val saving: Double = 1.0,
-    val salary: Double = 0.0,
     val desireResourceMap: Map<ResourceType, ResourceDesireData> = mapOf(),
     val resourceInputMap: Map<ResourceType, ResourceDesireData> = mapOf(),
 )
@@ -152,8 +152,8 @@ data class MutableCommonPopData(
     var unemploymentRate: Double = 0.0,
     var unemploymentBenefit: Double = 0.0,
     var satisfaction: Double = 0.0,
+    var salaryPerEmployee: Double = 0.0,
     var saving: Double = 0.0,
-    var salary: Double = 0.0,
     var desireResourceMap: MutableMap<ResourceType, MutableResourceDesireData> = mutableMapOf(),
     var resourceInputMap: MutableMap<ResourceType, MutableResourceDesireData> = mutableMapOf(),
 ) {
