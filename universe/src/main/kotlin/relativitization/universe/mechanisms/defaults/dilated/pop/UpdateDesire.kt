@@ -12,6 +12,7 @@ import relativitization.universe.data.components.defaults.popsystem.pop.PopType
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.maths.algebra.Piecewise
 import relativitization.universe.mechanisms.Mechanism
+import kotlin.math.min
 
 object UpdateDesire : Mechanism() {
     override fun process(
@@ -24,8 +25,8 @@ object UpdateDesire : Mechanism() {
         // Parameters
         val desireQualityUpdateFactor: Double = 0.2
         val desireQualityUpdateDiff: Double = 0.2
-        val satisfactionMaxDecreaseFactor: Double = 0.2
-        val satisfactionMaxIncreaseDelta: Double = 3.0
+        val satisfactionUpdateFactor: Double = 0.2
+        val satisfactionMaxIncreaseDiff: Double = 3.0
 
 
         mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.forEach { carrier ->
@@ -60,8 +61,8 @@ object UpdateDesire : Mechanism() {
                 updateSatisfaction(
                     mutableCommonPopData = mutableCommonPopData,
                     desireResourceTypeList = desireResourceTypeList,
-                    satisfactionMaxDecreaseFactor = satisfactionMaxDecreaseFactor,
-                    satisfactionMaxIncreaseDelta = satisfactionMaxIncreaseDelta,
+                    satisfactionUpdateFactor = satisfactionUpdateFactor,
+                    satisfactionMaxIncreaseDiff = satisfactionMaxIncreaseDiff,
                 )
 
                 // Update desire and clear input
@@ -190,8 +191,8 @@ object UpdateDesire : Mechanism() {
     fun updateSatisfaction(
         mutableCommonPopData: MutableCommonPopData,
         desireResourceTypeList: List<ResourceType>,
-        satisfactionMaxDecreaseFactor: Double,
-        satisfactionMaxIncreaseDelta: Double,
+        satisfactionUpdateFactor: Double,
+        satisfactionMaxIncreaseDiff: Double,
     ) {
         val amountFractionList: List<Double> = desireResourceTypeList.map { resourceType ->
             val originalDesire: MutableResourceDesireData =
@@ -251,15 +252,19 @@ object UpdateDesire : Mechanism() {
             (qualityFactorWithoutMod - 1.0) * amountFactor + 1.0
         }
 
-        val overallFactor: Double = amountFactor * qualityFactor
+        // the ideal satisfaction which the population should be at
+        val idealSatisfaction: Double = amountFactor * qualityFactor
+
 
         // Compute the change of satisfaction by piecewise function
-        val deltaSatisfaction: Double = Piecewise.quadTanh(
-            x = overallFactor,
-            yMin = -satisfactionMaxDecreaseFactor * originalSatisfaction,
-            yMax = satisfactionMaxIncreaseDelta,
-            tanhSlope1 = 1.0
-        )
+        val deltaSatisfaction: Double = if (idealSatisfaction > originalSatisfaction) {
+            min(
+                (idealSatisfaction - originalSatisfaction) * satisfactionUpdateFactor,
+                satisfactionMaxIncreaseDiff
+            )
+        } else {
+            (idealSatisfaction - originalSatisfaction) * satisfactionUpdateFactor
+        }
 
         mutableCommonPopData.satisfaction += deltaSatisfaction
     }
