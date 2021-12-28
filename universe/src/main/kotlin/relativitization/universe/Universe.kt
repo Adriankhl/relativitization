@@ -246,7 +246,6 @@ class Universe(
                     universeData
                 )
 
-
                 commandListFromPlayer
             }.flatten()
 
@@ -562,7 +561,7 @@ class Universe(
             commandList: List<Command>
         ) {
             val listGroup: Map<Int, List<Command>> = commandList.groupBy { it.toId }
-            listGroup.map { (id, commands) ->
+            listGroup.forEach { (id, commands) ->
                 commandMap.getOrPut(id) { mutableListOf() }.addAll(commands)
             }
         }
