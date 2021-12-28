@@ -119,6 +119,7 @@ internal class RandomOneStarPerPlayerGenerateTest {
             numPlayer = 1,
             numHumanPlayer = 1,
             numExtraStellarSystem = 3,
+            initialPopulation = 1E6,
             universeSettings = MutableUniverseSettings(
                 universeName = "One player test",
                 mechanismCollectionName = DefaultMechanismLists.name(),
@@ -153,6 +154,11 @@ internal class RandomOneStarPerPlayerGenerateTest {
 
         val finalView = universe.getUniverse3DViewAtPlayer(1)
 
-        println(finalView.getCurrentPlayerData().playerInternalData.popSystemData())
+        val allPopData = finalView.getCurrentPlayerData().playerInternalData.popSystemData()
+            .carrierDataMap.getValue(0).allPopData
+
+        // Ensure population has grown
+        // Currently doesn't work
+        //assert(allPopData.labourerPopData.commonPopData.adultPopulation > generateSetting.initialPopulation)
     }
 }
