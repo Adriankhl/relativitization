@@ -335,9 +335,13 @@ object Employment : Mechanism() {
                 acc + mutableResourceFactoryData.lastNumEmployee
             }
 
-        // Compute unemployment rate
-        labourerPopData.commonPopData.unemploymentRate =
-            (1.0 - actualNumEmployee / availableEmployee)
+        // Compute unemployment rate, allow a small error from floating point operation
+        val actualUnemploymentRate: Double = (1.0 - actualNumEmployee / availableEmployee)
+        labourerPopData.commonPopData.unemploymentRate = when {
+            (actualUnemploymentRate > 1.0) && (actualUnemploymentRate < 1.01) -> 1.0
+            (actualUnemploymentRate > -0.01) && (actualUnemploymentRate < 0.0) -> 0.0
+            else -> actualUnemploymentRate
+        }
     }
 
     fun updateScholarEmployment(
@@ -358,7 +362,6 @@ object Employment : Mechanism() {
             scholarPopData.instituteMap.values.fold(0.0) { acc, mutableInstituteData ->
                 acc + mutableInstituteData.instituteInternalData.maxNumEmployee
             }
-
 
         // Compute fractions of employee if number of available employees is not enough
         val instituteEmployeeFraction: Double =
@@ -405,9 +408,13 @@ object Employment : Mechanism() {
                 acc + mutableInstituteData.lastNumEmployee
             }
 
-        // Compute unemployment rate
-        scholarPopData.commonPopData.unemploymentRate =
-            (1.0 - actualNumEmployee / availableEmployee)
+        // Compute unemployment rate, allow a small error from floating point operation
+        val actualUnemploymentRate: Double = (1.0 - actualNumEmployee / availableEmployee)
+        scholarPopData.commonPopData.unemploymentRate = when {
+            (actualUnemploymentRate > 1.0) && (actualUnemploymentRate < 1.01) -> 1.0
+            (actualUnemploymentRate > -0.01) && (actualUnemploymentRate < 0.0) -> 0.0
+            else -> actualUnemploymentRate
+        }
     }
 
 
@@ -476,9 +483,13 @@ object Employment : Mechanism() {
                 acc + mutableLaboratoryData.lastNumEmployee
             }
 
-        // Compute unemployment rate
-        engineerPopData.commonPopData.unemploymentRate =
-            (1.0 - actualNumEmployee / availableEmployee)
+        // Compute unemployment rate, allow a small error from floating point operation
+        val actualUnemploymentRate: Double = (1.0 - actualNumEmployee / availableEmployee)
+        engineerPopData.commonPopData.unemploymentRate = when {
+            (actualUnemploymentRate > 1.0) && (actualUnemploymentRate < 1.01) -> 1.0
+            (actualUnemploymentRate > -0.01) && (actualUnemploymentRate < 0.0) -> 0.0
+            else -> actualUnemploymentRate
+        }
     }
 
     /**
