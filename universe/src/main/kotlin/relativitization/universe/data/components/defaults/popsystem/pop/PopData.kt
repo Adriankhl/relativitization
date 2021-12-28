@@ -167,7 +167,7 @@ data class MutableCommonPopData(
             adultPopulation
         }
         else -> {
-            adultPopulation * (1 - unemploymentRate)
+            adultPopulation * (1.0 - unemploymentRate)
         }
     }
 
