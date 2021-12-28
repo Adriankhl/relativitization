@@ -168,11 +168,11 @@ object Employment : Mechanism() {
         // Compute fractions of employee if number of available employees is not enough
         val selfFuelFactoryEmployeeFraction: Double =
             when {
-                maxSelfFuelFactoryEmployee > availableEmployee -> {
+                maxSelfFuelFactoryEmployee <= availableEmployee -> {
                     1.0
                 }
-                availableEmployee > 0.0 -> {
-                    maxSelfFuelFactoryEmployee / availableEmployee
+                (availableEmployee > 0.0) && (maxSelfFuelFactoryEmployee > 0.0) -> {
+                    availableEmployee / maxSelfFuelFactoryEmployee
                 }
                 else -> {
                     0.0
@@ -181,11 +181,11 @@ object Employment : Mechanism() {
 
         val selfResourceFactoryEmployeeFraction: Double =
             when {
-                maxSelfFuelFactoryEmployee + maxSelfResourceFactoryEmployee > availableEmployee -> {
+                maxSelfFuelFactoryEmployee + maxSelfResourceFactoryEmployee <= availableEmployee -> {
                     1.0
                 }
-                availableEmployee - maxSelfFuelFactoryEmployee > 0.0 -> {
-                    maxSelfResourceFactoryEmployee / availableEmployee
+                (availableEmployee - maxSelfFuelFactoryEmployee > 0.0) && (maxSelfResourceFactoryEmployee > 0.0) -> {
+                    (availableEmployee - maxSelfFuelFactoryEmployee) / maxSelfResourceFactoryEmployee
                 }
                 else -> {
                     0.0
@@ -195,11 +195,11 @@ object Employment : Mechanism() {
 
         val otherFuelFactoryEmployeeFraction: Double =
             when {
-                maxSelfFuelFactoryEmployee + maxSelfResourceFactoryEmployee + maxOtherFuelFactoryEmployee > availableEmployee -> {
+                maxSelfFuelFactoryEmployee + maxSelfResourceFactoryEmployee + maxOtherFuelFactoryEmployee <= availableEmployee -> {
                     1.0
                 }
-                availableEmployee - maxSelfFuelFactoryEmployee - maxSelfResourceFactoryEmployee > 0.0 -> {
-                    maxOtherFuelFactoryEmployee / availableEmployee
+                (availableEmployee - maxSelfFuelFactoryEmployee - maxSelfResourceFactoryEmployee > 0.0) && (maxOtherFuelFactoryEmployee > 0.0) -> {
+                    (availableEmployee - maxSelfFuelFactoryEmployee - maxSelfResourceFactoryEmployee) / maxOtherFuelFactoryEmployee
                 }
                 else -> {
                     0.0
@@ -209,11 +209,11 @@ object Employment : Mechanism() {
 
         val otherResourceFactoryEmployeeFraction: Double =
             when {
-                maxSelfFuelFactoryEmployee + maxSelfResourceFactoryEmployee + maxOtherFuelFactoryEmployee + maxOtherResourceFactoryEmployee > availableEmployee -> {
+                maxSelfFuelFactoryEmployee + maxSelfResourceFactoryEmployee + maxOtherFuelFactoryEmployee + maxOtherResourceFactoryEmployee <= availableEmployee -> {
                     1.0
                 }
-                availableEmployee - maxSelfFuelFactoryEmployee - maxSelfResourceFactoryEmployee - maxOtherFuelFactoryEmployee > 0.0 -> {
-                    maxOtherResourceFactoryEmployee / availableEmployee
+                (availableEmployee - maxSelfFuelFactoryEmployee - maxSelfResourceFactoryEmployee - maxOtherFuelFactoryEmployee > 0.0) && (maxOtherResourceFactoryEmployee > 0.0) -> {
+                    (availableEmployee - maxSelfFuelFactoryEmployee - maxSelfResourceFactoryEmployee - maxOtherFuelFactoryEmployee) / maxOtherResourceFactoryEmployee
                 }
                 else -> {
                     0.0
@@ -363,11 +363,11 @@ object Employment : Mechanism() {
         // Compute fractions of employee if number of available employees is not enough
         val instituteEmployeeFraction: Double =
             when {
-                maxInstituteEmployee > availableEmployee -> {
+                maxInstituteEmployee <= availableEmployee -> {
                     1.0
                 }
-                availableEmployee > 0.0 -> {
-                    maxInstituteEmployee / availableEmployee
+                (availableEmployee > 0.0) && (maxInstituteEmployee > 0.0) -> {
+                    availableEmployee / maxInstituteEmployee
                 }
                 else -> {
                     0.0
@@ -434,11 +434,11 @@ object Employment : Mechanism() {
         // Compute fractions of employee if number of available employees is not enough
         val laboratoryEmployeeFraction: Double =
             when {
-                maxLaboratoryEmployee > availableEmployee -> {
+                maxLaboratoryEmployee <= availableEmployee -> {
                     1.0
                 }
-                availableEmployee > 0.0 -> {
-                    maxLaboratoryEmployee / availableEmployee
+                (availableEmployee > 0.0) && (maxLaboratoryEmployee > 0.0) -> {
+                    availableEmployee / maxLaboratoryEmployee
                 }
                 else -> {
                     0.0
