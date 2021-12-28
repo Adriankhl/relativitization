@@ -147,7 +147,10 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
     var currentCommand: Command by Delegates.observable(DummyCommand()) { _, oldValue, newValue ->
         // Only check command canSend if the command is new
         if (oldValue != newValue) {
-            if (newValue is CannotSendCommand || newValue is ExecuteWarningCommand) {
+            if (newValue is DummyCommand ||
+                newValue is CannotSendCommand ||
+                newValue is ExecuteWarningCommand
+            ) {
                 onCurrentCommandChangeFunctionList.forEach { it() }
             } else {
                 val commandErrorMessage: CommandErrorMessage = newValue.canSendFromPlayer(
