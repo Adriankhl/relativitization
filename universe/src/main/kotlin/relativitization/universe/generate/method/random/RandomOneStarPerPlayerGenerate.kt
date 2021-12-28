@@ -18,6 +18,7 @@ import relativitization.universe.maths.random.Rand
 import relativitization.universe.mechanisms.defaults.dilated.pop.UpdateDesire
 import relativitization.universe.mechanisms.defaults.regular.science.UpdateScienceApplicationData
 import relativitization.universe.mechanisms.defaults.regular.sync.SyncPlayerScienceData
+import java.util.*
 
 object RandomOneStarPerPlayerGenerate : RandomGenerateUniverseMethod() {
     override fun generate(settings: GenerateSettings): UniverseData {
@@ -291,7 +292,7 @@ object RandomOneStarPerPlayerGenerate : RandomGenerateUniverseMethod() {
 
             // Add random basic and applied projects as done projects
             mutableUniverseGlobalData.universeScienceData().basicResearchProjectDataMap.values
-                .shuffled().take(5).forEach {
+                .shuffled(Rand.rand()).take(5).forEach {
                     mutablePlayerData.playerInternalData.playerScienceData()
                         .doneBasicResearchProject(
                             it,
@@ -299,7 +300,7 @@ object RandomOneStarPerPlayerGenerate : RandomGenerateUniverseMethod() {
                         )
                 }
             mutableUniverseGlobalData.universeScienceData().appliedResearchProjectDataMap.values
-                .shuffled().take(5).forEach {
+                .shuffled(Rand.rand()).take(5).forEach {
                     mutablePlayerData.playerInternalData.playerScienceData()
                         .doneAppliedResearchProject(
                             it,
@@ -314,7 +315,7 @@ object RandomOneStarPerPlayerGenerate : RandomGenerateUniverseMethod() {
                         .doneBasicResearchProjectList.all {
                             it.basicResearchId != universeProject.basicResearchId
                         }
-                }.shuffled().take(5).forEach {
+                }.shuffled(Rand.rand()).take(5).forEach {
                     mutablePlayerData.playerInternalData.playerScienceData()
                         .knownBasicResearchProject(
                             it,
@@ -326,7 +327,7 @@ object RandomOneStarPerPlayerGenerate : RandomGenerateUniverseMethod() {
                         .doneAppliedResearchProjectList.all {
                             it.appliedResearchId != universeProject.appliedResearchId
                         }
-                }.shuffled().take(5).forEach {
+                }.shuffled(Rand.rand()).take(5).forEach {
                     mutablePlayerData.playerInternalData.playerScienceData()
                         .knownAppliedResearchProject(
                             it,

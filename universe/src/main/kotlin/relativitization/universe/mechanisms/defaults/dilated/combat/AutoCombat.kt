@@ -24,7 +24,7 @@ object AutoCombat : Mechanism() {
             mutablePlayerData,
             universeData3DAtPlayer,
             universeData3DAtPlayer.getNeighbour(0)
-        ).shuffled()
+        ).shuffled(Rand.rand())
 
         return if (sameCubeEnemy.isNotEmpty()) {
             mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.map {

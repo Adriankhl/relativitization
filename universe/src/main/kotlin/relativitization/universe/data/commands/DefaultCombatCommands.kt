@@ -6,6 +6,7 @@ import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.components.defaults.physics.Int4D
 import relativitization.universe.data.components.defaults.popsystem.CarrierType
 import relativitization.universe.data.components.defaults.popsystem.MutableCarrierData
+import relativitization.universe.maths.random.Rand
 import relativitization.universe.utils.I18NString
 
 /**
@@ -43,7 +44,7 @@ data class DamageCommand(
         )
 
         val carrierIdList: MutableList<Int> =
-            playerData.playerInternalData.popSystemData().carrierDataMap.keys.shuffled()
+            playerData.playerInternalData.popSystemData().carrierDataMap.keys.shuffled(Rand.rand())
                 .toMutableList()
 
         // Use attack to destroy carrier, until used up or no carrier left
