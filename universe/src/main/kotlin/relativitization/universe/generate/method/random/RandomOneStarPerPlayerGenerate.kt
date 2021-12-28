@@ -1,6 +1,7 @@
 package relativitization.universe.generate.method.random
 
 import relativitization.universe.data.*
+import relativitization.universe.data.components.defaults.popsystem.pop.PopType
 import relativitization.universe.data.components.defaults.science.knowledge.AppliedResearchField
 import relativitization.universe.data.components.defaults.science.knowledge.BasicResearchField
 import relativitization.universe.data.global.MutableUniverseGlobalData
@@ -18,7 +19,6 @@ import relativitization.universe.maths.random.Rand
 import relativitization.universe.mechanisms.defaults.dilated.pop.UpdateDesire
 import relativitization.universe.mechanisms.defaults.regular.science.UpdateScienceApplicationData
 import relativitization.universe.mechanisms.defaults.regular.sync.SyncPlayerScienceData
-import java.util.*
 
 object RandomOneStarPerPlayerGenerate : RandomGenerateUniverseMethod() {
     override fun generate(settings: GenerateSettings): UniverseData {
@@ -289,6 +289,15 @@ object RandomOneStarPerPlayerGenerate : RandomGenerateUniverseMethod() {
 
             // Add random stellar system
             mutablePlayerData.playerInternalData.popSystemData().addRandomStellarSystem()
+
+            // Change initial population
+            mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.forEach { carrier ->
+                PopType.values().forEach { popType ->
+                    carrier.allPopData.getCommonPopData(
+                        popType
+                    ).adultPopulation = settings.initialPopulation
+                }
+            }
 
             // Add random basic and applied projects as done projects
             mutableUniverseGlobalData.universeScienceData().basicResearchProjectDataMap.values

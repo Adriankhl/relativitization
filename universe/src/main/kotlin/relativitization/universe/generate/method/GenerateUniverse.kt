@@ -12,12 +12,22 @@ import relativitization.universe.generate.method.testing.TestingGenerateUniverse
 import relativitization.universe.utils.RelativitizationLogManager
 import java.io.File
 
+/**
+ * Settings for universe generation, pass to GenerateUniverseMethod
+ * Generation methods are not enforced to use any parameters here
+ *
+ * @property numPlayer number of initial players, human and ai
+ * @property numHumanPlayer number of initial human players
+ * @property numExtraStellarSystem number of "None" type player with a stellar system
+ * @property initialPopulation initial population of the carrier
+ */
 @Serializable
 data class GenerateSettings(
     var generateMethod: String = TestingFixedMinimal.name(),
     var numPlayer: Int = 4,
     var numHumanPlayer: Int = 2,
     var numExtraStellarSystem: Int = 3,
+    var initialPopulation: Double = 1E6,
     var universeSettings: MutableUniverseSettings = MutableUniverseSettings(),
 ) {
     fun save(programDir: String) {
