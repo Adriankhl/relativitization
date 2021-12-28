@@ -50,7 +50,7 @@ class NewFuelFactoryAtCarrierReasoner(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<DualUtilityOption> {
-        TODO("Not yet implemented")
+        return listOf()
     }
 }
 
