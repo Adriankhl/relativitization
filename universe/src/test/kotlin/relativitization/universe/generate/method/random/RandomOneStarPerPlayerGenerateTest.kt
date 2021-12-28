@@ -1,16 +1,11 @@
 package relativitization.universe.generate.method.random
 
 import kotlinx.coroutines.runBlocking
-import org.apache.logging.log4j.Level
-import org.apache.logging.log4j.core.config.Configurator
 import relativitization.universe.Universe
 import relativitization.universe.data.MutableUniverseSettings
 import relativitization.universe.data.commands.*
 import relativitization.universe.data.components.defaults.economy.ResourceType
-import relativitization.universe.data.components.defaults.physics.Int3D
-import relativitization.universe.data.components.defaults.physics.Int4D
 import relativitization.universe.data.components.defaults.popsystem.pop.PopType
-import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.ResourceFactoryInternalData
 import relativitization.universe.generate.method.GenerateSettings
 import relativitization.universe.generate.method.GenerateUniverseMethodCollection
 import relativitization.universe.generate.method.name
@@ -115,5 +110,49 @@ internal class RandomOneStarPerPlayerGenerateTest {
             )
             universe.preProcessUniverse()
         }
+    }
+
+    @Test
+    fun onePlayerLongRunTest() {
+        val generateSetting = GenerateSettings(
+            generateMethod = RandomOneStarPerPlayerGenerate.name(),
+            numPlayer = 1,
+            numHumanPlayer = 1,
+            numExtraStellarSystem = 3,
+            universeSettings = MutableUniverseSettings(
+                universeName = "One player test",
+                mechanismCollectionName = DefaultMechanismLists.name(),
+                commandCollectionName = DefaultCommandAvailability.name(),
+                globalMechanismCollectionName = DefaultGlobalMechanismList.name(),
+                speedOfLight = 1.0,
+                tDim = 5,
+                xDim = 1,
+                yDim = 1,
+                zDim = 1,
+                playerAfterImageDuration = 4,
+                playerHistoricalInt4DLength = 4,
+                groupEdgeLength = 0.01,
+                otherSettings = mutableMapOf(),
+            )
+        )
+
+        val universe = Universe(
+            GenerateUniverseMethodCollection.generate(generateSetting),
+            "."
+        )
+
+        runBlocking {
+            for (turn in 1..100) {
+                universe.postProcessUniverse(
+                    mapOf(),
+                    mapOf()
+                )
+                universe.preProcessUniverse()
+            }
+        }
+
+        val finalView = universe.getUniverse3DViewAtPlayer(1)
+
+        println(finalView.getCurrentPlayerData().playerInternalData.popSystemData())
     }
 }

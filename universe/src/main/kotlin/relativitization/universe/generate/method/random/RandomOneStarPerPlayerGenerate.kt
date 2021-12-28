@@ -273,15 +273,15 @@ object RandomOneStarPerPlayerGenerate : RandomGenerateUniverseMethod() {
             // Random location, avoid too close to the boundary by adding a 0.1 width margin
             mutablePlayerData.double4D.x = Rand.rand().nextDouble(
                 0.1,
-                universeSettings.xDim.toDouble() - 1.1
+                universeSettings.xDim.toDouble() - 0.1
             )
             mutablePlayerData.double4D.y = Rand.rand().nextDouble(
                 0.1,
-                universeSettings.yDim.toDouble() - 1.1
+                universeSettings.yDim.toDouble() - 0.1
             )
             mutablePlayerData.double4D.z = Rand.rand().nextDouble(
                 0.1,
-                universeSettings.zDim.toDouble() - 1.1
+                universeSettings.zDim.toDouble() - 0.1
             )
             mutablePlayerData.int4D.x = mutablePlayerData.double4D.x.toInt()
             mutablePlayerData.int4D.y = mutablePlayerData.double4D.y.toInt()
