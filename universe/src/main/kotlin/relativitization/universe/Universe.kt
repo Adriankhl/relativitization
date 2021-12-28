@@ -122,8 +122,10 @@ class Universe(
         val time: Int = universeData.universeState.getCurrentTime()
         val playerId3D: List<List<List<List<Int>>>> = playerCollection.getPlayerId3D()
         int3DList.pmap { int3D ->
-            val viewMap =
-                universeData.toUniverseData3DAtGrid(Int4D(time, int3D)).idToUniverseData3DAtPlayer()
+            val viewMap = universeData.toUniverseData3DAtGrid(
+                Int4D(time, int3D)
+            ).idToUniverseData3DAtPlayer()
+
             playerId3D[int3D.x][int3D.y][int3D.z].map { id ->
                 id to AICollection.compute(viewMap.getValue(id))
             }

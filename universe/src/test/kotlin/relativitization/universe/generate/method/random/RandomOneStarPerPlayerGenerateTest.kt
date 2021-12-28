@@ -144,9 +144,11 @@ internal class RandomOneStarPerPlayerGenerateTest {
 
         runBlocking {
             for (turn in 1..100) {
+                val aiCommandMap = universe.computeAICommands()
+
                 universe.postProcessUniverse(
                     mapOf(),
-                    mapOf()
+                    aiCommandMap
                 )
                 universe.preProcessUniverse()
             }
