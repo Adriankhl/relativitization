@@ -43,7 +43,13 @@
 * Base stellar fuel production = mass / 1E24 ~ 1E6 per time
 * Max fuel production per cube by factory = 1E9
 * Entertainment resource = entertainer pop size * 20 per time
+
+## Factory production
+* Amount increases by technology
+* Basic fuel factory: 1E4 employee, 2E5 output
+* Basic food, cloth, household good factory: 1E4 employee, 2E4 fuel consumption, 5E6 output, 1 input per input resource
+* Basic food, cloth, household good factory: 1E4 employee, 2E4 fuel consumption, 2E6 output, 1 input per input resource
+* Research equipment, medicine, ammunition factory: 1E4 employee, 2E4 fuel consumption, 2E5 output, 1 input per input resource
   
 ## Consumption
-* Population desire resource amount = population size
-* Ideal fuel factory production = 1 per employee per time, employee required is reduced by tech
+* Minimum population desire resource amount = population size, (TODO) increases if population has more money and if there are more left in trade

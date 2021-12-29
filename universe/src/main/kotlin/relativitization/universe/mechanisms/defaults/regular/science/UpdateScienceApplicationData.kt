@@ -93,9 +93,9 @@ object UpdateScienceApplicationData : Mechanism() {
 
     fun computeIdealFuelFactory(mutableKnowledgeData: MutableKnowledgeData): MutableFuelFactoryInternalData {
 
-        val maxOutputAmount: Double = 1E6
+        val maxNumEmployee: Double = 1E4
 
-        val maxNumEmployee: Double = 0.05 * maxOutputAmount / log2(
+        val maxOutputAmount: Double = 20.0 * maxNumEmployee * log2(
             mutableKnowledgeData.appliedResearchData.energyTechnologyLevel / 100.0 + 2.0
         )
 
@@ -113,13 +113,11 @@ object UpdateScienceApplicationData : Mechanism() {
             0.0
         )
 
-        val maxOutputAmount: Double = 1E6
+        val maxNumEmployee: Double = 1E4
 
-        val fuelRestMassConsumptionRate = 0.1 * maxOutputAmount / log2(
-            mutableKnowledgeData.appliedResearchData.environmentalTechnologyLevel / 100.0 + 2.0
-        )
+        val fuelRestMassConsumptionRate = 2.0 * maxNumEmployee
 
-        val maxNumEmployee: Double = 0.05 * maxOutputAmount / log2(
+        val maxOutputAmount: Double = 500.0 * maxNumEmployee * log2(
             mutableKnowledgeData.appliedResearchData.environmentalTechnologyLevel / 100.0 + 2.0
         )
 
@@ -141,13 +139,11 @@ object UpdateScienceApplicationData : Mechanism() {
             0.0
         )
 
-        val maxOutputAmount: Double = 1E6
+        val maxNumEmployee: Double = 1E4
 
-        val fuelRestMassConsumptionRate = 0.1 * maxOutputAmount / log2(
-            mutableKnowledgeData.appliedResearchData.biomedicalTechnologyLevel / 100.0 + 2.0
-        )
+        val fuelRestMassConsumptionRate = 2.0 * maxNumEmployee
 
-        val maxNumEmployee: Double = 0.05 * maxOutputAmount / log2(
+        val maxOutputAmount: Double = 500.0 * maxNumEmployee * log2(
             mutableKnowledgeData.appliedResearchData.biomedicalTechnologyLevel / 100.0 + 2.0
         )
 
@@ -169,13 +165,11 @@ object UpdateScienceApplicationData : Mechanism() {
             0.0
         )
 
-        val maxOutputAmount: Double = 1E6
+        val maxNumEmployee: Double = 1E4
 
-        val fuelRestMassConsumptionRate = 0.1 * maxOutputAmount / log2(
-            mutableKnowledgeData.appliedResearchData.machineryTechnologyLevel / 100.0 + 2.0
-        )
+        val fuelRestMassConsumptionRate = 2.0 * maxNumEmployee
 
-        val maxNumEmployee: Double = 0.05 * maxOutputAmount / log2(
+        val maxOutputAmount: Double = 500.0 * maxNumEmployee * log2(
             mutableKnowledgeData.appliedResearchData.machineryTechnologyLevel / 100.0 + 2.0
         )
 
@@ -197,13 +191,11 @@ object UpdateScienceApplicationData : Mechanism() {
             0.0
         )
 
-        val maxOutputAmount: Double = 1E6
+        val maxNumEmployee: Double = 1E4
 
-        val fuelRestMassConsumptionRate = 0.1 * maxOutputAmount / log2(
-            mutableKnowledgeData.appliedResearchData.chemicalTechnologyLevel / 100.0 + 2.0
-        )
+        val fuelRestMassConsumptionRate = 2.0 * maxNumEmployee
 
-        val maxNumEmployee: Double = 0.05 * maxOutputAmount / log2(
+        val maxOutputAmount: Double = 500.0 * maxNumEmployee * log2(
             mutableKnowledgeData.appliedResearchData.chemicalTechnologyLevel / 100.0 + 2.0
         )
 
@@ -225,13 +217,11 @@ object UpdateScienceApplicationData : Mechanism() {
             quality3 = 0.0
         )
 
-        val maxOutputAmount: Double = 1E6
+        val maxNumEmployee: Double = 1E4
 
-        val fuelRestMassConsumptionRate = 0.1 * maxOutputAmount / log2(
-            mutableKnowledgeData.appliedResearchData.foodTechnologyLevel / 100.0 + 2.0
-        )
+        val fuelRestMassConsumptionRate = 2.0 * maxNumEmployee
 
-        val maxNumEmployee: Double = 0.05 * maxOutputAmount / log2(
+        val maxOutputAmount: Double = 200.0 * maxNumEmployee * log2(
             mutableKnowledgeData.appliedResearchData.foodTechnologyLevel / 100.0 + 2.0
         )
 
@@ -242,7 +232,7 @@ object UpdateScienceApplicationData : Mechanism() {
                     quality2 = 0.0,
                     quality3 = 0.0,
                 ),
-                amount = 0.5
+                amount = 1.0
             ),
             ResourceType.PLANT to MutableInputResourceData(
                 qualityData = MutableResourceQualityData(
@@ -250,7 +240,7 @@ object UpdateScienceApplicationData : Mechanism() {
                     quality2 = 0.0,
                     quality3 = 0.0,
                 ),
-                amount = 0.5
+                amount = 1.0
             ),
         )
 
@@ -272,13 +262,11 @@ object UpdateScienceApplicationData : Mechanism() {
             quality3 = 0.0
         )
 
-        val maxOutputAmount: Double = 1E6
+        val maxNumEmployee: Double = 1E4
 
-        val fuelRestMassConsumptionRate = 0.1 * maxOutputAmount / log2(
-            mutableKnowledgeData.appliedResearchData.materialTechnologyLevel / 100.0 + 2.0
-        )
+        val fuelRestMassConsumptionRate = 2.0 * maxNumEmployee
 
-        val maxNumEmployee: Double = 0.05 * maxOutputAmount / log2(
+        val maxOutputAmount: Double = 200.0 * maxNumEmployee * log2(
             mutableKnowledgeData.appliedResearchData.materialTechnologyLevel / 100.0 + 2.0
         )
 
@@ -289,7 +277,7 @@ object UpdateScienceApplicationData : Mechanism() {
                     quality2 = 0.0,
                     quality3 = 0.0,
                 ),
-                amount = 0.5
+                amount = 1.0
             ),
             ResourceType.PLASTIC to MutableInputResourceData(
                 qualityData = MutableResourceQualityData(
@@ -297,7 +285,7 @@ object UpdateScienceApplicationData : Mechanism() {
                     quality2 = 0.0,
                     quality3 = 0.0,
                 ),
-                amount = 0.5
+                amount = 1.0
             ),
         )
 
@@ -319,13 +307,11 @@ object UpdateScienceApplicationData : Mechanism() {
             quality3 = 0.0
         )
 
-        val maxOutputAmount: Double = 1E6
+        val maxNumEmployee: Double = 1E4
 
-        val fuelRestMassConsumptionRate = 0.1 * maxOutputAmount / log2(
-            mutableKnowledgeData.appliedResearchData.artTechnologyLevel / 100.0 + 2.0
-        )
+        val fuelRestMassConsumptionRate = 2.0 * maxNumEmployee
 
-        val maxNumEmployee: Double = 0.05 * maxOutputAmount / log2(
+        val maxOutputAmount: Double = 200.0 * maxNumEmployee * log2(
             mutableKnowledgeData.appliedResearchData.artTechnologyLevel / 100.0 + 2.0
         )
 
@@ -336,7 +322,7 @@ object UpdateScienceApplicationData : Mechanism() {
                     quality2 = 0.0,
                     quality3 = 0.0,
                 ),
-                amount = 0.5
+                amount = 1.0
             ),
             ResourceType.PLASTIC to MutableInputResourceData(
                 qualityData = MutableResourceQualityData(
@@ -344,7 +330,7 @@ object UpdateScienceApplicationData : Mechanism() {
                     quality2 = 0.0,
                     quality3 = 0.0,
                 ),
-                amount = 0.5
+                amount = 1.0
             ),
         )
 
@@ -366,13 +352,11 @@ object UpdateScienceApplicationData : Mechanism() {
             quality3 = 0.0
         )
 
-        val maxOutputAmount: Double = 1E6
+        val maxNumEmployee: Double = 1E4
 
-        val fuelRestMassConsumptionRate = 0.1 * maxOutputAmount / log2(
-            mutableKnowledgeData.appliedResearchData.materialTechnologyLevel / 100.0 + 2.0
-        )
+        val fuelRestMassConsumptionRate = 2.0 * maxNumEmployee
 
-        val maxNumEmployee: Double = 0.05 * maxOutputAmount / log2(
+        val maxOutputAmount: Double = 20.0 * maxNumEmployee * log2(
             mutableKnowledgeData.appliedResearchData.materialTechnologyLevel / 100.0 + 2.0
         )
 
@@ -383,7 +367,7 @@ object UpdateScienceApplicationData : Mechanism() {
                     quality2 = 0.0,
                     quality3 = 0.0,
                 ),
-                amount = 0.5
+                amount = 1.0
             ),
             ResourceType.METAL to MutableInputResourceData(
                 qualityData = MutableResourceQualityData(
@@ -391,7 +375,7 @@ object UpdateScienceApplicationData : Mechanism() {
                     quality2 = 0.0,
                     quality3 = 0.0,
                 ),
-                amount = 0.5
+                amount = 1.0
             ),
         )
 
@@ -413,13 +397,11 @@ object UpdateScienceApplicationData : Mechanism() {
             quality3 = 0.0
         )
 
-        val maxOutputAmount: Double = 1E6
+        val maxNumEmployee: Double = 1E4
 
-        val fuelRestMassConsumptionRate = 0.1 * maxOutputAmount / log2(
-            mutableKnowledgeData.appliedResearchData.biomedicalTechnologyLevel / 100.0 + 2.0
-        )
+        val fuelRestMassConsumptionRate = 2.0 * maxNumEmployee
 
-        val maxNumEmployee: Double = 0.05 * maxOutputAmount / log2(
+        val maxOutputAmount: Double = 20.0 * maxNumEmployee * log2(
             mutableKnowledgeData.appliedResearchData.biomedicalTechnologyLevel / 100.0 + 2.0
         )
 
@@ -430,7 +412,7 @@ object UpdateScienceApplicationData : Mechanism() {
                     quality2 = 0.0,
                     quality3 = 0.0,
                 ),
-                amount = 0.5
+                amount = 1.0
             ),
             ResourceType.METAL to MutableInputResourceData(
                 qualityData = MutableResourceQualityData(
@@ -438,7 +420,7 @@ object UpdateScienceApplicationData : Mechanism() {
                     quality2 = 0.0,
                     quality3 = 0.0,
                 ),
-                amount = 0.5
+                amount = 1.0
             ),
         )
 
@@ -460,13 +442,11 @@ object UpdateScienceApplicationData : Mechanism() {
             quality3 = 0.0
         )
 
-        val maxOutputAmount: Double = 1E6
+        val maxNumEmployee: Double = 1E4
 
-        val fuelRestMassConsumptionRate = 0.1 * maxOutputAmount / log2(
-            mutableKnowledgeData.appliedResearchData.militaryTechnologyLevel / 100.0 + 2.0
-        )
+        val fuelRestMassConsumptionRate = 2.0 * maxNumEmployee
 
-        val maxNumEmployee: Double = 0.05 * maxOutputAmount / log2(
+        val maxOutputAmount: Double = 20.0 * maxNumEmployee * log2(
             mutableKnowledgeData.appliedResearchData.militaryTechnologyLevel / 100.0 + 2.0
         )
 
@@ -477,7 +457,7 @@ object UpdateScienceApplicationData : Mechanism() {
                     quality2 = 0.0,
                     quality3 = 0.0,
                 ),
-                amount = 0.5
+                amount = 1.0
             ),
             ResourceType.PLASTIC to MutableInputResourceData(
                 qualityData = MutableResourceQualityData(
@@ -485,7 +465,7 @@ object UpdateScienceApplicationData : Mechanism() {
                     quality2 = 0.0,
                     quality3 = 0.0,
                 ),
-                amount = 0.5
+                amount = 1.0
             ),
         )
 
