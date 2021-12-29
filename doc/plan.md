@@ -43,11 +43,12 @@
 * Stop war after long period of time [x]
 * Adjust attack and export by time dilation [x]
 * Limit fuel produced in a single unit space cube to prevent unlimited population [x]
-* Adjust the price and quality bound based on overall desire and trade
+* Adjust the price and quality bound based on overall desire and trade [x]
+* Increase population desire amount if there are extra saving and resource
 
-# AI TODO List
-* Default AI
-* AI state store last command to subordinate
+# Default AI TODO List
+* AI state store last command to subordinate [x]
+* Review resource factory construction after desire change
 
 # Command TODO List
 * Destroy factory [x]

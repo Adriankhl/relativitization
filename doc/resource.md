@@ -52,4 +52,4 @@
 * Research equipment, medicine, ammunition factory: 1E4 employee, 2E4 fuel consumption, 2E5 output, 1 input per input resource
   
 ## Consumption
-* Minimum population desire resource amount = population size, (TODO) increases if population has more money and if there are more left in trade
+* Minimum population desire resource amount = population size, increases if population has more money and if there are more left in trade
