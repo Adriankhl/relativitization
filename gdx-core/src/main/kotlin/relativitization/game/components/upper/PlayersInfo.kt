@@ -180,6 +180,7 @@ class PlayersInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
             mapPlayerColorMode = gdxSettings.mapPlayerColorMode
         ) {
             game.universeClient.mapCenterPlayerId = playerData.playerId
+            game.universeClient.primarySelectedInt3D = playerData.int4D.toInt3D()
         }
 
         nestedTable.add(previousPlayerIdButton)
