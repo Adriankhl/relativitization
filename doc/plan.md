@@ -44,7 +44,6 @@
 * Adjust attack and export by time dilation [x]
 * Limit fuel produced in a single unit space cube to prevent unlimited population [x]
 * Adjust the price and quality bound based on overall desire and trade [x]
-* Increase population desire amount if there are extra saving and resource
 
 # Default AI TODO List
 * AI state store last command to subordinate [x]
@@ -60,17 +59,15 @@
 * Improve diplomatic relation by sending resource [x]
 * Declare war, declare independence [x]
 * Merge direct subordinate at exactly the same position [x]
-* Open and close factories
+* Open and close factories [x]
 
 # Generate universe TODO List
 * One stellar per player generation
 * Generate proper knowledge network
 
 # GUI TODO List
-* Display information
-* Available commands
 * Map mode [x]
-* Show execute warning
+* Show execute warning [x]
 
 # Test TODO List
 * Declare war [x]
