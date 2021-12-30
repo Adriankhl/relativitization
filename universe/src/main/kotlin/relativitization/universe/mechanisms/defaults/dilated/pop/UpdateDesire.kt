@@ -65,9 +65,12 @@ object UpdateDesire : Mechanism() {
                     satisfactionMaxIncreaseDiff = satisfactionMaxIncreaseDiff,
                 )
 
-                // Update desire and clear input
+                // Update desire
                 mutableCommonPopData.desireResourceMap.clear()
                 mutableCommonPopData.desireResourceMap.putAll(desireResourceMap)
+
+                // Store and clear resource input
+                mutableCommonPopData.lastResourceInputMap = mutableCommonPopData.resourceInputMap.toMutableMap()
                 mutableCommonPopData.resourceInputMap.clear()
             }
         }

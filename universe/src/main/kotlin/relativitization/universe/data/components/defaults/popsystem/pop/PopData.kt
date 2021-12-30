@@ -126,7 +126,9 @@ data class MutableAllPopData(
  * @property saving saving of the population in fuel rest mass
  * @property salaryPerEmployee the salary per employee per turn of the employed population
  * @property desireResourceMap the desire resources of the population
- * @property resourceInputMap the resource input to this population to fulfill the desire
+ * @property resourceInputMap store the resource input to this population to fulfill the desire,
+ * should be cleared after calculating the effect of the input
+ * @property lastResourceInputMap store the latest resource input just before it is cleared
  */
 @Serializable
 data class CommonPopData(
@@ -141,6 +143,7 @@ data class CommonPopData(
     val saving: Double = 1.0,
     val desireResourceMap: Map<ResourceType, ResourceDesireData> = mapOf(),
     val resourceInputMap: Map<ResourceType, ResourceDesireData> = mapOf(),
+    val lastResourceInputMap: Map<ResourceType, ResourceDesireData> = mapOf(),
 )
 
 @Serializable
@@ -156,6 +159,7 @@ data class MutableCommonPopData(
     var saving: Double = 0.0,
     var desireResourceMap: MutableMap<ResourceType, MutableResourceDesireData> = mutableMapOf(),
     var resourceInputMap: MutableMap<ResourceType, MutableResourceDesireData> = mutableMapOf(),
+    var lastResourceInputMap: MutableMap<ResourceType, MutableResourceDesireData> = mutableMapOf(),
 ) {
     fun numEmployee(): Double = when {
         unemploymentRate > 1.0 -> {
