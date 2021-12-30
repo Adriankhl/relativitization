@@ -409,6 +409,23 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             nestedTable.row().space(10f)
         }
 
+        nestedTable.row().space(10f)
+
+        nestedTable.add(createLabel("Last desire input: ", gdxSettings.smallFontSize))
+
+        nestedTable.row().space(10f)
+
+        commonPopData.lastResourceInputMap.forEach { (resourceType, desireData) ->
+            nestedTable.add(
+                createPopDesireTable(
+                    resourceType,
+                    desireData
+                )
+            )
+
+            nestedTable.row().space(10f)
+        }
+
         return nestedTable
     }
 
