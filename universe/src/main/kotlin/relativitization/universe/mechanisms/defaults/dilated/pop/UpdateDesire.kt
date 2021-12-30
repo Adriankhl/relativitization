@@ -25,7 +25,7 @@ object UpdateDesire : Mechanism() {
         // Parameters
         val desireQualityUpdateFactor: Double = 0.2
         val desireQualityUpdateDiff: Double = 0.2
-        val satisfactionUpdateFactor: Double = 0.2
+        val satisfactionUpdateFactor: Double = 0.5
         val satisfactionMaxIncreaseDiff: Double = 3.0
 
 
@@ -254,7 +254,6 @@ object UpdateDesire : Mechanism() {
 
         // the ideal satisfaction which the population should be at
         val idealSatisfaction: Double = amountFactor * qualityFactor
-
 
         // Compute the change of satisfaction by piecewise function
         val deltaSatisfaction: Double = if (idealSatisfaction > originalSatisfaction) {
