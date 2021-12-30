@@ -2,6 +2,7 @@ package relativitization.universe.mechanisms
 
 import relativitization.universe.mechanisms.defaults.dilated.modifier.UpdateModifierByProperTime
 import relativitization.universe.mechanisms.defaults.dilated.combat.AutoCombat
+import relativitization.universe.mechanisms.defaults.dilated.economy.ResourceDecay
 import relativitization.universe.mechanisms.defaults.dilated.economy.UpdatePrice
 import relativitization.universe.mechanisms.defaults.dilated.economy.UpdateResourceQualityBound
 import relativitization.universe.mechanisms.defaults.regular.dead.ClearDeadPlayer
@@ -67,6 +68,7 @@ object DefaultMechanismLists : MechanismLists() {
         PopulationGrowth,
         Migration,
         SendTax,
+        ResourceDecay,
         KnowledgeDiffusion,
         DiscoverKnowledge,
         AutoCombat,
