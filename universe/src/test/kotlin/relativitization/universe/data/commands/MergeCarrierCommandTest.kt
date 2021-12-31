@@ -8,12 +8,16 @@ import relativitization.universe.data.events.AskToMergeCarrierEvent
 import relativitization.universe.data.events.name
 import relativitization.universe.generate.method.GenerateSettings
 import relativitization.universe.generate.method.GenerateUniverseMethodCollection
+import relativitization.universe.generate.method.name
+import relativitization.universe.generate.method.testing.TestingFixedMinimal
 import kotlin.test.Test
 
 internal class MergeCarrierCommandTest {
     @Test
     fun fixedMinimalTest() {
-        val universe = Universe(GenerateUniverseMethodCollection.generate(GenerateSettings()), ".")
+        val universe = Universe(GenerateUniverseMethodCollection.generate(GenerateSettings(
+            generateMethod = TestingFixedMinimal.name(),
+        )), ".")
 
         val view7At1 = universe.getUniverse3DViewAtPlayer(1)
         val view7At2 = universe.getUniverse3DViewAtPlayer(2)

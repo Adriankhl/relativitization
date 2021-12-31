@@ -5,12 +5,16 @@ import relativitization.universe.Universe
 import relativitization.universe.data.commands.DeclareWarCommand
 import relativitization.universe.generate.method.GenerateSettings
 import relativitization.universe.generate.method.GenerateUniverseMethodCollection
+import relativitization.universe.generate.method.name
+import relativitization.universe.generate.method.testing.TestingFixedMinimal
 import kotlin.test.Test
 
 internal class AutoCombatTest {
     @Test
     fun fixedMinimalTest() {
-        val universe = Universe(GenerateUniverseMethodCollection.generate(GenerateSettings()), ".")
+        val universe = Universe(GenerateUniverseMethodCollection.generate(GenerateSettings(
+            generateMethod = TestingFixedMinimal.name(),
+        )), ".")
 
         val view7At5 = universe.getUniverse3DViewAtPlayer(5)
         val view7At6 = universe.getUniverse3DViewAtPlayer(6)

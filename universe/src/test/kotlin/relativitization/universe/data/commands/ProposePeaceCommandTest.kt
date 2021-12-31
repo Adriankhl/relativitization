@@ -4,12 +4,16 @@ import kotlinx.coroutines.runBlocking
 import relativitization.universe.Universe
 import relativitization.universe.generate.method.GenerateSettings
 import relativitization.universe.generate.method.GenerateUniverseMethodCollection
+import relativitization.universe.generate.method.name
+import relativitization.universe.generate.method.testing.TestingFixedMinimal
 import kotlin.test.Test
 
 internal class ProposePeaceCommandTest {
     @Test
     fun fixedMinimalTest() {
-        val universe = Universe(GenerateUniverseMethodCollection.generate(GenerateSettings()), ".")
+        val universe = Universe(GenerateUniverseMethodCollection.generate(GenerateSettings(
+            generateMethod = TestingFixedMinimal.name(),
+        )), ".")
 
         val view7At3 = universe.getUniverse3DViewAtPlayer(3)
         val view7At5 = universe.getUniverse3DViewAtPlayer(5)

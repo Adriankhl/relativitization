@@ -6,12 +6,16 @@ import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.components.defaults.economy.ResourceType
 import relativitization.universe.generate.method.GenerateSettings
 import relativitization.universe.generate.method.GenerateUniverseMethodCollection
+import relativitization.universe.generate.method.name
+import relativitization.universe.generate.method.testing.TestingFixedMinimal
 import kotlin.test.Test
 
 internal class BuildForeignResourceFactoryCommandTest {
     @Test
     fun fixedMinimalSelfResourceFactoryTest() {
-        val universe = Universe(GenerateUniverseMethodCollection.generate(GenerateSettings()), ".")
+        val universe = Universe(GenerateUniverseMethodCollection.generate(GenerateSettings(
+            generateMethod = TestingFixedMinimal.name(),
+        )), ".")
         val view7: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
 
         val playerData = view7.get(1)
