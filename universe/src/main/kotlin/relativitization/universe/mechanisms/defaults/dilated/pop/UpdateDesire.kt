@@ -21,12 +21,12 @@ object UpdateDesire : Mechanism() {
         universeSettings: UniverseSettings,
         universeGlobalData: UniverseGlobalData
     ): List<Command> {
-
         // Parameters
         val desireQualityUpdateFactor: Double = 0.2
         val desireQualityUpdateDiff: Double = 0.2
         val satisfactionUpdateFactor: Double = 0.5
         val satisfactionMaxIncreaseDiff: Double = 3.0
+        val averageDesireInputQualityRange: Int = 3
 
 
         mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.forEach { carrier ->
