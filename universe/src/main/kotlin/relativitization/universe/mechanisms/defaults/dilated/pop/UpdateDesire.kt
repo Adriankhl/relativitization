@@ -1,10 +1,12 @@
 package relativitization.universe.mechanisms.defaults.dilated.pop
 
 import relativitization.universe.data.MutablePlayerData
+import relativitization.universe.data.PlayerData
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.components.defaults.economy.MutableResourceQualityData
+import relativitization.universe.data.components.defaults.economy.ResourceQualityData
 import relativitization.universe.data.components.defaults.economy.ResourceType
 import relativitization.universe.data.components.defaults.popsystem.pop.MutableCommonPopData
 import relativitization.universe.data.components.defaults.popsystem.pop.MutableResourceDesireData
@@ -187,6 +189,24 @@ object UpdateDesire : Mechanism() {
             )
         }
     }
+
+    /**
+     * Compute average quality of input desire resources in a neighbourhood
+     *
+     *
+     */
+    fun computeAverageResourceQualityMap(
+        mutablePlayerData: MutablePlayerData,
+        universeData3DAtPlayer: UniverseData3DAtPlayer,
+        averageDesireInputQualityRange: Int,
+    ): Map<ResourceType, ResourceQualityData> {
+
+        val neighbors: List<PlayerData> =
+            universeData3DAtPlayer.getNeighbour(averageDesireInputQualityRange)
+
+        return mapOf()
+    }
+
 
     /**
      * Compute satisfaction, adjusted by time dilation

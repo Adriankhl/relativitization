@@ -169,13 +169,16 @@ data class UniverseData3DAtPlayer(
     fun getNeighbourAndSelf(range: Int): List<PlayerData> {
         val currentPlayer: PlayerData = getCurrentPlayerData()
         val int3D: Int3D = currentPlayer.int4D.toInt3D()
+        val minX: Int = max(int3D.x - range, 0)
+        val maxX: Int = min(int3D.x + range, universeSettings.xDim - 1)
+        val minY: Int = max(int3D.y - range, 0)
+        val maxY: Int = min(int3D.y + range, universeSettings.yDim - 1)
+        val minZ: Int = max(int3D.z - range, 0)
+        val maxZ: Int = min(int3D.z + range, universeSettings.zDim - 1)
 
-        return (max(int3D.x - range, 0)..min(int3D.x + range, universeSettings.xDim - 1)).map { x ->
-            (max(int3D.y - range, 0)..min(int3D.y + range, universeSettings.yDim - 1)).map { y ->
-                (max(int3D.z - range, 0)..min(
-                    int3D.z + range,
-                    universeSettings.zDim - 1
-                )).map { z ->
+        return (minX..maxX).map { x ->
+            (minY..maxY).map { y ->
+                (minZ..maxZ).map { z ->
                     get(Int3D(x, y, z)).values
                 }
             }
