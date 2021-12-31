@@ -14,6 +14,7 @@ import relativitization.universe.data.components.defaults.popsystem.pop.PopType
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.mechanisms.Mechanism
 import kotlin.math.min
+import kotlin.math.pow
 
 object UpdateDesire : Mechanism() {
     override fun process(
@@ -25,10 +26,6 @@ object UpdateDesire : Mechanism() {
         // Parameters
         val desireQualityUpdateFactor: Double = 0.2
         val desireQualityUpdateDiff: Double = 0.2
-        val satisfactionUpdateFactor: Double = 0.5
-        val satisfactionMaxIncreaseDiff: Double = 3.0
-        val averageDesireInputQualityRange: Int = 3
-
 
         mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.forEach { carrier ->
             PopType.values().forEach { popType ->
@@ -59,21 +56,10 @@ object UpdateDesire : Mechanism() {
                         )
                     }.toMap()
 
-                updateSatisfaction(
-                    mutableCommonPopData = mutableCommonPopData,
-                    desireResourceTypeList = desireResourceTypeList,
-                    satisfactionUpdateFactor = satisfactionUpdateFactor,
-                    satisfactionMaxIncreaseDiff = satisfactionMaxIncreaseDiff,
-                )
 
                 // Update desire
                 mutableCommonPopData.desireResourceMap.clear()
                 mutableCommonPopData.desireResourceMap.putAll(desireResourceMap)
-
-                // Store and clear resource input
-                mutableCommonPopData.lastResourceInputMap =
-                    mutableCommonPopData.resourceInputMap.toMutableMap()
-                mutableCommonPopData.resourceInputMap.clear()
             }
         }
 
@@ -188,144 +174,5 @@ object UpdateDesire : Mechanism() {
                 desireQualityUpdateMinDiff,
             )
         }
-    }
-
-    /**
-     * Compute average quality of input desire resources in a neighbourhood
-     */
-    fun computeAverageResourceQualityMap(
-        mutablePlayerData: MutablePlayerData,
-        universeData3DAtPlayer: UniverseData3DAtPlayer,
-        averageDesireInputQualityRange: Int,
-    ): Map<ResourceType, ResourceQualityData> {
-        val resourceMap: MutableMap<ResourceType, ResourceQualityData> = mutableMapOf()
-
-        // Add the resource quality times the amount to resource map, then divide by total
-        // population later
-        mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.forEach { carrier ->
-            PopType.values().forEach { popType ->
-                carrier.allPopData.getCommonPopData(popType).lastResourceInputMap.forEach { (resourceType, desireData) ->
-                    val newQualityData: ResourceQualityData = resourceMap.getOrDefault(
-                        resourceType,
-                        ResourceQualityData()
-                    ) + (desireData.desireQuality * desireData.desireAmount)
-                    resourceMap[resourceType] = newQualityData
-                }
-            }
-        }
-
-        val neighbors: List<PlayerData> =
-            universeData3DAtPlayer.getNeighbour(averageDesireInputQualityRange)
-
-        neighbors.forEach { playerData ->
-            playerData.playerInternalData.popSystemData().carrierDataMap.values.forEach { carrier ->
-                PopType.values().forEach { popType ->
-                    carrier.allPopData.getCommonPopData(popType).lastResourceInputMap.forEach { (resourceType, desireData) ->
-                        val newQualityData: ResourceQualityData = resourceMap.getOrDefault(
-                            resourceType,
-                            ResourceQualityData()
-                        ) + (desireData.desireQuality * desireData.desireAmount)
-                        resourceMap[resourceType] = newQualityData
-                    }
-                }
-            }
-        }
-
-        // compute the total population
-        val totalPopulation: Double =
-            mutablePlayerData.playerInternalData.popSystemData().totalAdultPopulation() +
-                    neighbors.fold(0.0) { acc, playerData ->
-                        acc + playerData.playerInternalData.popSystemData().totalAdultPopulation()
-                    }
-
-        return if (totalPopulation > 0.0) {
-            resourceMap.mapValues { (_, qualityData) -> qualityData / totalPopulation }
-        } else {
-            mapOf()
-        }
-    }
-
-
-    /**
-     * Compute satisfaction, adjusted by time dilation
-     */
-    fun updateSatisfaction(
-        mutableCommonPopData: MutableCommonPopData,
-        desireResourceTypeList: List<ResourceType>,
-        satisfactionUpdateFactor: Double,
-        satisfactionMaxIncreaseDiff: Double,
-    ) {
-        val amountFractionList: List<Double> = desireResourceTypeList.map { resourceType ->
-            val originalDesire: MutableResourceDesireData =
-                mutableCommonPopData.desireResourceMap.getOrDefault(
-                    resourceType,
-                    MutableResourceDesireData()
-                )
-
-            val inputDesire: MutableResourceDesireData =
-                mutableCommonPopData.resourceInputMap.getOrDefault(
-                    resourceType,
-                    MutableResourceDesireData()
-                )
-
-            if (originalDesire.desireAmount > 0.0) {
-                inputDesire.desireAmount / (originalDesire.desireAmount)
-            } else {
-                1.0
-            }
-        }
-
-        val qualityFractionList: List<Double> = desireResourceTypeList.map { resourceType ->
-            val originalDesire: MutableResourceDesireData =
-                mutableCommonPopData.desireResourceMap.getOrDefault(
-                    resourceType,
-                    MutableResourceDesireData()
-                )
-
-            val inputDesire: MutableResourceDesireData =
-                mutableCommonPopData.resourceInputMap.getOrDefault(
-                    resourceType,
-                    MutableResourceDesireData()
-                )
-
-            if (originalDesire.desireQuality.square() > 0.0) {
-                inputDesire.desireQuality.mag() / originalDesire.desireQuality.mag()
-            } else {
-                1.0
-            }
-        }
-
-        val originalSatisfaction: Double = mutableCommonPopData.satisfaction
-
-
-        val amountFactor: Double = amountFractionList.fold(1.0) { acc, d ->
-            acc * d
-        }
-
-        // Modify quality factor based on amount factor
-        // If amount factor is small, the impact from quality should be small
-        val qualityFactorWithoutMod: Double = qualityFractionList.fold(1.0) { acc, d ->
-            acc * d
-        }
-        val qualityFactor: Double = if (amountFactor > 1.0) {
-            qualityFactorWithoutMod
-        } else {
-            (qualityFactorWithoutMod - 1.0) * amountFactor + 1.0
-        }
-
-        // the ideal satisfaction which the population should be at
-        val idealSatisfaction: Double = amountFactor * qualityFactor
-
-        // Compute the change of satisfaction by piecewise function
-        val deltaSatisfaction: Double = if (idealSatisfaction > originalSatisfaction) {
-            min(
-                (idealSatisfaction - originalSatisfaction) * satisfactionUpdateFactor,
-                satisfactionMaxIncreaseDiff
-            )
-        } else {
-            (idealSatisfaction - originalSatisfaction) * satisfactionUpdateFactor
-        }
-
-        mutableCommonPopData.satisfaction += deltaSatisfaction
     }
 }

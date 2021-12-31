@@ -56,6 +56,7 @@ object DefaultMechanismLists : MechanismLists() {
         Employment,
         PopBuyResource,
         UpdateDesire,
+        UpdateSatisfaction,
         UpdateMilitaryBase,
         BaseStellarFuelProduction,
         FuelFactoryProduction,
