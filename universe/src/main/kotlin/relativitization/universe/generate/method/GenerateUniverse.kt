@@ -28,7 +28,7 @@ data class GenerateSettings(
     var numPlayer: Int = 1,
     var numHumanPlayer: Int = 1,
     var numExtraStellarSystem: Int = 0,
-    var initialPopulation: Double = 1E6,
+    var initialPopulation: Double = 1E5,
     var universeSettings: MutableUniverseSettings = MutableUniverseSettings(),
 ) {
     fun save(programDir: String) {

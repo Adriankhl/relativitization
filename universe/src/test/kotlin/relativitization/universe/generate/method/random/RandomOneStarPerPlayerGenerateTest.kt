@@ -161,6 +161,6 @@ internal class RandomOneStarPerPlayerGenerateTest {
 
         // Ensure population has grown
         // Currently doesn't work
-        //assert(allPopData.labourerPopData.commonPopData.adultPopulation > generateSetting.initialPopulation)
+        assert(allPopData.labourerPopData.commonPopData.adultPopulation > generateSetting.initialPopulation)
     }
 }
