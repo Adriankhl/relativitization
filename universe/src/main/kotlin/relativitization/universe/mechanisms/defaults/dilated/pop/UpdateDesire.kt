@@ -12,7 +12,6 @@ import relativitization.universe.data.components.defaults.popsystem.pop.MutableC
 import relativitization.universe.data.components.defaults.popsystem.pop.MutableResourceDesireData
 import relativitization.universe.data.components.defaults.popsystem.pop.PopType
 import relativitization.universe.data.global.UniverseGlobalData
-import relativitization.universe.maths.algebra.Piecewise
 import relativitization.universe.mechanisms.Mechanism
 import kotlin.math.min
 
@@ -72,7 +71,8 @@ object UpdateDesire : Mechanism() {
                 mutableCommonPopData.desireResourceMap.putAll(desireResourceMap)
 
                 // Store and clear resource input
-                mutableCommonPopData.lastResourceInputMap = mutableCommonPopData.resourceInputMap.toMutableMap()
+                mutableCommonPopData.lastResourceInputMap =
+                    mutableCommonPopData.resourceInputMap.toMutableMap()
                 mutableCommonPopData.resourceInputMap.clear()
             }
         }
@@ -192,8 +192,6 @@ object UpdateDesire : Mechanism() {
 
     /**
      * Compute average quality of input desire resources in a neighbourhood
-     *
-     *
      */
     fun computeAverageResourceQualityMap(
         mutablePlayerData: MutablePlayerData,
@@ -202,14 +200,49 @@ object UpdateDesire : Mechanism() {
     ): Map<ResourceType, ResourceQualityData> {
         val resourceMap: MutableMap<ResourceType, ResourceQualityData> = mutableMapOf()
 
-        mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.forEach {
-
+        // Add the resource quality times the amount to resource map, then divide by total
+        // population later
+        mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.forEach { carrier ->
+            PopType.values().forEach { popType ->
+                carrier.allPopData.getCommonPopData(popType).lastResourceInputMap.forEach { (resourceType, desireData) ->
+                    val newQualityData: ResourceQualityData = resourceMap.getOrDefault(
+                        resourceType,
+                        ResourceQualityData()
+                    ) + (desireData.desireQuality * desireData.desireAmount)
+                    resourceMap[resourceType] = newQualityData
+                }
+            }
         }
 
         val neighbors: List<PlayerData> =
             universeData3DAtPlayer.getNeighbour(averageDesireInputQualityRange)
 
-        return resourceMap
+        neighbors.forEach { playerData ->
+            playerData.playerInternalData.popSystemData().carrierDataMap.values.forEach { carrier ->
+                PopType.values().forEach { popType ->
+                    carrier.allPopData.getCommonPopData(popType).lastResourceInputMap.forEach { (resourceType, desireData) ->
+                        val newQualityData: ResourceQualityData = resourceMap.getOrDefault(
+                            resourceType,
+                            ResourceQualityData()
+                        ) + (desireData.desireQuality * desireData.desireAmount)
+                        resourceMap[resourceType] = newQualityData
+                    }
+                }
+            }
+        }
+
+        // compute the total population
+        val totalPopulation: Double =
+            mutablePlayerData.playerInternalData.popSystemData().totalAdultPopulation() +
+                    neighbors.fold(0.0) { acc, playerData ->
+                        acc + playerData.playerInternalData.popSystemData().totalAdultPopulation()
+                    }
+
+        return if (totalPopulation > 0.0) {
+            resourceMap.mapValues { (_, qualityData) -> qualityData / totalPopulation }
+        } else {
+            mapOf()
+        }
     }
 
 

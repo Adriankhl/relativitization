@@ -340,6 +340,27 @@ data class ResourceQualityData(
     val quality2: Double = 0.0,
     val quality3: Double = 0.0,
 ) {
+    operator fun plus(other: ResourceQualityData): ResourceQualityData =
+        ResourceQualityData(
+            quality1 + other.quality1,
+            quality2 + other.quality2,
+            quality3 + other.quality3,
+        )
+
+
+    operator fun plus(other: MutableResourceQualityData): ResourceQualityData =
+        ResourceQualityData(
+            quality1 + other.quality1,
+            quality2 + other.quality2,
+            quality3 + other.quality3,
+        )
+
+    operator fun plus(num: Double): ResourceQualityData =
+        ResourceQualityData(
+            quality1 + num,
+            quality2 + num,
+            quality3 + num,
+        )
 
     operator fun times(d: Double): ResourceQualityData = ResourceQualityData(
         quality1 * d,

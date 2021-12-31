@@ -56,6 +56,12 @@ data class PopSystemData(
         return carrierDataMap.values.sumOf { it.carrierInternalData.maxMovementDeltaFuelRestMass }
     }
 
+    fun totalAdultPopulation(): Double {
+        return carrierDataMap.values.sumOf {
+            it.allPopData.totalAdultPopulation()
+        }
+    }
+
     fun numCarrier() = carrierDataMap.values.size
 }
 
