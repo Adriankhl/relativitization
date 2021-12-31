@@ -200,11 +200,16 @@ object UpdateDesire : Mechanism() {
         universeData3DAtPlayer: UniverseData3DAtPlayer,
         averageDesireInputQualityRange: Int,
     ): Map<ResourceType, ResourceQualityData> {
+        val resourceMap: MutableMap<ResourceType, ResourceQualityData> = mutableMapOf()
+
+        mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.forEach {
+
+        }
 
         val neighbors: List<PlayerData> =
             universeData3DAtPlayer.getNeighbour(averageDesireInputQualityRange)
 
-        return mapOf()
+        return resourceMap
     }
 
 

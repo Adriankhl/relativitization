@@ -347,6 +347,27 @@ data class ResourceQualityData(
         quality3 * d,
     )
 
+    /**
+     * If quality equals to zero, the output equal to zero instead of undefined
+     */
+    operator fun div(d: Double): ResourceQualityData = ResourceQualityData(
+        if (quality1!= 0.0) {
+            quality1 / d
+        } else {
+            0.0
+        },
+        if (quality2!= 0.0) {
+            quality2 / d
+        } else {
+            0.0
+        },
+        if (quality3!= 0.0) {
+            quality3 / d
+        } else {
+            0.0
+        },
+    )
+
     fun square(): Double = quality1 * quality1 + quality2 * quality2 + quality3 * quality3
 
     fun mag(): Double = sqrt(square())
@@ -419,6 +440,27 @@ data class MutableResourceQualityData(
         quality1 * d,
         quality2 * d,
         quality3 * d,
+    )
+
+    /**
+     * If quality equals to zero, the output equal to zero instead of undefined
+     */
+    operator fun div(d: Double): MutableResourceQualityData = MutableResourceQualityData(
+        if (quality1!= 0.0) {
+            quality1 / d
+        } else {
+            0.0
+        },
+        if (quality2!= 0.0) {
+            quality2 / d
+        } else {
+            0.0
+        },
+        if (quality3!= 0.0) {
+            quality3 / d
+        } else {
+            0.0
+        },
     )
 
     fun square(): Double = quality1 * quality1 + quality2 * quality2 + quality3 * quality3
