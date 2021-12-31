@@ -69,17 +69,18 @@ internal class SendResourceFromStorageCommandTest {
         val newResourceData1 = newPlayerData1.playerInternalData.economyData().resourceData
         val newResourceData2 = newPlayerData2.playerInternalData.economyData().resourceData
 
+        // Times 0.99 to account for resource decay
         assert(
             newResourceData1.getTradeResourceAmount(
                 ResourceType.PLANT,
                 ResourceQualityClass.THIRD
-            ) == 2.0
+            ) == 2.0 * 0.99
         )
         assert(
             newResourceData2.getTradeResourceAmount(
                 ResourceType.PLANT,
                 ResourceQualityClass.THIRD
-            ) == 3.0
+            ) == 3.0 * 0.99
         )
 
     }
