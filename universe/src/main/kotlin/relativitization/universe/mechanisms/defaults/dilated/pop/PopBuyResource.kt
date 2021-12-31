@@ -59,6 +59,7 @@ object PopBuyResource : Mechanism() {
                         desireData.desireAmount,
                         desireData.desireQuality,
                         availableFuelPerResource,
+                        true,
                     )
                 resourceType to selectedClass
             }.toMap()

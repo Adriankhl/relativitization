@@ -61,10 +61,11 @@ class AdjustSalaryAINode(
                 resourceType
             )
             val qualityClass: ResourceQualityClass = resourceData.tradeQualityClass(
-                resourceType,
+                resourceType = resourceType,
                 amount = desireData.desireAmount,
                 targetQuality = desireData.desireQuality,
-                budget = commonPopData.saving
+                budget = commonPopData.saving,
+                preferHighQualityClass = true,
             )
             val price: Double = resourceData.getResourcePrice(resourceType, qualityClass)
             acc + price * desireData.desireAmount

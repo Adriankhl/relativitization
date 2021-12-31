@@ -82,7 +82,8 @@ object UpdatePrice : Mechanism() {
                             resourceType = resourceType,
                             amount = desireData.desireAmount,
                             targetQuality = desireData.desireQuality,
-                            budget = commonPopData.saving
+                            budget = commonPopData.saving,
+                            preferHighQualityClass = true
                         )
                     val originalAmount: Double =
                         tradeNeedMap.getValue(resourceType).getValue(qualityClass)
@@ -115,7 +116,8 @@ object UpdatePrice : Mechanism() {
                                 .getValue(resourceType).amount * resourceFactory.numBuilding,
                             targetQuality = resourceFactory.resourceFactoryInternalData.inputResourceMap
                                 .getValue(resourceType).qualityData,
-                            budget = budgetPerResource
+                            budget = budgetPerResource,
+                            preferHighQualityClass = false
                         )
                     val originalAmount: Double =
                         tradeNeedMap.getValue(resourceType).getValue(qualityClass)

@@ -22,6 +22,8 @@ object PopulationGrowth : Mechanism() {
         universeSettings: UniverseSettings,
         universeGlobalData: UniverseGlobalData
     ): List<Command> {
+        // Parameters
+        val averageDesireInputQualityRange: Int = 3
 
         mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.forEach { mutableCarrierData ->
             val totalPopulation: Double = mutableCarrierData.allPopData.totalAdultPopulation()

@@ -95,16 +95,18 @@ object ResourceFactoryProduction : Mechanism() {
                         (resourceFactoryData.storedFuelRestMass - maxFuelConsumption) / numInputResource
 
                     resourceData.tradeQualityClass(
-                        type,
-                        requiredAmount,
-                        requiredQuality,
-                        availableFuelPerResource,
+                        resourceType = type,
+                        amount = requiredAmount,
+                        targetQuality = requiredQuality,
+                        budget = availableFuelPerResource,
+                        preferHighQualityClass = false,
                     )
                 } else {
                     resourceData.productionQualityClass(
-                        type,
-                        requiredAmount,
-                        requiredQuality,
+                        resourceType = type,
+                        amount = requiredAmount,
+                        targetQuality = requiredQuality,
+                        preferHighQualityClass = false
                     )
                 }
                 type to qualityClass
