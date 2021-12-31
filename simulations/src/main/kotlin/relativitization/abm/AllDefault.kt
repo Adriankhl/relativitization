@@ -14,9 +14,11 @@ fun main() {
 
     runBlocking {
         for (i in 1..10) {
+            val aiCommandMap = universe.computeAICommands()
+
             universe.postProcessUniverse(
                 mapOf(),
-                mapOf()
+                aiCommandMap,
             )
             universe.preProcessUniverse()
         }

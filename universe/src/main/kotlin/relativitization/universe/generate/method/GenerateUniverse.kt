@@ -7,6 +7,7 @@ import relativitization.universe.data.serializer.DataSerializer.decode
 import relativitization.universe.data.serializer.DataSerializer.encode
 import relativitization.universe.generate.method.abm.ABMGenerateUniverseMethod
 import relativitization.universe.generate.method.random.RandomGenerateUniverseMethod
+import relativitization.universe.generate.method.random.RandomOneStarPerPlayerGenerate
 import relativitization.universe.generate.method.testing.TestingFixedMinimal
 import relativitization.universe.generate.method.testing.TestingGenerateUniverseMethod
 import relativitization.universe.utils.RelativitizationLogManager
@@ -23,10 +24,10 @@ import java.io.File
  */
 @Serializable
 data class GenerateSettings(
-    var generateMethod: String = TestingFixedMinimal.name(),
-    var numPlayer: Int = 4,
-    var numHumanPlayer: Int = 2,
-    var numExtraStellarSystem: Int = 3,
+    var generateMethod: String = RandomOneStarPerPlayerGenerate.name(),
+    var numPlayer: Int = 1,
+    var numHumanPlayer: Int = 1,
+    var numExtraStellarSystem: Int = 0,
     var initialPopulation: Double = 1E6,
     var universeSettings: MutableUniverseSettings = MutableUniverseSettings(),
 ) {
