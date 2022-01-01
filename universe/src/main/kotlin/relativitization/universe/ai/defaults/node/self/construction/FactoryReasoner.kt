@@ -18,7 +18,10 @@ class FactoryReasoner : SequenceReasoner() {
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<AINode> {
-        val fuelReasonerList: List<AINode> = listOf(NewFuelFactoryReasoner())
+        val fuelReasonerList: List<AINode> = listOf(
+            NewFuelFactoryReasoner(),
+            RemoveFuelFactoryReasoner(),
+        )
 
         val resourceReasonerList: List<AINode> =
             (ResourceType.values().toList() - ResourceType.ENTERTAINMENT).map {
@@ -140,6 +143,38 @@ class BuildNewFuelFactoryOption(
                 numBuilding = numBuilding,
             )
         )
+    }
+}
+
+/**
+ * Remove fuel factory reasoner
+ */
+class RemoveFuelFactoryReasoner : SequenceReasoner() {
+    override fun getSubNodeList(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planState: PlanState
+    ): List<AINode> {
+        return planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData.popSystemData()
+            .carrierDataMap.map { (carrierId, carrierData) ->
+                carrierData.allPopData.labourerPopData.fuelFactoryMap.map { (fuelFactoryId, _) ->
+                    RemoveSpecificFuelFactoryReasoner(carrierId, fuelFactoryId)
+                }
+            }.flatten()
+    }
+}
+
+/**
+ * Remove a specific fuel factory
+ */
+class RemoveSpecificFuelFactoryReasoner(
+    val carrierId: Int,
+    val fuelFactoryId: Int,
+) : DualUtilityReasoner() {
+    override fun getOptionList(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planState: PlanState
+    ): List<DualUtilityOption> {
+        return listOf()
     }
 }
 
