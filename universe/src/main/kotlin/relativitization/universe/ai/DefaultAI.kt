@@ -2,8 +2,6 @@ package relativitization.universe.ai
 
 import relativitization.universe.ai.defaults.node.special.RecordRecentlySentCommandAINode
 import relativitization.universe.ai.defaults.node.self.SelfReasoner
-import relativitization.universe.ai.defaults.node.self.event.EventReasoner
-import relativitization.universe.ai.defaults.node.self.resource.BalanceFuelAndResourceReasoner
 import relativitization.universe.ai.defaults.utils.AINode
 import relativitization.universe.ai.defaults.utils.PlanState
 import relativitization.universe.ai.defaults.utils.SequenceReasoner

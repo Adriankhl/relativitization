@@ -14,16 +14,14 @@ class FactoryReasoner : SequenceReasoner() {
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<AINode> {
-        val fuelReasoner: AINode = NewFuelFactoryReasoner()
+        val fuelReasonerList: List<AINode> = listOf(NewFuelFactoryReasoner())
 
         val resourceReasonerList: List<AINode> =
             (ResourceType.values().toList() - ResourceType.ENTERTAINMENT).map {
                 NewResourceFactoryReasoner(it)
             }
 
-        return listOf(
-            fuelReasoner
-        ) + resourceReasonerList
+        return fuelReasonerList + resourceReasonerList
     }
 }
 
@@ -50,7 +48,28 @@ class NewFuelFactoryAtCarrierReasoner(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<DualUtilityOption> {
-        return listOf()
+        return listOf(
+            BuildNewFuelFactoryOption(carrierId),
+            DoNothingDualUtilityOption(rank = 1, multiplier = 1.0, bonus = 1.0),
+        )
+    }
+}
+
+/**
+ * Option to build a new fuel factory
+ */
+class BuildNewFuelFactoryOption(
+    val carrierId: Int
+) : DualUtilityOption() {
+    override fun getConsiderationList(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planState: PlanState
+    ): List<DualUtilityConsideration> {
+        TODO("Not yet implemented")
+    }
+
+    override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
+        TODO("Not yet implemented")
     }
 }
 
