@@ -1,6 +1,6 @@
 package relativitization.universe.ai.defaults.node.self.construction
 
-import relativitization.universe.ai.defaults.consideration.building.NoResourceFactoryAtPlayerConsideration
+import relativitization.universe.ai.defaults.consideration.building.NoResourceFactoryConsideration
 import relativitization.universe.ai.defaults.utils.*
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.commands.BuildForeignResourceFactoryCommand
@@ -115,7 +115,7 @@ class BuildNewResourceFactoryOption(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<DualUtilityConsideration> = listOf(
-        NoResourceFactoryAtPlayerConsideration(
+        NoResourceFactoryConsideration(
             resourceType = resourceType,
             rankIfTrue = 5,
             multiplierIfTrue = 1.0,
