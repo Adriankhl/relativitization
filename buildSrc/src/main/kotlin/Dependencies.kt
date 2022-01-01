@@ -11,11 +11,11 @@ object Versions {
     const val ktorVersion = "1.6.7"
 
     // Documentation
-    const val dokkaVersion = "1.6.0"
+    const val dokkaVersion = "1.6.10"
 
     // JVM
     const val gdxVersion = "1.10.0"
-    const val log4jVersion = "2.17.0"
+    const val log4jVersion = "2.17.1"
     const val kotlinFakerVersion = "1.9.0"
 
     // Android
