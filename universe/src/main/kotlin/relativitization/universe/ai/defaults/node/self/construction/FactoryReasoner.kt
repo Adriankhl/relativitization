@@ -1,5 +1,7 @@
 package relativitization.universe.ai.defaults.node.self.construction
 
+import relativitization.universe.ai.defaults.consideration.building.NoFuelFactoryAndNoStarConsideration
+import relativitization.universe.ai.defaults.consideration.building.NoResourceFactoryAndHasStarConsideration
 import relativitization.universe.ai.defaults.consideration.building.NoResourceFactoryConsideration
 import relativitization.universe.ai.defaults.utils.*
 import relativitization.universe.data.PlanDataAtPlayer
@@ -65,11 +67,32 @@ class BuildNewFuelFactoryOption(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<DualUtilityConsideration> {
-        TODO("Not yet implemented")
+        // Build fuel factory if no fuel factory and no star
+        val noFuelFactoryAndNoStarConsiderationList: List<NoFuelFactoryAndNoStarConsideration> =
+            listOf(
+                NoFuelFactoryAndNoStarConsideration(
+                    rankIfTrue = 5,
+                    multiplierIfTrue = 1.0,
+                    bonusIfTrue = 1.0
+                )
+            )
+
+        // Prioritize resource factory if no resource factory and has star
+        val resourceFactoryAndHasStarConsiderationList: List<NoResourceFactoryAndHasStarConsideration> =
+            ResourceType.values().map {
+                NoResourceFactoryAndHasStarConsideration(
+                    it,
+                    rankIfTrue = 0,
+                    multiplierIfTrue = 0.0,
+                    bonusIfTrue = 0.0
+                )
+            }
+
+        return noFuelFactoryAndNoStarConsiderationList + resourceFactoryAndHasStarConsiderationList
     }
 
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
-        TODO("Not yet implemented")
+
     }
 }
 

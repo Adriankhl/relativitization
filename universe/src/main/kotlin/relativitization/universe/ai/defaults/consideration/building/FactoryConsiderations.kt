@@ -41,7 +41,6 @@ class NoFuelFactoryAndNoStarConsideration(
     }
 }
 
-
 /**
  * Check if there isn't any resource factory of this resource type
  *
@@ -68,6 +67,44 @@ class NoResourceFactoryConsideration(
             }
 
         return if (hasResourceFactory) {
+            DualUtilityData(rank = 0, multiplier = 1.0, bonus = 0.0)
+        } else {
+            DualUtilityData(rank = rankIfTrue, multiplier = multiplierIfTrue, bonus = bonusIfTrue)
+        }
+    }
+}
+
+/**
+ * Check if there isn't any resource factory of this resource type and has at least a star
+ *
+ * @property resourceType the resource type to check
+ * @property rankIfTrue rank of dual utility if this is true
+ * @property multiplierIfTrue multiplier of dual utility if this is true
+ * @property bonusIfTrue bonus of dual utility if this is true
+ */
+class NoResourceFactoryAndHasStarConsideration(
+    val resourceType: ResourceType,
+    private val rankIfTrue: Int,
+    private val multiplierIfTrue: Double,
+    private val bonusIfTrue: Double,
+) : DualUtilityConsideration {
+    override fun getDualUtilityData(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planState: PlanState
+    ): DualUtilityData {
+        val hasResourceFactory: Boolean = planDataAtPlayer.getCurrentMutablePlayerData()
+            .playerInternalData.popSystemData().carrierDataMap.values.any {
+                it.allPopData.labourerPopData.resourceFactoryMap.values.any {
+                    it.resourceFactoryInternalData.outputResource == resourceType
+                }
+            }
+
+        val hasStellarSystem: Boolean = planDataAtPlayer.getCurrentMutablePlayerData()
+            .playerInternalData.popSystemData().carrierDataMap.values.any {
+                it.carrierType == CarrierType.STELLAR
+            }
+
+        return if (hasResourceFactory || !hasStellarSystem) {
             DualUtilityData(rank = 0, multiplier = 1.0, bonus = 0.0)
         } else {
             DualUtilityData(rank = rankIfTrue, multiplier = multiplierIfTrue, bonus = bonusIfTrue)
