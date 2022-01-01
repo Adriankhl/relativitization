@@ -6,6 +6,8 @@ import relativitization.universe.ai.defaults.utils.PlanState
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.components.defaults.economy.ResourceType
 import relativitization.universe.data.components.defaults.popsystem.CarrierType
+import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.MutableFuelFactoryData
+import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.MutableFuelFactoryInternalData
 
 /**
  * Check if there is no fuel factory and no stellar pop system
@@ -63,6 +65,47 @@ class OneFuelFactoryConsideration(
             }
 
         return if (numFuelFactory > 1) {
+            DualUtilityData(rank = 0, multiplier = 1.0, bonus = 0.0)
+        } else {
+            DualUtilityData(rank = rankIfTrue, multiplier = multiplierIfTrue, bonus = bonusIfTrue)
+        }
+    }
+}
+
+/**
+ * Check if this fuel factory use outdated technology
+ *
+ * @property carrierId the id of the carrier with this factory
+ * @property fuelFactoryId the id of the fuel factory
+ * @property rankIfTrue rank of dual utility if this is true
+ * @property multiplierIfTrue multiplier of dual utility if this is true
+ * @property bonusIfTrue bonus of dual utility if this is true
+ */
+class OutdatedFuelFactoryConsideration(
+    val carrierId: Int,
+    val fuelFactoryId: Int,
+    private val rankIfTrue: Int,
+    private val multiplierIfTrue: Double,
+    private val bonusIfTrue: Double,
+) : DualUtilityConsideration {
+    override fun getDualUtilityData(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planState: PlanState
+    ): DualUtilityData {
+        val fuelFactory: MutableFuelFactoryData = planDataAtPlayer.getCurrentMutablePlayerData()
+            .playerInternalData.popSystemData().carrierDataMap.getValue(carrierId)
+            .allPopData.labourerPopData.fuelFactoryMap.getValue(fuelFactoryId)
+
+        val idealFuelFactory: MutableFuelFactoryInternalData = planDataAtPlayer
+            .getCurrentMutablePlayerData().playerInternalData.playerScienceData()
+            .playerScienceApplicationData.idealFuelFactory
+
+        // Compute the ratio of output over the employee, which should be affected by tech level
+        val ratio: Double = fuelFactory.fuelFactoryInternalData.maxOutputAmount /
+                fuelFactory.fuelFactoryInternalData.maxNumEmployee
+        val idealRatio: Double = idealFuelFactory.maxOutputAmount / idealFuelFactory.maxNumEmployee
+
+        return if (ratio == idealRatio) {
             DualUtilityData(rank = 0, multiplier = 1.0, bonus = 0.0)
         } else {
             DualUtilityData(rank = rankIfTrue, multiplier = multiplierIfTrue, bonus = bonusIfTrue)
