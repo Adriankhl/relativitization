@@ -15,7 +15,6 @@ import relativitization.universe.data.components.defaults.popsystem.CarrierType
  * @property bonusIfTrue bonus of dual utility if this is true
  */
 class NoFuelFactoryAndNoStarConsideration(
-    val resourceType: ResourceType,
     private val rankIfTrue: Int,
     private val multiplierIfTrue: Double,
     private val bonusIfTrue: Double,
