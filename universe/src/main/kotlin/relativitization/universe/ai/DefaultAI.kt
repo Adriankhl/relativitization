@@ -1,6 +1,6 @@
 package relativitization.universe.ai
 
-import relativitization.universe.ai.defaults.node.ai.RecordRecentlySentCommandAINode
+import relativitization.universe.ai.defaults.node.special.RecordRecentlySentCommandAINode
 import relativitization.universe.ai.defaults.node.self.SelfReasoner
 import relativitization.universe.ai.defaults.node.self.event.EventReasoner
 import relativitization.universe.ai.defaults.node.self.resource.BalanceFuelAndResourceReasoner

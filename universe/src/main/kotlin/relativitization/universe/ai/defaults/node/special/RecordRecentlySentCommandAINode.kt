@@ -1,4 +1,4 @@
-package relativitization.universe.ai.defaults.node.ai
+package relativitization.universe.ai.defaults.node.special
 
 import relativitization.universe.ai.defaults.utils.AINode
 import relativitization.universe.ai.defaults.utils.PlanState
