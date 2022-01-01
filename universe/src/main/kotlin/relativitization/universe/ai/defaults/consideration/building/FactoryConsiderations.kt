@@ -42,6 +42,35 @@ class NoFuelFactoryAndNoStarConsideration(
 }
 
 /**
+ * Check if there is fewer than or equal to one fuel factory
+ *
+ * @property rankIfTrue rank of dual utility if this is true
+ * @property multiplierIfTrue multiplier of dual utility if this is true
+ * @property bonusIfTrue bonus of dual utility if this is true
+ */
+class OneFuelFactoryConsideration(
+    private val rankIfTrue: Int,
+    private val multiplierIfTrue: Double,
+    private val bonusIfTrue: Double,
+) : DualUtilityConsideration {
+    override fun getDualUtilityData(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planState: PlanState
+    ): DualUtilityData {
+        val numFuelFactory: Int = planDataAtPlayer.getCurrentMutablePlayerData()
+            .playerInternalData.popSystemData().carrierDataMap.values.fold(0) { acc, carrier ->
+                acc + carrier.allPopData.labourerPopData.fuelFactoryMap.size
+            }
+
+        return if (numFuelFactory > 1) {
+            DualUtilityData(rank = 0, multiplier = 1.0, bonus = 0.0)
+        } else {
+            DualUtilityData(rank = rankIfTrue, multiplier = multiplierIfTrue, bonus = bonusIfTrue)
+        }
+    }
+}
+
+/**
  * Check if there isn't any resource factory of this resource type
  *
  * @property resourceType the resource type to check
