@@ -174,7 +174,29 @@ class RemoveSpecificFuelFactoryReasoner(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<DualUtilityOption> {
-        return listOf()
+        return listOf(
+            RemoveSpecificFuelFactoryOption(carrierId, fuelFactoryId),
+            DoNothingDualUtilityOption(rank = 1, multiplier = 1.0, bonus = 1.0),
+        )
+    }
+}
+
+/**
+ * Dual utility option to remove a specific fuel factory
+ */
+class RemoveSpecificFuelFactoryOption(
+    val carrierId: Int,
+    val fuelFactoryId: Int,
+) : DualUtilityOption() {
+    override fun getConsiderationList(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planState: PlanState
+    ): List<DualUtilityConsideration> {
+        TODO("Not yet implemented")
+    }
+
+    override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
+        TODO("Not yet implemented")
     }
 }
 
