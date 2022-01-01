@@ -62,11 +62,16 @@ The generated `~/.wine/drive_c/relativitization-output/relativitization-win` fol
 
 
 ## Build Android (debug) apk
-`./gradlew :gdx-android:assembleDebug`
+This will produce a `relativitization-debug.apk` in `gdx-android/build/outputs/apk/debug`: 
+```
+./gradlew :gdx-android:assembleDebug
+```
 
 # Generate html doc
-`./gradlew dokkaHtml`
-
+This will produce documentation pages in `build/dokka/htmlMultiModule`:
+```
+./gradlew dokkaHtmlMultimodule
+```
 
 # Run simulation
 `./simulations/src/main/kotlin/relativitization/abm/AllDefault.kt` is a simulation example. You can run the main function by:
