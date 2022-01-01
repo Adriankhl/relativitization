@@ -3,10 +3,12 @@ package relativitization.universe.ai.defaults.node.self.construction
 import relativitization.universe.ai.defaults.consideration.building.NoFuelFactoryAndNoStarConsideration
 import relativitization.universe.ai.defaults.consideration.building.NoResourceFactoryAndHasStarConsideration
 import relativitization.universe.ai.defaults.consideration.building.NoResourceFactoryConsideration
+import relativitization.universe.ai.defaults.consideration.building.OneFuelFactoryConsideration
 import relativitization.universe.ai.defaults.utils.*
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.commands.BuildForeignFuelFactoryCommand
 import relativitization.universe.data.commands.BuildForeignResourceFactoryCommand
+import relativitization.universe.data.commands.RemoveLocalFuelFactoryCommand
 import relativitization.universe.data.components.defaults.economy.ResourceType
 import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.MutableFuelFactoryInternalData
 import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.MutableResourceFactoryInternalData
@@ -191,12 +193,20 @@ class RemoveSpecificFuelFactoryOption(
     override fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
-    ): List<DualUtilityConsideration> {
-        TODO("Not yet implemented")
-    }
+    ): List<DualUtilityConsideration> = listOf(
+        OneFuelFactoryConsideration(rankIfTrue = 0, multiplierIfTrue = 0.0, bonusIfTrue = 0.0)
+    )
 
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
-        TODO("Not yet implemented")
+        planDataAtPlayer.addCommand(
+            RemoveLocalFuelFactoryCommand(
+                toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+                fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+                fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
+                targetCarrierId = carrierId,
+                targetFuelFactoryId = fuelFactoryId,
+            )
+        )
     }
 }
 
