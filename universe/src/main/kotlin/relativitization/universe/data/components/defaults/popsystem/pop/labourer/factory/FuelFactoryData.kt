@@ -49,7 +49,7 @@ data class MutableFuelFactoryData(
 @Serializable
 data class FuelFactoryInternalData(
     val maxOutputAmount: Double = 0.0,
-    val maxNumEmployee: Double = 0.0,
+    val maxNumEmployee: Double = 1.0,
     val size: Double = 0.0,
 ) {
     fun squareDiff(other: FuelFactoryInternalData): Double {
@@ -76,7 +76,7 @@ data class FuelFactoryInternalData(
 @Serializable
 data class MutableFuelFactoryInternalData(
     var maxOutputAmount: Double = 0.0,
-    var maxNumEmployee: Double = 0.0,
+    var maxNumEmployee: Double = 1.0,
     var size: Double = 0.0,
 ) {
     fun squareDiff(other: FuelFactoryInternalData): Double {
