@@ -79,14 +79,12 @@ class OneFuelFactoryConsideration(
  * @property fuelFactoryId the id of the fuel factory
  * @property rankIfTrue rank of dual utility if this is true
  * @property multiplierIfTrue multiplier of dual utility if this is true
- * @property bonusIfTrue bonus of dual utility if this is true
  */
 class OutdatedFuelFactoryConsideration(
     val carrierId: Int,
     val fuelFactoryId: Int,
     private val rankIfTrue: Int,
     private val multiplierIfTrue: Double,
-    private val bonusIfTrue: Double,
 ) : DualUtilityConsideration {
     override fun getDualUtilityData(
         planDataAtPlayer: PlanDataAtPlayer,
@@ -108,7 +106,20 @@ class OutdatedFuelFactoryConsideration(
         return if (ratio == idealRatio) {
             DualUtilityData(rank = 0, multiplier = 1.0, bonus = 0.0)
         } else {
-            DualUtilityData(rank = rankIfTrue, multiplier = multiplierIfTrue, bonus = bonusIfTrue)
+            if (ratio > 0.0) {
+                DualUtilityData(
+                    rank = rankIfTrue,
+                    multiplier = multiplierIfTrue,
+                    bonus = (idealRatio - ratio) / ratio
+                )
+            } else {
+                // If ratio equals to 0, you should build a new factory
+                DualUtilityData(
+                    rank = rankIfTrue,
+                    multiplier = multiplierIfTrue,
+                    bonus = (idealRatio - ratio) / 1E-10
+                )
+            }
         }
     }
 }
