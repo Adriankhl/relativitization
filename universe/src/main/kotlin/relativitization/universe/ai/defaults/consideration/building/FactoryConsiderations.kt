@@ -6,6 +6,7 @@ import relativitization.universe.ai.defaults.utils.PlanState
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.components.defaults.economy.ResourceType
 import relativitization.universe.data.components.defaults.popsystem.CarrierType
+import relativitization.universe.data.components.defaults.popsystem.MutableCarrierData
 import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.MutableFuelFactoryData
 import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.MutableFuelFactoryInternalData
 
@@ -148,7 +149,33 @@ class SufficientFuelFactoryConsideration(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): DualUtilityData {
-        TODO("Not yet implemented")
+        val carrier: MutableCarrierData = planDataAtPlayer.getCurrentMutablePlayerData()
+            .playerInternalData.popSystemData().carrierDataMap.getValue(carrierId)
+
+        val fuelFactoryMap: Map<Int, MutableFuelFactoryData> =
+            carrier.allPopData.labourerPopData.fuelFactoryMap
+
+        val totalMaxEmployee: Double = fuelFactoryMap.values.fold(0.0){ acc, fuelFactory ->
+            acc + fuelFactory.fuelFactoryInternalData.maxNumEmployee * fuelFactory.numBuilding
+        }
+
+        val totalLabourerPopulation: Double =
+            carrier.allPopData.labourerPopData.commonPopData.adultPopulation
+
+        // Sufficient if fuel factory position is more than half of the population
+        return if (totalMaxEmployee >= totalLabourerPopulation * 0.5) {
+            DualUtilityData(
+                rank = rankIfTrue,
+                multiplier = multiplierIfTrue,
+                bonus = bonusIfTrue
+            )
+        } else {
+            DualUtilityData(
+                rank = rankIfFalse,
+                multiplier = multiplierIfFalse,
+                bonus = bonusIfFalse
+            )
+        }
     }
 }
 
