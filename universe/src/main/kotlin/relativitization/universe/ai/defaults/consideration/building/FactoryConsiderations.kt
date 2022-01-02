@@ -81,8 +81,8 @@ class OneFuelFactoryConsideration(
  * @property multiplierIfTrue multiplier of dual utility if this is true
  */
 class OutdatedFuelFactoryConsideration(
-    val carrierId: Int,
-    val fuelFactoryId: Int,
+    private val carrierId: Int,
+    private val fuelFactoryId: Int,
     private val rankIfTrue: Int,
     private val multiplierIfTrue: Double,
 ) : DualUtilityConsideration {
@@ -125,6 +125,34 @@ class OutdatedFuelFactoryConsideration(
 }
 
 /**
+ * Check if there is sufficient fuel factory
+ *
+ * @property carrierId the id of the carrier to consider
+ * @property rankIfTrue rank of dual utility if this is true
+ * @property multiplierIfTrue multiplier of dual utility if this is true
+ * @property bonusIfTrue bonus of dual utility if this is true
+ * @property rankIfFalse rank of dual utility if this is false
+ * @property multiplierIfFalse multiplier of dual utility if this is false
+ * @property bonusIfFalse bonus of dual utility if this is false
+ */
+class SufficientFuelFactoryConsideration(
+    private val carrierId: Int,
+    private val rankIfTrue: Int,
+    private val multiplierIfTrue: Double,
+    private val bonusIfTrue: Double,
+    private val rankIfFalse: Int,
+    private val multiplierIfFalse: Double,
+    private val bonusIfFalse: Double,
+) : DualUtilityConsideration {
+    override fun getDualUtilityData(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planState: PlanState
+    ): DualUtilityData {
+        TODO("Not yet implemented")
+    }
+}
+
+/**
  * Check if there isn't any resource factory of this resource type
  *
  * @property resourceType the resource type to check
@@ -133,7 +161,7 @@ class OutdatedFuelFactoryConsideration(
  * @property bonusIfTrue bonus of dual utility if this is true
  */
 class NoResourceFactoryConsideration(
-    val resourceType: ResourceType,
+    private val resourceType: ResourceType,
     private val rankIfTrue: Int,
     private val multiplierIfTrue: Double,
     private val bonusIfTrue: Double,
@@ -166,7 +194,7 @@ class NoResourceFactoryConsideration(
  * @property bonusIfTrue bonus of dual utility if this is true
  */
 class NoResourceFactoryAndHasStarConsideration(
-    val resourceType: ResourceType,
+    private val resourceType: ResourceType,
     private val rankIfTrue: Int,
     private val multiplierIfTrue: Double,
     private val bonusIfTrue: Double,

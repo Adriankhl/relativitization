@@ -17,7 +17,7 @@ import kotlin.math.exp
  * @property relationNormalization the normalization to scale the bonus of relation
  */
 class RelationConsideration(
-    val playerId: Int,
+    private val playerId: Int,
     private val rank: Int = 1,
     private val multiplier: Double = 1.0,
     private val relationNormalization: Double = 100.0,
