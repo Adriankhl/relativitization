@@ -1,6 +1,7 @@
 package relativitization.universe.ai.defaults.node.self
 
 import relativitization.universe.ai.defaults.node.self.construction.FactoryReasoner
+import relativitization.universe.ai.defaults.node.self.construction.InstituteReasoner
 import relativitization.universe.ai.defaults.node.self.event.EventReasoner
 import relativitization.universe.ai.defaults.node.self.pop.SalaryReasoner
 import relativitization.universe.ai.defaults.node.self.resource.BalanceFuelAndResourceReasoner
@@ -17,6 +18,7 @@ class SelfReasoner : SequenceReasoner() {
         EventReasoner(),
         BalanceFuelAndResourceReasoner(),
         FactoryReasoner(),
+        InstituteReasoner(),
         SalaryReasoner(),
     )
 }
