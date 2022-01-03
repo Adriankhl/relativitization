@@ -11,7 +11,7 @@ import relativitization.universe.data.components.defaults.popsystem.pop.labourer
 import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.MutableFuelFactoryInternalData
 
 /**
- * Check if there is no fuel factory and no stellar pop system
+ * Check if there is no self fuel factory and no stellar pop system
  *
  * @property rankIfTrue rank of dual utility if this is true
  * @property multiplierIfTrue multiplier of dual utility if this is true
@@ -78,7 +78,7 @@ class OneSelfFuelFactoryConsideration(
 }
 
 /**
- * Check if this fuel factory use outdated technology
+ * Check if this fuel factory uses outdated technology
  *
  * @property carrierId the id of the carrier with this factory
  * @property fuelFactoryId the id of the fuel factory
@@ -130,7 +130,7 @@ class OutdatedFuelFactoryConsideration(
 }
 
 /**
- * Check if there is sufficient fuel factory
+ * Check if self fuel factory is sufficient
  *
  * @property carrierId the id of the carrier to consider
  * @property rankIfTrue rank of dual utility if this is true
@@ -186,7 +186,7 @@ class SufficientSelfFuelFactoryConsideration(
 }
 
 /**
- * Check if there isn't any resource factory of this resource type
+ * Check if there isn't any self resource factory of this resource type
  *
  * @property resourceType the resource type to check
  * @property rankIfTrue rank of dual utility if this is true
@@ -223,7 +223,7 @@ class NoSelfResourceFactoryConsideration(
 }
 
 /**
- * Check if there isn't any resource factory of this resource type and has at least a star
+ * Check if there isn't any self resource factory of this resource type and has at least a star
  *
  * @property resourceType the resource type to check
  * @property rankIfTrue rank of dual utility if this is true
