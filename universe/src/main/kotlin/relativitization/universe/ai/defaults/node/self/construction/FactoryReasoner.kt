@@ -82,7 +82,7 @@ class BuildNewFuelFactoryOption(
             )
 
         // Prioritize resource factory if no resource factory and has star
-        val selfResourceFactoryAndHasStarConsiderationList: List<NoSelfResourceFactoryAndHasStarConsideration> =
+        val noSelfResourceFactoryAndHasStarConsiderationList: List<NoSelfResourceFactoryAndHasStarConsideration> =
             ResourceType.values().map {
                 NoSelfResourceFactoryAndHasStarConsideration(
                     it,
@@ -106,7 +106,7 @@ class BuildNewFuelFactoryOption(
             )
 
         return noSelfFuelFactoryAndNoStarConsiderationList +
-                selfResourceFactoryAndHasStarConsiderationList +
+                noSelfResourceFactoryAndHasStarConsiderationList +
                 sufficientSelfFuelFactoryConsiderationList
     }
 
@@ -288,14 +288,32 @@ class BuildNewResourceFactoryOption(
     override fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
-    ): List<DualUtilityConsideration> = listOf(
-        NoSelfResourceFactoryConsideration(
-            resourceType = resourceType,
-            rankIfTrue = 5,
-            multiplierIfTrue = 1.0,
-            bonusIfTrue = 1.0
+    ): List<DualUtilityConsideration> {
+        val noSelfResourceFactoryConsiderationList: List<NoSelfResourceFactoryConsideration> = listOf(
+            NoSelfResourceFactoryConsideration(
+                resourceType = resourceType,
+                rankIfTrue = 5,
+                multiplierIfTrue = 1.0,
+                bonusIfTrue = 1.0
+            )
         )
-    )
+
+        val sufficientSelfResourceFactoryConsiderationList: List<SufficientSelfResourceFactoryConsideration> =
+            listOf(
+                SufficientSelfResourceFactoryConsideration(
+                    carrierId = carrierId,
+                    resourceType = resourceType,
+                    rankIfTrue = 0,
+                    multiplierIfTrue = 1.0,
+                    bonusIfTrue = 0.0,
+                    rankIfFalse = 1,
+                    multiplierIfFalse = 1.0,
+                    bonusIfFalse = 1.0
+                )
+            )
+
+        return noSelfResourceFactoryConsiderationList + sufficientSelfResourceFactoryConsiderationList
+    }
 
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
         val idealFactory: MutableResourceFactoryInternalData = planDataAtPlayer
