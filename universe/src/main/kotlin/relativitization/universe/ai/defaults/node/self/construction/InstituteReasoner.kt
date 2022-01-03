@@ -13,3 +13,13 @@ class InstituteReasoner : SequenceReasoner() {
         return listOf()
     }
 }
+
+class NewInstituteReasoner : SequenceReasoner() {
+    override fun getSubNodeList(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planState: PlanState
+    ): List<AINode> {
+       return listOf()
+    }
+
+}
