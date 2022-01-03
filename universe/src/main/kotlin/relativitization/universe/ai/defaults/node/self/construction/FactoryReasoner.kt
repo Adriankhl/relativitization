@@ -48,7 +48,7 @@ class NewFuelFactoryReasoner : SequenceReasoner() {
  * Consider building a fuel factory at a carrier
  */
 class NewFuelFactoryAtCarrierReasoner(
-    val carrierId: Int
+    private val carrierId: Int
 ) : DualUtilityReasoner() {
     override fun getOptionList(
         planDataAtPlayer: PlanDataAtPlayer,
@@ -65,7 +65,7 @@ class NewFuelFactoryAtCarrierReasoner(
  * Option to build a new fuel factory
  */
 class BuildNewFuelFactoryOption(
-    val carrierId: Int
+    private val carrierId: Int
 ) : DualUtilityOption() {
     override fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer,
@@ -92,7 +92,21 @@ class BuildNewFuelFactoryOption(
                 )
             }
 
-        return noFuelFactoryAndNoStarConsiderationList + resourceFactoryAndHasStarConsiderationList
+        val sufficientFuelFactoryConsiderationList: List<SufficientFuelFactoryConsideration> = listOf(
+            SufficientFuelFactoryConsideration(
+                carrierId = carrierId,
+                rankIfTrue = 0,
+                multiplierIfTrue = 1.0,
+                bonusIfTrue = 0.0,
+                rankIfFalse = 1,
+                multiplierIfFalse = 1.0,
+                bonusIfFalse = 1.0
+            )
+        )
+
+        return noFuelFactoryAndNoStarConsiderationList +
+                resourceFactoryAndHasStarConsiderationList +
+                sufficientFuelFactoryConsiderationList
     }
 
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
@@ -166,8 +180,8 @@ class RemoveFuelFactoryReasoner : SequenceReasoner() {
  * Remove a specific fuel factory
  */
 class RemoveSpecificFuelFactoryReasoner(
-    val carrierId: Int,
-    val fuelFactoryId: Int,
+    private val carrierId: Int,
+    private val fuelFactoryId: Int,
 ) : DualUtilityReasoner() {
     override fun getOptionList(
         planDataAtPlayer: PlanDataAtPlayer,
@@ -184,8 +198,8 @@ class RemoveSpecificFuelFactoryReasoner(
  * Dual utility option to remove a specific fuel factory
  */
 class RemoveSpecificFuelFactoryOption(
-    val carrierId: Int,
-    val fuelFactoryId: Int,
+    private val carrierId: Int,
+    private val fuelFactoryId: Int,
 ) : DualUtilityOption() {
     override fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer,
@@ -212,7 +226,7 @@ class RemoveSpecificFuelFactoryOption(
  * Iterate all carrier to consider building new factory
  */
 class NewResourceFactoryReasoner(
-    val resourceType: ResourceType
+    private val resourceType: ResourceType
 ) : SequenceReasoner() {
     override fun getSubNodeList(
         planDataAtPlayer: PlanDataAtPlayer,
@@ -230,8 +244,8 @@ class NewResourceFactoryReasoner(
  * Consider building a resource factory at a carrier
  */
 class NewResourceFactoryAtCarrierReasoner(
-    val resourceType: ResourceType,
-    val carrierId: Int,
+    private val resourceType: ResourceType,
+    private val carrierId: Int,
 ) : DualUtilityReasoner() {
     override fun getOptionList(
         planDataAtPlayer: PlanDataAtPlayer,
@@ -243,8 +257,8 @@ class NewResourceFactoryAtCarrierReasoner(
 }
 
 class BuildNewResourceFactoryOption(
-    val resourceType: ResourceType,
-    val carrierId: Int,
+    private val resourceType: ResourceType,
+    private val carrierId: Int,
 ) : DualUtilityOption() {
     override fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer,

@@ -38,9 +38,9 @@ class SalaryReasoner : SequenceReasoner() {
 }
 
 class AdjustSalaryAINode(
-    val carrierId: Int,
-    val popType: PopType,
-    val totalAdultPopulation: Double,
+    private val carrierId: Int,
+    private val popType: PopType,
+    private val totalAdultPopulation: Double,
 ) : AINode {
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
         val commonPopData: MutableCommonPopData = planDataAtPlayer.getCurrentMutablePlayerData()

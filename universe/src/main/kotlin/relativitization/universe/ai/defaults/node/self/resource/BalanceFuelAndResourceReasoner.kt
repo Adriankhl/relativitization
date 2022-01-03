@@ -168,8 +168,8 @@ class BalanceFuelTargetDataAINode : AINode {
  * @param resourceQualityClass the quality class of the resource
  */
 class BalanceResourceDataAINode(
-    val resourceType: ResourceType,
-    val resourceQualityClass: ResourceQualityClass,
+    private val resourceType: ResourceType,
+    private val resourceQualityClass: ResourceQualityClass,
 ) : AINode {
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
         val storage: Double = planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData
