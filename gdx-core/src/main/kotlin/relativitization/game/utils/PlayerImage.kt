@@ -159,6 +159,59 @@ object PlayerImage {
 
         }
 
+        // Get player in the same cube, excluding self
+        val neighbors: List<PlayerData> = universeData3DAtPlayer.getIdMap(
+            playerData.int4D.toInt3D()
+        ).values.flatten().filter {
+            it != playerData.playerId
+        }.map {
+            universeData3DAtPlayer.get(it)
+        }
+
+        // Neighbor that views the player as enemy
+        val neighborViewEnemyList: List<PlayerData> =
+            neighbors.filter { neighbor ->
+                neighbor.playerInternalData.diplomacyData().isEnemyOf(
+                    playerData
+                )
+            }
+
+        // Neighbor that this player views as enemy
+        val selfViewEnemyList: List<PlayerData> =
+            playerData.playerInternalData.diplomacyData().relationMap.filter { (id, relationData) ->
+                // Select the player that are enemy, nearby, and not in neighborViewEnemyList
+                (relationData.diplomaticRelationState == DiplomaticRelationState.ENEMY) && neighbors.any { neighbor ->
+                    neighbor.playerId == id
+                } && neighborViewEnemyList.all { neighbor ->
+                    neighbor.playerId != id
+                }
+            }.map { (playerId, _) ->
+                universeData3DAtPlayer.get(playerId)
+            }
+
+        // Determine if it is in combat or not
+        val inCombat: Boolean = neighborViewEnemyList.isNotEmpty() || selfViewEnemyList.isNotEmpty()
+
+        // Add a red sword if in Combat
+        if (inCombat) {
+            val sword: Image = ActorFunction.createImage(
+                assets = assets,
+                name = "combat/sword1",
+                xPos = xPos + width * 0.75f,
+                yPos = yPos,
+                width = width * 0.25f,
+                height = height * 0.5f,
+                r = 1.0f,
+                g = 0.0f,
+                b = 0.0f,
+                a = 0.0f,
+                soundVolume = soundVolume,
+                function = function
+            )
+            imageList.add(sword)
+        }
+
+
         // Add an transparent square on top for selecting player
         val transparentSquare: Image = ActorFunction.createImage(
             assets = assets,

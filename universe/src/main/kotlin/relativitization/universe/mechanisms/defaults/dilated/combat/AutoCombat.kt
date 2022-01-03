@@ -66,7 +66,7 @@ object AutoCombat : Mechanism() {
         // Neighbor that this player views as enemy
         val selfViewEnemyList: List<PlayerData> =
             mutablePlayerData.playerInternalData.diplomacyData().relationMap.filter { (id, relationData) ->
-                // Select the player that are enemy, nearby, and not in enemyOfSelf list
+                // Select the player that are enemy, nearby, and not in neighborViewEnemyList
                 (relationData.diplomaticRelationState == DiplomaticRelationState.ENEMY) && neighbors.any { playerData ->
                     playerData.playerId == id
                 } && neighborViewEnemyList.all { playerData ->
