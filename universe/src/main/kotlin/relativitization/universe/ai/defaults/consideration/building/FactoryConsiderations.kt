@@ -10,6 +10,8 @@ import relativitization.universe.data.components.defaults.popsystem.CarrierType
 import relativitization.universe.data.components.defaults.popsystem.MutableCarrierData
 import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.MutableFuelFactoryData
 import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.MutableFuelFactoryInternalData
+import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.MutableResourceFactoryData
+import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.MutableResourceFactoryInternalData
 
 /**
  * Check if there is no self fuel factory and no stellar pop system
@@ -105,25 +107,26 @@ class OutdatedFuelFactoryConsideration(
             .playerScienceApplicationData.idealFuelFactory
 
         // Compute the ratio of output over the employee, which should be affected by tech level
-        val ratio: Double = fuelFactory.fuelFactoryInternalData.maxOutputAmount /
+        val outputRatio: Double = fuelFactory.fuelFactoryInternalData.maxOutputAmount /
                 fuelFactory.fuelFactoryInternalData.maxNumEmployee
-        val idealRatio: Double = idealFuelFactory.maxOutputAmount / idealFuelFactory.maxNumEmployee
+        val idealOutputRatio: Double = idealFuelFactory.maxOutputAmount /
+                idealFuelFactory.maxNumEmployee
 
-        return if (ratio == idealRatio) {
+        return if (outputRatio == idealOutputRatio) {
             DualUtilityDataFactory.noImpact()
         } else {
-            if (ratio > 0.0) {
+            if (outputRatio > 0.0) {
                 DualUtilityData(
                     rank = rankIfTrue,
                     multiplier = multiplierIfTrue,
-                    bonus = (idealRatio - ratio) / ratio
+                    bonus = (idealOutputRatio - outputRatio) / outputRatio
                 )
             } else {
-                // If ratio equals to 0, you should build a new factory
+                // If ratio equals to 0, set a high bonus
                 DualUtilityData(
                     rank = rankIfTrue,
                     multiplier = multiplierIfTrue,
-                    bonus = (idealRatio - ratio) / 1E-10
+                    bonus = 10.0
                 )
             }
         }
@@ -297,6 +300,68 @@ class OneSelfResourceFactoryConsideration(
             DualUtilityDataFactory.noImpact()
         } else {
             DualUtilityData(rank = rankIfTrue, multiplier = multiplierIfTrue, bonus = bonusIfTrue)
+        }
+    }
+}
+
+/**
+ * Check if this resource factory uses outdated technology
+ *
+ * @property carrierId the id of the carrier with this factory
+ * @property resourceFactoryId the id of the fuel factory
+ * @property rankIfTrue rank of dual utility if this is true
+ * @property multiplierIfTrue multiplier of dual utility if this is true
+ */
+class OutdatedResourceFactoryConsideration(
+    private val carrierId: Int,
+    private val resourceFactoryId: Int,
+    private val rankIfTrue: Int,
+    private val multiplierIfTrue: Double,
+) : DualUtilityConsideration {
+    override fun getDualUtilityData(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planState: PlanState
+    ): DualUtilityData {
+        val resourceFactory: MutableResourceFactoryData = planDataAtPlayer.getCurrentMutablePlayerData()
+            .playerInternalData.popSystemData().carrierDataMap.getValue(carrierId)
+            .allPopData.labourerPopData.resourceFactoryMap.getValue(resourceFactoryId)
+
+        val idealResourceFactory: MutableResourceFactoryInternalData = planDataAtPlayer
+            .getCurrentMutablePlayerData().playerInternalData.playerScienceData()
+            .playerScienceApplicationData.getIdealResourceFactory(
+                resourceFactory.resourceFactoryInternalData.outputResource
+            )
+
+        // Compute the ratio of output over the employee, which should be affected by tech level
+        val outputRatio: Double = resourceFactory.resourceFactoryInternalData.maxOutputAmount /
+                resourceFactory.resourceFactoryInternalData.maxNumEmployee
+        val idealOutputRatio: Double = idealResourceFactory.maxOutputAmount /
+                idealResourceFactory.maxNumEmployee
+
+        val qualityMag: Double =
+            resourceFactory.resourceFactoryInternalData.maxOutputResourceQualityData.mag()
+        val idealQualityMag: Double = idealResourceFactory.maxOutputResourceQualityData.mag()
+
+        return if ((outputRatio == idealOutputRatio) && (qualityMag == idealQualityMag)) {
+            DualUtilityDataFactory.noImpact()
+        } else {
+            if ((outputRatio > 0.0) && (qualityMag > 0.0)) {
+                val outputRatioBonus: Double = (idealOutputRatio - outputRatio) / outputRatio
+                val qualityBonus: Double = (idealQualityMag - qualityMag) / qualityMag
+
+                DualUtilityData(
+                    rank = rankIfTrue,
+                    multiplier = multiplierIfTrue,
+                    bonus = outputRatioBonus + qualityBonus
+                )
+            } else {
+                // If ratio equals to 0, set a high bonus
+                DualUtilityData(
+                    rank = rankIfTrue,
+                    multiplier = multiplierIfTrue,
+                    bonus = 10.0
+                )
+            }
         }
     }
 }
