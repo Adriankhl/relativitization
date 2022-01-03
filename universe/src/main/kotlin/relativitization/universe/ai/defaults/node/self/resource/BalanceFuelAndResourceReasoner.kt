@@ -263,10 +263,10 @@ class BalanceResourceTargetDataAINode(
         // Set the target storage to a high value, which means everything is put into the storage
         // Do the transfer "manually" by AI
         val currentTargetStorage: Double = planDataAtPlayer.getCurrentMutablePlayerData()
-            .playerInternalData.economyData().resourceData.getStorageResourceAmount(
+            .playerInternalData.economyData().resourceData.getResourceTargetAmountData(
                 resourceType,
                 resourceQualityClass
-            )
+            ).storage
 
         if (currentTargetStorage < 1E100) {
             planDataAtPlayer.addCommand(
