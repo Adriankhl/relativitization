@@ -29,15 +29,15 @@ import relativitization.universe.mechanisms.name
  */
 @Serializable
 data class UniverseSettings(
-    val universeName: String = "Test",
+    val universeName: String = "my universe",
     val mechanismCollectionName: String = DefaultMechanismLists.name(),
     val commandCollectionName: String = DefaultCommandAvailability.name(),
     val globalMechanismCollectionName: String = DefaultGlobalMechanismList.name(),
     val speedOfLight: Double = 1.0,
     val tDim: Int = 8,
-    val xDim: Int = 2,
-    val yDim: Int = 2,
-    val zDim: Int = 2,
+    val xDim: Int = 3,
+    val yDim: Int = 3,
+    val zDim: Int = 3,
     val playerAfterImageDuration: Int = 4,
     val playerHistoricalInt4DLength: Int = 4,
     val groupEdgeLength: Double = 0.01,
@@ -63,15 +63,15 @@ data class UniverseSettings(
 
 @Serializable
 data class MutableUniverseSettings(
-    var universeName: String = "Test",
+    var universeName: String = "my universe",
     var mechanismCollectionName: String = DefaultMechanismLists.name(),
     var commandCollectionName: String = DefaultCommandAvailability.name(),
     var globalMechanismCollectionName: String = DefaultGlobalMechanismList.name(),
     var speedOfLight: Double = 1.0,
     var tDim: Int = 8,
-    var xDim: Int = 2,
-    var yDim: Int = 2,
-    var zDim: Int = 2,
+    var xDim: Int = 3,
+    var yDim: Int = 3,
+    var zDim: Int = 3,
     var playerAfterImageDuration: Int = 4,
     var playerHistoricalInt4DLength: Int = 4,
     var groupEdgeLength: Double = 0.01,
