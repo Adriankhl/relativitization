@@ -36,3 +36,33 @@ class NoInstituteAtCarrierConsideration(
         }
     }
 }
+
+/**
+ * Check if there is fewer than or equal to one institute at carrier
+ *
+ * @property carrierId the id of the carrier
+ * @property rankIfTrue rank of dual utility if this is true
+ * @property multiplierIfTrue multiplier of dual utility if this is true
+ * @property bonusIfTrue bonus of dual utility if this is true
+ */
+class OneInstituteConsideration(
+    private val carrierId: Int,
+    private val rankIfTrue: Int,
+    private val multiplierIfTrue: Double,
+    private val bonusIfTrue: Double,
+) : DualUtilityConsideration {
+    override fun getDualUtilityData(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planState: PlanState
+    ): DualUtilityData {
+        val numInstitute: Int = planDataAtPlayer.getCurrentMutablePlayerData()
+            .playerInternalData.popSystemData().carrierDataMap.getValue(carrierId).allPopData
+            .scholarPopData.instituteMap.size
+
+        return if (numInstitute > 1) {
+            DualUtilityDataFactory.noImpact()
+        } else {
+            DualUtilityData(rank = rankIfTrue, multiplier = multiplierIfTrue, bonus = bonusIfTrue)
+        }
+    }
+}
