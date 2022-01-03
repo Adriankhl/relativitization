@@ -6,6 +6,7 @@ import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.commands.BuildForeignFuelFactoryCommand
 import relativitization.universe.data.commands.BuildForeignResourceFactoryCommand
 import relativitization.universe.data.commands.RemoveLocalFuelFactoryCommand
+import relativitization.universe.data.commands.RemoveLocalResourceFactoryCommand
 import relativitization.universe.data.components.defaults.economy.ResourceType
 import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.MutableFuelFactoryInternalData
 import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.MutableResourceFactoryInternalData
@@ -24,8 +25,11 @@ class FactoryReasoner : SequenceReasoner() {
 
         val resourceReasonerList: List<AINode> =
             (ResourceType.values().toList() - ResourceType.ENTERTAINMENT).map {
-                NewResourceFactoryReasoner(it)
-            }
+                listOf(
+                    NewResourceFactoryReasoner(it),
+                    RemoveResourceFactoryReasoner(it)
+                )
+            }.flatten()
 
         return fuelReasonerList + resourceReasonerList
     }
@@ -363,6 +367,108 @@ class BuildNewResourceFactoryOption(
                 qualityLevel = 1.0,
                 storedFuelRestMass = 0.0,
                 numBuilding = numBuilding,
+            )
+        )
+    }
+}
+
+/**
+ * Remove resource factory reasoner
+ */
+class RemoveResourceFactoryReasoner(
+    private val resourceType: ResourceType,
+) : SequenceReasoner() {
+    override fun getSubNodeList(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planState: PlanState
+    ): List<AINode> {
+        val removeSelfResourceFactoryList: List<AINode> =
+            planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData.popSystemData()
+                .carrierDataMap.map { (carrierId, carrierData) ->
+                    // Only consider self fuel factory
+                    carrierData.allPopData.labourerPopData.resourceFactoryMap.filter { (_, resourceFactory) ->
+                        val isThisResource: Boolean =
+                            resourceFactory.resourceFactoryInternalData.outputResource == resourceType
+                        val isSelf: Boolean =
+                            resourceFactory.ownerPlayerId == planDataAtPlayer.getCurrentMutablePlayerData().playerId
+                        isThisResource && isSelf
+                    }.map { (resourceFactoryId, _) ->
+                        RemoveSpecificSelfResourceFactoryReasoner(carrierId, resourceFactoryId)
+                    }
+                }.flatten()
+
+        return removeSelfResourceFactoryList
+    }
+}
+
+/**
+ * Remove a specific fuel factory
+ */
+class RemoveSpecificSelfResourceFactoryReasoner(
+    private val carrierId: Int,
+    private val fuelFactoryId: Int,
+) : DualUtilityReasoner() {
+    override fun getOptionList(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planState: PlanState
+    ): List<DualUtilityOption> {
+        return listOf(
+            RemoveSpecificSelfResourceFactoryOption(carrierId, fuelFactoryId),
+            DoNothingDualUtilityOption(rank = 1, multiplier = 1.0, bonus = 1.0),
+        )
+    }
+}
+
+
+/**
+ * Dual utility option to remove a specific resource factory
+ */
+class RemoveSpecificSelfResourceFactoryOption(
+    private val carrierId: Int,
+    private val resourceFactoryId: Int,
+) : DualUtilityOption() {
+    override fun getConsiderationList(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planState: PlanState
+    ): List<DualUtilityConsideration> {
+        val resourceType: ResourceType = planDataAtPlayer.getCurrentMutablePlayerData()
+            .playerInternalData.popSystemData().carrierDataMap.getValue(carrierId).allPopData
+            .labourerPopData.resourceFactoryMap.getValue(resourceFactoryId)
+            .resourceFactoryInternalData.outputResource
+        return listOf(
+            OneSelfResourceFactoryConsideration(
+                resourceType = resourceType,
+                rankIfTrue = 0,
+                multiplierIfTrue = 0.0,
+                bonusIfTrue = 0.0
+            ),
+            OutdatedResourceFactoryConsideration(
+                carrierId = carrierId,
+                resourceFactoryId = resourceFactoryId,
+                rankIfTrue = 1,
+                multiplierIfTrue = 1.0
+            ),
+            SufficientSelfResourceFactoryConsideration(
+                carrierId = carrierId,
+                resourceType = resourceType,
+                rankIfTrue = 0,
+                multiplierIfTrue = 1.0,
+                bonusIfTrue = 0.0,
+                rankIfFalse = 0,
+                multiplierIfFalse = 0.0,
+                bonusIfFalse = 0.0
+            )
+        )
+    }
+
+    override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
+        planDataAtPlayer.addCommand(
+            RemoveLocalResourceFactoryCommand(
+                toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+                fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+                fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
+                targetCarrierId = carrierId,
+                targetResourceFactoryId = resourceFactoryId,
             )
         )
     }
