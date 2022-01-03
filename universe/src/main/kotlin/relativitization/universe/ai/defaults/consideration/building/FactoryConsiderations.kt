@@ -264,3 +264,39 @@ class NoSelfResourceFactoryAndHasStarConsideration(
         }
     }
 }
+
+/**
+ * Check if there is fewer than or equal to one resource factory
+ *
+ * @property rankIfTrue rank of dual utility if this is true
+ * @property multiplierIfTrue multiplier of dual utility if this is true
+ * @property bonusIfTrue bonus of dual utility if this is true
+ */
+class OneSelfResourceFactoryConsideration(
+    private val resourceType: ResourceType,
+    private val rankIfTrue: Int,
+    private val multiplierIfTrue: Double,
+    private val bonusIfTrue: Double,
+) : DualUtilityConsideration {
+    override fun getDualUtilityData(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planState: PlanState
+    ): DualUtilityData {
+        val numSelfResourceFactory: Int = planDataAtPlayer.getCurrentMutablePlayerData()
+            .playerInternalData.popSystemData().carrierDataMap.values.fold(0) { acc, carrier ->
+                acc + carrier.allPopData.labourerPopData.resourceFactoryMap.values.filter {
+                    val isThisResource: Boolean =
+                        it.resourceFactoryInternalData.outputResource == resourceType
+                    val isSelf: Boolean =
+                        it.ownerPlayerId == planDataAtPlayer.getCurrentMutablePlayerData().playerId
+                    isThisResource && isSelf
+                }.size
+            }
+
+        return if (numSelfResourceFactory > 1) {
+            DualUtilityDataFactory.noImpact()
+        } else {
+            DualUtilityData(rank = rankIfTrue, multiplier = multiplierIfTrue, bonus = bonusIfTrue)
+        }
+    }
+}
