@@ -72,9 +72,9 @@ class BuildNewFuelFactoryOption(
         planState: PlanState
     ): List<DualUtilityConsideration> {
         // Build fuel factory if no fuel factory and no star
-        val noFuelFactoryAndNoStarConsiderationList: List<NoFuelFactoryAndNoStarConsideration> =
+        val noSelfFuelFactoryAndNoStarConsiderationList: List<NoSelfFuelFactoryAndNoStarConsideration> =
             listOf(
-                NoFuelFactoryAndNoStarConsideration(
+                NoSelfFuelFactoryAndNoStarConsideration(
                     rankIfTrue = 5,
                     multiplierIfTrue = 1.0,
                     bonusIfTrue = 1.0
@@ -82,9 +82,9 @@ class BuildNewFuelFactoryOption(
             )
 
         // Prioritize resource factory if no resource factory and has star
-        val resourceFactoryAndHasStarConsiderationList: List<NoResourceFactoryAndHasStarConsideration> =
+        val selfResourceFactoryAndHasStarConsiderationList: List<NoSelfResourceFactoryAndHasStarConsideration> =
             ResourceType.values().map {
-                NoResourceFactoryAndHasStarConsideration(
+                NoSelfResourceFactoryAndHasStarConsideration(
                     it,
                     rankIfTrue = 0,
                     multiplierIfTrue = 0.0,
@@ -92,21 +92,22 @@ class BuildNewFuelFactoryOption(
                 )
             }
 
-        val sufficientFuelFactoryConsiderationList: List<SufficientFuelFactoryConsideration> = listOf(
-            SufficientFuelFactoryConsideration(
-                carrierId = carrierId,
-                rankIfTrue = 0,
-                multiplierIfTrue = 1.0,
-                bonusIfTrue = 0.0,
-                rankIfFalse = 1,
-                multiplierIfFalse = 1.0,
-                bonusIfFalse = 1.0
+        val sufficientSelfFuelFactoryConsiderationList: List<SufficientSelfFuelFactoryConsideration> =
+            listOf(
+                SufficientSelfFuelFactoryConsideration(
+                    carrierId = carrierId,
+                    rankIfTrue = 0,
+                    multiplierIfTrue = 1.0,
+                    bonusIfTrue = 0.0,
+                    rankIfFalse = 1,
+                    multiplierIfFalse = 1.0,
+                    bonusIfFalse = 1.0
+                )
             )
-        )
 
-        return noFuelFactoryAndNoStarConsiderationList +
-                resourceFactoryAndHasStarConsiderationList +
-                sufficientFuelFactoryConsiderationList
+        return noSelfFuelFactoryAndNoStarConsiderationList +
+                selfResourceFactoryAndHasStarConsiderationList +
+                sufficientSelfFuelFactoryConsiderationList
     }
 
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
@@ -167,19 +168,25 @@ class RemoveFuelFactoryReasoner : SequenceReasoner() {
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<AINode> {
-        return planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData.popSystemData()
-            .carrierDataMap.map { (carrierId, carrierData) ->
-                carrierData.allPopData.labourerPopData.fuelFactoryMap.map { (fuelFactoryId, _) ->
-                    RemoveSpecificFuelFactoryReasoner(carrierId, fuelFactoryId)
-                }
-            }.flatten()
+        val removeSelfFuelFactoryList: List<AINode> =
+            planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData.popSystemData()
+                .carrierDataMap.map { (carrierId, carrierData) ->
+                    // Only consider self fuel factory
+                    carrierData.allPopData.labourerPopData.fuelFactoryMap.filter { (_, fuelFactory) ->
+                        fuelFactory.ownerPlayerId == planDataAtPlayer.getCurrentMutablePlayerData().playerId
+                    }.map { (fuelFactoryId, _) ->
+                        RemoveSpecificSelfFuelFactoryReasoner(carrierId, fuelFactoryId)
+                    }
+                }.flatten()
+
+        return removeSelfFuelFactoryList
     }
 }
 
 /**
  * Remove a specific fuel factory
  */
-class RemoveSpecificFuelFactoryReasoner(
+class RemoveSpecificSelfFuelFactoryReasoner(
     private val carrierId: Int,
     private val fuelFactoryId: Int,
 ) : DualUtilityReasoner() {
@@ -188,7 +195,7 @@ class RemoveSpecificFuelFactoryReasoner(
         planState: PlanState
     ): List<DualUtilityOption> {
         return listOf(
-            RemoveSpecificFuelFactoryOption(carrierId, fuelFactoryId),
+            RemoveSpecificSelfFuelFactoryOption(carrierId, fuelFactoryId),
             DoNothingDualUtilityOption(rank = 1, multiplier = 1.0, bonus = 1.0),
         )
     }
@@ -197,7 +204,7 @@ class RemoveSpecificFuelFactoryReasoner(
 /**
  * Dual utility option to remove a specific fuel factory
  */
-class RemoveSpecificFuelFactoryOption(
+class RemoveSpecificSelfFuelFactoryOption(
     private val carrierId: Int,
     private val fuelFactoryId: Int,
 ) : DualUtilityOption() {
@@ -205,7 +212,7 @@ class RemoveSpecificFuelFactoryOption(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<DualUtilityConsideration> = listOf(
-        OneFuelFactoryConsideration(
+        OneSelfFuelFactoryConsideration(
             rankIfTrue = 0,
             multiplierIfTrue = 0.0,
             bonusIfTrue = 0.0
@@ -216,7 +223,7 @@ class RemoveSpecificFuelFactoryOption(
             rankIfTrue = 1,
             multiplierIfTrue = 1.0
         ),
-        SufficientFuelFactoryConsideration(
+        SufficientSelfFuelFactoryConsideration(
             carrierId = carrierId,
             rankIfTrue = 0,
             multiplierIfTrue = 1.0,
@@ -282,7 +289,7 @@ class BuildNewResourceFactoryOption(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<DualUtilityConsideration> = listOf(
-        NoResourceFactoryConsideration(
+        NoSelfResourceFactoryConsideration(
             resourceType = resourceType,
             rankIfTrue = 5,
             multiplierIfTrue = 1.0,

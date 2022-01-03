@@ -17,7 +17,7 @@ import relativitization.universe.data.components.defaults.popsystem.pop.labourer
  * @property multiplierIfTrue multiplier of dual utility if this is true
  * @property bonusIfTrue bonus of dual utility if this is true
  */
-class NoFuelFactoryAndNoStarConsideration(
+class NoSelfFuelFactoryAndNoStarConsideration(
     private val rankIfTrue: Int,
     private val multiplierIfTrue: Double,
     private val bonusIfTrue: Double,
@@ -26,9 +26,11 @@ class NoFuelFactoryAndNoStarConsideration(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): DualUtilityData {
-        val hasFuelFactory: Boolean = planDataAtPlayer.getCurrentMutablePlayerData()
-            .playerInternalData.popSystemData().carrierDataMap.values.any {
-                it.allPopData.labourerPopData.fuelFactoryMap.isNotEmpty()
+        val hasSelfFuelFactory: Boolean = planDataAtPlayer.getCurrentMutablePlayerData()
+            .playerInternalData.popSystemData().carrierDataMap.values.any { carrier ->
+                carrier.allPopData.labourerPopData.fuelFactoryMap.values.any {
+                    it.ownerPlayerId == planDataAtPlayer.getCurrentMutablePlayerData().playerId
+                }
             }
 
         val hasStellarSystem: Boolean = planDataAtPlayer.getCurrentMutablePlayerData()
@@ -36,7 +38,7 @@ class NoFuelFactoryAndNoStarConsideration(
                 it.carrierType == CarrierType.STELLAR
             }
 
-        return if (hasFuelFactory || hasStellarSystem) {
+        return if (hasSelfFuelFactory || hasStellarSystem) {
             DualUtilityData(rank = 0, multiplier = 1.0, bonus = 0.0)
         } else {
             DualUtilityData(rank = rankIfTrue, multiplier = multiplierIfTrue, bonus = bonusIfTrue)
@@ -51,7 +53,7 @@ class NoFuelFactoryAndNoStarConsideration(
  * @property multiplierIfTrue multiplier of dual utility if this is true
  * @property bonusIfTrue bonus of dual utility if this is true
  */
-class OneFuelFactoryConsideration(
+class OneSelfFuelFactoryConsideration(
     private val rankIfTrue: Int,
     private val multiplierIfTrue: Double,
     private val bonusIfTrue: Double,
@@ -60,12 +62,14 @@ class OneFuelFactoryConsideration(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): DualUtilityData {
-        val numFuelFactory: Int = planDataAtPlayer.getCurrentMutablePlayerData()
+        val numSelfFuelFactory: Int = planDataAtPlayer.getCurrentMutablePlayerData()
             .playerInternalData.popSystemData().carrierDataMap.values.fold(0) { acc, carrier ->
-                acc + carrier.allPopData.labourerPopData.fuelFactoryMap.size
+                acc + carrier.allPopData.labourerPopData.fuelFactoryMap.values.filter {
+                    it.ownerPlayerId == planDataAtPlayer.getCurrentMutablePlayerData().playerId
+                }.size
             }
 
-        return if (numFuelFactory > 1) {
+        return if (numSelfFuelFactory > 1) {
             DualUtilityData(rank = 0, multiplier = 1.0, bonus = 0.0)
         } else {
             DualUtilityData(rank = rankIfTrue, multiplier = multiplierIfTrue, bonus = bonusIfTrue)
@@ -136,7 +140,7 @@ class OutdatedFuelFactoryConsideration(
  * @property multiplierIfFalse multiplier of dual utility if this is false
  * @property bonusIfFalse bonus of dual utility if this is false
  */
-class SufficientFuelFactoryConsideration(
+class SufficientSelfFuelFactoryConsideration(
     private val carrierId: Int,
     private val rankIfTrue: Int,
     private val multiplierIfTrue: Double,
@@ -152,10 +156,12 @@ class SufficientFuelFactoryConsideration(
         val carrier: MutableCarrierData = planDataAtPlayer.getCurrentMutablePlayerData()
             .playerInternalData.popSystemData().carrierDataMap.getValue(carrierId)
 
-        val fuelFactoryMap: Map<Int, MutableFuelFactoryData> =
-            carrier.allPopData.labourerPopData.fuelFactoryMap
+        val selfFuelFactoryList: List<MutableFuelFactoryData> =
+            carrier.allPopData.labourerPopData.fuelFactoryMap.values.filter {
+                it.ownerPlayerId == planDataAtPlayer.getCurrentMutablePlayerData().playerId
+            }
 
-        val totalMaxEmployee: Double = fuelFactoryMap.values.fold(0.0){ acc, fuelFactory ->
+        val totalMaxEmployee: Double = selfFuelFactoryList.fold(0.0){ acc, fuelFactory ->
             acc + fuelFactory.fuelFactoryInternalData.maxNumEmployee * fuelFactory.numBuilding
         }
 
@@ -187,7 +193,7 @@ class SufficientFuelFactoryConsideration(
  * @property multiplierIfTrue multiplier of dual utility if this is true
  * @property bonusIfTrue bonus of dual utility if this is true
  */
-class NoResourceFactoryConsideration(
+class NoSelfResourceFactoryConsideration(
     private val resourceType: ResourceType,
     private val rankIfTrue: Int,
     private val multiplierIfTrue: Double,
@@ -197,14 +203,18 @@ class NoResourceFactoryConsideration(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): DualUtilityData {
-        val hasResourceFactory: Boolean = planDataAtPlayer.getCurrentMutablePlayerData()
-            .playerInternalData.popSystemData().carrierDataMap.values.any {
-                it.allPopData.labourerPopData.resourceFactoryMap.values.any {
-                    it.resourceFactoryInternalData.outputResource == resourceType
+        val hasSelfResourceFactory: Boolean = planDataAtPlayer.getCurrentMutablePlayerData()
+            .playerInternalData.popSystemData().carrierDataMap.values.any { carrier ->
+                carrier.allPopData.labourerPopData.resourceFactoryMap.values.any {
+                    val isThisResource: Boolean =
+                        it.resourceFactoryInternalData.outputResource == resourceType
+                    val isSelf: Boolean =
+                        it.ownerPlayerId == planDataAtPlayer.getCurrentMutablePlayerData().playerId
+                    isThisResource && isSelf
                 }
             }
 
-        return if (hasResourceFactory) {
+        return if (hasSelfResourceFactory) {
             DualUtilityData(rank = 0, multiplier = 1.0, bonus = 0.0)
         } else {
             DualUtilityData(rank = rankIfTrue, multiplier = multiplierIfTrue, bonus = bonusIfTrue)
@@ -220,7 +230,7 @@ class NoResourceFactoryConsideration(
  * @property multiplierIfTrue multiplier of dual utility if this is true
  * @property bonusIfTrue bonus of dual utility if this is true
  */
-class NoResourceFactoryAndHasStarConsideration(
+class NoSelfResourceFactoryAndHasStarConsideration(
     private val resourceType: ResourceType,
     private val rankIfTrue: Int,
     private val multiplierIfTrue: Double,
@@ -230,10 +240,14 @@ class NoResourceFactoryAndHasStarConsideration(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): DualUtilityData {
-        val hasResourceFactory: Boolean = planDataAtPlayer.getCurrentMutablePlayerData()
-            .playerInternalData.popSystemData().carrierDataMap.values.any {
-                it.allPopData.labourerPopData.resourceFactoryMap.values.any {
-                    it.resourceFactoryInternalData.outputResource == resourceType
+        val hasSelfResourceFactory: Boolean = planDataAtPlayer.getCurrentMutablePlayerData()
+            .playerInternalData.popSystemData().carrierDataMap.values.any { carrier ->
+                carrier.allPopData.labourerPopData.resourceFactoryMap.values.any {
+                    val isThisResource: Boolean =
+                        it.resourceFactoryInternalData.outputResource == resourceType
+                    val isSelf: Boolean =
+                        it.ownerPlayerId == planDataAtPlayer.getCurrentMutablePlayerData().playerId
+                    isThisResource && isSelf
                 }
             }
 
@@ -242,7 +256,7 @@ class NoResourceFactoryAndHasStarConsideration(
                 it.carrierType == CarrierType.STELLAR
             }
 
-        return if (hasResourceFactory || !hasStellarSystem) {
+        return if (hasSelfResourceFactory || !hasStellarSystem) {
             DualUtilityData(rank = 0, multiplier = 1.0, bonus = 0.0)
         } else {
             DualUtilityData(rank = rankIfTrue, multiplier = multiplierIfTrue, bonus = bonusIfTrue)
