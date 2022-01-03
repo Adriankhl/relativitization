@@ -173,6 +173,7 @@ class GameScreenWorldMap(
 
             val images = getPlayerImages(
                 playerData = game.universeClient.getUniverseData3D().get(id),
+                universeData3DAtPlayer = game.universeClient.getUniverseData3D(),
                 primaryPlayerData = game.universeClient.getPrimarySelectedPlayerData(),
                 assets = assets,
                 xPos = playerRectangle.xPos.toFloat() * actualZoom(),

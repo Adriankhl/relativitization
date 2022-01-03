@@ -172,6 +172,7 @@ class PlayersInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
 
         val playerImageStack = PlayerImage.getPlayerImageStack(
             playerData = playerData,
+            universeData3DAtPlayer = game.universeClient.getUniverseData3D(),
             primaryPlayerData = game.universeClient.getPrimarySelectedPlayerData(),
             assets = assets,
             width = 128f,
