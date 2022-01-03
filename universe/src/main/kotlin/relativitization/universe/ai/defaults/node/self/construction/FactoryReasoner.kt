@@ -87,7 +87,7 @@ class BuildNewFuelFactoryOption(
 
         // Prioritize resource factory if no resource factory and has star
         val noSelfResourceFactoryAndHasStarConsiderationList: List<NoSelfResourceFactoryAndHasStarConsideration> =
-            ResourceType.values().map {
+            (ResourceType.values().toList() - ResourceType.ENTERTAINMENT).map {
                 NoSelfResourceFactoryAndHasStarConsideration(
                     it,
                     rankIfTrue = 0,
