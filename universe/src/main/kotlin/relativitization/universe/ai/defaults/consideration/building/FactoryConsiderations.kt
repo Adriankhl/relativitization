@@ -2,6 +2,7 @@ package relativitization.universe.ai.defaults.consideration.building
 
 import relativitization.universe.ai.defaults.utils.DualUtilityConsideration
 import relativitization.universe.ai.defaults.utils.DualUtilityData
+import relativitization.universe.ai.defaults.utils.DualUtilityDataFactory
 import relativitization.universe.ai.defaults.utils.PlanState
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.components.defaults.economy.ResourceType
@@ -39,7 +40,7 @@ class NoSelfFuelFactoryAndNoStarConsideration(
             }
 
         return if (hasSelfFuelFactory || hasStellarSystem) {
-            DualUtilityData(rank = 0, multiplier = 1.0, bonus = 0.0)
+            DualUtilityDataFactory.noImpact()
         } else {
             DualUtilityData(rank = rankIfTrue, multiplier = multiplierIfTrue, bonus = bonusIfTrue)
         }
@@ -70,7 +71,7 @@ class OneSelfFuelFactoryConsideration(
             }
 
         return if (numSelfFuelFactory > 1) {
-            DualUtilityData(rank = 0, multiplier = 1.0, bonus = 0.0)
+            DualUtilityDataFactory.noImpact()
         } else {
             DualUtilityData(rank = rankIfTrue, multiplier = multiplierIfTrue, bonus = bonusIfTrue)
         }
@@ -109,7 +110,7 @@ class OutdatedFuelFactoryConsideration(
         val idealRatio: Double = idealFuelFactory.maxOutputAmount / idealFuelFactory.maxNumEmployee
 
         return if (ratio == idealRatio) {
-            DualUtilityData(rank = 0, multiplier = 1.0, bonus = 0.0)
+            DualUtilityDataFactory.noImpact()
         } else {
             if (ratio > 0.0) {
                 DualUtilityData(
@@ -215,7 +216,7 @@ class NoSelfResourceFactoryConsideration(
             }
 
         return if (hasSelfResourceFactory) {
-            DualUtilityData(rank = 0, multiplier = 1.0, bonus = 0.0)
+            DualUtilityDataFactory.noImpact()
         } else {
             DualUtilityData(rank = rankIfTrue, multiplier = multiplierIfTrue, bonus = bonusIfTrue)
         }
@@ -257,7 +258,7 @@ class NoSelfResourceFactoryAndHasStarConsideration(
             }
 
         return if (hasSelfResourceFactory || !hasStellarSystem) {
-            DualUtilityData(rank = 0, multiplier = 1.0, bonus = 0.0)
+            DualUtilityDataFactory.noImpact()
         } else {
             DualUtilityData(rank = rankIfTrue, multiplier = multiplierIfTrue, bonus = bonusIfTrue)
         }
