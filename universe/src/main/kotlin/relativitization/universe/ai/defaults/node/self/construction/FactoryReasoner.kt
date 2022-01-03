@@ -205,8 +205,26 @@ class RemoveSpecificFuelFactoryOption(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<DualUtilityConsideration> = listOf(
-        OneFuelFactoryConsideration(rankIfTrue = 0, multiplierIfTrue = 0.0, bonusIfTrue = 0.0),
-        OutdatedFuelFactoryConsideration(carrierId, fuelFactoryId, 1, 1.0)
+        OneFuelFactoryConsideration(
+            rankIfTrue = 0,
+            multiplierIfTrue = 0.0,
+            bonusIfTrue = 0.0
+        ),
+        OutdatedFuelFactoryConsideration(
+            carrierId = carrierId,
+            fuelFactoryId = fuelFactoryId,
+            rankIfTrue = 1,
+            multiplierIfTrue = 1.0
+        ),
+        SufficientFuelFactoryConsideration(
+            carrierId = carrierId,
+            rankIfTrue = 0,
+            multiplierIfTrue = 1.0,
+            bonusIfTrue = 0.0,
+            rankIfFalse = 0,
+            multiplierIfFalse = 0.0,
+            bonusIfFalse = 0.0
+        )
     )
 
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
