@@ -5,6 +5,7 @@ import relativitization.universe.ai.defaults.consideration.building.SufficientIn
 import relativitization.universe.ai.defaults.utils.*
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.commands.BuildInstituteCommand
+import relativitization.universe.data.commands.RemoveInstituteCommand
 import relativitization.universe.data.components.defaults.economy.ResourceQualityClass
 import relativitization.universe.data.components.defaults.economy.ResourceType
 import relativitization.universe.data.components.defaults.physics.Double2D
@@ -198,8 +199,8 @@ class NewInstituteAtCarrierOption(
  * Remove a specific institute
  */
 class RemoveSpecificInstituteOption(
-    val carrierId: Int,
-    val instituteId: Int
+    private val carrierId: Int,
+    private val instituteId: Int
 ) : DualUtilityOption() {
     override fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer,
@@ -209,6 +210,14 @@ class RemoveSpecificInstituteOption(
     }
 
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
-        TODO("Not yet implemented")
+        planDataAtPlayer.addCommand(
+            RemoveInstituteCommand(
+                toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+                fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+                fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
+                carrierId = carrierId,
+                instituteId = instituteId,
+            )
+        )
     }
 }
