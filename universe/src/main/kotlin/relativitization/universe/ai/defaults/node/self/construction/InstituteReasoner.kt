@@ -20,7 +20,10 @@ class InstituteReasoner : SequenceReasoner() {
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<AINode> {
-        return listOf(NewInstituteReasoner())
+        return listOf(
+            RemoveInstituteReasoner(),
+            NewInstituteReasoner(),
+        )
     }
 }
 
@@ -193,6 +196,37 @@ class NewInstituteAtCarrierOption(
             )
         }
     }
+}
+
+/**
+ * Consider building new institutes at all carrier
+ */
+class RemoveInstituteReasoner : SequenceReasoner() {
+    override fun getSubNodeList(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planState: PlanState
+    ): List<AINode> = planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData
+        .popSystemData().carrierDataMap.map { (carrierId, carrier) ->
+            carrier.allPopData.scholarPopData.instituteMap.map { (instituteId, _) ->
+                RemoveSpecificInstituteReasoner(carrierId, instituteId)
+            }
+        }.flatten()
+}
+
+/**
+ * Consider building new institutes at all carrier
+ */
+class RemoveSpecificInstituteReasoner(
+    private val carrierId: Int,
+    private val instituteId: Int
+) : DualUtilityReasoner() {
+    override fun getOptionList(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planState: PlanState
+    ): List<DualUtilityOption> = listOf(
+        RemoveSpecificInstituteOption(carrierId, instituteId),
+        DoNothingDualUtilityOption(rank = 1, multiplier = 1.0, bonus = 1.0),
+    )
 }
 
 /**

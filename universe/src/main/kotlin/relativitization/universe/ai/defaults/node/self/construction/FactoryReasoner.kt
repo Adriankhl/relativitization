@@ -19,15 +19,15 @@ class FactoryReasoner : SequenceReasoner() {
         planState: PlanState
     ): List<AINode> {
         val fuelReasonerList: List<AINode> = listOf(
-            NewFuelFactoryReasoner(),
             RemoveFuelFactoryReasoner(),
+            NewFuelFactoryReasoner(),
         )
 
         val resourceReasonerList: List<AINode> =
             (ResourceType.values().toList() - ResourceType.ENTERTAINMENT).map {
                 listOf(
+                    RemoveResourceFactoryReasoner(it),
                     NewResourceFactoryReasoner(it),
-                    RemoveResourceFactoryReasoner(it)
                 )
             }.flatten()
 
