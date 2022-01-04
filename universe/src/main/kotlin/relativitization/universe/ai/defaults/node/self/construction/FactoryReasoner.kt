@@ -216,7 +216,7 @@ class RemoveSpecificSelfFuelFactoryOption(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<DualUtilityConsideration> = listOf(
-        OneSelfFuelFactoryConsideration(
+        OnlyOneSelfFuelFactoryConsideration(
             rankIfTrue = 0,
             multiplierIfTrue = 0.0,
             bonusIfTrue = 0.0
@@ -436,7 +436,7 @@ class RemoveSpecificSelfResourceFactoryOption(
             .labourerPopData.resourceFactoryMap.getValue(resourceFactoryId)
             .resourceFactoryInternalData.outputResource
         return listOf(
-            OneSelfResourceFactoryConsideration(
+            OnlyOneSelfResourceFactoryConsideration(
                 resourceType = resourceType,
                 rankIfTrue = 0,
                 multiplierIfTrue = 0.0,

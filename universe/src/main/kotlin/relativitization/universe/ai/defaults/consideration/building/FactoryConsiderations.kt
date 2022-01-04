@@ -56,7 +56,7 @@ class NoSelfFuelFactoryAndNoStarConsideration(
  * @property multiplierIfTrue multiplier of dual utility if this is true
  * @property bonusIfTrue bonus of dual utility if this is true
  */
-class OneSelfFuelFactoryConsideration(
+class OnlyOneSelfFuelFactoryConsideration(
     private val rankIfTrue: Int,
     private val multiplierIfTrue: Double,
     private val bonusIfTrue: Double,
@@ -275,7 +275,7 @@ class NoSelfResourceFactoryAndHasStarConsideration(
  * @property multiplierIfTrue multiplier of dual utility if this is true
  * @property bonusIfTrue bonus of dual utility if this is true
  */
-class OneSelfResourceFactoryConsideration(
+class OnlyOneSelfResourceFactoryConsideration(
     private val resourceType: ResourceType,
     private val rankIfTrue: Int,
     private val multiplierIfTrue: Double,

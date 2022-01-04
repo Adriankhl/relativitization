@@ -6,17 +6,17 @@ import relativitization.universe.ai.defaults.utils.DualUtilityDataFactory
 import relativitization.universe.ai.defaults.utils.PlanState
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.components.defaults.popsystem.MutableCarrierData
-import relativitization.universe.data.components.defaults.popsystem.pop.scholar.institute.MutableInstituteData
+import relativitization.universe.data.components.defaults.popsystem.pop.engineer.laboratory.MutableLaboratoryData
 
 /**
- * Check if there is no institute at a carrier
+ * Check if there is no laboratory at a carrier
  *
  * @property carrierId the id of the carrier
  * @property rankIfTrue rank of dual utility if this is true
  * @property multiplierIfTrue multiplier of dual utility if this is true
  * @property bonusIfTrue bonus of dual utility if this is true
  */
-class NoInstituteAtCarrierConsideration(
+class NoLaboratoryAtCarrierConsideration(
     private val carrierId: Int,
     private val rankIfTrue: Int,
     private val multiplierIfTrue: Double,
@@ -26,11 +26,11 @@ class NoInstituteAtCarrierConsideration(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): DualUtilityData {
-        val hasInstitute: Boolean = planDataAtPlayer.getCurrentMutablePlayerData()
+        val hasLaboratory: Boolean = planDataAtPlayer.getCurrentMutablePlayerData()
             .playerInternalData.popSystemData().carrierDataMap.getValue(carrierId).allPopData
-            .scholarPopData.instituteMap.isNotEmpty()
+            .engineerPopData.laboratoryMap.isNotEmpty()
 
-        return if (hasInstitute) {
+        return if (hasLaboratory) {
             DualUtilityDataFactory.noImpact()
         } else {
             DualUtilityData(rank = rankIfTrue, multiplier = multiplierIfTrue, bonus = bonusIfTrue)
@@ -39,14 +39,14 @@ class NoInstituteAtCarrierConsideration(
 }
 
 /**
- * Check if there is fewer than or equal to one institute at carrier
+ * Check if there is fewer than or equal to one laboratory at carrier
  *
  * @property carrierId the id of the carrier
  * @property rankIfTrue rank of dual utility if this is true
  * @property multiplierIfTrue multiplier of dual utility if this is true
  * @property bonusIfTrue bonus of dual utility if this is true
  */
-class OnlyOneInstituteConsideration(
+class OnlyOneLaboratoryConsideration(
     private val carrierId: Int,
     private val rankIfTrue: Int,
     private val multiplierIfTrue: Double,
@@ -56,11 +56,11 @@ class OnlyOneInstituteConsideration(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): DualUtilityData {
-        val numInstitute: Int = planDataAtPlayer.getCurrentMutablePlayerData()
+        val numLaboratory: Int = planDataAtPlayer.getCurrentMutablePlayerData()
             .playerInternalData.popSystemData().carrierDataMap.getValue(carrierId).allPopData
-            .scholarPopData.instituteMap.size
+            .engineerPopData.laboratoryMap.size
 
-        return if (numInstitute > 1) {
+        return if (numLaboratory > 1) {
             DualUtilityDataFactory.noImpact()
         } else {
             DualUtilityData(rank = rankIfTrue, multiplier = multiplierIfTrue, bonus = bonusIfTrue)
@@ -79,7 +79,7 @@ class OnlyOneInstituteConsideration(
  * @property multiplierIfFalse multiplier of dual utility if this is false
  * @property bonusIfFalse bonus of dual utility if this is false
  */
-class SufficientInstituteConsideration(
+class SufficientLaboratoryConsideration(
     private val carrierId: Int,
     private val rankIfTrue: Int,
     private val multiplierIfTrue: Double,
@@ -95,18 +95,18 @@ class SufficientInstituteConsideration(
         val carrier: MutableCarrierData = planDataAtPlayer.getCurrentMutablePlayerData()
             .playerInternalData.popSystemData().carrierDataMap.getValue(carrierId)
 
-        val instituteList: List<MutableInstituteData> =
-            carrier.allPopData.scholarPopData.instituteMap.values.toList()
+        val laboratoryList: List<MutableLaboratoryData> =
+            carrier.allPopData.engineerPopData.laboratoryMap.values.toList()
 
-        val totalMaxEmployee: Double = instituteList.fold(0.0){ acc, institute ->
-            acc + institute.instituteInternalData.maxNumEmployee
+        val totalMaxEmployee: Double = laboratoryList.fold(0.0){ acc, laboratory ->
+            acc + laboratory.laboratoryInternalData.maxNumEmployee
         }
 
-        val totalScholarPopulation: Double =
-            carrier.allPopData.labourerPopData.commonPopData.adultPopulation
+        val totalEngineerPopulation: Double =
+            carrier.allPopData.engineerPopData.commonPopData.adultPopulation
 
-        // Sufficient if institute position is more than total scholar population
-        return if (totalMaxEmployee >= totalScholarPopulation) {
+        // Sufficient if institute position is more than total engineer population
+        return if (totalMaxEmployee >= totalEngineerPopulation) {
             DualUtilityData(
                 rank = rankIfTrue,
                 multiplier = multiplierIfTrue,
