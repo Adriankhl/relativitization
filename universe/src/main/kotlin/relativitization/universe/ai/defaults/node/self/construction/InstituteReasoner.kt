@@ -112,11 +112,11 @@ class NewInstituteAtCarrierOption(
             }
 
         // Determine the amount of research equipment per new institute
-        val newResearchEquipmentPerTime: Double = (totalResearchEquipment - researchEquipmentNeedPerTime) *
-                0.1 / numCarrier / numNewInstitute
+        val targetResearchEquipmentPerTime: Double = (totalResearchEquipment -
+                researchEquipmentNeedPerTime) * 0.1 / numCarrier / numNewInstitute
 
         // Determine the employee per new institute
-        val newMaxEmployee: Double = planDataAtPlayer.getCurrentMutablePlayerData()
+        val targetMaxEmployee: Double = planDataAtPlayer.getCurrentMutablePlayerData()
             .playerInternalData.popSystemData().carrierDataMap.getValue(carrierId).allPopData
             .scholarPopData.commonPopData.adultPopulation / numNewInstitute
 
@@ -166,6 +166,11 @@ class NewInstituteAtCarrierOption(
 
             val newRange: Double = Rand.rand().nextDouble(0.25, 1.5)
 
+            val newResearchEquipmentPerTime: Double =
+                targetResearchEquipmentPerTime * Rand.rand().nextDouble(0.5, 2.0)
+
+            val newMaxNumEmployee: Double = targetMaxEmployee * Rand.rand().nextDouble(0.5, 2.0)
+
             planDataAtPlayer.addCommand(
                 BuildInstituteCommand(
                     toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
@@ -177,7 +182,7 @@ class NewInstituteAtCarrierOption(
                         yCor = newCor.y,
                         range = newRange,
                         researchEquipmentPerTime = newResearchEquipmentPerTime,
-                        maxNumEmployee = newMaxEmployee,
+                        maxNumEmployee = newMaxNumEmployee,
                         size = 0.0,
                     ),
                 )
