@@ -1,5 +1,7 @@
 package relativitization.universe.ai.defaults.node.self.construction
 
+import relativitization.universe.ai.defaults.consideration.building.NoInstituteAtCarrierConsideration
+import relativitization.universe.ai.defaults.consideration.building.SufficientInstituteConsideration
 import relativitization.universe.ai.defaults.utils.*
 import relativitization.universe.data.PlanDataAtPlayer
 
@@ -49,7 +51,23 @@ class NewInstituteAtCarrierOption(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<DualUtilityConsideration> {
-        return listOf()
+        return listOf(
+            NoInstituteAtCarrierConsideration(
+                carrierId = carrierId,
+                rankIfTrue = 5,
+                multiplierIfTrue = 1.0,
+                bonusIfTrue = 1.0
+            ),
+            SufficientInstituteConsideration(
+                carrierId = carrierId,
+                rankIfTrue = 1,
+                multiplierIfTrue = 1.0,
+                bonusIfTrue = 0.1,
+                rankIfFalse = 1,
+                multiplierIfFalse = 1.0,
+                bonusIfFalse = 1.0
+            )
+        )
     }
 
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
