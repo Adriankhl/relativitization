@@ -36,7 +36,22 @@ class NewInstituteAtCarrierReasoner(
         planState: PlanState
     ): List<DualUtilityOption> {
         return listOf(
+            NewInstituteAtCarrierOption(carrierId),
             DoNothingDualUtilityOption(1, 1.0, 1.0)
         )
+    }
+}
+
+class NewInstituteAtCarrierOption(
+    private val carrierId: Int,
+) : DualUtilityOption() {
+    override fun getConsiderationList(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planState: PlanState
+    ): List<DualUtilityConsideration> {
+        return listOf()
+    }
+
+    override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
     }
 }
