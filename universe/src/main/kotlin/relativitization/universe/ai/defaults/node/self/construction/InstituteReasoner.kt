@@ -37,7 +37,7 @@ class NewInstituteReasoner : SequenceReasoner() {
 }
 
 /**
- * Consider building a new institute at a carrier
+ * Consider building new institute at a carrier
  */
 class NewInstituteAtCarrierReasoner(
     private val carrierId: Int,
@@ -53,6 +53,9 @@ class NewInstituteAtCarrierReasoner(
     }
 }
 
+/**
+ * Option to build new institute
+ */
 class NewInstituteAtCarrierOption(
     private val carrierId: Int,
 ) : DualUtilityOption() {
@@ -118,7 +121,7 @@ class NewInstituteAtCarrierOption(
         // Determine the employee per new institute
         val targetMaxEmployee: Double = planDataAtPlayer.getCurrentMutablePlayerData()
             .playerInternalData.popSystemData().carrierDataMap.getValue(carrierId).allPopData
-            .scholarPopData.commonPopData.adultPopulation / numNewInstitute
+            .scholarPopData.commonPopData.adultPopulation * 0.1 / numNewInstitute
 
         (1..numNewInstitute).forEach { _ ->
             val instituteList: List<MutableInstituteData> = planDataAtPlayer
@@ -188,5 +191,24 @@ class NewInstituteAtCarrierOption(
                 )
             )
         }
+    }
+}
+
+/**
+ * Remove a specific institute
+ */
+class RemoveSpecificInstituteOption(
+    val carrierId: Int,
+    val instituteId: Int
+) : DualUtilityOption() {
+    override fun getConsiderationList(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planState: PlanState
+    ): List<DualUtilityConsideration> {
+        TODO("Not yet implemented")
+    }
+
+    override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
+        TODO("Not yet implemented")
     }
 }
