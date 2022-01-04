@@ -5,6 +5,8 @@ import relativitization.universe.ai.defaults.utils.DualUtilityData
 import relativitization.universe.ai.defaults.utils.DualUtilityDataFactory
 import relativitization.universe.ai.defaults.utils.PlanState
 import relativitization.universe.data.PlanDataAtPlayer
+import relativitization.universe.data.components.defaults.popsystem.MutableCarrierData
+import relativitization.universe.data.components.defaults.popsystem.pop.scholar.institute.MutableInstituteData
 
 
 /**
@@ -63,6 +65,60 @@ class OneInstituteConsideration(
             DualUtilityDataFactory.noImpact()
         } else {
             DualUtilityData(rank = rankIfTrue, multiplier = multiplierIfTrue, bonus = bonusIfTrue)
+        }
+    }
+}
+
+/**
+ * Check if institute is sufficient to cover scholar employment
+ *
+ * @property carrierId the id of the carrier to consider
+ * @property rankIfTrue rank of dual utility if this is true
+ * @property multiplierIfTrue multiplier of dual utility if this is true
+ * @property bonusIfTrue bonus of dual utility if this is true
+ * @property rankIfFalse rank of dual utility if this is false
+ * @property multiplierIfFalse multiplier of dual utility if this is false
+ * @property bonusIfFalse bonus of dual utility if this is false
+ */
+class SufficientInstituteConsideration(
+    private val carrierId: Int,
+    private val rankIfTrue: Int,
+    private val multiplierIfTrue: Double,
+    private val bonusIfTrue: Double,
+    private val rankIfFalse: Int,
+    private val multiplierIfFalse: Double,
+    private val bonusIfFalse: Double,
+) : DualUtilityConsideration {
+    override fun getDualUtilityData(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planState: PlanState
+    ): DualUtilityData {
+        val carrier: MutableCarrierData = planDataAtPlayer.getCurrentMutablePlayerData()
+            .playerInternalData.popSystemData().carrierDataMap.getValue(carrierId)
+
+        val instituteList: List<MutableInstituteData> =
+            carrier.allPopData.scholarPopData.instituteMap.values.toList()
+
+        val totalMaxEmployee: Double = instituteList.fold(0.0){ acc, institute ->
+            acc + institute.instituteInternalData.maxNumEmployee
+        }
+
+        val totalScholarPopulation: Double =
+            carrier.allPopData.labourerPopData.commonPopData.adultPopulation
+
+        // Sufficient if institute position is more than total scholar population
+        return if (totalMaxEmployee >= totalScholarPopulation) {
+            DualUtilityData(
+                rank = rankIfTrue,
+                multiplier = multiplierIfTrue,
+                bonus = bonusIfTrue
+            )
+        } else {
+            DualUtilityData(
+                rank = rankIfFalse,
+                multiplier = multiplierIfFalse,
+                bonus = bonusIfFalse
+            )
         }
     }
 }
