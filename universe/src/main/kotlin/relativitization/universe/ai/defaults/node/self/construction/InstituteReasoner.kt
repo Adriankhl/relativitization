@@ -5,6 +5,8 @@ import relativitization.universe.ai.defaults.consideration.building.SufficientIn
 import relativitization.universe.ai.defaults.utils.*
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.commands.BuildInstituteCommand
+import relativitization.universe.data.components.defaults.economy.ResourceQualityClass
+import relativitization.universe.data.components.defaults.economy.ResourceType
 import relativitization.universe.data.components.defaults.physics.Double2D
 import relativitization.universe.data.components.defaults.popsystem.pop.scholar.institute.InstituteInternalData
 import relativitization.universe.data.components.defaults.popsystem.pop.scholar.institute.MutableInstituteData
@@ -78,15 +80,45 @@ class NewInstituteAtCarrierOption(
     }
 
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
-        // Build multiple new institute randomly
+        // Determine number of new institute randomly
         val numNewInstitute: Int = Rand.rand().nextInt(1, 6)
 
-        val doneBasicProjectList: List<BasicResearchProjectData> = planDataAtPlayer
-            .getCurrentMutablePlayerData().playerInternalData.playerScienceData()
-            .doneBasicResearchProjectList
+        // Number of carrier in Double
+        val numCarrier: Int = planDataAtPlayer.getCurrentMutablePlayerData()
+            .playerInternalData.popSystemData().numCarrier()
+
         val knownBasicProjectList: List<BasicResearchProjectData> = planDataAtPlayer
             .getCurrentMutablePlayerData().playerInternalData.playerScienceData()
             .knownBasicResearchProjectList
+
+        // Compute the total research equipment available and need
+        val totalResearchEquipment: Double = ResourceQualityClass.values().fold(
+            0.0
+        ) { acc, resourceQualityClass ->
+            acc + planDataAtPlayer.getCurrentMutablePlayerData()
+                .playerInternalData.economyData().resourceData.getTotalResourceAmount(
+                    ResourceType.RESEARCH_EQUIPMENT,
+                    resourceQualityClass
+                )
+        }
+
+        val researchEquipmentNeedPerTime: Double = planDataAtPlayer.getCurrentMutablePlayerData()
+            .playerInternalData.popSystemData().carrierDataMap.values.fold(
+                0.0
+            ) { acc, mutableCarrierData ->
+                acc + mutableCarrierData.allPopData.scholarPopData.instituteMap.values.sumOf {
+                    it.instituteInternalData.researchEquipmentPerTime
+                }
+            }
+
+        // Determine the amount of research equipment per new institute
+        val newResearchEquipmentPerTime: Double = (totalResearchEquipment - researchEquipmentNeedPerTime) *
+                0.1 / numCarrier / numNewInstitute
+
+        // Determine the employee per new institute
+        val newMaxEmployee: Double = planDataAtPlayer.getCurrentMutablePlayerData()
+            .playerInternalData.popSystemData().carrierDataMap.getValue(carrierId).allPopData
+            .scholarPopData.commonPopData.adultPopulation / numNewInstitute
 
         (1..numNewInstitute).forEach { _ ->
             val instituteList: List<MutableInstituteData> = planDataAtPlayer
@@ -144,8 +176,8 @@ class NewInstituteAtCarrierOption(
                         xCor = newCor.x,
                         yCor = newCor.y,
                         range = newRange,
-                        researchEquipmentPerTime = 0.0,
-                        maxNumEmployee = 0.0,
+                        researchEquipmentPerTime = newResearchEquipmentPerTime,
+                        maxNumEmployee = newMaxEmployee,
                         size = 0.0,
                     ),
                 )
