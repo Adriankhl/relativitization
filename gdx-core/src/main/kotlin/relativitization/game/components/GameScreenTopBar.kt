@@ -9,6 +9,7 @@ import relativitization.game.RelativitizationGame
 import relativitization.game.ShowingInfoType
 import relativitization.game.screens.ClientSettingsScreen
 import relativitization.game.utils.ScreenComponent
+import relativitization.universe.data.commands.DummyCommand
 import relativitization.universe.maths.physics.Intervals.intDelay
 import kotlin.math.min
 
@@ -141,6 +142,8 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
             updateUpdateToLatestButton()
 
             updatePreviousNextUniverseDataButton()
+
+            game.universeClient.currentCommand = DummyCommand()
         }
 
         uploadButton.image.setColor(1.0f, 1.0f, 1.0f, 1.0f)
