@@ -7,6 +7,8 @@ import relativitization.universe.ai.defaults.utils.PlanState
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.components.defaults.popsystem.MutableCarrierData
 import relativitization.universe.data.components.defaults.popsystem.pop.scholar.institute.MutableInstituteData
+import relativitization.universe.data.components.defaults.science.knowledge.BasicResearchProjectData
+import relativitization.universe.maths.physics.Intervals
 
 /**
  * Check if there is no institute at a carrier
@@ -98,7 +100,7 @@ class SufficientInstituteConsideration(
         val instituteList: List<MutableInstituteData> =
             carrier.allPopData.scholarPopData.instituteMap.values.toList()
 
-        val totalMaxEmployee: Double = instituteList.fold(0.0){ acc, institute ->
+        val totalMaxEmployee: Double = instituteList.fold(0.0) { acc, institute ->
             acc + institute.instituteInternalData.maxNumEmployee
         }
 
@@ -118,6 +120,56 @@ class SufficientInstituteConsideration(
                 multiplier = multiplierIfFalse,
                 bonus = bonusIfFalse
             )
+        }
+    }
+}
+
+/**
+ * Check if the institute is doing any known basic research project
+ *
+ * @property carrierId the id of the carrier to consider
+ * @property instituteId the id of the institute
+ * @property rankIfTrue rank of dual utility if this is true
+ * @property multiplierIfTrue multiplier of dual utility if this is true
+ * @property bonusIfTrue bonus of dual utility if this is true
+ */
+class KnownBasicProjectInRangeConsideration(
+    private val carrierId: Int,
+    private val instituteId: Int,
+    private val rankIfTrue: Int,
+    private val multiplierIfTrue: Double,
+    private val bonusIfTrue: Double,
+) : DualUtilityConsideration {
+    override fun getDualUtilityData(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planState: PlanState
+    ): DualUtilityData {
+        val institute: MutableInstituteData = planDataAtPlayer.getCurrentMutablePlayerData()
+            .playerInternalData.popSystemData().carrierDataMap.getValue(carrierId).allPopData
+            .scholarPopData.instituteMap.getValue(instituteId)
+
+        val knownBasicProjectList: List<BasicResearchProjectData> = planDataAtPlayer
+            .getCurrentMutablePlayerData().playerInternalData.playerScienceData()
+            .knownBasicResearchProjectList
+
+        val anyInRange: Boolean = knownBasicProjectList.any {
+            Intervals.distance(
+                institute.instituteInternalData.xCor,
+                institute.instituteInternalData.yCor,
+                it.xCor,
+                it.yCor
+            ) <= institute.instituteInternalData.range
+        }
+
+        // Sufficient if institute position is more than total scholar population
+        return if (anyInRange) {
+            DualUtilityData(
+                rank = rankIfTrue,
+                multiplier = multiplierIfTrue,
+                bonus = bonusIfTrue
+            )
+        } else {
+            DualUtilityDataFactory.noImpact()
         }
     }
 }

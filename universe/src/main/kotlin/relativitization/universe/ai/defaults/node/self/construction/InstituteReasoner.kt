@@ -1,6 +1,7 @@
 package relativitization.universe.ai.defaults.node.self.construction
 
 import relativitization.universe.ai.defaults.consideration.building.NoInstituteAtCarrierConsideration
+import relativitization.universe.ai.defaults.consideration.building.OnlyOneInstituteConsideration
 import relativitization.universe.ai.defaults.consideration.building.SufficientInstituteConsideration
 import relativitization.universe.ai.defaults.utils.*
 import relativitization.universe.data.PlanDataAtPlayer
@@ -77,7 +78,7 @@ class NewInstituteAtCarrierOption(
             SufficientInstituteConsideration(
                 carrierId = carrierId,
                 rankIfTrue = 1,
-                multiplierIfTrue = 1.0,
+                multiplierIfTrue = 0.2,
                 bonusIfTrue = 0.1,
                 rankIfFalse = 1,
                 multiplierIfFalse = 1.0,
@@ -247,7 +248,23 @@ class RemoveSpecificInstituteOption(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<DualUtilityConsideration> {
-        return listOf()
+        return listOf(
+            OnlyOneInstituteConsideration(
+                carrierId = carrierId,
+                rankIfTrue = 0,
+                multiplierIfTrue = 0.0,
+                bonusIfTrue = 0.0
+            ),
+            SufficientInstituteConsideration(
+                carrierId = carrierId,
+                rankIfTrue = 1,
+                multiplierIfTrue = 1.0,
+                bonusIfTrue = 0.1,
+                rankIfFalse = 0,
+                multiplierIfFalse = 0.0,
+                bonusIfFalse = 0.0
+            )
+        )
     }
 
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
