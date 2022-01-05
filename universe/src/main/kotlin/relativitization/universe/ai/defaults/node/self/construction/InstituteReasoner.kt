@@ -1,5 +1,6 @@
 package relativitization.universe.ai.defaults.node.self.construction
 
+import relativitization.universe.ai.defaults.consideration.building.KnownBasicProjectInRangeConsideration
 import relativitization.universe.ai.defaults.consideration.building.NoInstituteAtCarrierConsideration
 import relativitization.universe.ai.defaults.consideration.building.OnlyOneInstituteConsideration
 import relativitization.universe.ai.defaults.consideration.building.SufficientInstituteConsideration
@@ -263,6 +264,13 @@ class RemoveSpecificInstituteOption(
                 rankIfFalse = 0,
                 multiplierIfFalse = 0.0,
                 bonusIfFalse = 0.0
+            ),
+            KnownBasicProjectInRangeConsideration(
+                carrierId = carrierId,
+                instituteId = instituteId,
+                rankIfTrue = 1,
+                multiplierIfTrue = 0.5,
+                bonusIfTrue = 0.0,
             )
         )
     }
