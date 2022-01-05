@@ -47,7 +47,7 @@
 
 # Default AI TODO List
 * AI state store last command to subordinate [x]
-* Review resource factory construction after desire change
+* Review resource factory construction after desire change [x]
 
 # Command TODO List
 * Destroy factory [x]
@@ -62,8 +62,8 @@
 * Open and close factories [x]
 
 # Generate universe TODO List
-* One stellar per player generation
-* Generate proper knowledge network
+* One stellar per player generation [x]
+* Generate proper knowledge network [x]
 
 # GUI TODO List
 * Map mode [x]
@@ -83,3 +83,5 @@
 * Surrender, alliance
 * Retract or transfer subordinate
 * Decrease relation when a factory is removed
+* Physics: time dilation of photon rocket, momentum conservation when sending fuel (transfer 
+  opposite momentum by virtual photon?)
