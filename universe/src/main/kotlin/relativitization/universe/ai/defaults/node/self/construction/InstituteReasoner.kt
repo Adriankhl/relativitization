@@ -173,10 +173,17 @@ class NewInstituteAtCarrierOption(
 
             val newRange: Double = Rand.rand().nextDouble(0.25, 1.5)
 
-            val newResearchEquipmentPerTime: Double =
+            val newResearchEquipmentPerTime: Double = if (targetResearchEquipmentPerTime > 0.0) {
                 targetResearchEquipmentPerTime * Rand.rand().nextDouble(0.5, 2.0)
+            } else {
+                0.0
+            }
 
-            val newMaxNumEmployee: Double = targetMaxEmployee * Rand.rand().nextDouble(0.5, 2.0)
+            val newMaxNumEmployee: Double = if(targetMaxEmployee > 0.0) {
+                targetMaxEmployee * Rand.rand().nextDouble(0.5, 2.0)
+            } else {
+                0.0
+            }
 
             planDataAtPlayer.addCommand(
                 BuildInstituteCommand(
