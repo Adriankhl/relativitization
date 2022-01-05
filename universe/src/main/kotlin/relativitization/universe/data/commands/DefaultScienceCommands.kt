@@ -70,7 +70,17 @@ data class BuildInstituteCommand(
 
         val isRangeValid = CommandErrorMessage(
             instituteInternalData.range >= 0.25,
-            I18NString("Range should be smaller than 0.25")
+            I18NString("Range should be >= 0.25")
+        )
+
+        val isResearchEquipmentPerTimeValid = CommandErrorMessage(
+            instituteInternalData.researchEquipmentPerTime >= 0.0,
+            I18NString("Research equipment per time should be >= 0.0. ")
+        )
+
+        val isMaxNumEmployeeValid = CommandErrorMessage(
+            instituteInternalData.maxNumEmployee >= 0.0,
+            I18NString("Max employee should be >= 0.0. ")
         )
 
         return CommandErrorMessage(
@@ -78,6 +88,8 @@ data class BuildInstituteCommand(
                 isSelf,
                 hasCarrier,
                 isRangeValid,
+                isResearchEquipmentPerTimeValid,
+                isMaxNumEmployeeValid,
             )
         )
     }
@@ -174,7 +186,17 @@ data class BuildLaboratoryCommand(
 
         val isRangeValid = CommandErrorMessage(
             laboratoryInternalData.range >= 0.25,
-            I18NString("Range should be smaller than 0.25")
+            I18NString("Range should be >= 0.25")
+        )
+
+        val isResearchEquipmentPerTimeValid = CommandErrorMessage(
+            laboratoryInternalData.researchEquipmentPerTime >= 0.0,
+            I18NString("Research equipment per time should be >= 0.0. ")
+        )
+
+        val isMaxNumEmployeeValid = CommandErrorMessage(
+            laboratoryInternalData.maxNumEmployee >= 0.0,
+            I18NString("Max employee should be >= 0.0. ")
         )
 
         return CommandErrorMessage(
@@ -182,6 +204,8 @@ data class BuildLaboratoryCommand(
                 isSelf,
                 hasCarrier,
                 isRangeValid,
+                isResearchEquipmentPerTimeValid,
+                isMaxNumEmployeeValid,
             )
         )
     }

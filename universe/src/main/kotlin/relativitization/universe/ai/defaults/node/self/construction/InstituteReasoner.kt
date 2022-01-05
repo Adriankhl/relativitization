@@ -240,7 +240,7 @@ class RemoveSpecificInstituteOption(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<DualUtilityConsideration> {
-        TODO("Not yet implemented")
+        return listOf()
     }
 
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
