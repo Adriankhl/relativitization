@@ -244,7 +244,7 @@ data class MutableScienceApplicationData(
             qualityLevel
         )
 
-        return carrierInternalData.coreRestMass * 5.0
+        return carrierInternalData.coreRestMass * 10.0
     }
 
     fun newFuelFactoryInternalData(): MutableFuelFactoryInternalData {
