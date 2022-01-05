@@ -7,6 +7,8 @@ import relativitization.universe.ai.defaults.utils.PlanState
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.components.defaults.popsystem.MutableCarrierData
 import relativitization.universe.data.components.defaults.popsystem.pop.engineer.laboratory.MutableLaboratoryData
+import relativitization.universe.data.components.defaults.science.knowledge.AppliedResearchProjectData
+import relativitization.universe.maths.physics.Intervals
 
 /**
  * Check if there is no laboratory at a carrier
@@ -118,6 +120,56 @@ class SufficientLaboratoryConsideration(
                 multiplier = multiplierIfFalse,
                 bonus = bonusIfFalse
             )
+        }
+    }
+}
+
+/**
+ * Check if the laboratory is doing any known applied research project
+ *
+ * @property carrierId the id of the carrier to consider
+ * @property laboratoryId the id of the laboratory
+ * @property rankIfTrue rank of dual utility if this is true
+ * @property multiplierIfTrue multiplier of dual utility if this is true
+ * @property bonusIfTrue bonus of dual utility if this is true
+ */
+class KnownAppliedProjectInRangeConsideration(
+    private val carrierId: Int,
+    private val laboratoryId: Int,
+    private val rankIfTrue: Int,
+    private val multiplierIfTrue: Double,
+    private val bonusIfTrue: Double,
+) : DualUtilityConsideration {
+    override fun getDualUtilityData(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planState: PlanState
+    ): DualUtilityData {
+        val laboratory: MutableLaboratoryData = planDataAtPlayer.getCurrentMutablePlayerData()
+            .playerInternalData.popSystemData().carrierDataMap.getValue(carrierId).allPopData
+            .engineerPopData.laboratoryMap.getValue(laboratoryId)
+
+        val knownAppliedProjectList: List<AppliedResearchProjectData> = planDataAtPlayer
+            .getCurrentMutablePlayerData().playerInternalData.playerScienceData()
+            .knownAppliedResearchProjectList
+
+        val anyInRange: Boolean = knownAppliedProjectList.any {
+            Intervals.distance(
+                laboratory.laboratoryInternalData.xCor,
+                laboratory.laboratoryInternalData.yCor,
+                it.xCor,
+                it.yCor
+            ) <= laboratory.laboratoryInternalData.range
+        }
+
+        // Sufficient if institute position is more than total scholar population
+        return if (anyInRange) {
+            DualUtilityData(
+                rank = rankIfTrue,
+                multiplier = multiplierIfTrue,
+                bonus = bonusIfTrue
+            )
+        } else {
+            DualUtilityDataFactory.noImpact()
         }
     }
 }
