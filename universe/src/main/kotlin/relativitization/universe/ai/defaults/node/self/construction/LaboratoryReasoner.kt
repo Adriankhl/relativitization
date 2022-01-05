@@ -1,51 +1,48 @@
 package relativitization.universe.ai.defaults.node.self.construction
 
-import relativitization.universe.ai.defaults.consideration.building.KnownBasicProjectInRangeConsideration
-import relativitization.universe.ai.defaults.consideration.building.NoInstituteAtCarrierConsideration
-import relativitization.universe.ai.defaults.consideration.building.OnlyOneInstituteConsideration
-import relativitization.universe.ai.defaults.consideration.building.SufficientInstituteConsideration
+import relativitization.universe.ai.defaults.consideration.building.*
 import relativitization.universe.ai.defaults.utils.*
 import relativitization.universe.data.PlanDataAtPlayer
-import relativitization.universe.data.commands.BuildInstituteCommand
-import relativitization.universe.data.commands.RemoveInstituteCommand
+import relativitization.universe.data.commands.BuildLaboratoryCommand
+import relativitization.universe.data.commands.RemoveLaboratoryCommand
 import relativitization.universe.data.components.defaults.economy.ResourceQualityClass
 import relativitization.universe.data.components.defaults.economy.ResourceType
 import relativitization.universe.data.components.defaults.physics.Double2D
-import relativitization.universe.data.components.defaults.popsystem.pop.scholar.institute.InstituteInternalData
-import relativitization.universe.data.components.defaults.popsystem.pop.scholar.institute.MutableInstituteData
-import relativitization.universe.data.components.defaults.science.knowledge.BasicResearchProjectData
+import relativitization.universe.data.components.defaults.popsystem.pop.engineer.laboratory.LaboratoryInternalData
+import relativitization.universe.data.components.defaults.popsystem.pop.engineer.laboratory.MutableLaboratoryData
+import relativitization.universe.data.components.defaults.science.knowledge.AppliedResearchProjectData
 import relativitization.universe.maths.physics.Intervals
 import relativitization.universe.maths.random.Rand
 
-class InstituteReasoner : SequenceReasoner() {
+class LaboratoryReasoner : SequenceReasoner() {
     override fun getSubNodeList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<AINode> {
         return listOf(
-            RemoveInstituteReasoner(),
-            NewInstituteReasoner(),
+            RemoveLaboratoryReasoner(),
+            NewLaboratoryReasoner(),
         )
     }
 }
 
 /**
- * Consider building new institutes at all carrier
+ * Consider building new laboratory at all carrier
  */
-class NewInstituteReasoner : SequenceReasoner() {
+class NewLaboratoryReasoner : SequenceReasoner() {
     override fun getSubNodeList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<AINode> = planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData
         .popSystemData().carrierDataMap.keys.map {
-            NewInstituteAtCarrierReasoner(it)
+            NewLaboratoryAtCarrierReasoner(it)
         }
 }
 
 /**
- * Consider building new institute at a carrier
+ * Consider building new laboratory at a carrier
  */
-class NewInstituteAtCarrierReasoner(
+class NewLaboratoryAtCarrierReasoner(
     private val carrierId: Int,
 ) : DualUtilityReasoner() {
     override fun getOptionList(
@@ -53,16 +50,16 @@ class NewInstituteAtCarrierReasoner(
         planState: PlanState
     ): List<DualUtilityOption> {
         return listOf(
-            NewInstituteAtCarrierOption(carrierId),
+            NewLaboratoryAtCarrierOption(carrierId),
             DoNothingDualUtilityOption(1, 1.0, 1.0)
         )
     }
 }
 
 /**
- * Option to build new institute
+ * Option to build new laboratory
  */
-class NewInstituteAtCarrierOption(
+class NewLaboratoryAtCarrierOption(
     private val carrierId: Int,
 ) : DualUtilityOption() {
     override fun getConsiderationList(
@@ -70,13 +67,13 @@ class NewInstituteAtCarrierOption(
         planState: PlanState
     ): List<DualUtilityConsideration> {
         return listOf(
-            NoInstituteAtCarrierConsideration(
+            NoLaboratoryAtCarrierConsideration(
                 carrierId = carrierId,
                 rankIfTrue = 5,
                 multiplierIfTrue = 1.0,
                 bonusIfTrue = 1.0
             ),
-            SufficientInstituteConsideration(
+            SufficientLaboratoryConsideration(
                 carrierId = carrierId,
                 rankIfTrue = 1,
                 multiplierIfTrue = 0.2,
@@ -89,16 +86,16 @@ class NewInstituteAtCarrierOption(
     }
 
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
-        // Determine number of new institute randomly
-        val numNewInstitute: Int = Rand.rand().nextInt(1, 6)
+        // Determine number of new laboratory randomly
+        val numNewLaboratory: Int = Rand.rand().nextInt(1, 6)
 
         // Number of carrier in Double
         val numCarrier: Int = planDataAtPlayer.getCurrentMutablePlayerData()
             .playerInternalData.popSystemData().numCarrier()
 
-        val knownBasicProjectList: List<BasicResearchProjectData> = planDataAtPlayer
+        val knownAppliedProjectList: List<AppliedResearchProjectData> = planDataAtPlayer
             .getCurrentMutablePlayerData().playerInternalData.playerScienceData()
-            .knownBasicResearchProjectList
+            .knownAppliedResearchProjectList
 
         // Compute the total research equipment available and need
         val totalResearchEquipment: Double = ResourceQualityClass.values().fold(
@@ -122,56 +119,56 @@ class NewInstituteAtCarrierOption(
                 }
             }
 
-        // Determine the amount of research equipment per new institute
+        // Determine the amount of research equipment per new laboratory
         val targetResearchEquipmentPerTime: Double = (totalResearchEquipment -
-                researchEquipmentNeedPerTime) * 0.1 / numCarrier / numNewInstitute
+                researchEquipmentNeedPerTime) * 0.1 / numCarrier / numNewLaboratory
 
-        // Determine the employee per new institute
+        // Determine the employee per new laboratory
         val targetMaxEmployee: Double = planDataAtPlayer.getCurrentMutablePlayerData()
             .playerInternalData.popSystemData().carrierDataMap.getValue(carrierId).allPopData
-            .scholarPopData.commonPopData.adultPopulation * 0.1 / numNewInstitute
+            .engineerPopData.commonPopData.adultPopulation * 0.1 / numNewLaboratory
 
-        (1..numNewInstitute).forEach { _ ->
-            val instituteList: List<MutableInstituteData> = planDataAtPlayer
+        (1..numNewLaboratory).forEach { _ ->
+            val laboratoryList: List<MutableLaboratoryData> = planDataAtPlayer
                 .getCurrentMutablePlayerData().playerInternalData.popSystemData().carrierDataMap
-                .getValue(carrierId).allPopData.scholarPopData.instituteMap.values.toList()
+                .getValue(carrierId).allPopData.engineerPopData.laboratoryMap.values.toList()
 
-            // Filter known project which is not in range of any institute
-            val outOfRangeBasicProject: List<BasicResearchProjectData> =
-                knownBasicProjectList.filter { basicProject ->
-                    instituteList.all { institute ->
+            // Filter known project which is not in range of any laboratory
+            val outOfRangeAppliedProject: List<AppliedResearchProjectData> =
+                knownAppliedProjectList.filter { appliedProject ->
+                    laboratoryList.all { laboratory ->
                         Intervals.distance(
-                            institute.instituteInternalData.xCor,
-                            institute.instituteInternalData.yCor,
-                            basicProject.xCor,
-                            basicProject.yCor
-                        ) <= institute.instituteInternalData.range
+                            laboratory.laboratoryInternalData.xCor,
+                            laboratory.laboratoryInternalData.yCor,
+                            appliedProject.xCor,
+                            appliedProject.yCor
+                        ) <= laboratory.laboratoryInternalData.range
                     }
                 }
 
-            val newCor: Double2D = if (outOfRangeBasicProject.isNotEmpty()) {
+            val newCor: Double2D = if (outOfRangeAppliedProject.isNotEmpty()) {
                 // Center at out-of-range project is it is not empty
-                val targetProject: BasicResearchProjectData = outOfRangeBasicProject.first()
+                val targetProject: AppliedResearchProjectData = outOfRangeAppliedProject.first()
                 Double2D(targetProject.xCor, targetProject.yCor)
             } else {
-                val minInstituteX: Double = instituteList.minOfOrNull {
-                    it.instituteInternalData.xCor - it.instituteInternalData.range
+                val minLaboratoryX: Double = laboratoryList.minOfOrNull {
+                    it.laboratoryInternalData.xCor - it.laboratoryInternalData.range
                 } ?: 0.0
-                val minInstituteY: Double = instituteList.minOfOrNull {
-                    it.instituteInternalData.yCor - it.instituteInternalData.range
+                val minLaboratoryY: Double = laboratoryList.minOfOrNull {
+                    it.laboratoryInternalData.yCor - it.laboratoryInternalData.range
                 } ?: 0.0
-                val maxInstituteX: Double = instituteList.maxOfOrNull {
-                    it.instituteInternalData.xCor + it.instituteInternalData.range
+                val maxLaboratoryX: Double = laboratoryList.maxOfOrNull {
+                    it.laboratoryInternalData.xCor + it.laboratoryInternalData.range
                 } ?: 0.0
-                val maxInstituteY: Double = instituteList.maxOfOrNull {
-                    it.instituteInternalData.yCor + it.instituteInternalData.range
+                val maxLaboratoryY: Double = laboratoryList.maxOfOrNull {
+                    it.laboratoryInternalData.yCor + it.laboratoryInternalData.range
                 } ?: 0.0
 
-                // Randomly determine the knowledge coordinate of the new institute
-                // Expand slightly from the existing institutes
+                // Randomly determine the knowledge coordinate of the new laboratory
+                // Expand slightly from the existing laboratories
                 Double2D(
-                    Rand.rand().nextDouble(minInstituteX - 1.0, maxInstituteX + 1.0),
-                    Rand.rand().nextDouble(minInstituteY - 1.0, maxInstituteY + 1.0),
+                    Rand.rand().nextDouble(minLaboratoryX - 1.0, maxLaboratoryX + 1.0),
+                    Rand.rand().nextDouble(minLaboratoryY - 1.0, maxLaboratoryY + 1.0),
                 )
             }
 
@@ -190,12 +187,12 @@ class NewInstituteAtCarrierOption(
             }
 
             planDataAtPlayer.addCommand(
-                BuildInstituteCommand(
+                BuildLaboratoryCommand(
                     toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
                     fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
                     fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
                     carrierId = carrierId,
-                    instituteInternalData = InstituteInternalData(
+                    laboratoryInternalData = LaboratoryInternalData(
                         xCor = newCor.x,
                         yCor = newCor.y,
                         range = newRange,
@@ -210,55 +207,55 @@ class NewInstituteAtCarrierOption(
 }
 
 /**
- * Consider building new institutes at all carrier
+ * Consider building new laboratories at all carrier
  */
-class RemoveInstituteReasoner : SequenceReasoner() {
+class RemoveLaboratoryReasoner : SequenceReasoner() {
     override fun getSubNodeList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<AINode> = planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData
         .popSystemData().carrierDataMap.map { (carrierId, carrier) ->
-            carrier.allPopData.scholarPopData.instituteMap.map { (instituteId, _) ->
-                RemoveSpecificInstituteReasoner(carrierId, instituteId)
+            carrier.allPopData.engineerPopData.laboratoryMap.map { (laboratoryId, _) ->
+                RemoveSpecificLaboratoryReasoner(carrierId, laboratoryId)
             }
         }.flatten()
 }
 
 /**
- * Consider building new institutes at all carrier
+ * Consider building new laboratories at all carrier
  */
-class RemoveSpecificInstituteReasoner(
+class RemoveSpecificLaboratoryReasoner(
     private val carrierId: Int,
-    private val instituteId: Int
+    private val laboratoryId: Int
 ) : DualUtilityReasoner() {
     override fun getOptionList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<DualUtilityOption> = listOf(
-        RemoveSpecificInstituteOption(carrierId, instituteId),
+        RemoveSpecificLaboratoryOption(carrierId, laboratoryId),
         DoNothingDualUtilityOption(rank = 1, multiplier = 1.0, bonus = 1.0),
     )
 }
 
 /**
- * Remove a specific institute
+ * Remove a specific laboratory
  */
-class RemoveSpecificInstituteOption(
+class RemoveSpecificLaboratoryOption(
     private val carrierId: Int,
-    private val instituteId: Int
+    private val laboratoryId: Int
 ) : DualUtilityOption() {
     override fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<DualUtilityConsideration> {
         return listOf(
-            OnlyOneInstituteConsideration(
+            OnlyOneLaboratoryConsideration(
                 carrierId = carrierId,
                 rankIfTrue = 0,
                 multiplierIfTrue = 0.0,
                 bonusIfTrue = 0.0
             ),
-            SufficientInstituteConsideration(
+            SufficientLaboratoryConsideration(
                 carrierId = carrierId,
                 rankIfTrue = 1,
                 multiplierIfTrue = 1.0,
@@ -267,9 +264,9 @@ class RemoveSpecificInstituteOption(
                 multiplierIfFalse = 0.0,
                 bonusIfFalse = 0.0
             ),
-            KnownBasicProjectInRangeConsideration(
+            KnownAppliedProjectInRangeConsideration(
                 carrierId = carrierId,
-                instituteId = instituteId,
+                laboratoryId = laboratoryId,
                 rankIfTrue = 1,
                 multiplierIfTrue = 0.5,
                 bonusIfTrue = 0.0,
@@ -279,12 +276,12 @@ class RemoveSpecificInstituteOption(
 
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
         planDataAtPlayer.addCommand(
-            RemoveInstituteCommand(
+            RemoveLaboratoryCommand(
                 toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
                 fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
                 fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
                 carrierId = carrierId,
-                instituteId = instituteId,
+                laboratoryId = laboratoryId,
             )
         )
     }
