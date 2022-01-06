@@ -35,7 +35,7 @@ object PopulationGrowth : Mechanism() {
                         popType
                     )
 
-                val newPopulation: Double = if (commonPopData.adultPopulation < 0.0) {
+                val newPopulation: Double = if (commonPopData.adultPopulation >= 0.0) {
                     computeNewPop(
                         popType = popType,
                         medicFactor = medicFactor,
@@ -78,7 +78,7 @@ object PopulationGrowth : Mechanism() {
                 effectiveMedicPopulation * 10.0 / totalPopulation
             }
         } else {
-            logger.error("Population <= 0.0")
+            logger.error("computeMedicFactor: population <= 0.0")
             1.0
         }
     }
@@ -111,7 +111,7 @@ object PopulationGrowth : Mechanism() {
         val idealPopulationFactor: Double = when{
             currentTotalPopulation < idealTotalPopulation * 0.5 -> {
                 // Encourage concentrating pop in one place by effective ratio
-                val effectiveRatio: Double = (currentTotalPopulation / idealTotalPopulation).pow(1.1)
+                val effectiveRatio: Double = (currentTotalPopulation / idealTotalPopulation).pow(0.9)
                 // Plus 2.5 to make this function continuous
                 7.5 * (1.0 - effectiveRatio) + 2.5
             }
@@ -138,6 +138,6 @@ object PopulationGrowth : Mechanism() {
             }
         }
 
-        return maxPopulationChange * actualOverallFactor + constantPopulationGrowth
+        return currentPopulation + maxPopulationChange * actualOverallFactor + constantPopulationGrowth
     }
 }

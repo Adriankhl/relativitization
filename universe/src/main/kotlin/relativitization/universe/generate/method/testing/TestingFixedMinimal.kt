@@ -212,7 +212,7 @@ object TestingFixedMinimal : TestingGenerateUniverseMethod() {
                 yCor = 2.0,
                 range = 2.0,
                 researchEquipmentPerTime = 0.0,
-                maxNumEmployee = Double.MAX_VALUE * 0.5,
+                maxNumEmployee = Double.MAX_VALUE * 1E-10,
                 size = 0.0,
             ),
             strength = 1.0,
@@ -230,7 +230,7 @@ object TestingFixedMinimal : TestingGenerateUniverseMethod() {
                 yCor = 2.0,
                 range = 0.25,
                 researchEquipmentPerTime = 0.0,
-                maxNumEmployee = Double.MAX_VALUE * 0.5,
+                maxNumEmployee = Double.MAX_VALUE * 1E-10,
                 size = 0.0
             ),
             strength = 0.0,
@@ -273,10 +273,10 @@ object TestingFixedMinimal : TestingGenerateUniverseMethod() {
         ).allPopData.labourerPopData.commonPopData.adultPopulation = 100.0
         playerData1.playerInternalData.popSystemData().carrierDataMap.getValue(
             0
-        ).allPopData.scholarPopData.commonPopData.adultPopulation = Double.MAX_VALUE
+        ).allPopData.scholarPopData.commonPopData.adultPopulation = Double.MAX_VALUE * 1E-10
         playerData1.playerInternalData.popSystemData().carrierDataMap.getValue(
             0
-        ).allPopData.engineerPopData.commonPopData.adultPopulation = Double.MAX_VALUE
+        ).allPopData.engineerPopData.commonPopData.adultPopulation = Double.MAX_VALUE * 1E-10
 
 
         // Add fuel factory to player 1

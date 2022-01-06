@@ -186,7 +186,7 @@ object UpdatePrice : Mechanism() {
         val resourceRatio: Double = if (amountAvailable > 0.0) {
             amountNeeded * needAvailableFactor / amountAvailable
         } else {
-            Double.MAX_VALUE / 1E10
+            Double.MAX_VALUE * 1E-10
         }
 
         val actualResourceRatio: Double = when {
