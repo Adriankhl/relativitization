@@ -181,6 +181,7 @@ data class SplitCarrierCommand(
  * Grant independence to direct subordinate, if the sender is not a top leader, the player
  * still belong to the leader of one level higher
  */
+@Serializable
 data class GrantIndependenceCommand(
     override val toId: Int,
     override val fromId: Int,
