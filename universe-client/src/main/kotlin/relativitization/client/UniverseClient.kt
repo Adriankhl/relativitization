@@ -623,6 +623,8 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
                 }
             }
         } catch (cause: Throwable) {
+            logger.error("httpGetUniverseServerStatus error: $cause")
+
             // Server status with default universe name to prevent update
             UniverseServerStatusMessage(UniverseSettings().universeName)
         }
@@ -639,6 +641,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
                 }
             }
         } catch (cause: Throwable) {
+            logger.error("httpGetAvailableIdList error: $cause")
             listOf()
         }
     }
@@ -654,6 +657,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
                 }
             }
         } catch (cause: Throwable) {
+            logger.error("httpGetAvailableHumanIdList error: $cause")
             listOf()
         }
     }
@@ -670,6 +674,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
                 }
             }
         } catch (cause: Throwable) {
+            logger.error("httpGetSavedUniverse error: $cause")
             listOf()
         }
     }
@@ -689,6 +694,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
                 }
             }
         } catch (cause: Throwable) {
+            logger.error("httpGetCheckIsPlayerDead error: $cause")
             false
         }
     }
@@ -708,7 +714,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
                 }
             }
         } catch (cause: Throwable) {
-            logger.error("httpGetUniverseData3D error, returning empty data")
+            logger.error("httpGetUniverseData3D error, returning empty data: $cause")
             UniverseData3DAtPlayer()
         }
     }
@@ -733,7 +739,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
             logger.error("httpPostUniverseServerSettings error: " + cause.response.status)
             cause.response.status
         } catch (cause: Throwable) {
-            logger.error("postNewUniverse error: cannot find server")
+            logger.error("postNewUniverse error: $cause")
             HttpStatusCode.NotFound
         }
     }
@@ -758,7 +764,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
             logger.error("postNewUniverse error: " + cause.response.status)
             cause.response.status
         } catch (cause: Throwable) {
-            logger.error("postNewUniverse error: cannot find server")
+            logger.error("postNewUniverse error: $cause")
             HttpStatusCode.NotFound
         }
     }
@@ -784,7 +790,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
             logger.error("postLoadUniverse error: " + cause.response.status)
             cause.response.status
         } catch (cause: Throwable) {
-            logger.error("postLoadUniverse error: cannot find server")
+            logger.error("postLoadUniverse error: $cause")
             HttpStatusCode.NotFound
         }
     }
@@ -811,7 +817,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
             logger.error("Register player error: " + cause.response.status)
             cause.response.status
         } catch (cause: Throwable) {
-            logger.error("Register player error: cannot find server")
+            logger.error("Register player error: $cause")
             HttpStatusCode.NotFound
         }
     }
@@ -836,7 +842,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
             logger.error("Run universe error: " + cause.response.status)
             cause.response.status
         } catch (cause: Throwable) {
-            logger.error("Run universe error: cannot find server")
+            logger.error("Run universe error: $cause")
             HttpStatusCode.NotFound
         }
     }
@@ -862,7 +868,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
             logger.error("Stop universe error: " + cause.response.status)
             cause.response.status
         } catch (cause: Throwable) {
-            logger.error("Stop universe error: cannot find server")
+            logger.error("Stop universe error: $cause")
             HttpStatusCode.NotFound
         }
     }
@@ -889,7 +895,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
             logger.error("Human command input error: " + cause.response.status)
             cause.response.status
         } catch (cause: Throwable) {
-            logger.error("Human command input error: cannot find server")
+            logger.error("Human command input error: $cause")
             HttpStatusCode.NotFound
         }
     }
@@ -914,7 +920,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
             logger.error("Stop waiting error: " + cause.response.status)
             cause.response.status
         } catch (cause: Throwable) {
-            logger.error("Stop waiting error: cannot find server")
+            logger.error("Stop waiting error: $cause")
             HttpStatusCode.NotFound
         }
     }
