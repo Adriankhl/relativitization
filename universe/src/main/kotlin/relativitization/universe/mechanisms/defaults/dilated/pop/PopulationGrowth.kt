@@ -35,15 +35,20 @@ object PopulationGrowth : Mechanism() {
                         popType
                     )
 
-                val newPopulation: Double = computeNewPop(
-                    popType = popType,
-                    medicFactor = medicFactor,
-                    satisfaction = commonPopData.satisfaction,
-                    educationLevel = commonPopData.educationLevel,
-                    currentPopulation = commonPopData.adultPopulation,
-                    currentTotalPopulation = totalPopulation,
-                    idealTotalPopulation = mutableCarrierData.carrierInternalData.idealPopulation,
-                )
+                val newPopulation: Double = if (commonPopData.adultPopulation < 0.0) {
+                    computeNewPop(
+                        popType = popType,
+                        medicFactor = medicFactor,
+                        satisfaction = commonPopData.satisfaction,
+                        educationLevel = commonPopData.educationLevel,
+                        currentPopulation = commonPopData.adultPopulation,
+                        currentTotalPopulation = totalPopulation,
+                        idealTotalPopulation = mutableCarrierData.carrierInternalData.idealPopulation,
+                    )
+                } else {
+                    logger.error("Adult population of $popType < 0")
+                    0.0
+                }
 
                 commonPopData.adultPopulation = newPopulation
             }
@@ -94,7 +99,7 @@ object PopulationGrowth : Mechanism() {
         val maxPopulationChange: Double = currentPopulation * 0.1
 
         // Always add 100 population to avoid 0 population
-        val basePopulationGrowth: Double = 100.0
+        val constantPopulationGrowth: Double = 100.0
 
         val educationFactor: Double =
             if (popType == PopType.SCHOLAR || popType == PopType.ENGINEER) {
@@ -103,22 +108,36 @@ object PopulationGrowth : Mechanism() {
                 1.0
             }
 
-        val totalPopulationFactor: Double =
-            if (currentTotalPopulation > idealTotalPopulation * 0.5) {
-                (0.5).pow(currentPopulation / idealTotalPopulation - 1.0)
-            } else {
-                5.0 * (1.0 - currentPopulation / idealTotalPopulation)
+        val idealPopulationFactor: Double = when{
+            currentTotalPopulation < idealTotalPopulation * 0.5 -> {
+                // Encourage concentrating pop in one place by effective ratio
+                val effectiveRatio: Double = (currentTotalPopulation / idealTotalPopulation).pow(1.1)
+                // Plus 2.5 to make this function continuous
+                7.5 * (1.0 - effectiveRatio) + 2.5
             }
+            currentPopulation < idealTotalPopulation -> {
+                5.0 * (1.0 - currentTotalPopulation / idealTotalPopulation)
+            }
+            else -> {
+                (0.5).pow(currentTotalPopulation / idealTotalPopulation - 1.0)
+            }
+        }
 
-        // the new population compare to maxPopulationChange
-        val relativeNewPopulation: Double = min(
-            maxPopulationChange * 2.0,
-            maxPopulationChange * educationFactor * totalPopulationFactor * medicFactor * satisfaction + basePopulationGrowth
-        )
+        // Population increase if > 1.0, else population decrease
+        val overallFactor: Double = educationFactor * idealPopulationFactor * medicFactor * satisfaction - 1.0
 
-        // Adjusted by time dilation
-        val populationChange: Double = (relativeNewPopulation - maxPopulationChange)
+        val actualOverallFactor: Double = when {
+            overallFactor > 1.0 -> {
+                1.0
+            }
+            overallFactor < -1.0 -> {
+                -1.0
+            }
+            else -> {
+                overallFactor
+            }
+        }
 
-        return currentPopulation + populationChange
+        return maxPopulationChange * actualOverallFactor + constantPopulationGrowth
     }
 }
