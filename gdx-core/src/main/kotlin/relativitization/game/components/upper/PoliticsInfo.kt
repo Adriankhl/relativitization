@@ -7,6 +7,7 @@ import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.commands.AddEventCommand
 import relativitization.universe.data.commands.ChangeFactoryPolicyCommand
+import relativitization.universe.data.commands.GrantIndependenceCommand
 import relativitization.universe.data.events.AskToMergeCarrierEvent
 
 class PoliticsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.assets) {
@@ -17,7 +18,6 @@ class PoliticsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>
     private val scrollPane: ScrollPane = createScrollPane(table)
 
     private var playerData: PlayerData = PlayerData(-1)
-
 
     init {
         // Set background color
@@ -79,6 +79,10 @@ class PoliticsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>
 
         table.row().space(20f)
 
+        table.add(createGrantIndependenceTable())
+
+        table.row().space(20f)
+
         table.add(createFactoryPolicyTable())
     }
 
@@ -112,6 +116,27 @@ class PoliticsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>
             game.universeClient.currentCommand = addEventCommand
         }
         nestedTable.add(askToMergeButton)
+
+        return nestedTable
+    }
+
+    private fun createGrantIndependenceTable(): Table {
+        val nestedTable = Table()
+
+        val grantIndependenceButton = createTextButton(
+            "Grant independence",
+            gdxSettings.smallFontSize,
+            gdxSettings.soundEffectsVolume
+        ) {
+            val grantIndependenceCommand = GrantIndependenceCommand(
+                toId = playerData.playerId,
+                fromId = game.universeClient.getCurrentPlayerData().playerId,
+                fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
+            )
+
+            game.universeClient.currentCommand = grantIndependenceCommand
+        }
+        nestedTable.add(grantIndependenceButton)
 
         return nestedTable
     }
