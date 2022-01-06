@@ -9,6 +9,7 @@ import relativitization.universe.data.components.defaults.popsystem.MutableCarri
 import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.*
 import relativitization.universe.maths.algebra.Quadratic
 import relativitization.universe.utils.RelativitizationLogManager
+import kotlin.math.min
 
 @Serializable
 data class ScienceApplicationData(
@@ -180,13 +181,18 @@ data class MutableScienceApplicationData(
             }
         }
 
+        // Set yMin such that it is always possible to build a small ship
+        val yMin: Double = min(
+            0.2,
+            1E6 / idealSpaceship.coreRestMass
+        )
 
         // Reduce core rest mass
         val coreRestMass: Double = idealSpaceship.coreRestMass * Quadratic.standard(
             x = actualQualityLevel,
             xMin = 0.0,
             xMax = 1.0,
-            yMin = 0.2,
+            yMin = yMin,
             yMax = 1.0,
             increasing = true,
             accelerate = true
@@ -198,7 +204,7 @@ data class MutableScienceApplicationData(
                 x = actualQualityLevel,
                 xMin = 0.0,
                 xMax = 1.0,
-                yMin = 0.2,
+                yMin = yMin,
                 yMax = 1.0,
                 increasing = true,
                 accelerate = false
@@ -209,7 +215,7 @@ data class MutableScienceApplicationData(
             x = actualQualityLevel,
             xMin = 0.0,
             xMax = 1.0,
-            yMin = 0.2,
+            yMin = yMin,
             yMax = 1.0,
             increasing = true,
             accelerate = true
@@ -220,7 +226,7 @@ data class MutableScienceApplicationData(
             x = actualQualityLevel,
             xMin = 0.0,
             xMax = 1.0,
-            yMin = 0.2,
+            yMin = yMin,
             yMax = 1.0,
             increasing = true,
             accelerate = false
