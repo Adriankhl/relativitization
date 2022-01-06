@@ -20,8 +20,6 @@ data class AddEventCommand(
     val event: Event,
     override val fromInt4D: Int4D,
 ) : DefaultCommand() {
-
-
     override val toId: Int = event.toId
     override val fromId: Int = event.fromId
 

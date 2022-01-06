@@ -30,15 +30,7 @@ data class DummyCommand(
         )
     }
 
-    override fun canExecute(
-        playerData: MutablePlayerData,
-        universeSettings: UniverseSettings
-    ): CommandErrorMessage {
-        return CommandErrorMessage(true)
-    }
-
-    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
-    }
+    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) { }
 }
 
 /**

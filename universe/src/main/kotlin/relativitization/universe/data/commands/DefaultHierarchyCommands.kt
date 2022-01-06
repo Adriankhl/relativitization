@@ -16,20 +16,11 @@ data class AddDirectSubordinateCommand(
     override val fromId: Int,
     override val fromInt4D: Int4D
 ) : DefaultCommand() {
-    override fun description(): I18NString = I18NString("")
-
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
         return CommandErrorMessage(false)
-    }
-
-    override fun canExecute(
-        playerData: MutablePlayerData,
-        universeSettings: UniverseSettings
-    ): CommandErrorMessage {
-        return CommandErrorMessage(true)
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {

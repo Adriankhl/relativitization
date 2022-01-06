@@ -343,8 +343,6 @@ data class SendFuelCommand(
     val amount: Double,
     val senderFuelLossFractionPerDistance: Double,
 ) : DefaultCommand() {
-    override fun description(): I18NString = I18NString("")
-
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
@@ -412,20 +410,10 @@ data class SendResourceCommand(
     val amount: Double,
     val senderResourceLossFractionPerDistance: Double,
 ) : DefaultCommand() {
-    override fun description(): I18NString = I18NString("")
-
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): CommandErrorMessage = CommandErrorMessage(false)
-
-    override fun canExecute(
-        playerData: MutablePlayerData,
-        universeSettings: UniverseSettings
-    ): CommandErrorMessage {
-        return CommandErrorMessage(true)
-    }
-
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
         val receiverLossFractionPerDistance: Double =
@@ -480,19 +468,10 @@ data class SendResourceToPopCommand(
     val amount: Double,
     val senderResourceLossFractionPerDistance: Double,
 ) : DefaultCommand() {
-    override fun description(): I18NString = I18NString("")
-
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): CommandErrorMessage = CommandErrorMessage(false)
-
-    override fun canExecute(
-        playerData: MutablePlayerData,
-        universeSettings: UniverseSettings
-    ): CommandErrorMessage {
-        return CommandErrorMessage(true)
-    }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
         val receiverLossFractionPerDistance: Double =
@@ -557,8 +536,6 @@ data class PopBuyResourceCommand(
     val amountPerTime: Double,
     val senderFuelLossFractionPerDistance: Double,
 ) : DefaultCommand() {
-    override fun description(): I18NString = I18NString("")
-
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings

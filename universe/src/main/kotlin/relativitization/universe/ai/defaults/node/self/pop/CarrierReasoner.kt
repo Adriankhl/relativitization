@@ -17,11 +17,8 @@ class CreateCarrierOption : DualUtilityOption() {
     override fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
-    ): List<DualUtilityConsideration> {
-        TODO("Not yet implemented")
-    }
+    ): List<DualUtilityConsideration> = listOf()
 
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
-        TODO("Not yet implemented")
     }
 }
