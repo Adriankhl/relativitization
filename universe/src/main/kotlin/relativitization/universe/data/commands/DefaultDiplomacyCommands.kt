@@ -136,8 +136,7 @@ data class DeclareIndependenceCommand(
     ): CommandErrorMessage {
         val isDirectLeader = CommandErrorMessage(
             playerData.playerInternalData.directLeaderId == toId,
-
-            I18NString("Target is not direct leader. ")
+            CommandI18NStringFactory.isNotDirectLeader(playerData.playerId, toId),
         )
 
         val isNotSelf = CommandErrorMessage(

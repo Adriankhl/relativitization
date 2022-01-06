@@ -44,7 +44,7 @@ data class AskToMergeCarrierEvent(
         val isDirectSubordinate = CommandErrorMessage(
             playerData.playerInternalData.directSubordinateIdList.contains(toId),
             CommandI18NStringFactory.isNotDirectSubordinate(
-                playerId = fromId, toId = toId
+                playerId = fromId, otherPlayerId = toId
             )
         )
 
@@ -61,7 +61,7 @@ data class AskToMergeCarrierEvent(
     ): CommandErrorMessage {
         val isDirectLeader = CommandErrorMessage(
             playerData.playerInternalData.directLeaderId == fromId,
-            I18NString("Sender is not direct leader. ")
+            CommandI18NStringFactory.isNotDirectLeader(playerData.playerId, fromId),
         )
 
         val isNotTopLeader = CommandErrorMessage(

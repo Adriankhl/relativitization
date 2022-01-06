@@ -362,7 +362,21 @@ object CommandI18NStringFactory {
         )
     )
 
-    fun isNotDirectSubordinate(playerId: Int, toId: Int): I18NString = I18NString(
+    fun isNotDirectLeader(playerId: Int, otherPlayerId: Int): I18NString = I18NString(
+        listOf(
+            NormalString("Player "),
+            IntString(0),
+            NormalString(" not a direct leader of player "),
+            IntString(1),
+            NormalString(". ")
+        ),
+        listOf(
+            otherPlayerId.toString(),
+            playerId.toString(),
+        )
+    )
+
+    fun isNotDirectSubordinate(playerId: Int, otherPlayerId: Int): I18NString = I18NString(
         listOf(
             NormalString("Player "),
             IntString(0),
@@ -371,12 +385,12 @@ object CommandI18NStringFactory {
             NormalString(". ")
         ),
         listOf(
-            toId.toString(),
+            otherPlayerId.toString(),
             playerId.toString(),
         )
     )
 
-    fun isNotSubordinate(playerId: Int, toId: Int): I18NString = I18NString(
+    fun isNotSubordinate(playerId: Int, otherPlayerId: Int): I18NString = I18NString(
         listOf(
             NormalString("Player "),
             IntString(0),
@@ -385,7 +399,7 @@ object CommandI18NStringFactory {
             NormalString(". ")
         ),
         listOf(
-            toId.toString(),
+            otherPlayerId.toString(),
             playerId.toString(),
         )
     )
@@ -419,7 +433,10 @@ object CommandI18NStringFactory {
         )
     )
 
-    fun isTopLeaderIdWrong(commandTopLeaderId: Int, playerTopLeaderId: Int): I18NString = I18NString(
+    fun isTopLeaderIdWrong(
+        playerTopLeaderId: Int,
+        commandTopLeaderId: Int
+    ): I18NString = I18NString(
         listOf(
             NormalString("Command top leader id "),
             IntString(0),

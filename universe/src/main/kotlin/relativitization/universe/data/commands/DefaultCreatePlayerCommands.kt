@@ -29,6 +29,7 @@ data class SplitCarrierCommand(
         listOf(
             NormalString("Create new player with carriers: "),
             IntString(0),
+            NormalString(". ")
         ),
         listOf(
             carrierIdList.toString(),
@@ -176,30 +177,61 @@ data class SplitCarrierCommand(
     }
 }
 
+/**
+ * Grant independence to direct subordinate, if the sender is not a top leader, the player
+ * still belong to the leader of one level higher
+ */
 data class GrantIndependenceCommand(
     override val toId: Int,
     override val fromId: Int,
     override val fromInt4D: Int4D
 ) : DefaultCommand() {
-    override fun description(): I18NString {
-        TODO("Not yet implemented")
-    }
+    override fun description(): I18NString = I18NString(
+        listOf(
+            NormalString("Grant independence to "),
+            IntString(0),
+            NormalString(". "),
+        ),
+        listOf(
+            toId.toString(),
+        )
+    )
 
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
-        TODO("Not yet implemented")
+        val isDirectSubordinate = CommandErrorMessage(
+            playerData.isDirectSubOrdinate(toId),
+            CommandI18NStringFactory.isNotDirectSubordinate(playerData.playerId, toId)
+        )
+
+        return CommandErrorMessage(
+            listOf(
+                isDirectSubordinate
+            )
+        )
     }
 
     override fun canExecute(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
-        TODO("Not yet implemented")
+        val isDirectLeader = CommandErrorMessage(
+            playerData.playerInternalData.directLeaderId == fromId,
+            CommandI18NStringFactory.isNotDirectLeader(playerData.playerId, fromId),
+        )
+
+        return CommandErrorMessage(
+            listOf(
+                isDirectLeader
+            )
+        )
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
-        TODO("Not yet implemented")
+        val newLeaderIdList: List<Int> = playerData.playerInternalData.leaderIdList -
+                playerData.playerInternalData.directLeaderId
+        playerData.changeDirectLeaderId(newLeaderIdList)
     }
 }

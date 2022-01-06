@@ -70,7 +70,7 @@ data class BuildForeignFuelFactoryCommand(
     ): CommandErrorMessage {
         val sameTopLeaderId = CommandErrorMessage(
             playerData.topLeaderId() == senderTopLeaderId,
-            CommandI18NStringFactory.isTopLeaderIdWrong(senderTopLeaderId, playerData.topLeaderId())
+            CommandI18NStringFactory.isTopLeaderIdWrong(playerData.topLeaderId(), senderTopLeaderId)
         )
 
         val isTopLeader: Boolean = playerData.isTopLeader()
@@ -240,7 +240,7 @@ data class BuildForeignResourceFactoryCommand(
     ): CommandErrorMessage {
         val sameTopLeaderId = CommandErrorMessage(
             playerData.topLeaderId() == senderTopLeaderId,
-            CommandI18NStringFactory.isTopLeaderIdWrong(senderTopLeaderId, playerData.topLeaderId())
+            CommandI18NStringFactory.isTopLeaderIdWrong(playerData.topLeaderId(), senderTopLeaderId)
         )
 
         val isTopLeader: Boolean = playerData.isTopLeader()
