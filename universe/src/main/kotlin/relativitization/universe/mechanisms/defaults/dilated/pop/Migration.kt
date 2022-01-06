@@ -25,24 +25,35 @@ object Migration : Mechanism() {
         val migrationRate: Double = 0.01
 
         PopType.values().forEach { popType ->
-            val commonPopMap: MutableMap<Int, MutableCommonPopData> = mutablePlayerData
+            // carrier id to common pop data of a specific pop type
+            val commonPopMap: Map<Int, MutableCommonPopData> = mutablePlayerData
                 .playerInternalData.popSystemData().carrierDataMap.mapValues { (_, carrier) ->
                     carrier.allPopData.getCommonPopData(popType)
-                }.toMutableMap()
+                }
 
-            for (i in (0..commonPopMap.size)) {
-                if (commonPopMap.size >= 2 ) {
-                    val emigrateId: Int = commonPopMap.minByOrNull { (_, commonPop) ->
+            // Shuffle carrier id to avoid same immigration order every time
+            val carrierIdList: MutableList<Int> = commonPopMap.keys.shuffled(
+                Rand.rand()
+            ).toMutableList()
+
+            repeat(carrierIdList.size) {
+                if (carrierIdList.size >= 2 ) {
+                    val emigrateId: Int = carrierIdList.minByOrNull {
+                        val commonPop: MutableCommonPopData = commonPopMap.getValue(it)
                         commonPop.salaryPerEmployee * (1.0 - commonPop.unemploymentRate)
-                    }?.key ?: -1
+                    } ?: -1
 
                     val emigrateCommonPop: MutableCommonPopData = commonPopMap.getValue(emigrateId)
 
-                    commonPopMap.remove(emigrateId)
+                    carrierIdList.remove(emigrateId)
 
-                    val immigrateId: Int = commonPopMap.keys.elementAt(Rand.rand().nextInt(commonPopMap.size))
+                    val immigrateId: Int = carrierIdList.elementAt(
+                        Rand.rand().nextInt(carrierIdList.size)
+                    )
 
-                    val immigrateCommonPop: MutableCommonPopData = commonPopMap.getValue(immigrateId)
+                    val immigrateCommonPop: MutableCommonPopData = commonPopMap.getValue(
+                        immigrateId
+                    )
 
                     localMigrate(
                         emigrateCommonPop,
@@ -85,6 +96,5 @@ object Migration : Mechanism() {
            otherSatisfaction = emigrateCommonPop.satisfaction,
            otherSaving = otherSaving,
        )
-
     }
 }
