@@ -175,3 +175,31 @@ data class SplitCarrierCommand(
         playerData.newPlayerList.add(newPlayerInternalData)
     }
 }
+
+data class GrantIndependenceCommand(
+    override val toId: Int,
+    override val fromId: Int,
+    override val fromInt4D: Int4D
+) : DefaultCommand() {
+    override fun description(): I18NString {
+        TODO("Not yet implemented")
+    }
+
+    override fun canSend(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): CommandErrorMessage {
+        TODO("Not yet implemented")
+    }
+
+    override fun canExecute(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): CommandErrorMessage {
+        TODO("Not yet implemented")
+    }
+
+    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+        TODO("Not yet implemented")
+    }
+}

@@ -17,9 +17,9 @@ sealed class Command {
     abstract val fromInt4D: Int4D
 
     /**
-     * Description of the command
+     * Description of the command, default to empty description
      */
-    abstract fun description(): I18NString
+    open fun description(): I18NString = I18NString("")
 
 
     /**
@@ -50,12 +50,15 @@ sealed class Command {
 
 
     /**
-     * Check if the player (sender) can send the command
+     * Check if the player (sender) can send the command, default to always true
+     *
+     * @param playerData the data of the player to send this command
+     * @param universeSettings the universe settings
      */
-    protected abstract fun canSend(
+    protected open fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CommandErrorMessage
+    ): CommandErrorMessage = CommandErrorMessage(true)
 
     /**
      * Check if can send and have command
@@ -141,8 +144,7 @@ sealed class Command {
     protected open fun selfExecuteBeforeSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ) {
-    }
+    ) { }
 
     /**
      * Check and self execute
@@ -161,7 +163,7 @@ sealed class Command {
             }
         } else {
             val className = this::class.qualifiedName
-            logger.info("$className cannot be sent by $fromId")
+            logger.debug("$className cannot be sent by $fromId")
             val reasonI18NString = I18NString("Reason: ")
             CommandErrorMessage(
                 false,
@@ -175,12 +177,15 @@ sealed class Command {
 
 
     /**
-     * Check if the player can receive the command
+     * Check if the player can receive the command, default to always true
+     *
+     * @param playerData the data of the player to execute this command
+     * @param universeSettings the universe settings
      */
-    protected abstract fun canExecute(
+    protected open fun canExecute(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CommandErrorMessage
+    ): CommandErrorMessage = CommandErrorMessage(true)
 
     /**
      * Check if can execute and have command
@@ -314,6 +319,9 @@ object CommandCollection {
 
 /**
  * Store the success state and error message if not success
+ *
+ * @property success is the command successfully sent / executed
+ * @property errorMessage the error message if failed
  */
 @Serializable
 data class CommandErrorMessage(
