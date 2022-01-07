@@ -1,14 +1,10 @@
 package relativitization.universe.ai.defaults.node.self.pop
 
-import relativitization.universe.ai.defaults.utils.AINode
-import relativitization.universe.ai.defaults.utils.PlanState
-import relativitization.universe.ai.defaults.utils.SequenceReasoner
+import relativitization.universe.ai.defaults.utils.*
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.commands.ChangeSalaryCommand
-import relativitization.universe.data.components.MutableEconomyData
 import relativitization.universe.data.components.MutablePhysicsData
 import relativitization.universe.data.components.defaults.economy.MutableResourceData
-import relativitization.universe.data.components.defaults.economy.MutableResourceQualityData
 import relativitization.universe.data.components.defaults.economy.ResourceQualityClass
 import relativitization.universe.data.components.defaults.popsystem.pop.MutableCommonPopData
 import relativitization.universe.data.components.defaults.popsystem.pop.MutableResourceDesireData
@@ -27,7 +23,7 @@ class SalaryReasoner : SequenceReasoner() {
         return planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData
             .popSystemData().carrierDataMap.keys.map { carrierId ->
                 PopType.values().map { popType ->
-                    AdjustSalaryAINode(
+                    AdjustSalaryReasoner(
                         carrierId,
                         popType,
                         totalAdultPopulation,
@@ -37,11 +33,31 @@ class SalaryReasoner : SequenceReasoner() {
     }
 }
 
-class AdjustSalaryAINode(
+class AdjustSalaryReasoner(
     private val carrierId: Int,
     private val popType: PopType,
     private val totalAdultPopulation: Double,
-) : AINode {
+) : DualUtilityReasoner() {
+    override fun getOptionList(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planState: PlanState
+    ): List<DualUtilityOption> = listOf(
+        GoodSalaryOption(carrierId, popType, totalAdultPopulation),
+    )
+}
+
+class GoodSalaryOption(
+    private val carrierId: Int,
+    private val popType: PopType,
+    private val totalAdultPopulation: Double,
+) : DualUtilityOption() {
+    override fun getConsiderationList(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planState: PlanState
+    ): List<DualUtilityConsideration> = listOf(
+        PlainDualUtilityConsideration(1, 1.0, 1.0)
+    )
+
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
         val commonPopData: MutableCommonPopData = planDataAtPlayer.getCurrentMutablePlayerData()
             .playerInternalData.popSystemData().carrierDataMap.getValue(carrierId).allPopData
