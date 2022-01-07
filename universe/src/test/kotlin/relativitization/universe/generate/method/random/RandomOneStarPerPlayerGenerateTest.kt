@@ -119,7 +119,7 @@ internal class RandomOneStarPerPlayerGenerateTest {
             numPlayer = 1,
             numHumanPlayer = 1,
             numExtraStellarSystem = 3,
-            initialPopulation = 1E5,
+            initialPopulation = 1E6,
             universeSettings = MutableUniverseSettings(
                 universeName = "One player test",
                 mechanismCollectionName = DefaultMechanismLists.name(),
