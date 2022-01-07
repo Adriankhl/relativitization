@@ -11,6 +11,9 @@ import relativitization.universe.data.components.defaults.popsystem.pop.PopType
  * Whether this player has sufficient population compare to ideal population
  *
  * @param ratio the required ratio of total population compare to ideal population
+ * @property rankIfTrue rank of dual utility if this is true
+ * @property multiplierIfTrue multiplier of dual utility if this is true
+ * @property bonusIfTrue bonus of dual utility if this is true
  */
 class SufficientPopulationRatioConsideration(
     private val ratio: Double,
