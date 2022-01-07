@@ -86,8 +86,8 @@ enum class MapPlayerColorMode(private val value: String) {
 
 enum class Language(private val value: String) {
     ENGLISH("English"),
-    TRADITIONAL_CHINESE("Traditional Chinese"),
-    SIMPLIFIED_CHINESE("Simplified Chinese"),
+    TRADITIONAL_CHINESE("Traditional Chinese (incomplete)"),
+    SIMPLIFIED_CHINESE("Simplified Chinese (incomplete)"),
     ;
 
     override fun toString(): String {
