@@ -35,7 +35,7 @@ data class MutableFuelRestMassHistoryData(
      *
      * @param turn the number of turn to consider
      */
-    fun isProductionFuelIncreasing(turn: Int): Boolean {
+    fun isProductionFuelStrictlyIncreasing(turn: Int): Boolean {
         return if (historyList.size <= 1) {
             true
         } else {
@@ -61,7 +61,45 @@ data class MutableFuelRestMassHistoryData(
                 } else {
                     true
                 }
-            }.any { it }
+            }.all { it }
+        }
+    }
+
+    /**
+     * Check whether the latest production fuel is greater than average times a factor
+     *
+     * @param turn the number of turn to consider
+     * @param compareFactor compare the latest
+     */
+    fun isLastProductionFuelGreaterThanAverage(
+        turn: Int,
+        compareFactor: Double,
+    ): Boolean {
+        return if (historyList.size <= 1) {
+            true
+        } else {
+            val actualTurn: Int = when {
+                turn > historyList.size - 1 -> {
+                    logger.debug("Reduce turn to history length")
+                    historyList.size - 1
+                }
+                turn <= 0 -> {
+                    logger.error("Turn should be larger than 0")
+                    1
+                }
+                else -> {
+                    turn
+                }
+            }
+            val subHistory: List<MutableFuelRestMassData> = historyList.takeLast(turn)
+
+            val latestProductionFuel: Double = subHistory.last().production
+
+            val averageProductionFuel: Double  = subHistory.take(subHistory.size - 1).sumOf {
+                it.production
+            } / subHistory.size
+
+            latestProductionFuel > averageProductionFuel * compareFactor
         }
     }
 
