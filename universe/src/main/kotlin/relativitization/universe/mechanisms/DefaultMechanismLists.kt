@@ -5,6 +5,7 @@ import relativitization.universe.mechanisms.defaults.dilated.combat.AutoCombat
 import relativitization.universe.mechanisms.defaults.dilated.economy.ResourceDecay
 import relativitization.universe.mechanisms.defaults.dilated.economy.UpdatePrice
 import relativitization.universe.mechanisms.defaults.dilated.economy.UpdateResourceQualityBound
+import relativitization.universe.mechanisms.defaults.dilated.history.StoreFuelRestMassHistory
 import relativitization.universe.mechanisms.defaults.regular.dead.ClearDeadPlayer
 import relativitization.universe.mechanisms.defaults.regular.diplomacy.UpdateDiplomaticRelation
 import relativitization.universe.mechanisms.defaults.regular.diplomacy.UpdateDiplomaticRelationState
@@ -74,5 +75,6 @@ object DefaultMechanismLists : MechanismLists() {
         DiscoverKnowledge,
         AutoCombat,
         UpdateModifierByProperTime,
+        StoreFuelRestMassHistory,
     )
 }

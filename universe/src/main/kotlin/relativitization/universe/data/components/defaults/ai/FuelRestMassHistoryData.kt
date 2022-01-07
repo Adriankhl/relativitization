@@ -19,5 +19,12 @@ data class FuelRestMassHistoryData(
 @Serializable
 data class MutableFuelRestMassHistoryData(
     var maxStoredTurn: Int = 5,
-    var historyList: MutableList<MutableFuelRestMassData> = mutableListOf(),
-)
+    val historyList: MutableList<MutableFuelRestMassData> = mutableListOf(),
+) {
+    fun addHistory(mutableFuelRestMassData: MutableFuelRestMassData) {
+        historyList.add(mutableFuelRestMassData)
+        while (historyList.size > maxStoredTurn) {
+            historyList.removeFirst()
+        }
+    }
+}
