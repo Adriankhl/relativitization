@@ -17,16 +17,12 @@ class SalaryReasoner : SequenceReasoner() {
         planState: PlanState
     ): List<AINode> {
 
-        val totalAdultPopulation: Double = planDataAtPlayer.getCurrentMutablePlayerData()
-            .playerInternalData.popSystemData().totalAdultPopulation()
-
         return planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData
             .popSystemData().carrierDataMap.keys.map { carrierId ->
                 PopType.values().map { popType ->
                     AdjustSalaryReasoner(
                         carrierId,
                         popType,
-                        totalAdultPopulation,
                     )
                 }
             }.flatten()
@@ -36,14 +32,46 @@ class SalaryReasoner : SequenceReasoner() {
 class AdjustSalaryReasoner(
     private val carrierId: Int,
     private val popType: PopType,
-    private val totalAdultPopulation: Double,
 ) : DualUtilityReasoner() {
     override fun getOptionList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<DualUtilityOption> = listOf(
-        GoodSalaryOption(carrierId, popType, totalAdultPopulation),
+        IncreaseSalaryOption(carrierId, popType),
+        DecreaseSalaryOption(carrierId, popType),
     )
+}
+
+class IncreaseSalaryOption(
+    private val carrierId: Int,
+    private val popType: PopType,
+) : DualUtilityOption() {
+    override fun getConsiderationList(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planState: PlanState
+    ): List<DualUtilityConsideration> {
+        TODO("Not yet implemented")
+    }
+
+    override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
+        TODO("Not yet implemented")
+    }
+}
+
+class DecreaseSalaryOption(
+    private val carrierId: Int,
+    private val popType: PopType,
+) : DualUtilityOption() {
+    override fun getConsiderationList(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planState: PlanState
+    ): List<DualUtilityConsideration> {
+        TODO("Not yet implemented")
+    }
+
+    override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
+        TODO("Not yet implemented")
+    }
 }
 
 class GoodSalaryOption(
