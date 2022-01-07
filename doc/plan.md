@@ -85,3 +85,4 @@
 * Decrease relation when a factory is removed
 * Physics: time dilation of photon rocket, momentum conservation when sending fuel (transfer 
   opposite momentum by virtual photon?)
+* GUI: ai-relevant data
