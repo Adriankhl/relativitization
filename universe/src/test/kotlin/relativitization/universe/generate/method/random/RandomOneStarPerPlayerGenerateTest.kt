@@ -164,14 +164,48 @@ internal class RandomOneStarPerPlayerGenerateTest {
             }
         }
 
+        val middleView = universe.getUniverse3DViewAtPlayer(1)
+
+        val middleAllPopData = middleView.getCurrentPlayerData().playerInternalData.popSystemData()
+            .carrierDataMap.getValue(0).allPopData
+
+        val middleResourceData = middleView.getCurrentPlayerData().playerInternalData.economyData()
+            .resourceData
+
+        val middleFuelData = middleView.getCurrentPlayerData().playerInternalData.physicsData()
+            .fuelRestMassData
+
+        middleAllPopData.labourerPopData
+        middleResourceData.singleResourceMap
+        middleFuelData.production
+
+        runBlocking {
+            for (turn in 1..10) {
+                val aiCommandMap = universe.computeAICommands()
+
+                universe.postProcessUniverse(
+                    mapOf(),
+                    aiCommandMap
+                )
+                universe.preProcessUniverse()
+
+                // For debug convenience
+                val view = universe.getUniverse3DViewAtPlayer(1)
+                val allPopData = view.getCurrentPlayerData().playerInternalData.popSystemData()
+                    .carrierDataMap.getValue(0).allPopData
+                val fuelData = view.getCurrentPlayerData().playerInternalData.physicsData()
+                    .fuelRestMassData
+                fuelData.production
+                allPopData.labourerPopData
+            }
+        }
+
         val finalView = universe.getUniverse3DViewAtPlayer(1)
 
         val allPopData = finalView.getCurrentPlayerData().playerInternalData.popSystemData()
             .carrierDataMap.getValue(0).allPopData
-
         val resourceData = finalView.getCurrentPlayerData().playerInternalData.economyData()
             .resourceData
-
         val fuelData = finalView.getCurrentPlayerData().playerInternalData.physicsData()
             .fuelRestMassData
 
