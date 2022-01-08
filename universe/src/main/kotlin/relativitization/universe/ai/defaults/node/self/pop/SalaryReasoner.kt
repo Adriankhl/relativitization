@@ -1,5 +1,6 @@
 package relativitization.universe.ai.defaults.node.self.pop
 
+import relativitization.universe.ai.defaults.consideration.fuel.IncreasingProductionFuelConsideration
 import relativitization.universe.ai.defaults.utils.*
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.commands.ChangeSalaryCommand
@@ -9,6 +10,7 @@ import relativitization.universe.data.components.defaults.economy.ResourceQualit
 import relativitization.universe.data.components.defaults.popsystem.pop.MutableCommonPopData
 import relativitization.universe.data.components.defaults.popsystem.pop.MutableResourceDesireData
 import relativitization.universe.data.components.defaults.popsystem.pop.PopType
+import kotlin.math.max
 import kotlin.math.min
 
 class SalaryReasoner : SequenceReasoner() {
@@ -48,6 +50,9 @@ class AdjustSalaryReasoner(
     )
 }
 
+/**
+ * Increase salary if production fuel is increasing
+ */
 class IncreaseSalaryOption(
     private val carrierId: Int,
     private val popType: PopType,
@@ -56,13 +61,48 @@ class IncreaseSalaryOption(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<DualUtilityConsideration> {
-        return listOf()
+        return listOf(
+            IncreasingProductionFuelConsideration(
+                rankIfTrue = 5,
+                multiplierIfTrue = 1.0,
+                bonusIfTrue = 1.0,
+                rankIfFalse = 1,
+                multiplierIfFalse = 1.0,
+                bonusIfFalse = 1.0
+            )
+        )
     }
 
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
+        // Absolute minimum of salary
+        val maxSalary: Double = 1E10
+
+        // Multiply this to get the new salary
+        val salaryMultiplier: Double = 1.25
+
+        val currentSalary: Double = planDataAtPlayer.getCurrentMutablePlayerData()
+            .playerInternalData.popSystemData().carrierDataMap.getValue(carrierId).allPopData
+            .getCommonPopData(popType).salaryPerEmployee
+
+        val newSalary: Double = min(maxSalary, currentSalary * salaryMultiplier)
+
+        planDataAtPlayer.addCommand(
+            ChangeSalaryCommand(
+                toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+                fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+                fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
+                carrierId = carrierId,
+                popType = popType,
+                salary =  newSalary,
+            )
+        )
     }
 }
 
+
+/**
+ * Decrease salary if production fuel is decreasing
+ */
 class DecreaseSalaryOption(
     private val carrierId: Int,
     private val popType: PopType,
@@ -71,10 +111,41 @@ class DecreaseSalaryOption(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<DualUtilityConsideration> {
-        return listOf()
+        return listOf(
+            IncreasingProductionFuelConsideration(
+                rankIfTrue = 1,
+                multiplierIfTrue = 1.0,
+                bonusIfTrue = 1.0,
+                rankIfFalse = 5,
+                multiplierIfFalse = 1.0,
+                bonusIfFalse = 1.0
+            )
+        )
     }
 
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
+        // Absolute minimum of salary
+        val minSalary: Double = 1E-10
+
+        // Multiply this to get the new salary
+        val salaryMultiplier: Double = 0.8
+
+        val currentSalary: Double = planDataAtPlayer.getCurrentMutablePlayerData()
+            .playerInternalData.popSystemData().carrierDataMap.getValue(carrierId).allPopData
+            .getCommonPopData(popType).salaryPerEmployee
+
+        val newSalary: Double = max(minSalary, currentSalary * salaryMultiplier)
+
+        planDataAtPlayer.addCommand(
+            ChangeSalaryCommand(
+                toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+                fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+                fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
+                carrierId = carrierId,
+                popType = popType,
+                salary =  newSalary,
+            )
+        )
     }
 }
 
@@ -90,7 +161,7 @@ class GoodSalaryOption(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<DualUtilityConsideration> = listOf(
-        PlainDualUtilityConsideration(1, 1.0, 1.0)
+        PlainDualUtilityConsideration(1, 1.0, 0.01)
     )
 
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
