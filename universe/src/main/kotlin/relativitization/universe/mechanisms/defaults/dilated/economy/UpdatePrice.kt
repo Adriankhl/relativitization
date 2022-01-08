@@ -22,9 +22,6 @@ object UpdatePrice : Mechanism() {
         universeSettings: UniverseSettings,
         universeGlobalData: UniverseGlobalData
     ): List<Command> {
-        // Parameters
-        val needAvailableFactor: Double = 10.0
-
         val tradeNeedMap: Map<ResourceType, Map<ResourceQualityClass, Double>> =
             computeResourceTradeNeedMap(mutablePlayerData)
 
@@ -44,7 +41,6 @@ object UpdatePrice : Mechanism() {
                     ),
                     amountNeeded = tradeNeedMap.getValue(resourceType)
                         .getValue(resourceQualityClass),
-                    needAvailableFactor = needAvailableFactor,
                     averageSalary = averageSalary,
                 )
 
@@ -170,17 +166,17 @@ object UpdatePrice : Mechanism() {
      * @param oldPrice the old price of the resource
      * @param amountAvailable the available amount of the resource for trading
      * @param amountNeeded the amount of the resource needed
-     * @param needAvailableFactor determine how need and available amount should be compared
      * @param averageSalary the average salary of the population
      */
-    @Suppress("SameParameterValue")
     private fun computeNewPrice(
         oldPrice: Double,
         amountAvailable: Double,
         amountNeeded: Double,
-        needAvailableFactor: Double,
         averageSalary: Double,
     ): Double {
+        // Determine how need and available amount should be compared
+        val needAvailableFactor: Double = 10.0
+
         val resourceRatio: Double = if (amountAvailable > 0.0) {
             amountNeeded * needAvailableFactor / amountAvailable
         } else {
