@@ -52,7 +52,7 @@ data class MutableFuelRestMassHistoryData(
                     turn
                 }
             }
-            val subHistory: List<MutableFuelRestMassData> = historyList.takeLast(turn)
+            val subHistory: List<MutableFuelRestMassData> = historyList.takeLast(actualTurn)
 
             // Check if the production is strictly increasing
             subHistory.mapIndexed { index, mutableFuelRestMassData ->
@@ -91,7 +91,7 @@ data class MutableFuelRestMassHistoryData(
                     turn
                 }
             }
-            val subHistory: List<MutableFuelRestMassData> = historyList.takeLast(turn)
+            val subHistory: List<MutableFuelRestMassData> = historyList.takeLast(actualTurn)
 
             val latestProductionFuel: Double = subHistory.last().production
 
