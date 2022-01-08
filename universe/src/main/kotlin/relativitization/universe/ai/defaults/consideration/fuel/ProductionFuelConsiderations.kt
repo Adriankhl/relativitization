@@ -32,8 +32,8 @@ class IncreasingProductionFuelConsideration(
             .getCurrentMutablePlayerData().playerInternalData.aiData().fuelRestMassHistoryData
 
         val isIncreasing: Boolean = fuelHistory.isProductionFuelIncreasing(
-            turn = 6,
-            turnCompare = 3,
+            turn = fuelHistory.maxStoredTurn,
+            turnCompare = fuelHistory.maxStoredTurn - 1,
             compareMultiplier = 1.0,
         )
 
