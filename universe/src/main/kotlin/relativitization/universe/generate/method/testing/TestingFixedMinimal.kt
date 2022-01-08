@@ -148,7 +148,7 @@ object TestingFixedMinimal : TestingGenerateUniverseMethod() {
         playerData1.playerInternalData.popSystemData().addSpaceShip(1.0, 100.0, 1000.0)
 
         // Add fuel and resource to player 1
-        playerData1.playerInternalData.physicsData().fuelRestMassData.production = 30.0
+        playerData1.playerInternalData.physicsData().fuelRestMassData.production = 1E100
         playerData1.playerInternalData.economyData().resourceData.getSingleResourceData(
             ResourceType.PLANT,
             ResourceQualityClass.FIRST
@@ -273,10 +273,10 @@ object TestingFixedMinimal : TestingGenerateUniverseMethod() {
         ).allPopData.labourerPopData.commonPopData.adultPopulation = 100.0
         playerData1.playerInternalData.popSystemData().carrierDataMap.getValue(
             0
-        ).allPopData.scholarPopData.commonPopData.adultPopulation = Double.MAX_VALUE * 1E-10
+        ).allPopData.scholarPopData.commonPopData.adultPopulation = 1E100 * 1E-10
         playerData1.playerInternalData.popSystemData().carrierDataMap.getValue(
             0
-        ).allPopData.engineerPopData.commonPopData.adultPopulation = Double.MAX_VALUE * 1E-10
+        ).allPopData.engineerPopData.commonPopData.adultPopulation = 1E100 * 1E-10
 
 
         // Add fuel factory to player 1
