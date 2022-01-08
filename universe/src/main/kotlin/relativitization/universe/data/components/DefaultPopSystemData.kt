@@ -6,6 +6,7 @@ import relativitization.universe.data.components.defaults.popsystem.CarrierData
 import relativitization.universe.data.components.defaults.popsystem.CarrierType
 import relativitization.universe.data.components.defaults.popsystem.MutableCarrierData
 import relativitization.universe.data.components.defaults.popsystem.MutableCarrierInternalData
+import relativitization.universe.data.components.defaults.popsystem.pop.MutableCommonPopData
 import relativitization.universe.data.components.defaults.popsystem.pop.PopType
 import relativitization.universe.maths.collection.ListFind
 import relativitization.universe.maths.random.Rand
@@ -183,4 +184,26 @@ data class MutablePopSystemData(
     }
 
     fun numCarrier(): Int = carrierDataMap.values.size
+
+    /**
+     * Compute average salary
+     */
+    fun averageSalary(): Double {
+        val totalSalary: Double = carrierDataMap.values.fold(0.0) { acc, mutableCarrierData ->
+            PopType.values().sumOf { popType ->
+                val commonPopData: MutableCommonPopData =
+                    mutableCarrierData.allPopData.getCommonPopData(popType)
+                commonPopData.salaryPerEmployee * commonPopData.adultPopulation *
+                        (1.0 - commonPopData.unemploymentRate)
+            }
+        }
+
+        val totalAdultPopulation : Double = totalAdultPopulation()
+
+        return if (totalAdultPopulation > 0.0) {
+            totalSalary / totalAdultPopulation
+        } else {
+            0.0
+        }
+    }
 }
