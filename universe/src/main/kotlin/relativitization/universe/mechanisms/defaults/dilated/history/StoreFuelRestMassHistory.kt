@@ -6,6 +6,7 @@ import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.components.MutableAIData
 import relativitization.universe.data.global.UniverseGlobalData
+import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.mechanisms.Mechanism
 
 object StoreFuelRestMassHistory : Mechanism() {
@@ -18,7 +19,9 @@ object StoreFuelRestMassHistory : Mechanism() {
         val aiData: MutableAIData = mutablePlayerData.playerInternalData.aiData()
 
         aiData.fuelRestMassHistoryData.addHistory(
-            mutablePlayerData.playerInternalData.physicsData().fuelRestMassData
+            DataSerializer.copy(
+                mutablePlayerData.playerInternalData.physicsData().fuelRestMassData
+            )
         )
 
         return listOf()
