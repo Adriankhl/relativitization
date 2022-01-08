@@ -468,6 +468,14 @@ class RemoveSpecificSelfResourceFactoryOption(
                 rankIfFalse = 0,
                 multiplierIfFalse = 0.0,
                 bonusIfFalse = 0.0
+            ),
+            IncreasingProductionFuelConsideration(
+                rankIfTrue = 0,
+                multiplierIfTrue = 1.0,
+                bonusIfTrue = 0.1,
+                rankIfFalse = 0,
+                multiplierIfFalse = 0.1,
+                bonusIfFalse = 0.0
             )
         )
     }
