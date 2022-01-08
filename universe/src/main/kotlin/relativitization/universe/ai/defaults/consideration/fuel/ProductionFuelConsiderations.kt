@@ -2,7 +2,6 @@ package relativitization.universe.ai.defaults.consideration.fuel
 
 import relativitization.universe.ai.defaults.utils.DualUtilityConsideration
 import relativitization.universe.ai.defaults.utils.DualUtilityData
-import relativitization.universe.ai.defaults.utils.DualUtilityDataFactory
 import relativitization.universe.ai.defaults.utils.PlanState
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.components.defaults.ai.MutableFuelRestMassHistoryData
@@ -32,9 +31,10 @@ class IncreasingProductionFuelConsideration(
         val fuelHistory: MutableFuelRestMassHistoryData = planDataAtPlayer
             .getCurrentMutablePlayerData().playerInternalData.aiData().fuelRestMassHistoryData
 
-        val isIncreasing: Boolean = fuelHistory.isLastProductionFuelGreaterThanAverage(
+        val isIncreasing: Boolean = fuelHistory.isProductionFuelIncreasing(
             turn = fuelHistory.maxStoredTurn,
-            compareFactor = 1.0,
+            turnCompare = fuelHistory.maxStoredTurn - 1,
+            compareMultiplier = 1.0,
         )
 
         return if (isIncreasing) {

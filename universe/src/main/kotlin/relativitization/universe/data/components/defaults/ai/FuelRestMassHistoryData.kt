@@ -4,7 +4,6 @@ import kotlinx.serialization.Serializable
 import relativitization.universe.data.components.defaults.physics.FuelRestMassData
 import relativitization.universe.data.components.defaults.physics.MutableFuelRestMassData
 import relativitization.universe.utils.RelativitizationLogManager
-import kotlin.math.log
 
 /**
  * Store the history of fuel rest mass data
@@ -14,13 +13,13 @@ import kotlin.math.log
  */
 @Serializable
 data class FuelRestMassHistoryData(
-    val maxStoredTurn: Int = 5,
+    val maxStoredTurn: Int = 6,
     val historyList: List<FuelRestMassData> = listOf(),
 )
 
 @Serializable
 data class MutableFuelRestMassHistoryData(
-    var maxStoredTurn: Int = 5,
+    var maxStoredTurn: Int = 6,
     val historyList: MutableList<MutableFuelRestMassData> = mutableListOf(),
 ) {
     fun addHistory(mutableFuelRestMassData: MutableFuelRestMassData) {
@@ -66,40 +65,61 @@ data class MutableFuelRestMassHistoryData(
     }
 
     /**
-     * Check whether the latest production fuel is greater than average times a factor
+     * Check whether the production fuel is increasing
      *
      * @param turn the number of turn to consider
-     * @param compareFactor compare the latest
+     * @param turnCompare the number of recent turn to compare with the history
+     * @param compareMultiplier compare the latest average to previous average times this multiplier
      */
-    fun isLastProductionFuelGreaterThanAverage(
+    fun isProductionFuelIncreasing(
         turn: Int,
-        compareFactor: Double,
+        turnCompare: Int,
+        compareMultiplier: Double,
     ): Boolean {
         return if (historyList.size <= 1) {
             true
         } else {
             val actualTurn: Int = when {
-                turn > historyList.size - 1 -> {
+                turn > historyList.size -> {
                     logger.debug("Reduce turn to history length")
-                    historyList.size - 1
+                    historyList.size
                 }
-                turn <= 0 -> {
-                    logger.error("Turn should be larger than 0")
-                    1
+                turn < 2 -> {
+                    logger.error("Turn should be larger than 1")
+                    2
                 }
                 else -> {
                     turn
                 }
             }
+
+            val actualCompareTurn: Int = when {
+                turnCompare > actualTurn - 1 -> {
+                    logger.debug("Reduce compareTurn to turn - 1")
+                    actualTurn - 1
+                }
+                turnCompare < 1 -> {
+                    logger.error("Turn should be larger than 0")
+                    1
+                }
+                else -> {
+                    turnCompare
+                }
+            }
+
             val subHistory: List<MutableFuelRestMassData> = historyList.takeLast(actualTurn)
 
-            val latestProductionFuel: Double = subHistory.last().production
-
-            val averageProductionFuel: Double  = subHistory.take(subHistory.size - 1).sumOf {
+            val latestProductionFuel: Double = subHistory.takeLast(actualCompareTurn).sumOf {
                 it.production
-            } / subHistory.size
+            } / actualCompareTurn
 
-            latestProductionFuel > averageProductionFuel * compareFactor
+            val previousProductionFuel: Double  = subHistory.take(
+                actualTurn - actualCompareTurn
+            ).sumOf {
+                it.production
+            } / (actualTurn - actualCompareTurn)
+
+            latestProductionFuel > previousProductionFuel * compareMultiplier
         }
     }
 
