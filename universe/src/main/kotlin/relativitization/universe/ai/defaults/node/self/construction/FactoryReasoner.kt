@@ -76,14 +76,11 @@ class BuildNewFuelFactoryOption(
         planState: PlanState
     ): List<DualUtilityConsideration> {
         // Build fuel factory if no fuel factory and no star
-        val noSelfFuelFactoryAndNoStarConsiderationList: List<NoSelfFuelFactoryAndNoStarConsideration> =
-            listOf(
-                NoSelfFuelFactoryAndNoStarConsideration(
-                    rankIfTrue = 5,
-                    multiplierIfTrue = 1.0,
-                    bonusIfTrue = 1.0
-                )
-            )
+        val noSelfFuelFactoryAndNoStarConsideration = NoSelfFuelFactoryAndNoStarConsideration(
+            rankIfTrue = 5,
+            multiplierIfTrue = 1.0,
+            bonusIfTrue = 1.0
+        )
 
         // Prioritize resource factory if no resource factory and has star
         val noSelfResourceFactoryAndHasStarConsiderationList: List<NoSelfResourceFactoryAndHasStarConsideration> =
@@ -96,22 +93,19 @@ class BuildNewFuelFactoryOption(
                 )
             }
 
-        val sufficientSelfFuelFactoryConsiderationList: List<SufficientSelfFuelFactoryConsideration> =
-            listOf(
-                SufficientSelfFuelFactoryConsideration(
-                    carrierId = carrierId,
-                    rankIfTrue = 0,
-                    multiplierIfTrue = 1.0,
-                    bonusIfTrue = 0.0,
-                    rankIfFalse = 1,
-                    multiplierIfFalse = 1.0,
-                    bonusIfFalse = 1.0
-                )
-            )
+        val sufficientSelfFuelFactoryConsideration = SufficientSelfFuelFactoryConsideration(
+            carrierId = carrierId,
+            rankIfTrue = 0,
+            multiplierIfTrue = 1.0,
+            bonusIfTrue = 0.0,
+            rankIfFalse = 1,
+            multiplierIfFalse = 1.0,
+            bonusIfFalse = 1.0
+        )
 
-        return noSelfFuelFactoryAndNoStarConsiderationList +
+        return listOf(noSelfFuelFactoryAndNoStarConsideration) +
                 noSelfResourceFactoryAndHasStarConsiderationList +
-                sufficientSelfFuelFactoryConsiderationList
+                listOf(sufficientSelfFuelFactoryConsideration)
     }
 
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
@@ -293,30 +287,28 @@ class BuildNewResourceFactoryOption(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<DualUtilityConsideration> {
-        val noSelfResourceFactoryConsiderationList: List<NoSelfResourceFactoryConsideration> = listOf(
-            NoSelfResourceFactoryConsideration(
-                resourceType = resourceType,
-                rankIfTrue = 5,
-                multiplierIfTrue = 1.0,
-                bonusIfTrue = 1.0
-            )
+        val noSelfResourceFactoryConsideration = NoSelfResourceFactoryConsideration(
+            resourceType = resourceType,
+            rankIfTrue = 5,
+            multiplierIfTrue = 1.0,
+            bonusIfTrue = 1.0
         )
 
-        val sufficientSelfResourceFactoryConsiderationList: List<SufficientSelfResourceFactoryConsideration> =
-            listOf(
-                SufficientSelfResourceFactoryConsideration(
-                    carrierId = carrierId,
-                    resourceType = resourceType,
-                    rankIfTrue = 0,
-                    multiplierIfTrue = 1.0,
-                    bonusIfTrue = 0.0,
-                    rankIfFalse = 1,
-                    multiplierIfFalse = 1.0,
-                    bonusIfFalse = 1.0
-                )
-            )
+        val sufficientSelfResourceFactoryConsideration = SufficientSelfResourceFactoryConsideration(
+            carrierId = carrierId,
+            resourceType = resourceType,
+            rankIfTrue = 0,
+            multiplierIfTrue = 1.0,
+            bonusIfTrue = 0.0,
+            rankIfFalse = 1,
+            multiplierIfFalse = 1.0,
+            bonusIfFalse = 1.0
+        )
 
-        return noSelfResourceFactoryConsiderationList + sufficientSelfResourceFactoryConsiderationList
+        return listOf(
+            noSelfResourceFactoryConsideration,
+            sufficientSelfResourceFactoryConsideration
+        )
     }
 
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
