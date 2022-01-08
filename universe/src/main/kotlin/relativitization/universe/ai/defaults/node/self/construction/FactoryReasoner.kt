@@ -1,6 +1,7 @@
 package relativitization.universe.ai.defaults.node.self.construction
 
 import relativitization.universe.ai.defaults.consideration.building.*
+import relativitization.universe.ai.defaults.consideration.fuel.IncreasingProductionFuelConsideration
 import relativitization.universe.ai.defaults.utils.*
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.commands.BuildForeignFuelFactoryCommand
@@ -228,6 +229,14 @@ class RemoveSpecificSelfFuelFactoryOption(
             bonusIfTrue = 0.0,
             rankIfFalse = 0,
             multiplierIfFalse = 0.0,
+            bonusIfFalse = 0.0
+        ),
+        IncreasingProductionFuelConsideration(
+            rankIfTrue = 0,
+            multiplierIfTrue = 1.0,
+            bonusIfTrue = 0.1,
+            rankIfFalse = 0,
+            multiplierIfFalse = 0.1,
             bonusIfFalse = 0.0
         )
     )
