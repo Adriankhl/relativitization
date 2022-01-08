@@ -44,7 +44,7 @@ class AdjustSalaryReasoner(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<DualUtilityOption> = listOf(
-        IncreaseSalaryOption(carrierId, popType),
+        IncreaseSalaryOption(carrierId, popType, totalAdultPopulation),
         DecreaseSalaryOption(carrierId, popType),
         GoodSalaryOption(carrierId, popType, totalAdultPopulation),
     )
@@ -56,6 +56,7 @@ class AdjustSalaryReasoner(
 class IncreaseSalaryOption(
     private val carrierId: Int,
     private val popType: PopType,
+    private val totalAdultPopulation: Double,
 ) : DualUtilityOption() {
     override fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer,
@@ -80,11 +81,28 @@ class IncreaseSalaryOption(
         // Multiply this to get the new salary
         val salaryMultiplier: Double = 1.25
 
-        val currentSalary: Double = planDataAtPlayer.getCurrentMutablePlayerData()
+        val commonPopData: MutableCommonPopData = planDataAtPlayer.getCurrentMutablePlayerData()
             .playerInternalData.popSystemData().carrierDataMap.getValue(carrierId).allPopData
-            .getCommonPopData(popType).salaryPerEmployee
+            .getCommonPopData(popType)
 
-        val newSalary: Double = min(maxSalary, currentSalary * salaryMultiplier)
+        val physicsData: MutablePhysicsData = planDataAtPlayer.getCurrentMutablePlayerData()
+            .playerInternalData.physicsData()
+
+        val currentSalary: Double = commonPopData.salaryPerEmployee
+
+        // Bound the salary by production fuel
+        val maxFuelAsSalaryPerEmployee: Double = if (totalAdultPopulation > 0.0) {
+            // Only use 0.1 of the production fuel as salary
+            0.1 * physicsData.fuelRestMassData.production / totalAdultPopulation
+        } else {
+            1.0
+        }
+
+        val newSalary: Double = listOf(
+            maxSalary,
+            currentSalary * salaryMultiplier,
+            maxFuelAsSalaryPerEmployee,
+        ).minOf { it }
 
         planDataAtPlayer.addCommand(
             ChangeSalaryCommand(
@@ -193,8 +211,8 @@ class GoodSalaryOption(
             acc + price * desireData.desireAmount
         }
 
-        // Max fuel as total salary
-        val maxFuel: Double = if (totalAdultPopulation > 0.0) {
+        // Bound the salary by production fuel
+        val maxFuelAsSalary: Double = if (totalAdultPopulation > 0.0) {
             // Only use 0.1 of the production fuel as salary
             0.1 * physicsData.fuelRestMassData.production * commonPopData.adultPopulation /
                     totalAdultPopulation
@@ -204,8 +222,10 @@ class GoodSalaryOption(
 
         if (commonPopData.adultPopulation > 0.0) {
             // Multiply by 1.1 so the pop can save their salary
-            val salaryPerAdultPopulation: Double = min(desireResourceFuelNeeded * 1.1, maxFuel) /
-                    commonPopData.adultPopulation
+            val salaryPerAdultPopulation: Double = min(
+                desireResourceFuelNeeded * 1.1,
+                maxFuelAsSalary
+            ) / commonPopData.adultPopulation
 
             planDataAtPlayer.addCommand(
                 ChangeSalaryCommand(
