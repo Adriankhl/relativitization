@@ -168,7 +168,16 @@ internal class RandomOneStarPerPlayerGenerateTest {
 
         val allPopData = finalView.getCurrentPlayerData().playerInternalData.popSystemData()
             .carrierDataMap.getValue(0).allPopData
+
+        val resourceData = finalView.getCurrentPlayerData().playerInternalData.economyData()
+            .resourceData
+
+        val fuelData = finalView.getCurrentPlayerData().playerInternalData.physicsData()
+            .fuelRestMassData
+
         allPopData.labourerPopData
+        resourceData.singleResourceMap
+        fuelData.production
 
         // Ensure population has grown
         // Currently doesn't work
