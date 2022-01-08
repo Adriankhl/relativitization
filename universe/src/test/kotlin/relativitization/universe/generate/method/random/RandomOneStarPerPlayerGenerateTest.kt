@@ -113,14 +113,14 @@ internal class RandomOneStarPerPlayerGenerateTest {
     }
 
     @Test
-    fun onePlayerLongRunTest() {
+    fun onePlayerHighInitialPopulationTest() {
         // Set the initial population to 1E8 to test how the ai do with a big population
         val generateSetting = GenerateSettings(
             generateMethod = RandomOneStarPerPlayerGenerate.name(),
             numPlayer = 1,
             numHumanPlayer = 1,
             numExtraStellarSystem = 3,
-            initialPopulation = 1E8,
+            initialPopulation = 1E7,
             universeSettings = MutableUniverseSettings(
                 universeName = "One player test",
                 mechanismCollectionName = DefaultMechanismLists.name(),
@@ -180,7 +180,7 @@ internal class RandomOneStarPerPlayerGenerateTest {
         middleFuelData.production
 
         runBlocking {
-            for (turn in 1..10) {
+            for (turn in 1..200) {
                 val aiCommandMap = universe.computeAICommands()
 
                 universe.postProcessUniverse(
@@ -215,6 +215,6 @@ internal class RandomOneStarPerPlayerGenerateTest {
 
         // Ensure population has grown
         // Currently doesn't work
-        //assert(allPopData.labourerPopData.commonPopData.adultPopulation > generateSetting.initialPopulation)
+        assert(allPopData.labourerPopData.commonPopData.adultPopulation > generateSetting.initialPopulation)
     }
 }
