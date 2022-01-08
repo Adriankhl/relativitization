@@ -56,11 +56,10 @@ class IncreaseSalaryOption(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<DualUtilityConsideration> {
-        TODO("Not yet implemented")
+        return listOf()
     }
 
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
-        TODO("Not yet implemented")
     }
 }
 
@@ -72,16 +71,15 @@ class DecreaseSalaryOption(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<DualUtilityConsideration> {
-        TODO("Not yet implemented")
+        return listOf()
     }
 
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
-        TODO("Not yet implemented")
     }
 }
 
 /**
- *
+ * Set the salary to a good value: higher than the desire if production fuel is sufficient
  */
 class GoodSalaryOption(
     private val carrierId: Int,
