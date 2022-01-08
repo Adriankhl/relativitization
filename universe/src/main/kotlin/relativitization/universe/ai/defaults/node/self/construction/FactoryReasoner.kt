@@ -314,9 +314,19 @@ class BuildNewResourceFactoryOption(
             bonusIfFalse = 1.0
         )
 
+        val increasingProductionFuelConsideration = IncreasingProductionFuelConsideration(
+            rankIfTrue = 0,
+            multiplierIfTrue = 1.0,
+            bonusIfTrue = 0.1,
+            rankIfFalse = 0,
+            multiplierIfFalse = 0.1,
+            bonusIfFalse = 0.0
+        )
+
         return listOf(
             noSelfResourceFactoryConsideration,
-            sufficientSelfResourceFactoryConsideration
+            sufficientSelfResourceFactoryConsideration,
+            increasingProductionFuelConsideration,
         )
     }
 
