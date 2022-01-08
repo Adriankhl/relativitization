@@ -378,7 +378,7 @@ object Employment : Mechanism() {
             // Decide employee and payment based on the remaining scholar and fuel
             if (availableFuel - payWithTax >= 0.0) {
                 // Update number of employee
-                it.lastNumEmployee = it.instituteInternalData.maxNumEmployee
+                it.lastNumEmployee = newNumEmployee
 
                 // Pay salary and tax here
                 fuelRestMassData.production -= payWithTax
@@ -450,7 +450,7 @@ object Employment : Mechanism() {
             // Decide employee and payment based on the remaining scholar and fuel
             if (availableFuel - payWithTax >= 0.0) {
                 // Update number of employee
-                it.lastNumEmployee = it.laboratoryInternalData.maxNumEmployee
+                it.lastNumEmployee = newNumEmployee
 
                 // Pay salary and tax here
                 fuelRestMassData.production -= payWithTax
