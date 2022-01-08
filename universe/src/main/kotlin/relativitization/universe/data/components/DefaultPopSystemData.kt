@@ -190,7 +190,7 @@ data class MutablePopSystemData(
      */
     fun averageSalary(): Double {
         val totalSalary: Double = carrierDataMap.values.fold(0.0) { acc, mutableCarrierData ->
-            PopType.values().sumOf { popType ->
+            acc + PopType.values().sumOf { popType ->
                 val commonPopData: MutableCommonPopData =
                     mutableCarrierData.allPopData.getCommonPopData(popType)
                 commonPopData.salaryPerEmployee * commonPopData.adultPopulation *
