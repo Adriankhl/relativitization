@@ -94,7 +94,7 @@ class BuildNewFuelFactoryOption(
                 )
             }
 
-        val sufficientSelfFuelFactoryConsideration = SufficientSelfFuelFactoryConsideration(
+        val sufficientSelfFuelFactoryConsideration = SufficientSelfFuelFactoryAtCarrierConsideration(
             carrierId = carrierId,
             rankIfTrue = 0,
             multiplierIfTrue = 1.0,
@@ -222,7 +222,7 @@ class RemoveSpecificSelfFuelFactoryOption(
             rankIfTrue = 1,
             multiplierIfTrue = 1.0
         ),
-        SufficientSelfFuelFactoryConsideration(
+        SufficientSelfFuelFactoryAtCarrierConsideration(
             carrierId = carrierId,
             rankIfTrue = 0,
             multiplierIfTrue = 1.0,
@@ -303,7 +303,7 @@ class BuildNewResourceFactoryOption(
             bonusIfTrue = 1.0
         )
 
-        val sufficientSelfResourceFactoryConsideration = SufficientSelfResourceFactoryConsideration(
+        val sufficientSelfResourceFactoryConsideration = SufficientSelfResourceFactoryAtCarrierConsideration(
             carrierId = carrierId,
             resourceType = resourceType,
             rankIfTrue = 0,
@@ -459,7 +459,7 @@ class RemoveSpecificSelfResourceFactoryOption(
                 rankIfTrue = 1,
                 multiplierIfTrue = 1.0
             ),
-            SufficientSelfResourceFactoryConsideration(
+            SufficientSelfResourceFactoryAtCarrierConsideration(
                 carrierId = carrierId,
                 resourceType = resourceType,
                 rankIfTrue = 0,

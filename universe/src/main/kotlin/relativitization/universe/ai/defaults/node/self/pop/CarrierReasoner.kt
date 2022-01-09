@@ -2,6 +2,7 @@ package relativitization.universe.ai.defaults.node.self.pop
 
 import relativitization.universe.ai.defaults.utils.*
 import relativitization.universe.data.PlanDataAtPlayer
+import relativitization.universe.data.components.defaults.economy.ResourceType
 
 class CarrierReasoner : DualUtilityReasoner() {
     override fun getOptionList(
@@ -17,7 +18,9 @@ class CreateCarrierOption : DualUtilityOption() {
     override fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
-    ): List<DualUtilityConsideration> = listOf()
+    ): List<DualUtilityConsideration> {
+        return listOf()
+    }
 
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
     }
