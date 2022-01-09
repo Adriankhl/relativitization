@@ -1,3 +1,6 @@
+# Fix
+* Education level, and the impact on production, avoid zero production
+
 # Keep it simple
 * Only one dimension in resource quality
 * Besides factory and research, other pop functionalities depend on size only.
