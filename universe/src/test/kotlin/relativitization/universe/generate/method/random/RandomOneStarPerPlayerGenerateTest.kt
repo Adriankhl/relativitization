@@ -114,7 +114,7 @@ internal class RandomOneStarPerPlayerGenerateTest {
 
     @Test
     fun onePlayerHighInitialPopulationTest() {
-        // Set the initial population to 1E8 to test how the ai do with a big population
+        // Set the initial population to 1E8 to test how the AI do with a big population
         val generateSetting = GenerateSettings(
             generateMethod = RandomOneStarPerPlayerGenerate.name(),
             numPlayer = 1,
@@ -175,9 +175,12 @@ internal class RandomOneStarPerPlayerGenerateTest {
         val middleFuelData = middleView.getCurrentPlayerData().playerInternalData.physicsData()
             .fuelRestMassData
 
+        val middleCarrierData = middleView.getCurrentPlayerData().playerInternalData.popSystemData().carrierDataMap
+
         middleAllPopData.labourerPopData
         middleResourceData.singleResourceMap
         middleFuelData.production
+        middleCarrierData[0]
 
         runBlocking {
             for (turn in 1..200) {
@@ -208,10 +211,12 @@ internal class RandomOneStarPerPlayerGenerateTest {
             .resourceData
         val fuelData = finalView.getCurrentPlayerData().playerInternalData.physicsData()
             .fuelRestMassData
+        val carrierData = finalView.getCurrentPlayerData().playerInternalData.popSystemData().carrierDataMap
 
         allPopData.labourerPopData
         resourceData.singleResourceMap
         fuelData.production
+        carrierData[0]
 
         // Ensure population has grown
         // Currently doesn't work
