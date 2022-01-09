@@ -241,7 +241,7 @@ data class MutableCommonPopData(
             satisfaction = (adultPopulation * satisfaction +
                     otherPopulation * otherSatisfaction) / totalAdultPopulation
             saving += otherSaving
-            adultPopulation += totalAdultPopulation
+            adultPopulation = totalAdultPopulation
         }
     }
 
