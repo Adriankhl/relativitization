@@ -1,6 +1,7 @@
 package relativitization.universe.ai.defaults.node.self.carrier
 
 import relativitization.universe.ai.defaults.consideration.building.SufficientLabourerEmploymentConsideration
+import relativitization.universe.ai.defaults.consideration.carrier.NumberOfSpaceShipConsideration
 import relativitization.universe.ai.defaults.consideration.carrier.SufficientPopulationRatioConsideration
 import relativitization.universe.ai.defaults.consideration.fuel.SufficientProductionFuelConsideration
 import relativitization.universe.ai.defaults.utils.*
@@ -43,20 +44,6 @@ class CreateCarrierOption : DualUtilityOption() {
             )
 
         return listOf(
-            SufficientPopulationRatioConsideration(
-                ratio = 0.1,
-                rankIfTrue = 1,
-                multiplierIfTrue = 1.0,
-                bonusIfTrue = 1.0
-            ),
-            SufficientLabourerEmploymentConsideration(
-                rankIfTrue = 0,
-                multiplierIfTrue = 1.0,
-                bonusIfTrue = 0.0,
-                rankIfFalse = 0,
-                multiplierIfFalse = 0.0,
-                bonusIfFalse = 0.0
-            ),
             SufficientProductionFuelConsideration(
                 requiredProductionFuelRestMass = maxFuelNeeded,
                 rankIfTrue = 1,
@@ -74,6 +61,20 @@ class CreateCarrierOption : DualUtilityOption() {
                 rankIfFalse = 0,
                 multiplierIfFalse = 0.0,
                 bonusIfFalse = 0.0
+            ),
+            SufficientLabourerEmploymentConsideration(
+                rankIfTrue = 0,
+                multiplierIfTrue = 1.0,
+                bonusIfTrue = 0.0,
+                rankIfFalse = 0,
+                multiplierIfFalse = 0.0,
+                bonusIfFalse = 0.0
+            ),
+            NumberOfSpaceShipConsideration(
+                initialMultiplier = 2.0,
+                exponent = 0.5,
+                rank = 1,
+                bonus = 0.0
             )
         )
     }
