@@ -67,12 +67,12 @@ class IncreaseSalaryOption(
     ): List<DualUtilityConsideration> {
         return listOf(
             IncreasingProductionFuelConsideration(
-                rankIfTrue = 5,
+                rankIfTrue = 1,
                 multiplierIfTrue = 1.0,
                 bonusIfTrue = 1.0,
-                rankIfFalse = 1,
-                multiplierIfFalse = 1.0,
-                bonusIfFalse = 1.0
+                rankIfFalse = 0,
+                multiplierIfFalse = 0.0,
+                bonusIfFalse = 0.0
             )
         )
     }
@@ -134,10 +134,10 @@ class DecreaseSalaryOption(
     ): List<DualUtilityConsideration> {
         return listOf(
             IncreasingProductionFuelConsideration(
-                rankIfTrue = 1,
-                multiplierIfTrue = 1.0,
-                bonusIfTrue = 1.0,
-                rankIfFalse = 5,
+                rankIfTrue = 0,
+                multiplierIfTrue = 0.0,
+                bonusIfTrue = 0.0,
+                rankIfFalse = 1,
                 multiplierIfFalse = 1.0,
                 bonusIfFalse = 1.0
             )
@@ -182,7 +182,7 @@ class GoodSalaryOption(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<DualUtilityConsideration> = listOf(
-        PlainDualUtilityConsideration(1, 1.0, 0.01)
+        PlainDualUtilityConsideration(1, 1.0, 0.1)
     )
 
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
