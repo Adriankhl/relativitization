@@ -1,4 +1,4 @@
-package relativitization.universe.ai.defaults.node.self.pop
+package relativitization.universe.ai.defaults.node.self.carrier
 
 import relativitization.universe.ai.defaults.consideration.building.SufficientLabourerEmploymentConsideration
 import relativitization.universe.ai.defaults.consideration.carrier.SufficientPopulationRatioConsideration

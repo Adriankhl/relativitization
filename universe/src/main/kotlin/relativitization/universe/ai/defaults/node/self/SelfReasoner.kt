@@ -4,7 +4,7 @@ import relativitization.universe.ai.defaults.node.self.construction.FactoryReaso
 import relativitization.universe.ai.defaults.node.self.construction.InstituteReasoner
 import relativitization.universe.ai.defaults.node.self.construction.LaboratoryReasoner
 import relativitization.universe.ai.defaults.node.self.event.EventReasoner
-import relativitization.universe.ai.defaults.node.self.pop.CarrierReasoner
+import relativitization.universe.ai.defaults.node.self.carrier.CarrierReasoner
 import relativitization.universe.ai.defaults.node.self.pop.SalaryReasoner
 import relativitization.universe.ai.defaults.node.self.storage.BalanceFuelReasoner
 import relativitization.universe.ai.defaults.node.self.storage.BalanceResourceReasoner
