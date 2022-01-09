@@ -210,16 +210,9 @@ object ResourceFactoryProduction : Mechanism() {
             0.0
         )
 
-        // Modifier by education level
-        val educationLevel: Double = (labourerPopData.commonPopData.educationLevel)
-        val educationLevelMultiplier: Double = when {
-            educationLevel > 1.0 -> 1.0
-            educationLevel < 0.0 -> 0.0
-            else -> educationLevel
-        }
 
         // Prevent smaller than zero
-        return max(minFaction, 0.0) * educationLevelMultiplier
+        return max(minFaction, 0.0)
     }
 
     /**
@@ -264,6 +257,7 @@ object ResourceFactoryProduction : Mechanism() {
      */
     fun productQuality(
         resourceFactoryData: MutableResourceFactoryData,
+        labourerPopData: MutableLabourerPopData,
         inputResourceQualityClassMap: Map<ResourceType, ResourceQualityClass>,
         resourceData: MutableResourceData,
     ): MutableResourceQualityData {
@@ -284,7 +278,16 @@ object ResourceFactoryProduction : Mechanism() {
             fractionList.average()
         }
 
-        return resourceFactoryData.resourceFactoryInternalData.maxOutputResourceQualityData * avgFraction
+        // Modifier by education level
+        val educationLevel: Double = (labourerPopData.commonPopData.educationLevel)
+        val educationLevelMultiplier: Double = when {
+            educationLevel > 1.0 -> 1.0
+            educationLevel < 0.0 -> 0.0
+            else -> educationLevel
+        }
+
+        return resourceFactoryData.resourceFactoryInternalData.maxOutputResourceQualityData *
+                avgFraction * educationLevelMultiplier
     }
 
     /**
@@ -322,6 +325,7 @@ object ResourceFactoryProduction : Mechanism() {
         // Output quality
         val outputQuality: MutableResourceQualityData = productQuality(
             mutableResourceFactoryData,
+            mutableLabourerPopData,
             qualityClassMap,
             resourceData
         )
@@ -403,6 +407,7 @@ object ResourceFactoryProduction : Mechanism() {
         // Output quality
         val outputQuality: MutableResourceQualityData = productQuality(
             mutableResourceFactoryData,
+            mutableLabourerPopData,
             qualityClassMap,
             resourceData
         )
