@@ -143,6 +143,9 @@ internal class RandomOneStarPerPlayerGenerateTest {
             "."
         )
 
+        val initialAdultPopulation: Double = universe.getUniverse3DViewAtPlayer(1).get(1)
+            .playerInternalData.popSystemData().totalAdultPopulation()
+
         runBlocking {
             for (turn in 1..100) {
                 val aiCommandMap = universe.computeAICommands()
@@ -211,6 +214,7 @@ internal class RandomOneStarPerPlayerGenerateTest {
             .resourceData
         val fuelData = finalView.getCurrentPlayerData().playerInternalData.physicsData()
             .fuelRestMassData
+        val popSystemData = finalView.getCurrentPlayerData().playerInternalData.popSystemData()
         val carrierData = finalView.getCurrentPlayerData().playerInternalData.popSystemData().carrierDataMap
 
         allPopData.labourerPopData
@@ -218,8 +222,9 @@ internal class RandomOneStarPerPlayerGenerateTest {
         fuelData.production
         carrierData[0]
 
+        val totalAdultPopulation: Double = popSystemData.totalAdultPopulation()
+
         // Ensure population has grown
-        // Currently doesn't work
-        assert(allPopData.labourerPopData.commonPopData.adultPopulation > generateSetting.initialPopulation)
+        assert(totalAdultPopulation > initialAdultPopulation)
     }
 }
