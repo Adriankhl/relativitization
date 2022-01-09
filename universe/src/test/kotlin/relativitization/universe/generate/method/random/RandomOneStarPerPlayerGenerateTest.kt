@@ -13,6 +13,7 @@ import relativitization.universe.global.DefaultGlobalMechanismList
 import relativitization.universe.global.name
 import relativitization.universe.mechanisms.DefaultMechanismLists
 import relativitization.universe.mechanisms.name
+import kotlin.test.Ignore
 import kotlin.test.Test
 
 internal class RandomOneStarPerPlayerGenerateTest {
@@ -112,7 +113,7 @@ internal class RandomOneStarPerPlayerGenerateTest {
         }
     }
 
-    @Test
+    @Ignore
     fun onePlayerHighInitialPopulationTest() {
         // Set the initial population to 1E8 to test how the AI do with a big population
         val generateSetting = GenerateSettings(
