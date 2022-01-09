@@ -5,8 +5,10 @@ import relativitization.universe.ai.defaults.utils.*
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.commands.ChangeSalaryCommand
 import relativitization.universe.data.components.MutablePhysicsData
+import relativitization.universe.data.components.MutablePopSystemData
 import relativitization.universe.data.components.defaults.economy.MutableResourceData
 import relativitization.universe.data.components.defaults.economy.ResourceQualityClass
+import relativitization.universe.data.components.defaults.popsystem.MutableCarrierData
 import relativitization.universe.data.components.defaults.popsystem.pop.MutableCommonPopData
 import relativitization.universe.data.components.defaults.popsystem.pop.MutableResourceDesireData
 import relativitization.universe.data.components.defaults.popsystem.pop.PopType
@@ -19,20 +21,34 @@ class SalaryReasoner : SequenceReasoner() {
         planState: PlanState
     ): List<AINode> {
 
-        val totalAdultPopulation: Double = planDataAtPlayer.getCurrentMutablePlayerData()
-            .playerInternalData.popSystemData().totalAdultPopulation()
+        val popSystemData: MutablePopSystemData = planDataAtPlayer.getCurrentMutablePlayerData()
+            .playerInternalData.popSystemData()
 
-        val adjustSalaryReasonerList: List<AdjustSalaryReasoner> =
-            planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData
-                .popSystemData().carrierDataMap.keys.map { carrierId ->
-                    PopType.values().map { popType ->
-                        AdjustSalaryReasoner(
-                            carrierId,
-                            popType,
-                            totalAdultPopulation,
-                        )
-                    }
-                }.flatten()
+        val totalAdultPopulation: Double = popSystemData.totalAdultPopulation()
+
+        // Compute the order of the ratio between population and ideal population for all carrier
+        // Carrier with lower ratio should have a higher salary to attract immigrant
+        val populationRatioOrder: List<Int> = popSystemData.carrierDataMap.keys.sortedByDescending {
+            val carrier: MutableCarrierData = popSystemData.carrierDataMap.getValue(it)
+            if (carrier.carrierInternalData.idealPopulation > 0.0) {
+                carrier.allPopData.totalAdultPopulation() /
+                        carrier.carrierInternalData.idealPopulation
+            } else {
+                1.0
+            }
+        }
+
+        val adjustSalaryReasonerList: List<AdjustSalaryReasoner> = popSystemData.carrierDataMap
+            .keys.map { carrierId ->
+                PopType.values().map { popType ->
+                    AdjustSalaryReasoner(
+                        carrierId,
+                        popType,
+                        totalAdultPopulation,
+                        populationRatioOrder,
+                    )
+                }
+            }.flatten()
 
         return adjustSalaryReasonerList
     }
@@ -42,6 +58,7 @@ class AdjustSalaryReasoner(
     private val carrierId: Int,
     private val popType: PopType,
     private val totalAdultPopulation: Double,
+    private val populationRatioOrder: List<Int>,
 ) : DualUtilityReasoner() {
     override fun getOptionList(
         planDataAtPlayer: PlanDataAtPlayer,
@@ -49,7 +66,7 @@ class AdjustSalaryReasoner(
     ): List<DualUtilityOption> = listOf(
         IncreaseSalaryOption(carrierId, popType, totalAdultPopulation),
         DecreaseSalaryOption(carrierId, popType),
-        GoodSalaryOption(carrierId, popType, totalAdultPopulation),
+        GoodSalaryOption(carrierId, popType, totalAdultPopulation, populationRatioOrder),
     )
 }
 
@@ -177,6 +194,7 @@ class GoodSalaryOption(
     private val carrierId: Int,
     private val popType: PopType,
     private val totalAdultPopulation: Double,
+    private val populationRatioOrder: List<Int>,
 ) : DualUtilityOption() {
     override fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer,
@@ -223,10 +241,17 @@ class GoodSalaryOption(
             1.0
         }
 
+        // Compute an extra factor determined by the order of population ratio to enhance migration
+        val populationOrderRatioFactor: Double = 1.0 + if (populationRatioOrder.isNotEmpty()) {
+            0.05 + 0.05 * populationRatioOrder.indexOf(carrierId) / populationRatioOrder.size
+        } else {
+            0.1
+        }
+
         if (commonPopData.adultPopulation > 0.0) {
             // Multiply by 1.1 so the pop can save their salary
             val salaryPerAdultPopulation: Double = min(
-                desireResourceFuelNeeded * 1.1,
+                desireResourceFuelNeeded * populationOrderRatioFactor,
                 maxFuelAsSalary
             ) / commonPopData.adultPopulation
 
