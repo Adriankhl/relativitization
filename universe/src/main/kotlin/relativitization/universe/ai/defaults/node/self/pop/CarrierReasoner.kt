@@ -6,7 +6,6 @@ import relativitization.universe.ai.defaults.consideration.fuel.SufficientProduc
 import relativitization.universe.ai.defaults.utils.*
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.commands.BuildLocalCarrierCommand
-import relativitization.universe.data.components.defaults.economy.ResourceType
 import relativitization.universe.data.components.defaults.physics.MutableFuelRestMassData
 import relativitization.universe.data.components.defaults.science.application.MutableScienceApplicationData
 import kotlin.math.pow
@@ -29,10 +28,18 @@ class CreateCarrierOption : DualUtilityOption() {
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<DualUtilityConsideration> {
-        // Fuel needed to build a low quality carrier2
-        val fuelNeeded: Double = planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData
-            .playerScienceData().playerScienceApplicationData.newSpaceshipFuelNeededByConstruction(
-                0.1
+        // Fuel needed to build a highest quality ship
+        val maxFuelNeeded: Double = planDataAtPlayer.getCurrentMutablePlayerData()
+            .playerInternalData.playerScienceData().playerScienceApplicationData
+            .newSpaceshipFuelNeededByConstruction(
+                1.0
+            )
+
+        // Fuel needed to build a lowest quality ship
+        val minFuelNeeded: Double = planDataAtPlayer.getCurrentMutablePlayerData()
+            .playerInternalData.playerScienceData().playerScienceApplicationData
+            .newSpaceshipFuelNeededByConstruction(
+                0.0
             )
 
         return listOf(
@@ -43,20 +50,29 @@ class CreateCarrierOption : DualUtilityOption() {
                 bonusIfTrue = 1.0
             ),
             SufficientLabourerEmploymentConsideration(
-                rankIfTrue = 1,
+                rankIfTrue = 0,
                 multiplierIfTrue = 1.0,
-                bonusIfTrue = 0.1,
+                bonusIfTrue = 0.0,
                 rankIfFalse = 0,
                 multiplierIfFalse = 0.0,
                 bonusIfFalse = 0.0
             ),
             SufficientProductionFuelConsideration(
-                requiredProductionFuelRestMass = fuelNeeded,
+                requiredProductionFuelRestMass = maxFuelNeeded,
                 rankIfTrue = 1,
                 multiplierIfTrue = 10.0,
                 bonusIfTrue = 1.0,
                 rankIfFalse = 1,
                 multiplierIfFalse = 0.1,
+                bonusIfFalse = 1.0
+            ),
+            SufficientProductionFuelConsideration(
+                requiredProductionFuelRestMass = minFuelNeeded,
+                rankIfTrue = 0,
+                multiplierIfTrue = 1.0,
+                bonusIfTrue = 0.0,
+                rankIfFalse = 0,
+                multiplierIfFalse = 0.0,
                 bonusIfFalse = 0.0
             )
         )
