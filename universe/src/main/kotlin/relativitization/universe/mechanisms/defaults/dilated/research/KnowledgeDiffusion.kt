@@ -28,9 +28,19 @@ object KnowledgeDiffusion : Mechanism() {
         val basicResearchDiffusionProb: Double = 0.01
         val appliedResearchDiffusionProb: Double = 0.001
 
+        // Same top leader benefit
+        val sameTopLeaderMultiplier: Double = 5.0
+
         universeData3DAtPlayer.getNeighbour(diffusionRange).forEach { playerData ->
+            val actualBasicResearchDiffusionProb: Double =
+                if (playerData.topLeaderId() == mutablePlayerData.topLeaderId()) {
+                basicResearchDiffusionProb * sameTopLeaderMultiplier
+            } else {
+                basicResearchDiffusionProb
+            }
+
             computeBasicResearchDiffusion(
-                basicResearchDiffusionProb,
+                actualBasicResearchDiffusionProb,
                 mutablePlayerData.playerInternalData.playerScienceData(),
                 playerData.playerInternalData.playerScienceData(),
             ).forEach {
@@ -40,8 +50,15 @@ object KnowledgeDiffusion : Mechanism() {
                 )
             }
 
+            val actualAppliedResearchDiffusionProb: Double =
+                if (playerData.topLeaderId() == mutablePlayerData.topLeaderId()) {
+                    appliedResearchDiffusionProb * sameTopLeaderMultiplier
+                } else {
+                    appliedResearchDiffusionProb
+                }
+
             computeAppliedResearchDiffusion(
-                appliedResearchDiffusionProb,
+                actualAppliedResearchDiffusionProb,
                 mutablePlayerData.playerInternalData.playerScienceData(),
                 playerData.playerInternalData.playerScienceData(),
             ).forEach {
