@@ -7,9 +7,9 @@ import relativitization.universe.data.commands.Command
 import relativitization.universe.data.components.defaults.popsystem.pop.MutableCommonPopData
 import relativitization.universe.data.components.defaults.popsystem.pop.PopType
 import relativitization.universe.data.global.UniverseGlobalData
+import relativitization.universe.maths.random.Rand
 import relativitization.universe.mechanisms.Mechanism
 import kotlin.math.min
-import relativitization.universe.maths.random.Rand
 
 /**
  * Population migrate from higher salary place to lower salary place
@@ -37,7 +37,7 @@ object Migration : Mechanism() {
             ).toMutableList()
 
             repeat(carrierIdList.size) {
-                if (carrierIdList.size >= 2 ) {
+                if (carrierIdList.size >= 2) {
                     val emigrateId: Int = carrierIdList.minByOrNull {
                         val commonPop: MutableCommonPopData = commonPopMap.getValue(it)
                         commonPop.salaryPerEmployee * (1.0 - commonPop.unemploymentRate)
@@ -79,10 +79,15 @@ object Migration : Mechanism() {
         immigrateCarrierIdealPop: Double,
         migrationRate: Double,
     ) {
-        val immigrateAmount: Double = min(
-            immigrateCarrierIdealPop * migrationRate,
-            emigrateCommonPop.adultPopulation * migrationRate
-        )
+        val immigrateAmount: Double =
+            if (immigrateCommonPop.adultPopulation < immigrateCarrierIdealPop) {
+                min(
+                    (immigrateCarrierIdealPop - immigrateCommonPop.adultPopulation) * migrationRate,
+                    emigrateCommonPop.adultPopulation * migrationRate
+                )
+            } else {
+                0.0
+            }
 
         val otherSaving: Double = if (emigrateCommonPop.adultPopulation > 0.0) {
             emigrateCommonPop.saving * immigrateAmount / emigrateCommonPop.adultPopulation
@@ -90,11 +95,11 @@ object Migration : Mechanism() {
             0.0
         }
 
-       immigrateCommonPop.addAdultPopulation(
-           otherPopulation = immigrateAmount,
-           otherEducationLevel = emigrateCommonPop.educationLevel,
-           otherSatisfaction = emigrateCommonPop.satisfaction,
-           otherSaving = otherSaving,
-       )
+        immigrateCommonPop.addAdultPopulation(
+            otherPopulation = immigrateAmount,
+            otherEducationLevel = emigrateCommonPop.educationLevel,
+            otherSatisfaction = emigrateCommonPop.satisfaction,
+            otherSaving = otherSaving,
+        )
     }
 }
