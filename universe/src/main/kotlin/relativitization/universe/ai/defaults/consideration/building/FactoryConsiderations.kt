@@ -426,3 +426,63 @@ class SufficientSelfResourceFactoryAtCarrierConsideration(
         }
     }
 }
+
+/**
+ * Check if there are sufficient employment position in all labourer
+ *
+ * @property rankIfTrue rank of dual utility if this is true
+ * @property multiplierIfTrue multiplier of dual utility if this is true
+ * @property bonusIfTrue bonus of dual utility if this is true
+ * @property rankIfFalse rank of dual utility if this is false
+ * @property multiplierIfFalse multiplier of dual utility if this is false
+ * @property bonusIfFalse bonus of dual utility if this is false
+ */
+class SufficientLabourerEmploymentConsideration(
+    private val rankIfTrue: Int,
+    private val multiplierIfTrue: Double,
+    private val bonusIfTrue: Double,
+    private val rankIfFalse: Int,
+    private val multiplierIfFalse: Double,
+    private val bonusIfFalse: Double,
+) : DualUtilityConsideration {
+    override fun getDualUtilityData(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planState: PlanState
+    ): DualUtilityData {
+        val isSufficient: Boolean = planDataAtPlayer.getCurrentMutablePlayerData()
+            .playerInternalData.popSystemData().carrierDataMap.values.all { mutableCarrierData ->
+                val popAmount: Double =
+                    mutableCarrierData.allPopData.labourerPopData.commonPopData.adultPopulation
+                val fuelFactoryEmploymentAmount: Double =
+                    mutableCarrierData.allPopData.labourerPopData.fuelFactoryMap.values.fold(
+                        0.0
+                    ) { acc, mutableFuelFactoryData ->
+                        acc + mutableFuelFactoryData.fuelFactoryInternalData.maxNumEmployee *
+                                mutableFuelFactoryData.numBuilding
+                    }
+                val resourceFactoryEmploymentAmount: Double =
+                    mutableCarrierData.allPopData.labourerPopData.resourceFactoryMap.values.fold(
+                        0.0
+                    ) { acc, mutableResourceFactoryData ->
+                        acc + mutableResourceFactoryData.resourceFactoryInternalData.maxNumEmployee *
+                                mutableResourceFactoryData.numBuilding
+                    }
+
+                fuelFactoryEmploymentAmount + resourceFactoryEmploymentAmount >= popAmount
+            }
+
+        return if (isSufficient) {
+            DualUtilityData(
+                rank = rankIfTrue,
+                multiplier = multiplierIfTrue,
+                bonus = bonusIfTrue
+            )
+        } else {
+            DualUtilityData(
+                rank = rankIfFalse,
+                multiplier = multiplierIfFalse,
+                bonus = bonusIfFalse
+            )
+        }
+    }
+}
