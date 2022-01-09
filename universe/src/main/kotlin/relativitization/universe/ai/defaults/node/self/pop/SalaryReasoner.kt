@@ -19,19 +19,22 @@ class SalaryReasoner : SequenceReasoner() {
         planState: PlanState
     ): List<AINode> {
 
-       val totalAdultPopulation: Double = planDataAtPlayer.getCurrentMutablePlayerData()
+        val totalAdultPopulation: Double = planDataAtPlayer.getCurrentMutablePlayerData()
             .playerInternalData.popSystemData().totalAdultPopulation()
 
-        return planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData
-            .popSystemData().carrierDataMap.keys.map { carrierId ->
-                PopType.values().map { popType ->
-                    AdjustSalaryReasoner(
-                        carrierId,
-                        popType,
-                        totalAdultPopulation,
-                    )
-                }
-            }.flatten()
+        val adjustSalaryReasonerList: List<AdjustSalaryReasoner> =
+            planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData
+                .popSystemData().carrierDataMap.keys.map { carrierId ->
+                    PopType.values().map { popType ->
+                        AdjustSalaryReasoner(
+                            carrierId,
+                            popType,
+                            totalAdultPopulation,
+                        )
+                    }
+                }.flatten()
+
+        return adjustSalaryReasonerList
     }
 }
 
@@ -111,7 +114,7 @@ class IncreaseSalaryOption(
                 fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
                 carrierId = carrierId,
                 popType = popType,
-                salary =  newSalary,
+                salary = newSalary,
             )
         )
     }
@@ -161,7 +164,7 @@ class DecreaseSalaryOption(
                 fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
                 carrierId = carrierId,
                 popType = popType,
-                salary =  newSalary,
+                salary = newSalary,
             )
         )
     }
