@@ -6,6 +6,7 @@ import relativitization.universe.ai.defaults.utils.DualUtilityDataFactory
 import relativitization.universe.ai.defaults.utils.PlanState
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.components.defaults.popsystem.CarrierType
+import kotlin.math.pow
 
 /**
  * Check if there is no spaceship
@@ -33,5 +34,36 @@ class NoSpaceShipConsideration(
         } else {
             DualUtilityData(rank = rankIfTrue, multiplier = multiplierIfTrue, bonus = bonusIfTrue)
         }
+    }
+}
+
+/**
+ * Decrease the multiplier exponentially as the number of spaceship increases
+ *
+ * @property initialMultiplier the multiplier when there is 0 spaceship
+ * @property exponent exponentially modify the multiplier as the number of spaceship increases
+ * @property rank rank of dual utility
+ * @property bonus bonus of dual utility
+ */
+class NumberOfSpaceShipConsideration(
+    private val initialMultiplier: Double,
+    private val exponent: Double,
+    private val rank: Int,
+    private val bonus: Double,
+) : DualUtilityConsideration {
+    override fun getDualUtilityData(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planState: PlanState
+    ): DualUtilityData {
+        val numSpaceShip: Int = planDataAtPlayer.getCurrentMutablePlayerData()
+            .playerInternalData.popSystemData().carrierDataMap.values.filter {
+                it.carrierType == CarrierType.SPACESHIP
+            }.size
+
+        return DualUtilityData(
+            rank = rank,
+            multiplier = initialMultiplier * exponent.pow(numSpaceShip),
+            bonus = bonus,
+        )
     }
 }
