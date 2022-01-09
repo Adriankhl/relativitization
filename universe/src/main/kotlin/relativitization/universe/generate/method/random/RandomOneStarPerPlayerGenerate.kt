@@ -345,7 +345,7 @@ object RandomOneStarPerPlayerGenerate : RandomGenerateUniverseMethod() {
 
             // Add fuel to the player
             mutablePlayerData.playerInternalData.physicsData().targetFuelRestMassData.storage = 1E9
-            mutablePlayerData.playerInternalData.physicsData().addFuel(5E7)
+            mutablePlayerData.playerInternalData.physicsData().addFuel(1E9)
 
             // Use default mechanisms to update player data
 
