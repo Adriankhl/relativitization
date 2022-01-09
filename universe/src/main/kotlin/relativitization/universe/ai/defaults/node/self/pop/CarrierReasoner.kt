@@ -5,7 +5,11 @@ import relativitization.universe.ai.defaults.consideration.carrier.SufficientPop
 import relativitization.universe.ai.defaults.consideration.fuel.SufficientProductionFuelConsideration
 import relativitization.universe.ai.defaults.utils.*
 import relativitization.universe.data.PlanDataAtPlayer
+import relativitization.universe.data.commands.BuildLocalCarrierCommand
 import relativitization.universe.data.components.defaults.economy.ResourceType
+import relativitization.universe.data.components.defaults.physics.MutableFuelRestMassData
+import relativitization.universe.data.components.defaults.science.application.MutableScienceApplicationData
+import kotlin.math.pow
 
 class CarrierReasoner : DualUtilityReasoner() {
     override fun getOptionList(
@@ -59,5 +63,29 @@ class CreateCarrierOption : DualUtilityOption() {
     }
 
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
+
+        val scienceApplicationData: MutableScienceApplicationData = planDataAtPlayer
+            .getCurrentMutablePlayerData().playerInternalData
+            .playerScienceData().playerScienceApplicationData
+
+        val fuelData: MutableFuelRestMassData = planDataAtPlayer
+            .getCurrentMutablePlayerData().playerInternalData.physicsData().fuelRestMassData
+
+        // Find the suitable quality to build the new spaceship
+        val qualityLevel: Double = (0..20).map {
+            1.0 / 2.0.pow(it)
+        }.firstOrNull {
+            fuelData.production > scienceApplicationData.newSpaceshipFuelNeededByConstruction(it)
+        } ?: 0.0
+
+        // Search for quality that
+        planDataAtPlayer.addCommand(
+            BuildLocalCarrierCommand(
+                toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+                fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+                fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
+                qualityLevel = qualityLevel,
+            )
+        )
     }
 }
