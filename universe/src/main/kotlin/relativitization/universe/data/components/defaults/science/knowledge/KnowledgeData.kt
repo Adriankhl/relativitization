@@ -42,7 +42,7 @@ data class MutableKnowledgeData(
         function: (BasicResearchProjectData, MutableBasicResearchData) -> Unit
     ) {
         if (basicResearchIdList.contains(basicResearchProjectData.basicResearchId) ||
-            basicResearchProjectData.basicResearchId < startFromAppliedResearchId
+            basicResearchProjectData.basicResearchId < startFromBasicResearchId
         ) {
             logger.error("Duplicate basic research id ${basicResearchProjectData.basicResearchId}, skip this")
         } else {
