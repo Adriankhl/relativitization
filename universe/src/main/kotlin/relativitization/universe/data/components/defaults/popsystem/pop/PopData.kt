@@ -234,10 +234,15 @@ data class MutableCommonPopData(
         otherSatisfaction: Double,
         otherSaving: Double
     ) {
-        educationLevel = adultPopulation * educationLevel + otherPopulation * otherEducationLevel
-        satisfaction = adultPopulation * satisfaction + otherPopulation * otherSatisfaction
-        saving += otherSaving
-        adultPopulation += otherPopulation
+        val totalAdultPopulation: Double = adultPopulation + otherPopulation
+        if (totalAdultPopulation > 0.0) {
+            educationLevel = (adultPopulation * educationLevel +
+                    otherPopulation * otherEducationLevel) / totalAdultPopulation
+            satisfaction = (adultPopulation * satisfaction +
+                    otherPopulation * otherSatisfaction) / totalAdultPopulation
+            saving += otherSaving
+            adultPopulation += totalAdultPopulation
+        }
     }
 
     companion object {
