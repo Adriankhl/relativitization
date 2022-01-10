@@ -510,32 +510,22 @@ class RemoveSpecificSelfResourceFactoryOption(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<DualUtilityConsideration> {
-        val resourceType: ResourceType = planDataAtPlayer.getCurrentMutablePlayerData()
-            .playerInternalData.popSystemData().carrierDataMap.getValue(carrierId).allPopData
-            .labourerPopData.resourceFactoryMap.getValue(resourceFactoryId)
-            .resourceFactoryInternalData.outputResource
         return listOf(
             SufficientSelfResourceFactoryAfterRemoveConsideration(
-                resourceType = resourceType,
-                rankIfTrue = 0,
-                multiplierIfTrue = 0.0,
-                bonusIfTrue = 0.0
-            ),
-            OutdatedResourceFactoryConsideration(
                 carrierId = carrierId,
                 resourceFactoryId = resourceFactoryId,
-                rankIfTrue = 1,
-                multiplierIfTrue = 1.0
-            ),
-            SufficientSelfResourceFactoryAtCarrierConsideration(
-                carrierId = carrierId,
-                resourceType = resourceType,
                 rankIfTrue = 0,
                 multiplierIfTrue = 1.0,
                 bonusIfTrue = 0.0,
                 rankIfFalse = 0,
                 multiplierIfFalse = 0.0,
                 bonusIfFalse = 0.0
+            ),
+            OutdatedResourceFactoryConsideration(
+                carrierId = carrierId,
+                resourceFactoryId = resourceFactoryId,
+                rankIfTrue = 1,
+                multiplierIfTrue = 1.0
             ),
             IncreasingProductionFuelConsideration(
                 rankIfTrue = 0,
