@@ -30,6 +30,7 @@ data class MutableWarData(
  * @property proposePeace whether this player desire peace for this war
  * @property startTime what integer time does this war start
  * @property warTargetTopLeaderId the top leader Id of the war target, should be detected by mechanism
+ * @property isAttacker whether this player is an attacker of this war
  */
 @Serializable
 data class WarStateData(
@@ -37,6 +38,7 @@ data class WarStateData(
     val proposePeace: Boolean = false,
     val startTime: Int = 0,
     val warTargetTopLeaderId: Int = -1,
+    val isAttacker: Boolean = false,
 )
 
 @Serializable
@@ -45,4 +47,5 @@ data class MutableWarStateData(
     var proposePeace: Boolean = false,
     var startTime: Int = 0,
     var warTargetTopLeaderId: Int = -1,
+    var isAttacker: Boolean = false,
 )

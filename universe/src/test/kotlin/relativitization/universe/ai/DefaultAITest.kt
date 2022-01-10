@@ -106,6 +106,7 @@ internal class DefaultAITest {
         allPopData.labourerPopData
         resourceData.singleResourceMap
         fuelData.production
+        popSystemData.carrierDataMap
         carrierData[0]
 
         val totalAdultPopulation: Double = finalView.playerDataMap.values.sumOf {
