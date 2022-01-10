@@ -122,11 +122,23 @@ class BuildNewFuelFactoryOption(
             bonusIfFalse = 0.0
         )
 
+        val tooManySelfFuelFactoryAtCarrierConsideration =
+            TooManySelfFuelFactoryAtCarrierConsideration(
+                carrierId = carrierId,
+                rankIfTrue = 0,
+                multiplierIfTrue = 1.0,
+                bonusIfTrue = 0.0,
+                rankIfFalse = 0,
+                multiplierIfFalse = 0.1,
+                bonusIfFalse = 0.0
+            )
+
         return listOf(noSelfFuelFactoryAndNoStarConsideration) +
                 noSelfResourceFactoryAndHasStarConsiderationList +
                 listOf(
                     sufficientSelfFuelFactoryAtCarrierConsideration,
                     sufficientProductionFuelConsideration,
+                    tooManySelfFuelFactoryAtCarrierConsideration,
                 )
     }
 
