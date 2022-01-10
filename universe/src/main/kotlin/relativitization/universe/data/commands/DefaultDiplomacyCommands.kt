@@ -78,7 +78,7 @@ data class DeclareWarCommand(
 
         playerData.playerInternalData.diplomacyData().warData.getWarStateData(
             toId
-        ).isAttacker = true
+        ).isOffensive = true
     }
 
     override fun canExecute(
@@ -116,7 +116,7 @@ data class DeclareWarCommand(
 
         playerData.playerInternalData.diplomacyData().warData.getWarStateData(
             toId
-        ).isAttacker = false
+        ).isOffensive = false
     }
 }
 
@@ -197,7 +197,7 @@ data class DeclareIndependenceCommand(
 
         playerData.playerInternalData.diplomacyData().warData.getWarStateData(
             toId
-        ).isAttacker = true
+        ).isOffensive = true
     }
 
 
@@ -238,7 +238,7 @@ data class DeclareIndependenceCommand(
 
         playerData.playerInternalData.diplomacyData().warData.getWarStateData(
             toId
-        ).isAttacker = false
+        ).isOffensive = false
     }
 }
 

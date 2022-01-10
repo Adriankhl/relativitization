@@ -20,6 +20,18 @@ object UpdateDiplomaticRelationState : Mechanism() {
         universeGlobalData: UniverseGlobalData
     ): List<Command> {
 
+        val inSelfOffensiveWarSet: Set<Int> = mutablePlayerData.playerInternalData.diplomacyData()
+            .warData.warStateMap.filter { it.value.isOffensive }.keys
+
+        val inSelfDefensiveWarSet: Set<Int> = mutablePlayerData.playerInternalData.diplomacyData()
+            .warData.warStateMap.filter { !it.value.isOffensive }.keys
+
+        val inSubordinateDefensiveWarSet: Set<Int> = mutablePlayerData.playerInternalData
+            .subordinateIdList.map { id ->
+                universeData3DAtPlayer.get(id).playerInternalData.diplomacyData()
+                    .warData.warStateMap.filter { !it.value.isOffensive }.keys
+            }.flatten().toSet()
+
         // Treat top leader and subordinate differently
         if (mutablePlayerData.isTopLeader()) {
             val inWarSet: Set<Int> =
