@@ -19,6 +19,7 @@ data class DeclareWarCommand(
         listOf(
             NormalString("Declare war on "),
             IntString(0),
+            NormalString(". "),
         ),
         listOf(
             toId.toString(),
@@ -132,6 +133,7 @@ data class DeclareIndependenceCommand(
         listOf(
             NormalString("Declare independence and war on "),
             IntString(0),
+            NormalString(". "),
         ),
         listOf(
             toId.toString(),
@@ -257,6 +259,7 @@ data class ProposePeaceCommand(
         listOf(
             NormalString("Propose peace with "),
             IntString(0),
+            NormalString(". "),
         ),
         listOf(
             targetPlayerId.toString(),
