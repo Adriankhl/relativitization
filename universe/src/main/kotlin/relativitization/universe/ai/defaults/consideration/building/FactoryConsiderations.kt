@@ -263,7 +263,7 @@ class TooManySelfFuelFactoryAtCarrierConsideration(
             acc + resourceFactory.resourceFactoryInternalData.maxNumEmployee * resourceFactory.numBuilding
         }
 
-        // Sufficient if fuel factory position is more than half of the labourer population
+        // Too many if self fuel employee is more than all other employee
         return if (selfFuelFactoryMaxEmployee > selfResourceFactoryMaxEmployee) {
             DualUtilityData(
                 rank = rankIfTrue,
@@ -462,6 +462,7 @@ class OutdatedResourceFactoryConsideration(
  * Check if self resource factory is sufficient
  *
  * @property carrierId the id of the carrier to consider
+ * @property resourceType the type of resource of the factory
  * @property rankIfTrue rank of dual utility if this is true
  * @property multiplierIfTrue multiplier of dual utility if this is true
  * @property bonusIfTrue bonus of dual utility if this is true
@@ -504,6 +505,78 @@ class SufficientSelfResourceFactoryAtCarrierConsideration(
 
         // Sufficient if fuel factory position is more than 0.1 of the labourer population
         return if (totalMaxEmployee >= totalLabourerPopulation * 0.1) {
+            DualUtilityData(
+                rank = rankIfTrue,
+                multiplier = multiplierIfTrue,
+                bonus = bonusIfTrue
+            )
+        } else {
+            DualUtilityData(
+                rank = rankIfFalse,
+                multiplier = multiplierIfFalse,
+                bonus = bonusIfFalse
+            )
+        }
+    }
+}
+
+/**
+ * Check if there is too many self resource factory compare to all self factory
+ *
+ * @property carrierId the id of the carrier to consider
+ * @property resourceType the type of resource of the factory
+ * @property rankIfTrue rank of dual utility if this is true
+ * @property multiplierIfTrue multiplier of dual utility if this is true
+ * @property bonusIfTrue bonus of dual utility if this is true
+ * @property rankIfFalse rank of dual utility if this is false
+ * @property multiplierIfFalse multiplier of dual utility if this is false
+ * @property bonusIfFalse bonus of dual utility if this is false
+ */
+class TooManySelfResourceFactoryAtCarrierConsideration(
+    private val carrierId: Int,
+    private val resourceType: ResourceType,
+    private val rankIfTrue: Int,
+    private val multiplierIfTrue: Double,
+    private val bonusIfTrue: Double,
+    private val rankIfFalse: Int,
+    private val multiplierIfFalse: Double,
+    private val bonusIfFalse: Double,
+) : DualUtilityConsideration {
+    override fun getDualUtilityData(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planState: PlanState
+    ): DualUtilityData {
+        val carrier: MutableCarrierData = planDataAtPlayer.getCurrentMutablePlayerData()
+            .playerInternalData.popSystemData().carrierDataMap.getValue(carrierId)
+
+        val selfFuelFactoryList: List<MutableFuelFactoryData> =
+            carrier.allPopData.labourerPopData.fuelFactoryMap.values.filter {
+                it.ownerPlayerId == planDataAtPlayer.getCurrentMutablePlayerData().playerId
+            }
+
+        val selfResourceFactoryList: List<MutableResourceFactoryData> =
+            carrier.allPopData.labourerPopData.resourceFactoryMap.values.filter {
+                it.ownerPlayerId == planDataAtPlayer.getCurrentMutablePlayerData().playerId
+            }
+
+        val (thisResourceFactoryList, otherResourceFactoryList) = selfResourceFactoryList.partition {
+            it.resourceFactoryInternalData.outputResource == resourceType
+        }
+
+        val thisResourceMaxEmployee: Double = thisResourceFactoryList.fold(0.0) { acc, resourceFactory ->
+            acc + resourceFactory.resourceFactoryInternalData.maxNumEmployee * resourceFactory.numBuilding
+        }
+
+        val selfFuelFactoryMaxEmployee: Double = selfFuelFactoryList.fold(0.0) { acc, fuelFactory ->
+            acc + fuelFactory.fuelFactoryInternalData.maxNumEmployee * fuelFactory.numBuilding
+        }
+
+        val otherResourceFactoryMaxEmployee: Double = otherResourceFactoryList.fold(0.0) { acc, resourceFactory ->
+            acc + resourceFactory.resourceFactoryInternalData.maxNumEmployee * resourceFactory.numBuilding
+        }
+
+        // Too many if this resource employee is more than 0.1 of all other employee
+        return if (thisResourceMaxEmployee > (selfFuelFactoryMaxEmployee + otherResourceFactoryMaxEmployee) * 0.1) {
             DualUtilityData(
                 rank = rankIfTrue,
                 multiplier = multiplierIfTrue,
