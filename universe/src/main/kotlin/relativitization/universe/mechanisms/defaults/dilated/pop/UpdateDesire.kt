@@ -169,7 +169,7 @@ object UpdateDesire : Mechanism() {
             )
         } else {
             originalDesire.desireQuality.changeTo(
-                MutableResourceQualityData(0.0, 0.0, 0.0),
+                MutableResourceQualityData(0.0),
                 desireQualityUpdateFactor,
                 desireQualityUpdateMinDiff,
             )

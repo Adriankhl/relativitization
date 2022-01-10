@@ -337,35 +337,25 @@ data class MutableResourceData(
 @Serializable
 data class ResourceQualityData(
     val quality1: Double = 0.0,
-    val quality2: Double = 0.0,
-    val quality3: Double = 0.0,
 ) {
     operator fun plus(other: ResourceQualityData): ResourceQualityData =
         ResourceQualityData(
             quality1 + other.quality1,
-            quality2 + other.quality2,
-            quality3 + other.quality3,
         )
 
 
     operator fun plus(other: MutableResourceQualityData): ResourceQualityData =
         ResourceQualityData(
             quality1 + other.quality1,
-            quality2 + other.quality2,
-            quality3 + other.quality3,
         )
 
     operator fun plus(num: Double): ResourceQualityData =
         ResourceQualityData(
             quality1 + num,
-            quality2 + num,
-            quality3 + num,
         )
 
     operator fun times(d: Double): ResourceQualityData = ResourceQualityData(
         quality1 * d,
-        quality2 * d,
-        quality3 * d,
     )
 
     /**
@@ -376,27 +366,15 @@ data class ResourceQualityData(
             quality1 / d
         } else {
             0.0
-        },
-        if (quality2!= 0.0) {
-            quality2 / d
-        } else {
-            0.0
-        },
-        if (quality3!= 0.0) {
-            quality3 / d
-        } else {
-            0.0
-        },
+        }
     )
 
-    fun square(): Double = quality1 * quality1 + quality2 * quality2 + quality3 * quality3
+    fun square(): Double = quality1 * quality1
 
     fun mag(): Double = sqrt(square())
 
     fun toMutableResourceQualityData(): MutableResourceQualityData = MutableResourceQualityData(
         quality1,
-        quality2,
-        quality3
     )
 
 
@@ -404,63 +382,49 @@ data class ResourceQualityData(
      * Greater than or equal
      */
     fun geq(other: ResourceQualityData): Boolean {
-        return (quality1 >= other.quality1) && (quality2 >= other.quality2) &&
-                (quality3 >= other.quality3)
+        return (quality1 >= other.quality1)
     }
 
     /**
      * Less than or equal
      */
     fun leq(other: ResourceQualityData): Boolean {
-        return (quality1 <= other.quality1) && (quality2 <= other.quality2) &&
-                (quality3 <= other.quality3)
+        return (quality1 <= other.quality1)
     }
 
     /**
      * Resource difference
      */
     fun squareDiff(other: ResourceQualityData): Double {
-        return (quality1 - other.quality1).pow(2) + (quality2 - other.quality2).pow(2) +
-                (quality3 - other.quality3).pow(2)
+        return (quality1 - other.quality1).pow(2)
     }
 
     fun squareDiff(other: MutableResourceQualityData): Double {
-        return (quality1 - other.quality1).pow(2) + (quality2 - other.quality2).pow(2) +
-                (quality3 - other.quality3).pow(2)
+        return (quality1 - other.quality1).pow(2)
     }
 }
 
 @Serializable
 data class MutableResourceQualityData(
     var quality1: Double = 0.0,
-    var quality2: Double = 0.0,
-    var quality3: Double = 0.0,
 ) {
     operator fun plus(other: MutableResourceQualityData): MutableResourceQualityData =
         MutableResourceQualityData(
             quality1 + other.quality1,
-            quality2 + other.quality2,
-            quality3 + other.quality3,
         )
 
     operator fun plus(num: Double): MutableResourceQualityData =
         MutableResourceQualityData(
             quality1 + num,
-            quality2 + num,
-            quality3 + num,
         )
 
     operator fun minus(other: MutableResourceQualityData): MutableResourceQualityData =
         MutableResourceQualityData(
             quality1 - other.quality1,
-            quality2 - other.quality2,
-            quality3 - other.quality3,
         )
 
     operator fun times(d: Double): MutableResourceQualityData = MutableResourceQualityData(
         quality1 * d,
-        quality2 * d,
-        quality3 * d,
     )
 
     /**
@@ -472,19 +436,9 @@ data class MutableResourceQualityData(
         } else {
             0.0
         },
-        if (quality2!= 0.0) {
-            quality2 / d
-        } else {
-            0.0
-        },
-        if (quality3!= 0.0) {
-            quality3 / d
-        } else {
-            0.0
-        },
     )
 
-    fun square(): Double = quality1 * quality1 + quality2 * quality2 + quality3 * quality3
+    fun square(): Double = quality1 * quality1
 
     fun mag(): Double = sqrt(square())
 
@@ -504,8 +458,6 @@ data class MutableResourceQualityData(
         val delta2: MutableResourceQualityData = (other - this)
         val delta3: MutableResourceQualityData = MutableResourceQualityData(
             quality1 = 1.0 * delta1.quality1.sign,
-            quality2 = 1.0 * delta1.quality2.sign,
-            quality3 = 1.0 * delta1.quality3.sign,
         ) * minChange
 
         val deltaQuality1: Double = if (abs(delta1.quality1) > minChange) {
@@ -516,33 +468,13 @@ data class MutableResourceQualityData(
             delta2.quality1
         }
 
-        val deltaQuality2: Double = if (abs(delta1.quality2) > minChange) {
-            delta1.quality2
-        } else if (abs(delta2.quality2) > minChange) {
-            delta3.quality2
-        } else {
-            delta2.quality2
-        }
-
-        val deltaQuality3: Double = if (abs(delta1.quality3) > minChange) {
-            delta1.quality3
-        } else if (abs(delta2.quality3) > minChange) {
-            delta3.quality3
-        } else {
-            delta2.quality3
-        }
-
         return MutableResourceQualityData(
             quality1 + deltaQuality1,
-            quality2 + deltaQuality2,
-            quality3 + deltaQuality3
         )
     }
 
     fun toResourceQualityData(): ResourceQualityData = ResourceQualityData(
         quality1,
-        quality2,
-        quality3
     )
 
     fun updateQuality(
@@ -553,10 +485,6 @@ data class MutableResourceQualityData(
         if (originalAmount + newAmount > 0.0) {
             quality1 = (originalAmount * quality1 + newAmount * newData.quality1) /
                     (originalAmount + newAmount)
-            quality2 = (originalAmount * quality2 + newAmount * newData.quality2) /
-                    (originalAmount + newAmount)
-            quality3 = (originalAmount * quality3 + newAmount * newData.quality3) /
-                    (originalAmount + newAmount)
         } else {
             logger.debug("Add 0 new resource to 0 original resource")
         }
@@ -566,16 +494,14 @@ data class MutableResourceQualityData(
      * Greater than or equal
      */
     fun geq(other: MutableResourceQualityData): Boolean {
-        return (quality1 >= other.quality1) && (quality2 >= other.quality2) &&
-                (quality3 >= other.quality3)
+        return (quality1 >= other.quality1)
     }
 
     /**
      * Less than or equal
      */
     fun leq(other: MutableResourceQualityData): Boolean {
-        return (quality1 <= other.quality1) && (quality2 <= other.quality2) &&
-                (quality3 <= other.quality3)
+        return (quality1 <= other.quality1)
     }
 
     /**
@@ -589,8 +515,6 @@ data class MutableResourceQualityData(
     fun combineMin(other: MutableResourceQualityData): MutableResourceQualityData {
         return MutableResourceQualityData(
             quality1 = min(quality1, other.quality1),
-            quality2 = min(quality2, other.quality2),
-            quality3 = min(quality3, other.quality3)
         )
     }
 
@@ -600,8 +524,6 @@ data class MutableResourceQualityData(
     fun combineMax(other: MutableResourceQualityData): MutableResourceQualityData {
         return MutableResourceQualityData(
             quality1 = max(quality1, other.quality1),
-            quality2 = max(quality2, other.quality2),
-            quality3 = max(quality3, other.quality3)
         )
     }
 

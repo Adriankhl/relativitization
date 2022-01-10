@@ -127,7 +127,6 @@ object ResourceFactoryProduction : Mechanism() {
      */
     fun productAmountFraction(
         resourceFactoryData: MutableResourceFactoryData,
-        labourerPopData: MutableLabourerPopData,
         inputResourceQualityClassMap: Map<ResourceType, ResourceQualityClass>,
         physicsData: MutablePhysicsData,
         resourceData: MutableResourceData,
@@ -230,23 +229,7 @@ object ResourceFactoryProduction : Mechanism() {
             1.0
         }
 
-        val r2: Double = if (
-            (actualQuality.quality2 < requiredQuality.quality2) && (requiredQuality.quality2 > 0.0)
-        ) {
-            actualQuality.quality2 / requiredQuality.quality2
-        } else {
-            1.0
-        }
-
-        val r3: Double = if (
-            (actualQuality.quality3 < requiredQuality.quality3) && (requiredQuality.quality3 > 0.0)
-        ) {
-            actualQuality.quality3 / requiredQuality.quality3
-        } else {
-            1.0
-        }
-
-        return (r1 + r2 + r3) / 3.0
+        return r1
     }
 
     /**
@@ -315,7 +298,6 @@ object ResourceFactoryProduction : Mechanism() {
 
         val amountFraction: Double = productAmountFraction(
             mutableResourceFactoryData,
-            mutableLabourerPopData,
             qualityClassMap,
             physicsData,
             resourceData,
@@ -397,7 +379,6 @@ object ResourceFactoryProduction : Mechanism() {
 
         val amountFraction: Double = productAmountFraction(
             mutableResourceFactoryData,
-            mutableLabourerPopData,
             qualityClassMap,
             physicsData,
             resourceData,

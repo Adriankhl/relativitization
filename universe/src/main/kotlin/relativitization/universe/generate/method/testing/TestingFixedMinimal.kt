@@ -162,8 +162,6 @@ object TestingFixedMinimal : TestingGenerateUniverseMethod() {
             ResourceType.PLANT,
             MutableResourceQualityData(
                 1.0,
-                2.0,
-                3.0
             ),
             5.0,
         )
@@ -257,8 +255,6 @@ object TestingFixedMinimal : TestingGenerateUniverseMethod() {
                 outputResource = ResourceType.PLANT,
                 maxOutputResourceQualityData = MutableResourceQualityData(
                     quality1 = 0.0,
-                    quality2 = 0.0,
-                    quality3 = 0.0,
                 ),
                 maxOutputAmount = 1.0,
                 inputResourceMap = mutableMapOf(),
