@@ -13,6 +13,7 @@ import relativitization.universe.data.components.defaults.economy.ResourceType
 import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.MutableFuelFactoryInternalData
 import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.MutableResourceFactoryInternalData
 import relativitization.universe.data.serializer.DataSerializer
+import relativitization.universe.maths.random.Rand
 import kotlin.math.min
 
 class FactoryReasoner : SequenceReasoner() {
@@ -210,7 +211,7 @@ class RemoveFuelFactoryReasoner : SequenceReasoner() {
                     // Only consider self fuel factory
                     carrierData.allPopData.labourerPopData.fuelFactoryMap.filter { (_, fuelFactory) ->
                         fuelFactory.ownerPlayerId == planDataAtPlayer.getCurrentMutablePlayerData().playerId
-                    }.map { (fuelFactoryId, _) ->
+                    }.keys.shuffled(Rand.rand()).map { fuelFactoryId ->
                         RemoveSpecificSelfFuelFactoryReasoner(carrierId, fuelFactoryId)
                     }
                 }.flatten()
@@ -437,7 +438,7 @@ class RemoveResourceFactoryReasoner(
                         val isSelf: Boolean =
                             resourceFactory.ownerPlayerId == planDataAtPlayer.getCurrentMutablePlayerData().playerId
                         isThisResource && isSelf
-                    }.map { (resourceFactoryId, _) ->
+                    }.keys.shuffled(Rand.rand()).map { resourceFactoryId ->
                         RemoveSpecificSelfResourceFactoryReasoner(carrierId, resourceFactoryId)
                     }
                 }.flatten()
