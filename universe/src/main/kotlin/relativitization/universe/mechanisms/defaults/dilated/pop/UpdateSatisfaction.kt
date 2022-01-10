@@ -184,16 +184,12 @@ object UpdateSatisfaction : Mechanism() {
         val originalSatisfaction: Double = mutableCommonPopData.satisfaction
 
 
-        val amountFactor: Double = amountFractionList.fold(1.0) { acc, d ->
-            acc * d
-        }
+        val amountFactor: Double = amountFractionList.minOfOrNull { it } ?: 1.0
 
         // Modify quality factor based on amount factor
         // If amount factor is small, the impact from quality should be small
         val qualityFactorWithoutAmountConsideration: Double =
-            qualityExponentDiffList.fold(1.0) { acc, d ->
-                acc * d
-            }
+            qualityExponentDiffList.minOfOrNull { it } ?: 1.0
         val qualityFactor: Double = if (amountFactor > 1.0) {
             qualityFactorWithoutAmountConsideration
         } else {
@@ -211,7 +207,7 @@ object UpdateSatisfaction : Mechanism() {
         }
         val unevennessBonus: Double = when {
             unevennessDiff > unevennessDiffReference -> unevennessMaxBonus
-            unevennessDiff < -unevennessDiffReference -> unevennessMaxBonus
+            unevennessDiff < -unevennessDiffReference -> -unevennessMaxBonus
             else -> unevennessMaxBonus * unevennessDiff / unevennessDiffReference
         }
 
