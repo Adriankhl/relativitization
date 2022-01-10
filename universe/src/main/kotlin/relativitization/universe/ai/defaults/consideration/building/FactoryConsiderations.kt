@@ -503,7 +503,7 @@ class SufficientSelfResourceFactoryAtCarrierConsideration(
         val totalLabourerPopulation: Double =
             carrier.allPopData.labourerPopData.commonPopData.adultPopulation
 
-        // Sufficient if fuel factory position is more than 0.1 of the labourer population
+        // Sufficient if resource factory position is more than 0.1 of the labourer population
         return if (totalMaxEmployee >= totalLabourerPopulation * 0.1) {
             DualUtilityData(
                 rank = rankIfTrue,

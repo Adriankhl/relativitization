@@ -326,6 +326,9 @@ class BuildNewResourceFactoryOption(
     private val resourceType: ResourceType,
     private val carrierId: Int,
 ) : DualUtilityOption() {
+    // Max production fuel fraction used to build the factory
+    private val maxProductionFuelFraction: Double = 0.1
+
     override fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -342,7 +345,7 @@ class BuildNewResourceFactoryOption(
                 carrierId = carrierId,
                 resourceType = resourceType,
                 rankIfTrue = 0,
-                multiplierIfTrue = 1.0,
+                multiplierIfTrue = 0.1,
                 bonusIfTrue = 0.0,
                 rankIfFalse = 1,
                 multiplierIfFalse = 1.0,
@@ -358,10 +361,37 @@ class BuildNewResourceFactoryOption(
             bonusIfFalse = 0.0
         )
 
+        val minFuelNeeded: Double = planDataAtPlayer.getCurrentMutablePlayerData()
+            .playerInternalData.playerScienceData().playerScienceApplicationData
+            .newResourceFactoryFuelNeededByConstruction(resourceType, 1.0)
+        val sufficientProductionFuelConsideration = SufficientProductionFuelConsideration(
+            requiredProductionFuelRestMass = minFuelNeeded / maxProductionFuelFraction,
+            rankIfTrue = 0,
+            multiplierIfTrue = 1.0,
+            bonusIfTrue = 0.0,
+            rankIfFalse = 0,
+            multiplierIfFalse = 0.0,
+            bonusIfFalse = 0.0
+        )
+
+        val tooManyResourceFuelFactoryAtCarrierConsideration =
+            TooManySelfResourceFactoryAtCarrierConsideration(
+                carrierId = carrierId,
+                resourceType = resourceType,
+                rankIfTrue = 0,
+                multiplierIfTrue = 1.0,
+                bonusIfTrue = 0.0,
+                rankIfFalse = 0,
+                multiplierIfFalse = 0.1,
+                bonusIfFalse = 0.0
+            )
+
         return listOf(
             noSelfResourceFactoryConsideration,
             sufficientSelfResourceFactoryAtCarrierConsideration,
             increasingProductionFuelConsideration,
+            sufficientProductionFuelConsideration,
+            tooManyResourceFuelFactoryAtCarrierConsideration,
         )
     }
 
@@ -386,19 +416,23 @@ class BuildNewResourceFactoryOption(
             .playerInternalData.physicsData().fuelRestMassData.production
 
         // Don't use all the fuel
-        val maxUsableFuel: Double = fuelAvailable * 0.1
+        val maxUsableFuel: Double = fuelAvailable * maxProductionFuelFraction
 
         val numLabourer: Double = planDataAtPlayer.getCurrentMutablePlayerData()
             .playerInternalData.popSystemData().carrierDataMap.getValue(carrierId).allPopData
             .labourerPopData.commonPopData.adultPopulation
 
         // Multiply by 10 to consider pop growth
-        val targetNumLabourerPerResource: Double = numLabourer / ResourceType.values().size * 10.0
+        val targetNumLabourerPerResource: Double = numLabourer / ResourceType.values().size * 0.5
 
         // Compute the numBuilding by considering the available fuel and number of labourer
         val fuelFraction: Double = maxUsableFuel / fuelNeededPerBuilding
         val labourerFraction: Double = targetNumLabourerPerResource / idealFactory.maxNumEmployee
-        val numBuilding: Double = min(fuelFraction, labourerFraction)
+        val numBuilding: Double = listOf(
+            fuelFraction,
+            labourerFraction,
+            1.0
+        ).minOf { it }
 
 
         planDataAtPlayer.addCommand(
