@@ -53,8 +53,14 @@ object EntertainmentProduction : Mechanism() {
             entertainerPopData.commonPopData.satisfaction
         }
 
-        val educationFactor: Double = entertainerPopData.commonPopData.educationLevel
+        // Modifier by education level, range from 0.5 to 1.5
+        val educationLevel: Double = (entertainerPopData.commonPopData.educationLevel)
+        val educationLevelMultiplier: Double = when {
+            educationLevel > 1.0 -> 1.5
+            educationLevel < 0.0 -> 0.5
+            else -> educationLevel + 0.5
+        }
 
-        return idealEntertainmentQuality * satisfactionFactor * educationFactor
+        return idealEntertainmentQuality * satisfactionFactor * educationLevelMultiplier
     }
 }

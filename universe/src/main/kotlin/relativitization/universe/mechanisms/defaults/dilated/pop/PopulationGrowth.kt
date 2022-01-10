@@ -103,7 +103,12 @@ object PopulationGrowth : Mechanism() {
 
         val educationFactor: Double =
             if (popType == PopType.SCHOLAR || popType == PopType.ENGINEER) {
-                (educationLevel - 0.5) * 2.0
+                // Modifier by education level, range from 0.5 to 1.5
+                when {
+                    educationLevel > 1.0 -> 1.5
+                    educationLevel < 0.0 -> 0.5
+                    else -> educationLevel + 0.5
+                }
             } else {
                 1.0
             }

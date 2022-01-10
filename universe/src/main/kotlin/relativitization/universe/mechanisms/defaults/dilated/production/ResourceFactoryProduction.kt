@@ -278,12 +278,12 @@ object ResourceFactoryProduction : Mechanism() {
             fractionList.average()
         }
 
-        // Modifier by education level
+        // Modifier by education level, range from 0.5 to 1.5
         val educationLevel: Double = (labourerPopData.commonPopData.educationLevel)
         val educationLevelMultiplier: Double = when {
-            educationLevel > 1.0 -> 1.0
-            educationLevel < 0.0 -> 0.0
-            else -> educationLevel
+            educationLevel > 1.0 -> 1.5
+            educationLevel < 0.0 -> 0.5
+            else -> educationLevel + 0.5
         }
 
         return resourceFactoryData.resourceFactoryInternalData.maxOutputResourceQualityData *
