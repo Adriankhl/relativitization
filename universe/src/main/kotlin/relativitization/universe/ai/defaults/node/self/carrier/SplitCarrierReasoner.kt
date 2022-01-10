@@ -68,7 +68,7 @@ class SplitCarrierOption : DualUtilityOption() {
             val hasFuelFactory: Boolean = carrierData.allPopData.labourerPopData.fuelFactoryMap
                 .isNotEmpty()
             val hasAllResourceFactory: Boolean =
-                (ResourceType.values().toList() - ResourceType.ENTERTAINMENT).all { resourceType ->
+                ResourceType.factoryResourceList.all { resourceType ->
                     carrierData.allPopData.labourerPopData.resourceFactoryMap.values.any {
                         it.resourceFactoryInternalData.outputResource == resourceType
                     }

@@ -28,7 +28,7 @@ class FactoryReasoner : SequenceReasoner() {
         )
 
         val resourceReasonerList: List<AINode> =
-            (ResourceType.values().toList() - ResourceType.ENTERTAINMENT).map {
+            ResourceType.factoryResourceList.map {
                 listOf(
                     RemoveResourceFactoryReasoner(it),
                     NewResourceFactoryReasoner(it),
@@ -91,7 +91,7 @@ class BuildNewFuelFactoryOption(
 
         // Prioritize resource factory if no resource factory and has star
         val noSelfResourceFactoryAndHasStarConsiderationList: List<NoSelfResourceFactoryAndHasStarConsideration> =
-            (ResourceType.values().toList() - ResourceType.ENTERTAINMENT).map {
+            ResourceType.factoryResourceList.map {
                 NoSelfResourceFactoryAndHasStarConsideration(
                     it,
                     rankIfTrue = 0,

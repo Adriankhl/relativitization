@@ -68,7 +68,7 @@ internal class RandomOneStarPerPlayerGenerateTest {
             )
         )
 
-        (ResourceType.values().toList() - ResourceType.ENTERTAINMENT).forEach {
+        ResourceType.factoryResourceList.forEach {
             commandList7.add(
                 BuildForeignResourceFactoryCommand(
                     toId = 1,
