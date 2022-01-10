@@ -38,7 +38,7 @@ class NoSpaceShipConsideration(
 }
 
 /**
- * Decrease the multiplier exponentially as the number of spaceship increases
+ * Change the multiplier exponentially as the number of spaceship increases
  *
  * @property initialMultiplier the multiplier when there is 0 spaceship
  * @property exponent exponentially modify the multiplier as the number of spaceship increases
