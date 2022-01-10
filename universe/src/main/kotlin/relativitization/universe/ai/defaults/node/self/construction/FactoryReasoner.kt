@@ -14,7 +14,6 @@ import relativitization.universe.data.components.defaults.popsystem.pop.labourer
 import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.MutableResourceFactoryInternalData
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.maths.random.Rand
-import kotlin.math.min
 
 class FactoryReasoner : SequenceReasoner() {
     override fun getSubNodeList(
@@ -516,7 +515,7 @@ class RemoveSpecificSelfResourceFactoryOption(
             .labourerPopData.resourceFactoryMap.getValue(resourceFactoryId)
             .resourceFactoryInternalData.outputResource
         return listOf(
-            OnlyOneSelfResourceFactoryConsideration(
+            SufficientSelfResourceFactoryAfterRemoveConsideration(
                 resourceType = resourceType,
                 rankIfTrue = 0,
                 multiplierIfTrue = 0.0,
