@@ -84,23 +84,27 @@ object UpdateWarState : Mechanism() {
         // All player to get peace treaty
         val allPeaceSet: Set<Int> = noPlayerWarSet + acceptedPeaceSet + warTooLongSet
         allPeaceSet.forEach { warId ->
-            val warTopLeaderId: Int = mutablePlayerData.playerInternalData.diplomacyData()
-                .warData.warStateMap.getValue(warId).warTargetTopLeaderId + warId
-
             val subordinateSet: Set<Int> = universeData3DAtPlayer.get(warId)
                 .playerInternalData.subordinateIdList.toSet()
 
-            val topLeaderSubordinateSet: Set<Int> = if (warTopLeaderId != mutablePlayerData.topLeaderId()) {
-                universeData3DAtPlayer.get(warTopLeaderId).playerInternalData.subordinateIdList.toSet() + warTopLeaderId
+            // If this is a offensive war, add the enemy top leader and subordinate to peace treaty
+            val isOffensiveWar: Boolean = mutablePlayerData.playerInternalData.diplomacyData()
+                .warData.warStateMap.getValue(warId).isOffensive
+            val topLeaderSubordinateSet: Set<Int> = if (isOffensiveWar) {
+                val warTopLeaderId: Int = mutablePlayerData.playerInternalData.diplomacyData()
+                    .warData.warStateMap.getValue(warId).warTargetTopLeaderId
+                if (warTopLeaderId != mutablePlayerData.topLeaderId()) {
+                    universeData3DAtPlayer.get(warTopLeaderId).playerInternalData.subordinateIdList.toSet() + warTopLeaderId
+                } else {
+                    setOf()
+                }
             } else {
                 setOf()
             }
 
-
             val peaceTreatyIdSet: Set<Int> = (subordinateSet + topLeaderSubordinateSet).filter {
                 it != mutablePlayerData.playerId
             }.toSet()
-
 
             peaceTreatyIdSet.forEach {
                 mutablePlayerData.playerInternalData.modifierData().diplomacyModifierData.setPeaceTreatyWithLength(
