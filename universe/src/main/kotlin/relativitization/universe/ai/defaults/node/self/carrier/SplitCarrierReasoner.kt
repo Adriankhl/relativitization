@@ -5,6 +5,12 @@ import relativitization.universe.ai.defaults.consideration.carrier.NumberOfSpace
 import relativitization.universe.ai.defaults.consideration.carrier.SufficientPopulationRatioConsideration
 import relativitization.universe.ai.defaults.utils.*
 import relativitization.universe.data.PlanDataAtPlayer
+import relativitization.universe.data.commands.SplitCarrierCommand
+import relativitization.universe.data.components.MutablePopSystemData
+import relativitization.universe.data.components.defaults.economy.ResourceType
+import relativitization.universe.data.components.defaults.popsystem.CarrierType
+import relativitization.universe.maths.random.Rand
+import relativitization.universe.utils.RelativitizationLogManager
 
 class SplitCarrierReasoner : DualUtilityReasoner() {
     override fun getOptionList(
@@ -46,6 +52,39 @@ class SplitCarrierOption : DualUtilityOption() {
     }
 
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
-        TODO("Not yet implemented")
+        val popSystemData: MutablePopSystemData = planDataAtPlayer.getCurrentMutablePlayerData()
+            .playerInternalData.popSystemData()
+
+        // Filter carrier that is spaceship and has all factories
+        val carrierIdList: List<Int> = popSystemData.carrierDataMap.filter { (_, carrierData) ->
+            val isSpaceship: Boolean = carrierData.carrierType == CarrierType.SPACESHIP
+            val hasFuelFactory: Boolean = carrierData.allPopData.labourerPopData.fuelFactoryMap
+                .isNotEmpty()
+            val hasAllResourceFactory: Boolean =
+                (ResourceType.values().toList() - ResourceType.ENTERTAINMENT).all { resourceType ->
+                    carrierData.allPopData.labourerPopData.resourceFactoryMap.values.any {
+                        it.resourceFactoryInternalData.outputResource == resourceType
+                    }
+                }
+            isSpaceship && hasFuelFactory && hasAllResourceFactory
+        }.keys.toList().shuffled(Rand.rand())
+
+        if (carrierIdList.isNotEmpty()) {
+            planDataAtPlayer.addCommand(
+                SplitCarrierCommand(
+                    toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+                    fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+                    fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
+                    carrierIdList = carrierIdList.take(1),
+                    resourceFraction = 0.1,
+                )
+            )
+        } else {
+            logger.debug("No suitable carrier to split")
+        }
+    }
+
+    companion object {
+        val logger = RelativitizationLogManager.getLogger()
     }
 }
