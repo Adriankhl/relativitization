@@ -3,6 +3,7 @@ package relativitization.universe.ai.defaults.node.self.carrier
 import relativitization.universe.ai.defaults.consideration.carrier.NoSpaceShipConsideration
 import relativitization.universe.ai.defaults.consideration.carrier.NumberOfSpaceShipConsideration
 import relativitization.universe.ai.defaults.consideration.carrier.SufficientPopulationRatioConsideration
+import relativitization.universe.ai.defaults.consideration.subordinate.NumberOfDirectSubordinateConsideration
 import relativitization.universe.ai.defaults.utils.*
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.commands.SplitCarrierCommand
@@ -48,6 +49,12 @@ class SplitCarrierOption : DualUtilityOption() {
                 rank = 0,
                 bonus = 0.0
             ),
+            NumberOfDirectSubordinateConsideration(
+                initialMultiplier = 1.0,
+                exponent = 0.5,
+                rank = 0,
+                bonus = 0.0
+            )
         )
     }
 
