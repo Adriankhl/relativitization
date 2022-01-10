@@ -10,16 +10,22 @@ import relativitization.universe.data.components.defaults.popsystem.pop.PopType
 /**
  * Whether this player has sufficient population compare to ideal population
  *
- * @param ratio the required ratio of total population compare to ideal population
+ * @property ratio the required ratio of total population compare to ideal population
  * @property rankIfTrue rank of dual utility if this is true
  * @property multiplierIfTrue multiplier of dual utility if this is true
  * @property bonusIfTrue bonus of dual utility if this is true
+ * @property rankIfFalse rank of dual utility if this is false
+ * @property multiplierIfFalse multiplier of dual utility if this is false
+ * @property bonusIfFalse bonus of dual utility if this is false
  */
 class SufficientPopulationRatioConsideration(
     private val ratio: Double,
     private val rankIfTrue: Int,
     private val multiplierIfTrue: Double,
     private val bonusIfTrue: Double,
+    private val rankIfFalse: Int,
+    private val multiplierIfFalse: Double,
+    private val bonusIfFalse: Double,
 ) : DualUtilityConsideration {
     override fun getDualUtilityData(
         planDataAtPlayer: PlanDataAtPlayer,

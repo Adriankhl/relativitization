@@ -1,5 +1,7 @@
 package relativitization.universe.ai.defaults.node.self.carrier
 
+import relativitization.universe.ai.defaults.consideration.carrier.NoSpaceShipConsideration
+import relativitization.universe.ai.defaults.consideration.carrier.NumberOfSpaceShipConsideration
 import relativitization.universe.ai.defaults.consideration.carrier.SufficientPopulationRatioConsideration
 import relativitization.universe.ai.defaults.utils.*
 import relativitization.universe.data.PlanDataAtPlayer
@@ -20,12 +22,26 @@ class SplitCarrierOption : DualUtilityOption() {
         planState: PlanState
     ): List<DualUtilityConsideration> {
         return listOf(
+            NoSpaceShipConsideration(
+                rankIfTrue = 0,
+                multiplierIfTrue = 0.0,
+                bonusIfTrue = 0.0,
+            ),
             SufficientPopulationRatioConsideration(
                 ratio = 0.001,
                 rankIfTrue = 1,
-                multiplierIfTrue = 0.0,
-                bonusIfTrue = 0.0
+                multiplierIfTrue = 1.0,
+                bonusIfTrue = 1.0,
+                rankIfFalse = 0,
+                multiplierIfFalse = 0.0,
+                bonusIfFalse = 0.0
             ),
+            NumberOfSpaceShipConsideration(
+                initialMultiplier = 0.001,
+                exponent = 2.0,
+                rank = 0,
+                bonus = 0.0
+            )
         )
     }
 
