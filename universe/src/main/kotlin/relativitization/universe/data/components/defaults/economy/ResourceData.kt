@@ -21,6 +21,11 @@ enum class ResourceType(val value: String) {
     override fun toString(): String {
         return value
     }
+
+    companion object {
+        // Entertainment is not produced by factory
+        val factoryResourceList: List<ResourceType> = ResourceType.values().toList() - ENTERTAINMENT
+    }
 }
 
 /**
