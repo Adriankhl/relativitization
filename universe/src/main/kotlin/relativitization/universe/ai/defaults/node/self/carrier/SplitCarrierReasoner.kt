@@ -47,7 +47,7 @@ class SplitCarrierOption : DualUtilityOption() {
                 exponent = 2.0,
                 rank = 0,
                 bonus = 0.0
-            )
+            ),
         )
     }
 

@@ -108,7 +108,9 @@ internal class DefaultAITest {
         fuelData.production
         carrierData[0]
 
-        val totalAdultPopulation: Double = popSystemData.totalAdultPopulation()
+        val totalAdultPopulation: Double = finalView.playerDataMap.values.sumOf {
+            it.playerInternalData.popSystemData().totalAdultPopulation()
+        }
 
         // Ensure population has grown
         assert(totalAdultPopulation > initialAdultPopulation)
