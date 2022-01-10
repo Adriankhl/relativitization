@@ -20,7 +20,6 @@ class SelfReasoner : SequenceReasoner() {
         planState: PlanState
     ): List<AINode> = listOf(
         EventReasoner(),
-        SplitCarrierReasoner(),
         BalanceFuelReasoner(),
         BalanceResourceReasoner(),
         FactoryReasoner(),
@@ -28,5 +27,6 @@ class SelfReasoner : SequenceReasoner() {
         LaboratoryReasoner(),
         SalaryReasoner(),
         CarrierReasoner(),
+        SplitCarrierReasoner(),
     )
 }
