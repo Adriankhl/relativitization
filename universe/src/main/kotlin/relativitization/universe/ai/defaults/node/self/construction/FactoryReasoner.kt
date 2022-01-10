@@ -235,25 +235,21 @@ class RemoveSpecificSelfFuelFactoryOption(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<DualUtilityConsideration> = listOf(
-        OnlyOneSelfFuelFactoryConsideration(
-            rankIfTrue = 0,
-            multiplierIfTrue = 0.0,
-            bonusIfTrue = 0.0
+        SufficientFuelFactoryAtCarrierAfterRemoveConsideration(
+            carrierId = carrierId,
+            fuelFactoryId = fuelFactoryId,
+            rankIfTrue = 1,
+            multiplierIfTrue = 1.0,
+            bonusIfTrue = 1.0,
+            rankIfFalse = 0,
+            multiplierIfFalse = 0.0,
+            bonusIfFalse = 0.0
         ),
         OutdatedFuelFactoryConsideration(
             carrierId = carrierId,
             fuelFactoryId = fuelFactoryId,
             rankIfTrue = 1,
             multiplierIfTrue = 1.0
-        ),
-        SufficientSelfFuelFactoryAtCarrierConsideration(
-            carrierId = carrierId,
-            rankIfTrue = 0,
-            multiplierIfTrue = 1.0,
-            bonusIfTrue = 0.0,
-            rankIfFalse = 0,
-            multiplierIfFalse = 0.0,
-            bonusIfFalse = 0.0
         ),
         IncreasingProductionFuelConsideration(
             rankIfTrue = 0,
