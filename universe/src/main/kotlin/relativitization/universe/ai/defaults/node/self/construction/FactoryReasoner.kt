@@ -98,15 +98,16 @@ class BuildNewFuelFactoryOption(
                 )
             }
 
-        val sufficientSelfFuelFactoryConsideration = SufficientSelfFuelFactoryAtCarrierConsideration(
-            carrierId = carrierId,
-            rankIfTrue = 0,
-            multiplierIfTrue = 0.1,
-            bonusIfTrue = 1.0,
-            rankIfFalse = 1,
-            multiplierIfFalse = 1.0,
-            bonusIfFalse = 1.0
-        )
+        val sufficientSelfFuelFactoryAtCarrierConsideration =
+            SufficientSelfFuelFactoryAtCarrierConsideration(
+                carrierId = carrierId,
+                rankIfTrue = 0,
+                multiplierIfTrue = 0.1,
+                bonusIfTrue = 1.0,
+                rankIfFalse = 1,
+                multiplierIfFalse = 1.0,
+                bonusIfFalse = 1.0
+            )
 
         val minFuelNeeded: Double = planDataAtPlayer.getCurrentMutablePlayerData()
             .playerInternalData.playerScienceData().playerScienceApplicationData
@@ -124,7 +125,7 @@ class BuildNewFuelFactoryOption(
         return listOf(noSelfFuelFactoryAndNoStarConsideration) +
                 noSelfResourceFactoryAndHasStarConsiderationList +
                 listOf(
-                    sufficientSelfFuelFactoryConsideration,
+                    sufficientSelfFuelFactoryAtCarrierConsideration,
                     sufficientProductionFuelConsideration,
                 )
     }
@@ -323,16 +324,17 @@ class BuildNewResourceFactoryOption(
             bonusIfTrue = 1.0
         )
 
-        val sufficientSelfResourceFactoryConsideration = SufficientSelfResourceFactoryAtCarrierConsideration(
-            carrierId = carrierId,
-            resourceType = resourceType,
-            rankIfTrue = 0,
-            multiplierIfTrue = 1.0,
-            bonusIfTrue = 0.0,
-            rankIfFalse = 1,
-            multiplierIfFalse = 1.0,
-            bonusIfFalse = 1.0
-        )
+        val sufficientSelfResourceFactoryAtCarrierConsideration =
+            SufficientSelfResourceFactoryAtCarrierConsideration(
+                carrierId = carrierId,
+                resourceType = resourceType,
+                rankIfTrue = 0,
+                multiplierIfTrue = 1.0,
+                bonusIfTrue = 0.0,
+                rankIfFalse = 1,
+                multiplierIfFalse = 1.0,
+                bonusIfFalse = 1.0
+            )
 
         val increasingProductionFuelConsideration = IncreasingProductionFuelConsideration(
             rankIfTrue = 0,
@@ -345,7 +347,7 @@ class BuildNewResourceFactoryOption(
 
         return listOf(
             noSelfResourceFactoryConsideration,
-            sufficientSelfResourceFactoryConsideration,
+            sufficientSelfResourceFactoryAtCarrierConsideration,
             increasingProductionFuelConsideration,
         )
     }
