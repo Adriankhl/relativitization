@@ -94,6 +94,11 @@ data class BuildForeignFuelFactoryCommand(
             I18NString("Not enough fuel rest mass. ")
         )
 
+        val isNumBuildingValid = CommandErrorMessage(
+            numBuilding >= 1.0,
+            I18NString("Number of building should be >= 1. ")
+        )
+
 
         return CommandErrorMessage(
             listOf(
@@ -101,6 +106,7 @@ data class BuildForeignFuelFactoryCommand(
                 allowConstruction,
                 validFactoryInternalData,
                 hasFuel,
+                isNumBuildingValid,
             )
         )
     }
@@ -270,6 +276,10 @@ data class BuildForeignResourceFactoryCommand(
             I18NString("Not enough fuel rest mass. ")
         )
 
+        val isNumBuildingValid = CommandErrorMessage(
+            numBuilding >= 1.0,
+            I18NString("Number of building should be >= 1. ")
+        )
 
         return CommandErrorMessage(
             listOf(
@@ -277,6 +287,7 @@ data class BuildForeignResourceFactoryCommand(
                 allowConstruction,
                 validFactoryInternalData,
                 hasFuel,
+                isNumBuildingValid,
             )
         )
     }
@@ -396,10 +407,16 @@ data class BuildLocalFuelFactoryCommand(
             I18NString("Not allow to build factory. ")
         )
 
+        val isNumBuildingValid = CommandErrorMessage(
+            numBuilding >= 1.0,
+            I18NString("Number of building should be >= 1. ")
+        )
+
         return CommandErrorMessage(
             listOf(
                 isSubordinateOrSelf,
                 allowSubordinateConstruction,
+                isNumBuildingValid,
             )
         )
     }
@@ -544,10 +561,16 @@ data class BuildLocalResourceFactoryCommand(
             I18NString("Not allow to build factory. ")
         )
 
+        val isNumBuildingValid = CommandErrorMessage(
+            numBuilding >= 1.0,
+            I18NString("Number of building should be >= 1. ")
+        )
+
         return CommandErrorMessage(
             listOf(
                 isSubordinateOrSelf,
                 allowSubordinateConstruction,
+                isNumBuildingValid,
             )
         )
     }
