@@ -14,6 +14,8 @@ import relativitization.universe.data.components.defaults.popsystem.pop.labourer
 import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.MutableResourceFactoryInternalData
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.maths.random.Rand
+import kotlin.math.max
+import kotlin.math.min
 
 class FactoryReasoner : SequenceReasoner() {
     override fun getSubNodeList(
@@ -174,11 +176,13 @@ class BuildNewFuelFactoryOption(
         // Compute the numBuilding by considering the available fuel and number of labourer
         val fuelFraction: Double = maxUsableFuel / fuelNeededPerBuilding
         val labourerFraction: Double = targetNumLabourer / idealFactory.maxNumEmployee
-        val numBuilding: Double = listOf(
-            fuelFraction,
-            labourerFraction,
+        val numBuilding: Double = max(
+            min(
+                fuelFraction,
+                labourerFraction,
+            ),
             1.0
-        ).minOf { it }
+        )
 
         planDataAtPlayer.addCommand(
             BuildForeignFuelFactoryCommand(
@@ -427,12 +431,13 @@ class BuildNewResourceFactoryOption(
         // Compute the numBuilding by considering the available fuel and number of labourer
         val fuelFraction: Double = maxUsableFuel / fuelNeededPerBuilding
         val labourerFraction: Double = targetNumLabourerPerResource / idealFactory.maxNumEmployee
-        val numBuilding: Double = listOf(
-            fuelFraction,
-            labourerFraction,
+        val numBuilding: Double = max(
+            min(
+                fuelFraction,
+                labourerFraction,
+            ),
             1.0
-        ).minOf { it }
-
+        )
 
         planDataAtPlayer.addCommand(
             BuildForeignResourceFactoryCommand(
