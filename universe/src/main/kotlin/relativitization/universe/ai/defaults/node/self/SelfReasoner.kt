@@ -6,6 +6,7 @@ import relativitization.universe.ai.defaults.node.self.construction.LaboratoryRe
 import relativitization.universe.ai.defaults.node.self.event.EventReasoner
 import relativitization.universe.ai.defaults.node.self.carrier.CarrierReasoner
 import relativitization.universe.ai.defaults.node.self.carrier.SplitCarrierReasoner
+import relativitization.universe.ai.defaults.node.self.movement.MovementReasoner
 import relativitization.universe.ai.defaults.node.self.pop.SalaryReasoner
 import relativitization.universe.ai.defaults.node.self.storage.BalanceFuelReasoner
 import relativitization.universe.ai.defaults.node.self.storage.BalanceResourceReasoner
@@ -27,6 +28,7 @@ class SelfReasoner : SequenceReasoner() {
         LaboratoryReasoner(),
         SalaryReasoner(),
         CarrierReasoner(),
+        MovementReasoner(),
         SplitCarrierReasoner(),
     )
 }
