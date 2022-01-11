@@ -197,6 +197,15 @@ class DiplomacyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
             nestedTable.add(
                 createLabel(
+                    "War type: ${if (warState.isOffensive) {"Offensive"} else {"Defensive"}}",
+                    gdxSettings.smallFontSize
+                )
+            )
+
+            nestedTable.row().space(10f)
+
+            nestedTable.add(
+                createLabel(
                     "Proposed peace: ${warState.proposePeace}",
                     gdxSettings.smallFontSize
                 )
