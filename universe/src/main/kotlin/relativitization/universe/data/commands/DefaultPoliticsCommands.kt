@@ -13,7 +13,7 @@ import relativitization.universe.utils.NormalString
  * Change the factory policy of this player
  *
  * @property allowSubordinateBuildFactory whether subordinates are allowed to build factory
- * @property allowLeaderBuildLocalFactory whether leader is allow to build local factory at subordinate
+ * @property allowLeaderBuildLocalFactory whether leader is allowed to build local factory at subordinate
  * @property allowForeignInvestor whether foreigner are allowed to invest
  */
 @Serializable
