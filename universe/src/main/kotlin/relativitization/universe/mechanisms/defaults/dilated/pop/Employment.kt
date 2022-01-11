@@ -50,7 +50,6 @@ object Employment : Mechanism() {
             carrierData.allPopData.labourerPopData,
             fuelRestMassData,
             mutableEconomyData,
-            universeData3DAtPlayer.getCurrentPlayerData().playerInternalData.economyData(),
             universeData3DAtPlayer,
         )
 
@@ -58,49 +57,42 @@ object Employment : Mechanism() {
             carrierData.allPopData.soldierPopData,
             fuelRestMassData,
             mutableEconomyData,
-            universeData3DAtPlayer.getCurrentPlayerData().playerInternalData.economyData(),
         )
 
         updateCommonEmployment(
             carrierData.allPopData.entertainerPopData.commonPopData,
             fuelRestMassData,
             mutableEconomyData,
-            universeData3DAtPlayer.getCurrentPlayerData().playerInternalData.economyData(),
         )
 
         updateCommonEmployment(
             carrierData.allPopData.servicePopData.commonPopData,
             fuelRestMassData,
             mutableEconomyData,
-            universeData3DAtPlayer.getCurrentPlayerData().playerInternalData.economyData(),
         )
 
         updateCommonEmployment(
             carrierData.allPopData.medicPopData.commonPopData,
             fuelRestMassData,
             mutableEconomyData,
-            universeData3DAtPlayer.getCurrentPlayerData().playerInternalData.economyData(),
         )
 
         updateCommonEmployment(
             carrierData.allPopData.educatorPopData.commonPopData,
             fuelRestMassData,
             mutableEconomyData,
-            universeData3DAtPlayer.getCurrentPlayerData().playerInternalData.economyData(),
         )
 
         updateEngineerEmployment(
             carrierData.allPopData.engineerPopData,
             fuelRestMassData,
             mutableEconomyData,
-            universeData3DAtPlayer.getCurrentPlayerData().playerInternalData.economyData(),
         )
 
         updateScholarEmployment(
             carrierData.allPopData.scholarPopData,
             fuelRestMassData,
             mutableEconomyData,
-            universeData3DAtPlayer.getCurrentPlayerData().playerInternalData.economyData(),
         )
 
     }
@@ -113,12 +105,12 @@ object Employment : Mechanism() {
         labourerPopData: MutableLabourerPopData,
         fuelRestMassData: MutableFuelRestMassData,
         mutableEconomyData: MutableEconomyData,
-        economyData: EconomyData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
     ) {
         val salary: Double = labourerPopData.commonPopData.salaryPerEmployee
 
-        val incomeTax: Double = economyData.taxData.taxRateData.incomeTax.getIncomeTax(salary)
+        val incomeTax: Double =
+            mutableEconomyData.taxData.taxRateData.incomeTax.getIncomeTax(salary)
 
         // Available population to work
         val availableEmployee: Double = labourerPopData.commonPopData.adultPopulation
@@ -338,11 +330,11 @@ object Employment : Mechanism() {
         scholarPopData: MutableScholarPopData,
         fuelRestMassData: MutableFuelRestMassData,
         mutableEconomyData: MutableEconomyData,
-        economyData: EconomyData,
     ) {
         val salary: Double = scholarPopData.commonPopData.salaryPerEmployee
 
-        val incomeTax: Double = economyData.taxData.taxRateData.incomeTax.getIncomeTax(salary)
+        val incomeTax: Double =
+            mutableEconomyData.taxData.taxRateData.incomeTax.getIncomeTax(salary)
 
         // Available population to work
         val availableEmployee: Double = scholarPopData.commonPopData.adultPopulation
@@ -410,11 +402,11 @@ object Employment : Mechanism() {
         engineerPopData: MutableEngineerPopData,
         fuelRestMassData: MutableFuelRestMassData,
         mutableEconomyData: MutableEconomyData,
-        economyData: EconomyData,
     ) {
         val salary: Double = engineerPopData.commonPopData.salaryPerEmployee
 
-        val incomeTax: Double = economyData.taxData.taxRateData.incomeTax.getIncomeTax(salary)
+        val incomeTax: Double =
+            mutableEconomyData.taxData.taxRateData.incomeTax.getIncomeTax(salary)
 
         // Available population to work
         val availableEmployee: Double = engineerPopData.commonPopData.adultPopulation
@@ -484,11 +476,11 @@ object Employment : Mechanism() {
         soldierPopData: MutableSoldierPopData,
         fuelRestMassData: MutableFuelRestMassData,
         mutableEconomyData: MutableEconomyData,
-        economyData: EconomyData,
     ) {
         val salary: Double = soldierPopData.commonPopData.salaryPerEmployee
 
-        val incomeTax: Double = economyData.taxData.taxRateData.incomeTax.getIncomeTax(salary)
+        val incomeTax: Double =
+            mutableEconomyData.taxData.taxRateData.incomeTax.getIncomeTax(salary)
 
         val maxPay: Double = soldierPopData.commonPopData.adultPopulation * salary
         val tax: Double = maxPay * incomeTax
@@ -522,11 +514,11 @@ object Employment : Mechanism() {
         commonPopData: MutableCommonPopData,
         fuelRestMassData: MutableFuelRestMassData,
         mutableEconomyData: MutableEconomyData,
-        economyData: EconomyData,
     ) {
         val salary: Double = commonPopData.salaryPerEmployee
 
-        val incomeTax: Double = economyData.taxData.taxRateData.incomeTax.getIncomeTax(salary)
+        val incomeTax: Double =
+            mutableEconomyData.taxData.taxRateData.incomeTax.getIncomeTax(salary)
 
         val maxPay: Double = commonPopData.adultPopulation * salary
         val tax: Double = maxPay * incomeTax
