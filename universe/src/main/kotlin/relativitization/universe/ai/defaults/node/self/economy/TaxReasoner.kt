@@ -4,9 +4,7 @@ import relativitization.universe.ai.defaults.utils.AINode
 import relativitization.universe.ai.defaults.utils.PlanState
 import relativitization.universe.ai.defaults.utils.SequenceReasoner
 import relativitization.universe.data.PlanDataAtPlayer
-import relativitization.universe.data.commands.ChangeLowIncomeTaxCommand
-import relativitization.universe.data.commands.ChangeLowMiddleBoundaryCommand
-import relativitization.universe.data.commands.ChangeMiddleHighBoundaryCommand
+import relativitization.universe.data.commands.*
 
 class TaxReasoner : SequenceReasoner() {
     override fun getSubNodeList(
@@ -77,7 +75,9 @@ class IncomeTaxReasoner : SequenceReasoner() {
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<AINode> = listOf(
-        LowIncomeTaxAINode()
+        LowIncomeTaxAINode(),
+        MiddleIncomeTaxAINode(),
+        HighIncomeTaxAINode(),
     )
 }
 
@@ -92,6 +92,38 @@ class LowIncomeTaxAINode : AINode {
                 fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
                 fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
                 rate = 0.001,
+            )
+        )
+    }
+}
+
+class MiddleIncomeTaxAINode : AINode {
+    override fun updatePlan(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planState: PlanState
+    ) {
+        planDataAtPlayer.addCommand(
+            ChangeMiddleIncomeTaxCommand(
+                toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+                fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+                fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
+                rate = 0.01,
+            )
+        )
+    }
+}
+
+class HighIncomeTaxAINode : AINode {
+    override fun updatePlan(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planState: PlanState
+    ) {
+        planDataAtPlayer.addCommand(
+            ChangeHighIncomeTaxCommand(
+                toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+                fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+                fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
+                rate = 0.1,
             )
         )
     }
