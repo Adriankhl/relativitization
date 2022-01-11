@@ -6,6 +6,7 @@ import relativitization.universe.ai.defaults.node.self.construction.LaboratoryRe
 import relativitization.universe.ai.defaults.node.self.event.EventReasoner
 import relativitization.universe.ai.defaults.node.self.carrier.CarrierReasoner
 import relativitization.universe.ai.defaults.node.self.carrier.SplitCarrierReasoner
+import relativitization.universe.ai.defaults.node.self.economy.TaxReasoner
 import relativitization.universe.ai.defaults.node.self.movement.MovementReasoner
 import relativitization.universe.ai.defaults.node.self.politics.PolicyReasoner
 import relativitization.universe.ai.defaults.node.self.pop.SalaryReasoner
@@ -30,6 +31,7 @@ class SelfReasoner : SequenceReasoner() {
         LaboratoryReasoner(),
         SalaryReasoner(),
         CarrierReasoner(),
+        TaxReasoner(),
         MovementReasoner(),
         SplitCarrierReasoner(),
     )
