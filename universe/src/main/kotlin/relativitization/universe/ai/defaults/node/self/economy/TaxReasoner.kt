@@ -4,6 +4,7 @@ import relativitization.universe.ai.defaults.utils.AINode
 import relativitization.universe.ai.defaults.utils.PlanState
 import relativitization.universe.ai.defaults.utils.SequenceReasoner
 import relativitization.universe.data.PlanDataAtPlayer
+import relativitization.universe.data.commands.ChangeLowIncomeTaxCommand
 import relativitization.universe.data.commands.ChangeLowMiddleBoundaryCommand
 import relativitization.universe.data.commands.ChangeMiddleHighBoundaryCommand
 
@@ -13,6 +14,7 @@ class TaxReasoner : SequenceReasoner() {
         planState: PlanState
     ): List<AINode> = listOf(
         IncomeBoundaryReasoner(),
+        IncomeTaxReasoner(),
     )
 }
 
@@ -64,5 +66,33 @@ class MiddleHighIncomeBoundaryAINode : AINode {
                 )
             )
         }
+    }
+}
+
+/**
+ * Set the income tax
+ */
+class IncomeTaxReasoner : SequenceReasoner() {
+    override fun getSubNodeList(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planState: PlanState
+    ): List<AINode> = listOf(
+        LowIncomeTaxAINode()
+    )
+}
+
+class LowIncomeTaxAINode : AINode {
+    override fun updatePlan(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planState: PlanState
+    ) {
+        planDataAtPlayer.addCommand(
+            ChangeLowIncomeTaxCommand(
+                toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+                fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+                fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
+                rate = 0.001,
+            )
+        )
     }
 }
