@@ -68,8 +68,8 @@ class PickMoveToDouble3DEventDualUtilityOption(
     }
 
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
-        val movementEventMap: Map<Int, EventData> =
-            planDataAtPlayer.universeData3DAtPlayer.getCurrentPlayerData().playerInternalData.eventDataMap.filter {
+        val movementEventMap: Map<Int, EventData> = planDataAtPlayer.universeData3DAtPlayer
+            .getCurrentPlayerData().playerInternalData.eventDataMap.filter {
                 // Filter out MoveToDouble3DEvent
                 it.value.event is MoveToDouble3DEvent
             }
