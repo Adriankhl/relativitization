@@ -33,9 +33,6 @@ class HigherPopulationDensityThenNeighborCubeConsideration(
                 acc + playerData.playerInternalData.popSystemData().totalAdultPopulation()
             }
 
-        val playerInt3D: Int3D = planDataAtPlayer.universeData3DAtPlayer.getCurrentPlayerData()
-            .int4D.toInt3D()
-
         val allNeighborCube: List<Int3D> = planDataAtPlayer.universeData3DAtPlayer
             .getInt3DAtCubeSurface(
                 1
