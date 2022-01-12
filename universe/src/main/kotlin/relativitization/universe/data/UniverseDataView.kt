@@ -152,7 +152,7 @@ data class UniverseData3DAtPlayer(
     /**
      * Get neighbour player in the same group, excluding self
      */
-    fun getNeighbour(): List<PlayerData> {
+    fun getGroupNeighbour(): List<PlayerData> {
         val currentPlayer: PlayerData = getCurrentPlayerData()
         return get(currentPlayer.int4D.toInt3D()).getValue(currentPlayer.groupId).filter {
             // Filter out afterimage player data, which have different t coordinate
@@ -164,7 +164,6 @@ data class UniverseData3DAtPlayer(
      * Get neighbour player within a cube containing current player, excluding self
      *
      * @param range half of the length of the cube
-     *
      */
     fun getNeighbourAndSelf(range: Int): List<PlayerData> {
         val currentPlayer: PlayerData = getCurrentPlayerData()
