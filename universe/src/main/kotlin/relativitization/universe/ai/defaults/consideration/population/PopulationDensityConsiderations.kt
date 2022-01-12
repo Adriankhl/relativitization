@@ -16,7 +16,7 @@ import relativitization.universe.data.components.defaults.physics.Int3D
  * @property multiplierIfFalse multiplier of dual utility if this is false
  * @property bonusIfFalse bonus of dual utility if this is false
  */
-class HigherPopulationDensityThenNeighborConsideration(
+class HigherPopulationDensityThenNeighborCubeConsideration(
     private val rankIfTrue: Int,
     private val multiplierIfTrue: Double,
     private val bonusIfTrue: Double,
@@ -36,7 +36,20 @@ class HigherPopulationDensityThenNeighborConsideration(
         val playerInt3D: Int3D = planDataAtPlayer.universeData3DAtPlayer.getCurrentPlayerData()
             .int4D.toInt3D()
 
-        val isHigherDensity: Boolean = true
+        val allNeighborCube: List<Int3D> = planDataAtPlayer.universeData3DAtPlayer
+            .getInt3DAtCubeSurface(
+                1
+            )
+
+        val allNeighborPopulation: List<Double> = allNeighborCube.map { int3D ->
+            planDataAtPlayer.universeData3DAtPlayer.get(int3D).values.flatten().fold(
+                0.0
+            ) { acc, playerData ->
+                acc + playerData.playerInternalData.popSystemData().totalAdultPopulation()
+            }
+        }
+
+        val isHigherDensity: Boolean = allNeighborPopulation.any { it > totalPopulation }
 
         return if (isHigherDensity) {
             DualUtilityData(
