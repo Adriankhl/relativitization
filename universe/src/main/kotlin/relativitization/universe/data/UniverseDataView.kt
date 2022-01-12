@@ -116,6 +116,24 @@ data class UniverseData3DAtPlayer(
         return xLower && xUpper && yLower && yUpper && zLower && zUpper
     }
 
+
+    /**
+     * Get list of int3D at the surface of a greater cube, with the current center
+     *
+     * @param halfEdgeLLength half of the length of the edge of the greater cube
+     */
+    fun getInt3DAtCubeSurface(halfEdgeLLength: Int): List<Int3D> {
+        return center.toInt3D().getInt3DSurfaceList(
+            halfEdgeLength = halfEdgeLLength,
+            minX = 0,
+            maxX = universeSettings.xDim - 1,
+            minY = 0,
+            maxY = universeSettings.yDim - 1,
+            minZ = 0,
+            maxZ = universeSettings.zDim - 1
+        )
+    }
+
     /**
      * Get player data by id
      */
