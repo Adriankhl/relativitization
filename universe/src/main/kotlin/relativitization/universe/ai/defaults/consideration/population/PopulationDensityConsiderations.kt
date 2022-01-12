@@ -4,6 +4,7 @@ import relativitization.universe.ai.defaults.utils.DualUtilityConsideration
 import relativitization.universe.ai.defaults.utils.DualUtilityData
 import relativitization.universe.ai.defaults.utils.PlanState
 import relativitization.universe.data.PlanDataAtPlayer
+import relativitization.universe.data.components.defaults.physics.Int3D
 
 /**
  * Check if the population in the cube is higher than the neighboring cube
@@ -32,6 +33,23 @@ class HigherPopulationDensityThenNeighborConsideration(
                 acc + playerData.playerInternalData.popSystemData().totalAdultPopulation()
             }
 
-        val neighborTotalPopulationList: List<Double> =
+        val playerInt3D: Int3D = planDataAtPlayer.universeData3DAtPlayer.getCurrentPlayerData()
+            .int4D.toInt3D()
+
+        val isHigherDensity: Boolean = true
+
+        return if (isHigherDensity) {
+            DualUtilityData(
+                rank = rankIfTrue,
+                multiplier = multiplierIfTrue,
+                bonus = bonusIfTrue
+            )
+        } else {
+            DualUtilityData(
+                rank = rankIfFalse,
+                multiplier = multiplierIfFalse,
+                bonus = bonusIfFalse
+            )
+        }
     }
 }

@@ -2,6 +2,8 @@ package relativitization.universe.data.components.defaults.physics
 
 import kotlinx.serialization.Serializable
 import kotlin.math.abs
+import kotlin.math.max
+import kotlin.math.min
 import kotlin.math.sqrt
 
 @Serializable
@@ -85,6 +87,168 @@ data class Int3D(val x: Int, val y: Int, val z: Int) {
      */
     fun toDouble3DCenter(): Double3D {
         return Double3D(x.toDouble() + 0.5, y.toDouble() + 0.5, z.toDouble() + 0.5)
+    }
+
+    /**
+     * Get list of int3D at the surface of a greater cube
+     *
+     * @param halfEdgeLength half of the length of the edge of the greater cube
+     * @param minX minimum x coordinate
+     * @param maxX maximum x coordinate
+     * @param minY minimum y coordinate
+     * @param maxY maximum y coordinate
+     * @param minZ minimum z coordinate
+     * @param maxZ maximum z coordinate
+     */
+    fun getInt3DSurfaceList(
+        halfEdgeLength: Int,
+        minX: Int,
+        maxX: Int,
+        minY: Int,
+        maxY: Int,
+        minZ: Int,
+        maxZ: Int
+    ): List<Int3D> {
+        val isLowerXSurfaceExist: Boolean = (x - halfEdgeLength) >= minX
+        val isUpperXSurfaceExist: Boolean = (x + halfEdgeLength) <= maxX
+        val isLowerYSurfaceExist: Boolean = (y - halfEdgeLength) >= minY
+        val isUpperYSurfaceExist: Boolean = (y + halfEdgeLength) <= maxY
+        val isLowerZSurfaceExist: Boolean = (z - halfEdgeLength) >= minZ
+        val isUpperZSurfaceExist: Boolean = (z + halfEdgeLength) <= maxZ
+
+        val realMinX: Int = max(x - halfEdgeLength, minX)
+        val realMaxX: Int = min(x + halfEdgeLength, maxX)
+        val realMinY: Int = max(y - halfEdgeLength, minY)
+        val realMaxY: Int = min(y + halfEdgeLength, maxY)
+        val realMinZ: Int = max(z - halfEdgeLength, minZ)
+        val realMaxZ: Int = min(z + halfEdgeLength, maxZ)
+
+        val lowerXSurface: List<Int3D> = if (isLowerXSurfaceExist) {
+            (realMinY..realMaxY).map { yCor ->
+                (realMinZ..realMaxZ).map { zCor ->
+                    Int3D(realMinX, yCor, zCor)
+                }
+            }.flatten()
+        } else {
+            listOf()
+        }
+
+        val upperXSurface: List<Int3D> = if (isUpperXSurfaceExist) {
+            (realMinY..realMaxY).map { yCor ->
+                (realMinZ..realMaxZ).map { zCor ->
+                    Int3D(realMaxX, yCor, zCor)
+                }
+            }.flatten()
+        } else {
+            listOf()
+        }
+
+        val lowerYSurface: List<Int3D> = if (isLowerYSurfaceExist && (halfEdgeLength > 0)) {
+            // Avoid repeating, exclude the edge
+            val minXNoRepeat: Int = if (isLowerXSurfaceExist) {
+                realMinX + 1
+            } else {
+                realMinX
+            }
+            val maxXNoRepeat: Int = if (isUpperXSurfaceExist) {
+                realMaxX - 1
+            } else {
+                realMaxX
+            }
+            (minXNoRepeat..maxXNoRepeat).map { xCor ->
+                (realMinZ..realMaxZ).map { zCor ->
+                    Int3D(xCor, realMinY, zCor)
+                }
+            }.flatten()
+        } else {
+            listOf()
+        }
+
+        val upperYSurface: List<Int3D> = if (isUpperYSurfaceExist && (halfEdgeLength > 0)) {
+            // Avoid repeating, exclude the edge
+            val minXNoRepeat: Int = if (isLowerXSurfaceExist) {
+                realMinX + 1
+            } else {
+                realMinX
+            }
+            val maxXNoRepeat: Int = if (isUpperXSurfaceExist) {
+                realMaxX - 1
+            } else {
+                realMaxX
+            }
+            (minXNoRepeat..maxXNoRepeat).map { xCor ->
+                (realMinZ..realMaxZ).map { zCor ->
+                    Int3D(xCor, realMaxY, zCor)
+                }
+            }.flatten()
+        } else {
+            listOf()
+        }
+
+        val lowerZSurface: List<Int3D> = if (isLowerZSurfaceExist && (halfEdgeLength > 0)) {
+            // Avoid repeating, exclude the edge
+            val minXNoRepeat: Int = if (isLowerXSurfaceExist) {
+                realMinX + 1
+            } else {
+                realMinX
+            }
+            val maxXNoRepeat: Int = if (isUpperXSurfaceExist) {
+                realMaxX - 1
+            } else {
+                realMaxX
+            }
+            val minYNoRepeat: Int = if (isLowerYSurfaceExist) {
+                realMinY + 1
+            } else {
+                realMinY
+            }
+            val maxYNoRepeat: Int = if (isUpperYSurfaceExist) {
+                realMaxY - 1
+            } else {
+                realMaxY
+            }
+            (minXNoRepeat..maxXNoRepeat).map { xCor ->
+                (minYNoRepeat..maxYNoRepeat).map { yCor ->
+                    Int3D(xCor, yCor, realMinZ)
+                }
+            }.flatten()
+        } else {
+            listOf()
+        }
+
+        val upperZSurface: List<Int3D> = if (isUpperZSurfaceExist && (halfEdgeLength > 0)) {
+            // Avoid repeating, exclude the edge
+            val minXNoRepeat: Int = if (isLowerXSurfaceExist) {
+                realMinX + 1
+            } else {
+                realMinX
+            }
+            val maxXNoRepeat: Int = if (isUpperXSurfaceExist) {
+                realMaxX - 1
+            } else {
+                realMaxX
+            }
+            val minYNoRepeat: Int = if (isLowerYSurfaceExist) {
+                realMinY + 1
+            } else {
+                realMinY
+            }
+            val maxYNoRepeat: Int = if (isUpperYSurfaceExist) {
+                realMaxY - 1
+            } else {
+                realMaxY
+            }
+            (minXNoRepeat..maxXNoRepeat).map { xCor ->
+                (minYNoRepeat..maxYNoRepeat).map { yCor ->
+                    Int3D(xCor, yCor, realMaxZ)
+                }
+            }.flatten()
+        } else {
+            listOf()
+        }
+
+        return lowerXSurface + upperXSurface + lowerYSurface + upperYSurface + lowerZSurface +
+                upperZSurface
     }
 }
 
