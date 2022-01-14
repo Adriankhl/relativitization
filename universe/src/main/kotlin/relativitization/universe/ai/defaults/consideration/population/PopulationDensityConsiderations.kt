@@ -7,7 +7,7 @@ import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.components.defaults.physics.Int3D
 
 /**
- * Check if the population in the cube is higher than the neighboring cube
+ * Check if the population in the cube is higher than any of the neighboring cube
  *
  * @property rankIfTrue rank of dual utility if this is true
  * @property multiplierIfTrue multiplier of dual utility if this is true
