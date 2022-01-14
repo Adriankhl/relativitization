@@ -4,6 +4,12 @@ import relativitization.universe.ai.defaults.consideration.event.HasMovementEven
 import relativitization.universe.ai.defaults.consideration.population.HigherPopulationDensityThenNeighborCubeConsideration
 import relativitization.universe.ai.defaults.utils.*
 import relativitization.universe.data.PlanDataAtPlayer
+import relativitization.universe.data.commands.AddEventCommand
+import relativitization.universe.data.components.defaults.physics.Double3D
+import relativitization.universe.data.components.defaults.physics.Int3D
+import relativitization.universe.data.components.defaults.physics.Int4D
+import relativitization.universe.data.events.MoveToDouble3DEvent
+import relativitization.universe.maths.random.Rand
 
 class MovementReasoner : DualUtilityReasoner() {
     override fun getOptionList(
@@ -35,6 +41,45 @@ class MoveToLowerDensityCubeOption : DualUtilityOption() {
     )
 
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
-        TODO("Not yet implemented")
+        val totalPopulation: Double = planDataAtPlayer.universeData3DAtPlayer
+            .getNeighbourAndSelf(0).fold(0.0) { acc, playerData ->
+                acc + playerData.playerInternalData.popSystemData().totalAdultPopulation()
+            }
+
+        val allNeighborCube: List<Int3D> = planDataAtPlayer.universeData3DAtPlayer
+            .getInt3DAtCubeSurface(
+                1
+            )
+
+        val neighborCubeWithHigherPopulation: List<Int3D> = allNeighborCube.filter {
+            val populationAtCube: Double =
+                planDataAtPlayer.universeData3DAtPlayer.get(it).values.flatten().fold(
+                    0.0
+                ) { acc, playerData ->
+                    acc + playerData.playerInternalData.popSystemData().totalAdultPopulation()
+                }
+            populationAtCube < totalPopulation
+        }
+        if (neighborCubeWithHigherPopulation.isNotEmpty()) {
+            val targetInt3D: Int3D = neighborCubeWithHigherPopulation[Rand.rand().nextInt(
+                0,
+                neighborCubeWithHigherPopulation.size
+            )]
+
+            val event = MoveToDouble3DEvent(
+                toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+                fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+                stayTime = 99,
+                targetDouble3D = targetInt3D.toDouble3DCenter(),
+                maxSpeed = 0.1
+            )
+
+            planDataAtPlayer.addCommand(
+                AddEventCommand(
+                    event = event,
+                    fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
+                )
+            )
+        }
     }
 }
