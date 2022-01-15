@@ -50,7 +50,7 @@ class BalanceFuelDataAINode : AINode {
         val movementWeight: Double = if (hasStellarSystem) {
             0.0
         } else {
-            1.0
+            4.0
         }
         val productionWeight: Double = 2.0
         val tradeWeight: Double = 1.0

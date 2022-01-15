@@ -44,7 +44,7 @@ class SplitCarrierOption : DualUtilityOption() {
                 bonusIfFalse = 0.0
             ),
             NumberOfSpaceShipConsideration(
-                initialMultiplier = 0.001,
+                initialMultiplier = 0.0001,
                 exponent = 2.0,
                 rank = 0,
                 bonus = 0.0
