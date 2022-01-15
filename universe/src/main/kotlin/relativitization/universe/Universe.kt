@@ -523,6 +523,9 @@ class Universe(
         logger.debug("Move player in player collection")
         playerCollection.movePlayer(universeData.universeState, universeData.universeSettings)
 
+        logger.debug("Process dead players and new players")
+        processDeadAndNewPlayer()
+
         // Sync all data component to ensure consistency before universe data update
         logger.debug("Sync all player data component in postProcessUniverse()")
         playerCollection.syncAllPlayerDataComponent()

@@ -56,8 +56,7 @@ data class MutableKnowledgeData(
      * Compute and modify the startFromBasicResearchId
      */
     private fun computeStartFromBasicResearchId() {
-        startFromBasicResearchId =
-            ListFind.minMissing(basicResearchIdList, startFromBasicResearchId)
+        startFromBasicResearchId = ListFind.minMissing(basicResearchIdList, startFromBasicResearchId)
         basicResearchIdList.removeAll { it < startFromBasicResearchId }
     }
 
@@ -81,8 +80,7 @@ data class MutableKnowledgeData(
      * Compute and modify the startFromAppliedResearchId
      */
     private fun computeStartFromAppliedResearchId() {
-        startFromAppliedResearchId =
-            ListFind.minMissing(appliedResearchIdList, startFromAppliedResearchId)
+        startFromAppliedResearchId = ListFind.minMissing(appliedResearchIdList, startFromAppliedResearchId)
         appliedResearchIdList.removeAll { it < startFromAppliedResearchId }
     }
 
