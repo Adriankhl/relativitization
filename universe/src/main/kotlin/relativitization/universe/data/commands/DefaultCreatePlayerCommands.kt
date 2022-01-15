@@ -53,22 +53,29 @@ data class SplitCarrierCommand(
             I18NString("Invalid carrier id. ")
         )
 
-        val isResourceFractionValid = CommandErrorMessage(
-            (resourceFraction >= 0.0) && (resourceFraction <= 1.0),
-            I18NString("Invalid resource fraction. ")
-        )
-
         val isCarrierListNotEmpty = CommandErrorMessage(
             carrierIdList.isNotEmpty(),
             I18NString("Carrier list is empty. ")
         )
 
+        val isRemainingCarrierNonZero = CommandErrorMessage(
+            (playerData.playerInternalData.popSystemData().carrierDataMap.keys - carrierIdList.toSet()).isNotEmpty(),
+            I18NString("Zero remaining carrier. ")
+        )
+
+        val isResourceFractionValid = CommandErrorMessage(
+            (resourceFraction >= 0.0) && (resourceFraction <= 1.0),
+            I18NString("Invalid resource fraction. ")
+        )
+
+
         return CommandErrorMessage(
             listOf(
                 isSelf,
                 isCarrierIdValid,
-                isResourceFractionValid,
                 isCarrierListNotEmpty,
+                isRemainingCarrierNonZero,
+                isResourceFractionValid,
             )
         )
     }
