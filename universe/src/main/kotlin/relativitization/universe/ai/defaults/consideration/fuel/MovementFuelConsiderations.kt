@@ -4,6 +4,7 @@ import relativitization.universe.ai.defaults.utils.DualUtilityConsideration
 import relativitization.universe.ai.defaults.utils.DualUtilityData
 import relativitization.universe.ai.defaults.utils.PlanState
 import relativitization.universe.data.PlanDataAtPlayer
+import relativitization.universe.maths.physics.Movement
 
 /**
  * Check whether there is sufficient movement fuel to change the velocity
@@ -29,6 +30,29 @@ class SufficientFuelMoveToDouble3DConsideration(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): DualUtilityData {
-        TODO("Not yet implemented")
+        val requiredDeltaMass: Double = Movement.requiredDeltaRestMassSimpleEstimation(
+            initialRestMass = planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData.physicsData()
+                .totalRestMass(),
+            initialVelocity = planDataAtPlayer.getCurrentMutablePlayerData().velocity.toVelocity(),
+            maxSpeed = maxSpeed,
+            speedOfLight = planDataAtPlayer.universeData3DAtPlayer.universeSettings.speedOfLight,
+        )
+
+        val isMovementFuelSufficient: Boolean = planDataAtPlayer.getCurrentPlayerData().playerInternalData
+            .physicsData().fuelRestMassData.movement >= requiredDeltaMass
+
+        return if (isMovementFuelSufficient) {
+            DualUtilityData(
+                rank = rankIfTrue,
+                multiplier = multiplierIfTrue,
+                bonus = bonusIfTrue
+            )
+        } else {
+            DualUtilityData(
+                rank = rankIfFalse,
+                multiplier = multiplierIfFalse,
+                bonus = bonusIfFalse
+            )
+        }
     }
 }
