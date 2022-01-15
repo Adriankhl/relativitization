@@ -83,7 +83,7 @@ object KnowledgeDiffusion : Mechanism() {
             }
         }.filter {
             Rand.rand().nextDouble() < diffusionProb
-        }
+        }.distinctBy { it.basicResearchId }
     }
 
     fun computeAppliedResearchDiffusion(
@@ -97,6 +97,6 @@ object KnowledgeDiffusion : Mechanism() {
             }
         }.filter {
             Rand.rand().nextDouble() < diffusionProb
-        }
+        }.distinctBy { it.appliedResearchId }
     }
 }
