@@ -91,8 +91,8 @@ data class SplitCarrierCommand(
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
         val newPlayerInternalData: MutablePlayerInternalData = MutablePlayerInternalData(
-            playerData.playerId,
-            (playerData.playerInternalData.leaderIdList + playerData.playerId).toMutableList(),
+            directLeaderId = playerData.playerId,
+            leaderIdList = (playerData.playerInternalData.leaderIdList + playerData.playerId).toMutableList(),
         )
 
         // copy ai data

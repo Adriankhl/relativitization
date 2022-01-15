@@ -174,20 +174,23 @@ class PlayerCollection(
     fun addNewPlayerFromPlayerData(universeState: UniverseState) {
         val newPlayerList: List<PlayerData> = playerMap.map { (_, playerData) ->
             playerData.newPlayerList.map { mutableNewPlayerInternalData ->
-
-                val newPlayerInternalData: PlayerInternalData = copy(mutableNewPlayerInternalData)
-                val playerId: Int = runBlocking {
+                val newPlayerId: Int = runBlocking {
                     universeState.getNewPlayerId()
                 }
-                val name = randomPlayerName(newPlayerInternalData)
 
                 // Add new player as direct subordinate if it is the direct leader
-                if (newPlayerInternalData.directLeaderId == playerData.playerId) {
-                    playerData.addDirectSubordinateId(playerId)
+                if (mutableNewPlayerInternalData.directLeaderId == playerData.playerId) {
+                    playerData.addDirectSubordinateId(newPlayerId)
                 }
 
+                // Player should be leader of itself
+                mutableNewPlayerInternalData.leaderIdList.add(newPlayerId)
+
+                val newPlayerInternalData: PlayerInternalData = copy(mutableNewPlayerInternalData)
+                val name = randomPlayerName(newPlayerInternalData)
+
                 PlayerData(
-                    playerId = playerId,
+                    playerId = newPlayerId,
                     name = name,
                     playerType = PlayerType.AI,
                     int4D = copy(playerData.int4D),
