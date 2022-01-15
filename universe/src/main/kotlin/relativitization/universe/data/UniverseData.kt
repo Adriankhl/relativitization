@@ -122,7 +122,7 @@ data class UniverseData(
             universeSettings.speedOfLight
         )
 
-        val data4D: List<List<List<List<List<PlayerData>>>>> = universeData4D.takeLast(tSize)
+        val data4D: List<List<List<List<List<PlayerData>>>>> = universeData4D.takeLast(tSize + 1)
 
         return data4D.flatten().flatten().flatten().flatten()
     }
