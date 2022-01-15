@@ -86,14 +86,16 @@ class LowIncomeTaxAINode : AINode {
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ) {
-        planDataAtPlayer.addCommand(
-            ChangeLowIncomeTaxCommand(
-                toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
-                rate = 0.001,
+        if (planDataAtPlayer.getCurrentMutablePlayerData().isTopLeader()) {
+            planDataAtPlayer.addCommand(
+                ChangeLowIncomeTaxCommand(
+                    toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+                    fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+                    fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
+                    rate = 0.001,
+                )
             )
-        )
+        }
     }
 }
 
@@ -102,14 +104,16 @@ class MiddleIncomeTaxAINode : AINode {
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ) {
-        planDataAtPlayer.addCommand(
-            ChangeMiddleIncomeTaxCommand(
-                toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
-                rate = 0.01,
+        if (planDataAtPlayer.getCurrentMutablePlayerData().isTopLeader()) {
+            planDataAtPlayer.addCommand(
+                ChangeMiddleIncomeTaxCommand(
+                    toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+                    fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+                    fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
+                    rate = 0.01,
+                )
             )
-        )
+        }
     }
 }
 
@@ -118,13 +122,15 @@ class HighIncomeTaxAINode : AINode {
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ) {
-        planDataAtPlayer.addCommand(
-            ChangeHighIncomeTaxCommand(
-                toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
-                rate = 0.1,
+        if (planDataAtPlayer.getCurrentMutablePlayerData().isTopLeader()) {
+            planDataAtPlayer.addCommand(
+                ChangeHighIncomeTaxCommand(
+                    toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+                    fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+                    fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
+                    rate = 0.1,
+                )
             )
-        )
+        }
     }
 }
