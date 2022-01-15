@@ -56,11 +56,27 @@ data class UniverseData(
      * Check if the universe is valid
      */
     fun isUniverseValid(): Boolean {
-        logger.debug("Is setting valid: ${universeSettings.isSettingValid()}")
-        logger.debug("Is dimension valid: ${isDimensionValid()}")
-        logger.debug("Is state valid: ${isStateValid()}")
-        logger.debug("Is player data valid: ${isPlayerDataValid()}")
-        return universeSettings.isSettingValid() && isDimensionValid() && isStateValid() && isPlayerDataValid()
+        val isSettingValid: Boolean = universeSettings.isSettingValid()
+        if (!isSettingValid) {
+            logger.error("Universe setting is not valid")
+        }
+
+        val isDimensionValid: Boolean = isDimensionValid()
+        if (!isDimensionValid) {
+            logger.error("Universe dimension is not valid")
+        }
+
+        val isStateValid: Boolean = isStateValid()
+        if (!isSettingValid) {
+            logger.error("Universe state is not valid")
+        }
+
+        val isPlayerDataValid: Boolean = isPlayerDataValid()
+        if (!isPlayerDataValid) {
+            logger.error("Some player data is not valid")
+        }
+
+        return isSettingValid && isDimensionValid && isStateValid && isPlayerDataValid
     }
 
     /**
