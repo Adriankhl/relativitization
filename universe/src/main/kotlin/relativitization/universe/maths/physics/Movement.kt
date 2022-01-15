@@ -211,7 +211,7 @@ object Movement {
     }
 
     /**
-     * Estimate the required mass to move to the target position, not full accurate
+     * Estimate the required mass to move to the target position, not fully accurate
      *
      * @param initialRestMass initial rest mass of the object
      * @param initialVelocity initial velocity
