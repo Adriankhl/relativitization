@@ -78,9 +78,7 @@ object KnowledgeDiffusion : Mechanism() {
         otherScienceData: PlayerScienceData,
     ): List<BasicResearchProjectData> {
         return otherScienceData.doneBasicResearchProjectList.filter { otherProject ->
-            !thisScienceData.doneBasicResearchProjectList.any { thisProject ->
-                thisProject.basicResearchId == otherProject.basicResearchId
-            }
+            !thisScienceData.isBasicProjectDone(otherProject)
         }.filter {
             Rand.rand().nextDouble() < diffusionProb
         }.distinctBy { it.basicResearchId }
@@ -92,9 +90,7 @@ object KnowledgeDiffusion : Mechanism() {
         otherScienceData: PlayerScienceData,
     ): List<AppliedResearchProjectData> {
         return otherScienceData.doneAppliedResearchProjectList.filter { otherProject ->
-            !thisScienceData.doneAppliedResearchProjectList.any { thisProject ->
-                thisProject.appliedResearchId == otherProject.appliedResearchId
-            }
+            !thisScienceData.isAppliedProjectDone(otherProject)
         }.filter {
             Rand.rand().nextDouble() < diffusionProb
         }.distinctBy { it.appliedResearchId }
