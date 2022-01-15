@@ -133,12 +133,14 @@ data class SplitCarrierCommand(
         // split fuel rest mass data
         val newPhysicsData: MutablePhysicsData =
             DataSerializer.copy(playerData.playerInternalData.physicsData())
+        newPhysicsData.fuelRestMassData.storage *= resourceFraction
         newPhysicsData.fuelRestMassData.movement *= resourceFraction
         newPhysicsData.fuelRestMassData.trade *= resourceFraction
         newPhysicsData.fuelRestMassData.production *= resourceFraction
         newPlayerInternalData.physicsData(newPhysicsData)
 
         // reduce original fuel
+        playerData.playerInternalData.physicsData().fuelRestMassData.storage *= (1.0 - resourceFraction)
         playerData.playerInternalData.physicsData().fuelRestMassData.movement *= (1.0 - resourceFraction)
         playerData.playerInternalData.physicsData().fuelRestMassData.trade *= (1.0 - resourceFraction)
         playerData.playerInternalData.physicsData().fuelRestMassData.production *= (1.0 - resourceFraction)
