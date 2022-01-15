@@ -45,6 +45,54 @@ data class MutablePlayerScienceData(
     var playerScienceApplicationData: MutableScienceApplicationData = MutableScienceApplicationData(),
 ) : MutableDefaultPlayerDataComponent() {
     /**
+     * Check if this basic project is done
+     */
+    fun isBasicProjectDone(basicResearchProjectData: BasicResearchProjectData): Boolean {
+        val isInCommonSense: Boolean =
+            basicResearchProjectData.basicResearchId < commonSenseKnowledgeData.startFromBasicResearchId
+        val isInDoneProjectList:Boolean = doneBasicResearchProjectList.any {
+            it.basicResearchId == basicResearchProjectData.basicResearchId
+        }
+        return isInCommonSense || isInDoneProjectList
+    }
+
+    /**
+     * Check if this basic project is known
+     */
+    fun isBasicProjectKnown(basicResearchProjectData: BasicResearchProjectData): Boolean {
+        val isInCommonSense: Boolean =
+            basicResearchProjectData.basicResearchId < commonSenseKnowledgeData.startFromBasicResearchId
+        val isInKnownProjectList:Boolean = knownBasicResearchProjectList.any {
+            it.basicResearchId == basicResearchProjectData.basicResearchId
+        }
+        return isInCommonSense || isInKnownProjectList
+    }
+
+    /**
+     * Check if this applied project is done
+     */
+    fun isAppliedProjectDone(appliedResearchProjectData: AppliedResearchProjectData): Boolean {
+        val isInCommonSense: Boolean =
+            appliedResearchProjectData.appliedResearchId < commonSenseKnowledgeData.startFromAppliedResearchId
+        val isInDoneProjectList:Boolean = doneAppliedResearchProjectList.any {
+            it.appliedResearchId == appliedResearchProjectData.appliedResearchId
+        }
+        return isInCommonSense || isInDoneProjectList
+    }
+
+    /**
+     * Check if this applied project is known
+     */
+    fun isAppliedProjectKnown(appliedResearchProjectData: AppliedResearchProjectData): Boolean {
+        val isInCommonSense: Boolean =
+            appliedResearchProjectData.appliedResearchId < commonSenseKnowledgeData.startFromAppliedResearchId
+        val isInDoneProjectList:Boolean = knownAppliedResearchProjectList.any {
+            it.appliedResearchId == appliedResearchProjectData.appliedResearchId
+        }
+        return isInCommonSense || isInDoneProjectList
+    }
+
+    /**
      * Compute player knowledge data by common sense and knowledge data list
      */
     fun computePlayerKnowledgeData(
@@ -74,9 +122,7 @@ data class MutablePlayerScienceData(
         basicResearchProjectData: BasicResearchProjectData,
         function: (BasicResearchProjectData, MutableBasicResearchData) -> Unit
     ) {
-        if (doneBasicResearchProjectList.any {
-                it.basicResearchId == basicResearchProjectData.basicResearchId
-            } || (basicResearchProjectData.basicResearchId < commonSenseKnowledgeData.startFromBasicResearchId)) {
+        if (isBasicProjectDone(basicResearchProjectData)) {
             logger.error("Duplicate done basic research id: ${basicResearchProjectData.basicResearchId}, skipping")
         } else {
             knownBasicResearchProjectList.removeAll {
@@ -95,9 +141,7 @@ data class MutablePlayerScienceData(
         appliedResearchProjectData: AppliedResearchProjectData,
         function: (AppliedResearchProjectData, MutableAppliedResearchData) -> Unit
     ) {
-        if (doneAppliedResearchProjectList.any {
-                it.appliedResearchId == appliedResearchProjectData.appliedResearchId
-            } || (appliedResearchProjectData.appliedResearchId < commonSenseKnowledgeData.startFromAppliedResearchId)) {
+        if (isAppliedProjectDone(appliedResearchProjectData)) {
             logger.error("Duplicate done applied research id: ${appliedResearchProjectData.appliedResearchId}, skipping")
         } else {
             knownAppliedResearchProjectList.removeAll {
@@ -115,9 +159,7 @@ data class MutablePlayerScienceData(
     fun knownBasicResearchProject(
         basicResearchProjectData: BasicResearchProjectData,
     ) {
-        if ((doneBasicResearchProjectList + knownBasicResearchProjectList).any {
-                it.basicResearchId == basicResearchProjectData.basicResearchId
-            } || (basicResearchProjectData.basicResearchId < commonSenseKnowledgeData.startFromBasicResearchId)) {
+        if (isBasicProjectKnown(basicResearchProjectData)) {
             logger.error("Duplicate known basic research id: ${basicResearchProjectData.basicResearchId}, skipping")
         } else {
             knownBasicResearchProjectList.add(basicResearchProjectData)
@@ -130,9 +172,7 @@ data class MutablePlayerScienceData(
     fun knownAppliedResearchProject(
         appliedResearchProjectData: AppliedResearchProjectData,
     ) {
-        if ((doneAppliedResearchProjectList + knownAppliedResearchProjectList).any {
-                it.appliedResearchId == appliedResearchProjectData.appliedResearchId
-            } || (appliedResearchProjectData.appliedResearchId < commonSenseKnowledgeData.startFromAppliedResearchId)) {
+        if (isAppliedProjectKnown(appliedResearchProjectData)) {
             logger.error("Duplicate known applied research id: ${appliedResearchProjectData.appliedResearchId}, skipping")
         } else {
             knownAppliedResearchProjectList.add(appliedResearchProjectData)
