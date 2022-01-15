@@ -8,7 +8,7 @@ import relativitization.universe.data.PlanDataAtPlayer
 /**
  * Check whether there is sufficient movement fuel to change the velocity
  *
- * @property targetSpeed the target speed to change to
+ * @property maxSpeed the target max speed
  * @property rankIfTrue rank of dual utility if this is true
  * @property multiplierIfTrue multiplier of dual utility if this is true
  * @property bonusIfTrue bonus of dual utility if this is true
@@ -16,8 +16,8 @@ import relativitization.universe.data.PlanDataAtPlayer
  * @property multiplierIfFalse multiplier of dual utility if this is false
  * @property bonusIfFalse bonus of dual utility if this is false
  */
-class SufficientFuelVelocityChangeConsideration(
-    private val targetSpeed: Double,
+class SufficientFuelMoveToDouble3DConsideration(
+    private val maxSpeed: Double,
     private val rankIfTrue: Int,
     private val multiplierIfTrue: Double,
     private val bonusIfTrue: Double,

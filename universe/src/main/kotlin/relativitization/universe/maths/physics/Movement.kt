@@ -304,6 +304,46 @@ object Movement {
         )
     }
 
+    /**
+     * Estimate the required delta rest mass by (1) stop, (2) change to a velocity, (3) and stop
+     *
+     * @param initialRestMass initial rest mass of the object
+     * @param initialVelocity initial velocity
+     * @param maxSpeed the maximum speed limit of the object, to prevent using too much rest mass as fuel
+     * @param speedOfLight speed of light
+     */
+    fun requiredDeltaRestMassSimpleEstimation(
+        initialRestMass: Double,
+        initialVelocity: Velocity,
+        maxSpeed: Double,
+        speedOfLight: Double,
+    ): Double {
+        // First stop to zero velocity, then accelerate to max speed, then stop to zero again
+        val maxVelocity: Velocity = Velocity(1.0, 0.0, 0.0).scaleVelocity(maxSpeed)
+
+        val requiredDeltaMass1: Double = deltaMassByPhotonRocket(
+            initialRestMass = initialRestMass,
+            initialVelocity = initialVelocity,
+            targetVelocity = Velocity(0.0, 0.0, 0.0),
+            speedOfLight = speedOfLight,
+        )
+
+        val requiredDeltaMass2: Double = deltaMassByPhotonRocket(
+            initialRestMass = initialRestMass - requiredDeltaMass1,
+            initialVelocity = Velocity(0.0, 0.0, 0.0),
+            targetVelocity = maxVelocity,
+            speedOfLight = speedOfLight,
+        )
+
+        val requiredDeltaMass3: Double = deltaMassByPhotonRocket(
+            initialRestMass = initialRestMass - requiredDeltaMass1 - requiredDeltaMass2,
+            initialVelocity = maxVelocity,
+            targetVelocity = Velocity(0.0, 0.0, 0.0),
+            speedOfLight = speedOfLight,
+        )
+
+        return requiredDeltaMass1 + requiredDeltaMass2 + requiredDeltaMass3
+    }
 
     /**
      * Upper bound of the required delta mass to move to the target position, given that the
@@ -344,33 +384,12 @@ object Movement {
         ) {
             initialRestMass - testMovementFinalState.restMass
         } else {
-            // First stop to zero velocity, then accelerate to max speed, then stop to zero again
-            val maxVelocity: Velocity =
-                displacementToVelocity(initialDouble3D, targetDouble3D, speedOfLight).scaleVelocity(
-                    maxSpeed
-                )
-            val requiredDeltaMass1: Double = deltaMassByPhotonRocket(
-                initialRestMass = initialRestMass,
-                initialVelocity = initialVelocity,
-                targetVelocity = Velocity(0.0, 0.0, 0.0),
-                speedOfLight = speedOfLight,
+            requiredDeltaRestMassSimpleEstimation(
+                initialRestMass,
+                initialVelocity,
+                maxSpeed,
+                speedOfLight,
             )
-
-            val requiredDeltaMass2: Double = deltaMassByPhotonRocket(
-                initialRestMass = initialRestMass - requiredDeltaMass1,
-                initialVelocity = Velocity(0.0, 0.0, 0.0),
-                targetVelocity = maxVelocity,
-                speedOfLight = speedOfLight,
-            )
-
-            val requiredDeltaMass3: Double = deltaMassByPhotonRocket(
-                initialRestMass = initialRestMass - requiredDeltaMass1 - requiredDeltaMass2,
-                initialVelocity = maxVelocity,
-                targetVelocity = Velocity(0.0, 0.0, 0.0),
-                speedOfLight = speedOfLight,
-            )
-
-            requiredDeltaMass1 + requiredDeltaMass2 + requiredDeltaMass3
         }
     }
 
