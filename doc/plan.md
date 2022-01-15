@@ -12,7 +12,7 @@
 * No pop buy resource from other player
 * No alliance
 
-# Currently unused data
+# Current unused data
 * Size of factory and institute
 * Open and close factory
 * Size of carrier
@@ -51,6 +51,7 @@
 # Default AI TODO List
 * AI state store last command to subordinate [x]
 * Review resource factory construction after desire change [x]
+* Decrease salary and increase price when pop saving is too much compare to storage
 
 # Command TODO List
 * Destroy factory [x]
