@@ -109,8 +109,17 @@ data class PlayerData(
 
     fun isValid(currentTime: Int): Boolean {
         val isTValid: Boolean = currentTime == int4D.t
-        val isRestMassValid: Boolean = (playerInternalData.physicsData().coreRestMass > 0.0) &&
-                (playerInternalData.physicsData().fuelRestMassData.total() >= 0.0)
+        if (!isTValid) {
+            logger.error("Invalid t ${int4D.t}, should be $currentTime")
+        }
+
+        val physicsData: PhysicsData = playerInternalData.physicsData()
+
+        val isRestMassValid: Boolean = (physicsData.coreRestMass > 0.0) && (physicsData.fuelRestMassData.total() >= 0.0)
+        if (!isRestMassValid) {
+            logger.error("Invalid rest mass: core ${physicsData.coreRestMass}, " +
+                    "fuel ${physicsData.fuelRestMassData.total()}")
+        }
 
         return isTValid && isRestMassValid
     }
@@ -123,6 +132,10 @@ data class PlayerData(
             double4DToGroupId(double4D, edgeLength),
             edgeLength
         )
+    }
+
+    companion object {
+        val logger = RelativitizationLogManager.getLogger()
     }
 }
 
