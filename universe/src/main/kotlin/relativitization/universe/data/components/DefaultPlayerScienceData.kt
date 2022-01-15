@@ -76,7 +76,7 @@ data class MutablePlayerScienceData(
     ) {
         if (doneBasicResearchProjectList.any {
                 it.basicResearchId == basicResearchProjectData.basicResearchId
-            }) {
+            } || (basicResearchProjectData.basicResearchId < commonSenseKnowledgeData.startFromBasicResearchId)) {
             logger.error("Duplicate done basic research id: ${basicResearchProjectData.basicResearchId}, skipping")
         } else {
             knownBasicResearchProjectList.removeAll {
@@ -97,7 +97,7 @@ data class MutablePlayerScienceData(
     ) {
         if (doneAppliedResearchProjectList.any {
                 it.appliedResearchId == appliedResearchProjectData.appliedResearchId
-            }) {
+            } || (appliedResearchProjectData.appliedResearchId < commonSenseKnowledgeData.startFromAppliedResearchId)) {
             logger.error("Duplicate done applied research id: ${appliedResearchProjectData.appliedResearchId}, skipping")
         } else {
             knownAppliedResearchProjectList.removeAll {
@@ -117,7 +117,7 @@ data class MutablePlayerScienceData(
     ) {
         if ((doneBasicResearchProjectList + knownBasicResearchProjectList).any {
                 it.basicResearchId == basicResearchProjectData.basicResearchId
-            }) {
+            } || (basicResearchProjectData.basicResearchId < commonSenseKnowledgeData.startFromBasicResearchId)) {
             logger.error("Duplicate known basic research id: ${basicResearchProjectData.basicResearchId}, skipping")
         } else {
             knownBasicResearchProjectList.add(basicResearchProjectData)
@@ -132,7 +132,7 @@ data class MutablePlayerScienceData(
     ) {
         if ((doneAppliedResearchProjectList + knownAppliedResearchProjectList).any {
                 it.appliedResearchId == appliedResearchProjectData.appliedResearchId
-            }) {
+            } || (appliedResearchProjectData.appliedResearchId < commonSenseKnowledgeData.startFromAppliedResearchId)) {
             logger.error("Duplicate known applied research id: ${appliedResearchProjectData.appliedResearchId}, skipping")
         } else {
             knownAppliedResearchProjectList.add(appliedResearchProjectData)
