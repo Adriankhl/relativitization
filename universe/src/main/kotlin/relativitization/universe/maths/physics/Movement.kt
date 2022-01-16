@@ -47,7 +47,7 @@ object Movement {
     }
 
     /**
-     * Given a initial speed, the distance needed to stop the object by photon rocket
+     * Given an initial speed, the distance needed to stop the object by photon rocket
      *
      * @param initialRestMass initial rest mass of the object
      * @param maxDeltaRestMass maximum change of rest mass to photon to stop the object
@@ -106,31 +106,35 @@ object Movement {
         speedOfLight: Double,
         numIteration: Int = 10,
     ): Double {
-        var intervalMin: Double = 0.0
-        var intervalMax: Double = speedOfLight
+        return if (distance > 0.0) {
+            var intervalMin: Double = Double.MIN_VALUE * 1E10
+            var intervalMax: Double = speedOfLight
 
-        for (i in 1..numIteration) {
-            val testSpeed: Double = 0.5 * intervalMin + 0.5 * intervalMax
-            val stoppingDistance: Double = stoppingDistanceByPhotonRocket(
-                initialRestMass = initialRestMass,
-                maxDeltaRestMass = maxDeltaRestMass,
-                initialVelocity = Velocity(testSpeed, 0.0, 0.0),
-                speedOfLight = speedOfLight
-            )
+            for (i in 1..numIteration) {
+                val testSpeed: Double = 0.5 * intervalMin + 0.5 * intervalMax
+                val stoppingDistance: Double = stoppingDistanceByPhotonRocket(
+                    initialRestMass = initialRestMass,
+                    maxDeltaRestMass = maxDeltaRestMass,
+                    initialVelocity = Velocity(testSpeed, 0.0, 0.0),
+                    speedOfLight = speedOfLight
+                )
 
-            if (stoppingDistance < distance) {
-                intervalMin = testSpeed
-            } else {
-                intervalMax = testSpeed
+                if (stoppingDistance < distance) {
+                    intervalMin = testSpeed
+                } else {
+                    intervalMax = testSpeed
+                }
             }
-        }
 
-        return intervalMin
+            intervalMin
+        } else {
+            0.0
+        }
     }
 
 
     /**
-     * Compute the velocity the object should reached to move to a target double3D position
+     * Compute the velocity the object should reach to move to a target double3D position
      *
      * @param initialRestMass initial rest mass of the object
      * @param maxDeltaRestMass maximum change of rest mass to photon to stop the object
@@ -154,7 +158,8 @@ object Movement {
         val originalTargetVelocity: Velocity =
             displacementToVelocity(initialDouble3D, targetDouble3D, speedOfLight)
         val maxSpeedByDistance: Double = min(
-            maxSpeed, maxSpeedToStopByPhotonRocket(
+            maxSpeed,
+            maxSpeedToStopByPhotonRocket(
                 initialRestMass = initialRestMass,
                 maxDeltaRestMass = maxDeltaRestMass,
                 distance = distance,

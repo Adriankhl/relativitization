@@ -115,5 +115,11 @@ internal class DefaultAITest {
 
         // Ensure population has grown
         assert(totalAdultPopulation > initialAdultPopulation)
+        if (finalView.playerDataMap.size >= 2) {
+            val nonEmptyCube: List<Map<Int, List<Int>>> = finalView.playerId3DMap.flatten().flatten().filter {
+                it.isNotEmpty()
+            }
+            assert(nonEmptyCube.size >= 2)
+        }
     }
 }
