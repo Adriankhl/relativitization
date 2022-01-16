@@ -6,6 +6,7 @@ import relativitization.universe.ai.defaults.utils.PlanState
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.components.defaults.ai.MutableFuelRestMassHistoryData
 import relativitization.universe.data.components.defaults.physics.MutableFuelRestMassData
+import relativitization.universe.data.components.defaults.popsystem.pop.MutableCommonPopData
 import relativitization.universe.data.components.defaults.popsystem.pop.PopType
 
 /**
@@ -105,6 +106,7 @@ class SufficientProductionFuelConsideration(
  *
  * @property carrierId the id of the carrier
  * @property popType consider the salary of this pop type
+ * @property productionFuelRatio compare salary to production fuel times this ratio
  * @property rankIfTrue rank of dual utility if this is true
  * @property multiplierIfTrue multiplier of dual utility if this is true
  * @property bonusIfTrue bonus of dual utility if this is true
@@ -115,6 +117,7 @@ class SufficientProductionFuelConsideration(
 class PopulationSavingHighCompareToProduction(
     private val carrierId: Int,
     private val popType: PopType,
+    private val productionFuelRatio: Double,
     private val rankIfTrue: Int,
     private val multiplierIfTrue: Double,
     private val bonusIfTrue: Double,
@@ -123,6 +126,34 @@ class PopulationSavingHighCompareToProduction(
     private val bonusIfFalse: Double,
 ) : DualUtilityConsideration {
     override fun getDualUtilityData(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState): DualUtilityData {
-        TODO("Not yet implemented")
+        val totalPopulation: Double = planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData.popSystemData()
+            .totalAdultPopulation()
+
+        val commonPopData: MutableCommonPopData = planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData
+            .popSystemData().carrierDataMap.getValue(carrierId).allPopData.getCommonPopData(popType)
+
+        // scaled salary to compare production fuel to as if the whole population is having this saving
+        val scaledSaving: Double = if (commonPopData.adultPopulation > 0.0) {
+            commonPopData.saving / commonPopData.adultPopulation * totalPopulation
+        } else {
+            0.0
+        }
+
+        val productionFuel: Double = planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData
+            .physicsData().fuelRestMassData.production
+
+        return if (scaledSaving >= productionFuel * productionFuelRatio) {
+            DualUtilityData(
+                rank = rankIfTrue,
+                multiplier = multiplierIfTrue,
+                bonus = bonusIfTrue
+            )
+        } else {
+            DualUtilityData(
+                rank = rankIfFalse,
+                multiplier = multiplierIfFalse,
+                bonus = bonusIfFalse
+            )
+        }
     }
 }
