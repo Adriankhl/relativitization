@@ -78,8 +78,7 @@ object UpdateScienceApplicationData : Mechanism() {
         val coreRestMass: Double =
             (mutableKnowledgeData.appliedResearchData.architectureTechnologyLevel + 1.0) * 1E6
 
-        val maxMovementDeltaFuelRestMass: Double = coreRestMass *
-                tanh(mutableKnowledgeData.appliedResearchData.energyTechnologyLevel / 500.0) * 5.0
+        val maxMovementDeltaFuelRestMass: Double = coreRestMass * 1E4
 
         val idealPopulation: Double = coreRestMass
 
