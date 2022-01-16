@@ -47,7 +47,7 @@ class HigherPopulationDensityThenNeighborCubeConsideration(
             }
         }
 
-        val isHigherDensity: Boolean = allNeighborPopulation.any { it > otherPopulation }
+        val isHigherDensity: Boolean = allNeighborPopulation.any { otherPopulation > it }
 
         return if (isHigherDensity) {
             DualUtilityData(
