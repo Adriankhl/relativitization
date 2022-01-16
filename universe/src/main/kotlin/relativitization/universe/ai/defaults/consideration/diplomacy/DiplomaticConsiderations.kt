@@ -51,7 +51,7 @@ class RelationConsideration(
  * @property multiplier the multiplier of the DualUtilityData
  */
 class HierarchyConsideration(
-    val playerId: Int,
+    private val playerId: Int,
     private val rankIfSelf: Int = 4,
     private val rankIfDirectLeader: Int = 3,
     private val rankIfOtherLeader: Int = 2,
