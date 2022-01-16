@@ -1,6 +1,7 @@
 package relativitization.universe.ai.defaults.node.self.pop
 
 import relativitization.universe.ai.defaults.consideration.fuel.IncreasingProductionFuelConsideration
+import relativitization.universe.ai.defaults.consideration.fuel.PopulationSavingHighCompareToProduction
 import relativitization.universe.ai.defaults.utils.*
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.commands.ChangeSalaryCommand
@@ -26,7 +27,7 @@ class SalaryReasoner : SequenceReasoner() {
 
         val totalAdultPopulation: Double = popSystemData.totalAdultPopulation()
 
-        // Compute the order of the ratio between population and ideal population for all carrier
+        // Compute the order of the ratio between population and ideal population for all carriers.
         // Carrier with lower ratio should have a higher salary to attract immigrant
         val populationRatioOrder: List<Int> = popSystemData.carrierDataMap.keys.sortedByDescending {
             val carrier: MutableCarrierData = popSystemData.carrierDataMap.getValue(it)
@@ -157,6 +158,17 @@ class DecreaseSalaryOption(
                 rankIfFalse = 1,
                 multiplierIfFalse = 1.0,
                 bonusIfFalse = 1.0
+            ),
+            PopulationSavingHighCompareToProduction(
+                carrierId = carrierId,
+                popType = popType,
+                productionFuelRatio = 0.5,
+                rankIfTrue = 5,
+                multiplierIfTrue = 1.0,
+                bonusIfTrue = 1.0,
+                rankIfFalse = 0,
+                multiplierIfFalse = 1.0,
+                bonusIfFalse = 0.0
             )
         )
     }
