@@ -28,8 +28,9 @@ class HigherPopulationDensityThenNeighborCubeConsideration(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): DualUtilityData {
-        val totalPopulation: Double = planDataAtPlayer.universeData3DAtPlayer
-            .getNeighbourAndSelf(0).fold(0.0) { acc, playerData ->
+        // All population in the cube, exclude self
+        val otherPopulation: Double = planDataAtPlayer.universeData3DAtPlayer
+            .getNeighbour(0).fold(0.0) { acc, playerData ->
                 acc + playerData.playerInternalData.popSystemData().totalAdultPopulation()
             }
 
@@ -46,7 +47,7 @@ class HigherPopulationDensityThenNeighborCubeConsideration(
             }
         }
 
-        val isHigherDensity: Boolean = allNeighborPopulation.any { it > totalPopulation }
+        val isHigherDensity: Boolean = allNeighborPopulation.any { it > otherPopulation }
 
         return if (isHigherDensity) {
             DualUtilityData(

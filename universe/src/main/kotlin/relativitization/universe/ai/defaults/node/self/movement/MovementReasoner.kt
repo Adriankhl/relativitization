@@ -49,8 +49,8 @@ class MoveToLowerDensityCubeOption : DualUtilityOption() {
     )
 
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
-        val totalPopulation: Double = planDataAtPlayer.universeData3DAtPlayer
-            .getNeighbourAndSelf(0).fold(0.0) { acc, playerData ->
+        val otherPopulation: Double = planDataAtPlayer.universeData3DAtPlayer
+            .getNeighbour(0).fold(0.0) { acc, playerData ->
                 acc + playerData.playerInternalData.popSystemData().totalAdultPopulation()
             }
 
@@ -59,19 +59,19 @@ class MoveToLowerDensityCubeOption : DualUtilityOption() {
                 1
             )
 
-        val neighborCubeWithHigherPopulation: List<Int3D> = allNeighborCube.filter {
+        val neighborCubeWithLowerPopulation: List<Int3D> = allNeighborCube.filter {
             val populationAtCube: Double =
                 planDataAtPlayer.universeData3DAtPlayer.get(it).values.flatten().fold(
                     0.0
                 ) { acc, playerData ->
                     acc + playerData.playerInternalData.popSystemData().totalAdultPopulation()
                 }
-            populationAtCube < totalPopulation
+            populationAtCube < otherPopulation
         }
-        if (neighborCubeWithHigherPopulation.isNotEmpty()) {
-            val targetInt3D: Int3D = neighborCubeWithHigherPopulation[Rand.rand().nextInt(
+        if (neighborCubeWithLowerPopulation.isNotEmpty()) {
+            val targetInt3D: Int3D = neighborCubeWithLowerPopulation[Rand.rand().nextInt(
                 0,
-                neighborCubeWithHigherPopulation.size
+                neighborCubeWithLowerPopulation.size
             )]
 
             val event = MoveToDouble3DEvent(
