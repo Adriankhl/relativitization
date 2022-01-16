@@ -76,7 +76,8 @@ class SplitCarrierOption : DualUtilityOption() {
             isSpaceship && hasFuelFactory && hasAllResourceFactory
         }.keys.toList().shuffled(Rand.rand())
 
-        if (carrierIdList.isNotEmpty()) {
+        // Only split if there are two valid carrier
+        if (carrierIdList.size >= 2) {
             planDataAtPlayer.addCommand(
                 SplitCarrierCommand(
                     toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
