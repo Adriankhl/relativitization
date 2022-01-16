@@ -76,7 +76,7 @@ object UpdateScienceApplicationData : Mechanism() {
     fun computeIdealShip(mutableKnowledgeData: MutableKnowledgeData): MutableCarrierInternalData {
 
         val coreRestMass: Double =
-            mutableKnowledgeData.appliedResearchData.architectureTechnologyLevel * 1E6
+            (mutableKnowledgeData.appliedResearchData.architectureTechnologyLevel + 1.0) * 1E6
 
         val maxMovementDeltaFuelRestMass: Double = coreRestMass *
                 tanh(mutableKnowledgeData.appliedResearchData.energyTechnologyLevel / 500.0) * 5.0
