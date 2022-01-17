@@ -16,6 +16,7 @@ class MovementReasoner : DualUtilityReasoner() {
         planState: PlanState
     ): List<DualUtilityOption> = listOf(
         MoveToLowerDensityCubeOption(),
+        MoveToEnemyOption(),
         DoNothingDualUtilityOption(rank = 1, multiplier = 1.0, bonus = 1.0)
     )
 }
@@ -89,5 +90,28 @@ class MoveToLowerDensityCubeOption : DualUtilityOption() {
                 )
             )
         }
+    }
+}
+
+/**
+ * Move to a cube with enemy
+ */
+class MoveToEnemyOption : DualUtilityOption() {
+    override fun getConsiderationList(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planState: PlanState
+    ): List<DualUtilityConsideration> = listOf(
+        SufficientFuelMoveToDouble3DConsideration(
+            maxSpeed = 0.1,
+            rankIfTrue = 0,
+            multiplierIfTrue = 1.0,
+            bonusIfTrue = 0.0,
+            rankIfFalse = 0,
+            multiplierIfFalse = 0.0,
+            bonusIfFalse = 0.0
+        )
+    )
+
+    override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
     }
 }
