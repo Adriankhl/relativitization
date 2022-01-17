@@ -5,6 +5,7 @@ import relativitization.universe.data.components.defaults.physics.Velocity
 import relativitization.universe.maths.physics.Intervals.distance
 import relativitization.universe.maths.physics.Relativistic.decelerateByPhotonRocket
 import relativitization.universe.maths.physics.Relativistic.deltaMassByPhotonRocket
+import relativitization.universe.maths.physics.Relativistic.speedByPhotonRocket
 import relativitization.universe.maths.physics.Relativistic.targetVelocityByPhotonRocket
 import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.math.min
@@ -267,6 +268,40 @@ object Movement {
             currentVelocity,
             currentDouble3D
         )
+    }
+
+    /**
+     * Estimate the max speed by (1) stop, (2) spend half of the movement fuel to a velocity
+     *
+     * @param initialRestMass initial rest mass of the object
+     * @param initialVelocity initial velocity
+     * @param movementFuelRestMass the fuel to be used
+     * @param speedOfLight speed of light
+     */
+    fun maxSpeedSimpleEstimation(
+        initialRestMass: Double,
+        initialVelocity: Velocity,
+        movementFuelRestMass: Double,
+        speedOfLight: Double,
+    ): Double {
+        val requiredDeltaMass1: Double = deltaMassByPhotonRocket(
+            initialRestMass = initialRestMass,
+            initialVelocity = initialVelocity,
+            targetVelocity = Velocity(0.0, 0.0, 0.0),
+            speedOfLight = speedOfLight,
+        )
+
+        val remainingMovementFuel: Double = movementFuelRestMass - requiredDeltaMass1
+
+        return if (remainingMovementFuel > 0.0) {
+            speedByPhotonRocket(
+                initialRestMass = initialRestMass - requiredDeltaMass1,
+                deltaRestMass = remainingMovementFuel * 0.5,
+                speedOfLight = speedOfLight
+            )
+        } else {
+            0.0
+        }
     }
 
     /**
