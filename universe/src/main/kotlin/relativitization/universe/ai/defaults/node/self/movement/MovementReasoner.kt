@@ -7,6 +7,7 @@ import relativitization.universe.ai.defaults.consideration.fuel.SufficientFuelMo
 import relativitization.universe.ai.defaults.consideration.population.HigherPopulationDensityThenNeighborCubeConsideration
 import relativitization.universe.ai.defaults.utils.*
 import relativitization.universe.data.PlanDataAtPlayer
+import relativitization.universe.data.PlayerData
 import relativitization.universe.data.commands.AddEventCommand
 import relativitization.universe.data.components.defaults.physics.Int3D
 import relativitization.universe.data.events.MoveToDouble3DEvent
@@ -99,13 +100,15 @@ class MoveToLowerDensityCubeOption : DualUtilityOption() {
  * Move to a cube with enemy
  */
 class MoveToEnemyOption : DualUtilityOption() {
+    val range: Int = 2
+
     override fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<DualUtilityConsideration> = listOf(
         HasMovementEventConsideration(rankIfTrue = 0, multiplierIfTrue = 0.0, bonusIfTrue = 0.0),
         EnemyNeighbourConsideration(
-            range = 2,
+            range = range,
             rankIfTrue = 1,
             multiplierIfTrue = 1.0,
             bonusIfTrue = 1.0,
@@ -133,5 +136,25 @@ class MoveToEnemyOption : DualUtilityOption() {
     )
 
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
+        val neighbour: List<PlayerData> = planDataAtPlayer.universeData3DAtPlayer.getNeighbour(range)
+
+        if (neighbour.isNotEmpty()) {
+            val enemy: PlayerData = neighbour[Rand.rand().nextInt(neighbour.size)]
+
+            val event = MoveToDouble3DEvent(
+                toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+                fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+                stayTime = 99,
+                targetDouble3D = enemy.double4D.toDouble3D(),
+                maxSpeed = 0.1,
+            )
+
+            planDataAtPlayer.addCommand(
+                AddEventCommand(
+                    event = event,
+                    fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
+                )
+            )
+        }
     }
 }

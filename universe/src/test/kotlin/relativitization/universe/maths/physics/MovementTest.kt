@@ -6,6 +6,7 @@ import relativitization.universe.maths.physics.Movement.deltaMassTargetDouble3DB
 import relativitization.universe.maths.physics.Movement.estimateRequiredDeltaMass
 import relativitization.universe.maths.physics.Movement.isSameDirection
 import relativitization.universe.maths.physics.Movement.maxSpeedToStopByPhotonRocket
+import relativitization.universe.maths.physics.Movement.requiredDeltaRestMassSimpleEstimation
 import relativitization.universe.maths.physics.Movement.stoppingDistanceByPhotonRocket
 import relativitization.universe.maths.physics.Movement.targetDouble3DByPhotonRocket
 import relativitization.universe.maths.physics.Relativistic.targetVelocityByPhotonRocket
@@ -195,12 +196,10 @@ internal class MovementTest {
 
         println(l1)
 
-        val e1: Double = estimateRequiredDeltaMass(
+        val e1: Double = requiredDeltaRestMassSimpleEstimation(
             initialRestMass = 1.0,
             initialVelocity = Velocity(0.0, 0.0, 0.0),
             maxSpeed = 0.2,
-            initialDouble3D = Double3D(0.0, 0.0, 0.0),
-            targetDouble3D = Double3D(1.0, 0.0, 0.0),
             speedOfLight = 1.0
         )
 
@@ -232,12 +231,10 @@ internal class MovementTest {
 
         println(l2)
 
-        val e2: Double = estimateRequiredDeltaMass(
+        val e2: Double = requiredDeltaRestMassSimpleEstimation(
             initialRestMass = 1.0,
             initialVelocity = Velocity(0.0, -0.3, 0.0),
             maxSpeed = 0.2,
-            initialDouble3D = Double3D(0.0, 0.0, 0.0),
-            targetDouble3D = Double3D(1.0, 0.0, 0.0),
             speedOfLight = 1.0
         )
 
