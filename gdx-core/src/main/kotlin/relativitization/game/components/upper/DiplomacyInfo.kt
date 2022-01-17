@@ -6,6 +6,7 @@ import relativitization.game.RelativitizationGame
 import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.commands.DeclareIndependenceToDirectLeaderCommand
+import relativitization.universe.data.commands.DeclareIndependenceToTopLeaderCommand
 import relativitization.universe.data.commands.DeclareWarCommand
 import relativitization.universe.data.commands.ProposePeaceCommand
 import relativitization.universe.data.components.defaults.diplomacy.DiplomaticRelationData
@@ -259,6 +260,23 @@ class DiplomacyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             game.universeClient.currentCommand = declareIndependenceToDirectLeaderCommand
         }
         nestedTable.add(declareIndependenceToDirectLeaderButton)
+
+        nestedTable.row().space(10f)
+
+        val declareIndependenceToTopLeaderButton = createTextButton(
+            "Declare independence (top leader)",
+            gdxSettings.smallFontSize,
+            gdxSettings.soundEffectsVolume
+        ) {
+            val declareIndependenceToTopLeaderCommand = DeclareIndependenceToTopLeaderCommand(
+                toId = playerData.topLeaderId(),
+                fromId = game.universeClient.getCurrentPlayerData().playerId,
+                fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
+            )
+
+            game.universeClient.currentCommand = declareIndependenceToTopLeaderCommand
+        }
+        nestedTable.add(declareIndependenceToTopLeaderButton)
 
         nestedTable.row().space(10f)
 
