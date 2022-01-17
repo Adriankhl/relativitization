@@ -51,7 +51,7 @@
 # Default AI TODO List
 * AI state store last command to subordinate [x]
 * Review resource factory construction after desire change [x]
-* Decrease salary and increase price when pop saving is too much compare to storage
+* Decrease salary and increase price when pop saving is too much compare to storage [x]
 
 # Command TODO List
 * Destroy factory [x]
