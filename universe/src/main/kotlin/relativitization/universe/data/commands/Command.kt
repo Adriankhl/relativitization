@@ -440,7 +440,7 @@ object CommandI18NStringFactory {
         listOf(
             NormalString("Command top leader id "),
             IntString(0),
-            NormalString("is not the same as player top leader id "),
+            NormalString(" is not the same as player top leader id "),
             IntString(1),
             NormalString(". ")
         ),
