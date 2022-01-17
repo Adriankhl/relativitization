@@ -101,6 +101,7 @@ class MoveToEnemyOption : DualUtilityOption() {
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<DualUtilityConsideration> = listOf(
+        HasMovementEventConsideration(rankIfTrue = 0, multiplierIfTrue = 0.0, bonusIfTrue = 0.0),
         SufficientFuelMoveToDouble3DConsideration(
             maxSpeed = 0.1,
             rankIfTrue = 0,
