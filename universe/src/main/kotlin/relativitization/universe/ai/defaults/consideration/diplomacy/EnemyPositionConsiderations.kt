@@ -4,6 +4,8 @@ import relativitization.universe.ai.defaults.utils.DualUtilityConsideration
 import relativitization.universe.ai.defaults.utils.DualUtilityData
 import relativitization.universe.ai.defaults.utils.PlanState
 import relativitization.universe.data.PlanDataAtPlayer
+import relativitization.universe.data.PlayerData
+import relativitization.universe.data.components.defaults.diplomacy.DiplomaticRelationState
 
 /**
  * Check if there is any enemy in neighbouring cube
@@ -16,7 +18,7 @@ import relativitization.universe.data.PlanDataAtPlayer
  * @property multiplierIfFalse multiplier of dual utility if this is false
  * @property bonusIfFalse bonus of dual utility if this is false
  */
-class EnemyInRangeConsideration(
+class EnemyNeighbourConsideration(
     private val range: Int,
     private val rankIfTrue: Int,
     private val multiplierIfTrue: Double,
@@ -26,6 +28,29 @@ class EnemyInRangeConsideration(
     private val bonusIfFalse: Double,
 ) : DualUtilityConsideration {
     override fun getDualUtilityData(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState): DualUtilityData {
-        TODO("Not yet implemented")
+        val neighbour: List<PlayerData> = planDataAtPlayer.universeData3DAtPlayer.getNeighbour(range)
+
+        val hasEnemy: Boolean = planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData.diplomacyData()
+            .relationMap.filterValues {
+                it.diplomaticRelationState == DiplomaticRelationState.ENEMY
+            }.keys.any { enemyId ->
+                neighbour.any {
+                    it.playerId == enemyId
+                }
+            }
+
+        return if (hasEnemy) {
+            DualUtilityData(
+                rank = rankIfTrue,
+                multiplier = multiplierIfTrue,
+                bonus = bonusIfTrue
+            )
+        } else {
+            DualUtilityData(
+                rank = rankIfFalse,
+                multiplier = multiplierIfFalse,
+                bonus = bonusIfFalse
+            )
+        }
     }
 }
