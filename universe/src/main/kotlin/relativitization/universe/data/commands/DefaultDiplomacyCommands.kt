@@ -124,14 +124,14 @@ data class DeclareWarCommand(
  * Declare independence war on direct leader
  */
 @Serializable
-data class DeclareIndependenceCommand(
+data class DeclareIndependenceToDirectLeaderCommand(
     override val toId: Int,
     override val fromId: Int,
     override val fromInt4D: Int4D
 ) : DefaultCommand() {
     override fun description(): I18NString = I18NString(
         listOf(
-            NormalString("Declare independence and war on "),
+            NormalString("Declare independence and war on direct leader: id "),
             IntString(0),
             NormalString(". "),
         ),

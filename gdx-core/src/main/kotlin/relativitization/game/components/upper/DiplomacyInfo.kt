@@ -5,7 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.PlayerData
-import relativitization.universe.data.commands.DeclareIndependenceCommand
+import relativitization.universe.data.commands.DeclareIndependenceToDirectLeaderCommand
 import relativitization.universe.data.commands.DeclareWarCommand
 import relativitization.universe.data.commands.ProposePeaceCommand
 import relativitization.universe.data.components.defaults.diplomacy.DiplomaticRelationData
@@ -245,20 +245,20 @@ class DiplomacyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         nestedTable.row().space(10f)
 
-        val declareIndependenceButton = createTextButton(
-            "Declare independence",
+        val declareIndependenceToDirectLeaderButton = createTextButton(
+            "Declare independence (direct leader)",
             gdxSettings.smallFontSize,
             gdxSettings.soundEffectsVolume
         ) {
-            val declareIndependenceCommand = DeclareIndependenceCommand(
-                toId = playerData.topLeaderId(),
+            val declareIndependenceToDirectLeaderCommand = DeclareIndependenceToDirectLeaderCommand(
+                toId = playerData.playerInternalData.directLeaderId,
                 fromId = game.universeClient.getCurrentPlayerData().playerId,
                 fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
             )
 
-            game.universeClient.currentCommand = declareIndependenceCommand
+            game.universeClient.currentCommand = declareIndependenceToDirectLeaderCommand
         }
-        nestedTable.add(declareIndependenceButton)
+        nestedTable.add(declareIndependenceToDirectLeaderButton)
 
         nestedTable.row().space(10f)
 

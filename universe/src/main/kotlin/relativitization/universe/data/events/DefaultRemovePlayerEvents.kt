@@ -99,18 +99,18 @@ data class AskToMergeCarrierEvent(
 
                 listOf()
             } else {
-                val declareIndependenceCommand = DeclareIndependenceCommand(
+                val declareIndependenceToDirectLeaderCommand = DeclareIndependenceToDirectLeaderCommand(
                     toId = fromId,
                     fromId = toId,
                     fromInt4D = universeData3DAtPlayer.getCurrentPlayerData().int4D
                 )
 
-                declareIndependenceCommand.checkAndSelfExecuteBeforeSend(
+                declareIndependenceToDirectLeaderCommand.checkAndSelfExecuteBeforeSend(
                     mutablePlayerData,
                     universeData3DAtPlayer.universeSettings
                 )
 
-                listOf(declareIndependenceCommand)
+                listOf(declareIndependenceToDirectLeaderCommand)
             }
         } else {
             listOf()
