@@ -10,8 +10,12 @@ import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.commands.AddEventCommand
 import relativitization.universe.data.components.defaults.physics.Int3D
+import relativitization.universe.data.components.defaults.physics.Velocity
 import relativitization.universe.data.events.MoveToDouble3DEvent
+import relativitization.universe.maths.physics.Movement
 import relativitization.universe.maths.random.Rand
+import kotlin.math.max
+import kotlin.math.min
 
 class MovementReasoner : DualUtilityReasoner() {
     override fun getOptionList(
@@ -141,12 +145,24 @@ class MoveToEnemyOption : DualUtilityOption() {
         if (neighbour.isNotEmpty()) {
             val enemy: PlayerData = neighbour[Rand.rand().nextInt(neighbour.size)]
 
+            // Estimate max. speed possible
+            val maxSpeedEstimate: Double = Movement.maxSpeedSimpleEstimation(
+                initialRestMass = planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData.physicsData()
+                    .totalRestMass(),
+                initialVelocity = planDataAtPlayer.getCurrentMutablePlayerData().velocity.toVelocity(),
+                movementFuelRestMass = planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData
+                    .physicsData().fuelRestMassData.movement,
+                speedOfLight = planDataAtPlayer.universeData3DAtPlayer.universeSettings.speedOfLight
+            )
+
+            val maxSpeed: Double = min(maxSpeedEstimate, 0.9)
+
             val event = MoveToDouble3DEvent(
                 toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
                 fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
                 stayTime = 99,
                 targetDouble3D = enemy.double4D.toDouble3D(),
-                maxSpeed = 0.1,
+                maxSpeed = maxSpeed,
             )
 
             planDataAtPlayer.addCommand(
