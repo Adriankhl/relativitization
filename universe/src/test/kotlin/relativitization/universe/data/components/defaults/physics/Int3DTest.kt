@@ -23,4 +23,12 @@ internal class Int3DTest {
 
         assert(l1.all { il1.contains(it) } && il1.all { l1.contains(it) })
     }
+
+    @Test
+    fun duplicateTest() {
+        val l = listOf(Int3D(1, 1, 1), Int3D(1, 1, 1))
+        val s = l.toSet()
+
+        assert(s == setOf(Int3D(1, 1, 1)))
+    }
 }
