@@ -3,7 +3,7 @@ package relativitization.universe.ai.defaults.node.self.movement
 import relativitization.universe.ai.defaults.consideration.enemy.EnemyNeighbourConsideration
 import relativitization.universe.ai.defaults.consideration.enemy.FightingEnemyConsideration
 import relativitization.universe.ai.defaults.consideration.event.HasMovementEventConsideration
-import relativitization.universe.ai.defaults.consideration.fuel.SufficientFuelMoveToDouble3DConsideration
+import relativitization.universe.ai.defaults.consideration.fuel.SufficientFuelMaxSpeedConsideration
 import relativitization.universe.ai.defaults.consideration.population.HigherPopulationDensityThenNeighborCubeConsideration
 import relativitization.universe.ai.defaults.utils.*
 import relativitization.universe.data.PlanDataAtPlayer
@@ -11,12 +11,10 @@ import relativitization.universe.data.PlayerData
 import relativitization.universe.data.commands.AddEventCommand
 import relativitization.universe.data.components.defaults.diplomacy.DiplomaticRelationState
 import relativitization.universe.data.components.defaults.physics.Int3D
-import relativitization.universe.data.components.defaults.physics.Velocity
 import relativitization.universe.data.events.MoveToDouble3DEvent
 import relativitization.universe.maths.physics.Intervals
 import relativitization.universe.maths.physics.Movement
 import relativitization.universe.maths.random.Rand
-import kotlin.math.max
 import kotlin.math.min
 
 class MovementReasoner : DualUtilityReasoner() {
@@ -38,7 +36,6 @@ class MoveToLowerDensityCubeOption : DualUtilityOption() {
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<DualUtilityConsideration> = listOf(
-        HasMovementEventConsideration(rankIfTrue = 0, multiplierIfTrue = 0.0, bonusIfTrue = 0.0),
         HigherPopulationDensityThenNeighborCubeConsideration(
             rankIfTrue = 1,
             multiplierIfTrue = 1.0,
@@ -47,7 +44,8 @@ class MoveToLowerDensityCubeOption : DualUtilityOption() {
             multiplierIfFalse = 0.0,
             bonusIfFalse = 0.0
         ),
-        SufficientFuelMoveToDouble3DConsideration(
+        SufficientFuelMaxSpeedConsideration(
+            playerId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
             maxSpeed = 0.1,
             rankIfTrue = 0,
             multiplierIfTrue = 1.0,
@@ -55,7 +53,8 @@ class MoveToLowerDensityCubeOption : DualUtilityOption() {
             rankIfFalse = 0,
             multiplierIfFalse = 0.0,
             bonusIfFalse = 0.0
-        )
+        ),
+        HasMovementEventConsideration(rankIfTrue = 0, multiplierIfTrue = 0.0, bonusIfTrue = 0.0),
     )
 
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
@@ -110,7 +109,6 @@ class MoveToEnemyOption : DualUtilityOption() {
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<DualUtilityConsideration> = listOf(
-        HasMovementEventConsideration(rankIfTrue = 0, multiplierIfTrue = 0.0, bonusIfTrue = 0.0),
         EnemyNeighbourConsideration(
             range = 2,
             rankIfTrue = 1,
@@ -128,7 +126,8 @@ class MoveToEnemyOption : DualUtilityOption() {
             multiplierIfFalse = 1.0,
             bonusIfFalse = 0.0
         ),
-        SufficientFuelMoveToDouble3DConsideration(
+        SufficientFuelMaxSpeedConsideration(
+            playerId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
             maxSpeed = 0.1,
             rankIfTrue = 0,
             multiplierIfTrue = 1.0,
@@ -137,6 +136,7 @@ class MoveToEnemyOption : DualUtilityOption() {
             multiplierIfFalse = 0.0,
             bonusIfFalse = 0.0
         ),
+        HasMovementEventConsideration(rankIfTrue = 0, multiplierIfTrue = 0.0, bonusIfTrue = 0.0),
     )
 
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {

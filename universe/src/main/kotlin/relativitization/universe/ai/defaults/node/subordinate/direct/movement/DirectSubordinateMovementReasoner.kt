@@ -1,9 +1,6 @@
 package relativitization.universe.ai.defaults.node.subordinate.direct.movement
 
-import relativitization.universe.ai.defaults.utils.DoNothingDualUtilityOption
-import relativitization.universe.ai.defaults.utils.DualUtilityOption
-import relativitization.universe.ai.defaults.utils.DualUtilityReasoner
-import relativitization.universe.ai.defaults.utils.PlanState
+import relativitization.universe.ai.defaults.utils.*
 import relativitization.universe.data.PlanDataAtPlayer
 
 class DirectSubordinateMovementReasoner(
@@ -13,6 +10,21 @@ class DirectSubordinateMovementReasoner(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<DualUtilityOption> = listOf(
-        DoNothingDualUtilityOption(rank = 1, multiplier = 1.0, bonus = 1.0)
+        MoveDirectSubordinateToEnemyOption(directSubordinateId),
+        DoNothingDualUtilityOption(rank = 1, multiplier = 1.0, bonus = 1.0),
     )
+}
+
+class MoveDirectSubordinateToEnemyOption(
+    val directSubordinateId: Int
+) : DualUtilityOption() {
+    override fun getConsiderationList(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planState: PlanState
+    ): List<DualUtilityConsideration> = listOf(
+
+    )
+
+    override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
+    }
 }
