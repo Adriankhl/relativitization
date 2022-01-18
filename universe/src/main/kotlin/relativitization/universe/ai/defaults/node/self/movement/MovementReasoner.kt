@@ -140,14 +140,14 @@ class MoveToEnemyOption : DualUtilityOption() {
     )
 
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
-        val enemyIdList: List<Int> = planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData
+        val enemyIdSet: Set<Int> = planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData
             .diplomacyData().relationMap.filterValues {
                 it.diplomaticRelationState == DiplomaticRelationState.ENEMY
-            }.keys.toList()
+            }.keys
 
-        if (enemyIdList.isNotEmpty()) {
+        if (enemyIdSet.isNotEmpty()) {
             // map from enemy id to integer distance
-            val enemyDistanceMap: Map<Int, Int> = enemyIdList.associateWith {
+            val enemyDistanceMap: Map<Int, Int> = enemyIdSet.associateWith {
                 val enemyData: PlayerData = planDataAtPlayer.universeData3DAtPlayer.get(it)
                 Intervals.intDistance(enemyData.int4D, planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D())
             }
