@@ -118,8 +118,9 @@ class GameScreenWorldMap(
             zLimit = game.universeClient.universeClientSettings.zLimit,
             imageWidth = 512,
             imageHeight = 512,
-            gridXSeparation = 256,
-            gridYSeparation = 128,
+            gridXSeparation = 0,
+            gridYSeparation = 0,
+            extraGridSeparation = 256,
             xPadding = 512,
             yPadding = 512,
         )

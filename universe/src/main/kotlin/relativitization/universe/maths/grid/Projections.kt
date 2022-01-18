@@ -98,7 +98,7 @@ object Projections {
     /**
      * Compute rectangle for grid inside grid
      *
-     * @param gridMap a map of grid indexes to lists of image id
+     * @param gridMap a map of grid indexes to list of image id
      * @param imageWidth height of the texture image
      * @param imageHeight width of the texture image
      * @param gridWidth width of this grid
@@ -165,7 +165,7 @@ object Projections {
     /**
      * Compute rectangle for grid inside grid
      *
-     * @param gridMap a map of grid indexes to lists of image id
+     * @param gridMap a map of grid indexes to list of image id
      * @param imageWidth height of the texture image
      * @param imageHeight width of the texture image
      * @param gridWidth width of this grid
@@ -258,14 +258,14 @@ object Projections {
     private fun gridScaleFactor(
         data3D: List<List<List<Map<Int, List<Int>>>>>,
     ): Int {
-        return data3D.flatten().flatten().map { gridMap ->
+        return data3D.flatten().flatten().maxOfOrNull { gridMap ->
             // multiply by two to insert spacing
             val gridDivision: Int = numDivisionInGroup(gridMap.size * 2)
-            val maxInnerDivision: Int = gridMap.values.map { idList ->
+            val maxInnerDivision: Int = gridMap.values.maxOfOrNull { idList ->
                 numDivisionInGroup(idList.size)
-            }.maxOrNull() ?: 1
+            } ?: 1
             maxInnerDivision * gridDivision
-        }.maxOrNull() ?: 1
+        } ?: 1
     }
 
     /**
@@ -274,8 +274,9 @@ object Projections {
      * @param data3D cropped universe 3d view data
      * @param imageWidth height of the texture image
      * @param imageHeight width of the texture image
-     * @param gridXSeparation the unscaled spacing in x axis between grid of different z coordinate
-     * @param gridYSeparation the unscaled spacing in Y axis between grid of different z coordinate
+     * @param gridXSeparation the unscaled spacing in x-axis between grid of different z coordinate
+     * @param gridYSeparation the unscaled spacing in y-axis between grid of different z coordinate
+     * @param extraGridSeparation extra spacing between grid of different x, y coordinates
      * @param xOffSet offset in x coordinate
      * @param yOffSet offset in y coordinate
      *
@@ -287,6 +288,7 @@ object Projections {
         imageHeight: Int,
         gridXSeparation: Int,
         gridYSeparation: Int,
+        extraGridSeparation: Int,
         xOffSet: Int,
         yOffSet: Int,
     ): Data3DProjectionFunction {
@@ -300,7 +302,7 @@ object Projections {
         val ySingleSpace: Int = gridYSeparation * scale + gridHeight
 
         // Space between grid with different x and y coordinate
-        val xyFullSpace = max(xSingleSpace * (zDim + 1), ySingleSpace * (zDim + 1))
+        val xyFullSpace: Int = max(xSingleSpace * zDim, ySingleSpace * zDim) + extraGridSeparation * scale
 
         val int3DRectangleData: List<List<List<IntRectangle>>> = data3D.mapIndexed { x, yList ->
             yList.mapIndexed { y, zList ->
@@ -400,8 +402,9 @@ object Projections {
      * @param zLimit limit of z dimension
      * @param imageWidth height of the texture image
      * @param imageHeight width of the texture image
-     * @param gridXSeparation the unscaled spacing in x axis between grid of different z coordinate
-     * @param gridYSeparation the unscaled spacing in Y axis between grid of different z coordinate
+     * @param gridXSeparation the unscaled spacing in x-axis between grid of different z coordinate
+     * @param gridYSeparation the unscaled spacing in y-axis between grid of different z coordinate
+     * @param extraGridSeparation extra spacing between grid of different x, y coordinates
      * @param xPadding width padding around the whole projected plane
      * @param yPadding height padding around the whole projected plane
      *
@@ -415,6 +418,7 @@ object Projections {
         imageHeight: Int,
         gridXSeparation: Int,
         gridYSeparation: Int,
+        extraGridSeparation: Int,
         xPadding: Int,
         yPadding: Int,
     ): Data3D2DProjection {
@@ -441,6 +445,7 @@ object Projections {
             imageHeight,
             gridXSeparation,
             gridYSeparation,
+            extraGridSeparation,
             xPadding,
             yPadding,
         )
