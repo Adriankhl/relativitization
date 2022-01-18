@@ -9,12 +9,17 @@ import kotlinx.coroutines.runBlocking
 import relativitization.client.UniverseClient
 import relativitization.game.screens.MainMenuScreen
 import relativitization.game.utils.Assets
-import relativitization.server.UniverseServer
 import relativitization.universe.utils.RelativitizationLogManager
 
+/**
+ * The main game graphical interface
+ *
+ * @property universeClient the GUI independent client
+ * @property onDispose function to execute on dispose
+ */
 class RelativitizationGame(
     val universeClient: UniverseClient,
-    private val universeServer: UniverseServer
+    private val onDispose: () -> Unit,
 ) : Game() {
 
     val gdxSettings: GdxSettings =
@@ -52,8 +57,8 @@ class RelativitizationGame(
             backgroundMusic.stop()
             assets.dispose()
             universeClient.stop()
-            universeServer.stop()
         }
+        onDispose()
         logger.debug("Game stopped")
     }
 

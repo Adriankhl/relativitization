@@ -11,6 +11,7 @@ import com.badlogic.gdx.backends.android.AndroidFragmentApplication
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import relativitization.client.UniverseClient
 import relativitization.game.RelativitizationGame
 import relativitization.server.UniverseServer
@@ -53,8 +54,7 @@ class AndroidLauncher : AppCompatActivity(), AndroidFragmentApplication.Callback
         )
         val universeClient: UniverseClient = UniverseClient(universeClientSettings)
 
-        val relativitizationGameFragment =
-            RelativitizationGameFragment(universeClient, universeServer)
+        val relativitizationGameFragment = RelativitizationGameFragment(universeClient, universeServer)
 
         val trans: FragmentTransaction = supportFragmentManager.beginTransaction()
 
@@ -84,6 +84,10 @@ class RelativitizationGameFragment(
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return initializeForView(RelativitizationGame(universeClient, universeServer))
+        return initializeForView(
+            RelativitizationGame(universeClient) {
+                runBlocking { universeServer.stop() }
+            }
+        )
     }
 }

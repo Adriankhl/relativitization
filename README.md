@@ -5,9 +5,9 @@ Turn-based strategy game / agent-based simulation framework / social model in 4D
 * `universe` core to run universe simulations
 * `universe-server` server to run the game, depends on `universe`
 * `universe-client` store non-gui functions that are useful to game client, depends on `universe`
-* `gdx-core` libgdx gui core, depends on `universe`,  `universe-client`, and `universe-server` (very loosely, only manage the server `start()` and `stop()`)
-* `gdx-desktop` libgdx gui desktop launcher, depends on `gdx-core`, `universe`,  `universe-client`, and `universe-server` (very loosely, only manage the server `start()` and `stop()`)
-* `gdx-android` libgdx gui android launcher, depends on `gdx-core`, `universe`,  `universe-client`, and `universe-server` (very loosely, only manage the server `start()` and `stop()`)
+* `gdx-core` libgdx gui core, depends on `universe` and  `universe-client`
+* `gdx-desktop` libgdx gui desktop launcher, depends on `gdx-core`, `universe`,  `universe-client`, and `universe-server`
+* `gdx-android` libgdx gui android launcher, depends on `gdx-core`, `universe`,  `universe-client`, and `universe-server`
 
 
 # Build the game

@@ -11,7 +11,6 @@ kotlin {
         val main by getting {
             dependencies {
                 implementation(project(":universe-client"))
-                implementation(project(":universe-server"))
                 implementation(project(":universe"))
 
 
