@@ -9,9 +9,11 @@ import relativitization.universe.ai.defaults.utils.*
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.commands.AddEventCommand
+import relativitization.universe.data.components.defaults.diplomacy.DiplomaticRelationState
 import relativitization.universe.data.components.defaults.physics.Int3D
 import relativitization.universe.data.components.defaults.physics.Velocity
 import relativitization.universe.data.events.MoveToDouble3DEvent
+import relativitization.universe.maths.physics.Intervals
 import relativitization.universe.maths.physics.Movement
 import relativitization.universe.maths.random.Rand
 import kotlin.math.max
@@ -104,15 +106,13 @@ class MoveToLowerDensityCubeOption : DualUtilityOption() {
  * Move to a cube with enemy
  */
 class MoveToEnemyOption : DualUtilityOption() {
-    val range: Int = 2
-
     override fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<DualUtilityConsideration> = listOf(
         HasMovementEventConsideration(rankIfTrue = 0, multiplierIfTrue = 0.0, bonusIfTrue = 0.0),
         EnemyNeighbourConsideration(
-            range = range,
+            range = 2,
             rankIfTrue = 1,
             multiplierIfTrue = 1.0,
             bonusIfTrue = 1.0,
@@ -140,10 +140,23 @@ class MoveToEnemyOption : DualUtilityOption() {
     )
 
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
-        val neighbour: List<PlayerData> = planDataAtPlayer.universeData3DAtPlayer.getNeighbour(range)
+        val enemyIdList: List<Int> = planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData
+            .diplomacyData().relationMap.filterValues {
+                it.diplomaticRelationState == DiplomaticRelationState.ENEMY
+            }.keys.toList()
 
-        if (neighbour.isNotEmpty()) {
-            val enemy: PlayerData = neighbour[Rand.rand().nextInt(neighbour.size)]
+        if (enemyIdList.isNotEmpty()) {
+            // map from enemy id to integer distance
+            val enemyDistanceMap: Map<Int, Int> = enemyIdList.associateWith {
+                val enemyData: PlayerData = planDataAtPlayer.universeData3DAtPlayer.get(it)
+                Intervals.intDistance(enemyData.int4D, planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D())
+            }
+            val closestDistance: Int = enemyDistanceMap.values.minOf { it }
+            val closestEnemyList: List<Int> = enemyDistanceMap.filterValues { it == closestDistance }.keys.toList()
+
+            val enemyId: Int = closestEnemyList[Rand.rand().nextInt(closestEnemyList.size)]
+
+            val enemy: PlayerData = planDataAtPlayer.universeData3DAtPlayer.get(enemyId)
 
             // Estimate max. speed possible
             val maxSpeedEstimate: Double = Movement.maxSpeedSimpleEstimation(
