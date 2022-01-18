@@ -1,5 +1,6 @@
 package relativitization.universe.ai.defaults.node.subordinate.direct
 
+import relativitization.universe.ai.defaults.node.subordinate.direct.movement.DirectSubordinateMovementReasoner
 import relativitization.universe.ai.defaults.utils.AINode
 import relativitization.universe.ai.defaults.utils.PlanState
 import relativitization.universe.ai.defaults.utils.SequenceReasoner
@@ -40,7 +41,9 @@ class DirectSubordinateReasoner : SequenceReasoner() {
         }
 
         return directSubordinateToConsiderList.flatMap {
-            listOf()
+            listOf(
+                DirectSubordinateMovementReasoner(it),
+            )
         }
     }
 }
