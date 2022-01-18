@@ -90,7 +90,43 @@ data class Int3D(val x: Int, val y: Int, val z: Int) {
     }
 
     /**
-     * Get list of int3D at the surface of a greater cube
+     * Get list of int3D of a greater cube center at the current coordinate
+     *
+     * @param halfEdgeLength half of the length of the edge of the greater cube
+     * @param minX minimum x coordinate
+     * @param maxX maximum x coordinate
+     * @param minY minimum y coordinate
+     * @param maxY maximum y coordinate
+     * @param minZ minimum z coordinate
+     * @param maxZ maximum z coordinate
+     */
+    fun getInt3DCubeList(
+        halfEdgeLength: Int,
+        minX: Int,
+        maxX: Int,
+        minY: Int,
+        maxY: Int,
+        minZ: Int,
+        maxZ: Int
+    ): List<Int3D> {
+        val realMinX: Int = max(x - halfEdgeLength, minX)
+        val realMaxX: Int = min(x + halfEdgeLength, maxX)
+        val realMinY: Int = max(y - halfEdgeLength, minY)
+        val realMaxY: Int = min(y + halfEdgeLength, maxY)
+        val realMinZ: Int = max(z - halfEdgeLength, minZ)
+        val realMaxZ: Int = min(z + halfEdgeLength, maxZ)
+
+        return (realMinX..realMaxX).map { x ->
+            (realMinY..realMaxY).map { y ->
+                (realMinZ..realMaxZ).map { z ->
+                    Int3D(x, y, z)
+                }
+            }
+        }.flatten().flatten()
+    }
+
+    /**
+     * Get list of int3D at the surface of a greater cube center at the current coordinate
      *
      * @param halfEdgeLength half of the length of the edge of the greater cube
      * @param minX minimum x coordinate
