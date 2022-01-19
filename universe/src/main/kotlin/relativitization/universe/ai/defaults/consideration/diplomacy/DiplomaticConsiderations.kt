@@ -6,23 +6,24 @@ import relativitization.universe.ai.defaults.utils.PlanState
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.components.MutableDiplomacyData
-import kotlin.math.exp
+import kotlin.math.pow
 
 /**
  * Consideration of diplomatic relation
  *
  * @property playerId the relation between player with this id and current player
- * @property rank the rank of the DualUtilityData
- * @property multiplier the multiplier of the DualUtilityData
- * @property relationNormalization the normalization to scale the bonus of relation
+ * @property initialMultiplier the multiplier when the relation is 0
+ * @property exponent exponentially modify the multiplier as the relation increases
+ * @property rank rank of the dual utility data
+ * @property bonus bonus of the dual utility data
  */
 class RelationConsideration(
     private val playerId: Int,
-    private val rank: Int = 1,
-    private val multiplier: Double = 1.0,
-    private val relationNormalization: Double = 100.0,
+    private val initialMultiplier: Double,
+    private val exponent: Double,
+    private val rank: Int,
+    private val bonus: Double,
 ) : DualUtilityConsideration() {
-
     override fun getDualUtilityData(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -32,8 +33,8 @@ class RelationConsideration(
 
         return DualUtilityData(
             rank = rank,
-            multiplier = multiplier,
-            bonus = exp(diplomacyData.getRelation(playerId) / relationNormalization),
+            multiplier = initialMultiplier * exponent.pow(diplomacyData.getRelation(playerId)),
+            bonus = bonus,
         )
     }
 }
@@ -52,14 +53,14 @@ class RelationConsideration(
  */
 class HierarchyConsideration(
     private val playerId: Int,
-    private val rankIfSelf: Int = 4,
-    private val rankIfDirectLeader: Int = 3,
-    private val rankIfOtherLeader: Int = 2,
-    private val rankIfDirectSubordinate: Int = 1,
-    private val rankIfOtherSubordinate: Int = 1,
-    private val rankIfOther: Int = 1,
-    private val multiplier: Double = 1.0,
-    private val bonus: Double = 1.0,
+    private val rankIfSelf: Int,
+    private val rankIfDirectLeader: Int,
+    private val rankIfOtherLeader: Int,
+    private val rankIfDirectSubordinate: Int,
+    private val rankIfOtherSubordinate: Int,
+    private val rankIfOther: Int,
+    private val multiplier: Double,
+    private val bonus: Double,
 ) : DualUtilityConsideration() {
 
     override fun getDualUtilityData(

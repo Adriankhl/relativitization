@@ -21,65 +21,70 @@ class PickMoveToDouble3DEventReasoner : DualUtilityReasoner() {
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<DualUtilityOption> {
-        val movementEventKeyList: List<Int> =
-            planDataAtPlayer.universeData3DAtPlayer.getCurrentPlayerData(
-            ).playerInternalData.eventDataMap.filter {
+        val movementEventKeySet: Set<Int> = planDataAtPlayer.universeData3DAtPlayer.getCurrentPlayerData()
+            .playerInternalData.eventDataMap.filter {
                 // Filter out MoveToDouble3DEvent
                 it.value.event is MoveToDouble3DEvent
-            }.keys.toList()
+            }.keys
 
-        return movementEventKeyList.map {
+        return movementEventKeySet.map {
             PickMoveToDouble3DEventDualUtilityOption(
-                it,
+                eventKey = it,
+                otherEventKeySet = movementEventKeySet - it
             )
         }
     }
 }
 
 /**
- * Cancel all MoveToDouble3D beside event at keepEventIndex
+ * Cancel all MoveToDouble3D event beside event at keepEventIndex
+ *
+ * @property eventKey keep the event with this key
+ * @property otherEventKeySet drop the event with key contain in this set
  */
 class PickMoveToDouble3DEventDualUtilityOption(
-    private val keepEventIndex: Int,
+    private val eventKey: Int,
+    private val otherEventKeySet: Set<Int>,
 ) : DualUtilityOption() {
 
     override fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<DualUtilityConsideration> {
-        val movementEventMap: Map<Int, EventData> =
-            planDataAtPlayer.universeData3DAtPlayer.getCurrentPlayerData().playerInternalData.eventDataMap.filter {
-                // Filter out MoveToDouble3DEvent
-                it.value.event is MoveToDouble3DEvent
-            }
 
-        return if (movementEventMap.containsKey(keepEventIndex)) {
-            listOf(
-                RelationConsideration(
-                    playerId = movementEventMap.getValue(keepEventIndex).event.fromId,
-                ),
-                HierarchyConsideration(
-                    playerId = movementEventMap.getValue(keepEventIndex).event.fromId,
-                )
-            )
-        } else {
-            listOf()
-        }
+        val movementEventData: EventData = planDataAtPlayer.universeData3DAtPlayer.getCurrentPlayerData()
+            .playerInternalData.eventDataMap.getValue(eventKey)
+
+        return listOf(
+            HierarchyConsideration(
+                playerId = movementEventData.event.fromId,
+                rankIfSelf = 4,
+                rankIfDirectLeader = 3,
+                rankIfOtherLeader = 2,
+                rankIfDirectSubordinate = 1,
+                rankIfOtherSubordinate = 1,
+                rankIfOther = 1,
+                multiplier = 1.0,
+                bonus = 1.0,
+            ),
+            RelationConsideration(
+                playerId = movementEventData.event.fromId,
+                initialMultiplier = 1.0,
+                exponent = 1.01,
+                rank = 0,
+                bonus = 0.0,
+            ),
+        )
     }
 
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
-        val movementEventMap: Map<Int, EventData> = planDataAtPlayer.universeData3DAtPlayer
-            .getCurrentPlayerData().playerInternalData.eventDataMap.filter {
-                // Filter out MoveToDouble3DEvent
-                it.value.event is MoveToDouble3DEvent
-            }
-        val commandList: List<Command> = movementEventMap.filter { it.key != keepEventIndex }.map {
+        val commandList: List<Command> = otherEventKeySet.map {
             SelectEventChoiceCommand(
                 toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
                 fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
                 fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
-                eventKey = it.key,
-                eventName = it.value.event.name(),
+                eventKey = it,
+                eventName = MoveToDouble3DEvent::class.name(),
                 choice = 1,
             )
         }
