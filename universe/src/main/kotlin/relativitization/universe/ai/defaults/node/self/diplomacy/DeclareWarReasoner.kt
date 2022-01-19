@@ -1,5 +1,6 @@
 package relativitization.universe.ai.defaults.node.self.diplomacy
 
+import relativitization.universe.ai.defaults.consideration.military.LargerMilitaryStrengthConsideration
 import relativitization.universe.ai.defaults.utils.*
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.PlanDataAtPlayer
@@ -68,8 +69,17 @@ class SpaceConflictDeclareWarOption(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<DualUtilityConsideration> {
-
-        return listOf()
+        return listOf(
+            LargerMilitaryStrengthConsideration(
+                targetPlayerId = targetPlayerId,
+                rankIfTrue = 1,
+                multiplierIfTrue = 0.01,
+                bonusIfTrue = 1.0,
+                rankIfFalse = 1,
+                multiplierIfFalse = 0.00001,
+                bonusIfFalse = 1.0
+            )
+        )
     }
 
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
