@@ -24,7 +24,7 @@ class NoSelfFuelFactoryAndNoStarConsideration(
     private val rankIfTrue: Int,
     private val multiplierIfTrue: Double,
     private val bonusIfTrue: Double,
-) : DualUtilityConsideration {
+) : DualUtilityConsideration() {
     override fun getDualUtilityData(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -62,7 +62,7 @@ class OutdatedFuelFactoryConsideration(
     private val fuelFactoryId: Int,
     private val rankIfTrue: Int,
     private val multiplierIfTrue: Double,
-) : DualUtilityConsideration {
+) : DualUtilityConsideration() {
     override fun getDualUtilityData(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -121,7 +121,7 @@ class SufficientSelfFuelFactoryAtCarrierConsideration(
     private val rankIfFalse: Int,
     private val multiplierIfFalse: Double,
     private val bonusIfFalse: Double,
-) : DualUtilityConsideration {
+) : DualUtilityConsideration() {
     override fun getDualUtilityData(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -179,7 +179,7 @@ class SufficientFuelFactoryAtCarrierAfterRemoveConsideration(
     private val rankIfFalse: Int,
     private val multiplierIfFalse: Double,
     private val bonusIfFalse: Double,
-) : DualUtilityConsideration {
+) : DualUtilityConsideration() {
     override fun getDualUtilityData(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -237,7 +237,7 @@ class TooManySelfFuelFactoryAtCarrierConsideration(
     private val rankIfFalse: Int,
     private val multiplierIfFalse: Double,
     private val bonusIfFalse: Double,
-) : DualUtilityConsideration {
+) : DualUtilityConsideration() {
     override fun getDualUtilityData(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -293,7 +293,7 @@ class NoSelfResourceFactoryConsideration(
     private val rankIfTrue: Int,
     private val multiplierIfTrue: Double,
     private val bonusIfTrue: Double,
-) : DualUtilityConsideration {
+) : DualUtilityConsideration() {
     override fun getDualUtilityData(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -330,7 +330,7 @@ class NoSelfResourceFactoryAndHasStarConsideration(
     private val rankIfTrue: Int,
     private val multiplierIfTrue: Double,
     private val bonusIfTrue: Double,
-) : DualUtilityConsideration {
+) : DualUtilityConsideration() {
     override fun getDualUtilityData(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -372,7 +372,7 @@ class OutdatedResourceFactoryConsideration(
     private val resourceFactoryId: Int,
     private val rankIfTrue: Int,
     private val multiplierIfTrue: Double,
-) : DualUtilityConsideration {
+) : DualUtilityConsideration() {
     override fun getDualUtilityData(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -443,7 +443,7 @@ class SufficientSelfResourceFactoryAtCarrierConsideration(
     private val rankIfFalse: Int,
     private val multiplierIfFalse: Double,
     private val bonusIfFalse: Double,
-) : DualUtilityConsideration {
+) : DualUtilityConsideration() {
     override fun getDualUtilityData(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -505,7 +505,7 @@ class SufficientSelfResourceFactoryAfterRemoveConsideration(
     private val rankIfFalse: Int,
     private val multiplierIfFalse: Double,
     private val bonusIfFalse: Double,
-) : DualUtilityConsideration {
+) : DualUtilityConsideration() {
     override fun getDualUtilityData(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -573,7 +573,7 @@ class TooManySelfResourceFactoryAtCarrierConsideration(
     private val rankIfFalse: Int,
     private val multiplierIfFalse: Double,
     private val bonusIfFalse: Double,
-) : DualUtilityConsideration {
+) : DualUtilityConsideration() {
     override fun getDualUtilityData(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -641,7 +641,7 @@ class SufficientLabourerEmploymentConsideration(
     private val rankIfFalse: Int,
     private val multiplierIfFalse: Double,
     private val bonusIfFalse: Double,
-) : DualUtilityConsideration {
+) : DualUtilityConsideration() {
     override fun getDualUtilityData(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState

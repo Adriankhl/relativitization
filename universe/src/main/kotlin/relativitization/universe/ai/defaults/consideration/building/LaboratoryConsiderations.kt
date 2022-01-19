@@ -23,7 +23,7 @@ class NoLaboratoryAtCarrierConsideration(
     private val rankIfTrue: Int,
     private val multiplierIfTrue: Double,
     private val bonusIfTrue: Double,
-) : DualUtilityConsideration {
+) : DualUtilityConsideration() {
     override fun getDualUtilityData(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -53,7 +53,7 @@ class OnlyOneLaboratoryConsideration(
     private val rankIfTrue: Int,
     private val multiplierIfTrue: Double,
     private val bonusIfTrue: Double,
-) : DualUtilityConsideration {
+) : DualUtilityConsideration() {
     override fun getDualUtilityData(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -89,7 +89,7 @@ class SufficientLaboratoryConsideration(
     private val rankIfFalse: Int,
     private val multiplierIfFalse: Double,
     private val bonusIfFalse: Double,
-) : DualUtilityConsideration {
+) : DualUtilityConsideration() {
     override fun getDualUtilityData(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -139,7 +139,7 @@ class KnownAppliedProjectInRangeConsideration(
     private val rankIfTrue: Int,
     private val multiplierIfTrue: Double,
     private val bonusIfTrue: Double,
-) : DualUtilityConsideration {
+) : DualUtilityConsideration() {
     override fun getDualUtilityData(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState

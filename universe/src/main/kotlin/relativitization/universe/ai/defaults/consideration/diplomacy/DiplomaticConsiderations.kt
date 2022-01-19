@@ -21,7 +21,7 @@ class RelationConsideration(
     private val rank: Int = 1,
     private val multiplier: Double = 1.0,
     private val relationNormalization: Double = 100.0,
-) : DualUtilityConsideration {
+) : DualUtilityConsideration() {
 
     override fun getDualUtilityData(
         planDataAtPlayer: PlanDataAtPlayer,
@@ -60,7 +60,7 @@ class HierarchyConsideration(
     private val rankIfOther: Int = 1,
     private val multiplier: Double = 1.0,
     private val bonus: Double = 1.0,
-) : DualUtilityConsideration {
+) : DualUtilityConsideration() {
 
     override fun getDualUtilityData(
         planDataAtPlayer: PlanDataAtPlayer,

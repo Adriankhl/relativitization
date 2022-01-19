@@ -26,7 +26,7 @@ class EnemyNeighbourConsideration(
     private val rankIfFalse: Int,
     private val multiplierIfFalse: Double,
     private val bonusIfFalse: Double,
-) : DualUtilityConsideration {
+) : DualUtilityConsideration() {
     override fun getDualUtilityData(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState): DualUtilityData {
         val neighbour: List<PlayerData> = planDataAtPlayer.universeData3DAtPlayer.getNeighbour(range)
 
@@ -73,7 +73,7 @@ class FightingEnemyConsideration(
     private val rankIfFalse: Int,
     private val multiplierIfFalse: Double,
     private val bonusIfFalse: Double,
-) : DualUtilityConsideration {
+) : DualUtilityConsideration() {
     override fun getDualUtilityData(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState): DualUtilityData {
         val sameCubeNeighbour: List<PlayerData> = planDataAtPlayer.universeData3DAtPlayer.getNeighbour(0)
 

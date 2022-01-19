@@ -28,7 +28,7 @@ class SufficientFuelMaxSpeedConsideration(
     private val rankIfFalse: Int,
     private val multiplierIfFalse: Double,
     private val bonusIfFalse: Double,
-) : DualUtilityConsideration {
+) : DualUtilityConsideration() {
     override fun getDualUtilityData(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState

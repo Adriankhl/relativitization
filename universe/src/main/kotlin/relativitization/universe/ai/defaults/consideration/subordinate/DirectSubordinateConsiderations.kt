@@ -19,7 +19,7 @@ class NumberOfDirectSubordinateConsideration(
     private val exponent: Double,
     private val rank: Int,
     private val bonus: Double,
-) : DualUtilityConsideration {
+) : DualUtilityConsideration() {
     override fun getDualUtilityData(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState

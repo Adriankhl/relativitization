@@ -26,7 +26,7 @@ class IncreasingProductionFuelConsideration(
     private val rankIfFalse: Int,
     private val multiplierIfFalse: Double,
     private val bonusIfFalse: Double,
-) : DualUtilityConsideration {
+) : DualUtilityConsideration() {
     override fun getDualUtilityData(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -75,7 +75,7 @@ class SufficientProductionFuelConsideration(
     private val rankIfFalse: Int,
     private val multiplierIfFalse: Double,
     private val bonusIfFalse: Double,
-) : DualUtilityConsideration {
+) : DualUtilityConsideration() {
     override fun getDualUtilityData(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -124,7 +124,7 @@ class PopulationSavingHighCompareToProduction(
     private val rankIfFalse: Int,
     private val multiplierIfFalse: Double,
     private val bonusIfFalse: Double,
-) : DualUtilityConsideration {
+) : DualUtilityConsideration() {
     override fun getDualUtilityData(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState): DualUtilityData {
         val totalPopulation: Double = planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData.popSystemData()
             .totalAdultPopulation()
