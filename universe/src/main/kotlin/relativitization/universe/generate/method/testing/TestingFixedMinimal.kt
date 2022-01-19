@@ -166,16 +166,6 @@ object TestingFixedMinimal : TestingGenerateUniverseMethod() {
             5.0,
         )
 
-        // Increase player 2 quality bound
-        playerData2.playerInternalData.economyData().resourceData.getSingleResourceData(
-            ResourceType.PLANT,
-            ResourceQualityClass.FIRST
-        ).resourceQualityLowerBound += 100.0
-        playerData2.playerInternalData.economyData().resourceData.getSingleResourceData(
-            ResourceType.PLANT,
-            ResourceQualityClass.SECOND
-        ).resourceQualityLowerBound += 50.0
-
         // Player 2 is a subordinate of player 1
         playerData1.addDirectSubordinateId(playerData2.playerId)
 
@@ -309,6 +299,17 @@ object TestingFixedMinimal : TestingGenerateUniverseMethod() {
         playerData2.changeDirectLeaderId(
             playerData1.playerInternalData.leaderIdList
         )
+
+        // Increase player 2 quality bound
+        playerData2.playerInternalData.economyData().resourceData.getSingleResourceData(
+            ResourceType.PLANT,
+            ResourceQualityClass.FIRST
+        ).resourceQualityLowerBound += 100.0
+        playerData2.playerInternalData.economyData().resourceData.getSingleResourceData(
+            ResourceType.PLANT,
+            ResourceQualityClass.SECOND
+        ).resourceQualityLowerBound += 50.0
+
 
         // Player 3
 

@@ -44,7 +44,13 @@ object UpdateWarState : Mechanism() {
                     universeSettings.speedOfLight
                 )
                 val timeDiff: Int = mutablePlayerData.int4D.t - warState.startTime
-                timeDiff >= 2 * timeDelay
+
+                // Offensive war need to wait the information to travel back, so 2 times the delay
+                if (warState.isOffensive) {
+                    timeDiff >= 2 * timeDelay
+                } else {
+                    timeDiff >= timeDelay
+                }
             }.keys
 
         // Both have accepted peace or this player accepted peace and other war state has disappeared
