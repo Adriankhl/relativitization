@@ -59,7 +59,8 @@ object UpdateMilitaryBase : Mechanism() {
 
         // Can only attack if shield is greater than 0
         return if (soldierPopData.militaryBaseData.shield > 0.0) {
-            soldierPopData.militaryBaseData.lastNumEmployee * satisfactionFactor * playerScienceData.playerScienceApplicationData.militaryBaseAttackFactor
+            soldierPopData.militaryBaseData.lastNumEmployee * satisfactionFactor *
+                    playerScienceData.playerScienceApplicationData.militaryBaseAttackFactor
         } else {
             0.0
         }
@@ -81,8 +82,8 @@ object UpdateMilitaryBase : Mechanism() {
             soldierPopData.commonPopData.satisfaction
         }
 
-        val maxShield: Double =
-            soldierPopData.militaryBaseData.lastNumEmployee * satisfactionFactor * playerScienceData.playerScienceApplicationData.militaryBaseShieldFactor * maxShieldFactor
+        val maxShield: Double = soldierPopData.militaryBaseData.lastNumEmployee * satisfactionFactor *
+                playerScienceData.playerScienceApplicationData.militaryBaseShieldFactor * maxShieldFactor
 
         // Compute the change in two ways: fraction of the difference or fraction of the max shield
         // take the larger one
