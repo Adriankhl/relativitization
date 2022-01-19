@@ -16,7 +16,6 @@ kotlin {
                 implementation("org.jetbrains.kotlin:kotlin-reflect:${Versions.kotlinVersion}")
                 implementation("org.apache.logging.log4j:log4j-api:${Versions.log4jVersion}")
                 implementation("org.apache.logging.log4j:log4j-core:${Versions.log4jVersion}")
-                implementation("io.github.serpro69:kotlin-faker:${Versions.kotlinFakerVersion}")
             }
         }
         val test by getting {
