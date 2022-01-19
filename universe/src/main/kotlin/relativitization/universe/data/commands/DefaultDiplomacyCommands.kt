@@ -9,6 +9,9 @@ import relativitization.universe.utils.I18NString
 import relativitization.universe.utils.IntString
 import relativitization.universe.utils.NormalString
 
+/**
+ * Declare war on target
+ */
 @Serializable
 data class DeclareWarCommand(
     override val toId: Int,
