@@ -4,13 +4,13 @@ import kotlinx.serialization.Serializable
 import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.reflect.KClass
 
-sealed interface GlobalDataComponentCommon
+sealed class GlobalDataComponentCommon
 
 @Serializable
-sealed class GlobalDataComponent : GlobalDataComponentCommon
+sealed class GlobalDataComponent : GlobalDataComponentCommon()
 
 @Serializable
-sealed class MutableGlobalDataComponent : GlobalDataComponentCommon
+sealed class MutableGlobalDataComponent : GlobalDataComponentCommon()
 
 fun <T : GlobalDataComponentCommon> KClass<T>.name(): String = this.simpleName.toString()
 

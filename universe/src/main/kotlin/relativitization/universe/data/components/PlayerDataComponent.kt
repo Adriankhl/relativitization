@@ -4,13 +4,13 @@ import kotlinx.serialization.Serializable
 import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.reflect.KClass
 
-sealed interface PlayerDataComponentCommon
+sealed class PlayerDataComponentCommon
 
 @Serializable
-sealed class PlayerDataComponent : PlayerDataComponentCommon
+sealed class PlayerDataComponent : PlayerDataComponentCommon()
 
 @Serializable
-sealed class MutablePlayerDataComponent : PlayerDataComponentCommon
+sealed class MutablePlayerDataComponent : PlayerDataComponentCommon()
 
 fun <T : PlayerDataComponentCommon> KClass<T>.name(): String = this.simpleName.toString()
 
