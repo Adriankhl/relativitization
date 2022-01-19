@@ -135,10 +135,3 @@ data class MutableEventRecordData(
     var choice: Int = 0,
     var stayCounter: Int = 0
 )
-
-/**
- * Given the universe data 3D view, some events should be generated probabilistically if certain condition is satisfied
- */
-interface AutoEvent {
-    fun generateEventList(universeData3DAtPlayer: UniverseData3DAtPlayer): List<Event>
-}
