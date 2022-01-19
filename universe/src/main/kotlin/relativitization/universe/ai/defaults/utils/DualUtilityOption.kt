@@ -3,7 +3,7 @@ package relativitization.universe.ai.defaults.utils
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.utils.RelativitizationLogManager
 
-abstract class DualUtilityOption : AINode {
+abstract class DualUtilityOption : AINode() {
     abstract fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer, planState: PlanState
     ): List<DualUtilityConsideration>
@@ -42,7 +42,6 @@ abstract class DualUtilityOption : AINode {
             totalMultiplier * totalBonus
         }
     }
-
 
     companion object {
         private val logger = RelativitizationLogManager.getLogger()

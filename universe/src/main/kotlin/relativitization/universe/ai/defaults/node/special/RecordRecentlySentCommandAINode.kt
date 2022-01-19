@@ -6,7 +6,7 @@ import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.commands.AddRecentCommandTimeCommand
 import relativitization.universe.data.commands.Command
 
-class RecordRecentlySentCommandAINode : AINode {
+class RecordRecentlySentCommandAINode : AINode() {
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
         val toIdSet: Set<Int> = planDataAtPlayer.commandList.map { it.toId }.toSet()
         val allUpdateCommand: List<Command> = toIdSet.filter {

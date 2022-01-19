@@ -25,7 +25,7 @@ class BalanceFuelReasoner : SequenceReasoner() {
 /**
  * Transfer from storage to other fuel usage categories
  */
-class BalanceFuelDataAINode : AINode {
+class BalanceFuelDataAINode : AINode() {
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
         val storage: Double = planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData
             .physicsData().fuelRestMassData.storage
@@ -131,7 +131,7 @@ class BalanceFuelDataAINode : AINode {
 /**
  * Change the fuel target data
  */
-class BalanceFuelTargetDataAINode : AINode {
+class BalanceFuelTargetDataAINode : AINode() {
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
         // Set the target storage to a high value, which means everything is put into the storage
         // Do the transfer "manually" by AI

@@ -29,7 +29,7 @@ class IncomeBoundaryReasoner : SequenceReasoner() {
     )
 }
 
-class LowMiddleIncomeBoundaryAINode : AINode {
+class LowMiddleIncomeBoundaryAINode : AINode() {
     override fun updatePlan(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -48,7 +48,7 @@ class LowMiddleIncomeBoundaryAINode : AINode {
     }
 }
 
-class MiddleHighIncomeBoundaryAINode : AINode {
+class MiddleHighIncomeBoundaryAINode : AINode() {
     override fun updatePlan(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -81,7 +81,7 @@ class IncomeTaxReasoner : SequenceReasoner() {
     )
 }
 
-class LowIncomeTaxAINode : AINode {
+class LowIncomeTaxAINode : AINode() {
     override fun updatePlan(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -99,7 +99,7 @@ class LowIncomeTaxAINode : AINode {
     }
 }
 
-class MiddleIncomeTaxAINode : AINode {
+class MiddleIncomeTaxAINode : AINode() {
     override fun updatePlan(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -117,7 +117,7 @@ class MiddleIncomeTaxAINode : AINode {
     }
 }
 
-class HighIncomeTaxAINode : AINode {
+class HighIncomeTaxAINode : AINode() {
     override fun updatePlan(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState

@@ -15,7 +15,7 @@ class PolicyReasoner : SequenceReasoner() {
     )
 }
 
-class FactoryPolicyAINode : AINode {
+class FactoryPolicyAINode : AINode() {
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
         // Only top leader can change policy
         if (planDataAtPlayer.getCurrentPlayerData().isTopLeader()) {

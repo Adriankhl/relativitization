@@ -39,7 +39,7 @@ class BalanceResourceReasoner : SequenceReasoner() {
 class BalanceResourceDataAINode(
     private val resourceType: ResourceType,
     private val resourceQualityClass: ResourceQualityClass,
-) : AINode {
+) : AINode() {
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
         val storage: Double = planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData
             .economyData().resourceData.getStorageResourceAmount(
@@ -127,7 +127,7 @@ class BalanceResourceDataAINode(
 class BalanceResourceTargetDataAINode(
     val resourceType: ResourceType,
     val resourceQualityClass: ResourceQualityClass,
-) : AINode {
+) : AINode() {
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
         // Set the target storage to a high value, which means everything is put into the storage
         // Do the transfer "manually" by AI

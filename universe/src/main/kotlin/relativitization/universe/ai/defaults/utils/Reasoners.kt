@@ -4,7 +4,7 @@ import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.maths.sampling.WeightedReservoir
 import relativitization.universe.utils.RelativitizationLogManager
 
-abstract class Reasoner : AINode {
+abstract class Reasoner : AINode() {
     abstract fun getSubNodeList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
