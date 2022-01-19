@@ -237,9 +237,10 @@ class DiplomacyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             val currentPlayerData: PlayerData = game.universeClient.getCurrentPlayerData()
 
             // Target the highest possible leader
-            val targetPlayerId: Int = playerData.playerInternalData.leaderIdList.first {
-                !currentPlayerData.playerInternalData.leaderIdList.contains(it)
-            }
+            val targetPlayerId: Int = playerData.playerInternalData.leaderIdList.firstOrNull {
+                !currentPlayerData.isLeaderOrSelf(it)
+            } ?: playerData.playerId
+
             val declareWarCommand = DeclareWarCommand(
                 toId = targetPlayerId,
                 fromId = currentPlayerData.playerId,
