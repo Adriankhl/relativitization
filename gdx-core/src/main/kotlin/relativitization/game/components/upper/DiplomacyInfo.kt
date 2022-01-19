@@ -234,10 +234,17 @@ class DiplomacyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             gdxSettings.smallFontSize,
             gdxSettings.soundEffectsVolume
         ) {
+            val currentPlayerData: PlayerData = game.universeClient.getCurrentPlayerData()
+
+            // Target the highest possible leader
+            val targetPlayerId: Int = playerData.playerInternalData.leaderIdList.first {
+                !currentPlayerData.playerInternalData.leaderIdList.contains(it)
+            }
             val declareWarCommand = DeclareWarCommand(
-                toId = playerData.playerId,
-                fromId = game.universeClient.getCurrentPlayerData().playerId,
-                fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
+                toId = targetPlayerId,
+                fromId = currentPlayerData.playerId,
+                fromInt4D = currentPlayerData.int4D,
+                senderLeaderIdList = currentPlayerData.playerInternalData.leaderIdList,
             )
 
             game.universeClient.currentCommand = declareWarCommand

@@ -10,13 +10,17 @@ import relativitization.universe.utils.IntString
 import relativitization.universe.utils.NormalString
 
 /**
- * Declare war on target
+ * Declare war on target player, the target must be top leader or the highest in the leader list where it is not the
+ * leader of the sender
+ *
+ * @property senderLeaderIdList the leader id list of the sender
  */
 @Serializable
 data class DeclareWarCommand(
     override val toId: Int,
     override val fromId: Int,
-    override val fromInt4D: Int4D
+    override val fromInt4D: Int4D,
+    val senderLeaderIdList: List<Int>,
 ) : DefaultCommand() {
     override fun description(): I18NString = I18NString(
         listOf(
@@ -53,12 +57,18 @@ data class DeclareWarCommand(
             I18NString("Target is in peace with you. ")
         )
 
+        val isLeaderListValid = CommandErrorMessage(
+            senderLeaderIdList == playerData.playerInternalData.leaderIdList,
+            I18NString("Leader list is not valid. ")
+        )
+
         return CommandErrorMessage(
             listOf(
                 isNotLeaderOrSelf,
                 isNotSubordinateOrSelf,
                 isNotInWar,
                 isNotInPeaceTreaty,
+                isLeaderListValid,
             )
         )
     }
@@ -94,9 +104,16 @@ data class DeclareWarCommand(
             I18NString("Target is in war with you. ")
         )
 
+        // Whether this player is a valid target, i.e., top leader of the highest possible leader
+        val isValidDeclareWarTarget = CommandErrorMessage(
+            playerData.playerInternalData.leaderIdList.first { !senderLeaderIdList.contains(it) } == toId,
+            I18NString("This is not a valid war target. ")
+        )
+
         return CommandErrorMessage(
             listOf(
-                isNotInWar
+                isNotInWar,
+                isValidDeclareWarTarget,
             )
         )
     }

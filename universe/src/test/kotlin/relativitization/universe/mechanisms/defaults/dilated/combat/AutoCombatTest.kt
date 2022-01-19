@@ -33,7 +33,8 @@ internal class AutoCombatTest {
                         DeclareWarCommand(
                             toId = 6,
                             fromId = 5,
-                            fromInt4D = view7At5.getCurrentPlayerData().int4D
+                            fromInt4D = view7At5.getCurrentPlayerData().int4D,
+                            senderLeaderIdList = view7At5.getCurrentPlayerData().playerInternalData.leaderIdList,
                         )
                     )
                 ),
