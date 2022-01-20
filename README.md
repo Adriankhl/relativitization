@@ -94,7 +94,7 @@ This will produce documentation pages in `build/dokka/htmlMultiModule`:
 The source code of Relativitization is licensed under GPLv3.
 
         Relativitization
-        Copyright (C) 2021-2022  Lai Kwun Hang
+        Copyright (C) 2021-present  Lai Kwun Hang
 
         This program is free software: you can redistribute it and/or modify
         it under the terms of the GNU General Public License as published by
