@@ -1,7 +1,9 @@
 package relativitization.universe.ai
 
+import relativitization.universe.ai.defaults.node.other.OtherPlayerReasoner
 import relativitization.universe.ai.defaults.node.special.RecordRecentlySentCommandAINode
 import relativitization.universe.ai.defaults.node.self.SelfReasoner
+import relativitization.universe.ai.defaults.node.subordinate.SubordinateReasoner
 import relativitization.universe.ai.defaults.node.subordinate.direct.DirectSubordinateReasoner
 import relativitization.universe.ai.defaults.utils.AINode
 import relativitization.universe.ai.defaults.utils.PlanState
@@ -38,7 +40,8 @@ class RootReasoner(
         planState: PlanState
     ): List<AINode> = listOf(
         SelfReasoner(),
-        DirectSubordinateReasoner(),
+        SubordinateReasoner(),
+        OtherPlayerReasoner(),
         RecordRecentlySentCommandAINode(),
     )
 

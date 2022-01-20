@@ -6,7 +6,6 @@ import relativitization.universe.ai.defaults.node.self.construction.LaboratoryRe
 import relativitization.universe.ai.defaults.node.self.event.EventReasoner
 import relativitization.universe.ai.defaults.node.self.carrier.CarrierReasoner
 import relativitization.universe.ai.defaults.node.self.carrier.SplitCarrierReasoner
-import relativitization.universe.ai.defaults.node.other.diplomacy.DeclareWarReasoner
 import relativitization.universe.ai.defaults.node.self.economy.TaxReasoner
 import relativitization.universe.ai.defaults.node.self.movement.MovementReasoner
 import relativitization.universe.ai.defaults.node.self.politics.PolicyReasoner
@@ -24,7 +23,6 @@ class SelfReasoner : SequenceReasoner() {
         planState: PlanState
     ): List<AINode> = listOf(
         EventReasoner(),
-        DeclareWarReasoner(),
         PolicyReasoner(),
         BalanceFuelReasoner(),
         BalanceResourceReasoner(),
