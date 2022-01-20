@@ -81,7 +81,7 @@ You can run the main function by:
 ./gradlew :simulation:run -PmainClass=relativitization.abm.AllDefaultKt
 ```
 
-Note that the main class has an additional `Kt` after the file name in kotlin convention.
+Note that the main class has an additional `Kt` after the file name in Kotlin convention.
 
 ## Generate documentation
 This will produce documentation pages in `build/dokka/htmlMultiModule`:
