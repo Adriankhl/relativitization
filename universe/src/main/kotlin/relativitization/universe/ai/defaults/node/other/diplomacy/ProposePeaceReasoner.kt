@@ -1,5 +1,7 @@
 package relativitization.universe.ai.defaults.node.other.diplomacy
 
+import relativitization.universe.ai.defaults.consideration.military.HasProposedPeaceConsideration
+import relativitization.universe.ai.defaults.consideration.military.WarLossConsideration
 import relativitization.universe.ai.defaults.utils.*
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.commands.ProposePeaceCommand
@@ -32,9 +34,24 @@ class ProposePeaceToPlayerOption(
     override fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
-    ): List<DualUtilityConsideration> {
-        return listOf()
-    }
+    ): List<DualUtilityConsideration> = listOf(
+        WarLossConsideration(
+            otherPlayerId = targetPlayerId,
+            minMultiplier = 0.0,
+            maxMultiplier = 2.0,
+            rank = 1,
+            bonus = 1.0,
+        ),
+        HasProposedPeaceConsideration(
+            otherPlayerId = targetPlayerId,
+            rankIfTrue = 0,
+            multiplierIfTrue = 0.0,
+            bonusIfTrue = 0.0,
+            rankIfFalse = 0,
+            multiplierIfFalse = 1.0,
+            bonusIfFalse = 0.0
+        )
+    )
 
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
         planDataAtPlayer.addCommand(
