@@ -136,6 +136,51 @@ class DeclareIndependenceReasoner : DualUtilityReasoner() {
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<DualUtilityOption> = listOf(
+        DeclareIndependenceToDirectLeaderOption(),
         DoNothingDualUtilityOption(rank = 1, multiplier = 1.0, bonus = 1.0)
     )
+}
+
+class DeclareIndependenceToDirectLeaderOption : DualUtilityOption() {
+    override fun getConsiderationList(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planState: PlanState
+    ): List<DualUtilityConsideration> = listOf(
+        LargerMilitaryStrengthConsideration(
+            targetPlayerId = planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData.directLeaderId,
+            rankIfTrue = 1,
+            multiplierIfTrue = 0.01,
+            bonusIfTrue = 1.0,
+            rankIfFalse = 1,
+            multiplierIfFalse = 0.00001,
+            bonusIfFalse = 1.0
+        ),
+        InWarConsideration(
+            rankIfTrue = 0,
+            multiplierIfTrue = 0.01,
+            bonusIfTrue = 0.0,
+            rankIfFalse = 0,
+            multiplierIfFalse = 1.0,
+            bonusIfFalse = 0.0
+        ),
+        InWarWithPlayerConsideration(
+            otherPlayerId = planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData.directLeaderId,
+            rankIfTrue = 0,
+            multiplierIfTrue = 0.0,
+            bonusIfTrue = 0.0,
+            rankIfFalse = 0,
+            multiplierIfFalse = 1.0,
+            bonusIfFalse = 0.0
+        ),
+        RelationConsideration(
+            playerId = planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData.directLeaderId,
+            initialMultiplier = 1.0,
+            exponent = 0.99,
+            rank = 0,
+            bonus = 0.0
+        )
+    )
+
+    override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
+    }
 }
