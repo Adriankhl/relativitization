@@ -1,5 +1,8 @@
 package relativitization.universe.ai.defaults.node.self.diplomacy
 
+import relativitization.universe.ai.defaults.consideration.diplomacy.RelationConsideration
+import relativitization.universe.ai.defaults.consideration.military.InWarConsideration
+import relativitization.universe.ai.defaults.consideration.military.InWarWithPlayerConsideration
 import relativitization.universe.ai.defaults.consideration.military.LargerMilitaryStrengthConsideration
 import relativitization.universe.ai.defaults.utils.*
 import relativitization.universe.data.MutablePlayerData
@@ -85,6 +88,30 @@ class SpaceConflictDeclareWarOption(
                 rankIfFalse = 1,
                 multiplierIfFalse = 0.00001,
                 bonusIfFalse = 1.0
+            ),
+            InWarConsideration(
+                rankIfTrue = 0,
+                multiplierIfTrue = 0.01,
+                bonusIfTrue = 0.0,
+                rankIfFalse = 0,
+                multiplierIfFalse = 1.0,
+                bonusIfFalse = 0.0
+            ),
+            InWarWithPlayerConsideration(
+                otherPlayerId = targetPlayerId,
+                rankIfTrue = 0,
+                multiplierIfTrue = 0.0,
+                bonusIfTrue = 0.0,
+                rankIfFalse = 0,
+                multiplierIfFalse = 1.0,
+                bonusIfFalse = 0.0
+            ),
+            RelationConsideration(
+                playerId = targetPlayerId,
+                initialMultiplier = 1.0,
+                exponent = 0.99,
+                rank = 0,
+                bonus = 0.0
             )
         )
     }
