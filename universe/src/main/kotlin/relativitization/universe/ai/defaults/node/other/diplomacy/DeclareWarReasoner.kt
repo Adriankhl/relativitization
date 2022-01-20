@@ -1,4 +1,4 @@
-package relativitization.universe.ai.defaults.node.self.diplomacy
+package relativitization.universe.ai.defaults.node.other.diplomacy
 
 import relativitization.universe.ai.defaults.consideration.diplomacy.RelationConsideration
 import relativitization.universe.ai.defaults.consideration.military.InWarConsideration
@@ -7,6 +7,7 @@ import relativitization.universe.ai.defaults.consideration.military.LargerMilita
 import relativitization.universe.ai.defaults.utils.*
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.PlanDataAtPlayer
+import relativitization.universe.data.commands.DeclareWarCommand
 import relativitization.universe.data.components.defaults.physics.Int3D
 
 class DeclareWarReasoner : SequenceReasoner() {
@@ -117,5 +118,14 @@ class SpaceConflictDeclareWarOption(
     }
 
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
+        planDataAtPlayer.addCommand(
+            DeclareWarCommand(
+                toId = targetPlayerId,
+                fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+                fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
+                senderLeaderIdList = planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData
+                    .leaderIdList.toList(),
+            )
+        )
     }
 }
