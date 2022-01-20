@@ -91,7 +91,7 @@ This will produce documentation pages in `build/dokka/htmlMultiModule`:
 ```
 
 ## License
-Relativitization is licensed under GPLv3.
+The source code of Relativitization is licensed under GPLv3.
 
         Relativitization
         Copyright (C) 2021-2022  Lai Kwun Hang
