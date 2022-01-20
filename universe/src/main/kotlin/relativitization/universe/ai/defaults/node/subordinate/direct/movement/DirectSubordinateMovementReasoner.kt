@@ -20,12 +20,15 @@ class DirectSubordinateMovementReasoner(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<DualUtilityOption> = listOf(
-        MoveDirectSubordinateToNearByEnemyOption(directSubordinateId),
+        MoveDirectSubordinateToNearbyEnemyOption(directSubordinateId),
         DoNothingDualUtilityOption(rank = 1, multiplier = 1.0, bonus = 1.0),
     )
 }
 
-class MoveDirectSubordinateToNearByEnemyOption(
+/**
+ * Move direct subordinate to a nearby enemy
+ */
+class MoveDirectSubordinateToNearbyEnemyOption(
     private val directSubordinateId: Int
 ) : DualUtilityOption() {
     override fun getConsiderationList(
@@ -38,7 +41,7 @@ class MoveDirectSubordinateToNearByEnemyOption(
             multiplierIfTrue = 1.0,
             bonusIfTrue = 1.0,
             rankIfFalse = 0,
-            multiplierIfFalse = 0.0,
+            multiplierIfFalse = 1.0,
             bonusIfFalse = 0.0
         ),
         SufficientFuelMaxSpeedConsideration(
