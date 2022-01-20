@@ -5,6 +5,7 @@ import relativitization.universe.ai.defaults.utils.DualUtilityData
 import relativitization.universe.ai.defaults.utils.PlanState
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.components.defaults.diplomacy.DiplomaticRelationState
+import relativitization.universe.data.components.defaults.diplomacy.MutableWarStateData
 
 /**
  * Check if this player has any enemy
@@ -118,5 +119,46 @@ class InWarWithPlayerConsideration(
                 bonus = bonusIfFalse
             )
         }
+    }
+}
+
+/**
+ * Consider loss of player compare to the start of the war
+ *
+ * @property playerId the id of the other player
+ * @property minMultiplier minimum of the multiplier
+ * @property maxMultiplier maximum of the multiplier
+ * @property rank rank of the dual utility data
+ * @property bonus bonus of the dual utility data
+ */
+class WarLossConsideration(
+    private val playerId: Int,
+    private val minMultiplier: Double,
+    private val maxMultiplier: Double,
+    private val rank: Int,
+    private val bonus: Double,
+) : DualUtilityConsideration() {
+    override fun getDualUtilityData(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planState: PlanState
+    ): DualUtilityData {
+
+        val warState: MutableWarStateData = planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData
+            .diplomacyData().warData.warStateMap.getValue(playerId)
+
+        val numOriginalSubordinate: Int = planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData
+            .subordinateIdList.filter { warState.initialSubordinateList.contains(it) }.size
+
+        val lossFraction: Double = if (warState.initialSubordinateList.isNotEmpty()) {
+            1.0 - numOriginalSubordinate.toDouble() /  warState.initialSubordinateList.size.toDouble()
+        } else {
+            0.0
+        }
+
+        return DualUtilityData(
+            rank = rank,
+            multiplier = (maxMultiplier - minMultiplier) * lossFraction + minMultiplier,
+            bonus = bonus
+        )
     }
 }
