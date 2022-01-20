@@ -113,7 +113,7 @@ class SpaceConflictDeclareWarOption(
                 bonusIfFalse = 0.0
             ),
             RelationConsideration(
-                playerId = targetPlayerId,
+                otherPlayerId = targetPlayerId,
                 initialMultiplier = 1.0,
                 exponent = 0.99,
                 rank = 0,
@@ -181,14 +181,14 @@ class DeclareIndependenceToDirectLeaderOption : DualUtilityOption() {
             bonusIfFalse = 0.0
         ),
         RelationConsideration(
-            playerId = planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData.directLeaderId,
+            otherPlayerId = planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData.directLeaderId,
             initialMultiplier = 1.0,
             exponent = 0.99,
             rank = 0,
             bonus = 0.0
         ),
         DistanceMultiplierConsideration(
-            playerId = planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData.directLeaderId,
+            otherPlayerId = planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData.directLeaderId,
             initialMultiplier = 1.0,
             exponent = 1.2,
             rank = 0,
@@ -250,14 +250,14 @@ class DeclareIndependenceToTopLeaderOption : DualUtilityOption() {
             bonusIfFalse = 0.0
         ),
         RelationConsideration(
-            playerId = planDataAtPlayer.getCurrentMutablePlayerData().topLeaderId(),
+            otherPlayerId = planDataAtPlayer.getCurrentMutablePlayerData().topLeaderId(),
             initialMultiplier = 1.0,
             exponent = 0.99,
             rank = 0,
             bonus = 0.0
         ),
         DistanceMultiplierConsideration(
-            playerId = planDataAtPlayer.getCurrentMutablePlayerData().topLeaderId(),
+            otherPlayerId = planDataAtPlayer.getCurrentMutablePlayerData().topLeaderId(),
             initialMultiplier = 1.0,
             exponent = 1.2,
             rank = 0,

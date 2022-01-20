@@ -45,7 +45,7 @@ class MoveToLowerDensityCubeOption : DualUtilityOption() {
             bonusIfFalse = 0.0
         ),
         SufficientFuelMaxSpeedConsideration(
-            playerId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+            otherPlayerId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
             maxSpeed = 0.1,
             rankIfTrue = 0,
             multiplierIfTrue = 1.0,
@@ -127,7 +127,7 @@ class MoveToEnemyOption : DualUtilityOption() {
             bonusIfFalse = 0.0
         ),
         SufficientFuelMaxSpeedConsideration(
-            playerId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+            otherPlayerId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
             maxSpeed = 0.1,
             rankIfTrue = 0,
             multiplierIfTrue = 1.0,

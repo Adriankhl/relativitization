@@ -54,7 +54,7 @@ class MoveDirectSubordinateToNearbyEnemyOption(
             bonusIfFalse = 0.0
         ),
         SufficientFuelMaxSpeedConsideration(
-            playerId = directSubordinateId,
+            otherPlayerId = directSubordinateId,
             maxSpeed = 0.1,
             rankIfTrue = 0,
             multiplierIfTrue = 1.0,
