@@ -20,12 +20,12 @@ class DirectSubordinateMovementReasoner(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<DualUtilityOption> = listOf(
-        MoveDirectSubordinateToEnemyOption(directSubordinateId),
+        MoveDirectSubordinateToNearByEnemyOption(directSubordinateId),
         DoNothingDualUtilityOption(rank = 1, multiplier = 1.0, bonus = 1.0),
     )
 }
 
-class MoveDirectSubordinateToEnemyOption(
+class MoveDirectSubordinateToNearByEnemyOption(
     private val directSubordinateId: Int
 ) : DualUtilityOption() {
     override fun getConsiderationList(
@@ -100,6 +100,5 @@ class MoveDirectSubordinateToEnemyOption(
                 )
             )
         }
-
     }
 }
