@@ -10,6 +10,7 @@ import relativitization.universe.ai.defaults.utils.*
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.commands.DeclareIndependenceToDirectLeaderCommand
+import relativitization.universe.data.commands.DeclareIndependenceToTopLeaderCommand
 import relativitization.universe.data.commands.DeclareWarCommand
 import relativitization.universe.data.components.defaults.physics.Int3D
 
@@ -140,6 +141,7 @@ class DeclareIndependenceReasoner : DualUtilityReasoner() {
         planState: PlanState
     ): List<DualUtilityOption> = listOf(
         DeclareIndependenceToDirectLeaderOption(),
+        DeclareIndependenceToTopLeaderOption(),
         DoNothingDualUtilityOption(rank = 1, multiplier = 1.0, bonus = 1.0)
     )
 }
@@ -206,6 +208,75 @@ class DeclareIndependenceToDirectLeaderOption : DualUtilityOption() {
         planDataAtPlayer.addCommand(
             DeclareIndependenceToDirectLeaderCommand(
                 toId = planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData.directLeaderId,
+                fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+                fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
+            )
+        )
+    }
+}
+
+/**
+ * Declare war and independence to direct leader
+ */
+class DeclareIndependenceToTopLeaderOption : DualUtilityOption() {
+    override fun getConsiderationList(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planState: PlanState
+    ): List<DualUtilityConsideration> = listOf(
+        LargerMilitaryStrengthConsideration(
+            targetPlayerId = planDataAtPlayer.getCurrentMutablePlayerData().topLeaderId(),
+            rankIfTrue = 1,
+            multiplierIfTrue = 0.01,
+            bonusIfTrue = 1.0,
+            rankIfFalse = 1,
+            multiplierIfFalse = 0.00001,
+            bonusIfFalse = 1.0
+        ),
+        InWarConsideration(
+            rankIfTrue = 0,
+            multiplierIfTrue = 0.01,
+            bonusIfTrue = 0.0,
+            rankIfFalse = 0,
+            multiplierIfFalse = 1.0,
+            bonusIfFalse = 0.0
+        ),
+        InWarWithPlayerConsideration(
+            otherPlayerId = planDataAtPlayer.getCurrentMutablePlayerData().topLeaderId(),
+            rankIfTrue = 0,
+            multiplierIfTrue = 0.0,
+            bonusIfTrue = 0.0,
+            rankIfFalse = 0,
+            multiplierIfFalse = 1.0,
+            bonusIfFalse = 0.0
+        ),
+        RelationConsideration(
+            playerId = planDataAtPlayer.getCurrentMutablePlayerData().topLeaderId(),
+            initialMultiplier = 1.0,
+            exponent = 0.99,
+            rank = 0,
+            bonus = 0.0
+        ),
+        DistanceMultiplierConsideration(
+            playerId = planDataAtPlayer.getCurrentMutablePlayerData().topLeaderId(),
+            initialMultiplier = 1.0,
+            exponent = 1.2,
+            rank = 0,
+            bonus = 0.0
+        ),
+        IsTopLeaderConsideration(
+            rankIfTrue = 0,
+            multiplierIfTrue = 0.0,
+            bonusIfTrue = 0.0,
+            rankIfFalse = 0,
+            multiplierIfFalse = 1.0,
+            bonusIfFalse = 0.0
+        )
+    )
+
+    override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
+        planDataAtPlayer.addCommand(
+            DeclareIndependenceToTopLeaderCommand(
+                toId = planDataAtPlayer.getCurrentMutablePlayerData().topLeaderId(),
                 fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
                 fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
             )
