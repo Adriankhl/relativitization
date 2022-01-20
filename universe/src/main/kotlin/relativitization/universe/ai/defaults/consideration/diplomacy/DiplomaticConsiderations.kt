@@ -10,14 +10,14 @@ import kotlin.math.pow
 /**
  * Consideration of diplomatic relation
  *
- * @property playerId the relation between player with this id and current player
+ * @property otherPlayerId the relation between player with this id and current player
  * @property initialMultiplier the multiplier when the relation is 0
  * @property exponent exponentially modify the multiplier as the relation increases
  * @property rank rank of the dual utility data
  * @property bonus bonus of the dual utility data
  */
 class RelationConsideration(
-    private val playerId: Int,
+    private val otherPlayerId: Int,
     private val initialMultiplier: Double,
     private val exponent: Double,
     private val rank: Int,
@@ -32,7 +32,7 @@ class RelationConsideration(
 
         return DualUtilityData(
             rank = rank,
-            multiplier = initialMultiplier * exponent.pow(diplomacyData.getRelation(playerId)),
+            multiplier = initialMultiplier * exponent.pow(diplomacyData.getRelation(otherPlayerId)),
             bonus = bonus,
         )
     }

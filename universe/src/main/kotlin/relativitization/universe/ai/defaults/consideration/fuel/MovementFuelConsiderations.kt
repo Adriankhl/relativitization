@@ -10,7 +10,7 @@ import relativitization.universe.maths.physics.Movement
 /**
  * Check whether there is sufficient movement fuel to change the velocity
  *
- * @property playerId the id of the player to consider
+ * @property otherPlayerId the id of the player to consider
  * @property maxSpeed the target max speed
  * @property rankIfTrue rank of dual utility if this is true
  * @property multiplierIfTrue multiplier of dual utility if this is true
@@ -20,7 +20,7 @@ import relativitization.universe.maths.physics.Movement
  * @property bonusIfFalse bonus of dual utility if this is false
  */
 class SufficientFuelMaxSpeedConsideration(
-    private val playerId: Int,
+    private val otherPlayerId: Int,
     private val maxSpeed: Double,
     private val rankIfTrue: Int,
     private val multiplierIfTrue: Double,
@@ -33,12 +33,12 @@ class SufficientFuelMaxSpeedConsideration(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): DualUtilityData {
-        val initialRestMass: Double = planDataAtPlayer.getMutablePlayerData(playerId).playerInternalData
+        val initialRestMass: Double = planDataAtPlayer.getMutablePlayerData(otherPlayerId).playerInternalData
             .physicsData().totalRestMass()
 
-        val initialVelocity: Velocity = planDataAtPlayer.getMutablePlayerData(playerId).velocity.toVelocity()
+        val initialVelocity: Velocity = planDataAtPlayer.getMutablePlayerData(otherPlayerId).velocity.toVelocity()
 
-        val movementFuelMass: Double = planDataAtPlayer.getMutablePlayerData(playerId).playerInternalData
+        val movementFuelMass: Double = planDataAtPlayer.getMutablePlayerData(otherPlayerId).playerInternalData
             .physicsData().fuelRestMassData.movement
 
         val requiredDeltaMass: Double = Movement.requiredDeltaRestMassSimpleEstimation(

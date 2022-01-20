@@ -9,7 +9,7 @@ import relativitization.universe.data.PlanDataAtPlayer
 /**
  * Consider the hierarchical relation with this player
  *
- * @property playerId Is this player self, leader, or subordinate
+ * @property otherPlayerId Is this player self, leader, or subordinate
  * @property rankIfSelf the rank of the DualUtilityData if the player is self
  * @property rankIfDirectLeader the rank of the DualUtilityData if the player is direct leader
  * @property rankIfOtherLeader the rank of the DualUtilityData if the player is other leader
@@ -19,7 +19,7 @@ import relativitization.universe.data.PlanDataAtPlayer
  * @property multiplier the multiplier of the DualUtilityData
  */
 class HierarchyRelationConsideration(
-    private val playerId: Int,
+    private val otherPlayerId: Int,
     private val rankIfSelf: Int,
     private val rankIfDirectLeader: Int,
     private val rankIfOtherLeader: Int,
@@ -37,27 +37,27 @@ class HierarchyRelationConsideration(
         val playerData: MutablePlayerData = planDataAtPlayer.getCurrentMutablePlayerData()
 
         return when {
-            playerData.playerId == playerId -> DualUtilityData(
+            playerData.playerId == otherPlayerId -> DualUtilityData(
                 rank = rankIfSelf,
                 multiplier = multiplier,
                 bonus = bonus
             )
-            playerData.playerInternalData.directLeaderId == playerId -> DualUtilityData(
+            playerData.playerInternalData.directLeaderId == otherPlayerId -> DualUtilityData(
                 rank = rankIfDirectLeader,
                 multiplier = multiplier,
                 bonus = bonus
             )
-            playerData.isLeader(playerId) -> DualUtilityData(
+            playerData.isLeader(otherPlayerId) -> DualUtilityData(
                 rank = rankIfOtherLeader,
                 multiplier = multiplier,
                 bonus = bonus
             )
-            playerData.isDirectSubOrdinate(playerId) -> DualUtilityData(
+            playerData.isDirectSubOrdinate(otherPlayerId) -> DualUtilityData(
                 rank = rankIfDirectSubordinate,
                 multiplier = multiplier,
                 bonus = bonus
             )
-            playerData.isSubOrdinate(playerId) -> DualUtilityData(
+            playerData.isSubOrdinate(otherPlayerId) -> DualUtilityData(
                 rank = rankIfOtherSubordinate,
                 multiplier = multiplier,
                 bonus = bonus

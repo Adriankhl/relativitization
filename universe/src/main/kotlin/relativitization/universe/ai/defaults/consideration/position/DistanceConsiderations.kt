@@ -12,21 +12,21 @@ import kotlin.math.pow
 /**
  * Consider the distance between this player and the other player to change the multiplier
  *
- * @property playerId the id of the other player
+ * @property otherPlayerId the id of the other player
  * @property initialMultiplier the multiplier when the distance is zero
  * @property exponent exponentially modify the multiplier as the distance increases
  * @property rank rank of the dual utility data
  * @property bonus bonus of the dual utility data
  */
 class DistanceMultiplierConsideration(
-    private val playerId: Int,
+    private val otherPlayerId: Int,
     private val initialMultiplier: Double,
     private val exponent: Double,
     private val rank: Int,
     private val bonus: Double,
 ) : DualUtilityConsideration() {
     override fun getDualUtilityData(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState): DualUtilityData {
-        val otherPlayerData: PlayerData = planDataAtPlayer.universeData3DAtPlayer.get(playerId)
+        val otherPlayerData: PlayerData = planDataAtPlayer.universeData3DAtPlayer.get(otherPlayerId)
 
         val otherInt4D: Int4D = otherPlayerData.int4D
         val otherGroup: Int = otherPlayerData.groupId
