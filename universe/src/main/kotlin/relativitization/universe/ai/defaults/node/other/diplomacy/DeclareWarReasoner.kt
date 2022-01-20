@@ -15,6 +15,7 @@ class DeclareWarReasoner : SequenceReasoner() {
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<AINode> = listOf(
+        DeclareIndependenceReasoner(),
         SpaceConflictReasoner(),
     )
 }
@@ -128,4 +129,13 @@ class SpaceConflictDeclareWarOption(
             )
         )
     }
+}
+
+class DeclareIndependenceReasoner : DualUtilityReasoner() {
+    override fun getOptionList(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planState: PlanState
+    ): List<DualUtilityOption> = listOf(
+        DoNothingDualUtilityOption(rank = 1, multiplier = 1.0, bonus = 1.0)
+    )
 }
