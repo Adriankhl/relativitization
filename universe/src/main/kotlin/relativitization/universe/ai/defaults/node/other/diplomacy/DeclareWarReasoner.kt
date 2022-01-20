@@ -1,12 +1,15 @@
 package relativitization.universe.ai.defaults.node.other.diplomacy
 
 import relativitization.universe.ai.defaults.consideration.diplomacy.RelationConsideration
+import relativitization.universe.ai.defaults.consideration.hierarchy.IsTopLeaderConsideration
 import relativitization.universe.ai.defaults.consideration.military.InWarConsideration
 import relativitization.universe.ai.defaults.consideration.military.InWarWithPlayerConsideration
 import relativitization.universe.ai.defaults.consideration.military.LargerMilitaryStrengthConsideration
+import relativitization.universe.ai.defaults.consideration.position.DistanceMultiplierConsideration
 import relativitization.universe.ai.defaults.utils.*
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.PlanDataAtPlayer
+import relativitization.universe.data.commands.DeclareIndependenceToDirectLeaderCommand
 import relativitization.universe.data.commands.DeclareWarCommand
 import relativitization.universe.data.components.defaults.physics.Int3D
 
@@ -141,6 +144,9 @@ class DeclareIndependenceReasoner : DualUtilityReasoner() {
     )
 }
 
+/**
+ * Declare war and independence to direct leader
+ */
 class DeclareIndependenceToDirectLeaderOption : DualUtilityOption() {
     override fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer,
@@ -178,9 +184,31 @@ class DeclareIndependenceToDirectLeaderOption : DualUtilityOption() {
             exponent = 0.99,
             rank = 0,
             bonus = 0.0
+        ),
+        DistanceMultiplierConsideration(
+            playerId = planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData.directLeaderId,
+            initialMultiplier = 1.0,
+            exponent = 1.2,
+            rank = 0,
+            bonus = 0.0
+        ),
+        IsTopLeaderConsideration(
+            rankIfTrue = 0,
+            multiplierIfTrue = 0.0,
+            bonusIfTrue = 0.0,
+            rankIfFalse = 0,
+            multiplierIfFalse = 1.0,
+            bonusIfFalse = 0.0
         )
     )
 
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
+        planDataAtPlayer.addCommand(
+            DeclareIndependenceToDirectLeaderCommand(
+                toId = planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData.directLeaderId,
+                fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+                fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
+            )
+        )
     }
 }
