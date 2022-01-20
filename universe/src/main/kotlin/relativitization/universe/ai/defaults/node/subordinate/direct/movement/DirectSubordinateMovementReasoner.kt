@@ -2,6 +2,7 @@ package relativitization.universe.ai.defaults.node.subordinate.direct.movement
 
 import relativitization.universe.ai.defaults.consideration.enemy.EnemyNeighbourConsideration
 import relativitization.universe.ai.defaults.consideration.fuel.SufficientFuelMaxSpeedConsideration
+import relativitization.universe.ai.defaults.consideration.military.InWarConsideration
 import relativitization.universe.ai.defaults.utils.*
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.PlayerData
@@ -37,6 +38,14 @@ class MoveDirectSubordinateToNearbyEnemyOption(
     ): List<DualUtilityConsideration> = listOf(
         EnemyNeighbourConsideration(
             range = 2,
+            rankIfTrue = 1,
+            multiplierIfTrue = 1.0,
+            bonusIfTrue = 1.0,
+            rankIfFalse = 0,
+            multiplierIfFalse = 1.0,
+            bonusIfFalse = 0.0
+        ),
+        InWarConsideration(
             rankIfTrue = 1,
             multiplierIfTrue = 1.0,
             bonusIfTrue = 1.0,
