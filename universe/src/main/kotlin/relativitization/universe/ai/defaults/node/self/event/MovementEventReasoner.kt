@@ -1,6 +1,6 @@
 package relativitization.universe.ai.defaults.node.self.event
 
-import relativitization.universe.ai.defaults.consideration.diplomacy.HierarchyConsideration
+import relativitization.universe.ai.defaults.consideration.hierarchy.HierarchyRelationConsideration
 import relativitization.universe.ai.defaults.consideration.diplomacy.RelationConsideration
 import relativitization.universe.ai.defaults.utils.DualUtilityConsideration
 import relativitization.universe.ai.defaults.utils.DualUtilityOption
@@ -56,7 +56,7 @@ class PickMoveToDouble3DEventDualUtilityOption(
             .playerInternalData.eventDataMap.getValue(eventKey)
 
         return listOf(
-            HierarchyConsideration(
+            HierarchyRelationConsideration(
                 playerId = movementEventData.event.fromId,
                 rankIfSelf = 4,
                 rankIfDirectLeader = 3,
