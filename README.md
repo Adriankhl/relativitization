@@ -9,7 +9,6 @@ Turn-based strategy game / agent-based simulation framework / social model in 4D
 * `gdx-desktop` libgdx gui desktop launcher, depends on `gdx-core`, `universe`,  `universe-client`, and `universe-server`
 * `gdx-android` libgdx gui android launcher, depends on `gdx-core`, `universe`,  `universe-client`, and `universe-server`
 
-
 # Build the game
 The following assumes you are using a Linux terminal. If you are working with Windows, you need to use the Windows-equivalent commands, such as changing `./gradlew` to `gradlew.bat`.
 
@@ -74,9 +73,12 @@ This will produce documentation pages in `build/dokka/htmlMultiModule`:
 ```
 
 # Run simulation
-`./simulations/src/main/kotlin/relativitization/abm/AllDefault.kt` is a simulation example. You can run the main function by:
+Here is an example: 
+`./simulations/src/main/kotlin/relativitization/abm/AllDefault.kt`.
 
-`./gradlew :simulation:run -PmainClass=relativitization.abm.AllDefaultKt`
+You can run the main function by:
+```
+./gradlew :simulation:run -PmainClass=relativitization.abm.AllDefaultKt
+```
 
-You can change `relativitization.abm.AllDefaultKt` to the main class of your simulation.
-Note that there is an additional `Kt` after the file name in kotlin convention.
+Note that the main class has an additional `Kt` after the file name in kotlin convention.
