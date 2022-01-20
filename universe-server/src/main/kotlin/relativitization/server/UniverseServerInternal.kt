@@ -45,7 +45,7 @@ class UniverseServerInternal(
     // Whether the data process is done
     private val isProcessDone: CoroutineBoolean = CoroutineBoolean(false)
 
-    // wait beginning time in milli second, used to calculate the time limit to stop waiting
+    // wait beginning time in millisecond, used to calculate the time limit to stop waiting
     private val waitBeginTime: CoroutineVar<Long> = CoroutineVar(System.currentTimeMillis())
 
     // map from registered player id to password
@@ -105,7 +105,7 @@ class UniverseServerInternal(
                 }
 
 
-                // Compute ai commands after universe processing is done
+                // Compute AI commands after universe processing is done
                 if (isProcessDone.isTrue()) {
                     // Start to accept human input
                     isServerWaitingInput.set(true)
