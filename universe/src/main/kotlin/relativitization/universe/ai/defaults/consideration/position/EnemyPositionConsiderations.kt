@@ -1,4 +1,4 @@
-package relativitization.universe.ai.defaults.consideration.enemy
+package relativitization.universe.ai.defaults.consideration.position
 
 import relativitization.universe.ai.defaults.utils.DualUtilityConsideration
 import relativitization.universe.ai.defaults.utils.DualUtilityData

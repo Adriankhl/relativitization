@@ -1,6 +1,6 @@
 package relativitization.universe.ai.defaults.node.subordinate.direct.movement
 
-import relativitization.universe.ai.defaults.consideration.enemy.EnemyNeighbourConsideration
+import relativitization.universe.ai.defaults.consideration.position.EnemyNeighbourConsideration
 import relativitization.universe.ai.defaults.consideration.fuel.SufficientFuelMaxSpeedConsideration
 import relativitization.universe.ai.defaults.consideration.military.InWarConsideration
 import relativitization.universe.ai.defaults.utils.*

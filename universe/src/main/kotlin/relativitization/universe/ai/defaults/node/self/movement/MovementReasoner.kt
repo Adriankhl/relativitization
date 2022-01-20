@@ -1,7 +1,7 @@
 package relativitization.universe.ai.defaults.node.self.movement
 
-import relativitization.universe.ai.defaults.consideration.enemy.EnemyNeighbourConsideration
-import relativitization.universe.ai.defaults.consideration.enemy.FightingEnemyConsideration
+import relativitization.universe.ai.defaults.consideration.position.EnemyNeighbourConsideration
+import relativitization.universe.ai.defaults.consideration.position.FightingEnemyConsideration
 import relativitization.universe.ai.defaults.consideration.event.HasMovementEventConsideration
 import relativitization.universe.ai.defaults.consideration.fuel.SufficientFuelMaxSpeedConsideration
 import relativitization.universe.ai.defaults.consideration.population.HigherPopulationDensityThenNeighborCubeConsideration
