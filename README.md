@@ -6,6 +6,7 @@ Turn-based strategy game / agent-based simulation framework / social model in 4D
 2. [Build the game](#build-the-game)
 3. [Run simulation](#run-simulation)
 4. [Generate documentation](#generate-documentation)
+5. [License](#license)
 
 ## Project layout
 * `universe` core to run universe simulations
@@ -88,3 +89,22 @@ This will produce documentation pages in `build/dokka/htmlMultiModule`:
 ```
 ./gradlew dokkaHtmlMultimodule
 ```
+
+## License
+Relativitization is licensed under GPLv3.
+
+        Relativitization
+        Copyright (C) 2021-2022  Lai Kwun Hang
+
+        This program is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        This program is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with this program.  If not, see <https://www.gnu.org/licenses/>.
