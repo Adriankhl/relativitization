@@ -10,34 +10,34 @@ import relativitization.universe.maths.physics.Intervals
 import kotlin.math.pow
 
 /**
- * Consider the distance of direct leader
+ * Consider the distance between this player and the other player to change the multiplier
  *
+ * @property playerId the id of the other player
  * @property initialMultiplier the multiplier when the distance is zero
  * @property exponent exponentially modify the multiplier as the distance increases
  * @property rank rank of the dual utility data
  * @property bonus bonus of the dual utility data
  */
-class DirectLeaderDistanceConsideration(
+class DistanceMultiplierConsideration(
+    private val playerId: Int,
     private val initialMultiplier: Double,
     private val exponent: Double,
     private val rank: Int,
     private val bonus: Double,
 ) : DualUtilityConsideration() {
     override fun getDualUtilityData(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState): DualUtilityData {
-        val leaderPlayerData: PlayerData = planDataAtPlayer.universeData3DAtPlayer.get(
-            planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData.directLeaderId
-        )
+        val otherPlayerData: PlayerData = planDataAtPlayer.universeData3DAtPlayer.get(playerId)
 
-        val leaderInt4D: Int4D = leaderPlayerData.int4D
-        val leaderGroup: Int = leaderPlayerData.groupId
+        val otherInt4D: Int4D = otherPlayerData.int4D
+        val otherGroup: Int = otherPlayerData.groupId
 
         val thisInt4D: Int4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D()
         val thisGroup: Int = planDataAtPlayer.getCurrentMutablePlayerData().groupId
 
-        val distance: Int = if ((leaderInt4D == thisInt4D) && (leaderGroup == thisGroup)) {
+        val distance: Int = if ((otherInt4D == thisInt4D) && (otherGroup == thisGroup)) {
             0
         } else {
-            Intervals.intDistance(leaderInt4D, thisInt4D)
+            Intervals.intDistance(otherInt4D, thisInt4D)
         }
 
         return DualUtilityData(
