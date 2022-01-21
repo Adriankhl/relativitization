@@ -21,7 +21,7 @@ The following assumes you are using a Linux terminal.
 If you are working with Windows, you need to use the Windows-equivalent commands, 
 such as changing `./gradlew` to `gradlew.bat`.
 
-You can run simulation for your model with command-line. Here is an example: 
+You can run simulations of your model on the command line. Here is an example: 
 `./simulations/src/main/kotlin/relativitization/abm/AllDefault.kt`.
 
 You can run the main function by:
