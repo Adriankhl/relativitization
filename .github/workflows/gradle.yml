@@ -1,6 +1,10 @@
 name: Java CI with Gradle
 
-on: [push, pull_request]
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
   test:
@@ -22,5 +26,4 @@ jobs:
           mkdir -p ../relativitization-art/assets/skin
           mkdir -p ../relativitization-art/assets/sounds
           mkdir -p ../relativitization-art/assets/translations
-          mkdir -p ../relativitization-art/resources
           ./gradlew clean test
