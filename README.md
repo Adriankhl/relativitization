@@ -1,23 +1,43 @@
 # Relativitization
 Turn-based strategy game / agent-based simulation framework / social model in a 4D relativistic spacetime.
 
-**Status of the project**: Command line simulation is functioning, the first version of game GUI
+**Status of the project**: Command line simulation is functioning, the first version of the game
 will be released in February 2022.
 
 ## Table of Contents
 1. [Project layout](#project-layout)
-2. [Run simulation](#run-simulation)
-3. [Build the game](#build-the-game)
-4. [Generate documentation](#generate-documentation)
-5. [License](#license)
+2. [Introduction and references](#introduction-and-references)
+3. [Run simulation](#run-simulation)
+4. [Build the game](#build-the-game)
+5. [Generate documentation](#generate-documentation)
+6. [Contribute](#contribute)
+7. [License](#license)
 
 ## Project layout
-* `universe` core to run universe simulations
-* `universe-server` server to run the game, depends on `universe`
-* `universe-client` store non-gui functions that are useful to game client, depends on `universe`
-* `gdx-core` libgdx gui core, depends on `universe` and  `universe-client`
-* `gdx-desktop` libgdx gui desktop launcher, depends on `gdx-core`, `universe`,  `universe-client`, and `universe-server`
-* `gdx-android` libgdx gui android launcher, depends on `gdx-core`, `universe`,  `universe-client`, and `universe-server`
+* `universe`: core of this project
+* `simulations`: model simulation examples, depends on `universe`
+* `universe-server`: server to run the game, depends on `universe`
+* `universe-client`: store non-gui functions that are useful to game client, depends on `universe`
+* `gdx-core`: libgdx gui core, depends on `universe` and  `universe-client`
+* `gdx-desktop`: libgdx gui desktop launcher, depends on `gdx-core`, `universe`,  `universe-client`, and `universe-server`
+* `gdx-android`: libgdx gui android launcher, depends on `gdx-core`, `universe`,  `universe-client`, and `universe-server`
+
+## Introduction and references
+Our interstellar future is always an interesting scenario to think about. 
+There are great imaginations about of interstellar society in books, movies, and games.
+While computer games are fun to play, it is rare to see the essential physics - relativity, in games.
+
+Relativitization is an attempt to create a turn-based strategy / simulation game that respect special relativity.
+Since building an academic social model can be quite similar to designing mechanisms in a simulation / strategy game,
+this can also be used as an agent-based simulation framework for 
+social scientists to build social models.
+
+The source code is licensed under GPLv3, you are free to modify or add things in the `universe` to
+build your model, and you can simulate your model using terminal.
+
+To encourage people to support this project financially, the assets of the game are not opened.
+You need to buy the assets to play the game, though you are free to modify the game logic to experiment and share
+your ideas.
 
 ## Run simulation
 The following assumes you are using a Linux terminal.
@@ -95,6 +115,15 @@ This will produce documentation pages in `build/dokka/htmlMultiModule`:
 ```
 ./gradlew dokkaHtmlMultimodule
 ```
+
+## Contribute
+If you encounter a bug, please check to see if there is any existing issue before reporting the bug.
+
+Pull requests are welcome. Since it is not entirely clear whether the GPLv3 license is the best option for
+this project, to keep open the possibility of changing the license in the future,
+you are required to sign a contributor license agreement to indicate that your contribution is under the MIT license.
+You just need to copy and paste a sentence as a comment in your pull request, 
+the instruction will appear after your pull request has been created.
 
 ## License
 The source code of Relativitization is licensed under GPLv3.
