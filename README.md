@@ -3,8 +3,8 @@ Turn-based strategy game / agent-based simulation framework / social model in 4D
 
 ## Table of Contents
 1. [Project layout](#project-layout)
-2. [Build the game](#build-the-game)
-3. [Run simulation](#run-simulation)
+2. [Run simulation](#run-simulation)
+3. [Build the game](#build-the-game)
 4. [Generate documentation](#generate-documentation)
 5. [License](#license)
 
@@ -16,8 +16,22 @@ Turn-based strategy game / agent-based simulation framework / social model in 4D
 * `gdx-desktop` libgdx gui desktop launcher, depends on `gdx-core`, `universe`,  `universe-client`, and `universe-server`
 * `gdx-android` libgdx gui android launcher, depends on `gdx-core`, `universe`,  `universe-client`, and `universe-server`
 
+## Run simulation
+The following assumes you are using a Linux terminal.
+If you are working with Windows, you need to use the Windows-equivalent commands, 
+such as changing `./gradlew` to `gradlew.bat`.
+
+You can run simulation for your model with command-line. Here is an example: 
+`./simulations/src/main/kotlin/relativitization/abm/AllDefault.kt`.
+
+You can run the main function by:
+```
+./gradlew :simulation:run -PmainClass=relativitization.abm.AllDefaultKt
+```
+
+Note that the main class has an additional `Kt` after the file name in Kotlin convention.
+
 ## Build the game
-The following assumes you are using a Linux terminal. If you are working with Windows, you need to use the Windows-equivalent commands, such as changing `./gradlew` to `gradlew.bat`.
 
 ### Prerequisite
 You need jdk 17 to build the game.
@@ -72,17 +86,6 @@ This will produce a `relativitization-debug.apk` in `gdx-android/build/outputs/a
 ```
 ./gradlew :gdx-android:assembleDebug
 ```
-
-## Run simulation
-Here is an example:
-`./simulations/src/main/kotlin/relativitization/abm/AllDefault.kt`.
-
-You can run the main function by:
-```
-./gradlew :simulation:run -PmainClass=relativitization.abm.AllDefaultKt
-```
-
-Note that the main class has an additional `Kt` after the file name in Kotlin convention.
 
 ## Generate documentation
 This will produce documentation pages in `build/dokka/htmlMultiModule`:
