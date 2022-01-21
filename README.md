@@ -1,6 +1,9 @@
 # Relativitization
 Turn-based strategy game / agent-based simulation framework / social model in a 4D relativistic spacetime.
 
+**Status of the project**: Command line simulation is functioning, the first version of game GUI
+will be released in February 2022.
+
 ## Table of Contents
 1. [Project layout](#project-layout)
 2. [Run simulation](#run-simulation)
