@@ -14,4 +14,13 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
       - name: Run unit test
-        run: mkdir -p ../relativitization-art/assets && ./gradlew clean test
+        run: |
+          mkdir -p ../relativitization-art/assets
+          mkdir -p ../relativitization-art/assets/fonts
+          mkdir -p ../relativitization-art/assets/images
+          mkdir -p ../relativitization-art/assets/music
+          mkdir -p ../relativitization-art/assets/skin
+          mkdir -p ../relativitization-art/assets/sounds
+          mkdir -p ../relativitization-art/assets/translations
+          mkdir -p ../relativitization-art/resources
+          ./gradlew clean test
