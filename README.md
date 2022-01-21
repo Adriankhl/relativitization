@@ -24,8 +24,8 @@ will be released in February 2022.
 
 ## Introduction and references
 Our interstellar future is always an interesting scenario to think about. 
-There are great imaginations about of interstellar society in books, movies, and games.
-While computer games are fun to play, it is rare to see the essential physics - relativity, in games.
+There are great imaginations about all kinds of possible interstellar society in books, movies, and games.
+Unfortunately, while computer games are fun to play, it is rare to see the essential physics - relativity, in games.
 
 Relativitization is an attempt to create a turn-based strategy / simulation game that respect special relativity.
 Since building an academic social model can be quite similar to designing mechanisms in a simulation / strategy game,
