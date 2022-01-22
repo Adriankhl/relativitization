@@ -11,8 +11,10 @@ import relativitization.game.utils.Assets
 import relativitization.game.utils.TableScreen
 import relativitization.universe.utils.RelativitizationLogManager
 
-class ClientSettingsScreen(val game: RelativitizationGame, private val inGame: Boolean) :
-    TableScreen(game.assets) {
+class ClientSettingsScreen(
+    val game: RelativitizationGame,
+    private val inGame: Boolean
+) : TableScreen(game.assets) {
     private val gdxSettings = game.gdxSettings
     private val universeClientSettings = game.universeClient.universeClientSettings
 
