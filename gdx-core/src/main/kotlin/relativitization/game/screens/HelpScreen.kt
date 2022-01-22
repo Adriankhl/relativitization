@@ -13,15 +13,6 @@ class HelpScreen(
     override fun show() {
         root.add(
             createLabel(
-                "Help",
-                gdxSettings.hugeFontSize
-            )
-        )
-
-        root.row().space(20f)
-
-        root.add(
-            createLabel(
                 "Quick start / documentation: ",
                 gdxSettings.normalFontSize
             )
@@ -37,5 +28,20 @@ class HelpScreen(
             Gdx.net.openURI("https://github.com/Adriankhl/relativitization-game-doc")
         }
         root.add(docTextButton)
+
+        root.row().space(10f)
+
+        val returnButton = createTextButton(
+            "Return",
+            gdxSettings.normalFontSize,
+            gdxSettings.soundEffectsVolume,
+        ) {
+            if (inGame) {
+                game.screen = GameScreen(game)
+            } else {
+                game.screen = MainMenuScreen(game)
+            }
+        }
+        root.add(returnButton)
     }
 }
