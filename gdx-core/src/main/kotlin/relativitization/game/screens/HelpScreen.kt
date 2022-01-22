@@ -24,14 +24,14 @@ class HelpScreen(
 
         val docTextButton = createTextButton(
             "github.com/Adriankhl/relativitization-game-doc",
-            gdxSettings.smallFontSize,
+            gdxSettings.normalFontSize,
             gdxSettings.soundEffectsVolume,
         ) {
             Gdx.net.openURI("https://github.com/Adriankhl/relativitization-game-doc")
         }
         root.add(docTextButton)
 
-        root.row().space(10f)
+        root.row().space(30f)
 
         val returnButton = createTextButton(
             "Return",
