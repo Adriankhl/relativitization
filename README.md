@@ -126,7 +126,7 @@ You just need to copy and paste a sentence as a comment in your pull request,
 the instruction will appear after your pull request has been created.
 
 ## License
-The source code of Relativitization is licensed under GPLv3.
+The source code of Relativitization is licensed under the [GPLv3 License](./LICENSE.md).
 
         Relativitization
         Copyright (C) 2021-present  Lai Kwun Hang
@@ -145,4 +145,4 @@ The source code of Relativitization is licensed under GPLv3.
         along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 Contributions from pull requests are licensed under the [MIT License](./CLALICENSE.md),
-see the [Contributor License Agreement](./CLA.md)
+see the [Contributor License Agreement](./CLA.md).
