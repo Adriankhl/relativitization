@@ -59,7 +59,7 @@ Note that the main class has an additional `Kt` after the file name in Kotlin co
 ### Prerequisite
 You need jdk 17 to build the game.
 
-There should be a `../relativitization-art/assets` directory. If not, create `../relativitization-art`
+There should be a `../relativitization-art/assets` directory. If not, create `../relativitization-art/assets`
 and copy the assets:
 
 * `fonts`
