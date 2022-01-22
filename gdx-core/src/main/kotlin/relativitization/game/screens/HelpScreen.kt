@@ -13,7 +13,7 @@ class HelpScreen(
     override fun show() {
         root.add(
             createLabel(
-                "Quick start / documentation: ",
+                "Quick start guide / documentation: ",
                 gdxSettings.normalFontSize
             )
         )
