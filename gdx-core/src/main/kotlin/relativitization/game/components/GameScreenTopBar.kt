@@ -8,6 +8,7 @@ import kotlinx.coroutines.runBlocking
 import relativitization.game.RelativitizationGame
 import relativitization.game.ShowingInfoType
 import relativitization.game.screens.ClientSettingsScreen
+import relativitization.game.screens.HelpScreen
 import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.commands.DummyCommand
 import relativitization.universe.maths.physics.Intervals.intDelay
@@ -636,6 +637,25 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         game.universeClient.showMutablePlayerDataFromPlan = !it.isChecked
     }
 
+    private val helpButton: ImageButton = createImageButton(
+        name = "basic/white-question-mark",
+        rUp = 1.0f,
+        gUp = 1.0f,
+        bUp = 1.0f,
+        aUp = 1.0f,
+        rDown = 1.0f,
+        gDown = 1.0f,
+        bDown = 1.0f,
+        aDown = 0.7f,
+        rChecked = 1.0f,
+        gChecked = 1.0f,
+        bChecked = 1.0f,
+        aChecked = 1.0f,
+        soundVolume = gdxSettings.soundEffectsVolume
+    ) {
+        game.screen = HelpScreen(game, true)
+    }
+
 
     // About server status
     private val serverStatusNameAndTimeLabel: Label = createLabel("", gdxSettings.smallFontSize)
@@ -718,6 +738,8 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         table.add(uploadButton).size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
 
         table.add(settingButton).size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
+
+        table.add(helpButton).size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
     }
 
     override fun getScreenComponent(): ScrollPane {
