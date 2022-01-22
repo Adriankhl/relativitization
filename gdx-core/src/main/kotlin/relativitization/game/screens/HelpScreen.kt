@@ -11,6 +11,8 @@ class HelpScreen(
     private val gdxSettings = game.gdxSettings
 
     override fun show() {
+        super.show()
+
         root.add(
             createLabel(
                 "Quick start guide / documentation: ",
