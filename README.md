@@ -144,5 +144,5 @@ The source code of Relativitization is licensed under GPLv3.
         You should have received a copy of the GNU General Public License
         along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-Contributions from pull requests are licensed under the [MIT License](CLALICENSE.md),
-see the [Contributor License Agreement](CLA.md)
+Contributions from pull requests are licensed under the [MIT License](./CLALICENSE.md),
+see the [Contributor License Agreement](./CLA.md)
