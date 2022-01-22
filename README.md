@@ -119,8 +119,11 @@ This will produce documentation pages in `build/dokka/htmlMultiModule`:
 ## Contribute
 If you encounter a bug, please check to see if there is any existing issue before reporting the bug.
 
+If you want to propose your idea on the game, please use
+[relativitization-game-doc](https://github.com/Adriankhl/relativitization-game-doc) instead.
+
 Pull requests are welcome. Since it is not entirely clear whether the GPLv3 license is the best option for
-this project, to keep open the possibility of changing the license in the future,
+this project, to leave the possibility of changing the license in the future open,
 you are required to sign a contributor license agreement to indicate that your contribution is under the MIT license.
 You just need to copy and paste a sentence as a comment in your pull request, 
 the instruction will appear after your pull request has been created.
