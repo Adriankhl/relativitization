@@ -15,7 +15,7 @@ class HelpScreen(
 
         root.add(
             createLabel(
-                "Quick start guide / documentation: ",
+                "Guide (Click to open / copy): ",
                 gdxSettings.normalFontSize
             )
         )
@@ -23,11 +23,12 @@ class HelpScreen(
         root.row().space(10f)
 
         val docTextButton = createTextButton(
-            "github.com/Adriankhl/relativitization-game-doc",
+            "https://github.com/Adriankhl/relativitization-game-doc",
             gdxSettings.normalFontSize,
             gdxSettings.soundEffectsVolume,
         ) {
             Gdx.net.openURI("https://github.com/Adriankhl/relativitization-game-doc")
+            Gdx.app.clipboard.contents = "https://github.com/Adriankhl/relativitization-game-doc"
         }
         root.add(docTextButton)
 
