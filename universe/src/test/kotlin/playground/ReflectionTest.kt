@@ -1,6 +1,7 @@
 package playground
 
 import kotlin.system.measureTimeMillis
+import kotlin.test.Ignore
 import kotlin.test.Test
 
 data class TestData(val name1: Int = 1) {
@@ -8,7 +9,7 @@ data class TestData(val name1: Int = 1) {
 }
 
 internal class ReflectionTest {
-    @Test
+    @Ignore
     fun benchmark() {
         val repeatTimes: Int = 100000000
         val s1: Long = measureTimeMillis {

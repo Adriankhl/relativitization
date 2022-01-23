@@ -1,5 +1,6 @@
 package playground
 
+import kotlin.test.Ignore
 import kotlin.test.Test
 
 private open class A {
@@ -11,7 +12,7 @@ private open class A {
 private class B : A()
 
 internal class QualifiedNameTest {
-    @Test
+    @Ignore
     fun testInheritance() {
         val a = A()
         val b = B()

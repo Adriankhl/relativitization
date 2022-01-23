@@ -8,11 +8,11 @@ import io.ktor.server.engine.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlin.test.Ignore
 import kotlin.test.Test
 
 internal class KtorBugTest {
-    /*
-    @Test
+    @Ignore
     fun minimalTest() {
         val server = embeddedServer(
             CIO,
@@ -41,9 +41,8 @@ internal class KtorBugTest {
             server.stop(1000, 1000)
         }
     }
-    */
 
-    @Test
+    @Ignore
     fun minimalTest2() {
         println("Start")
         val server = embeddedServer(
@@ -79,8 +78,7 @@ internal class KtorBugTest {
         }
     }
 
-    /*
-    @Test
+    @Ignore
     fun minimalTest3() {
         val server = embeddedServer(
             CIO,
@@ -105,5 +103,4 @@ internal class KtorBugTest {
             server.stop(1000, 1000)
         }
     }
-    */
 }
