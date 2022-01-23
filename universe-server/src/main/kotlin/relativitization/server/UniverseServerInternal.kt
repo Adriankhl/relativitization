@@ -78,7 +78,7 @@ class UniverseServerInternal(
                 mutex.withLock {
                     if (allHumanInputReady() || (!isServerWaitingInput.isTrue()) || exceedTimeLimit()) {
                         isServerWaitingInput.set(false)
-                        setTimeLeftTo(0)
+                        setTimeLeftTo(0L)
                         logger.debug("Not accepting new input")
                     }
                 }
@@ -189,7 +189,7 @@ class UniverseServerInternal(
      * Time left for waiting, can be negative
      */
     private suspend fun timeLeft(): Long =
-        (universeServerSettings.waitTimeLimit * 1000).toLong() - (System.currentTimeMillis() - waitBeginTime.get())
+        universeServerSettings.waitTimeLimit * 1000L - (System.currentTimeMillis() - waitBeginTime.get())
 
 
     /**
@@ -203,9 +203,9 @@ class UniverseServerInternal(
      *
      * @param time time left in seconds
      */
-    private suspend fun setTimeLeftTo(time: Int) {
+    private suspend fun setTimeLeftTo(time: Long) {
         waitBeginTime.set(
-            (universeServerSettings.waitTimeLimit * 1000).toLong() + System.currentTimeMillis() - (time * 1000).toLong()
+            universeServerSettings.waitTimeLimit * 1000L + System.currentTimeMillis() - time * 1000L
         )
     }
 
