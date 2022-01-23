@@ -270,6 +270,13 @@ object RandomOneStarPerPlayerGenerate : RandomGenerateUniverseMethod() {
         for (playerId in 1..settings.numPlayer) {
             val mutablePlayerData = MutablePlayerData(playerId)
 
+            // First n players are human player
+            if (playerId <= settings.numHumanPlayer) {
+                mutablePlayerData.playerType = PlayerType.HUMAN
+            } else {
+                mutablePlayerData.playerType = PlayerType.AI
+            }
+
             // Random location, avoid too close to the boundary by adding a 0.1 width margin
             mutablePlayerData.double4D.x = Rand.rand().nextDouble(
                 0.1,
