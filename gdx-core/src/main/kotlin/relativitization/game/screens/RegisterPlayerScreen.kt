@@ -25,7 +25,7 @@ class RegisterPlayerScreen(val game: RelativitizationGame) : TableScreen(game.as
                 val httpCode = game.universeClient.httpPostRegisterPlayer()
                 if (httpCode == HttpStatusCode.OK) {
                     disableActor(button)
-                    registerStatusLabel.setText("Player id: ${game.universeClient.universeClientSettings.playerId}")
+                    registerStatusLabel.setText("Registered player id: ${game.universeClient.universeClientSettings.playerId}")
                 } else {
                     registerStatusLabel.setText("Register player fail, http code: $httpCode")
                 }
