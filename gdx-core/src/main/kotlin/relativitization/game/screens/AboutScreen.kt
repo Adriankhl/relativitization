@@ -93,6 +93,15 @@ class AboutScreen(
 
         table.add(
             createLabel(
+                licensedAssetText(),
+                gdxSettings.smallFontSize
+            )
+        )
+
+        table.row().space(30f)
+
+        table.add(
+            createLabel(
                 googleNotoFontOpenFontLicense(),
                 gdxSettings.smallFontSize
             )
@@ -1102,6 +1111,17 @@ class AboutScreen(
             
             Logback: the reliable, generic, fast and flexible logging framework.
             Copyright (C) 1999-2015, QOS.ch. All rights reserved.
+        """
+    }
+
+    private fun licensedAssetText(): String {
+        return """
+            Relativitization depends on noto-font and flat-earth-ui.
+            
+            Noto-fonts is licensed under SIL Open Font License 1.1
+            
+            Flat Earth UI Skin(https://ray3k.wordpress.com/flat-earth-ui-skin-for-libgdx/)
+            by ray3k is licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
         """
     }
 
