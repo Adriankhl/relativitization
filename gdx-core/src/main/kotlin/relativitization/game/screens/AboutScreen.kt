@@ -107,6 +107,13 @@ class AboutScreen(
             )
         )
 
+        table.add(
+            createLabel(
+                assetCreditText(),
+                gdxSettings.smallFontSize
+            )
+        )
+
         val scrollPane: ScrollPane = createScrollPane(table)
 
         scrollPane.fadeScrollBars = false
@@ -1221,6 +1228,17 @@ class AboutScreen(
             DAMAGES, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
             FROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM
             OTHER DEALINGS IN THE FONT SOFTWARE.            
+        """
+    }
+
+    private fun assetCreditText(): String {
+        return """
+            Credit:
+              
+            kenny asset(https://www.kenney.nl/assets)
+            
+            <a href="https://www.freepik.com/vectors/background">Background vector created
+            by pikisuperstar - www.freepik.com </a>
         """
     }
 }
