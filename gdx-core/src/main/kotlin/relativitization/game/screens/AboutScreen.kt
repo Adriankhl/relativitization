@@ -66,6 +66,15 @@ class AboutScreen(
 
         table.add(
             createLabel(
+                apacheLicencedDependenciesText(),
+                gdxSettings.smallFontSize
+            )
+        )
+
+        table.row().space(30f)
+
+        table.add(
+            createLabel(
                 apacheLicenseText(),
                 gdxSettings.smallFontSize
             )
@@ -98,6 +107,72 @@ class AboutScreen(
             Some of the contributions in the source code is licensed
             under the MIT License.
             See https://github.com/Adriankhl/relativitization for details.
+        """
+    }
+
+    private fun apacheLicencedDependenciesText(): String {
+        return """
+            Apache licenced dependencies:
+            
+            
+            =========================================================================
+            ==  NOTICE file corresponding to the section 4 d of                    ==
+            ==  the Apache License, Version 2.0,                                   ==
+            ==  in this case for the Kotlin Compiler distribution.                 ==
+            =========================================================================
+
+            Kotlin Compiler
+            Copyright 2010-2020 JetBrains s.r.o and respective authors and developers            
+ 
+
+            =========================================================================
+            ==  NOTICE file corresponding to the section 4 d of                    ==
+            ==  the Apache License, Version 2.0,                                   ==
+            ==  in this case for the kotlinx.coroutines library.                   ==
+            =========================================================================
+            
+            kotlinx.coroutines library.
+            Copyright 2016-2021 JetBrains s.r.o and respective authors and developers               
+            
+            
+            =========================================================================
+            ==  NOTICE file corresponding to the section 4 d of                    ==
+            ==  the Apache License, Version 2.0,                                   ==
+            ==  in this case for the kotlix.serialization library.                 ==
+            =========================================================================
+         
+            kotlinx.serialization library.
+            Copyright 2017-2019 JetBrains s.r.o and respective authors and developers
+            
+            
+            kotlinx.datetime library.
+            Copyright 2019-2021 JetBrains s.r.o and respective authors and developers
+            
+            
+            ktor library.
+            Copyright 2014-2021 JetBrains s.r.o and contributors. 
+             
+             
+            libgdx library. 
+            
+            
+            Apache Log4j
+            Copyright 1999-2021 Apache Software Foundation
+            
+            This product includes software developed at
+            The Apache Software Foundation (http://www.apache.org/).
+            
+            ResolverUtil.java
+            Copyright 2005-2006 Tim Fennell
+            
+            Dumbster SMTP test server
+            Copyright 2004 Jason Paul Kitchen
+            
+            TypeUtil.java
+            Copyright 2002-2012 Ramnivas Laddad, Juergen Hoeller, Chris Beams
+            
+            picocli (http://picocli.info)
+            Copyright 2017 Remko Popma
         """
     }
 
