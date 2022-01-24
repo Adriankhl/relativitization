@@ -42,7 +42,7 @@ class AboutScreen(
                 sourceCodeLicenseText(),
                 gdxSettings.smallFontSize
             )
-        )
+        ).left()
 
         table.row().space(30f)
 
@@ -106,6 +106,8 @@ class AboutScreen(
                 gdxSettings.smallFontSize
             )
         )
+
+        table.row().space(30f)
 
         table.add(
             createLabel(
