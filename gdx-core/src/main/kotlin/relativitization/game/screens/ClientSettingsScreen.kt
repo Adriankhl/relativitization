@@ -38,8 +38,10 @@ class ClientSettingsScreen(
             game.restartMusic()
             if (inGame) {
                 game.screen = GameScreen(game)
+                dispose()
             } else {
                 game.screen = MainMenuScreen(game)
+                dispose()
             }
         }
 

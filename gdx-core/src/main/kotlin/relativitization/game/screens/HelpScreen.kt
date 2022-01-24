@@ -41,8 +41,10 @@ class HelpScreen(
         ) {
             if (inGame) {
                 game.screen = GameScreen(game)
+                dispose()
             } else {
                 game.screen = MainMenuScreen(game)
+                dispose()
             }
         }
         root.add(returnButton)
