@@ -46,5 +46,14 @@ class HelpScreen(
             }
         }
         root.add(returnButton)
+
+        val creditButton = createTextButton(
+            "Credit",
+            gdxSettings.normalFontSize,
+            gdxSettings.soundEffectsVolume
+        ) {
+            game.screen = CreditScreen(game, inGame)
+        }
+        root.add(creditButton)
     }
 }
