@@ -15,10 +15,10 @@ class HelpScreen(
 
         root.add(
             createLabel(
-                "Guide (Click to open / copy): ",
+                "Guide (Click to open + copy): ",
                 gdxSettings.normalFontSize
             )
-        )
+        ).colspan(2)
 
         root.row().space(10f)
 
@@ -30,7 +30,7 @@ class HelpScreen(
             Gdx.net.openURI("https://github.com/Adriankhl/relativitization-game-doc")
             Gdx.app.clipboard.contents = "https://github.com/Adriankhl/relativitization-game-doc"
         }
-        root.add(docTextButton)
+        root.add(docTextButton).colspan(2)
 
         root.row().space(30f)
 
@@ -49,13 +49,13 @@ class HelpScreen(
         }
         root.add(returnButton)
 
-        val creditButton = createTextButton(
-            "Credit",
+        val aboutButton = createTextButton(
+            "About",
             gdxSettings.normalFontSize,
             gdxSettings.soundEffectsVolume
         ) {
-            game.screen = CreditScreen(game, inGame)
+            game.screen = AboutScreen(game, inGame)
         }
-        root.add(creditButton)
+        root.add(aboutButton)
     }
 }

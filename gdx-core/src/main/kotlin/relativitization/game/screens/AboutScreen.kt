@@ -5,7 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.TableScreen
 
-class CreditScreen(
+class AboutScreen(
     val game: RelativitizationGame,
     private val inGame: Boolean
 ) : TableScreen(game.assets) {
@@ -39,12 +39,37 @@ class CreditScreen(
 
         table.add(
             createLabel(
+                sourceCodeLicenseText(),
+                gdxSettings.smallFontSize
+            )
+        )
+
+        table.row().space(30f)
+
+        table.add(
+            createLabel(
                 gplLicenseText(),
                 gdxSettings.smallFontSize
             )
         )
 
         table.row().space(30f)
+
+        table.add(
+            createLabel(
+                mitLicenseText(),
+                gdxSettings.smallFontSize
+            )
+        )
+
+        table.row().space(30f)
+
+        table.add(
+            createLabel(
+                apacheLicenseText(),
+                gdxSettings.smallFontSize
+            )
+        )
 
         val scrollPane: ScrollPane = createScrollPane(table)
 
@@ -53,6 +78,18 @@ class CreditScreen(
         scrollPane.setOverscroll(false, false)
 
         return scrollPane
+    }
+
+    private fun sourceCodeLicenseText(): String {
+        return """
+            Relativitization
+            Copyright (C) 2021-2022  Lai Kwun Hang
+            
+            The source code is licensed under the GPLv3 License.
+            Some of the contributions in the source code is Licensed
+            under the MIT License.
+            See https://github.com/Adriankhl/relativitization for details.
+        """
     }
 
     private fun gplLicenseText(): String {
@@ -912,31 +949,6 @@ class CreditScreen(
                   of your accepting any such warranty or additional liability.
             
                END OF TERMS AND CONDITIONS
-            
-               APPENDIX: How to apply the Apache License to your work.
-            
-                  To apply the Apache License to your work, attach the following
-                  boilerplate notice, with the fields enclosed by brackets "[]"
-                  replaced with your own identifying information. (Don't include
-                  the brackets!)  The text should be enclosed in the appropriate
-                  comment syntax for the file format. We also recommend that a
-                  file or class name and description of purpose be included on the
-                  same "printed page" as the copyright notice for easier
-                  identification within third-party archives.
-            
-               Copyright [yyyy] [name of copyright owner]
-            
-               Licensed under the Apache License, Version 2.0 (the "License");
-               you may not use this file except in compliance with the License.
-               You may obtain a copy of the License at
-            
-                   http://www.apache.org/licenses/LICENSE-2.0
-            
-               Unless required by applicable law or agreed to in writing, software
-               distributed under the License is distributed on an "AS IS" BASIS,
-               WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-               See the License for the specific language governing permissions and
-               limitations under the License.    
         """
     }
 
@@ -965,4 +977,6 @@ class CreditScreen(
             SOFTWARE.          
         """
     }
+
+
 }
