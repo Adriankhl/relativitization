@@ -84,6 +84,15 @@ class AboutScreen(
 
         table.add(
             createLabel(
+                logbackLicenseText(),
+                gdxSettings.smallFontSize
+            )
+        )
+
+        table.row().space(30f)
+
+        table.add(
+            createLabel(
                 googleNotoFontOpenFontLicense(),
                 gdxSettings.smallFontSize
             )
@@ -1084,6 +1093,15 @@ class AboutScreen(
             LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
             OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
             SOFTWARE.          
+        """
+    }
+
+    private fun logbackLicenseText(): String {
+        return """
+            Relativitization depends on logback, licensed under GNU Lesser General Public License version 2.1 
+            
+            Logback: the reliable, generic, fast and flexible logging framework.
+            Copyright (C) 1999-2015, QOS.ch. All rights reserved.
         """
     }
 
