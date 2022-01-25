@@ -48,17 +48,14 @@ object UpdateResourceQualityBound : Mechanism() {
 
             // Only do the update when there is resource
             if (totalAmount > 0.0) {
-                val secondRatio: Double = qualityMap.getValue(
-                    ResourceQualityClass.SECOND
-                ).resourceAmount.total() / totalAmount
 
                 val firstRatio: Double = qualityMap.getValue(
                     ResourceQualityClass.FIRST
                 ).resourceAmount.total() / totalAmount
 
-
                 // Put higher quality resource to lower quality class if there are too many
-                // Do first class first
+
+                // Compute first class before second class
                 if (firstRatio > idealFirstClassAmountRatio) {
                     val changeFraction: Double = amountChangeFactor *
                             (firstRatio - idealFirstClassAmountRatio) / firstRatio
@@ -79,6 +76,11 @@ object UpdateResourceQualityBound : Mechanism() {
                         newResourceAmount = changeAmount
                     )
                 }
+
+                val secondRatio: Double = qualityMap.getValue(
+                    ResourceQualityClass.SECOND
+                ).resourceAmount.total() / totalAmount
+
                 if (secondRatio > idealSecondClassAmountRatio) {
                     val changeFraction: Double = amountChangeFactor *
                             (secondRatio - idealSecondClassAmountRatio) / secondRatio
