@@ -175,14 +175,19 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
             ): Boolean {
                 // Store original value for zooming by gesture
                 originalZoom = gdxSettings.mapZoomRelativeToFullMap
-                return false
+                return true
+            }
+
+            override fun touchUp(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int) {
+                if (originalZoom != gdxSettings.mapZoomRelativeToFullMap) {
+                    game.changeGdxSettings()
+                }
             }
         })
 
         stage.addListener(object : ActorGestureListener() {
             override fun zoom(event: InputEvent?, initialDistance: Float, distance: Float) {
                 gdxSettings.mapZoomRelativeToFullMap = (distance / initialDistance) * originalZoom
-                game.changeGdxSettings()
             }
         })
 
