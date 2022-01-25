@@ -71,6 +71,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
     private var showCarrierInfo: Boolean = true
     private var showNewCarrierInfo: Boolean = false
     private var showNewPlayerInfo: Boolean = false
+    private var showSummaryInfo: Boolean = false
 
     // Variables to determine whether pop info is shown
     private var showCommonPopInfo: Boolean = true
@@ -196,41 +197,59 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
     private fun createInfoOptionTable(): Table {
         val nestedTable = Table()
 
+        val showSummaryInfoButton = createTextButton(
+            "Summary",
+            gdxSettings.smallFontSize,
+            gdxSettings.soundEffectsVolume
+        ) {
+            showSummaryInfo = true
+            showCarrierInfo = false
+            showNewCarrierInfo = false
+            showNewPlayerInfo = false
+            updateTable()
+        }
+        nestedTable.add(showSummaryInfoButton).pad(5f)
+
         val showCarrierInfoButton = createTextButton(
             "Carrier",
             gdxSettings.smallFontSize,
             gdxSettings.soundEffectsVolume
         ) {
+            showSummaryInfo = false
             showCarrierInfo = true
             showNewCarrierInfo = false
             showNewPlayerInfo = false
             updateTable()
         }
-        nestedTable.add(showCarrierInfoButton).pad(10f)
+        nestedTable.add(showCarrierInfoButton).pad(5f)
+
+        nestedTable.row()
 
         val showNewCarrierInfoButton = createTextButton(
             "New carrier",
             gdxSettings.smallFontSize,
             gdxSettings.soundEffectsVolume
         ) {
+            showSummaryInfo = false
             showCarrierInfo = false
             showNewCarrierInfo = true
             showNewPlayerInfo = false
             updateTable()
         }
-        nestedTable.add(showNewCarrierInfoButton).pad(10f)
+        nestedTable.add(showNewCarrierInfoButton).pad(5f)
 
         val showNewPlayerInfoButton = createTextButton(
             "New player",
             gdxSettings.smallFontSize,
             gdxSettings.soundEffectsVolume
         ) {
+            showSummaryInfo = false
             showCarrierInfo = false
             showNewCarrierInfo = false
             showNewPlayerInfo = true
             updateTable()
         }
-        nestedTable.add(showNewPlayerInfoButton).pad(10f)
+        nestedTable.add(showNewPlayerInfoButton).pad(5f)
 
         return nestedTable
     }
