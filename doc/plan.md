@@ -80,7 +80,9 @@
 * New player [x]
 * Merge player [x]
 
-# Far future TODO List
+# Future TODO List
+* Optimize UI, only change what is shown, separate stage and use camera instead of
+computing the zoom manually
 * Science era, e.g., Biology era favour nation with more biologist
 * Optimize afterimage and load saved universe to reduce memory usage
 * Transfer player and transfer carrier commands
