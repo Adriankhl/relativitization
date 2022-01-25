@@ -221,6 +221,17 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
 
         updateKnowledgeGroup()
 
+        table.add(
+            createScrollPane(
+                createLabel(
+                    "Knowledge map: player ${playerData.playerId}",
+                    gdxSettings.bigFontSize,
+                )
+            )
+        )
+
+        table.row().space(20f)
+
         table.add(knowledgeBar)
 
         table.row().space(20f)
@@ -232,9 +243,6 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
 
     private fun updateKnowledgeBar() {
         knowledgeBar.clear()
-
-        val headerLabel =
-            createLabel("Science: player ${playerData.playerId}", gdxSettings.bigFontSize)
 
         val controlTable: Table = Table()
 
@@ -266,8 +274,6 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
         controlScrollPane.fadeScrollBars = false
         controlScrollPane.setClamp(true)
         controlScrollPane.setOverscroll(false, false)
-
-        knowledgeBar.add(headerLabel)
 
         knowledgeBar.row().space(20f)
 
@@ -370,7 +376,7 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
                     createLabel("", gdxSettings.normalFontSize)
                 }
             }
-            !isInstituteSelected && isLaboratorySelected  -> {
+            !isInstituteSelected && isLaboratorySelected -> {
                 if (hasLaboratory) {
                     val laboratory: LaboratoryData =
                         playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
@@ -384,7 +390,7 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
                     createLabel("", gdxSettings.normalFontSize)
                 }
             }
-            isInstituteSelected && isLaboratorySelected  -> {
+            isInstituteSelected && isLaboratorySelected -> {
                 createLabel(
                     "Error: too many selected building. ",
                     gdxSettings.normalFontSize
