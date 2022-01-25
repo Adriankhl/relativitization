@@ -195,7 +195,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         val nestedTable = Table()
 
         val showCarrierInfoButton = createTextButton(
-            "Carrier info",
+            "Carrier",
             gdxSettings.smallFontSize,
             gdxSettings.soundEffectsVolume
         ) {
@@ -207,7 +207,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         nestedTable.add(showCarrierInfoButton).pad(10f)
 
         val showNewCarrierInfoButton = createTextButton(
-            "New carrier info",
+            "New carrier",
             gdxSettings.smallFontSize,
             gdxSettings.soundEffectsVolume
         ) {
@@ -219,7 +219,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         nestedTable.add(showNewCarrierInfoButton).pad(10f)
 
         val showNewPlayerInfoButton = createTextButton(
-            "New player info",
+            "New player",
             gdxSettings.smallFontSize,
             gdxSettings.soundEffectsVolume
         ) {
