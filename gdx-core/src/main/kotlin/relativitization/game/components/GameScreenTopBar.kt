@@ -911,7 +911,7 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
     private fun createRunStopUniverseTable(): Table {
         val nestedTable: Table = Table()
 
-        nestedTable.add(createLabel("Run or stop server:", gdxSettings.smallFontSize)).colspan(2)
+        nestedTable.add(createLabel("Stop server (admin):", gdxSettings.smallFontSize)).colspan(2)
 
         nestedTable.row().space(10f)
 
