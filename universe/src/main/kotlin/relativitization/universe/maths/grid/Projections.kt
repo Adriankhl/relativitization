@@ -430,7 +430,7 @@ object Projections {
         val xEnd: Int = xDim - 1
         val yBegin = 0
         val yEnd = yDim - 1
-        val zBegin: Int = max(0, center.z - zLimit / 2)
+        val zBegin: Int = max(0, min(center.z - zLimit / 2, zDim - zLimit))
         val zEnd: Int = min(zDim - 1, zBegin + zLimit - 1)
 
         val data3DWithZLimit: List<List<List<Map<Int, List<Int>>>>> = data3D.map { yList ->
