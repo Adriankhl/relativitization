@@ -72,9 +72,11 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
     private var showNewCarrierInfo: Boolean = false
     private var showNewPlayerInfo: Boolean = false
 
+    // Variables to determine whether pop info is shown
+    private var showCommonPopInfo: Boolean = true
+
 
     init {
-
         // Set background color
         table.background = assets.getBackgroundColor(0.2f, 0.2f, 0.2f, 1.0f)
 
@@ -268,6 +270,18 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         carrierTable.row().space(30f)
 
+        val commonPopTextButton = createTextButton(
+            text = "Common pop",
+            fontSize = gdxSettings.smallFontSize,
+            soundVolume = gdxSettings.soundEffectsVolume
+        ) {
+            showCommonPopInfo = !showCommonPopInfo
+            updateTable()
+        }
+        carrierTable.add(commonPopTextButton).colspan(2)
+
+        carrierTable.row().space(20f)
+
         carrierTable.add(createPopTable(carrier.allPopData)).colspan(2)
     }
 
@@ -310,9 +324,11 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
     private fun createPopTable(allPopData: AllPopData): Table {
         val nestedTable = Table()
 
-        nestedTable.add(createCommonPopTable(allPopData.getCommonPopData(popType)))
+        if (showCommonPopInfo) {
+            nestedTable.add(createCommonPopTable(allPopData.getCommonPopData(popType)))
 
-        nestedTable.row().space(30f)
+            nestedTable.row().space(30f)
+        }
 
         when (popType) {
             PopType.LABOURER -> nestedTable.add(createLabourerTable(allPopData.labourerPopData))
