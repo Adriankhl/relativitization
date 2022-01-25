@@ -2852,3 +2852,9 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         private val logger = RelativitizationLogManager.getLogger()
     }
 }
+
+enum class SummaryScope {
+    THIS_CARRIER,
+    THIS_PLAYER,
+    ALL_SUBORDINATE,
+}
