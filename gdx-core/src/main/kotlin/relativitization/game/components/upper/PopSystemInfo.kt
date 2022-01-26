@@ -271,7 +271,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         carrierTable.row().space(30f)
 
         val commonPopTextButton = createTextButton(
-            text = "Common pop",
+            text = "Common",
             fontSize = gdxSettings.smallFontSize,
             soundVolume = gdxSettings.soundEffectsVolume
         ) {
