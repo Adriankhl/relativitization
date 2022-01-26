@@ -1,5 +1,6 @@
 package relativitization.game.utils
 
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.NinePatch
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.InputEvent
@@ -265,14 +266,28 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets) {
      * @param text the text in the button
      * @param fontSize size of the font
      * @param function the function called when clicking this button, take this button as parameter
+     * @param extraColor adding color to the background
      */
     fun createTextButton(
         text: String,
         fontSize: Int,
         soundVolume: Float,
+        extraColor: Color = Color.WHITE,
         function: (TextButton) -> Unit = {},
-    ): TextButton =
-        ActorFunction.createTextButton(skin, assets, text, fontSize, soundVolume, function)
+    ): TextButton {
+        val button: TextButton = ActorFunction.createTextButton(
+            skin,
+            assets,
+            text,
+            fontSize,
+            soundVolume,
+            function
+        )
+
+        button.color = extraColor
+
+        return button
+    }
 
     /**
      * Create check box
