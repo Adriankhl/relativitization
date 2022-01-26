@@ -25,7 +25,8 @@ object BaseStellarFuelProduction : Mechanism() {
             val fuelList: List<Double> =
                 mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.map {
                     baseFuelProduction(
-                        mutableCarrierData = it,
+                        it.carrierType,
+                        it.carrierInternalData.coreRestMass
                     )
                 }
 
@@ -38,11 +39,12 @@ object BaseStellarFuelProduction : Mechanism() {
     }
 
     fun baseFuelProduction(
-        mutableCarrierData: MutableCarrierData,
+        carrierType: CarrierType,
+        coreRestMass: Double,
     ): Double {
-        return if (mutableCarrierData.carrierType == CarrierType.STELLAR) {
+        return if (carrierType == CarrierType.STELLAR) {
             // Estimate the relation between star mass and energy received by planet
-            mutableCarrierData.carrierInternalData.coreRestMass / 1E24
+            coreRestMass / 1E24
         } else {
             0.0
         }

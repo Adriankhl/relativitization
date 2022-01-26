@@ -5,6 +5,7 @@ import relativitization.universe.data.components.defaults.economy.ResourceType
 import relativitization.universe.data.components.defaults.popsystem.CarrierData
 import relativitization.universe.data.components.defaults.popsystem.pop.CommonPopData
 import relativitization.universe.data.components.defaults.popsystem.pop.PopType
+import relativitization.universe.mechanisms.defaults.dilated.production.BaseStellarFuelProduction
 
 object Summary {
     fun compute(
