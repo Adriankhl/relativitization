@@ -23,7 +23,7 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets) {
 
     private val allChildScreenComponentList: MutableList<ScreenComponent<Actor>> = mutableListOf()
 
-    val commandButtonColor = Color(0.8f, 0.8f, 1.0f, 1.0f)
+    val commandButtonColor = Color(0.5f, 1.0f, 0.5f, 1.0f)
 
     /**
      * Get the actor (e.g. table, group) of this component
