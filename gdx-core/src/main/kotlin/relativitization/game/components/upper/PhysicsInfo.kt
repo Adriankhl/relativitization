@@ -382,7 +382,8 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         val changeVelocityCommandTextButton = createTextButton(
             text = "Change Velocity",
             fontSize = gdxSettings.normalFontSize,
-            soundVolume = gdxSettings.soundEffectsVolume
+            soundVolume = gdxSettings.soundEffectsVolume,
+            extraColor = commandButtonColor,
         ) {
             val changeVelocityCommand = ChangeVelocityCommand(
                 toId = playerData.playerId,
@@ -434,7 +435,8 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         val moveToDouble3DEventCommandTextButton = createTextButton(
             text = "Move to location",
             fontSize = gdxSettings.normalFontSize,
-            soundVolume = gdxSettings.soundEffectsVolume
+            soundVolume = gdxSettings.soundEffectsVolume,
+            extraColor = commandButtonColor
         ) {
             val moveToDouble3DEvent = MoveToDouble3DEvent(
                 toId = playerData.playerId,

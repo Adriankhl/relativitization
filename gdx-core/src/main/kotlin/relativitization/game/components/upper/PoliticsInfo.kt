@@ -101,7 +101,8 @@ class PoliticsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>
         val askToMergeButton = createTextButton(
             "Ast to merge",
             gdxSettings.smallFontSize,
-            gdxSettings.soundEffectsVolume
+            gdxSettings.soundEffectsVolume,
+            extraColor = commandButtonColor,
         ) {
             val askToMergeEvent = AskToMergeCarrierEvent(
                 toId = playerData.playerId,
@@ -126,7 +127,8 @@ class PoliticsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>
         val grantIndependenceButton = createTextButton(
             "Grant independence",
             gdxSettings.smallFontSize,
-            gdxSettings.soundEffectsVolume
+            gdxSettings.soundEffectsVolume,
+            extraColor = commandButtonColor,
         ) {
             val grantIndependenceCommand = GrantIndependenceCommand(
                 toId = playerData.playerId,
@@ -201,7 +203,8 @@ class PoliticsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>
         val changeButton = createTextButton(
             "Change",
             gdxSettings.smallFontSize,
-            gdxSettings.soundEffectsVolume
+            gdxSettings.soundEffectsVolume,
+            extraColor = commandButtonColor,
         ) {
             val changeFactoryPolicyCommand = ChangeFactoryPolicyCommand(
                 toId = playerData.playerId,

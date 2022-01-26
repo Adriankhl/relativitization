@@ -186,7 +186,8 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         val sendFuelButton = createTextButton(
             "Send fuel to this player",
             gdxSettings.smallFontSize,
-            gdxSettings.soundEffectsVolume
+            gdxSettings.soundEffectsVolume,
+            extraColor = commandButtonColor,
         ) {
             val sendFuelFromStorageCommand = SendFuelFromStorageCommand(
                 toId = playerData.playerId,
@@ -239,7 +240,8 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         val changeStorageFuelButton = createTextButton(
             "Change target storage",
             gdxSettings.smallFontSize,
-            gdxSettings.soundEffectsVolume
+            gdxSettings.soundEffectsVolume,
+            extraColor = commandButtonColor,
         ) {
             val changeStorageFuelTargetCommand = ChangeStorageFuelTargetCommand(
                 toId = playerData.playerId,
@@ -298,7 +300,8 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         val transferToMovementButton = createTextButton(
             "Transfer to movement",
             gdxSettings.smallFontSize,
-            gdxSettings.soundEffectsVolume
+            gdxSettings.soundEffectsVolume,
+            extraColor = commandButtonColor,
         ) {
             val transferFuelToMovementCommand = TransferFuelToMovementCommand(
                 toId = playerData.playerId,
@@ -329,7 +332,8 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         val changeMovementFuelButton = createTextButton(
             "Change target movement",
             gdxSettings.smallFontSize,
-            gdxSettings.soundEffectsVolume
+            gdxSettings.soundEffectsVolume,
+            extraColor = commandButtonColor,
         ) {
             val changeMovementFuelTargetCommand = ChangeMovementFuelTargetCommand(
                 toId = playerData.playerId,
@@ -388,7 +392,8 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         val transferToProductionButton = createTextButton(
             "Transfer to production",
             gdxSettings.smallFontSize,
-            gdxSettings.soundEffectsVolume
+            gdxSettings.soundEffectsVolume,
+            extraColor = commandButtonColor,
         ) {
             val transferFuelToProductionCommand = TransferFuelToProductionCommand(
                 toId = playerData.playerId,
@@ -419,7 +424,8 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         val changeProductionFuelButton = createTextButton(
             "Change target production",
             gdxSettings.smallFontSize,
-            gdxSettings.soundEffectsVolume
+            gdxSettings.soundEffectsVolume,
+            extraColor = commandButtonColor,
         ) {
             val changeProductionFuelTargetCommand = ChangeProductionFuelTargetCommand(
                 toId = playerData.playerId,
@@ -478,7 +484,8 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         val transferToTradeButton = createTextButton(
             "Transfer to trade",
             gdxSettings.smallFontSize,
-            gdxSettings.soundEffectsVolume
+            gdxSettings.soundEffectsVolume,
+            extraColor = commandButtonColor,
         ) {
             val transferFuelToTradeCommand = TransferFuelToTradeCommand(
                 toId = playerData.playerId,
@@ -600,7 +607,8 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         val changeStorageResourceButton = createTextButton(
             "Change target storage",
             gdxSettings.smallFontSize,
-            gdxSettings.soundEffectsVolume
+            gdxSettings.soundEffectsVolume,
+            extraColor = commandButtonColor,
         ) {
             val changeStorageResourceTargetCommand = ChangeStorageResourceTargetCommand(
                 toId = playerData.playerId,
@@ -661,7 +669,8 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         val transferToProductionButton = createTextButton(
             "Transfer to production",
             gdxSettings.smallFontSize,
-            gdxSettings.soundEffectsVolume
+            gdxSettings.soundEffectsVolume,
+            extraColor = commandButtonColor,
         ) {
             val transferResourceToProductionCommand = TransferResourceToProductionCommand(
                 toId = playerData.playerId,
@@ -685,7 +694,8 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         val changeProductionResourceButton = createTextButton(
             "Change target production",
             gdxSettings.smallFontSize,
-            gdxSettings.soundEffectsVolume
+            gdxSettings.soundEffectsVolume,
+            extraColor = commandButtonColor,
         ) {
             val changeProductionResourceTargetCommand = ChangeProductionResourceTargetCommand(
                 toId = playerData.playerId,
@@ -746,7 +756,8 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         val transferToTradeButton = createTextButton(
             "Transfer to trade",
             gdxSettings.smallFontSize,
-            gdxSettings.soundEffectsVolume
+            gdxSettings.soundEffectsVolume,
+            extraColor = commandButtonColor,
         ) {
             val transferResourceToTradeCommand = TransferResourceToTradeCommand(
                 toId = playerData.playerId,
@@ -854,7 +865,8 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         val changeImportTariffButton = createTextButton(
             "Change import tariff",
             gdxSettings.smallFontSize,
-            gdxSettings.soundEffectsVolume
+            gdxSettings.soundEffectsVolume,
+            extraColor = commandButtonColor,
         ) {
             val changeDefaultImportTariffCommand = ChangeDefaultImportTariffCommand(
                 toId = playerData.playerId,
@@ -907,7 +919,8 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         val changeExportTariffButton = createTextButton(
             "Change export tariff",
             gdxSettings.smallFontSize,
-            gdxSettings.soundEffectsVolume
+            gdxSettings.soundEffectsVolume,
+            extraColor = commandButtonColor,
         ) {
             val changeDefaultExportTariffCommand = ChangeDefaultExportTariffCommand(
                 toId = playerData.playerId,
@@ -960,7 +973,8 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         val changeLowIncomeTaxButton = createTextButton(
             "Change low income tax",
             gdxSettings.smallFontSize,
-            gdxSettings.soundEffectsVolume
+            gdxSettings.soundEffectsVolume,
+            extraColor = commandButtonColor,
         ) {
             val changeLowIncomeTaxCommand = ChangeLowIncomeTaxCommand(
                 toId = playerData.playerId,
@@ -1010,7 +1024,8 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         val changeMiddleIncomeTaxButton = createTextButton(
             "Change middle income tax",
             gdxSettings.smallFontSize,
-            gdxSettings.soundEffectsVolume
+            gdxSettings.soundEffectsVolume,
+            extraColor = commandButtonColor,
         ) {
             val changeMiddleIncomeTaxCommand = ChangeMiddleIncomeTaxCommand(
                 toId = playerData.playerId,
@@ -1060,7 +1075,8 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         val changeHighIncomeTaxButton = createTextButton(
             "Change high income tax",
             gdxSettings.smallFontSize,
-            gdxSettings.soundEffectsVolume
+            gdxSettings.soundEffectsVolume,
+            extraColor = commandButtonColor,
         ) {
             val changeHighIncomeTaxCommand = ChangeHighIncomeTaxCommand(
                 toId = playerData.playerId,
@@ -1110,7 +1126,8 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         val changeLowMiddleBoundaryButton = createTextButton(
             "Change low-middle boundary",
             gdxSettings.smallFontSize,
-            gdxSettings.soundEffectsVolume
+            gdxSettings.soundEffectsVolume,
+            extraColor = commandButtonColor,
         ) {
             val changeLowMiddleBoundaryCommand = ChangeLowMiddleBoundaryCommand(
                 toId = playerData.playerId,
@@ -1162,7 +1179,8 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         val changeMiddleHighBoundaryButton = createTextButton(
             "Change middle-high boundary",
             gdxSettings.smallFontSize,
-            gdxSettings.soundEffectsVolume
+            gdxSettings.soundEffectsVolume,
+            extraColor = commandButtonColor,
         ) {
             val changeMiddleHighBoundaryCommand = ChangeMiddleHighBoundaryCommand(
                 toId = playerData.playerId,

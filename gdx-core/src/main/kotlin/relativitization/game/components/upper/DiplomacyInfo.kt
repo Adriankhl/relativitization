@@ -232,7 +232,8 @@ class DiplomacyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         val declareWarButton = createTextButton(
             "Declare war",
             gdxSettings.smallFontSize,
-            gdxSettings.soundEffectsVolume
+            gdxSettings.soundEffectsVolume,
+            extraColor = commandButtonColor,
         ) {
             val currentPlayerData: PlayerData = game.universeClient.getCurrentPlayerData()
 
@@ -257,7 +258,8 @@ class DiplomacyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         val declareIndependenceToDirectLeaderButton = createTextButton(
             "Declare independence (direct leader)",
             gdxSettings.smallFontSize,
-            gdxSettings.soundEffectsVolume
+            gdxSettings.soundEffectsVolume,
+            extraColor = commandButtonColor,
         ) {
             val declareIndependenceToDirectLeaderCommand = DeclareIndependenceToDirectLeaderCommand(
                 toId = playerData.playerInternalData.directLeaderId,
@@ -274,7 +276,8 @@ class DiplomacyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         val declareIndependenceToTopLeaderButton = createTextButton(
             "Declare independence (top leader)",
             gdxSettings.smallFontSize,
-            gdxSettings.soundEffectsVolume
+            gdxSettings.soundEffectsVolume,
+            extraColor = commandButtonColor,
         ) {
             val declareIndependenceToTopLeaderCommand = DeclareIndependenceToTopLeaderCommand(
                 toId = playerData.topLeaderId(),
@@ -291,7 +294,8 @@ class DiplomacyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         val proposePeaceButton = createTextButton(
             "Propose peace",
             gdxSettings.smallFontSize,
-            gdxSettings.soundEffectsVolume
+            gdxSettings.soundEffectsVolume,
+            extraColor = commandButtonColor,
         ) {
             val proposePeaceCommand = ProposePeaceCommand(
                 toId = game.universeClient.getCurrentPlayerData().playerId,

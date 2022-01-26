@@ -1,5 +1,6 @@
 package relativitization.game.components.upper
 
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.RelativitizationGame
@@ -110,7 +111,8 @@ class EventsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(g
             val selectChoiceButton = createTextButton(
                 "${choice.key}",
                 gdxSettings.smallFontSize,
-                gdxSettings.soundEffectsVolume
+                gdxSettings.soundEffectsVolume,
+                commandButtonColor,
             ) {
                 val selectEventDataCommand = SelectEventChoiceCommand(
                     toId = playerData.playerId,

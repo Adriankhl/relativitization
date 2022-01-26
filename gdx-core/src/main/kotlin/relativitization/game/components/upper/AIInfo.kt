@@ -109,7 +109,8 @@ class AIInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.
         val useAllButton = createTextButton(
             "Use all",
             gdxSettings.smallFontSize,
-            gdxSettings.soundEffectsVolume
+            gdxSettings.soundEffectsVolume,
+            commandButtonColor,
         ) {
             game.universeClient.clearCommandList()
 

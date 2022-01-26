@@ -476,7 +476,8 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         val changeSalaryTextButton = createTextButton(
             text = "Change salary",
             fontSize = gdxSettings.smallFontSize,
-            soundVolume = gdxSettings.soundEffectsVolume
+            soundVolume = gdxSettings.soundEffectsVolume,
+            extraColor = commandButtonColor,
         ) {
             val changeSalaryCommand = ChangeSalaryCommand(
                 toId = playerData.playerId,
@@ -658,6 +659,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
                 text = "Remove factory",
                 fontSize = gdxSettings.smallFontSize,
                 soundVolume = gdxSettings.soundEffectsVolume,
+                extraColor = commandButtonColor,
             ) {
                 val removeLocalFuelFactoryCommand = RemoveLocalFuelFactoryCommand(
                     toId = playerData.playerId,
@@ -675,6 +677,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
                 text = "Remove factory",
                 fontSize = gdxSettings.smallFontSize,
                 soundVolume = gdxSettings.soundEffectsVolume,
+                extraColor = commandButtonColor,
             ) {
                 val removeForeignFuelFactoryCommand = RemoveForeignFuelFactoryCommand(
                     toId = playerData.playerId,
@@ -697,6 +700,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
                 text = "Close factory",
                 fontSize = gdxSettings.smallFontSize,
                 soundVolume = gdxSettings.soundEffectsVolume,
+                extraColor = commandButtonColor,
             ) {
                 val closeLocalFuelFactoryCommand = CloseLocalFuelFactoryCommand(
                     toId = playerData.playerId,
@@ -714,6 +718,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
                 text = "Open factory",
                 fontSize = gdxSettings.smallFontSize,
                 soundVolume = gdxSettings.soundEffectsVolume,
+                extraColor = commandButtonColor,
             ) {
                 val openLocalFuelFactoryCommand = OpenLocalFuelFactoryCommand(
                     toId = playerData.playerId,
@@ -808,6 +813,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             "Supply Fuel",
             gdxSettings.smallFontSize,
             gdxSettings.soundEffectsVolume,
+            extraColor = commandButtonColor,
         ) {
             val supplyForeignFuelFactoryCommand = SupplyForeignFuelFactoryCommand(
                 toId = playerData.playerId,
@@ -926,6 +932,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
                 text = "Remove factory",
                 fontSize = gdxSettings.smallFontSize,
                 soundVolume = gdxSettings.soundEffectsVolume,
+                extraColor = commandButtonColor,
             ) {
                 val removeLocalResourceFactoryCommand = RemoveLocalResourceFactoryCommand(
                     toId = playerData.playerId,
@@ -964,6 +971,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
                 text = "Close factory",
                 fontSize = gdxSettings.smallFontSize,
                 soundVolume = gdxSettings.soundEffectsVolume,
+                extraColor = commandButtonColor,
             ) {
                 val closeLocalResourceFactoryCommand = CloseLocalResourceFactoryCommand(
                     toId = playerData.playerId,
@@ -981,6 +989,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
                 text = "Open factory",
                 fontSize = gdxSettings.smallFontSize,
                 soundVolume = gdxSettings.soundEffectsVolume,
+                extraColor = commandButtonColor,
             ) {
                 val openLocalResourceFactoryCommand = OpenLocalResourceFactoryCommand(
                     toId = playerData.playerId,
@@ -1144,6 +1153,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             "Supply Fuel",
             gdxSettings.smallFontSize,
             gdxSettings.soundEffectsVolume,
+            extraColor = commandButtonColor,
         ) {
             val supplyForeignResourceFactoryCommand = SupplyForeignResourceFactoryCommand(
                 toId = playerData.playerId,
@@ -1215,6 +1225,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             "Build fuel factory",
             gdxSettings.smallFontSize,
             gdxSettings.soundEffectsVolume,
+            extraColor = commandButtonColor,
         ) {
             val buildForeignFuelFactoryCommand = BuildForeignFuelFactoryCommand(
                 toId = playerData.playerId,
@@ -1338,6 +1349,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             "Build resource factory",
             gdxSettings.smallFontSize,
             gdxSettings.soundEffectsVolume,
+            extraColor = commandButtonColor,
         ) {
             val buildForeignResourceFactoryCommand = BuildForeignResourceFactoryCommand(
                 toId = playerData.playerId,
@@ -1479,6 +1491,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             "Build local fuel factory",
             gdxSettings.smallFontSize,
             gdxSettings.soundEffectsVolume,
+            extraColor = commandButtonColor,
         ) {
             val buildLocalFuelFactoryCommand = BuildLocalFuelFactoryCommand(
                 toId = playerData.playerId,
@@ -1576,6 +1589,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             "Build local resource factory",
             gdxSettings.smallFontSize,
             gdxSettings.soundEffectsVolume,
+            extraColor = commandButtonColor,
         ) {
             val buildLocalResourceFactoryCommand = BuildLocalResourceFactoryCommand(
                 toId = playerData.playerId,
@@ -1767,7 +1781,8 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         val removeInstituteButton = createTextButton(
             "Remove institute",
             gdxSettings.smallFontSize,
-            gdxSettings.soundEffectsVolume
+            gdxSettings.soundEffectsVolume,
+            extraColor = commandButtonColor,
         ) {
             val removeInstituteCommand = RemoveInstituteCommand(
                 toId = playerData.playerId,
@@ -1879,6 +1894,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             "Build institute",
             gdxSettings.smallFontSize,
             gdxSettings.soundEffectsVolume,
+            extraColor = commandButtonColor,
         ) {
             val buildInstituteCommand = BuildInstituteCommand(
                 toId = playerData.playerId,
@@ -2089,7 +2105,8 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         val removeLaboratoryButton = createTextButton(
             "Remove laboratory",
             gdxSettings.smallFontSize,
-            gdxSettings.soundEffectsVolume
+            gdxSettings.soundEffectsVolume,
+            extraColor = commandButtonColor,
         ) {
             val removeLaboratoryCommand = RemoveLaboratoryCommand(
                 toId = playerData.playerId,
@@ -2201,6 +2218,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             "Build laboratory",
             gdxSettings.smallFontSize,
             gdxSettings.soundEffectsVolume,
+            extraColor = commandButtonColor,
         ) {
             val buildLaboratoryCommand = BuildLaboratoryCommand(
                 toId = playerData.playerId,
@@ -2528,6 +2546,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             "Buy",
             gdxSettings.smallFontSize,
             gdxSettings.soundEffectsVolume,
+            extraColor = commandButtonColor,
         ) {
             val playerBuyResourceCommand = PlayerBuyResourceCommand(
                 toId = playerData.playerId,
@@ -2692,7 +2711,8 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         val buildCarrierButton = createTextButton(
             "Build carrier",
             gdxSettings.smallFontSize,
-            gdxSettings.soundEffectsVolume
+            gdxSettings.soundEffectsVolume,
+            extraColor = commandButtonColor,
         ) {
             val buildLocalCarrierCommand = BuildLocalCarrierCommand(
                 toId = playerData.playerId,
@@ -2762,7 +2782,8 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         val splitCarrierButton = createTextButton(
             "Split carrier",
             gdxSettings.smallFontSize,
-            gdxSettings.soundEffectsVolume
+            gdxSettings.soundEffectsVolume,
+            extraColor = commandButtonColor,
         ) {
             val splitCarrierCommand = SplitCarrierCommand(
                 toId = playerData.playerId,
@@ -2791,7 +2812,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         val addButton = createTextButton(
             "Add",
             gdxSettings.smallFontSize,
-            gdxSettings.soundEffectsVolume
+            gdxSettings.soundEffectsVolume,
         ) {
             newPlayerCarrierIdSet.add(carrierId)
             newPlayerCarrierIdLabel.setText("Carriers in new player: $newPlayerCarrierIdSet")
@@ -2808,7 +2829,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         val removeButton = createTextButton(
             "Remove",
             gdxSettings.smallFontSize,
-            gdxSettings.soundEffectsVolume
+            gdxSettings.soundEffectsVolume,
         ) {
             newPlayerCarrierIdSet.remove(newPlayerCarrierIdSelectBoxContainer.actor.selected)
             newPlayerCarrierIdLabel.setText("Carriers in new player: $newPlayerCarrierIdSet")
