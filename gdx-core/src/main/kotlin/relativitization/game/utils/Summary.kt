@@ -20,6 +20,10 @@ object Summary {
         val carrierList: List<CarrierData> = thisPlayer.playerInternalData.popSystemData().carrierDataMap.values +
                 otherPlayerList.flatMap { it.playerInternalData.popSystemData().carrierDataMap.values }
 
+        val totalPopulation: Double = carrierList.sumOf {
+            it.allPopData.totalAdultPopulation()
+        }
+
         val totalAttack: Double = carrierList.sumOf {
             it.allPopData.soldierPopData.militaryBaseData.attack
         }
@@ -122,15 +126,28 @@ object Summary {
             }
         }
 
+        val averageSatisfaction: Double = if (totalPopulation > 0.0) {
+            carrierList.sumOf { carrierData ->
+                PopType.values().sumOf { popType ->
+                    val commonPopData: CommonPopData = carrierData.allPopData.getCommonPopData(popType)
+                    commonPopData.satisfaction * commonPopData.adultPopulation
+                }
+            } / totalPopulation
+        } else {
+            0.0
+        }
+
         return PlayerSummary(
             playerId = thisPlayer.playerId,
             numCarrier = carrierList.size,
+            totalPopulation = totalPopulation,
             totalAttack = totalAttack,
             totalShield = totalShield,
             totalFuelDemand = totalFuelDemand,
             totalFuelSupply = totalFuelSupply,
             totalResourceDemandMap = totalResourceDemandMap,
             totalResourceSupplyMap = totalResourceSupplyMap,
+            averageSatisfaction = averageSatisfaction,
         )
     }
 }
@@ -138,10 +155,12 @@ object Summary {
 data class PlayerSummary(
     val playerId: Int,
     val numCarrier: Int,
+    val totalPopulation: Double,
     val totalAttack: Double,
     val totalShield: Double,
     val totalFuelDemand: Double,
     val totalFuelSupply: Double,
     val totalResourceDemandMap: Map<ResourceType, Double>,
     val totalResourceSupplyMap: Map<ResourceType, Double>,
+    val averageSatisfaction: Double,
 )
