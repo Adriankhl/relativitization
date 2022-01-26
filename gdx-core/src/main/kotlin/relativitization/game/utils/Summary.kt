@@ -6,7 +6,7 @@ import relativitization.universe.data.components.defaults.popsystem.CarrierData
 object Summary {
     fun compute(
         thisPlayer: PlayerData,
-        otherPlayerList: List<PlayerData>,
+        otherPlayerList: List<PlayerData> = listOf(),
     ): CarrierListSummary {
 
         val carrierList: List<CarrierData> = thisPlayer.playerInternalData.popSystemData().carrierDataMap.values +
