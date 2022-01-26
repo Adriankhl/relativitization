@@ -5,6 +5,8 @@ import relativitization.universe.data.components.defaults.economy.ResourceType
 import relativitization.universe.data.components.defaults.popsystem.CarrierData
 import relativitization.universe.data.components.defaults.popsystem.pop.CommonPopData
 import relativitization.universe.data.components.defaults.popsystem.pop.PopType
+import relativitization.universe.data.components.defaults.popsystem.pop.ResourceDesireData
+import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.InputResourceData
 import relativitization.universe.mechanisms.defaults.dilated.production.BaseStellarFuelProduction
 
 object Summary {
@@ -28,7 +30,7 @@ object Summary {
         val totalFuelDemand: Double = carrierList.sumOf { carrierData ->
             val totalSalary: Double = PopType.values().sumOf { popType ->
                 val commonPopData: CommonPopData = carrierData.allPopData.getCommonPopData(popType)
-                commonPopData.salaryPerEmployee * commonPopData.adultPopulation * (1.0 - commonPopData.unemploymentRate)
+                commonPopData.salaryPerEmployee * commonPopData.adultPopulation
             }
             val totalResourceFactoryConsumption: Double = carrierData.allPopData.labourerPopData.resourceFactoryMap
                 .values.sumOf { resourceFactory ->
@@ -63,8 +65,35 @@ object Summary {
         }
 
 
-        val resourceConsumptionMap: Map<ResourceType, Double> = ResourceType.values().associateWith { resourceType ->
-            0.0
+        val totalResourceDemandMap: Map<ResourceType, Double> = ResourceType.values().associateWith { resourceType ->
+            carrierList.sumOf { carrierData ->
+                val popDesire: Double = PopType.values().sumOf { popType ->
+                    carrierData.allPopData.getCommonPopData(popType).desireResourceMap.getOrDefault(
+                        resourceType,
+                        ResourceDesireData()
+                    ).desireAmount
+                }
+
+                val resourceFactoryDesire: Double = carrierData.allPopData.labourerPopData.resourceFactoryMap
+                    .values.sumOf { resourceFactory ->
+                        resourceFactory.resourceFactoryInternalData.inputResourceMap.getOrDefault(
+                            resourceType,
+                            InputResourceData(),
+                        ).amount * resourceFactory.numBuilding * resourceFactory.employeeFraction()
+                    }
+
+                val researchDesire: Double = if (resourceType == ResourceType.RESEARCH_EQUIPMENT) {
+                    carrierData.allPopData.scholarPopData.instituteMap.values.sumOf { institute ->
+                        institute.instituteInternalData.researchEquipmentPerTime
+                    } + carrierData.allPopData.engineerPopData.laboratoryMap.values.sumOf { laboratory ->
+                        laboratory.laboratoryInternalData.researchEquipmentPerTime
+                    }
+                } else {
+                    0.0
+                }
+
+                popDesire + resourceFactoryDesire + researchDesire
+            }
         }
 
         return PlayerSummary(
@@ -74,6 +103,7 @@ object Summary {
             totalShield = totalShield,
             totalFuelDemand = totalFuelDemand,
             totalFuelSupply = totalFuelSupply,
+            totalResourceDemandMap = totalResourceDemandMap,
         )
     }
 }
@@ -85,4 +115,5 @@ data class PlayerSummary(
     val totalShield: Double,
     val totalFuelDemand: Double,
     val totalFuelSupply: Double,
+    val totalResourceDemandMap: Map<ResourceType, Double>
 )
