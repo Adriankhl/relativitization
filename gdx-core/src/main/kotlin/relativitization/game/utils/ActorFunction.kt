@@ -77,7 +77,11 @@ object ActorFunction {
      *
      * @param actor the actor in the scroll pane
      */
-    fun createScrollPane(skin: Skin, actor: Actor): ScrollPane = ScrollPane(actor, skin)
+    fun createScrollPane(
+        skin: Skin,
+        actor: Actor,
+        onSizeChange: () -> Unit
+    ): ScrollPane = GdxScrollPane(actor, skin, onSizeChange)
 
     /**
      * Create split pane

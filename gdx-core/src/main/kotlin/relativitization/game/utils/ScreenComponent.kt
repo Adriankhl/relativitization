@@ -126,7 +126,10 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets) {
      *
      * @param actor the table to add scroll pane
      */
-    fun createScrollPane(actor: Actor): ScrollPane = ActorFunction.createScrollPane(skin, actor)
+    fun createScrollPane(
+        actor: Actor,
+        onSizeChanged: () -> Unit = {}
+    ): ScrollPane = ActorFunction.createScrollPane(skin, actor, onSizeChanged)
 
     /**
      * Create split pane
