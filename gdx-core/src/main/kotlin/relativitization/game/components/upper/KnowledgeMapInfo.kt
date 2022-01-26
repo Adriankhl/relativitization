@@ -67,7 +67,7 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
     // If true, show institutes and laboratory on the knowledge map
     private var showInstituteAndLaboratory: Boolean = false
 
-    // If true, a institute is selected by mouse
+    // If true, an institute is selected by mouse
     private var isInstituteSelected: Boolean = false
 
     // If true, a laboratory is selected by mouse
@@ -595,7 +595,7 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
 
         if (showInstituteAndLaboratory) {
             playerData.playerInternalData.popSystemData().carrierDataMap.forEach { (carrierId, carrier) ->
-                carrier.allPopData.scholarPopData.instituteMap.forEach { instituteId, institute ->
+                carrier.allPopData.scholarPopData.instituteMap.forEach { (instituteId, institute) ->
                     val imageList: List<Image> = createInstituteImageList(
                         carrierId,
                         instituteId,
@@ -680,7 +680,7 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
 
 
     /**
-     * Create image of a applied research project
+     * Create image of an applied research project
      *
      * @param project the basic research project data
      * @param isProjectDone is this a done project or a known project
@@ -956,7 +956,7 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
 
 
     /**
-     * The dimension of the icon of a knowledge project
+     * The dimension of the icon of a project
      */
     private fun basicProjectImageDimension(): Double {
         val image = ActorFunction.createImage(assets, "science/book1", 0.0f)
@@ -966,7 +966,7 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
 
 
     /**
-     * The dimension of the icon of a knowledge project
+     * The dimension of the icon of a project
      */
     private fun appliedProjectImageDimension(): Double {
         val image = ActorFunction.createImage(assets, "science/wrench1", 0.0f)
