@@ -35,6 +35,9 @@ data class ResourceFactoryData(
             resourceFactoryInternalData.inputResourceMap[resourceType]?.amount ?: 0.0
         return amountPerUnit * resourceFactoryInternalData.maxOutputAmount * numBuilding
     }
+
+    fun employeeFraction(): Double =
+        lastNumEmployee / (resourceFactoryInternalData.maxNumEmployee * numBuilding)
 }
 
 @Serializable
