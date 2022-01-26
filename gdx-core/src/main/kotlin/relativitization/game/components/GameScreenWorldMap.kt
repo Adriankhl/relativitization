@@ -21,7 +21,7 @@ class GameScreenWorldMap(
     private val gdxSettings = game.gdxSettings
 
     private val allImageGroup: Group = Group()
-    private val scrollPane: ScrollPane = createScrollPane(allImageGroup)
+    private val scrollPane: ScrollPane = createScrollPane(allImageGroup, this::onGdxSettingsChange)
     private var data3D2DProjection: Data3D2DProjection = update3D2DProjection()
 
     private var oldActualZoom: Float = 1.0f

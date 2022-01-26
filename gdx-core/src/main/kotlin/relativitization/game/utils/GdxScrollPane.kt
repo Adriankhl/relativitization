@@ -5,21 +5,19 @@ import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import relativitization.universe.utils.RelativitizationLogManager
 
+/**
+ * A scroll pane which call a function when size change
+ *
+ * @property onSizeChanged the function to call, ideally this should not be nullable, but jvm behaves weirdly and
+ * introduce null pointer exception, so let it be nullable here and safe call the invoke
+ */
 class GdxScrollPane(
     actor: Actor,
     skin: Skin,
-    val onSizeChanged: () -> Unit,
+    private val onSizeChanged: (() -> Unit)?,
 ) : ScrollPane(actor, skin) {
     override fun sizeChanged() {
         super.sizeChanged()
-        try {
-            onSizeChanged()
-        } catch (e: Throwable) {
-            logger.error("onSizeChanged: $e")
-        }
-    }
-
-    companion object {
-        private val logger = RelativitizationLogManager.getLogger()
+        onSizeChanged?.invoke()
     }
 }
