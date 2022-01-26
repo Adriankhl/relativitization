@@ -9,7 +9,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import relativitization.game.RelativitizationGame
-import relativitization.game.ShowingInfoType
 import relativitization.game.components.GameScreenInfo
 import relativitization.game.components.GameScreenTopBar
 import relativitization.game.components.GameScreenWorldMap
@@ -37,33 +36,6 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
     private val worldMapAndInfo =
         createSplitPane(worldMap.getScreenComponent(), info.getScreenComponent(), false)
     private val topBar: GameScreenTopBar = GameScreenTopBar(game)
-
-    // Button to trigger gdx settings change
-    private val helloUniverseButtonBackground = createImage(
-        "basic/white-pixel",
-        0f,
-        0f,
-        Gdx.graphics.width.toFloat(),
-        Gdx.graphics.height.toFloat(),
-        0.0f,
-        0.0f,
-        0.0f,
-        0.6f,
-        gdxSettings.soundEffectsVolume
-    )
-
-    private val helloUniverseButton = createTextButton(
-        "Hello Universe!",
-        gdxSettings.maxFontSize,
-        gdxSettings.soundEffectsVolume
-    ) {
-        it.remove()
-        helloUniverseButtonBackground.remove()
-
-        // Default to overview
-        gdxSettings.showingInfoType = ShowingInfoType.OVERVIEW
-        game.changeGdxSettings()
-    }
 
     // Button to trigger gdx settings change
     private val playerDeadBackground = createImage(
@@ -190,17 +162,6 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
                 gdxSettings.mapZoomRelativeToFullMap = (distance / initialDistance) * originalZoom
             }
         })
-
-        // To correct the layout of knowledge map by pressing the helloUniverseButton
-        gdxSettings.showingInfoType = ShowingInfoType.KNOWLEDGE_MAP
-        game.changeGdxSettings()
-
-        helloUniverseButton.setPosition(
-            Gdx.graphics.width / 2.0f - helloUniverseButton.width / 2,
-            Gdx.graphics.height / 2.0f - helloUniverseButton.height / 2
-        )
-        stage.addActor(helloUniverseButtonBackground)
-        stage.addActor(helloUniverseButton)
     }
 
     override fun render(delta: Float) {
