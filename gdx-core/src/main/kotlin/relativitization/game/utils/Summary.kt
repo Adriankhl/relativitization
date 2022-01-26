@@ -8,6 +8,7 @@ import relativitization.universe.data.components.defaults.popsystem.pop.PopType
 import relativitization.universe.data.components.defaults.popsystem.pop.ResourceDesireData
 import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.InputResourceData
 import relativitization.universe.mechanisms.defaults.dilated.production.BaseStellarFuelProduction
+import relativitization.universe.mechanisms.defaults.dilated.production.EntertainmentProduction
 
 object Summary {
     fun compute(
@@ -96,6 +97,31 @@ object Summary {
             }
         }
 
+        val totalResourceSupplyMap: Map<ResourceType, Double> = ResourceType.values().associateWith { resourceType ->
+            carrierList.sumOf { carrierData ->
+                val resourceFactoryOutput: Double = carrierData.allPopData.labourerPopData.resourceFactoryMap
+                    .values.sumOf { resourceFactory ->
+                        if (resourceFactory.resourceFactoryInternalData.outputResource == resourceType) {
+                            resourceFactory.lastOutputAmount
+                        } else {
+                            0.0
+                        }
+                    }
+
+                val entertainerOutput: Double = if (resourceType == ResourceType.ENTERTAINMENT) {
+                    val commonPopData: CommonPopData =
+                        carrierData.allPopData.entertainerPopData.commonPopData
+                    EntertainmentProduction.computeEntertainmentAmount(
+                        commonPopData.adultPopulation * (1.0 - commonPopData.unemploymentRate)
+                    )
+                } else {
+                    0.0
+                }
+
+                resourceFactoryOutput + entertainerOutput
+            }
+        }
+
         return PlayerSummary(
             playerId = thisPlayer.playerId,
             numCarrier = carrierList.size,
@@ -104,6 +130,7 @@ object Summary {
             totalFuelDemand = totalFuelDemand,
             totalFuelSupply = totalFuelSupply,
             totalResourceDemandMap = totalResourceDemandMap,
+            totalResourceSupplyMap = totalResourceSupplyMap,
         )
     }
 }
@@ -115,5 +142,6 @@ data class PlayerSummary(
     val totalShield: Double,
     val totalFuelDemand: Double,
     val totalFuelSupply: Double,
-    val totalResourceDemandMap: Map<ResourceType, Double>
+    val totalResourceDemandMap: Map<ResourceType, Double>,
+    val totalResourceSupplyMap: Map<ResourceType, Double>,
 )

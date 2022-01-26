@@ -22,7 +22,10 @@ object EntertainmentProduction : Mechanism() {
             val entertainerPopData: MutableEntertainerPopData =
                 mutableCarrierData.allPopData.entertainerPopData
 
-            val amount: Double = entertainerPopData.commonPopData.adultPopulation * 20.0
+            val amount: Double = computeEntertainmentAmount(
+                entertainerPopData.commonPopData.adultPopulation *
+                        (1.0 - entertainerPopData.commonPopData.unemploymentRate)
+            )
 
             val qualityData: MutableResourceQualityData = computeEntertainmentQuality(
                 entertainerPopData,
@@ -38,6 +41,12 @@ object EntertainmentProduction : Mechanism() {
 
 
         return listOf()
+    }
+
+    fun computeEntertainmentAmount(
+        numEmployee: Double,
+    ): Double {
+        return numEmployee * 20.0
     }
 
     /**
