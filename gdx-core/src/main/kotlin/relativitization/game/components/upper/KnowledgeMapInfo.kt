@@ -27,7 +27,7 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
 
     private val knowledgeGroup: Group = Group()
 
-    private val knowledgeGroupScrollPane: ScrollPane = createScrollPane(knowledgeGroup)
+    private val knowledgeGroupScrollPane: ScrollPane = createScrollPane(knowledgeGroup, this::onGdxSettingsChange)
 
     private val table: Table = Table()
 
