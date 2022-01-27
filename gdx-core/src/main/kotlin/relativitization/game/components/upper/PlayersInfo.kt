@@ -17,7 +17,7 @@ class PlayersInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
 
     private val scrollPane: ScrollPane = createScrollPane(table)
 
-    // Viewed history of player in Id
+    // Viewed history of player in ID
     private val viewedPlayerIdList: MutableList<Int> = mutableListOf(-1)
 
     // ID of currently viewing player
@@ -66,21 +66,6 @@ class PlayersInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         updateTable()
     }
 
-    private fun previousPlayerId() {
-        if (viewingIdIndex >= 1) {
-            viewingIdIndex--
-            game.universeClient.primarySelectedPlayerId = viewedPlayerIdList[viewingIdIndex]
-        }
-    }
-
-    private fun nextPlayerId() {
-        if (viewingIdIndex <= viewedPlayerIdList.size - 2) {
-            viewingIdIndex++
-            game.universeClient.primarySelectedPlayerId = viewedPlayerIdList[viewingIdIndex]
-        }
-    }
-
-
     private fun updatePlayerDataAndIdList() {
         playerData = if (game.universeClient.isPrimarySelectedPlayerIdValid()) {
             game.universeClient.getPrimarySelectedPlayerData()
@@ -100,7 +85,6 @@ class PlayersInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
             viewedPlayerIdList.add(playerData.playerId)
         }
     }
-
 
     private fun updateTable() {
         table.clear()
@@ -136,6 +120,23 @@ class PlayersInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
 
         table.row().space(10f)
     }
+
+
+    private fun previousPlayerId() {
+        if (viewingIdIndex >= 1) {
+            viewingIdIndex--
+            game.universeClient.primarySelectedPlayerId = viewedPlayerIdList[viewingIdIndex]
+        }
+    }
+
+    private fun nextPlayerId() {
+        if (viewingIdIndex <= viewedPlayerIdList.size - 2) {
+            viewingIdIndex++
+            game.universeClient.primarySelectedPlayerId = viewedPlayerIdList[viewingIdIndex]
+        }
+    }
+
+
 
     private fun createPlayerImageAndButtonTable(): Table {
         val nestedTable = Table()
@@ -302,7 +303,7 @@ class PlayersInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         return nestedTable
     }
 
-    fun updatePlayerSummary() {
+    private fun updatePlayerSummary() {
         val otherPlayerIdList: List<Int> = when (playerSummaryOption) {
             PlayerSummaryOption.SELF_ONLY -> listOf()
             PlayerSummaryOption.SELF_AND_SUBORDINATES -> game.universeClient.getUniverseData3D().get(
@@ -315,6 +316,122 @@ class PlayersInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
             otherPlayerIdList,
             game.universeClient.getUniverseData3D(),
         )
+    }
+
+    private fun createPlayerSummaryTable(): Table {
+        val nestedTable = Table()
+
+        nestedTable.add(
+            createLabel(
+                "Summary player id: ${playerSummary.playerId}",
+                gdxSettings.normalFontSize
+            )
+        )
+
+        nestedTable.row().space(20f)
+
+        nestedTable.add(
+            createLabel(
+                "Number of carrier: ${playerSummary.numCarrier}",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "Population: ${playerSummary.totalPopulation}",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "Satisfaction: ${playerSummary.averageSatisfaction}",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "Attack: ${playerSummary.totalAttack}",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "Shield: ${playerSummary.totalShield}",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "Fuel demand: ${playerSummary.totalFuelDemand}",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "Fuel supply: ${playerSummary.totalFuelSupply}",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.row().space(10f)
+
+        val resourceSupplyLabel = createLabel(
+            "$selectedPlayerSummaryResourceType supply: " +
+                    "${playerSummary.totalResourceSupplyMap.getValue(selectedPlayerSummaryResourceType)}",
+            gdxSettings.smallFontSize
+        )
+
+        val resourceDemandLabel = createLabel(
+            "$selectedPlayerSummaryResourceType demand: " +
+                    "${playerSummary.totalResourceDemandMap.getValue(selectedPlayerSummaryResourceType)}",
+            gdxSettings.smallFontSize
+        )
+
+        val resourceTypeSelectBox = createSelectBox(
+            ResourceType.values().toList(),
+            selectedPlayerSummaryResourceType,
+            gdxSettings.smallFontSize
+        ) { resourceType, selectBox ->
+            selectedPlayerSummaryResourceType = resourceType
+            resourceSupplyLabel.setText(
+                "$selectedPlayerSummaryResourceType supply: " +
+                        "${playerSummary.totalResourceSupplyMap.getValue(selectedPlayerSummaryResourceType)}",
+            )
+            resourceDemandLabel.setText(
+                "$selectedPlayerSummaryResourceType demand: " +
+                        "${playerSummary.totalResourceDemandMap.getValue(selectedPlayerSummaryResourceType)}",
+            )
+        }
+
+        nestedTable.add(resourceTypeSelectBox)
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(resourceDemandLabel)
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(resourceSupplyLabel)
+
+        return nestedTable
     }
 }
 
