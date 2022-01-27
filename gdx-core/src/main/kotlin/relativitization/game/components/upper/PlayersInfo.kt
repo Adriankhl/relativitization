@@ -1,5 +1,6 @@
 package relativitization.game.components.upper
 
+import com.badlogic.gdx.scenes.scene2d.ui.Container
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.RelativitizationGame
@@ -27,7 +28,6 @@ class PlayersInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
     private var playerData: PlayerData = PlayerData(-1)
 
     // cache the computed summary
-    private var showPlayerSummary: Boolean = false
     private var playerSummary: PlayerSummary = PlayerSummary()
     private var playerSummaryOption: PlayerSummaryOption = PlayerSummaryOption.SELF_ONLY
     private var selectedPlayerSummaryResourceType: ResourceType = ResourceType.PLANT
@@ -117,6 +117,10 @@ class PlayersInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         table.row().space(10f)
 
         table.add(createSubordinateIdTable())
+
+        table.row().space(30f)
+
+        table.add(createPlayerSummaryControlTable())
 
         table.row().space(10f)
     }
@@ -303,16 +307,74 @@ class PlayersInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         return nestedTable
     }
 
+    private fun createPlayerSummaryControlTable(): Table {
+        val nestedTable = Table()
+
+        val playerSummaryContainer: Container<Table> = Container()
+
+        val computeSummaryButton = createTextButton(
+            "Compute summary",
+            gdxSettings.smallFontSize,
+            gdxSettings.soundEffectsVolume
+        ) {
+            updatePlayerSummary()
+            playerSummaryContainer.actor = createPlayerSummaryTable()
+        }
+
+        val hideSummaryButton = createTextButton(
+            "Hide",
+            gdxSettings.smallFontSize,
+            gdxSettings.soundEffectsVolume
+        ) {
+            playerSummaryContainer.actor = Table()
+        }
+
+        nestedTable.add(computeSummaryButton)
+
+        nestedTable.add(hideSummaryButton).size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "Options: ",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        val summaryOptionSelectBox = createSelectBox(
+            PlayerSummaryOption.values().toList(),
+            playerSummaryOption,
+            gdxSettings.smallFontSize
+        ) { newPlayerSummaryOption, _ ->
+            playerSummaryOption = newPlayerSummaryOption
+        }
+
+        nestedTable.add(summaryOptionSelectBox)
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(playerSummaryContainer).colspan(2)
+
+        return nestedTable
+    }
+
     private fun updatePlayerSummary() {
+        val selectedId: Int = if (game.universeClient.primarySelectedPlayerId < 0) {
+            game.universeClient.getUniverseData3D().id
+        } else {
+            game.universeClient.primarySelectedPlayerId
+        }
+
         val otherPlayerIdList: List<Int> = when (playerSummaryOption) {
             PlayerSummaryOption.SELF_ONLY -> listOf()
             PlayerSummaryOption.SELF_AND_SUBORDINATES -> game.universeClient.getUniverseData3D().get(
-                game.universeClient.primarySelectedPlayerId
+                selectedId
             ).playerInternalData.subordinateIdList
             PlayerSummaryOption.SELECTED -> game.universeClient.selectedPlayerIdList
         }
         playerSummary = Summary.computeFromUniverseData3DAtPlayer(
-            game.universeClient.primarySelectedPlayerId,
+            selectedId,
             otherPlayerIdList,
             game.universeClient.getUniverseData3D(),
         )
@@ -409,7 +471,7 @@ class PlayersInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
             ResourceType.values().toList(),
             selectedPlayerSummaryResourceType,
             gdxSettings.smallFontSize
-        ) { resourceType, selectBox ->
+        ) { resourceType, _ ->
             selectedPlayerSummaryResourceType = resourceType
             resourceSupplyLabel.setText(
                 "$selectedPlayerSummaryResourceType supply: " +
