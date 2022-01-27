@@ -28,6 +28,7 @@ class PlayersInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
     private var playerData: PlayerData = PlayerData(-1)
 
     // cache the computed summary
+    private var isPlayerSummaryShowing: Boolean = false
     private var playerSummary: PlayerSummary = PlayerSummary()
     private var playerSummaryOption: PlayerSummaryOption = PlayerSummaryOption.SELF_ONLY
     private var selectedPlayerSummaryResourceType: ResourceType = ResourceType.PLANT
@@ -310,7 +311,11 @@ class PlayersInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
     private fun createPlayerSummaryControlTable(): Table {
         val nestedTable = Table()
 
-        val playerSummaryContainer: Container<Table> = Container()
+        val playerSummaryContainer: Container<Table> = if (isPlayerSummaryShowing) {
+            Container(createPlayerSummaryTable())
+        } else {
+            Container()
+        }
 
         val computeSummaryButton = createTextButton(
             "Compute summary",
@@ -319,6 +324,7 @@ class PlayersInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         ) {
             updatePlayerSummary()
             playerSummaryContainer.actor = createPlayerSummaryTable()
+            isPlayerSummaryShowing = true
         }
 
         val hideSummaryButton = createTextButton(
@@ -327,6 +333,7 @@ class PlayersInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
             gdxSettings.soundEffectsVolume
         ) {
             playerSummaryContainer.actor = Table()
+            isPlayerSummaryShowing = false
         }
 
         nestedTable.add(computeSummaryButton)
