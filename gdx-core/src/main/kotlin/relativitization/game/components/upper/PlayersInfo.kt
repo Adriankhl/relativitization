@@ -6,7 +6,9 @@ import relativitization.game.RelativitizationGame
 import relativitization.game.utils.PlayerImage
 import relativitization.game.utils.PlayerSummary
 import relativitization.game.utils.ScreenComponent
+import relativitization.game.utils.Summary
 import relativitization.universe.data.PlayerData
+import relativitization.universe.data.components.defaults.economy.ResourceType
 
 class PlayersInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.assets) {
     private val gdxSettings = game.gdxSettings
@@ -25,8 +27,10 @@ class PlayersInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
     private var playerData: PlayerData = PlayerData(-1)
 
     // cache the computed summary
-    private var playerSummaryOption: PlayerSummaryOption = PlayerSummaryOption.SELF_ONLY
+    private var showPlayerSummary: Boolean = false
     private var playerSummary: PlayerSummary = PlayerSummary()
+    private var playerSummaryOption: PlayerSummaryOption = PlayerSummaryOption.SELF_ONLY
+    private var selectedPlayerSummaryResourceType: ResourceType = ResourceType.PLANT
 
     init {
         table.background = assets.getBackgroundColor(0.2f, 0.2f, 0.2f, 1.0f)
@@ -296,6 +300,21 @@ class PlayersInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         nestedTable.add(subordinateIdSelectBox)
 
         return nestedTable
+    }
+
+    fun updatePlayerSummary() {
+        val otherPlayerIdList: List<Int> = when (playerSummaryOption) {
+            PlayerSummaryOption.SELF_ONLY -> listOf()
+            PlayerSummaryOption.SELF_AND_SUBORDINATES -> game.universeClient.getUniverseData3D().get(
+                game.universeClient.primarySelectedPlayerId
+            ).playerInternalData.subordinateIdList
+            PlayerSummaryOption.SELECTED -> game.universeClient.selectedPlayerIdList
+        }
+        playerSummary = Summary.computeFromUniverseData3DAtPlayer(
+            game.universeClient.primarySelectedPlayerId,
+            otherPlayerIdList,
+            game.universeClient.getUniverseData3D(),
+        )
     }
 }
 
