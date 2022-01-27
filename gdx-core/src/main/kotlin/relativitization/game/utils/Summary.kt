@@ -153,14 +153,14 @@ object Summary {
 }
 
 data class PlayerSummary(
-    val playerId: Int,
-    val numCarrier: Int,
-    val totalPopulation: Double,
-    val totalAttack: Double,
-    val totalShield: Double,
-    val totalFuelDemand: Double,
-    val totalFuelSupply: Double,
-    val totalResourceDemandMap: Map<ResourceType, Double>,
-    val totalResourceSupplyMap: Map<ResourceType, Double>,
-    val averageSatisfaction: Double,
+    val playerId: Int = -1,
+    val numCarrier: Int = 0,
+    val totalPopulation: Double = 0.0,
+    val totalAttack: Double = 0.0,
+    val totalShield: Double = 0.0,
+    val totalFuelDemand: Double = 0.0,
+    val totalFuelSupply: Double = 0.0,
+    val totalResourceDemandMap: Map<ResourceType, Double> = ResourceType.values().associateWith { 0.0 },
+    val totalResourceSupplyMap: Map<ResourceType, Double> = ResourceType.values().associateWith { 0.0 },
+    val averageSatisfaction: Double = 0.0,
 )

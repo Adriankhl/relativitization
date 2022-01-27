@@ -4,6 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.PlayerImage
+import relativitization.game.utils.PlayerSummary
 import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.PlayerData
 
@@ -22,6 +23,9 @@ class PlayersInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
 
     // the currently viewing player data
     private var playerData: PlayerData = PlayerData(-1)
+
+    //
+    private var playerSummary: PlayerSummary = PlayerSummary()
 
     init {
         table.background = assets.getBackgroundColor(0.2f, 0.2f, 0.2f, 1.0f)
