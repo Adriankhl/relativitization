@@ -18,13 +18,14 @@ class PlayersInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
     // Viewed history of player in Id
     private val viewedPlayerIdList: MutableList<Int> = mutableListOf(-1)
 
-    // Id of currently viewing player
+    // ID of currently viewing player
     private var viewingIdIndex: Int = 0
 
     // the currently viewing player data
     private var playerData: PlayerData = PlayerData(-1)
 
-    //
+    // cache the computed summary
+    private var playerSummaryOption: PlayerSummaryOption = PlayerSummaryOption.SELF_ONLY
     private var playerSummary: PlayerSummary = PlayerSummary()
 
     init {
@@ -295,5 +296,16 @@ class PlayersInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         nestedTable.add(subordinateIdSelectBox)
 
         return nestedTable
+    }
+}
+
+enum class PlayerSummaryOption(private val value: String) {
+    SELF_ONLY("Self only"),
+    SELF_AND_SUBORDINATES("Self and subordinates"),
+    SELECTED("Selected"),
+    ;
+
+    override fun toString(): String {
+        return value
     }
 }
