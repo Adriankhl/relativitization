@@ -1,6 +1,7 @@
 package relativitization.game.utils
 
 import relativitization.universe.data.PlayerData
+import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.components.defaults.economy.ResourceType
 import relativitization.universe.data.components.defaults.popsystem.CarrierData
 import relativitization.universe.data.components.defaults.popsystem.pop.CommonPopData
@@ -11,6 +12,12 @@ import relativitization.universe.mechanisms.defaults.dilated.production.BaseStel
 import relativitization.universe.mechanisms.defaults.dilated.production.EntertainmentProduction
 
 object Summary {
+    /**
+     * Compute a player summary
+     *
+     * @param thisPlayer this is the primary player of the summary
+     * @param otherPlayerList also include these players in the summary
+     */
     fun compute(
         thisPlayer: PlayerData,
         otherPlayerList: List<PlayerData> = listOf(),
@@ -149,6 +156,31 @@ object Summary {
             totalResourceSupplyMap = totalResourceSupplyMap,
             averageSatisfaction = averageSatisfaction,
         )
+    }
+
+    /**
+     * Compute a summary from UniverseData3DAtPlayer
+     *
+     * @param thisPlayerId the id of the primary player of the summary
+     * @param otherPlayerIdList the ids of the other player to include in the summary
+     * @param universeData3DAtPlayer the data, should contain thisPlayerId, ids in otherPlayerIdList could be absent
+     */
+    fun computeFromUniverseData3DAtPlayer(
+        thisPlayerId: Int,
+        otherPlayerIdList: List<Int>,
+        universeData3DAtPlayer: UniverseData3DAtPlayer,
+    ): PlayerSummary {
+        return if (universeData3DAtPlayer.playerDataMap.containsKey(thisPlayerId)) {
+            val thisPlayerData: PlayerData = universeData3DAtPlayer.get(thisPlayerId)
+            val otherPlayerDataList: List<PlayerData> = otherPlayerIdList.filter {
+                universeData3DAtPlayer.playerDataMap.containsKey(it)
+            }.map {
+                universeData3DAtPlayer.get(it)
+            }
+            compute(thisPlayerData, otherPlayerDataList)
+        } else {
+            PlayerSummary()
+        }
     }
 }
 
