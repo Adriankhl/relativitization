@@ -44,7 +44,9 @@ class LargerMilitaryStrengthConsideration(
         val targetSubordinateAndSelfIdList: List<Int> = (planDataAtPlayer.universeData3DAtPlayer.get(
             targetPlayerId
         ).playerInternalData.subordinateIdList + targetPlayerId).filter {
-            !subordinateAndSelfIdList.contains(it)
+            !subordinateAndSelfIdList.contains(
+                it
+            ) && planDataAtPlayer.universeData3DAtPlayer.playerDataMap.containsKey(it)
         }
 
         val allTargetPopSystemData: List<PopSystemData> = targetSubordinateAndSelfIdList.map {
