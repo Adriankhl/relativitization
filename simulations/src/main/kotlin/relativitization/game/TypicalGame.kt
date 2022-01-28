@@ -43,6 +43,8 @@ fun main() {
 
     runBlocking {
         for (turn in 1..100) {
+            println("Turn: $turn")
+
             val aiCommandMap = universe.computeAICommands()
 
             universe.postProcessUniverse(
