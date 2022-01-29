@@ -92,6 +92,10 @@ data class DeclareWarCommand(
         playerData.playerInternalData.diplomacyData().warData.getWarStateData(
             toId
         ).isOffensive = true
+
+        playerData.playerInternalData.diplomacyData().warData.getWarStateData(
+            toId
+        ).warTargetTopLeaderId = toId
     }
 
     override fun canExecute(
@@ -135,8 +139,12 @@ data class DeclareWarCommand(
         ).startTime = playerData.int4D.t
 
         playerData.playerInternalData.diplomacyData().warData.getWarStateData(
-            toId
+            fromId
         ).isOffensive = false
+
+        playerData.playerInternalData.diplomacyData().warData.getWarStateData(
+            fromId
+        ).warTargetTopLeaderId = fromId
     }
 }
 
@@ -215,9 +223,18 @@ data class DeclareIndependenceToDirectLeaderCommand(
             toId
         ).startTime = playerData.int4D.t
 
+        // Auto propose peace
+        playerData.playerInternalData.diplomacyData().warData.getWarStateData(
+            toId
+        ).proposePeace = true
+
         playerData.playerInternalData.diplomacyData().warData.getWarStateData(
             toId
         ).isOffensive = true
+
+        playerData.playerInternalData.diplomacyData().warData.getWarStateData(
+            toId
+        ).warTargetTopLeaderId = toId
     }
 
 
@@ -259,6 +276,10 @@ data class DeclareIndependenceToDirectLeaderCommand(
         playerData.playerInternalData.diplomacyData().warData.getWarStateData(
             fromId
         ).isOffensive = false
+
+        playerData.playerInternalData.diplomacyData().warData.getWarStateData(
+            fromId
+        ).warTargetTopLeaderId = fromId
     }
 }
 
@@ -333,9 +354,18 @@ data class DeclareIndependenceToTopLeaderCommand(
             toId
         ).startTime = playerData.int4D.t
 
+        // Auto propose peace
+        playerData.playerInternalData.diplomacyData().warData.getWarStateData(
+            toId
+        ).proposePeace = true
+
         playerData.playerInternalData.diplomacyData().warData.getWarStateData(
             toId
         ).isOffensive = true
+
+        playerData.playerInternalData.diplomacyData().warData.getWarStateData(
+            toId
+        ).warTargetTopLeaderId = toId
     }
 
 
@@ -377,6 +407,10 @@ data class DeclareIndependenceToTopLeaderCommand(
         playerData.playerInternalData.diplomacyData().warData.getWarStateData(
             fromId
         ).isOffensive = false
+
+        playerData.playerInternalData.diplomacyData().warData.getWarStateData(
+            fromId
+        ).warTargetTopLeaderId = fromId
     }
 }
 

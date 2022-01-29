@@ -128,8 +128,7 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
                 logger.debug("Key down code: $keycode")
                 return when (keycode) {
                     Input.Keys.ESCAPE -> {
-                        gdxSettings.showingInfo = false
-                        game.changeGdxSettings()
+                        game.universeClient.clearSelected()
                         true
                     }
                     else -> {
