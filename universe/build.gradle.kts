@@ -16,6 +16,7 @@ kotlin {
                 implementation("org.jetbrains.kotlin:kotlin-reflect:${Versions.kotlinVersion}")
                 implementation("org.apache.logging.log4j:log4j-api:${Versions.log4jVersion}")
                 implementation("org.apache.logging.log4j:log4j-core:${Versions.log4jVersion}")
+                implementation("com.squareup.okio:okio:${Versions.okioVersion}")
             }
         }
         val test by getting {
