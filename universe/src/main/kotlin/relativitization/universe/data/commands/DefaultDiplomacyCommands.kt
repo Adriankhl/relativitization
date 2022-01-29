@@ -456,3 +456,78 @@ data class ProposePeaceCommand(
         ).proposePeace = true
     }
 }
+
+/**
+ * Surrender to become a direct subordinate
+ * Send to the player himself instead of target player
+ *
+ * @property targetPlayerId the target player which is in war
+ */
+@Serializable
+data class SurrenderCommand(
+    override val toId: Int,
+    override val fromId: Int,
+    override val fromInt4D: Int4D,
+    val targetPlayerId: Int,
+) : DefaultCommand() {
+    override fun description(): I18NString = I18NString(
+        listOf(
+            NormalString("Surrender and become subordinate of "),
+            IntString(0),
+            NormalString(". "),
+        ),
+        listOf(
+            targetPlayerId.toString(),
+        )
+    )
+
+    override fun canSend(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): CommandErrorMessage {
+        val isSelf = CommandErrorMessage(
+            playerData.playerId == toId,
+            I18NString("Is not sending to self. ")
+        )
+
+        val isInWar = CommandErrorMessage(
+            playerData.playerInternalData.diplomacyData().warData.warStateMap.containsKey(
+                targetPlayerId
+            ),
+            I18NString("Is not in war with target. ")
+        )
+
+        return CommandErrorMessage(
+            listOf(
+                isSelf,
+                isInWar,
+            )
+        )
+    }
+
+    override fun canExecute(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): CommandErrorMessage {
+        val isSelf = CommandErrorMessage(
+            playerData.playerId == fromId,
+            CommandI18NStringFactory.isNotFromSelf(playerData.playerId, fromId)
+        )
+
+        val isInWar = CommandErrorMessage(
+            playerData.playerInternalData.diplomacyData().warData.warStateMap.containsKey(targetPlayerId),
+            I18NString("Target is not in war with you. ")
+        )
+
+        return CommandErrorMessage(
+            listOf(
+                isSelf,
+                isInWar,
+            )
+        )
+    }
+
+    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+        playerData.changeDirectLeaderId(listOf(targetPlayerId))
+    }
+}
