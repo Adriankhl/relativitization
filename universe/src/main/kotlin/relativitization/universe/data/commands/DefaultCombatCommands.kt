@@ -8,6 +8,7 @@ import relativitization.universe.data.components.defaults.popsystem.CarrierType
 import relativitization.universe.data.components.defaults.popsystem.MutableCarrierData
 import relativitization.universe.maths.random.Rand
 import relativitization.universe.utils.I18NString
+import relativitization.universe.utils.RelativitizationLogManager
 
 /**
  * Damage from one player to another, send by auto combat mechanism only
@@ -79,8 +80,17 @@ data class DamageCommand(
                 }
 
             if (allCarrierDestroyed) {
-                playerData.changeDirectLeaderId(listOf(fromId))
+                // Don't change leader id if the damage is from subordinate
+                if (playerData.playerInternalData.subordinateIdList.contains(fromId)) {
+                    logger.debug("Destroyed by subordinate $fromId")
+                } else {
+                    playerData.changeDirectLeaderId(listOf(fromId))
+                }
             }
         }
+    }
+
+    companion object {
+        val logger = RelativitizationLogManager.getLogger()
     }
 }
