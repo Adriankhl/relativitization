@@ -97,7 +97,7 @@ data class SplitCarrierCommand(
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
-        val newPlayerInternalData: MutablePlayerInternalData = MutablePlayerInternalData(
+        val newPlayerInternalData = MutablePlayerInternalData(
             directLeaderId = playerData.playerId,
             leaderIdList = (playerData.playerInternalData.leaderIdList + playerData.playerId).toMutableList(),
         )
@@ -106,7 +106,7 @@ data class SplitCarrierCommand(
         val newAIData: MutableAIData = DataSerializer.copy(playerData.playerInternalData.aiData())
         newPlayerInternalData.aiData(newAIData)
 
-        // copy diplomacy data and remove war state
+        // copy diplomacy data and remove the war state
         val newDiplomacyData: MutableDiplomacyData =
             DataSerializer.copy(playerData.playerInternalData.diplomacyData())
         newDiplomacyData.warData.warStateMap.clear()
@@ -134,7 +134,7 @@ data class SplitCarrierCommand(
         }
 
         // Use default modifier data
-        val newModifierData: MutableModifierData = MutableModifierData()
+        val newModifierData = MutableModifierData()
         newPlayerInternalData.modifierData(newModifierData)
 
         // split fuel rest mass data
