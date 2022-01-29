@@ -140,11 +140,31 @@ class DeclareIndependenceReasoner : DualUtilityReasoner() {
     override fun getOptionList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
-    ): List<DualUtilityOption> = listOf(
-        DeclareIndependenceToDirectLeaderOption(),
-        DeclareIndependenceToTopLeaderOption(),
-        DoNothingDualUtilityOption(rank = 1, multiplier = 1.0, bonus = 1.0)
-    )
+    ): List<DualUtilityOption> {
+        val hasDirectLeader: Boolean = planDataAtPlayer.universeData3DAtPlayer.playerDataMap.containsKey(
+            planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData.directLeaderId,
+        )
+
+        val hasTopLeader: Boolean = planDataAtPlayer.universeData3DAtPlayer.playerDataMap.containsKey(
+            planDataAtPlayer.getCurrentMutablePlayerData().topLeaderId()
+        )
+
+        val declareIndependenceToDirectLeaderOptionList = if (hasDirectLeader) {
+            listOf(DeclareIndependenceToDirectLeaderOption())
+        } else {
+            listOf()
+        }
+
+        val declareIndependenceToTopLeaderOptionList = if (hasTopLeader) {
+            listOf(DeclareIndependenceToTopLeaderOption())
+        } else {
+            listOf()
+        }
+
+        return declareIndependenceToDirectLeaderOptionList + declareIndependenceToTopLeaderOptionList + listOf(
+            DoNothingDualUtilityOption(rank = 1, multiplier = 1.0, bonus = 1.0)
+        )
+    }
 }
 
 /**
