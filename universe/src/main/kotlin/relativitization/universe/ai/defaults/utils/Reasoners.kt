@@ -49,7 +49,7 @@ abstract class DualUtilityReasoner : Reasoner() {
     }
 
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
-        logger.debug("${this::class.java.simpleName} (DualUtilityReasoner) updating data")
+        logger.debug("${this::class.simpleName} (DualUtilityReasoner) updating data")
 
         val selectedDualUtilityOption: DualUtilityOption = selectOption(planDataAtPlayer, planState)
 
