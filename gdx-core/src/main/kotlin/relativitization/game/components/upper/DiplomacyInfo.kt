@@ -5,10 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.PlayerData
-import relativitization.universe.data.commands.DeclareIndependenceToDirectLeaderCommand
-import relativitization.universe.data.commands.DeclareIndependenceToTopLeaderCommand
-import relativitization.universe.data.commands.DeclareWarCommand
-import relativitization.universe.data.commands.ProposePeaceCommand
+import relativitization.universe.data.commands.*
 import relativitization.universe.data.components.defaults.diplomacy.DiplomaticRelationData
 import relativitization.universe.data.components.defaults.diplomacy.WarStateData
 
@@ -307,6 +304,25 @@ class DiplomacyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             game.universeClient.currentCommand = proposePeaceCommand
         }
         nestedTable.add(proposePeaceButton)
+
+        nestedTable.row().space(10f)
+
+        val surrenderButton = createTextButton(
+            "Surrender",
+            gdxSettings.smallFontSize,
+            gdxSettings.soundEffectsVolume,
+            extraColor = commandButtonColor,
+        ) {
+            val surrenderCommand = SurrenderCommand(
+                toId = game.universeClient.getCurrentPlayerData().playerId,
+                fromId = game.universeClient.getCurrentPlayerData().playerId,
+                fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
+                targetPlayerId = otherPlayerId.value
+            )
+
+            game.universeClient.currentCommand = surrenderCommand
+        }
+        nestedTable.add(surrenderButton)
 
         return nestedTable
     }
