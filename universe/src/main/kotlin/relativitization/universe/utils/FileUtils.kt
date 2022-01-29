@@ -1,17 +1,22 @@
 package relativitization.universe.utils
 
-import java.io.File
+import okio.FileSystem
+import okio.Path.Companion.toPath
 
 object FileUtils {
     fun mkdirs(path: String) {
-        File(path).mkdirs()
+        FileSystem.SYSTEM.createDirectories(path.toPath())
     }
 
     fun textToFile(text: String, path: String) {
-        File(path).writeText(text)
+        FileSystem.SYSTEM.write(path.toPath()) {
+            writeUtf8(text)
+        }
     }
 
     fun fileToText(path: String): String {
-        return File(path).readText()
+        return FileSystem.SYSTEM.read(path.toPath()) {
+            readUtf8()
+        }
     }
 }
