@@ -15,9 +15,9 @@ object AICollection {
 
     private val aiList: List<AI> = AI::class.sealedSubclasses.map { it.objectInstance!! }
 
-    val aiNameMap: Map<String, AI> = aiList.map {
-        it.name() to it
-    }.toMap()
+    val aiNameMap: Map<String, AI> = aiList.associateBy {
+        it.name()
+    }
 
     fun compute(
         universeData3DAtPlayer: UniverseData3DAtPlayer,

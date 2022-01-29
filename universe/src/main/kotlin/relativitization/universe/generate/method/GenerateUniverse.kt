@@ -10,14 +10,14 @@ import relativitization.universe.generate.method.random.RandomGenerateUniverseMe
 import relativitization.universe.generate.method.random.RandomOneStarPerPlayerGenerate
 import relativitization.universe.generate.method.testing.TestingFixedMinimal
 import relativitization.universe.generate.method.testing.TestingGenerateUniverseMethod
+import relativitization.universe.utils.FileUtils
 import relativitization.universe.utils.RelativitizationLogManager
-import java.io.File
 
 /**
  * Settings for universe generation, pass to GenerateUniverseMethod
  * Generation methods are not enforced to use any parameters here
  *
- * @property numPlayer number of initial players, human and ai
+ * @property numPlayer number of initial players, human and AI
  * @property numHumanPlayer number of initial human players
  * @property numExtraStellarSystem number of "None" type player with a stellar system
  * @property initialPopulation initial population of the carrier
@@ -33,14 +33,19 @@ data class GenerateSettings(
 ) {
     fun save(programDir: String) {
         logger.debug("Saving generate setting to GenerateSettings.json")
-        File("$programDir/GenerateSettings.json").writeText(encode(this))
+        FileUtils.textToFile(
+            text = encode(this),
+            path = "$programDir/GenerateSettings.json"
+        )
     }
 
     companion object {
         private val logger = RelativitizationLogManager.getLogger()
 
         private fun load(programDir: String): GenerateSettings {
-            val settingString: String = File("$programDir/GenerateSettings.json").readText()
+            val settingString: String = FileUtils.fileToText(
+                "$programDir/GenerateSettings.json"
+            )
             return decode(settingString)
         }
 
@@ -83,9 +88,9 @@ object GenerateUniverseMethodCollection {
         }
 
     // Store all generate method
-    val generateMethodMap: Map<String, GenerateUniverseMethod> = generateMethodList.map {
-        it.name() to it
-    }.toMap()
+    val generateMethodMap: Map<String, GenerateUniverseMethod> = generateMethodList.associateBy {
+        it.name()
+    }
 
     fun isSettingValid(settings: GenerateSettings): Boolean {
         val generateData = generate(settings)

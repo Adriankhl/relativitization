@@ -15,9 +15,9 @@ import relativitization.universe.maths.physics.Intervals.intDelay
 import relativitization.universe.maths.physics.Relativistic
 import relativitization.universe.maths.random.Rand
 import relativitization.universe.mechanisms.MechanismCollection.processMechanismCollection
+import relativitization.universe.utils.FileUtils
 import relativitization.universe.utils.RelativitizationLogManager
 import relativitization.universe.utils.pmap
-import java.io.File
 
 /**
  * Main class representing the 4D universe
@@ -26,7 +26,7 @@ import java.io.File
  * @param universeData the core data of the universe
  * @param programDir the location of the program directories, "." for desktop and context.filesDir for android
  * @param saveWhenInit save all when initializing the universe
- * @param alwaysSaveLatest always save latest slice for loading
+ * @param alwaysSaveLatest always save the latest slice for loading
  */
 class Universe(
     private val universeData: UniverseData,
@@ -116,7 +116,7 @@ class Universe(
     }
 
     /**
-     * Compute commands by ai for all player in a coroutine
+     * Compute commands by AI for all player in a coroutine
      */
     suspend fun computeAICommands(): Map<Int, List<Command>> = coroutineScope {
         val time: Int = universeData.universeState.getCurrentTime()
@@ -140,36 +140,42 @@ class Universe(
         val latestTime: Int = universeData.universeState.getCurrentTime()
 
         // Make Directory
-        File(saveDir).mkdirs()
+        FileUtils.mkdirs(saveDir)
 
         // save universe 4D slice
-        File("${saveDir}/universeData4DSlice-${latestTime}.json").writeText(
-            encode(universeData.universeData4D.getLatest())
+        FileUtils.textToFile(
+            text = encode(universeData.universeData4D.getLatest()),
+            path = "${saveDir}/universeData4DSlice-${latestTime}.json"
         )
 
         // save state
-        File("${saveDir}/universeState-${latestTime}.json").writeText(
-            encode(universeData.universeState)
+        FileUtils.textToFile(
+            text = encode(universeData.universeState),
+            path = "${saveDir}/universeState-${latestTime}.json"
         )
 
         // save settings, setting should be immutable, so only one save is enough
-        File("${saveDir}/universeSetting.json").writeText(
-            encode(universeData.universeSettings)
+        FileUtils.textToFile(
+            text = encode(universeData.universeSettings),
+            path = "${saveDir}/universeSetting.json",
         )
 
         // save commands
-        File("${saveDir}/commandMap-${latestTime}.json").writeText(
-            encode(universeData.commandMap)
+        FileUtils.textToFile(
+            text = encode(universeData.commandMap),
+            path = "${saveDir}/commandMap-${latestTime}.json",
         )
 
         // save science data
-        File("${saveDir}/universeGlobalData-${latestTime}.json").writeText(
-            encode(universeData.universeGlobalData)
+        FileUtils.textToFile(
+            text = encode(universeData.universeGlobalData),
+            path = "${saveDir}/universeGlobalData-${latestTime}.json",
         )
 
-        // Additionally save state to latestState.json for loading
-        File("${saveDir}/latestState.json").writeText(
-            encode(universeData.universeState)
+        // Additionally, save state to latestState.json for loading
+        FileUtils.textToFile(
+            text = encode(universeData.universeState),
+            path = "${saveDir}/latestState.json",
         )
     }
 
@@ -182,17 +188,19 @@ class Universe(
         val oldestTime: Int = latestTime - universeData.universeSettings.tDim + 1
         val oldUniverseData4D = universeData.universeData4D.getAllExcludeLatest()
 
-        File(saveDir).mkdirs()
+        FileUtils.mkdirs(saveDir)
 
         for (i in oldUniverseData4D.indices) {
-            File("${saveDir}/universeData4DSlice-${oldestTime + i}.json").writeText(
-                encode(oldUniverseData4D[i])
+            FileUtils.textToFile(
+                text = encode(oldUniverseData4D[i]),
+                path = "${saveDir}/universeData4DSlice-${oldestTime + i}.json",
             )
         }
 
         // save settings, setting should be immutable, so only one save is enough
-        File("${saveDir}/universeSetting.json").writeText(
-            encode(universeData.universeSettings)
+        FileUtils.textToFile(
+            text = encode(universeData.universeSettings),
+            path = "${saveDir}/universeSetting.json",
         )
 
         // Also save the latest slice, setting, state, commandMap
@@ -241,7 +249,7 @@ class Universe(
             val playerIdAtGrid: List<Int> = playerId3D[int3D.x][int3D.y][int3D.z]
 
             // Process the mechanisms and compute a map from player id and the command it produces
-            val commandMap: Map<Int, List<Command>> = playerIdAtGrid.map { id ->
+            val commandMap: Map<Int, List<Command>> = playerIdAtGrid.associateWith { id ->
                 val universeData3DAtPlayer = viewMap.getValue(id)
 
                 val commandListFromPlayer: List<Command> = processMechanismCollection(
@@ -250,10 +258,10 @@ class Universe(
                     universeData
                 )
 
-                id to commandListFromPlayer
-            }.toMap()
+                commandListFromPlayer
+            }
 
-            // Differentiate the commands the should be executed immediately, e.g., self and same group player
+            // Differentiate the commands should be executed immediately, e.g., self and same group player
             // or commands to be saved to command Map
             // In principle, this shouldn't contain self commands since they should be integrated in the mechanism process
             val commandPairList: List<Pair<List<Command>, List<Command>>> =
@@ -300,7 +308,7 @@ class Universe(
      * Execute commands in parallel
      */
     private suspend fun processCommandMap() = coroutineScope {
-        // Remove non existing player from the command map
+        // Remove non-existing player from the command map
         val noIdList: List<Int> =
             universeData.commandMap.keys.filter { !playerCollection.hasPlayer(it) }
 
@@ -344,16 +352,16 @@ class Universe(
     }
 
     /**
-     * Process human and ai command input
+     * Process human and AI command input
      *
      * @param originalHumanInputCommands map from player id to the command list from this player
-     * @param originalAiInputCommands map from player id to the command list computed by ai
+     * @param originalAiInputCommands map from player id to the command list computed by AI
      */
     private suspend fun processCommandInput(
         originalHumanInputCommands: Map<Int, List<Command>>,
         originalAiInputCommands: Map<Int, List<Command>>
     ) {
-        // Filter out non existing player
+        // Filter out non-existing player
         val humanInputCommands: Map<Int, List<Command>> = originalHumanInputCommands.filter {
             playerCollection.hasPlayer(it.key)
         }.mapValues { (_, commandList) ->
@@ -510,7 +518,7 @@ class Universe(
 
     /**
      * Post process universe
-     * Happens before ai and human input command list
+     * Happens before AI and human input command list
      */
     suspend fun postProcessUniverse(
         humanInputCommands: Map<Int, List<Command>>,
@@ -549,27 +557,41 @@ class Universe(
             val saveDir = "$programDir/saves/$universeName"
 
             // save settings, setting should be immutable, so only one save is enough
-            val universeSettings: UniverseSettings =
-                decode(File("${saveDir}/universeSetting.json").readText())
+            val universeSettings: UniverseSettings = decode(
+                FileUtils.fileToText(
+                    "${saveDir}/universeSetting.json"
+                )
+            )
 
             // load latest universe state
-            val universeState: UniverseState =
-                decode(File("${saveDir}/latestState.json").readText())
+            val universeState: UniverseState = decode(
+                FileUtils.fileToText(
+                    "${saveDir}/latestState.json"
+                )
+            )
 
             val latestTime: Int = universeState.getCurrentTime()
             val oldestTime: Int = latestTime - universeSettings.tDim + 1
 
             val commandMap: MutableMap<Int, MutableList<Command>> = decode(
-                File("${saveDir}/commandMap-${latestTime}.json").readText()
+                FileUtils.fileToText(
+                    "${saveDir}/commandMap-${latestTime}.json"
+                )
             )
 
             val universeGlobalData: UniverseGlobalData = decode(
-                File("${saveDir}/universeGlobalData-${latestTime}.json").readText()
+                FileUtils.fileToText(
+                    "${saveDir}/universeGlobalData-${latestTime}.json"
+                )
             )
 
             val playerData4D: MutableList<List<List<List<List<PlayerData>>>>> = mutableListOf()
             for (time in oldestTime..latestTime) {
-                playerData4D.add(decode(File("${saveDir}/universeData4DSlice-${time}.json").readText()))
+                playerData4D.add(decode(
+                    FileUtils.fileToText(
+                        "${saveDir}/universeData4DSlice-${time}.json"
+                    )
+                ))
             }
 
             val universeData4D = UniverseData4D(playerData4D)

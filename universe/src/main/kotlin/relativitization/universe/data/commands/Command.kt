@@ -61,7 +61,7 @@ sealed class Command {
     ): CommandErrorMessage = CommandErrorMessage(true)
 
     /**
-     * Check if can send and have command
+     * Check if the universe has this command, and it can be sent by the player
      *
      * @param playerData the player data to send this command
      */
@@ -188,7 +188,7 @@ sealed class Command {
     ): CommandErrorMessage = CommandErrorMessage(true)
 
     /**
-     * Check if can execute and have command
+     * Check if the universe has this command, and it can be executed on the player
      *
      * @param playerData the command execute on this player
      * @param universeSettings universe setting, e.g., have
@@ -297,9 +297,9 @@ object CommandCollection {
             it.objectInstance!!
         }
 
-    val commandAvailabilityNameMap: Map<String, CommandAvailability> = commandAvailabilityList.map {
-        it.name() to it
-    }.toMap()
+    val commandAvailabilityNameMap: Map<String, CommandAvailability> = commandAvailabilityList.associateBy {
+        it.name()
+    }
 
     fun hasCommand(universeSettings: UniverseSettings, command: Command): Boolean {
         return if (universeSettings.commandCollectionName != "All") {

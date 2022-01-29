@@ -41,9 +41,9 @@ object MechanismCollection {
     private val mechanismListsList: List<MechanismLists> =
         MechanismLists::class.sealedSubclasses.map { it.objectInstance!! }
 
-    val mechanismListsMap: Map<String, MechanismLists> = mechanismListsList.map {
-        it.name() to it
-    }.toMap()
+    val mechanismListsMap: Map<String, MechanismLists> = mechanismListsList.associateBy {
+        it.name()
+    }
 
     fun processMechanismCollection(
         mutablePlayerData: MutablePlayerData,

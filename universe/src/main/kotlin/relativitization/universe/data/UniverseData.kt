@@ -36,9 +36,8 @@ data class UniverseData(
     private fun isStateValid(): Boolean {
         // Not a valid test
         // val currentTimeCheck: Boolean = universeData4D.getTSizeList()[0] >= universeState.getCurrentTime()
-        val currentIdCheck: Boolean = (getLatestPlayerDataList().maxOfOrNull { it.playerId } ?: 0) <=
+        return (getLatestPlayerDataList().maxOfOrNull { it.playerId } ?: 0) <=
                 universeState.getCurrentMaxId()
-        return currentIdCheck
     }
 
     /**
@@ -193,7 +192,7 @@ data class UniverseData(
         val maxT: Int = playerDataList.maxOfOrNull { it.int4D.t } ?: 0
 
         return playerDataList.groupBy { it.playerId }.map { (_, playerDataGroup) ->
-            // If player is dead, only after image is left, none should be satisfy
+            // If player is dead, only after image is left, none should be satisfied
             playerDataGroup.firstOrNull { it.int4D.t == maxT }
         }.filterNotNull()
     }
@@ -321,7 +320,7 @@ data class MutableUniverseData4D(
      * @param currentTime the current time of the universe, the player data is added to the grid relative to this time
      * @param edgeLength the length of the cube defining same group of players
      */
-    fun addPlayerData(mutablePlayerData: MutablePlayerData, currentTime: Int, edgeLength: Double) {
+    private fun addPlayerData(mutablePlayerData: MutablePlayerData, currentTime: Int, edgeLength: Double) {
         val tSize: Int = playerData4D.size
 
         // Sync data component
@@ -373,7 +372,7 @@ data class MutableUniverseData4D(
     }
 
     /**
-     * Add player data to latest time slice, also add after image to prevent player disappearing after move
+     * Add player data to the latest time slice, also add after image to prevent player disappearing after move
      * Also sync data component
      *
      * @param mutablePlayerData the data of the player to be added
