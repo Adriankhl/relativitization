@@ -23,6 +23,19 @@ data class AddDirectSubordinateCommand(
         return CommandErrorMessage(false)
     }
 
+    override fun canExecute(playerData: MutablePlayerData, universeSettings: UniverseSettings): CommandErrorMessage {
+        val isNotLeader = CommandErrorMessage(
+            !playerData.isLeaderOrSelf(fromId),
+            I18NString("Is not leader of self. ")
+        )
+
+        return CommandErrorMessage(
+            listOf(
+                isNotLeader
+            )
+        )
+    }
+
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
         playerData.addDirectSubordinateId(fromId)
     }
