@@ -81,7 +81,8 @@ object SyncHierarchy : Mechanism() {
         // Clear subordinate
         val toRemoveSubordinateIdList: List<Int> =
             mutablePlayerData.playerInternalData.subordinateIdList.filter {
-                !universeData3DAtPlayer.get(it).isLeaderOrSelf(mutablePlayerData.playerId)
+                !universeData3DAtPlayer.playerDataMap.containsKey(it) ||
+                        !universeData3DAtPlayer.get(it).isLeaderOrSelf(mutablePlayerData.playerId)
             }
         mutablePlayerData.playerInternalData.subordinateIdList.removeAll(toRemoveSubordinateIdList)
 
