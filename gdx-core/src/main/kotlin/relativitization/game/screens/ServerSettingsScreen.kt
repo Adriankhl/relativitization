@@ -116,7 +116,7 @@ class ServerSettingsScreen(val game: RelativitizationGame) : TableScreen(game.as
             )
         )
         val waitTimeLimitSelectBox = createSelectBox(
-            listOf(10000000000L) + (10L..3600L).toList(),
+            listOf(10000000000L) + (60L..3600L step 60L).toList(),
             game.universeClient.universeServerSettings.waitTimeLimit,
             gdxSettings.normalFontSize,
         ) { limit, _ ->
