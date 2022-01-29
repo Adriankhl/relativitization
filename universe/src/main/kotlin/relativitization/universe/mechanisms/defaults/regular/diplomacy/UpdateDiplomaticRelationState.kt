@@ -40,7 +40,9 @@ object UpdateDiplomaticRelationState : Mechanism() {
         val allWarSet: Set<Int> = (inSelfDefensiveWarSet + inSelfOffensiveWarEnemyTopLeaderSet +
                 inSelfDefensiveWarSet + inSubordinateDefensiveWarSet).filter {
                     // Exclude subordinate and leader
-                    !mutablePlayerData.isSubOrdinateOrSelf(it) && !mutablePlayerData.isLeader(it)
+                    !mutablePlayerData.isSubOrdinateOrSelf(it) &&
+                            !mutablePlayerData.isLeader(it) &&
+                            universeData3DAtPlayer.playerDataMap.containsKey(it)
         }.toSet()
 
         val allSelfEnemySet: Set<Int> = allWarSet.map {
