@@ -287,7 +287,7 @@ class PlayerCollection(
             }
 
             // Clean up unnecessary int4DHistory
-            playerData.int4DHistory.removeAll { time - it.t > universeSettings.playerAfterImageDuration }
+            playerData.int4DHistory.removeAll { time - it.t > universeSettings.playerHistoricalInt4DLength }
         }
     }
 

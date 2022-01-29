@@ -222,7 +222,22 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
 
         table.row().space(10f)
 
+        val playerAfterImageLabel = createLabel(
+            game.universeClient.generateSettings.universeSettings.playerAfterImageDuration.toString(),
+            gdxSettings.normalFontSize
+        )
+
+        val playerHistoricalInt4DLengthSelectBox = createSelectBox(
+            (4..10).toList(),
+            game.universeClient.generateSettings.universeSettings.playerHistoricalInt4DLength,
+            gdxSettings.normalFontSize
+        ) { length, _ ->
+            game.universeClient.generateSettings.universeSettings.playerHistoricalInt4DLength =
+                length
+        }
+
         table.add(createLabel("Speed of light: ", gdxSettings.normalFontSize))
+
         val speedOfLightTextField = createTextField(
             game.universeClient.generateSettings.universeSettings.speedOfLight.toString(),
             gdxSettings.normalFontSize
@@ -230,6 +245,16 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
             try {
                 game.universeClient.generateSettings.universeSettings.speedOfLight =
                     speedOfLight.toDouble()
+
+                // Ensure setting is valid
+                val minHistory: Int = Intervals.maxDelayAfterMove(
+                    game.universeClient.generateSettings.universeSettings.speedOfLight
+                )
+                playerAfterImageLabel.setText(minHistory)
+
+                if (playerHistoricalInt4DLengthSelectBox.selected < minHistory) {
+                    playerHistoricalInt4DLengthSelectBox.selected = minHistory
+                }
             } catch (e: NumberFormatException) {
                 logger.error("Invalid speed of light")
             }
@@ -332,32 +357,18 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
         table.row().space(10f)
 
         table.add(createLabel("Player after image duration: ", gdxSettings.normalFontSize))
-        val playerAfterImageSelectBox = createSelectBox(
-            (4..10).toList(),
-            game.universeClient.generateSettings.universeSettings.playerAfterImageDuration,
-            gdxSettings.normalFontSize
-        ) { duration, _ ->
-            game.universeClient.generateSettings.universeSettings.playerAfterImageDuration =
-                duration
-        }
-        table.add(playerAfterImageSelectBox)
+
+        table.add(playerAfterImageLabel)
 
         table.row().space(10f)
 
         table.add(
             createLabel(
-                "Player trajectory length (must be greater than after image duration): ",
+                "Player trajectory length (>= after image duration): ",
                 gdxSettings.normalFontSize
             )
         )
-        val playerHistoricalInt4DLengthSelectBox = createSelectBox(
-            (4..10).toList(),
-            game.universeClient.generateSettings.universeSettings.playerHistoricalInt4DLength,
-            gdxSettings.normalFontSize
-        ) { length, _ ->
-            game.universeClient.generateSettings.universeSettings.playerHistoricalInt4DLength =
-                length
-        }
+
         table.add(playerHistoricalInt4DLengthSelectBox)
 
         table.row().space(10f)
