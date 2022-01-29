@@ -61,7 +61,8 @@ class SpaceConflictReasoner : DualUtilityReasoner() {
         // potential target are the highest rank leader possible of all the conflict player
         val potentialWarTargetIdSet: Set<Int> = conflictPlayerIdList.map { id ->
             planDataAtPlayer.universeData3DAtPlayer.get(id).playerInternalData.leaderIdList.firstOrNull { leaderId ->
-                !currentPlayer.isLeaderOrSelf(leaderId)
+                !currentPlayer.isLeaderOrSelf(leaderId) &&
+                        planDataAtPlayer.universeData3DAtPlayer.playerDataMap.containsKey(leaderId)
             } ?: id
         }.toSet()
 
