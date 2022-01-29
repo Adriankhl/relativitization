@@ -238,7 +238,7 @@ data class MutablePlayerData(
                 playerInternalData.leaderIdList.add(playerId)
             }
         } else {
-            logger.error("Add subordinate as leader")
+            logger.error("Player $playerId try to add subordinate in $leaderListOfDirectLeader as leader")
         }
     }
 
@@ -255,7 +255,7 @@ data class MutablePlayerData(
                 playerInternalData.subordinateIdList.add(subordinateId)
             }
         } else {
-            logger.error("Add leader as subordinate")
+            logger.error("Player $playerId try to add leader $subordinateId as direct subordinate")
         }
     }
 
@@ -268,7 +268,7 @@ data class MutablePlayerData(
                 playerInternalData.subordinateIdList.add(subordinateId)
             }
         } else {
-            logger.error("Add leader as subordinate")
+            logger.error("Player $playerId try to add leader $subordinateId as subordinate")
         }
     }
 
