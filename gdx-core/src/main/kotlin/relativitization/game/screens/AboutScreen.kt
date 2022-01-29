@@ -180,6 +180,9 @@ class AboutScreen(
             Copyright 2014-2021 JetBrains s.r.o and contributors. 
              
              
+            okio library.
+            Copyright 2013 Square, Inc.
+             
             libgdx library. 
             
             
