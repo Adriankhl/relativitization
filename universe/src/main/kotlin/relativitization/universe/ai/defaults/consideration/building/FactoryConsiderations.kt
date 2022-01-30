@@ -259,7 +259,7 @@ class TooManySelfFuelFactoryAtCarrierConsideration(
         }
 
         val selfResourceFactoryMaxEmployee: Double = selfResourceFactoryList.fold(0.0) { acc, resourceFactory ->
-            acc + resourceFactory.resourceFactoryInternalData.maxNumEmployee * resourceFactory.numBuilding
+            acc + resourceFactory.maxNumEmployee
         }
 
         // Too many if self fuel employee is more than all others' employee
@@ -388,10 +388,8 @@ class OutdatedResourceFactoryConsideration(
             )
 
         // Compute the ratio of output over the employee, which should be affected by tech level
-        val outputRatio: Double = resourceFactory.resourceFactoryInternalData.maxOutputAmount /
-                resourceFactory.resourceFactoryInternalData.maxNumEmployee
-        val idealOutputRatio: Double = idealResourceFactory.maxOutputAmount /
-                idealResourceFactory.maxNumEmployee
+        val outputRatio: Double = resourceFactory.resourceFactoryInternalData.maxOutputAmountPerEmployee
+        val idealOutputRatio: Double = idealResourceFactory.maxOutputAmountPerEmployee
 
         val qualityMag: Double =
             resourceFactory.resourceFactoryInternalData.maxOutputResourceQualityData.mag()
@@ -460,7 +458,7 @@ class SufficientSelfResourceFactoryAtCarrierConsideration(
             }
 
         val totalMaxEmployee: Double = selfResourceFactoryList.fold(0.0) { acc, resourceFactory ->
-            acc + resourceFactory.resourceFactoryInternalData.maxNumEmployee * resourceFactory.numBuilding
+            acc + resourceFactory.maxNumEmployee
         }
 
         val totalLabourerPopulation: Double =
@@ -528,7 +526,7 @@ class SufficientSelfResourceFactoryAfterRemoveConsideration(
             }.values.toList()
 
         val totalMaxEmployee: Double = selfResourceFactoryList.fold(0.0) { acc, resourceFactory ->
-            acc + resourceFactory.resourceFactoryInternalData.maxNumEmployee * resourceFactory.numBuilding
+            acc + resourceFactory.maxNumEmployee
         }
 
         val totalLabourerPopulation: Double =
@@ -595,7 +593,7 @@ class TooManySelfResourceFactoryAtCarrierConsideration(
         }
 
         val thisResourceMaxEmployee: Double = thisResourceFactoryList.fold(0.0) { acc, resourceFactory ->
-            acc + resourceFactory.resourceFactoryInternalData.maxNumEmployee * resourceFactory.numBuilding
+            acc + resourceFactory.maxNumEmployee
         }
 
         val selfFuelFactoryMaxEmployee: Double = selfFuelFactoryList.fold(0.0) { acc, fuelFactory ->
@@ -603,7 +601,7 @@ class TooManySelfResourceFactoryAtCarrierConsideration(
         }
 
         val otherResourceFactoryMaxEmployee: Double = otherResourceFactoryList.fold(0.0) { acc, resourceFactory ->
-            acc + resourceFactory.resourceFactoryInternalData.maxNumEmployee * resourceFactory.numBuilding
+            acc + resourceFactory.maxNumEmployee
         }
 
         // Too many if this resource employee is more than 0.1 of all others' employee
@@ -659,8 +657,7 @@ class SufficientLabourerEmploymentConsideration(
                     mutableCarrierData.allPopData.labourerPopData.resourceFactoryMap.values.fold(
                         0.0
                     ) { acc, mutableResourceFactoryData ->
-                        acc + mutableResourceFactoryData.resourceFactoryInternalData.maxNumEmployee *
-                                mutableResourceFactoryData.numBuilding
+                        acc + mutableResourceFactoryData.maxNumEmployee
                     }
 
                 fuelFactoryEmploymentAmount + resourceFactoryEmploymentAmount >= popAmount

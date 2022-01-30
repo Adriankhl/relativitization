@@ -184,7 +184,7 @@ data class BuildForeignFuelFactoryCommand(
  * @property resourceFactoryInternalData data of the factory
  * @property qualityLevel the quality of the factory, relative to tech level
  * @property storedFuelRestMass fuel stored in the newly built factory
- * @property numBuilding number of building in this factory
+ * @property maxNumEmployee maximum number of employee
  */
 @Serializable
 data class BuildForeignResourceFactoryCommand(
@@ -196,8 +196,8 @@ data class BuildForeignResourceFactoryCommand(
     val ownerId: Int,
     val resourceFactoryInternalData: ResourceFactoryInternalData,
     val qualityLevel: Double,
+    val maxNumEmployee: Double,
     val storedFuelRestMass: Double,
-    val numBuilding: Double,
 ) : DefaultCommand() {
     override fun description(): I18NString = I18NString(
         listOf(
@@ -211,16 +211,14 @@ data class BuildForeignResourceFactoryCommand(
             IntString(3),
             NormalString(" of player "),
             IntString(4),
-            NormalString(". Initial stored fuel rest mass: "),
+            NormalString(". Max. number of employee: "),
             IntString(5),
-            NormalString(", number of building: "),
+            NormalString(", initial stored fuel rest mass: "),
             IntString(6),
-            NormalString(", max. number of employee: "),
-            IntString(7),
             NormalString(", output amount: "),
-            IntString(8),
+            IntString(7),
             NormalString(", output quality: "),
-            IntString(9),
+            IntString(8),
             NormalString(". "),
         ),
         listOf(
@@ -229,10 +227,10 @@ data class BuildForeignResourceFactoryCommand(
             ownerId.toString(),
             targetCarrierId.toString(),
             toId.toString(),
+            maxNumEmployee.toString(),
             storedFuelRestMass.toString(),
-            numBuilding.toString(),
-            (resourceFactoryInternalData.maxNumEmployee * numBuilding).toString(),
-            (resourceFactoryInternalData.maxOutputAmount * numBuilding).toString(),
+            (resourceFactoryInternalData.maxOutputAmountPerEmployee * maxNumEmployee).toString(),
+            (resourceFactoryInternalData.maxOutputAmountPerEmployee * maxNumEmployee).toString(),
             resourceFactoryInternalData.maxOutputResourceQualityData.quality1.toString(),
         )
     )
@@ -263,19 +261,20 @@ data class BuildForeignResourceFactoryCommand(
             I18NString("Factory internal data is not valid. ")
         )
 
-        val fuelNeeded: Double =
-            playerData.playerInternalData.playerScienceData().playerScienceApplicationData.newResourceFactoryFuelNeededByConstruction(
-                resourceFactoryInternalData.outputResource,
-                qualityLevel
-            ) * numBuilding
+        val fuelNeeded: Double = playerData.playerInternalData.playerScienceData().playerScienceApplicationData
+            .newResourceFactoryFuelNeededByConstruction(
+                outputResourceType = resourceFactoryInternalData.outputResource,
+                maxNumEmployee = maxNumEmployee,
+                qualityLevel = qualityLevel,
+            )
         val hasFuel = CommandErrorMessage(
             playerData.playerInternalData.physicsData().fuelRestMassData.production >= fuelNeeded + storedFuelRestMass,
             I18NString("Not enough fuel rest mass. ")
         )
 
-        val isNumBuildingValid = CommandErrorMessage(
-            numBuilding >= 1.0,
-            I18NString("Number of building should be >= 1. ")
+        val isMaxNumEmployeeValid = CommandErrorMessage(
+            maxNumEmployee >= 1.0,
+            I18NString("Max. number of employee should be >= 1. ")
         )
 
         return CommandErrorMessage(
@@ -284,7 +283,7 @@ data class BuildForeignResourceFactoryCommand(
                 allowConstruction,
                 validFactoryInternalData,
                 hasFuel,
-                isNumBuildingValid,
+                isMaxNumEmployeeValid,
             )
         )
     }
@@ -293,11 +292,12 @@ data class BuildForeignResourceFactoryCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ) {
-        val fuelNeeded: Double =
-            playerData.playerInternalData.playerScienceData().playerScienceApplicationData.newResourceFactoryFuelNeededByConstruction(
-                resourceFactoryInternalData.outputResource,
-                qualityLevel
-            ) * numBuilding
+        val fuelNeeded: Double = playerData.playerInternalData.playerScienceData().playerScienceApplicationData
+            .newResourceFactoryFuelNeededByConstruction(
+                outputResourceType = resourceFactoryInternalData.outputResource,
+                maxNumEmployee = maxNumEmployee,
+                qualityLevel = qualityLevel,
+            )
         playerData.playerInternalData.physicsData().fuelRestMassData.production -= fuelNeeded + storedFuelRestMass
 
     }
@@ -336,13 +336,15 @@ data class BuildForeignResourceFactoryCommand(
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
 
-        val carrier: MutableCarrierData =
-            playerData.playerInternalData.popSystemData().carrierDataMap.getValue(targetCarrierId)
+        val carrier: MutableCarrierData = playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
+            targetCarrierId
+        )
+
         carrier.allPopData.labourerPopData.addResourceFactory(
             MutableResourceFactoryData(
                 ownerPlayerId = ownerId,
                 resourceFactoryInternalData = DataSerializer.copy(resourceFactoryInternalData),
-                numBuilding = numBuilding,
+                maxNumEmployee = maxNumEmployee,
                 isOpened = true,
                 lastOutputAmount = 0.0,
                 lastInputResourceMap = mutableMapOf(),
@@ -508,7 +510,7 @@ data class BuildLocalFuelFactoryCommand(
  * @property outputResourceType the resource type of this factory
  * @property targetCarrierId build factory on that carrier
  * @property qualityLevel the quality of the factory, relative to tech level
- * @property numBuilding number of building in this factory
+ * @property maxNumEmployee maximum number of employee
  */
 @Serializable
 data class BuildLocalResourceFactoryCommand(
@@ -518,7 +520,7 @@ data class BuildLocalResourceFactoryCommand(
     val outputResourceType: ResourceType,
     val targetCarrierId: Int,
     val qualityLevel: Double,
-    val numBuilding: Double,
+    val maxNumEmployee: Double,
 ) : DefaultCommand() {
     override fun description(): I18NString = I18NString(
         listOf(
@@ -530,7 +532,7 @@ data class BuildLocalResourceFactoryCommand(
             IntString(2),
             NormalString(" of player "),
             IntString(3),
-            NormalString(". Number of building: "),
+            NormalString(". Max. number of employee: "),
             IntString(4),
             NormalString(". "),
         ),
@@ -539,7 +541,7 @@ data class BuildLocalResourceFactoryCommand(
             qualityLevel.toString(),
             targetCarrierId.toString(),
             toId.toString(),
-            numBuilding.toString()
+            maxNumEmployee.toString(),
         )
     )
 
@@ -558,16 +560,16 @@ data class BuildLocalResourceFactoryCommand(
             I18NString("Not allow to build factory. ")
         )
 
-        val isNumBuildingValid = CommandErrorMessage(
-            numBuilding >= 1.0,
-            I18NString("Number of building should be >= 1. ")
+        val isMaxNumEmployeeValid = CommandErrorMessage(
+            maxNumEmployee >= 1.0,
+            I18NString("Max. number of employee should be >= 1. ")
         )
 
         return CommandErrorMessage(
             listOf(
                 isSubordinateOrSelf,
                 allowSubordinateConstruction,
-                isNumBuildingValid,
+                isMaxNumEmployeeValid,
             )
         )
     }
@@ -601,14 +603,15 @@ data class BuildLocalResourceFactoryCommand(
             I18NString("Carrier does not exist. ")
         )
 
-        val requiredFuel: Double =
-            playerData.playerInternalData.playerScienceData().playerScienceApplicationData.newResourceFactoryFuelNeededByConstruction(
+        val requiredFuel: Double = playerData.playerInternalData.playerScienceData().playerScienceApplicationData
+            .newResourceFactoryFuelNeededByConstruction(
                 outputResourceType = outputResourceType,
+                maxNumEmployee = maxNumEmployee,
                 qualityLevel = qualityLevel
-            ) * numBuilding
+            )
 
         val hasFuel = CommandErrorMessage(
-            playerData.playerInternalData.physicsData().fuelRestMassData.production > -requiredFuel,
+            playerData.playerInternalData.physicsData().fuelRestMassData.production >= requiredFuel,
             I18NString("Not enough fuel. ")
         )
 
@@ -630,17 +633,18 @@ data class BuildLocalResourceFactoryCommand(
                 targetCarrierId
             )
 
-        val newResourceFactoryInternalData: MutableResourceFactoryInternalData =
-            playerData.playerInternalData.playerScienceData().playerScienceApplicationData.newResourceFactoryInternalData(
+        val newResourceFactoryInternalData: MutableResourceFactoryInternalData = playerData.playerInternalData
+            .playerScienceData().playerScienceApplicationData.newResourceFactoryInternalData(
                 outputResourceType = outputResourceType,
                 qualityLevel = qualityLevel
             )
 
-        val requiredFuel: Double =
-            playerData.playerInternalData.playerScienceData().playerScienceApplicationData.newResourceFactoryFuelNeededByConstruction(
+        val requiredFuel: Double = playerData.playerInternalData.playerScienceData().playerScienceApplicationData
+            .newResourceFactoryFuelNeededByConstruction(
                 outputResourceType = outputResourceType,
+                maxNumEmployee = maxNumEmployee,
                 qualityLevel = qualityLevel
-            ) * numBuilding
+            )
 
         playerData.playerInternalData.physicsData().fuelRestMassData.production -= requiredFuel
 
@@ -648,7 +652,7 @@ data class BuildLocalResourceFactoryCommand(
             MutableResourceFactoryData(
                 ownerPlayerId = toId,
                 resourceFactoryInternalData = newResourceFactoryInternalData,
-                numBuilding = numBuilding,
+                maxNumEmployee = maxNumEmployee,
                 isOpened = true,
                 lastOutputAmount = 0.0,
                 lastInputResourceMap = mutableMapOf(),

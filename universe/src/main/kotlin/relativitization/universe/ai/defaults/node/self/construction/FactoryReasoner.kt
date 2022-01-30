@@ -359,7 +359,11 @@ class BuildNewResourceFactoryOption(
 
         val minFuelNeeded: Double = planDataAtPlayer.getCurrentMutablePlayerData()
             .playerInternalData.playerScienceData().playerScienceApplicationData
-            .newResourceFactoryFuelNeededByConstruction(resourceType, 1.0)
+            .newResourceFactoryFuelNeededByConstruction(
+                outputResourceType = resourceType,
+                maxNumEmployee = 1.0,
+                qualityLevel = 1.0
+            )
         val sufficientProductionFuelConsideration = SufficientProductionFuelConsideration(
             requiredProductionFuelRestMass = minFuelNeeded / maxProductionFuelFraction,
             rankIfTrue = 0,
@@ -400,12 +404,13 @@ class BuildNewResourceFactoryOption(
                 1.0
             )
 
-        val fuelNeededPerBuilding: Double = planDataAtPlayer
+        val fuelNeededPerEmployee: Double = planDataAtPlayer
             .getCurrentMutablePlayerData()
             .playerInternalData.playerScienceData()
             .playerScienceApplicationData.newResourceFactoryFuelNeededByConstruction(
-                resourceType,
-                1.0
+                outputResourceType = resourceType,
+                maxNumEmployee = 1.0,
+                qualityLevel = 1.0
             )
 
         val fuelAvailable: Double = planDataAtPlayer.getCurrentMutablePlayerData()
@@ -418,16 +423,10 @@ class BuildNewResourceFactoryOption(
             .playerInternalData.popSystemData().carrierDataMap.getValue(carrierId).allPopData
             .labourerPopData.commonPopData.adultPopulation
 
-        // Multiply by 10 to consider pop growth
-        val targetNumLabourerPerResource: Double = numLabourer / ResourceType.values().size * 0.5
-
-        // Compute the numBuilding by considering the available fuel and number of labourer
-        val fuelFraction: Double = maxUsableFuel / fuelNeededPerBuilding
-        val labourerFraction: Double = targetNumLabourerPerResource / idealFactory.maxNumEmployee
-        val numBuilding: Double = max(
+        val maxNumEmployee: Double = max(
             min(
-                fuelFraction,
-                labourerFraction,
+                maxUsableFuel / fuelNeededPerEmployee,
+                numLabourer / ResourceType.values().size * 0.5,
             ),
             1.0
         )
@@ -442,8 +441,8 @@ class BuildNewResourceFactoryOption(
                 ownerId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
                 resourceFactoryInternalData = DataSerializer.copy(idealFactory),
                 qualityLevel = 1.0,
+                maxNumEmployee = maxNumEmployee,
                 storedFuelRestMass = 0.0,
-                numBuilding = numBuilding,
             )
         )
     }

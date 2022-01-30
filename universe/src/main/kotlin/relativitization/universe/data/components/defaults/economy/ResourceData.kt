@@ -512,7 +512,13 @@ data class MutableResourceQualityData(
     /**
      * Resource difference
      */
-    fun squareDiff(other: MutableResourceQualityData): Double = (this - other).square()
+    fun squareDiff(other: ResourceQualityData): Double {
+        return (quality1 - other.quality1).pow(2)
+    }
+
+    fun squareDiff(other: MutableResourceQualityData): Double {
+        return (quality1 - other.quality1).pow(2)
+    }
 
     /**
      * Combine min of the qualities

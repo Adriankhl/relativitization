@@ -83,8 +83,8 @@ internal class RandomOneStarPerPlayerGenerateTest {
                             1.0
                         ),
                     qualityLevel = 1.0,
+                    maxNumEmployee = 1.0,
                     storedFuelRestMass = 0.0,
-                    numBuilding = 1.0,
                 )
             )
         }

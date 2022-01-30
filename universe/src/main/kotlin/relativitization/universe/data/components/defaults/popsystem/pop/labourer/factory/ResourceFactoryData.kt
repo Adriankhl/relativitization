@@ -11,7 +11,7 @@ import kotlin.math.pow
  *
  * @property ownerPlayerId the owner of this factory
  * @property resourceFactoryInternalData the data describing this factory
- * @property numBuilding how large is this factory, affect the throughput of the factory
+ * @property maxNumEmployee maximum number of employee
  * @property isOpened whether this factory is opened
  * @property storedFuelRestMass stored fuel to be consumed if this is owned by foreign player
  * @property lastOutputAmount the output amount in the latest turn
@@ -22,7 +22,7 @@ import kotlin.math.pow
 data class ResourceFactoryData(
     val ownerPlayerId: Int = -1,
     val resourceFactoryInternalData: ResourceFactoryInternalData = ResourceFactoryInternalData(),
-    val numBuilding: Double = 1.0,
+    val maxNumEmployee: Double = 1.0,
     val isOpened: Boolean = true,
     val storedFuelRestMass: Double = 0.0,
     val lastOutputAmount: Double = 0.0,
@@ -33,18 +33,18 @@ data class ResourceFactoryData(
     fun maxInputAmount(resourceType: ResourceType): Double {
         val amountPerUnit: Double =
             resourceFactoryInternalData.inputResourceMap[resourceType]?.amount ?: 0.0
-        return amountPerUnit * resourceFactoryInternalData.maxOutputAmount * numBuilding
+        return amountPerUnit * resourceFactoryInternalData.maxOutputAmountPerEmployee * maxNumEmployee
     }
 
     fun employeeFraction(): Double =
-        lastNumEmployee / (resourceFactoryInternalData.maxNumEmployee * numBuilding)
+        lastNumEmployee / maxNumEmployee
 }
 
 @Serializable
 data class MutableResourceFactoryData(
     var ownerPlayerId: Int = -1,
     var resourceFactoryInternalData: MutableResourceFactoryInternalData = MutableResourceFactoryInternalData(),
-    var numBuilding: Double = 1.0,
+    var maxNumEmployee: Double = 1.0,
     var isOpened: Boolean = true,
     var storedFuelRestMass: Double = 0.0,
     var lastOutputAmount: Double = 0.0,
@@ -55,11 +55,11 @@ data class MutableResourceFactoryData(
     fun maxInputAmount(resourceType: ResourceType): Double {
         val amountPerUnit: Double =
             resourceFactoryInternalData.inputResourceMap[resourceType]?.amount ?: 0.0
-        return amountPerUnit * resourceFactoryInternalData.maxOutputAmount * numBuilding
+        return amountPerUnit * resourceFactoryInternalData.maxOutputAmountPerEmployee * maxNumEmployee
     }
 
     fun employeeFraction(): Double =
-        lastNumEmployee / (resourceFactoryInternalData.maxNumEmployee * numBuilding)
+        lastNumEmployee / maxNumEmployee
 }
 
 /**
@@ -98,6 +98,15 @@ data class MutableInputResourceData(
     var qualityData: MutableResourceQualityData = MutableResourceQualityData(),
     var amount: Double = 1.0,
 ) {
+    fun squareDiff(other: InputResourceData): Double {
+        val qualityDiff: Double =
+            qualityData.squareDiff(other.qualityData)
+
+        val amountDiff: Double = (amount - other.amount).pow(2)
+
+        return qualityDiff + amountDiff
+    }
+
     fun squareDiff(other: MutableInputResourceData): Double {
         val qualityDiff: Double =
             qualityData.squareDiff(other.qualityData)
@@ -113,82 +122,76 @@ data class MutableInputResourceData(
  *
  * @property outputResource the output resource type
  * @property maxOutputResourceQualityData maximum output resource quality
- * @property maxOutputAmount maximum output resource amount
+ * @property maxOutputAmountPerEmployee maximum output resource amount per employee
  * @property inputResourceMap map the input resource type to the input-related data
- * @property fuelRestMassConsumptionRate fuel consumption rate
- * @property maxNumEmployee max number of employee
- * @property size the size of this factory
+ * @property fuelRestMassConsumptionRatePerEmployee fuel consumption rate per employee
+ * @property sizePerEmployee the size of this factory per employee
  */
 @Serializable
 data class ResourceFactoryInternalData(
     val outputResource: ResourceType = ResourceType.PLANT,
     val maxOutputResourceQualityData: ResourceQualityData = ResourceQualityData(),
-    val maxOutputAmount: Double = 0.0,
+    val maxOutputAmountPerEmployee: Double = 0.0,
     val inputResourceMap: Map<ResourceType, InputResourceData> = mapOf(),
-    val fuelRestMassConsumptionRate: Double = 1.0,
-    val maxNumEmployee: Double = 1.0,
-    val size: Double = 0.0,
+    val fuelRestMassConsumptionRatePerEmployee: Double = 1.0,
+    val sizePerEmployee: Double = 0.0,
 ) {
     fun squareDiff(other: ResourceFactoryInternalData): Double {
         val outputResourceDiff: Double = if (outputResource == other.outputResource) {
             0.0
         } else {
-            Double.POSITIVE_INFINITY
+            Double.MAX_VALUE * 0.01
         }
 
         val outputQualityDiff: Double =
             maxOutputResourceQualityData.squareDiff(other.maxOutputResourceQualityData)
 
-        val outputAmountDiff: Double = (maxOutputAmount - other.maxOutputAmount).pow(2)
+        val outputAmountDiff: Double = (maxOutputAmountPerEmployee - other.maxOutputAmountPerEmployee).pow(2)
 
         val inputDiff: Double = inputResourceMap.map {
             if (!other.inputResourceMap.containsKey(it.key)) {
-                Double.POSITIVE_INFINITY
+                Double.MAX_VALUE * 0.01
             } else {
                 it.value.squareDiff(other.inputResourceMap.getValue(it.key))
             }
         }.sumOf { it }
 
         val consumptionDiff: Double =
-            (fuelRestMassConsumptionRate - other.fuelRestMassConsumptionRate).pow(2)
+            (fuelRestMassConsumptionRatePerEmployee - other.fuelRestMassConsumptionRatePerEmployee).pow(2)
 
-        val employeeDiff: Double = (maxNumEmployee - other.maxNumEmployee).pow(2)
-
-        val sizeDiff: Double = (size - other.size).pow(2)
+        val sizeDiff: Double = (sizePerEmployee - other.sizePerEmployee).pow(2)
 
         return (outputResourceDiff + outputQualityDiff + outputAmountDiff + inputDiff +
-                consumptionDiff + employeeDiff + sizeDiff)
+                consumptionDiff + sizeDiff)
     }
 
     fun squareDiff(other: MutableResourceFactoryInternalData): Double {
         val outputResourceDiff: Double = if (outputResource == other.outputResource) {
             0.0
         } else {
-            Double.POSITIVE_INFINITY
+            Double.MAX_VALUE * 0.01
         }
 
         val outputQualityDiff: Double =
             maxOutputResourceQualityData.squareDiff(other.maxOutputResourceQualityData)
 
-        val outputAmountDiff: Double = (maxOutputAmount - other.maxOutputAmount).pow(2)
+        val outputAmountDiff: Double = (maxOutputAmountPerEmployee - other.maxOutputAmountPerEmployee).pow(2)
 
         val inputDiff: Double = inputResourceMap.map {
             if (!other.inputResourceMap.containsKey(it.key)) {
-                Double.POSITIVE_INFINITY
+                Double.MAX_VALUE * 0.01
             } else {
                 it.value.squareDiff(other.inputResourceMap.getValue(it.key))
             }
         }.sumOf { it }
 
         val consumptionDiff: Double =
-            (fuelRestMassConsumptionRate - other.fuelRestMassConsumptionRate).pow(2)
+            (fuelRestMassConsumptionRatePerEmployee - other.fuelRestMassConsumptionRatePerEmployee).pow(2)
 
-        val employeeDiff: Double = (maxNumEmployee - other.maxNumEmployee).pow(2)
-
-        val sizeDiff: Double = (size - other.size).pow(2)
+        val sizeDiff: Double = (sizePerEmployee - other.sizePerEmployee).pow(2)
 
         return (outputResourceDiff + outputQualityDiff + outputAmountDiff + inputDiff +
-                consumptionDiff + employeeDiff + sizeDiff)
+                consumptionDiff + sizeDiff)
     }
 }
 
@@ -196,40 +199,66 @@ data class ResourceFactoryInternalData(
 data class MutableResourceFactoryInternalData(
     var outputResource: ResourceType = ResourceType.PLANT,
     var maxOutputResourceQualityData: MutableResourceQualityData = MutableResourceQualityData(),
-    var maxOutputAmount: Double = 0.0,
+    var maxOutputAmountPerEmployee: Double = 1.0,
     var inputResourceMap: MutableMap<ResourceType, MutableInputResourceData> = mutableMapOf(),
-    var fuelRestMassConsumptionRate: Double = 1.0,
-    var maxNumEmployee: Double = 1.0,
-    var size: Double = 0.0,
+    var fuelRestMassConsumptionRatePerEmployee: Double = 1.0,
+    var sizePerEmployee: Double = 0.0,
 ) {
-    fun squareDiff(other: MutableResourceFactoryInternalData): Double {
+    fun squareDiff(other: ResourceFactoryInternalData): Double {
         val outputResourceDiff: Double = if (outputResource == other.outputResource) {
             0.0
         } else {
-            Double.POSITIVE_INFINITY
+            Double.MAX_VALUE * 0.01
         }
 
         val outputQualityDiff: Double =
             maxOutputResourceQualityData.squareDiff(other.maxOutputResourceQualityData)
 
-        val outputAmountDiff: Double = (maxOutputAmount - other.maxOutputAmount).pow(2)
+        val outputAmountDiff: Double = (maxOutputAmountPerEmployee - other.maxOutputAmountPerEmployee).pow(2)
 
         val inputDiff: Double = inputResourceMap.map {
             if (!other.inputResourceMap.containsKey(it.key)) {
-                Double.POSITIVE_INFINITY
+                Double.MAX_VALUE * 0.01
             } else {
                 it.value.squareDiff(other.inputResourceMap.getValue(it.key))
             }
         }.sumOf { it }
 
         val consumptionDiff: Double =
-            (fuelRestMassConsumptionRate - other.fuelRestMassConsumptionRate).pow(2)
+            (fuelRestMassConsumptionRatePerEmployee - other.fuelRestMassConsumptionRatePerEmployee).pow(2)
 
-        val employeeDiff: Double = (maxNumEmployee - other.maxNumEmployee).pow(2)
-
-        val sizeDiff: Double = (size - other.size).pow(2)
+        val sizeDiff: Double = (sizePerEmployee - other.sizePerEmployee).pow(2)
 
         return (outputResourceDiff + outputQualityDiff + outputAmountDiff + inputDiff +
-                consumptionDiff + employeeDiff + sizeDiff)
+                consumptionDiff + sizeDiff)
+    }
+
+    fun squareDiff(other: MutableResourceFactoryInternalData): Double {
+        val outputResourceDiff: Double = if (outputResource == other.outputResource) {
+            0.0
+        } else {
+            Double.MAX_VALUE * 0.01
+        }
+
+        val outputQualityDiff: Double =
+            maxOutputResourceQualityData.squareDiff(other.maxOutputResourceQualityData)
+
+        val outputAmountDiff: Double = (maxOutputAmountPerEmployee - other.maxOutputAmountPerEmployee).pow(2)
+
+        val inputDiff: Double = inputResourceMap.map {
+            if (!other.inputResourceMap.containsKey(it.key)) {
+                Double.MAX_VALUE * 0.01
+            } else {
+                it.value.squareDiff(other.inputResourceMap.getValue(it.key))
+            }
+        }.sumOf { it }
+
+        val consumptionDiff: Double =
+            (fuelRestMassConsumptionRatePerEmployee - other.fuelRestMassConsumptionRatePerEmployee).pow(2)
+
+        val sizeDiff: Double = (sizePerEmployee - other.sizePerEmployee).pow(2)
+
+        return (outputResourceDiff + outputQualityDiff + outputAmountDiff + inputDiff +
+                consumptionDiff + sizeDiff)
     }
 }

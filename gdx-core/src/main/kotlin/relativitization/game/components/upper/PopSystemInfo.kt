@@ -998,15 +998,6 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         nestedTable.add(
             createLabel(
-                "Number of building: ${resourceFactoryData.numBuilding}",
-                gdxSettings.smallFontSize
-            )
-        )
-
-        nestedTable.row().space(10f)
-
-        nestedTable.add(
-            createLabel(
                 "Max. quality: ${resourceFactoryData.resourceFactoryInternalData.maxOutputResourceQualityData.quality1}",
                 gdxSettings.smallFontSize
             )
@@ -1025,7 +1016,8 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         nestedTable.add(
             createLabel(
-                "Max. output: ${resourceFactoryData.resourceFactoryInternalData.maxOutputAmount * resourceFactoryData.numBuilding}",
+                "Max. output: ${resourceFactoryData.resourceFactoryInternalData.maxOutputAmountPerEmployee * 
+                        resourceFactoryData.maxNumEmployee}",
                 gdxSettings.smallFontSize
             )
         )
@@ -1065,7 +1057,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
             nestedTable.add(
                 createLabel(
-                    "Max. $resourceType input: ${inputResource.amount * resourceFactoryData.numBuilding}",
+                    "Max. $resourceType input: ${resourceFactoryData.maxInputAmount(resourceType)}",
                     gdxSettings.smallFontSize
                 )
             )
@@ -1085,7 +1077,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         nestedTable.add(
             createLabel(
-                "Max. employee: ${resourceFactoryData.resourceFactoryInternalData.maxNumEmployee * resourceFactoryData.numBuilding}",
+                "Max. employee: ${resourceFactoryData.maxNumEmployee}",
                 gdxSettings.smallFontSize
             )
         )
@@ -1103,7 +1095,8 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         nestedTable.add(
             createLabel(
-                "Max. fuel consumption: ${resourceFactoryData.resourceFactoryInternalData.fuelRestMassConsumptionRate * resourceFactoryData.numBuilding}",
+                "Max. fuel consumption: ${resourceFactoryData.resourceFactoryInternalData
+                    .fuelRestMassConsumptionRatePerEmployee * resourceFactoryData.maxNumEmployee}",
                 gdxSettings.smallFontSize
             )
         )
@@ -1305,7 +1298,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             gdxSettings.smallFontSize
         )
 
-        val numBuilding = createDoubleTextField(
+        val maxNumEmployee = createDoubleTextField(
             1.0,
             gdxSettings.smallFontSize
         )
@@ -1337,8 +1330,8 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
                         qualityLevel.value,
                     ),
                 qualityLevel = qualityLevel.value,
+                maxNumEmployee = maxNumEmployee.value,
                 storedFuelRestMass = storedFuelRestMass.value,
-                numBuilding = numBuilding.value
             )
 
             game.universeClient.currentCommand = buildForeignResourceFactoryCommand
@@ -1420,27 +1413,27 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         nestedTable.add(
             createLabel(
-                "New factory num building: ",
+                "New factory max. employee: ",
                 gdxSettings.smallFontSize
             )
         )
 
-        nestedTable.add(numBuilding.textField)
+        nestedTable.add(maxNumEmployee.textField)
 
         nestedTable.row().space(10f)
 
-        val numBuildingDoubleSliderButton = createDoubleSliderButtonTable(
-            default = numBuilding.value,
+        val maxNumEmployeeDoubleSliderButton = createDoubleSliderButtonTable(
+            default = maxNumEmployee.value,
             sliderStepSize = 0.01f,
             sliderDecimalPlace = 2,
             buttonSize = 40f * gdxSettings.imageScale,
             buttonSoundVolume = gdxSettings.soundEffectsVolume,
-            currentValue = { numBuilding.value },
+            currentValue = { maxNumEmployee.value },
         ) {
-            numBuilding.value = it
+            maxNumEmployee.value = it
         }
 
-        nestedTable.add(numBuildingDoubleSliderButton).colspan(2)
+        nestedTable.add(maxNumEmployeeDoubleSliderButton).colspan(2)
 
         return nestedTable
     }
@@ -1545,7 +1538,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             gdxSettings.smallFontSize
         )
 
-        val numBuilding = createDoubleTextField(
+        val maxNumEmployee = createDoubleTextField(
             1.0,
             gdxSettings.smallFontSize
         )
@@ -1570,7 +1563,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
                 outputResourceType = outputResourceSelectBox.selected,
                 targetCarrierId = carrierId,
                 qualityLevel = qualityLevel.value,
-                numBuilding = numBuilding.value
+                maxNumEmployee = maxNumEmployee.value,
             )
 
             game.universeClient.currentCommand = buildLocalResourceFactoryCommand
@@ -1641,27 +1634,27 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         nestedTable.add(
             createLabel(
-                "New factory num building: ",
+                "New factory max. employee: ",
                 gdxSettings.smallFontSize
             )
         )
 
-        nestedTable.add(numBuilding.textField)
+        nestedTable.add(maxNumEmployee.textField)
 
         nestedTable.row().space(10f)
 
-        val numBuildingDoubleSliderButton = createDoubleSliderButtonTable(
-            default = numBuilding.value,
+        val maxNumEmployeeDoubleSliderButton = createDoubleSliderButtonTable(
+            default = maxNumEmployee.value,
             sliderStepSize = 0.01f,
             sliderDecimalPlace = 2,
             buttonSize = 40f * gdxSettings.imageScale,
             buttonSoundVolume = gdxSettings.soundEffectsVolume,
-            currentValue = { numBuilding.value },
+            currentValue = { maxNumEmployee.value },
         ) {
-            numBuilding.value = it
+            maxNumEmployee.value = it
         }
 
-        nestedTable.add(numBuildingDoubleSliderButton).colspan(2)
+        nestedTable.add(maxNumEmployeeDoubleSliderButton).colspan(2)
 
         return nestedTable
     }

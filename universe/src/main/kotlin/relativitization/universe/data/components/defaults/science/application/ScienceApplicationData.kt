@@ -62,7 +62,7 @@ data class ScienceApplicationData(
             idealResourceFactory.maxOutputResourceQualityData * actualQualityLevel
 
         // Max. increase to 5 times
-        val maxOutputAmount: Double = idealResourceFactory.maxOutputAmount * Quadratic.standard(
+        val maxOutputAmountPerEmployee: Double = idealResourceFactory.maxOutputAmountPerEmployee * Quadratic.standard(
             x = actualQualityLevel,
             xMin = 0.0,
             xMax = 1.0,
@@ -101,11 +101,11 @@ data class ScienceApplicationData(
                     qualityData = inputResourceData.qualityData * qualityFactor,
                     amount = inputResourceData.amount * amountFactor
                 )
-            }
+            }.toMap()
 
         // Reduce the fuel rest mass consumption rate
-        val fuelRestMassConsumptionRate: Double =
-            idealResourceFactory.fuelRestMassConsumptionRate * Quadratic.standard(
+        val fuelRestMassConsumptionRatePerEmployee: Double =
+            idealResourceFactory.fuelRestMassConsumptionRatePerEmployee * Quadratic.standard(
                 x = actualQualityLevel,
                 xMin = 0.0,
                 xMax = 1.0,
@@ -115,19 +115,9 @@ data class ScienceApplicationData(
                 accelerate = true
             )
 
-        // Reduce the number of employee needed
-        val maxNumEmployee: Double = idealResourceFactory.maxNumEmployee * Quadratic.standard(
-            x = actualQualityLevel,
-            xMin = 0.0,
-            xMax = 1.0,
-            yMin = 0.2,
-            yMax = 1.0,
-            increasing = true,
-            accelerate = true
-        )
 
         // Reduce size
-        val size: Double = idealResourceFactory.size * Quadratic.standard(
+        val sizePerEmployee: Double = idealResourceFactory.sizePerEmployee * Quadratic.standard(
             x = actualQualityLevel,
             xMin = 0.0,
             xMax = 1.0,
@@ -140,11 +130,10 @@ data class ScienceApplicationData(
         return ResourceFactoryInternalData(
             outputResource = outputResourceType,
             maxOutputResourceQualityData = maxOutputResourceQualityData,
-            maxOutputAmount = maxOutputAmount,
+            maxOutputAmountPerEmployee = maxOutputAmountPerEmployee,
             inputResourceMap = inputResourceMap,
-            fuelRestMassConsumptionRate = fuelRestMassConsumptionRate,
-            maxNumEmployee = maxNumEmployee,
-            size = size
+            fuelRestMassConsumptionRatePerEmployee = fuelRestMassConsumptionRatePerEmployee,
+            sizePerEmployee = sizePerEmployee,
         )
     }
 
@@ -302,7 +291,7 @@ data class MutableScienceApplicationData(
             idealResourceFactory.maxOutputResourceQualityData * actualQualityLevel
 
         // Max. increase to 5 times
-        val maxOutputAmount: Double = idealResourceFactory.maxOutputAmount * Quadratic.standard(
+        val maxOutputAmountPerEmployee: Double = idealResourceFactory.maxOutputAmountPerEmployee * Quadratic.standard(
             x = actualQualityLevel,
             xMin = 0.0,
             xMax = 1.0,
@@ -344,8 +333,8 @@ data class MutableScienceApplicationData(
             }.toMutableMap()
 
         // Reduce the fuel rest mass consumption rate
-        val fuelRestMassConsumptionRate: Double =
-            idealResourceFactory.fuelRestMassConsumptionRate * Quadratic.standard(
+        val fuelRestMassConsumptionRatePerEmployee: Double =
+            idealResourceFactory.fuelRestMassConsumptionRatePerEmployee * Quadratic.standard(
                 x = actualQualityLevel,
                 xMin = 0.0,
                 xMax = 1.0,
@@ -355,19 +344,9 @@ data class MutableScienceApplicationData(
                 accelerate = true
             )
 
-        // Reduce the number of employee needed
-        val maxNumEmployee: Double = idealResourceFactory.maxNumEmployee * Quadratic.standard(
-            x = actualQualityLevel,
-            xMin = 0.0,
-            xMax = 1.0,
-            yMin = 0.2,
-            yMax = 1.0,
-            increasing = true,
-            accelerate = true
-        )
 
         // Reduce size
-        val size: Double = idealResourceFactory.size * Quadratic.standard(
+        val sizePerEmployee: Double = idealResourceFactory.sizePerEmployee * Quadratic.standard(
             x = actualQualityLevel,
             xMin = 0.0,
             xMax = 1.0,
@@ -380,11 +359,10 @@ data class MutableScienceApplicationData(
         return MutableResourceFactoryInternalData(
             outputResource = outputResourceType,
             maxOutputResourceQualityData = maxOutputResourceQualityData,
-            maxOutputAmount = maxOutputAmount,
+            maxOutputAmountPerEmployee = maxOutputAmountPerEmployee,
             inputResourceMap = inputResourceMap,
-            fuelRestMassConsumptionRate = fuelRestMassConsumptionRate,
-            maxNumEmployee = maxNumEmployee,
-            size = size
+            fuelRestMassConsumptionRatePerEmployee = fuelRestMassConsumptionRatePerEmployee,
+            sizePerEmployee = sizePerEmployee,
         )
     }
 
@@ -393,6 +371,7 @@ data class MutableScienceApplicationData(
      */
     fun newResourceFactoryFuelNeededByConstruction(
         outputResourceType: ResourceType,
+        maxNumEmployee: Double,
         qualityLevel: Double
     ): Double {
         val resourceFactoryInternalData: MutableResourceFactoryInternalData =
@@ -401,7 +380,7 @@ data class MutableScienceApplicationData(
                 qualityLevel
             )
 
-        return resourceFactoryInternalData.fuelRestMassConsumptionRate * 20
+        return resourceFactoryInternalData.fuelRestMassConsumptionRatePerEmployee * maxNumEmployee * 20
     }
 
     companion object {

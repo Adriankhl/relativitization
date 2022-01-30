@@ -37,8 +37,8 @@ internal class BuildForeignResourceFactoryCommandTest {
                 qualityLevel = 1.0
             ),
             qualityLevel = 1.0,
+            maxNumEmployee = 1.0,
             storedFuelRestMass = 0.0,
-            numBuilding = 1.0,
         )
 
         runBlocking {
@@ -53,9 +53,10 @@ internal class BuildForeignResourceFactoryCommandTest {
 
         val view8: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
         val newPlayerData = view8.get(1)
-        val factoryMap =
-            newPlayerData.playerInternalData.popSystemData().carrierDataMap.getValue(0).allPopData.labourerPopData.resourceFactoryMap
-        println(factoryMap)
+        val factoryMap = newPlayerData.playerInternalData.popSystemData().carrierDataMap.getValue(
+            0
+        ).allPopData.labourerPopData.resourceFactoryMap
+
         assert(factoryMap.size == 1)
     }
 }

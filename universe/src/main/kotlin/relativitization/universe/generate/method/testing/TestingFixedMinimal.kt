@@ -245,11 +245,10 @@ object TestingFixedMinimal : TestingGenerateUniverseMethod() {
                 maxOutputResourceQualityData = MutableResourceQualityData(
                     quality1 = 0.0,
                 ),
-                maxOutputAmount = 1.0,
+                maxOutputAmountPerEmployee = 1.0,
                 inputResourceMap = mutableMapOf(),
-                fuelRestMassConsumptionRate = 1.0,
-                maxNumEmployee = 100.0,
-                size = 1.0
+                fuelRestMassConsumptionRatePerEmployee = 1.0,
+                sizePerEmployee = 1.0
             )
 
         // Add population to player 1

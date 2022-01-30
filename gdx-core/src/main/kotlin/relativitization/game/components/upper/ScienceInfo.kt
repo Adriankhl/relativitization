@@ -576,7 +576,7 @@ class ScienceInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
 
         nestedTable.add(
             createLabel(
-                "Output amount: ${idealFactory.maxOutputAmount}",
+                "Output amount per employee: ${idealFactory.maxOutputAmountPerEmployee}",
                 gdxSettings.smallFontSize
             )
         )
@@ -595,7 +595,7 @@ class ScienceInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
 
             nestedTable.add(
                 createLabel(
-                    "Input $resourceType amount: ${inputResourceData.amount}",
+                    "Input $resourceType amount per output: ${inputResourceData.amount}",
                     gdxSettings.smallFontSize
                 )
             )
@@ -605,16 +605,7 @@ class ScienceInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
 
         nestedTable.add(
             createLabel(
-                "Fuel consumption rate: ${idealFactory.fuelRestMassConsumptionRate}",
-                gdxSettings.smallFontSize
-            )
-        )
-
-        nestedTable.row().space(10f)
-
-        nestedTable.add(
-            createLabel(
-                "Employee: ${idealFactory.maxNumEmployee}",
+                "Fuel consumption rate per employee: ${idealFactory.fuelRestMassConsumptionRatePerEmployee}",
                 gdxSettings.smallFontSize
             )
         )

@@ -61,11 +61,11 @@ object UpdatePrice : Mechanism() {
         playerData: MutablePlayerData
     ): Map<ResourceType, Map<ResourceQualityClass, Double>> {
         val tradeNeedMap: Map<ResourceType, MutableMap<ResourceQualityClass, Double>> =
-            ResourceType.values().map { resourceType ->
-                resourceType to ResourceQualityClass.values().map { resourceQualityClass ->
-                    resourceQualityClass to 0.0
-                }.toMap().toMutableMap()
-            }.toMap()
+            ResourceType.values().associateWith {
+                ResourceQualityClass.values().associateWith {
+                    0.0
+                }.toMutableMap()
+            }
 
         // Add trade needed by pop desire
         playerData.playerInternalData.popSystemData().carrierDataMap.values.forEach { carrierData ->
@@ -110,7 +110,10 @@ object UpdatePrice : Mechanism() {
                         playerData.playerInternalData.economyData().resourceData.tradeQualityClass(
                             resourceType = resourceType,
                             amount = resourceFactory.resourceFactoryInternalData.inputResourceMap
-                                .getValue(resourceType).amount * resourceFactory.numBuilding,
+                                .getValue(resourceType).amount *
+                                    resourceFactory.resourceFactoryInternalData.maxOutputAmountPerEmployee *
+                                    resourceFactory.maxNumEmployee *
+                                    resourceFactory.employeeFraction(),
                             targetQuality = resourceFactory.resourceFactoryInternalData.inputResourceMap
                                 .getValue(resourceType).qualityData,
                             budget = budgetPerResource,
@@ -121,7 +124,10 @@ object UpdatePrice : Mechanism() {
 
                     tradeNeedMap.getValue(resourceType)[qualityClass] = originalAmount +
                             resourceFactory.resourceFactoryInternalData.inputResourceMap
-                                .getValue(resourceType).amount * resourceFactory.numBuilding
+                                .getValue(resourceType).amount *
+                            resourceFactory.resourceFactoryInternalData.maxOutputAmountPerEmployee *
+                            resourceFactory.maxNumEmployee *
+                            resourceFactory.employeeFraction()
                 }
             }
         }

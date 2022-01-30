@@ -48,8 +48,8 @@ object Summary {
                 .values.sumOf { resourceFactory ->
                     // only consider self resource factory
                     if (allPlayerId.contains(resourceFactory.ownerPlayerId)) {
-                        resourceFactory.resourceFactoryInternalData.fuelRestMassConsumptionRate *
-                                resourceFactory.numBuilding * resourceFactory.employeeFraction()
+                        resourceFactory.resourceFactoryInternalData.fuelRestMassConsumptionRatePerEmployee *
+                                resourceFactory.maxNumEmployee * resourceFactory.employeeFraction()
                     } else {
                         0.0
                     }
@@ -91,7 +91,9 @@ object Summary {
                         resourceFactory.resourceFactoryInternalData.inputResourceMap.getOrDefault(
                             resourceType,
                             InputResourceData(),
-                        ).amount * resourceFactory.numBuilding * resourceFactory.employeeFraction()
+                        ).amount * resourceFactory.resourceFactoryInternalData.maxOutputAmountPerEmployee *
+                                resourceFactory.maxNumEmployee *
+                                resourceFactory.employeeFraction()
                     }
 
                 val researchDesire: Double = if (resourceType == ResourceType.RESEARCH_EQUIPMENT) {

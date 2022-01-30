@@ -15,7 +15,6 @@ import relativitization.universe.data.components.defaults.science.knowledge.Muta
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.mechanisms.Mechanism
 import kotlin.math.log2
-import kotlin.math.tanh
 
 object UpdateScienceApplicationData : Mechanism() {
     override fun process(
@@ -107,22 +106,19 @@ object UpdateScienceApplicationData : Mechanism() {
             log2(mutableKnowledgeData.appliedResearchData.environmentalTechnologyLevel + 2.0),
         )
 
-        val maxNumEmployee: Double = 1E4
+        val fuelRestMassConsumptionRatePerEmployee = 2.0
 
-        val fuelRestMassConsumptionRate = 2.0 * maxNumEmployee
-
-        val maxOutputAmount: Double = 600.0 * maxNumEmployee * log2(
+        val maxOutputAmountPerEmployee: Double = 600.0 * log2(
             mutableKnowledgeData.appliedResearchData.environmentalTechnologyLevel / 100.0 + 2.0
         )
 
         return MutableResourceFactoryInternalData(
             outputResource = ResourceType.PLANT,
             maxOutputResourceQualityData = maxOutputResourceQualityData,
-            maxOutputAmount = maxOutputAmount,
+            maxOutputAmountPerEmployee = maxOutputAmountPerEmployee,
             inputResourceMap = mutableMapOf(),
-            fuelRestMassConsumptionRate = fuelRestMassConsumptionRate,
-            maxNumEmployee = maxNumEmployee,
-            size = 100.0,
+            fuelRestMassConsumptionRatePerEmployee = fuelRestMassConsumptionRatePerEmployee,
+            sizePerEmployee = 100.0,
         )
     }
 
@@ -131,22 +127,19 @@ object UpdateScienceApplicationData : Mechanism() {
             log2(mutableKnowledgeData.appliedResearchData.biomedicalTechnologyLevel + 2.0),
         )
 
-        val maxNumEmployee: Double = 1E4
+        val fuelRestMassConsumptionRatePerEmployee = 2.0
 
-        val fuelRestMassConsumptionRate = 2.0 * maxNumEmployee
-
-        val maxOutputAmount: Double = 600.0 * maxNumEmployee * log2(
+        val maxOutputAmountPerEmployee: Double = 600.0 * log2(
             mutableKnowledgeData.appliedResearchData.biomedicalTechnologyLevel / 100.0 + 2.0
         )
 
         return MutableResourceFactoryInternalData(
             outputResource = ResourceType.ANIMAL,
             maxOutputResourceQualityData = maxOutputResourceQualityData,
-            maxOutputAmount = maxOutputAmount,
+            maxOutputAmountPerEmployee = maxOutputAmountPerEmployee,
             inputResourceMap = mutableMapOf(),
-            fuelRestMassConsumptionRate = fuelRestMassConsumptionRate,
-            maxNumEmployee = maxNumEmployee,
-            size = 100.0,
+            fuelRestMassConsumptionRatePerEmployee = fuelRestMassConsumptionRatePerEmployee,
+            sizePerEmployee = 100.0
         )
     }
 
@@ -155,22 +148,19 @@ object UpdateScienceApplicationData : Mechanism() {
             log2(mutableKnowledgeData.appliedResearchData.machineryTechnologyLevel + 2.0),
         )
 
-        val maxNumEmployee: Double = 1E4
+        val fuelRestMassConsumptionRatePerEmployee = 2.0
 
-        val fuelRestMassConsumptionRate = 2.0 * maxNumEmployee
-
-        val maxOutputAmount: Double = 600.0 * maxNumEmployee * log2(
-            mutableKnowledgeData.appliedResearchData.machineryTechnologyLevel / 100.0 + 2.0
+        val maxOutputAmountPerEmployee: Double = 600.0 * log2(
+            mutableKnowledgeData.appliedResearchData.biomedicalTechnologyLevel / 100.0 + 2.0
         )
 
         return MutableResourceFactoryInternalData(
             outputResource = ResourceType.METAL,
             maxOutputResourceQualityData = maxOutputResourceQualityData,
-            maxOutputAmount = maxOutputAmount,
+            maxOutputAmountPerEmployee = maxOutputAmountPerEmployee,
             inputResourceMap = mutableMapOf(),
-            fuelRestMassConsumptionRate = fuelRestMassConsumptionRate,
-            maxNumEmployee = maxNumEmployee,
-            size = 100.0,
+            fuelRestMassConsumptionRatePerEmployee = fuelRestMassConsumptionRatePerEmployee,
+            sizePerEmployee = 100.0
         )
     }
 
@@ -179,22 +169,19 @@ object UpdateScienceApplicationData : Mechanism() {
             log2(mutableKnowledgeData.appliedResearchData.chemicalTechnologyLevel + 2.0),
         )
 
-        val maxNumEmployee: Double = 1E4
+        val fuelRestMassConsumptionRatePerEmployee = 2.0
 
-        val fuelRestMassConsumptionRate = 2.0 * maxNumEmployee
-
-        val maxOutputAmount: Double = 600.0 * maxNumEmployee * log2(
-            mutableKnowledgeData.appliedResearchData.chemicalTechnologyLevel / 100.0 + 2.0
+        val maxOutputAmountPerEmployee: Double = 600.0 * log2(
+            mutableKnowledgeData.appliedResearchData.biomedicalTechnologyLevel / 100.0 + 2.0
         )
 
         return MutableResourceFactoryInternalData(
             outputResource = ResourceType.PLASTIC,
             maxOutputResourceQualityData = maxOutputResourceQualityData,
-            maxOutputAmount = maxOutputAmount,
+            maxOutputAmountPerEmployee = maxOutputAmountPerEmployee,
             inputResourceMap = mutableMapOf(),
-            fuelRestMassConsumptionRate = fuelRestMassConsumptionRate,
-            maxNumEmployee = maxNumEmployee,
-            size = 100.0,
+            fuelRestMassConsumptionRatePerEmployee = fuelRestMassConsumptionRatePerEmployee,
+            sizePerEmployee = 100.0
         )
     }
 
@@ -203,11 +190,9 @@ object UpdateScienceApplicationData : Mechanism() {
             quality1 = log2(mutableKnowledgeData.appliedResearchData.foodTechnologyLevel + 2.0),
         )
 
-        val maxNumEmployee: Double = 1E4
+        val fuelRestMassConsumptionRatePerEmployee = 2.0
 
-        val fuelRestMassConsumptionRate = 2.0 * maxNumEmployee
-
-        val maxOutputAmount: Double = 200.0 * maxNumEmployee * log2(
+        val maxOutputAmountPerEmployee: Double = 200.0 * log2(
             mutableKnowledgeData.appliedResearchData.foodTechnologyLevel / 100.0 + 2.0
         )
 
@@ -229,11 +214,10 @@ object UpdateScienceApplicationData : Mechanism() {
         return MutableResourceFactoryInternalData(
             outputResource = ResourceType.FOOD,
             maxOutputResourceQualityData = maxOutputResourceQualityData,
-            maxOutputAmount = maxOutputAmount,
+            maxOutputAmountPerEmployee = maxOutputAmountPerEmployee,
             inputResourceMap = inputResourceMap,
-            fuelRestMassConsumptionRate = fuelRestMassConsumptionRate,
-            maxNumEmployee = maxNumEmployee,
-            size = 100.0,
+            fuelRestMassConsumptionRatePerEmployee = fuelRestMassConsumptionRatePerEmployee,
+            sizePerEmployee = 100.0,
         )
     }
 
@@ -242,12 +226,10 @@ object UpdateScienceApplicationData : Mechanism() {
             quality1 = log2(mutableKnowledgeData.appliedResearchData.materialTechnologyLevel + 2.0),
         )
 
-        val maxNumEmployee: Double = 1E4
+        val fuelRestMassConsumptionRatePerEmployee = 2.0
 
-        val fuelRestMassConsumptionRate = 2.0 * maxNumEmployee
-
-        val maxOutputAmount: Double = 200.0 * maxNumEmployee * log2(
-            mutableKnowledgeData.appliedResearchData.materialTechnologyLevel / 100.0 + 2.0
+        val maxOutputAmountPerEmployee: Double = 200.0 * log2(
+            mutableKnowledgeData.appliedResearchData.foodTechnologyLevel / 100.0 + 2.0
         )
 
         val inputResourceMap: MutableMap<ResourceType, MutableInputResourceData> = mutableMapOf(
@@ -268,11 +250,10 @@ object UpdateScienceApplicationData : Mechanism() {
         return MutableResourceFactoryInternalData(
             outputResource = ResourceType.CLOTH,
             maxOutputResourceQualityData = maxOutputResourceQualityData,
-            maxOutputAmount = maxOutputAmount,
+            maxOutputAmountPerEmployee = maxOutputAmountPerEmployee,
             inputResourceMap = inputResourceMap,
-            fuelRestMassConsumptionRate = fuelRestMassConsumptionRate,
-            maxNumEmployee = maxNumEmployee,
-            size = 100.0,
+            fuelRestMassConsumptionRatePerEmployee = fuelRestMassConsumptionRatePerEmployee,
+            sizePerEmployee = 100.0,
         )
     }
 
@@ -281,12 +262,10 @@ object UpdateScienceApplicationData : Mechanism() {
             quality1 = log2(mutableKnowledgeData.appliedResearchData.artTechnologyLevel + 2.0),
         )
 
-        val maxNumEmployee: Double = 1E4
+        val fuelRestMassConsumptionRatePerEmployee = 2.0
 
-        val fuelRestMassConsumptionRate = 2.0 * maxNumEmployee
-
-        val maxOutputAmount: Double = 200.0 * maxNumEmployee * log2(
-            mutableKnowledgeData.appliedResearchData.artTechnologyLevel / 100.0 + 2.0
+        val maxOutputAmountPerEmployee: Double = 200.0 * log2(
+            mutableKnowledgeData.appliedResearchData.foodTechnologyLevel / 100.0 + 2.0
         )
 
         val inputResourceMap: MutableMap<ResourceType, MutableInputResourceData> = mutableMapOf(
@@ -307,11 +286,10 @@ object UpdateScienceApplicationData : Mechanism() {
         return MutableResourceFactoryInternalData(
             outputResource = ResourceType.HOUSEHOLD_GOOD,
             maxOutputResourceQualityData = maxOutputResourceQualityData,
-            maxOutputAmount = maxOutputAmount,
+            maxOutputAmountPerEmployee = maxOutputAmountPerEmployee,
             inputResourceMap = inputResourceMap,
-            fuelRestMassConsumptionRate = fuelRestMassConsumptionRate,
-            maxNumEmployee = maxNumEmployee,
-            size = 100.0,
+            fuelRestMassConsumptionRatePerEmployee = fuelRestMassConsumptionRatePerEmployee,
+            sizePerEmployee = 100.0,
         )
     }
 
@@ -320,12 +298,10 @@ object UpdateScienceApplicationData : Mechanism() {
             quality1 = log2(mutableKnowledgeData.appliedResearchData.materialTechnologyLevel + 2.0),
         )
 
-        val maxNumEmployee: Double = 1E4
+        val fuelRestMassConsumptionRatePerEmployee = 2.0
 
-        val fuelRestMassConsumptionRate = 2.0 * maxNumEmployee
-
-        val maxOutputAmount: Double = 20.0 * maxNumEmployee * log2(
-            mutableKnowledgeData.appliedResearchData.materialTechnologyLevel / 100.0 + 2.0
+        val maxOutputAmountPerEmployee: Double = 200.0 * log2(
+            mutableKnowledgeData.appliedResearchData.foodTechnologyLevel / 100.0 + 2.0
         )
 
         val inputResourceMap: MutableMap<ResourceType, MutableInputResourceData> = mutableMapOf(
@@ -346,11 +322,10 @@ object UpdateScienceApplicationData : Mechanism() {
         return MutableResourceFactoryInternalData(
             outputResource = ResourceType.RESEARCH_EQUIPMENT,
             maxOutputResourceQualityData = maxOutputResourceQualityData,
-            maxOutputAmount = maxOutputAmount,
+            maxOutputAmountPerEmployee = maxOutputAmountPerEmployee,
             inputResourceMap = inputResourceMap,
-            fuelRestMassConsumptionRate = fuelRestMassConsumptionRate,
-            maxNumEmployee = maxNumEmployee,
-            size = 100.0,
+            fuelRestMassConsumptionRatePerEmployee = fuelRestMassConsumptionRatePerEmployee,
+            sizePerEmployee = 100.0,
         )
     }
 
@@ -359,12 +334,10 @@ object UpdateScienceApplicationData : Mechanism() {
             quality1 = log2(mutableKnowledgeData.appliedResearchData.biomedicalTechnologyLevel + 2.0),
         )
 
-        val maxNumEmployee: Double = 1E4
+        val fuelRestMassConsumptionRatePerEmployee = 2.0
 
-        val fuelRestMassConsumptionRate = 2.0 * maxNumEmployee
-
-        val maxOutputAmount: Double = 20.0 * maxNumEmployee * log2(
-            mutableKnowledgeData.appliedResearchData.biomedicalTechnologyLevel / 100.0 + 2.0
+        val maxOutputAmountPerEmployee: Double = 200.0 * log2(
+            mutableKnowledgeData.appliedResearchData.foodTechnologyLevel / 100.0 + 2.0
         )
 
         val inputResourceMap: MutableMap<ResourceType, MutableInputResourceData> = mutableMapOf(
@@ -385,11 +358,10 @@ object UpdateScienceApplicationData : Mechanism() {
         return MutableResourceFactoryInternalData(
             outputResource = ResourceType.MEDICINE,
             maxOutputResourceQualityData = maxOutputResourceQualityData,
-            maxOutputAmount = maxOutputAmount,
+            maxOutputAmountPerEmployee = maxOutputAmountPerEmployee,
             inputResourceMap = inputResourceMap,
-            fuelRestMassConsumptionRate = fuelRestMassConsumptionRate,
-            maxNumEmployee = maxNumEmployee,
-            size = 100.0,
+            fuelRestMassConsumptionRatePerEmployee = fuelRestMassConsumptionRatePerEmployee,
+            sizePerEmployee = 100.0,
         )
     }
 
@@ -398,12 +370,10 @@ object UpdateScienceApplicationData : Mechanism() {
             quality1 = log2(mutableKnowledgeData.appliedResearchData.militaryTechnologyLevel + 2.0),
         )
 
-        val maxNumEmployee: Double = 1E4
+        val fuelRestMassConsumptionRatePerEmployee = 2.0
 
-        val fuelRestMassConsumptionRate = 2.0 * maxNumEmployee
-
-        val maxOutputAmount: Double = 20.0 * maxNumEmployee * log2(
-            mutableKnowledgeData.appliedResearchData.militaryTechnologyLevel / 100.0 + 2.0
+        val maxOutputAmountPerEmployee: Double = 200.0 * log2(
+            mutableKnowledgeData.appliedResearchData.foodTechnologyLevel / 100.0 + 2.0
         )
 
         val inputResourceMap: MutableMap<ResourceType, MutableInputResourceData> = mutableMapOf(
@@ -424,11 +394,10 @@ object UpdateScienceApplicationData : Mechanism() {
         return MutableResourceFactoryInternalData(
             outputResource = ResourceType.AMMUNITION,
             maxOutputResourceQualityData = maxOutputResourceQualityData,
-            maxOutputAmount = maxOutputAmount,
+            maxOutputAmountPerEmployee = maxOutputAmountPerEmployee,
             inputResourceMap = inputResourceMap,
-            fuelRestMassConsumptionRate = fuelRestMassConsumptionRate,
-            maxNumEmployee = maxNumEmployee,
-            size = 100.0,
+            fuelRestMassConsumptionRatePerEmployee = fuelRestMassConsumptionRatePerEmployee,
+            sizePerEmployee = 100.0,
         )
     }
 
