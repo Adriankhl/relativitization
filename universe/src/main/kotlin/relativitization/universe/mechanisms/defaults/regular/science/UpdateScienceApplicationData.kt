@@ -114,7 +114,7 @@ object UpdateScienceApplicationData : Mechanism() {
 
         val fuelRestMassConsumptionRate = 2.0 * maxNumEmployee
 
-        val maxOutputAmount: Double = 500.0 * maxNumEmployee * log2(
+        val maxOutputAmount: Double = 600.0 * maxNumEmployee * log2(
             mutableKnowledgeData.appliedResearchData.environmentalTechnologyLevel / 100.0 + 2.0
         )
 
@@ -138,7 +138,7 @@ object UpdateScienceApplicationData : Mechanism() {
 
         val fuelRestMassConsumptionRate = 2.0 * maxNumEmployee
 
-        val maxOutputAmount: Double = 500.0 * maxNumEmployee * log2(
+        val maxOutputAmount: Double = 600.0 * maxNumEmployee * log2(
             mutableKnowledgeData.appliedResearchData.biomedicalTechnologyLevel / 100.0 + 2.0
         )
 
@@ -162,7 +162,7 @@ object UpdateScienceApplicationData : Mechanism() {
 
         val fuelRestMassConsumptionRate = 2.0 * maxNumEmployee
 
-        val maxOutputAmount: Double = 500.0 * maxNumEmployee * log2(
+        val maxOutputAmount: Double = 600.0 * maxNumEmployee * log2(
             mutableKnowledgeData.appliedResearchData.machineryTechnologyLevel / 100.0 + 2.0
         )
 
@@ -186,7 +186,7 @@ object UpdateScienceApplicationData : Mechanism() {
 
         val fuelRestMassConsumptionRate = 2.0 * maxNumEmployee
 
-        val maxOutputAmount: Double = 500.0 * maxNumEmployee * log2(
+        val maxOutputAmount: Double = 600.0 * maxNumEmployee * log2(
             mutableKnowledgeData.appliedResearchData.chemicalTechnologyLevel / 100.0 + 2.0
         )
 
