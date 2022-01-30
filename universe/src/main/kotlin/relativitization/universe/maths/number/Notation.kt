@@ -36,5 +36,8 @@ data class ScientificNotation(
     val coefficient: Double,
     val exponent: Int,
 ) {
+    /**
+     * Use string to double instead of multiplying to avoid floating point error
+     */
     fun toDouble(): Double = "${coefficient}E${exponent}".toDouble()
 }
