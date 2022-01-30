@@ -17,6 +17,7 @@ import relativitization.universe.maths.physics.Intervals
 import relativitization.universe.utils.I18NString
 import kotlin.math.PI
 import kotlin.math.atan2
+import kotlin.math.pow
 
 abstract class ScreenComponent<out T : Actor>(val assets: Assets) {
     val skin: Skin = assets.getSkin()
@@ -443,7 +444,7 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets) {
 
         val coefficientSlider = createSlider(
             1f,
-            10f,
+            10f - 10f.pow(-sliderDecimalPlace),
             sliderStepSize,
             default.toScientificNotation().coefficient.toFloat(),
         ) { fl, _ ->

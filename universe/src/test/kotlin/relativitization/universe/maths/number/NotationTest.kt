@@ -29,5 +29,13 @@ internal class NotationTest {
         val num6 = -Double.MIN_VALUE * 10000.0
         val sf6 = num6.toScientificNotation()
         assert(abs(num6 - sf6.toDouble()) < 0.0001 * abs(sf6.toDouble()))
+
+        val num7 = 500.0
+        val sf7 = num7.toScientificNotation()
+        assert(sf7.exponent == 2)
+
+        val num8 = 5E-6
+        val sf8 = num8.toScientificNotation()
+        assert(sf8.exponent == -6)
     }
 }
