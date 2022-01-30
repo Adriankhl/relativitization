@@ -83,11 +83,19 @@ object DiscoverKnowledge : Mechanism() {
         equipmentQuality: ResourceQualityData
     ): Double {
 
-        val humanPower: Double = log2(numEmployee + 1.0) * educationLevel
+        val basePower: Double = numEmployee * 0.5
 
-        val machinePower: Double = log2(equipmentAmount + 1.0) * equipmentQuality.mag()
+        val equipmentAmountModifier: Double = if (numEmployee > 0.0) {
+            equipmentAmount / numEmployee + 1.0
+        } else {
+            0.0
+        }
 
-        return (humanPower + machinePower) * 0.5
+        val baseStrength: Double = log2(1.0 + basePower * equipmentAmountModifier)
+
+        val equipmentQualityModifier: Double = log2(2.0 + equipmentQuality.mag())
+
+        return baseStrength * educationLevel * equipmentQualityModifier
     }
 
     /**
@@ -102,12 +110,12 @@ object DiscoverKnowledge : Mechanism() {
             mutableInstituteData.instituteInternalData.researchEquipmentPerTime
 
         val resourceAmountMap: Map<ResourceQualityClass, Double> =
-            ResourceQualityClass.values().map {
-                it to mutableResourceData.getResourceAmountData(
+            ResourceQualityClass.values().associateWith {
+                mutableResourceData.getResourceAmountData(
                     ResourceType.RESEARCH_EQUIPMENT,
                     it
                 ).production
-            }.toMap()
+            }
 
         val resourceQualityClass: ResourceQualityClass =
             if (resourceAmountMap.values.any { it >= requiredEquipmentAmount }) {
@@ -152,12 +160,12 @@ object DiscoverKnowledge : Mechanism() {
             mutableLaboratoryData.laboratoryInternalData.researchEquipmentPerTime
 
         val resourceAmountMap: Map<ResourceQualityClass, Double> =
-            ResourceQualityClass.values().map {
-                it to mutableResourceData.getResourceAmountData(
+            ResourceQualityClass.values().associateWith {
+                mutableResourceData.getResourceAmountData(
                     ResourceType.RESEARCH_EQUIPMENT,
                     it
                 ).production
-            }.toMap()
+            }
 
         val resourceQualityClass: ResourceQualityClass =
             if (resourceAmountMap.values.any { it >= requiredEquipmentAmount }) {
