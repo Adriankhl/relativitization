@@ -31,7 +31,13 @@ class JoinUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asse
 
         table.row().space(10f)
 
-        table.add(createLabel("Server address: ", gdxSettings.normalFontSize))
+        table.add(
+            createLabel(
+                "Server address: ",
+                gdxSettings.normalFontSize
+            )
+        )
+
         val serverAddressTextField = createTextField(
             game.universeClient.universeClientSettings.serverAddress,
             gdxSettings.normalFontSize
@@ -42,8 +48,13 @@ class JoinUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asse
 
         table.row().space(10f)
 
+        table.add(
+            createLabel(
+                "Server port: ",
+                gdxSettings.normalFontSize
+            )
+        )
 
-        table.add(createLabel("Server port: ", gdxSettings.normalFontSize))
         val serverPortTextField = createTextField(
             game.universeClient.universeClientSettings.serverPort.toString(),
             gdxSettings.normalFontSize
@@ -55,6 +66,23 @@ class JoinUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asse
             }
         }
         table.add(serverPortTextField)
+
+        table.row().space(10f)
+
+        table.add(
+            createLabel(
+                "Admin password (if you are admin): ",
+                gdxSettings.normalFontSize
+            )
+        )
+
+        val adminPasswordTextField = createTextField(
+            game.universeClient.universeClientSettings.adminPassword,
+            gdxSettings.normalFontSize
+        ) { password, _ ->
+            game.universeClient.universeClientSettings.adminPassword = password
+        }
+        table.add(adminPasswordTextField)
 
         table.row().space(10f)
 

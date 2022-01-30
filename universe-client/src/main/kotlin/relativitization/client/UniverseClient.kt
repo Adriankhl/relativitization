@@ -347,12 +347,21 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
                 currentUniverseData3DAtPlayer
             }
         }
-        // set the data outside of the lock to prevent dead lock
+
+        // Clear old universe data
+        if (universeData3DMap.size > universeClientSettings.maxStoredUniverseData3DAtPlayer) {
+            universeData3DMap.keys.take(
+                universeData3DMap.size - universeClientSettings.maxStoredUniverseData3DAtPlayer
+            ).forEach { universeData3DMap.remove(it) }
+        }
+
+        // set the data outside the lock to prevent deadlock
         currentUniverseData3DAtPlayer = currentData
         planDataAtPlayer = currentUniverseData3DAtPlayer.getPlanDataAtPlayer {
             onCommandListChangeFunctionList.forEach { it() }
         }
         planDataAtPlayer.onCommandListChange()
+
         isNewDataReady.set(false)
     }
 

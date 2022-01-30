@@ -396,7 +396,31 @@ class ClientSettingsScreen(
     }
 
     private fun addUniverseClientSettings(table: Table) {
-        table.add(createLabel("Http request timeout (in ms)", gdxSettings.normalFontSize))
+        table.add(
+            createLabel(
+                "Max. stored data:  ",
+                gdxSettings.normalFontSize
+            )
+        )
+
+        val maxStoredUniverseData3DAtPlayerSelectBox = createSelectBox(
+            listOf(100000000) + (5..50 step 5).toList(),
+            universeClientSettings.maxStoredUniverseData3DAtPlayer,
+            gdxSettings.normalFontSize,
+        ) { i, _ ->
+            universeClientSettings.maxStoredUniverseData3DAtPlayer = i
+        }
+        table.add(maxStoredUniverseData3DAtPlayerSelectBox)
+
+        table.row().space(10f)
+
+        table.add(
+            createLabel(
+                "Http request timeout (in ms): ",
+                gdxSettings.normalFontSize
+            )
+        )
+
         val httpRequestTimeoutTextField = createTextField(
             universeClientSettings.httpRequestTimeout.toString(),
             gdxSettings.normalFontSize
@@ -411,7 +435,13 @@ class ClientSettingsScreen(
 
         table.row().space(10f)
 
-        table.add(createLabel("Http connect timeout (in ms)", gdxSettings.normalFontSize))
+        table.add(
+            createLabel(
+                "Http connect timeout (in ms): ",
+                gdxSettings.normalFontSize
+            )
+        )
+
         val httpConnectTimeoutTextField = createTextField(
             universeClientSettings.httpConnectTimeout.toString(),
             gdxSettings.normalFontSize
@@ -423,6 +453,10 @@ class ClientSettingsScreen(
             }
         }
         table.add(httpConnectTimeoutTextField)
+
+        table.row().space(10f)
+
+
     }
 
     companion object {
