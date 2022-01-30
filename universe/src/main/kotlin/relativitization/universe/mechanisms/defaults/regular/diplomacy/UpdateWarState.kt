@@ -7,8 +7,11 @@ import relativitization.universe.data.commands.Command
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.maths.physics.Intervals
 import relativitization.universe.mechanisms.Mechanism
+import relativitization.universe.utils.RelativitizationLogManager
 
 object UpdateWarState : Mechanism() {
+    private val logger = RelativitizationLogManager.getLogger()
+
     override fun process(
         mutablePlayerData: MutablePlayerData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
@@ -19,10 +22,18 @@ object UpdateWarState : Mechanism() {
         val peaceTreatyLength: Int = 15
         val maxWarLength: Int = 100
 
+        // Clear weird self war
+        if (mutablePlayerData.playerInternalData.diplomacyData().warData.warStateMap.containsKey(
+                mutablePlayerData.playerId
+            )) {
+            logger.error("Player ${mutablePlayerData.playerId} is in war with self")
+            mutablePlayerData.playerInternalData.diplomacyData().warData.warStateMap.remove(mutablePlayerData.playerId)
+        }
+
         // Invalid internal war, is leader or subordinate
         val invalidWarSet: Set<Int> = mutablePlayerData.playerInternalData.diplomacyData().warData
             .warStateMap.filter { (id, _) ->
-                mutablePlayerData.isLeaderOrSelf(id) || mutablePlayerData.isSubOrdinateOrSelf(id)
+                mutablePlayerData.isLeader(id) || mutablePlayerData.isSubOrdinate(id)
             }.keys
 
         // Remove the war if the player does not exist, i.e., dead
