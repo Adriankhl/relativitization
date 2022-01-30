@@ -208,14 +208,55 @@ class DiplomacyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
                     gdxSettings.smallFontSize
                 )
             )
-        }
 
+            if (playerData.playerId == game.universeClient.getUniverseData3D().id) {
+                nestedTable.row().space(10f)
+
+                val proposePeaceButton = createTextButton(
+                    "Propose peace",
+                    gdxSettings.smallFontSize,
+                    gdxSettings.soundEffectsVolume,
+                    extraColor = commandButtonColor,
+                ) {
+                    val proposePeaceCommand = ProposePeaceCommand(
+                        toId = game.universeClient.getCurrentPlayerData().playerId,
+                        fromId = game.universeClient.getCurrentPlayerData().playerId,
+                        fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
+                        targetPlayerId = otherPlayerId.value
+                    )
+
+                    game.universeClient.currentCommand = proposePeaceCommand
+                }
+                nestedTable.add(proposePeaceButton)
+
+                nestedTable.row().space(10f)
+
+                val surrenderButton = createTextButton(
+                    "Surrender",
+                    gdxSettings.smallFontSize,
+                    gdxSettings.soundEffectsVolume,
+                    extraColor = commandButtonColor,
+                ) {
+                    val surrenderCommand = SurrenderCommand(
+                        toId = game.universeClient.getCurrentPlayerData().playerId,
+                        fromId = game.universeClient.getCurrentPlayerData().playerId,
+                        fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
+                        targetPlayerId = otherPlayerId.value
+                    )
+
+                    game.universeClient.currentCommand = surrenderCommand
+                }
+                nestedTable.add(surrenderButton)
+            }
+        }
 
         return nestedTable
     }
 
     private fun createWarCommandTable(): Table {
         val nestedTable = Table()
+
+        val currentPlayerData: PlayerData = game.universeClient.getCurrentPlayerData()
 
         nestedTable.add(
             createLabel(
@@ -224,105 +265,73 @@ class DiplomacyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             )
         )
 
-        nestedTable.row().space(10f)
-
-        val declareWarButton = createTextButton(
-            "Declare war",
-            gdxSettings.smallFontSize,
-            gdxSettings.soundEffectsVolume,
-            extraColor = commandButtonColor,
+        if (!currentPlayerData.isLeaderOrSelf(playerData.playerId) &&
+            !currentPlayerData.isSubOrdinate(playerData.playerId)
         ) {
-            val currentPlayerData: PlayerData = game.universeClient.getCurrentPlayerData()
+            nestedTable.row().space(10f)
 
-            // Target the highest possible leader
-            val targetPlayerId: Int = playerData.playerInternalData.leaderIdList.firstOrNull {
-                !currentPlayerData.isLeaderOrSelf(it)
-            } ?: playerData.playerId
+            val declareWarButton = createTextButton(
+                "Declare war",
+                gdxSettings.smallFontSize,
+                gdxSettings.soundEffectsVolume,
+                extraColor = commandButtonColor,
+            ) {
+                val declareWarCommand = DeclareWarCommand(
+                    toId = playerData.playerId,
+                    fromId = game.universeClient.getCurrentPlayerData().playerId,
+                    fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
+                    senderLeaderIdList = game.universeClient.getCurrentPlayerData().playerInternalData.leaderIdList,
+                )
 
-            val declareWarCommand = DeclareWarCommand(
-                toId = targetPlayerId,
-                fromId = currentPlayerData.playerId,
-                fromInt4D = currentPlayerData.int4D,
-                senderLeaderIdList = currentPlayerData.playerInternalData.leaderIdList,
-            )
-
-            game.universeClient.currentCommand = declareWarCommand
+                game.universeClient.currentCommand = declareWarCommand
+            }
+            nestedTable.add(declareWarButton)
         }
-        nestedTable.add(declareWarButton)
 
-        nestedTable.row().space(10f)
-
-        val declareIndependenceToDirectLeaderButton = createTextButton(
-            "Declare independence (direct leader)",
-            gdxSettings.smallFontSize,
-            gdxSettings.soundEffectsVolume,
-            extraColor = commandButtonColor,
+        if (!currentPlayerData.isTopLeader() &&
+            (currentPlayerData.playerInternalData.directLeaderId == playerData.playerId)
         ) {
-            val declareIndependenceToDirectLeaderCommand = DeclareIndependenceToDirectLeaderCommand(
-                toId = playerData.playerInternalData.directLeaderId,
-                fromId = game.universeClient.getCurrentPlayerData().playerId,
-                fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
-            )
 
-            game.universeClient.currentCommand = declareIndependenceToDirectLeaderCommand
+            nestedTable.row().space(10f)
+
+            val declareIndependenceToDirectLeaderButton = createTextButton(
+                "Declare independence (direct leader)",
+                gdxSettings.smallFontSize,
+                gdxSettings.soundEffectsVolume,
+                extraColor = commandButtonColor,
+            ) {
+                val declareIndependenceToDirectLeaderCommand = DeclareIndependenceToDirectLeaderCommand(
+                    toId = playerData.playerId,
+                    fromId = game.universeClient.getCurrentPlayerData().playerId,
+                    fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
+                )
+
+                game.universeClient.currentCommand = declareIndependenceToDirectLeaderCommand
+            }
+            nestedTable.add(declareIndependenceToDirectLeaderButton)
         }
-        nestedTable.add(declareIndependenceToDirectLeaderButton)
 
-        nestedTable.row().space(10f)
-
-        val declareIndependenceToTopLeaderButton = createTextButton(
-            "Declare independence (top leader)",
-            gdxSettings.smallFontSize,
-            gdxSettings.soundEffectsVolume,
-            extraColor = commandButtonColor,
+        if (!currentPlayerData.isTopLeader() &&
+            (currentPlayerData.topLeaderId() == playerData.playerId)
         ) {
-            val declareIndependenceToTopLeaderCommand = DeclareIndependenceToTopLeaderCommand(
-                toId = playerData.topLeaderId(),
-                fromId = game.universeClient.getCurrentPlayerData().playerId,
-                fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
-            )
+            nestedTable.row().space(10f)
 
-            game.universeClient.currentCommand = declareIndependenceToTopLeaderCommand
+            val declareIndependenceToTopLeaderButton = createTextButton(
+                "Declare independence (top leader)",
+                gdxSettings.smallFontSize,
+                gdxSettings.soundEffectsVolume,
+                extraColor = commandButtonColor,
+            ) {
+                val declareIndependenceToTopLeaderCommand = DeclareIndependenceToTopLeaderCommand(
+                    toId = playerData.playerId,
+                    fromId = game.universeClient.getCurrentPlayerData().playerId,
+                    fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
+                )
+
+                game.universeClient.currentCommand = declareIndependenceToTopLeaderCommand
+            }
+            nestedTable.add(declareIndependenceToTopLeaderButton)
         }
-        nestedTable.add(declareIndependenceToTopLeaderButton)
-
-        nestedTable.row().space(10f)
-
-        val proposePeaceButton = createTextButton(
-            "Propose peace",
-            gdxSettings.smallFontSize,
-            gdxSettings.soundEffectsVolume,
-            extraColor = commandButtonColor,
-        ) {
-            val proposePeaceCommand = ProposePeaceCommand(
-                toId = game.universeClient.getCurrentPlayerData().playerId,
-                fromId = game.universeClient.getCurrentPlayerData().playerId,
-                fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
-                targetPlayerId = otherPlayerId.value
-            )
-
-            game.universeClient.currentCommand = proposePeaceCommand
-        }
-        nestedTable.add(proposePeaceButton)
-
-        nestedTable.row().space(10f)
-
-        val surrenderButton = createTextButton(
-            "Surrender",
-            gdxSettings.smallFontSize,
-            gdxSettings.soundEffectsVolume,
-            extraColor = commandButtonColor,
-        ) {
-            val surrenderCommand = SurrenderCommand(
-                toId = game.universeClient.getCurrentPlayerData().playerId,
-                fromId = game.universeClient.getCurrentPlayerData().playerId,
-                fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
-                targetPlayerId = otherPlayerId.value
-            )
-
-            game.universeClient.currentCommand = surrenderCommand
-        }
-        nestedTable.add(surrenderButton)
 
         return nestedTable
     }

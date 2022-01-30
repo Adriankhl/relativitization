@@ -579,13 +579,15 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         nestedTable.add(createBuildForeignResourceFactoryTable())
 
-        nestedTable.row().space(10f)
+        if (playerData.playerId != game.universeClient.getUniverseData3D().id) {
+            nestedTable.row().space(10f)
 
-        nestedTable.add(createBuildLocalFuelFactoryTable())
+            nestedTable.add(createBuildLocalFuelFactoryTable())
 
-        nestedTable.row().space(10f)
+            nestedTable.row().space(10f)
 
-        nestedTable.add(createBuildLocalResourceFactoryTable())
+            nestedTable.add(createBuildLocalResourceFactoryTable())
+        }
 
         return nestedTable
     }
@@ -1682,18 +1684,20 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         nestedTable.add(createInstituteMapTable(scholarPopData))
 
-        nestedTable.row().space(30f)
+        if (playerData.playerId == game.universeClient.getUniverseData3D().id) {
+            nestedTable.row().space(30f)
 
-        nestedTable.add(
-            createLabel(
-                "Build institute commands: ",
-                gdxSettings.normalFontSize
+            nestedTable.add(
+                createLabel(
+                    "Build institute commands: ",
+                    gdxSettings.normalFontSize
+                )
             )
-        )
 
-        nestedTable.row().space(10f)
+            nestedTable.row().space(10f)
 
-        nestedTable.add(createBuildInstituteTable())
+            nestedTable.add(createBuildInstituteTable())
+        }
 
         return nestedTable
     }
@@ -2006,18 +2010,20 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         nestedTable.add(createLaboratoryMapTable(engineerPopData))
 
-        nestedTable.row().space(30f)
+        if (playerData.playerId == game.universeClient.getUniverseData3D().id) {
+            nestedTable.row().space(30f)
 
-        nestedTable.add(
-            createLabel(
-                "Build laboratory commands: ",
-                gdxSettings.normalFontSize
+            nestedTable.add(
+                createLabel(
+                    "Build laboratory commands: ",
+                    gdxSettings.normalFontSize
+                )
             )
-        )
 
-        nestedTable.row().space(10f)
+            nestedTable.row().space(10f)
 
-        nestedTable.add(createBuildLaboratoryTable())
+            nestedTable.add(createBuildLaboratoryTable())
+        }
 
         return nestedTable
     }
