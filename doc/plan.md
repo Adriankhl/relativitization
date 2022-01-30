@@ -72,6 +72,12 @@
 # GUI TODO List
 * Map mode [x]
 * Show execute warning [x]
+* Filter resource factory by resource type
+* Hide send resource when not appropriate
+* Default build factory and institute employee to population, research equipment to production
+
+# Control TODO List
+* Fuel and resource weight instead of target
 
 # Test TODO List
 * Declare war [x]
