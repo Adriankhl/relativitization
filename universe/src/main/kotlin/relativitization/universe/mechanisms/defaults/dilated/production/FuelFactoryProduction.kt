@@ -21,14 +21,23 @@ object FuelFactoryProduction : Mechanism() {
         // max fuel produced per cube in space, prevent unlimited fuel and population
         val maxFuelPerCube: Double = 1E9
 
-        val totalFuelProductionInCube: Double =
-            universeData3DAtPlayer.getNeighbourAndSelf(0).sumOf { playerData ->
+        val totalFuelProductionInNeighbor: Double =
+            universeData3DAtPlayer.getNeighbour(0).sumOf { playerData ->
                 playerData.playerInternalData.popSystemData().carrierDataMap.values.sumOf { carrierData ->
                     carrierData.allPopData.labourerPopData.fuelFactoryMap.values.sumOf { fuelFactoryData ->
-                        fuelFactoryData.numBuilding * fuelFactoryData.fuelFactoryInternalData.maxOutputAmount
+                        fuelFactoryData.lastOutputAmount
                     }
                 }
             }
+
+        val totalFuelProductionInPlayer: Double = mutablePlayerData.playerInternalData.popSystemData()
+            .carrierDataMap.values.sumOf { carrierData ->
+                carrierData.allPopData.labourerPopData.fuelFactoryMap.values.sumOf { fuelFactoryData ->
+                    computeOutAmount(fuelFactoryData)
+                }
+            }
+
+        val totalFuelProductionInCube: Double = totalFuelProductionInNeighbor + totalFuelProductionInPlayer
 
         val maxFuelPerCubeFactor: Double = if (totalFuelProductionInCube > maxFuelPerCube) {
             maxFuelPerCube / totalFuelProductionInCube
@@ -42,7 +51,7 @@ object FuelFactoryProduction : Mechanism() {
                 carrier.allPopData.labourerPopData.fuelFactoryMap.values.filter { factory ->
                     (factory.ownerPlayerId == mutablePlayerData.playerId) && (factory.isOpened)
                 }.forEach { factory ->
-                    updateResourceData(
+                    updateFuelData(
                         factory,
                         mutablePlayerData.playerInternalData.physicsData(),
                         maxFuelPerCubeFactor,
@@ -87,6 +96,21 @@ object FuelFactoryProduction : Mechanism() {
         ).minOrNull() ?: 0.0
     }
 
+    /**
+     * Compute the out amount of fuel factory, ignoring maxFuelPerCube
+     */
+    fun computeOutAmount(
+        mutableFuelFactoryData: MutableFuelFactoryData
+    ): Double {
+        val amountFraction: Double = productAmountFraction(
+            mutableFuelFactoryData,
+        )
+
+        return mutableFuelFactoryData.maxNumEmployee *
+                mutableFuelFactoryData.fuelFactoryInternalData.maxOutputAmountPerEmployee *
+                amountFraction
+    }
+
 
     /**
      * Consume and produce resource
@@ -95,19 +119,12 @@ object FuelFactoryProduction : Mechanism() {
      * @param physicsData physics data of the player
      * @param maxFuelPerCubeFactor affected by how many fuel factory in a space unit
      */
-    fun updateResourceData(
+    fun updateFuelData(
         mutableFuelFactoryData: MutableFuelFactoryData,
         physicsData: MutablePhysicsData,
         maxFuelPerCubeFactor: Double,
     ) {
-        val amountFraction: Double = productAmountFraction(
-            mutableFuelFactoryData,
-        )
-
-
-        val outputAmount: Double =
-            mutableFuelFactoryData.fuelFactoryInternalData.maxOutputAmount * amountFraction *
-                    mutableFuelFactoryData.numBuilding * maxFuelPerCubeFactor
+        val outputAmount: Double = computeOutAmount(mutableFuelFactoryData) * maxFuelPerCubeFactor
 
         mutableFuelFactoryData.lastOutputAmount = outputAmount
 
@@ -128,15 +145,7 @@ object FuelFactoryProduction : Mechanism() {
     ): Command {
         val toId: Int = mutableFuelFactoryData.ownerPlayerId
 
-
-        val amountFraction: Double = productAmountFraction(
-            mutableFuelFactoryData,
-        )
-
-
-        val outputAmount: Double =
-            mutableFuelFactoryData.fuelFactoryInternalData.maxOutputAmount * amountFraction *
-                    mutableFuelFactoryData.numBuilding * maxFuelPerCubeFactor
+        val outputAmount: Double = computeOutAmount(mutableFuelFactoryData) * maxFuelPerCubeFactor
 
         mutableFuelFactoryData.lastOutputAmount = outputAmount
 
@@ -145,7 +154,8 @@ object FuelFactoryProduction : Mechanism() {
             fromId = mutablePlayerData.playerId,
             fromInt4D = mutablePlayerData.int4D.toInt4D(),
             amount = outputAmount,
-            senderFuelLossFractionPerDistance = mutablePlayerData.playerInternalData.playerScienceData().playerScienceApplicationData.fuelLogisticsLossFractionPerDistance,
+            senderFuelLossFractionPerDistance = mutablePlayerData.playerInternalData.playerScienceData()
+                .playerScienceApplicationData.fuelLogisticsLossFractionPerDistance,
         )
     }
 }

@@ -131,7 +131,7 @@ object Employment : Mechanism() {
         val maxSelfFuelFactoryEmployee: Double = labourerPopData.fuelFactoryMap.values.filter {
             (it.ownerPlayerId == universeData3DAtPlayer.getCurrentPlayerData().playerId) && (it.isOpened)
         }.fold(0.0) { acc, mutableFuelFactoryData ->
-            acc + mutableFuelFactoryData.fuelFactoryInternalData.maxNumEmployee * mutableFuelFactoryData.numBuilding
+            acc + mutableFuelFactoryData.maxNumEmployee
         }
 
         // Total number of max employee of self resource factory, ignore factor of salary
@@ -146,8 +146,8 @@ object Employment : Mechanism() {
         val maxOtherFuelFactoryEmployee: Double = labourerPopData.fuelFactoryMap.values.filter {
             (it.ownerPlayerId != universeData3DAtPlayer.getCurrentPlayerData().playerId) && (it.isOpened)
         }.fold(0.0) { acc, mutableFuelFactoryData ->
-            val maxNumEmployee: Double = mutableFuelFactoryData.fuelFactoryInternalData
-                .maxNumEmployee * mutableFuelFactoryData.numBuilding
+            val maxNumEmployee: Double = mutableFuelFactoryData.maxNumEmployee
+
             val maxPaidEmployee: Double = if (salary > 0.0) {
                 val payWithTax: Double = salary * (1.0 + incomeTax)
                 mutableFuelFactoryData.storedFuelRestMass / payWithTax
@@ -193,7 +193,7 @@ object Employment : Mechanism() {
             (it.ownerPlayerId == universeData3DAtPlayer.getCurrentPlayerData().playerId) && (it.isOpened)
         }.forEach {
 
-            val maxNumEmployee: Double = it.fuelFactoryInternalData.maxNumEmployee * it.numBuilding
+            val maxNumEmployee: Double = it.maxNumEmployee
             val newNumEmployee: Double = maxNumEmployee * employeeFraction
             val pay: Double = newNumEmployee * salary
             val tax: Double = pay * incomeTax
@@ -248,7 +248,7 @@ object Employment : Mechanism() {
             (it.ownerPlayerId != universeData3DAtPlayer.getCurrentPlayerData().playerId) && (it.isOpened)
         }.forEach {
 
-            val maxNumEmployee: Double = it.fuelFactoryInternalData.maxNumEmployee * it.numBuilding
+            val maxNumEmployee: Double = it.maxNumEmployee
 
             val maxNewNumEmployee: Double = maxNumEmployee * employeeFraction
             val maxPaidEmployee: Double = if (salary > 0.0) {

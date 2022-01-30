@@ -194,7 +194,7 @@ object TestingFixedMinimal : TestingGenerateUniverseMethod() {
         )
 
         // Add a research institute with high research power to player 1
-        val mutableInstitute: MutableInstituteData = MutableInstituteData(
+        val mutableInstitute = MutableInstituteData(
             instituteInternalData = MutableInstituteInternalData(
                 xCor = -1.0,
                 yCor = 2.0,
@@ -212,7 +212,7 @@ object TestingFixedMinimal : TestingGenerateUniverseMethod() {
         ).allPopData.scholarPopData.addInstitute(mutableInstitute)
 
         // Add a laboratory to player 1
-        val mutableLaboratoryData: MutableLaboratoryData = MutableLaboratoryData(
+        val mutableLaboratoryData = MutableLaboratoryData(
             laboratoryInternalData = MutableLaboratoryInternalData(
                 xCor = 1.0,
                 yCor = 2.0,
@@ -234,9 +234,8 @@ object TestingFixedMinimal : TestingGenerateUniverseMethod() {
         // Add ideal fuel factory to player 1
         playerData1.playerInternalData.playerScienceData().playerScienceApplicationData.idealFuelFactory =
             MutableFuelFactoryInternalData(
-                maxOutputAmount = 1.0,
-                maxNumEmployee = 10.0,
-                size = 1.0,
+                maxOutputAmountPerEmployee = 0.1,
+                sizePerEmployee = 1.0
             )
 
         // Add ideal plant factory to player 1
@@ -269,11 +268,10 @@ object TestingFixedMinimal : TestingGenerateUniverseMethod() {
         val fuelFactory1 = MutableFuelFactoryData(
             ownerPlayerId = 1,
             fuelFactoryInternalData = MutableFuelFactoryInternalData(
-                maxOutputAmount = 2.0,
-                maxNumEmployee = 100.0,
-                size = 3.0,
+                maxOutputAmountPerEmployee = 2.0,
+                sizePerEmployee = 3.0,
             ),
-            numBuilding = 1.0,
+            1.0,
             isOpened = true,
             storedFuelRestMass = 0.0,
             lastOutputAmount = 0.0,

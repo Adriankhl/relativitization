@@ -736,16 +736,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         nestedTable.add(
             createLabel(
-                "Number of building: ${fuelFactoryData.numBuilding}",
-                gdxSettings.smallFontSize
-            )
-        )
-
-        nestedTable.row().space(10f)
-
-        nestedTable.add(
-            createLabel(
-                "Max. output: ${fuelFactoryData.fuelFactoryInternalData.maxOutputAmount * fuelFactoryData.numBuilding}",
+                "Max. output: ${fuelFactoryData.fuelFactoryInternalData.maxOutputAmountPerEmployee * fuelFactoryData.maxNumEmployee}",
                 gdxSettings.smallFontSize
             )
         )
@@ -763,7 +754,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         nestedTable.add(
             createLabel(
-                "Max. employee: ${fuelFactoryData.fuelFactoryInternalData.maxNumEmployee * fuelFactoryData.numBuilding}",
+                "Max. employee: ${fuelFactoryData.maxNumEmployee}",
                 gdxSettings.smallFontSize
             )
         )
@@ -1197,7 +1188,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             gdxSettings.smallFontSize
         )
 
-        val numBuilding = createDoubleTextField(
+        val maxNumEmployee = createDoubleTextField(
             1.0,
             gdxSettings.smallFontSize
         )
@@ -1218,8 +1209,8 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
                 fuelFactoryInternalData = game.universeClient.getCurrentPlayerData()
                     .playerInternalData.playerScienceData()
                     .playerScienceApplicationData.newFuelFactoryInternalData(),
+                maxNumEmployee = maxNumEmployee.value,
                 storedFuelRestMass = storedFuelRestMass.value,
-                numBuilding = numBuilding.value
             )
 
             game.universeClient.currentCommand = buildForeignFuelFactoryCommand
@@ -1267,27 +1258,27 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         nestedTable.add(
             createLabel(
-                "New factory num building: ",
+                "New factory max. employee: ",
                 gdxSettings.smallFontSize
             )
         )
 
-        nestedTable.add(numBuilding.textField)
+        nestedTable.add(maxNumEmployee.textField)
 
         nestedTable.row().space(10f)
 
-        val numBuildingDoubleSliderButton = createDoubleSliderButtonTable(
-            default = numBuilding.value,
+        val maxNumEmployeeDoubleSliderButton = createDoubleSliderButtonTable(
+            default = maxNumEmployee.value,
             sliderStepSize = 0.01f,
             sliderDecimalPlace = 2,
             buttonSize = 40f * gdxSettings.imageScale,
             buttonSoundVolume = gdxSettings.soundEffectsVolume,
-            currentValue = { numBuilding.value },
+            currentValue = { maxNumEmployee.value },
         ) {
-            numBuilding.value = it
+            maxNumEmployee.value = it
         }
 
-        nestedTable.add(numBuildingDoubleSliderButton).colspan(2)
+        nestedTable.add(maxNumEmployeeDoubleSliderButton).colspan(2)
 
         return nestedTable
     }
@@ -1463,7 +1454,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             gdxSettings.smallFontSize
         )
 
-        val numBuilding = createDoubleTextField(
+        val maxNumEmployee = createDoubleTextField(
             1.0,
             gdxSettings.smallFontSize
         )
@@ -1479,7 +1470,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
                 fromId = game.universeClient.getCurrentPlayerData().playerId,
                 fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
                 targetCarrierId = carrierId,
-                numBuilding = numBuilding.value
+                maxNumEmployee = maxNumEmployee.value,
             )
 
             game.universeClient.currentCommand = buildLocalFuelFactoryCommand
@@ -1516,27 +1507,27 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         nestedTable.add(
             createLabel(
-                "New factory num building: ",
+                "New factory max. employee: ",
                 gdxSettings.smallFontSize
             )
         )
 
-        nestedTable.add(numBuilding.textField)
+        nestedTable.add(maxNumEmployee.textField)
 
         nestedTable.row().space(10f)
 
-        val numBuildingDoubleSliderButton = createDoubleSliderButtonTable(
-            default = numBuilding.value,
+        val maxNumEmployeeDoubleSliderButton = createDoubleSliderButtonTable(
+            default = maxNumEmployee.value,
             sliderStepSize = 0.01f,
             sliderDecimalPlace = 2,
             buttonSize = 40f * gdxSettings.imageScale,
             buttonSoundVolume = gdxSettings.soundEffectsVolume,
-            currentValue = { numBuilding.value },
+            currentValue = { maxNumEmployee.value },
         ) {
-            numBuilding.value = it
+            maxNumEmployee.value = it
         }
 
-        nestedTable.add(numBuildingDoubleSliderButton).colspan(2)
+        nestedTable.add(maxNumEmployeeDoubleSliderButton).colspan(2)
 
         return nestedTable
     }

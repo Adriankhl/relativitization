@@ -113,7 +113,7 @@ class BuildNewFuelFactoryOption(
 
         val minFuelNeeded: Double = planDataAtPlayer.getCurrentMutablePlayerData()
             .playerInternalData.playerScienceData().playerScienceApplicationData
-            .newFuelFactoryFuelNeededByConstruction()
+            .newFuelFactoryFuelNeededByConstruction(1.0)
         val sufficientProductionFuelConsideration = SufficientProductionFuelConsideration(
             requiredProductionFuelRestMass = minFuelNeeded / maxProductionFuelFraction,
             rankIfTrue = 0,
@@ -152,16 +152,15 @@ class BuildNewFuelFactoryOption(
             .playerScienceApplicationData
             .idealFuelFactory
 
-        val fuelNeededPerBuilding: Double = planDataAtPlayer
+        val fuelNeededPerEmployee: Double = planDataAtPlayer
             .getCurrentMutablePlayerData()
             .playerInternalData
             .playerScienceData()
             .playerScienceApplicationData
-            .newFuelFactoryFuelNeededByConstruction()
+            .newFuelFactoryFuelNeededByConstruction(1.0)
 
         val fuelAvailable: Double = planDataAtPlayer.getCurrentMutablePlayerData()
             .playerInternalData.physicsData().fuelRestMassData.production
-
 
         // Don't use all the fuel
         val maxUsableFuel: Double = fuelAvailable * maxProductionFuelFraction
@@ -170,16 +169,10 @@ class BuildNewFuelFactoryOption(
             .playerInternalData.popSystemData().carrierDataMap.getValue(carrierId).allPopData
             .labourerPopData.commonPopData.adultPopulation
 
-        // Multiply by 0.5 to consider pop growth
-        val targetNumLabourer: Double = numLabourer * 0.5
-
-        // Compute the numBuilding by considering the available fuel and number of labourer
-        val fuelFraction: Double = maxUsableFuel / fuelNeededPerBuilding
-        val labourerFraction: Double = targetNumLabourer / idealFactory.maxNumEmployee
-        val numBuilding: Double = max(
+        val maxNumEmployee: Double = max(
             min(
-                fuelFraction,
-                labourerFraction,
+                maxUsableFuel / fuelNeededPerEmployee,
+                numLabourer * 0.5,
             ),
             1.0
         )
@@ -193,8 +186,8 @@ class BuildNewFuelFactoryOption(
                 targetCarrierId = carrierId,
                 ownerId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
                 fuelFactoryInternalData = DataSerializer.copy(idealFactory),
+                maxNumEmployee = maxNumEmployee,
                 storedFuelRestMass = 0.0,
-                numBuilding = numBuilding,
             )
         )
     }

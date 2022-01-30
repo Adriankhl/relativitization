@@ -24,7 +24,7 @@ data class ScienceApplicationData(
 ) {
 
     /**
-     * Fuel factory should depends on num building only
+     * Fuel factory should depend on num building only
      */
     fun newFuelFactoryInternalData(): FuelFactoryInternalData {
         return idealFuelFactory
@@ -61,7 +61,7 @@ data class ScienceApplicationData(
         val maxOutputResourceQualityData: ResourceQualityData =
             idealResourceFactory.maxOutputResourceQualityData * actualQualityLevel
 
-        // Max increase to 5 times
+        // Max. increase to 5 times
         val maxOutputAmount: Double = idealResourceFactory.maxOutputAmount * Quadratic.standard(
             x = actualQualityLevel,
             xMin = 0.0,
@@ -241,7 +241,7 @@ data class MutableScienceApplicationData(
     }
 
     /**
-     * The fuel rest mass needed to construct a new space ship
+     * The fuel rest mass needed to construct a new spaceship
      */
     fun newSpaceshipFuelNeededByConstruction(
         qualityLevel: Double
@@ -259,12 +259,15 @@ data class MutableScienceApplicationData(
 
     /**
      * The fuel rest mass needed to construct a new factory
+     *
+     * @param maxNumEmployee the maximum number of employee of this factory
      */
     fun newFuelFactoryFuelNeededByConstruction(
+        maxNumEmployee: Double
     ): Double {
         val fuelFactoryInternalData: MutableFuelFactoryInternalData = newFuelFactoryInternalData()
 
-        return fuelFactoryInternalData.maxOutputAmount * 20
+        return fuelFactoryInternalData.maxOutputAmountPerEmployee * maxNumEmployee * 20
     }
 
     fun getIdealResourceFactory(resourceType: ResourceType): MutableResourceFactoryInternalData {
@@ -298,7 +301,7 @@ data class MutableScienceApplicationData(
         val maxOutputResourceQualityData: MutableResourceQualityData =
             idealResourceFactory.maxOutputResourceQualityData * actualQualityLevel
 
-        // Max increase to 5 times
+        // Max. increase to 5 times
         val maxOutputAmount: Double = idealResourceFactory.maxOutputAmount * Quadratic.standard(
             x = actualQualityLevel,
             xMin = 0.0,

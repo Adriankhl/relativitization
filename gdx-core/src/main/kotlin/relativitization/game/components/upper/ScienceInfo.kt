@@ -184,7 +184,7 @@ class ScienceInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
     }
 
     private fun createKnowledgeDataTable(knowledgeData: KnowledgeData): Table {
-        val nestedTable: Table = Table()
+        val nestedTable = Table()
 
         nestedTable.add(createBasicResearchDataTable(knowledgeData.basicResearchData))
 
@@ -201,7 +201,7 @@ class ScienceInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
      * @param basicResearchData the data to be displayed
      */
     private fun createBasicResearchDataTable(basicResearchData: BasicResearchData): Table {
-        val nestedTable: Table = Table()
+        val nestedTable = Table()
 
         val headerLabel = createLabel("Basic Research", gdxSettings.normalFontSize)
         nestedTable.add(headerLabel)
@@ -264,7 +264,7 @@ class ScienceInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
      * @param appliedResearchData the data to be displayed
      */
     private fun createAppliedResearchDataTable(appliedResearchData: AppliedResearchData): Table {
-        val nestedTable: Table = Table()
+        val nestedTable = Table()
 
         val headerLabel = createLabel("Applied Research", gdxSettings.normalFontSize)
         nestedTable.add(headerLabel)
@@ -413,18 +413,11 @@ class ScienceInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
 
         nestedTable.row().space(10f)
 
-        nestedTable.add(
-            createLabel(
-                "Max. output: ${scienceApplicationData.idealFuelFactory.maxOutputAmount}",
-                gdxSettings.smallFontSize
-            )
-        )
-
         nestedTable.row().space(10f)
 
         nestedTable.add(
             createLabel(
-                "Max. employee: ${scienceApplicationData.idealFuelFactory.maxNumEmployee}",
+                "Max. output per employee: ${scienceApplicationData.idealFuelFactory.maxOutputAmountPerEmployee}",
                 gdxSettings.smallFontSize
             )
         )

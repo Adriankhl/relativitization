@@ -21,7 +21,7 @@ import relativitization.universe.utils.RelativitizationLogManager
  * @property ownerId who own this factory
  * @property fuelFactoryInternalData data of the factory
  * @property storedFuelRestMass fuel stored in the newly built factory
- * @property numBuilding number of building in this factory
+ * @property maxNumEmployee maximum number of employee
  */
 @Serializable
 data class BuildForeignFuelFactoryCommand(
@@ -32,8 +32,8 @@ data class BuildForeignFuelFactoryCommand(
     val targetCarrierId: Int,
     val ownerId: Int,
     val fuelFactoryInternalData: FuelFactoryInternalData,
+    val maxNumEmployee: Double,
     val storedFuelRestMass: Double,
-    val numBuilding: Double,
 ) : DefaultCommand() {
     override fun description(): I18NString = I18NString(
         listOf(
@@ -43,24 +43,21 @@ data class BuildForeignFuelFactoryCommand(
             IntString(1),
             NormalString(" of player "),
             IntString(2),
-            NormalString(". Initial stored fuel rest mass: "),
+            NormalString(". Max. employee: "),
             IntString(3),
-            NormalString(", number of building: "),
-            IntString(4),
             NormalString(", max. output: "),
+            IntString(4),
+            NormalString(", initial stored fuel rest mass: "),
             IntString(5),
-            NormalString(", max. employee: "),
-            IntString(6),
             NormalString(". "),
         ),
         listOf(
             ownerId.toString(),
             targetCarrierId.toString(),
             toId.toString(),
+            maxNumEmployee.toString(),
+            (maxNumEmployee * fuelFactoryInternalData.maxOutputAmountPerEmployee).toString(),
             storedFuelRestMass.toString(),
-            numBuilding.toString(),
-            (numBuilding * fuelFactoryInternalData.maxOutputAmount).toString(),
-            (numBuilding * fuelFactoryInternalData.maxNumEmployee).toString(),
         )
     )
 
@@ -88,15 +85,15 @@ data class BuildForeignFuelFactoryCommand(
         )
 
         val fuelNeeded: Double = playerData.playerInternalData.playerScienceData()
-            .playerScienceApplicationData.newFuelFactoryFuelNeededByConstruction() * numBuilding
+            .playerScienceApplicationData.newFuelFactoryFuelNeededByConstruction(maxNumEmployee)
         val hasFuel = CommandErrorMessage(
             playerData.playerInternalData.physicsData().fuelRestMassData.production >= fuelNeeded + storedFuelRestMass,
             I18NString("Not enough fuel rest mass. ")
         )
 
-        val isNumBuildingValid = CommandErrorMessage(
-            numBuilding >= 1.0,
-            I18NString("Number of building should be >= 1. ")
+        val isMaxNumEmployeeValid = CommandErrorMessage(
+            maxNumEmployee > 1.0,
+            I18NString("Number of employee should be >= 1. ")
         )
 
 
@@ -106,7 +103,7 @@ data class BuildForeignFuelFactoryCommand(
                 allowConstruction,
                 validFactoryInternalData,
                 hasFuel,
-                isNumBuildingValid,
+                isMaxNumEmployeeValid,
             )
         )
     }
@@ -116,7 +113,7 @@ data class BuildForeignFuelFactoryCommand(
         universeSettings: UniverseSettings
     ) {
         val fuelNeeded: Double = playerData.playerInternalData.playerScienceData()
-            .playerScienceApplicationData.newFuelFactoryFuelNeededByConstruction() * numBuilding
+            .playerScienceApplicationData.newFuelFactoryFuelNeededByConstruction(maxNumEmployee)
 
         playerData.playerInternalData.physicsData().fuelRestMassData.production -= fuelNeeded + storedFuelRestMass
 
@@ -155,14 +152,14 @@ data class BuildForeignFuelFactoryCommand(
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
-
         val carrier: MutableCarrierData =
             playerData.playerInternalData.popSystemData().carrierDataMap.getValue(targetCarrierId)
+
         carrier.allPopData.labourerPopData.addFuelFactory(
             MutableFuelFactoryData(
                 ownerPlayerId = ownerId,
                 fuelFactoryInternalData = DataSerializer.copy(fuelFactoryInternalData),
-                numBuilding = numBuilding,
+                maxNumEmployee = maxNumEmployee,
                 isOpened = true,
                 storedFuelRestMass = storedFuelRestMass,
                 lastOutputAmount = 0.0,
@@ -267,7 +264,7 @@ data class BuildForeignResourceFactoryCommand(
         )
 
         val fuelNeeded: Double =
-            storedFuelRestMass + playerData.playerInternalData.playerScienceData().playerScienceApplicationData.newResourceFactoryFuelNeededByConstruction(
+            playerData.playerInternalData.playerScienceData().playerScienceApplicationData.newResourceFactoryFuelNeededByConstruction(
                 resourceFactoryInternalData.outputResource,
                 qualityLevel
             ) * numBuilding
@@ -297,7 +294,7 @@ data class BuildForeignResourceFactoryCommand(
         universeSettings: UniverseSettings
     ) {
         val fuelNeeded: Double =
-            storedFuelRestMass + playerData.playerInternalData.playerScienceData().playerScienceApplicationData.newResourceFactoryFuelNeededByConstruction(
+            playerData.playerInternalData.playerScienceData().playerScienceApplicationData.newResourceFactoryFuelNeededByConstruction(
                 resourceFactoryInternalData.outputResource,
                 qualityLevel
             ) * numBuilding
@@ -365,7 +362,7 @@ data class BuildForeignResourceFactoryCommand(
  * Build a fuel factory locally on player
  *
  * @property targetCarrierId build factory on that carrier
- * @property numBuilding number of building in this factory
+ * @property maxNumEmployee maximum number of employee
  */
 @Serializable
 data class BuildLocalFuelFactoryCommand(
@@ -373,7 +370,7 @@ data class BuildLocalFuelFactoryCommand(
     override val fromId: Int,
     override val fromInt4D: Int4D,
     val targetCarrierId: Int,
-    val numBuilding: Double,
+    val maxNumEmployee: Double,
 ) : DefaultCommand() {
     override fun description(): I18NString = I18NString(
         listOf(
@@ -381,14 +378,14 @@ data class BuildLocalFuelFactoryCommand(
             IntString(0),
             NormalString(" of player "),
             IntString(1),
-            NormalString(". Number of building: "),
+            NormalString(". Max. number of employee: "),
             IntString(2),
             NormalString(". "),
         ),
         listOf(
             targetCarrierId.toString(),
             toId.toString(),
-            numBuilding.toString(),
+            maxNumEmployee.toString(),
         )
     )
 
@@ -407,16 +404,16 @@ data class BuildLocalFuelFactoryCommand(
             I18NString("Not allow to build factory. ")
         )
 
-        val isNumBuildingValid = CommandErrorMessage(
-            numBuilding >= 1.0,
-            I18NString("Number of building should be >= 1. ")
+        val isMaxNumEmployeeValid = CommandErrorMessage(
+            maxNumEmployee >= 1.0,
+            I18NString("Max. number of employee should be >= 1. ")
         )
 
         return CommandErrorMessage(
             listOf(
                 isSubordinateOrSelf,
                 allowSubordinateConstruction,
-                isNumBuildingValid,
+                isMaxNumEmployeeValid,
             )
         )
     }
@@ -451,7 +448,7 @@ data class BuildLocalFuelFactoryCommand(
         )
 
         val requiredFuel: Double = playerData.playerInternalData.playerScienceData()
-            .playerScienceApplicationData.newFuelFactoryFuelNeededByConstruction() * numBuilding
+            .playerScienceApplicationData.newFuelFactoryFuelNeededByConstruction(maxNumEmployee)
 
         val hasFuel = CommandErrorMessage(
             playerData.playerInternalData.physicsData().fuelRestMassData.production >= requiredFuel,
@@ -481,7 +478,7 @@ data class BuildLocalFuelFactoryCommand(
             .newFuelFactoryInternalData()
 
         val requiredFuel: Double = playerData.playerInternalData.playerScienceData()
-            .playerScienceApplicationData.newFuelFactoryFuelNeededByConstruction() * numBuilding
+            .playerScienceApplicationData.newFuelFactoryFuelNeededByConstruction(maxNumEmployee)
 
         playerData.playerInternalData.physicsData().fuelRestMassData.production -= requiredFuel
 
@@ -489,7 +486,7 @@ data class BuildLocalFuelFactoryCommand(
             MutableFuelFactoryData(
                 ownerPlayerId = toId,
                 fuelFactoryInternalData = newFuelFactoryInternalData,
-                numBuilding = numBuilding,
+                maxNumEmployee = maxNumEmployee,
                 isOpened = true,
                 storedFuelRestMass = 0.0,
                 lastOutputAmount = 0.0,
@@ -672,7 +669,7 @@ data class BuildLocalResourceFactoryCommand(
  * Remove a fuel factory from foreign player
  *
  * @property targetCarrierId remove the factory from that carrier
- * @property targetFuelFactoryId remove the factory with that Id
+ * @property targetFuelFactoryId remove the factory with that ID
  */
 @Serializable
 data class RemoveForeignFuelFactoryCommand(
@@ -768,7 +765,7 @@ data class RemoveForeignFuelFactoryCommand(
  * Remove a resource factory from foreign player
  *
  * @property targetCarrierId remove the factory from that carrier
- * @property targetResourceFactoryId remove the factory with that Id
+ * @property targetResourceFactoryId remove the factory with that ID
  */
 @Serializable
 data class RemoveForeignResourceFactoryCommand(
@@ -1196,7 +1193,7 @@ data class RemoveLocalResourceFactoryCommand(
  * Supply fuel to a fuel factory in foreign player
  *
  * @property targetCarrierId supply the factory from that carrier
- * @property targetFuelFactoryId supply the factory with that Id
+ * @property targetFuelFactoryId supply the factory with that ID
  * @property amount the amount of fuel supplied to the factory
  */
 @Serializable
@@ -1556,7 +1553,7 @@ data class CloseLocalFuelFactoryCommand(
  * Supply fuel to a resource factory in foreign player
  *
  * @property targetCarrierId supply the factory from that carrier
- * @property targetResourceFactoryId supply the factory with that Id
+ * @property targetResourceFactoryId supply the factory with that ID
  * @property amount the amount of fuel supplied to the factory
  */
 @Serializable
