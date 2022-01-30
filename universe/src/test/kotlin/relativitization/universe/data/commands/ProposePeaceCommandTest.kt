@@ -45,9 +45,7 @@ internal class ProposePeaceCommandTest {
 
         assert(view8At3.getCurrentPlayerData().playerInternalData.diplomacyData().warData.warStateMap.isEmpty())
         assert(
-            view8At5.getCurrentPlayerData().playerInternalData.diplomacyData().warData.warStateMap.containsKey(
-                3
-            )
+            view8At5.getCurrentPlayerData().playerInternalData.diplomacyData().warData.warStateMap.keys == setOf(3)
         )
 
         runBlocking {
@@ -66,14 +64,10 @@ internal class ProposePeaceCommandTest {
 
 
         assert(
-            view10At3.getCurrentPlayerData().playerInternalData.diplomacyData().warData.warStateMap.containsKey(
-                5
-            )
+            view10At3.getCurrentPlayerData().playerInternalData.diplomacyData().warData.warStateMap.keys == setOf(5)
         )
         assert(
-            view10At5.getCurrentPlayerData().playerInternalData.diplomacyData().warData.warStateMap.containsKey(
-                3
-            )
+            view10At5.getCurrentPlayerData().playerInternalData.diplomacyData().warData.warStateMap.keys == setOf(3)
         )
 
         runBlocking {
