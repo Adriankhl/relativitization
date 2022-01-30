@@ -11,6 +11,9 @@ import relativitization.game.screens.ClientSettingsScreen
 import relativitization.game.screens.HelpScreen
 import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.commands.DummyCommand
+import relativitization.universe.data.components.defaults.physics.FuelRestMassData
+import relativitization.universe.maths.number.Notation
+import relativitization.universe.maths.number.toScientificNotation
 import relativitization.universe.maths.physics.Intervals.intDelay
 import kotlin.math.min
 
@@ -656,19 +659,24 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         game.screen = HelpScreen(game, true)
     }
 
-
     // About server status
     private val serverStatusNameAndTimeLabel: Label = createLabel("", gdxSettings.smallFontSize)
     private val serverUniverseTimeLabel: Label = createLabel("", gdxSettings.smallFontSize)
     private val timeLeftLabel: Label = createLabel("", gdxSettings.smallFontSize)
 
+    // About fuel
+    private val fuelTradeLabel: Label = createLabel("", gdxSettings.smallFontSize)
+    private val fuelProductionLabel: Label = createLabel("", gdxSettings.smallFontSize)
+    private val fuelMovementLabel: Label = createLabel("", gdxSettings.smallFontSize)
+    private val fuelStorageLabel: Label = createLabel("", gdxSettings.smallFontSize)
+
     // Tables
     private val viewControlTable: Table = createViewControlTable()
     private val currentUniverseDataTable: Table = createCurrentUniverseDataTable()
+    private val fuelRestMassDataTable: Table = createFuelRestMassDataTable()
     private val serverStatusTable: Table = createServerStatusTable()
     private val stopWaitingTable: Table = createStopWaitingTable()
     private val runOrStopUniverseTable: Table = createRunStopUniverseTable()
-
 
     init {
         // Set background color to blue
@@ -683,6 +691,8 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
 
         updateCurrentUniverseDataLabel()
 
+        updateFuelRestMassDataLabel()
+
         table.add(viewControlTable).pad(10f)
 
         table.add(currentUniverseDataTable).pad(10f)
@@ -694,6 +704,8 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
 
         table.add(clearCommandListButton)
             .size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
+
+        table.add(fuelRestMassDataTable).pad(10f)
 
         table.add(aiInfoButton).pad(10f)
 
@@ -777,8 +789,12 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
             updateUpdateToLatestButton()
         }
         updateUniverseDataSelectionBox()
+        updateFuelRestMassDataLabel()
     }
 
+    override fun onCommandListChange() {
+        updateFuelRestMassDataLabel()
+    }
 
     override fun onPrimarySelectedInt3DChange() {
         // Update select box if different
@@ -858,10 +874,53 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
     }
 
     /**
+     * Create a table to display fuel data
+     */
+    private fun createFuelRestMassDataTable(): Table {
+        val nestedTable = Table()
+
+        nestedTable.add(
+            createLabel(
+                "Fuel",
+                gdxSettings.smallFontSize
+            )
+        ).colspan(3)
+
+        nestedTable.row().space(0f)
+
+        nestedTable.add(fuelTradeLabel)
+
+        nestedTable.add(
+            createLabel(
+                " | ",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.add(fuelProductionLabel)
+
+        nestedTable.row().space(0f)
+
+        nestedTable.add(fuelMovementLabel)
+
+        nestedTable.add(
+            createLabel(
+                " | ",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.add(fuelStorageLabel)
+
+        return nestedTable
+    }
+
+    /**
      * Create a table to display server status
      */
     private fun createServerStatusTable(): Table {
         val nestedTable: Table = Table()
+
         nestedTable.add(serverStatusNameAndTimeLabel)
 
         nestedTable.row()
@@ -931,6 +990,30 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         val currentUniverseTime: Int = game.universeClient.getUniverseData3D().center.t
 
         currentUniverseDataLabel.setText("Current data: $currentUniverseName - $currentUniverseTime")
+    }
+
+    /**
+     * Update the label showing the fuel rest mass
+     */
+    private fun updateFuelRestMassDataLabel() {
+        val fuelRestMassData: FuelRestMassData = game.universeClient.getCurrentPlayerData()
+            .playerInternalData.physicsData().fuelRestMassData
+
+        val trade: String = fuelRestMassData.trade.toScientificNotation().toString(2)
+
+        val production: String = fuelRestMassData.production.toScientificNotation().toString(2)
+
+        val movement: String = fuelRestMassData.movement.toScientificNotation().toString(2)
+
+        val storage: String = fuelRestMassData.storage.toScientificNotation().toString(2)
+
+        fuelTradeLabel.setText(trade)
+
+        fuelProductionLabel.setText(production)
+
+        fuelMovementLabel.setText(movement)
+
+        fuelStorageLabel.setText(storage)
     }
 
     /**

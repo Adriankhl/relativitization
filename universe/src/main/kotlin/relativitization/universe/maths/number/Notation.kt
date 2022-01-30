@@ -40,4 +40,10 @@ data class ScientificNotation(
      * Use string to double instead of multiplying to avoid floating point error
      */
     fun toDouble(): Double = "${coefficient}E${exponent}".toDouble()
+
+    fun toDouble(decimalPlace: Int): Double =
+        "${Notation.roundDecimal(coefficient, decimalPlace)}E${exponent}".toDouble()
+
+    fun toString(decimalPlace: Int): String =
+        "${Notation.roundDecimal(coefficient, decimalPlace)}E${exponent}"
 }
