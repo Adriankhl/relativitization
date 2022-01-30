@@ -24,7 +24,9 @@ object SyncHierarchy : Mechanism() {
         if (!mutablePlayerData.isTopLeader()) {
             val leaderIdListOfLeader: List<Int> = universeData3DAtPlayer.get(
                 mutablePlayerData.playerInternalData.directLeaderId
-            ).playerInternalData.leaderIdList
+            ).playerInternalData.leaderIdList.filter {
+                universeData3DAtPlayer.playerDataMap.containsKey(it)
+            }
 
             // In weird situation, it is possible that your leader is also viewing you as leader
             // the player should replace the leader list by one higher rank leader list
