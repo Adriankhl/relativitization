@@ -57,20 +57,19 @@ object Educate : Mechanism() {
     ): Double {
         val maxDeltaEducationLevel: Double = 0.05
 
-        val educatorFactor: Double = if (totalPopulation > 0.0) {
-            educatorPopulation * 10.0 / totalPopulation
+        val idealEducatorLevel: Double = if (totalPopulation > 0.0) {
+            educatorPopulation * 10.0 * educatorSatisfaction / totalPopulation
         } else {
-            1.0
+            0.0
         }
 
-        val relativeNewEducationLevel: Double = min(
-            maxDeltaEducationLevel * 2.0,
-            maxDeltaEducationLevel * educatorFactor * educatorSatisfaction
-        )
+        val educationDiff: Double = idealEducatorLevel - originalEducationLevel
 
-        // Adjusted by time dilation
-        val educationLevelChange: Double =
-            (relativeNewEducationLevel - maxDeltaEducationLevel)
+        val educationLevelChange: Double = when {
+            educationDiff > maxDeltaEducationLevel -> maxDeltaEducationLevel
+            educationDiff < -maxDeltaEducationLevel -> -maxDeltaEducationLevel
+            else -> educationDiff
+        }
 
         val tempEducationLevel: Double = originalEducationLevel + educationLevelChange
 
