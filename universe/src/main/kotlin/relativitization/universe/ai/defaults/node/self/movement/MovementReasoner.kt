@@ -143,6 +143,8 @@ class MoveToEnemyOption : DualUtilityOption() {
         val enemyIdSet: Set<Int> = planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData
             .diplomacyData().relationMap.filterValues {
                 it.diplomaticRelationState == DiplomaticRelationState.ENEMY
+            }.filterKeys {
+                planDataAtPlayer.universeData3DAtPlayer.playerDataMap.containsKey(it)
             }.keys
 
         if (enemyIdSet.isNotEmpty()) {
