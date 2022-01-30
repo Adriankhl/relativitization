@@ -135,12 +135,14 @@ object ResourceFactoryProduction : Mechanism() {
         resourceData: MutableResourceData,
         buyResource: Boolean,
     ): Double {
+        val employeeFraction: Double = resourceFactoryData.employeeFraction()
+
         val inputFractionList: List<Double> = if (buyResource) {
             resourceFactoryData.resourceFactoryInternalData.inputResourceMap.map { (type, inputResourceData) ->
+                // Don't adjust by employee fraction, it as already considered
                 val requiredAmount: Double = inputResourceData.amount *
                         resourceFactoryData.resourceFactoryInternalData.maxOutputAmountPerEmployee *
-                        resourceFactoryData.maxNumEmployee *
-                        resourceFactoryData.employeeFraction()
+                        resourceFactoryData.maxNumEmployee
 
                 val qualityClass: ResourceQualityClass = inputResourceQualityClassMap.getValue(type)
 
@@ -152,10 +154,10 @@ object ResourceFactoryProduction : Mechanism() {
             }
         } else {
             resourceFactoryData.resourceFactoryInternalData.inputResourceMap.map { (type, inputResourceData) ->
+                // Don't adjust by employee fraction, it as already considered
                 val requiredAmount: Double = inputResourceData.amount *
                         resourceFactoryData.resourceFactoryInternalData.maxOutputAmountPerEmployee *
-                        resourceFactoryData.maxNumEmployee *
-                        resourceFactoryData.employeeFraction()
+                        resourceFactoryData.maxNumEmployee
 
                 val qualityClass: ResourceQualityClass = inputResourceQualityClassMap.getValue(type)
 
@@ -168,8 +170,6 @@ object ResourceFactoryProduction : Mechanism() {
         }
 
         val inputFraction: Double = inputFractionList.minOrNull() ?: 1.0
-
-        val employeeFraction: Double = resourceFactoryData.employeeFraction()
 
         val fuelFraction: Double = if (buyResource) {
             val totalResourcePrice: Double = resourceFactoryData.resourceFactoryInternalData
@@ -185,10 +185,10 @@ object ResourceFactoryProduction : Mechanism() {
                     acc + amount * price
                 }
 
+            // Don't adjust by employee fraction, it as already considered
             val totalPrice: Double = totalResourcePrice +
                     resourceFactoryData.resourceFactoryInternalData.fuelRestMassConsumptionRatePerEmployee *
-                    resourceFactoryData.maxNumEmployee *
-                    resourceFactoryData.employeeFraction()
+                    resourceFactoryData.maxNumEmployee
 
             if (totalPrice > 0.0) {
                 resourceFactoryData.storedFuelRestMass / totalPrice
@@ -196,10 +196,10 @@ object ResourceFactoryProduction : Mechanism() {
                 1.0
             }
         } else {
+            // Don't adjust by employee fraction, it as already considered
             val totalPrice: Double =
                     resourceFactoryData.resourceFactoryInternalData.fuelRestMassConsumptionRatePerEmployee *
-                            resourceFactoryData.maxNumEmployee *
-                            resourceFactoryData.employeeFraction()
+                            resourceFactoryData.maxNumEmployee
 
             if (totalPrice > 0.0) {
                 physicsData.fuelRestMassData.production / totalPrice
