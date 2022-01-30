@@ -605,7 +605,7 @@ class TooManySelfResourceFactoryAtCarrierConsideration(
         }
 
         // Too many if this resource employee is more than 0.1 of all others' employee
-        return if (thisResourceMaxEmployee > (selfFuelFactoryMaxEmployee + otherResourceFactoryMaxEmployee) * 0.1) {
+        return if (thisResourceMaxEmployee > (selfFuelFactoryMaxEmployee + otherResourceFactoryMaxEmployee) * 0.2) {
             DualUtilityData(
                 rank = rankIfTrue,
                 multiplier = multiplierIfTrue,
