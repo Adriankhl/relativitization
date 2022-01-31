@@ -1,8 +1,6 @@
 package relativitization.universe.ai
 
 import relativitization.universe.ai.defaults.node.self.pop.SalaryReasoner
-import relativitization.universe.ai.defaults.node.self.storage.BalanceFuelReasoner
-import relativitization.universe.ai.defaults.node.self.storage.BalanceResourceReasoner
 import relativitization.universe.ai.defaults.utils.AINode
 import relativitization.universe.ai.defaults.utils.PlanState
 import relativitization.universe.ai.defaults.utils.SequenceReasoner
@@ -11,16 +9,16 @@ import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.commands.Command
 import relativitization.universe.utils.RelativitizationLogManager
 
-object DefaultFuelResourceSalaryAI : AI() {
+object DefaultSalaryAI : AI() {
     private val logger = RelativitizationLogManager.getLogger()
 
     override fun compute(universeData3DAtPlayer: UniverseData3DAtPlayer): List<Command> {
         logger.debug("Computing player ${universeData3DAtPlayer.id} with DefaultAI")
-        return SelfManagementAIRootReasoner(universeData3DAtPlayer).computeCommandList()
+        return SalaryAIRootReasoner(universeData3DAtPlayer).computeCommandList()
     }
 }
 
-class SelfManagementAIRootReasoner(
+class SalaryAIRootReasoner(
     universeData3DAtPlayer: UniverseData3DAtPlayer
 ) : SequenceReasoner() {
 
@@ -37,8 +35,6 @@ class SelfManagementAIRootReasoner(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<AINode> = listOf(
-        BalanceFuelReasoner(),
-        BalanceResourceReasoner(),
         SalaryReasoner(),
     )
 
