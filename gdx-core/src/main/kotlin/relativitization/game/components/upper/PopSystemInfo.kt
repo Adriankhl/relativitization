@@ -2778,9 +2778,11 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             )
         )
 
-        val resourceFraction = createDoubleTextField(
-            1.0,
-            gdxSettings.smallFontSize
+        val storageFractionSlider = createSlider(
+            0f,
+            1f,
+            0.01f,
+            0.2f,
         )
 
         val splitCarrierButton = createTextButton(
@@ -2794,7 +2796,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
                 fromId = game.universeClient.getCurrentPlayerData().playerId,
                 fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
                 carrierIdList = newPlayerCarrierIdSet.toList(),
-                resourceFraction = resourceFraction.value,
+                storageFraction = storageFractionSlider.value.toDouble(),
             )
 
             game.universeClient.currentCommand = splitCarrierCommand
@@ -2851,24 +2853,12 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         nestedTable.add(
             createLabel(
-                "Resource fraction: ",
+                "Storage fraction: ",
                 gdxSettings.smallFontSize
             )
         )
 
-        nestedTable.add(resourceFraction.textField)
-
-        nestedTable.row().space(10f)
-
-        val resourceFractionSlider = createSlider(
-            0f,
-            1f,
-            0.01f,
-            0.2f,
-        ) { fl, _ ->
-            resourceFraction.value = Notation.roundDecimal(fl.toDouble(), 2)
-        }
-        nestedTable.add(resourceFractionSlider).colspan(2)
+        nestedTable.add(storageFractionSlider)
 
         return nestedTable
     }

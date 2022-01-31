@@ -84,7 +84,7 @@ class SplitCarrierOption : DualUtilityOption() {
                     fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
                     fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
                     carrierIdList = carrierIdList.take(1),
-                    resourceFraction = 0.1,
+                    storageFraction = 0.3,
                 )
             )
         } else {

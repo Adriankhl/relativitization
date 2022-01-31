@@ -28,7 +28,7 @@ internal class SplitCarrierCommandTest {
                             fromId = 1,
                             fromInt4D = view7.getCurrentPlayerData().int4D,
                             carrierIdList = listOf(1),
-                            resourceFraction = 0.1,
+                            storageFraction = 0.1,
                         )
                     )
                 ),

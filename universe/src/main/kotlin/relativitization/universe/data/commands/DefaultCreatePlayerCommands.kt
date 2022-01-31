@@ -15,7 +15,7 @@ import relativitization.universe.utils.NormalString
  * Split carrier to create new player
  *
  * @property carrierIdList the id of the carriers to form the new player
- * @property resourceFraction the fraction of fuel and resource from original player to new player
+ * @property storageFraction the fraction of fuel and resource from original player storage to new player
  */
 @Serializable
 data class SplitCarrierCommand(
@@ -23,7 +23,7 @@ data class SplitCarrierCommand(
     override val fromId: Int,
     override val fromInt4D: Int4D,
     val carrierIdList: List<Int>,
-    val resourceFraction: Double,
+    val storageFraction: Double,
 ) : DefaultCommand() {
     override fun description(): I18NString = I18NString(
         listOf(
@@ -63,9 +63,9 @@ data class SplitCarrierCommand(
             I18NString("Zero remaining carrier. ")
         )
 
-        val isResourceFractionValid = CommandErrorMessage(
-            (resourceFraction >= 0.0) && (resourceFraction <= 1.0),
-            I18NString("Invalid resource fraction. ")
+        val isStorageFractionValid = CommandErrorMessage(
+            (storageFraction >= 0.0) && (storageFraction <= 1.0),
+            I18NString("Invalid storage fraction. ")
         )
 
 
@@ -75,7 +75,7 @@ data class SplitCarrierCommand(
                 isCarrierIdValid,
                 isCarrierListNotEmpty,
                 isRemainingCarrierNonZero,
-                isResourceFractionValid,
+                isStorageFractionValid,
             )
         )
     }
@@ -117,9 +117,7 @@ data class SplitCarrierCommand(
             DataSerializer.copy(playerData.playerInternalData.economyData())
         newEconomyData.resourceData.singleResourceMap.forEach { (_, qualityMap) ->
             qualityMap.forEach { (_, singleResourceData) ->
-                singleResourceData.resourceAmount.storage *= resourceFraction
-                singleResourceData.resourceAmount.production *= resourceFraction
-                singleResourceData.resourceAmount.trade *= resourceFraction
+                singleResourceData.resourceAmount.storage *= storageFraction
             }
         }
         newPlayerInternalData.economyData(newEconomyData)
@@ -127,9 +125,7 @@ data class SplitCarrierCommand(
         // reduce original resource
         playerData.playerInternalData.economyData().resourceData.singleResourceMap.forEach { (_, qualityMap) ->
             qualityMap.forEach { (_, singleResourceData) ->
-                singleResourceData.resourceAmount.storage *= (1.0 - resourceFraction)
-                singleResourceData.resourceAmount.production *= (1.0 - resourceFraction)
-                singleResourceData.resourceAmount.trade *= (1.0 - resourceFraction)
+                singleResourceData.resourceAmount.storage *= (1.0 - storageFraction)
             }
         }
 
@@ -140,17 +136,11 @@ data class SplitCarrierCommand(
         // split fuel rest mass data
         val newPhysicsData: MutablePhysicsData =
             DataSerializer.copy(playerData.playerInternalData.physicsData())
-        newPhysicsData.fuelRestMassData.storage *= resourceFraction
-        newPhysicsData.fuelRestMassData.movement *= resourceFraction
-        newPhysicsData.fuelRestMassData.trade *= resourceFraction
-        newPhysicsData.fuelRestMassData.production *= resourceFraction
+        newPhysicsData.fuelRestMassData.storage *= storageFraction
         newPlayerInternalData.physicsData(newPhysicsData)
 
         // reduce original fuel
-        playerData.playerInternalData.physicsData().fuelRestMassData.storage *= (1.0 - resourceFraction)
-        playerData.playerInternalData.physicsData().fuelRestMassData.movement *= (1.0 - resourceFraction)
-        playerData.playerInternalData.physicsData().fuelRestMassData.trade *= (1.0 - resourceFraction)
-        playerData.playerInternalData.physicsData().fuelRestMassData.production *= (1.0 - resourceFraction)
+        playerData.playerInternalData.physicsData().fuelRestMassData.storage *= (1.0 - storageFraction)
 
         // Copy science data
         val newPlayerScienceData: MutablePlayerScienceData =
