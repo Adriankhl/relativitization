@@ -7,9 +7,11 @@ import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.commands.DamageCommand
 import relativitization.universe.data.components.defaults.diplomacy.DiplomaticRelationState
+import relativitization.universe.data.components.defaults.physics.MutableFuelRestMassData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.mechanisms.Mechanism
 import relativitization.universe.maths.random.Rand
+import kotlin.math.min
 
 object AutoCombat : Mechanism() {
     override fun process(
@@ -26,17 +28,28 @@ object AutoCombat : Mechanism() {
             universeData3DAtPlayer.getNeighbour(0)
         ).shuffled(Rand.rand())
 
+        val fuelRestMassData: MutableFuelRestMassData = mutablePlayerData.playerInternalData.physicsData()
+            .fuelRestMassData
+
         return if (sameCubeEnemy.isNotEmpty()) {
             mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.map {
                 // Randomly pick target enemy
                 val targetEnemy: PlayerData = sameCubeEnemy[Rand.rand().nextInt(sameCubeEnemy.size)]
+
+                val attack: Double = min(
+                    it.allPopData.soldierPopData.militaryBaseData.attack,
+                    fuelRestMassData.production
+                )
+
+                // Consume production fuel when attack
+                fuelRestMassData.production -= attack
 
                 // Adjust damage by time dilation
                 val command = DamageCommand(
                     toId = targetEnemy.playerId,
                     fromId = mutablePlayerData.playerId,
                     fromInt4D = mutablePlayerData.int4D.toInt4D(),
-                    attack = it.allPopData.soldierPopData.militaryBaseData.attack
+                    attack = attack
                 )
                 command
             }
