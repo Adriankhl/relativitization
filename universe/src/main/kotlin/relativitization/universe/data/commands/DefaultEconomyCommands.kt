@@ -5,9 +5,11 @@ import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.components.defaults.economy.MutableResourceAmountData
 import relativitization.universe.data.components.defaults.economy.ResourceQualityClass
+import relativitization.universe.data.components.defaults.economy.ResourceTargetProportionData
 import relativitization.universe.data.components.defaults.economy.ResourceType
 import relativitization.universe.data.components.defaults.physics.Int4D
 import relativitization.universe.data.components.defaults.popsystem.pop.PopType
+import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.utils.I18NString
 import relativitization.universe.utils.IntString
 import relativitization.universe.utils.IntTranslateString
@@ -540,225 +542,41 @@ data class ChangeMiddleHighBoundaryCommand(
 }
 
 /**
- * Transfer resource from storage to production
- *
- * @property resourceType the type of the resource to be transferred
- * @property resourceQualityClass the class of the resource to be transferred
- * @property amount the amount of resource to transfer
- */
-@Serializable
-data class TransferResourceToProductionCommand(
-    override val toId: Int,
-    override val fromId: Int,
-    override val fromInt4D: Int4D,
-    val resourceType: ResourceType,
-    val resourceQualityClass: ResourceQualityClass,
-    val amount: Double,
-) : DefaultCommand() {
-    override fun description(): I18NString = I18NString(
-        listOf(
-            NormalString("Transfer "),
-            IntString(0),
-            NormalString(" of "),
-            IntTranslateString(1),
-            NormalString(" of class "),
-            IntTranslateString(2),
-            NormalString(" from storage to production. ")
-        ),
-        listOf(
-            amount.toString(),
-            resourceType.toString(),
-            resourceQualityClass.toString(),
-        ),
-    )
-
-    override fun canSend(
-        playerData: MutablePlayerData,
-        universeSettings: UniverseSettings
-    ): CommandErrorMessage {
-        val isSelf = CommandErrorMessage(
-            playerData.playerId == toId,
-            CommandI18NStringFactory.isNotToSelf(fromId, toId)
-        )
-
-        val hasStorage = CommandErrorMessage(
-            playerData.playerInternalData.economyData().resourceData.getStorageResourceAmount(
-                resourceType,
-                resourceQualityClass
-            ) >= amount,
-            I18NString("Not enough resource in storage. ")
-        )
-
-        return CommandErrorMessage(
-            listOf(
-                isSelf,
-                hasStorage,
-            )
-        )
-    }
-
-    override fun canExecute(
-        playerData: MutablePlayerData,
-        universeSettings: UniverseSettings
-    ): CommandErrorMessage {
-        val isSelf = CommandErrorMessage(
-            playerData.playerId == fromId,
-            CommandI18NStringFactory.isNotFromSelf(playerData.playerId, fromId)
-        )
-
-        val hasStorage = CommandErrorMessage(
-            playerData.playerInternalData.economyData().resourceData.getStorageResourceAmount(
-                resourceType,
-                resourceQualityClass
-            ) >= amount,
-            I18NString("Not enough resource in storage. ")
-        )
-
-        return CommandErrorMessage(
-            listOf(
-                isSelf,
-                hasStorage,
-            )
-        )
-    }
-
-    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
-        val amountData: MutableResourceAmountData =
-            playerData.playerInternalData.economyData().resourceData.getResourceAmountData(
-                resourceType,
-                resourceQualityClass
-            )
-
-        amountData.storage -= amount
-        amountData.production += amount
-    }
-}
-
-/**
- * Transfer resource from storage to trade
- *
- * @property resourceType the type of the resource to be transferred
- * @property resourceQualityClass the class of the resource to be transferred
- * @property amount the amount of resource to transfer
- */
-@Serializable
-data class TransferResourceToTradeCommand(
-    override val toId: Int,
-    override val fromId: Int,
-    override val fromInt4D: Int4D,
-    val resourceType: ResourceType,
-    val resourceQualityClass: ResourceQualityClass,
-    val amount: Double,
-) : DefaultCommand() {
-    override fun description(): I18NString = I18NString(
-        listOf(
-            NormalString("Transfer "),
-            IntString(0),
-            NormalString(" of "),
-            IntTranslateString(1),
-            NormalString(" of class "),
-            IntTranslateString(2),
-            NormalString(" from storage to trade. ")
-        ),
-        listOf(
-            amount.toString(),
-            resourceType.toString(),
-            resourceQualityClass.toString(),
-        ),
-    )
-
-    override fun canSend(
-        playerData: MutablePlayerData,
-        universeSettings: UniverseSettings
-    ): CommandErrorMessage {
-        val isSelf = CommandErrorMessage(
-            playerData.playerId == toId,
-            CommandI18NStringFactory.isNotToSelf(fromId, toId)
-        )
-
-        val hasStorage = CommandErrorMessage(
-            playerData.playerInternalData.economyData().resourceData.getStorageResourceAmount(
-                resourceType,
-                resourceQualityClass
-            ) >= amount,
-            I18NString("Not enough resource in storage. ")
-        )
-
-        return CommandErrorMessage(
-            listOf(
-                isSelf,
-                hasStorage,
-            )
-        )
-    }
-
-    override fun canExecute(
-        playerData: MutablePlayerData,
-        universeSettings: UniverseSettings
-    ): CommandErrorMessage {
-        val isSelf = CommandErrorMessage(
-            playerData.playerId == fromId,
-            CommandI18NStringFactory.isNotFromSelf(playerData.playerId, fromId)
-        )
-
-        val hasStorage = CommandErrorMessage(
-            playerData.playerInternalData.economyData().resourceData.getStorageResourceAmount(
-                resourceType,
-                resourceQualityClass
-            ) >= amount,
-            I18NString("Not enough resource in storage. ")
-        )
-
-        return CommandErrorMessage(
-            listOf(
-                isSelf,
-                hasStorage,
-            )
-        )
-    }
-
-    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
-        val amountData: MutableResourceAmountData =
-            playerData.playerInternalData.economyData().resourceData.getResourceAmountData(
-                resourceType,
-                resourceQualityClass
-            )
-
-        amountData.storage -= amount
-        amountData.trade += amount
-    }
-}
-
-/**
  * Change the storage resource target amount
  *
  * @property resourceType the type of the resource
  * @property resourceQualityClass the class of the resource
- * @property targetAmount the target amount of the resource
+ * @property resourceTargetProportionData the target proportion of the resource categories
  */
 @Serializable
-data class ChangeStorageResourceTargetCommand(
+data class ChangeResourceTargetProportionCommand(
     override val toId: Int,
     override val fromId: Int,
     override val fromInt4D: Int4D,
     val resourceType: ResourceType,
     val resourceQualityClass: ResourceQualityClass,
-    val targetAmount: Double,
+    val resourceTargetProportionData: ResourceTargetProportionData,
 ) : DefaultCommand() {
     override fun description(): I18NString = I18NString(
         listOf(
-            NormalString("Change the target amount of "),
+            NormalString("Change the target proportion of "),
             IntTranslateString(0),
             NormalString(" of class "),
             IntTranslateString(1),
-            NormalString(" for storage to "),
+            NormalString(", storage: "),
             IntString(2),
+            NormalString(", production: "),
+            IntString(2),
+            NormalString(", trade: "),
+            IntString(3),
             NormalString(". ")
         ),
         listOf(
             resourceType.toString(),
             resourceQualityClass.toString(),
-            targetAmount.toString(),
+            resourceTargetProportionData.storage.toString(),
+            resourceTargetProportionData.production.toString(),
+            resourceTargetProportionData.trade.toString(),
         ),
     )
 
@@ -795,89 +613,10 @@ data class ChangeStorageResourceTargetCommand(
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
-        val targetAmountData: MutableResourceAmountData =
-            playerData.playerInternalData.economyData().resourceData.getResourceTargetAmountData(
+        playerData.playerInternalData.economyData().resourceData.getSingleResourceData(
                 resourceType,
                 resourceQualityClass
-            )
-
-        targetAmountData.storage = targetAmount
-    }
-}
-
-/**
- * Change the production resource target amount
- *
- * @property resourceType the type of the resource
- * @property resourceQualityClass the class of the resource
- * @property targetAmount the target amount of the resource
- */
-@Serializable
-data class ChangeProductionResourceTargetCommand(
-    override val toId: Int,
-    override val fromId: Int,
-    override val fromInt4D: Int4D,
-    val resourceType: ResourceType,
-    val resourceQualityClass: ResourceQualityClass,
-    val targetAmount: Double,
-) : DefaultCommand() {
-    override fun description(): I18NString = I18NString(
-        listOf(
-            NormalString("Change the target amount of "),
-            IntTranslateString(0),
-            NormalString(" of class "),
-            IntTranslateString(1),
-            NormalString(" for production to "),
-            IntString(2),
-            NormalString(". ")
-        ),
-        listOf(
-            resourceType.toString(),
-            resourceQualityClass.toString(),
-            targetAmount.toString(),
-        ),
-    )
-
-    override fun canSend(
-        playerData: MutablePlayerData,
-        universeSettings: UniverseSettings
-    ): CommandErrorMessage {
-        val isSelf = CommandErrorMessage(
-            playerData.playerId == toId,
-            CommandI18NStringFactory.isNotToSelf(fromId, toId)
-        )
-
-        return CommandErrorMessage(
-            listOf(
-                isSelf,
-            )
-        )
-    }
-
-    override fun canExecute(
-        playerData: MutablePlayerData,
-        universeSettings: UniverseSettings
-    ): CommandErrorMessage {
-        val isSelf = CommandErrorMessage(
-            playerData.playerId == fromId,
-            CommandI18NStringFactory.isNotFromSelf(playerData.playerId, fromId)
-        )
-
-        return CommandErrorMessage(
-            listOf(
-                isSelf
-            )
-        )
-    }
-
-    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
-        val targetAmountData: MutableResourceAmountData =
-            playerData.playerInternalData.economyData().resourceData.getResourceTargetAmountData(
-                resourceType,
-                resourceQualityClass
-            )
-
-        targetAmountData.production = targetAmount
+        ).resourceTargetProportion = DataSerializer.copy(resourceTargetProportionData)
     }
 }
 

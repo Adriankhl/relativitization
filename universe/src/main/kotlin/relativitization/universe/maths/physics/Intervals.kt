@@ -2,6 +2,7 @@ package relativitization.universe.maths.physics
 
 import relativitization.universe.data.components.defaults.physics.*
 import kotlin.math.abs
+import kotlin.math.ceil
 import kotlin.math.sqrt
 
 object Intervals {
@@ -38,7 +39,7 @@ object Intervals {
      * then round up to Int and return the maximum Int distance
      */
     fun intDistanceFromOrigin(x: Int, y: Int, z: Int): Int {
-        return (doubleDistanceFromOrigin(x, y, z) - 0.000001).toInt() + 1 // Round up
+        return ceil(doubleDistanceFromOrigin(x, y, z)).toInt()
     }
 
     /**
@@ -93,6 +94,11 @@ object Intervals {
     fun intDistance(c1: Int3D, c2: Int3D): Int {
         return intDistance(c1.x, c1.y, c1.z, c2.x, c2.y, c2.z)
     }
+
+    /**
+     * Integer distance at the same cube
+     */
+    fun sameCubeIntDistance(): Int = intDistance(0, 0, 0, 0, 0, 0)
 
     /**
      * Compute light travel time by turn, round up

@@ -30,6 +30,7 @@ import relativitization.universe.mechanisms.defaults.regular.ai.ClearRecentComma
 import relativitization.universe.mechanisms.defaults.regular.factory.ClearLocalFactoryStoredFuel
 import relativitization.universe.mechanisms.defaults.regular.science.UpdateScienceApplicationData
 import relativitization.universe.mechanisms.defaults.regular.storage.BalanceFuel
+import relativitization.universe.mechanisms.defaults.regular.storage.BalanceResource
 import relativitization.universe.mechanisms.defaults.regular.sync.SyncHierarchy
 import relativitization.universe.mechanisms.defaults.regular.sync.SyncPlayerData
 import relativitization.universe.mechanisms.defaults.regular.sync.SyncPlayerScienceData
@@ -43,6 +44,7 @@ object DefaultMechanismLists : MechanismLists() {
         ProcessEvents,
         ClearLocalFactoryStoredFuel,
         BalanceFuel,
+        BalanceResource,
         UpdateWarState,
         UpdateDiplomaticRelation,
         UpdateDiplomaticRelationState,

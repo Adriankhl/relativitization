@@ -31,9 +31,11 @@ enum class ResourceType(val value: String) {
             ANIMAL,
             METAL,
             PLASTIC,
+            RESEARCH_EQUIPMENT,
         )
 
-        fun isPrimaryResource(resourceType: ResourceType): Boolean = primaryResourceList.contains(resourceType)
+        // whether the resource is involved in production
+        fun isProductionResource(resourceType: ResourceType): Boolean = primaryResourceList.contains(resourceType)
     }
 }
 
@@ -54,11 +56,26 @@ enum class ResourceQualityClass {
 @Serializable
 data class ResourceData(
     val singleResourceMap: Map<ResourceType, Map<ResourceQualityClass, SingleResourceData>> =
-        ResourceType.values().map { resourceType ->
-            resourceType to ResourceQualityClass.values().map { resourceQualityClass ->
-                resourceQualityClass to SingleResourceData()
-            }.toMap()
-        }.toMap(),
+        ResourceType.values().associateWith { resourceType ->
+            ResourceQualityClass.values().associateWith {
+                val resourceTargetProportion: ResourceTargetProportionData =
+                    if (ResourceType.isProductionResource(resourceType)) {
+                        ResourceTargetProportionData(
+                            storage = 0.25,
+                            production = 0.5,
+                            trade = 0.25
+                        )
+                    } else {
+                        ResourceTargetProportionData(
+                            storage = 0.5,
+                            production = 0.0,
+                            trade = 0.5
+                        )
+                    }
+
+                SingleResourceData(resourceTargetProportion = resourceTargetProportion)
+            }
+        },
 ) {
     /**
      * Get single resource data, default to SingleResourceData() if it doesn't exist
@@ -136,11 +153,11 @@ data class ResourceData(
     /**
      * Get resource target amount
      */
-    fun getResourceTargetAmountData(
+    fun getResourceTargetProportionData(
         resourceType: ResourceType,
         resourceQualityClass: ResourceQualityClass
-    ): ResourceAmountData =
-        getSingleResourceData(resourceType, resourceQualityClass).resourceTargetAmount
+    ): ResourceTargetProportionData =
+        getSingleResourceData(resourceType, resourceQualityClass).resourceTargetProportion
 
     /**
      * Get resource price
@@ -154,11 +171,26 @@ data class ResourceData(
 @Serializable
 data class MutableResourceData(
     val singleResourceMap: MutableMap<ResourceType, MutableMap<ResourceQualityClass, MutableSingleResourceData>> =
-        ResourceType.values().map { resourceType ->
-            resourceType to ResourceQualityClass.values().map { resourceQualityClass ->
-                resourceQualityClass to MutableSingleResourceData()
-            }.toMap().toMutableMap()
-        }.toMap().toMutableMap(),
+        ResourceType.values().associateWith { resourceType ->
+            ResourceQualityClass.values().associateWith {
+                val resourceTargetProportion: MutableResourceTargetProportionData =
+                    if (ResourceType.isProductionResource(resourceType)) {
+                        MutableResourceTargetProportionData(
+                            storage = 0.25,
+                            production = 0.5,
+                            trade = 0.25
+                        )
+                    } else {
+                        MutableResourceTargetProportionData(
+                            storage = 0.5,
+                            production = 0.0,
+                            trade = 0.5
+                        )
+                    }
+
+                MutableSingleResourceData(resourceTargetProportion = resourceTargetProportion)
+            }.toMutableMap()
+        }.toMutableMap(),
 ) {
     /**
      * Get single resource data
@@ -236,11 +268,11 @@ data class MutableResourceData(
     /**
      * Get resource target amount
      */
-    fun getResourceTargetAmountData(
+    fun getResourceTargetProportionData(
         resourceType: ResourceType,
         resourceQualityClass: ResourceQualityClass
-    ): MutableResourceAmountData =
-        getSingleResourceData(resourceType, resourceQualityClass).resourceTargetAmount
+    ): MutableResourceTargetProportionData=
+        getSingleResourceData(resourceType, resourceQualityClass).resourceTargetProportion
 
 
     /**
@@ -376,7 +408,7 @@ data class ResourceQualityData(
      * If quality equals to zero, the output equal to zero instead of undefined
      */
     operator fun div(d: Double): ResourceQualityData = ResourceQualityData(
-        if (quality1!= 0.0) {
+        if (quality1 != 0.0) {
             quality1 / d
         } else {
             0.0
@@ -445,7 +477,7 @@ data class MutableResourceQualityData(
      * If quality equals to zero, the output equal to zero instead of undefined
      */
     operator fun div(d: Double): MutableResourceQualityData = MutableResourceQualityData(
-        if (quality1!= 0.0) {
+        if (quality1 != 0.0) {
             quality1 / d
         } else {
             0.0
@@ -592,34 +624,34 @@ data class MutableResourceAmountData(
  */
 @Serializable
 data class ResourceTargetProportionData(
-    val storage: Double = 0.0,
+    val storage: Double = 0.5,
     val production: Double = 0.0,
-    val trade: Double = 0.0,
+    val trade: Double = 0.5,
 ) {
     fun total(): Double = storage + trade + production
 }
 
 @Serializable
 data class MutableResourceTargetProportionData(
-    var storage: Double = 0.0,
+    var storage: Double = 0.5,
     var production: Double = 0.0,
-    var trade: Double = 0.0,
+    var trade: Double = 0.5,
 ) {
     fun total(): Double = storage + trade + production
 }
 
 /**
  * The resource data of a specific type and class
+ * @property resourceAmount resource amount
+ * @property resourceTargetProportion the target proportion of the resource categories
  * @property resourceQuality resource quality
  * @property resourceQualityLowerBound the lower bound of resource quality
- * @property resourceAmount resource amount
- * @property resourceTargetAmount  target amount
  * @property resourcePrice resource price in fuel rest mass
  */
 @Serializable
 data class SingleResourceData(
     val resourceAmount: ResourceAmountData = ResourceAmountData(),
-    val resourceTargetAmount: ResourceAmountData = ResourceAmountData(),
+    val resourceTargetProportion: ResourceTargetProportionData = ResourceTargetProportionData(),
     val resourceQuality: ResourceQualityData = ResourceQualityData(),
     val resourceQualityLowerBound: ResourceQualityData = ResourceQualityData(),
     val resourcePrice: Double = 0.01,
@@ -628,7 +660,7 @@ data class SingleResourceData(
 @Serializable
 data class MutableSingleResourceData(
     var resourceAmount: MutableResourceAmountData = MutableResourceAmountData(),
-    var resourceTargetAmount: MutableResourceAmountData = MutableResourceAmountData(),
+    var resourceTargetProportion: MutableResourceTargetProportionData = MutableResourceTargetProportionData(),
     var resourceQuality: MutableResourceQualityData = MutableResourceQualityData(),
     var resourceQualityLowerBound: MutableResourceQualityData = MutableResourceQualityData(),
     var resourcePrice: Double = 0.01,
@@ -640,24 +672,45 @@ data class MutableSingleResourceData(
         newResourceQuality: MutableResourceQualityData,
         newResourceAmount: Double,
     ) {
-        when {
-            resourceAmount.storage < resourceTargetAmount.storage -> {
-                val originalAmount: Double = resourceAmount.storage
-                val newAmount: Double = originalAmount + newResourceAmount
-                resourceQuality.updateQuality(originalAmount, newAmount, newResourceQuality)
-                resourceAmount.storage = newAmount
-            }
-            resourceAmount.production < resourceTargetAmount.production -> {
-                val originalAmount: Double = resourceAmount.production
-                val newAmount: Double = originalAmount + newResourceAmount
-                resourceQuality.updateQuality(originalAmount, newAmount, newResourceQuality)
-                resourceAmount.production = newAmount
-            }
-            else -> {
-                val originalAmount: Double = resourceAmount.trade
-                val newAmount: Double = originalAmount + newResourceAmount
-                resourceQuality.updateQuality(originalAmount, newAmount, newResourceQuality)
-                resourceAmount.trade = newAmount
+        val totalResource: Double = newResourceAmount + resourceAmount.total()
+        val totalTargetWeight: Double = resourceTargetProportion.total()
+
+        val targetStorage: Double = if (totalTargetWeight > 0.0) {
+            resourceTargetProportion.storage / totalTargetWeight * totalResource
+        } else {
+            totalResource / 3.0
+        }
+
+        val targetProduction: Double = if (totalTargetWeight > 0.0) {
+            resourceTargetProportion.production / totalTargetWeight * totalResource
+        } else {
+            totalResource / 3.0
+        }
+
+        if (newResourceAmount > 0.0) {
+            when {
+                resourceAmount.storage < targetStorage -> {
+                    val actualResourceAdded: Double = min(
+                        newResourceAmount,
+                        targetStorage - resourceAmount.storage,
+                    )
+                    resourceQuality.updateQuality(resourceAmount.total(), actualResourceAdded, newResourceQuality)
+                    resourceAmount.storage += actualResourceAdded
+                    addResource(newResourceQuality, newResourceAmount - actualResourceAdded)
+                }
+                resourceAmount.production < targetProduction -> {
+                    val actualResourceAdded: Double = min(
+                        newResourceAmount,
+                        targetProduction - resourceAmount.production,
+                    )
+                    resourceQuality.updateQuality(resourceAmount.total(), actualResourceAdded, newResourceQuality)
+                    resourceAmount.production += actualResourceAdded
+                    addResource(newResourceQuality, newResourceAmount - actualResourceAdded)
+                }
+                else -> {
+                    resourceQuality.updateQuality(resourceAmount.total(), newResourceAmount, newResourceQuality)
+                    resourceAmount.trade += newResourceAmount
+                }
             }
         }
     }

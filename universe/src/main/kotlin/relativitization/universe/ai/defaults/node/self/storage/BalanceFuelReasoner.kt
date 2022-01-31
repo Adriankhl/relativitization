@@ -14,14 +14,14 @@ class BalanceFuelReasoner : SequenceReasoner() {
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<AINode> = listOf(
-        BalanceFuelTargetDataAINode(),
+        BalanceFuelProportionAINode(),
     )
 }
 
 /**
  * Change the fuel target data
  */
-class BalanceFuelTargetDataAINode : AINode() {
+class BalanceFuelProportionAINode : AINode() {
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
         // If there is stellar system in player, movement should be zero
         val hasStellarSystem: Boolean = planDataAtPlayer.getCurrentMutablePlayerData()

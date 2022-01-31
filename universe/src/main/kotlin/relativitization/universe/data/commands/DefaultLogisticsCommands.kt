@@ -6,6 +6,7 @@ import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.components.defaults.economy.ResourceQualityClass
 import relativitization.universe.data.components.defaults.economy.ResourceQualityData
 import relativitization.universe.data.components.defaults.economy.ResourceType
+import relativitization.universe.data.components.defaults.physics.Int3D
 import relativitization.universe.data.components.defaults.physics.Int4D
 import relativitization.universe.data.components.defaults.popsystem.pop.PopType
 import relativitization.universe.data.components.defaults.popsystem.pop.service.export.MutablePlayerExportCenterData
@@ -41,6 +42,7 @@ data class SendFuelFromStorageCommand(
             IntString(1),
             NormalString(" to "),
             IntString(2),
+            NormalString(". "),
         ),
         listOf(
             amount.toString(),
@@ -54,17 +56,17 @@ data class SendFuelFromStorageCommand(
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
         val hasAmount = CommandErrorMessage(
-            playerData.playerInternalData.physicsData().fuelRestMassData.trade >= amount,
+            playerData.playerInternalData.physicsData().fuelRestMassData.storage >= amount,
             I18NString(
                 listOf(
-                    NormalString("Trade fuel amount "),
+                    NormalString("Storage fuel amount "),
                     IntString(0),
                     NormalString(" is less than "),
                     IntString(1),
                     NormalString(". ")
                 ),
                 listOf(
-                    playerData.playerInternalData.physicsData().fuelRestMassData.trade.toString(),
+                    playerData.playerInternalData.physicsData().fuelRestMassData.storage.toString(),
                     amount.toString()
                 )
             )
@@ -99,7 +101,7 @@ data class SendFuelFromStorageCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ) {
-        playerData.playerInternalData.physicsData().fuelRestMassData.trade -= amount
+        playerData.playerInternalData.physicsData().fuelRestMassData.storage -= amount
     }
 
     override fun canExecute(
@@ -119,18 +121,18 @@ data class SendFuelFromStorageCommand(
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
-        val receiverLossFractionPerDistance: Double =
-            playerData.playerInternalData.playerScienceData().playerScienceApplicationData.fuelLogisticsLossFractionPerDistance
+        val receiverLossFractionPerDistance: Double = playerData.playerInternalData.playerScienceData()
+            .playerScienceApplicationData.fuelLogisticsLossFractionPerDistance
 
         val lossFractionPerDistance: Double =
             (receiverLossFractionPerDistance + senderFuelLossFractionPerDistance) * 0.5
 
-        val distance: Double = Intervals.distance(
-            fromInt4D.toDouble3D(),
-            playerData.int4D.toDouble3D()
+        val distance: Int = Intervals.intDistance(
+            fromInt4D,
+            playerData.int4D
         )
 
-        val remainFraction: Double = if (distance < 1.0) {
+        val remainFraction: Double = if (distance <= Intervals.sameCubeIntDistance()) {
             1.0
         } else {
             (1.0 - lossFractionPerDistance).pow(distance)
@@ -152,6 +154,7 @@ data class SendFuelFromStorageCommand(
             100.0 * changeFraction
         }
         val duration: Int = 10
+
         playerData.playerInternalData.modifierData().diplomacyModifierData.addReceiveFuelToRelationModifier(
             id = fromId,
             relationChange = relationChange,
@@ -200,6 +203,7 @@ data class SendResourceFromStorageCommand(
             IntString(3),
             NormalString(" to "),
             IntString(4),
+            NormalString(". "),
         ),
         listOf(
             amount.toString(),
@@ -215,19 +219,19 @@ data class SendResourceFromStorageCommand(
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
         val hasAmount = CommandErrorMessage(
-            playerData.playerInternalData.economyData().resourceData.getTradeResourceAmount(
+            playerData.playerInternalData.economyData().resourceData.getStorageResourceAmount(
                 resourceType, resourceQualityClass
             ) >= amount,
             I18NString(
                 listOf(
-                    NormalString("Trade resource amount "),
+                    NormalString("Storage resource amount "),
                     IntString(0),
                     NormalString(" is less than "),
                     IntString(1),
                     NormalString(". ")
                 ),
                 listOf(
-                    playerData.playerInternalData.economyData().resourceData.getTradeResourceAmount(
+                    playerData.playerInternalData.economyData().resourceData.getStorageResourceAmount(
                         resourceType, resourceQualityClass
                     ).toString(),
                     amount.toString()
@@ -258,7 +262,8 @@ data class SendResourceFromStorageCommand(
 
 
         val isLossFractionValid = CommandErrorMessage(
-            playerData.playerInternalData.playerScienceData().playerScienceApplicationData.resourceLogisticsLossFractionPerDistance <= senderResourceLossFractionPerDistance,
+            playerData.playerInternalData.playerScienceData().playerScienceApplicationData
+                .resourceLogisticsLossFractionPerDistance <= senderResourceLossFractionPerDistance,
             I18NString(
                 listOf(
                     NormalString("Sender resource loss fraction per distance"),
@@ -268,7 +273,8 @@ data class SendResourceFromStorageCommand(
                     NormalString(". ")
                 ),
                 listOf(
-                    playerData.playerInternalData.playerScienceData().playerScienceApplicationData.resourceLogisticsLossFractionPerDistance.toString(),
+                    playerData.playerInternalData.playerScienceData().playerScienceApplicationData
+                        .resourceLogisticsLossFractionPerDistance.toString(),
                     senderResourceLossFractionPerDistance.toString()
                 )
             )
@@ -289,7 +295,7 @@ data class SendResourceFromStorageCommand(
     ) {
         playerData.playerInternalData.economyData().resourceData.getResourceAmountData(
             resourceType, resourceQualityClass
-        ).trade -= amount
+        ).storage -= amount
     }
 
     override fun canExecute(
@@ -301,17 +307,18 @@ data class SendResourceFromStorageCommand(
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
         val receiverLossFractionPerDistance: Double =
-            playerData.playerInternalData.playerScienceData().playerScienceApplicationData.resourceLogisticsLossFractionPerDistance
+            playerData.playerInternalData.playerScienceData().playerScienceApplicationData
+                .resourceLogisticsLossFractionPerDistance
 
         val lossFractionPerDistance: Double =
             (receiverLossFractionPerDistance + senderResourceLossFractionPerDistance) * 0.5
 
-        val distance: Double = Intervals.distance(
-            fromInt4D.toDouble3D(),
-            playerData.int4D.toDouble3D()
+        val distance: Int = Intervals.intDistance(
+            fromInt4D,
+            playerData.int4D
         )
 
-        val remainFraction: Double = if (distance < 1.0) {
+        val remainFraction: Double = if (distance <= Intervals.sameCubeIntDistance()) {
             1.0
         } else {
             (1.0 - lossFractionPerDistance).pow(distance)
@@ -372,12 +379,12 @@ data class SendFuelCommand(
         val lossFractionPerDistance: Double =
             (receiverLossFractionPerDistance + senderFuelLossFractionPerDistance) * 0.5
 
-        val distance: Double = Intervals.distance(
-            fromInt4D.toDouble3D(),
-            playerData.int4D.toDouble3D()
+        val distance: Int = Intervals.intDistance(
+            fromInt4D,
+            playerData.int4D
         )
 
-        val remainFraction: Double = if (distance < 1.0) {
+        val remainFraction: Double = if (distance <= Intervals.sameCubeIntDistance()) {
             1.0
         } else {
             (1.0 - lossFractionPerDistance).pow(distance)
@@ -422,12 +429,12 @@ data class SendResourceCommand(
         val lossFractionPerDistance: Double =
             (receiverLossFractionPerDistance + senderResourceLossFractionPerDistance) * 0.5
 
-        val distance: Double = Intervals.distance(
-            fromInt4D.toDouble3D(),
-            playerData.int4D.toDouble3D()
+        val distance: Int = Intervals.intDistance(
+            fromInt4D,
+            playerData.int4D
         )
 
-        val remainFraction: Double = if (distance < 1.0) {
+        val remainFraction: Double = if (distance <= Intervals.sameCubeIntDistance()) {
             1.0
         } else {
             (1.0 - lossFractionPerDistance).pow(distance)
@@ -480,12 +487,12 @@ data class SendResourceToPopCommand(
         val lossFractionPerDistance: Double =
             (receiverLossFractionPerDistance + senderResourceLossFractionPerDistance) * 0.5
 
-        val distance: Double = Intervals.distance(
-            fromInt4D.toDouble3D(),
-            playerData.int4D.toDouble3D()
+        val distance: Int = Intervals.intDistance(
+            fromInt4D,
+            playerData.int4D
         )
 
-        val remainFraction: Double = if (distance < 1.0) {
+        val remainFraction: Double = if (distance <= Intervals.sameCubeIntDistance()) {
             1.0
         } else {
             (1.0 - lossFractionPerDistance).pow(distance)
@@ -517,7 +524,7 @@ data class SendResourceToPopCommand(
  * @property targetCarrierId the id of the carrier to build the pop export center
  * @property resourceType the type of resource to buy
  * @property resourceQualityClass the quality class of the resource to buy
- * @property fuelRestMassAmount the amount of fuel to the center to buy the reosurce
+ * @property fuelRestMassAmount the amount of fuel to the center to buy the resource
  * @property amountPerTime the amount of resource to buy per time
  * @property senderFuelLossFractionPerDistance the loss fraction, determined by player science data
  */
@@ -571,12 +578,12 @@ data class PopBuyResourceCommand(
         val lossFractionPerDistance: Double =
             (receiverLossFractionPerDistance + senderFuelLossFractionPerDistance) * 0.5
 
-        val distance: Double = Intervals.distance(
-            fromInt4D.toDouble3D(),
-            playerData.int4D.toDouble3D()
+        val distance: Int = Intervals.intDistance(
+            fromInt4D,
+            playerData.int4D
         )
 
-        val remainFraction: Double = if (distance < 1.0) {
+        val remainFraction: Double = if (distance <= Intervals.sameCubeIntDistance()) {
             1.0
         } else {
             (1.0 - lossFractionPerDistance).pow(distance)
@@ -773,12 +780,12 @@ data class PlayerBuyResourceCommand(
         val lossFractionPerDistance: Double =
             (receiverLossFractionPerDistance + senderFuelLossFractionPerDistance) * 0.5
 
-        val distance: Double = Intervals.distance(
-            fromInt4D.toDouble3D(),
-            playerData.int4D.toDouble3D()
+        val distance: Int = Intervals.intDistance(
+            fromInt4D,
+            playerData.int4D
         )
 
-        val remainFraction: Double = if (distance < 1.0) {
+        val remainFraction: Double = if (distance <= Intervals.sameCubeIntDistance()) {
             1.0
         } else {
             (1.0 - lossFractionPerDistance).pow(distance)
