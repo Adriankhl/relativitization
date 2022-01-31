@@ -78,7 +78,7 @@
 * Rotation based on next position [x]
 
 # Control TODO List
-* Fuel and resource weight instead of target
+* Fuel and resource weight instead of target [x]
 
 # Test TODO List
 * Declare war [x]
