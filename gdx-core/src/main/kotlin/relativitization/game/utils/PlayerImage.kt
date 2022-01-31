@@ -59,12 +59,6 @@ object PlayerImage {
                     playerData.playerId == primaryPlayerData.playerId -> {
                         Color(0f, 1f, 0f, 1f)
                     }
-                    primaryPlayerData.isLeader(playerData.playerId) -> {
-                        Color(0f, 0.5f, 0f, 1f)
-                    }
-                    primaryPlayerData.isSubOrdinate(playerData.playerId) -> {
-                        Color(0f, 0.8f, 0f, 1f)
-                    }
                     primaryPlayerData.playerInternalData.diplomacyData().getRelationState(
                         playerData.playerId
                     ) == DiplomaticRelationState.ENEMY -> {
@@ -72,6 +66,15 @@ object PlayerImage {
                     }
                     primaryPlayerData.playerInternalData.diplomacyData().isEnemyOf(playerData) -> {
                         Color(0.5f, 0f, 0f, 1f)
+                    }
+                    primaryPlayerData.isLeader(playerData.playerId) -> {
+                        Color(1.0f, 1.0f, 0f, 1f)
+                    }
+                    primaryPlayerData.isSubOrdinate(playerData.playerId) -> {
+                        Color(0f, 0.5f, 0f, 1f)
+                    }
+                    primaryPlayerData.topLeaderId() == playerData.topLeaderId() -> {
+                        Color(0.5f, 0.5f, 0f, 1f)
                     }
                     else -> {
                         Color(0f, 0f ,0f, 1f)
