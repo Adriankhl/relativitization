@@ -6,6 +6,8 @@ import relativitization.universe.data.MutablePlayerInternalData
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.components.*
 import relativitization.universe.data.components.defaults.physics.Int4D
+import relativitization.universe.data.components.defaults.physics.MutableFuelRestMassTargetProportionData
+import relativitization.universe.data.components.defaults.popsystem.CarrierType
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.utils.I18NString
 import relativitization.universe.utils.IntString
@@ -126,21 +128,14 @@ data class SplitCarrierCommand(
         playerData.playerInternalData.economyData().resourceData.singleResourceMap.forEach { (_, qualityMap) ->
             qualityMap.forEach { (_, singleResourceData) ->
                 singleResourceData.resourceAmount.storage *= (1.0 - storageFraction)
+                singleResourceData.resourceAmount.production = 0.0
+                singleResourceData.resourceAmount.trade = 0.0
             }
         }
 
         // Use default modifier data
         val newModifierData = MutableModifierData()
         newPlayerInternalData.modifierData(newModifierData)
-
-        // split fuel rest mass data
-        val newPhysicsData: MutablePhysicsData =
-            DataSerializer.copy(playerData.playerInternalData.physicsData())
-        newPhysicsData.fuelRestMassData.storage *= storageFraction
-        newPlayerInternalData.physicsData(newPhysicsData)
-
-        // reduce original fuel
-        playerData.playerInternalData.physicsData().fuelRestMassData.storage *= (1.0 - storageFraction)
 
         // Copy science data
         val newPlayerScienceData: MutablePlayerScienceData =
@@ -168,6 +163,31 @@ data class SplitCarrierCommand(
         toRemoveOriginalCarrierId.forEach {
             playerData.playerInternalData.popSystemData().carrierDataMap.remove(it)
         }
+
+        // If there is stellar system in player, movement should be zero
+        val hasStellarSystem: Boolean = newPlayerInternalData.popSystemData().carrierDataMap.values.any {
+                it.carrierType == CarrierType.STELLAR
+            }
+
+        val fuelRestMassTargetProportionData: MutableFuelRestMassTargetProportionData = if (hasStellarSystem) {
+            MutableFuelRestMassTargetProportionData()
+        } else {
+            MutableFuelRestMassTargetProportionData(
+                storage = 0.2,
+                movement = 0.5,
+                production = 0.2,
+                trade = 0.1
+            )
+        }
+
+        // split fuel rest mass data
+        val newPhysicsData: MutablePhysicsData = MutablePhysicsData()
+        newPhysicsData.fuelRestMassData.storage *= storageFraction
+        newPhysicsData.fuelRestMassTargetProportionData = fuelRestMassTargetProportionData
+        newPlayerInternalData.physicsData(newPhysicsData)
+
+        // reduce original fuel
+        playerData.playerInternalData.physicsData().fuelRestMassData.storage *= (1.0 - storageFraction)
 
         // Sync data and add the new player internal data to new player list
         playerData.syncData()
