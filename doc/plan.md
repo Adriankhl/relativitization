@@ -73,7 +73,7 @@
 # GUI TODO List
 * Map mode [x]
 * Show execute warning [x]
-* Filter resource factory by resource type
+* Filter resource factory by resource type [x]
 * Default build factory and institute employee to population, research equipment to production
 * Rotation based on next position [x]
 
