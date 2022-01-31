@@ -83,7 +83,7 @@ data class Int3D(val x: Int, val y: Int, val z: Int) {
     }
 
     /**
-     * @return a equivalent double sitting at the center of the grid
+     * @return an equivalent double sitting at the center of the grid
      */
     fun toDouble3DCenter(): Double3D {
         return Double3D(x.toDouble() + 0.5, y.toDouble() + 0.5, z.toDouble() + 0.5)

@@ -9,8 +9,14 @@ import relativitization.universe.data.PlayerData
 import relativitization.universe.data.PlayerType
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.components.defaults.diplomacy.DiplomaticRelationState
+import relativitization.universe.data.components.defaults.physics.Double3D
+import relativitization.universe.data.components.defaults.physics.Velocity
 import relativitization.universe.data.components.defaults.popsystem.CarrierType
 import relativitization.universe.utils.RelativitizationLogManager
+import kotlin.math.abs
+import kotlin.math.ceil
+import kotlin.math.floor
+import kotlin.math.sign
 import kotlin.random.Random
 
 object PlayerImage {
@@ -154,7 +160,7 @@ object PlayerImage {
                 }
             }
             playerShipImage.setOrigin(Align.center)
-            playerShipImage.rotation = rotationByVelocity(playerData)
+            playerShipImage.rotation = rotationByNextPosition(playerData)
             imageList.add(playerShipImage)
 
         }
@@ -212,7 +218,7 @@ object PlayerImage {
         }
 
 
-        // Add an transparent square on top for selecting player
+        // Add a transparent square on top for selecting player
         val transparentSquare: Image = ActorFunction.createImage(
             assets = assets,
             name = "basic/white-pixel",
@@ -265,12 +271,12 @@ object PlayerImage {
     }
 
     /**
-     * Compute the image direction of player ship by the velocity
-     * The velocity is 3 dimensional so it is projected to a circle
+     * Compute the image direction of player ship by velocity
+     * The velocity is 3 dimensional, so it is projected to a circle
      *
      * Main velocity component
-     * vx: x axis
-     * vy: y axis
+     * vx: x-axis
+     * vy: y-axis
      * vz: 45 degree axis
      *
      * Other component adjust the angle
@@ -325,6 +331,136 @@ object PlayerImage {
             0.0f
         }
 
+
+        return 360f - degree
+    }
+
+    /**
+     * Compute the primary image direction of player ship by the next cube the ship will enter
+     * Then slightly rotate the direction by velocity
+     */
+    private fun rotationByNextPosition(
+        playerData: PlayerData
+    ): Float {
+        val velocity: Velocity = playerData.velocity
+        val velocityMag: Double = velocity.mag()
+        val double3D: Double3D = playerData.double4D.toDouble3D()
+        val maxComponent: Pair<Char, Double> = velocity.maxComponent()
+
+        val xPositive: Boolean = velocity.vx >= 0.0
+        val vxMag: Double = abs(velocity.vx)
+        val xDistance: Double = if (xPositive) {
+            ceil(double3D.x) - double3D.x
+        } else {
+            double3D.x - floor(double3D.x)
+        }
+        val xTime: Double = if (vxMag > 0.0) {
+            xDistance / vxMag
+        } else {
+            Double.MAX_VALUE
+        }
+
+        val yPositive: Boolean = velocity.vy >= 0.0
+        val vyMag: Double = abs(velocity.vy)
+        val yDistance: Double = if (yPositive) {
+            ceil(double3D.y) - double3D.y
+        } else {
+            double3D.y - floor(double3D.y)
+        }
+        val yTime: Double = if (vyMag > 0.0) {
+            yDistance / vyMag
+        } else {
+            Double.MAX_VALUE
+        }
+
+        val zPositive: Boolean = velocity.vz >= 0.0
+        val vzMag: Double = abs(velocity.vz)
+        val zDistance: Double = if (zPositive) {
+            ceil(double3D.z) - double3D.z
+        } else {
+            double3D.z - floor(double3D.z)
+        }
+        val zTime: Double = if (vzMag > 0.0) {
+            zDistance / vzMag
+        } else {
+            Double.MAX_VALUE
+        }
+
+        val degree: Float = if (velocityMag < 1E-4) {
+            315f
+        } else {
+            when {
+                ((xTime <= yTime) && (xTime <= zTime)) -> {
+                    if (xPositive) {
+                        val primaryDirection: Float = 90f
+                        val adjustment: Float =
+                            (-velocity.vy / velocityMag * 15 - velocity.vz / velocityMag * 5).toFloat()
+                        val realAdjustment: Float = if (maxComponent.first == 'x') {
+                            adjustment * 0.5f
+                        } else {
+                            adjustment * 0.5f + 10f * adjustment.sign
+                        }
+                        primaryDirection + realAdjustment
+                    } else {
+                        val primaryDirection: Float = 270f
+                        val adjustment: Float =
+                            (velocity.vy / velocityMag * 15 + velocity.vz / velocityMag * 5).toFloat()
+                        val realAdjustment: Float = if (maxComponent.first == 'x') {
+                            adjustment * 0.5f
+                        } else {
+                            adjustment * 0.5f + 10f * adjustment.sign
+                        }
+                        primaryDirection + realAdjustment
+                    }
+                }
+                ((yTime <= xTime) && (yTime <= zTime)) -> {
+                    if (yPositive) {
+                        val primaryDirection: Float = 0f
+                        val adjustment: Float =
+                            (velocity.vx / velocityMag * 15 + velocity.vz / velocityMag * 5).toFloat()
+                        val realAdjustment: Float = if (maxComponent.first == 'y') {
+                            adjustment * 0.5f
+                        } else {
+                            adjustment * 0.5f + 10f * adjustment.sign
+                        }
+                        primaryDirection + realAdjustment
+                    } else {
+                        val primaryDirection: Float = 180f
+                        val adjustment: Float =
+                            (-velocity.vx / velocityMag * 15 - velocity.vz / velocityMag * 5).toFloat()
+                        val realAdjustment: Float = if (maxComponent.first == 'y') {
+                            adjustment * 0.5f
+                        } else {
+                            adjustment * 0.5f + 10f * adjustment.sign
+                        }
+                        primaryDirection + realAdjustment
+                    }
+                }
+                else -> {
+                    if (zPositive) {
+                        val primaryDirection: Float = 45f
+                        val adjustment: Float =
+                            (velocity.vx / velocityMag * 15 - velocity.vy / velocityMag * 5).toFloat()
+                        val realAdjustment: Float = if (maxComponent.first == 'z') {
+                            adjustment * 0.5f
+                        } else {
+                            adjustment * 0.5f + 10f * adjustment.sign
+                        }
+                        primaryDirection + realAdjustment
+                    } else {
+                        val primaryDirection: Float = 225f
+                        val adjustment: Float =
+                            (-velocity.vx / velocityMag * 15 + velocity.vy / velocityMag * 5).toFloat()
+                        val realAdjustment: Float = if (maxComponent.first == 'z') {
+                            adjustment * 0.5f
+                        } else {
+                            adjustment * 0.5f + 10f * adjustment.sign
+                        }
+                        primaryDirection + realAdjustment
+                    }
+                }
+            }
+        }
 
         return 360f - degree
     }
