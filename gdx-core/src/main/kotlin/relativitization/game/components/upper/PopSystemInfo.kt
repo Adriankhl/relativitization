@@ -1314,7 +1314,9 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             ResourceType.factoryResourceList,
             resourceFactoryType,
             gdxSettings.smallFontSize
-        )
+        ) { resourceType, _ ->
+            resourceFactoryType = resourceType
+        }
 
         val buildForeignFuelFactoryTextButton = createTextButton(
             "Build resource factory",
@@ -1554,7 +1556,9 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             ResourceType.factoryResourceList,
             resourceFactoryType,
             gdxSettings.smallFontSize
-        )
+        ) { resourceType, _ ->
+            resourceFactoryType = resourceType
+        }
 
         val buildForeignFuelFactoryTextButton = createTextButton(
             "Build local resource factory",
