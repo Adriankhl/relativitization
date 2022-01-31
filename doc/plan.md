@@ -47,6 +47,7 @@
 * Adjust attack and export by time dilation [x]
 * Limit fuel produced in a single unit space cube to prevent unlimited population [x]
 * Adjust the price and quality bound based on overall desire and trade [x]
+* Attack spend production fuel
 
 # Default AI TODO List
 * AI state store last command to subordinate [x]

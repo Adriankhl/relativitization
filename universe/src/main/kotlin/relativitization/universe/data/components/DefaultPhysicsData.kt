@@ -4,6 +4,8 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.components.defaults.physics.FuelRestMassData
 import relativitization.universe.data.components.defaults.physics.MutableFuelRestMassData
+import relativitization.universe.data.components.defaults.physics.MutableTargetFuelRestMassProportionData
+import relativitization.universe.data.components.defaults.physics.TargetFuelRestMassProportionData
 import kotlin.math.min
 
 /**
@@ -12,7 +14,7 @@ import kotlin.math.min
  * @property coreRestMass the core rest mass of the player, cannot be converted to energy
  * @property otherRestMass the other rest mass of the player, e.g., fuel stored in pop and factory
  * @property fuelRestMassData various data of fuel rest mass
- * @property targetFuelRestMassData target fuel rest mass storage
+ * @property targetFuelRestMassProportionData target fuel rest mass proportion in the categories
  */
 @Serializable
 @SerialName("PhysicsData")
@@ -20,7 +22,7 @@ data class PhysicsData(
     val coreRestMass: Double = 1.0,
     val otherRestMass: Double = 0.0,
     val fuelRestMassData: FuelRestMassData = FuelRestMassData(),
-    val targetFuelRestMassData: FuelRestMassData = FuelRestMassData(),
+    val targetFuelRestMassProportionData: TargetFuelRestMassProportionData = TargetFuelRestMassProportionData(),
 ) : DefaultPlayerDataComponent() {
     fun totalRestMass() = coreRestMass + otherRestMass + fuelRestMassData.total()
 }
@@ -31,7 +33,8 @@ data class MutablePhysicsData(
     var coreRestMass: Double = 1.0,
     var otherRestMass: Double = 0.0,
     var fuelRestMassData: MutableFuelRestMassData = MutableFuelRestMassData(),
-    var targetFuelRestMassData: MutableFuelRestMassData = MutableFuelRestMassData(),
+    var targetFuelRestMassProportionData: MutableTargetFuelRestMassProportionData =
+        MutableTargetFuelRestMassProportionData(),
 ) : MutableDefaultPlayerDataComponent() {
     fun totalRestMass() = coreRestMass + otherRestMass + fuelRestMassData.total()
 
@@ -40,28 +43,47 @@ data class MutablePhysicsData(
      * put the rest in trade, by recursion
      */
     fun addFuel(newFuelRestMass: Double) {
+        val totalFuel: Double = newFuelRestMass + fuelRestMassData.total()
+        val totalTargetWeight: Double = targetFuelRestMassProportionData.total()
+
+        val targetStorage: Double = if (totalTargetWeight > 0.0) {
+            targetFuelRestMassProportionData.storage / totalTargetWeight * totalFuel
+        } else {
+            totalFuel * 0.25
+        }
+        val targetMovement: Double = if (totalTargetWeight > 0.0) {
+            targetFuelRestMassProportionData.movement / totalTargetWeight * totalFuel
+        } else {
+            totalFuel * 0.25
+        }
+        val targetProduction: Double = if (totalTargetWeight > 0.0) {
+            targetFuelRestMassProportionData.production / totalTargetWeight * totalFuel
+        } else {
+            totalFuel * 0.25
+        }
+
         if (newFuelRestMass > 0.0) {
             when {
-                fuelRestMassData.storage < targetFuelRestMassData.storage -> {
+                fuelRestMassData.storage < targetStorage -> {
                     val actualFuelAdded: Double = min(
                         newFuelRestMass,
-                        targetFuelRestMassData.storage - fuelRestMassData.storage
+                        targetStorage - fuelRestMassData.storage
                     )
                     fuelRestMassData.storage += actualFuelAdded
                     addFuel(newFuelRestMass - actualFuelAdded)
                 }
-                fuelRestMassData.movement < targetFuelRestMassData.movement -> {
+                fuelRestMassData.movement < targetMovement -> {
                     val actualFuelAdded: Double = min(
                         newFuelRestMass,
-                        targetFuelRestMassData.movement - fuelRestMassData.movement
+                        targetMovement - fuelRestMassData.movement
                     )
                     fuelRestMassData.movement += actualFuelAdded
                     addFuel(newFuelRestMass - actualFuelAdded)
                 }
-                fuelRestMassData.production < targetFuelRestMassData.production -> {
+                fuelRestMassData.production < targetProduction -> {
                     val actualFuelAdded: Double = min(
                         newFuelRestMass,
-                        targetFuelRestMassData.movement - fuelRestMassData.movement
+                        targetProduction - fuelRestMassData.production
                     )
                     fuelRestMassData.production += actualFuelAdded
                     addFuel(newFuelRestMass - actualFuelAdded)

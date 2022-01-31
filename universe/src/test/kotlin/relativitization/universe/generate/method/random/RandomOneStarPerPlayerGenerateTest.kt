@@ -51,20 +51,13 @@ internal class RandomOneStarPerPlayerGenerateTest {
         val commandList7: MutableList<Command> = mutableListOf()
 
         commandList7.add(
-            ChangeProductionFuelTargetCommand(
-                toId = 1,
-                fromId = 1,
-                fromInt4D = view7.get(1).int4D,
-                targetAmount = 1E8
-            )
-        )
-
-        commandList7.add(
-            TransferFuelToProductionCommand(
+            SendFuelFromStorageCommand(
                 toId = 1,
                 fromId = 1,
                 fromInt4D = view7.get(1).int4D,
                 amount = 1E7,
+                senderFuelLossFractionPerDistance = view7.getCurrentPlayerData().playerInternalData.playerScienceData()
+                    .playerScienceApplicationData.fuelLogisticsLossFractionPerDistance
             )
         )
 

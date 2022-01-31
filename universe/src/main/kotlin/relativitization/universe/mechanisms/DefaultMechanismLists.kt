@@ -29,6 +29,7 @@ import relativitization.universe.mechanisms.defaults.dilated.research.KnowledgeD
 import relativitization.universe.mechanisms.defaults.regular.ai.ClearRecentCommand
 import relativitization.universe.mechanisms.defaults.regular.factory.ClearLocalFactoryStoredFuel
 import relativitization.universe.mechanisms.defaults.regular.science.UpdateScienceApplicationData
+import relativitization.universe.mechanisms.defaults.regular.storage.BalanceFuel
 import relativitization.universe.mechanisms.defaults.regular.sync.SyncHierarchy
 import relativitization.universe.mechanisms.defaults.regular.sync.SyncPlayerData
 import relativitization.universe.mechanisms.defaults.regular.sync.SyncPlayerScienceData
@@ -41,6 +42,7 @@ object DefaultMechanismLists : MechanismLists() {
         AutoEventCollection,
         ProcessEvents,
         ClearLocalFactoryStoredFuel,
+        BalanceFuel,
         UpdateWarState,
         UpdateDiplomaticRelation,
         UpdateDiplomaticRelationState,

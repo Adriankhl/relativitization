@@ -63,23 +63,24 @@ fun main() {
         )
         val universeClient: UniverseClient = UniverseClient(universeClientSettings)
 
-        launch(Dispatchers.Default.limitedParallelism(1)) {
-            val game = RelativitizationGame(universeClient) {
-                runBlocking { universeServer.stop() }
-            }
+        try {
+            launch(Dispatchers.Default.limitedParallelism(1)) {
+                val game = RelativitizationGame(universeClient) {
+                    runBlocking { universeServer.stop() }
+                }
 
-            try {
                 Lwjgl3Application(game, config)
-            } finally {
-                //game.dispose()
             }
-        }
 
-        launch(Dispatchers.IO) {
-            universeServer.start()
-        }
-        launch(Dispatchers.IO.limitedParallelism(1)) {
-            universeClient.start()
+            launch(Dispatchers.IO) {
+                universeServer.start()
+            }
+            launch(Dispatchers.IO.limitedParallelism(1)) {
+                universeClient.start()
+            }
+        } finally {
+            universeClient.stop()
+            universeServer.stop()
         }
     }
 }
