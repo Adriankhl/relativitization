@@ -149,7 +149,8 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
         if (oldValue != newValue) {
             if (newValue is DummyCommand ||
                 newValue is CannotSendCommand ||
-                newValue is ExecuteWarningCommand
+                newValue is ExecuteWarningCommand ||
+                planDataAtPlayer.commandList.contains(newValue)
             ) {
                 onCurrentCommandChangeFunctionList.forEach { it() }
             } else {
