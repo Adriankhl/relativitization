@@ -110,7 +110,11 @@ class BottomCommandInfo(val game: RelativitizationGame) : ScreenComponent<Scroll
         nestedTable.add(previousCommandButton)
             .size(40f * gdxSettings.imageScale, 40f * gdxSettings.imageScale)
 
-        nestedTable.add(createScrollPane(commandNameLabel)).expandX()
+        val nameLabelScrollPane = createScrollPane(commandNameLabel)
+
+        nameLabelScrollPane.setScrollingDisabled(false, true)
+
+        nestedTable.add(nameLabelScrollPane).expandX().growY()
 
         nestedTable.add(nextCommandButton)
             .size(40f * gdxSettings.imageScale, 40f * gdxSettings.imageScale)
