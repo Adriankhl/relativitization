@@ -3,7 +3,7 @@
 
 # Keep it simple
 * Only one dimension in resource quality
-* Besides factory and research, other pop functionalities depend on size only.
+* Beside factory and research, other pop functionalities depend on size only.
 * Only adult population
 * No migration
 * No work at other carrier
@@ -74,7 +74,7 @@
 * Show execute warning [x]
 * Filter resource factory by resource type
 * Default build factory and institute employee to population, research equipment to production
-* Rotation based on next cube
+* Rotation based on next position [x]
 
 # Control TODO List
 * Fuel and resource weight instead of target
@@ -92,7 +92,7 @@ computing the zoom manually
 * Science era, e.g., Biology era favour nation with more biologist
 * Optimize afterimage and load saved universe to reduce memory usage
 * Transfer player and transfer carrier commands
-* Surrender, alliance
+* Alliance
 * Retract or transfer subordinate
 * Decrease relation when a factory is removed
 * Physics: time dilation of photon rocket, momentum conservation when sending fuel (transfer 
