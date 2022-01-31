@@ -5,10 +5,7 @@ import relativitization.universe.ai.defaults.utils.PlanState
 import relativitization.universe.ai.defaults.utils.SequenceReasoner
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.commands.*
-import relativitization.universe.data.components.defaults.economy.ResourceQualityClass
-import relativitization.universe.data.components.defaults.economy.ResourceType
-import relativitization.universe.data.components.defaults.physics.MutableTargetFuelRestMassProportionData
-import relativitization.universe.data.components.defaults.physics.TargetFuelRestMassProportionData
+import relativitization.universe.data.components.defaults.physics.MutableFuelRestMassTargetProportionData
 import relativitization.universe.data.components.defaults.popsystem.CarrierType
 import relativitization.universe.data.serializer.DataSerializer
 
@@ -32,10 +29,10 @@ class BalanceFuelTargetDataAINode : AINode() {
                 it.carrierType == CarrierType.STELLAR
             }
 
-        val targetFuelRestMassProportionData: MutableTargetFuelRestMassProportionData = if (hasStellarSystem) {
-            MutableTargetFuelRestMassProportionData()
+        val fuelRestMassTargetProportionData: MutableFuelRestMassTargetProportionData = if (hasStellarSystem) {
+            MutableFuelRestMassTargetProportionData()
         } else {
-            MutableTargetFuelRestMassProportionData(
+            MutableFuelRestMassTargetProportionData(
                 storage = 0.2,
                 movement = 0.5,
                 production = 0.2,
@@ -43,16 +40,16 @@ class BalanceFuelTargetDataAINode : AINode() {
             )
         }
 
-        val currentTargetFuelRestMassProportionData: MutableTargetFuelRestMassProportionData = planDataAtPlayer
-            .getCurrentMutablePlayerData().playerInternalData.physicsData().targetFuelRestMassProportionData
+        val currentFuelRestMassTargetProportionData: MutableFuelRestMassTargetProportionData = planDataAtPlayer
+            .getCurrentMutablePlayerData().playerInternalData.physicsData().fuelRestMassTargetProportionData
 
-        if (currentTargetFuelRestMassProportionData != targetFuelRestMassProportionData) {
+        if (currentFuelRestMassTargetProportionData != fuelRestMassTargetProportionData) {
             planDataAtPlayer.addCommand(
-                ChangeTargetFuelRestMassProportionCommand(
+                ChangeFuelRestMassTargetProportionCommand(
                     toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
                     fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
                     fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
-                    targetFuelRestMassProportionData = DataSerializer.copy(targetFuelRestMassProportionData),
+                    fuelRestMassTargetProportionData = DataSerializer.copy(fuelRestMassTargetProportionData),
                 )
             )
         }

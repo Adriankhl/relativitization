@@ -4,8 +4,8 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.components.defaults.physics.FuelRestMassData
 import relativitization.universe.data.components.defaults.physics.MutableFuelRestMassData
-import relativitization.universe.data.components.defaults.physics.MutableTargetFuelRestMassProportionData
-import relativitization.universe.data.components.defaults.physics.TargetFuelRestMassProportionData
+import relativitization.universe.data.components.defaults.physics.MutableFuelRestMassTargetProportionData
+import relativitization.universe.data.components.defaults.physics.FuelRestMassTargetProportionData
 import kotlin.math.min
 
 /**
@@ -14,7 +14,7 @@ import kotlin.math.min
  * @property coreRestMass the core rest mass of the player, cannot be converted to energy
  * @property otherRestMass the other rest mass of the player, e.g., fuel stored in pop and factory
  * @property fuelRestMassData various data of fuel rest mass
- * @property targetFuelRestMassProportionData target fuel rest mass proportion in the categories
+ * @property fuelRestMassTargetProportionData target fuel rest mass proportion in the categories
  */
 @Serializable
 @SerialName("PhysicsData")
@@ -22,7 +22,7 @@ data class PhysicsData(
     val coreRestMass: Double = 1.0,
     val otherRestMass: Double = 0.0,
     val fuelRestMassData: FuelRestMassData = FuelRestMassData(),
-    val targetFuelRestMassProportionData: TargetFuelRestMassProportionData = TargetFuelRestMassProportionData(),
+    val fuelRestMassTargetProportionData: FuelRestMassTargetProportionData = FuelRestMassTargetProportionData(),
 ) : DefaultPlayerDataComponent() {
     fun totalRestMass() = coreRestMass + otherRestMass + fuelRestMassData.total()
 }
@@ -33,8 +33,8 @@ data class MutablePhysicsData(
     var coreRestMass: Double = 1.0,
     var otherRestMass: Double = 0.0,
     var fuelRestMassData: MutableFuelRestMassData = MutableFuelRestMassData(),
-    var targetFuelRestMassProportionData: MutableTargetFuelRestMassProportionData =
-        MutableTargetFuelRestMassProportionData(),
+    var fuelRestMassTargetProportionData: MutableFuelRestMassTargetProportionData =
+        MutableFuelRestMassTargetProportionData(),
 ) : MutableDefaultPlayerDataComponent() {
     fun totalRestMass() = coreRestMass + otherRestMass + fuelRestMassData.total()
 
@@ -44,20 +44,20 @@ data class MutablePhysicsData(
      */
     fun addFuel(newFuelRestMass: Double) {
         val totalFuel: Double = newFuelRestMass + fuelRestMassData.total()
-        val totalTargetWeight: Double = targetFuelRestMassProportionData.total()
+        val totalTargetWeight: Double = fuelRestMassTargetProportionData.total()
 
         val targetStorage: Double = if (totalTargetWeight > 0.0) {
-            targetFuelRestMassProportionData.storage / totalTargetWeight * totalFuel
+            fuelRestMassTargetProportionData.storage / totalTargetWeight * totalFuel
         } else {
             totalFuel * 0.25
         }
         val targetMovement: Double = if (totalTargetWeight > 0.0) {
-            targetFuelRestMassProportionData.movement / totalTargetWeight * totalFuel
+            fuelRestMassTargetProportionData.movement / totalTargetWeight * totalFuel
         } else {
             totalFuel * 0.25
         }
         val targetProduction: Double = if (totalTargetWeight > 0.0) {
-            targetFuelRestMassProportionData.production / totalTargetWeight * totalFuel
+            fuelRestMassTargetProportionData.production / totalTargetWeight * totalFuel
         } else {
             totalFuel * 0.25
         }

@@ -11,7 +11,7 @@ import relativitization.universe.data.components.defaults.economy.ResourceQualit
 import relativitization.universe.data.components.defaults.economy.ResourceType
 import relativitization.universe.data.components.defaults.economy.SingleResourceData
 import relativitization.universe.data.components.defaults.economy.TaxRateData
-import relativitization.universe.data.components.defaults.physics.TargetFuelRestMassProportionData
+import relativitization.universe.data.components.defaults.physics.FuelRestMassTargetProportionData
 import relativitization.universe.maths.number.Notation
 
 class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.assets) {
@@ -212,7 +212,7 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
                 min = 0f,
                 max = 1f,
                 stepSize = 0.01f,
-                default = playerData.playerInternalData.physicsData().targetFuelRestMassProportionData.storage
+                default = playerData.playerInternalData.physicsData().fuelRestMassTargetProportionData.storage
                     .toFloat(),
             )
             nestedTable.add(targetStorageSlider)
@@ -223,7 +223,7 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
                 min = 0f,
                 max = 1f,
                 stepSize = 0.01f,
-                default = playerData.playerInternalData.physicsData().targetFuelRestMassProportionData.movement
+                default = playerData.playerInternalData.physicsData().fuelRestMassTargetProportionData.movement
                     .toFloat(),
             )
             nestedTable.add(targetMovementSlider)
@@ -234,7 +234,7 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
                 min = 0f,
                 max = 1f,
                 stepSize = 0.01f,
-                default = playerData.playerInternalData.physicsData().targetFuelRestMassProportionData.production
+                default = playerData.playerInternalData.physicsData().fuelRestMassTargetProportionData.production
                     .toFloat(),
             )
             nestedTable.add(targetProductionSlider)
@@ -245,24 +245,24 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
                 min = 0f,
                 max = 1f,
                 stepSize = 0.01f,
-                default = playerData.playerInternalData.physicsData().targetFuelRestMassProportionData.trade
+                default = playerData.playerInternalData.physicsData().fuelRestMassTargetProportionData.trade
                     .toFloat(),
             )
             nestedTable.add(targetTradeSlider)
 
             nestedTable.row().space(10f)
 
-            val changeTargetFuelRestMassProportionButton = createTextButton(
+            val changeFuelRestMassTargetProportionButton = createTextButton(
                 "Change fuel proportion",
                 gdxSettings.smallFontSize,
                 gdxSettings.soundEffectsVolume,
                 extraColor = commandButtonColor,
             ) {
-                val changeTargetFuelRestMassProportionCommand = ChangeTargetFuelRestMassProportionCommand(
+                val changeFuelRestMassTargetProportionCommand = ChangeFuelRestMassTargetProportionCommand(
                     toId = playerData.playerId,
                     fromId = game.universeClient.getCurrentPlayerData().playerId,
                     fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
-                    targetFuelRestMassProportionData = TargetFuelRestMassProportionData(
+                    fuelRestMassTargetProportionData = FuelRestMassTargetProportionData(
                         storage = targetStorageSlider.value.toDouble(),
                         movement = targetMovementSlider.value.toDouble(),
                         production = targetProductionSlider.value.toDouble(),
@@ -270,9 +270,9 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
                     ),
                 )
 
-                game.universeClient.currentCommand = changeTargetFuelRestMassProportionCommand
+                game.universeClient.currentCommand = changeFuelRestMassTargetProportionCommand
             }
-            nestedTable.add(changeTargetFuelRestMassProportionButton).colspan(2)
+            nestedTable.add(changeFuelRestMassTargetProportionButton).colspan(2)
 
             nestedTable.row().space(30f)
         }

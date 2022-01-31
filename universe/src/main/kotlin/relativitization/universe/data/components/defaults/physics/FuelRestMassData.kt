@@ -46,7 +46,7 @@ data class MutableFuelRestMassData(
  * @property trade fuel for production
  */
 @Serializable
-data class TargetFuelRestMassProportionData(
+data class FuelRestMassTargetProportionData(
     val storage: Double = 0.25,
     val movement: Double = 0.0,
     val production: Double = 0.5,
@@ -56,7 +56,7 @@ data class TargetFuelRestMassProportionData(
 }
 
 @Serializable
-data class MutableTargetFuelRestMassProportionData(
+data class MutableFuelRestMassTargetProportionData(
     var storage: Double = 0.25,
     var movement: Double = 0.0,
     var production: Double = 0.5,

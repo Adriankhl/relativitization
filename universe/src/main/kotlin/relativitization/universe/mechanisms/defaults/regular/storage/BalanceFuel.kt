@@ -5,7 +5,7 @@ import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.components.defaults.physics.MutableFuelRestMassData
-import relativitization.universe.data.components.defaults.physics.MutableTargetFuelRestMassProportionData
+import relativitization.universe.data.components.defaults.physics.MutableFuelRestMassTargetProportionData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.mechanisms.Mechanism
 
@@ -16,8 +16,8 @@ object BalanceFuel : Mechanism() {
         universeSettings: UniverseSettings,
         universeGlobalData: UniverseGlobalData
     ): List<Command> {
-        val target: MutableTargetFuelRestMassProportionData = mutablePlayerData.playerInternalData.physicsData()
-            .targetFuelRestMassProportionData
+        val target: MutableFuelRestMassTargetProportionData = mutablePlayerData.playerInternalData.physicsData()
+            .fuelRestMassTargetProportionData
         val fuelData: MutableFuelRestMassData = mutablePlayerData.playerInternalData.physicsData()
             .fuelRestMassData
 

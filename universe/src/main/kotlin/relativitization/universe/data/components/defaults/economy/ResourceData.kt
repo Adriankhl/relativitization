@@ -24,7 +24,16 @@ enum class ResourceType(val value: String) {
 
     companion object {
         // Entertainment is not produced by factory
-        val factoryResourceList: List<ResourceType> = ResourceType.values().toList() - ENTERTAINMENT
+        val factoryResourceList: List<ResourceType> = values().toList() - ENTERTAINMENT
+
+        private val primaryResourceList: List<ResourceType> = listOf(
+            PLANT,
+            ANIMAL,
+            METAL,
+            PLASTIC,
+        )
+
+        fun isPrimaryResource(resourceType: ResourceType): Boolean = primaryResourceList.contains(resourceType)
     }
 }
 
@@ -571,6 +580,31 @@ data class MutableResourceAmountData(
         trade = trade * num
     )
 
+    fun total(): Double = storage + trade + production
+}
+
+/**
+ * Target proportion of resource
+ *
+ * @property storage not for use
+ * @property production for production
+ * @property trade for trade
+ */
+@Serializable
+data class ResourceTargetProportionData(
+    val storage: Double = 0.0,
+    val production: Double = 0.0,
+    val trade: Double = 0.0,
+) {
+    fun total(): Double = storage + trade + production
+}
+
+@Serializable
+data class MutableResourceTargetProportionData(
+    var storage: Double = 0.0,
+    var production: Double = 0.0,
+    var trade: Double = 0.0,
+) {
     fun total(): Double = storage + trade + production
 }
 

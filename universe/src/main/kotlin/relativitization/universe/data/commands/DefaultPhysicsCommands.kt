@@ -105,14 +105,14 @@ data class ChangeVelocityCommand(
 /**
  * Change the storage fuel target amount
  *
- * @property targetFuelRestMassProportionData the target proportion
+ * @property fuelRestMassTargetProportionData the target proportion
  */
 @Serializable
-data class ChangeTargetFuelRestMassProportionCommand(
+data class ChangeFuelRestMassTargetProportionCommand(
     override val toId: Int,
     override val fromId: Int,
     override val fromInt4D: Int4D,
-    val targetFuelRestMassProportionData: TargetFuelRestMassProportionData,
+    val fuelRestMassTargetProportionData: FuelRestMassTargetProportionData,
 ) : DefaultCommand() {
     override fun description(): I18NString = I18NString(
         listOf(
@@ -127,10 +127,10 @@ data class ChangeTargetFuelRestMassProportionCommand(
             NormalString(". "),
         ),
         listOf(
-            targetFuelRestMassProportionData.storage.toString(),
-            targetFuelRestMassProportionData.movement.toString(),
-            targetFuelRestMassProportionData.production.toString(),
-            targetFuelRestMassProportionData.trade.toString(),
+            fuelRestMassTargetProportionData.storage.toString(),
+            fuelRestMassTargetProportionData.movement.toString(),
+            fuelRestMassTargetProportionData.production.toString(),
+            fuelRestMassTargetProportionData.trade.toString(),
         ),
     )
 
@@ -167,7 +167,7 @@ data class ChangeTargetFuelRestMassProportionCommand(
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
-        playerData.playerInternalData.physicsData().targetFuelRestMassProportionData =
-            DataSerializer.copy(targetFuelRestMassProportionData)
+        playerData.playerInternalData.physicsData().fuelRestMassTargetProportionData =
+            DataSerializer.copy(fuelRestMassTargetProportionData)
     }
 }
