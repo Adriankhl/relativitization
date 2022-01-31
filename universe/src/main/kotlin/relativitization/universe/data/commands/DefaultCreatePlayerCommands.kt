@@ -182,8 +182,10 @@ data class SplitCarrierCommand(
 
         // split fuel rest mass data
         val newPhysicsData: MutablePhysicsData = MutablePhysicsData()
-        newPhysicsData.fuelRestMassData.storage *= storageFraction
         newPhysicsData.fuelRestMassTargetProportionData = fuelRestMassTargetProportionData
+        newPhysicsData.addFuel(
+            playerData.playerInternalData.physicsData().fuelRestMassData.storage * storageFraction
+        )
         newPlayerInternalData.physicsData(newPhysicsData)
 
         // reduce original fuel
