@@ -261,17 +261,45 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
 
             nestedTable.row().space(10f)
 
+            nestedTable.add(
+                createLabel(
+                    "Storage: ",
+                    gdxSettings.smallFontSize
+                )
+            )
+
             nestedTable.add(targetStorageSlider)
 
             nestedTable.row().space(10f)
+
+            nestedTable.add(
+                createLabel(
+                    "Movement: ",
+                    gdxSettings.smallFontSize
+                )
+            )
 
             nestedTable.add(targetMovementSlider)
 
             nestedTable.row().space(10f)
 
+            nestedTable.add(
+                createLabel(
+                    "Production: ",
+                    gdxSettings.smallFontSize
+                )
+            )
+
             nestedTable.add(targetProductionSlider)
 
             nestedTable.row().space(10f)
+
+            nestedTable.add(
+                createLabel(
+                    "Trade: ",
+                    gdxSettings.smallFontSize
+                )
+            )
 
             nestedTable.add(targetTradeSlider)
 
@@ -461,13 +489,34 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
 
             nestedTable.row().space(10f)
 
+            nestedTable.add(
+                createLabel(
+                    "Storage: ",
+                    gdxSettings.smallFontSize
+                )
+            )
+
             nestedTable.add(targetStorageSlider)
 
             nestedTable.row().space(10f)
 
+            nestedTable.add(
+                createLabel(
+                    "Production: ",
+                    gdxSettings.smallFontSize
+                )
+            )
+
             nestedTable.add(targetProductionSlider)
 
             nestedTable.row().space(10f)
+
+            nestedTable.add(
+                createLabel(
+                    "Trade: ",
+                    gdxSettings.smallFontSize
+                )
+            )
 
             nestedTable.add(targetTradeSlider)
 
