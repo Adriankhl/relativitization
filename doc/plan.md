@@ -1,7 +1,9 @@
 # Fix
+
 * Education level, and the impact on production, avoid zero production
 
 # Keep it simple
+
 * Only one dimension in resource quality
 * Beside factory and research, other pop functionalities depend on size only.
 * Only adult population
@@ -13,6 +15,7 @@
 * No alliance
 
 # Current unused data
+
 * Size of factory and institute
 * Open and close factory
 * Size of carrier
@@ -25,6 +28,7 @@
 * Fuel tariff
 
 # Mechanism TODO list
+
 * Basic resource output from stellar system [x]
 * Pop update daily need [x]
 * Salary, and allocate pop to factory, institute and lab [x]
@@ -50,11 +54,13 @@
 * Attack spend production fuel
 
 # Default AI TODO List
+
 * AI state store last command to subordinate [x]
 * Review resource factory construction after desire change [x]
 * Decrease salary and increase price when pop saving is too much compare to storage [x]
 
 # Command TODO List
+
 * Destroy factory [x]
 * Send fuel to foreign factory [x]
 * Change economy policy, e.g., tax, storage [x]
@@ -67,20 +73,24 @@
 * Open and close factories [x]
 
 # Generate universe TODO List
+
 * One stellar per player generation [x]
 * Generate proper knowledge network [x]
 
 # GUI TODO List
+
 * Map mode [x]
 * Show execute warning [x]
 * Filter resource factory by resource type [x]
-* Default build factory and institute employee to population, research equipment to production
+* Default build factory and institute employee to population, research equipment to production [x]
 * Rotation based on next position [x]
 
 # Control TODO List
+
 * Fuel and resource weight instead of target [x]
 
 # Test TODO List
+
 * Declare war [x]
 * Combat [x]
 * Propose peace [x]
@@ -88,14 +98,14 @@
 * Merge player [x]
 
 # Future TODO List
-* Optimize UI, only change what is shown, separate stage and use camera instead of
-computing the zoom manually
+
+* Optimize UI, only change what is shown, separate stage and use camera instead of computing the zoom manually
 * Science era, e.g., Biology era favour nation with more biologist
 * Optimize afterimage and load saved universe to reduce memory usage
 * Transfer player and transfer carrier commands
 * Alliance
 * Retract or transfer subordinate
 * Decrease relation when a factory is removed
-* Physics: time dilation of photon rocket, momentum conservation when sending fuel (transfer 
-  opposite momentum by virtual photon?)
+* Physics: time dilation of photon rocket, momentum conservation when sending fuel (transfer opposite momentum by
+  virtual photon?)
 * GUI: ai-relevant data
