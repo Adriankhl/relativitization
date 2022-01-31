@@ -55,32 +55,32 @@ fun main() {
         serverPort = serverPort,
     )
 
+    val universeServer: UniverseServer = UniverseServer(
+        universeServerSettings = universeServerSettings,
+        serverAddress = serverAddress,
+        serverPort = serverPort
+    )
+    val universeClient: UniverseClient = UniverseClient(universeClientSettings)
+
     runBlocking {
-        val universeServer: UniverseServer = UniverseServer(
-            universeServerSettings = universeServerSettings,
-            serverAddress = serverAddress,
-            serverPort = serverPort
-        )
-        val universeClient: UniverseClient = UniverseClient(universeClientSettings)
+        launch(Dispatchers.Default.limitedParallelism(1)) {
+            val game = RelativitizationGame(universeClient) {
+                runBlocking { universeServer.stop() }
+            }
 
-        try {
-            launch(Dispatchers.Default.limitedParallelism(1)) {
-                val game = RelativitizationGame(universeClient) {
-                    runBlocking { universeServer.stop() }
-                }
-
+            try {
                 Lwjgl3Application(game, config)
+            } finally {
+                universeClient.stop()
+                universeServer.stop()
             }
+        }
 
-            launch(Dispatchers.IO) {
-                universeServer.start()
-            }
-            launch(Dispatchers.IO.limitedParallelism(1)) {
-                universeClient.start()
-            }
-        } finally {
-            universeClient.stop()
-            universeServer.stop()
+        launch(Dispatchers.IO) {
+            universeServer.start()
+        }
+        launch(Dispatchers.IO.limitedParallelism(1)) {
+            universeClient.start()
         }
     }
 }
