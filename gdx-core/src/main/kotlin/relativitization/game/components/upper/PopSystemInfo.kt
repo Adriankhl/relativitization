@@ -573,11 +573,11 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         nestedTable.row().space(10f)
 
-        nestedTable.add(createBuildForeignFuelFactoryTable())
+        nestedTable.add(createBuildForeignFuelFactoryTable(labourerPopData))
 
         nestedTable.row().space(10f)
 
-        nestedTable.add(createBuildForeignResourceFactoryTable())
+        nestedTable.add(createBuildForeignResourceFactoryTable(labourerPopData))
 
         if (playerData.playerId != game.universeClient.getUniverseData3D().id) {
             nestedTable.row().space(10f)
@@ -1166,7 +1166,9 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         return nestedTable
     }
 
-    private fun createBuildForeignFuelFactoryTable(): Table {
+    private fun createBuildForeignFuelFactoryTable(
+        labourerPopData: LabourerPopData,
+    ): Table {
         val nestedTable = Table()
 
         val ownerId = createIntTextField(
@@ -1184,7 +1186,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         )
 
         val maxNumEmployee = createDoubleTextField(
-            1.0,
+            labourerPopData.commonPopData.adultPopulation * 0.5,
             gdxSettings.smallFontSize
         )
 
@@ -1278,7 +1280,9 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         return nestedTable
     }
 
-    private fun createBuildForeignResourceFactoryTable(): Table {
+    private fun createBuildForeignResourceFactoryTable(
+        labourerPopData: LabourerPopData,
+    ): Table {
         val nestedTable = Table()
 
         val ownerId = createIntTextField(
@@ -1301,7 +1305,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         )
 
         val maxNumEmployee = createDoubleTextField(
-            1.0,
+            labourerPopData.commonPopData.adultPopulation * 0.2,
             gdxSettings.smallFontSize
         )
 
@@ -1696,7 +1700,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
             nestedTable.row().space(10f)
 
-            nestedTable.add(createBuildInstituteTable())
+            nestedTable.add(createBuildInstituteTable(scholarPopData))
         }
 
         return nestedTable
@@ -1831,8 +1835,15 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         return nestedTable
     }
 
-    private fun createBuildInstituteTable(): Table {
+    private fun createBuildInstituteTable(scholarPopData: ScholarPopData): Table {
         val nestedTable = Table()
+
+        val allProductionResearchEquipment: Double = ResourceQualityClass.values().sumOf {
+            playerData.playerInternalData.economyData().resourceData.getProductionResourceAmount(
+                ResourceType.RESEARCH_EQUIPMENT,
+                it,
+            )
+        }
 
         val xCor = createDoubleTextField(
             default = game.universeClient.selectedKnowledgeDouble2D.x,
@@ -1845,17 +1856,17 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         )
 
         val range = createDoubleTextField(
-            default = 0.0,
-            fontSize = gdxSettings.smallFontSize
-        )
-
-        val researchEquipmentPerTime = createDoubleTextField(
             default = 0.25,
             fontSize = gdxSettings.smallFontSize
         )
 
+        val researchEquipmentPerTime = createDoubleTextField(
+            default = allProductionResearchEquipment * 0.1,
+            fontSize = gdxSettings.smallFontSize,
+        )
+
         val maxNumEmployee = createDoubleTextField(
-            default = 0.0,
+            default = scholarPopData.commonPopData.adultPopulation * 0.2,
             fontSize = gdxSettings.smallFontSize
         )
 
@@ -2022,7 +2033,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
             nestedTable.row().space(10f)
 
-            nestedTable.add(createBuildLaboratoryTable())
+            nestedTable.add(createBuildLaboratoryTable(engineerPopData))
         }
 
         return nestedTable
@@ -2157,8 +2168,15 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         return nestedTable
     }
 
-    private fun createBuildLaboratoryTable(): Table {
+    private fun createBuildLaboratoryTable(engineerPopData: EngineerPopData): Table {
         val nestedTable = Table()
+
+        val allProductionResearchEquipment: Double = ResourceQualityClass.values().sumOf {
+            playerData.playerInternalData.economyData().resourceData.getProductionResourceAmount(
+                ResourceType.RESEARCH_EQUIPMENT,
+                it,
+            )
+        }
 
         val xCor = createDoubleTextField(
             default = game.universeClient.selectedKnowledgeDouble2D.x,
@@ -2171,17 +2189,17 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         )
 
         val range = createDoubleTextField(
-            default = 0.0,
-            fontSize = gdxSettings.smallFontSize
-        )
-
-        val researchEquipmentPerTime = createDoubleTextField(
             default = 0.25,
             fontSize = gdxSettings.smallFontSize
         )
 
+        val researchEquipmentPerTime = createDoubleTextField(
+            default = allProductionResearchEquipment * 0.1,
+            fontSize = gdxSettings.smallFontSize
+        )
+
         val maxNumEmployee = createDoubleTextField(
-            default = 0.0,
+            default = engineerPopData.commonPopData.adultPopulation * 0.2,
             fontSize = gdxSettings.smallFontSize
         )
 
