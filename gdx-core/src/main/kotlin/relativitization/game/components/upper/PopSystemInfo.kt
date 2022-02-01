@@ -1048,7 +1048,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         resourceFactoryData.resourceFactoryInternalData.inputResourceMap.forEach { (resourceType, inputResource) ->
             val lastInputResource: InputResourceData = resourceFactoryData.lastInputResourceMap
-                .getOrDefault(resourceType, InputResourceData())
+                .getOrDefault(resourceType, InputResourceData(amount = 0.0))
 
             nestedTable.add(
                 createLabel(
