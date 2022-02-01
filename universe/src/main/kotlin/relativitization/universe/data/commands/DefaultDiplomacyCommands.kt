@@ -49,7 +49,7 @@ data class DeclareWarCommand(
         )
 
         val isNotInPeaceTreaty = CommandErrorMessage(
-            !playerData.playerInternalData.modifierData().diplomacyModifierData.canDeclareWar(toId),
+            !playerData.playerInternalData.modifierData().diplomacyModifierData.hasPeaceTreaty(toId),
             I18NString("Target is in peace with you. ")
         )
 
@@ -172,7 +172,7 @@ data class DeclareIndependenceToDirectLeaderCommand(
         )
 
         val isNotInPeaceTreaty = CommandErrorMessage(
-            !playerData.playerInternalData.modifierData().diplomacyModifierData.canDeclareWar(toId),
+            !playerData.playerInternalData.modifierData().diplomacyModifierData.hasPeaceTreaty(toId),
             I18NString("Target is in peace with you. ")
         )
 
@@ -310,7 +310,7 @@ data class DeclareIndependenceToTopLeaderCommand(
         )
 
         val isNotInPeaceTreaty = CommandErrorMessage(
-            !playerData.playerInternalData.modifierData().diplomacyModifierData.canDeclareWar(toId),
+            !playerData.playerInternalData.modifierData().diplomacyModifierData.hasPeaceTreaty(toId),
             I18NString("Target is in peace with you. ")
         )
 

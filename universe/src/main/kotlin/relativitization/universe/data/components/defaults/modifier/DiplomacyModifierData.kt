@@ -72,7 +72,7 @@ data class MutableDiplomacyModifierData(
     /**
      * Check can declare war or not
      */
-    fun canDeclareWar(id: Int): Boolean {
+    fun hasPeaceTreaty(id: Int): Boolean {
         return peaceTreaty.containsKey(id)
     }
 

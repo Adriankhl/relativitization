@@ -63,10 +63,10 @@ class HasPeaceTreatyConsideration(
         planState: PlanState
     ): DualUtilityData {
 
-        val cannotDeclareWar: Boolean = !planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData
-            .modifierData().diplomacyModifierData.canDeclareWar(otherPlayerId)
+        val hasPeaceTreaty: Boolean = planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData
+            .modifierData().diplomacyModifierData.hasPeaceTreaty(otherPlayerId)
 
-        return if (cannotDeclareWar) {
+        return if (hasPeaceTreaty) {
             DualUtilityData(
                 rank = rankIfTrue,
                 multiplier = multiplierIfTrue,
