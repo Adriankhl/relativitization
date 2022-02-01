@@ -83,7 +83,7 @@ data class DamageCommand(
                 if (playerData.playerInternalData.subordinateIdSet.contains(fromId)) {
                     logger.debug("Destroyed by subordinate $fromId")
                 } else {
-                    playerData.changeDirectLeaderId(listOf(fromId))
+                    playerData.changeDirectLeader(listOf(fromId))
                 }
             }
         }

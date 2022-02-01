@@ -60,10 +60,10 @@ class SpaceConflictReasoner : DualUtilityReasoner() {
 
         // potential target are the highest rank leader possible of all the conflict player
         val potentialWarTargetIdSet: Set<Int> = conflictPlayerIdList.map { id ->
-            planDataAtPlayer.universeData3DAtPlayer.get(id).playerInternalData.leaderIdList.firstOrNull { leaderId ->
+            planDataAtPlayer.universeData3DAtPlayer.get(id).getLeaderAndSelfIdList().first { leaderId ->
                 !currentPlayer.isLeaderOrSelf(leaderId) &&
                         planDataAtPlayer.universeData3DAtPlayer.playerDataMap.containsKey(leaderId)
-            } ?: id
+            }
         }.toSet()
 
         val declareWarOptionList: List<SpaceConflictDeclareWarOption> = potentialWarTargetIdSet.map {
@@ -129,8 +129,6 @@ class SpaceConflictDeclareWarOption(
                 toId = targetPlayerId,
                 fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
                 fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
-                senderLeaderIdList = planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData
-                    .leaderIdList.toList(),
             )
         )
     }

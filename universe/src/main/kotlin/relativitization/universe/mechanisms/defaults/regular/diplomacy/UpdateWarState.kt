@@ -158,9 +158,9 @@ object UpdateWarState : Mechanism() {
             .forEach { (id, warState) ->
                 warState.warTargetTopLeaderId = universeData3DAtPlayer.get(
                     id
-                ).playerInternalData.leaderIdList.firstOrNull {
+                ).getLeaderAndSelfIdList().first {
                     !mutablePlayerData.isLeaderOrSelf(it)
-                } ?: id
+                }
             }
 
         return listOf()

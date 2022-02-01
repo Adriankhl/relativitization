@@ -25,20 +25,18 @@ data class DiplomacyData(
         getDiplomaticRelationData(id).diplomaticRelationState
 
     /**
-     * Whether this player is a enemy of other player
-     *
+     * @param playerData whether this player is an enemy of the player with this diplomatic data
      */
     fun isEnemyOf(playerData: PlayerData): Boolean =
-        playerData.playerInternalData.leaderIdList.any {
+        playerData.getLeaderAndSelfIdList().any {
             getRelationState(it) == DiplomaticRelationState.ENEMY
         }
 
     /**
-     * Whether this player is a enemy of other player
-     *
+     * @param playerData whether this player is an enemy of the player with this diplomatic data
      */
     fun isEnemyOf(playerData: MutablePlayerData): Boolean =
-        playerData.playerInternalData.leaderIdList.any {
+        playerData.getLeaderAndSelfIdList().any {
             getRelationState(it) == DiplomaticRelationState.ENEMY
         }
 }

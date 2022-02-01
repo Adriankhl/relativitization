@@ -22,30 +22,27 @@ object SyncHierarchy : Mechanism() {
 
         // Add all leaders of direct leader
         if (!mutablePlayerData.isTopLeader()) {
-            val leaderIdListOfLeader: List<Int> = universeData3DAtPlayer.get(
+            val newLeaderList: List<Int> = universeData3DAtPlayer.get(
                 mutablePlayerData.playerInternalData.directLeaderId
-            ).playerInternalData.leaderIdList.filter {
+            ).getLeaderAndSelfIdList().filter {
                 universeData3DAtPlayer.playerDataMap.containsKey(it)
-            }
+            }.takeWhile {
+                // In weird situation, it is possible that your leader is also viewing you as leader
+                // the player should replace the leader list by one higher rank leader list
+                // or become independent if it is empty
+                !universeData3DAtPlayer.get(it).isLeaderOrSelf(mutablePlayerData.playerId)
+            }.distinct()
 
-            // In weird situation, it is possible that your leader is also viewing you as leader
-            // the player should replace the leader list by one higher rank leader list
-            // or become independent if it is empty
-            val newLeaderList: List<Int> = leaderIdListOfLeader.takeWhile {
-                !universeData3DAtPlayer.get(it).isLeader(mutablePlayerData.playerId)
-            }
-
-            mutablePlayerData.changeDirectLeaderId(newLeaderList)
+            mutablePlayerData.changeDirectLeader(newLeaderList)
         }
 
         // Send AddSubordinateCommand to direct leader if the leader data is not correct
         val toDirectLeaderCommandList: List<Command> = if (mutablePlayerData.isTopLeader()) {
             listOf()
         } else {
-            val directLeaderData: PlayerData =
-                universeData3DAtPlayer.get(mutablePlayerData.playerInternalData.directLeaderId)
-
-            mutablePlayerData.changeDirectLeaderId(directLeaderData.playerInternalData.leaderIdList)
+            val directLeaderData: PlayerData = universeData3DAtPlayer.get(
+                mutablePlayerData.playerInternalData.directLeaderId
+            )
 
             if (directLeaderData.isDirectSubOrdinate(mutablePlayerData.playerId)) {
                 listOf()
@@ -77,6 +74,7 @@ object SyncHierarchy : Mechanism() {
 
         // Clear subordinate
         mutablePlayerData.playerInternalData.subordinateIdSet.removeAll {
+            // Subordinates of subordinate may contain dead player
             !universeData3DAtPlayer.playerDataMap.containsKey(it) ||
                     (universeData3DAtPlayer.get(it).playerInternalData.directLeaderId != mutablePlayerData.playerId) ||
                     mutablePlayerData.isLeaderOrSelf(it)

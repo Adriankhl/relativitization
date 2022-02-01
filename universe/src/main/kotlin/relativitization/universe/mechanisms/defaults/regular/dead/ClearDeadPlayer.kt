@@ -22,21 +22,13 @@ object ClearDeadPlayer : Mechanism() {
         val allPlayerId: Set<Int> = universeData3DAtPlayer.playerDataMap.keys
 
         // Clear diplomatic relation
+        // Don't clear war, UpdateWarState handle this
         val toRemoveRelationKeys: List<Int> =
             mutablePlayerData.playerInternalData.diplomacyData().relationMap.keys.filter {
                 !allPlayerId.contains(it)
             }
         toRemoveRelationKeys.forEach {
             mutablePlayerData.playerInternalData.diplomacyData().relationMap.remove(it)
-        }
-
-        // Clear war
-        val toRemoveWarKeys: List<Int> =
-            mutablePlayerData.playerInternalData.diplomacyData().warData.warStateMap.keys.filter {
-                !allPlayerId.contains(it)
-            }
-        toRemoveWarKeys.forEach {
-            mutablePlayerData.playerInternalData.diplomacyData().warData.warStateMap.remove(it)
         }
 
         // Clear export tariff
@@ -61,22 +53,12 @@ object ClearDeadPlayer : Mechanism() {
             )
         }
 
-        // Clear direct leader
-        if (!allPlayerId.contains(mutablePlayerData.playerInternalData.directLeaderId)) {
-            val newLeaderIdList: MutableList<Int> =
-                mutablePlayerData.playerInternalData.leaderIdList
-            newLeaderIdList.remove(mutablePlayerData.playerInternalData.directLeaderId)
-            newLeaderIdList.remove(mutablePlayerData.playerId)
-            mutablePlayerData.changeDirectLeaderId(newLeaderIdList)
+        // Clear subordinate and direct subordinate
+        val newLeaderIdList: List<Int> = mutablePlayerData.playerInternalData.leaderIdList.filter {
+            allPlayerId.contains(it) && (it != mutablePlayerData.playerId)
         }
-
-        // Clear leaders
-        mutablePlayerData.playerInternalData.leaderIdList.removeAll { !allPlayerId.contains(it) }
-
-        // Clear direct subordinate
+        mutablePlayerData.changeDirectLeader(newLeaderIdList)
         mutablePlayerData.playerInternalData.directSubordinateIdSet.removeAll { !allPlayerId.contains(it) }
-
-        // Clear subordinate
         mutablePlayerData.playerInternalData.subordinateIdSet.removeAll { !allPlayerId.contains(it) }
 
         return listOf()

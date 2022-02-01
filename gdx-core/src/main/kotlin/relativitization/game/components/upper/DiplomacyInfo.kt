@@ -280,7 +280,6 @@ class DiplomacyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
                     toId = playerData.playerId,
                     fromId = game.universeClient.getCurrentPlayerData().playerId,
                     fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
-                    senderLeaderIdList = game.universeClient.getCurrentPlayerData().playerInternalData.leaderIdList,
                 )
 
                 game.universeClient.currentCommand = declareWarCommand

@@ -29,7 +29,6 @@ internal class ProposePeaceCommandTest {
                             toId = 3,
                             fromId = 5,
                             fromInt4D = view7At5.getCurrentPlayerData().int4D,
-                            senderLeaderIdList = view7At5.getCurrentPlayerData().playerInternalData.leaderIdList,
                         )
                     )
                 ),

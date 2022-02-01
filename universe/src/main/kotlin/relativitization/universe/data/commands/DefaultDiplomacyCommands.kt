@@ -10,17 +10,13 @@ import relativitization.universe.utils.IntString
 import relativitization.universe.utils.NormalString
 
 /**
- * Declare war on target player, the target must be top leader or the highest in the leader list where it is not the
- * leader of the sender
- *
- * @property senderLeaderIdList the leader id list of the sender
+ * Declare war on target player
  */
 @Serializable
 data class DeclareWarCommand(
     override val toId: Int,
     override val fromId: Int,
     override val fromInt4D: Int4D,
-    val senderLeaderIdList: List<Int>,
 ) : DefaultCommand() {
     override fun description(): I18NString = I18NString(
         listOf(
@@ -57,18 +53,12 @@ data class DeclareWarCommand(
             I18NString("Target is in peace with you. ")
         )
 
-        val isLeaderListValid = CommandErrorMessage(
-            senderLeaderIdList == playerData.playerInternalData.leaderIdList,
-            I18NString("Leader list is not valid. ")
-        )
-
         return CommandErrorMessage(
             listOf(
                 isNotLeaderOrSelf,
                 isNotSubordinateOrSelf,
                 isNotInWar,
                 isNotInPeaceTreaty,
-                isLeaderListValid,
             )
         )
     }
@@ -108,16 +98,9 @@ data class DeclareWarCommand(
             I18NString("Target is in war with you. ")
         )
 
-        // Whether this player is a valid target, i.e., top leader of the highest possible leader
-        val isValidDeclareWarTarget = CommandErrorMessage(
-            playerData.playerInternalData.leaderIdList.first { !senderLeaderIdList.contains(it) } == toId,
-            I18NString("This is not a valid war target. ")
-        )
-
         return CommandErrorMessage(
             listOf(
                 isNotInWar,
-                isValidDeclareWarTarget,
             )
         )
     }
@@ -205,9 +188,7 @@ data class DeclareIndependenceToDirectLeaderCommand(
         val newLeaderIdList: List<Int> = playerData.playerInternalData.leaderIdList.filter {
             (it != playerData.playerId) && (it != toId)
         }
-        playerData.changeDirectLeaderId(
-            newLeaderIdList
-        )
+        playerData.changeDirectLeader(newLeaderIdList)
 
         // Change diplomatic relation state
         playerData.playerInternalData.diplomacyData().getDiplomaticRelationData(
@@ -257,7 +238,7 @@ data class DeclareIndependenceToDirectLeaderCommand(
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
         // Remove subordinate
-        playerData.removeSubordinate(fromId)
+        playerData.removeSubordinateId(fromId)
 
         // Change diplomatic relation state
         playerData.playerInternalData.diplomacyData().getDiplomaticRelationData(
@@ -336,7 +317,7 @@ data class DeclareIndependenceToTopLeaderCommand(
         universeSettings: UniverseSettings
     ) {
         // Change direct leader and leader id list
-        playerData.changeDirectLeaderId(
+        playerData.changeDirectLeader(
             listOf()
         )
 
@@ -388,7 +369,7 @@ data class DeclareIndependenceToTopLeaderCommand(
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
         // Remove subordinate
-        playerData.removeSubordinate(fromId)
+        playerData.removeSubordinateId(fromId)
 
         // Change diplomatic relation state
         playerData.playerInternalData.diplomacyData().getDiplomaticRelationData(
@@ -562,6 +543,6 @@ data class SurrenderCommand(
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
-        playerData.changeDirectLeaderId(listOf(targetPlayerId))
+        playerData.changeDirectLeader(listOf(targetPlayerId))
     }
 }

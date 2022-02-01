@@ -104,7 +104,7 @@ data class SplitCarrierCommand(
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
         val newPlayerInternalData = MutablePlayerInternalData(
             directLeaderId = playerData.playerId,
-            leaderIdList = (playerData.playerInternalData.leaderIdList + playerData.playerId).toMutableList(),
+            leaderIdList = playerData.getLeaderAndSelfIdList().toMutableList(),
         )
 
         // Split carrier, process pop system data first since it is the most important
@@ -282,8 +282,9 @@ data class GrantIndependenceCommand(
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
-        val newLeaderIdList: List<Int> = playerData.playerInternalData.leaderIdList -
-                playerData.playerInternalData.directLeaderId
-        playerData.changeDirectLeaderId(newLeaderIdList)
+        val newLeaderIdList: List<Int> = playerData.playerInternalData.leaderIdList.filter {
+            (it != playerData.playerInternalData.directLeaderId) && (it != playerData.playerId)
+        }
+        playerData.changeDirectLeader(newLeaderIdList)
     }
 }

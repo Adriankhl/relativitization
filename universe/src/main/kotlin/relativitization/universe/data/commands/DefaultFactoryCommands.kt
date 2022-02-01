@@ -935,9 +935,11 @@ data class RemoveLocalFuelFactoryCommand(
                     targetFuelFactoryId
                 ).ownerPlayerId
 
-                // Allow removal of local factory if the owner is not leader
-                // or leader is not allowed to build
-                !playerData.isLeader(ownerId) || !playerData.playerInternalData.politicsData().allowLeaderBuildLocalFactory
+                // Allow removal of local factory if the player is the owner,
+                // the owner is not a leader, or leader building is not allowed
+                (ownerId == playerData.playerId) ||
+                        !playerData.isLeader(ownerId) ||
+                        !playerData.playerInternalData.politicsData().allowLeaderBuildLocalFactory
             } else {
                 false
             },
@@ -993,9 +995,11 @@ data class RemoveLocalFuelFactoryCommand(
                     targetFuelFactoryId
                 ).ownerPlayerId
 
-                // Allow removal of local factory if the owner is not leader
-                // or leader is not allowed to build
-                !playerData.isLeader(ownerId) || !playerData.playerInternalData.politicsData().allowLeaderBuildLocalFactory
+                // Allow removal of local factory if the player is the owner,
+                // the owner is not a leader, or leader building is not allowed
+                (ownerId == playerData.playerId) ||
+                        !playerData.isLeader(ownerId) ||
+                        !playerData.playerInternalData.politicsData().allowLeaderBuildLocalFactory
             } else {
                 false
             },
@@ -1099,9 +1103,11 @@ data class RemoveLocalResourceFactoryCommand(
                     targetResourceFactoryId
                 ).ownerPlayerId
 
-                // Allow removal of local factory if the owner is not leader
-                // or leader is not allowed to build
-                !playerData.isLeader(ownerId) || !playerData.playerInternalData.politicsData().allowLeaderBuildLocalFactory
+                // Allow removal of local factory if the player is the owner,
+                // the owner is not a leader, or leader building is not allowed
+                (ownerId == playerData.playerId) ||
+                        !playerData.isLeader(ownerId) ||
+                        !playerData.playerInternalData.politicsData().allowLeaderBuildLocalFactory
             } else {
                 false
             },
@@ -1159,9 +1165,11 @@ data class RemoveLocalResourceFactoryCommand(
                     targetResourceFactoryId
                 ).ownerPlayerId
 
-                // Allow removal of local factory if the owner is not leader
-                // or leader is not allowed to build
-                !playerData.isLeader(ownerId) || !playerData.playerInternalData.politicsData().allowLeaderBuildLocalFactory
+                // Allow removal of local factory if the player is the owner,
+                // the owner is not a leader, or leader building is not allowed
+                (ownerId == playerData.playerId) ||
+                        !playerData.isLeader(ownerId) ||
+                        !playerData.playerInternalData.politicsData().allowLeaderBuildLocalFactory
             } else {
                 false
             },

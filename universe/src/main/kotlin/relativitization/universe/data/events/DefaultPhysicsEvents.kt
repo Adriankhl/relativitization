@@ -175,33 +175,26 @@ data class MoveToDouble3DEvent(
         mutableEventRecordData: MutableEventRecordData,
         universeData3DAtPlayer: UniverseData3DAtPlayer
     ): Int {
-        val eventDataMap: Map<Int, EventData> =
-            universeData3DAtPlayer.getCurrentPlayerData().playerInternalData.eventDataMap
+        val eventDataMap: Map<Int, EventData> = universeData3DAtPlayer.getCurrentPlayerData().playerInternalData
+            .eventDataMap
 
-        val otherMovementEvents: Map<Int, EventData> = eventDataMap.filter { (id, eventData) ->
+        val otherMovementEventMap: Map<Int, EventData> = eventDataMap.filter { (id, eventData) ->
             (eventData.event is MoveToDouble3DEvent) && (id != eventId)
         }
-        return if (otherMovementEvents.isEmpty()) {
+        return if (otherMovementEventMap.isEmpty()) {
             0
         } else {
-            if (otherMovementEvents.any { it.value.eventRecordData.hasChoice }) {
+            if (otherMovementEventMap.any { it.value.eventRecordData.hasChoice }) {
                 1
             } else {
-                val leaderIdList: List<Int> =
-                    universeData3DAtPlayer.getCurrentPlayerData().playerInternalData.leaderIdList
+                val leaderAndSelfIdList: List<Int> = universeData3DAtPlayer.getCurrentPlayerData()
+                    .getLeaderAndSelfIdList()
 
-                // if all movement events are default, find the one with the closest relation with the player
-                val entry = eventDataMap.maxByOrNull { (_, eventData) ->
-                    if (leaderIdList.contains(eventData.event.fromId)) {
-                        leaderIdList.indexOf(eventData.event.fromId)
-                    } else {
-                        -1
-                    }
-                }
+                val keepMovementEventId: Int = otherMovementEventMap.maxByOrNull {
+                    leaderAndSelfIdList.indexOf(it.value.event.fromId)
+                }!!.key
 
-                val entryId: Int = entry?.key ?: eventId
-
-                if (entryId == eventId) {
+                if (keepMovementEventId == eventId) {
                     0
                 } else {
                     1

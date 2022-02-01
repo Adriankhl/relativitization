@@ -48,7 +48,7 @@ data class PlayerData(
     val groupId: Int = double4DToGroupId(double4D, 0.01),
     val velocity: Velocity = Velocity(0.0, 0.0, 0.0),
     val playerInternalData: PlayerInternalData = PlayerInternalData(
-        directLeaderId = playerId, leaderIdList = listOf(playerId)
+        directLeaderId = playerId, leaderIdList = listOf()
     ),
     val newPlayerList: List<PlayerInternalData> = listOf()
 ) {
@@ -65,7 +65,7 @@ data class PlayerData(
      * @param otherPlayerId whether this id is one of the direct subordinates of the player
      */
     fun isDirectSubOrdinate(otherPlayerId: Int): Boolean {
-        return (otherPlayerId != playerId) && playerInternalData.directSubordinateIdSet.contains(
+        return playerInternalData.directSubordinateIdSet.contains(
             otherPlayerId
         )
     }
@@ -74,7 +74,7 @@ data class PlayerData(
      * @param otherPlayerId whether this id is one of the subordinates of the player
      */
     fun isSubOrdinate(otherPlayerId: Int): Boolean {
-        return (otherPlayerId != playerId) && playerInternalData.subordinateIdSet.contains(
+        return playerInternalData.subordinateIdSet.contains(
             otherPlayerId
         )
     }
@@ -90,21 +90,25 @@ data class PlayerData(
      * @param otherPlayerId whether this id is one of the leaders of the player
      */
     fun isLeader(otherPlayerId: Int): Boolean {
-        return (otherPlayerId != playerId) && playerInternalData.leaderIdList.contains(otherPlayerId)
+        return playerInternalData.leaderIdList.contains(otherPlayerId)
     }
 
     /**
      * The top leader id
      */
     fun topLeaderId(): Int {
-        return playerInternalData.leaderIdList.firstOrNull() ?: playerId
+        return if (playerInternalData.leaderIdList.isEmpty()) {
+            playerId
+        } else {
+            playerInternalData.leaderIdList.first()
+        }
     }
 
     /**
      * Is player the top leader
      */
     fun isTopLeader(): Boolean {
-        return topLeaderId() == playerId
+        return playerInternalData.leaderIdList.isEmpty()
     }
 
     fun isValid(currentTime: Int): Boolean {
@@ -136,6 +140,11 @@ data class PlayerData(
         )
     }
 
+    /**
+     * Get leader and self id list
+     */
+    fun getLeaderAndSelfIdList(): List<Int> = playerInternalData.leaderIdList + playerId
+
     companion object {
         val logger = RelativitizationLogManager.getLogger()
     }
@@ -154,7 +163,7 @@ data class MutablePlayerData(
     var groupId: Int = double4DToGroupId(double4D, 0.01),
     var velocity: MutableVelocity = MutableVelocity(0.0, 0.0, 0.0),
     var playerInternalData: MutablePlayerInternalData = MutablePlayerInternalData(
-        directLeaderId = playerId, leaderIdList = mutableListOf(playerId)
+        directLeaderId = playerId, leaderIdList = mutableListOf()
     ),
     val newPlayerList: MutableList<MutablePlayerInternalData> = mutableListOf()
 ) {
@@ -179,7 +188,7 @@ data class MutablePlayerData(
      * @param otherPlayerId whether this id is one of the direct subordinates of the player
      */
     fun isDirectSubOrdinate(otherPlayerId: Int): Boolean {
-        return (otherPlayerId != playerId) && playerInternalData.directSubordinateIdSet.contains(
+        return playerInternalData.directSubordinateIdSet.contains(
             otherPlayerId
         )
     }
@@ -188,7 +197,7 @@ data class MutablePlayerData(
      * @param otherPlayerId whether this id is one of the subordinates of the player
      */
     fun isSubOrdinate(otherPlayerId: Int): Boolean {
-        return (otherPlayerId != playerId) && playerInternalData.subordinateIdSet.contains(
+        return playerInternalData.subordinateIdSet.contains(
             otherPlayerId
         )
     }
@@ -205,7 +214,7 @@ data class MutablePlayerData(
      * @param otherPlayerId whether this id is one of the leaders of the player
      */
     fun isLeader(otherPlayerId: Int): Boolean {
-        return (otherPlayerId != playerId) && playerInternalData.leaderIdList.contains(otherPlayerId)
+        return playerInternalData.leaderIdList.contains(otherPlayerId)
     }
 
 
@@ -213,35 +222,44 @@ data class MutablePlayerData(
      * The top leader id
      */
     fun topLeaderId(): Int {
-        return playerInternalData.leaderIdList.firstOrNull() ?: playerId
+        return if (playerInternalData.leaderIdList.isEmpty()) {
+            playerId
+        } else {
+            playerInternalData.leaderIdList.first()
+        }
     }
 
     /**
      * Is player the top leader
      */
     fun isTopLeader(): Boolean {
-        return topLeaderId() == playerId
+        return playerInternalData.leaderIdList.isEmpty()
     }
 
 
     /**
      * Change direct leader id and add all leaders of direct leader
+     *
+     * @param newLeaderList new leader list including the new direct leader as the last item,
+     * should not contain id of this player
      */
-    fun changeDirectLeaderId(leaderListOfDirectLeader: List<Int>) {
-        if (leaderListOfDirectLeader.isNotEmpty()) {
-            // Remove subordinate and direct subordinate if they appear on the leader list
-            leaderListOfDirectLeader.forEach {
-                removeSubordinate(it)
-            }
-
-            playerInternalData.directLeaderId = leaderListOfDirectLeader.last()
-            playerInternalData.leaderIdList.clear()
-            playerInternalData.leaderIdList.addAll(leaderListOfDirectLeader)
-            playerInternalData.leaderIdList.add(playerId)
+    fun changeDirectLeader(newLeaderList: List<Int>) {
+        if (newLeaderList.contains(playerId)) {
+            logger.error("Leader id list contains this player id ($playerId). ")
         } else {
-            playerInternalData.directLeaderId = playerId
-            playerInternalData.leaderIdList.clear()
-            playerInternalData.leaderIdList.add(playerId)
+            if (newLeaderList.isNotEmpty()) {
+                // Remove subordinate and direct subordinate if they appear on the leader list
+                newLeaderList.forEach {
+                    removeSubordinateId(it)
+                }
+
+                playerInternalData.directLeaderId = newLeaderList.last()
+                playerInternalData.leaderIdList.clear()
+                playerInternalData.leaderIdList.addAll(newLeaderList)
+            } else {
+                playerInternalData.directLeaderId = playerId
+                playerInternalData.leaderIdList.clear()
+            }
         }
     }
 
@@ -249,11 +267,11 @@ data class MutablePlayerData(
      * Add direct subordinate to this player
      */
     fun addDirectSubordinateId(subordinateId: Int) {
-        if (!playerInternalData.leaderIdList.contains(subordinateId)) {
+        if (!isLeaderOrSelf(subordinateId)) {
             playerInternalData.directSubordinateIdSet.add(subordinateId)
             playerInternalData.subordinateIdSet.add(subordinateId)
         } else {
-            logger.error("Player $playerId try to add leader $subordinateId as direct subordinate")
+            logger.error("Player $playerId try to add leader or self $subordinateId as direct subordinate")
         }
     }
 
@@ -261,20 +279,25 @@ data class MutablePlayerData(
      * Add subordinate to this player
      */
     fun addSubordinateId(subordinateId: Int) {
-        if (!playerInternalData.leaderIdList.contains(subordinateId)) {
+        if (!isLeaderOrSelf(subordinateId)) {
             playerInternalData.subordinateIdSet.add(subordinateId)
         } else {
-            logger.error("Player $playerId try to add leader $subordinateId as subordinate")
+            logger.error("Player $playerId try to add leader or self $subordinateId as subordinate")
         }
     }
 
     /**
      * Remove subordinate
      */
-    fun removeSubordinate(subordinateId: Int) {
+    fun removeSubordinateId(subordinateId: Int) {
         playerInternalData.subordinateIdSet.remove(subordinateId)
         playerInternalData.directSubordinateIdSet.remove(subordinateId)
     }
+
+    /**
+     * Get leader and self id list
+     */
+    fun getLeaderAndSelfIdList(): List<Int> = playerInternalData.leaderIdList + playerId
 
     companion object {
         private val logger = RelativitizationLogManager.getLogger()

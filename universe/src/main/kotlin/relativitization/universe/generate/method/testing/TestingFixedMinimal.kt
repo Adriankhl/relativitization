@@ -293,8 +293,8 @@ object TestingFixedMinimal : TestingGenerateUniverseMethod() {
         playerData2.playerInternalData.physicsData().fuelRestMassData.movement = 100.0
 
         // player 1 is a leader of player 2
-        playerData2.changeDirectLeaderId(
-            playerData1.playerInternalData.leaderIdList
+        playerData2.changeDirectLeader(
+            listOf(1)
         )
 
         // Increase player 2 quality bound

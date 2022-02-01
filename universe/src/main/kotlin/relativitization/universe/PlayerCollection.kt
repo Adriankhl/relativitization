@@ -182,12 +182,15 @@ class PlayerCollection(
                     universeState.getNewPlayerId()
                 }
 
-                // Add new player as direct subordinate if it is the direct leader
                 if (mutableNewPlayerInternalData.directLeaderId == playerData.playerId) {
+                    // Add new player as direct subordinate if it is the direct leader
                     playerData.addDirectSubordinateId(newPlayerId)
+                } else if (mutableNewPlayerInternalData.leaderIdList.contains(playerData.playerId)) {
+                    // Add new player as subordinate if it is a leader
+                    playerData.addSubordinateId(newPlayerId)
                 }
 
-                val newMutablePlayerData = MutablePlayerData(
+                PlayerData(
                     playerId = newPlayerId,
                     name = randomPlayerName(mutableNewPlayerInternalData),
                     playerType = PlayerType.AI,
@@ -195,16 +198,8 @@ class PlayerCollection(
                     double4D = DataSerializer.copy(playerData.double4D),
                     groupId = playerData.groupId,
                     velocity = DataSerializer.copy(playerData.velocity),
-                    playerInternalData = mutableNewPlayerInternalData,
+                    playerInternalData = DataSerializer.copy(mutableNewPlayerInternalData),
                 )
-
-                // Player should be leader of itself
-                val newLeaderIdList: List<Int> = mutableNewPlayerInternalData.leaderIdList + newPlayerId
-                newMutablePlayerData.changeDirectLeaderId(newLeaderIdList)
-
-                val newPlayerData: PlayerData = DataSerializer.copy(newMutablePlayerData)
-
-                newPlayerData
             }
         }.flatten()
 

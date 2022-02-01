@@ -22,18 +22,13 @@ object SendTax : Mechanism() {
         val fuelRestMass: Double =
             mutablePlayerData.playerInternalData.economyData().taxData.storedFuelRestMass
 
-        // Repair empty leader list
-        if (mutablePlayerData.playerInternalData.leaderIdList.isEmpty()) {
-            mutablePlayerData.playerInternalData.leaderIdList.add(mutablePlayerData.playerId)
-        }
+        val numTaxReceiver: Int = mutablePlayerData.getLeaderAndSelfIdList().size
 
-        val numLeader: Int = mutablePlayerData.playerInternalData.leaderIdList.size
-
-        val fractionList: List<Double> = Fraction.oneFractionList(numLeader, fraction).reversed()
+        val fractionList: List<Double> = Fraction.oneFractionList(numTaxReceiver, fraction).reversed()
 
         // Send fuel command
         val commandList: List<Command> =
-            mutablePlayerData.playerInternalData.leaderIdList.mapIndexed { index, id ->
+            mutablePlayerData.getLeaderAndSelfIdList().mapIndexed { index, id ->
                 SendFuelCommand(
                     toId = id,
                     fromId = universeData3DAtPlayer.getCurrentPlayerData().playerId,
