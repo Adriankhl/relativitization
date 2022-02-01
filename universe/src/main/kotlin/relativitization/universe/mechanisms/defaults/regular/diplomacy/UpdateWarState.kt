@@ -125,7 +125,7 @@ object UpdateWarState : Mechanism() {
                 if (mutablePlayerData.isLeaderOrSelf(warTopLeaderId) &&
                     universeData3DAtPlayer.playerDataMap.containsKey(warTopLeaderId)
                 ) {
-                    universeData3DAtPlayer.get(warTopLeaderId).playerInternalData.subordinateIdSet + warTopLeaderId
+                    universeData3DAtPlayer.get(warTopLeaderId).getSubordinateAndSelfIdSet()
                 } else {
                     setOf()
                 }

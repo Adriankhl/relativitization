@@ -145,6 +145,11 @@ data class PlayerData(
      */
     fun getLeaderAndSelfIdList(): List<Int> = playerInternalData.leaderIdList + playerId
 
+    /**
+     * Get subordinate and self id set
+     */
+    fun getSubordinateAndSelfIdSet(): Set<Int> = playerInternalData.subordinateIdSet + playerId
+
     companion object {
         val logger = RelativitizationLogManager.getLogger()
     }
@@ -298,6 +303,11 @@ data class MutablePlayerData(
      * Get leader and self id list
      */
     fun getLeaderAndSelfIdList(): List<Int> = playerInternalData.leaderIdList + playerId
+
+    /**
+     * Get subordinate and self id set
+     */
+    fun getSubordinateAndSelfIdSet(): Set<Int> = playerInternalData.subordinateIdSet + playerId
 
     companion object {
         private val logger = RelativitizationLogManager.getLogger()
