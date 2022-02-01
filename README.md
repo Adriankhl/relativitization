@@ -45,11 +45,11 @@ If you are working with Windows, you need to use the Windows-equivalent commands
 such as changing `./gradlew` to `gradlew.bat`.
 
 You can run simulations of your model on the command line. Here is an example: 
-`./simulations/src/main/kotlin/relativitization/abm/AllDefault.kt`.
+`./simulations/src/main/kotlin/relativitization/game/TypicalGame.kt`.
 
 You can run the main function by:
 ```
-./gradlew :simulation:run -PmainClass=relativitization.abm.AllDefaultKt
+./gradlew :simulations:run -PmainClass=relativitization.game.TypicalGameKt
 ```
 
 Note that the main class has an additional `Kt` after the file name in Kotlin convention.
