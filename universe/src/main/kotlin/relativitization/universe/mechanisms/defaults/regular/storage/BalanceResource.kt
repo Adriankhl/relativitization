@@ -46,15 +46,6 @@ object BalanceResource : Mechanism() {
                 }
             }
         }
-        val target: MutableFuelRestMassTargetProportionData = mutablePlayerData.playerInternalData.physicsData()
-            .fuelRestMassTargetProportionData
-        val fuelData: MutableFuelRestMassData = mutablePlayerData.playerInternalData.physicsData()
-            .fuelRestMassData
-
-        val totalWeight: Double = target.total()
-
-
-
 
         return listOf()
     }
