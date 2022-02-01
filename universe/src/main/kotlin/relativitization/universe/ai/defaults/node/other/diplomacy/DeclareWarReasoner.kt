@@ -68,6 +68,7 @@ class SpaceConflictReasoner : DualUtilityReasoner() {
         val conflictPlayerToTopLeaderIdMap: Map<Int, Int> = conflictPlayerIdSet.associateWith { id ->
             planDataAtPlayer.universeData3DAtPlayer.get(id).getLeaderAndSelfIdList().first { leaderId ->
                 !currentPlayer.isLeaderOrSelf(leaderId) &&
+                        !currentPlayer.isSubOrdinate(leaderId)
                         planDataAtPlayer.universeData3DAtPlayer.playerDataMap.containsKey(leaderId)
             }
         }
