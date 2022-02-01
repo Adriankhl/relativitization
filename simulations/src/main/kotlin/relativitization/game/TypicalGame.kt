@@ -43,8 +43,6 @@ fun main() {
 
     runBlocking {
         for (turn in 1..100) {
-            println("Turn: $turn")
-
             val aiCommandMap = universe.computeAICommands()
 
             universe.postProcessUniverse(
@@ -52,6 +50,8 @@ fun main() {
                 aiCommandMap
             )
             universe.preProcessUniverse()
+
+            println("Turn: $turn. Player: ${universe.availablePlayers().size}. Dead: ${universe.getDeadIdList().size}")
         }
     }
 }
