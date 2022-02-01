@@ -11,7 +11,7 @@ abstract class DualUtilityOption : AINode() {
     fun getRank(
         planDataAtPlayer: PlanDataAtPlayer, planState: PlanState
     ): Int {
-        val considerationList = getConsiderationList(planDataAtPlayer, planState)
+        val considerationList: List<DualUtilityConsideration> = getConsiderationList(planDataAtPlayer, planState)
         return if (considerationList.isEmpty()) {
             0
         } else {
@@ -24,7 +24,7 @@ abstract class DualUtilityOption : AINode() {
     fun getWeight(
         planDataAtPlayer: PlanDataAtPlayer, planState: PlanState
     ): Double {
-        val considerationList = getConsiderationList(planDataAtPlayer, planState)
+        val considerationList: List<DualUtilityConsideration> = getConsiderationList(planDataAtPlayer, planState)
         return if (considerationList.isEmpty()) {
             0.0
         } else {

@@ -20,14 +20,14 @@ import relativitization.universe.data.components.defaults.science.knowledge.Appl
 import relativitization.universe.data.components.defaults.science.knowledge.BasicResearchField
 import relativitization.universe.data.components.defaults.science.knowledge.BasicResearchProjectData
 import relativitization.universe.data.global.MutableUniverseGlobalData
-import relativitization.universe.data.serializer.DataSerializer.copy
+import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.generate.method.GenerateSettings
 import relativitization.universe.global.defaults.science.UpdateUniverseScienceData
 import relativitization.universe.maths.grid.Grids.create4DGrid
 
 object TestingFixedMinimal : TestingGenerateUniverseMethod() {
     override fun generate(settings: GenerateSettings): UniverseData {
-        val universeSettings: UniverseSettings = copy(settings.universeSettings)
+        val universeSettings: UniverseSettings = DataSerializer.copy(settings.universeSettings)
 
         val mutableUniverseData4D = MutableUniverseData4D(
             create4DGrid(
@@ -409,11 +409,11 @@ object TestingFixedMinimal : TestingGenerateUniverseMethod() {
         )
 
         return UniverseData(
-            universeData4D = copy(mutableUniverseData4D),
+            universeData4D = DataSerializer.copy(mutableUniverseData4D),
             universeSettings = universeSettings,
             universeState = universeState,
             commandMap = mutableMapOf(),
-            universeGlobalData = copy(mutableUniverseGlobalData),
+            universeGlobalData = DataSerializer.copy(mutableUniverseGlobalData),
         )
     }
 }

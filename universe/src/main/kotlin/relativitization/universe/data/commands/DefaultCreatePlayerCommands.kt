@@ -5,6 +5,9 @@ import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.MutablePlayerInternalData
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.components.*
+import relativitization.universe.data.components.defaults.economy.MutableSingleResourceData
+import relativitization.universe.data.components.defaults.economy.ResourceQualityClass
+import relativitization.universe.data.components.defaults.economy.ResourceType
 import relativitization.universe.data.components.defaults.physics.Int4D
 import relativitization.universe.data.components.defaults.physics.MutableFuelRestMassTargetProportionData
 import relativitization.universe.data.components.defaults.popsystem.CarrierType
@@ -104,50 +107,7 @@ data class SplitCarrierCommand(
             leaderIdList = (playerData.playerInternalData.leaderIdList + playerData.playerId).toMutableList(),
         )
 
-        // copy ai data
-        val newAIData: MutableAIData = DataSerializer.copy(playerData.playerInternalData.aiData())
-        newPlayerInternalData.aiData(newAIData)
-
-        // copy diplomacy data and remove the war state
-        val newDiplomacyData: MutableDiplomacyData =
-            DataSerializer.copy(playerData.playerInternalData.diplomacyData())
-        newDiplomacyData.warData.warStateMap.clear()
-        newPlayerInternalData.diplomacyData(newDiplomacyData)
-
-        // split the economy data to new player
-        val newEconomyData: MutableEconomyData =
-            DataSerializer.copy(playerData.playerInternalData.economyData())
-        newEconomyData.resourceData.singleResourceMap.forEach { (_, qualityMap) ->
-            qualityMap.forEach { (_, singleResourceData) ->
-                singleResourceData.resourceAmount.storage *= storageFraction
-            }
-        }
-        newPlayerInternalData.economyData(newEconomyData)
-
-        // reduce original resource
-        playerData.playerInternalData.economyData().resourceData.singleResourceMap.forEach { (_, qualityMap) ->
-            qualityMap.forEach { (_, singleResourceData) ->
-                singleResourceData.resourceAmount.storage *= (1.0 - storageFraction)
-                singleResourceData.resourceAmount.production = 0.0
-                singleResourceData.resourceAmount.trade = 0.0
-            }
-        }
-
-        // Use default modifier data
-        val newModifierData = MutableModifierData()
-        newPlayerInternalData.modifierData(newModifierData)
-
-        // Copy science data
-        val newPlayerScienceData: MutablePlayerScienceData =
-            DataSerializer.copy(playerData.playerInternalData.playerScienceData())
-        newPlayerInternalData.playerScienceData(newPlayerScienceData)
-
-        // Copy politics data
-        val newPoliticsData: MutablePoliticsData =
-            DataSerializer.copy(playerData.playerInternalData.politicsData())
-        newPlayerInternalData.politicsData(newPoliticsData)
-
-        // Split carrier
+        // Split carrier, process pop system data first since it is the most important
         val newPopSystemData: MutablePopSystemData =
             DataSerializer.copy(playerData.playerInternalData.popSystemData())
         val toRemoveCarrierId: List<Int> = newPopSystemData.carrierDataMap.keys.filter {
@@ -164,12 +124,73 @@ data class SplitCarrierCommand(
             playerData.playerInternalData.popSystemData().carrierDataMap.remove(it)
         }
 
-        // If there is stellar system in player, movement should be zero
-        val hasStellarSystem: Boolean = newPlayerInternalData.popSystemData().carrierDataMap.values.any {
-                it.carrierType == CarrierType.STELLAR
-            }
+        // copy ai data
+        val newAIData: MutableAIData = DataSerializer.copy(playerData.playerInternalData.aiData())
+        newPlayerInternalData.aiData(newAIData)
 
-        val fuelRestMassTargetProportionData: MutableFuelRestMassTargetProportionData = if (hasStellarSystem) {
+        // copy diplomacy data and remove the war state
+        val newDiplomacyData: MutableDiplomacyData =
+            DataSerializer.copy(playerData.playerInternalData.diplomacyData())
+        newDiplomacyData.warData.warStateMap.clear()
+        newPlayerInternalData.diplomacyData(newDiplomacyData)
+
+        // copy economy data
+        val newEconomyData: MutableEconomyData =
+            DataSerializer.copy(playerData.playerInternalData.economyData())
+
+        // clear stored resource
+        ResourceType.values().forEach { resourceType ->
+            ResourceQualityClass.values().forEach { resourceQualityClass ->
+                val singleResourceData: MutableSingleResourceData =
+                    newEconomyData.resourceData.getSingleResourceData(resourceType, resourceQualityClass)
+                singleResourceData.resourceAmount.storage = 0.0
+                singleResourceData.resourceAmount.production = 0.0
+                singleResourceData.resourceAmount.trade = 0.0
+            }
+        }
+
+        // Add resource to new player
+        ResourceType.values().forEach { resourceType ->
+            ResourceQualityClass.values().forEach { resourceQualityClass ->
+                newEconomyData.resourceData.addResource(
+                    resourceType,
+                    playerData.playerInternalData.economyData().resourceData.getResourceQuality(
+                        resourceType,
+                        resourceQualityClass
+                    ),
+                    playerData.playerInternalData.economyData().resourceData.getStorageResourceAmount(
+                        resourceType,
+                        resourceQualityClass
+                    ) * storageFraction
+                )
+            }
+        }
+
+        newPlayerInternalData.economyData(newEconomyData)
+
+        // reduce original resource
+        playerData.playerInternalData.economyData().resourceData.singleResourceMap.forEach { (_, qualityMap) ->
+            qualityMap.forEach { (_, singleResourceData) ->
+                singleResourceData.resourceAmount.storage *= (1.0 - storageFraction)
+                singleResourceData.resourceAmount.production = 0.0
+                singleResourceData.resourceAmount.trade = 0.0
+            }
+        }
+
+        // Use default modifier data
+        val newModifierData = MutableModifierData()
+        newPlayerInternalData.modifierData(newModifierData)
+
+        // Use default physics data
+        val newPhysicsData = MutablePhysicsData()
+
+        // Check if there is stellar system in player
+        val hasStellarSystem: Boolean = newPlayerInternalData.popSystemData().carrierDataMap.values.any {
+            it.carrierType == CarrierType.STELLAR
+        }
+
+        // Adjust the fuel proportion based on whether the player has stellar system
+        newPhysicsData.fuelRestMassTargetProportionData = if (hasStellarSystem) {
             MutableFuelRestMassTargetProportionData()
         } else {
             MutableFuelRestMassTargetProportionData(
@@ -180,9 +201,7 @@ data class SplitCarrierCommand(
             )
         }
 
-        // split fuel rest mass data
-        val newPhysicsData: MutablePhysicsData = MutablePhysicsData()
-        newPhysicsData.fuelRestMassTargetProportionData = fuelRestMassTargetProportionData
+        // split fuel to new player
         newPhysicsData.addFuel(
             playerData.playerInternalData.physicsData().fuelRestMassData.storage * storageFraction
         )
@@ -190,6 +209,17 @@ data class SplitCarrierCommand(
 
         // reduce original fuel
         playerData.playerInternalData.physicsData().fuelRestMassData.storage *= (1.0 - storageFraction)
+
+        // Copy science data
+        val newPlayerScienceData: MutablePlayerScienceData =
+            DataSerializer.copy(playerData.playerInternalData.playerScienceData())
+        newPlayerInternalData.playerScienceData(newPlayerScienceData)
+
+        // Copy politics data
+        val newPoliticsData: MutablePoliticsData =
+            DataSerializer.copy(playerData.playerInternalData.politicsData())
+        newPlayerInternalData.politicsData(newPoliticsData)
+
 
         // Sync data and add the new player internal data to new player list
         playerData.syncData()

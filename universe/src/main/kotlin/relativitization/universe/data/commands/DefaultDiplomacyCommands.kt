@@ -83,7 +83,7 @@ data class DeclareWarCommand(
 
         playerData.playerInternalData.diplomacyData().warData.getWarStateData(
             toId
-        ).initialSubordinateSet = playerData.playerInternalData.subordinateIdSet
+        ).initialSubordinateSet = playerData.playerInternalData.subordinateIdSet.toMutableSet()
 
         playerData.playerInternalData.diplomacyData().warData.getWarStateData(
             toId
@@ -132,7 +132,7 @@ data class DeclareWarCommand(
 
         playerData.playerInternalData.diplomacyData().warData.getWarStateData(
             fromId
-        ).initialSubordinateSet = playerData.playerInternalData.subordinateIdSet
+        ).initialSubordinateSet = playerData.playerInternalData.subordinateIdSet.toMutableSet()
 
         playerData.playerInternalData.diplomacyData().warData.getWarStateData(
             fromId
@@ -217,7 +217,7 @@ data class DeclareIndependenceToDirectLeaderCommand(
         // Add war state
         playerData.playerInternalData.diplomacyData().warData.getWarStateData(
             toId
-        ).initialSubordinateSet = playerData.playerInternalData.subordinateIdSet
+        ).initialSubordinateSet = playerData.playerInternalData.subordinateIdSet.toMutableSet()
 
         playerData.playerInternalData.diplomacyData().warData.getWarStateData(
             toId
@@ -267,7 +267,7 @@ data class DeclareIndependenceToDirectLeaderCommand(
         // Add war state
         playerData.playerInternalData.diplomacyData().warData.getWarStateData(
             fromId
-        ).initialSubordinateSet = playerData.playerInternalData.subordinateIdSet
+        ).initialSubordinateSet = playerData.playerInternalData.subordinateIdSet.toMutableSet()
 
         playerData.playerInternalData.diplomacyData().warData.getWarStateData(
             fromId
@@ -348,7 +348,7 @@ data class DeclareIndependenceToTopLeaderCommand(
         // Add war state
         playerData.playerInternalData.diplomacyData().warData.getWarStateData(
             toId
-        ).initialSubordinateSet = playerData.playerInternalData.subordinateIdSet
+        ).initialSubordinateSet = playerData.playerInternalData.subordinateIdSet.toMutableSet()
 
         playerData.playerInternalData.diplomacyData().warData.getWarStateData(
             toId
@@ -398,7 +398,7 @@ data class DeclareIndependenceToTopLeaderCommand(
         // Add war state
         playerData.playerInternalData.diplomacyData().warData.getWarStateData(
             fromId
-        ).initialSubordinateSet = playerData.playerInternalData.subordinateIdSet
+        ).initialSubordinateSet = playerData.playerInternalData.subordinateIdSet.toMutableSet()
 
         playerData.playerInternalData.diplomacyData().warData.getWarStateData(
             fromId

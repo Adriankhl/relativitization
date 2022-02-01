@@ -53,7 +53,7 @@ class Universe(
 
     init {
         // for each player data at the latest time slice, create player object and add to universe3D
-        universeData.getLatestPlayerDataList().forEach { playerCollection.addPlayer(it) }
+        universeData.getCurrentPlayerDataList().forEach { playerCollection.addPlayer(it) }
 
 
         if (saveWhenInit) {

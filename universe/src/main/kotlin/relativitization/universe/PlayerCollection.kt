@@ -6,7 +6,7 @@ import relativitization.universe.data.components.defaults.physics.Int4D
 import relativitization.universe.data.components.defaults.physics.MutableDouble4D
 import relativitization.universe.data.components.defaults.physics.MutableVelocity
 import relativitization.universe.data.components.defaults.physics.Velocity
-import relativitization.universe.data.serializer.DataSerializer.copy
+import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.maths.grid.Grids.create3DGrid
 import relativitization.universe.maths.grid.Grids.double4DToGroupId
 import relativitization.universe.maths.physics.Relativistic.deltaMassByPhotonRocket
@@ -58,7 +58,7 @@ class PlayerCollection(
      * Get player location
      */
     fun getPlayerInt4D(id: Int): Int4D {
-        return copy(playerMap.getValue(id).int4D)
+        return DataSerializer.copy(playerMap.getValue(id).int4D)
     }
 
     /**
@@ -69,7 +69,7 @@ class PlayerCollection(
     }
 
     /**
-     * Get all NONE type (nor ai or human) player
+     * Get all NONE type (nor AI or human) player
      */
     fun getNoneIdList(): List<Int> {
         return playerMap.filter { (_, player) -> player.playerType == PlayerType.NONE }.keys.toList()
@@ -83,7 +83,7 @@ class PlayerCollection(
     }
 
     /**
-     * Get all human or ai player id
+     * Get all human or AI player id
      */
     fun getHumanOrAiIdList(): List<Int> {
         return playerMap.filter { (_, player) ->
@@ -119,7 +119,9 @@ class PlayerCollection(
             }
 
         playerMap.forEach { (_, player) ->
-            playerId3D[player.int4D.x][player.int4D.y][player.int4D.z].add(copy(player))
+            playerId3D[player.int4D.x][player.int4D.y][player.int4D.z].add(
+                DataSerializer.copy(player)
+            )
 
             // Also add afterimage
             player.int4DHistory.forEach { int4D ->
@@ -128,7 +130,7 @@ class PlayerCollection(
             }
         }
 
-        return copy(playerId3D)
+        return DataSerializer.copy(playerId3D)
     }
 
     /**
@@ -149,12 +151,12 @@ class PlayerCollection(
         if (hasPlayer(playerData.playerId)) {
             if (playerData.int4D.t > playerMap.getValue(playerData.playerId).int4D.t) {
                 removePlayer(playerData.playerId)
-                playerMap[playerData.playerId] = copy(playerData)
+                playerMap[playerData.playerId] = DataSerializer.copy(playerData)
             } else {
                 logger.debug("Not going to add player ${playerData.playerId}")
             }
         } else {
-            playerMap[playerData.playerId] = copy(playerData)
+            playerMap[playerData.playerId] = DataSerializer.copy(playerData)
         }
     }
 
@@ -162,10 +164,12 @@ class PlayerCollection(
      * Remove player and add id to deadIdList if player is dead
      */
     fun cleanDeadPlayer() {
-        val dead: List<Int> =
-            playerMap.values.filter { !it.playerInternalData.isAlive }.map { it.playerId }
-        dead.map { removePlayer(it) }
-        deadIdList.addAll(dead)
+        val deadPlayerIdList: List<Int> = playerMap.values.filter {
+            !it.playerInternalData.isAlive
+        }.map { it.playerId }
+
+        deadPlayerIdList.forEach { removePlayer(it) }
+        deadIdList.addAll(deadPlayerIdList)
     }
 
     /**
@@ -183,22 +187,24 @@ class PlayerCollection(
                     playerData.addDirectSubordinateId(newPlayerId)
                 }
 
-                // Player should be leader of itself
-                mutableNewPlayerInternalData.leaderIdList.add(newPlayerId)
-
-                val newPlayerInternalData: PlayerInternalData = copy(mutableNewPlayerInternalData)
-                val name = randomPlayerName(newPlayerInternalData)
-
-                PlayerData(
+                val newMutablePlayerData = MutablePlayerData(
                     playerId = newPlayerId,
-                    name = name,
+                    name = randomPlayerName(mutableNewPlayerInternalData),
                     playerType = PlayerType.AI,
-                    int4D = copy(playerData.int4D),
-                    double4D = copy(playerData.double4D),
+                    int4D = DataSerializer.copy(playerData.int4D),
+                    double4D = DataSerializer.copy(playerData.double4D),
                     groupId = playerData.groupId,
-                    velocity = copy(playerData.velocity),
-                    playerInternalData = newPlayerInternalData
+                    velocity = DataSerializer.copy(playerData.velocity),
+                    playerInternalData = mutableNewPlayerInternalData,
                 )
+
+                // Player should be leader of itself
+                val newLeaderIdList: List<Int> = mutableNewPlayerInternalData.leaderIdList + newPlayerId
+                newMutablePlayerData.changeDirectLeaderId(newLeaderIdList)
+
+                val newPlayerData: PlayerData = DataSerializer.copy(newMutablePlayerData)
+
+                newPlayerData
             }
         }.flatten()
 
@@ -265,7 +271,7 @@ class PlayerCollection(
 
         for ((_, playerData) in playerMap) {
             val double4D: MutableDouble4D = playerData.double4D
-            val oldInt4D: Int4D = Int4D(playerData.int4D)
+            val oldInt4D = Int4D(playerData.int4D)
             val oldGroupId: Int = playerData.groupId
 
             // Move player int4D by double4D

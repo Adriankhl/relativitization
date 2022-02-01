@@ -36,7 +36,7 @@ data class UniverseData(
     private fun isStateValid(): Boolean {
         // Not a valid test
         // val currentTimeCheck: Boolean = universeData4D.getTSizeList()[0] >= universeState.getCurrentTime()
-        return (getLatestPlayerDataList().maxOfOrNull { it.playerId } ?: 0) <=
+        return (getCurrentPlayerDataList().maxOfOrNull { it.playerId } ?: 0) <=
                 universeState.getCurrentMaxId()
     }
 
@@ -44,7 +44,7 @@ data class UniverseData(
      * Check if the player data in the universeData4D is valid
      */
     private fun isPlayerDataValid(): Boolean {
-        val playerDataList: List<PlayerData> = getLatestPlayerDataList()
+        val playerDataList: List<PlayerData> = getCurrentPlayerDataList()
         val playerDataCheckList: List<Boolean> = playerDataList.map {
             it.isValid(universeState.getCurrentTime())
         }
@@ -182,18 +182,15 @@ data class UniverseData(
     /**
      * Get all player data from the latest universe slice
      * Since there can be duplicated player id since the after image may be added after player move,
-     * only player data with maximum t is included
+     * only player data at current time is included
      */
-    fun getLatestPlayerDataList(): List<PlayerData> {
+    fun getCurrentPlayerDataList(): List<PlayerData> {
         val playerDataList: List<PlayerData> =
             universeData4D.getLatest().flatten().flatten().flatten()
 
-        // If at least one player is alive, get the t from that player
-        val maxT: Int = playerDataList.maxOfOrNull { it.int4D.t } ?: 0
-
         return playerDataList.groupBy { it.playerId }.map { (_, playerDataGroup) ->
             // If player is dead, only after image is left, none should be satisfied
-            playerDataGroup.firstOrNull { it.int4D.t == maxT }
+            playerDataGroup.firstOrNull { it.int4D.t == universeState.getCurrentTime() }
         }.filterNotNull()
     }
 
