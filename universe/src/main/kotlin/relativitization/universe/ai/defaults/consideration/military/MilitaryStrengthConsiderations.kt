@@ -4,13 +4,13 @@ import relativitization.universe.ai.defaults.utils.DualUtilityConsideration
 import relativitization.universe.ai.defaults.utils.DualUtilityData
 import relativitization.universe.ai.defaults.utils.PlanState
 import relativitization.universe.data.PlanDataAtPlayer
-import relativitization.universe.data.components.PopSystemData
 
 /**
  * Compare the military strength of this player to target player, exclude this player and the subordinate of this
  * player if they are subordinates of the target
  *
- * @property targetPlayerId compare with the player with this id
+ * @property selfMilitaryScore the military score of self
+ * @property selfMilitaryScore the military score of self
  * @property rankIfTrue rank of dual utility if this is true
  * @property multiplierIfTrue multiplier of dual utility if this is true
  * @property bonusIfTrue bonus of dual utility if this is true
@@ -19,7 +19,8 @@ import relativitization.universe.data.components.PopSystemData
  * @property bonusIfFalse bonus of dual utility if this is false
  */
 class LargerMilitaryStrengthConsideration(
-    private val targetPlayerId: Int,
+    private val selfMilitaryScore: Double,
+    private val targetMilitaryScore: Double,
     private val rankIfTrue: Int,
     private val multiplierIfTrue: Double,
     private val bonusIfTrue: Double,
@@ -31,42 +32,7 @@ class LargerMilitaryStrengthConsideration(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): DualUtilityData {
-        val subordinateAndSelfIdSet: Set<Int> = planDataAtPlayer.universeData3DAtPlayer
-            .getCurrentPlayerData().playerInternalData.subordinateIdSet + planDataAtPlayer.universeData3DAtPlayer
-            .getCurrentPlayerData().playerId
-
-        val allPopSystemData: List<PopSystemData> = subordinateAndSelfIdSet.map {
-            planDataAtPlayer.universeData3DAtPlayer.get(it).playerInternalData.popSystemData()
-        }
-
-        // Exclude self and subordinate of self when comparing to the target
-        val targetSubordinateAndSelfIdList: List<Int> = (planDataAtPlayer.universeData3DAtPlayer.get(
-            targetPlayerId
-        ).playerInternalData.subordinateIdSet + targetPlayerId).filter {
-            !subordinateAndSelfIdSet.contains(
-                it
-            ) && planDataAtPlayer.universeData3DAtPlayer.playerDataMap.containsKey(it)
-        }
-
-        val allTargetPopSystemData: List<PopSystemData> = targetSubordinateAndSelfIdList.map {
-            planDataAtPlayer.universeData3DAtPlayer.get(it).playerInternalData.popSystemData()
-        }
-
-        val militaryScore: Double = allPopSystemData.fold(0.0) { totalScore, popSystemData ->
-            totalScore + popSystemData.carrierDataMap.values.fold(0.0) { localScore, carrierData ->
-                localScore + (carrierData.allPopData.soldierPopData.militaryBaseData.attack * 5.0 +
-                        carrierData.allPopData.soldierPopData.militaryBaseData.shield)
-            }
-        }
-
-        val targetMilitaryScore: Double = allTargetPopSystemData.fold(0.0) { totalScore, popSystemData ->
-            totalScore + popSystemData.carrierDataMap.values.fold(0.0) { localScore, carrierData ->
-                localScore + (carrierData.allPopData.soldierPopData.militaryBaseData.attack * 5.0 +
-                        carrierData.allPopData.soldierPopData.militaryBaseData.shield)
-            }
-        }
-
-        return if (militaryScore >= targetMilitaryScore) {
+        return if (selfMilitaryScore >= targetMilitaryScore) {
             DualUtilityData(
                 rank = rankIfTrue,
                 multiplier = multiplierIfTrue,

@@ -6,6 +6,7 @@ import relativitization.universe.ai.defaults.consideration.military.InWarConside
 import relativitization.universe.ai.defaults.consideration.military.InWarWithPlayerConsideration
 import relativitization.universe.ai.defaults.consideration.military.LargerMilitaryStrengthConsideration
 import relativitization.universe.ai.defaults.consideration.position.DistanceMultiplierConsideration
+import relativitization.universe.ai.defaults.score.MilitaryScore
 import relativitization.universe.ai.defaults.utils.*
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.PlanDataAtPlayer
@@ -52,22 +53,36 @@ class SpaceConflictReasoner : DualUtilityReasoner() {
 
         val currentPlayer: MutablePlayerData = planDataAtPlayer.getCurrentMutablePlayerData()
 
-        val conflictPlayerIdList: List<Int> = allNeighbourInt3DSet.flatMap {
+        val selfMilitaryScore: Double = MilitaryScore.compute(currentPlayer.playerId, planDataAtPlayer)
+
+        // Potential player in conflict
+        val conflictPlayerIdSet: Set<Int> = allNeighbourInt3DSet.flatMap {
             planDataAtPlayer.universeData3DAtPlayer.playerId3DMap[it.x][it.y][it.z].values.flatten()
         }.filter {
             !currentPlayer.isLeaderOrSelf(it) && !currentPlayer.isSubOrdinate(it)
-        }
+        }.toSet()
 
-        // potential target are the highest rank leader possible of all the conflict player
-        val potentialWarTargetIdSet: Set<Int> = conflictPlayerIdList.map { id ->
+        val conflictPlayerToTopLeaderIdMap: Map<Int, Int> = conflictPlayerIdSet.associateWith { id ->
             planDataAtPlayer.universeData3DAtPlayer.get(id).getLeaderAndSelfIdList().first { leaderId ->
                 !currentPlayer.isLeaderOrSelf(leaderId) &&
                         planDataAtPlayer.universeData3DAtPlayer.playerDataMap.containsKey(leaderId)
             }
-        }.toSet()
+        }
 
-        val declareWarOptionList: List<SpaceConflictDeclareWarOption> = potentialWarTargetIdSet.map {
-            SpaceConflictDeclareWarOption(it)
+        val conflictPlayerTopLeaderMilitaryScoreMap: Map<Int, Double> = conflictPlayerToTopLeaderIdMap.values.toSet()
+            .associateWith {
+                MilitaryScore.compute(it, planDataAtPlayer)
+            }
+
+        val declareWarOptionList: List<SpaceConflictDeclareWarOption> = conflictPlayerIdSet.map {
+            SpaceConflictDeclareWarOption(
+                targetPlayerId = it,
+                targetPlayerTopLeaderId = conflictPlayerToTopLeaderIdMap.getValue(it),
+                selfMilitaryScore = selfMilitaryScore,
+                targetPlayerTopLeaderMilitaryScore = conflictPlayerTopLeaderMilitaryScoreMap.getValue(
+                    conflictPlayerToTopLeaderIdMap.getValue(it)
+                )
+            )
         }
 
         return declareWarOptionList + listOf(
@@ -78,9 +93,18 @@ class SpaceConflictReasoner : DualUtilityReasoner() {
 
 /**
  * Declare war on target player due to space conflict
+ *
+ * @property targetPlayerId the id of the target player to declare war
+ * @property targetPlayerTopLeaderId the id of the top (and not a leader of this player or self)
+ * leader of the target player
+ * @property selfMilitaryScore self military score
+ * @property targetPlayerTopLeaderMilitaryScore the military score of the top leader of the target player
  */
 class SpaceConflictDeclareWarOption(
     private val targetPlayerId: Int,
+    private val targetPlayerTopLeaderId: Int,
+    private val selfMilitaryScore: Double,
+    private val targetPlayerTopLeaderMilitaryScore: Double,
 ) : DualUtilityOption() {
     override fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer,
@@ -88,7 +112,8 @@ class SpaceConflictDeclareWarOption(
     ): List<DualUtilityConsideration> {
         return listOf(
             LargerMilitaryStrengthConsideration(
-                targetPlayerId = targetPlayerId,
+                selfMilitaryScore = selfMilitaryScore,
+                targetMilitaryScore = targetPlayerTopLeaderMilitaryScore,
                 rankIfTrue = 1,
                 multiplierIfTrue = 0.01,
                 bonusIfTrue = 1.0,
@@ -124,12 +149,21 @@ class SpaceConflictDeclareWarOption(
     }
 
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
+        // If military score is lower, target the easier player, else target the top player
         planDataAtPlayer.addCommand(
-            DeclareWarCommand(
-                toId = targetPlayerId,
-                fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
-            )
+            if (selfMilitaryScore > targetPlayerTopLeaderMilitaryScore) {
+                DeclareWarCommand(
+                    toId = targetPlayerTopLeaderId,
+                    fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+                    fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
+                )
+            } else {
+                DeclareWarCommand(
+                    toId = targetPlayerId,
+                    fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+                    fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
+                )
+            }
         )
     }
 }
@@ -147,14 +181,37 @@ class DeclareIndependenceReasoner : DualUtilityReasoner() {
             planDataAtPlayer.getCurrentMutablePlayerData().topLeaderId()
         )
 
-        val declareIndependenceToDirectLeaderOptionList = if (hasDirectLeader) {
-            listOf(DeclareIndependenceToDirectLeaderOption())
+        val isTopLeader: Boolean = planDataAtPlayer.getCurrentMutablePlayerData().isTopLeader()
+
+        val isTopLeaderDirectLeader: Boolean = planDataAtPlayer.getCurrentMutablePlayerData().topLeaderId() ==
+                planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData.directLeaderId
+
+        val selfMilitaryScore: Double = MilitaryScore.compute(
+            planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+            planDataAtPlayer
+        )
+
+
+        val declareIndependenceToDirectLeaderOptionList = if (hasDirectLeader && !isTopLeader) {
+            val directLeaderExcludeSelfMilitaryScore: Double = MilitaryScore.computeWithExclusion(
+                planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData.directLeaderId,
+                planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+                planDataAtPlayer,
+            )
+
+            listOf(DeclareIndependenceToDirectLeaderOption(selfMilitaryScore, directLeaderExcludeSelfMilitaryScore))
         } else {
             listOf()
         }
 
-        val declareIndependenceToTopLeaderOptionList = if (hasTopLeader) {
-            listOf(DeclareIndependenceToTopLeaderOption())
+        val declareIndependenceToTopLeaderOptionList = if (hasTopLeader && !isTopLeader && !isTopLeaderDirectLeader) {
+            val topLeaderExcludeSelfMilitaryScore: Double = MilitaryScore.computeWithExclusion(
+                planDataAtPlayer.getCurrentMutablePlayerData().topLeaderId(),
+                planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+                planDataAtPlayer,
+            )
+
+            listOf(DeclareIndependenceToTopLeaderOption(selfMilitaryScore, topLeaderExcludeSelfMilitaryScore))
         } else {
             listOf()
         }
@@ -168,13 +225,17 @@ class DeclareIndependenceReasoner : DualUtilityReasoner() {
 /**
  * Declare war and independence to direct leader
  */
-class DeclareIndependenceToDirectLeaderOption : DualUtilityOption() {
+class DeclareIndependenceToDirectLeaderOption(
+    val selfMilitaryScore: Double,
+    val targetMilitaryScore: Double,
+) : DualUtilityOption() {
     override fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<DualUtilityConsideration> = listOf(
         LargerMilitaryStrengthConsideration(
-            targetPlayerId = planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData.directLeaderId,
+            selfMilitaryScore = selfMilitaryScore,
+            targetMilitaryScore = targetMilitaryScore,
             rankIfTrue = 1,
             multiplierIfTrue = 0.01,
             bonusIfTrue = 1.0,
@@ -237,13 +298,17 @@ class DeclareIndependenceToDirectLeaderOption : DualUtilityOption() {
 /**
  * Declare war and independence to direct leader
  */
-class DeclareIndependenceToTopLeaderOption : DualUtilityOption() {
+class DeclareIndependenceToTopLeaderOption(
+    val selfMilitaryScore: Double,
+    val targetMilitaryScore: Double,
+) : DualUtilityOption() {
     override fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<DualUtilityConsideration> = listOf(
         LargerMilitaryStrengthConsideration(
-            targetPlayerId = planDataAtPlayer.getCurrentMutablePlayerData().topLeaderId(),
+            selfMilitaryScore = selfMilitaryScore,
+            targetMilitaryScore = targetMilitaryScore,
             rankIfTrue = 1,
             multiplierIfTrue = 0.01,
             bonusIfTrue = 1.0,
