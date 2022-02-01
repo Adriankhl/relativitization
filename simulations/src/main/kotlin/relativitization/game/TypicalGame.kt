@@ -53,7 +53,7 @@ fun main() {
 
             val gameStatus: GameStatus = GameStatus.compute(universe)
 
-            println("Turn: $turn. Player: ${universe.availablePlayers().size}. Dead: ${universe.getDeadIdList().size}" +
+            println("Turn: $turn. Player: ${universe.availablePlayers().size}. Dead: ${universe.getDeadIdList().size}. " +
                     "Carrier: ${gameStatus.numCarrier}. Population: ${gameStatus.totalPopulation}")
         }
     }
