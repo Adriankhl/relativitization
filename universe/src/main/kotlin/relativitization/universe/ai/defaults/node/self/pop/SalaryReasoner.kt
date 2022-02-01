@@ -122,7 +122,7 @@ class IncreaseSalaryOption(
         val newSalary: Double = listOf(
             maxSalary,
             currentSalary * salaryMultiplier,
-            maxFuelAsSalaryPerEmployee,
+            max(maxFuelAsSalaryPerEmployee, currentSalary),
         ).minOf { it }
 
         planDataAtPlayer.addCommand(
@@ -216,6 +216,10 @@ class GoodSalaryOption(
     )
 
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
+        // Absolute minimum of salary
+        val minSalary: Double = 1E-10
+        val maxSalary: Double = 1E10
+
         val commonPopData: MutableCommonPopData = planDataAtPlayer.getCurrentMutablePlayerData()
             .playerInternalData.popSystemData().carrierDataMap.getValue(carrierId).allPopData
             .getCommonPopData(popType)
@@ -267,6 +271,12 @@ class GoodSalaryOption(
                 maxFuelAsSalary
             ) / commonPopData.adultPopulation
 
+            val salary: Double = when {
+                salaryPerAdultPopulation > maxSalary -> maxSalary
+                salaryPerAdultPopulation < minSalary -> minSalary
+                else -> salaryPerAdultPopulation
+            }
+
             planDataAtPlayer.addCommand(
                 ChangeSalaryCommand(
                     toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
@@ -274,7 +284,7 @@ class GoodSalaryOption(
                     fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
                     carrierId = carrierId,
                     popType = popType,
-                    salary = salaryPerAdultPopulation,
+                    salary = salary,
                 )
             )
         }
