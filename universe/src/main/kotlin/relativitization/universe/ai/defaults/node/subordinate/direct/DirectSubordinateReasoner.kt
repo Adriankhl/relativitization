@@ -23,6 +23,8 @@ class DirectSubordinateReasoner : SequenceReasoner() {
         // Only consider direct subordinates that this player has not recently sent command to
         val recentCommandTooOldSet: Set<Int> =  recentCommandTimeMap.filterKeys {
             directSubordinateSet.contains(it)
+        }.filterKeys {
+            planDataAtPlayer.universeData3DAtPlayer.playerDataMap.containsKey(it)
         }.filter { (id, time) ->
             val subordinateData: PlayerData = planDataAtPlayer.universeData3DAtPlayer.get(id)
 
@@ -37,6 +39,8 @@ class DirectSubordinateReasoner : SequenceReasoner() {
         }.keys
 
         val directSubordinateToConsiderList: List<Int> = directSubordinateSet.filter {
+            planDataAtPlayer.universeData3DAtPlayer.playerDataMap.containsKey(it)
+        }.filter {
             !recentCommandTimeMap.containsKey(it) || recentCommandTooOldSet.contains(it)
         }
 

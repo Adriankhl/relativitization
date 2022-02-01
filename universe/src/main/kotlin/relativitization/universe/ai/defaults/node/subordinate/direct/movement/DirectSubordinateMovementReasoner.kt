@@ -54,7 +54,7 @@ class MoveDirectSubordinateToNearbyEnemyOption(
             bonusIfFalse = 0.0
         ),
         SufficientFuelMaxSpeedConsideration(
-            otherPlayerId = directSubordinateId,
+            playerId = directSubordinateId,
             maxSpeed = 0.1,
             rankIfTrue = 0,
             multiplierIfTrue = 1.0,
@@ -69,6 +69,8 @@ class MoveDirectSubordinateToNearbyEnemyOption(
         val enemyIdSet: Set<Int> = planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData
             .diplomacyData().relationMap.filterValues {
                 it.diplomaticRelationState == DiplomaticRelationState.ENEMY
+            }.filterKeys {
+                planDataAtPlayer.universeData3DAtPlayer.playerDataMap.containsKey(it)
             }.keys
 
 
