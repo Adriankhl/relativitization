@@ -1,5 +1,6 @@
 package relativitization.universe.ai.defaults.node.other.diplomacy
 
+import relativitization.universe.ai.defaults.consideration.diplomacy.HasPeaceTreatyConsideration
 import relativitization.universe.ai.defaults.consideration.diplomacy.RelationConsideration
 import relativitization.universe.ai.defaults.consideration.hierarchy.IsTopLeaderConsideration
 import relativitization.universe.ai.defaults.consideration.military.InWarConsideration
@@ -146,7 +147,16 @@ class SpaceConflictDeclareWarOption(
                 exponent = 0.99,
                 rank = 0,
                 bonus = 0.0
-            )
+            ),
+            HasPeaceTreatyConsideration(
+                otherPlayerId = targetPlayerId,
+                rankIfTrue = 0,
+                multiplierIfTrue = 0.0,
+                bonusIfTrue = 0.0,
+                rankIfFalse = 0,
+                multiplierIfFalse = 1.0,
+                bonusIfFalse = 0.0
+            ),
         )
     }
 
@@ -228,8 +238,8 @@ class DeclareIndependenceReasoner : DualUtilityReasoner() {
  * Declare war and independence to direct leader
  */
 class DeclareIndependenceToDirectLeaderOption(
-    val selfMilitaryScore: Double,
-    val targetMilitaryScore: Double,
+    private val selfMilitaryScore: Double,
+    private val targetMilitaryScore: Double,
 ) : DualUtilityOption() {
     override fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer,
@@ -283,7 +293,16 @@ class DeclareIndependenceToDirectLeaderOption(
             rankIfFalse = 0,
             multiplierIfFalse = 1.0,
             bonusIfFalse = 0.0
-        )
+        ),
+        HasPeaceTreatyConsideration(
+            otherPlayerId = planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData.directLeaderId,
+            rankIfTrue = 0,
+            multiplierIfTrue = 0.0,
+            bonusIfTrue = 0.0,
+            rankIfFalse = 0,
+            multiplierIfFalse = 1.0,
+            bonusIfFalse = 0.0
+        ),
     )
 
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
@@ -301,8 +320,8 @@ class DeclareIndependenceToDirectLeaderOption(
  * Declare war and independence to direct leader
  */
 class DeclareIndependenceToTopLeaderOption(
-    val selfMilitaryScore: Double,
-    val targetMilitaryScore: Double,
+    private val selfMilitaryScore: Double,
+    private val targetMilitaryScore: Double,
 ) : DualUtilityOption() {
     override fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer,
@@ -356,7 +375,16 @@ class DeclareIndependenceToTopLeaderOption(
             rankIfFalse = 0,
             multiplierIfFalse = 1.0,
             bonusIfFalse = 0.0
-        )
+        ),
+        HasPeaceTreatyConsideration(
+            otherPlayerId = planDataAtPlayer.getCurrentMutablePlayerData().topLeaderId(),
+            rankIfTrue = 0,
+            multiplierIfTrue = 0.0,
+            bonusIfTrue = 0.0,
+            rankIfFalse = 0,
+            multiplierIfFalse = 1.0,
+            bonusIfFalse = 0.0
+        ),
     )
 
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {

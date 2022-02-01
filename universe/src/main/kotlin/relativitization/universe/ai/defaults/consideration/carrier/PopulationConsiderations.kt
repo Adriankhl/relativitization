@@ -47,10 +47,18 @@ class SufficientPopulationRatioConsideration(
                 }
             }
 
-        return if (totalPopulation < totalIdealPopulation * ratio) {
-            DualUtilityDataFactory.noImpact()
+        return if (totalPopulation > totalIdealPopulation * ratio) {
+            DualUtilityData(
+                rank = rankIfTrue,
+                multiplier = multiplierIfTrue,
+                bonus = bonusIfTrue
+            )
         } else {
-            DualUtilityData(rank = rankIfTrue, multiplier = multiplierIfTrue, bonus = bonusIfTrue)
+            DualUtilityData(
+                rank = rankIfFalse,
+                multiplier = multiplierIfFalse,
+                bonus = bonusIfFalse
+            )
         }
     }
 }
