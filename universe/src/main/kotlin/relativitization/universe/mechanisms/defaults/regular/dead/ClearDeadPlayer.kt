@@ -71,17 +71,13 @@ object ClearDeadPlayer : Mechanism() {
         }
 
         // Clear leaders
-        mutablePlayerData.playerInternalData.leaderIdList.removeIf { !allPlayerId.contains(it) }
+        mutablePlayerData.playerInternalData.leaderIdList.removeAll { !allPlayerId.contains(it) }
 
         // Clear direct subordinate
-        mutablePlayerData.playerInternalData.directSubordinateIdList.removeIf {
-            !allPlayerId.contains(
-                it
-            )
-        }
+        mutablePlayerData.playerInternalData.directSubordinateIdSet.removeAll { !allPlayerId.contains(it) }
 
         // Clear subordinate
-        mutablePlayerData.playerInternalData.subordinateIdList.removeIf { !allPlayerId.contains(it) }
+        mutablePlayerData.playerInternalData.subordinateIdSet.removeAll { !allPlayerId.contains(it) }
 
         return listOf()
     }

@@ -257,7 +257,7 @@ class PlayersInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
             createLabel("Direct subordinate Id: ", gdxSettings.smallFontSize)
 
         val directSubordinateIdSelectBox = createSelectBox(
-            itemList = playerData.playerInternalData.directSubordinateIdList,
+            itemList = playerData.playerInternalData.directSubordinateIdSet.toList(),
             default = playerData.playerId,
             fontSize = gdxSettings.smallFontSize,
         ) { selectedId, _ ->
@@ -295,7 +295,7 @@ class PlayersInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         val subordinateIdLabel = createLabel("Subordinate Id: ", gdxSettings.smallFontSize)
 
         val subordinateIdSelectBox = createSelectBox(
-            itemList = playerData.playerInternalData.subordinateIdList,
+            itemList = playerData.playerInternalData.subordinateIdSet.toList(),
             default = playerData.playerId,
             fontSize = gdxSettings.smallFontSize,
         ) { selectedId, _ ->
@@ -377,7 +377,7 @@ class PlayersInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
             PlayerSummaryOption.SELF_ONLY -> listOf()
             PlayerSummaryOption.SELF_AND_SUBORDINATES -> game.universeClient.getUniverseData3D().get(
                 selectedId
-            ).playerInternalData.subordinateIdList
+            ).playerInternalData.subordinateIdSet.toList()
             PlayerSummaryOption.SELECTED -> game.universeClient.selectedPlayerIdList
         }
         playerSummary = Summary.computeFromUniverseData3DAtPlayer(

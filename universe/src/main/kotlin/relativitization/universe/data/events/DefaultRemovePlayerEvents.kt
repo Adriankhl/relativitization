@@ -42,7 +42,7 @@ data class AskToMergeCarrierEvent(
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
         val isDirectSubordinate = CommandErrorMessage(
-            playerData.playerInternalData.directSubordinateIdList.contains(toId),
+            playerData.playerInternalData.directSubordinateIdSet.contains(toId),
             CommandI18NStringFactory.isNotDirectSubordinate(
                 playerId = fromId, otherPlayerId = toId
             )

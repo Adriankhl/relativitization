@@ -11,8 +11,8 @@ import relativitization.universe.maths.physics.Intervals
 
 class DirectSubordinateReasoner : SequenceReasoner() {
     override fun getSubNodeList(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState): List<AINode> {
-        val directSubordinateList: List<Int> = planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData
-            .directSubordinateIdList
+        val directSubordinateSet: Set<Int> = planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData
+            .directSubordinateIdSet
 
         val recentCommandTimeMap: Map<Int, Int> =
             planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData.aiData().recentCommandTimeMap
@@ -22,7 +22,7 @@ class DirectSubordinateReasoner : SequenceReasoner() {
 
         // Only consider direct subordinates that this player has not recently sent command to
         val recentCommandTooOldSet: Set<Int> =  recentCommandTimeMap.filterKeys {
-            directSubordinateList.contains(it)
+            directSubordinateSet.contains(it)
         }.filter { (id, time) ->
             val subordinateData: PlayerData = planDataAtPlayer.universeData3DAtPlayer.get(id)
 
@@ -36,7 +36,7 @@ class DirectSubordinateReasoner : SequenceReasoner() {
             timeRequired <= currentTime - time
         }.keys
 
-        val directSubordinateToConsiderList: List<Int> = directSubordinateList.filter {
+        val directSubordinateToConsiderList: List<Int> = directSubordinateSet.filter {
             !recentCommandTimeMap.containsKey(it) || recentCommandTooOldSet.contains(it)
         }
 

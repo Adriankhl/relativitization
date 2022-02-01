@@ -109,7 +109,7 @@ data class MutablePopExportCenterData(
     fun clearExportData() {
         exportDataMap.values.forEach { popMap ->
             popMap.values.forEach { exportDataList ->
-                exportDataList.removeIf { exportData ->
+                exportDataList.removeAll { exportData ->
                     exportData.storedFuelRestMass <= 0.0
                 }
             }

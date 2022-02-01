@@ -87,7 +87,7 @@ data class MutablePlayerExportCenterData(
     }
 
     fun clearExportData() {
-        exportDataList.removeIf {
+        exportDataList.removeAll {
             it.storedFuelRestMass <= 0.0
         }
     }

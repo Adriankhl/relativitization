@@ -21,8 +21,8 @@ internal class GrantIndependenceCommandTest {
         )
         val view7: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
 
-        assert(view7.get(1).playerInternalData.subordinateIdList == listOf(2))
-        assert(view7.get(1).playerInternalData.directSubordinateIdList == listOf(2))
+        assert(view7.get(1).playerInternalData.subordinateIdSet == setOf(2))
+        assert(view7.get(1).playerInternalData.directSubordinateIdSet == setOf(2))
         assert(!view7.get(2).isTopLeader())
         assert(view7.get(2).topLeaderId() == 1)
 
@@ -44,8 +44,8 @@ internal class GrantIndependenceCommandTest {
 
         val view8: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
 
-        assert(view8.get(1).playerInternalData.subordinateIdList.isEmpty())
-        assert(view8.get(1).playerInternalData.directSubordinateIdList.isEmpty())
+        assert(view8.get(1).playerInternalData.subordinateIdSet.isEmpty())
+        assert(view8.get(1).playerInternalData.directSubordinateIdSet.isEmpty())
         assert(view8.get(2).isTopLeader())
     }
 }

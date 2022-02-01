@@ -148,10 +148,10 @@ class WarLossConsideration(
             .diplomacyData().warData.warStateMap.getValue(otherPlayerId)
 
         val numOriginalSubordinate: Int = planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData
-            .subordinateIdList.filter { warState.initialSubordinateList.contains(it) }.size
+            .subordinateIdSet.filter { warState.initialSubordinateSet.contains(it) }.size
 
-        val lossFraction: Double = if (warState.initialSubordinateList.isNotEmpty()) {
-            1.0 - numOriginalSubordinate.toDouble() /  warState.initialSubordinateList.size.toDouble()
+        val lossFraction: Double = if (warState.initialSubordinateSet.isNotEmpty()) {
+            1.0 - numOriginalSubordinate.toDouble() /  warState.initialSubordinateSet.size.toDouble()
         } else {
             0.0
         }

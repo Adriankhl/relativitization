@@ -111,7 +111,7 @@ object UpdateWarState : Mechanism() {
             val subordinateSet: Set<Int> = if (playerNotExistSet.contains(warId)) {
                 setOf()
             } else {
-                universeData3DAtPlayer.get(warId).playerInternalData.subordinateIdList.toSet()
+                universeData3DAtPlayer.get(warId).playerInternalData.subordinateIdSet
             }
 
             // If this is an offensive war, add the enemy top leader and subordinate to peace treaty
@@ -125,8 +125,7 @@ object UpdateWarState : Mechanism() {
                 if (mutablePlayerData.isLeaderOrSelf(warTopLeaderId) &&
                     universeData3DAtPlayer.playerDataMap.containsKey(warTopLeaderId)
                 ) {
-                    universeData3DAtPlayer.get(warTopLeaderId).playerInternalData.subordinateIdList
-                        .toSet() + warTopLeaderId
+                    universeData3DAtPlayer.get(warTopLeaderId).playerInternalData.subordinateIdSet + warTopLeaderId
                 } else {
                     setOf()
                 }

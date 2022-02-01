@@ -25,7 +25,7 @@ class NumberOfDirectSubordinateConsideration(
         planState: PlanState
     ): DualUtilityData {
         val numDirectSubordinate: Int = planDataAtPlayer.getCurrentMutablePlayerData()
-            .playerInternalData.directSubordinateIdList.size
+            .playerInternalData.directSubordinateIdSet.size
 
         return DualUtilityData(
             rank = rank,

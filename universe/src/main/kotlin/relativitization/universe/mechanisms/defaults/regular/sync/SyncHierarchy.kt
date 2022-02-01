@@ -42,7 +42,6 @@ object SyncHierarchy : Mechanism() {
         val toDirectLeaderCommandList: List<Command> = if (mutablePlayerData.isTopLeader()) {
             listOf()
         } else {
-
             val directLeaderData: PlayerData =
                 universeData3DAtPlayer.get(mutablePlayerData.playerInternalData.directLeaderId)
 
@@ -62,18 +61,14 @@ object SyncHierarchy : Mechanism() {
         }
 
         // Clear direct subordinate
-        val toRemoveDirectSubordinateIdList: List<Int> =
-            mutablePlayerData.playerInternalData.directSubordinateIdList.filter {
-                (universeData3DAtPlayer.get(it).playerInternalData.directLeaderId != mutablePlayerData.playerId) ||
-                        mutablePlayerData.isLeaderOrSelf(it)
-            }
-        mutablePlayerData.playerInternalData.directSubordinateIdList.removeAll(
-            toRemoveDirectSubordinateIdList
-        )
+        mutablePlayerData.playerInternalData.directSubordinateIdSet.removeAll {
+            (universeData3DAtPlayer.get(it).playerInternalData.directLeaderId != mutablePlayerData.playerId) ||
+                    mutablePlayerData.isLeaderOrSelf(it)
+        }
 
         // Add all subordinates of direct subordinates
-        mutablePlayerData.playerInternalData.directSubordinateIdList.map {
-            universeData3DAtPlayer.get(it).playerInternalData.subordinateIdList
+        mutablePlayerData.playerInternalData.directSubordinateIdSet.map {
+            universeData3DAtPlayer.get(it).playerInternalData.subordinateIdSet
         }.flatten().filter {
             !mutablePlayerData.isLeaderOrSelf(it)
         }.forEach {
@@ -81,12 +76,11 @@ object SyncHierarchy : Mechanism() {
         }
 
         // Clear subordinate
-        val toRemoveSubordinateIdList: List<Int> =
-            mutablePlayerData.playerInternalData.subordinateIdList.filter {
-                !universeData3DAtPlayer.playerDataMap.containsKey(it) ||
-                        !universeData3DAtPlayer.get(it).isLeaderOrSelf(mutablePlayerData.playerId)
-            }
-        mutablePlayerData.playerInternalData.subordinateIdList.removeAll(toRemoveSubordinateIdList)
+        mutablePlayerData.playerInternalData.subordinateIdSet.removeAll {
+            !universeData3DAtPlayer.playerDataMap.containsKey(it) ||
+                    (universeData3DAtPlayer.get(it).playerInternalData.directLeaderId != mutablePlayerData.playerId) ||
+                    mutablePlayerData.isLeaderOrSelf(it)
+        }
 
         return toDirectLeaderCommandList
     }

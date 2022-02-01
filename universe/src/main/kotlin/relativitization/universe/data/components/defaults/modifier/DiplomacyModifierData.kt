@@ -167,7 +167,7 @@ data class MutableRelationModifier(
      */
     fun updateByProperTime() {
         // Clear modifier when time left is smaller than 0
-        receiveFuelList.removeIf {
+        receiveFuelList.removeAll {
             it.durationLeft <= 0
         }
 

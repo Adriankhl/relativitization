@@ -4,7 +4,6 @@ import relativitization.universe.ai.defaults.utils.DualUtilityConsideration
 import relativitization.universe.ai.defaults.utils.DualUtilityData
 import relativitization.universe.ai.defaults.utils.PlanState
 import relativitization.universe.data.PlanDataAtPlayer
-import relativitization.universe.data.components.MutablePopSystemData
 import relativitization.universe.data.components.PopSystemData
 
 /**
@@ -32,19 +31,19 @@ class LargerMilitaryStrengthConsideration(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): DualUtilityData {
-        val subordinateAndSelfIdList: List<Int> = planDataAtPlayer.universeData3DAtPlayer
-            .getCurrentPlayerData().playerInternalData.subordinateIdList + planDataAtPlayer.universeData3DAtPlayer
+        val subordinateAndSelfIdSet: Set<Int> = planDataAtPlayer.universeData3DAtPlayer
+            .getCurrentPlayerData().playerInternalData.subordinateIdSet + planDataAtPlayer.universeData3DAtPlayer
             .getCurrentPlayerData().playerId
 
-        val allPopSystemData: List<PopSystemData> = subordinateAndSelfIdList.map {
+        val allPopSystemData: List<PopSystemData> = subordinateAndSelfIdSet.map {
             planDataAtPlayer.universeData3DAtPlayer.get(it).playerInternalData.popSystemData()
         }
 
         // Exclude self and subordinate of self when comparing to the target
         val targetSubordinateAndSelfIdList: List<Int> = (planDataAtPlayer.universeData3DAtPlayer.get(
             targetPlayerId
-        ).playerInternalData.subordinateIdList + targetPlayerId).filter {
-            !subordinateAndSelfIdList.contains(
+        ).playerInternalData.subordinateIdSet + targetPlayerId).filter {
+            !subordinateAndSelfIdSet.contains(
                 it
             ) && planDataAtPlayer.universeData3DAtPlayer.playerDataMap.containsKey(it)
         }

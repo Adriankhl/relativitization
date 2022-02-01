@@ -34,7 +34,7 @@ class SpaceConflictReasoner : DualUtilityReasoner() {
     ): List<DualUtilityOption> {
 
         val subordinateInt3DSet: Set<Int3D> = planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData
-            .subordinateIdList.map {
+            .subordinateIdSet.map {
                 planDataAtPlayer.universeData3DAtPlayer.get(it).int4D.toInt3D()
             }.toSet()
 

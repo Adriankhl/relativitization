@@ -56,7 +56,7 @@ data class PlayerData(
      * @param otherPlayerId whether this id is the player or one of the subordinates of the player
      */
     fun isSubOrdinateOrSelf(otherPlayerId: Int): Boolean {
-        return (otherPlayerId == playerId) || playerInternalData.subordinateIdList.contains(
+        return (otherPlayerId == playerId) || playerInternalData.subordinateIdSet.contains(
             otherPlayerId
         )
     }
@@ -65,7 +65,7 @@ data class PlayerData(
      * @param otherPlayerId whether this id is one of the direct subordinates of the player
      */
     fun isDirectSubOrdinate(otherPlayerId: Int): Boolean {
-        return (otherPlayerId != playerId) && playerInternalData.directSubordinateIdList.contains(
+        return (otherPlayerId != playerId) && playerInternalData.directSubordinateIdSet.contains(
             otherPlayerId
         )
     }
@@ -74,7 +74,7 @@ data class PlayerData(
      * @param otherPlayerId whether this id is one of the subordinates of the player
      */
     fun isSubOrdinate(otherPlayerId: Int): Boolean {
-        return (otherPlayerId != playerId) && playerInternalData.subordinateIdList.contains(
+        return (otherPlayerId != playerId) && playerInternalData.subordinateIdSet.contains(
             otherPlayerId
         )
     }
@@ -117,8 +117,10 @@ data class PlayerData(
 
         val isRestMassValid: Boolean = (physicsData.coreRestMass > 0.0) && (physicsData.fuelRestMassData.total() >= 0.0)
         if (!isRestMassValid) {
-            logger.error("Invalid rest mass: core ${physicsData.coreRestMass}, " +
-                    "fuel ${physicsData.fuelRestMassData.total()}")
+            logger.error(
+                "Invalid rest mass: core ${physicsData.coreRestMass}, " +
+                        "fuel ${physicsData.fuelRestMassData.total()}"
+            )
         }
 
         return isTValid && isRestMassValid
@@ -167,7 +169,7 @@ data class MutablePlayerData(
      * @param otherPlayerId whether this id is the player or one the subordinates of the player
      */
     fun isSubOrdinateOrSelf(otherPlayerId: Int): Boolean {
-        return (otherPlayerId == playerId) || playerInternalData.subordinateIdList.contains(
+        return (otherPlayerId == playerId) || playerInternalData.subordinateIdSet.contains(
             otherPlayerId
         )
     }
@@ -177,7 +179,7 @@ data class MutablePlayerData(
      * @param otherPlayerId whether this id is one of the direct subordinates of the player
      */
     fun isDirectSubOrdinate(otherPlayerId: Int): Boolean {
-        return (otherPlayerId != playerId) && playerInternalData.directSubordinateIdList.contains(
+        return (otherPlayerId != playerId) && playerInternalData.directSubordinateIdSet.contains(
             otherPlayerId
         )
     }
@@ -186,7 +188,7 @@ data class MutablePlayerData(
      * @param otherPlayerId whether this id is one of the subordinates of the player
      */
     fun isSubOrdinate(otherPlayerId: Int): Boolean {
-        return (otherPlayerId != playerId) && playerInternalData.subordinateIdList.contains(
+        return (otherPlayerId != playerId) && playerInternalData.subordinateIdSet.contains(
             otherPlayerId
         )
     }
@@ -226,19 +228,20 @@ data class MutablePlayerData(
      * Change direct leader id and add all leaders of direct leader
      */
     fun changeDirectLeaderId(leaderListOfDirectLeader: List<Int>) {
-        if (playerInternalData.subordinateIdList.all { !leaderListOfDirectLeader.contains(it) }) {
-            if (leaderListOfDirectLeader.isNotEmpty()) {
-                playerInternalData.directLeaderId = leaderListOfDirectLeader.last()
-                playerInternalData.leaderIdList.clear()
-                playerInternalData.leaderIdList.addAll(leaderListOfDirectLeader)
-                playerInternalData.leaderIdList.add(playerId)
-            } else {
-                playerInternalData.directLeaderId = playerId
-                playerInternalData.leaderIdList.clear()
-                playerInternalData.leaderIdList.add(playerId)
+        if (leaderListOfDirectLeader.isNotEmpty()) {
+            // Remove subordinate and direct subordinate if they appear on the leader list
+            leaderListOfDirectLeader.forEach {
+                removeSubordinate(it)
             }
+
+            playerInternalData.directLeaderId = leaderListOfDirectLeader.last()
+            playerInternalData.leaderIdList.clear()
+            playerInternalData.leaderIdList.addAll(leaderListOfDirectLeader)
+            playerInternalData.leaderIdList.add(playerId)
         } else {
-            logger.error("Player $playerId try to add subordinate in $leaderListOfDirectLeader as leader")
+            playerInternalData.directLeaderId = playerId
+            playerInternalData.leaderIdList.clear()
+            playerInternalData.leaderIdList.add(playerId)
         }
     }
 
@@ -247,13 +250,8 @@ data class MutablePlayerData(
      */
     fun addDirectSubordinateId(subordinateId: Int) {
         if (!playerInternalData.leaderIdList.contains(subordinateId)) {
-            if (!playerInternalData.directSubordinateIdList.contains(subordinateId)) {
-                playerInternalData.directSubordinateIdList.add(subordinateId)
-            }
-
-            if (!playerInternalData.subordinateIdList.contains(subordinateId)) {
-                playerInternalData.subordinateIdList.add(subordinateId)
-            }
+            playerInternalData.directSubordinateIdSet.add(subordinateId)
+            playerInternalData.subordinateIdSet.add(subordinateId)
         } else {
             logger.error("Player $playerId try to add leader $subordinateId as direct subordinate")
         }
@@ -264,9 +262,7 @@ data class MutablePlayerData(
      */
     fun addSubordinateId(subordinateId: Int) {
         if (!playerInternalData.leaderIdList.contains(subordinateId)) {
-            if (!playerInternalData.subordinateIdList.contains(subordinateId)) {
-                playerInternalData.subordinateIdList.add(subordinateId)
-            }
+            playerInternalData.subordinateIdSet.add(subordinateId)
         } else {
             logger.error("Player $playerId try to add leader $subordinateId as subordinate")
         }
@@ -276,8 +272,8 @@ data class MutablePlayerData(
      * Remove subordinate
      */
     fun removeSubordinate(subordinateId: Int) {
-        playerInternalData.subordinateIdList.remove(subordinateId)
-        playerInternalData.directSubordinateIdList.remove(subordinateId)
+        playerInternalData.subordinateIdSet.remove(subordinateId)
+        playerInternalData.directSubordinateIdSet.remove(subordinateId)
     }
 
     companion object {
@@ -297,12 +293,13 @@ enum class PlayerType {
 /**
  * Player internal data
  *
+ * @property directLeaderId the direct leader
+ * @property leaderIdList list of player ids of leader, leader of leader, etc., from top leader to direct leader
  * @property directLeaderId player id of the direct leader, equals -1 if no leader
- * @property directSubordinateIdList direct subordinates
- * @property leaderIdList list of player ids of leader, leader of leader, etc., from -1 to direct leader
- * @property subordinateIdList list of player ids of the subordinates of this player
+ * @property directSubordinateIdSet direct subordinates
+ * @property subordinateIdSet set of player ids of the subordinates of this player
  * @property isAlive whether the player is alive or dead
- * @property aiName the name of the ai
+ * @property aiName the name of the AI
  * @property eventDataMap list of current event on this player
  * @property playerDataComponentMap the map to store addition data component
  */
@@ -310,8 +307,8 @@ enum class PlayerType {
 data class PlayerInternalData(
     val directLeaderId: Int,
     val leaderIdList: List<Int>,
-    val directSubordinateIdList: List<Int> = listOf(),
-    val subordinateIdList: List<Int> = listOf(),
+    val directSubordinateIdSet: Set<Int> = setOf(),
+    val subordinateIdSet: Set<Int> = setOf(),
     val isAlive: Boolean = true,
     val aiName: String = DefaultAI.name(),
     val eventDataMap: Map<Int, EventData> = mapOf(),
@@ -351,8 +348,8 @@ data class PlayerInternalData(
 data class MutablePlayerInternalData(
     var directLeaderId: Int,
     var leaderIdList: MutableList<Int>,
-    var directSubordinateIdList: MutableList<Int> = mutableListOf(),
-    var subordinateIdList: MutableList<Int> = mutableListOf(),
+    var directSubordinateIdSet: MutableSet<Int> = mutableSetOf(),
+    var subordinateIdSet: MutableSet<Int> = mutableSetOf(),
     var isAlive: Boolean = true,
     var aiName: String = DefaultAI.name(),
     var eventDataMap: MutableMap<Int, MutableEventData> = mutableMapOf(),

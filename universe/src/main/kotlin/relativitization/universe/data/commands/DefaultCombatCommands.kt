@@ -7,7 +7,6 @@ import relativitization.universe.data.components.defaults.physics.Int4D
 import relativitization.universe.data.components.defaults.popsystem.CarrierType
 import relativitization.universe.data.components.defaults.popsystem.MutableCarrierData
 import relativitization.universe.maths.random.Rand
-import relativitization.universe.utils.I18NString
 import relativitization.universe.utils.RelativitizationLogManager
 
 /**
@@ -81,7 +80,7 @@ data class DamageCommand(
 
             if (allCarrierDestroyed) {
                 // Don't change leader id if the damage is from subordinate
-                if (playerData.playerInternalData.subordinateIdList.contains(fromId)) {
+                if (playerData.playerInternalData.subordinateIdSet.contains(fromId)) {
                     logger.debug("Destroyed by subordinate $fromId")
                 } else {
                     playerData.changeDirectLeaderId(listOf(fromId))
