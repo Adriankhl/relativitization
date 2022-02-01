@@ -213,11 +213,11 @@ data class BuildForeignResourceFactoryCommand(
             IntString(4),
             NormalString(". Max. number of employee: "),
             IntString(5),
-            NormalString(", initial stored fuel rest mass: "),
-            IntString(6),
             NormalString(", output amount: "),
-            IntString(7),
+            IntString(6),
             NormalString(", output quality: "),
+            IntString(7),
+            NormalString(", initial stored fuel rest mass: "),
             IntString(8),
             NormalString(". "),
         ),
@@ -228,10 +228,9 @@ data class BuildForeignResourceFactoryCommand(
             targetCarrierId.toString(),
             toId.toString(),
             maxNumEmployee.toString(),
-            storedFuelRestMass.toString(),
-            (resourceFactoryInternalData.maxOutputAmountPerEmployee * maxNumEmployee).toString(),
             (resourceFactoryInternalData.maxOutputAmountPerEmployee * maxNumEmployee).toString(),
             resourceFactoryInternalData.maxOutputResourceQualityData.quality1.toString(),
+            storedFuelRestMass.toString(),
         )
     )
 
