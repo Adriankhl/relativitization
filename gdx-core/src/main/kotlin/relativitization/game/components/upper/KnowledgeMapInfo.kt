@@ -274,6 +274,7 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
         controlScrollPane.fadeScrollBars = false
         controlScrollPane.setClamp(true)
         controlScrollPane.setOverscroll(false, false)
+        controlScrollPane.setScrollingDisabled(false, true)
 
         knowledgeBar.row().space(20f)
 
