@@ -693,7 +693,7 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
                 "Export tariff: $exportTariff",
                 gdxSettings.smallFontSize
             )
-        )
+        ).colspan(2)
 
         nestedTable.row().space(10f)
 
