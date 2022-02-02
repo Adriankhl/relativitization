@@ -200,7 +200,7 @@ class DecreaseSalaryOption(
 }
 
 /**
- * Set the salary to a good value: higher than the desire if production fuel is sufficient
+ * Increase the salary to a good value: higher than the desire if production fuel is sufficient
  */
 class GoodSalaryOption(
     private val carrierId: Int,
@@ -216,13 +216,14 @@ class GoodSalaryOption(
     )
 
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
-        // Absolute minimum of salary
-        val minSalary: Double = 1E-10
-        val maxSalary: Double = 1E10
-
         val commonPopData: MutableCommonPopData = planDataAtPlayer.getCurrentMutablePlayerData()
             .playerInternalData.popSystemData().carrierDataMap.getValue(carrierId).allPopData
             .getCommonPopData(popType)
+
+        // Bound the salary
+        val currentSalary: Double = commonPopData.salaryPerEmployee
+        val minSalary: Double = currentSalary
+        val maxSalary: Double = 1E10
 
         val resourceData: MutableResourceData = planDataAtPlayer.getCurrentMutablePlayerData()
             .playerInternalData.economyData().resourceData
@@ -267,7 +268,7 @@ class GoodSalaryOption(
         if (commonPopData.adultPopulation > 0.0) {
             // Multiply by 1.1 so the pop can save their salary
             val salaryPerAdultPopulation: Double = min(
-                desireResourceFuelNeeded * populationOrderRatioFactor,
+                desireResourceFuelNeeded,
                 maxFuelAsSalary
             ) / commonPopData.adultPopulation
 
@@ -275,7 +276,7 @@ class GoodSalaryOption(
                 salaryPerAdultPopulation > maxSalary -> maxSalary
                 salaryPerAdultPopulation < minSalary -> minSalary
                 else -> salaryPerAdultPopulation
-            }
+            } * populationOrderRatioFactor
 
             planDataAtPlayer.addCommand(
                 ChangeSalaryCommand(
