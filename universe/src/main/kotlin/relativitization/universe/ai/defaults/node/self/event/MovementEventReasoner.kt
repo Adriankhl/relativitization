@@ -58,8 +58,8 @@ class PickMoveToDouble3DEventDualUtilityOption(
         return listOf(
             HierarchyRelationConsideration(
                 otherPlayerId = movementEventData.event.fromId,
-                rankIfSelf = 4,
-                rankIfDirectLeader = 3,
+                rankIfSelf = 3,
+                rankIfDirectLeader = 4,
                 rankIfOtherLeader = 2,
                 rankIfDirectSubordinate = 1,
                 rankIfOtherSubordinate = 1,
