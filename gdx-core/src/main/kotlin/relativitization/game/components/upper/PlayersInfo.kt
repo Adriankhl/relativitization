@@ -221,7 +221,7 @@ class PlayersInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
             default = playerData.playerId,
             fontSize = gdxSettings.smallFontSize,
         ) { selectedId, _ ->
-            game.universeClient.primarySelectedPlayerId = selectedId
+            game.universeClient.replacePrimarySelectedPlayerId(selectedId)
         }
 
         nestedTable.add(allPlayerIdLabel)
@@ -240,8 +240,7 @@ class PlayersInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
             fontSize = gdxSettings.smallFontSize,
             soundVolume = gdxSettings.soundEffectsVolume,
         ) {
-            game.universeClient.primarySelectedPlayerId =
-                playerData.playerInternalData.directLeaderId
+            game.universeClient.replacePrimarySelectedPlayerId(playerData.playerInternalData.directLeaderId)
         }
 
         nestedTable.add(directLeaderIdLabel)
@@ -261,7 +260,7 @@ class PlayersInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
             default = playerData.playerId,
             fontSize = gdxSettings.smallFontSize,
         ) { selectedId, _ ->
-            game.universeClient.primarySelectedPlayerId = selectedId
+            game.universeClient.replacePrimarySelectedPlayerId(selectedId)
         }
 
         nestedTable.add(directSubordinateIdLabel)
@@ -280,7 +279,7 @@ class PlayersInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
             default = playerData.playerId,
             fontSize = gdxSettings.smallFontSize,
         ) { selectedId, _ ->
-            game.universeClient.primarySelectedPlayerId = selectedId
+            game.universeClient.replacePrimarySelectedPlayerId(selectedId)
         }
 
         nestedTable.add(leaderIdLabel)
@@ -299,7 +298,7 @@ class PlayersInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
             default = playerData.playerId,
             fontSize = gdxSettings.smallFontSize,
         ) { selectedId, _ ->
-            game.universeClient.primarySelectedPlayerId = selectedId
+            game.universeClient.replacePrimarySelectedPlayerId(selectedId)
         }
 
         nestedTable.add(subordinateIdLabel)

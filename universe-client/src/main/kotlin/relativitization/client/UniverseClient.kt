@@ -113,7 +113,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
 
     // All selected player id
     val onSelectedPlayerIdListChangeFunctionList: MutableList<() -> Unit> = mutableListOf()
-    var selectedPlayerIdList: MutableList<Int> = mutableListOf()
+    val selectedPlayerIdList: MutableList<Int> = mutableListOf()
     var newSelectedPlayerId: Int by Delegates.observable(currentUniverseData3DAtPlayer.id) { _, _, newValue ->
         if (!selectedPlayerIdList.contains(newValue)) {
             if (!selectedPlayerIdList.contains(primarySelectedPlayerId)) {
@@ -249,6 +249,14 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
         universeClientRunJob.cancelAndJoin()
         ktorClient.close()
         logger.debug("Client stopped")
+    }
+
+    /**
+     * Replace the primary selected player
+     */
+    fun replacePrimarySelectedPlayerId(newId: Int) {
+        selectedPlayerIdList.remove(primarySelectedPlayerId)
+        newSelectedPlayerId = newId
     }
 
     /**
