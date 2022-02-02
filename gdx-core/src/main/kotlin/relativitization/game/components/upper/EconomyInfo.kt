@@ -617,7 +617,7 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
 
         nestedTable.add(
             createLabel(
-                "Tariffs",
+                "Tariff:",
                 gdxSettings.normalFontSize
             )
         ).colspan(2)
@@ -749,7 +749,16 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         }
         nestedTable.add(newExportTariffSliderButtonTable).colspan(2)
 
-        nestedTable.row().spaceTop(30f)
+        nestedTable.row().space(30f)
+
+        nestedTable.add(
+            createLabel(
+                "Income tax:",
+                gdxSettings.normalFontSize
+            )
+        ).colspan(2)
+
+        nestedTable.row().space(10f)
 
         nestedTable.add(
             createLabel(
