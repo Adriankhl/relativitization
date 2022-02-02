@@ -828,7 +828,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         nestedTable.row().space(10f)
 
-        val supplyFuelSliderButton = createDoubleSliderButtonTable(
+        val supplyFuelSliderButtonTable = createDoubleSliderButtonTable(
             default = supplyFuelAmount.value,
             sliderStepSize = 0.01f,
             sliderDecimalPlace = 2,
@@ -839,7 +839,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             supplyFuelAmount.value = it
         }
 
-        nestedTable.add(supplyFuelSliderButton)
+        nestedTable.add(supplyFuelSliderButtonTable)
 
         return nestedTable
     }
@@ -1161,7 +1161,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         nestedTable.row().space(10f)
 
-        val supplyFuelSliderButton = createDoubleSliderButtonTable(
+        val supplyFuelSliderButtonTable = createDoubleSliderButtonTable(
             default = supplyFuelAmount.value,
             sliderStepSize = 0.01f,
             sliderDecimalPlace = 2,
@@ -1172,7 +1172,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             supplyFuelAmount.value = it
         }
 
-        nestedTable.add(supplyFuelSliderButton)
+        nestedTable.add(supplyFuelSliderButtonTable)
 
         return nestedTable
     }
@@ -1249,7 +1249,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         nestedTable.row().space(10f)
 
-        val storedFuelRestMassDoubleSliderButton = createDoubleSliderButtonTable(
+        val storedFuelRestMassDoubleSliderButtonTable = createDoubleSliderButtonTable(
             default = storedFuelRestMass.value,
             sliderStepSize = 0.01f,
             sliderDecimalPlace = 2,
@@ -1260,7 +1260,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             storedFuelRestMass.value = it
         }
 
-        nestedTable.add(storedFuelRestMassDoubleSliderButton).colspan(2)
+        nestedTable.add(storedFuelRestMassDoubleSliderButtonTable).colspan(2)
 
         nestedTable.row().space(10f)
 
@@ -1275,7 +1275,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         nestedTable.row().space(10f)
 
-        val maxNumEmployeeDoubleSliderButton = createDoubleSliderButtonTable(
+        val maxNumEmployeeDoubleSliderButtonTable = createDoubleSliderButtonTable(
             default = maxNumEmployee.value,
             sliderStepSize = 0.01f,
             sliderDecimalPlace = 2,
@@ -1286,7 +1286,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             maxNumEmployee.value = it
         }
 
-        nestedTable.add(maxNumEmployeeDoubleSliderButton).colspan(2)
+        nestedTable.add(maxNumEmployeeDoubleSliderButtonTable).colspan(2)
 
         return nestedTable
     }
@@ -1415,7 +1415,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         nestedTable.row().space(10f)
 
-        val storedFuelRestMassDoubleSliderButton = createDoubleSliderButtonTable(
+        val storedFuelRestMassDoubleSliderButtonTable = createDoubleSliderButtonTable(
             default = storedFuelRestMass.value,
             sliderStepSize = 0.01f,
             sliderDecimalPlace = 2,
@@ -1426,7 +1426,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             storedFuelRestMass.value = it
         }
 
-        nestedTable.add(storedFuelRestMassDoubleSliderButton).colspan(2)
+        nestedTable.add(storedFuelRestMassDoubleSliderButtonTable).colspan(2)
 
         nestedTable.row().space(10f)
 
@@ -1441,7 +1441,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         nestedTable.row().space(10f)
 
-        val maxNumEmployeeDoubleSliderButton = createDoubleSliderButtonTable(
+        val maxNumEmployeeDoubleSliderButtonTable = createDoubleSliderButtonTable(
             default = maxNumEmployee.value,
             sliderStepSize = 0.01f,
             sliderDecimalPlace = 2,
@@ -1452,7 +1452,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             maxNumEmployee.value = it
         }
 
-        nestedTable.add(maxNumEmployeeDoubleSliderButton).colspan(2)
+        nestedTable.add(maxNumEmployeeDoubleSliderButtonTable).colspan(2)
 
         return nestedTable
     }
@@ -1502,7 +1502,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         nestedTable.row().space(10f)
 
-        val storedFuelRestMassDoubleSliderButton = createDoubleSliderButtonTable(
+        val storedFuelRestMassDoubleSliderButtonTable = createDoubleSliderButtonTable(
             default = storedFuelRestMass.value,
             sliderStepSize = 0.01f,
             sliderDecimalPlace = 2,
@@ -1513,7 +1513,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             storedFuelRestMass.value = it
         }
 
-        nestedTable.add(storedFuelRestMassDoubleSliderButton).colspan(2)
+        nestedTable.add(storedFuelRestMassDoubleSliderButtonTable).colspan(2)
 
         nestedTable.row().space(10f)
 
@@ -1528,7 +1528,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         nestedTable.row().space(10f)
 
-        val maxNumEmployeeDoubleSliderButton = createDoubleSliderButtonTable(
+        val maxNumEmployeeDoubleSliderButtonTable = createDoubleSliderButtonTable(
             default = maxNumEmployee.value,
             sliderStepSize = 0.01f,
             sliderDecimalPlace = 2,
@@ -1539,7 +1539,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             maxNumEmployee.value = it
         }
 
-        nestedTable.add(maxNumEmployeeDoubleSliderButton).colspan(2)
+        nestedTable.add(maxNumEmployeeDoubleSliderButtonTable).colspan(2)
 
         return nestedTable
     }
@@ -1638,7 +1638,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         nestedTable.row().space(10f)
 
-        val storedFuelRestMassDoubleSliderButton = createDoubleSliderButtonTable(
+        val storedFuelRestMassDoubleSliderButtonTable = createDoubleSliderButtonTable(
             default = storedFuelRestMass.value,
             sliderStepSize = 0.01f,
             sliderDecimalPlace = 2,
@@ -1649,7 +1649,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             storedFuelRestMass.value = it
         }
 
-        nestedTable.add(storedFuelRestMassDoubleSliderButton).colspan(2)
+        nestedTable.add(storedFuelRestMassDoubleSliderButtonTable).colspan(2)
 
         nestedTable.row().space(10f)
 
@@ -1664,7 +1664,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
         nestedTable.row().space(10f)
 
-        val maxNumEmployeeDoubleSliderButton = createDoubleSliderButtonTable(
+        val maxNumEmployeeDoubleSliderButtonTable = createDoubleSliderButtonTable(
             default = maxNumEmployee.value,
             sliderStepSize = 0.01f,
             sliderDecimalPlace = 2,
@@ -1675,7 +1675,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
             maxNumEmployee.value = it
         }
 
-        nestedTable.add(maxNumEmployeeDoubleSliderButton).colspan(2)
+        nestedTable.add(maxNumEmployeeDoubleSliderButtonTable).colspan(2)
 
         return nestedTable
     }

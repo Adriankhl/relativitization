@@ -617,6 +617,15 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
 
         nestedTable.add(
             createLabel(
+                "Tariffs",
+                gdxSettings.normalFontSize
+            )
+        ).colspan(2)
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
                 "Resource: ",
                 gdxSettings.smallFontSize
             )
@@ -674,7 +683,7 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
 
         nestedTable.row().space(10f)
 
-        val newImportTariffButtonSlider = createDoubleSliderButtonTable(
+        val newImportTariffSliderButtonTable = createDoubleSliderButtonTable(
             newImportTariff.value,
             0.01f,
             2,
@@ -684,7 +693,7 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         ) {
             newImportTariff.value = it
         }
-        nestedTable.add(newImportTariffButtonSlider).colspan(2)
+        nestedTable.add(newImportTariffSliderButtonTable).colspan(2)
 
         nestedTable.row().spaceTop(30f)
 
@@ -728,7 +737,7 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
 
         nestedTable.row().space(10f)
 
-        val newExportTariffButtonSlider = createDoubleSliderButtonTable(
+        val newExportTariffSliderButtonTable = createDoubleSliderButtonTable(
             newExportTariff.value,
             0.01f,
             2,
@@ -738,7 +747,7 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         ) {
             newExportTariff.value = it
         }
-        nestedTable.add(newExportTariffButtonSlider).colspan(2)
+        nestedTable.add(newExportTariffSliderButtonTable).colspan(2)
 
         nestedTable.row().spaceTop(30f)
 
@@ -934,7 +943,7 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
 
         nestedTable.row().space(10f)
 
-        val changeLowMiddleBoundarySliderButton = createDoubleSliderButtonTable(
+        val changeLowMiddleBoundarySliderButtonTable = createDoubleSliderButtonTable(
             newLowMiddleIncomeBoundary.value,
             0.01f,
             2,
@@ -944,7 +953,7 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         ) {
             newLowMiddleIncomeBoundary.value = it
         }
-        nestedTable.add(changeLowMiddleBoundarySliderButton).colspan(2)
+        nestedTable.add(changeLowMiddleBoundarySliderButtonTable).colspan(2)
 
         nestedTable.row().spaceTop(30f)
 
@@ -987,7 +996,7 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
 
         nestedTable.row().space(10f)
 
-        val changeMiddleHighBoundarySliderButton = createDoubleSliderButtonTable(
+        val changeMiddleHighBoundarySliderButtonTable = createDoubleSliderButtonTable(
             newMiddleHighIncomeBoundary.value,
             0.01f,
             2,
@@ -997,7 +1006,7 @@ class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         ) {
             newMiddleHighIncomeBoundary.value = it
         }
-        nestedTable.add(changeMiddleHighBoundarySliderButton).colspan(2)
+        nestedTable.add(changeMiddleHighBoundarySliderButtonTable).colspan(2)
 
         return nestedTable
     }
