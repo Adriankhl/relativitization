@@ -197,7 +197,6 @@ object Movement {
                 )
             }
         } else {
-
             if ((requiredDeltaMass <= maxDeltaRestMass) && (targetVelocity == originalTargetVelocity)) {
                 TargetVelocityData(
                     TargetVelocityType.SUCCESS,
@@ -220,7 +219,7 @@ object Movement {
      * Run several iteration to move the object by photon rocket
      *
      * @param initialRestMass initial rest mass of the object
-     * @param maxDeltaRestMass maximum change of rest mass to photon to stop the object
+     * @param maxDeltaRestMass maximum change of rest mass to photon to stop the object per turn
      * @param initialVelocity initial velocity
      * @param maxSpeed the maximum speed limit of the object, to prevent using too much rest mass as fuel
      * @param initialDouble3D initial double3D position
@@ -397,7 +396,7 @@ object Movement {
      * Compute the overall delta mass required to move to a target double3D position
      *
      * @param initialRestMass initial rest mass of the object
-     * @param maxDeltaRestMass maximum change of rest mass to photon to stop the object
+     * @param maxDeltaRestMass maximum change of rest mass to photon to stop the object per turn
      * @param initialVelocity initial velocity
      * @param maxSpeed the maximum speed limit of the object, to prevent using too much rest mass as fuel
      * @param initialDouble3D initial double3D position

@@ -14,7 +14,7 @@ object Relativistic {
     // Unit of energy change when c != 1
     // if energy value data is stored as if c=1, scaling is required when c != 1
     // Consider the amount of energy required to accelerate something to 0.5c
-    // c = 2 needs 4 times more energy then c = 1, but this the amount of energy
+    // c = 2 needs 4 times more energy than c = 1, but this the amount of energy
     // should be the same regardless of c, so the energy value should be amplified by 4 times
     fun Double.toActualEnergyUnit(speedOfLight: Double): Double {
         return this * (speedOfLight * speedOfLight)
@@ -169,47 +169,67 @@ object Relativistic {
 
         return if (solution.isRealSolutionExist) {
             when (solution.numPositiveSolution) {
-                0 -> failTargetVelocityData
+                0 -> {
+                    failTargetVelocityData
+                }
                 1 -> if (accelerate) {
-                    if (solution.x1 >= initialVelocity.mag()) {
+                    if (solution.maxSol >= initialVelocity.mag()) {
                         TargetVelocityData(
                             TargetVelocityType.CHANGE_DIRECTION,
-                            targetDirection.scaleVelocity(solution.x1),
+                            targetDirection.scaleVelocity(solution.maxSol),
                             deltaRestMass
                         )
                     } else {
                         failTargetVelocityData
                     }
                 } else {
-                    if (solution.x1 <= initialVelocity.mag()) {
+                    if (solution.maxSol <= initialVelocity.mag()) {
                         TargetVelocityData(
                             TargetVelocityType.CHANGE_DIRECTION,
-                            targetDirection.scaleVelocity(solution.x1),
+                            targetDirection.scaleVelocity(solution.maxSol),
                             deltaRestMass
                         )
                     } else {
-                        failTargetVelocityData
+                        // Allow a small error in deceleration, return the original velocity
+                        if (solution.maxSol <= initialVelocity.mag() * 1.00001) {
+                            TargetVelocityData(
+                                TargetVelocityType.CHANGE_DIRECTION,
+                                initialVelocity,
+                                0.0,
+                            )
+                        } else {
+                            failTargetVelocityData
+                        }
                     }
                 }
                 2 -> if (accelerate) {
-                    if (solution.x1 >= initialVelocity.mag()) {
+                    if (solution.maxSol >= initialVelocity.mag()) {
                         TargetVelocityData(
                             TargetVelocityType.CHANGE_DIRECTION,
-                            targetDirection.scaleVelocity(solution.x1),
+                            targetDirection.scaleVelocity(solution.maxSol),
                             deltaRestMass
                         )
                     } else {
                         failTargetVelocityData
                     }
                 } else {
-                    if (solution.x2 <= initialVelocity.mag()) {
+                    if (solution.minSol <= initialVelocity.mag()) {
                         TargetVelocityData(
                             TargetVelocityType.CHANGE_DIRECTION,
-                            targetDirection.scaleVelocity(solution.x2),
+                            targetDirection.scaleVelocity(solution.minSol),
                             deltaRestMass
                         )
                     } else {
-                        failTargetVelocityData
+                        // Allow a small error in deceleration, return the original velocity
+                        if (solution.minSol <= initialVelocity.mag() * 1.00001) {
+                            TargetVelocityData(
+                                TargetVelocityType.CHANGE_DIRECTION,
+                                initialVelocity,
+                                0.0,
+                            )
+                        } else {
+                            failTargetVelocityData
+                        }
                     }
                 }
                 // Shouldn't involve else
@@ -267,10 +287,10 @@ object Relativistic {
         return if (targetVelocity.squareMag() >= speedOfLight * speedOfLight) {
             // Return infinity if the target velocity is greater than the speed of light
             Double.POSITIVE_INFINITY
-        } else if ((solution.x2 <= initialRestMass) && (solution.x2 >= 0)) {
-            initialRestMass - solution.x2
-        } else if ((solution.x1 <= initialRestMass) && (solution.x1 >= 0)) {
-            initialRestMass - solution.x1
+        } else if ((solution.minSol <= initialRestMass) && (solution.minSol >= 0)) {
+            initialRestMass - solution.minSol
+        } else if ((solution.maxSol <= initialRestMass) && (solution.maxSol >= 0)) {
+            initialRestMass - solution.maxSol
         } else {
             logger.error("Wrong delta mass computed")
             // Return initial rest mass in case if the returned value is used for further computation
