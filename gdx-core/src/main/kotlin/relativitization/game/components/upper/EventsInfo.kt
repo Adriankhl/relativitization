@@ -82,27 +82,28 @@ class EventsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(g
 
         nestedTable.background = assets.getBackgroundColor(0.25f, 0.25f, 0.25f, 1.0f)
 
-        val eventNameLabel = createLabel(eventData.event.name(), gdxSettings.normalFontSize)
+        val eventNameLabel = createLabel(
+            eventData.event.name(),
+            gdxSettings.normalFontSize
+        )
         nestedTable.add(eventNameLabel).colspan(2)
 
         nestedTable.row().space(10f)
 
-        val eventDescriptionLabel =
-            createLabel(eventData.event.description(), gdxSettings.smallFontSize)
-        eventDescriptionLabel.wrap = true
-        nestedTable.add(eventDescriptionLabel).colspan(2).growX()
+        val stayTimeLabel = createLabel(
+            "Stay time: ${eventData.event.stayTime}  Counter: ${eventData.eventRecordData.stayCounter}",
+            gdxSettings.smallFontSize
+        )
+        nestedTable.add(stayTimeLabel).colspan(2)
 
         nestedTable.row().space(10f)
 
-        val selectedChoiceLabel = if (eventData.eventRecordData.hasChoice) {
-            createLabel(
-                "Selected choice: ${eventData.eventRecordData.choice}",
-                gdxSettings.smallFontSize
-            )
-        } else {
-            createLabel("Selected choice: default", gdxSettings.smallFontSize)
-        }
-        nestedTable.add(selectedChoiceLabel).colspan(2)
+        val eventDescriptionLabel = createLabel(
+            eventData.event.description(),
+            gdxSettings.smallFontSize
+        )
+        eventDescriptionLabel.wrap = true
+        nestedTable.add(eventDescriptionLabel).colspan(2).growX()
 
         nestedTable.row().space(10f)
 
@@ -134,6 +135,16 @@ class EventsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(g
 
             nestedTable.row().space(10f)
         }
+
+        val selectedChoiceLabel = if (eventData.eventRecordData.hasChoice) {
+            createLabel(
+                "Selected choice: ${eventData.eventRecordData.choice}",
+                gdxSettings.smallFontSize
+            )
+        } else {
+            createLabel("Selected choice: default", gdxSettings.smallFontSize)
+        }
+        nestedTable.add(selectedChoiceLabel).colspan(2)
 
         return nestedTable
     }
