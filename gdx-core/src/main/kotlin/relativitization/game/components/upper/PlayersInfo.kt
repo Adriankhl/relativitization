@@ -19,7 +19,7 @@ class PlayersInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
     private val scrollPane: ScrollPane = createScrollPane(table)
 
     // Viewed history of player in ID
-    private val viewedPlayerIdList: MutableList<Int> = mutableListOf(-1)
+    private val viewedPlayerIdList: MutableList<Int> = mutableListOf()
 
     // ID of currently viewing player
     private var viewingIdIndex: Int = 0
@@ -74,16 +74,24 @@ class PlayersInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
             game.universeClient.getCurrentPlayerData()
         }
 
-        // If this id has not been stored, clear later index and add this id
-        if (viewingIdIndex <= viewedPlayerIdList.size - 2) {
+        if (viewedPlayerIdList.isEmpty()) {
+            viewingIdIndex = 0
+            viewedPlayerIdList.add(playerData.playerId)
+        } else {
+            // Correctly constrain the index
+            if (viewingIdIndex < 0) {
+                viewingIdIndex = 0
+            }
+            if (viewingIdIndex >= viewedPlayerIdList.size) {
+                viewingIdIndex = viewedPlayerIdList.size - 1
+            }
+
+            // If this id is not the current id
             if (viewedPlayerIdList[viewingIdIndex] != playerData.playerId) {
+                viewedPlayerIdList.dropLast(viewedPlayerIdList.size - viewingIdIndex - 1)
                 viewingIdIndex++
-                viewedPlayerIdList.subList(viewingIdIndex, viewedPlayerIdList.size).clear()
                 viewedPlayerIdList.add(playerData.playerId)
             }
-        } else {
-            viewingIdIndex = viewedPlayerIdList.size
-            viewedPlayerIdList.add(playerData.playerId)
         }
     }
 
@@ -128,19 +136,28 @@ class PlayersInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
 
 
     private fun previousPlayerId() {
-        if (viewingIdIndex >= 1) {
-            viewingIdIndex--
+        if (viewedPlayerIdList.isNotEmpty()) {
+            viewingIdIndex = if (viewingIdIndex >= 1) {
+                viewingIdIndex - 1
+            } else {
+                0
+            }
+
             game.universeClient.primarySelectedPlayerId = viewedPlayerIdList[viewingIdIndex]
         }
     }
 
     private fun nextPlayerId() {
-        if (viewingIdIndex <= viewedPlayerIdList.size - 2) {
-            viewingIdIndex++
+        if (viewedPlayerIdList.isNotEmpty()) {
+            viewingIdIndex = if (viewingIdIndex <= viewedPlayerIdList.size - 2) {
+                viewingIdIndex + 1
+            } else {
+                viewedPlayerIdList.size - 1
+            }
+
             game.universeClient.primarySelectedPlayerId = viewedPlayerIdList[viewingIdIndex]
         }
     }
-
 
 
     private fun createPlayerImageAndButtonTable(): Table {
@@ -200,13 +217,13 @@ class PlayersInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         }
 
         nestedTable.add(previousPlayerIdButton)
-            .size(40f * gdxSettings.imageScale, 40f * gdxSettings.imageScale)
+            .size(40f * gdxSettings.imageScale, 40f * gdxSettings.imageScale).pad(20f)
 
         nestedTable.add(playerImageStack)
             .size(128f * gdxSettings.imageScale, 128f * gdxSettings.imageScale)
 
         nestedTable.add(nextPlayerIdButton)
-            .size(40f * gdxSettings.imageScale, 40f * gdxSettings.imageScale)
+            .size(40f * gdxSettings.imageScale, 40f * gdxSettings.imageScale).pad(20f)
 
         return nestedTable
     }
