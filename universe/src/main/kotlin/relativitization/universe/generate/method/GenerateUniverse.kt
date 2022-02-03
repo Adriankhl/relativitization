@@ -93,7 +93,7 @@ object GenerateUniverseMethodCollection {
     }
 
     fun isSettingValid(settings: GenerateSettings): Boolean {
-        val generateData = generate(settings)
+        val generateData: UniverseData = generate(settings)
         return if (generateData.isUniverseValid()) {
             true
         } else {
