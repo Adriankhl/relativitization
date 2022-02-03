@@ -113,24 +113,24 @@ class PlayerCollection(
      * Turn data to immutable data, and return new universe slice
      */
     fun getUniverseSlice(universeData: UniverseData): List<List<List<List<PlayerData>>>> {
-        val playerId3D: List<List<List<MutableList<PlayerData>>>> =
+        val playerData3D: List<List<List<MutableList<PlayerData>>>> =
             create3DGrid(xDim, yDim, zDim) { _, _, _ ->
                 mutableListOf()
             }
 
         playerMap.forEach { (_, player) ->
-            playerId3D[player.int4D.x][player.int4D.y][player.int4D.z].add(
+            playerData3D[player.int4D.x][player.int4D.y][player.int4D.z].add(
                 DataSerializer.copy(player)
             )
 
             // Also add afterimage
             player.int4DHistory.forEach { int4D ->
                 val oldData: PlayerData = universeData.getPlayerDataAt(int4D, player.playerId)
-                playerId3D[oldData.int4D.x][oldData.int4D.y][oldData.int4D.z].add(oldData)
+                playerData3D[oldData.int4D.x][oldData.int4D.y][oldData.int4D.z].add(oldData)
             }
         }
 
-        return DataSerializer.copy(playerId3D)
+        return playerData3D
     }
 
     /**

@@ -585,13 +585,42 @@ class Universe(
                 )
             )
 
+            // For reusing player data in the history, e.g. when dealing with after Image
+            val int4DPlayerDataMap: MutableMap<Int4D, MutableMap<Int, PlayerData>> = mutableMapOf()
+            // Store the player 4D data
             val playerData4D: MutableList<List<List<List<List<PlayerData>>>>> = mutableListOf()
             for (time in oldestTime..latestTime) {
-                playerData4D.add(decode(
+                val playerData3D: List<List<List<MutableList<PlayerData>>>> = decode(
                     FileUtils.fileToText(
                         "${saveDir}/universeData4DSlice-${time}.json"
                     )
-                ))
+                )
+
+                playerData3D.flatten().flatten().forEach { playerDataList ->
+                    // data needed to be replaced by pointer to older playerData3D to reduce memory usage
+                    val toBeReplaced: List<PlayerData> = playerDataList.filter { playerData ->
+                        if (int4DPlayerDataMap.containsKey(playerData.int4D)) {
+                            int4DPlayerDataMap.getValue(playerData.int4D).containsKey(playerData.playerId)
+                        } else {
+                            false
+                        }
+                    }
+
+                    // replace the data with
+                    val replaceWith: List<PlayerData> = toBeReplaced.map { playerData ->
+                        int4DPlayerDataMap.getValue(playerData.int4D).getValue(playerData.playerId)
+                    }
+
+                    // Replace data
+                    playerDataList.removeAll(toBeReplaced)
+                    playerDataList.addAll(replaceWith)
+
+                    // Store data in int4DPlayerDataMap
+                    playerDataList.forEach { playerData->
+                        int4DPlayerDataMap.getOrDefault(playerData.int4D, mutableMapOf())[playerData.playerId] =
+                            playerData
+                    }
+                }
             }
 
             val universeData4D = UniverseData4D(playerData4D)
@@ -623,5 +652,4 @@ class Universe(
             }
         }
     }
-
 }

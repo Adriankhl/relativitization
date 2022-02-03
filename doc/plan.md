@@ -1,7 +1,3 @@
-# Fix
-
-* Education level, and the impact on production, avoid zero production
-
 # Keep it simple
 
 * Only one dimension in resource quality
@@ -26,6 +22,10 @@
 * Ally
 * Player specific tariff
 * Fuel tariff
+
+# Technical TODO List
+
+* Optimize afterimage and load saved universe to reduce memory usage [x]
 
 # Mechanism TODO list
 
@@ -101,7 +101,6 @@
 
 * Optimize UI, only change what is shown, separate stage and use camera instead of computing the zoom manually
 * Science era, e.g., Biology era favour nation with more biologist
-* Optimize afterimage and load saved universe to reduce memory usage
 * Transfer player and transfer carrier commands
 * Alliance
 * Retract or transfer subordinate
