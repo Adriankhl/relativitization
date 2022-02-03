@@ -621,6 +621,9 @@ class Universe(
                             playerData
                     }
                 }
+
+                // Add the replaced 3d data to 4d data
+                playerData4D.add(playerData3D)
             }
 
             val universeData4D = UniverseData4D(playerData4D)
