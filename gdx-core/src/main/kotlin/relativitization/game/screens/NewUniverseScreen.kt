@@ -7,6 +7,7 @@ import io.ktor.http.*
 import kotlinx.coroutines.runBlocking
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.TableScreen
+import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.CommandCollection
 import relativitization.universe.data.components.defaults.physics.Int3D
 import relativitization.universe.generate.method.GenerateUniverseMethodCollection
@@ -17,6 +18,11 @@ import relativitization.universe.utils.RelativitizationLogManager
 
 class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
     private val gdxSettings = game.gdxSettings
+
+    init {
+        // Use default name
+        game.universeClient.generateSettings.universeSettings.universeName = UniverseSettings().universeName
+    }
 
     override fun show() {
         super.show()
