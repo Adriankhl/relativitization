@@ -52,9 +52,9 @@ data class I18NString(
     )
 
     /**
-     * Convert to a string
+     * Convert to a list of string
      */
-    fun toNormalString(): List<String> = listOf(message.map {
+    fun toNormalStringList(): List<String> = listOf(message.map {
         when (it) {
             is NormalString -> it.str
             is IntString -> try {
@@ -70,13 +70,18 @@ data class I18NString(
                 ""
             }
         }
-    }.reduce(String::plus)) + (next?.toNormalString() ?: listOf())
+    }.reduce(String::plus)) + (next?.toNormalStringList() ?: listOf())
+
+    /**
+     * Convert to a strong
+     */
+    fun toNormalString(): String = toNormalStringList().reduce(String::plus)
 
     /**
      * Convert to a list of string following the format of java's MessageFormat
      * Used in libgdx translation
      */
-    fun toMessageFormat(): List<MessageFormatData> {
+    fun toMessageFormatList(): List<MessageFormatData> {
         val template: String = message.map {
             when (it) {
                 is NormalString -> it.str
@@ -106,7 +111,7 @@ data class I18NString(
         }
 
         return listOf(MessageFormatData(template, variableList)) +
-                (next?.toMessageFormat() ?: listOf())
+                (next?.toMessageFormatList() ?: listOf())
     }
 
     fun last(): I18NString = next?.last() ?: this

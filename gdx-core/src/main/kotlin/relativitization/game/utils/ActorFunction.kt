@@ -34,8 +34,8 @@ object ActorFunction {
 
     fun translate(text: I18NString, assets: Assets): String {
         val i18NBundle = assets.getI18NBundle()
-        val messageFormatList: List<MessageFormatData> = text.toMessageFormat()
-        val normalStringList: List<String> = text.toNormalString()
+        val messageFormatList: List<MessageFormatData> = text.toMessageFormatList()
+        val normalStringList: List<String> = text.toNormalStringList()
 
         return messageFormatList.mapIndexed { index, varData ->
             try {
