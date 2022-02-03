@@ -586,7 +586,7 @@ class Universe(
             )
 
             // For reusing player data in the history, e.g. when dealing with after Image
-            val int4DPlayerDataMap: MutableMap<Int4D, MutableMap<Int, PlayerData>> = mutableMapOf()
+            val timePlayerDataMap: MutableMap<Int, MutableMap<Int, PlayerData>> = mutableMapOf()
             // Store the player 4D data
             val playerData4D: MutableList<List<List<List<List<PlayerData>>>>> = mutableListOf()
             for (time in oldestTime..latestTime) {
@@ -599,8 +599,8 @@ class Universe(
                 playerData3D.flatten().flatten().forEach { playerDataList ->
                     // data needed to be replaced by pointer to older playerData3D to reduce memory usage
                     val toBeReplaced: List<PlayerData> = playerDataList.filter { playerData ->
-                        if (int4DPlayerDataMap.containsKey(playerData.int4D)) {
-                            int4DPlayerDataMap.getValue(playerData.int4D).containsKey(playerData.playerId)
+                        if (timePlayerDataMap.containsKey(playerData.int4D.t)) {
+                            timePlayerDataMap.getValue(playerData.int4D.t).containsKey(playerData.playerId)
                         } else {
                             false
                         }
@@ -608,7 +608,7 @@ class Universe(
 
                     // replace the data with
                     val replaceWith: List<PlayerData> = toBeReplaced.map { playerData ->
-                        int4DPlayerDataMap.getValue(playerData.int4D).getValue(playerData.playerId)
+                        timePlayerDataMap.getValue(playerData.int4D.t).getValue(playerData.playerId)
                     }
 
                     // Replace data
@@ -617,7 +617,7 @@ class Universe(
 
                     // Store data in int4DPlayerDataMap
                     playerDataList.forEach { playerData->
-                        int4DPlayerDataMap.getOrDefault(playerData.int4D, mutableMapOf())[playerData.playerId] =
+                        timePlayerDataMap.getOrDefault(playerData.int4D.t, mutableMapOf())[playerData.playerId] =
                             playerData
                     }
                 }
