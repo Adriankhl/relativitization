@@ -219,7 +219,7 @@ object Movement {
      * Run several iteration to move the object by photon rocket
      *
      * @param initialRestMass initial rest mass of the object
-     * @param maxDeltaRestMass maximum change of rest mass to photon to stop the object per turn
+     * @param maxDeltaRestMassPerTurn maximum change of rest mass to photon to stop the object per turn
      * @param initialVelocity initial velocity
      * @param maxSpeed the maximum speed limit of the object, to prevent using too much rest mass as fuel
      * @param initialDouble3D initial double3D position
@@ -229,7 +229,7 @@ object Movement {
      */
     fun runTargetDouble3DByPhotonRocket(
         initialRestMass: Double,
-        maxDeltaRestMass: Double,
+        maxDeltaRestMassPerTurn: Double,
         initialVelocity: Velocity,
         maxSpeed: Double,
         initialDouble3D: Double3D,
@@ -246,7 +246,7 @@ object Movement {
             if (currentDouble3D != targetDouble3D) {
                 val targetVelocityData: TargetVelocityData = targetDouble3DByPhotonRocket(
                     initialRestMass = currentRestMass,
-                    maxDeltaRestMass = maxDeltaRestMass,
+                    maxDeltaRestMass = maxDeltaRestMassPerTurn,
                     initialVelocity = currentVelocity,
                     maxSpeed = maxSpeed,
                     initialDouble3D = currentDouble3D,
@@ -349,7 +349,7 @@ object Movement {
      * rest mass does not increase
      *
      * @param initialRestMass initial rest mass of the object
-     * @param maxDeltaRestMass maximum change of rest mass to photon to stop the object
+     * @param maxDeltaRestMassPerTurn maximum change of rest mass to photon to move the object per turn
      * @param initialVelocity initial velocity
      * @param maxSpeed the maximum speed limit of the object, to prevent using too much rest mass as fuel
      * @param initialDouble3D initial double3D position
@@ -358,7 +358,7 @@ object Movement {
      */
     fun requiredDeltaRestMassUpperBound(
         initialRestMass: Double,
-        maxDeltaRestMass: Double,
+        maxDeltaRestMassPerTurn: Double,
         initialVelocity: Velocity,
         maxSpeed: Double,
         initialDouble3D: Double3D,
@@ -369,7 +369,7 @@ object Movement {
         // Test the movement by 100 iteration
         val testMovementFinalState: MovementStateData = runTargetDouble3DByPhotonRocket(
             initialRestMass = initialRestMass,
-            maxDeltaRestMass = maxDeltaRestMass,
+            maxDeltaRestMassPerTurn = maxDeltaRestMassPerTurn,
             initialVelocity = initialVelocity,
             maxSpeed = maxSpeed,
             initialDouble3D = initialDouble3D,
@@ -396,7 +396,7 @@ object Movement {
      * Compute the overall delta mass required to move to a target double3D position
      *
      * @param initialRestMass initial rest mass of the object
-     * @param maxDeltaRestMass maximum change of rest mass to photon to stop the object per turn
+     * @param maxDeltaRestMassPerTurn maximum change of rest mass to photon to stop the object per turn
      * @param initialVelocity initial velocity
      * @param maxSpeed the maximum speed limit of the object, to prevent using too much rest mass as fuel
      * @param initialDouble3D initial double3D position
@@ -405,7 +405,7 @@ object Movement {
      */
     fun deltaMassTargetDouble3DByPhotonRocket(
         initialRestMass: Double,
-        maxDeltaRestMass: Double,
+        maxDeltaRestMassPerTurn: Double,
         initialVelocity: Velocity,
         maxSpeed: Double,
         initialDouble3D: Double3D,
@@ -415,7 +415,7 @@ object Movement {
 
         val currentMovementState: MovementStateData = runTargetDouble3DByPhotonRocket(
             initialRestMass = initialRestMass,
-            maxDeltaRestMass = maxDeltaRestMass,
+            maxDeltaRestMassPerTurn = maxDeltaRestMassPerTurn,
             initialVelocity = initialVelocity,
             maxSpeed = maxSpeed,
             initialDouble3D = initialDouble3D,

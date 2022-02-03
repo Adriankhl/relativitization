@@ -8,6 +8,7 @@ import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.maths.physics.Relativistic.targetVelocityByPhotonRocket
 import relativitization.universe.maths.physics.TargetVelocityData
 import relativitization.universe.utils.*
+import kotlin.math.min
 
 @Serializable
 data class ChangeVelocityCommand(
@@ -81,7 +82,10 @@ data class ChangeVelocityCommand(
 
             val targetVelocityData: TargetVelocityData = targetVelocityByPhotonRocket(
                 initialRestMass = playerData.playerInternalData.physicsData().totalRestMass(),
-                maxDeltaRestMass = playerData.playerInternalData.physicsData().fuelRestMassData.maxMovementDeltaRestMass(),
+                maxDeltaRestMass = min(
+                    playerData.playerInternalData.physicsData().fuelRestMassData.maxMovementDeltaRestMass(),
+                    playerData.playerInternalData.physicsData().fuelRestMassData.movement,
+                ),
                 initialVelocity = playerData.velocity.toVelocity(),
                 targetVelocity = targetVelocity,
                 speedOfLight = universeSettings.speedOfLight

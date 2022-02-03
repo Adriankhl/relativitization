@@ -91,7 +91,7 @@ data class MoveToDouble3DEvent(
 
         val requiredDeltaRestMass: Double = Movement.requiredDeltaRestMassUpperBound(
             initialRestMass = playerData.playerInternalData.physicsData().totalRestMass(),
-            maxDeltaRestMass = playerData.playerInternalData.physicsData().fuelRestMassData.maxMovementDelta,
+            maxDeltaRestMassPerTurn = playerData.playerInternalData.physicsData().fuelRestMassData.maxMovementDelta,
             initialVelocity = playerData.velocity.toVelocity(),
             maxSpeed = maxSpeed,
             initialDouble3D = playerData.double4D.toDouble3D(),

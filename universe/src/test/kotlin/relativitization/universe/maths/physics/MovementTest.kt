@@ -244,7 +244,7 @@ internal class MovementTest {
     fun deltaMassTest() {
         val d1: Double = deltaMassTargetDouble3DByPhotonRocket(
             initialRestMass = 1.0,
-            maxDeltaRestMass = 0.1,
+            maxDeltaRestMassPerTurn = 0.1,
             initialVelocity = Velocity(0.0, 0.0, 0.0),
             maxSpeed = 0.2,
             initialDouble3D = Double3D(0.0, 0.0, 0.0),
@@ -255,7 +255,7 @@ internal class MovementTest {
 
         val d2: Double = deltaMassTargetDouble3DByPhotonRocket(
             initialRestMass = 1.0,
-            maxDeltaRestMass = 0.1,
+            maxDeltaRestMassPerTurn = 0.1,
             initialVelocity = Velocity(0.4, 0.2, -0.1),
             maxSpeed = 0.2,
             initialDouble3D = Double3D(0.0, 0.0, 0.0),
