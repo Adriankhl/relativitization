@@ -86,7 +86,7 @@ This will produce a `Relativitization.jar` in `../relativitization-art/assets`:
 ### Build executable for linux
 Go to `../relativitization-art` (`cd ../relativitization-art`), then run
 ```
-jpackage --input ./assets --name relativitization-linux --main-jar Relativitization.jar --type app-image --java-options XX:MaxRAMPercentage=80
+jpackage --input ./assets --name relativitization-linux --main-jar Relativitization.jar --type app-image --java-options XX:MaxRAMPercentage=60
 ```
 
 The generated `relativitization-linux` folder contains a `bin/relativitization-linux` executable.
@@ -98,7 +98,7 @@ Download Windows jdk at `../windows/jdk/jdk-17`
 
 Go to `relativitization-art` if it is not your current directory, then run
 ```
-wine ../windows/jdk/jdk-17/bin/jpackage.exe --input ./assets --dest C:/relativitization-output --name relativitization-win --main-jar Relativitization.jar --type app-image --java-options XX:MaxRAMPercentage=80
+wine ../windows/jdk/jdk-17/bin/jpackage.exe --input ./assets --dest C:/relativitization-output --name relativitization-win --main-jar Relativitization.jar --type app-image --java-options XX:MaxRAMPercentage=60
 ```
 
 The generated `~/.wine/drive_c/relativitization-output/relativitization-win` folder contains a `relativitization-win.exe` executable.
