@@ -357,26 +357,37 @@ object Relativistic {
             speedOfLight = speedOfLight,
         )
 
-        return if (requiredDeltaMass <= maxDeltaRestMass) {
-            TargetVelocityData(
-                TargetVelocityType.SUCCESS,
-                targetVelocity,
-                requiredDeltaMass
-            )
-        } else {
-            // Try to change to the correct direction and accelerate / decelerate
-            val toDirectionTargetVelocityData: TargetVelocityData =
-                targetVelocityAtDirectionPhotonRocket(
-                    initialRestMass = initialRestMass,
-                    deltaRestMass = maxDeltaRestMass,
-                    initialVelocity = initialVelocity,
-                    targetDirection = targetVelocity,
-                    accelerate = initialVelocity.squareMag() < targetVelocity.squareMag(),
-                    speedOfLight = speedOfLight
+        return when {
+            requiredDeltaMass <= maxDeltaRestMass -> {
+                TargetVelocityData(
+                    TargetVelocityType.SUCCESS,
+                    targetVelocity,
+                    requiredDeltaMass
                 )
-            if (toDirectionTargetVelocityData.targetVelocityType == TargetVelocityType.CHANGE_DIRECTION) {
-                toDirectionTargetVelocityData
-            } else {
+            }
+            targetVelocity.squareMag() > 0.0 -> {
+                // Try to change to the correct direction and accelerate / decelerate
+                val toDirectionTargetVelocityData: TargetVelocityData =
+                    targetVelocityAtDirectionPhotonRocket(
+                        initialRestMass = initialRestMass,
+                        deltaRestMass = maxDeltaRestMass,
+                        initialVelocity = initialVelocity,
+                        targetDirection = targetVelocity,
+                        accelerate = initialVelocity.squareMag() < targetVelocity.squareMag(),
+                        speedOfLight = speedOfLight
+                    )
+                if (toDirectionTargetVelocityData.targetVelocityType == TargetVelocityType.CHANGE_DIRECTION) {
+                    toDirectionTargetVelocityData
+                } else {
+                    decelerateByPhotonRocket(
+                        initialRestMass = initialRestMass,
+                        maxDeltaRestMass = maxDeltaRestMass,
+                        initialVelocity = initialVelocity,
+                        speedOfLight = speedOfLight,
+                    )
+                }
+            }
+            else -> {
                 decelerateByPhotonRocket(
                     initialRestMass = initialRestMass,
                     maxDeltaRestMass = maxDeltaRestMass,
