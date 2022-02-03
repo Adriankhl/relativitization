@@ -42,7 +42,7 @@ fun main() {
     val universe = Universe(GenerateUniverseMethodCollection.generate(generateSetting), ".")
 
     runBlocking {
-        for (turn in 1..200) {
+        for (turn in 1..1000) {
             val aiCommandMap = universe.computeAICommands()
 
             universe.postProcessUniverse(
