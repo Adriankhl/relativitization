@@ -124,7 +124,13 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
      * Add generate method and various number setting except universe setting
      */
     private fun addGenerateSettings(table: Table) {
-        table.add(createLabel("Generate Method: ", gdxSettings.normalFontSize))
+        table.add(
+            createLabel(
+                "Generate method: ",
+                gdxSettings.normalFontSize
+            )
+        )
+
         val generateMethodSelectBox = createSelectBox(
             GenerateUniverseMethodCollection.generateMethodMap.keys.toList(),
             game.universeClient.generateSettings.generateMethod,

@@ -380,7 +380,7 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
         val nestedTable = Table()
 
         val changeVelocityCommandTextButton = createTextButton(
-            text = "Change Velocity",
+            text = "Change velocity",
             fontSize = gdxSettings.normalFontSize,
             soundVolume = gdxSettings.soundEffectsVolume,
             extraColor = commandButtonColor,

@@ -795,7 +795,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         val supplyFuelAmount = createDoubleTextField(0.0, gdxSettings.smallFontSize)
 
         val supplyFuelButton = createTextButton(
-            "Supply Fuel",
+            "Supply fuel",
             gdxSettings.smallFontSize,
             gdxSettings.soundEffectsVolume,
             extraColor = commandButtonColor,
@@ -1128,7 +1128,7 @@ class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
         val supplyFuelAmount = createDoubleTextField(0.0, gdxSettings.smallFontSize)
 
         val supplyFuelButton = createTextButton(
-            "Supply Fuel",
+            "Supply fuel",
             gdxSettings.smallFontSize,
             gdxSettings.soundEffectsVolume,
             extraColor = commandButtonColor,
