@@ -200,7 +200,7 @@ class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(
 
         table.add(
             createLabel(
-                "Movement Commands:",
+                "Movement commands:",
                 gdxSettings.normalFontSize
             )
         )
