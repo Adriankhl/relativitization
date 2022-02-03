@@ -79,11 +79,17 @@ class GameScreenWorldMap(
     override fun onUniverseData3DChange() {
         data3D2DProjection = update3D2DProjection()
         updateGroup()
+
+        // The new universe data 3D may have different height and width
+        oldActualZoom = actualZoom()
     }
 
     override fun onUniverseDataViewChange() {
         data3D2DProjection = update3D2DProjection()
         updateGroup()
+
+        // The new universe data 3D may have different height and width
+        oldActualZoom = actualZoom()
     }
 
     override fun onPrimarySelectedInt3DChange() {
