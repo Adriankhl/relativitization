@@ -35,6 +35,7 @@ data class MoveToDouble3DEvent(
             IntString(0),
             NormalString(" moving to "),
             IntString(1),
+            NormalString(". "),
         ),
         listOf(
             toId.toString(),
@@ -47,13 +48,16 @@ data class MoveToDouble3DEvent(
             listOf(
                 NormalString("Moving to position "),
                 IntString(0),
+                NormalString(". "),
             ),
             listOf(
                 targetDouble3D.toString()
             )
         ),
         1 to I18NString(
-            listOf(NormalString("Cancel this command")),
+            listOf(
+                NormalString("Cancel this command. ")
+            ),
             listOf()
         )
     )
@@ -184,22 +188,7 @@ data class MoveToDouble3DEvent(
         return if (otherMovementEventMap.isEmpty()) {
             0
         } else {
-            if (otherMovementEventMap.any { it.value.eventRecordData.hasChoice }) {
-                1
-            } else {
-                val leaderAndSelfIdList: List<Int> = universeData3DAtPlayer.getCurrentPlayerData()
-                    .getLeaderAndSelfIdList()
-
-                val keepMovementEventId: Int = otherMovementEventMap.maxByOrNull {
-                    leaderAndSelfIdList.indexOf(it.value.event.fromId)
-                }!!.key
-
-                if (keepMovementEventId == eventId) {
-                    0
-                } else {
-                    1
-                }
-            }
+            1
         }
     }
 
