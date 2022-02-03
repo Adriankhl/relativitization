@@ -59,7 +59,7 @@ data class AddEventCommand(
             I18NString("Cannot add this event by command. ")
         )
 
-        val canSendEvent = event.canSend(playerData, universeSettings)
+        val canSendEvent: CommandErrorMessage = event.canSend(playerData, universeSettings)
 
 
         return CommandErrorMessage(

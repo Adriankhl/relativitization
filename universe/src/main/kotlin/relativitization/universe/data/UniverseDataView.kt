@@ -313,20 +313,20 @@ class PlanDataAtPlayer(
 
         if (targetPlayerData.playerId == -1) {
             logger.error("Add command error: Player id -1")
-
         }
 
-        return if (command.checkAndSelfExecuteBeforeSend(
-                getCurrentMutablePlayerData(),
-                universeData3DAtPlayer.universeSettings
-            ).success
-        ) {
+        val sendCommandMessage: CommandErrorMessage = command.checkAndSelfExecuteBeforeSend(
+            getCurrentMutablePlayerData(),
+            universeData3DAtPlayer.universeSettings
+        )
+
+        return if (sendCommandMessage.success) {
             val executeMessage: CommandErrorMessage =
                 command.checkAndExecute(targetPlayerData, universeData3DAtPlayer.universeSettings)
             commandList.add(command)
             executeMessage
         } else {
-            logger.error("Cannot add command: $command")
+            logger.error("Cannot add command: ${sendCommandMessage.errorMessage.toNormalString()}")
             CommandErrorMessage(
                 false,
                 I18NString("Cannot send this command. Self-execute check failed.  ")
