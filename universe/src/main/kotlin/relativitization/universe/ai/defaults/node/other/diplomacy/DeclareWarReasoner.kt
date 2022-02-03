@@ -69,7 +69,7 @@ class SpaceConflictReasoner : DualUtilityReasoner() {
             planDataAtPlayer.universeData3DAtPlayer.get(id).getLeaderAndSelfIdList().first { leaderId ->
                 !currentPlayer.isLeaderOrSelf(leaderId) &&
                         !currentPlayer.isSubOrdinate(leaderId)
-                        planDataAtPlayer.universeData3DAtPlayer.playerDataMap.containsKey(leaderId)
+                planDataAtPlayer.universeData3DAtPlayer.playerDataMap.containsKey(leaderId)
             }
         }
 
@@ -79,12 +79,22 @@ class SpaceConflictReasoner : DualUtilityReasoner() {
             }
 
         val declareWarOptionList: List<SpaceConflictDeclareWarOption> = conflictPlayerIdSet.map {
+            val targetTopLeaderId: Int = conflictPlayerToTopLeaderIdMap.getValue(it)
+            val targetPlayerTopLeaderMilitaryScore: Double = conflictPlayerTopLeaderMilitaryScoreMap.getValue(
+                targetTopLeaderId
+            )
+
+            val targetPlayerId: Int = if (selfMilitaryScore > targetPlayerTopLeaderMilitaryScore) {
+                targetTopLeaderId
+            } else {
+                it
+            }
+
             SpaceConflictDeclareWarOption(
-                targetPlayerId = it,
-                targetPlayerTopLeaderId = conflictPlayerToTopLeaderIdMap.getValue(it),
+                targetPlayerId = targetPlayerId,
                 selfMilitaryScore = selfMilitaryScore,
                 targetPlayerTopLeaderMilitaryScore = conflictPlayerTopLeaderMilitaryScoreMap.getValue(
-                    conflictPlayerToTopLeaderIdMap.getValue(it)
+                    targetTopLeaderId
                 )
             )
         }
@@ -99,14 +109,11 @@ class SpaceConflictReasoner : DualUtilityReasoner() {
  * Declare war on target player due to space conflict
  *
  * @property targetPlayerId the id of the target player to declare war
- * @property targetPlayerTopLeaderId the id of the top (and not a leader of this player or self)
- * leader of the target player
  * @property selfMilitaryScore self military score
  * @property targetPlayerTopLeaderMilitaryScore the military score of the top leader of the target player
  */
 class SpaceConflictDeclareWarOption(
     private val targetPlayerId: Int,
-    private val targetPlayerTopLeaderId: Int,
     private val selfMilitaryScore: Double,
     private val targetPlayerTopLeaderMilitaryScore: Double,
 ) : DualUtilityOption() {
@@ -164,19 +171,11 @@ class SpaceConflictDeclareWarOption(
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
         // If military score is lower, target the easier player, else target the top player
         planDataAtPlayer.addCommand(
-            if (selfMilitaryScore > targetPlayerTopLeaderMilitaryScore) {
-                DeclareWarCommand(
-                    toId = targetPlayerTopLeaderId,
-                    fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                    fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
-                )
-            } else {
-                DeclareWarCommand(
-                    toId = targetPlayerId,
-                    fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                    fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
-                )
-            }
+            DeclareWarCommand(
+                toId = targetPlayerId,
+                fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+                fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
+            )
         )
     }
 }
@@ -217,17 +216,18 @@ class DeclareIndependenceReasoner : DualUtilityReasoner() {
             listOf()
         }
 
-        val declareIndependenceToTopLeaderOptionList = if (hasTopLeader && !isTopLeader && !isTopLeaderDirectLeader) {
-            val topLeaderExcludeSelfMilitaryScore: Double = MilitaryScore.computeWithExclusion(
-                planDataAtPlayer.getCurrentMutablePlayerData().topLeaderId(),
-                planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                planDataAtPlayer,
-            )
+        val declareIndependenceToTopLeaderOptionList =
+            if (hasTopLeader && !isTopLeader && !isTopLeaderDirectLeader) {
+                val topLeaderExcludeSelfMilitaryScore: Double = MilitaryScore.computeWithExclusion(
+                    planDataAtPlayer.getCurrentMutablePlayerData().topLeaderId(),
+                    planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+                    planDataAtPlayer,
+                )
 
-            listOf(DeclareIndependenceToTopLeaderOption(selfMilitaryScore, topLeaderExcludeSelfMilitaryScore))
-        } else {
-            listOf()
-        }
+                listOf(DeclareIndependenceToTopLeaderOption(selfMilitaryScore, topLeaderExcludeSelfMilitaryScore))
+            } else {
+                listOf()
+            }
 
         return declareIndependenceToDirectLeaderOptionList + declareIndependenceToTopLeaderOptionList + listOf(
             DoNothingDualUtilityOption(rank = 1, multiplier = 1.0, bonus = 1.0)
