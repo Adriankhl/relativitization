@@ -33,17 +33,31 @@ tasks.register("packageAll") {
     if (artGitDirectory.exists()) {
         exec {
             workingDir = artDirectory
-            commandLine("git", "clean", "-xfdf")
+            commandLine(
+                "git",
+                "clean",
+                "-xfdf",
+            )
         }
+    }
+
+    // Clean wine output directory
+    exec {
+        commandLine(
+            "rm",
+            "-r",
+            "${System.getProperty("user.home")}/.wine/drive_c/relativitization-output",
+        )
     }
 
     dependsOn(":gdx-desktop:fatJar")
 
     doLast {
+        // package for linux
         exec {
             workingDir = artDirectory
             commandLine(
-                "jpackage", 
+                "jpackage",
                 "--input",
                 "./assets",
                 "--name",
@@ -52,8 +66,44 @@ tasks.register("packageAll") {
                 "Relativitization.jar",
                 "--type",
                 "app-image",
+                "--icon",
+                "./assets/images/normal/logo/logo.png",
                 "--java-options",
                 "-XX:MaxRAMPercentage=60",
+            )
+        }
+
+        // cross-building package for windows with wine
+        exec {
+            workingDir = artDirectory
+            commandLine(
+                "wine",
+                "../windows/jdk/jdk-17/bin/jpackage.exe",
+                "--input",
+                "./assets",
+                "--dest",
+                "C:/relativitization-output",
+                "--name",
+                "relativitization-win",
+                "--main-jar",
+                "Relativitization.jar",
+                "--type",
+                "app-image",
+                "--icon",
+                "./assets/images/normal/logo/logo.ico",
+                "--java-options",
+                "-XX:MaxRAMPercentage=60",
+            )
+        }
+
+        // Copy the windows package directory here
+        exec {
+            workingDir = artDirectory
+            commandLine(
+                "cp",
+                "-r",
+                "${System.getProperty("user.home")}/.wine/drive_c/relativitization-output/relativitization-win",
+                "."
             )
         }
     }
