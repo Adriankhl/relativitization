@@ -11,7 +11,7 @@ February 2022.
 ## Table of Contents
 
 1. [Project layout](#project-layout)
-2. [Introduction and references](#introduction-and-references)
+2. [Introduction](#introduction)
 3. [Run simulation](#run-simulation)
 4. [Build the game](#build-the-game)
 5. [Generate documentation](#generate-documentation)
@@ -30,7 +30,7 @@ February 2022.
 * `gdx-android`: libgdx gui android launcher, depends on `gdx-core`, `universe`,  `universe-client`,
   and `universe-server`
 
-## Introduction and references
+## Introduction
 
 Our interstellar future is always an interesting scenario to think about. There are great imaginations about all kinds
 of possible interstellar society in books, movies, and games. Unfortunately, while the space computer games are fun to
