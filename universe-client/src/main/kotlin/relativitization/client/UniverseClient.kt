@@ -337,24 +337,40 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
      */
     private suspend fun updateUniverseData3DMap() {
         universeData3DMapMutex.withLock {
-            val name: String =
-                universeData3DName(universeData3DCache, universeData3DMap.keys.toList())
+            val name: String = universeData3DName(
+                universeData3DCache, 
+                universeData3DMap.keys.toList()
+            )
             universeData3DMap[name] = universeData3DCache
+            clearUniverseData3DByMaxStored()
             isNewDataReady.set(true)
         }
+
+        clearUniverseData3DByMaxStored()
     }
+
+    /**
+     * Clear old universe data by client settings
+     */ 
+    private fun clearUniverseData3DByMaxStored() {
+        if (universeData3DMap.size > universeClientSettings.maxStoredUniverseData3DAtPlayer) {
+            val currentName: String = universeData3DMap.filterValues { 
+                it == currentUniverseData3DAtPlayer 
+            }.keys.lastOrNull() ?: ""
+
+            universeData3DMap.keys.take(
+                universeData3DMap.size - universeClientSettings.maxStoredUniverseData3DAtPlayer
+            ).filter { it != currentName }.forEach { universeData3DMap.remove(it) }
+        }
+    }
+
 
     /**
      * Update current UniverseData3DTime to latest time available from universeData3DMap
      */
     suspend fun pickLatestUniverseData3D() {
         val currentData = universeData3DMapMutex.withLock {
-            // Clear old universe data
-            if (universeData3DMap.size > universeClientSettings.maxStoredUniverseData3DAtPlayer) {
-                universeData3DMap.keys.take(
-                    universeData3DMap.size - universeClientSettings.maxStoredUniverseData3DAtPlayer
-                ).forEach { universeData3DMap.remove(it) }
-            }
+            clearUniverseData3DByMaxStored()
 
             if (universeData3DMap.isNotEmpty()) {
                 universeData3DMap.values.last()
