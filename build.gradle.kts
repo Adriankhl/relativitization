@@ -6,6 +6,7 @@ plugins {
 
 val artDirectory = File("../relativitization-art")
 val artGitDirectory = File("../relativitization-art/.git")
+val winePath = "${System.getProperty("user.home")}/.wine/drive_c/relativitization-output"
 
 buildscript {
     repositories {
@@ -28,7 +29,7 @@ allprojects {
     }
 }
 
-tasks.register("packageAll") {
+tasks.register("cleanArt") {
     // art directory may not be a git repository
     if (artGitDirectory.exists()) {
         exec {
@@ -40,36 +41,43 @@ tasks.register("packageAll") {
             )
         }
     }
+}
 
-    // Clean wine output directory
-    exec {
-        commandLine(
-            "rm",
-            "-r",
-            "${System.getProperty("user.home")}/.wine/drive_c/relativitization-output",
-        )
+tasks.register("cleanWine") {
+    if (File(winePath).exists()) {
+        exec {
+            commandLine(
+                "rm",
+                "-r",
+                winePath
+            )
+        }
     }
+}
 
-    // create directory to store output
-    exec {
-         workingDir = artDirectory
-         commandLine(
-             "mkdir",
-             "outputs",
-        )
-    }
+tasks.register<Exec>("createOutputDir") {
+    workingDir = artDirectory
+    commandLine(
+        "mkdir",
+        "outputs",
+    )
+}
 
-    // zip the assets
-    exec {
-         workingDir = artDirectory
-         commandLine(
-             "zip",
-             "-r",
-             "./outputs/assets.zip",
-             "./assets",
-        )
-    }
+tasks.register<Exec>("packageAssets") {
+    workingDir = artDirectory
+    commandLine(
+        "zip",
+        "-r",
+        "./outputs/assets.zip",
+        "./assets",
+    )
+}
 
+tasks.register("packageAll") {
+    dependsOn("cleanArt")
+    dependsOn("cleanWine")
+    dependsOn("createOutputDir")
+    dependsOn("packageAssets")
     dependsOn(":gdx-android:assembleDebug")
     dependsOn(":gdx-desktop:fatJar")
 
@@ -123,7 +131,7 @@ tasks.register("packageAll") {
             commandLine(
                 "cp",
                 "-r",
-                "${System.getProperty("user.home")}/.wine/drive_c/relativitization-output/relativitization-win",
+                winePath + "/relativitization-win",
                 "."
             )
         }
@@ -140,34 +148,34 @@ tasks.register("packageAll") {
 
         // zip the assets with jar
         exec {
-             workingDir = artDirectory
-             commandLine(
-                 "zip",
-                 "-r",
-                 "./outputs/relativitization-jar.zip",
-                 "./assets",
+            workingDir = artDirectory
+            commandLine(
+                "zip",
+                "-r",
+                "./outputs/relativitization-jar.zip",
+                "./assets",
             )
         }
 
         // zip the linux package
         exec {
-             workingDir = artDirectory
-             commandLine(
-                 "zip",
-                 "-r",
-                 "./outputs/relativitization-linux.zip",
-                 "./relativitization-linux",
+            workingDir = artDirectory
+            commandLine(
+                "zip",
+                "-r",
+                "./outputs/relativitization-linux.zip",
+                "./relativitization-linux",
             )
         }
 
         // zip the windows package
         exec {
-             workingDir = artDirectory
-             commandLine(
-                 "zip",
-                 "-r",
-                 "./outputs/relativitization-win.zip",
-                 "./relativitization-win",
+            workingDir = artDirectory
+            commandLine(
+                "zip",
+                "-r",
+                "./outputs/relativitization-win.zip",
+                "./relativitization-win",
             )
         }
     }
