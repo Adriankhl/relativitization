@@ -72,7 +72,7 @@ There will be guides on how to use this framework for modeling. For now, you hav
 
 ### Prerequisite
 
-You need jdk 17 to build the game.
+It is recommended to use jdk 17 to build and run the game.
 
 There should be a `../relativitization-art/assets` directory. If not, create `../relativitization-art/assets`
 and copy the assets:
@@ -101,31 +101,6 @@ This will produce a `Relativitization.jar` in `../relativitization-art/assets`:
 ```
 ./gradlew :gdx-desktop:fatJar
 ```
-
-### Build executable for linux
-
-Go to `../relativitization-art` (`cd ../relativitization-art`), then run
-
-```
-jpackage --input ./assets --name relativitization-linux --main-jar Relativitization.jar --type app-image --java-options XX:MaxRAMPercentage=60
-```
-
-The generated `relativitization-linux` folder contains a `bin/relativitization-linux` executable.
-
-### Build executable for Windows on Linux
-
-You need `wine` to cross-build Windows executable on Linux.
-
-Download Windows jdk at `../windows/jdk/jdk-17`
-
-Go to `relativitization-art` if it is not your current directory, then run
-
-```
-wine ../windows/jdk/jdk-17/bin/jpackage.exe --input ./assets --dest C:/relativitization-output --name relativitization-win --main-jar Relativitization.jar --type app-image --java-options XX:MaxRAMPercentage=60
-```
-
-The generated `~/.wine/drive_c/relativitization-output/relativitization-win` folder contains
-a `relativitization-win.exe` executable.
 
 ### Build Android (debug) apk
 
