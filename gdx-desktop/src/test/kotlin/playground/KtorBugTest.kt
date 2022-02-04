@@ -33,6 +33,7 @@ internal class KtorBugTest {
             println("Launched Server")
             val job = launch {
                 val response: HttpResponse = client.get("http://127.0.0.1:12345")
+                println(response)
             }
             println("Launched response")
             delay(1000)
@@ -89,7 +90,6 @@ internal class KtorBugTest {
                 }
             }
         )
-        val client = HttpClient(io.ktor.client.engine.cio.CIO)
 
         runBlocking {
             launch {
