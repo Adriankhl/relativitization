@@ -30,47 +30,57 @@ allprojects {
 }
 
 tasks.register("cleanArt") {
-    // art directory may not be a git repository
-    if (artGitDirectory.exists()) {
-        exec {
-            workingDir = artDirectory
-            commandLine(
-                "git",
-                "clean",
-                "-xfdf",
-            )
+    doLast {
+        // art directory may not be a git repository
+        if (artGitDirectory.exists()) {
+            exec {
+                workingDir = artDirectory
+                commandLine(
+                    "git",
+                    "clean",
+                    "-xfdf",
+                )
+            }
         }
     }
 }
 
 tasks.register("cleanWine") {
-    if (File(winePath).exists()) {
-        exec {
-            commandLine(
-                "rm",
-                "-r",
-                winePath
-            )
+    doLast {
+        if (File(winePath).exists()) {
+            exec {
+                commandLine(
+                    "rm",
+                    "-r",
+                    winePath
+                )
+            }
         }
     }
 }
 
 tasks.register<Exec>("createOutputDir") {
     workingDir = artDirectory
-    commandLine(
-        "mkdir",
-        "outputs",
-    )
+
+    doLast {
+        commandLine(
+            "mkdir",
+            "outputs",
+        )
+    }
 }
 
 tasks.register<Exec>("packageAssets") {
     workingDir = artDirectory
-    commandLine(
-        "zip",
-        "-r",
-        "./outputs/assets.zip",
-        "./assets",
-    )
+
+    doLast {
+        commandLine(
+            "zip",
+            "-r",
+            "./outputs/assets.zip",
+            "./assets",
+        )
+    }
 }
 
 tasks.register("packageAll") {
@@ -98,7 +108,7 @@ tasks.register("packageAll") {
                 "--icon",
                 "./assets/images/normal/logo/logo.png",
                 "--java-options",
-                "-XX:MaxRAMPercentage=60",
+                "-XX:MaxRAMPercentage=40",
             )
         }
 
@@ -121,7 +131,7 @@ tasks.register("packageAll") {
                 "--icon",
                 "./assets/images/normal/logo/logo.ico",
                 "--java-options",
-                "-XX:MaxRAMPercentage=60",
+                "-XX:MaxRAMPercentage=40",
             )
         }
 

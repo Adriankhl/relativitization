@@ -66,7 +66,7 @@ tasks {
 
 application {
     mainClass.set(mainClassPath)
-    applicationDefaultJvmArgs = listOf("-XX:MaxRAMPercentage=60")
+    applicationDefaultJvmArgs = listOf("-XX:MaxRAMPercentage=40")
 }
 
 tasks.withType<JavaExec> {

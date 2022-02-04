@@ -45,5 +45,5 @@ tasks {
 
 application {
     mainClass.set(project.properties["mainClass"].toString())
-    applicationDefaultJvmArgs = listOf("-XX:MaxRAMPercentage=60")
+    applicationDefaultJvmArgs = listOf("-XX:MaxRAMPercentage=40")
 }
