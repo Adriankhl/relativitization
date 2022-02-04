@@ -26,7 +26,7 @@ enum class ResourceType(val value: String) {
         // Entertainment is not produced by factory
         val factoryResourceList: List<ResourceType> = values().toList() - ENTERTAINMENT
 
-        private val primaryResourceList: List<ResourceType> = listOf(
+        private val productionResourceList: List<ResourceType> = listOf(
             PLANT,
             ANIMAL,
             METAL,
@@ -35,7 +35,7 @@ enum class ResourceType(val value: String) {
         )
 
         // whether the resource is involved in production
-        fun isProductionResource(resourceType: ResourceType): Boolean = primaryResourceList.contains(resourceType)
+        fun isProductionResource(resourceType: ResourceType): Boolean = productionResourceList.contains(resourceType)
     }
 }
 
