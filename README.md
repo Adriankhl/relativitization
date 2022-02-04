@@ -12,7 +12,7 @@ February 2022.
 
 1. [Project layout](#project-layout)
 2. [Introduction](#introduction)
-3. [Run simulation](#run-simulation)
+3. [Run simulations](#run-simulations)
 4. [Build the game](#build-the-game)
 5. [Generate documentation](#generate-documentation)
 6. [Contribute](#contribute)
@@ -46,12 +46,12 @@ you can simulate your model using terminal.
 To encourage people to support this project financially, the assets of the game are not opened. You need to buy the
 assets to play the game, though you are free to modify the game logic to experiment and share your ideas.
 
-## Run simulation
+## Run simulations
 
 The following assumes you are using a Linux terminal. If you are working with Windows, you need to use the
 Windows-equivalent commands, such as changing `./gradlew` to `gradlew.bat`.
 
-You can run simulations of your model on the command line. This is an example of an all-AI game:
+You can run simulations of your model on the command line. This is an example model:
 `./simulations/src/main/kotlin/relativitization/game/TypicalGame.kt`.
 
 You can run the main function by:
@@ -61,6 +61,12 @@ You can run the main function by:
 ```
 
 Note that the main class has an additional `Kt` after the file name in Kotlin convention.
+
+The default configuration can take up to 60% of the ram in your PC. If you think it is too much,
+open `./simulations/build.gradle.kts` and modify the line
+`applicationDefaultJvmArgs = listOf("-XX:MaxRAMPercentage=60")`.
+
+There will be guides on how to use this framework for modeling. For now, you have to dig into the source code.
 
 ## Build the game
 
