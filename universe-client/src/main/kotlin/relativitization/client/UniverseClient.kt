@@ -349,6 +349,13 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
      */
     suspend fun pickLatestUniverseData3D() {
         val currentData = universeData3DMapMutex.withLock {
+            // Clear old universe data
+            if (universeData3DMap.size > universeClientSettings.maxStoredUniverseData3DAtPlayer) {
+                universeData3DMap.keys.take(
+                    universeData3DMap.size - universeClientSettings.maxStoredUniverseData3DAtPlayer
+                ).forEach { universeData3DMap.remove(it) }
+            }
+
             if (universeData3DMap.isNotEmpty()) {
                 universeData3DMap.values.last()
             } else {
@@ -357,12 +364,6 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
             }
         }
 
-        // Clear old universe data
-        if (universeData3DMap.size > universeClientSettings.maxStoredUniverseData3DAtPlayer) {
-            universeData3DMap.keys.take(
-                universeData3DMap.size - universeClientSettings.maxStoredUniverseData3DAtPlayer
-            ).forEach { universeData3DMap.remove(it) }
-        }
 
         // set the data outside the lock to prevent deadlock
         currentUniverseData3DAtPlayer = currentData
@@ -460,11 +461,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
      */
     suspend fun getCurrentData3DName(): String {
         universeData3DMapMutex.withLock {
-            return universeData3DMap.keys.elementAt(
-                universeData3DMap.values.indexOf(
-                    currentUniverseData3DAtPlayer
-                )
-            )
+            return universeData3DMap.filterValues { it == currentUniverseData3DAtPlayer }.keys.lastOrNull() ?: ""
         }
     }
 
