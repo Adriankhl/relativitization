@@ -50,6 +50,27 @@ tasks.register("packageAll") {
         )
     }
 
+    // create directory to store output
+    exec {
+         workingDir = artDirectory
+         commandLine(
+             "mkdir",
+             "outputs",
+        )
+    }
+
+    // zip the assets
+    exec {
+         workingDir = artDirectory
+         commandLine(
+             "zip",
+             "-r",
+             "./outputs/assets.zip",
+             "./assets",
+        )
+    }
+
+    dependsOn(":gdx-android:assembleDebug")
     dependsOn(":gdx-desktop:fatJar")
 
     doLast {
@@ -104,6 +125,49 @@ tasks.register("packageAll") {
                 "-r",
                 "${System.getProperty("user.home")}/.wine/drive_c/relativitization-output/relativitization-win",
                 "."
+            )
+        }
+
+        // Copy the windows package directory here
+        exec {
+            workingDir = artDirectory
+            commandLine(
+                "cp",
+                "../relativitization/gdx-android/build/outputs/apk/debug/relativitization-debug.apk",
+                "./outputs/relativitization.apk"
+            )
+        }
+
+        // zip the assets with jar
+        exec {
+             workingDir = artDirectory
+             commandLine(
+                 "zip",
+                 "-r",
+                 "./outputs/relativitization-jar.zip",
+                 "./assets",
+            )
+        }
+
+        // zip the linux package
+        exec {
+             workingDir = artDirectory
+             commandLine(
+                 "zip",
+                 "-r",
+                 "./outputs/relativitization-linux.zip",
+                 "./relativitization-linux",
+            )
+        }
+
+        // zip the windows package
+        exec {
+             workingDir = artDirectory
+             commandLine(
+                 "zip",
+                 "-r",
+                 "./outputs/relativitization-win.zip",
+                 "./relativitization-win",
             )
         }
     }
