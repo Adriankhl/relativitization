@@ -2,8 +2,9 @@
 
 Turn-based strategy game / agent-based simulation framework / social model in a 4D relativistic spacetime.
 
-See [game documentation](https://github.com/Adriankhl/relativitization-game-doc) if you want to know more about the
-game.
+* [Buy the game from itch.io](https://adriankhl.itch.io/relativitization)
+* [See the game documentation](https://github.com/Adriankhl/relativitization-game-doc) if you want to know more about the
+  game.
 
 **Status of the project**: Command line simulation is functioning, the first version of the game will be released in
 February 2022.
@@ -122,13 +123,12 @@ This will produce documentation html pages in `build/dokka/htmlMultiModule`:
 
 If you encounter a bug, please check to see if there is any existing issue before reporting the bug.
 
-If you want to propose your idea on the game, please use
+If you want to propose your ideas about the game, please use
 [relativitization-game-doc](https://github.com/Adriankhl/relativitization-game-doc) instead.
 
-Pull requests are welcome. Since it is not entirely clear whether the GPLv3 license is the best option for this project,
-to leave the possibility of changing the license in the future open, you are required to sign a contributor license
-agreement to indicate that your contribution is under the MIT license. You just need to copy and paste a sentence as a
-comment in your pull request, the instruction will appear after your pull request has been created.
+Pull requests are welcome. To leave the possibility of changing the license of this project open, you are required to
+sign a contributor license agreement to indicate that your contribution is under the MIT license. The instruction will
+appear after your pull request has been created, just copy and paste a sentence in the comment.
 
 ## License
 
