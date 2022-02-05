@@ -59,27 +59,30 @@ tasks.register("cleanWine") {
     }
 }
 
-tasks.register<Exec>("createOutputDir") {
-    workingDir = artDirectory
-
+tasks.register("createOutputDir") {
     doLast {
-        commandLine(
-            "mkdir",
-            "outputs",
-        )
+        exec {
+            workingDir = artDirectory
+            commandLine(
+                "mkdir",
+                "outputs",
+            )
+
+        }
     }
 }
 
-tasks.register<Exec>("packageAssets") {
-    workingDir = artDirectory
-
+tasks.register("packageAssets") {
     doLast {
-        commandLine(
-            "zip",
-            "-r",
-            "./outputs/assets.zip",
-            "./assets",
-        )
+        exec {
+            workingDir = artDirectory
+            commandLine(
+                "zip",
+                "-r",
+                "./outputs/assets.zip",
+                "./assets",
+            )
+        }
     }
 }
 
