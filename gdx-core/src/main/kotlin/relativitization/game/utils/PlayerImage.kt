@@ -77,7 +77,7 @@ object PlayerImage {
                         Color(0.5f, 0.5f, 0f, 1f)
                     }
                     else -> {
-                        Color(0f, 0f ,0f, 1f)
+                        Color(0f, 0f, 0f, 1f)
                     }
                 }
             }
@@ -169,7 +169,7 @@ object PlayerImage {
         }
 
         // Get player in the same cube, excluding self
-        val neighbors: List<PlayerData> = universeData3DAtPlayer.getIdMap(
+        val neighborList: List<PlayerData> = universeData3DAtPlayer.getIdMap(
             playerData.int4D.toInt3D()
         ).values.flatten().filter {
             it != playerData.playerId
@@ -177,29 +177,14 @@ object PlayerImage {
             universeData3DAtPlayer.get(it)
         }
 
-        // Neighbor that views the player as enemy
-        val neighborViewEnemyList: List<PlayerData> =
-            neighbors.filter { neighbor ->
-                neighbor.playerInternalData.diplomacyData().isEnemyOf(
-                    playerData
-                )
-            }
-
-        // Neighbor that this player views as enemy
-        val selfViewEnemyList: List<PlayerData> =
-            playerData.playerInternalData.diplomacyData().relationMap.filter { (id, relationData) ->
-                // Select the player that are enemy, nearby, and not in neighborViewEnemyList
-                (relationData.diplomaticRelationState == DiplomaticRelationState.ENEMY) && neighbors.any { neighbor ->
-                    neighbor.playerId == id
-                } && neighborViewEnemyList.all { neighbor ->
-                    neighbor.playerId != id
-                }
-            }.map { (playerId, _) ->
-                universeData3DAtPlayer.get(playerId)
-            }
+        // player view the neighbor as enemy, or neighbor that views the player as enemy
+        val neighborEnemyList: List<PlayerData> = neighborList.filter { neighbor ->
+            playerData.playerInternalData.diplomacyData().isEnemyOf(neighbor) ||
+                    neighbor.playerInternalData.diplomacyData().isEnemyOf(playerData)
+        }
 
         // Determine if it is in combat or not
-        val inCombat: Boolean = neighborViewEnemyList.isNotEmpty() || selfViewEnemyList.isNotEmpty()
+        val inCombat: Boolean = neighborEnemyList.isNotEmpty()
 
         // Add a red sword if in Combat
         if (inCombat) {

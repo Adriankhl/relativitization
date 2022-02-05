@@ -24,7 +24,6 @@ object AutoCombat : Mechanism() {
         // enemy in the same cube
         val sameCubeEnemy: List<PlayerData> = computeEnemyList(
             mutablePlayerData,
-            universeData3DAtPlayer,
             universeData3DAtPlayer.getNeighbour(0)
         ).shuffled(Rand.rand())
 
@@ -63,32 +62,13 @@ object AutoCombat : Mechanism() {
      */
     fun computeEnemyList(
         mutablePlayerData: MutablePlayerData,
-        universeData3DAtPlayer: UniverseData3DAtPlayer,
-        neighbors: List<PlayerData>,
+        neighborList: List<PlayerData>,
     ): List<PlayerData> {
 
-        // Neighbor that views the player as enemy
-        val neighborViewEnemyList: List<PlayerData> =
-            neighbors.filter { playerData ->
-                playerData.playerInternalData.diplomacyData().isEnemyOf(
-                    mutablePlayerData
-                )
-            }
-
-
-        // Neighbor that this player views as enemy
-        val selfViewEnemyList: List<PlayerData> =
-            mutablePlayerData.playerInternalData.diplomacyData().relationMap.filter { (id, relationData) ->
-                // Select the player that are enemy, nearby, and not in neighborViewEnemyList
-                (relationData.diplomaticRelationState == DiplomaticRelationState.ENEMY) && neighbors.any { playerData ->
-                    playerData.playerId == id
-                } && neighborViewEnemyList.all { playerData ->
-                    playerData.playerId != id
-                }
-            }.map { (playerId, _) ->
-                universeData3DAtPlayer.get(playerId)
-            }
-
-        return selfViewEnemyList + neighborViewEnemyList
+        // player view the neighbor as enemy, or neighbor that views the player as enemy
+        return neighborList.filter { neighbor ->
+            mutablePlayerData.playerInternalData.diplomacyData().isEnemyOf(neighbor) ||
+                    neighbor.playerInternalData.diplomacyData().isEnemyOf(mutablePlayerData)
+        }
     }
 }

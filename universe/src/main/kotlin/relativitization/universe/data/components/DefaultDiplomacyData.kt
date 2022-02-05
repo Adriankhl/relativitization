@@ -69,4 +69,21 @@ data class MutableDiplomacyData(
             relationMap.remove(it)
         }
     }
+
+
+    /**
+     * @param playerData whether this player is an enemy of the player with this diplomatic data
+     */
+    fun isEnemyOf(playerData: PlayerData): Boolean =
+        playerData.getLeaderAndSelfIdList().any {
+            getRelationState(it) == DiplomaticRelationState.ENEMY
+        }
+
+    /**
+     * @param playerData whether this player is an enemy of the player with this diplomatic data
+     */
+    fun isEnemyOf(playerData: MutablePlayerData): Boolean =
+        playerData.getLeaderAndSelfIdList().any {
+            getRelationState(it) == DiplomaticRelationState.ENEMY
+        }
 }
