@@ -3,8 +3,8 @@
 Turn-based strategy game / agent-based simulation framework / social model in a 4D relativistic spacetime.
 
 * [Buy the game from itch.io](https://adriankhl.itch.io/relativitization)
-* [See the game documentation](https://github.com/Adriankhl/relativitization-game-doc) if you want to know more about the
-  game.
+* [See the game documentation](https://github.com/Adriankhl/relativitization-game-doc) if you want to know more about
+  the game.
 
 **Status of the project**: Command line simulation is functioning, the first version of the game will be released in
 February 2022.
@@ -41,11 +41,14 @@ Relativitization is an attempt to create a turn-based strategy / simulation game
 building an academic social model can be quite similar to designing mechanisms in a simulation / strategy game, this can
 also be used as an agent-based simulation framework for social scientists to build interstellar social models.
 
-The source code is licensed under GPLv3, you are free to modify or add things in the `universe` to build your model, and
-you can simulate your model using terminal.
+The source code is licensed under GPLv3, you are free to modify things in the `universe` to build your model, and you
+can simulate your model via a terminal. Typically, this should be sufficient for academic studies.
 
-To encourage people to support this project financially, the assets of the game are not opened. You need to buy the
-assets to play the game, though you are free to modify the game logic to experiment and share your ideas.
+To encourage people to support this project financially, the assets of the game are not opened. You need
+to [buy the assets](https://adriankhl.itch.io/relativitization) to actually play the game.
+
+Under specific circumstances, such as education, it may be possible to get free download-keys for the game. Please email
+your request to [relativitization@gmail.com](relativitization@gmail.com).
 
 ## Run simulations
 
@@ -75,8 +78,11 @@ There will be guides on how to use this framework for modeling. For now, you hav
 
 It is recommended to use jdk 17 to build and run the game.
 
-There should be a `../relativitization-art/assets` directory. If not, create `../relativitization-art/assets`
-and copy the assets:
+Create a `../relativitization-art` directory. Get the `relativitization-assets.zip`
+from [itch.io](https://adriankhl.itch.io/relativitization), unzip it and copy the
+`assets` directory into `../relativitization-art`.
+
+Alternatively, create `../relativitization-art/assets`, and copy these directories:
 
 * `fonts`
 * `images`
@@ -85,7 +91,7 @@ and copy the assets:
 * `sounds`
 * `translations`
 
-from the game into the `../relativitization-art/assets` folder.
+from your game into `../relativitization-art/assets`.
 
 ### Run desktop application
 
