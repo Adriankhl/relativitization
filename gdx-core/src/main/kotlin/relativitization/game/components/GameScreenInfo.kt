@@ -87,7 +87,10 @@ class GameScreenInfo(val game: RelativitizationGame) : ScreenComponent<SplitPane
         if (gdxSettings.showingBottomCommand) {
             infoAndCommand.splitAmount = gdxSettings.upperInfoAndBottomCommandSplitAmount
         } else {
-            gdxSettings.upperInfoAndBottomCommandSplitAmount = infoAndCommand.splitAmount
+            // Only update the stored split amount of the split screen is not too close to the edge
+            if (infoAndCommand.splitAmount < infoAndCommand.maxSplitAmount * 0.9) {
+                gdxSettings.upperInfoAndBottomCommandSplitAmount = infoAndCommand.splitAmount
+            }
             infoAndCommand.splitAmount = infoAndCommand.maxSplitAmount
         }
     }

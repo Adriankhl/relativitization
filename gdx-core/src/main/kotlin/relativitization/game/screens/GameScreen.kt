@@ -191,7 +191,10 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
         if (gdxSettings.showingInfo) {
             worldMapAndInfo.splitAmount = gdxSettings.worldMapAndInfoSplitAmount
         } else {
-            gdxSettings.worldMapAndInfoSplitAmount = worldMapAndInfo.splitAmount
+            // Only update the stored split amount of the split screen is not too close to the edge
+            if (worldMapAndInfo.splitAmount < worldMapAndInfo.maxSplitAmount * 0.9) {
+                gdxSettings.worldMapAndInfoSplitAmount = worldMapAndInfo.splitAmount
+            }
             worldMapAndInfo.splitAmount = worldMapAndInfo.maxSplitAmount
         }
     }
