@@ -62,9 +62,9 @@ You can run the main function by:
 
 Note that the main class has an additional `Kt` after the file name in Kotlin convention.
 
-The default configuration can take up to 40% of the ram in your PC. If you think it is too much,
+The default configuration can take up to 50% of the ram in your PC. If you think it is too little or too much,
 open `./simulations/build.gradle.kts` and modify the line
-`applicationDefaultJvmArgs = listOf("-XX:MaxRAMPercentage=40")`.
+`applicationDefaultJvmArgs = listOf("-XX:MaxRAMPercentage=50")`.
 
 There will be guides on how to use this framework for modeling. For now, you have to dig into the source code.
 

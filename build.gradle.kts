@@ -108,7 +108,7 @@ tasks.register("packageAll") {
                 "--icon",
                 "./assets/images/normal/logo/logo.png",
                 "--java-options",
-                "-XX:MaxRAMPercentage=40",
+                "-XX:MaxRAMPercentage=50",
             )
         }
 
@@ -131,7 +131,7 @@ tasks.register("packageAll") {
                 "--icon",
                 "./assets/images/normal/logo/logo.ico",
                 "--java-options",
-                "-XX:MaxRAMPercentage=40",
+                "-XX:MaxRAMPercentage=50",
             )
         }
 
