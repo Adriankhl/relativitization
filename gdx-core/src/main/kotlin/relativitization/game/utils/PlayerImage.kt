@@ -22,6 +22,22 @@ import kotlin.random.Random
 object PlayerImage {
     private val logger = RelativitizationLogManager.getLogger()
 
+    /**
+     * Get a list of player image to add to group / stack
+     *
+     * @param playerData the image of this player
+     * @param universeData3DAtPlayer the universe data
+     * @param primaryPlayerData a primary selected player, which may affect the color
+     * @param assets game assets
+     * @param xPos the x coordinate of the image group
+     * @param yPos the y coordinate of the image group
+     * @param width the width of the image group
+     * @param height the height of the image group
+     * @param soundVolume sound volume when clicked
+     * @param mapPlayerColorMode how the player image should be colored
+     * @param showCombat whether combat information should be shown
+     * @param function the function to be called when clicked
+     */
     fun getPlayerImages(
         playerData: PlayerData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
@@ -33,6 +49,7 @@ object PlayerImage {
         height: Float,
         soundVolume: Float,
         mapPlayerColorMode: MapPlayerColorMode,
+        showCombat: Boolean,
         function: (Image) -> Unit = {}
     ): List<Image> {
 
@@ -168,41 +185,43 @@ object PlayerImage {
 
         }
 
-        // Get player in the same cube, excluding self
-        val neighborList: List<PlayerData> = universeData3DAtPlayer.getIdMap(
-            playerData.int4D.toInt3D()
-        ).values.flatten().filter {
-            it != playerData.playerId
-        }.map {
-            universeData3DAtPlayer.get(it)
-        }
+        if (showCombat) {
+            // Get player in the same cube, excluding self
+            val neighborList: List<PlayerData> = universeData3DAtPlayer.getIdMap(
+                playerData.int4D.toInt3D()
+            ).values.flatten().filter {
+                it != playerData.playerId
+            }.map {
+                universeData3DAtPlayer.get(it)
+            }
 
-        // player view the neighbor as enemy, or neighbor that views the player as enemy
-        val neighborEnemyList: List<PlayerData> = neighborList.filter { neighbor ->
-            playerData.playerInternalData.diplomacyData().isEnemyOf(neighbor) ||
-                    neighbor.playerInternalData.diplomacyData().isEnemyOf(playerData)
-        }
+            // player view the neighbor as enemy, or neighbor that views the player as enemy
+            val neighborEnemyList: List<PlayerData> = neighborList.filter { neighbor ->
+                playerData.playerInternalData.diplomacyData().isEnemyOf(neighbor) ||
+                        neighbor.playerInternalData.diplomacyData().isEnemyOf(playerData)
+            }
 
-        // Determine if it is in combat or not
-        val inCombat: Boolean = neighborEnemyList.isNotEmpty()
+            // Determine if it is in combat or not
+            val inCombat: Boolean = neighborEnemyList.isNotEmpty()
 
-        // Add a red sword if in Combat
-        if (inCombat) {
-            val sword: Image = ActorFunction.createImage(
-                assets = assets,
-                name = "combat/sword1",
-                xPos = xPos + width * 0.75f,
-                yPos = yPos,
-                width = width * 0.25f,
-                height = height * 0.5f,
-                r = 1.0f,
-                g = 0.0f,
-                b = 0.0f,
-                a = 1.0f,
-                soundVolume = soundVolume,
-                function = function
-            )
-            imageList.add(sword)
+            // Add a red sword if in Combat
+            if (inCombat) {
+                val sword: Image = ActorFunction.createImage(
+                    assets = assets,
+                    name = "combat/sword1",
+                    xPos = xPos + width * 0.75f,
+                    yPos = yPos,
+                    width = width * 0.25f,
+                    height = height * 0.5f,
+                    r = 1.0f,
+                    g = 0.0f,
+                    b = 0.0f,
+                    a = 1.0f,
+                    soundVolume = soundVolume,
+                    function = function
+                )
+                imageList.add(sword)
+            }
         }
 
 
@@ -248,6 +267,7 @@ object PlayerImage {
             height = height,
             soundVolume = soundVolume,
             mapPlayerColorMode = mapPlayerColorMode,
+            showCombat = false,
             function = function
         )
         val stack = Stack()
@@ -276,47 +296,53 @@ object PlayerImage {
         val maxComponent: Pair<Char, Double> = velocity.maxComponent()
         val magMaxComponent: Double = maxComponent.second
 
-        val degree: Float = if (maxComponent.second < 0.000001f) {
-            0.0f
-        } else if (maxComponent.first == 'x') {
-            if (velocity.vx > 0) {
-                val primaryDirection: Float = 90f
-                val adjusted: Float =
-                    (-velocity.vy / magMaxComponent * 15 - velocity.vz / magMaxComponent * 5).toFloat()
-                primaryDirection + adjusted
-            } else {
-                val primaryDirection: Float = 270f
-                val adjusted: Float =
-                    (velocity.vy / magMaxComponent * 15 + velocity.vz / magMaxComponent * 5).toFloat()
-                primaryDirection + adjusted
+        val degree: Float = when {
+            maxComponent.second < 0.000001f -> {
+                0.0f
             }
-        } else if (maxComponent.first == 'y') {
-            if (velocity.vy > 0) {
-                val primaryDirection: Float = 0f
-                val adjusted: Float =
-                    (velocity.vx / magMaxComponent * 15 + velocity.vz / magMaxComponent * 5).toFloat()
-                primaryDirection + adjusted
-            } else {
-                val primaryDirection: Float = 180f
-                val adjusted: Float =
-                    (-velocity.vx / magMaxComponent * 15 - velocity.vz / magMaxComponent * 5).toFloat()
-                primaryDirection + adjusted
+            maxComponent.first == 'x' -> {
+                if (velocity.vx > 0) {
+                    val primaryDirection: Float = 90f
+                    val adjusted: Float =
+                        (-velocity.vy / magMaxComponent * 15 - velocity.vz / magMaxComponent * 5).toFloat()
+                    primaryDirection + adjusted
+                } else {
+                    val primaryDirection: Float = 270f
+                    val adjusted: Float =
+                        (velocity.vy / magMaxComponent * 15 + velocity.vz / magMaxComponent * 5).toFloat()
+                    primaryDirection + adjusted
+                }
             }
-        } else if (maxComponent.first == 'z') {
-            if (velocity.vz > 0) {
-                val primaryDirection: Float = 45f
-                val adjusted: Float =
-                    (velocity.vx / magMaxComponent * 15 - velocity.vy / magMaxComponent * 5).toFloat()
-                primaryDirection + adjusted
-            } else {
-                val primaryDirection: Float = 225f
-                val adjusted: Float =
-                    (-velocity.vx / magMaxComponent * 15 + velocity.vy / magMaxComponent * 5).toFloat()
-                primaryDirection + adjusted
+            maxComponent.first == 'y' -> {
+                if (velocity.vy > 0) {
+                    val primaryDirection: Float = 0f
+                    val adjusted: Float =
+                        (velocity.vx / magMaxComponent * 15 + velocity.vz / magMaxComponent * 5).toFloat()
+                    primaryDirection + adjusted
+                } else {
+                    val primaryDirection: Float = 180f
+                    val adjusted: Float =
+                        (-velocity.vx / magMaxComponent * 15 - velocity.vz / magMaxComponent * 5).toFloat()
+                    primaryDirection + adjusted
+                }
             }
-        } else {
-            logger.error("Wrong velocity maxComponent character")
-            0.0f
+            maxComponent.first == 'z' -> {
+                if (velocity.vz > 0) {
+                    val primaryDirection: Float = 45f
+                    val adjusted: Float =
+                        (velocity.vx / magMaxComponent * 15 - velocity.vy / magMaxComponent * 5).toFloat()
+                    primaryDirection + adjusted
+                } else {
+                    val primaryDirection: Float = 225f
+                    val adjusted: Float =
+                        (-velocity.vx / magMaxComponent * 15 + velocity.vy / magMaxComponent * 5).toFloat()
+                    primaryDirection + adjusted
+                }
+            }
+            else -> {
+                logger.error("Wrong velocity maxComponent character")
+                0.0f
+            }
         }
 
 

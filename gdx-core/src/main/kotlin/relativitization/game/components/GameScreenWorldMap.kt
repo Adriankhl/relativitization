@@ -189,6 +189,7 @@ class GameScreenWorldMap(
                 height = playerRectangle.height.toFloat() * actualZoom(),
                 soundVolume = gdxSettings.soundEffectsVolume,
                 mapPlayerColorMode = gdxSettings.mapPlayerColorMode,
+                showCombat = true,
             ) {
                 game.universeClient.newSelectedPlayerId = id
             }
