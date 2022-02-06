@@ -47,9 +47,7 @@ data class PlayerData(
     val isDilationActionTurn: Boolean = true,
     val groupId: Int = double4DToGroupId(double4D, 0.01),
     val velocity: Velocity = Velocity(0.0, 0.0, 0.0),
-    val playerInternalData: PlayerInternalData = PlayerInternalData(
-        directLeaderId = playerId, leaderIdList = listOf()
-    ),
+    val playerInternalData: PlayerInternalData = PlayerInternalData(directLeaderId = playerId),
     val newPlayerList: List<PlayerInternalData> = listOf()
 ) {
     /**
@@ -167,9 +165,7 @@ data class MutablePlayerData(
     var isDilationActionTurn: Boolean = true,
     var groupId: Int = double4DToGroupId(double4D, 0.01),
     var velocity: MutableVelocity = MutableVelocity(0.0, 0.0, 0.0),
-    var playerInternalData: MutablePlayerInternalData = MutablePlayerInternalData(
-        directLeaderId = playerId, leaderIdList = mutableListOf()
-    ),
+    var playerInternalData: MutablePlayerInternalData = MutablePlayerInternalData(directLeaderId = playerId),
     val newPlayerList: MutableList<MutablePlayerInternalData> = mutableListOf()
 ) {
     /**
@@ -339,7 +335,7 @@ enum class PlayerType {
 @Serializable
 data class PlayerInternalData(
     val directLeaderId: Int,
-    val leaderIdList: List<Int>,
+    val leaderIdList: List<Int> = listOf(),
     val directSubordinateIdSet: Set<Int> = setOf(),
     val subordinateIdSet: Set<Int> = setOf(),
     val isAlive: Boolean = true,
@@ -380,7 +376,7 @@ data class PlayerInternalData(
 @Serializable
 data class MutablePlayerInternalData(
     var directLeaderId: Int,
-    var leaderIdList: MutableList<Int>,
+    var leaderIdList: MutableList<Int> = mutableListOf(),
     var directSubordinateIdSet: MutableSet<Int> = mutableSetOf(),
     var subordinateIdSet: MutableSet<Int> = mutableSetOf(),
     var isAlive: Boolean = true,
