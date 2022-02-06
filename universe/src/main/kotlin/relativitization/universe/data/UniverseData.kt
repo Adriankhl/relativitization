@@ -148,10 +148,13 @@ data class UniverseData(
         for (i in 0 until universeSettings.xDim) {
             for (j in 0 until universeSettings.yDim) {
                 for (k in 0 until universeSettings.zDim) {
-                    val delay =
-                        intDelay(center.toInt3D(), Int3D(i, j, k), universeSettings.speedOfLight)
+                    val delay: Int = intDelay(
+                        center.toInt3D(),
+                        Int3D(i, j, k),
+                        universeSettings.speedOfLight
+                    )
                     val int4D = Int4D(center.t - delay, i, j, k)
-                    val playerDataList = getPlayerDataListAt(int4D)
+                    val playerDataList: List<PlayerData> = getPlayerDataListAt(int4D)
 
                     // Check repeated playerData due to movement and time delay
                     for (playerData in playerDataList) {
