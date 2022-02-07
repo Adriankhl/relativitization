@@ -19,6 +19,7 @@ import relativitization.universe.maths.random.Rand
 import relativitization.universe.mechanisms.defaults.dilated.pop.UpdateDesire
 import relativitization.universe.mechanisms.defaults.regular.science.UpdateScienceApplicationData
 import relativitization.universe.mechanisms.defaults.regular.sync.SyncPlayerScienceData
+import kotlin.math.floor
 
 object RandomOneStarPerPlayerGenerate : RandomGenerateUniverseMethod() {
     override fun generate(settings: GenerateSettings): UniverseData {
@@ -290,9 +291,9 @@ object RandomOneStarPerPlayerGenerate : RandomGenerateUniverseMethod() {
                 0.1,
                 universeSettings.zDim.toDouble() - 0.1
             )
-            mutablePlayerData.int4D.x = mutablePlayerData.double4D.x.toInt()
-            mutablePlayerData.int4D.y = mutablePlayerData.double4D.y.toInt()
-            mutablePlayerData.int4D.z = mutablePlayerData.double4D.z.toInt()
+            mutablePlayerData.int4D.x = floor(mutablePlayerData.double4D.x).toInt()
+            mutablePlayerData.int4D.y = floor(mutablePlayerData.double4D.y).toInt()
+            mutablePlayerData.int4D.z = floor(mutablePlayerData.double4D.z).toInt()
 
             // Add random stellar system
             mutablePlayerData.playerInternalData.popSystemData().addRandomStellarSystem()

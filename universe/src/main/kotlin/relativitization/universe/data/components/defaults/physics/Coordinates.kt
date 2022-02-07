@@ -1,10 +1,7 @@
 package relativitization.universe.data.components.defaults.physics
 
 import kotlinx.serialization.Serializable
-import kotlin.math.abs
-import kotlin.math.max
-import kotlin.math.min
-import kotlin.math.sqrt
+import kotlin.math.*
 
 @Serializable
 data class Int4D(val t: Int, val x: Int, val y: Int, val z: Int) {
@@ -49,24 +46,26 @@ data class MutableInt4D(var t: Int, var x: Int, var y: Int, var z: Int) {
 
 @Serializable
 data class Double4D(val t: Double, val x: Double, val y: Double, val z: Double) {
-    fun toInt4D() = Int4D(t.toInt(), x.toInt(), y.toInt(), z.toInt())
-    fun toInt3D() = Int3D(x.toInt(), y.toInt(), z.toInt())
+    fun toInt4D() = Int4D(floor(t).toInt(), floor(x).toInt(), floor(y).toInt(), floor(z).toInt())
+    fun toInt3D() = Int3D(floor(x).toInt(), floor(y).toInt(), floor(z).toInt())
     fun toDouble3D() = Double3D(x, y, z)
 
     fun atInt4D(int4D: Int4D): Boolean {
-        return (t.toInt() == int4D.t) && (x.toInt() == int4D.x) && (y.toInt() == int4D.y) && (z.toInt() == int4D.z)
+        return (floor(t).toInt() == int4D.t) && (floor(x).toInt() == int4D.x) && (floor(y).toInt() == int4D.y) &&
+                (floor(z).toInt() == int4D.z)
     }
 }
 
 @Serializable
 data class MutableDouble4D(var t: Double, var x: Double, var y: Double, var z: Double) {
-    fun toMutableInt4D() = MutableInt4D(t.toInt(), x.toInt(), y.toInt(), z.toInt())
+    fun toMutableInt4D() = MutableInt4D(floor(t).toInt(), floor(x).toInt(), floor(y).toInt(), floor(z).toInt())
     fun toDouble3D() = Double3D(x, y, z)
     fun toMutableDouble3D() = MutableDouble3D(x, y, z)
-    fun toInt3D() = Int3D(x.toInt(), y.toInt(), z.toInt())
-    fun toMutableInt3D() = MutableInt3D(x.toInt(), y.toInt(), z.toInt())
+    fun toInt3D() = Int3D(floor(x).toInt(), floor(y).toInt(), floor(z).toInt())
+    fun toMutableInt3D() = MutableInt3D(floor(x).toInt(), floor(y).toInt(), floor(z).toInt())
     fun atInt4D(int4D: MutableInt4D): Boolean {
-        return (t.toInt() == int4D.t) && (x.toInt() == int4D.x) && (y.toInt() == int4D.y) && (z.toInt() == int4D.z)
+        return (floor(t).toInt() == int4D.t) && (floor(x).toInt() == int4D.x) && (floor(y).toInt() == int4D.y) &&
+                (floor(z).toInt() == int4D.z)
     }
 }
 
@@ -318,7 +317,7 @@ data class Double3D(val x: Double, val y: Double, val z: Double) {
 @Serializable
 data class MutableDouble3D(var x: Double, var y: Double, var z: Double) {
     fun atInt3D(int3D: MutableInt3D): Boolean {
-        return (x.toInt() == int3D.x) && (y.toInt() == int3D.y) && (z.toInt() == int3D.z)
+        return (floor(x).toInt() == int3D.x) && (floor(y).toInt() == int3D.y) && (floor(z).toInt() == int3D.z)
     }
 }
 

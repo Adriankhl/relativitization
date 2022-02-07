@@ -12,6 +12,7 @@ import relativitization.universe.maths.grid.Grids.double4DToGroupId
 import relativitization.universe.maths.physics.Relativistic.deltaMassByPhotonRocket
 import relativitization.universe.utils.RandomName.randomPlayerName
 import relativitization.universe.utils.RelativitizationLogManager
+import kotlin.math.floor
 import kotlin.math.min
 
 class PlayerCollection(
@@ -271,9 +272,9 @@ class PlayerCollection(
 
             // Move player int4D by double4D
             playerData.int4D.t = time
-            playerData.int4D.x = double4D.x.toInt()
-            playerData.int4D.y = double4D.y.toInt()
-            playerData.int4D.z = double4D.z.toInt()
+            playerData.int4D.x = floor(double4D.x).toInt()
+            playerData.int4D.y = floor(double4D.y).toInt()
+            playerData.int4D.z = floor(double4D.z).toInt()
 
             // Change player group id
             playerData.groupId = double4DToGroupId(playerData.double4D, edgeLength)

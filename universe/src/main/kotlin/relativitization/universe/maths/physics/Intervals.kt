@@ -105,11 +105,7 @@ object Intervals {
      */
     fun intDelay(c1: Int3D, c2: Int3D, speedOfLight: Double): Int {
         val doubleDelay: Double = doubleDistance(c1, c2) / speedOfLight
-        return if (doubleDelay % 1.0 == 0.0) {
-            doubleDelay.toInt()
-        } else {
-            doubleDelay.toInt() + 1
-        }
+        return ceil(doubleDelay).toInt()
     }
 
     /**

@@ -4,6 +4,7 @@ import relativitization.universe.data.components.defaults.physics.Double3D
 import relativitization.universe.data.components.defaults.physics.Double4D
 import relativitization.universe.data.components.defaults.physics.Int3D
 import relativitization.universe.data.components.defaults.physics.MutableDouble4D
+import kotlin.math.floor
 
 object Grids {
 
@@ -66,25 +67,25 @@ object Grids {
         MutableList(tDim) { create3DGrid<T>(xDim, yDim, zDim) { x, y, z -> generate(it, x, y, z) } }
 
     /**
-     * Whether the coordinate belong to same cube in a grid
+     * Whether the coordinate belong to same group in a cube
      */
-    fun sameCube(md1: MutableDouble4D, md2: MutableDouble4D, edgeLength: Double): Boolean {
+    fun sameGroup(md1: MutableDouble4D, md2: MutableDouble4D, edgeLength: Double): Boolean {
         return if (md1.toMutableInt4D() != md2.toMutableInt4D()) {
             false
         } else {
-            val xExtra1: Double = md1.x - md1.x.toInt()
-            val xExtra2: Double = md2.x - md2.x.toInt()
-            val yExtra1: Double = md1.y - md1.y.toInt()
-            val yExtra2: Double = md2.y - md2.y.toInt()
-            val zExtra1: Double = md1.z - md1.z.toInt()
-            val zExtra2: Double = md2.z - md2.z.toInt()
+            val xExtra1: Double = md1.x - floor(md1.x)
+            val xExtra2: Double = md2.x - floor(md2.x)
+            val yExtra1: Double = md1.y - floor(md1.y)
+            val yExtra2: Double = md2.y - floor(md2.y)
+            val zExtra1: Double = md1.z - floor(md1.z)
+            val zExtra2: Double = md2.z - floor(md2.z)
 
-            val xNum1 = (xExtra1 / edgeLength).toInt()
-            val xNum2 = (xExtra2 / edgeLength).toInt()
-            val yNum1 = (yExtra1 / edgeLength).toInt()
-            val yNum2 = (yExtra2 / edgeLength).toInt()
-            val zNum1 = (zExtra1 / edgeLength).toInt()
-            val zNum2 = (zExtra2 / edgeLength).toInt()
+            val xNum1: Int = floor(xExtra1 / edgeLength).toInt()
+            val xNum2: Int = floor(xExtra2 / edgeLength).toInt()
+            val yNum1: Int = floor(yExtra1 / edgeLength).toInt()
+            val yNum2: Int = floor(yExtra2 / edgeLength).toInt()
+            val zNum1: Int = floor(zExtra1 / edgeLength).toInt()
+            val zNum2: Int = floor(zExtra2 / edgeLength).toInt()
 
             (xNum1 == xNum2) && (yNum1 == yNum2) && (zNum1 == zNum2)
         }
@@ -96,9 +97,9 @@ object Grids {
     fun numEdge(edgeLength: Double): Int {
         val num: Double = (1.0 / edgeLength)
         return if (num % 1.0 == 0.0) {
-            num.toInt()
+            floor(num).toInt()
         } else {
-            num.toInt() + 1
+            floor(num).toInt() + 1
         }
     }
 
@@ -108,13 +109,13 @@ object Grids {
     fun double4DToGroupId(mutableDouble4D: MutableDouble4D, edgeLength: Double): Int {
         val numEdge: Int = numEdge(edgeLength)
 
-        val xExtra: Double = mutableDouble4D.x - mutableDouble4D.x.toInt()
-        val yExtra: Double = mutableDouble4D.y - mutableDouble4D.y.toInt()
-        val zExtra: Double = mutableDouble4D.z - mutableDouble4D.z.toInt()
+        val xExtra: Double = mutableDouble4D.x - floor(mutableDouble4D.x)
+        val yExtra: Double = mutableDouble4D.y - floor(mutableDouble4D.y)
+        val zExtra: Double = mutableDouble4D.z - floor(mutableDouble4D.z)
 
-        val xNum = (xExtra / edgeLength).toInt()
-        val yNum = (yExtra / edgeLength).toInt()
-        val zNum = (zExtra / edgeLength).toInt()
+        val xNum: Int = floor(xExtra / edgeLength).toInt()
+        val yNum: Int = floor(yExtra / edgeLength).toInt()
+        val zNum: Int = floor(zExtra / edgeLength).toInt()
 
         return xNum * numEdge * numEdge + yNum * numEdge + zNum
     }
@@ -125,13 +126,13 @@ object Grids {
     fun double4DToGroupId(double4D: Double4D, edgeLength: Double): Int {
         val numEdge: Int = numEdge(edgeLength)
 
-        val xExtra: Double = double4D.x - double4D.x.toInt()
-        val yExtra: Double = double4D.y - double4D.y.toInt()
-        val zExtra: Double = double4D.z - double4D.z.toInt()
+        val xExtra: Double = double4D.x - floor(double4D.x)
+        val yExtra: Double = double4D.y - floor(double4D.y)
+        val zExtra: Double = double4D.z - floor(double4D.z)
 
-        val xNum = (xExtra / edgeLength).toInt()
-        val yNum = (yExtra / edgeLength).toInt()
-        val zNum = (zExtra / edgeLength).toInt()
+        val xNum = floor(xExtra / edgeLength).toInt()
+        val yNum = floor(yExtra / edgeLength).toInt()
+        val zNum = floor(zExtra / edgeLength).toInt()
 
         return xNum * numEdge * numEdge + yNum * numEdge + zNum
     }
