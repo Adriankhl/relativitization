@@ -222,9 +222,9 @@ data class SplitCarrierCommand(
 
 
         // Sync data and add the new player internal data to new player list
-        playerData.syncData()
         newPlayerInternalData.syncDataComponent()
         playerData.newPlayerList.add(newPlayerInternalData)
+        playerData.syncData()
     }
 }
 

@@ -173,6 +173,11 @@ data class MutablePlayerData(
      */
     fun syncData() {
         playerInternalData.syncDataComponent()
+
+        // Add mass from new player to other rest mass
+        playerInternalData.physicsData().otherRestMass += newPlayerList.sumOf {
+            it.physicsData().totalRestMass()
+        }
     }
 
     /**
