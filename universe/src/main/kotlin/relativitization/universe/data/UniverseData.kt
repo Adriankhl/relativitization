@@ -6,6 +6,7 @@ import relativitization.universe.data.components.defaults.physics.Int3D
 import relativitization.universe.data.components.defaults.physics.Int4D
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.data.serializer.DataSerializer
+import relativitization.universe.maths.grid.Grids
 import relativitization.universe.maths.grid.Grids.double4DToGroupId
 import relativitization.universe.maths.physics.Intervals.intDelay
 import relativitization.universe.utils.RelativitizationLogManager
@@ -143,6 +144,8 @@ data class UniverseData(
     }
 
     fun toUniverseData3DAtGrid(center: Int4D): UniverseData3DAtGrid {
+        val centerPlayerDataList: List<PlayerData> = getPlayerDataListAt(center)
+
         val playerDataMap: MutableMap<Int, PlayerData> = mutableMapOf()
 
         for (i in 0 until universeSettings.xDim) {
@@ -172,13 +175,41 @@ data class UniverseData(
             }
         }
 
-        val centerPlayerDataList: List<PlayerData> = getPlayerDataListAt(center)
+        val playerId3D: List<List<List<MutableList<Int>>>> = Grids.create3DGrid(
+            universeSettings.xDim,
+            universeSettings.yDim,
+            universeSettings.zDim
+        ) { _, _, _ ->
+            mutableListOf()
+        }
+
+        playerDataMap.forEach {
+            val id = it.value.playerId
+            val x = it.value.int4D.x
+            val y = it.value.int4D.y
+            val z = it.value.int4D.z
+            playerId3D[x][y][z].add(id)
+        }
+
+        // Group playerId in 3D grid by groupId
+        val playerId3DMap: List<List<List<Map<Int, List<Int>>>>> =
+            playerId3D.map { yList ->
+                yList.map { zList ->
+                    zList.map { playerList ->
+                        playerList.groupBy { playerId ->
+                            playerDataMap.getValue(playerId).groupId
+                        }
+                    }
+                }
+            }
+
 
         return UniverseData3DAtGrid(
-            center,
-            centerPlayerDataList,
-            playerDataMap,
-            universeSettings
+            center = center,
+            centerPlayerDataList = centerPlayerDataList,
+            playerDataMap = playerDataMap,
+            playerId3DMap = playerId3DMap,
+            universeSettings = universeSettings,
         )
     }
 

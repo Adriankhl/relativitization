@@ -6,7 +6,6 @@ import relativitization.universe.data.commands.CommandErrorMessage
 import relativitization.universe.data.components.defaults.physics.Int3D
 import relativitization.universe.data.components.defaults.physics.Int4D
 import relativitization.universe.data.serializer.DataSerializer
-import relativitization.universe.maths.grid.Grids.create3DGrid
 import relativitization.universe.utils.I18NString
 import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.math.max
@@ -17,13 +16,14 @@ data class UniverseData3DAtGrid(
     val center: Int4D,
     val centerPlayerDataList: List<PlayerData>,
     val playerDataMap: Map<Int, PlayerData>,
+    val playerId3DMap: List<List<List<Map<Int, List<Int>>>>>,
     val universeSettings: UniverseSettings,
 ) {
     fun idToUniverseData3DAtPlayer(): Map<Int, UniverseData3DAtPlayer> {
         // group by group id
-        val playerGroups: List<List<PlayerData>> = centerPlayerDataList.groupBy {
+        val playerGroupMap: Map<Int, List<PlayerData>> = centerPlayerDataList.groupBy {
             it.groupId
-        }.values.filter { playerDataList ->
+        }.filterValues { playerDataList ->
             // Skip the process if none of the player in the group are in the recent time
             // this can happen if all player data are afterimage
             playerDataList.any {
@@ -31,7 +31,7 @@ data class UniverseData3DAtGrid(
             }
         }
 
-        return playerGroups.map { group ->
+        return playerGroupMap.map { (groupId, group) ->
             val allGroupId: Set<Int> = group.map { it.playerId }.toSet()
 
             // player data in the same group
@@ -56,37 +56,99 @@ data class UniverseData3DAtGrid(
                 }
             }
 
-            val groupPlayerDataMap: Map<Int, PlayerData> = prioritizedDataMap + playerDataMap.filter {
-                !prioritizedDataMap.containsKey(it.key)
+
+            // partition player data map by the part to keep and to remove
+            val toKeepPlayerDataMap: Map<Int, PlayerData> = playerDataMap - prioritizedDataMap.keys
+            val toRemovePlayerDataMap: Map<Int, PlayerData> = prioritizedDataMap.keys.filter {
+                playerDataMap.containsKey(it)
+            }.associateWith {
+                playerDataMap.getValue(it)
             }
 
-            val groupPlayerId3D: List<List<List<MutableList<Int>>>> = create3DGrid(
-                universeSettings.xDim,
-                universeSettings.yDim,
-                universeSettings.zDim
-            ) { _, _, _ ->
-                mutableListOf()
+            val groupPlayerDataMap: Map<Int, PlayerData> = prioritizedDataMap + toKeepPlayerDataMap
+
+            // a map to store the location of player data to be removed
+            val toRemoveLocationIdMap: Map<Int4D, Map<Int, List<Int>>> = toRemovePlayerDataMap.values.groupBy {
+                it.int4D
+            }.mapValues { (_, data) ->
+                data.groupBy {
+                    it.groupId
+                }.mapValues { (_, dataList) ->
+                    dataList.map { it.playerId }
+                }
             }
 
-            groupPlayerDataMap.forEach {
-                val id = it.value.playerId
-                val x = it.value.int4D.x
-                val y = it.value.int4D.y
-                val z = it.value.int4D.z
-                groupPlayerId3D[x][y][z].add(id)
-            }
+            // An optimized way to compute the 3d array of player id
+            // Remove the date that has been removed from playerDataMap, then add the prioritized data
+            val groupPlayerId3DMap: List<List<List<Map<Int, List<Int>>>>> = playerId3DMap.mapIndexed { xIndex, yList ->
+                val atCenterX: Boolean = xIndex == center.x
+                val toRemoveSameXMap: Map<Int4D, Map<Int, List<Int>>> = toRemoveLocationIdMap.filterKeys {
+                    it.x == xIndex
+                }
+                if (atCenterX || toRemoveSameXMap.isNotEmpty()) {
+                    yList.mapIndexed { yIndex, zList ->
+                        val atCenterY: Boolean = yIndex == center.y
+                        val toRemoveSameXYMap: Map<Int4D, Map<Int, List<Int>>> = toRemoveSameXMap.filterKeys {
+                            it.y == yIndex
+                        }
+                        if (atCenterY || toRemoveSameXYMap.isNotEmpty()) {
+                            zList.mapIndexed { zIndex, playerDataAtGridMap ->
+                                val atCenterZ: Boolean = zIndex == center.z
+                                val toRemoveDataSameXYZMap: Map<Int4D, Map<Int, List<Int>>> = toRemoveSameXYMap
+                                    .filterKeys {
+                                        it.z == zIndex
+                                    }
+                                if (atCenterZ || toRemoveDataSameXYZMap.isNotEmpty()) {
+                                    val atCenter: Boolean = atCenterX && atCenterY && atCenterZ
 
-            // Group playerId in 3D grid by groupId
-            val groupPlayerId3DMap: List<List<List<Map<Int, List<Int>>>>> =
-                groupPlayerId3D.map { yList ->
-                    yList.map { zList ->
-                        zList.map { playerList ->
-                            playerList.groupBy { playerId ->
-                                groupPlayerDataMap.getValue(playerId).groupId
+                                    // Add the center group id as key if not exist
+                                    val newPlayerDataAtGridMap: Map<Int, List<Int>> = if (atCenter) {
+                                        if (playerDataAtGridMap.containsKey(groupId)) {
+                                            playerDataAtGridMap
+                                        } else {
+                                            playerDataAtGridMap + mapOf(groupId to listOf())
+                                        }
+                                    } else {
+                                        playerDataAtGridMap
+                                    }
+
+                                    // remove the id from toRemovePlayerDataMap
+                                    // add prioritized id if this is the center group
+                                    newPlayerDataAtGridMap.mapValues { (gridGroupId, idList) ->
+                                        // The remaining should be at the correct location
+                                        val toRemoveSameGroupList: List<Int> = toRemoveDataSameXYZMap
+                                            .values.flatMap {
+                                                it.getOrDefault(gridGroupId, listOf())
+                                            }
+                                        val atCenterGroup: Boolean = atCenter && (gridGroupId == groupId)
+
+                                        val afterRemoveList: List<Int> = if (toRemoveSameGroupList.isNotEmpty()) {
+                                            idList - toRemoveSameGroupList.toSet()
+                                        } else {
+                                            idList
+                                        }
+
+                                        if (atCenterGroup) {
+                                            afterRemoveList + prioritizedDataMap.keys
+                                        } else {
+                                            afterRemoveList
+                                        }
+                                    }.filterValues {
+                                        // Some groups could be empty after removing player id, filter those out
+                                        it.isNotEmpty()
+                                    }
+                                } else {
+                                    playerDataAtGridMap
+                                }
                             }
+                        } else {
+                            zList
                         }
                     }
+                } else {
+                    yList
                 }
+            }
 
             group.filter {
                 // Prevent turning after image to UniverseData3DAtPlayer
@@ -252,7 +314,7 @@ data class UniverseData3DAtPlayer(
 }
 
 /**
- * For human or ai to decide the command list
+ * For human or AI to decide the command list
  */
 class PlanDataAtPlayer(
     val universeData3DAtPlayer: UniverseData3DAtPlayer,
