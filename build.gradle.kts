@@ -155,7 +155,7 @@ tasks.register("packageAll") {
             commandLine(
                 "cp",
                 "../relativitization/gdx-android/build/outputs/apk/debug/relativitization-debug.apk",
-                "./outputs/relativitization-experimental.apk"
+                "./outputs/relativitization.apk"
             )
         }
 
