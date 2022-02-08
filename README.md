@@ -47,8 +47,9 @@ can simulate your model via a terminal. Typically, this should be sufficient for
 To encourage people to support this project financially, the assets of the game are not opened. You need
 to [buy the assets](https://adriankhl.itch.io/relativitization) to actually play the game.
 
-Under specific circumstances, such as education, it may be possible to get free download-keys for the game. Please email
-your request to [relativitization@gmail.com](relativitization@gmail.com).
+Under specific circumstances, such as for educational purposes, or if you are a programmer who would like to contribute,
+it may be possible to get free download-keys for the game. Please email your request
+to [relativitization@gmail.com](relativitization@gmail.com).
 
 ## Run simulations
 
