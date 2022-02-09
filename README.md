@@ -6,9 +6,6 @@ Turn-based strategy game / agent-based simulation framework / social model in a 
 * [See the game documentation](https://github.com/Adriankhl/relativitization-game-doc) if you want to know more about
   the game.
 
-**Status of the project**: Command line simulation is functioning, the first version of the game will be released in
-February 2022.
-
 ## Table of Contents
 
 1. [Project layout](#project-layout)
