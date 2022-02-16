@@ -20,9 +20,9 @@ object Versions {
 
     // Android
     const val androidGradlePluginVersion = "7.0.4"
-    const val androidAppCompatVersion = "1.4.0"
-    const val androidLifeCycleKtxVersion = "2.4.0"
-    const val androidFragmentKtxVersion = "1.4.0"
+    const val androidAppCompatVersion = "1.4.1"
+    const val androidLifeCycleKtxVersion = "2.4.1"
+    const val androidFragmentKtxVersion = "1.4.1"
 
     // Unused in relativitization, for ktor
     const val logbackVersion = "1.2.10"
