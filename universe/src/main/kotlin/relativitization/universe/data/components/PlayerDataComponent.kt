@@ -24,9 +24,9 @@ data class PlayerDataComponentMap(
     val dataMap: Map<String, PlayerDataComponent> = mapOf(),
 ) {
     constructor(dataList: List<PlayerDataComponent>) : this(
-        dataMap = dataList.map {
-            (it.name()) to it
-        }.toMap()
+        dataMap = dataList.associateBy {
+            (it.name())
+        }
     )
 
     internal inline fun <reified T : PlayerDataComponent> getOrDefault(
@@ -53,10 +53,10 @@ data class MutablePlayerDataComponentMap(
     val dataMap: MutableMap<String, MutablePlayerDataComponent> = mutableMapOf(),
 ) {
     constructor(dataList: List<MutablePlayerDataComponent>) : this(
-        dataMap = dataList.map {
+        dataMap = dataList.associateBy {
             // Drop first 7 character "Mutable"
-            (it.name()).drop(7) to it
-        }.toMap().toMutableMap()
+            (it.name()).drop(7)
+        }.toMutableMap()
     )
 
     internal inline fun <reified T : MutablePlayerDataComponent> getOrDefault(

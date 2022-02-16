@@ -23,9 +23,9 @@ data class GlobalDataComponentMap(
     val dataMap: Map<String, GlobalDataComponent> = mapOf(),
 ) {
     constructor(dataList: List<GlobalDataComponent>) : this(
-        dataMap = dataList.map {
-            (it.name()) to it
-        }.toMap()
+        dataMap = dataList.associateBy {
+            (it.name())
+        }
     )
 
     internal inline fun <reified T : GlobalDataComponent> getOrDefault(
@@ -52,10 +52,10 @@ data class MutableGlobalDataComponentMap(
     val dataMap: MutableMap<String, MutableGlobalDataComponent> = mutableMapOf(),
 ) {
     constructor(dataList: List<MutableGlobalDataComponent>) : this(
-        dataMap = dataList.map {
+        dataMap = dataList.associateBy {
             // Drop first 7 character "Mutable"
-            (it.name()).drop(7) to it
-        }.toMap().toMutableMap()
+            (it.name()).drop(7)
+        }.toMutableMap()
     )
 
     internal inline fun <reified T : MutableGlobalDataComponent> getOrDefault(

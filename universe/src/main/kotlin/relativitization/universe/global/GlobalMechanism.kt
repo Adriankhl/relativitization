@@ -30,9 +30,9 @@ object GlobalMechanismCollection {
     private val globalMechanismListList: List<GlobalMechanismList> =
         GlobalMechanismList::class.sealedSubclasses.map { it.objectInstance!! }
 
-    val globalMechanismListMap: Map<String, GlobalMechanismList> = globalMechanismListList.map {
-        it.name() to it
-    }.toMap()
+    val globalMechanismListMap: Map<String, GlobalMechanismList> = globalMechanismListList.associateBy {
+        it.name()
+    }
 
     fun globalProcess(
         universeData: UniverseData

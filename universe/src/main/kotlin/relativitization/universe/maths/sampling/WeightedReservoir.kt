@@ -33,7 +33,7 @@ object WeightedReservoir {
                 val random: Double = Rand.rand().nextDouble()
 
                 if (weight <= 0.0) {
-                    logger.error("Weight smaller than 0.0, setting weightto 1E-9")
+                    logger.error("Weight smaller than 0.0, setting weight to 1E-9")
                     it to random.pow(1.0 / 1E-9)
                 } else {
                     it to random.pow(1.0 / weight)

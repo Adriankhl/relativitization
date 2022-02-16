@@ -1,20 +1,16 @@
 package relativitization.universe.mechanisms.defaults.dilated.pop
 
 import relativitization.universe.data.MutablePlayerData
-import relativitization.universe.data.PlayerData
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.components.defaults.economy.MutableResourceQualityData
-import relativitization.universe.data.components.defaults.economy.ResourceQualityData
 import relativitization.universe.data.components.defaults.economy.ResourceType
 import relativitization.universe.data.components.defaults.popsystem.pop.MutableCommonPopData
 import relativitization.universe.data.components.defaults.popsystem.pop.MutableResourceDesireData
 import relativitization.universe.data.components.defaults.popsystem.pop.PopType
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.mechanisms.Mechanism
-import kotlin.math.min
-import kotlin.math.pow
 
 object UpdateDesire : Mechanism() {
     override fun process(
@@ -41,7 +37,7 @@ object UpdateDesire : Mechanism() {
                 )
 
                 val desireResourceMap: Map<ResourceType, MutableResourceDesireData> =
-                    desireResourceTypeList.map {
+                    desireResourceTypeList.associateWith {
                         val desireQualityData: MutableResourceQualityData =
                             computeDesireResourceQuality(
                                 mutableCommonPopData = mutableCommonPopData,
@@ -50,11 +46,11 @@ object UpdateDesire : Mechanism() {
                                 desireQualityUpdateMinDiff = desireQualityUpdateDiff,
                             )
 
-                        it to MutableResourceDesireData(
+                        MutableResourceDesireData(
                             desireAmount,
                             desireQualityData
                         )
-                    }.toMap()
+                    }
 
 
                 // Update desire
