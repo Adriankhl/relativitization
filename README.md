@@ -17,6 +17,7 @@ Turn-based strategy game / agent-based simulation framework / social model in a 
 5. [Generate documentation](#generate-documentation)
 6. [Contribute](#contribute)
 7. [License](#license)
+8. [Citations](#citations)
 
 ## Project layout
 
@@ -156,3 +157,22 @@ The source code of Relativitization is licensed under the [GPLv3 License](./LICE
 
 Contributions from pull requests are licensed under the [MIT License](./CLALICENSE.md), see
 the [Contributor License Agreement](./CLA.md).
+
+## Citations
+
+If you use this framework in a publication, please cite:
+
+```
+
+```
+
+Also consider citing
+this [paper](https://github.com/Adriankhl/relativitization-framework-doc/blob/main/papers/on-social-simulation-in-4D-relativistic-spacetime/pdf/paper.pdf):
+
+```
+@article{lai2022simulation,
+    title={On social simulation in 4D relativistic spacetime}, 
+    author={Lai Kwun Hang},
+    year={2022},
+}
+```
