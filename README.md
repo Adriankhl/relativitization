@@ -4,7 +4,9 @@ Turn-based strategy game / agent-based simulation framework / social model in a 
 
 * [Buy the game from itch.io](https://adriankhl.itch.io/relativitization)
 * [See the game documentation](https://github.com/Adriankhl/relativitization-game-doc) if you want to know more about
-  the game.
+  the game
+* [See the framework documentation](https://github.com/Adriankhl/relativitization-framework-doc) if you want to
+  implement your model or alternative game mechanicsk
 
 ## Table of Contents
 
@@ -67,8 +69,6 @@ Note that the main class has an additional `Kt` after the file name in Kotlin co
 The default configuration can take up to 50% of the ram in your PC. If you think it is too little or too much,
 open `./simulations/build.gradle.kts` and modify the line
 `applicationDefaultJvmArgs = listOf("-XX:MaxRAMPercentage=50")`.
-
-There will be guides on how to use this framework for modeling. For now, you have to dig into the source code.
 
 ## Build the game
 
