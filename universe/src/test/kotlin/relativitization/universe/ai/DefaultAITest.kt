@@ -27,8 +27,8 @@ internal class DefaultAITest {
             initialPopulation = 1E6,
             universeSettings = MutableUniverseSettings(
                 universeName = "One player test",
-                mechanismCollectionName = DefaultMechanismLists.name(),
                 commandCollectionName = DefaultCommandAvailability.name(),
+                mechanismCollectionName = DefaultMechanismLists.name(),
                 globalMechanismCollectionName = DefaultGlobalMechanismList.name(),
                 speedOfLight = 1.0,
                 tDim = 8,

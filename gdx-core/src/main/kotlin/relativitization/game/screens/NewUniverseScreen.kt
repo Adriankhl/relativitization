@@ -181,8 +181,6 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
 
         table.row().space(10f)
 
-
-
         table.add(createLabel("Total number of AI + human player: ", gdxSettings.normalFontSize))
         val numPlayerSelectBox = createSelectBox(
             (1..1000).toList(),

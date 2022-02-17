@@ -30,8 +30,8 @@ import relativitization.universe.mechanisms.name
 @Serializable
 data class UniverseSettings(
     val universeName: String = "my universe",
-    val mechanismCollectionName: String = DefaultMechanismLists.name(),
     val commandCollectionName: String = DefaultCommandAvailability.name(),
+    val mechanismCollectionName: String = DefaultMechanismLists.name(),
     val globalMechanismCollectionName: String = DefaultGlobalMechanismList.name(),
     val speedOfLight: Double = 1.0,
     val tDim: Int = 8,
@@ -64,8 +64,8 @@ data class UniverseSettings(
 @Serializable
 data class MutableUniverseSettings(
     var universeName: String = "my universe",
-    var mechanismCollectionName: String = DefaultMechanismLists.name(),
     var commandCollectionName: String = DefaultCommandAvailability.name(),
+    var mechanismCollectionName: String = DefaultMechanismLists.name(),
     var globalMechanismCollectionName: String = DefaultGlobalMechanismList.name(),
     var speedOfLight: Double = 1.0,
     var tDim: Int = 8,

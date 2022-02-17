@@ -23,8 +23,8 @@ fun main() {
         initialPopulation = 1E6,
         universeSettings = MutableUniverseSettings(
             universeName = "Smaller typical game",
-            mechanismCollectionName = DefaultMechanismLists.name(),
             commandCollectionName = DefaultCommandAvailability.name(),
+            mechanismCollectionName = DefaultMechanismLists.name(),
             globalMechanismCollectionName = DefaultGlobalMechanismList.name(),
             speedOfLight = 1.0,
             tDim = 10,

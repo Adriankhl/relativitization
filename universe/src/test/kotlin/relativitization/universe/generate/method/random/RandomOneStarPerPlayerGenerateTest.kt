@@ -26,8 +26,8 @@ internal class RandomOneStarPerPlayerGenerateTest {
             numExtraStellarSystem = 3,
             universeSettings = MutableUniverseSettings(
                 universeName = "One player test",
-                mechanismCollectionName = DefaultMechanismLists.name(),
                 commandCollectionName = DefaultCommandAvailability.name(),
+                mechanismCollectionName = DefaultMechanismLists.name(),
                 globalMechanismCollectionName = DefaultGlobalMechanismList.name(),
                 speedOfLight = 1.0,
                 tDim = 8,
@@ -117,8 +117,8 @@ internal class RandomOneStarPerPlayerGenerateTest {
             initialPopulation = 1E7,
             universeSettings = MutableUniverseSettings(
                 universeName = "One player test",
-                mechanismCollectionName = DefaultMechanismLists.name(),
                 commandCollectionName = DefaultCommandAvailability.name(),
+                mechanismCollectionName = DefaultMechanismLists.name(),
                 globalMechanismCollectionName = DefaultGlobalMechanismList.name(),
                 speedOfLight = 1.0,
                 tDim = 5,
