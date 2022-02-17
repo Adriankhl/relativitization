@@ -163,7 +163,14 @@ the [Contributor License Agreement](./CLA.md).
 If you use this framework in a publication, please cite:
 
 ```
-
+@software{relativitization,
+  author       = {Lai Kwun Hang},
+  title        = {Relativitization},
+  year         = 2022,
+  doi          = {10.5281/zenodo.6120765},
+  url          = {https://doi.org/10.5281/zenodo.6120765},
+  howpublished = {https://github.com/Adriankhl/relativitization},
+}
 ```
 
 Also consider citing
@@ -171,8 +178,8 @@ this [paper](https://github.com/Adriankhl/relativitization-framework-doc/blob/ma
 
 ```
 @article{lai2022simulation,
-    title={On social simulation in 4D relativistic spacetime}, 
-    author={Lai Kwun Hang},
-    year={2022},
+    title   = {On social simulation in 4D relativistic spacetime}, 
+    author  = {Lai Kwun Hang},
+    year    = {2022},
 }
 ```
