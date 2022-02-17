@@ -1,6 +1,6 @@
 # Relativitization
 
-Turn-based strategy game / agent-based simulation framework / social model in a 4D relativistic spacetime.
+Turn-based strategy game / agent-based simulation framework / social model in 4D, relativistic spacetime.
 
 * [Buy the game from itch.io](https://adriankhl.itch.io/relativitization)
 * [See the game documentation](https://github.com/Adriankhl/relativitization-game-doc) if you want to know more about
