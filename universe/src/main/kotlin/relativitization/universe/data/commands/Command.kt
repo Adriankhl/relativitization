@@ -12,8 +12,13 @@ import kotlin.reflect.KClass
 
 @Serializable
 sealed class Command {
+    // The id of the player to receive this command
     abstract val toId: Int
+
+    // The id of the player who send this command
     abstract val fromId: Int
+
+    // The int4D coordinates of the player who send this command
     abstract val fromInt4D: Int4D
 
     /**
@@ -119,15 +124,6 @@ sealed class Command {
 
         val canSendErrorMessage: CommandErrorMessage = canSend(playerData, universeSettings)
 
-        if (!hasCommand.success ||
-            !isFromIdValid.success ||
-            !isFromInt4DValid.success ||
-            !(canSendErrorMessage.success)
-        ) {
-            val className = this::class.qualifiedName
-            logger.error("${className}: cannot send command")
-        }
-
         return CommandErrorMessage(
             listOf(
                 hasCommand,
@@ -153,26 +149,21 @@ sealed class Command {
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
-        return if (canSendFromPlayer(playerData, universeSettings).success) {
+        val sendMessage: CommandErrorMessage = canSendFromPlayer(playerData, universeSettings)
+
+        if (sendMessage.success) {
             try {
                 selfExecuteBeforeSend(playerData, universeSettings)
-                CommandErrorMessage(true)
             } catch (e: Throwable) {
                 logger.error("checkAndSelfExecuteBeforeSend fail, throwable $e")
                 throw e
             }
         } else {
             val className = this::class.qualifiedName
-            logger.debug("$className cannot be sent by $fromId")
-            val reasonI18NString = I18NString("Reason: ")
-            CommandErrorMessage(
-                false,
-                listOf(
-                    reasonI18NString,
-                    canSendFromPlayer(playerData, universeSettings).errorMessage
-                )
-            )
+            logger.debug("$className cannot be sent by $fromId: ${sendMessage.errorMessage.toNormalString()}")
         }
+
+        return sendMessage
     }
 
 
@@ -229,6 +220,7 @@ sealed class Command {
         )
 
         val canExecute = canExecute(playerData, universeSettings)
+
         return CommandErrorMessage(
             listOf(
                 hasCommand,
@@ -256,6 +248,7 @@ sealed class Command {
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
         val executeMessage: CommandErrorMessage = canExecuteOnPlayer(playerData, universeSettings)
+
         if (executeMessage.success) {
             try {
                 execute(playerData, universeSettings)
@@ -265,7 +258,7 @@ sealed class Command {
             }
         } else {
             val className = this::class.qualifiedName
-            logger.info("$className cannot be executed on $toId")
+            logger.debug("$className cannot be executed on $toId: ${executeMessage.errorMessage.toNormalString()}")
         }
 
         return executeMessage
@@ -281,9 +274,10 @@ fun Command.name(): String = this::class.simpleName.toString()
 fun <T : Command> KClass<T>.name(): String = this.simpleName.toString()
 
 sealed class CommandAvailability {
+    // Command list allowed to be sent and executed
     abstract val commandList: List<String>
 
-    // Allowed event list for AddEventCommand
+    // Event list allowed to be added by AddEventCommand
     abstract val addEventList: List<String>
 }
 
