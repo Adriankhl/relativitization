@@ -80,8 +80,7 @@ object GenerateUniverseMethodCollection {
     private val generateMethodList: List<GenerateUniverseMethod> =
         RandomGenerateUniverseMethod::class.sealedSubclasses.map {
             it.objectInstance!!
-        } +
-        TestingGenerateUniverseMethod::class.sealedSubclasses.map {
+        } + TestingGenerateUniverseMethod::class.sealedSubclasses.map {
             it.objectInstance!!
         } + ABMGenerateUniverseMethod::class.sealedSubclasses.map {
             it.objectInstance!!
