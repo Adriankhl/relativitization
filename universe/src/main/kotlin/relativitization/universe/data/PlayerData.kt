@@ -350,9 +350,6 @@ data class PlayerInternalData(
         DefaultPlayerDataComponent::class.sealedSubclasses.map { it.createInstance() }
     ),
 ) {
-    fun economyData(): EconomyData =
-        playerDataComponentMap.getOrDefault(EconomyData::class, EconomyData())
-
     fun modifierData(): ModifierData =
         playerDataComponentMap.getOrDefault(ModifierData::class, ModifierData())
 
@@ -386,11 +383,6 @@ data class MutablePlayerInternalData(
         MutableDefaultPlayerDataComponent::class.sealedSubclasses.map { it.createInstance() }
     ),
 ) {
-    fun economyData(): MutableEconomyData =
-        playerDataComponentMap.getOrDefault(MutableEconomyData::class, MutableEconomyData())
-
-    fun economyData(newEconomyData: MutableEconomyData) = playerDataComponentMap.put(newEconomyData)
-
     fun modifierData(): MutableModifierData =
         playerDataComponentMap.getOrDefault(MutableModifierData::class, MutableModifierData())
 

@@ -8,6 +8,7 @@ import relativitization.universe.data.components.defaults.economy.MutableResourc
 import relativitization.universe.data.components.defaults.economy.MutableSingleResourceData
 import relativitization.universe.data.components.defaults.economy.ResourceQualityClass
 import relativitization.universe.data.components.defaults.economy.ResourceType
+import relativitization.universe.data.components.economyData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.mechanisms.Mechanism
 

@@ -14,6 +14,7 @@ import relativitization.universe.data.components.defaults.physics.Double2D
 import relativitization.universe.data.components.defaults.popsystem.pop.scholar.institute.InstituteInternalData
 import relativitization.universe.data.components.defaults.popsystem.pop.scholar.institute.MutableInstituteData
 import relativitization.universe.data.components.defaults.science.knowledge.BasicResearchProjectData
+import relativitization.universe.data.components.economyData
 import relativitization.universe.maths.physics.Intervals
 import relativitization.universe.maths.random.Rand
 

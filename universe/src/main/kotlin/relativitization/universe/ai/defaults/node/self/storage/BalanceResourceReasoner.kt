@@ -8,6 +8,7 @@ import relativitization.universe.data.commands.ChangeResourceTargetProportionCom
 import relativitization.universe.data.components.defaults.economy.MutableResourceTargetProportionData
 import relativitization.universe.data.components.defaults.economy.ResourceQualityClass
 import relativitization.universe.data.components.defaults.economy.ResourceType
+import relativitization.universe.data.components.economyData
 import relativitization.universe.data.serializer.DataSerializer
 
 class BalanceResourceReasoner : SequenceReasoner() {

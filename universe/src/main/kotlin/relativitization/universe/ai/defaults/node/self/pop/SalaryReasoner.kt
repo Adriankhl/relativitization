@@ -13,6 +13,7 @@ import relativitization.universe.data.components.defaults.popsystem.MutableCarri
 import relativitization.universe.data.components.defaults.popsystem.pop.MutableCommonPopData
 import relativitization.universe.data.components.defaults.popsystem.pop.MutableResourceDesireData
 import relativitization.universe.data.components.defaults.popsystem.pop.PopType
+import relativitization.universe.data.components.economyData
 import kotlin.math.max
 import kotlin.math.min
 

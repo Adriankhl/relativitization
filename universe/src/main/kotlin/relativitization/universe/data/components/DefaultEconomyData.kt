@@ -2,6 +2,8 @@ package relativitization.universe.data.components
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import relativitization.universe.data.MutablePlayerInternalData
+import relativitization.universe.data.PlayerInternalData
 import relativitization.universe.data.components.defaults.economy.*
 
 /**
@@ -22,3 +24,13 @@ data class MutableEconomyData(
     var resourceData: MutableResourceData = MutableResourceData(),
     var socialSecurityData: MutableSocialSecurityData = MutableSocialSecurityData(),
 ) : MutableDefaultPlayerDataComponent()
+
+fun PlayerInternalData.economyData(): EconomyData =
+    playerDataComponentMap.getOrDefault(EconomyData::class, EconomyData())
+
+fun MutablePlayerInternalData.economyData(): MutableEconomyData =
+    playerDataComponentMap.getOrDefault(MutableEconomyData::class, MutableEconomyData())
+
+fun MutablePlayerInternalData.economyData(newEconomyData: MutableEconomyData) =
+    playerDataComponentMap.put(newEconomyData)
+

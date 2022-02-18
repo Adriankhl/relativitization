@@ -11,6 +11,7 @@ import relativitization.universe.data.components.defaults.economy.ResourceQualit
 import relativitization.universe.data.components.defaults.popsystem.pop.service.MutableServicePopData
 import relativitization.universe.data.components.defaults.popsystem.pop.service.export.MutablePlayerSingleExportData
 import relativitization.universe.data.components.defaults.popsystem.pop.service.export.MutablePopSingleExportData
+import relativitization.universe.data.components.economyData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.mechanisms.Mechanism
 import kotlin.math.max

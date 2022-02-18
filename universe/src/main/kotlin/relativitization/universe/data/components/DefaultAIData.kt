@@ -45,10 +45,10 @@ enum class AITask(val value: String) {
 }
 
 fun PlayerInternalData.aiData(): AIData =
-    this.playerDataComponentMap.getOrDefault(AIData::class, AIData())
+    playerDataComponentMap.getOrDefault(AIData::class, AIData())
 
 fun MutablePlayerInternalData.aiData(): MutableAIData =
-    this.playerDataComponentMap.getOrDefault(MutableAIData::class, MutableAIData())
+    playerDataComponentMap.getOrDefault(MutableAIData::class, MutableAIData())
 
 fun MutablePlayerInternalData.aiData(newAIData: MutableAIData) =
-    this.playerDataComponentMap.put(newAIData)
+    playerDataComponentMap.put(newAIData)
