@@ -6,6 +6,7 @@ import relativitization.universe.ai.defaults.utils.PlanState
 import relativitization.universe.ai.defaults.utils.SequenceReasoner
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.PlayerData
+import relativitization.universe.data.components.aiData
 import relativitization.universe.data.components.defaults.physics.Int3D
 import relativitization.universe.maths.physics.Intervals
 

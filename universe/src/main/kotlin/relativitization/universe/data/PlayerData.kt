@@ -350,8 +350,6 @@ data class PlayerInternalData(
         DefaultPlayerDataComponent::class.sealedSubclasses.map { it.createInstance() }
     ),
 ) {
-    fun aiData(): AIData = playerDataComponentMap.getOrDefault(AIData::class, AIData())
-
     fun diplomacyData(): DiplomacyData =
         playerDataComponentMap.getOrDefault(DiplomacyData::class, DiplomacyData())
 
@@ -391,11 +389,6 @@ data class MutablePlayerInternalData(
         MutableDefaultPlayerDataComponent::class.sealedSubclasses.map { it.createInstance() }
     ),
 ) {
-    fun aiData(): MutableAIData =
-        playerDataComponentMap.getOrDefault(MutableAIData::class, MutableAIData())
-
-    fun aiData(newAIData: MutableAIData) = playerDataComponentMap.put(newAIData)
-
     fun diplomacyData(): MutableDiplomacyData =
         playerDataComponentMap.getOrDefault(MutableDiplomacyData::class, MutableDiplomacyData())
 

@@ -4,6 +4,7 @@ import relativitization.universe.ai.defaults.utils.DualUtilityConsideration
 import relativitization.universe.ai.defaults.utils.DualUtilityData
 import relativitization.universe.ai.defaults.utils.PlanState
 import relativitization.universe.data.PlanDataAtPlayer
+import relativitization.universe.data.components.aiData
 import relativitization.universe.data.components.defaults.ai.MutableFuelRestMassHistoryData
 import relativitization.universe.data.components.defaults.physics.MutableFuelRestMassData
 import relativitization.universe.data.components.defaults.popsystem.pop.MutableCommonPopData

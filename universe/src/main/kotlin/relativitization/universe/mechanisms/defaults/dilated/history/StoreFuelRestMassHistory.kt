@@ -5,6 +5,7 @@ import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.components.MutableAIData
+import relativitization.universe.data.components.aiData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.mechanisms.Mechanism
