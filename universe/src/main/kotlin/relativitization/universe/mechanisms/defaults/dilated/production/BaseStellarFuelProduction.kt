@@ -6,6 +6,7 @@ import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.components.defaults.popsystem.CarrierType
 import relativitization.universe.data.components.defaults.popsystem.MutableCarrierData
+import relativitization.universe.data.components.modifierData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.mechanisms.Mechanism
 

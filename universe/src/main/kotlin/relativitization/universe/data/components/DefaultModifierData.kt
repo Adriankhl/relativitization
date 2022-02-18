@@ -2,6 +2,8 @@ package relativitization.universe.data.components
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import relativitization.universe.data.MutablePlayerInternalData
+import relativitization.universe.data.PlayerInternalData
 import relativitization.universe.data.components.defaults.modifier.*
 
 @Serializable
@@ -38,3 +40,12 @@ data class MutableModifierData(
         diplomacyModifierData.updateByProperTime()
     }
 }
+
+fun PlayerInternalData.modifierData(): ModifierData =
+    playerDataComponentMap.getOrDefault(ModifierData::class, ModifierData())
+
+fun MutablePlayerInternalData.modifierData(): MutableModifierData =
+    playerDataComponentMap.getOrDefault(MutableModifierData::class, MutableModifierData())
+
+fun MutablePlayerInternalData.modifierData(newModifierData: MutableModifierData) =
+    playerDataComponentMap.put(newModifierData)

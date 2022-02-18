@@ -8,6 +8,7 @@ import relativitization.universe.data.PlayerData
 import relativitization.universe.data.components.defaults.modifier.CombatModifierData
 import relativitization.universe.data.components.defaults.modifier.DiplomacyModifierData
 import relativitization.universe.data.components.defaults.modifier.PhysicsModifierData
+import relativitization.universe.data.components.modifierData
 
 class ModifierInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.assets) {
     private val gdxSettings = game.gdxSettings

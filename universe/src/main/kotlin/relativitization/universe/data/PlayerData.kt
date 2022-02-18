@@ -350,9 +350,6 @@ data class PlayerInternalData(
         DefaultPlayerDataComponent::class.sealedSubclasses.map { it.createInstance() }
     ),
 ) {
-    fun modifierData(): ModifierData =
-        playerDataComponentMap.getOrDefault(ModifierData::class, ModifierData())
-
     fun physicsData(): PhysicsData =
         playerDataComponentMap.getOrDefault(PhysicsData::class, PhysicsData())
 
@@ -383,12 +380,6 @@ data class MutablePlayerInternalData(
         MutableDefaultPlayerDataComponent::class.sealedSubclasses.map { it.createInstance() }
     ),
 ) {
-    fun modifierData(): MutableModifierData =
-        playerDataComponentMap.getOrDefault(MutableModifierData::class, MutableModifierData())
-
-    fun modifierData(newModifierData: MutableModifierData) =
-        playerDataComponentMap.put(newModifierData)
-
     fun physicsData(): MutablePhysicsData =
         playerDataComponentMap.getOrDefault(MutablePhysicsData::class, MutablePhysicsData())
 

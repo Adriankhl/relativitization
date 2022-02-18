@@ -7,6 +7,7 @@ import relativitization.universe.data.components.defaults.economy.ResourceType
 import relativitization.universe.data.components.defaults.physics.Int4D
 import relativitization.universe.data.components.defaults.popsystem.MutableCarrierData
 import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.*
+import relativitization.universe.data.components.modifierData
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.utils.I18NString
 import relativitization.universe.utils.IntString

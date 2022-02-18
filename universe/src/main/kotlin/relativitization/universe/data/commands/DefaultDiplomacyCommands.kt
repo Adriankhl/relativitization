@@ -6,6 +6,7 @@ import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.components.defaults.diplomacy.DiplomaticRelationState
 import relativitization.universe.data.components.defaults.physics.Int4D
 import relativitization.universe.data.components.diplomacyData
+import relativitization.universe.data.components.modifierData
 import relativitization.universe.utils.I18NString
 import relativitization.universe.utils.IntString
 import relativitization.universe.utils.NormalString

@@ -7,6 +7,7 @@ import relativitization.universe.data.commands.Command
 import relativitization.universe.data.commands.SendFuelCommand
 import relativitization.universe.data.components.MutablePhysicsData
 import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.MutableFuelFactoryData
+import relativitization.universe.data.components.modifierData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.mechanisms.Mechanism
 
