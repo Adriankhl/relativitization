@@ -8,6 +8,7 @@ import relativitization.universe.data.PlayerData
 import relativitization.universe.data.commands.AddEventCommand
 import relativitization.universe.data.commands.ChangeFactoryPolicyCommand
 import relativitization.universe.data.commands.GrantIndependenceCommand
+import relativitization.universe.data.components.politicsData
 import relativitization.universe.data.events.AskToMergeCarrierEvent
 
 class PoliticsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.assets) {

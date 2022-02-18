@@ -2,6 +2,8 @@ package relativitization.universe.data.components
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import relativitization.universe.data.MutablePlayerInternalData
+import relativitization.universe.data.PlayerInternalData
 import kotlin.math.abs
 
 /**
@@ -57,3 +59,12 @@ data class MutablePoliticsData(
     var allowLeaderBuildLocalFactory: Boolean = true,
     var allowForeignInvestor: Boolean = true,
 ) : MutableDefaultPlayerDataComponent()
+
+fun PlayerInternalData.politicsData(): PoliticsData =
+    playerDataComponentMap.getOrDefault(PoliticsData::class, PoliticsData())
+
+fun MutablePlayerInternalData.politicsData(): MutablePoliticsData =
+    playerDataComponentMap.getOrDefault(MutablePoliticsData::class, MutablePoliticsData())
+
+fun MutablePlayerInternalData.politicsData(newPoliticsData: MutablePoliticsData) =
+    playerDataComponentMap.put(newPoliticsData)

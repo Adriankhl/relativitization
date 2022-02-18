@@ -5,6 +5,7 @@ import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.components.MutablePoliticsData
 import relativitization.universe.data.components.defaults.physics.Int4D
+import relativitization.universe.data.components.politicsData
 import relativitization.universe.utils.I18NString
 import relativitization.universe.utils.IntTranslateString
 import relativitization.universe.utils.NormalString

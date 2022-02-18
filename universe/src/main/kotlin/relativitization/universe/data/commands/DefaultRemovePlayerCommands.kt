@@ -6,6 +6,7 @@ import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.components.defaults.physics.Int4D
 import relativitization.universe.data.components.defaults.popsystem.CarrierData
 import relativitization.universe.data.components.defaults.popsystem.MutableCarrierData
+import relativitization.universe.data.components.politicsData
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.utils.I18NString
 

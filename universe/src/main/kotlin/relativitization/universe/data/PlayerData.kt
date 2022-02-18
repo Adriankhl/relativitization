@@ -350,9 +350,6 @@ data class PlayerInternalData(
         DefaultPlayerDataComponent::class.sealedSubclasses.map { it.createInstance() }
     ),
 ) {
-    fun politicsData(): PoliticsData =
-        playerDataComponentMap.getOrDefault(PoliticsData::class, PoliticsData())
-
     fun popSystemData(): PopSystemData =
         playerDataComponentMap.getOrDefault(PopSystemData::class, PopSystemData())
 
@@ -374,12 +371,6 @@ data class MutablePlayerInternalData(
         MutableDefaultPlayerDataComponent::class.sealedSubclasses.map { it.createInstance() }
     ),
 ) {
-    fun politicsData(): MutablePoliticsData =
-        playerDataComponentMap.getOrDefault(MutablePoliticsData::class, MutablePoliticsData())
-
-    fun politicsData(newPoliticsData: MutablePoliticsData) =
-        playerDataComponentMap.put(newPoliticsData)
-
     fun popSystemData(): MutablePopSystemData =
         playerDataComponentMap.getOrDefault(MutablePopSystemData::class, MutablePopSystemData())
 

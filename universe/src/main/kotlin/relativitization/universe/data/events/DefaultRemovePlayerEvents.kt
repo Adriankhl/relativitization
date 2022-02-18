@@ -6,6 +6,7 @@ import relativitization.universe.data.PlayerType
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.*
+import relativitization.universe.data.components.politicsData
 import relativitization.universe.maths.random.Rand
 import relativitization.universe.utils.I18NString
 import relativitization.universe.utils.IntString
