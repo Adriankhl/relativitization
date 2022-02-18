@@ -6,7 +6,7 @@ Turn-based strategy game / agent-based simulation framework / social model in 4D
 * [See the game documentation](https://github.com/Adriankhl/relativitization-game-doc) if you want to know more about
   the game
 * [See the framework documentation](https://github.com/Adriankhl/relativitization-framework-doc) if you want to
-  implement your model or alternative game mechanicsk
+  implement your model or alternative game mechanics
 
 ## Table of Contents
 
