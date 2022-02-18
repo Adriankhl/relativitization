@@ -12,6 +12,7 @@ import relativitization.universe.data.commands.AddEventCommand
 import relativitization.universe.data.components.defaults.diplomacy.DiplomaticRelationState
 import relativitization.universe.data.components.defaults.physics.Int3D
 import relativitization.universe.data.components.diplomacyData
+import relativitization.universe.data.components.physicsData
 import relativitization.universe.data.events.MoveToDouble3DEvent
 import relativitization.universe.maths.physics.Intervals
 import relativitization.universe.maths.physics.Movement

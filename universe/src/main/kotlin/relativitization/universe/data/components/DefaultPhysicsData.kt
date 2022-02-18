@@ -2,6 +2,8 @@ package relativitization.universe.data.components
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import relativitization.universe.data.MutablePlayerInternalData
+import relativitization.universe.data.PlayerInternalData
 import relativitization.universe.data.components.defaults.physics.FuelRestMassData
 import relativitization.universe.data.components.defaults.physics.MutableFuelRestMassData
 import relativitization.universe.data.components.defaults.physics.MutableFuelRestMassTargetProportionData
@@ -95,3 +97,14 @@ data class MutablePhysicsData(
         }
     }
 }
+
+fun PlayerInternalData.physicsData(): PhysicsData =
+    playerDataComponentMap.getOrDefault(PhysicsData::class, PhysicsData())
+
+fun MutablePlayerInternalData.physicsData(): MutablePhysicsData =
+    playerDataComponentMap.getOrDefault(MutablePhysicsData::class, MutablePhysicsData())
+
+fun MutablePlayerInternalData.physicsData(newPhysicsData: MutablePhysicsData) =
+    playerDataComponentMap.put(newPhysicsData)
+
+

@@ -14,6 +14,7 @@ import relativitization.universe.data.components.defaults.popsystem.pop.MutableC
 import relativitization.universe.data.components.defaults.popsystem.pop.MutableResourceDesireData
 import relativitization.universe.data.components.defaults.popsystem.pop.PopType
 import relativitization.universe.data.components.economyData
+import relativitization.universe.data.components.physicsData
 import kotlin.math.max
 import kotlin.math.min
 

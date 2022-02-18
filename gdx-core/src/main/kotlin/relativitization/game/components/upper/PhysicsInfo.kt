@@ -11,6 +11,7 @@ import relativitization.universe.data.commands.ChangeVelocityCommand
 import relativitization.universe.data.components.defaults.physics.Double3D
 import relativitization.universe.data.components.defaults.physics.Int3D
 import relativitization.universe.data.components.defaults.physics.Velocity
+import relativitization.universe.data.components.physicsData
 import relativitization.universe.data.events.MoveToDouble3DEvent
 import relativitization.universe.maths.number.Notation
 import relativitization.universe.maths.physics.Movement.displacementToVelocity

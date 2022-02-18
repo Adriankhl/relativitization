@@ -12,6 +12,7 @@ import relativitization.game.screens.HelpScreen
 import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.commands.DummyCommand
 import relativitization.universe.data.components.defaults.physics.FuelRestMassData
+import relativitization.universe.data.components.physicsData
 import relativitization.universe.maths.number.Notation
 import relativitization.universe.maths.number.toScientificNotation
 import relativitization.universe.maths.physics.Intervals.intDelay

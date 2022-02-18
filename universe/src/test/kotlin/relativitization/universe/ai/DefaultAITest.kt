@@ -6,6 +6,7 @@ import relativitization.universe.data.MutableUniverseSettings
 import relativitization.universe.data.commands.DefaultCommandAvailability
 import relativitization.universe.data.commands.name
 import relativitization.universe.data.components.economyData
+import relativitization.universe.data.components.physicsData
 import relativitization.universe.generate.method.GenerateSettings
 import relativitization.universe.generate.method.GenerateUniverseMethodCollection
 import relativitization.universe.generate.method.name

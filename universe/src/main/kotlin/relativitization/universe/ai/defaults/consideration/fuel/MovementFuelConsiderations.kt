@@ -5,6 +5,7 @@ import relativitization.universe.ai.defaults.utils.DualUtilityData
 import relativitization.universe.ai.defaults.utils.PlanState
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.components.defaults.physics.Velocity
+import relativitization.universe.data.components.physicsData
 import relativitization.universe.maths.physics.Movement
 
 /**

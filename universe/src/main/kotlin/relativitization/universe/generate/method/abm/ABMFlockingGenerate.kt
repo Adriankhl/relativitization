@@ -4,6 +4,7 @@ import relativitization.universe.ai.ABMFlockingAI
 import relativitization.universe.ai.name
 import relativitization.universe.data.*
 import relativitization.universe.data.components.defaults.physics.MutableVelocity
+import relativitization.universe.data.components.physicsData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.generate.method.GenerateSettings

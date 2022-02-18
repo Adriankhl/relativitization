@@ -12,6 +12,7 @@ import relativitization.universe.data.commands.RemoveLocalResourceFactoryCommand
 import relativitization.universe.data.components.defaults.economy.ResourceType
 import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.MutableFuelFactoryInternalData
 import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.MutableResourceFactoryInternalData
+import relativitization.universe.data.components.physicsData
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.maths.random.Rand
 import kotlin.math.max

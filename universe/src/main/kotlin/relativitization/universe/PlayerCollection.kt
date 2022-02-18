@@ -6,6 +6,7 @@ import relativitization.universe.data.components.defaults.physics.Int4D
 import relativitization.universe.data.components.defaults.physics.MutableDouble4D
 import relativitization.universe.data.components.defaults.physics.MutableVelocity
 import relativitization.universe.data.components.defaults.physics.Velocity
+import relativitization.universe.data.components.physicsData
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.maths.grid.Grids.create3DGrid
 import relativitization.universe.maths.grid.Grids.double4DToGroupId
