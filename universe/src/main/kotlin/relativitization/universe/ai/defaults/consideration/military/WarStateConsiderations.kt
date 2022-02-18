@@ -6,6 +6,7 @@ import relativitization.universe.ai.defaults.utils.PlanState
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.components.defaults.diplomacy.DiplomaticRelationState
 import relativitization.universe.data.components.defaults.diplomacy.MutableWarStateData
+import relativitization.universe.data.components.diplomacyData
 
 /**
  * Check if this player has any enemy

@@ -2,6 +2,7 @@ package relativitization.universe.data.commands
 
 import kotlinx.coroutines.runBlocking
 import relativitization.universe.Universe
+import relativitization.universe.data.components.diplomacyData
 import relativitization.universe.generate.method.GenerateSettings
 import relativitization.universe.generate.method.GenerateUniverseMethodCollection
 import relativitization.universe.generate.method.name

@@ -3,7 +3,9 @@ package relativitization.universe.data.components
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.MutablePlayerData
+import relativitization.universe.data.MutablePlayerInternalData
 import relativitization.universe.data.PlayerData
+import relativitization.universe.data.PlayerInternalData
 import relativitization.universe.data.components.defaults.diplomacy.*
 
 /**
@@ -87,3 +89,12 @@ data class MutableDiplomacyData(
             getRelationState(it) == DiplomaticRelationState.ENEMY
         }
 }
+
+fun PlayerInternalData.diplomacyData(): DiplomacyData =
+    playerDataComponentMap.getOrDefault(DiplomacyData::class, DiplomacyData())
+
+fun MutablePlayerInternalData.diplomacyData(): MutableDiplomacyData =
+    playerDataComponentMap.getOrDefault(MutableDiplomacyData::class, MutableDiplomacyData())
+
+fun MutablePlayerInternalData.diplomacyData(newDiplomacyData: MutableDiplomacyData) =
+    playerDataComponentMap.put(newDiplomacyData)

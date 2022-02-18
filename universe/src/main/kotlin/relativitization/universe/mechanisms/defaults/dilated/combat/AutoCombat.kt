@@ -8,6 +8,7 @@ import relativitization.universe.data.commands.Command
 import relativitization.universe.data.commands.DamageCommand
 import relativitization.universe.data.components.defaults.diplomacy.DiplomaticRelationState
 import relativitization.universe.data.components.defaults.physics.MutableFuelRestMassData
+import relativitization.universe.data.components.diplomacyData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.mechanisms.Mechanism
 import relativitization.universe.maths.random.Rand

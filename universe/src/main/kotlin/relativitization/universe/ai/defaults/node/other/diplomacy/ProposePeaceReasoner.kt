@@ -5,6 +5,7 @@ import relativitization.universe.ai.defaults.consideration.military.WarLossConsi
 import relativitization.universe.ai.defaults.utils.*
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.commands.ProposePeaceCommand
+import relativitization.universe.data.components.diplomacyData
 
 class ProposePeaceReasoner : SequenceReasoner() {
     override fun getSubNodeList(

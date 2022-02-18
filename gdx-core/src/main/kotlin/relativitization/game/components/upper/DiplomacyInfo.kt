@@ -9,6 +9,7 @@ import relativitization.universe.data.commands.*
 import relativitization.universe.data.components.defaults.diplomacy.DiplomaticRelationData
 import relativitization.universe.data.components.defaults.diplomacy.DiplomaticRelationState
 import relativitization.universe.data.components.defaults.diplomacy.WarStateData
+import relativitization.universe.data.components.diplomacyData
 
 class DiplomacyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.assets) {
     private val gdxSettings = game.gdxSettings

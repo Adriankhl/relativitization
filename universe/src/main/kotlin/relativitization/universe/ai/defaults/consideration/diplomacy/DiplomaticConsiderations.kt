@@ -5,6 +5,7 @@ import relativitization.universe.ai.defaults.utils.DualUtilityData
 import relativitization.universe.ai.defaults.utils.PlanState
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.components.MutableDiplomacyData
+import relativitization.universe.data.components.diplomacyData
 import kotlin.math.pow
 
 /**
