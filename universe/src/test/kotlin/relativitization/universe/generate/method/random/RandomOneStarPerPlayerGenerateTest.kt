@@ -9,6 +9,7 @@ import relativitization.universe.data.components.defaults.popsystem.pop.PopType
 import relativitization.universe.data.components.economyData
 import relativitization.universe.data.components.physicsData
 import relativitization.universe.data.components.playerScienceData
+import relativitization.universe.data.components.popSystemData
 import relativitization.universe.generate.method.GenerateSettings
 import relativitization.universe.generate.method.GenerateUniverseMethodCollection
 import relativitization.universe.generate.method.name

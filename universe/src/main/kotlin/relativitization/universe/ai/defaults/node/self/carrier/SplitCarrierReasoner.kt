@@ -10,6 +10,7 @@ import relativitization.universe.data.commands.SplitCarrierCommand
 import relativitization.universe.data.components.MutablePopSystemData
 import relativitization.universe.data.components.defaults.economy.ResourceType
 import relativitization.universe.data.components.defaults.popsystem.CarrierType
+import relativitization.universe.data.components.popSystemData
 import relativitization.universe.maths.random.Rand
 import relativitization.universe.utils.RelativitizationLogManager
 

@@ -14,6 +14,7 @@ import relativitization.universe.data.components.defaults.popsystem.pop.labourer
 import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.MutableResourceFactoryInternalData
 import relativitization.universe.data.components.physicsData
 import relativitization.universe.data.components.playerScienceData
+import relativitization.universe.data.components.popSystemData
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.maths.random.Rand
 import kotlin.math.max

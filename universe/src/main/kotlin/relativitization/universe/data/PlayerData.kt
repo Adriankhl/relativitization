@@ -4,11 +4,7 @@ import kotlinx.serialization.Serializable
 import relativitization.universe.ai.DefaultAI
 import relativitization.universe.ai.name
 import relativitization.universe.data.components.*
-import relativitization.universe.data.components.MutablePlayerScienceData
-import relativitization.universe.data.components.MutablePoliticsData
 import relativitization.universe.data.components.MutablePopSystemData
-import relativitization.universe.data.components.PlayerScienceData
-import relativitization.universe.data.components.PoliticsData
 import relativitization.universe.data.components.PopSystemData
 import relativitization.universe.data.components.defaults.physics.*
 import relativitization.universe.data.events.EventData
@@ -350,9 +346,6 @@ data class PlayerInternalData(
         DefaultPlayerDataComponent::class.sealedSubclasses.map { it.createInstance() }
     ),
 ) {
-    fun popSystemData(): PopSystemData =
-        playerDataComponentMap.getOrDefault(PopSystemData::class, PopSystemData())
-
     companion object {
         private val logger = RelativitizationLogManager.getLogger()
     }
@@ -371,13 +364,6 @@ data class MutablePlayerInternalData(
         MutableDefaultPlayerDataComponent::class.sealedSubclasses.map { it.createInstance() }
     ),
 ) {
-    fun popSystemData(): MutablePopSystemData =
-        playerDataComponentMap.getOrDefault(MutablePopSystemData::class, MutablePopSystemData())
-
-    fun popSystemData(newPopSystemData: MutablePopSystemData) =
-        playerDataComponentMap.put(newPopSystemData)
-
-
     /**
      * Add an event to event map
      */

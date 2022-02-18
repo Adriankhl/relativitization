@@ -4,8 +4,7 @@ import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
-import relativitization.universe.data.components.MutablePlayerScienceData
-import relativitization.universe.data.components.PlayerScienceData
+import relativitization.universe.data.components.*
 import relativitization.universe.data.components.defaults.economy.MutableResourceData
 import relativitization.universe.data.components.defaults.economy.ResourceQualityClass
 import relativitization.universe.data.components.defaults.economy.ResourceQualityData
@@ -16,8 +15,6 @@ import relativitization.universe.data.components.defaults.popsystem.pop.scholar.
 import relativitization.universe.data.components.defaults.popsystem.pop.scholar.institute.MutableInstituteData
 import relativitization.universe.data.components.defaults.science.knowledge.AppliedResearchProjectData
 import relativitization.universe.data.components.defaults.science.knowledge.BasicResearchProjectData
-import relativitization.universe.data.components.economyData
-import relativitization.universe.data.components.playerScienceData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.data.global.components.UniverseScienceData
 import relativitization.universe.global.defaults.science.UpdateUniverseScienceData

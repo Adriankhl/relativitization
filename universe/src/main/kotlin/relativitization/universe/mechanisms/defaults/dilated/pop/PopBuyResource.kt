@@ -4,15 +4,12 @@ import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
-import relativitization.universe.data.components.MutableEconomyData
-import relativitization.universe.data.components.MutablePhysicsData
+import relativitization.universe.data.components.*
 import relativitization.universe.data.components.defaults.economy.MutableResourceQualityData
 import relativitization.universe.data.components.defaults.economy.ResourceQualityClass
 import relativitization.universe.data.components.defaults.economy.ResourceType
 import relativitization.universe.data.components.defaults.popsystem.pop.MutableCommonPopData
 import relativitization.universe.data.components.defaults.popsystem.pop.PopType
-import relativitization.universe.data.components.economyData
-import relativitization.universe.data.components.physicsData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.mechanisms.Mechanism
 import kotlin.math.min

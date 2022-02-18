@@ -2,6 +2,8 @@ package relativitization.universe.data.components
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import relativitization.universe.data.MutablePlayerInternalData
+import relativitization.universe.data.PlayerInternalData
 import relativitization.universe.data.components.defaults.popsystem.CarrierData
 import relativitization.universe.data.components.defaults.popsystem.CarrierType
 import relativitization.universe.data.components.defaults.popsystem.MutableCarrierData
@@ -207,3 +209,12 @@ data class MutablePopSystemData(
         }
     }
 }
+
+fun PlayerInternalData.popSystemData(): PopSystemData =
+    playerDataComponentMap.getOrDefault(PopSystemData::class, PopSystemData())
+
+fun MutablePlayerInternalData.popSystemData(): MutablePopSystemData =
+    playerDataComponentMap.getOrDefault(MutablePopSystemData::class, MutablePopSystemData())
+
+fun MutablePlayerInternalData.popSystemData(newPopSystemData: MutablePopSystemData) =
+    playerDataComponentMap.put(newPopSystemData)

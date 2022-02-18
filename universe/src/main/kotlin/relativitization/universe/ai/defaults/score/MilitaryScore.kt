@@ -2,6 +2,7 @@ package relativitization.universe.ai.defaults.score
 
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.components.PopSystemData
+import relativitization.universe.data.components.popSystemData
 
 object MilitaryScore {
     fun compute(

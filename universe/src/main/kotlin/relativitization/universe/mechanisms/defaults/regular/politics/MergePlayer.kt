@@ -7,6 +7,7 @@ import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.commands.MergeCarrierCommand
 import relativitization.universe.data.components.politicsData
+import relativitization.universe.data.components.popSystemData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.mechanisms.Mechanism
@@ -38,7 +39,8 @@ object MergePlayer : Mechanism() {
                     toId = directLeader.playerId,
                     fromId = mutablePlayerData.playerId,
                     fromInt4D = mutablePlayerData.int4D.toInt4D(),
-                    carrierList = DataSerializer.copy(mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.toList())
+                    carrierList = DataSerializer.copy(mutablePlayerData.playerInternalData.popSystemData()
+                        .carrierDataMap.values.toList())
                 )
 
                 // This player is dead

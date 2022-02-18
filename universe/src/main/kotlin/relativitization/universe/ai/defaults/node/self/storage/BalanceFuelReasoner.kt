@@ -8,6 +8,7 @@ import relativitization.universe.data.commands.*
 import relativitization.universe.data.components.defaults.physics.MutableFuelRestMassTargetProportionData
 import relativitization.universe.data.components.defaults.popsystem.CarrierType
 import relativitization.universe.data.components.physicsData
+import relativitization.universe.data.components.popSystemData
 import relativitization.universe.data.serializer.DataSerializer
 
 class BalanceFuelReasoner : SequenceReasoner() {

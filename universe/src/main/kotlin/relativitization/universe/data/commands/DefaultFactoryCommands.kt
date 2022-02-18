@@ -3,14 +3,11 @@ package relativitization.universe.data.commands
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseSettings
+import relativitization.universe.data.components.*
 import relativitization.universe.data.components.defaults.economy.ResourceType
 import relativitization.universe.data.components.defaults.physics.Int4D
 import relativitization.universe.data.components.defaults.popsystem.MutableCarrierData
 import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.*
-import relativitization.universe.data.components.modifierData
-import relativitization.universe.data.components.physicsData
-import relativitization.universe.data.components.playerScienceData
-import relativitization.universe.data.components.politicsData
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.utils.I18NString
 import relativitization.universe.utils.IntString

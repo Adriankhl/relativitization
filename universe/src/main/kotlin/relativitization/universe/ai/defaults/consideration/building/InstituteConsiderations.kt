@@ -9,6 +9,7 @@ import relativitization.universe.data.components.defaults.popsystem.MutableCarri
 import relativitization.universe.data.components.defaults.popsystem.pop.scholar.institute.MutableInstituteData
 import relativitization.universe.data.components.defaults.science.knowledge.BasicResearchProjectData
 import relativitization.universe.data.components.playerScienceData
+import relativitization.universe.data.components.popSystemData
 import relativitization.universe.maths.physics.Intervals
 
 /**

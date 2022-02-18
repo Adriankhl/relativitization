@@ -7,6 +7,7 @@ import relativitization.universe.data.components.defaults.physics.Int4D
 import relativitization.universe.data.components.defaults.popsystem.CarrierType
 import relativitization.universe.data.components.defaults.popsystem.MutableCarrierData
 import relativitization.universe.data.components.modifierData
+import relativitization.universe.data.components.popSystemData
 import relativitization.universe.maths.random.Rand
 import relativitization.universe.utils.RelativitizationLogManager
 

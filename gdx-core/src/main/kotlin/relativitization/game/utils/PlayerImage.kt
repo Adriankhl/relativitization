@@ -13,6 +13,7 @@ import relativitization.universe.data.components.defaults.physics.Double3D
 import relativitization.universe.data.components.defaults.physics.Velocity
 import relativitization.universe.data.components.defaults.popsystem.CarrierType
 import relativitization.universe.data.components.diplomacyData
+import relativitization.universe.data.components.popSystemData
 import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.math.abs
 import kotlin.math.ceil

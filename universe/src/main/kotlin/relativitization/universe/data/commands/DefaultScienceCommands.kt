@@ -9,6 +9,7 @@ import relativitization.universe.data.components.defaults.popsystem.pop.engineer
 import relativitization.universe.data.components.defaults.popsystem.pop.engineer.laboratory.MutableLaboratoryData
 import relativitization.universe.data.components.defaults.popsystem.pop.scholar.institute.InstituteInternalData
 import relativitization.universe.data.components.defaults.popsystem.pop.scholar.institute.MutableInstituteData
+import relativitization.universe.data.components.popSystemData
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.utils.I18NString
 import relativitization.universe.utils.IntString

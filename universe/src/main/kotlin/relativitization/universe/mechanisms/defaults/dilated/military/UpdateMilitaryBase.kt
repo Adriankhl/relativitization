@@ -9,6 +9,7 @@ import relativitization.universe.data.components.defaults.modifier.MutableCombat
 import relativitization.universe.data.components.defaults.popsystem.pop.soldier.MutableSoldierPopData
 import relativitization.universe.data.components.modifierData
 import relativitization.universe.data.components.playerScienceData
+import relativitization.universe.data.components.popSystemData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.mechanisms.Mechanism
 import kotlin.math.min

@@ -8,6 +8,7 @@ import relativitization.universe.data.components.defaults.popsystem.pop.CommonPo
 import relativitization.universe.data.components.defaults.popsystem.pop.PopType
 import relativitization.universe.data.components.defaults.popsystem.pop.ResourceDesireData
 import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.InputResourceData
+import relativitization.universe.data.components.popSystemData
 import relativitization.universe.mechanisms.defaults.dilated.production.BaseStellarFuelProduction
 import relativitization.universe.mechanisms.defaults.dilated.production.EntertainmentProduction
 

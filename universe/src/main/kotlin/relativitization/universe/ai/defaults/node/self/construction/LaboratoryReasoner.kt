@@ -13,6 +13,7 @@ import relativitization.universe.data.components.defaults.popsystem.pop.engineer
 import relativitization.universe.data.components.defaults.science.knowledge.AppliedResearchProjectData
 import relativitization.universe.data.components.economyData
 import relativitization.universe.data.components.playerScienceData
+import relativitization.universe.data.components.popSystemData
 import relativitization.universe.maths.physics.Intervals
 import relativitization.universe.maths.random.Rand
 

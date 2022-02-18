@@ -4,6 +4,7 @@ import kotlinx.coroutines.runBlocking
 import relativitization.universe.Universe
 import relativitization.universe.data.components.defaults.physics.Int3D
 import relativitization.universe.data.components.defaults.physics.Int4D
+import relativitization.universe.data.components.popSystemData
 import relativitization.universe.data.events.AskToMergeCarrierEvent
 import relativitization.universe.data.events.name
 import relativitization.universe.generate.method.GenerateSettings

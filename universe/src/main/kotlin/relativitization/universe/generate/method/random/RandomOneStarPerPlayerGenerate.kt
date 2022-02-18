@@ -6,6 +6,7 @@ import relativitization.universe.data.components.defaults.science.knowledge.Appl
 import relativitization.universe.data.components.defaults.science.knowledge.BasicResearchField
 import relativitization.universe.data.components.physicsData
 import relativitization.universe.data.components.playerScienceData
+import relativitization.universe.data.components.popSystemData
 import relativitization.universe.data.global.MutableUniverseGlobalData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.data.global.components.UniverseScienceData

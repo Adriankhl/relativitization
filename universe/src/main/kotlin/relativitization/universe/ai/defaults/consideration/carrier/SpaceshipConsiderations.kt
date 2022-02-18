@@ -6,6 +6,7 @@ import relativitization.universe.ai.defaults.utils.DualUtilityDataFactory
 import relativitization.universe.ai.defaults.utils.PlanState
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.components.defaults.popsystem.CarrierType
+import relativitization.universe.data.components.popSystemData
 import kotlin.math.pow
 
 /**

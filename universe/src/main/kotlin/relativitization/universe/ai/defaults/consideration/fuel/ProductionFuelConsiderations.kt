@@ -10,6 +10,7 @@ import relativitization.universe.data.components.defaults.physics.MutableFuelRes
 import relativitization.universe.data.components.defaults.popsystem.pop.MutableCommonPopData
 import relativitization.universe.data.components.defaults.popsystem.pop.PopType
 import relativitization.universe.data.components.physicsData
+import relativitization.universe.data.components.popSystemData
 
 /**
  * Whether production fuel is increasing comparing to historical average

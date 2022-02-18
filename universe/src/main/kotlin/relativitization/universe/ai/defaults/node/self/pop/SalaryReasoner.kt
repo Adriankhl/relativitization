@@ -5,16 +5,13 @@ import relativitization.universe.ai.defaults.consideration.fuel.PopulationSaving
 import relativitization.universe.ai.defaults.utils.*
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.commands.ChangeSalaryCommand
-import relativitization.universe.data.components.MutablePhysicsData
-import relativitization.universe.data.components.MutablePopSystemData
+import relativitization.universe.data.components.*
 import relativitization.universe.data.components.defaults.economy.MutableResourceData
 import relativitization.universe.data.components.defaults.economy.ResourceQualityClass
 import relativitization.universe.data.components.defaults.popsystem.MutableCarrierData
 import relativitization.universe.data.components.defaults.popsystem.pop.MutableCommonPopData
 import relativitization.universe.data.components.defaults.popsystem.pop.MutableResourceDesireData
 import relativitization.universe.data.components.defaults.popsystem.pop.PopType
-import relativitization.universe.data.components.economyData
-import relativitization.universe.data.components.physicsData
 import kotlin.math.max
 import kotlin.math.min
 

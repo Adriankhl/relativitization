@@ -32,6 +32,7 @@ import relativitization.universe.data.components.defaults.popsystem.pop.service.
 import relativitization.universe.data.components.defaults.popsystem.pop.soldier.SoldierPopData
 import relativitization.universe.data.components.economyData
 import relativitization.universe.data.components.playerScienceData
+import relativitization.universe.data.components.popSystemData
 import relativitization.universe.maths.number.Notation
 import relativitization.universe.utils.RelativitizationLogManager
 
