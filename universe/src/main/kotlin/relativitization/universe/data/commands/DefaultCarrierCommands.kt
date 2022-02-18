@@ -8,6 +8,7 @@ import relativitization.universe.data.components.defaults.popsystem.CarrierType
 import relativitization.universe.data.components.defaults.popsystem.MutableCarrierData
 import relativitization.universe.data.components.defaults.popsystem.MutableCarrierInternalData
 import relativitization.universe.data.components.physicsData
+import relativitization.universe.data.components.playerScienceData
 import relativitization.universe.utils.I18NString
 import relativitization.universe.utils.IntString
 import relativitization.universe.utils.NormalString

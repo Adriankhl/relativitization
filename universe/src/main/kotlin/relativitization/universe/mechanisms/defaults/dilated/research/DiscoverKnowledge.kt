@@ -17,6 +17,7 @@ import relativitization.universe.data.components.defaults.popsystem.pop.scholar.
 import relativitization.universe.data.components.defaults.science.knowledge.AppliedResearchProjectData
 import relativitization.universe.data.components.defaults.science.knowledge.BasicResearchProjectData
 import relativitization.universe.data.components.economyData
+import relativitization.universe.data.components.playerScienceData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.data.global.components.UniverseScienceData
 import relativitization.universe.global.defaults.science.UpdateUniverseScienceData

@@ -12,6 +12,7 @@ import relativitization.universe.data.components.defaults.science.application.Sc
 import relativitization.universe.data.components.defaults.science.knowledge.AppliedResearchData
 import relativitization.universe.data.components.defaults.science.knowledge.BasicResearchData
 import relativitization.universe.data.components.defaults.science.knowledge.KnowledgeData
+import relativitization.universe.data.components.playerScienceData
 
 class ScienceInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.assets) {
     private val gdxSettings = game.gdxSettings

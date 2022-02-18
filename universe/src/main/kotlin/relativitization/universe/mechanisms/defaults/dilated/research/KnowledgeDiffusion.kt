@@ -8,6 +8,7 @@ import relativitization.universe.data.components.MutablePlayerScienceData
 import relativitization.universe.data.components.PlayerScienceData
 import relativitization.universe.data.components.defaults.science.knowledge.AppliedResearchProjectData
 import relativitization.universe.data.components.defaults.science.knowledge.BasicResearchProjectData
+import relativitization.universe.data.components.playerScienceData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.global.defaults.science.UpdateUniverseScienceData
 import relativitization.universe.mechanisms.Mechanism

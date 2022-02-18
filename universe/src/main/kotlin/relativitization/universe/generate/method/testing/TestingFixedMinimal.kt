@@ -21,6 +21,7 @@ import relativitization.universe.data.components.defaults.science.knowledge.Basi
 import relativitization.universe.data.components.defaults.science.knowledge.BasicResearchProjectData
 import relativitization.universe.data.components.economyData
 import relativitization.universe.data.components.physicsData
+import relativitization.universe.data.components.playerScienceData
 import relativitization.universe.data.global.MutableUniverseGlobalData
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.generate.method.GenerateSettings

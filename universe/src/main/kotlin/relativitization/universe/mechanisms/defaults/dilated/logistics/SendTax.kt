@@ -6,6 +6,7 @@ import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.commands.SendFuelCommand
 import relativitization.universe.data.components.economyData
+import relativitization.universe.data.components.playerScienceData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.maths.collection.Fraction
 import relativitization.universe.mechanisms.Mechanism
@@ -35,7 +36,8 @@ object SendTax : Mechanism() {
                     fromId = universeData3DAtPlayer.getCurrentPlayerData().playerId,
                     fromInt4D = universeData3DAtPlayer.getCurrentPlayerData().int4D,
                     amount = fuelRestMass * fractionList[index],
-                    senderFuelLossFractionPerDistance = mutablePlayerData.playerInternalData.playerScienceData().playerScienceApplicationData.fuelLogisticsLossFractionPerDistance,
+                    senderFuelLossFractionPerDistance = mutablePlayerData.playerInternalData.playerScienceData()
+                        .playerScienceApplicationData.fuelLogisticsLossFractionPerDistance,
                 )
             }
 

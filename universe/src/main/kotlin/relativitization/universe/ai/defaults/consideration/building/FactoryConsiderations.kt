@@ -12,6 +12,7 @@ import relativitization.universe.data.components.defaults.popsystem.pop.labourer
 import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.MutableFuelFactoryInternalData
 import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.MutableResourceFactoryData
 import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.MutableResourceFactoryInternalData
+import relativitization.universe.data.components.playerScienceData
 
 /**
  * Check if there is no self fuel factory and no stellar pop system

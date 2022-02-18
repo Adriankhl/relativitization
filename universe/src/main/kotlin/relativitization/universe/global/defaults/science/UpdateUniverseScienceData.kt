@@ -3,6 +3,7 @@ package relativitization.universe.global.defaults.science
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.UniverseData
 import relativitization.universe.data.components.defaults.science.knowledge.*
+import relativitization.universe.data.components.playerScienceData
 import relativitization.universe.data.global.MutableUniverseGlobalData
 import relativitization.universe.data.global.components.MutableUniverseScienceData
 import relativitization.universe.data.global.components.UniverseScienceData

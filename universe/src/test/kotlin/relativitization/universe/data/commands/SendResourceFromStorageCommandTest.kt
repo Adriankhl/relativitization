@@ -6,6 +6,7 @@ import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.components.defaults.economy.ResourceQualityClass
 import relativitization.universe.data.components.defaults.economy.ResourceType
 import relativitization.universe.data.components.economyData
+import relativitization.universe.data.components.playerScienceData
 import relativitization.universe.generate.method.GenerateSettings
 import relativitization.universe.generate.method.GenerateUniverseMethodCollection
 import relativitization.universe.generate.method.name

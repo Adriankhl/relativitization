@@ -2,6 +2,8 @@ package relativitization.universe.data.components
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import relativitization.universe.data.MutablePlayerInternalData
+import relativitization.universe.data.PlayerInternalData
 import relativitization.universe.data.components.defaults.science.application.MutableScienceApplicationData
 import relativitization.universe.data.components.defaults.science.application.ScienceApplicationData
 import relativitization.universe.data.components.defaults.science.knowledge.*
@@ -50,7 +52,7 @@ data class MutablePlayerScienceData(
     fun isBasicProjectDone(basicResearchProjectData: BasicResearchProjectData): Boolean {
         val isInCommonSense: Boolean =
             basicResearchProjectData.basicResearchId < commonSenseKnowledgeData.startFromBasicResearchId
-        val isInDoneProjectList:Boolean = doneBasicResearchProjectList.any {
+        val isInDoneProjectList: Boolean = doneBasicResearchProjectList.any {
             it.basicResearchId == basicResearchProjectData.basicResearchId
         }
         return isInCommonSense || isInDoneProjectList
@@ -62,7 +64,7 @@ data class MutablePlayerScienceData(
     fun isBasicProjectKnown(basicResearchProjectData: BasicResearchProjectData): Boolean {
         val isInCommonSense: Boolean =
             basicResearchProjectData.basicResearchId < commonSenseKnowledgeData.startFromBasicResearchId
-        val isInKnownProjectList:Boolean = knownBasicResearchProjectList.any {
+        val isInKnownProjectList: Boolean = knownBasicResearchProjectList.any {
             it.basicResearchId == basicResearchProjectData.basicResearchId
         }
         return isInCommonSense || isInKnownProjectList
@@ -74,7 +76,7 @@ data class MutablePlayerScienceData(
     fun isAppliedProjectDone(appliedResearchProjectData: AppliedResearchProjectData): Boolean {
         val isInCommonSense: Boolean =
             appliedResearchProjectData.appliedResearchId < commonSenseKnowledgeData.startFromAppliedResearchId
-        val isInDoneProjectList:Boolean = doneAppliedResearchProjectList.any {
+        val isInDoneProjectList: Boolean = doneAppliedResearchProjectList.any {
             it.appliedResearchId == appliedResearchProjectData.appliedResearchId
         }
         return isInCommonSense || isInDoneProjectList
@@ -86,7 +88,7 @@ data class MutablePlayerScienceData(
     fun isAppliedProjectKnown(appliedResearchProjectData: AppliedResearchProjectData): Boolean {
         val isInCommonSense: Boolean =
             appliedResearchProjectData.appliedResearchId < commonSenseKnowledgeData.startFromAppliedResearchId
-        val isInDoneProjectList:Boolean = knownAppliedResearchProjectList.any {
+        val isInDoneProjectList: Boolean = knownAppliedResearchProjectList.any {
             it.appliedResearchId == appliedResearchProjectData.appliedResearchId
         }
         return isInCommonSense || isInDoneProjectList
@@ -267,3 +269,15 @@ data class MutablePlayerScienceData(
         private val logger = RelativitizationLogManager.getLogger()
     }
 }
+
+fun PlayerInternalData.playerScienceData(): PlayerScienceData =
+    playerDataComponentMap.getOrDefault(PlayerScienceData::class, PlayerScienceData())
+
+fun MutablePlayerInternalData.playerScienceData(): MutablePlayerScienceData =
+    playerDataComponentMap.getOrDefault(
+        MutablePlayerScienceData::class,
+        MutablePlayerScienceData()
+    )
+
+fun MutablePlayerInternalData.playerScienceData(newPlayerScienceData: MutablePlayerScienceData) =
+    playerDataComponentMap.put(newPlayerScienceData)

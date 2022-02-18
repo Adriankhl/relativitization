@@ -10,6 +10,7 @@ import relativitization.universe.data.commands.BuildLocalCarrierCommand
 import relativitization.universe.data.components.defaults.physics.MutableFuelRestMassData
 import relativitization.universe.data.components.defaults.science.application.MutableScienceApplicationData
 import relativitization.universe.data.components.physicsData
+import relativitization.universe.data.components.playerScienceData
 import kotlin.math.pow
 
 class CarrierReasoner : DualUtilityReasoner() {

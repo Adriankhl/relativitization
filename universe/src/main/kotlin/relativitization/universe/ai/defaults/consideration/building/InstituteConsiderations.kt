@@ -8,6 +8,7 @@ import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.components.defaults.popsystem.MutableCarrierData
 import relativitization.universe.data.components.defaults.popsystem.pop.scholar.institute.MutableInstituteData
 import relativitization.universe.data.components.defaults.science.knowledge.BasicResearchProjectData
+import relativitization.universe.data.components.playerScienceData
 import relativitization.universe.maths.physics.Intervals
 
 /**

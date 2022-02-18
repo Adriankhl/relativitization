@@ -16,6 +16,7 @@ import relativitization.universe.data.components.defaults.science.knowledge.Appl
 import relativitization.universe.data.components.defaults.science.knowledge.AppliedResearchProjectData
 import relativitization.universe.data.components.defaults.science.knowledge.BasicResearchField
 import relativitization.universe.data.components.defaults.science.knowledge.BasicResearchProjectData
+import relativitization.universe.data.components.playerScienceData
 import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.math.max
 import kotlin.math.min

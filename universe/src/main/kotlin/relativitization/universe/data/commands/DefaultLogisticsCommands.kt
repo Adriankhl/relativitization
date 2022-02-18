@@ -16,6 +16,7 @@ import relativitization.universe.data.components.defaults.popsystem.pop.service.
 import relativitization.universe.data.components.economyData
 import relativitization.universe.data.components.modifierData
 import relativitization.universe.data.components.physicsData
+import relativitization.universe.data.components.playerScienceData
 import relativitization.universe.maths.physics.Intervals
 import relativitization.universe.utils.I18NString
 import relativitization.universe.utils.IntString
@@ -575,8 +576,8 @@ data class PopBuyResourceCommand(
 
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
-        val receiverLossFractionPerDistance: Double =
-            playerData.playerInternalData.playerScienceData().playerScienceApplicationData.fuelLogisticsLossFractionPerDistance
+        val receiverLossFractionPerDistance: Double = playerData.playerInternalData.playerScienceData()
+            .playerScienceApplicationData.fuelLogisticsLossFractionPerDistance
 
         val lossFractionPerDistance: Double =
             (receiverLossFractionPerDistance + senderFuelLossFractionPerDistance) * 0.5
@@ -717,7 +718,8 @@ data class PlayerBuyResourceCommand(
                     NormalString(". ")
                 ),
                 listOf(
-                    playerData.playerInternalData.playerScienceData().playerScienceApplicationData.fuelLogisticsLossFractionPerDistance.toString(),
+                    playerData.playerInternalData.playerScienceData().playerScienceApplicationData
+                        .fuelLogisticsLossFractionPerDistance.toString(),
                     senderFuelLossFractionPerDistance.toString()
                 )
             )

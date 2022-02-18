@@ -11,6 +11,7 @@ import relativitization.universe.data.components.defaults.economy.*
 import relativitization.universe.data.components.defaults.physics.FuelRestMassTargetProportionData
 import relativitization.universe.data.components.economyData
 import relativitization.universe.data.components.physicsData
+import relativitization.universe.data.components.playerScienceData
 import relativitization.universe.maths.number.Notation
 
 class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.assets) {
