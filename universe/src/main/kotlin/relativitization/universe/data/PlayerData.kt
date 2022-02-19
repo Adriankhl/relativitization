@@ -165,18 +165,6 @@ data class MutablePlayerData(
     val newPlayerList: MutableList<MutablePlayerInternalData> = mutableListOf()
 ) {
     /**
-     * Synchronize different data component to ensure consistency
-     */
-    fun syncData() {
-        playerInternalData.syncDataComponent()
-
-        // Add mass from new player to other rest mass
-        playerInternalData.physicsData().otherRestMass += newPlayerList.sumOf {
-            it.physicsData().totalRestMass()
-        }
-    }
-
-    /**
      * @param otherPlayerId whether this id is the player or one the subordinates of the player
      */
     fun isSubOrdinateOrSelf(otherPlayerId: Int): Boolean {
@@ -370,23 +358,6 @@ data class MutablePlayerInternalData(
     fun addEventData(eventData: MutableEventData) {
         val newKey: Int = ListFind.minMissing(eventDataMap.keys.toList(), 0)
         eventDataMap[newKey] = eventData
-    }
-
-    /**
-     * Synchronize different data component to ensure consistency
-     */
-    fun syncDataComponent() {
-        logger.debug("Sync data component, change core mass")
-        physicsData().coreRestMass =
-            popSystemData().totalCoreRestMass()
-
-        logger.debug("Sync data component, change other rest mass")
-        physicsData().otherRestMass =
-            popSystemData().totalOtherRestMass()
-
-        logger.debug("Sync data component, change max delta fuel rest mass")
-        physicsData().fuelRestMassData.maxMovementDelta =
-            popSystemData().totalMaxMovementDeltaFuelRestMass()
     }
 
     companion object {

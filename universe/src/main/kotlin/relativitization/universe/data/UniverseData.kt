@@ -4,6 +4,7 @@ import kotlinx.serialization.Serializable
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.components.defaults.physics.Int3D
 import relativitization.universe.data.components.defaults.physics.Int4D
+import relativitization.universe.data.components.syncData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.maths.grid.Grids
