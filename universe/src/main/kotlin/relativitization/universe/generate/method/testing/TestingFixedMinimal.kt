@@ -24,6 +24,7 @@ import relativitization.universe.data.components.physicsData
 import relativitization.universe.data.components.playerScienceData
 import relativitization.universe.data.components.popSystemData
 import relativitization.universe.data.global.MutableUniverseGlobalData
+import relativitization.universe.data.global.components.universeScienceData
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.generate.method.GenerateSettings
 import relativitization.universe.global.defaults.science.UpdateUniverseScienceData

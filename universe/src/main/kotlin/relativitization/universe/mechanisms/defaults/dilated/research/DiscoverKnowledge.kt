@@ -17,6 +17,7 @@ import relativitization.universe.data.components.defaults.science.knowledge.Appl
 import relativitization.universe.data.components.defaults.science.knowledge.BasicResearchProjectData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.data.global.components.UniverseScienceData
+import relativitization.universe.data.global.components.universeScienceData
 import relativitization.universe.global.defaults.science.UpdateUniverseScienceData
 import relativitization.universe.maths.algebra.Logistic
 import relativitization.universe.maths.physics.Intervals

@@ -3,6 +3,8 @@ package relativitization.universe.data.global.components
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.components.defaults.science.knowledge.*
+import relativitization.universe.data.global.MutableUniverseGlobalData
+import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.data.global.components.defaults.science.knowledge.MutableUniverseProjectGenerationData
 import relativitization.universe.data.global.components.defaults.science.knowledge.UniverseProjectGenerationData
 import relativitization.universe.utils.RelativitizationLogManager
@@ -122,4 +124,17 @@ data class MutableUniverseScienceData(
     companion object {
         private val logger = RelativitizationLogManager.getLogger()
     }
+}
+
+fun UniverseGlobalData.universeScienceData(): UniverseScienceData =
+    globalDataComponentMap.getOrDefault(UniverseScienceData::class, UniverseScienceData())
+
+fun MutableUniverseGlobalData.universeScienceData(): MutableUniverseScienceData =
+    globalDataComponentMap.getOrDefault(
+        MutableUniverseScienceData::class,
+        MutableUniverseScienceData()
+    )
+
+fun MutableUniverseGlobalData.universeScienceData(newUniverseScienceData: MutableUniverseScienceData) {
+    globalDataComponentMap.put(newUniverseScienceData)
 }
