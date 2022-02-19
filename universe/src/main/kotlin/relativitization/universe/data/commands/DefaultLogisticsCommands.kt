@@ -7,7 +7,6 @@ import relativitization.universe.data.components.*
 import relativitization.universe.data.components.defaults.economy.ResourceQualityClass
 import relativitization.universe.data.components.defaults.economy.ResourceQualityData
 import relativitization.universe.data.components.defaults.economy.ResourceType
-import relativitization.universe.data.components.defaults.physics.Int3D
 import relativitization.universe.data.components.defaults.physics.Int4D
 import relativitization.universe.data.components.defaults.popsystem.pop.PopType
 import relativitization.universe.data.components.defaults.popsystem.pop.service.export.MutablePlayerExportCenterData
@@ -102,7 +101,7 @@ data class SendFuelFromStorageCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ) {
-        playerData.playerInternalData.physicsData().fuelRestMassData.storage -= amount
+        playerData.playerInternalData.physicsData().removeExternalStorageFuel(amount)
     }
 
     override fun canExecute(
@@ -163,7 +162,7 @@ data class SendFuelFromStorageCommand(
         )
 
         // Add fuel
-        playerData.playerInternalData.physicsData().addFuel(remainAmount)
+        playerData.playerInternalData.physicsData().addExternalFuel(remainAmount)
     }
 
     companion object {
@@ -391,7 +390,7 @@ data class SendFuelCommand(
             (1.0 - lossFractionPerDistance).pow(distance)
         }
 
-        playerData.playerInternalData.physicsData().addFuel(amount * remainFraction)
+        playerData.playerInternalData.physicsData().addExternalFuel(amount * remainFraction)
     }
 
     companion object {
@@ -747,7 +746,7 @@ data class PlayerBuyResourceCommand(
         }
 
         // Consume resource
-        playerData.playerInternalData.physicsData().fuelRestMassData.trade -= fuelRestMassAmount * (1.0 + tariffFactor)
+        playerData.playerInternalData.physicsData().removeExternalTradeFuel(fuelRestMassAmount * (1.0 + tariffFactor))
 
         // Add tariff to storage
         playerData.playerInternalData.economyData().taxData.storedFuelRestMass += fuelRestMassAmount * tariffFactor

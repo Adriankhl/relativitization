@@ -33,7 +33,7 @@ object BalanceFuel : Mechanism() {
         if (fuelData.storage > targetStorage) {
             val redistributeAmount: Double = fuelData.storage - targetStorage
             fuelData.storage = targetStorage
-            mutablePlayerData.playerInternalData.physicsData().addFuel(redistributeAmount)
+            mutablePlayerData.playerInternalData.physicsData().addInternalFuel(redistributeAmount)
         }
 
         return listOf()

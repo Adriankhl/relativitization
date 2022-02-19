@@ -116,7 +116,7 @@ data class BuildForeignFuelFactoryCommand(
         val fuelNeeded: Double = playerData.playerInternalData.playerScienceData()
             .playerScienceApplicationData.newFuelFactoryFuelNeededByConstruction(maxNumEmployee)
 
-        playerData.playerInternalData.physicsData().fuelRestMassData.production -= fuelNeeded + storedFuelRestMass
+        playerData.playerInternalData.physicsData().removeExternalProductionFuel(fuelNeeded + storedFuelRestMass)
 
     }
 
@@ -298,7 +298,7 @@ data class BuildForeignResourceFactoryCommand(
                 maxNumEmployee = maxNumEmployee,
                 qualityLevel = qualityLevel,
             )
-        playerData.playerInternalData.physicsData().fuelRestMassData.production -= fuelNeeded + storedFuelRestMass
+        playerData.playerInternalData.physicsData().removeExternalProductionFuel(fuelNeeded + storedFuelRestMass)
 
     }
 
@@ -482,7 +482,7 @@ data class BuildLocalFuelFactoryCommand(
         val requiredFuel: Double = playerData.playerInternalData.playerScienceData()
             .playerScienceApplicationData.newFuelFactoryFuelNeededByConstruction(maxNumEmployee)
 
-        playerData.playerInternalData.physicsData().fuelRestMassData.production -= requiredFuel
+        playerData.playerInternalData.physicsData().removeExternalProductionFuel(requiredFuel)
 
         carrier.allPopData.labourerPopData.addFuelFactory(
             MutableFuelFactoryData(
@@ -646,7 +646,7 @@ data class BuildLocalResourceFactoryCommand(
                 qualityLevel = qualityLevel
             )
 
-        playerData.playerInternalData.physicsData().fuelRestMassData.production -= requiredFuel
+        playerData.playerInternalData.physicsData().removeExternalProductionFuel(requiredFuel)
 
         carrier.allPopData.labourerPopData.addResourceFactory(
             MutableResourceFactoryData(
@@ -1257,7 +1257,7 @@ data class SupplyForeignFuelFactoryCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ) {
-        playerData.playerInternalData.physicsData().fuelRestMassData.production -= amount
+        playerData.playerInternalData.physicsData().removeExternalProductionFuel(amount)
     }
 
     override fun canExecute(
@@ -1617,7 +1617,7 @@ data class SupplyForeignResourceFactoryCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ) {
-        playerData.playerInternalData.physicsData().fuelRestMassData.production -= amount
+        playerData.playerInternalData.physicsData().removeExternalProductionFuel(amount)
     }
 
     override fun canExecute(

@@ -5,7 +5,6 @@ import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.components.defaults.popsystem.CarrierType
-import relativitization.universe.data.components.defaults.popsystem.MutableCarrierData
 import relativitization.universe.data.components.modifierData
 import relativitization.universe.data.components.physicsData
 import relativitization.universe.data.components.popSystemData
@@ -34,7 +33,7 @@ object BaseStellarFuelProduction : Mechanism() {
                 }
 
             fuelList.forEach {
-                mutablePlayerData.playerInternalData.physicsData().addFuel(it)
+                mutablePlayerData.playerInternalData.physicsData().addExternalFuel(it)
             }
         }
 

@@ -41,10 +41,13 @@ data class MutablePhysicsData(
     fun totalRestMass() = coreRestMass + otherRestMass + fuelRestMassData.total()
 
     /**
-     * Add fuel such that it fulfill the target in the order of storage, movement, production, and
+     * Add internal fuel from other part of the player,
+     * such that it fulfill the target in the order of storage, movement, production, and
      * put the rest in trade, by recursion
+     *
+     * @param newFuelRestMass the rest mass of the fuel to be added
      */
-    fun addFuel(newFuelRestMass: Double) {
+    fun addInternalFuel(newFuelRestMass: Double) {
         val totalFuel: Double = newFuelRestMass + fuelRestMassData.total()
         val totalTargetWeight: Double = fuelRestMassTargetProportionData.total()
 
@@ -72,7 +75,7 @@ data class MutablePhysicsData(
                         targetStorage - fuelRestMassData.storage
                     )
                     fuelRestMassData.storage += actualFuelAdded
-                    addFuel(newFuelRestMass - actualFuelAdded)
+                    addInternalFuel(newFuelRestMass - actualFuelAdded)
                 }
                 fuelRestMassData.movement < targetMovement -> {
                     val actualFuelAdded: Double = min(
@@ -80,7 +83,7 @@ data class MutablePhysicsData(
                         targetMovement - fuelRestMassData.movement
                     )
                     fuelRestMassData.movement += actualFuelAdded
-                    addFuel(newFuelRestMass - actualFuelAdded)
+                    addInternalFuel(newFuelRestMass - actualFuelAdded)
                 }
                 fuelRestMassData.production < targetProduction -> {
                     val actualFuelAdded: Double = min(
@@ -88,13 +91,85 @@ data class MutablePhysicsData(
                         targetProduction - fuelRestMassData.production
                     )
                     fuelRestMassData.production += actualFuelAdded
-                    addFuel(newFuelRestMass - actualFuelAdded)
+                    addInternalFuel(newFuelRestMass - actualFuelAdded)
                 }
                 else -> {
                     fuelRestMassData.trade += newFuelRestMass
                 }
             }
         }
+    }
+
+    /**
+     * Add external fuel from other player,
+     * such that it fulfill the target in the order of storage, movement, production, and
+     * put the rest in trade, by recursion. And increase otherRestMass
+     *
+     * @param newFuelRestMass the rest mass of the fuel to be added
+     */
+    fun addExternalFuel(newFuelRestMass: Double) {
+        otherRestMass += newFuelRestMass
+        addInternalFuel(newFuelRestMass)
+    }
+
+    /**
+     *  Remove fuel from storage
+     */
+    fun removeInternalStorageFuel(removeFuelRestMass: Double) {
+        fuelRestMassData.storage -= removeFuelRestMass
+    }
+
+    /**
+     *  Remove fuel from storage and decrease otherRestMass
+     */
+    fun removeExternalStorageFuel(removeFuelRestMass: Double) {
+        otherRestMass -= removeFuelRestMass
+        removeInternalStorageFuel(removeFuelRestMass)
+    }
+
+    /**
+     *  Remove fuel from movement
+     */
+    fun removeInternalMovementFuel(removeFuelRestMass: Double) {
+        fuelRestMassData.movement -= removeFuelRestMass
+    }
+
+    /**
+     *  Remove fuel from movement and decrease otherRestMass
+     */
+    fun removeExternalMovementFuel(removeFuelRestMass: Double) {
+        otherRestMass -= removeFuelRestMass
+        removeInternalMovementFuel(removeFuelRestMass)
+    }
+
+    /**
+     *  Remove fuel from production
+     */
+    fun removeInternalProductionFuel(removeFuelRestMass: Double) {
+        fuelRestMassData.production -= removeFuelRestMass
+    }
+
+    /**
+     *  Remove fuel from production and decrease otherRestMass
+     */
+    fun removeExternalProductionFuel(removeFuelRestMass: Double) {
+        otherRestMass -= removeFuelRestMass
+        removeInternalProductionFuel(removeFuelRestMass)
+    }
+
+    /**
+     *  Remove fuel from trade
+     */
+    fun removeInternalTradeFuel(removeFuelRestMass: Double) {
+        fuelRestMassData.trade -= removeFuelRestMass
+    }
+
+    /**
+     *  Remove fuel from trade and decrease otherRestMass
+     */
+    fun removeExternalTradeFuel(removeFuelRestMass: Double) {
+        otherRestMass -= removeFuelRestMass
+        removeInternalTradeFuel(removeFuelRestMass)
     }
 }
 

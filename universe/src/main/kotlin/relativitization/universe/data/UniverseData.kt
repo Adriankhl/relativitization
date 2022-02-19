@@ -4,7 +4,6 @@ import kotlinx.serialization.Serializable
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.components.defaults.physics.Int3D
 import relativitization.universe.data.components.defaults.physics.Int4D
-import relativitization.universe.data.components.syncData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.maths.grid.Grids
@@ -354,9 +353,6 @@ data class MutableUniverseData4D(
      */
     private fun addPlayerData(mutablePlayerData: MutablePlayerData, currentTime: Int, edgeLength: Double) {
         val tSize: Int = playerData4D.size
-
-        // Sync data component
-        mutablePlayerData.syncData()
 
         // Modified player data double 4D if it doesn't fit int4D
         val int4D = mutablePlayerData.int4D

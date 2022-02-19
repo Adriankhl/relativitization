@@ -498,10 +498,6 @@ class Universe(
         logger.debug("Process dead players and new players")
         processDeadAndNewPlayer()
 
-        // Sync all data component to ensure consistency before universe data update
-        logger.debug("Sync all player data component in preProcessUniverse()")
-        playerCollection.syncAllPlayerDataComponent()
-
         logger.debug("Get new universe slice in preProcessUniverse()")
         val universeSlice = playerCollection.getUniverseSlice(universeData)
 
@@ -533,10 +529,6 @@ class Universe(
 
         logger.debug("Process dead players and new players")
         processDeadAndNewPlayer()
-
-        // Sync all data component to ensure consistency before universe data update
-        logger.debug("Sync all player data component in postProcessUniverse()")
-        playerCollection.syncAllPlayerDataComponent()
 
         logger.debug("Get new universe slice in postProcessUniverse()")
         val universeSlice = playerCollection.getUniverseSlice(universeData)

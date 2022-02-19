@@ -6,8 +6,7 @@ import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.commands.DamageCommand
-import relativitization.universe.data.components.defaults.diplomacy.DiplomaticRelationState
-import relativitization.universe.data.components.defaults.physics.MutableFuelRestMassData
+import relativitization.universe.data.components.MutablePhysicsData
 import relativitization.universe.data.components.diplomacyData
 import relativitization.universe.data.components.physicsData
 import relativitization.universe.data.components.popSystemData
@@ -30,8 +29,7 @@ object AutoCombat : Mechanism() {
             universeData3DAtPlayer.getNeighbour(0)
         ).shuffled(Rand.rand())
 
-        val fuelRestMassData: MutableFuelRestMassData = mutablePlayerData.playerInternalData.physicsData()
-            .fuelRestMassData
+        val physicsData: MutablePhysicsData = mutablePlayerData.playerInternalData.physicsData()
 
         return if (sameCubeEnemy.isNotEmpty()) {
             mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.map {
@@ -40,11 +38,11 @@ object AutoCombat : Mechanism() {
 
                 val attack: Double = min(
                     it.allPopData.soldierPopData.militaryBaseData.attack,
-                    fuelRestMassData.production
+                    physicsData.fuelRestMassData.production
                 )
 
                 // Consume production fuel when attack
-                fuelRestMassData.production -= attack
+                physicsData.removeExternalProductionFuel(attack)
 
                 // Adjust damage by time dilation
                 val command = DamageCommand(

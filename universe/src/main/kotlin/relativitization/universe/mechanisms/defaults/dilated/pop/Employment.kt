@@ -24,13 +24,10 @@ object Employment : Mechanism() {
         universeGlobalData: UniverseGlobalData
     ): List<Command> {
 
-        val fuelRestMassData: MutableFuelRestMassData =
-            mutablePlayerData.playerInternalData.physicsData().fuelRestMassData
-
         mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.forEach {
             updateEmployment(
                 it,
-                fuelRestMassData,
+                mutablePlayerData.playerInternalData.physicsData(),
                 mutablePlayerData.playerInternalData.economyData(),
                 universeData3DAtPlayer,
             )
@@ -41,56 +38,56 @@ object Employment : Mechanism() {
 
     fun updateEmployment(
         carrierData: MutableCarrierData,
-        fuelRestMassData: MutableFuelRestMassData,
+        mutablePhysicsData: MutablePhysicsData,
         mutableEconomyData: MutableEconomyData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
     ) {
         updateLabourerEmployment(
             carrierData.allPopData.labourerPopData,
-            fuelRestMassData,
+            mutablePhysicsData,
             mutableEconomyData,
             universeData3DAtPlayer,
         )
 
         updateSoldierEmployment(
             carrierData.allPopData.soldierPopData,
-            fuelRestMassData,
+            mutablePhysicsData,
             mutableEconomyData,
         )
 
         updateCommonEmployment(
             carrierData.allPopData.entertainerPopData.commonPopData,
-            fuelRestMassData,
+            mutablePhysicsData,
             mutableEconomyData,
         )
 
         updateCommonEmployment(
             carrierData.allPopData.servicePopData.commonPopData,
-            fuelRestMassData,
+            mutablePhysicsData,
             mutableEconomyData,
         )
 
         updateCommonEmployment(
             carrierData.allPopData.medicPopData.commonPopData,
-            fuelRestMassData,
+            mutablePhysicsData,
             mutableEconomyData,
         )
 
         updateCommonEmployment(
             carrierData.allPopData.educatorPopData.commonPopData,
-            fuelRestMassData,
+            mutablePhysicsData,
             mutableEconomyData,
         )
 
         updateEngineerEmployment(
             carrierData.allPopData.engineerPopData,
-            fuelRestMassData,
+            mutablePhysicsData,
             mutableEconomyData,
         )
 
         updateScholarEmployment(
             carrierData.allPopData.scholarPopData,
-            fuelRestMassData,
+            mutablePhysicsData,
             mutableEconomyData,
         )
 
@@ -102,7 +99,7 @@ object Employment : Mechanism() {
      */
     fun updateLabourerEmployment(
         labourerPopData: MutableLabourerPopData,
-        fuelRestMassData: MutableFuelRestMassData,
+        mutablePhysicsData: MutablePhysicsData,
         mutableEconomyData: MutableEconomyData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
     ) {
@@ -196,7 +193,7 @@ object Employment : Mechanism() {
             val pay: Double = newNumEmployee * salary
             val tax: Double = pay * incomeTax
             val payWithTax: Double = pay + tax
-            val availableFuel: Double = fuelRestMassData.production
+            val availableFuel: Double = mutablePhysicsData.fuelRestMassData.production
 
             // Decide employee and payment based on the remaining labourer and fuel
             if (availableFuel - payWithTax >= 0.0) {
@@ -204,7 +201,7 @@ object Employment : Mechanism() {
                 it.lastNumEmployee = newNumEmployee
 
                 // Pay salary and tax here
-                fuelRestMassData.production -= payWithTax
+                mutablePhysicsData.removeInternalProductionFuel(payWithTax)
                 labourerPopData.commonPopData.saving += pay
                 mutableEconomyData.taxData.storedFuelRestMass += tax
 
@@ -223,7 +220,7 @@ object Employment : Mechanism() {
             val pay: Double = newNumEmployee * salary
             val tax: Double = pay * incomeTax
             val payWithTax: Double = pay + tax
-            val availableFuel: Double = fuelRestMassData.production
+            val availableFuel: Double = mutablePhysicsData.fuelRestMassData.production
 
             // Decide employee and payment based on the remaining labourer and fuel
             if (availableFuel - payWithTax >= 0.0) {
@@ -231,7 +228,7 @@ object Employment : Mechanism() {
                 it.lastNumEmployee = newNumEmployee
 
                 // Pay salary and tax here
-                fuelRestMassData.production -= payWithTax
+                mutablePhysicsData.removeInternalProductionFuel(payWithTax)
                 labourerPopData.commonPopData.saving += pay
                 mutableEconomyData.taxData.storedFuelRestMass += tax
 
@@ -323,7 +320,7 @@ object Employment : Mechanism() {
 
     fun updateScholarEmployment(
         scholarPopData: MutableScholarPopData,
-        fuelRestMassData: MutableFuelRestMassData,
+        mutablePhysicsData: MutablePhysicsData,
         mutableEconomyData: MutableEconomyData,
     ) {
         val salary: Double = scholarPopData.commonPopData.salaryPerEmployee
@@ -360,7 +357,7 @@ object Employment : Mechanism() {
             val pay: Double = newNumEmployee * salary
             val tax: Double = pay * incomeTax
             val payWithTax: Double = pay + tax
-            val availableFuel: Double = fuelRestMassData.production
+            val availableFuel: Double = mutablePhysicsData.fuelRestMassData.production
 
             // Decide employee and payment based on the remaining scholar and fuel
             if (availableFuel - payWithTax >= 0.0) {
@@ -368,7 +365,7 @@ object Employment : Mechanism() {
                 it.lastNumEmployee = newNumEmployee
 
                 // Pay salary and tax here
-                fuelRestMassData.production -= payWithTax
+                mutablePhysicsData.removeInternalProductionFuel(payWithTax)
                 scholarPopData.commonPopData.saving += pay
                 mutableEconomyData.taxData.storedFuelRestMass += tax
 
@@ -395,7 +392,7 @@ object Employment : Mechanism() {
 
     fun updateEngineerEmployment(
         engineerPopData: MutableEngineerPopData,
-        fuelRestMassData: MutableFuelRestMassData,
+        mutablePhysicsData: MutablePhysicsData,
         mutableEconomyData: MutableEconomyData,
     ) {
         val salary: Double = engineerPopData.commonPopData.salaryPerEmployee
@@ -432,7 +429,7 @@ object Employment : Mechanism() {
             val pay: Double = newNumEmployee * salary
             val tax: Double = pay * incomeTax
             val payWithTax: Double = pay + tax
-            val availableFuel: Double = fuelRestMassData.production
+            val availableFuel: Double = mutablePhysicsData.fuelRestMassData.production
 
             // Decide employee and payment based on the remaining scholar and fuel
             if (availableFuel - payWithTax >= 0.0) {
@@ -440,7 +437,7 @@ object Employment : Mechanism() {
                 it.lastNumEmployee = newNumEmployee
 
                 // Pay salary and tax here
-                fuelRestMassData.production -= payWithTax
+                mutablePhysicsData.removeInternalProductionFuel(payWithTax)
                 engineerPopData.commonPopData.saving += pay
                 mutableEconomyData.taxData.storedFuelRestMass += tax
 
@@ -469,7 +466,7 @@ object Employment : Mechanism() {
      */
     fun updateSoldierEmployment(
         soldierPopData: MutableSoldierPopData,
-        fuelRestMassData: MutableFuelRestMassData,
+        mutablePhysicsData: MutablePhysicsData,
         mutableEconomyData: MutableEconomyData,
     ) {
         val salary: Double = soldierPopData.commonPopData.salaryPerEmployee
@@ -481,7 +478,7 @@ object Employment : Mechanism() {
         val tax: Double = maxPay * incomeTax
         val maxPayWithTax: Double = maxPay + tax
 
-        val availableFuel: Double = fuelRestMassData.production
+        val availableFuel: Double = mutablePhysicsData.fuelRestMassData.production
 
         if (availableFuel >= maxPayWithTax) {
             soldierPopData.commonPopData.unemploymentRate = 0.0
@@ -491,7 +488,7 @@ object Employment : Mechanism() {
                 soldierPopData.commonPopData.adultPopulation
 
             // Pay salary and tax here
-            fuelRestMassData.production -= maxPayWithTax
+            mutablePhysicsData.removeInternalProductionFuel(maxPayWithTax)
             soldierPopData.commonPopData.saving += maxPay
             mutableEconomyData.taxData.storedFuelRestMass += tax
         } else {
@@ -507,7 +504,7 @@ object Employment : Mechanism() {
      */
     fun updateCommonEmployment(
         commonPopData: MutableCommonPopData,
-        fuelRestMassData: MutableFuelRestMassData,
+        mutablePhysicsData: MutablePhysicsData,
         mutableEconomyData: MutableEconomyData,
     ) {
         val salary: Double = commonPopData.salaryPerEmployee
@@ -519,13 +516,13 @@ object Employment : Mechanism() {
         val tax: Double = maxPay * incomeTax
         val maxPayWithTax: Double = maxPay + tax
 
-        val availableFuel: Double = fuelRestMassData.production
+        val availableFuel: Double = mutablePhysicsData.fuelRestMassData.production
 
         if (availableFuel >= maxPayWithTax) {
             commonPopData.unemploymentRate = 0.0
 
             // Pay salary and tax here
-            fuelRestMassData.production -= maxPayWithTax
+            mutablePhysicsData.removeInternalProductionFuel(maxPayWithTax)
             commonPopData.saving += maxPay
             mutableEconomyData.taxData.storedFuelRestMass += tax
         } else {

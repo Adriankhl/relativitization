@@ -55,6 +55,7 @@ object DefaultMechanismLists : MechanismLists() {
         SyncPlayerScienceData,
         UpdateScienceApplicationData,
         UpdateModifierByUniverseTime,
+        SyncPlayerData,
     )
 
     override val dilatedMechanismList: List<Mechanism> = listOf(
@@ -80,5 +81,6 @@ object DefaultMechanismLists : MechanismLists() {
         AutoCombat,
         UpdateModifierByProperTime,
         StoreFuelRestMassHistory,
+        SyncPlayerData,
     )
 }

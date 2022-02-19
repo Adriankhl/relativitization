@@ -3,6 +3,7 @@ package relativitization.universe.generate.method.testing
 import relativitization.universe.ai.EmptyAI
 import relativitization.universe.ai.name
 import relativitization.universe.data.*
+import relativitization.universe.data.components.*
 import relativitization.universe.data.components.defaults.economy.MutableResourceQualityData
 import relativitization.universe.data.components.defaults.economy.ResourceQualityClass
 import relativitization.universe.data.components.defaults.economy.ResourceType
@@ -19,10 +20,6 @@ import relativitization.universe.data.components.defaults.science.knowledge.Appl
 import relativitization.universe.data.components.defaults.science.knowledge.AppliedResearchProjectData
 import relativitization.universe.data.components.defaults.science.knowledge.BasicResearchField
 import relativitization.universe.data.components.defaults.science.knowledge.BasicResearchProjectData
-import relativitization.universe.data.components.economyData
-import relativitization.universe.data.components.physicsData
-import relativitization.universe.data.components.playerScienceData
-import relativitization.universe.data.components.popSystemData
 import relativitization.universe.data.global.MutableUniverseGlobalData
 import relativitization.universe.data.global.components.universeScienceData
 import relativitization.universe.data.serializer.DataSerializer
@@ -376,36 +373,42 @@ object TestingFixedMinimal : TestingGenerateUniverseMethod() {
 
 
         // Add player data to universe data 4D
+        playerData1.syncData()
         mutableUniverseData4D.addPlayerDataToLatestWithAfterImage(
             playerData1,
             universeState.getCurrentTime(),
             universeSettings.groupEdgeLength,
             universeSettings.playerAfterImageDuration
         )
+        playerData2.syncData()
         mutableUniverseData4D.addPlayerDataToLatestWithAfterImage(
             playerData2,
             universeState.getCurrentTime(),
             universeSettings.groupEdgeLength,
             universeSettings.playerAfterImageDuration
         )
+        playerData3.syncData()
         mutableUniverseData4D.addPlayerDataToLatestWithAfterImage(
             playerData3,
             universeState.getCurrentTime(),
             universeSettings.groupEdgeLength,
             universeSettings.playerAfterImageDuration
         )
+        playerData4.syncData()
         mutableUniverseData4D.addPlayerDataToLatestWithAfterImage(
             playerData4,
             universeState.getCurrentTime(),
             universeSettings.groupEdgeLength,
             universeSettings.playerAfterImageDuration
         )
+        playerData5.syncData()
         mutableUniverseData4D.addPlayerDataToLatestWithAfterImage(
             playerData5,
             universeState.getCurrentTime(),
             universeSettings.groupEdgeLength,
             universeSettings.playerAfterImageDuration
         )
+        playerData6.syncData()
         mutableUniverseData4D.addPlayerDataToLatestWithAfterImage(
             playerData6,
             universeState.getCurrentTime(),

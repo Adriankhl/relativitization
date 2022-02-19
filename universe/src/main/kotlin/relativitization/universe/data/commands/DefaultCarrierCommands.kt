@@ -104,8 +104,10 @@ data class BuildLocalCarrierCommand(
                 qualityLevel = qualityLevel
             )
 
-        playerData.playerInternalData.physicsData().fuelRestMassData.production -= requiredFuel
+        playerData.playerInternalData.physicsData().removeExternalProductionFuel(requiredFuel)
 
         playerData.playerInternalData.popSystemData().addCarrier(newCarrier)
+
+        playerData.playerInternalData.physicsData().coreRestMass += newCarrier.carrierInternalData.coreRestMass
     }
 }

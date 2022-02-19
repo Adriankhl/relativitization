@@ -6,16 +6,12 @@ import relativitization.universe.data.components.defaults.physics.Int4D
 import relativitization.universe.data.components.defaults.physics.MutableDouble4D
 import relativitization.universe.data.components.defaults.physics.MutableVelocity
 import relativitization.universe.data.components.defaults.physics.Velocity
-import relativitization.universe.data.components.physicsData
-import relativitization.universe.data.components.syncData
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.maths.grid.Grids.create3DGrid
 import relativitization.universe.maths.grid.Grids.double4DToGroupId
-import relativitization.universe.maths.physics.Relativistic.deltaMassByPhotonRocket
 import relativitization.universe.utils.RandomName.randomPlayerName
 import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.math.floor
-import kotlin.math.min
 
 class PlayerCollection(
     private val xDim: Int,
@@ -238,32 +234,32 @@ class PlayerCollection(
             // If exceeds boundaries, also decreases the velocity component to zero
             if (playerData.double4D.x <= 0.0) {
                 playerData.double4D.x = 0.000001
-                velocityComponentToZero('x', playerData, universeSettings.speedOfLight)
+                velocityComponentToZero('x', playerData)
             }
 
             if (playerData.double4D.x >= universeSettings.xDim.toDouble()) {
                 playerData.double4D.x = universeSettings.xDim.toDouble() - 0.000001
-                velocityComponentToZero('x', playerData, universeSettings.speedOfLight)
+                velocityComponentToZero('x', playerData)
             }
 
             if (playerData.double4D.y <= 0.0) {
                 playerData.double4D.y = 0.000001
-                velocityComponentToZero('y', playerData, universeSettings.speedOfLight)
+                velocityComponentToZero('y', playerData)
             }
 
             if (playerData.double4D.y >= universeSettings.yDim.toDouble()) {
                 playerData.double4D.y = universeSettings.yDim.toDouble() - 0.000001
-                velocityComponentToZero('y', playerData, universeSettings.speedOfLight)
+                velocityComponentToZero('y', playerData)
             }
 
             if (playerData.double4D.z <= 0.0) {
                 playerData.double4D.z = 0.000001
-                velocityComponentToZero('z', playerData, universeSettings.speedOfLight)
+                velocityComponentToZero('z', playerData)
             }
 
             if (playerData.double4D.z >= universeSettings.zDim.toDouble()) {
                 playerData.double4D.z = universeSettings.zDim.toDouble() - 0.000001
-                velocityComponentToZero('z', playerData, universeSettings.speedOfLight)
+                velocityComponentToZero('z', playerData)
             }
         }
 
@@ -301,7 +297,6 @@ class PlayerCollection(
     private fun velocityComponentToZero(
         component: Char,
         playerData: MutablePlayerData,
-        speedOfLight: Double,
     ) {
         val targetVelocity: Velocity = when (component) {
             'x' -> {
@@ -319,25 +314,7 @@ class PlayerCollection(
             }
         }
 
-        val deltaRestMass: Double = deltaMassByPhotonRocket(
-            initialRestMass = playerData.playerInternalData.physicsData().totalRestMass(),
-            initialVelocity = playerData.velocity.toVelocity(),
-            targetVelocity = targetVelocity,
-            speedOfLight = speedOfLight
-        )
-
-        val movementFuelRestMass: Double =
-            playerData.playerInternalData.physicsData().fuelRestMassData.movement
-
         playerData.velocity = targetVelocity.toMutableVelocity()
-        playerData.playerInternalData.physicsData().fuelRestMassData.movement -= min(
-            movementFuelRestMass,
-            deltaRestMass
-        )
-    }
-
-    fun syncAllPlayerDataComponent() {
-        playerMap.values.forEach { it.syncData() }
     }
 
     companion object {

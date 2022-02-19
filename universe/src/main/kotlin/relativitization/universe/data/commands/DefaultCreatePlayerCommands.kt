@@ -202,13 +202,16 @@ data class SplitCarrierCommand(
         }
 
         // split fuel to new player
-        newPhysicsData.addFuel(
+        val fuelToTransfer: Double =
             playerData.playerInternalData.physicsData().fuelRestMassData.storage * storageFraction
+
+        newPhysicsData.addExternalFuel(
+            fuelToTransfer
         )
         newPlayerInternalData.physicsData(newPhysicsData)
 
         // reduce original fuel
-        playerData.playerInternalData.physicsData().fuelRestMassData.storage *= (1.0 - storageFraction)
+        playerData.playerInternalData.physicsData().removeExternalStorageFuel(fuelToTransfer)
 
         // Copy science data
         val newPlayerScienceData: MutablePlayerScienceData =

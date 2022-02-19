@@ -89,9 +89,9 @@ object ResourceFactoryProduction : Mechanism() {
 
                 val qualityClass: ResourceQualityClass = if (buyResource) {
                     val maxFuelConsumption: Double =
-                            resourceFactoryData.resourceFactoryInternalData.fuelRestMassConsumptionRatePerEmployee *
-                                    resourceFactoryData.maxNumEmployee *
-                                    resourceFactoryData.employeeFraction()
+                        resourceFactoryData.resourceFactoryInternalData.fuelRestMassConsumptionRatePerEmployee *
+                                resourceFactoryData.maxNumEmployee *
+                                resourceFactoryData.employeeFraction()
 
                     // Approximate fuel per resource by taking the average
                     val availableFuelPerResource: Double =
@@ -198,8 +198,8 @@ object ResourceFactoryProduction : Mechanism() {
         } else {
             // Don't adjust by employee fraction, it as already considered
             val totalPrice: Double =
-                    resourceFactoryData.resourceFactoryInternalData.fuelRestMassConsumptionRatePerEmployee *
-                            resourceFactoryData.maxNumEmployee
+                resourceFactoryData.resourceFactoryInternalData.fuelRestMassConsumptionRatePerEmployee *
+                        resourceFactoryData.maxNumEmployee
 
             if (totalPrice > 0.0) {
                 physicsData.fuelRestMassData.production / totalPrice
@@ -349,9 +349,11 @@ object ResourceFactoryProduction : Mechanism() {
         }
 
         // Consume fuel
-        physicsData.fuelRestMassData.production -= amountFraction *
-                mutableResourceFactoryData.resourceFactoryInternalData.fuelRestMassConsumptionRatePerEmployee *
-                mutableResourceFactoryData.maxNumEmployee
+        physicsData.removeExternalProductionFuel(
+            amountFraction *
+                    mutableResourceFactoryData.resourceFactoryInternalData.fuelRestMassConsumptionRatePerEmployee *
+                    mutableResourceFactoryData.maxNumEmployee
+        )
 
         // Produce and add resource
         resourceData.addResource(
@@ -421,7 +423,7 @@ object ResourceFactoryProduction : Mechanism() {
             }.sumOf { it } * amountFraction
 
         mutableResourceFactoryData.storedFuelRestMass -= price
-        mutablePlayerData.playerInternalData.physicsData().addFuel(price)
+        mutablePlayerData.playerInternalData.physicsData().addInternalFuel(price)
 
 
         // Consume resource

@@ -6,6 +6,7 @@ import relativitization.universe.data.*
 import relativitization.universe.data.components.defaults.physics.MutableVelocity
 import relativitization.universe.data.components.physicsData
 import relativitization.universe.data.components.popSystemData
+import relativitization.universe.data.components.syncData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.generate.method.GenerateSettings
@@ -60,6 +61,7 @@ object ABMFlockingGenerate : ABMGenerateUniverseMethod() {
             // Use flocking ai
             playerData.playerInternalData.aiName = ABMFlockingAI.name()
 
+            playerData.syncData()
             data.addPlayerDataToLatestWithAfterImage(
                 playerData,
                 universeState.getCurrentTime(),
