@@ -45,6 +45,5 @@ saves*
 assets*
 
 # Latex
-*.log
 *.aux
 *.pdf
