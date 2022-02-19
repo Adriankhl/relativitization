@@ -9,8 +9,8 @@ import relativitization.universe.data.PlayerData
 import relativitization.universe.data.PlayerType
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.components.defaults.diplomacy.DiplomaticRelationState
-import relativitization.universe.data.components.defaults.physics.Double3D
-import relativitization.universe.data.components.defaults.physics.Velocity
+import relativitization.universe.maths.physics.Double3D
+import relativitization.universe.maths.physics.Velocity
 import relativitization.universe.data.components.defaults.popsystem.CarrierType
 import relativitization.universe.data.components.diplomacyData
 import relativitization.universe.data.components.popSystemData

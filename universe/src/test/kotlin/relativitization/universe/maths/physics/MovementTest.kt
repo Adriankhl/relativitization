@@ -1,7 +1,5 @@
 package relativitization.universe.maths.physics
 
-import relativitization.universe.data.components.defaults.physics.Double3D
-import relativitization.universe.data.components.defaults.physics.Velocity
 import relativitization.universe.maths.physics.Movement.deltaMassTargetDouble3DByPhotonRocket
 import relativitization.universe.maths.physics.Movement.isSameDirection
 import relativitization.universe.maths.physics.Movement.maxSpeedToStopByPhotonRocket

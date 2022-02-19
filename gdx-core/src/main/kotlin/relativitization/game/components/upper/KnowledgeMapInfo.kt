@@ -9,7 +9,7 @@ import relativitization.game.RelativitizationGame
 import relativitization.game.utils.ActorFunction
 import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.PlayerData
-import relativitization.universe.data.components.defaults.physics.Double2D
+import relativitization.universe.maths.physics.Double2D
 import relativitization.universe.data.components.defaults.popsystem.pop.engineer.laboratory.LaboratoryData
 import relativitization.universe.data.components.defaults.popsystem.pop.scholar.institute.InstituteData
 import relativitization.universe.data.components.defaults.science.knowledge.AppliedResearchField

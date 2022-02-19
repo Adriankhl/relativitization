@@ -3,7 +3,7 @@ package relativitization.universe.generate.method.abm
 import relativitization.universe.ai.ABMFlockingAI
 import relativitization.universe.ai.name
 import relativitization.universe.data.*
-import relativitization.universe.data.components.defaults.physics.MutableVelocity
+import relativitization.universe.maths.physics.MutableVelocity
 import relativitization.universe.data.components.physicsData
 import relativitization.universe.data.components.popSystemData
 import relativitization.universe.data.components.syncData

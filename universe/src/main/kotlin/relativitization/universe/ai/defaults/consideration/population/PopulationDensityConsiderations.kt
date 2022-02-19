@@ -4,7 +4,7 @@ import relativitization.universe.ai.defaults.utils.DualUtilityConsideration
 import relativitization.universe.ai.defaults.utils.DualUtilityData
 import relativitization.universe.ai.defaults.utils.PlanState
 import relativitization.universe.data.PlanDataAtPlayer
-import relativitization.universe.data.components.defaults.physics.Int3D
+import relativitization.universe.maths.physics.Int3D
 import relativitization.universe.data.components.popSystemData
 
 /**

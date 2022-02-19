@@ -6,8 +6,10 @@ import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.components.defaults.physics.*
 import relativitization.universe.data.components.physicsData
 import relativitization.universe.data.serializer.DataSerializer
+import relativitization.universe.maths.physics.Int4D
 import relativitization.universe.maths.physics.Relativistic.targetVelocityByPhotonRocket
 import relativitization.universe.maths.physics.TargetVelocityData
+import relativitization.universe.maths.physics.Velocity
 import relativitization.universe.utils.*
 import kotlin.math.min
 

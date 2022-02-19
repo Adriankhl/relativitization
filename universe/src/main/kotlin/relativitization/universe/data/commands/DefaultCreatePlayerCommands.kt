@@ -8,7 +8,7 @@ import relativitization.universe.data.components.*
 import relativitization.universe.data.components.defaults.economy.MutableSingleResourceData
 import relativitization.universe.data.components.defaults.economy.ResourceQualityClass
 import relativitization.universe.data.components.defaults.economy.ResourceType
-import relativitization.universe.data.components.defaults.physics.Int4D
+import relativitization.universe.maths.physics.Int4D
 import relativitization.universe.data.components.defaults.physics.MutableFuelRestMassTargetProportionData
 import relativitization.universe.data.components.defaults.popsystem.CarrierType
 import relativitization.universe.data.serializer.DataSerializer

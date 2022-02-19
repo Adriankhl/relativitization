@@ -3,7 +3,7 @@ package relativitization.universe.data.commands
 import kotlinx.coroutines.runBlocking
 import relativitization.universe.Universe
 import relativitization.universe.data.UniverseData3DAtPlayer
-import relativitization.universe.data.components.defaults.physics.Int4D
+import relativitization.universe.maths.physics.Int4D
 import relativitization.universe.data.events.MoveToDouble3DEvent
 import relativitization.universe.data.events.name
 import relativitization.universe.generate.method.GenerateSettings

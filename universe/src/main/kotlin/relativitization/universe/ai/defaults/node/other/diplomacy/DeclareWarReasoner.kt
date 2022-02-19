@@ -14,7 +14,7 @@ import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.commands.DeclareIndependenceToDirectLeaderCommand
 import relativitization.universe.data.commands.DeclareIndependenceToTopLeaderCommand
 import relativitization.universe.data.commands.DeclareWarCommand
-import relativitization.universe.data.components.defaults.physics.Int3D
+import relativitization.universe.maths.physics.Int3D
 
 class DeclareWarReasoner : SequenceReasoner() {
     override fun getSubNodeList(

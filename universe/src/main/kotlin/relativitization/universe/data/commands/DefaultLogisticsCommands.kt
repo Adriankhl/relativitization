@@ -7,7 +7,7 @@ import relativitization.universe.data.components.*
 import relativitization.universe.data.components.defaults.economy.ResourceQualityClass
 import relativitization.universe.data.components.defaults.economy.ResourceQualityData
 import relativitization.universe.data.components.defaults.economy.ResourceType
-import relativitization.universe.data.components.defaults.physics.Int4D
+import relativitization.universe.maths.physics.Int4D
 import relativitization.universe.data.components.defaults.popsystem.pop.PopType
 import relativitization.universe.data.components.defaults.popsystem.pop.service.export.MutablePlayerExportCenterData
 import relativitization.universe.data.components.defaults.popsystem.pop.service.export.MutablePlayerSingleExportData

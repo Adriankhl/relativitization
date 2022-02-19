@@ -1,9 +1,9 @@
 package relativitization.universe.maths.grid
 
-import relativitization.universe.data.components.defaults.physics.Double3D
-import relativitization.universe.data.components.defaults.physics.Double4D
-import relativitization.universe.data.components.defaults.physics.Int3D
-import relativitization.universe.data.components.defaults.physics.MutableDouble4D
+import relativitization.universe.maths.physics.Double3D
+import relativitization.universe.maths.physics.Double4D
+import relativitization.universe.maths.physics.Int3D
+import relativitization.universe.maths.physics.MutableDouble4D
 import kotlin.math.floor
 
 object Grids {

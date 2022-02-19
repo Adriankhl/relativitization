@@ -9,7 +9,7 @@ import relativitization.game.RelativitizationGame
 import relativitization.game.utils.TableScreen
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.CommandCollection
-import relativitization.universe.data.components.defaults.physics.Int3D
+import relativitization.universe.maths.physics.Int3D
 import relativitization.universe.generate.method.GenerateUniverseMethodCollection
 import relativitization.universe.global.GlobalMechanismCollection
 import relativitization.universe.maths.physics.Intervals

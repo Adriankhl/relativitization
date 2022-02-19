@@ -9,7 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.Align
 import kotlinx.coroutines.runBlocking
 import relativitization.game.RelativitizationGame
-import relativitization.universe.data.components.defaults.physics.Double2D
+import relativitization.universe.maths.physics.Double2D
 import relativitization.universe.maths.number.Notation
 import relativitization.universe.maths.number.ScientificNotation
 import relativitization.universe.maths.number.toScientificNotation

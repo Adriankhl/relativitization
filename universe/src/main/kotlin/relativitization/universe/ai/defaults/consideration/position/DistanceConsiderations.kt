@@ -5,7 +5,7 @@ import relativitization.universe.ai.defaults.utils.DualUtilityData
 import relativitization.universe.ai.defaults.utils.PlanState
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.PlayerData
-import relativitization.universe.data.components.defaults.physics.Int4D
+import relativitization.universe.maths.physics.Int4D
 import relativitization.universe.maths.physics.Intervals
 import kotlin.math.pow
 

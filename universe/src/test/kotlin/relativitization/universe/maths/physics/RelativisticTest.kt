@@ -1,6 +1,5 @@
 package relativitization.universe.maths.physics
 
-import relativitization.universe.data.components.defaults.physics.Velocity
 import relativitization.universe.maths.physics.Relativistic.canTargetVelocityAtDirectionByPhotonRocket
 import relativitization.universe.maths.physics.Relativistic.decelerateByPhotonRocket
 import relativitization.universe.maths.physics.Relativistic.deltaMassByPhotonRocket

@@ -7,8 +7,8 @@ import relativitization.universe.data.components.*
 import relativitization.universe.data.components.defaults.economy.MutableResourceQualityData
 import relativitization.universe.data.components.defaults.economy.ResourceQualityClass
 import relativitization.universe.data.components.defaults.economy.ResourceType
-import relativitization.universe.data.components.defaults.physics.MutableDouble4D
-import relativitization.universe.data.components.defaults.physics.MutableInt4D
+import relativitization.universe.maths.physics.MutableDouble4D
+import relativitization.universe.maths.physics.MutableInt4D
 import relativitization.universe.data.components.defaults.popsystem.pop.engineer.laboratory.MutableLaboratoryData
 import relativitization.universe.data.components.defaults.popsystem.pop.engineer.laboratory.MutableLaboratoryInternalData
 import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.MutableFuelFactoryData

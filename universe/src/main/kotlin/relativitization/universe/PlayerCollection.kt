@@ -2,13 +2,13 @@ package relativitization.universe
 
 import kotlinx.coroutines.runBlocking
 import relativitization.universe.data.*
-import relativitization.universe.data.components.defaults.physics.Int4D
-import relativitization.universe.data.components.defaults.physics.MutableDouble4D
-import relativitization.universe.data.components.defaults.physics.MutableVelocity
-import relativitization.universe.data.components.defaults.physics.Velocity
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.maths.grid.Grids.create3DGrid
 import relativitization.universe.maths.grid.Grids.double4DToGroupId
+import relativitization.universe.maths.physics.Int4D
+import relativitization.universe.maths.physics.MutableDouble4D
+import relativitization.universe.maths.physics.MutableVelocity
+import relativitization.universe.maths.physics.Velocity
 import relativitization.universe.utils.RandomName.randomPlayerName
 import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.math.floor

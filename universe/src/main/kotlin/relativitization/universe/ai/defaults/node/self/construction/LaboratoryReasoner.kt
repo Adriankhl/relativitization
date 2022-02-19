@@ -7,7 +7,7 @@ import relativitization.universe.data.commands.BuildLaboratoryCommand
 import relativitization.universe.data.commands.RemoveLaboratoryCommand
 import relativitization.universe.data.components.defaults.economy.ResourceQualityClass
 import relativitization.universe.data.components.defaults.economy.ResourceType
-import relativitization.universe.data.components.defaults.physics.Double2D
+import relativitization.universe.maths.physics.Double2D
 import relativitization.universe.data.components.defaults.popsystem.pop.engineer.laboratory.LaboratoryInternalData
 import relativitization.universe.data.components.defaults.popsystem.pop.engineer.laboratory.MutableLaboratoryData
 import relativitization.universe.data.components.defaults.science.knowledge.AppliedResearchProjectData

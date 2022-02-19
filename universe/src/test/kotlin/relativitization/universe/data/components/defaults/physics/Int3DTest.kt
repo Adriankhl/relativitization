@@ -1,6 +1,7 @@
 package relativitization.universe.data.components.defaults.physics
 
 import relativitization.universe.maths.grid.Grids
+import relativitization.universe.maths.physics.Int3D
 import kotlin.test.Test
 
 internal class Int3DTest {

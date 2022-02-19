@@ -4,14 +4,12 @@ import kotlinx.serialization.Serializable
 import relativitization.universe.ai.DefaultAI
 import relativitization.universe.ai.name
 import relativitization.universe.data.components.*
-import relativitization.universe.data.components.MutablePopSystemData
-import relativitization.universe.data.components.PopSystemData
-import relativitization.universe.data.components.defaults.physics.*
 import relativitization.universe.data.events.EventData
 import relativitization.universe.data.events.MutableEventData
 import relativitization.universe.maths.collection.ListFind
 import relativitization.universe.maths.grid.Grids.double4DToGroupId
 import relativitization.universe.maths.grid.Grids.groupIdToCenterDouble3D
+import relativitization.universe.maths.physics.*
 import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.reflect.full.createInstance
 

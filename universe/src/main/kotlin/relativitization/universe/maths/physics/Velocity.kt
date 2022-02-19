@@ -1,4 +1,4 @@
-package relativitization.universe.data.components.defaults.physics
+package relativitization.universe.maths.physics
 
 import kotlinx.serialization.Serializable
 import kotlin.math.abs

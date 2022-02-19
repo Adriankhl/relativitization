@@ -3,7 +3,7 @@ package relativitization.universe.data.commands
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseSettings
-import relativitization.universe.data.components.defaults.physics.Int4D
+import relativitization.universe.maths.physics.Int4D
 import relativitization.universe.utils.I18NString
 
 /**
