@@ -23,35 +23,7 @@ data class PopSystemData(
     }
 
     fun totalOtherRestMass(): Double {
-        val factoryStoredFuelRestMass: Double = carrierDataMap.values.sumOf { carrierData ->
-            carrierData.allPopData.labourerPopData.resourceFactoryMap.values.sumOf { resourceFactoryData ->
-                resourceFactoryData.storedFuelRestMass
-            } + carrierData.allPopData.labourerPopData.fuelFactoryMap.values.sumOf { fuelFactoryData ->
-                fuelFactoryData.storedFuelRestMass
-            }
-        }
-
-        val exportCenterStoredFuelRestMass: Double = carrierDataMap.values.sumOf { carrierData ->
-            carrierData.allPopData.servicePopData.exportData.playerExportCenterMap.values.sumOf { playerExportCenterData ->
-                playerExportCenterData.exportDataList.sumOf { playerSingleExportData ->
-                    playerSingleExportData.storedFuelRestMass
-                }
-            } + carrierData.allPopData.servicePopData.exportData.popExportCenterMap.values.sumOf { popExportCenterData ->
-                popExportCenterData.exportDataMap.values.sumOf { exportMap ->
-                    exportMap.values.flatten().sumOf { popSingleExportData ->
-                        popSingleExportData.storedFuelRestMass
-                    }
-                }
-            }
-        }
-
-        val popStoredFuelRestMass: Double = carrierDataMap.values.sumOf { mutableCarrierData ->
-            PopType.values().sumOf { popType ->
-                mutableCarrierData.allPopData.getCommonPopData(popType).saving
-            }
-        }
-
-        return factoryStoredFuelRestMass + exportCenterStoredFuelRestMass + popStoredFuelRestMass
+        return carrierDataMap.values.sumOf { it.totalOtherRestMass() }
     }
 
 
@@ -78,35 +50,7 @@ data class MutablePopSystemData(
     }
 
     fun totalOtherRestMass(): Double {
-        val factoryStoredFuelRestMass: Double = carrierDataMap.values.sumOf { carrierData ->
-            carrierData.allPopData.labourerPopData.resourceFactoryMap.values.sumOf { resourceFactoryData ->
-                resourceFactoryData.storedFuelRestMass
-            } + carrierData.allPopData.labourerPopData.fuelFactoryMap.values.sumOf { fuelFactoryData ->
-                fuelFactoryData.storedFuelRestMass
-            }
-        }
-
-        val exportCenterStoredFuelRestMass: Double = carrierDataMap.values.sumOf { carrierData ->
-            carrierData.allPopData.servicePopData.exportData.playerExportCenterMap.values.sumOf { playerExportCenterData ->
-                playerExportCenterData.exportDataList.sumOf { playerSingleExportData ->
-                    playerSingleExportData.storedFuelRestMass
-                }
-            } + carrierData.allPopData.servicePopData.exportData.popExportCenterMap.values.sumOf { popExportCenterData ->
-                popExportCenterData.exportDataMap.values.sumOf { exportMap ->
-                    exportMap.values.flatten().sumOf { popSingleExportData ->
-                        popSingleExportData.storedFuelRestMass
-                    }
-                }
-            }
-        }
-
-        val popStoredFuelRestMass: Double = carrierDataMap.values.sumOf { mutableCarrierData ->
-            PopType.values().sumOf { popType ->
-                mutableCarrierData.allPopData.getCommonPopData(popType).saving
-            }
-        }
-
-        return factoryStoredFuelRestMass + exportCenterStoredFuelRestMass + popStoredFuelRestMass
+        return carrierDataMap.values.sumOf { it.totalOtherRestMass() }
     }
 
     fun totalMaxMovementDeltaFuelRestMass(): Double {
@@ -122,7 +66,7 @@ data class MutablePopSystemData(
     /**
      * Find the smallest non-negative carrier id which is not in the carrier list
      */
-    fun newCarrierId(): Int {
+    private fun newCarrierId(): Int {
         return ListFind.minMissing(carrierDataMap.keys.toList(), 0)
     }
 

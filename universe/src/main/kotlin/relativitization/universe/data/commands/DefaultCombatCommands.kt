@@ -7,6 +7,7 @@ import relativitization.universe.maths.physics.Int4D
 import relativitization.universe.data.components.defaults.popsystem.CarrierType
 import relativitization.universe.data.components.defaults.popsystem.MutableCarrierData
 import relativitization.universe.data.components.modifierData
+import relativitization.universe.data.components.physicsData
 import relativitization.universe.data.components.popSystemData
 import relativitization.universe.maths.random.Rand
 import relativitization.universe.utils.RelativitizationLogManager
@@ -36,20 +37,16 @@ data class DamageCommand(
             1
         )
 
-        val carrierIdList: MutableList<Int> =
-            playerData.playerInternalData.popSystemData().carrierDataMap.keys.shuffled(Rand.rand())
-                .toMutableList()
+        val carrierIdList: MutableList<Int> = playerData.playerInternalData.popSystemData().carrierDataMap.keys
+            .shuffled(Rand.rand()).toMutableList()
 
         // Use attack to destroy carrier, until used up or no carrier left
         var attackAcc: Double = attack
 
         // Attack consume shield
         carrierIdList.forEach {
-
-            val carrierData: MutableCarrierData =
-                playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
-                    it
-                )
+            val carrierData: MutableCarrierData = playerData.playerInternalData.popSystemData().carrierDataMap
+                .getValue(it)
 
             val shield: Double = carrierData.allPopData.soldierPopData.militaryBaseData.shield
 
@@ -60,6 +57,11 @@ data class DamageCommand(
                 if (carrierData.carrierType == CarrierType.SPACESHIP) {
                     // Destroy this carrier
                     playerData.playerInternalData.popSystemData().carrierDataMap.remove(it)
+
+                    // Remove rest mass of the carrier
+                    playerData.playerInternalData.physicsData().coreRestMass -=
+                        carrierData.carrierInternalData.coreRestMass
+                    playerData.playerInternalData.physicsData().otherRestMass -= carrierData.totalOtherRestMass()
                 } else {
                     carrierData.allPopData.soldierPopData.militaryBaseData.shield = 0.0
                 }
