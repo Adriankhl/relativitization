@@ -47,3 +47,5 @@ assets*
 # Latex
 *.aux
 *.pdf
+
+# Other
