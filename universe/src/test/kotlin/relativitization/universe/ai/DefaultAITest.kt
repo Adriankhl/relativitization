@@ -84,7 +84,7 @@ internal class DefaultAITest {
         middleCarrierData[0]
 
         runBlocking {
-            for (turn in 1..50) {
+            for (turn in 1..100) {
                 val aiCommandMap = universe.computeAICommands()
 
                 universe.postProcessUniverse(
