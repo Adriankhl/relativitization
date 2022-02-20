@@ -3,7 +3,6 @@ package relativitization.game.components.upper
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.RelativitizationGame
-import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.commands.AddEventCommand
 import relativitization.universe.data.commands.ChangeFactoryPolicyCommand
@@ -11,7 +10,11 @@ import relativitization.universe.data.commands.GrantIndependenceCommand
 import relativitization.universe.data.components.politicsData
 import relativitization.universe.data.events.AskToMergeCarrierEvent
 
-class PoliticsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.assets) {
+class PoliticsInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game) {
+    override val infoName: String = "Politics"
+
+    override val infoPriority: Int = 10
+
     private val gdxSettings = game.gdxSettings
 
     private var table: Table = Table()

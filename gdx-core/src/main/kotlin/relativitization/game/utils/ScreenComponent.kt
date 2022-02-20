@@ -32,12 +32,21 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets) {
     abstract fun getScreenComponent(): T
 
     /**
-     * Add all components of a child component to this
+     * Add all components of a child component to this component
      *
      * @param component a child component
      */
     fun addChildScreenComponent(component: ScreenComponent<Actor>) {
         allChildScreenComponentList.addAll(component.getScreenComponentList())
+    }
+
+    /**
+     * Remove all components of a child component to this component
+     *
+     * @param component a child component
+     */
+    fun removeChildScreenComponent(component: ScreenComponent<Actor>) {
+        allChildScreenComponentList.removeAll(component.getScreenComponentList())
     }
 
     /**
@@ -95,7 +104,7 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets) {
     open fun onCommandListChange() {}
 
     /**
-     * Call this function when command to be confirm change
+     * Call this function when command to be confirmed change
      */
     open fun onCurrentCommandChange() {}
 
@@ -385,7 +394,7 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets) {
         function: (Image) -> Unit = { }
     ): Image {
         // Create new nine patch and edit this
-        val arrowNinePatch: NinePatch =
+        val arrowNinePatch =
             NinePatch(assets.getNinePatch("basic/white-right-arrow-tight"))
 
         // arrow length depends on the end point
@@ -397,7 +406,7 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets) {
         arrowNinePatch.scale(xScale, yScale)
 
         // Create the image from the arrow nine patch
-        val image: Image = Image(arrowNinePatch)
+        val image = Image(arrowNinePatch)
 
         // Rotate and set position by the center of the image
         val rotation: Double = atan2(to.y - from.y, to.x - from.x) * 0.5 / PI * 360
@@ -557,7 +566,7 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets) {
     fun enableActor(actor: Actor) = ActorFunction.enableActor(actor)
 
     companion object {
-        fun <T : Actor> addComponentToClient(
+        private fun <T : Actor> addComponentToClient(
             game: RelativitizationGame,
             component: ScreenComponent<T>
         ) {
@@ -586,11 +595,47 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets) {
             universeClient.onSelectedKnowledgeDouble2D.add(component::onSelectedKnowledgeDouble2DChange)
         }
 
+        private fun <T : Actor> removeComponentFromClient(
+            game: RelativitizationGame,
+            component: ScreenComponent<T>
+        ) {
+            game.onGdxSettingsChangeFunctionList.remove(component::onGdxSettingsChange)
+
+            val universeClient = game.universeClient
+            runBlocking {
+                universeClient.removeFromOnServerStatusChangeFunctionList(component::onServerStatusChange)
+            }
+
+            universeClient.onUniverseData3DChangeFunctionList.remove(component::onUniverseData3DChange)
+
+            universeClient.onUniverseDataViewChangeFunctionList.remove(component::onUniverseDataViewChange)
+
+            universeClient.onPrimarySelectedInt3DChangeFunctionList.remove(component::onPrimarySelectedInt3DChange)
+            universeClient.onPrimarySelectedPlayerIdChangeFunctionList.remove(component::onPrimarySelectedPlayerIdChange)
+            universeClient.onSelectedPlayerIdListChangeFunctionList.remove(component::onSelectedPlayerIdListChange)
+
+            universeClient.onMapCenterPlayerIdChangeFunctionList.remove(component::onMapCenterPlayerIdChange)
+
+            universeClient.onCommandListChangeFunctionList.remove(component::onCommandListChange)
+            universeClient.onCurrentCommandChangeFunctionList.remove(component::onCurrentCommandChange)
+
+            universeClient.onIsPlayerDeadChangeFunctionList.remove(component::onIsPlayerDeadChange)
+
+            universeClient.onSelectedKnowledgeDouble2D.remove(component::onSelectedKnowledgeDouble2DChange)
+        }
+
         fun <T : Actor> addAllComponentToClient(
             game: RelativitizationGame,
             component: ScreenComponent<T>
         ) {
             component.getScreenComponentList().forEach { addComponentToClient(game, it) }
+        }
+
+        fun <T : Actor> removeAllComponentFromClient(
+            game: RelativitizationGame,
+            component: ScreenComponent<T>
+        ) {
+            component.getScreenComponentList().forEach { removeComponentFromClient(game, it) }
         }
     }
 }

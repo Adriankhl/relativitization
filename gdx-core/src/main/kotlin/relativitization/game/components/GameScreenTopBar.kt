@@ -2,21 +2,20 @@ package relativitization.game.components
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.ui.*
-import com.badlogic.gdx.utils.Array
 import io.ktor.http.*
 import kotlinx.coroutines.runBlocking
 import relativitization.game.RelativitizationGame
-import relativitization.game.ShowingInfoType
+import relativitization.game.components.upper.UpperInfo
 import relativitization.game.screens.ClientSettingsScreen
 import relativitization.game.screens.HelpScreen
 import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.commands.DummyCommand
 import relativitization.universe.data.components.defaults.physics.FuelRestMassData
 import relativitization.universe.data.components.physicsData
-import relativitization.universe.maths.number.Notation
 import relativitization.universe.maths.number.toScientificNotation
 import relativitization.universe.maths.physics.Intervals.intDelay
 import kotlin.math.min
+import kotlin.reflect.full.primaryConstructor
 
 
 class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.assets) {
@@ -286,233 +285,29 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         game.changeGdxSettings()
     }
 
-    private val aiInfoButton: TextButton = createTextButton(
-        text = "AI",
-        fontSize = gdxSettings.normalFontSize,
-        soundVolume = gdxSettings.soundEffectsVolume
-    ) {
-        // If hiding, show the panel
-        if ((gdxSettings.showingInfoType == ShowingInfoType.AI) && gdxSettings.showingInfo) {
-            gdxSettings.showingInfo = false
-            gdxSettings.showingInfoType = ShowingInfoType.AI
-        } else {
-            gdxSettings.showingInfo = true
-            gdxSettings.showingInfoType = ShowingInfoType.AI
+    private val upperInfoButton: List<TextButton> = UpperInfo::class.sealedSubclasses.map {
+        it.primaryConstructor!!.call(game)
+    }.sortedBy {
+        it.infoPriority
+    }.map {
+        it.infoName
+    }.map { infoName ->
+        createTextButton(
+            infoName,
+            fontSize = gdxSettings.normalFontSize,
+            soundVolume = gdxSettings.soundEffectsVolume
+        ) {
+            // If hiding, show the panel
+            if ((gdxSettings.showingUpperInfo == infoName) && gdxSettings.showingInfo) {
+                gdxSettings.showingInfo = false
+                gdxSettings.showingUpperInfo = infoName
+            } else {
+                gdxSettings.showingInfo = true
+                gdxSettings.showingUpperInfo = infoName
+            }
+            game.changeGdxSettings()
         }
-        game.changeGdxSettings()
     }
-
-
-    private val playersInfoButton: TextButton = createTextButton(
-        text = "Players",
-        fontSize = gdxSettings.normalFontSize,
-        soundVolume = gdxSettings.soundEffectsVolume
-    ) {
-        // If hiding, show the panel
-        if ((gdxSettings.showingInfoType == ShowingInfoType.PLAYERS) && gdxSettings.showingInfo) {
-            gdxSettings.showingInfo = false
-            gdxSettings.showingInfoType = ShowingInfoType.PLAYERS
-        } else {
-            gdxSettings.showingInfo = true
-            gdxSettings.showingInfoType = ShowingInfoType.PLAYERS
-        }
-        game.changeGdxSettings()
-    }
-
-    private val overviewInfoButton: TextButton = createTextButton(
-        text = "Overview",
-        fontSize = gdxSettings.normalFontSize,
-        soundVolume = gdxSettings.soundEffectsVolume
-    ) {
-        // If hiding, show the panel
-        if ((gdxSettings.showingInfoType == ShowingInfoType.OVERVIEW) && gdxSettings.showingInfo) {
-            gdxSettings.showingInfo = false
-            gdxSettings.showingInfoType = ShowingInfoType.OVERVIEW
-        } else {
-            gdxSettings.showingInfo = true
-            gdxSettings.showingInfoType = ShowingInfoType.OVERVIEW
-        }
-        game.changeGdxSettings()
-    }
-
-    private val physicsInfoButton: TextButton = createTextButton(
-        text = "Physics",
-        fontSize = gdxSettings.normalFontSize,
-        soundVolume = gdxSettings.soundEffectsVolume
-    ) {
-        // If hiding, show the panel
-        if ((gdxSettings.showingInfoType == ShowingInfoType.PHYSICS) && gdxSettings.showingInfo) {
-            gdxSettings.showingInfo = false
-            gdxSettings.showingInfoType = ShowingInfoType.PHYSICS
-        } else {
-            gdxSettings.showingInfo = true
-            gdxSettings.showingInfoType = ShowingInfoType.PHYSICS
-        }
-        game.changeGdxSettings()
-    }
-
-    private val eventsInfoButton: TextButton = createTextButton(
-        text = "Events",
-        fontSize = gdxSettings.normalFontSize,
-        soundVolume = gdxSettings.soundEffectsVolume
-    ) {
-        // If hiding, show the panel
-        if ((gdxSettings.showingInfoType == ShowingInfoType.EVENTS) && gdxSettings.showingInfo) {
-            gdxSettings.showingInfo = false
-            gdxSettings.showingInfoType = ShowingInfoType.EVENTS
-        } else {
-            gdxSettings.showingInfo = true
-            gdxSettings.showingInfoType = ShowingInfoType.EVENTS
-        }
-        game.changeGdxSettings()
-    }
-
-    private val commandsInfoButton: TextButton = createTextButton(
-        text = "Commands",
-        fontSize = gdxSettings.normalFontSize,
-        soundVolume = gdxSettings.soundEffectsVolume
-    ) {
-        // If hiding, show the panel
-        if ((gdxSettings.showingInfoType == ShowingInfoType.COMMANDS) && gdxSettings.showingInfo) {
-            gdxSettings.showingInfo = false
-            gdxSettings.showingInfoType = ShowingInfoType.COMMANDS
-        } else {
-            gdxSettings.showingInfo = true
-            gdxSettings.showingInfoType = ShowingInfoType.COMMANDS
-        }
-        game.changeGdxSettings()
-    }
-
-    private val popSystemInfoButton: TextButton = createTextButton(
-        text = "Pop System",
-        fontSize = gdxSettings.normalFontSize,
-        soundVolume = gdxSettings.soundEffectsVolume
-    ) {
-        // If hiding, show the panel
-        if ((gdxSettings.showingInfoType == ShowingInfoType.POP_SYSTEM) && gdxSettings.showingInfo) {
-            gdxSettings.showingInfo = false
-            gdxSettings.showingInfoType = ShowingInfoType.POP_SYSTEM
-        } else {
-            gdxSettings.showingInfo = true
-            gdxSettings.showingInfoType = ShowingInfoType.POP_SYSTEM
-        }
-        game.changeGdxSettings()
-    }
-
-    private val knowledgeMapInfoButton: TextButton = createTextButton(
-        text = "Knowledge Map",
-        fontSize = gdxSettings.normalFontSize,
-        soundVolume = gdxSettings.soundEffectsVolume
-    ) {
-        // If hiding, show the panel
-        if ((gdxSettings.showingInfoType == ShowingInfoType.KNOWLEDGE_MAP) && gdxSettings.showingInfo) {
-            gdxSettings.showingInfo = false
-            gdxSettings.showingInfoType = ShowingInfoType.KNOWLEDGE_MAP
-        } else {
-            gdxSettings.showingInfo = true
-            gdxSettings.showingInfoType = ShowingInfoType.KNOWLEDGE_MAP
-        }
-        game.changeGdxSettings()
-    }
-
-    private val scienceInfoButton: TextButton = createTextButton(
-        text = "Science",
-        fontSize = gdxSettings.normalFontSize,
-        soundVolume = gdxSettings.soundEffectsVolume
-    ) {
-        // If hiding, show the panel
-        if ((gdxSettings.showingInfoType == ShowingInfoType.SCIENCE) && gdxSettings.showingInfo) {
-            gdxSettings.showingInfo = false
-            gdxSettings.showingInfoType = ShowingInfoType.SCIENCE
-        } else {
-            gdxSettings.showingInfo = true
-            gdxSettings.showingInfoType = ShowingInfoType.SCIENCE
-        }
-        game.changeGdxSettings()
-    }
-
-    private val politicsInfoButton: TextButton = createTextButton(
-        text = "Politics",
-        fontSize = gdxSettings.normalFontSize,
-        soundVolume = gdxSettings.soundEffectsVolume
-    ) {
-        // If hiding, show the panel
-        if ((gdxSettings.showingInfoType == ShowingInfoType.POLITICS) && gdxSettings.showingInfo) {
-            gdxSettings.showingInfo = false
-            gdxSettings.showingInfoType = ShowingInfoType.POLITICS
-        } else {
-            gdxSettings.showingInfo = true
-            gdxSettings.showingInfoType = ShowingInfoType.POLITICS
-        }
-        game.changeGdxSettings()
-    }
-
-
-    private val diplomacyInfoButton: TextButton = createTextButton(
-        text = "Diplomacy",
-        fontSize = gdxSettings.normalFontSize,
-        soundVolume = gdxSettings.soundEffectsVolume
-    ) {
-        // If hiding, show the panel
-        if ((gdxSettings.showingInfoType == ShowingInfoType.DIPLOMACY) && gdxSettings.showingInfo) {
-            gdxSettings.showingInfo = false
-            gdxSettings.showingInfoType = ShowingInfoType.DIPLOMACY
-        } else {
-            gdxSettings.showingInfo = true
-            gdxSettings.showingInfoType = ShowingInfoType.DIPLOMACY
-        }
-        game.changeGdxSettings()
-    }
-
-    private val economyInfoButton: TextButton = createTextButton(
-        text = "Economy",
-        fontSize = gdxSettings.normalFontSize,
-        soundVolume = gdxSettings.soundEffectsVolume
-    ) {
-        // If hiding, show the panel
-        if ((gdxSettings.showingInfoType == ShowingInfoType.ECONOMY) && gdxSettings.showingInfo) {
-            gdxSettings.showingInfo = false
-            gdxSettings.showingInfoType = ShowingInfoType.ECONOMY
-        } else {
-            gdxSettings.showingInfo = true
-            gdxSettings.showingInfoType = ShowingInfoType.ECONOMY
-        }
-        game.changeGdxSettings()
-    }
-
-    private val modifierInfoButton: TextButton = createTextButton(
-        text = "Modifier",
-        fontSize = gdxSettings.normalFontSize,
-        soundVolume = gdxSettings.soundEffectsVolume
-    ) {
-        // If hiding, show the panel
-        if ((gdxSettings.showingInfoType == ShowingInfoType.MODIFIER) && gdxSettings.showingInfo) {
-            gdxSettings.showingInfo = false
-            gdxSettings.showingInfoType = ShowingInfoType.MODIFIER
-        } else {
-            gdxSettings.showingInfo = true
-            gdxSettings.showingInfoType = ShowingInfoType.MODIFIER
-        }
-        game.changeGdxSettings()
-    }
-
-
-    private val mapModeInfoButton: TextButton = createTextButton(
-        text = "Map Mode",
-        fontSize = gdxSettings.normalFontSize,
-        soundVolume = gdxSettings.soundEffectsVolume
-    ) {
-        // If hiding, show the panel
-        if ((gdxSettings.showingInfoType == ShowingInfoType.MAP_MODE) && gdxSettings.showingInfo) {
-            gdxSettings.showingInfo = false
-            gdxSettings.showingInfoType = ShowingInfoType.MAP_MODE
-        } else {
-            gdxSettings.showingInfo = true
-            gdxSettings.showingInfoType = ShowingInfoType.MAP_MODE
-        }
-        game.changeGdxSettings()
-    }
-
 
     private val tCoordinateLabel = createLabel(
         text = "t: ${game.universeClient.getUniverseData3D().center.t}",
@@ -710,33 +505,9 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
 
         table.add(fuelRestMassDataTable).pad(10f)
 
-        table.add(aiInfoButton).pad(10f)
-
-        table.add(playersInfoButton).pad(10f)
-
-        table.add(overviewInfoButton).pad(10f)
-
-        table.add(physicsInfoButton).pad(10f)
-
-        table.add(eventsInfoButton).pad(10f)
-
-        table.add(commandsInfoButton).pad(10f)
-
-        table.add(popSystemInfoButton).pad(10f)
-
-        table.add(knowledgeMapInfoButton).pad(10f)
-
-        table.add(scienceInfoButton).pad(10f)
-
-        table.add(politicsInfoButton).pad(10f)
-
-        table.add(diplomacyInfoButton).pad(10f)
-
-        table.add(economyInfoButton).pad(10f)
-
-        table.add(modifierInfoButton).pad(10f)
-
-        table.add(mapModeInfoButton).pad(10f)
+        upperInfoButton.forEach {
+            table.add(it).pad(10f)
+        }
 
         table.add(bottomCommandInfoButton)
             .size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
@@ -819,7 +590,7 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
      * Create table for controlling stop waiting
      */
     private fun createStopWaitingTable(): Table {
-        val nestedTable: Table = Table()
+        val nestedTable = Table()
         nestedTable.add(createLabel("Server stop waiting (admin): ", gdxSettings.smallFontSize))
         nestedTable.row().space(10f)
         nestedTable.add(stopWaitingSelectBox)
@@ -922,7 +693,7 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
      * Create a table to display server status
      */
     private fun createServerStatusTable(): Table {
-        val nestedTable: Table = Table()
+        val nestedTable = Table()
 
         nestedTable.add(serverStatusNameAndTimeLabel)
 
@@ -941,11 +712,11 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
      * Create a table for controlling time slice
      */
     private fun createCurrentUniverseDataTable(): Table {
-        val nestedTable: Table = Table()
+        val nestedTable = Table()
 
-        val topTable: Table = Table()
+        val topTable = Table()
 
-        val bottomTable: Table = Table()
+        val bottomTable = Table()
 
         topTable.add(previousUniverseData3DButton)
             .size(30f * gdxSettings.imageScale, 30f * gdxSettings.imageScale)
@@ -971,7 +742,7 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
      * Create a table for running or stopping universe
      */
     private fun createRunStopUniverseTable(): Table {
-        val nestedTable: Table = Table()
+        val nestedTable = Table()
 
         nestedTable.add(createLabel("Stop server (admin):", gdxSettings.smallFontSize)).colspan(2)
 

@@ -643,6 +643,12 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
         }
     }
 
+    suspend fun removeFromOnServerStatusChangeFunctionList(function: () -> Unit) {
+        mutex.withLock {
+            onServerStatusChangeFunctionList.remove(function)
+        }
+    }
+
     suspend fun httpGetUniverseServerStatus(): UniverseServerStatusMessage {
         return try {
             val serverAddress = universeClientSettings.serverAddress

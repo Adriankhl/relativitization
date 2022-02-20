@@ -3,14 +3,17 @@ package relativitization.game.components.upper
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.RelativitizationGame
-import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.components.defaults.modifier.CombatModifierData
 import relativitization.universe.data.components.defaults.modifier.DiplomacyModifierData
 import relativitization.universe.data.components.defaults.modifier.PhysicsModifierData
 import relativitization.universe.data.components.modifierData
 
-class ModifierInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.assets) {
+class ModifierInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game) {
+    override val infoName: String = "Modifier"
+
+    override val infoPriority: Int = 13
+
     private val gdxSettings = game.gdxSettings
 
     private var table: Table = Table()

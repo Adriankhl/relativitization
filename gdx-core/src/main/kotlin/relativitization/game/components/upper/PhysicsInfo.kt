@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.RelativitizationGame
-import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.commands.AddEventCommand
 import relativitization.universe.data.commands.ChangeVelocityCommand
@@ -18,7 +17,11 @@ import relativitization.universe.maths.physics.Movement.displacementToVelocity
 import relativitization.universe.maths.physics.Relativistic
 import relativitization.universe.utils.RelativitizationLogManager
 
-class PhysicsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.assets) {
+class PhysicsInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game) {
+    override val infoName: String = "Physics"
+
+    override val infoPriority: Int = 4
+
     private val gdxSettings = game.gdxSettings
 
     private var table: Table = Table()

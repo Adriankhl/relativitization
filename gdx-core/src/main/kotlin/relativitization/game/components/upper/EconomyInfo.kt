@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.RelativitizationGame
-import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.commands.*
 import relativitization.universe.data.components.defaults.economy.*
@@ -14,7 +13,11 @@ import relativitization.universe.data.components.physicsData
 import relativitization.universe.data.components.playerScienceData
 import relativitization.universe.maths.number.Notation
 
-class EconomyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.assets) {
+class EconomyInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game) {
+    override val infoName: String = "Economy"
+
+    override val infoPriority: Int = 12
+
     private val gdxSettings = game.gdxSettings
 
     private var table: Table = Table()

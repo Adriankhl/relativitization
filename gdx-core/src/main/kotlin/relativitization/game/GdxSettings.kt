@@ -26,7 +26,7 @@ data class GdxSettings(
     var worldMapAndInfoSplitAmount: Float = 0.7f,
     var showingBottomCommand: Boolean = true,
     var upperInfoAndBottomCommandSplitAmount: Float = 0.8f,
-    var showingInfoType: ShowingInfoType = ShowingInfoType.OVERVIEW,
+    var showingUpperInfo: String = "Overview",
     var mapPlayerColorMode: MapPlayerColorMode = MapPlayerColorMode.ONE_COLOR_PER_PLAYER,
     var language: Language = Language.ENGLISH,
 ) {
@@ -54,23 +54,6 @@ data class GdxSettings(
             }
         }
     }
-}
-
-enum class ShowingInfoType {
-    AI,
-    PLAYERS,
-    OVERVIEW,
-    PHYSICS,
-    EVENTS,
-    COMMANDS,
-    POP_SYSTEM,
-    KNOWLEDGE_MAP,
-    SCIENCE,
-    POLITICS,
-    DIPLOMACY,
-    ECONOMY,
-    MODIFIER,
-    MAP_MODE,
 }
 
 enum class MapPlayerColorMode(private val value: String) {

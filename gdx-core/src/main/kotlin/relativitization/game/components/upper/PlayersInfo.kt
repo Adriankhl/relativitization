@@ -6,12 +6,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.PlayerImage
 import relativitization.game.utils.PlayerSummary
-import relativitization.game.utils.ScreenComponent
 import relativitization.game.utils.Summary
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.components.defaults.economy.ResourceType
 
-class PlayersInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.assets) {
+class PlayersInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game) {
+    override val infoName: String = "Players"
+
+    override val infoPriority: Int = 2
+
     private val gdxSettings = game.gdxSettings
 
     private val table: Table = Table()

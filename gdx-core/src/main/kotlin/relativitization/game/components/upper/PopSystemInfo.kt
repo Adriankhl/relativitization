@@ -5,7 +5,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Container
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.RelativitizationGame
-import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.commands.*
 import relativitization.universe.data.components.defaults.economy.ResourceQualityClass
@@ -36,7 +35,11 @@ import relativitization.universe.data.components.popSystemData
 import relativitization.universe.maths.number.Notation
 import relativitization.universe.utils.RelativitizationLogManager
 
-class PopSystemInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.assets) {
+class PopSystemInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game) {
+    override val infoName: String = "Pop System"
+
+    override val infoPriority: Int = 7
+
     private val gdxSettings = game.gdxSettings
 
     private var table: Table = Table()

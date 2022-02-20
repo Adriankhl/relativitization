@@ -6,10 +6,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import kotlinx.coroutines.runBlocking
 import relativitization.game.Language
 import relativitization.game.RelativitizationGame
-import relativitization.game.ShowingInfoType
+import relativitization.game.components.upper.UpperInfo
 import relativitization.game.utils.Assets
 import relativitization.game.utils.TableScreen
 import relativitization.universe.utils.RelativitizationLogManager
+import kotlin.reflect.full.primaryConstructor
 
 class ClientSettingsScreen(
     val game: RelativitizationGame,
@@ -372,15 +373,21 @@ class ClientSettingsScreen(
 
         table.row().space(10f)
 
-        table.add(createLabel("Showing info type: ", gdxSettings.normalFontSize))
-        val showingInfoTypeSelectBox = createSelectBox(
-            ShowingInfoType.values().toList(),
-            gdxSettings.showingInfoType,
+        table.add(createLabel("Showing upper info: ", gdxSettings.normalFontSize))
+        val showingUpperInfoSelectBox = createSelectBox(
+            UpperInfo::class.sealedSubclasses.map {
+                it.primaryConstructor!!.call(game)
+            }.sortedBy {
+                it.infoPriority
+            }.map {
+                it.infoName
+            },
+            gdxSettings.showingUpperInfo,
             gdxSettings.normalFontSize
-        ) { showingInfoType, _ ->
-            gdxSettings.showingInfoType = showingInfoType
+        ) { showingUpperInfo, _ ->
+            gdxSettings.showingUpperInfo = showingUpperInfo
         }
-        table.add(showingInfoTypeSelectBox)
+        table.add(showingUpperInfoSelectBox)
 
         table.row().space(10f)
 

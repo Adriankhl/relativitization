@@ -3,7 +3,6 @@ package relativitization.game.components.upper
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.RelativitizationGame
-import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.commands.*
 import relativitization.universe.data.components.defaults.diplomacy.DiplomaticRelationData
@@ -11,7 +10,11 @@ import relativitization.universe.data.components.defaults.diplomacy.DiplomaticRe
 import relativitization.universe.data.components.defaults.diplomacy.WarStateData
 import relativitization.universe.data.components.diplomacyData
 
-class DiplomacyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.assets) {
+class DiplomacyInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game) {
+    override val infoName: String = "Diplomacy"
+
+    override val infoPriority: Int = 11
+
     private val gdxSettings = game.gdxSettings
 
     private var table: Table = Table()
@@ -20,7 +23,7 @@ class DiplomacyInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane
 
     private var playerData: PlayerData = PlayerData(-1)
 
-    // For choosing the diplomatic relation between player with this Id and the primary player
+    // For choosing the diplomatic relation between player with this id and the primary player
     // Update by select box or select new player
     private var otherPlayerId: Int = playerData.playerId
 

@@ -4,11 +4,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.RelativitizationGame
-import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.commands.name
 
-class CommandsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.assets) {
+class CommandsInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game) {
+    override val infoName: String = "Commands"
+
+    override val infoPriority: Int = 6
+
     private val gdxSettings = game.gdxSettings
 
     private var table: Table = Table()

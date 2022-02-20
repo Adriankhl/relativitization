@@ -3,13 +3,16 @@ package relativitization.game.components.upper
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.RelativitizationGame
-import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.commands.SelectEventChoiceCommand
 import relativitization.universe.data.events.EventData
 import relativitization.universe.data.events.name
 
-class EventsInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.assets) {
+class EventsInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game) {
+    override val infoName: String = "Events"
+
+    override val infoPriority: Int = 5
+
     private val gdxSettings = game.gdxSettings
 
     private var table: Table = Table()

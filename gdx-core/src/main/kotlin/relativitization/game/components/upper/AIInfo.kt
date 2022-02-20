@@ -3,7 +3,6 @@ package relativitization.game.components.upper
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.RelativitizationGame
-import relativitization.game.utils.ScreenComponent
 import relativitization.universe.ai.AI
 import relativitization.universe.ai.AICollection
 import relativitization.universe.ai.DefaultAI
@@ -11,7 +10,11 @@ import relativitization.universe.ai.name
 import relativitization.universe.data.commands.*
 import relativitization.universe.utils.I18NString
 
-class AIInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.assets) {
+class AIInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game) {
+    override val infoName: String = "AI"
+
+    override val infoPriority: Int = 1
+
     private val gdxSettings = game.gdxSettings
 
     private val table: Table = Table()

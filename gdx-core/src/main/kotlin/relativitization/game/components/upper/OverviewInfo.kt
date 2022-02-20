@@ -4,10 +4,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.PlayerImage
-import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.PlayerData
 
-class OverviewInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.assets) {
+class OverviewInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game) {
+    override val infoName: String = "Overview"
+
+    override val infoPriority: Int = 3
+
     private val gdxSettings = game.gdxSettings
 
     private val table: Table = Table()

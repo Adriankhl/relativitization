@@ -7,7 +7,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.ActorFunction
-import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.PlayerData
 import relativitization.universe.maths.physics.Double2D
 import relativitization.universe.data.components.defaults.popsystem.pop.engineer.laboratory.LaboratoryData
@@ -22,7 +21,11 @@ import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.math.max
 import kotlin.math.min
 
-class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(game.assets) {
+class KnowledgeMapInfo(val game: RelativitizationGame) : UpperInfo<Table>(game) {
+    override val infoName: String = "Knowledge Map"
+
+    override val infoPriority: Int = 8
+
     private val gdxSettings = game.gdxSettings
 
     private val knowledgeBar: Table = Table()
@@ -246,7 +249,7 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
     private fun updateKnowledgeBar() {
         knowledgeBar.clear()
 
-        val controlTable: Table = Table()
+        val controlTable = Table()
 
         controlTable.add(zoomInButton)
             .size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
@@ -738,11 +741,11 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
         to: BasicResearchProjectData
     ): Image {
         val color: Color = Color.WHITE
-        val fromDouble2D: Double2D = Double2D(
+        val fromDouble2D = Double2D(
             (from.xCor - knowledgeMapMinX() + knowledgeMapMargin()) * actualZoom(),
             (from.yCor - knowledgeMapMinY() + knowledgeMapMargin()) * actualZoom()
         )
-        val toDouble2D: Double2D = Double2D(
+        val toDouble2D = Double2D(
             (to.xCor - knowledgeMapMinX() + knowledgeMapMargin()) * actualZoom(),
             (to.yCor - knowledgeMapMinY() + knowledgeMapMargin()) * actualZoom()
         )
@@ -766,11 +769,11 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
         to: AppliedResearchProjectData
     ): Image {
         val color: Color = Color.WHITE
-        val fromDouble2D: Double2D = Double2D(
+        val fromDouble2D = Double2D(
             (from.xCor - knowledgeMapMinX() + knowledgeMapMargin()) * actualZoom(),
             (from.yCor - knowledgeMapMinY() + knowledgeMapMargin()) * actualZoom()
         )
-        val toDouble2D: Double2D = Double2D(
+        val toDouble2D = Double2D(
             (to.xCor - knowledgeMapMinX() + knowledgeMapMargin()) * actualZoom(),
             (to.yCor - knowledgeMapMinY() + knowledgeMapMargin()) * actualZoom()
         )
@@ -795,11 +798,11 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
         to: BasicResearchProjectData
     ): Image {
         val color: Color = Color.WHITE
-        val fromDouble2D: Double2D = Double2D(
+        val fromDouble2D = Double2D(
             (from.xCor - knowledgeMapMinX() + knowledgeMapMargin()) * actualZoom(),
             (from.yCor - knowledgeMapMinY() + knowledgeMapMargin()) * actualZoom()
         )
-        val toDouble2D: Double2D = Double2D(
+        val toDouble2D = Double2D(
             (to.xCor - knowledgeMapMinX() + knowledgeMapMargin()) * actualZoom(),
             (to.yCor - knowledgeMapMinY() + knowledgeMapMargin()) * actualZoom()
         )
@@ -823,11 +826,11 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : ScreenComponent<Table>(
         to: AppliedResearchProjectData
     ): Image {
         val color: Color = Color.WHITE
-        val fromDouble2D: Double2D = Double2D(
+        val fromDouble2D = Double2D(
             (from.xCor - knowledgeMapMinX() + knowledgeMapMargin()) * actualZoom(),
             (from.yCor - knowledgeMapMinY() + knowledgeMapMargin()) * actualZoom()
         )
-        val toDouble2D: Double2D = Double2D(
+        val toDouble2D = Double2D(
             (to.xCor - knowledgeMapMinX() + knowledgeMapMargin()) * actualZoom(),
             (to.yCor - knowledgeMapMinY() + knowledgeMapMargin()) * actualZoom()
         )
