@@ -18,7 +18,10 @@ import kotlin.math.min
 import kotlin.reflect.full.primaryConstructor
 
 
-class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.assets) {
+class GameScreenTopBar(
+    val game: RelativitizationGame,
+    private val gameScreenInfo: GameScreenInfo,
+) : ScreenComponent<ScrollPane>(game.assets) {
     private val gdxSettings = game.gdxSettings
     private val table: Table = Table()
     private val scrollPane: ScrollPane = createScrollPane(table)
@@ -285,7 +288,7 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
         game.changeGdxSettings()
     }
 
-    private val upperInfoButton: List<TextButton> = UpperInfo::class.sealedSubclasses.map {
+    private val upperInfoButtonList: List<TextButton> = UpperInfo::class.sealedSubclasses.map {
         it.primaryConstructor!!.call(game)
     }.sortedBy {
         it.infoPriority
@@ -305,6 +308,9 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
                 gdxSettings.showingInfo = true
                 gdxSettings.showingUpperInfo = infoName
             }
+
+            gameScreenInfo.reRegisterUpperInfoComponent()
+
             game.changeGdxSettings()
         }
     }
@@ -505,7 +511,7 @@ class GameScreenTopBar(val game: RelativitizationGame) : ScreenComponent<ScrollP
 
         table.add(fuelRestMassDataTable).pad(10f)
 
-        upperInfoButton.forEach {
+        upperInfoButtonList.forEach {
             table.add(it).pad(10f)
         }
 

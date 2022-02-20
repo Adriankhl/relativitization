@@ -35,7 +35,7 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
     private val info: GameScreenInfo = GameScreenInfo(game)
     private val worldMapAndInfo =
         createSplitPane(worldMap.getScreenComponent(), info.getScreenComponent(), false)
-    private val topBar: GameScreenTopBar = GameScreenTopBar(game)
+    private val topBar: GameScreenTopBar = GameScreenTopBar(game, info)
 
     // Button to trigger gdx settings change
     private val playerDeadBackground = createImage(

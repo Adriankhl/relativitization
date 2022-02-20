@@ -33,7 +33,7 @@ class GameScreenInfo(val game: RelativitizationGame) : ScreenComponent<SplitPane
         // Add child screen component
         addChildScreenComponent(bottomCommandInfo)
 
-        upperInfoMap.values.forEach { addChildScreenComponent(it) }
+        addAllComponentToClient(game, getCurrentUpperInfoComponent())
 
         upperInfoContainer.fill()
 
@@ -62,5 +62,10 @@ class GameScreenInfo(val game: RelativitizationGame) : ScreenComponent<SplitPane
 
     private fun getCurrentUpperInfoComponent(): ScreenComponent<Actor> {
         return upperInfoMap.getValue(gdxSettings.showingUpperInfo)
+    }
+
+    fun reRegisterUpperInfoComponent() {
+        upperInfoMap.values.forEach { removeAllComponentFromClient(game, it) }
+        addAllComponentToClient(game, getCurrentUpperInfoComponent())
     }
 }

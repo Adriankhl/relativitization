@@ -182,6 +182,12 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : UpperInfo<Table>(game) 
     }
 
     override fun getScreenComponent(): Table {
+        val primaryPlayerData: PlayerData = game.universeClient.getPrimarySelectedPlayerData()
+        if ((primaryPlayerData.playerId != playerData.playerId) || (primaryPlayerData.int4D.t != playerData.int4D.t)) {
+            updatePlayerData()
+            updateTable()
+            updateKnowledgeGroup()
+        }
         return table
     }
 

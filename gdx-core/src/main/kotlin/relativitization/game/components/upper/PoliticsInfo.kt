@@ -39,6 +39,11 @@ class PoliticsInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game)
     }
 
     override fun getScreenComponent(): ScrollPane {
+        val primaryPlayerData: PlayerData = game.universeClient.getPrimarySelectedPlayerData()
+        if ((primaryPlayerData.playerId != playerData.playerId) || (primaryPlayerData.int4D.t != playerData.int4D.t)) {
+            updatePlayerData()
+            updateTable()
+        }
         return scrollPane
     }
 
