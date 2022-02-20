@@ -84,6 +84,7 @@
 * Filter resource factory by resource type [x]
 * Default build factory and institute employee to population, research equipment to production [x]
 * Rotation based on next position [x]
+* Optimize UI, only change what is shown, separate stage and use camera instead of computing the zoom manually [x]
 
 # Control TODO List
 
@@ -99,7 +100,6 @@
 
 # Future TODO List
 
-* Optimize UI, only change what is shown, separate stage and use camera instead of computing the zoom manually
 * Science era, e.g., Biology era favour nation with more biologist
 * Transfer player and transfer carrier commands
 * Alliance
