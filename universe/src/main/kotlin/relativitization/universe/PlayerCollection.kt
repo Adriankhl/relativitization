@@ -124,8 +124,10 @@ class PlayerCollection(
 
             // Also add afterimage
             player.int4DHistory.forEach { int4D ->
-                val oldData: PlayerData = universeData.getPlayerDataAt(int4D, player.playerId)
-                playerData3D[oldData.int4D.x][oldData.int4D.y][oldData.int4D.z].add(oldData)
+                if (player.int4D.t - int4D.t < universeData.universeSettings.playerAfterImageDuration) {
+                    val oldData: PlayerData = universeData.getPlayerDataAt(int4D, player.playerId)
+                    playerData3D[oldData.int4D.x][oldData.int4D.y][oldData.int4D.z].add(oldData)
+                }
             }
         }
 
