@@ -115,14 +115,19 @@ data class AddEventCommand(
          * Whether player can add this event to other player, used by AddEventCommand
          */
         fun canAddEvent(universeSettings: UniverseSettings, event: Event): Boolean {
-            val addEventList: List<String> = CommandCollection.commandAvailabilityNameMap.getOrElse(
+            val commandAvailability: CommandAvailability = CommandCollection.commandAvailabilityNameMap.getOrElse(
                 universeSettings.commandCollectionName
             ) {
                 logger.error("No add event command collection name: ${universeSettings.commandCollectionName} found")
                 DefaultCommandAvailability
-            }.addEventList
+            }
 
-            return addEventList.contains(event.name())
+            return if (commandAvailability.name() != AllCommandAvailability.name()) {
+                val addEventList: List<String> = commandAvailability.addEventList
+                addEventList.contains(event.name())
+            } else {
+                true
+            }
         }
     }
 }

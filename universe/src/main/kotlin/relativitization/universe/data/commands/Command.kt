@@ -296,7 +296,7 @@ object CommandCollection {
     }
 
     fun hasCommand(universeSettings: UniverseSettings, command: Command): Boolean {
-        return if (universeSettings.commandCollectionName != "All") {
+        return if (universeSettings.commandCollectionName != AllCommandAvailability.name()) {
             if (commandAvailabilityNameMap.containsKey(universeSettings.commandCollectionName)) {
                 commandAvailabilityNameMap.getValue(
                     universeSettings.commandCollectionName
