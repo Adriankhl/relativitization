@@ -12,7 +12,7 @@ import kotlin.reflect.full.primaryConstructor
 class GameScreenInfo(val game: RelativitizationGame) : ScreenComponent<SplitPane>(game.assets) {
     private val gdxSettings = game.gdxSettings
 
-    private val upperInfoMap: Map<String, UpperInfo<*>> = UpperInfo::class.sealedSubclasses.associate {
+    private val upperInfoMap: Map<String, UpperInfo<Actor>> = UpperInfo::class.sealedSubclasses.associate {
         val info = it.primaryConstructor!!.call(game)
         info.infoName to info
     }

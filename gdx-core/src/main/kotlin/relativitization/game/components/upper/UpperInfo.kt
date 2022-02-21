@@ -4,7 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.ScreenComponent
 
-sealed class UpperInfo<T : Actor>(game: RelativitizationGame) : ScreenComponent<T>(game.assets) {
+sealed class UpperInfo<out T : Actor>(game: RelativitizationGame) : ScreenComponent<T>(game.assets) {
     // The name of the upper info
     abstract val infoName: String
 
