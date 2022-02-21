@@ -221,6 +221,21 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
      * Add Universe setting
      */
     private fun addUniverseSettings(table: Table) {
+        val tDimLabel = createLabel(
+            game.universeClient.generateSettings.universeSettings.tDim.toString(),
+            gdxSettings.normalFontSize
+        )
+
+        val playerAfterImageLabel = createLabel(
+            game.universeClient.generateSettings.universeSettings.playerAfterImageDuration.toString(),
+            gdxSettings.normalFontSize
+        )
+
+        val playerHistoricalInt4DLengthLabel = createLabel(
+            game.universeClient.generateSettings.universeSettings.playerHistoricalInt4DLength.toString(),
+            gdxSettings.normalFontSize
+        )
+
         table.add(createLabel("Universe name: ", gdxSettings.normalFontSize))
         val universeNameTextField = createTextField(
             game.universeClient.generateSettings.universeSettings.universeName,
@@ -232,19 +247,6 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
 
         table.row().space(10f)
 
-        val playerAfterImageLabel = createLabel(
-            game.universeClient.generateSettings.universeSettings.playerAfterImageDuration.toString(),
-            gdxSettings.normalFontSize
-        )
-
-        val playerHistoricalInt4DLengthSelectBox = createSelectBox(
-            (4..10).toList(),
-            game.universeClient.generateSettings.universeSettings.playerHistoricalInt4DLength,
-            gdxSettings.normalFontSize
-        ) { length, _ ->
-            game.universeClient.generateSettings.universeSettings.playerHistoricalInt4DLength =
-                length
-        }
 
         table.add(createLabel("Speed of light: ", gdxSettings.normalFontSize))
 
@@ -256,32 +258,35 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
                 game.universeClient.generateSettings.universeSettings.speedOfLight =
                     speedOfLight.toDouble()
 
-                // Ensure setting is valid
+                // Change tDim
+                val maxDelay: Int = Intervals.intDelay(
+                    Int3D(0, 0, 0),
+                    Int3D(
+                        game.universeClient.generateSettings.universeSettings.xDim - 1,
+                        game.universeClient.generateSettings.universeSettings.yDim - 1,
+                        game.universeClient.generateSettings.universeSettings.zDim - 1
+                    ),
+                    game.universeClient.generateSettings.universeSettings.speedOfLight
+                )
+
+                game.universeClient.generateSettings.universeSettings.tDim = maxDelay + 1
+                tDimLabel.setText(maxDelay + 1)
+
+                // Change after image and history
                 val minHistory: Int = Intervals.maxDelayAfterMove(
                     game.universeClient.generateSettings.universeSettings.speedOfLight
                 )
+
+                game.universeClient.generateSettings.universeSettings.playerAfterImageDuration = minHistory
                 playerAfterImageLabel.setText(minHistory)
 
-                if (playerHistoricalInt4DLengthSelectBox.selected < minHistory) {
-                    playerHistoricalInt4DLengthSelectBox.selected = minHistory
-                }
+                game.universeClient.generateSettings.universeSettings.playerHistoricalInt4DLength = minHistory
+                playerHistoricalInt4DLengthLabel.setText(minHistory)
             } catch (e: NumberFormatException) {
                 logger.error("Invalid speed of light")
             }
         }
         table.add(speedOfLightTextField)
-
-        table.row().space(10f)
-
-        table.add(createLabel("Universe time dimension: ", gdxSettings.normalFontSize))
-        val tDimSelectBox = createSelectBox(
-            (1..100).toList(),
-            game.universeClient.generateSettings.universeSettings.tDim,
-            gdxSettings.normalFontSize
-        ) { tDim, _ ->
-            game.universeClient.generateSettings.universeSettings.tDim = tDim
-        }
-        table.add(tDimSelectBox)
 
         table.row().space(10f)
 
@@ -293,7 +298,7 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
         ) { xDim, _ ->
             game.universeClient.generateSettings.universeSettings.xDim = xDim
 
-            // Fix tDim if it is too small
+            // Change tDim
             val maxDelay: Int = Intervals.intDelay(
                 Int3D(0, 0, 0),
                 Int3D(
@@ -304,9 +309,8 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
                 game.universeClient.generateSettings.universeSettings.speedOfLight
             )
 
-            if (game.universeClient.generateSettings.universeSettings.tDim <= maxDelay) {
-                tDimSelectBox.selected = maxDelay + 1
-            }
+            game.universeClient.generateSettings.universeSettings.tDim = maxDelay + 1
+            tDimLabel.setText(maxDelay + 1)
         }
         table.add(xDimSelectBox)
 
@@ -320,7 +324,7 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
         ) { yDim, _ ->
             game.universeClient.generateSettings.universeSettings.yDim = yDim
 
-            // Fix tDim if it is too small
+            // Change tDim
             val maxDelay: Int = Intervals.intDelay(
                 Int3D(0, 0, 0),
                 Int3D(
@@ -331,9 +335,8 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
                 game.universeClient.generateSettings.universeSettings.speedOfLight
             )
 
-            if (game.universeClient.generateSettings.universeSettings.tDim <= maxDelay) {
-                tDimSelectBox.selected = maxDelay + 1
-            }
+            game.universeClient.generateSettings.universeSettings.tDim = maxDelay + 1
+            tDimLabel.setText(maxDelay + 1)
         }
         table.add(yDimSelectBox)
 
@@ -347,7 +350,7 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
         ) { zDim, _ ->
             game.universeClient.generateSettings.universeSettings.zDim = zDim
 
-            // Fix tDim if it is too small
+            // Change tDim
             val maxDelay: Int = Intervals.intDelay(
                 Int3D(0, 0, 0),
                 Int3D(
@@ -358,11 +361,16 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
                 game.universeClient.generateSettings.universeSettings.speedOfLight
             )
 
-            if (game.universeClient.generateSettings.universeSettings.tDim <= maxDelay) {
-                tDimSelectBox.selected = maxDelay + 1
-            }
+            game.universeClient.generateSettings.universeSettings.tDim = maxDelay + 1
+            tDimLabel.setText(maxDelay + 1)
         }
         table.add(zDimSelectBox)
+
+        table.row().space(10f)
+
+        table.add(createLabel("Universe time dimension: ", gdxSettings.normalFontSize))
+
+        table.add(tDimLabel)
 
         table.row().space(10f)
 
@@ -379,7 +387,7 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
             )
         )
 
-        table.add(playerHistoricalInt4DLengthSelectBox)
+        table.add(playerHistoricalInt4DLengthLabel)
 
         table.row().space(10f)
 
