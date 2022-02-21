@@ -1,6 +1,5 @@
 package relativitization.game
 
-import kotlinx.coroutines.runBlocking
 import relativitization.universe.Universe
 import relativitization.universe.data.MutableUniverseSettings
 import relativitization.universe.data.commands.DefaultCommandAvailability
@@ -27,10 +26,10 @@ fun main() {
             mechanismCollectionName = DefaultMechanismLists.name(),
             globalMechanismCollectionName = DefaultGlobalMechanismList.name(),
             speedOfLight = 1.0,
-            tDim = 10,
             xDim = 6,
             yDim = 6,
             zDim = 3,
+            tDim = 10,
             playerAfterImageDuration = 4,
             playerHistoricalInt4DLength = 4,
             groupEdgeLength = 0.01,

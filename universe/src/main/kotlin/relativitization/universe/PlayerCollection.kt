@@ -1,6 +1,5 @@
 package relativitization.universe
 
-import kotlinx.coroutines.runBlocking
 import relativitization.universe.data.*
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.maths.grid.Grids.create3DGrid
