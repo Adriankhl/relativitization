@@ -16,11 +16,11 @@ internal class ProposePeaceCommandTest {
             generateMethod = TestingFixedMinimal.name(),
         )), ".")
 
-        val view7At3 = universe.getUniverse3DViewAtPlayer(3)
-        val view7At5 = universe.getUniverse3DViewAtPlayer(5)
+        val view6At3 = universe.getUniverse3DViewAtPlayer(3)
+        val view6At5 = universe.getUniverse3DViewAtPlayer(5)
 
-        assert(view7At3.getCurrentPlayerData().playerInternalData.diplomacyData().warData.warStateMap.isEmpty())
-        assert(view7At5.getCurrentPlayerData().playerInternalData.diplomacyData().warData.warStateMap.isEmpty())
+        assert(view6At3.getCurrentPlayerData().playerInternalData.diplomacyData().warData.warStateMap.isEmpty())
+        assert(view6At5.getCurrentPlayerData().playerInternalData.diplomacyData().warData.warStateMap.isEmpty())
 
         runBlocking {
             universe.postProcessUniverse(
@@ -29,7 +29,7 @@ internal class ProposePeaceCommandTest {
                         DeclareWarCommand(
                             toId = 3,
                             fromId = 5,
-                            fromInt4D = view7At5.getCurrentPlayerData().int4D,
+                            fromInt4D = view6At5.getCurrentPlayerData().int4D,
                         )
                     )
                 ),

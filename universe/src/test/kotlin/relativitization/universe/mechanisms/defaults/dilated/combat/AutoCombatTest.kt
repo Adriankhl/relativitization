@@ -17,15 +17,15 @@ internal class AutoCombatTest {
             generateMethod = TestingFixedMinimal.name(),
         )), ".")
 
-        val view7At5 = universe.getUniverse3DViewAtPlayer(5)
-        val view7At6 = universe.getUniverse3DViewAtPlayer(6)
+        val view6At5 = universe.getUniverse3DViewAtPlayer(5)
+        val view6At6 = universe.getUniverse3DViewAtPlayer(6)
 
-        assert(view7At5.getCurrentPlayerData().double4D.x == 1.5)
-        assert(view7At6.getCurrentPlayerData().double4D.x == 1.4)
-        assert(view7At5.getCurrentPlayerData().groupId != view7At6.getCurrentPlayerData().groupId)
+        assert(view6At5.getCurrentPlayerData().double4D.x == 1.5)
+        assert(view6At6.getCurrentPlayerData().double4D.x == 1.4)
+        assert(view6At5.getCurrentPlayerData().groupId != view6At6.getCurrentPlayerData().groupId)
 
-        assert(view7At5.getCurrentPlayerData().playerInternalData.diplomacyData().warData.warStateMap.isEmpty())
-        assert(view7At6.getCurrentPlayerData().playerInternalData.diplomacyData().warData.warStateMap.isEmpty())
+        assert(view6At5.getCurrentPlayerData().playerInternalData.diplomacyData().warData.warStateMap.isEmpty())
+        assert(view6At6.getCurrentPlayerData().playerInternalData.diplomacyData().warData.warStateMap.isEmpty())
 
         runBlocking {
             universe.postProcessUniverse(
@@ -34,7 +34,7 @@ internal class AutoCombatTest {
                         DeclareWarCommand(
                             toId = 6,
                             fromId = 5,
-                            fromInt4D = view7At5.getCurrentPlayerData().int4D,
+                            fromInt4D = view6At5.getCurrentPlayerData().int4D,
                         )
                     )
                 ),

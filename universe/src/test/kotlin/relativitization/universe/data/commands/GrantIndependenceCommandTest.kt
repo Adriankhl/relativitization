@@ -19,12 +19,12 @@ internal class GrantIndependenceCommandTest {
                 )
             ), "."
         )
-        val view7: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
+        val view6: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
 
-        assert(view7.get(1).playerInternalData.subordinateIdSet == setOf(2))
-        assert(view7.get(1).playerInternalData.directSubordinateIdSet == setOf(2))
-        assert(!view7.get(2).isTopLeader())
-        assert(view7.get(2).topLeaderId() == 1)
+        assert(view6.get(1).playerInternalData.subordinateIdSet == setOf(2))
+        assert(view6.get(1).playerInternalData.directSubordinateIdSet == setOf(2))
+        assert(!view6.get(2).isTopLeader())
+        assert(view6.get(2).topLeaderId() == 1)
 
         runBlocking {
             universe.postProcessUniverse(
@@ -33,7 +33,7 @@ internal class GrantIndependenceCommandTest {
                         GrantIndependenceCommand(
                             toId = 2,
                             fromId = 1,
-                            fromInt4D = view7.getCurrentPlayerData().int4D,
+                            fromInt4D = view6.getCurrentPlayerData().int4D,
                         )
                     )
                 ),
@@ -42,10 +42,10 @@ internal class GrantIndependenceCommandTest {
             universe.preProcessUniverse()
         }
 
-        val view8: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
+        val view7: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
 
-        assert(view8.get(1).playerInternalData.subordinateIdSet.isEmpty())
-        assert(view8.get(1).playerInternalData.directSubordinateIdSet.isEmpty())
-        assert(view8.get(2).isTopLeader())
+        assert(view7.get(1).playerInternalData.subordinateIdSet.isEmpty())
+        assert(view7.get(1).playerInternalData.directSubordinateIdSet.isEmpty())
+        assert(view7.get(2).isTopLeader())
     }
 }

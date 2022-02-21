@@ -17,11 +17,11 @@ internal class SurrenderCommandTest {
             generateMethod = TestingFixedMinimal.name(),
         )), ".")
 
-        val view7At3 = universe.getUniverse3DViewAtPlayer(3)
-        val view7At5 = universe.getUniverse3DViewAtPlayer(5)
+        val view6At3 = universe.getUniverse3DViewAtPlayer(3)
+        val view6At5 = universe.getUniverse3DViewAtPlayer(5)
 
-        assert(view7At3.getCurrentPlayerData().playerInternalData.diplomacyData().warData.warStateMap.isEmpty())
-        assert(view7At5.getCurrentPlayerData().playerInternalData.diplomacyData().warData.warStateMap.isEmpty())
+        assert(view6At3.getCurrentPlayerData().playerInternalData.diplomacyData().warData.warStateMap.isEmpty())
+        assert(view6At5.getCurrentPlayerData().playerInternalData.diplomacyData().warData.warStateMap.isEmpty())
 
         runBlocking {
             universe.postProcessUniverse(
@@ -30,7 +30,7 @@ internal class SurrenderCommandTest {
                         DeclareWarCommand(
                             toId = 3,
                             fromId = 5,
-                            fromInt4D = view7At5.getCurrentPlayerData().int4D,
+                            fromInt4D = view6At5.getCurrentPlayerData().int4D,
                         )
                     )
                 ),
@@ -39,13 +39,13 @@ internal class SurrenderCommandTest {
             universe.preProcessUniverse()
         }
 
-        val view8At3 = universe.getUniverse3DViewAtPlayer(3)
-        val view8At5 = universe.getUniverse3DViewAtPlayer(5)
+        val view7At3 = universe.getUniverse3DViewAtPlayer(3)
+        val view7At5 = universe.getUniverse3DViewAtPlayer(5)
 
 
-        assert(view8At3.getCurrentPlayerData().playerInternalData.diplomacyData().warData.warStateMap.isEmpty())
+        assert(view7At3.getCurrentPlayerData().playerInternalData.diplomacyData().warData.warStateMap.isEmpty())
         assert(
-            view8At5.getCurrentPlayerData().playerInternalData.diplomacyData().warData.warStateMap.keys == setOf(3)
+            view7At5.getCurrentPlayerData().playerInternalData.diplomacyData().warData.warStateMap.keys == setOf(3)
         )
 
         runBlocking {
@@ -59,15 +59,15 @@ internal class SurrenderCommandTest {
         }
 
 
-        val view10At3 = universe.getUniverse3DViewAtPlayer(3)
-        val view10At5 = universe.getUniverse3DViewAtPlayer(5)
+        val view9At3 = universe.getUniverse3DViewAtPlayer(3)
+        val view9At5 = universe.getUniverse3DViewAtPlayer(5)
 
 
         assert(
-            view10At3.getCurrentPlayerData().playerInternalData.diplomacyData().warData.warStateMap.keys == setOf(5)
+            view9At3.getCurrentPlayerData().playerInternalData.diplomacyData().warData.warStateMap.keys == setOf(5)
         )
         assert(
-            view10At5.getCurrentPlayerData().playerInternalData.diplomacyData().warData.warStateMap.keys == setOf(3)
+            view9At5.getCurrentPlayerData().playerInternalData.diplomacyData().warData.warStateMap.keys == setOf(3)
         )
 
         runBlocking {
@@ -77,7 +77,7 @@ internal class SurrenderCommandTest {
                         SurrenderCommand(
                             toId = 3,
                             fromId = 3,
-                            fromInt4D = view10At3.getCurrentPlayerData().int4D,
+                            fromInt4D = view9At3.getCurrentPlayerData().int4D,
                             targetPlayerId = 5
                         )
                     ),
@@ -114,11 +114,11 @@ internal class SurrenderCommandTest {
             generateMethod = TestingFixedMinimal.name(),
         )), ".")
 
-        val view7At3 = universe.getUniverse3DViewAtPlayer(3)
-        val view7At5 = universe.getUniverse3DViewAtPlayer(5)
+        val view6At3 = universe.getUniverse3DViewAtPlayer(3)
+        val view6At5 = universe.getUniverse3DViewAtPlayer(5)
 
-        assert(view7At3.getCurrentPlayerData().playerInternalData.diplomacyData().warData.warStateMap.isEmpty())
-        assert(view7At5.getCurrentPlayerData().playerInternalData.diplomacyData().warData.warStateMap.isEmpty())
+        assert(view6At3.getCurrentPlayerData().playerInternalData.diplomacyData().warData.warStateMap.isEmpty())
+        assert(view6At5.getCurrentPlayerData().playerInternalData.diplomacyData().warData.warStateMap.isEmpty())
 
         runBlocking {
             universe.postProcessUniverse(
@@ -127,7 +127,7 @@ internal class SurrenderCommandTest {
                         DeclareWarCommand(
                             toId = 3,
                             fromId = 5,
-                            fromInt4D = view7At5.getCurrentPlayerData().int4D,
+                            fromInt4D = view6At5.getCurrentPlayerData().int4D,
                         )
                     )
                 ),
@@ -136,13 +136,13 @@ internal class SurrenderCommandTest {
             universe.preProcessUniverse()
         }
 
-        val view8At3 = universe.getUniverse3DViewAtPlayer(3)
-        val view8At5 = universe.getUniverse3DViewAtPlayer(5)
+        val view7At3 = universe.getUniverse3DViewAtPlayer(3)
+        val view7At5 = universe.getUniverse3DViewAtPlayer(5)
 
 
-        assert(view8At3.getCurrentPlayerData().playerInternalData.diplomacyData().warData.warStateMap.isEmpty())
+        assert(view7At3.getCurrentPlayerData().playerInternalData.diplomacyData().warData.warStateMap.isEmpty())
         assert(
-            view8At5.getCurrentPlayerData().playerInternalData.diplomacyData().warData.warStateMap.keys == setOf(3)
+            view7At5.getCurrentPlayerData().playerInternalData.diplomacyData().warData.warStateMap.keys == setOf(3)
         )
 
         runBlocking {
@@ -156,15 +156,15 @@ internal class SurrenderCommandTest {
         }
 
 
-        val view10At3 = universe.getUniverse3DViewAtPlayer(3)
-        val view10At5 = universe.getUniverse3DViewAtPlayer(5)
+        val view9At3 = universe.getUniverse3DViewAtPlayer(3)
+        val view9At5 = universe.getUniverse3DViewAtPlayer(5)
 
 
         assert(
-            view10At3.getCurrentPlayerData().playerInternalData.diplomacyData().warData.warStateMap.keys == setOf(5)
+            view9At3.getCurrentPlayerData().playerInternalData.diplomacyData().warData.warStateMap.keys == setOf(5)
         )
         assert(
-            view10At5.getCurrentPlayerData().playerInternalData.diplomacyData().warData.warStateMap.keys == setOf(3)
+            view9At5.getCurrentPlayerData().playerInternalData.diplomacyData().warData.warStateMap.keys == setOf(3)
         )
 
         runBlocking {
@@ -174,7 +174,7 @@ internal class SurrenderCommandTest {
                         SurrenderCommand(
                             toId = 3,
                             fromId = 3,
-                            fromInt4D = view10At3.getCurrentPlayerData().int4D,
+                            fromInt4D = view9At3.getCurrentPlayerData().int4D,
                             targetPlayerId = 5
                         )
                     ),
@@ -182,7 +182,7 @@ internal class SurrenderCommandTest {
                         SurrenderCommand(
                             toId = 5,
                             fromId = 5,
-                            fromInt4D = view10At5.getCurrentPlayerData().int4D,
+                            fromInt4D = view9At5.getCurrentPlayerData().int4D,
                             targetPlayerId = 3
                         )
                     ),

@@ -15,7 +15,7 @@ internal class SplitCarrierCommandTest {
             generateMethod = TestingFixedMinimal.name(),
         )), ".")
 
-        val view7 = universe.getUniverse3DViewAtPlayer(1)
+        val view6 = universe.getUniverse3DViewAtPlayer(1)
 
         assert(!universe.availablePlayers().contains(7))
 
@@ -26,7 +26,7 @@ internal class SplitCarrierCommandTest {
                         SplitCarrierCommand(
                             toId = 1,
                             fromId = 1,
-                            fromInt4D = view7.getCurrentPlayerData().int4D,
+                            fromInt4D = view6.getCurrentPlayerData().int4D,
                             carrierIdList = listOf(1),
                             storageFraction = 0.1,
                         )

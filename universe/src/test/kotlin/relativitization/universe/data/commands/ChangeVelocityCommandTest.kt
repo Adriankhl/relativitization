@@ -18,13 +18,13 @@ internal class ChangeVelocityCommandTest {
         val universe = Universe(GenerateUniverseMethodCollection.generate(GenerateSettings(
             generateMethod = TestingFixedMinimal.name(),
         )), ".")
-        val view7: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
-        assert(view7.get(2).int4D == Int4D(7, 0, 0, 0))
+        val view6: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
+        assert(view6.get(2).int4D == Int4D(6, 0, 0, 0))
 
         val command = ChangeVelocityCommand(
             toId = 2,
             fromId = 1,
-            fromInt4D = Int4D(7, 0, 0, 0),
+            fromInt4D = view6.getCurrentPlayerData().int4D,
             targetVelocity = Velocity(0.1, 0.0, 0.0),
         )
 
@@ -38,9 +38,9 @@ internal class ChangeVelocityCommandTest {
             universe.preProcessUniverse()
         }
 
-        val view8: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
+        val view7: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
 
         // Since player 2 left player 1, player 1 can only see the after image which is at t = 7
-        assert(view8.get(2).int4D == Int4D(7, 0, 0, 0))
+        assert(view7.get(2).int4D == Int4D(6, 0, 0, 0))
     }
 }

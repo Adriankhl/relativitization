@@ -18,15 +18,15 @@ internal class SelectEventChoiceCommandTest {
         val universe = Universe(GenerateUniverseMethodCollection.generate(GenerateSettings(
             generateMethod = TestingFixedMinimal.name(),
         )), ".")
-        val view7: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(2)
-        assert(view7.get(2).int4D == Int4D(7, 0, 0, 0))
+        val view6: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(2)
+        assert(view6.get(2).int4D == Int4D(7, 0, 0, 0))
 
         val event = MoveToDouble3DEvent(
             toId = 2,
             fromId = 2,
             stayTime = 999,
-            targetDouble3D = view7.get(3)
-                .groupCenterDouble3D(view7.universeSettings.groupEdgeLength),
+            targetDouble3D = view6.get(3)
+                .groupCenterDouble3D(view6.universeSettings.groupEdgeLength),
             maxSpeed = 0.2
 
         )
@@ -51,14 +51,14 @@ internal class SelectEventChoiceCommandTest {
             universe.preProcessUniverse()
         }
 
-        val view8: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(2)
+        val view7: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(2)
 
         val selectEventChoiceCommand = SelectEventChoiceCommand(
-            toId = view8.id,
-            fromId = view8.id,
-            fromInt4D = view8.getCurrentPlayerData().int4D,
+            toId = view7.id,
+            fromId = view7.id,
+            fromInt4D = view7.getCurrentPlayerData().int4D,
             eventKey = 0,
-            eventName = view8.getCurrentPlayerData().playerInternalData.eventDataMap.getValue(0).event.name(),
+            eventName = view7.getCurrentPlayerData().playerInternalData.eventDataMap.getValue(0).event.name(),
             choice = 1
 
         )
@@ -77,8 +77,8 @@ internal class SelectEventChoiceCommandTest {
             universe.preProcessUniverse()
         }
 
-        val view9: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(2)
+        val view8: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(2)
 
-        assert(view9.getCurrentPlayerData().playerInternalData.eventDataMap.isEmpty())
+        assert(view8.getCurrentPlayerData().playerInternalData.eventDataMap.isEmpty())
     }
 }
