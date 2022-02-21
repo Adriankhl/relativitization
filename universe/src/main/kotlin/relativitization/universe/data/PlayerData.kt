@@ -3,7 +3,10 @@ package relativitization.universe.data
 import kotlinx.serialization.Serializable
 import relativitization.universe.ai.DefaultAI
 import relativitization.universe.ai.name
-import relativitization.universe.data.components.*
+import relativitization.universe.data.components.DefaultPlayerDataComponent
+import relativitization.universe.data.components.MutableDefaultPlayerDataComponent
+import relativitization.universe.data.components.MutablePlayerDataComponentMap
+import relativitization.universe.data.components.PlayerDataComponentMap
 import relativitization.universe.data.events.EventData
 import relativitization.universe.data.events.MutableEventData
 import relativitization.universe.maths.collection.ListFind
@@ -108,18 +111,7 @@ data class PlayerData(
         if (!isTValid) {
             logger.error("Invalid t ${int4D.t}, should be $currentTime")
         }
-
-        val physicsData: PhysicsData = playerInternalData.physicsData()
-
-        val isRestMassValid: Boolean = (physicsData.coreRestMass > 0.0) && (physicsData.fuelRestMassData.total() >= 0.0)
-        if (!isRestMassValid) {
-            logger.error(
-                "Invalid rest mass: core ${physicsData.coreRestMass}, " +
-                        "fuel ${physicsData.fuelRestMassData.total()}"
-            )
-        }
-
-        return isTValid && isRestMassValid
+        return isTValid
     }
 
     /**
