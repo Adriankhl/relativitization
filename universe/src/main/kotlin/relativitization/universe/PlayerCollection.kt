@@ -177,9 +177,7 @@ class PlayerCollection(
     fun addNewPlayerFromPlayerData(universeState: UniverseState) {
         val newPlayerList: List<PlayerData> = playerMap.map { (_, playerData) ->
             playerData.newPlayerList.map { mutableNewPlayerInternalData ->
-                val newPlayerId: Int = runBlocking {
-                    universeState.getNewPlayerId()
-                }
+                val newPlayerId: Int = universeState.getNewPlayerId()
 
                 if (mutableNewPlayerInternalData.directLeaderId == playerData.playerId) {
                     // Add new player as direct subordinate if it is the direct leader

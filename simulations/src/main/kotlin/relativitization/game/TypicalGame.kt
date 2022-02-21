@@ -42,21 +42,15 @@ fun main() {
 
     val universe = Universe(GenerateUniverseMethodCollection.generate(generateSetting), ".")
 
-    runBlocking {
-        for (turn in 1..1000) {
-            val aiCommandMap = universe.computeAICommands()
+    for (turn in 1..1000) {
+        universe.pureAIStep()
 
-            universe.postProcessUniverse(
-                mapOf(),
-                aiCommandMap
-            )
-            universe.preProcessUniverse()
+        val gameStatus: GameStatus = GameStatus.compute(universe)
 
-            val gameStatus: GameStatus = GameStatus.compute(universe)
-
-            println("Turn: $turn. Player: ${universe.availablePlayers().size}. Dead: ${universe.getDeadIdList().size}. " +
-                    "Carrier: ${gameStatus.numCarrier}. Population: ${gameStatus.totalPopulation}")
-        }
+        println(
+            "Turn: $turn. Player: ${universe.availablePlayers().size}. Dead: ${universe.getDeadIdList().size}. " +
+                    "Carrier: ${gameStatus.numCarrier}. Population: ${gameStatus.totalPopulation}"
+        )
     }
 }
 

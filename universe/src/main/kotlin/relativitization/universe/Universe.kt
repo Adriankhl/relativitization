@@ -1,6 +1,7 @@
 package relativitization.universe
 
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.runBlocking
 import relativitization.universe.ai.AICollection
 import relativitization.universe.data.*
 import relativitization.universe.data.commands.Command
@@ -537,6 +538,21 @@ class Universe(
         universeData.updateUniverseDropOldest(universeSlice)
 
         logger.debug("Done postProcessUniverse()")
+    }
+
+    /**
+     * A step of the simulation with only AI
+     */
+    fun pureAIStep() {
+        runBlocking {
+            val aiCommandMap: Map<Int, List<Command>> = computeAICommands()
+
+            postProcessUniverse(
+                mapOf(),
+                aiCommandMap
+            )
+            preProcessUniverse()
+        }
     }
 
     companion object {

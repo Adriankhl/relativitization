@@ -1,5 +1,6 @@
 package relativitization.universe.data
 
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.serialization.Serializable
@@ -15,10 +16,12 @@ data class UniverseState(
 
     fun getCurrentMaxId(): Int = maxPlayerId
 
-    suspend fun getNewPlayerId(): Int {
-        mutex.withLock {
-            maxPlayerId++
-            return maxPlayerId
+    fun getNewPlayerId(): Int {
+        return runBlocking {
+            mutex.withLock {
+                maxPlayerId++
+                maxPlayerId
+            }
         }
     }
 
