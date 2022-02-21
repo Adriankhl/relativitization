@@ -19,21 +19,20 @@ internal class SelectEventChoiceCommandTest {
             generateMethod = TestingFixedMinimal.name(),
         )), ".")
         val view6: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(2)
-        assert(view6.get(2).int4D == Int4D(7, 0, 0, 0))
+        assert(view6.get(2).int4D == Int4D(6, 0, 0, 0))
 
         val event = MoveToDouble3DEvent(
             toId = 2,
             fromId = 2,
             stayTime = 999,
-            targetDouble3D = view6.get(3)
-                .groupCenterDouble3D(view6.universeSettings.groupEdgeLength),
+            targetDouble3D = view6.get(3).groupCenterDouble3D(view6.universeSettings.groupEdgeLength),
             maxSpeed = 0.2
 
         )
 
         val addEventCommand = AddEventCommand(
             event,
-            Int4D(7, 0, 0, 0),
+            view6.getCurrentPlayerData().int4D
         )
 
         // Add Command

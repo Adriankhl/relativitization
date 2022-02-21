@@ -19,21 +19,20 @@ internal class MoveToDouble3DEventTest {
             generateMethod = TestingFixedMinimal.name(),
         )), ".")
         val view6: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
-        assert(view6.get(2).int4D == Int4D(7, 0, 0, 0))
+        assert(view6.get(2).int4D == Int4D(6, 0, 0, 0))
 
         val event = MoveToDouble3DEvent(
             toId = 2,
             fromId = 1,
             stayTime = 999,
-            targetDouble3D = view6.get(3)
-                .groupCenterDouble3D(view6.universeSettings.groupEdgeLength),
+            targetDouble3D = view6.get(3).groupCenterDouble3D(view6.universeSettings.groupEdgeLength),
             maxSpeed = 0.2
 
         )
 
         val command = AddEventCommand(
             event,
-            Int4D(7, 0, 0, 0),
+            view6.getCurrentPlayerData().int4D
         )
 
         runBlocking {
@@ -70,7 +69,7 @@ internal class MoveToDouble3DEventTest {
             generateMethod = TestingFixedMinimal.name(),
         )), ".")
         val view6: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
-        assert(view6.getCurrentPlayerData().int4D == Int4D(7, 0, 0, 0))
+        assert(view6.getCurrentPlayerData().int4D == Int4D(6, 0, 0, 0))
 
         val originalDouble4D: Double4D = view6.getCurrentPlayerData().double4D
 
@@ -78,15 +77,14 @@ internal class MoveToDouble3DEventTest {
             toId = 1,
             fromId = 1,
             stayTime = 999,
-            targetDouble3D = view6.get(3)
-                .groupCenterDouble3D(view6.universeSettings.groupEdgeLength),
+            targetDouble3D = view6.get(3).groupCenterDouble3D(view6.universeSettings.groupEdgeLength),
             maxSpeed = 0.2
 
         )
 
         val command = AddEventCommand(
             event,
-            Int4D(7, 0, 0, 0),
+            view6.getCurrentPlayerData().int4D
         )
 
         runBlocking {

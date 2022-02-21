@@ -29,11 +29,6 @@ fun main() {
             xDim = 6,
             yDim = 6,
             zDim = 3,
-            tDim = 10,
-            playerAfterImageDuration = 4,
-            playerHistoricalInt4DLength = 4,
-            groupEdgeLength = 0.01,
-            otherSettings = mutableMapOf(),
         )
     )
 
