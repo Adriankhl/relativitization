@@ -37,7 +37,7 @@ data class PlayerDataComponentMap(
         return if (data is T) {
             data
         } else {
-            logger.error("Cannot find component in data map, use default value")
+            logger.error("Cannot find component ${key.name()} in data map, use default value")
             defaultValue
         }
     }
@@ -67,7 +67,7 @@ data class MutablePlayerDataComponentMap(
         return if (data is T) {
             data
         } else {
-            logger.error("Cannot find component in data map, use default value")
+            logger.error("Cannot find component ${key.name()} in data map, use default value")
             defaultValue
         }
     }

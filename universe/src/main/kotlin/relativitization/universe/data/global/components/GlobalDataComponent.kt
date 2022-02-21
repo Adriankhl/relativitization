@@ -36,7 +36,7 @@ data class GlobalDataComponentMap(
         return if (data is T) {
             data
         } else {
-            logger.error("Cannot find component in data map, use default value")
+            logger.error("Cannot find component ${key.name()} in data map, use default value")
             defaultValue
         }
     }
@@ -66,7 +66,7 @@ data class MutableGlobalDataComponentMap(
         return if (data is T) {
             data
         } else {
-            logger.error("Cannot find component in data map, use default value")
+            logger.error("Cannot find component ${key.name()} in data map, use default value")
             defaultValue
         }
     }
