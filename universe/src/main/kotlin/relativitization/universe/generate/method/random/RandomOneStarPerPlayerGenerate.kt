@@ -24,9 +24,12 @@ import relativitization.universe.maths.random.Rand
 import relativitization.universe.mechanisms.defaults.dilated.pop.UpdateDesire
 import relativitization.universe.mechanisms.defaults.regular.science.UpdateScienceApplicationData
 import relativitization.universe.mechanisms.defaults.regular.sync.SyncPlayerScienceData
+import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.math.floor
 
 object RandomOneStarPerPlayerGenerate : RandomGenerateUniverseMethod() {
+    private val logger = RelativitizationLogManager.getLogger()
+
     override fun generate(settings: GenerateSettings): UniverseData {
         val universeSettings: UniverseSettings = DataSerializer.copy(settings.universeSettings)
 
@@ -308,7 +311,10 @@ object RandomOneStarPerPlayerGenerate : RandomGenerateUniverseMethod() {
                 PopType.values().forEach { popType ->
                     carrier.allPopData.getCommonPopData(
                         popType
-                    ).adultPopulation = settings.otherDoubleMap.getOrDefault("initialPopulation", 1E6)
+                    ).adultPopulation = settings.otherDoubleMap.getOrElse("initialPopulation") {
+                        logger.debug("No initialPopulation variable, default to 1E6")
+                        1E6
+                    }
                 }
             }
 
