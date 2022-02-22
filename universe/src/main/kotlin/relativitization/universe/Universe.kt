@@ -107,6 +107,11 @@ class Universe(
     }
 
     /**
+     * Get all current player data list
+     */
+    fun getCurrentPlayerDataList(): List<PlayerData> = universeData.getCurrentPlayerDataList()
+
+    /**
      * Get universe 3d view for (human) player
      * Should only return if canAccess is true
      */
