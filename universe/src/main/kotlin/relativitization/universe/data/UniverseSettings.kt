@@ -44,6 +44,7 @@ data class UniverseSettings(
     val groupEdgeLength: Double = 0.01,
     val otherIntMap: Map<String, Int> = mapOf(),
     val otherDoubleMap: Map<String, Double> = mapOf(),
+    val otherStringMap: Map<String, String> = mapOf(),
 ) {
     private fun isTDimBigEnough(): Boolean {
         return tDim > intDelay(Int3D(0, 0, 0), Int3D(xDim - 1, yDim - 1, zDim - 1), speedOfLight)
@@ -78,5 +79,6 @@ data class MutableUniverseSettings(
     var playerHistoricalInt4DLength: Int = playerAfterImageDuration,
     var groupEdgeLength: Double = 0.01,
     val otherIntMap: MutableMap<String, Int> = mutableMapOf(),
-    val otherDoubleMap: Map<String, Double> = mutableMapOf(),
+    val otherDoubleMap: MutableMap<String, Double> = mutableMapOf(),
+    val otherStringMap: MutableMap<String, String> = mutableMapOf(),
 )

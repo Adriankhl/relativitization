@@ -29,6 +29,7 @@ data class GenerateSettings(
     var numHumanPlayer: Int = 1,
     val otherIntMap: MutableMap<String, Int> = mutableMapOf(),
     val otherDoubleMap: MutableMap<String, Double> = mutableMapOf(),
+    val otherStringMap: MutableMap<String, String> = mutableMapOf(),
     var universeSettings: MutableUniverseSettings = MutableUniverseSettings(),
 ) {
     fun save(programDir: String) {
