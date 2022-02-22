@@ -41,7 +41,8 @@ internal class DefaultAITest {
                 playerAfterImageDuration = 4,
                 playerHistoricalInt4DLength = 4,
                 groupEdgeLength = 0.01,
-                otherSettings = mutableMapOf(),
+                otherIntMap = mutableMapOf(),
+                otherDoubleMap = mutableMapOf(),
             )
         )
 
