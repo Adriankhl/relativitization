@@ -6,14 +6,10 @@ import kotlin.reflect.full.createInstance
 
 @Serializable
 data class UniverseGlobalData(
-    val globalDataComponentMap: GlobalDataComponentMap = GlobalDataComponentMap(
-        DefaultGlobalDataComponent::class.sealedSubclasses.map { it.createInstance() },
-    )
+    val globalDataComponentMap: GlobalDataComponentMap = GlobalDataComponentMap()
 )
 
 @Serializable
 data class MutableUniverseGlobalData(
-    var globalDataComponentMap: MutableGlobalDataComponentMap = MutableGlobalDataComponentMap(
-        MutableDefaultGlobalDataComponent::class.sealedSubclasses.map { it.createInstance() },
-    )
+    var globalDataComponentMap: MutableGlobalDataComponentMap = MutableGlobalDataComponentMap()
 )

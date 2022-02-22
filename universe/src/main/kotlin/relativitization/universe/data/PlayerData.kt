@@ -320,9 +320,7 @@ data class PlayerInternalData(
     val isAlive: Boolean = true,
     val aiName: String = DefaultAI.name(),
     val eventDataMap: Map<Int, EventData> = mapOf(),
-    val playerDataComponentMap: PlayerDataComponentMap = PlayerDataComponentMap(
-        DefaultPlayerDataComponent::class.sealedSubclasses.map { it.createInstance() }
-    ),
+    val playerDataComponentMap: PlayerDataComponentMap = PlayerDataComponentMap(),
 ) {
     companion object {
         private val logger = RelativitizationLogManager.getLogger()
@@ -338,9 +336,7 @@ data class MutablePlayerInternalData(
     var isAlive: Boolean = true,
     var aiName: String = DefaultAI.name(),
     var eventDataMap: MutableMap<Int, MutableEventData> = mutableMapOf(),
-    var playerDataComponentMap: MutablePlayerDataComponentMap = MutablePlayerDataComponentMap(
-        MutableDefaultPlayerDataComponent::class.sealedSubclasses.map { it.createInstance() }
-    ),
+    var playerDataComponentMap: MutablePlayerDataComponentMap = MutablePlayerDataComponentMap(),
 ) {
     /**
      * Add an event to event map

@@ -21,11 +21,13 @@ import relativitization.universe.data.components.defaults.science.knowledge.Appl
 import relativitization.universe.data.components.defaults.science.knowledge.BasicResearchField
 import relativitization.universe.data.components.defaults.science.knowledge.BasicResearchProjectData
 import relativitization.universe.data.global.MutableUniverseGlobalData
+import relativitization.universe.data.global.components.MutableDefaultGlobalDataComponent
 import relativitization.universe.data.global.components.universeScienceData
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.generate.method.GenerateSettings
 import relativitization.universe.global.defaults.science.UpdateUniverseScienceData
 import relativitization.universe.maths.grid.Grids.create4DGrid
+import kotlin.reflect.full.createInstance
 
 object TestingFixedMinimal : TestingGenerateUniverseMethod() {
     override fun generate(settings: GenerateSettings): UniverseData {
@@ -42,6 +44,11 @@ object TestingFixedMinimal : TestingGenerateUniverseMethod() {
 
         // Global data first
         val mutableUniverseGlobalData = MutableUniverseGlobalData()
+
+        // Add all default data component
+        MutableDefaultGlobalDataComponent::class.sealedSubclasses.forEach {
+            mutableUniverseGlobalData.globalDataComponentMap.put(it.createInstance())
+        }
 
         // Create basic and applied project
         val basic0 = BasicResearchProjectData(
@@ -126,6 +133,16 @@ object TestingFixedMinimal : TestingGenerateUniverseMethod() {
         val playerData4 = MutablePlayerData(4)
         val playerData5 = MutablePlayerData(5)
         val playerData6 = MutablePlayerData(6)
+
+        // Add all default data components
+        MutableDefaultPlayerDataComponent::class.sealedSubclasses.forEach {
+            playerData1.playerInternalData.playerDataComponentMap.put(it.createInstance())
+            playerData2.playerInternalData.playerDataComponentMap.put(it.createInstance())
+            playerData3.playerInternalData.playerDataComponentMap.put(it.createInstance())
+            playerData4.playerInternalData.playerDataComponentMap.put(it.createInstance())
+            playerData5.playerInternalData.playerDataComponentMap.put(it.createInstance())
+            playerData6.playerInternalData.playerDataComponentMap.put(it.createInstance())
+        }
 
 
         // Change AI to EmptyAI to for deterministic testing

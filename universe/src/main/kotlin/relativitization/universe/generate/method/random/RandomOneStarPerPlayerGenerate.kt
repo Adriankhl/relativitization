@@ -1,15 +1,13 @@
 package relativitization.universe.generate.method.random
 
 import relativitization.universe.data.*
+import relativitization.universe.data.components.*
 import relativitization.universe.data.components.defaults.popsystem.pop.PopType
 import relativitization.universe.data.components.defaults.science.knowledge.AppliedResearchField
 import relativitization.universe.data.components.defaults.science.knowledge.BasicResearchField
-import relativitization.universe.data.components.physicsData
-import relativitization.universe.data.components.playerScienceData
-import relativitization.universe.data.components.popSystemData
-import relativitization.universe.data.components.syncData
 import relativitization.universe.data.global.MutableUniverseGlobalData
 import relativitization.universe.data.global.UniverseGlobalData
+import relativitization.universe.data.global.components.MutableDefaultGlobalDataComponent
 import relativitization.universe.data.global.components.UniverseScienceData
 import relativitization.universe.data.global.components.defaults.science.knowledge.MutableAppliedResearchProjectGenerationData
 import relativitization.universe.data.global.components.defaults.science.knowledge.MutableBasicResearchProjectGenerationData
@@ -26,6 +24,7 @@ import relativitization.universe.mechanisms.defaults.regular.science.UpdateScien
 import relativitization.universe.mechanisms.defaults.regular.sync.SyncPlayerScienceData
 import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.math.floor
+import kotlin.reflect.full.createInstance
 
 object RandomOneStarPerPlayerGenerate : RandomGenerateUniverseMethod() {
     private val logger = RelativitizationLogManager.getLogger()
@@ -34,6 +33,11 @@ object RandomOneStarPerPlayerGenerate : RandomGenerateUniverseMethod() {
         val universeSettings: UniverseSettings = DataSerializer.copy(settings.universeSettings)
 
         val mutableUniverseGlobalData = MutableUniverseGlobalData()
+
+        // Add all default data component
+        MutableDefaultGlobalDataComponent::class.sealedSubclasses.forEach {
+            mutableUniverseGlobalData.globalDataComponentMap.put(it.createInstance())
+        }
 
         // Add project generation data for all basic research field
         val mathematicsProjectGenerationData = MutableBasicResearchProjectGenerationData(
@@ -273,11 +277,15 @@ object RandomOneStarPerPlayerGenerate : RandomGenerateUniverseMethod() {
         // Only consider numPlayer, ignore numExtraStellarSystem
         val universeState = UniverseState(
             currentTime = universeSettings.tDim - 1,
-            maxPlayerId = settings.numPlayer,
+            maxPlayerId = 0,
         )
 
         for (playerId in 1..settings.numPlayer) {
-            val mutablePlayerData = MutablePlayerData(playerId)
+            val mutablePlayerData = MutablePlayerData(universeState.getNewPlayerId())
+
+            MutableDefaultPlayerDataComponent::class.sealedSubclasses.forEach {
+                mutablePlayerData.playerInternalData.playerDataComponentMap.put(it.createInstance())
+            }
 
             // First n players are human player
             if (playerId <= settings.numHumanPlayer) {
