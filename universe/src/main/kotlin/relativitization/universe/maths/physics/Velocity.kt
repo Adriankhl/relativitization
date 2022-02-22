@@ -1,11 +1,19 @@
 package relativitization.universe.maths.physics
 
 import kotlinx.serialization.Serializable
-import kotlin.math.abs
-import kotlin.math.sqrt
+import relativitization.universe.maths.random.Rand
+import kotlin.math.*
 
 @Serializable
 data class Velocity(val vx: Double, val vy: Double, val vz: Double) {
+    operator fun times(double: Double) = Velocity(vx * double, vy * double, vz * double)
+
+    operator fun plus(velocity: Velocity) =
+        Velocity(vx + velocity.vx, vy + velocity.vy, vz + velocity.vz)
+
+    operator fun minus(velocity: Velocity) =
+        Velocity(vx - velocity.vx, vy - velocity.vy, vz - velocity.vz)
+
     fun squareMag(): Double {
         return vx * vx + vy * vy + vz * vz
     }
@@ -60,13 +68,56 @@ data class Velocity(val vx: Double, val vy: Double, val vz: Double) {
         return Double3D(vx * time, vy * time, vz * time)
     }
 
-    operator fun times(double: Double) = Velocity(vx * double, vy * double, vz * double)
+    fun cross(velocity: Velocity) = Velocity(
+        vy * velocity.vz - vz * velocity.vy,
+        vz * velocity.vx - vx * velocity.vz,
+        vx * velocity.vy - vy * velocity.vx,
+    )
 
-    operator fun plus(velocity: Velocity) =
-        Velocity(vx + velocity.vx, vy + velocity.vy, vz + velocity.vz)
+    /**
+     * Compute a pair of perpendicular unit vectors, form a new coordinate system
+     *
+     * @return (vector of x-axis, vector of y-axis) where the original vector is the z axis
+     */
+    private fun perpendicularUnitVectorPair(): Pair<Velocity, Velocity> {
+        val originalUnitVector: Velocity = scaleVelocity(1.0)
 
-    operator fun minus(velocity: Velocity) =
-        Velocity(vx - velocity.vx, vy - velocity.vy, vz - velocity.vz)
+        val referenceVector: Velocity = if ((originalUnitVector.vx != 0.0) || (originalUnitVector.vy != 0.0)) {
+            Velocity(0.0, 0.0, 1.0)
+        } else {
+            Velocity(1.0, 0.0, 1.0)
+        }
+
+        val vector1: Velocity = originalUnitVector.cross(referenceVector)
+        val vector2: Velocity = originalUnitVector.cross(vector1)
+
+        return Pair(vector1, vector2)
+    }
+
+    /**
+     * Randomly rotate the vector with a limit of max theta to rotate, in a spherical coordinate system where the
+     * original vector is the z axis
+     * https://www.bogotobogo.com/Algorithms/uniform_distribution_sphere.php
+     */
+    fun randomRotate(maxRotateTheta: Double): Velocity {
+        val originalMag: Double = mag()
+
+        val axisPair: Pair<Velocity, Velocity> = perpendicularUnitVectorPair()
+        val xAxis: Velocity = axisPair.first
+        val yAxis: Velocity = axisPair.second
+        val zAxis: Velocity = scaleVelocity(1.0)
+
+        // the angular coordinate where the original vector is the z-axis
+        val phi: Double = 2.0 * PI * Rand.rand().nextDouble()
+        // Bound the uniform random number for theta
+        val minRand: Double = (cos(maxRotateTheta) + 1.0) * 0.5
+        val maxRand: Double = 1.0
+        val theta: Double = acos(2.0 * Rand.rand().nextDouble(minRand, maxRand) - 1.0)
+
+        val newUnitVector: Velocity = xAxis * cos(phi) * sin(theta) + yAxis * sin(phi) * cos(theta) + zAxis * cos(theta)
+
+        return newUnitVector * originalMag
+    }
 }
 
 @Serializable
