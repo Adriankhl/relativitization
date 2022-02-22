@@ -27,7 +27,8 @@ internal class RandomOneStarPerPlayerGenerateTest {
             generateMethod = RandomOneStarPerPlayerGenerate.name(),
             numPlayer = 1,
             numHumanPlayer = 1,
-            numExtraStellarSystem = 3,
+            otherIntMap = mutableMapOf("numExtraStellarSystem" to 3),
+            otherDoubleMap = mutableMapOf("initialPopulation" to 1E6),
             universeSettings = MutableUniverseSettings(
                 universeName = "One player test",
                 commandCollectionName = DefaultCommandAvailability.name(),
@@ -118,8 +119,8 @@ internal class RandomOneStarPerPlayerGenerateTest {
             generateMethod = RandomOneStarPerPlayerGenerate.name(),
             numPlayer = 1,
             numHumanPlayer = 1,
-            numExtraStellarSystem = 3,
-            initialPopulation = 1E7,
+            otherIntMap = mutableMapOf("numExtraStellarSystem" to 3),
+            otherDoubleMap = mutableMapOf("initialPopulation" to 1E6),
             universeSettings = MutableUniverseSettings(
                 universeName = "One player test",
                 commandCollectionName = DefaultCommandAvailability.name(),

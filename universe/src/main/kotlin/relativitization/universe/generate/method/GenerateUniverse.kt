@@ -19,16 +19,16 @@ import relativitization.universe.utils.RelativitizationLogManager
  *
  * @property numPlayer number of initial players, human and AI
  * @property numHumanPlayer number of initial human players
- * @property numExtraStellarSystem number of "None" type player with a stellar system
- * @property initialPopulation initial population of the carrier
+ * @property otherIntMap other integer parameters for generating universe
+ * @property otherDoubleMap other double parameters for generating universe
  */
 @Serializable
 data class GenerateSettings(
     var generateMethod: String = RandomOneStarPerPlayerGenerate.name(),
     var numPlayer: Int = 1,
     var numHumanPlayer: Int = 1,
-    var numExtraStellarSystem: Int = 0,
-    var initialPopulation: Double = 1E6,
+    val otherIntMap: MutableMap<String, Int> = mutableMapOf(),
+    val otherDoubleMap: MutableMap<String, Double> = mutableMapOf(),
     var universeSettings: MutableUniverseSettings = MutableUniverseSettings(),
 ) {
     fun save(programDir: String) {

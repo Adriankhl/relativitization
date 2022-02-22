@@ -20,8 +20,8 @@ fun main() {
         generateMethod = RandomOneStarPerPlayerGenerate.name(),
         numPlayer = 50,
         numHumanPlayer = 1,
-        numExtraStellarSystem = 0,
-        initialPopulation = 1E6,
+        otherIntMap = mutableMapOf("numExtraStellarSystem" to 0),
+        otherDoubleMap = mutableMapOf("initialPopulation" to 1E6),
         universeSettings = MutableUniverseSettings(
             universeName = "Typical game",
             commandCollectionName = DefaultCommandAvailability.name(),

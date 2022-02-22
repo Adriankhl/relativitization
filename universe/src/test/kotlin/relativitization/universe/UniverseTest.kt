@@ -14,7 +14,8 @@ internal class UniverseTest {
             generateMethod = TestingFixedMinimal.name(),
             numPlayer = 4,
             numHumanPlayer = 2,
-            numExtraStellarSystem = 3,
+            otherIntMap = mutableMapOf("numExtraStellarSystem" to 3),
+            otherDoubleMap = mutableMapOf("initialPopulation" to 1E6),
             universeSettings = MutableUniverseSettings(universeName = "save-load-test")
         )
         val universeData = GenerateUniverseMethodCollection.generate(generateSetting)

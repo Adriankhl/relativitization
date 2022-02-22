@@ -208,10 +208,10 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
         table.add(createLabel("Total number of extra stellar system: ", gdxSettings.normalFontSize))
         val numExtraStellarSystemSelectBox = createSelectBox(
             (0..1000).toList(),
-            game.universeClient.generateSettings.numExtraStellarSystem,
+            game.universeClient.generateSettings.otherIntMap.getOrDefault("numExtraStellarSystem", 0),
             gdxSettings.normalFontSize,
         ) { numExtraStellarSystem, _ ->
-            game.universeClient.generateSettings.numExtraStellarSystem = numExtraStellarSystem
+            game.universeClient.generateSettings.otherIntMap["numExtraStellarSystem"] = numExtraStellarSystem
         }
         table.add(numExtraStellarSystemSelectBox)
 

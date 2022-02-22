@@ -308,7 +308,7 @@ object RandomOneStarPerPlayerGenerate : RandomGenerateUniverseMethod() {
                 PopType.values().forEach { popType ->
                     carrier.allPopData.getCommonPopData(
                         popType
-                    ).adultPopulation = settings.initialPopulation
+                    ).adultPopulation = settings.otherDoubleMap.getOrDefault("initialPopulation", 1E6)
                 }
             }
 
