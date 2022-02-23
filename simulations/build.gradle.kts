@@ -18,6 +18,7 @@ kotlin {
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.kotlinxCoroutineVersion}")
 
                 implementation("org.apache.logging.log4j:log4j-core:${Versions.log4jVersion}")
+                implementation("org.jetbrains.kotlinx:dataframe:${Versions.dataframeVersion}")
             }
         }
 
