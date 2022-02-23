@@ -27,6 +27,7 @@ class UniverseServerInternal(
         universeData = GenerateUniverseMethodCollection.generate(GenerateSettings()),
         programDir = universeServerSettings.programDir,
         saveWhenInit = false,
+        alwaysSaveLatest = true,
     )
 
     // Current universe time

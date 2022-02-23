@@ -13,9 +13,13 @@ import kotlin.test.Test
 internal class SurrenderCommandTest {
     @Test
     fun fixedMinimalTest() {
-        val universe = Universe(GenerateUniverseMethodCollection.generate(GenerateSettings(
-            generateMethod = TestingFixedMinimal.name(),
-        )), ".")
+        val universe = Universe(
+            GenerateUniverseMethodCollection.generate(
+                GenerateSettings(
+                    generateMethod = TestingFixedMinimal.name(),
+                )
+            )
+        )
 
         val view6At3 = universe.getUniverse3DViewAtPlayer(3)
         val view6At5 = universe.getUniverse3DViewAtPlayer(5)
@@ -110,9 +114,13 @@ internal class SurrenderCommandTest {
 
     @Test
     fun fixedMinimalDoubleSurrenderTest() {
-        val universe = Universe(GenerateUniverseMethodCollection.generate(GenerateSettings(
-            generateMethod = TestingFixedMinimal.name(),
-        )), ".")
+        val universe = Universe(
+            GenerateUniverseMethodCollection.generate(
+                GenerateSettings(
+                    generateMethod = TestingFixedMinimal.name(),
+                )
+            )
+        )
 
         val view6At3 = universe.getUniverse3DViewAtPlayer(3)
         val view6At5 = universe.getUniverse3DViewAtPlayer(5)

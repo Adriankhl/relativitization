@@ -46,10 +46,7 @@ internal class DefaultAITest {
             )
         )
 
-        val universe = Universe(
-            GenerateUniverseMethodCollection.generate(generateSetting),
-            "."
-        )
+        val universe = Universe(GenerateUniverseMethodCollection.generate(generateSetting))
 
         val initialAdultPopulation: Double = universe.getUniverse3DViewAtPlayer(1).get(1)
             .playerInternalData.popSystemData().totalAdultPopulation()

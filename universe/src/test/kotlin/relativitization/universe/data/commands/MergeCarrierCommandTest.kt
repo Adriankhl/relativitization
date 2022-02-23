@@ -14,9 +14,13 @@ import kotlin.test.Test
 internal class MergeCarrierCommandTest {
     @Test
     fun fixedMinimalTest() {
-        val universe = Universe(GenerateUniverseMethodCollection.generate(GenerateSettings(
-            generateMethod = TestingFixedMinimal.name(),
-        )), ".")
+        val universe = Universe(
+            GenerateUniverseMethodCollection.generate(
+                GenerateSettings(
+                    generateMethod = TestingFixedMinimal.name(),
+                )
+            )
+        )
 
         val view6At1 = universe.getUniverse3DViewAtPlayer(1)
         val view6At2 = universe.getUniverse3DViewAtPlayer(2)

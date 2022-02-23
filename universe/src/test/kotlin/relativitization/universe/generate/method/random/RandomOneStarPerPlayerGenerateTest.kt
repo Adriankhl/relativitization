@@ -49,7 +49,6 @@ internal class RandomOneStarPerPlayerGenerateTest {
 
         val universe = Universe(
             GenerateUniverseMethodCollection.generate(generateSetting),
-            "."
         )
 
         val view7 = universe.getUniverse3DViewAtPlayer(1)
@@ -141,7 +140,6 @@ internal class RandomOneStarPerPlayerGenerateTest {
 
         val universe = Universe(
             GenerateUniverseMethodCollection.generate(generateSetting),
-            "."
         )
 
         val initialAdultPopulation: Double = universe.getUniverse3DViewAtPlayer(1).get(1)

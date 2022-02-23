@@ -31,9 +31,9 @@ import relativitization.universe.utils.pmap
  */
 class Universe(
     private val universeData: UniverseData,
-    private val programDir: String,
-    private val saveWhenInit: Boolean = true,
-    private val alwaysSaveLatest: Boolean = true
+    private val programDir: String = ".",
+    private val saveWhenInit: Boolean = false,
+    private val alwaysSaveLatest: Boolean = false
 ) {
 
     private val xDim = universeData.universeSettings.xDim

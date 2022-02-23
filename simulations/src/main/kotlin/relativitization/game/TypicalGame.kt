@@ -34,7 +34,7 @@ fun main() {
         )
     )
 
-    val universe = Universe(GenerateUniverseMethodCollection.generate(generateSetting), ".")
+    val universe = Universe(GenerateUniverseMethodCollection.generate(generateSetting))
 
     for (turn in 1..1000) {
         universe.pureAIStep()

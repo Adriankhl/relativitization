@@ -15,9 +15,13 @@ import kotlin.test.Test
 internal class MoveToDouble3DEventTest {
     @Test
     fun fixedMinimalTest() {
-        val universe = Universe(GenerateUniverseMethodCollection.generate(GenerateSettings(
-            generateMethod = TestingFixedMinimal.name(),
-        )), ".")
+        val universe = Universe(
+            GenerateUniverseMethodCollection.generate(
+                GenerateSettings(
+                    generateMethod = TestingFixedMinimal.name(),
+                )
+            )
+        )
         val view6: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
         assert(view6.get(2).int4D == Int4D(6, 0, 0, 0))
 
@@ -65,9 +69,13 @@ internal class MoveToDouble3DEventTest {
 
     @Test
     fun fixedMinimalStrangeCaseTest() {
-        val universe = Universe(GenerateUniverseMethodCollection.generate(GenerateSettings(
-            generateMethod = TestingFixedMinimal.name(),
-        )), ".")
+        val universe = Universe(
+            GenerateUniverseMethodCollection.generate(
+                GenerateSettings(
+                    generateMethod = TestingFixedMinimal.name(),
+                )
+            )
+        )
         val view6: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
         assert(view6.getCurrentPlayerData().int4D == Int4D(6, 0, 0, 0))
 

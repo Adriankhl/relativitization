@@ -29,7 +29,10 @@ fun Route.createUniverseRouting(universeServerInternal: UniverseServerInternal) 
                 if (universeData.isUniverseValid()) {
                     universeServerInternal.setUniverse(
                         Universe(
-                            universeData, universeServerInternal.universeServerSettings.programDir
+                            universeData = universeData,
+                            programDir = universeServerInternal.universeServerSettings.programDir,
+                            saveWhenInit = true,
+                            alwaysSaveLatest = true,
                         )
                     )
                     call.respondText("Created Universe", ContentType.Text.Plain, HttpStatusCode.OK)
@@ -72,6 +75,7 @@ fun Route.createUniverseRouting(universeServerInternal: UniverseServerInternal) 
                             universeData = universeData,
                             programDir = universeServerInternal.universeServerSettings.programDir,
                             saveWhenInit = false,
+                            alwaysSaveLatest = true,
                         )
                     )
                     call.respondText("Loaded Universe", ContentType.Text.Plain, HttpStatusCode.OK)

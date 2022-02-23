@@ -13,9 +13,13 @@ import kotlin.test.Test
 internal class FuelFactoryProductionTest {
     @Test
     fun fixedMinimalTest() {
-        val universe = Universe(GenerateUniverseMethodCollection.generate(GenerateSettings(
-            generateMethod = TestingFixedMinimal.name(),
-        )), ".")
+        val universe = Universe(
+            GenerateUniverseMethodCollection.generate(
+                GenerateSettings(
+                    generateMethod = TestingFixedMinimal.name(),
+                )
+            )
+        )
 
 
         runBlocking {

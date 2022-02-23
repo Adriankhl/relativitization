@@ -1,6 +1,7 @@
 package relativitization.universe
 
 import relativitization.universe.data.MutableUniverseSettings
+import relativitization.universe.data.UniverseData
 import relativitization.universe.generate.method.GenerateSettings
 import relativitization.universe.generate.method.GenerateUniverseMethodCollection
 import relativitization.universe.generate.method.name
@@ -18,8 +19,8 @@ internal class UniverseTest {
             otherDoubleMap = mutableMapOf("initialPopulation" to 1E6),
             universeSettings = MutableUniverseSettings(universeName = "save-load-test")
         )
-        val universeData = GenerateUniverseMethodCollection.generate(generateSetting)
-        val universe = Universe(universeData = universeData, programDir = ".")
+        val universeData: UniverseData = GenerateUniverseMethodCollection.generate(generateSetting)
+        val universe = Universe(universeData)
         universe.saveAll()
         val universeLoad = Universe.loadUniverseLatest("save-load-test", ".")
         println(universeLoad)

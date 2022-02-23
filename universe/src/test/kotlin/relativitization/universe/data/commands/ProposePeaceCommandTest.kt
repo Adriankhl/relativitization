@@ -12,9 +12,13 @@ import kotlin.test.Test
 internal class ProposePeaceCommandTest {
     @Test
     fun fixedMinimalTest() {
-        val universe = Universe(GenerateUniverseMethodCollection.generate(GenerateSettings(
-            generateMethod = TestingFixedMinimal.name(),
-        )), ".")
+        val universe = Universe(
+            GenerateUniverseMethodCollection.generate(
+                GenerateSettings(
+                    generateMethod = TestingFixedMinimal.name(),
+                )
+            )
+        )
 
         val view6At3 = universe.getUniverse3DViewAtPlayer(3)
         val view6At5 = universe.getUniverse3DViewAtPlayer(5)

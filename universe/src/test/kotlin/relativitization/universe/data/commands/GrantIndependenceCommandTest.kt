@@ -17,7 +17,7 @@ internal class GrantIndependenceCommandTest {
                 GenerateSettings(
                     generateMethod = TestingFixedMinimal.name(),
                 )
-            ), "."
+            )
         )
         val view6: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
 

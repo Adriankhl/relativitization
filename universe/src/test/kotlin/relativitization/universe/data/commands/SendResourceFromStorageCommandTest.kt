@@ -16,9 +16,13 @@ import kotlin.test.Test
 internal class SendResourceFromStorageCommandTest {
     @Test
     fun fixedMinimalTest() {
-        val universe = Universe(GenerateUniverseMethodCollection.generate(GenerateSettings(
-            generateMethod = TestingFixedMinimal.name(),
-        )), ".")
+        val universe = Universe(
+            GenerateUniverseMethodCollection.generate(
+                GenerateSettings(
+                    generateMethod = TestingFixedMinimal.name(),
+                )
+            )
+        )
         val view6: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
 
         val playerData1 = view6.get(1)
