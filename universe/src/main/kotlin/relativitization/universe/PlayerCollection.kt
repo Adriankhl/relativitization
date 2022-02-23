@@ -10,6 +10,7 @@ import relativitization.universe.maths.physics.MutableVelocity
 import relativitization.universe.maths.physics.Velocity
 import relativitization.universe.utils.RandomName.randomPlayerName
 import relativitization.universe.utils.RelativitizationLogManager
+import kotlin.math.abs
 import kotlin.math.floor
 
 class PlayerCollection(
@@ -223,42 +224,42 @@ class PlayerCollection(
 
         // Move player double4D by velocity
         for ((_, playerData) in playerMap) {
-            val velocity: MutableVelocity = playerData.velocity
+            val originalVelocity: Velocity = playerData.velocity.toVelocity()
             playerData.double4D.t = timeDouble
-            playerData.double4D.x += velocity.vx
-            playerData.double4D.y += velocity.vy
-            playerData.double4D.z += velocity.vz
+            playerData.double4D.x += originalVelocity.vx
+            playerData.double4D.y += originalVelocity.vy
+            playerData.double4D.z += originalVelocity.vz
 
             // Check boundaries and ensure double 4D is within boundaries
-            // If exceeds boundaries, also decreases the velocity component to zero
+            // If exceeds boundaries, reflect the velocity
             if (playerData.double4D.x <= 0.0) {
                 playerData.double4D.x = 0.000001
-                velocityComponentToZero('x', playerData)
+                playerData.velocity.vx = abs(originalVelocity.vx)
             }
 
             if (playerData.double4D.x >= universeSettings.xDim.toDouble()) {
                 playerData.double4D.x = universeSettings.xDim.toDouble() - 0.000001
-                velocityComponentToZero('x', playerData)
+                playerData.velocity.vx = -abs(originalVelocity.vx)
             }
 
             if (playerData.double4D.y <= 0.0) {
                 playerData.double4D.y = 0.000001
-                velocityComponentToZero('y', playerData)
+                playerData.velocity.vy = abs(originalVelocity.vy)
             }
 
             if (playerData.double4D.y >= universeSettings.yDim.toDouble()) {
                 playerData.double4D.y = universeSettings.yDim.toDouble() - 0.000001
-                velocityComponentToZero('y', playerData)
+                playerData.velocity.vy = -abs(originalVelocity.vy)
             }
 
             if (playerData.double4D.z <= 0.0) {
                 playerData.double4D.z = 0.000001
-                velocityComponentToZero('z', playerData)
+                playerData.velocity.vz = abs(originalVelocity.vz)
             }
 
             if (playerData.double4D.z >= universeSettings.zDim.toDouble()) {
                 playerData.double4D.z = universeSettings.zDim.toDouble() - 0.000001
-                velocityComponentToZero('z', playerData)
+                playerData.velocity.vz = -abs(originalVelocity.vz)
             }
         }
 
@@ -288,32 +289,6 @@ class PlayerCollection(
             // Clean up unnecessary int4DHistory
             playerData.int4DHistory.removeAll { time - it.t > universeSettings.playerHistoricalInt4DLength }
         }
-    }
-
-    /**
-     * Change player velocity component to zero
-     */
-    private fun velocityComponentToZero(
-        component: Char,
-        playerData: MutablePlayerData,
-    ) {
-        val targetVelocity: Velocity = when (component) {
-            'x' -> {
-                playerData.velocity.toVelocity().copy(vx = 0.0)
-            }
-            'y' -> {
-                playerData.velocity.toVelocity().copy(vy = 0.0)
-            }
-            'z' -> {
-                playerData.velocity.toVelocity().copy(vz = 0.0)
-            }
-            else -> {
-                logger.error("Component doesn't exist")
-                playerData.velocity.toVelocity()
-            }
-        }
-
-        playerData.velocity = targetVelocity.toMutableVelocity()
     }
 
     companion object {

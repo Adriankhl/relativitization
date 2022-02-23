@@ -107,7 +107,7 @@ class Universe(
     }
 
     /**
-     * Get all current player data list
+     * Get all current player data as a list
      */
     fun getCurrentPlayerDataList(): List<PlayerData> = universeData.getCurrentPlayerDataList()
 
