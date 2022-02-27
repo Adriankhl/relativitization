@@ -32,13 +32,14 @@ object KnowledgeDiffusion : Mechanism() {
         // Same top leader benefit
         val sameTopLeaderMultiplier: Double = 5.0
 
+        // Diffuse done projects by probability
         universeData3DAtPlayer.getNeighbour(diffusionRange).forEach { playerData ->
             val actualBasicResearchDiffusionProb: Double =
                 if (playerData.topLeaderId() == mutablePlayerData.topLeaderId()) {
-                basicResearchDiffusionProb * sameTopLeaderMultiplier
-            } else {
-                basicResearchDiffusionProb
-            }
+                    basicResearchDiffusionProb * sameTopLeaderMultiplier
+                } else {
+                    basicResearchDiffusionProb
+                }
 
             computeBasicResearchDiffusion(
                 actualBasicResearchDiffusionProb,
@@ -68,6 +69,28 @@ object KnowledgeDiffusion : Mechanism() {
                     UpdateUniverseScienceData.appliedResearchProjectFunction()
                 )
             }
+        }
+
+        // Diffuse all visible project as known project
+        universeData3DAtPlayer.getNeighbour(diffusionRange).forEach { playerData ->
+            val thisPlayerScienceData: MutablePlayerScienceData =
+                mutablePlayerData.playerInternalData.playerScienceData()
+            val otherPlayerScienceData: PlayerScienceData = playerData.playerInternalData.playerScienceData()
+
+            (otherPlayerScienceData.doneBasicResearchProjectList + otherPlayerScienceData.knownBasicResearchProjectList)
+                .filter {
+                    !thisPlayerScienceData.isBasicProjectDone(it) && !thisPlayerScienceData.isBasicProjectKnown(it)
+                }.forEach {
+                    thisPlayerScienceData.knownBasicResearchProject(it)
+                }
+
+
+            (otherPlayerScienceData.doneAppliedResearchProjectList + otherPlayerScienceData.knownAppliedResearchProjectList)
+                .filter {
+                    !thisPlayerScienceData.isAppliedProjectDone(it) && !thisPlayerScienceData.isAppliedProjectKnown(it)
+                }.forEach {
+                    thisPlayerScienceData.knownAppliedResearchProject(it)
+                }
         }
 
         return listOf()
