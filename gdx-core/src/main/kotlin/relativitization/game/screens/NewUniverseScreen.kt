@@ -290,6 +290,12 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
 
         table.row().space(10f)
 
+        table.add(createLabel("Universe time dimension: ", gdxSettings.normalFontSize))
+
+        table.add(tDimLabel)
+
+        table.row().space(10f)
+
         table.add(createLabel("Universe x dimension: ", gdxSettings.normalFontSize))
         val xDimSelectBox = createSelectBox(
             (1..50).toList(),
@@ -365,12 +371,6 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
             tDimLabel.setText(maxDelay + 1)
         }
         table.add(zDimSelectBox)
-
-        table.row().space(10f)
-
-        table.add(createLabel("Universe time dimension: ", gdxSettings.normalFontSize))
-
-        table.add(tDimLabel)
 
         table.row().space(10f)
 
