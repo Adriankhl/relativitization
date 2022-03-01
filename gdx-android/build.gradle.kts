@@ -1,3 +1,5 @@
+import com.android.build.gradle.internal.tasks.StripDebugSymbolsDelegate
+import com.android.build.gradle.internal.tasks.StripDebugSymbolsTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 
@@ -12,6 +14,12 @@ val natives: Configuration by configurations.creating
 android {
     compileSdk = 31
 
+    buildFeatures {
+        aidl = false
+        renderScript = false
+        shaders = false
+    }
+
     sourceSets {
         getByName("main") {
  
@@ -20,11 +28,8 @@ android {
             assets.srcDir("../../relativitization-art/assets")
             jniLibs.srcDir("libs")
 
-            // Comment these out, since kotlin paths should be supported by android gradle plugin, no extra setting is required
-            //aidl.srcDir("src/main/kotlin")
-            //renderscript.srcDir("src/main/kotlin")
+            // Comment these out, since kotlin paths should be supported by android gradle plugin
             //java.srcDir("src/main/kotlin")
-
 
             dependencies {
                 implementation(project(":gdx-core"))
@@ -105,9 +110,13 @@ android {
     }
 }
 
+// Skip stripping task to avoid the need of ndk
+tasks.withType<StripDebugSymbolsTask>().configureEach {
+    enabled = false
+}
 
 // called every time gradle gets executed, takes the native dependencies of
-// the natives configuration, and extracts them to the proper libs/ folders
+// the natives' configuration, and extracts them to the proper libs/ folders,
 // so they get packed with the APK.
 task("copyAndroidNatives") {
     doFirst {
