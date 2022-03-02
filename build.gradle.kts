@@ -159,6 +159,17 @@ tasks.register("packageAll") {
             )
         }
 
+        // copy assets with jar
+        exec {
+            workingDir = artDirectory
+            commandLine(
+                "cp",
+                "-r",
+                "./assets",
+                "relativitization-jar",
+            )
+        }
+
         // zip the assets with jar
         exec {
             workingDir = artDirectory
@@ -166,7 +177,7 @@ tasks.register("packageAll") {
                 "zip",
                 "-r",
                 "./outputs/relativitization-jar.zip",
-                "./assets",
+                "./relativitization-jar",
             )
         }
 
