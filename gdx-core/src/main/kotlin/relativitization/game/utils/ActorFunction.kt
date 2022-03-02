@@ -44,9 +44,7 @@ object ActorFunction {
                         is NoTranslateString -> it.str
                         is TranslateString -> {
                             val trVar: String = i18NBundle.format(it.str)
-                            if (trVar.isNotEmpty()) {
-                                trVar
-                            } else {
+                            trVar.ifEmpty {
                                 logger.debug("Empty translated variable: $trVar")
                                 it.str
                             }
@@ -59,9 +57,7 @@ object ActorFunction {
                     *translatedVariableList.toTypedArray()
                 )
 
-                if (trText.isNotEmpty()) {
-                    trText
-                } else {
+                trText.ifEmpty {
                     logger.debug("Empty translated text: $text")
                     normalStringList[index]
                 }
@@ -189,7 +185,7 @@ object ActorFunction {
     }
 
     /**
-     * Create an nine patch image
+     * Create a nine patch image
      */
     fun createNinePatchImage(
         assets: Assets,
@@ -374,7 +370,7 @@ object ActorFunction {
         vertical: Boolean = false,
         function: (Float, Slider) -> Unit = { _, _ -> },
     ): Slider {
-        val slider: Slider = Slider(min, max, stepSize, vertical, skin)
+        val slider = Slider(min, max, stepSize, vertical, skin)
 
         slider.value = default
 
@@ -486,9 +482,9 @@ object ActorFunction {
 
         textField.setTextFieldListener { field, _ -> function(field?.text ?: "", field!!) }
 
-        // This adds a pop up text box to help text field input in Android
+        // This adds a pop-up text box to help text field input in Android
         // Disadvantage: ugly, need to click ok twice
-        // Comment this out and and empty space at the bottom of scroll pane instead
+        // Comment this out and empty space at the bottom of scroll pane instead
         /*
         textField.onscreenKeyboard = TextField.OnscreenKeyboard {
             Gdx.input.getTextInput(object : Input.TextInputListener {
