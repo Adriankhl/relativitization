@@ -32,13 +32,21 @@ class CommandsInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game)
     }
 
     override fun getScreenComponent(): ScrollPane {
+        if (game.universeClient.planDataAtPlayer.commandList != commandList) {
+            updateCommandList()
+            updateTable()
+        }
         return scrollPane
     }
 
     override fun onCommandListChange() {
+        updateCommandList()
+        updateTable()
+    }
+
+    private fun updateCommandList() {
         commandList.clear()
         commandList.addAll(game.universeClient.planDataAtPlayer.commandList)
-        updateTable()
     }
 
     private fun updateTable() {

@@ -164,6 +164,9 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
 
                 if (commandErrorMessage.success) {
                     onCurrentCommandChangeFunctionList.forEach { it() }
+                    if (universeClientSettings.autoConfirmCurrentCommand) {
+                        confirmCurrentCommand()
+                    }
                 } else {
                     currentCommand = CannotSendCommand(
                         reason = commandErrorMessage.errorMessage

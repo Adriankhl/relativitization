@@ -112,8 +112,7 @@ class ClientSettingsScreen(
 
         table.row().space(20f)
 
-        val universeClientSettingsLabel =
-            createLabel("Universe Client Settings:", gdxSettings.hugeFontSize)
+        val universeClientSettingsLabel = createLabel("Universe Client Settings:", gdxSettings.hugeFontSize)
 
         table.add(universeClientSettingsLabel).colspan(2).space(20f)
 
@@ -137,7 +136,12 @@ class ClientSettingsScreen(
     }
 
     private fun addGdxSettings(table: Table) {
-        table.add(createLabel("Continuous rendering: ", gdxSettings.normalFontSize))
+        table.add(
+            createLabel(
+                "Continuous rendering: ",
+                gdxSettings.normalFontSize
+            )
+        )
         val continuousRenderingCheckBox = createCheckBox(
             "",
             gdxSettings.continuousRendering,
@@ -418,6 +422,23 @@ class ClientSettingsScreen(
             universeClientSettings.maxStoredUniverseData3DAtPlayer = i
         }
         table.add(maxStoredUniverseData3DAtPlayerSelectBox)
+
+        table.row().space(10f)
+
+        table.add(
+            createLabel(
+                "Auto-confirm current command: ",
+                gdxSettings.normalFontSize
+            )
+        )
+        val autoConfirmCurrentCommandCheckBox = createCheckBox(
+            "",
+            universeClientSettings.autoConfirmCurrentCommand,
+            gdxSettings.normalFontSize,
+        ) { autoConfirmCurrentCommand, _ ->
+            universeClientSettings.autoConfirmCurrentCommand = autoConfirmCurrentCommand
+        }
+        table.add(autoConfirmCurrentCommandCheckBox)
 
         table.row().space(10f)
 

@@ -14,6 +14,7 @@ import relativitization.universe.maths.physics.MutableInt3D
  * @property serverPort port of the server
  * @property zLimit the z dimension limit of projected 2d universe data
  * @property maxStoredUniverseData3DAtPlayer the maximum number of stored 3D data in client
+ * @property autoConfirmCurrentCommand auto-confirm current command
  * @property httpRequestTimeout http request return from server time limit
  * @property httpConnectTimeout http find server time limit
  */
@@ -28,6 +29,7 @@ data class UniverseClientSettings(
     var viewCenter: MutableInt3D = MutableInt3D(0, 0, 0),
     var zLimit: Int = 10,
     var maxStoredUniverseData3DAtPlayer: Int = 10,
+    var autoConfirmCurrentCommand: Boolean = true,
     var httpRequestTimeout: Long = 100000,
     var httpConnectTimeout: Long = 1000,
 )

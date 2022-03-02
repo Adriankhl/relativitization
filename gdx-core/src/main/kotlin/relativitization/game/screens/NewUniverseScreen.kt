@@ -83,7 +83,7 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
                                 generateSettings.save(
                                     game.universeClient.universeClientSettings.programDir
                                 )
-                                generateStatusLabel.setText("Done generation")
+                                generateStatusLabel.setText("Generation Done")
                                 enableActor(nextButton)
                                 Gdx.graphics.requestRendering()
                             } else {
