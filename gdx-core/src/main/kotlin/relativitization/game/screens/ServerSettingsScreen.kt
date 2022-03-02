@@ -30,13 +30,13 @@ class ServerSettingsScreen(val game: RelativitizationGame) : TableScreen(game.as
 
 
         // Add apply setting button
-        val applyFailLabel = createLabel("", gdxSettings.normalFontSize)
-        val applyButton = createTextButton(
-            "Apply settings",
+        val serverSettingsStatusLabel = createLabel("", gdxSettings.normalFontSize)
+        val nextButton = createTextButton(
+            "Next",
             gdxSettings.bigFontSize,
             gdxSettings.soundEffectsVolume
         ) {
-            logger.debug("Applying settings")
+            logger.debug("Trying to change server settings")
             runBlocking {
                 val httpCode = game.universeClient.httpPostUniverseServerSettings()
                 if (httpCode == HttpStatusCode.OK) {
@@ -48,7 +48,7 @@ class ServerSettingsScreen(val game: RelativitizationGame) : TableScreen(game.as
                     game.screen = RegisterPlayerScreen(game)
                     dispose()
                 } else {
-                    applyFailLabel.setText("Apply fail, http code: $httpCode")
+                    serverSettingsStatusLabel.setText("Fail to apply settings, http code: $httpCode")
                 }
             }
         }
@@ -61,10 +61,10 @@ class ServerSettingsScreen(val game: RelativitizationGame) : TableScreen(game.as
             game.screen = MainMenuScreen(game)
         }
 
-        nestedTable.add(applyButton).space(10f)
+        nestedTable.add(nextButton).space(10f)
         nestedTable.add(cancelButton).space(10f)
         nestedTable.row().space(10f)
-        nestedTable.add(applyFailLabel).colspan(2)
+        nestedTable.add(serverSettingsStatusLabel).colspan(2)
 
         return nestedTable
     }

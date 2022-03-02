@@ -9,6 +9,8 @@ import relativitization.game.RelativitizationGame
 import relativitization.game.utils.TableScreen
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.CommandCollection
+import relativitization.universe.data.serializer.DataSerializer
+import relativitization.universe.generate.method.GenerateSettings
 import relativitization.universe.maths.physics.Int3D
 import relativitization.universe.generate.method.GenerateUniverseMethodCollection
 import relativitization.universe.global.GlobalMechanismCollection
@@ -19,9 +21,11 @@ import relativitization.universe.utils.RelativitizationLogManager
 class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
     private val gdxSettings = game.gdxSettings
 
+    private val generateSettings: GenerateSettings = DataSerializer.copy(game.universeClient.generateSettings)
+
     init {
         // Use default name
-        game.universeClient.generateSettings.universeSettings.universeName = UniverseSettings().universeName
+        generateSettings.universeSettings.universeName = UniverseSettings().universeName
     }
 
     override fun show() {
@@ -40,33 +44,61 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
     private fun createButtonTable(): Table {
         val nestedTable = Table()
 
-
         // Add Generate button
-        val generateFailLabel = createLabel("", gdxSettings.normalFontSize)
+        val generateStatusLabel = createLabel("", gdxSettings.normalFontSize)
+
+        // Go to
+        val nextButton = createTextButton(
+            "Next",
+            gdxSettings.bigFontSize,
+            gdxSettings.soundEffectsVolume
+        ) {
+            game.screen = ServerSettingsScreen(game)
+            dispose()
+        }
+
+        disableActor(nextButton)
+
         val generateButton = createTextButton(
             "Generate",
             gdxSettings.bigFontSize,
             gdxSettings.soundEffectsVolume
         ) {
-            if (GenerateUniverseMethodCollection.isSettingValid(game.universeClient.generateSettings)) {
-                logger.info("Generate settings: " + game.universeClient.generateSettings)
-                runBlocking {
-                    val httpCode = game.universeClient.httpPostNewUniverse()
-                    if (httpCode == HttpStatusCode.OK) {
-                        // Save generate setting for the next generation
-                        game.universeClient.generateSettings.save(
-                            game.universeClient.universeClientSettings.programDir
-                        )
-                        game.screen = ServerSettingsScreen(game)
-                        dispose()
+            disableActor(it)
+            disableActor(nextButton)
+
+            generateStatusLabel.setText("Generating...")
+
+            // Copy generate settings
+            game.universeClient.generateSettings = DataSerializer.copy(generateSettings)
+
+            runBlocking {
+                game.universeClient.runOnceFunctionCoroutineList.add {
+                    if (GenerateUniverseMethodCollection.isSettingValid(generateSettings)) {
+                        logger.info("Generate settings: $generateSettings")
+                        runBlocking {
+                            val httpCode = game.universeClient.httpPostNewUniverse()
+                            if (httpCode == HttpStatusCode.OK) {
+                                // Save generate setting for the next generation
+                                generateSettings.save(
+                                    game.universeClient.universeClientSettings.programDir
+                                )
+                                generateStatusLabel.setText("Done generation")
+                                enableActor(nextButton)
+                                Gdx.graphics.requestRendering()
+                            } else {
+                                generateStatusLabel.setText("Generate universe fail, http code: $httpCode")
+                                enableActor(it)
+                            }
+                        }
                     } else {
-                        generateFailLabel.setText("Generate universe fail, http code: $httpCode")
+                        generateStatusLabel.setText("Generate universe fail, some setting is wrong")
+                        enableActor(it)
                     }
                 }
-            } else {
-                generateFailLabel.setText("Generate universe fail, some setting is wrong")
             }
         }
+
 
         val cancelButton = createTextButton(
             "Cancel",
@@ -77,9 +109,10 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
             dispose()
         }
         nestedTable.add(generateButton).space(10f)
+        nestedTable.add(nextButton).space(10f)
         nestedTable.add(cancelButton).space(10f)
         nestedTable.row().space(10f)
-        nestedTable.add(generateFailLabel).colspan(2)
+        nestedTable.add(generateStatusLabel).colspan(3)
 
         return nestedTable
     }
@@ -133,10 +166,10 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
 
         val generateMethodSelectBox = createSelectBox(
             GenerateUniverseMethodCollection.generateMethodMap.keys.toList(),
-            game.universeClient.generateSettings.generateMethod,
+            generateSettings.generateMethod,
             gdxSettings.normalFontSize,
         ) { method, _ ->
-            game.universeClient.generateSettings.generateMethod = method
+            generateSettings.generateMethod = method
         }
         table.add(generateMethodSelectBox)
 
@@ -145,10 +178,10 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
         table.add(createLabel("Pick game mechanisms: ", gdxSettings.normalFontSize))
         val mechanismSelectBox = createSelectBox(
             MechanismCollection.mechanismListsMap.keys.toList(),
-            game.universeClient.generateSettings.universeSettings.mechanismCollectionName,
+            generateSettings.universeSettings.mechanismCollectionName,
             gdxSettings.normalFontSize,
         ) { mechanismCollectionName, _ ->
-            game.universeClient.generateSettings.universeSettings.mechanismCollectionName =
+            generateSettings.universeSettings.mechanismCollectionName =
                 mechanismCollectionName
         }
         table.add(mechanismSelectBox)
@@ -158,10 +191,10 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
         table.add(createLabel("Pick available commands: ", gdxSettings.normalFontSize))
         val commandSelectBox = createSelectBox(
             CommandCollection.commandAvailabilityNameMap.keys.toList(),
-            game.universeClient.generateSettings.universeSettings.commandCollectionName,
+            generateSettings.universeSettings.commandCollectionName,
             gdxSettings.normalFontSize,
         ) { commandCollectionName, _ ->
-            game.universeClient.generateSettings.universeSettings.commandCollectionName =
+            generateSettings.universeSettings.commandCollectionName =
                 commandCollectionName
         }
         table.add(commandSelectBox)
@@ -171,10 +204,10 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
         table.add(createLabel("Pick global mechanics: ", gdxSettings.normalFontSize))
         val universeScienceDataProcessSelectBox = createSelectBox(
             GlobalMechanismCollection.globalMechanismListMap.keys.toList(),
-            game.universeClient.generateSettings.universeSettings.globalMechanismCollectionName,
+            generateSettings.universeSettings.globalMechanismCollectionName,
             gdxSettings.normalFontSize,
         ) { globalMechanismCollectionName, _ ->
-            game.universeClient.generateSettings.universeSettings.globalMechanismCollectionName =
+            generateSettings.universeSettings.globalMechanismCollectionName =
                 globalMechanismCollectionName
         }
         table.add(universeScienceDataProcessSelectBox)
@@ -184,10 +217,10 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
         table.add(createLabel("Total number of AI + human player: ", gdxSettings.normalFontSize))
         val numPlayerSelectBox = createSelectBox(
             (1..1000).toList(),
-            game.universeClient.generateSettings.numPlayer,
+            generateSettings.numPlayer,
             gdxSettings.normalFontSize,
         ) { numPlayer, _ ->
-            game.universeClient.generateSettings.numPlayer = numPlayer
+            generateSettings.numPlayer = numPlayer
         }
         table.add(numPlayerSelectBox)
 
@@ -196,10 +229,10 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
         table.add(createLabel("Total number of human player: ", gdxSettings.normalFontSize))
         val numHumanPlayerSelectBox = createSelectBox(
             (1..1000).toList(),
-            game.universeClient.generateSettings.numHumanPlayer,
+            generateSettings.numHumanPlayer,
             gdxSettings.normalFontSize,
         ) { numHumanPlayer, _ ->
-            game.universeClient.generateSettings.numHumanPlayer = numHumanPlayer
+            generateSettings.numHumanPlayer = numHumanPlayer
         }
         table.add(numHumanPlayerSelectBox)
 
@@ -208,10 +241,10 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
         table.add(createLabel("Total number of extra stellar system: ", gdxSettings.normalFontSize))
         val numExtraStellarSystemSelectBox = createSelectBox(
             (0..1000).toList(),
-            game.universeClient.generateSettings.otherIntMap.getOrDefault("numExtraStellarSystem", 0),
+            generateSettings.otherIntMap.getOrDefault("numExtraStellarSystem", 0),
             gdxSettings.normalFontSize,
         ) { numExtraStellarSystem, _ ->
-            game.universeClient.generateSettings.otherIntMap["numExtraStellarSystem"] = numExtraStellarSystem
+            generateSettings.otherIntMap["numExtraStellarSystem"] = numExtraStellarSystem
         }
         table.add(numExtraStellarSystemSelectBox)
 
@@ -222,26 +255,26 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
      */
     private fun addUniverseSettings(table: Table) {
         val tDimLabel = createLabel(
-            game.universeClient.generateSettings.universeSettings.tDim.toString(),
+            generateSettings.universeSettings.tDim.toString(),
             gdxSettings.normalFontSize
         )
 
         val playerAfterImageLabel = createLabel(
-            game.universeClient.generateSettings.universeSettings.playerAfterImageDuration.toString(),
+            generateSettings.universeSettings.playerAfterImageDuration.toString(),
             gdxSettings.normalFontSize
         )
 
         val playerHistoricalInt4DLengthLabel = createLabel(
-            game.universeClient.generateSettings.universeSettings.playerHistoricalInt4DLength.toString(),
+            generateSettings.universeSettings.playerHistoricalInt4DLength.toString(),
             gdxSettings.normalFontSize
         )
 
         table.add(createLabel("Universe name: ", gdxSettings.normalFontSize))
         val universeNameTextField = createTextField(
-            game.universeClient.generateSettings.universeSettings.universeName,
+            generateSettings.universeSettings.universeName,
             gdxSettings.normalFontSize
         ) { name, _ ->
-            game.universeClient.generateSettings.universeSettings.universeName = name
+            generateSettings.universeSettings.universeName = name
         }
         table.add(universeNameTextField)
 
@@ -251,36 +284,36 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
         table.add(createLabel("Speed of light: ", gdxSettings.normalFontSize))
 
         val speedOfLightTextField = createTextField(
-            game.universeClient.generateSettings.universeSettings.speedOfLight.toString(),
+            generateSettings.universeSettings.speedOfLight.toString(),
             gdxSettings.normalFontSize
         ) { speedOfLight, _ ->
             try {
-                game.universeClient.generateSettings.universeSettings.speedOfLight =
+                generateSettings.universeSettings.speedOfLight =
                     speedOfLight.toDouble()
 
                 // Change tDim
                 val maxDelay: Int = Intervals.intDelay(
                     Int3D(0, 0, 0),
                     Int3D(
-                        game.universeClient.generateSettings.universeSettings.xDim - 1,
-                        game.universeClient.generateSettings.universeSettings.yDim - 1,
-                        game.universeClient.generateSettings.universeSettings.zDim - 1
+                        generateSettings.universeSettings.xDim - 1,
+                        generateSettings.universeSettings.yDim - 1,
+                        generateSettings.universeSettings.zDim - 1
                     ),
-                    game.universeClient.generateSettings.universeSettings.speedOfLight
+                    generateSettings.universeSettings.speedOfLight
                 )
 
-                game.universeClient.generateSettings.universeSettings.tDim = maxDelay + 1
+                generateSettings.universeSettings.tDim = maxDelay + 1
                 tDimLabel.setText(maxDelay + 1)
 
                 // Change after image and history
                 val minHistory: Int = Intervals.maxDelayAfterMove(
-                    game.universeClient.generateSettings.universeSettings.speedOfLight
+                    generateSettings.universeSettings.speedOfLight
                 )
 
-                game.universeClient.generateSettings.universeSettings.playerAfterImageDuration = minHistory
+                generateSettings.universeSettings.playerAfterImageDuration = minHistory
                 playerAfterImageLabel.setText(minHistory)
 
-                game.universeClient.generateSettings.universeSettings.playerHistoricalInt4DLength = minHistory
+                generateSettings.universeSettings.playerHistoricalInt4DLength = minHistory
                 playerHistoricalInt4DLengthLabel.setText(minHistory)
             } catch (e: NumberFormatException) {
                 logger.error("Invalid speed of light")
@@ -299,23 +332,23 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
         table.add(createLabel("Universe x dimension: ", gdxSettings.normalFontSize))
         val xDimSelectBox = createSelectBox(
             (1..50).toList(),
-            game.universeClient.generateSettings.universeSettings.xDim,
+            generateSettings.universeSettings.xDim,
             gdxSettings.normalFontSize
         ) { xDim, _ ->
-            game.universeClient.generateSettings.universeSettings.xDim = xDim
+            generateSettings.universeSettings.xDim = xDim
 
             // Change tDim
             val maxDelay: Int = Intervals.intDelay(
                 Int3D(0, 0, 0),
                 Int3D(
-                    game.universeClient.generateSettings.universeSettings.xDim - 1,
-                    game.universeClient.generateSettings.universeSettings.yDim - 1,
-                    game.universeClient.generateSettings.universeSettings.zDim - 1
+                    generateSettings.universeSettings.xDim - 1,
+                    generateSettings.universeSettings.yDim - 1,
+                    generateSettings.universeSettings.zDim - 1
                 ),
-                game.universeClient.generateSettings.universeSettings.speedOfLight
+                generateSettings.universeSettings.speedOfLight
             )
 
-            game.universeClient.generateSettings.universeSettings.tDim = maxDelay + 1
+            generateSettings.universeSettings.tDim = maxDelay + 1
             tDimLabel.setText(maxDelay + 1)
         }
         table.add(xDimSelectBox)
@@ -325,23 +358,23 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
         table.add(createLabel("Universe y dimension: ", gdxSettings.normalFontSize))
         val yDimSelectBox = createSelectBox(
             (1..50).toList(),
-            game.universeClient.generateSettings.universeSettings.yDim,
+            generateSettings.universeSettings.yDim,
             gdxSettings.normalFontSize
         ) { yDim, _ ->
-            game.universeClient.generateSettings.universeSettings.yDim = yDim
+            generateSettings.universeSettings.yDim = yDim
 
             // Change tDim
             val maxDelay: Int = Intervals.intDelay(
                 Int3D(0, 0, 0),
                 Int3D(
-                    game.universeClient.generateSettings.universeSettings.xDim - 1,
-                    game.universeClient.generateSettings.universeSettings.yDim - 1,
-                    game.universeClient.generateSettings.universeSettings.zDim - 1
+                    generateSettings.universeSettings.xDim - 1,
+                    generateSettings.universeSettings.yDim - 1,
+                    generateSettings.universeSettings.zDim - 1
                 ),
-                game.universeClient.generateSettings.universeSettings.speedOfLight
+                generateSettings.universeSettings.speedOfLight
             )
 
-            game.universeClient.generateSettings.universeSettings.tDim = maxDelay + 1
+            generateSettings.universeSettings.tDim = maxDelay + 1
             tDimLabel.setText(maxDelay + 1)
         }
         table.add(yDimSelectBox)
@@ -351,23 +384,23 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
         table.add(createLabel("Universe z dimension: ", gdxSettings.normalFontSize))
         val zDimSelectBox = createSelectBox(
             (1..50).toList(),
-            game.universeClient.generateSettings.universeSettings.zDim,
+            generateSettings.universeSettings.zDim,
             gdxSettings.normalFontSize
         ) { zDim, _ ->
-            game.universeClient.generateSettings.universeSettings.zDim = zDim
+            generateSettings.universeSettings.zDim = zDim
 
             // Change tDim
             val maxDelay: Int = Intervals.intDelay(
                 Int3D(0, 0, 0),
                 Int3D(
-                    game.universeClient.generateSettings.universeSettings.xDim - 1,
-                    game.universeClient.generateSettings.universeSettings.yDim - 1,
-                    game.universeClient.generateSettings.universeSettings.zDim - 1
+                    generateSettings.universeSettings.xDim - 1,
+                    generateSettings.universeSettings.yDim - 1,
+                    generateSettings.universeSettings.zDim - 1
                 ),
-                game.universeClient.generateSettings.universeSettings.speedOfLight
+                generateSettings.universeSettings.speedOfLight
             )
 
-            game.universeClient.generateSettings.universeSettings.tDim = maxDelay + 1
+            generateSettings.universeSettings.tDim = maxDelay + 1
             tDimLabel.setText(maxDelay + 1)
         }
         table.add(zDimSelectBox)
@@ -393,11 +426,11 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
 
         table.add(createLabel("Group edge length", gdxSettings.normalFontSize))
         val groupEdgeLengthTextField = createTextField(
-            game.universeClient.generateSettings.universeSettings.groupEdgeLength.toString(),
+            generateSettings.universeSettings.groupEdgeLength.toString(),
             gdxSettings.normalFontSize
         ) { groupEdgeLength, _ ->
             try {
-                game.universeClient.generateSettings.universeSettings.groupEdgeLength =
+                generateSettings.universeSettings.groupEdgeLength =
                     groupEdgeLength.toDouble()
             } catch (e: NumberFormatException) {
                 logger.error("Invalid group edge Length")

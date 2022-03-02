@@ -54,31 +54,30 @@ class RegisterPlayerScreen(val game: RelativitizationGame) : TableScreen(game.as
         val nestedTable = Table()
 
         val startStatusLabel = createLabel("", gdxSettings.normalFontSize)
-        val startButton: TextButton =
-            createTextButton("Start", gdxSettings.bigFontSize, gdxSettings.soundEffectsVolume) {
-                if (registerPlayerButton.touchable == Touchable.disabled) {
-                    runBlocking {
-                        if (game.universeClient.getCurrentServerStatus().isUniverseRunning) {
-                            // Not showing because it is too fast?
-                            startStatusLabel.setText("Universe already running, waiting universe data")
+        val startButton: TextButton = createTextButton(
+            "Start",
+            gdxSettings.bigFontSize,
+            gdxSettings.soundEffectsVolume
+        ) {
+            if (registerPlayerButton.touchable == Touchable.disabled) {
+                runBlocking {
+                    if (game.universeClient.getCurrentServerStatus().isUniverseRunning) {
+                        game.screen = GameScreen(game)
+                        dispose()
+                    } else {
+                        val httpCode = game.universeClient.httpPostRunUniverse()
+                        if (httpCode == HttpStatusCode.OK) {
                             game.screen = GameScreen(game)
                             dispose()
                         } else {
-                            val httpCode = game.universeClient.httpPostRunUniverse()
-                            if (httpCode == HttpStatusCode.OK) {
-                                // Not showing because it is too fast?
-                                startStatusLabel.setText("Run universe success, waiting universe data")
-                                game.screen = GameScreen(game)
-                                dispose()
-                            } else {
-                                startStatusLabel.setText("Can't start universe")
-                            }
+                            startStatusLabel.setText("Can't start universe")
                         }
                     }
-                } else {
-                    startStatusLabel.setText("Please register a player id")
                 }
+            } else {
+                startStatusLabel.setText("Please register a player id")
             }
+        }
 
         val cancelButton = createTextButton(
             "Cancel",

@@ -39,7 +39,16 @@ class CoroutineMap<K, V> {
 class CoroutineList<T> {
     private val mutex: Mutex = Mutex()
     private val mutableList: MutableList<T> = mutableListOf()
-    private var setCount: Int = 0
+
+
+    /**
+     * Append value to map, add count
+     */
+    suspend fun add(item: T) {
+        mutex.withLock {
+            mutableList.add(item)
+        }
+    }
 
     /**
      * Append value to map, add count
@@ -47,13 +56,14 @@ class CoroutineList<T> {
     suspend fun addAll(list: List<T>) {
         mutex.withLock {
             mutableList.addAll(list)
-            setCount++
         }
     }
 
-    suspend fun getCount(): Int {
+    suspend fun clearAndGetList(): List<T> {
         mutex.withLock {
-            return setCount
+            val list: List<T> = mutableList.toList()
+            mutableList.clear()
+            return list
         }
     }
 
@@ -66,7 +76,6 @@ class CoroutineList<T> {
     suspend fun reset() {
         mutex.withLock {
             mutableList.clear()
-            setCount = 0
         }
     }
 }

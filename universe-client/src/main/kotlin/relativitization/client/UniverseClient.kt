@@ -24,6 +24,7 @@ import relativitization.universe.maths.physics.Int3D
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.generate.method.GenerateSettings
 import relativitization.universe.utils.CoroutineBoolean
+import relativitization.universe.utils.CoroutineList
 import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.properties.Delegates
 
@@ -46,9 +47,11 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
 
     private var universeClientRunJob: Job = Job()
 
+    // Run these function once and clear the function at each cycle
+    val runOnceFunctionCoroutineList: CoroutineList<() -> Unit> = CoroutineList()
+
     // for generate universe
-    var generateSettings: GenerateSettings =
-        GenerateSettings.loadOrDefault(universeClientSettings.programDir)
+    var generateSettings: GenerateSettings = GenerateSettings.loadOrDefault(universeClientSettings.programDir)
 
     // For changing server setting
     var universeServerSettings: UniverseServerSettings = UniverseServerSettings(
@@ -191,6 +194,10 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
         while (isActive) {
             logger.debug("Client running")
             delay(2000)
+
+            // Run function
+            val functionList: List<() -> Unit> = runOnceFunctionCoroutineList.clearAndGetList()
+            functionList.forEach { it() }
 
             // Modify serverStatus and universeData3DMap, mutex and universeData3DMutex should take care of this
             mutex.withLock {
