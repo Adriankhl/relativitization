@@ -202,8 +202,18 @@ object ActorFunction {
         soundVolume: Float = 0.5f,
         function: (Image) -> Unit = {}
     ): Image {
-        val image =
-            assets.getNinePatchImage(name, xPos, yPos, width, height, rotation, r, g, b, a)
+        val image = assets.getNinePatchImage(
+            name = name,
+            xPos = xPos,
+            yPos = yPos,
+            width = width,
+            height = height,
+            rotation = rotation,
+            r = r,
+            g = g,
+            b = b,
+            a = a
+        )
         image.addListener(object : ClickListener() {
             override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 val sound = assets.getSound("click1.ogg")
