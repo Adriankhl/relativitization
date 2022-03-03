@@ -85,16 +85,16 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
                                 )
                                 generateStatusLabel.setText("Generation Done")
                                 enableActor(nextButton)
-                                Gdx.graphics.requestRendering()
                             } else {
                                 generateStatusLabel.setText("Generate universe fail, http code: $httpCode")
-                                enableActor(it)
                             }
                         }
                     } else {
                         generateStatusLabel.setText("Generate universe fail, some setting is wrong")
-                        enableActor(it)
                     }
+
+                    enableActor(it)
+                    Gdx.graphics.requestRendering()
                 }
             }
         }
