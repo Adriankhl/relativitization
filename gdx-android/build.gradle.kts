@@ -114,7 +114,6 @@ android {
 // so they get packed with the APK.
 task("copyAndroidNatives") {
     doFirst {
-        file("libs/armeabi/").mkdirs()
         file("libs/armeabi-v7a/").mkdirs()
         file("libs/arm64-v8a/").mkdirs()
         file("libs/x86_64/").mkdirs()
@@ -123,7 +122,6 @@ task("copyAndroidNatives") {
             val outputDir: File? = when {
                 jar.name.endsWith("natives-arm64-v8a.jar") -> file("libs/arm64-v8a")
                 jar.name.endsWith("natives-armeabi-v7a.jar") -> file("libs/armeabi-v7a")
-                jar.name.endsWith("natives-armeabi.jar") -> file("libs/armeabi")
                 jar.name.endsWith("natives-x86_64.jar") -> file("libs/x86_64")
                 jar.name.endsWith("natives-x86.jar") -> file("libs/x86")
                 else -> null
