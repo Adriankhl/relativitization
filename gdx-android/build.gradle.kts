@@ -1,4 +1,3 @@
-import com.android.build.gradle.internal.tasks.StripDebugSymbolsDelegate
 import com.android.build.gradle.internal.tasks.StripDebugSymbolsTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
@@ -108,11 +107,6 @@ android {
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
         }
     }
-}
-
-// Skip stripping task to avoid the need of ndk
-tasks.withType<StripDebugSymbolsTask>().configureEach {
-    enabled = false
 }
 
 // called every time gradle gets executed, takes the native dependencies of
