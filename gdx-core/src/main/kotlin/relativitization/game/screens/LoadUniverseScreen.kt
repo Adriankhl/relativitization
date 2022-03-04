@@ -1,5 +1,6 @@
 package relativitization.game.screens
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import io.ktor.http.*
 import kotlinx.coroutines.runBlocking
@@ -38,22 +39,47 @@ class LoadUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asse
 
         root.row().space(10f)
 
-        val loadFailLabel = createLabel("", gdxSettings.bigFontSize)
+        val loadStatusLabel = createLabel("", gdxSettings.bigFontSize)
+
+        val nextButton = createTextButton(
+            "Next",
+            gdxSettings.bigFontSize,
+            gdxSettings.soundEffectsVolume
+        ) {
+            game.screen = ServerSettingsScreen(game)
+            dispose()
+        }
+
+        disableActor(nextButton)
+
         val loadButton = createTextButton(
             "Load",
             gdxSettings.bigFontSize,
             gdxSettings.soundEffectsVolume
         ) {
+            disableActor(it)
+            disableActor(nextButton)
+
+            loadStatusLabel.setText("Loading...")
+
             runBlocking {
-                val httpCode = game.universeClient.httpPostLoadUniverse(loadUniverseName)
-                if (httpCode == HttpStatusCode.OK) {
-                    game.screen = ServerSettingsScreen(game)
-                    dispose()
-                } else {
-                    loadFailLabel.setText("Load universe fail, http code: ${httpCode}")
+                game.universeClient.runOnceFunctionCoroutineList.add {
+                    runBlocking {
+                        val httpCode = game.universeClient.httpPostLoadUniverse(loadUniverseName)
+                        if (httpCode == HttpStatusCode.OK) {
+                            loadStatusLabel.setText("Loading done")
+                            enableActor(nextButton)
+                        } else {
+                            loadStatusLabel.setText("Failed ($httpCode)")
+                        }
+                    }
+
+                    enableActor(it)
+                    Gdx.graphics.requestRendering()
                 }
             }
         }
+
 
         val cancelButton = createTextButton(
             "Cancel",
@@ -68,11 +94,13 @@ class LoadUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asse
 
         buttonTable.add(loadButton).space(10f)
 
+        buttonTable.add(nextButton).space(10f)
+
         buttonTable.add(cancelButton).space(10f)
 
         root.add(buttonTable)
         root.row().space(10f)
-        root.add(loadFailLabel)
+        root.add(loadStatusLabel)
     }
 
 }

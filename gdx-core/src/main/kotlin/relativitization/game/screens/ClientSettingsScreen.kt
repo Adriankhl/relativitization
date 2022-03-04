@@ -102,7 +102,7 @@ class ClientSettingsScreen(
 
         val scrollPane: ScrollPane = createScrollPane(table)
 
-        val gdxSettingsLabel = createLabel("Gdx Settings:", gdxSettings.hugeFontSize)
+        val gdxSettingsLabel = createLabel("Gdx settings:", gdxSettings.hugeFontSize)
 
         table.add(gdxSettingsLabel).colspan(2).space(20f)
 
@@ -112,7 +112,10 @@ class ClientSettingsScreen(
 
         table.row().space(20f)
 
-        val universeClientSettingsLabel = createLabel("Universe Client Settings:", gdxSettings.hugeFontSize)
+        val universeClientSettingsLabel = createLabel(
+            "Universe client settings:",
+            gdxSettings.hugeFontSize
+        )
 
         table.add(universeClientSettingsLabel).colspan(2).space(20f)
 

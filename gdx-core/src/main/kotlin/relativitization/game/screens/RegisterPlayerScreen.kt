@@ -99,7 +99,7 @@ class RegisterPlayerScreen(val game: RelativitizationGame) : TableScreen(game.as
     private fun createRegisterPlayerScrollPane(): ScrollPane {
         val table = Table()
 
-        table.add(createLabel("Register player Settings :", gdxSettings.hugeFontSize)).colspan(2)
+        table.add(createLabel("Register player settings :", gdxSettings.hugeFontSize)).colspan(2)
 
         table.row().space(20f)
 
