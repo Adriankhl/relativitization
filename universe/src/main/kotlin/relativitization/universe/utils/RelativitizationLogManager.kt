@@ -9,7 +9,7 @@ object RelativitizationLogManager {
     var useDefaultLoggerName: Boolean = false
 
     fun getLogger(): RelativitizationLogger = if (useDefaultLoggerName) {
-        RelativitizationLogger("Default")
+        RelativitizationLogger("DefaultLogger")
     } else {
         RelativitizationLogger()
     }
