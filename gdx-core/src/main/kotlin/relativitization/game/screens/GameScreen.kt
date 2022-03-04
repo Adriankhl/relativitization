@@ -33,22 +33,25 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
 
     private val worldMap: GameScreenWorldMap = GameScreenWorldMap(game)
     private val info: GameScreenInfo = GameScreenInfo(game)
-    private val worldMapAndInfo =
-        createSplitPane(worldMap.getScreenComponent(), info.getScreenComponent(), false)
+    private val worldMapAndInfo = createSplitPane(
+        worldMap.getScreenComponent(),
+        info.getScreenComponent(),
+        false
+    )
     private val topBar: GameScreenTopBar = GameScreenTopBar(game, info)
 
     // Button to trigger gdx settings change
     private val playerDeadBackground = createImage(
-        "basic/white-pixel",
-        0f,
-        0f,
-        Gdx.graphics.width.toFloat(),
-        Gdx.graphics.height.toFloat(),
-        0.0f,
-        0.0f,
-        0.0f,
-        0.6f,
-        gdxSettings.soundEffectsVolume
+        name = "basic/white-pixel",
+        xPos = 0f,
+        yPos = 0f,
+        width = Gdx.graphics.width.toFloat(),
+        height = Gdx.graphics.height.toFloat(),
+        r = 0.0f,
+        g = 0.0f,
+        b = 0.0f,
+        a = 0.6f,
+        soundVolume = gdxSettings.soundEffectsVolume
     )
 
     private val playerDeadButton = createTextButton(
