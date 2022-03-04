@@ -12,12 +12,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import org.apache.logging.log4j.Level
+import org.apache.logging.log4j.core.config.Configurator
 import relativitization.client.UniverseClient
 import relativitization.game.RelativitizationGame
 import relativitization.server.UniverseServer
 import relativitization.universe.UniverseClientSettings
 import relativitization.universe.UniverseServerSettings
-import relativitization.universe.utils.AndroidLogger
 import relativitization.universe.utils.RelativitizationLogManager
 import relativitization.utils.ServerPort
 import relativitization.universe.maths.random.Rand
@@ -25,8 +26,8 @@ import relativitization.universe.maths.random.Rand
 @ExperimentalCoroutinesApi
 class AndroidLauncher : AppCompatActivity(), AndroidFragmentApplication.Callbacks {
     override fun onCreate(savedInstanceState: Bundle?) {
-        RelativitizationLogManager.isAndroid = true
-        AndroidLogger.showLog = true
+        Configurator.setRootLevel(Level.DEBUG)
+        RelativitizationLogManager.useDefaultLoggerName = true
 
         super.onCreate(savedInstanceState)
 
