@@ -21,7 +21,7 @@ object RelativitizationLogManager {
 class RelativitizationLogger(
     name: String = ""
 ) {
-    val logger: Logger = if (name.isBlank()) {
+    private val logger: Logger = if (name.isBlank()) {
         LogManager.getLogger(StackLocatorUtil.getCallerClass(4))
     } else {
         LogManager.getLogger(name)
