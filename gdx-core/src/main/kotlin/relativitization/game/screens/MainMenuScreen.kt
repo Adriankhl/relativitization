@@ -1,8 +1,10 @@
 package relativitization.game.screens
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.TableScreen
+import kotlin.math.max
 
 class MainMenuScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
 
@@ -12,6 +14,7 @@ class MainMenuScreen(val game: RelativitizationGame) : TableScreen(game.assets) 
 
     override fun show() {
         // Add background before adding root table from super.show()
+        resizeBackgroundImage()
         stage.addActor(background)
 
         super.show()
@@ -73,5 +76,23 @@ class MainMenuScreen(val game: RelativitizationGame) : TableScreen(game.assets) 
             dispose()
         }
         root.add(helpButton).prefSize(500f, 100f)
+    }
+
+    override fun resize(width: Int, height: Int) {
+        super.resize(width, height)
+        resizeBackgroundImage()
+    }
+
+    private fun resizeBackgroundImage() {
+        val screenWidth: Float = Gdx.graphics.width.toFloat()
+        val screenHeight: Float = Gdx.graphics.height.toFloat()
+        val backgroundImageWidth: Float = background.drawable.minWidth
+        val backgroundImageHeight: Float = background.drawable.minHeight
+        background.setScale(
+            max(
+                screenWidth / backgroundImageWidth,
+                screenHeight / backgroundImageHeight
+            )
+        )
     }
 }

@@ -14,6 +14,7 @@ import relativitization.game.components.GameScreenTopBar
 import relativitization.game.components.GameScreenWorldMap
 import relativitization.game.utils.TableScreen
 import relativitization.universe.utils.RelativitizationLogManager
+import kotlin.math.max
 
 class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
     private val background: Image = assets.getImage("background/universe-background")
@@ -74,6 +75,7 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
 
     override fun show() {
         // Add background before adding root table from super.show()
+        resizeBackgroundImage()
         stage.addActor(background)
 
         super.show()
@@ -180,6 +182,11 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
         }
     }
 
+    override fun resize(width: Int, height: Int) {
+        super.resize(width, height)
+        resizeBackgroundImage()
+    }
+
     override fun hide() {
         super.hide()
         game.clearOnChangeFunctionList()
@@ -216,6 +223,18 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
         }
     }
 
+    private fun resizeBackgroundImage() {
+        val screenWidth: Float = Gdx.graphics.width.toFloat()
+        val screenHeight: Float = Gdx.graphics.height.toFloat()
+        val backgroundImageWidth: Float = background.drawable.minWidth
+        val backgroundImageHeight: Float = background.drawable.minHeight
+        background.setScale(
+            max(
+                screenWidth / backgroundImageWidth,
+                screenHeight / backgroundImageHeight
+            )
+        )
+    }
 
     companion object {
         private val logger = RelativitizationLogManager.getLogger()
