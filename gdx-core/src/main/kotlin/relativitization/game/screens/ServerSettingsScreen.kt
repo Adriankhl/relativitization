@@ -48,7 +48,7 @@ class ServerSettingsScreen(val game: RelativitizationGame) : TableScreen(game.as
                     game.screen = RegisterPlayerScreen(game)
                     dispose()
                 } else {
-                    serverSettingsStatusLabel.setText("Fail to apply settings, http code: $httpCode")
+                    serverSettingsStatusLabel.setText("Failed ($httpCode)")
                 }
             }
         }

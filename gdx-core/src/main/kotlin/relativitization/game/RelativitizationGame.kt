@@ -39,7 +39,7 @@ class RelativitizationGame(
 
     override fun create() {
         Gdx.input.setCatchKey(Input.Keys.BACK, true)
-        Gdx.graphics.isContinuousRendering = gdxSettings.continuousRendering
+        Gdx.graphics.isContinuousRendering = gdxSettings.isContinuousRendering
 
         assets.loadAll()
 

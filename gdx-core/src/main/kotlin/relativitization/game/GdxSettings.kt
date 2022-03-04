@@ -7,7 +7,7 @@ import java.io.File
 
 @Serializable
 data class GdxSettings(
-    var continuousRendering: Boolean = false,
+    var isContinuousRendering: Boolean = false,
     var windowsWidth: Int = 1360,
     var windowsHeight: Int = 768,
     var musicVolume: Float = 0.5f,

@@ -87,7 +87,7 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
                             generateStatusLabel.setText("Generation Done")
                             enableActor(nextButton)
                         } else {
-                            generateStatusLabel.setText("Generate universe fail ($httpCode)")
+                            generateStatusLabel.setText("Failed ($httpCode)")
                         }
                     }
 

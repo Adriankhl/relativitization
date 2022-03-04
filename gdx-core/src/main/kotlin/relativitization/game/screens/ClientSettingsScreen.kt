@@ -144,10 +144,10 @@ class ClientSettingsScreen(
         )
         val continuousRenderingCheckBox = createCheckBox(
             "",
-            gdxSettings.continuousRendering,
+            gdxSettings.isContinuousRendering,
             gdxSettings.normalFontSize
         ) { continuousRendering, _ ->
-            gdxSettings.continuousRendering = continuousRendering
+            gdxSettings.isContinuousRendering = continuousRendering
         }
         table.add(continuousRenderingCheckBox)
 
