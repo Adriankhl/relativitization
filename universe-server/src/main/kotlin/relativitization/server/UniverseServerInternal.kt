@@ -109,12 +109,15 @@ class UniverseServerInternal(
                 // Compute AI commands after universe processing is done
                 if (isProcessDone.isTrue()) {
                     // Start to accept human input
+                    setTimeLeftTo(universeServerSettings.waitTimeLimit)
                     isServerWaitingInput.set(true)
+
                     logger.debug("Start accepting new input")
 
                     aiCommandMap.putAll(universe.computeAICommands())
 
                     // Restart wait timer after ai command has been computed
+                    // To avoid heavy ai computation blocking human input from GUI
                     setTimeLeftTo(universeServerSettings.waitTimeLimit)
 
                     logger.debug("AI done computation")
@@ -189,8 +192,8 @@ class UniverseServerInternal(
     /**
      * Time left for waiting, can be negative
      */
-    private suspend fun timeLeft(): Long =
-        universeServerSettings.waitTimeLimit * 1000L - (System.currentTimeMillis() - waitBeginTime.get())
+    private suspend fun timeLeft(): Long = universeServerSettings.waitTimeLimit * 1000L -
+            (System.currentTimeMillis() - waitBeginTime.get())
 
 
     /**
