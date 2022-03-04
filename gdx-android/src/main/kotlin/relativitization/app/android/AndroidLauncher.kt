@@ -27,7 +27,10 @@ import relativitization.universe.maths.random.Rand
 class AndroidLauncher : AppCompatActivity(), AndroidFragmentApplication.Callbacks {
     override fun onCreate(savedInstanceState: Bundle?) {
         Configurator.setRootLevel(Level.DEBUG)
-        RelativitizationLogManager.useDefaultLoggerName = true
+        Configurator.setLevel("Translation", Level.ERROR)
+        Configurator.setLevel("UniverseServerInternal", Level.ERROR)
+        Configurator.setLevel("UniverseClient", Level.ERROR)
+        Configurator.setLevel("ActorFunction", Level.ERROR)
 
         super.onCreate(savedInstanceState)
 

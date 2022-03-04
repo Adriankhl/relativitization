@@ -6,7 +6,8 @@ import org.apache.logging.log4j.util.StackLocatorUtil
 
 object RelativitizationLogManager {
     // Android does not support StackLocatorUtil.getCallerClass, use default logger instead
-    var useDefaultLoggerName: Boolean = false
+    private val useDefaultLoggerName: Boolean =
+        System.getProperty("java.specification.vendor") == "The Android Project"
 
     fun getLogger(): RelativitizationLogger = if (useDefaultLoggerName) {
         RelativitizationLogger("DefaultLogger")
