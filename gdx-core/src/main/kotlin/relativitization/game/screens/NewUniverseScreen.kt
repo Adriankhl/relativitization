@@ -11,9 +11,9 @@ import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.CommandCollection
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.generate.method.GenerateSettings
-import relativitization.universe.maths.physics.Int3D
 import relativitization.universe.generate.method.GenerateUniverseMethodCollection
 import relativitization.universe.global.GlobalMechanismCollection
+import relativitization.universe.maths.physics.Int3D
 import relativitization.universe.maths.physics.Intervals
 import relativitization.universe.mechanisms.MechanismCollection
 import relativitization.universe.utils.RelativitizationLogManager
@@ -21,7 +21,8 @@ import relativitization.universe.utils.RelativitizationLogManager
 class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
     private val gdxSettings = game.gdxSettings
 
-    private val generateSettings: GenerateSettings = DataSerializer.copy(game.universeClient.generateSettings)
+    private val generateSettings: GenerateSettings =
+        DataSerializer.copy(game.universeClient.generateSettings)
 
     init {
         // Use default name
@@ -74,23 +75,20 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
 
             runBlocking {
                 game.universeClient.runOnceFunctionCoroutineList.add {
-                    if (GenerateUniverseMethodCollection.isSettingValid(generateSettings)) {
-                        logger.info("Generate settings: $generateSettings")
-                        runBlocking {
-                            val httpCode = game.universeClient.httpPostNewUniverse()
-                            if (httpCode == HttpStatusCode.OK) {
-                                // Save generate setting for the next generation
-                                generateSettings.save(
-                                    game.universeClient.universeClientSettings.programDir
-                                )
-                                generateStatusLabel.setText("Generation Done")
-                                enableActor(nextButton)
-                            } else {
-                                generateStatusLabel.setText("Generate universe fail, http code: $httpCode")
-                            }
+
+                    logger.info("Generate settings: $generateSettings")
+                    runBlocking {
+                        val httpCode = game.universeClient.httpPostNewUniverse()
+                        if (httpCode == HttpStatusCode.OK) {
+                            // Save generate setting for the next generation
+                            generateSettings.save(
+                                game.universeClient.universeClientSettings.programDir
+                            )
+                            generateStatusLabel.setText("Generation Done")
+                            enableActor(nextButton)
+                        } else {
+                            generateStatusLabel.setText("Generate universe fail ($httpCode)")
                         }
-                    } else {
-                        generateStatusLabel.setText("Generate universe fail, some setting is wrong")
                     }
 
                     enableActor(it)
