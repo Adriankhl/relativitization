@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.badlogic.gdx.utils.Array
+import com.badlogic.gdx.utils.Scaling
 import relativitization.universe.utils.*
 import com.badlogic.gdx.scenes.scene2d.ui.List as GdxList
 
@@ -353,6 +354,9 @@ object ActorFunction {
         style.fontColor = Color(1.0f, 1.0f, 1.0f, 1.0f)
 
         val checkBox = CheckBox(translate(text, assets), style)
+
+        checkBox.image.setScaling(Scaling.fill)
+        checkBox.imageCell.size(fontSize.toFloat())
 
         checkBox.isChecked = default
 
