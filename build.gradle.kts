@@ -163,7 +163,7 @@ tasks.register("packageAll") {
             workingDir = artDirectory
             commandLine(
                 "cp",
-                "../relativitization/gdx-android/build/intermediates/apk/debug/relativitization-debug.apk",
+                "../relativitization/gdx-android/build/outputs/apk/clean/debug/relativitization-clean-debug.apk",
                 "./outputs/relativitization.apk"
             )
         }
