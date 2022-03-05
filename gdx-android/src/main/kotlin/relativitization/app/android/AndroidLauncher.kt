@@ -19,9 +19,8 @@ import relativitization.game.RelativitizationGame
 import relativitization.server.UniverseServer
 import relativitization.universe.UniverseClientSettings
 import relativitization.universe.UniverseServerSettings
-import relativitization.universe.utils.RelativitizationLogManager
-import relativitization.utils.ServerPort
 import relativitization.universe.maths.random.Rand
+import relativitization.utils.ServerPort
 
 @ExperimentalCoroutinesApi
 class AndroidLauncher : AppCompatActivity(), AndroidFragmentApplication.Callbacks {
@@ -34,7 +33,9 @@ class AndroidLauncher : AppCompatActivity(), AndroidFragmentApplication.Callback
 
         super.onCreate(savedInstanceState)
 
-        val adminPassword: String = List(10) { Rand.rand().nextInt(0, 10) }.joinToString(separator = "")
+        val adminPassword: String = List(10) {
+            Rand.rand().nextInt(0, 10) }.joinToString(separator = ""
+        )
 
         val serverAddress: String = "127.0.0.1"
         val serverPort: Int = ServerPort.findAvailablePort()
@@ -58,7 +59,10 @@ class AndroidLauncher : AppCompatActivity(), AndroidFragmentApplication.Callback
         )
         val universeClient: UniverseClient = UniverseClient(universeClientSettings)
 
-        val relativitizationGameFragment = RelativitizationGameFragment(universeClient, universeServer)
+        val relativitizationGameFragment = RelativitizationGameFragment(
+            universeClient = universeClient,
+            universeServer = universeServer
+        )
 
         val trans: FragmentTransaction = supportFragmentManager.beginTransaction()
 
@@ -75,7 +79,7 @@ class AndroidLauncher : AppCompatActivity(), AndroidFragmentApplication.Callback
         }
     }
 
-    override fun exit() { }
+    override fun exit() {}
 }
 
 class RelativitizationGameFragment(

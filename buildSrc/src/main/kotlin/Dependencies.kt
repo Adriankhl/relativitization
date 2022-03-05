@@ -24,6 +24,7 @@ object Versions {
     const val androidAppCompatVersion = "1.4.1"
     const val androidLifeCycleKtxVersion = "2.4.1"
     const val androidFragmentKtxVersion = "1.4.1"
+    const val playServiceAdsVersion = "20.6.0"
 
     // Unused in relativitization, for ktor
     const val logbackVersion = "1.2.10"
