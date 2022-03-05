@@ -258,8 +258,8 @@ object ActorFunction {
             rawTexture.tint(Color(rChecked, gChecked, bChecked, aChecked)),
         )
 
-        button.addListener(object : ChangeListener() {
-            override fun changed(event: ChangeEvent, actor: Actor) {
+        button.addListener(object : ClickListener() {
+            override fun clicked(event: InputEvent?, x: Float, y: Float) {
                 val sound = assets.getSound("click1.ogg")
                 sound.play(soundVolume)
                 function(button)

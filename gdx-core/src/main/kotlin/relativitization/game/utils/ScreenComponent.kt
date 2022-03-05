@@ -319,6 +319,34 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets) {
         function: (Boolean, CheckBox) -> Unit = { _, _ -> }
     ): CheckBox = ActorFunction.createCheckBox(skin, assets, text, default, fontSize, function)
 
+    fun createTickImageButton(
+        default: Boolean,
+        soundVolume: Float,
+        function: (Boolean) -> Unit = { _, -> }
+    ): ImageButton {
+        val tickImage = createImageButton(
+            name = "basic/white-tick",
+            rUp = 1.0f,
+            gUp = 1.0f,
+            bUp = 1.0f,
+            aUp = 1.0f,
+            rDown = 1.0f,
+            gDown = 1.0f,
+            bDown = 1.0f,
+            aDown = 0.7f,
+            rChecked = 1.0f,
+            gChecked = 1.0f,
+            bChecked = 1.0f,
+            aChecked = 0.5f,
+            soundVolume = soundVolume
+        ) {
+            function(it.isChecked)
+        }
+        tickImage.isChecked = default
+
+        return tickImage
+    }
+
     /**
      * Create slider
      *

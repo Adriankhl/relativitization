@@ -156,7 +156,7 @@ class PoliticsInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game)
                 "Factory policy: ",
                 gdxSettings.normalFontSize
             )
-        )
+        ).colspan(2)
 
         nestedTable.row().space(10f)
 
@@ -165,7 +165,7 @@ class PoliticsInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game)
                 "Allow subordinate build: ${playerData.playerInternalData.politicsData().allowSubordinateBuildFactory}",
                 gdxSettings.smallFontSize
             )
-        )
+        ).colspan(2)
 
         nestedTable.row().space(10f)
 
@@ -174,7 +174,7 @@ class PoliticsInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game)
                 "Allow local build on subordinate: ${playerData.playerInternalData.politicsData().allowLeaderBuildLocalFactory}",
                 gdxSettings.smallFontSize
             )
-        )
+        ).colspan(2)
 
         nestedTable.row().space(10f)
 
@@ -183,26 +183,23 @@ class PoliticsInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game)
                 "Allow foreign build: ${playerData.playerInternalData.politicsData().allowForeignInvestor}",
                 gdxSettings.smallFontSize
             )
-        )
+        ).colspan(2)
 
         nestedTable.row().space(10f)
 
-        val allowSubordinateBuildFactoryCheckBox = createCheckBox(
-            "Allow subordinate build",
+        val allowSubordinateBuildFactoryTickImageButton = createTickImageButton(
             playerData.playerInternalData.politicsData().allowSubordinateBuildFactory,
-            gdxSettings.smallFontSize,
+            gdxSettings.soundEffectsVolume,
         )
 
-        val allowLeaderBuildLocalFactoryCheckBox = createCheckBox(
-            "Allow subordinate build",
+        val allowLeaderBuildLocalFactoryTickImageButton = createTickImageButton(
             playerData.playerInternalData.politicsData().allowLeaderBuildLocalFactory,
-            gdxSettings.smallFontSize,
+            gdxSettings.soundEffectsVolume,
         )
 
-        val allowForeignInvestorCheckBox = createCheckBox(
-            "Allow subordinate build",
+        val allowForeignInvestorTickImageButton = createTickImageButton(
             playerData.playerInternalData.politicsData().allowForeignInvestor,
-            gdxSettings.smallFontSize,
+            gdxSettings.soundEffectsVolume,
         )
 
         val changeButton = createTextButton(
@@ -215,27 +212,51 @@ class PoliticsInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game)
                 toId = playerData.playerId,
                 fromId = game.universeClient.getCurrentPlayerData().playerId,
                 fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
-                allowSubordinateBuildFactory = allowSubordinateBuildFactoryCheckBox.isChecked,
-                allowLeaderBuildLocalFactory = allowLeaderBuildLocalFactoryCheckBox.isChecked,
-                allowForeignInvestor = allowForeignInvestorCheckBox.isChecked,
+                allowSubordinateBuildFactory = allowSubordinateBuildFactoryTickImageButton.isChecked,
+                allowLeaderBuildLocalFactory = allowLeaderBuildLocalFactoryTickImageButton.isChecked,
+                allowForeignInvestor = allowForeignInvestorTickImageButton.isChecked,
             )
 
             game.universeClient.currentCommand = changeFactoryPolicyCommand
         }
 
-        nestedTable.add(changeButton)
+        nestedTable.add(changeButton).colspan(2)
 
         nestedTable.row().space(10f)
 
-        nestedTable.add(allowSubordinateBuildFactoryCheckBox)
+        nestedTable.add(
+            createLabel(
+                "Allow subordinate build: ",
+                gdxSettings.smallFontSize,
+            )
+        )
+        nestedTable.add(allowSubordinateBuildFactoryTickImageButton).size(
+            50f * gdxSettings.imageScale
+        )
 
         nestedTable.row().space(10f)
 
-        nestedTable.add(allowLeaderBuildLocalFactoryCheckBox)
+        nestedTable.add(
+            createLabel(
+                "Allow local build on subordinate: ",
+                gdxSettings.smallFontSize,
+            )
+        )
+        nestedTable.add(allowLeaderBuildLocalFactoryTickImageButton).size(
+            50f * gdxSettings.imageScale
+        )
 
         nestedTable.row().space(10f)
 
-        nestedTable.add(allowForeignInvestorCheckBox)
+        nestedTable.add(
+            createLabel(
+                "Allow foreign build: ",
+                gdxSettings.smallFontSize,
+            )
+        )
+        nestedTable.add(allowForeignInvestorTickImageButton).size(
+            50f * gdxSettings.imageScale
+        )
 
         return nestedTable
     }

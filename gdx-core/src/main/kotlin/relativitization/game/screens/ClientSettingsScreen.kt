@@ -145,14 +145,13 @@ class ClientSettingsScreen(
                 gdxSettings.normalFontSize
             )
         )
-        val continuousRenderingCheckBox = createCheckBox(
-            "",
+        val continuousRenderingTickImageButton = createTickImageButton(
             gdxSettings.isContinuousRendering,
-            gdxSettings.normalFontSize
-        ) { continuousRendering, _ ->
-            gdxSettings.isContinuousRendering = continuousRendering
+            gdxSettings.soundEffectsVolume,
+        ) {
+            gdxSettings.isContinuousRendering = it
         }
-        table.add(continuousRenderingCheckBox)
+        table.add(continuousRenderingTickImageButton).size(50f * gdxSettings.imageScale)
 
         table.row().space(10f)
 
@@ -328,14 +327,13 @@ class ClientSettingsScreen(
         table.row().space(10f)
 
         table.add(createLabel("Show info: ", gdxSettings.normalFontSize))
-        val showingInfoCheckBox = createCheckBox(
-            "",
+        val showingInfoTickImageButton = createTickImageButton(
             gdxSettings.showingInfo,
-            gdxSettings.normalFontSize
-        ) { showingInfo, _ ->
-            gdxSettings.showingInfo = showingInfo
+            gdxSettings.soundEffectsVolume,
+        ) {
+            gdxSettings.showingInfo = it
         }
-        table.add(showingInfoCheckBox)
+        table.add(showingInfoTickImageButton).size(50f * gdxSettings.imageScale)
 
         table.row().space(10f)
 
@@ -355,14 +353,13 @@ class ClientSettingsScreen(
         table.row().space(10f)
 
         table.add(createLabel("Show bottom command: ", gdxSettings.normalFontSize))
-        val showingBottomCommand = createCheckBox(
-            "",
+        val showingBottomCommandTickImageButton = createTickImageButton(
             gdxSettings.showingBottomCommand,
-            gdxSettings.normalFontSize
-        ) { showingBottomCommand, _ ->
-            gdxSettings.showingBottomCommand = showingBottomCommand
+            gdxSettings.soundEffectsVolume,
+        ) {
+            gdxSettings.showingBottomCommand = it
         }
-        table.add(showingBottomCommand)
+        table.add(showingBottomCommandTickImageButton).size(50f * gdxSettings.imageScale)
 
         table.row().space(10f)
 
@@ -436,14 +433,13 @@ class ClientSettingsScreen(
                 gdxSettings.normalFontSize
             )
         )
-        val autoConfirmCurrentCommandCheckBox = createCheckBox(
-            "",
+        val autoConfirmCurrentCommandTickImageButton = createTickImageButton(
             universeClientSettings.autoConfirmCurrentCommand,
-            gdxSettings.normalFontSize,
-        ) { autoConfirmCurrentCommand, _ ->
-            universeClientSettings.autoConfirmCurrentCommand = autoConfirmCurrentCommand
+            gdxSettings.soundEffectsVolume,
+        ) {
+            universeClientSettings.autoConfirmCurrentCommand = it
         }
-        table.add(autoConfirmCurrentCommandCheckBox)
+        table.add(autoConfirmCurrentCommandTickImageButton).size(50f * gdxSettings.imageScale)
 
         table.row().space(10f)
 

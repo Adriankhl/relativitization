@@ -98,14 +98,13 @@ class ServerSettingsScreen(val game: RelativitizationGame) : TableScreen(game.as
         table.row().space(10f)
 
         table.add(createLabel("Clear inactive player per turn: ", gdxSettings.normalFontSize))
-        val clearInactivePerTurnCheckbox = createCheckBox(
-            "",
+        val clearInactivePerTurnTickImageButton = createTickImageButton(
             game.universeClient.universeServerSettings.clearInactivePerTurn,
-            gdxSettings.normalFontSize
-        ) { clearInactivePerTurn, _ ->
-            game.universeClient.universeServerSettings.clearInactivePerTurn = clearInactivePerTurn
+            gdxSettings.soundEffectsVolume,
+        ) {
+            game.universeClient.universeServerSettings.clearInactivePerTurn = it
         }
-        table.add(clearInactivePerTurnCheckbox)
+        table.add(clearInactivePerTurnTickImageButton).size(50f * gdxSettings.imageScale)
 
         table.row().space(10f)
 
