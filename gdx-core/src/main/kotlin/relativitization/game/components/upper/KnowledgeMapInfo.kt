@@ -32,8 +32,10 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : UpperInfo<Table>(game) 
 
     private val knowledgeGroup: Group = Group()
 
-    private val knowledgeGroupScrollPane: ScrollPane =
-        createScrollPane(knowledgeGroup, this::onGdxSettingsChange)
+    private val knowledgeGroupScrollPane: ScrollPane = createScrollPane(
+        knowledgeGroup,
+        this::onGdxSettingsChange
+    )
 
     // Store old value to prevent meaningless render
     private var oldKnowledgeMapProjectIconZoom = gdxSettings.knowledgeMapProjectIconZoom
@@ -249,11 +251,9 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : UpperInfo<Table>(game) 
         updateKnowledgeGroup()
 
         table.add(
-            createScrollPane(
-                createLabel(
-                    "Knowledge map: player ${playerData.playerId}",
-                    gdxSettings.bigFontSize,
-                )
+            createLabel(
+                "Knowledge map: player ${playerData.playerId}",
+                gdxSettings.bigFontSize,
             )
         )
 
@@ -273,14 +273,22 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : UpperInfo<Table>(game) 
 
         val controlTable = Table()
 
-        controlTable.add(zoomInButton)
-            .size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
-        controlTable.add(zoomOutButton)
-            .size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
-        controlTable.add(plusButton)
-            .size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
-        controlTable.add(minusButton)
-            .size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
+        controlTable.add(zoomInButton).size(
+            50f * gdxSettings.imageScale,
+            50f * gdxSettings.imageScale
+        )
+        controlTable.add(zoomOutButton).size(
+            50f * gdxSettings.imageScale,
+            50f * gdxSettings.imageScale
+        )
+        controlTable.add(plusButton).size(
+            50f * gdxSettings.imageScale,
+            50f * gdxSettings.imageScale
+        )
+        controlTable.add(minusButton).size(
+            50f * gdxSettings.imageScale,
+            50f * gdxSettings.imageScale
+        )
         controlTable.add(knowledgeProjectTable).pad(20f)
 
         controlTable.row()
