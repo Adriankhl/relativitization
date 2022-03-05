@@ -71,7 +71,7 @@ class OverviewInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game)
 
         table.row().space(20f)
 
-        val playerImageStack = PlayerImage.getPlayerImageStack(
+        val playerImageWidgetGroup = PlayerImage.getPlayerImageWidgetGroup(
             playerData = playerData,
             universeData3DAtPlayer = game.universeClient.getUniverseData3D(),
             primaryPlayerData = game.universeClient.getPrimarySelectedPlayerData(),
@@ -85,7 +85,9 @@ class OverviewInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game)
             game.universeClient.primarySelectedInt3D = playerData.int4D.toInt3D()
         }
 
-        table.add(playerImageStack)
-            .size(128f * gdxSettings.imageScale, 128f * gdxSettings.imageScale)
+        table.add(playerImageWidgetGroup).size(
+            128f * gdxSettings.imageScale,
+            128f * gdxSettings.imageScale
+        )
     }
 }

@@ -208,7 +208,7 @@ class PlayersInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game) 
         }
 
 
-        val playerImageStack = PlayerImage.getPlayerImageStack(
+        val playerImageWidgetGroup = PlayerImage.getPlayerImageWidgetGroup(
             playerData = playerData,
             universeData3DAtPlayer = game.universeClient.getUniverseData3D(),
             primaryPlayerData = game.universeClient.getPrimarySelectedPlayerData(),
@@ -222,14 +222,20 @@ class PlayersInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game) 
             game.universeClient.primarySelectedInt3D = playerData.int4D.toInt3D()
         }
 
-        nestedTable.add(previousPlayerIdButton)
-            .size(40f * gdxSettings.imageScale, 40f * gdxSettings.imageScale).pad(20f)
+        nestedTable.add(previousPlayerIdButton).size(
+            40f * gdxSettings.imageScale,
+            40f * gdxSettings.imageScale
+        ).pad(20f)
 
-        nestedTable.add(playerImageStack)
-            .size(128f * gdxSettings.imageScale, 128f * gdxSettings.imageScale)
+        nestedTable.add(playerImageWidgetGroup).size(
+            128f * gdxSettings.imageScale,
+            128f * gdxSettings.imageScale
+        )
 
-        nestedTable.add(nextPlayerIdButton)
-            .size(40f * gdxSettings.imageScale, 40f * gdxSettings.imageScale).pad(20f)
+        nestedTable.add(nextPlayerIdButton).size(
+            40f * gdxSettings.imageScale,
+            40f * gdxSettings.imageScale
+        ).pad(20f)
 
         return nestedTable
     }

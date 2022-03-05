@@ -3,6 +3,7 @@ package relativitization.game.utils
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Stack
+import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup
 import com.badlogic.gdx.utils.Align
 import relativitization.game.MapPlayerColorMode
 import relativitization.universe.data.PlayerData
@@ -113,7 +114,11 @@ object PlayerImage {
             }
 
         if (hasStellarSystem) {
-            val stellarImage: Image = ActorFunction.createImage(assets, "system/sun", soundVolume)
+            val stellarImage: Image = ActorFunction.createImage(
+                assets = assets,
+                name = "system/sun",
+                soundVolume = soundVolume
+            )
             stellarImage.setPosition(xPos, yPos)
             stellarImage.setSize(width, height)
             imageList.add(stellarImage)
@@ -247,7 +252,7 @@ object PlayerImage {
         return imageList
     }
 
-    fun getPlayerImageStack(
+    fun getPlayerImageWidgetGroup(
         playerData: PlayerData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
         primaryPlayerData: PlayerData,
@@ -257,7 +262,7 @@ object PlayerImage {
         soundVolume: Float,
         mapPlayerColorMode: MapPlayerColorMode,
         function: (Image) -> Unit = {}
-    ): Stack {
+    ): WidgetGroup{
         val imageList = getPlayerImages(
             playerData = playerData,
             universeData3DAtPlayer = universeData3DAtPlayer,
@@ -272,12 +277,12 @@ object PlayerImage {
             showCombat = false,
             function = function
         )
-        val stack = Stack()
+        val widgetGroup = WidgetGroup()
         for (image in imageList) {
-            stack.add(image)
+            widgetGroup.addActor(image)
         }
 
-        return stack
+        return widgetGroup
     }
 
     /**
