@@ -250,6 +250,7 @@ class UniverseServerInternal(
             if (!isUniverseRunning.isTrue()) {
                 universe = newUniverse
                 updateCommandMapAndIdList()
+                humanIdPasswordMap.clear()
                 currentUniverseTime = universe.getCurrentUniverseTime()
                 hasUniverse.set(true)
             }

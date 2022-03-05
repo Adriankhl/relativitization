@@ -99,13 +99,23 @@ class RegisterPlayerScreen(val game: RelativitizationGame) : TableScreen(game.as
     private fun createRegisterPlayerScrollPane(): ScrollPane {
         val table = Table()
 
-        table.add(createLabel("Register player settings :", gdxSettings.hugeFontSize)).colspan(2)
+        table.add(
+            createLabel(
+                "Register player settings :",
+                gdxSettings.hugeFontSize
+            )
+        ).colspan(2)
 
         table.row().space(20f)
 
         var idList: List<Int> = listOf()
 
-        table.add(createLabel("Type of available players: ", gdxSettings.normalFontSize))
+        table.add(
+            createLabel(
+                "Type of available players: ",
+                gdxSettings.normalFontSize
+            )
+        )
         val getPlayerTypeSelectBox = createSelectBox(
             listOf("All", "Human only"),
             "All",
@@ -130,8 +140,11 @@ class RegisterPlayerScreen(val game: RelativitizationGame) : TableScreen(game.as
             }
         }
 
-        val updateButton =
-            createTextButton("Update", gdxSettings.normalFontSize, gdxSettings.soundEffectsVolume) {
+        val updateButton = createTextButton(
+            "Update",
+            gdxSettings.normalFontSize,
+            gdxSettings.soundEffectsVolume
+        ) {
                 when (getPlayerTypeSelectBox.selected) {
                     "All" -> {
                         runBlocking {
