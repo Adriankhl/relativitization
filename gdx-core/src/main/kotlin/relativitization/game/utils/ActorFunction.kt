@@ -381,10 +381,22 @@ object ActorFunction {
         max: Float,
         stepSize: Float,
         default: Float,
+        scale: Float,
         vertical: Boolean = false,
         function: (Float, Slider) -> Unit = { _, _ -> },
     ): Slider {
         val slider = Slider(min, max, stepSize, vertical, skin)
+
+        slider.style.knobOver.minWidth = 18f * scale
+        slider.style.knobOver.minHeight = 18f * scale
+        slider.style.knobDown.minWidth = 18f * scale
+        slider.style.knobDown.minHeight = 18f * scale
+        slider.style.background.minWidth = 17f * scale
+        slider.style.background.minHeight = 11f * scale
+        slider.style.knob.minWidth = 18f * scale
+        slider.style.knob.minHeight = 18f * scale
+        slider.style.knobBefore.minWidth = 17f * scale
+        slider.style.knobBefore.minHeight = 11f * scale
 
         slider.value = default
 

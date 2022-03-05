@@ -329,9 +329,19 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets) {
         max: Float,
         stepSize: Float,
         default: Float,
+        scale: Float,
         vertical: Boolean = false,
         function: (Float, Slider) -> Unit = { _, _ -> },
-    ): Slider = ActorFunction.createSlider(skin, min, max, stepSize, default, vertical, function)
+    ): Slider = ActorFunction.createSlider(
+        skin = skin,
+        min = min,
+        max = max,
+        stepSize = stepSize,
+        default = default,
+        scale = scale,
+        vertical = vertical,
+        function = function
+    )
 
     /**
      * Create gdx list
@@ -445,6 +455,7 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets) {
         sliderStepSize: Float,
         sliderDecimalPlace: Int,
         buttonSize: Float,
+        sliderScale: Float,
         buttonSoundVolume: Float,
         currentValue: () -> Double,
         function: (Double) -> Unit = { },
@@ -452,10 +463,11 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets) {
         val nestedTable = Table()
 
         val coefficientSlider = createSlider(
-            1f,
-            10f - 10f.pow(-sliderDecimalPlace),
-            sliderStepSize,
-            default.toScientificNotation().coefficient.toFloat(),
+            min = 1f,
+            max = 10f - 10f.pow(-sliderDecimalPlace),
+            stepSize = sliderStepSize,
+            default = default.toScientificNotation().coefficient.toFloat(),
+            scale = sliderScale,
         ) { fl, _ ->
             val originalValue: ScientificNotation = currentValue().toScientificNotation()
             val newCoefficient: Double = Notation.roundDecimal(fl.toDouble(), sliderDecimalPlace)

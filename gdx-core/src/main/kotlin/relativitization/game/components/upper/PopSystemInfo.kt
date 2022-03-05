@@ -510,8 +510,9 @@ class PopSystemInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game
             sliderStepSize = 0.01f,
             sliderDecimalPlace = 2,
             buttonSize = 40f * gdxSettings.imageScale,
+            sliderScale = gdxSettings.imageScale,
             buttonSoundVolume = gdxSettings.soundEffectsVolume,
-            currentValue = { targetSalary.value }
+            currentValue = { targetSalary.value },
         ) {
             targetSalary.value = it
         }
@@ -841,6 +842,7 @@ class PopSystemInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game
             sliderStepSize = 0.01f,
             sliderDecimalPlace = 2,
             buttonSize = 40f * gdxSettings.imageScale,
+            sliderScale = gdxSettings.imageScale,
             buttonSoundVolume = gdxSettings.soundEffectsVolume,
             currentValue = { supplyFuelAmount.value },
         ) {
@@ -1037,8 +1039,10 @@ class PopSystemInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game
 
         nestedTable.add(
             createLabel(
-                "Max. output: ${resourceFactoryData.resourceFactoryInternalData.maxOutputAmountPerEmployee * 
-                        resourceFactoryData.maxNumEmployee}",
+                "Max. output: ${
+                    resourceFactoryData.resourceFactoryInternalData.maxOutputAmountPerEmployee *
+                            resourceFactoryData.maxNumEmployee
+                }",
                 gdxSettings.smallFontSize
             )
         )
@@ -1116,8 +1120,10 @@ class PopSystemInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game
 
         nestedTable.add(
             createLabel(
-                "Max. fuel consumption: ${resourceFactoryData.resourceFactoryInternalData
-                    .fuelRestMassConsumptionRatePerEmployee * resourceFactoryData.maxNumEmployee}",
+                "Max. fuel consumption: ${
+                    resourceFactoryData.resourceFactoryInternalData
+                        .fuelRestMassConsumptionRatePerEmployee * resourceFactoryData.maxNumEmployee
+                }",
                 gdxSettings.smallFontSize
             )
         )
@@ -1174,6 +1180,7 @@ class PopSystemInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game
             sliderStepSize = 0.01f,
             sliderDecimalPlace = 2,
             buttonSize = 40f * gdxSettings.imageScale,
+            sliderScale = gdxSettings.imageScale,
             buttonSoundVolume = gdxSettings.soundEffectsVolume,
             currentValue = { supplyFuelAmount.value },
         ) {
@@ -1262,6 +1269,7 @@ class PopSystemInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game
             sliderStepSize = 0.01f,
             sliderDecimalPlace = 2,
             buttonSize = 40f * gdxSettings.imageScale,
+            sliderScale = gdxSettings.imageScale,
             buttonSoundVolume = gdxSettings.soundEffectsVolume,
             currentValue = { storedFuelRestMass.value },
         ) {
@@ -1288,6 +1296,7 @@ class PopSystemInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game
             sliderStepSize = 0.01f,
             sliderDecimalPlace = 2,
             buttonSize = 40f * gdxSettings.imageScale,
+            sliderScale = gdxSettings.imageScale,
             buttonSoundVolume = gdxSettings.soundEffectsVolume,
             currentValue = { maxNumEmployee.value },
         ) {
@@ -1401,10 +1410,11 @@ class PopSystemInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game
         nestedTable.row().space(10f)
 
         val qualityLevelSlider = createSlider(
-            0f,
-            1f,
-            0.01f,
-            1f
+            min = 0f,
+            max = 1f,
+            stepSize = 0.01f,
+            default = 1f,
+            scale = gdxSettings.imageScale,
         ) { fl, _ ->
             qualityLevel.value = Notation.roundDecimal(fl.toDouble(), 2)
         }
@@ -1428,6 +1438,7 @@ class PopSystemInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game
             sliderStepSize = 0.01f,
             sliderDecimalPlace = 2,
             buttonSize = 40f * gdxSettings.imageScale,
+            sliderScale = gdxSettings.imageScale,
             buttonSoundVolume = gdxSettings.soundEffectsVolume,
             currentValue = { storedFuelRestMass.value },
         ) {
@@ -1454,6 +1465,7 @@ class PopSystemInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game
             sliderStepSize = 0.01f,
             sliderDecimalPlace = 2,
             buttonSize = 40f * gdxSettings.imageScale,
+            sliderScale = gdxSettings.imageScale,
             buttonSoundVolume = gdxSettings.soundEffectsVolume,
             currentValue = { maxNumEmployee.value },
         ) {
@@ -1515,6 +1527,7 @@ class PopSystemInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game
             sliderStepSize = 0.01f,
             sliderDecimalPlace = 2,
             buttonSize = 40f * gdxSettings.imageScale,
+            sliderScale = gdxSettings.imageScale,
             buttonSoundVolume = gdxSettings.soundEffectsVolume,
             currentValue = { storedFuelRestMass.value },
         ) {
@@ -1541,6 +1554,7 @@ class PopSystemInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game
             sliderStepSize = 0.01f,
             sliderDecimalPlace = 2,
             buttonSize = 40f * gdxSettings.imageScale,
+            sliderScale = gdxSettings.imageScale,
             buttonSoundVolume = gdxSettings.soundEffectsVolume,
             currentValue = { maxNumEmployee.value },
         ) {
@@ -1624,10 +1638,11 @@ class PopSystemInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game
         nestedTable.row().space(10f)
 
         val qualityLevelSlider = createSlider(
-            0f,
-            1f,
-            0.01f,
-            1f
+            min = 0f,
+            max = 1f,
+            stepSize = 0.01f,
+            default = 1f,
+            scale = gdxSettings.imageScale,
         ) { fl, _ ->
             qualityLevel.value = Notation.roundDecimal(fl.toDouble(), 2)
         }
@@ -1651,6 +1666,7 @@ class PopSystemInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game
             sliderStepSize = 0.01f,
             sliderDecimalPlace = 2,
             buttonSize = 40f * gdxSettings.imageScale,
+            sliderScale = gdxSettings.imageScale,
             buttonSoundVolume = gdxSettings.soundEffectsVolume,
             currentValue = { storedFuelRestMass.value },
         ) {
@@ -1677,6 +1693,7 @@ class PopSystemInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game
             sliderStepSize = 0.01f,
             sliderDecimalPlace = 2,
             buttonSize = 40f * gdxSettings.imageScale,
+            sliderScale = gdxSettings.imageScale,
             buttonSoundVolume = gdxSettings.soundEffectsVolume,
             currentValue = { maxNumEmployee.value },
         ) {
@@ -1959,8 +1976,9 @@ class PopSystemInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game
             sliderStepSize = 0.01f,
             sliderDecimalPlace = 2,
             buttonSize = 40f * gdxSettings.imageScale,
+            sliderScale = gdxSettings.imageScale,
             buttonSoundVolume = gdxSettings.soundEffectsVolume,
-            currentValue = { range.value }
+            currentValue = { range.value },
         ) {
             range.value = it
         }
@@ -1984,8 +2002,9 @@ class PopSystemInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game
             sliderStepSize = 0.01f,
             sliderDecimalPlace = 2,
             buttonSize = 40f * gdxSettings.imageScale,
+            sliderScale = gdxSettings.imageScale,
             buttonSoundVolume = gdxSettings.soundEffectsVolume,
-            currentValue = { researchEquipmentPerTime.value }
+            currentValue = { researchEquipmentPerTime.value },
         ) {
             researchEquipmentPerTime.value = it
         }
@@ -2010,8 +2029,9 @@ class PopSystemInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game
             sliderStepSize = 0.01f,
             sliderDecimalPlace = 2,
             buttonSize = 40f * gdxSettings.imageScale,
+            sliderScale = gdxSettings.imageScale,
             buttonSoundVolume = gdxSettings.soundEffectsVolume,
-            currentValue = { maxNumEmployee.value }
+            currentValue = { maxNumEmployee.value },
         ) {
             maxNumEmployee.value = it
         }
@@ -2292,8 +2312,9 @@ class PopSystemInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game
             sliderStepSize = 0.01f,
             sliderDecimalPlace = 2,
             buttonSize = 40f * gdxSettings.imageScale,
+            sliderScale = gdxSettings.imageScale,
             buttonSoundVolume = gdxSettings.soundEffectsVolume,
-            currentValue = { range.value }
+            currentValue = { range.value },
         ) {
             range.value = it
         }
@@ -2317,8 +2338,9 @@ class PopSystemInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game
             sliderStepSize = 0.01f,
             sliderDecimalPlace = 2,
             buttonSize = 40f * gdxSettings.imageScale,
+            sliderScale = gdxSettings.imageScale,
             buttonSoundVolume = gdxSettings.soundEffectsVolume,
-            currentValue = { researchEquipmentPerTime.value }
+            currentValue = { researchEquipmentPerTime.value },
         ) {
             researchEquipmentPerTime.value = it
         }
@@ -2343,8 +2365,9 @@ class PopSystemInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game
             sliderStepSize = 0.01f,
             sliderDecimalPlace = 2,
             buttonSize = 40f * gdxSettings.imageScale,
+            sliderScale = gdxSettings.imageScale,
             buttonSoundVolume = gdxSettings.soundEffectsVolume,
-            currentValue = { maxNumEmployee.value }
+            currentValue = { maxNumEmployee.value },
         ) {
             maxNumEmployee.value = it
         }
@@ -2630,8 +2653,9 @@ class PopSystemInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game
             sliderStepSize = 0.01f,
             sliderDecimalPlace = 2,
             buttonSize = 40f * gdxSettings.imageScale,
+            sliderScale = gdxSettings.imageScale,
             buttonSoundVolume = gdxSettings.soundEffectsVolume,
-            currentValue = { fuelRestMass.value }
+            currentValue = { fuelRestMass.value },
         ) {
             fuelRestMass.value = it
         }
@@ -2655,8 +2679,9 @@ class PopSystemInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game
             sliderStepSize = 0.01f,
             sliderDecimalPlace = 2,
             buttonSize = 40f * gdxSettings.imageScale,
+            sliderScale = gdxSettings.imageScale,
             buttonSoundVolume = gdxSettings.soundEffectsVolume,
-            currentValue = { amountPerTime.value }
+            currentValue = { amountPerTime.value },
         ) {
             amountPerTime.value = it
         }
@@ -2752,10 +2777,11 @@ class PopSystemInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game
         nestedTable.row().space(10f)
 
         val newCarrierQualitySlider = createSlider(
-            0f,
-            1f,
-            0.01f,
-            1f
+            min = 0f,
+            max = 1f,
+            stepSize = 0.01f,
+            default = 1f,
+            scale = gdxSettings.imageScale,
         ) { fl, _ ->
             newCarrierQuality.value = Notation.roundDecimal(fl.toDouble(), 2)
         }
@@ -2787,10 +2813,11 @@ class PopSystemInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game
         )
 
         val storageFractionSlider = createSlider(
-            0f,
-            1f,
-            0.01f,
-            0.2f,
+            min = 0f,
+            max = 1f,
+            stepSize = 0.01f,
+            default = 0.2f,
+            scale = gdxSettings.imageScale,
         )
 
         val splitCarrierButton = createTextButton(

@@ -222,32 +222,36 @@ class EconomyInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game) 
                 min = 0f,
                 max = 1f,
                 stepSize = 0.01f,
-                default = playerData.playerInternalData.physicsData().fuelRestMassTargetProportionData.storage
-                    .toFloat(),
+                default = playerData.playerInternalData.physicsData()
+                    .fuelRestMassTargetProportionData.storage.toFloat(),
+                scale = gdxSettings.imageScale,
             )
 
             val targetMovementSlider = createSlider(
                 min = 0f,
                 max = 1f,
                 stepSize = 0.01f,
-                default = playerData.playerInternalData.physicsData().fuelRestMassTargetProportionData.movement
-                    .toFloat(),
+                default = playerData.playerInternalData.physicsData()
+                    .fuelRestMassTargetProportionData.movement.toFloat(),
+                scale = gdxSettings.imageScale,
             )
 
             val targetProductionSlider = createSlider(
                 min = 0f,
                 max = 1f,
                 stepSize = 0.01f,
-                default = playerData.playerInternalData.physicsData().fuelRestMassTargetProportionData.production
-                    .toFloat(),
+                default = playerData.playerInternalData.physicsData()
+                    .fuelRestMassTargetProportionData.production.toFloat(),
+                scale = gdxSettings.imageScale,
             )
 
             val targetTradeSlider = createSlider(
                 min = 0f,
                 max = 1f,
                 stepSize = 0.01f,
-                default = playerData.playerInternalData.physicsData().fuelRestMassTargetProportionData.trade
-                    .toFloat(),
+                default = playerData.playerInternalData.physicsData()
+                    .fuelRestMassTargetProportionData.trade.toFloat(),
+                scale = gdxSettings.imageScale,
             )
 
             val changeFuelRestMassTargetProportionButton = createTextButton(
@@ -325,6 +329,7 @@ class EconomyInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game) 
             max = 1f,
             stepSize = 0.01f,
             default = 0f,
+            scale = gdxSettings.imageScale,
         )
 
         val sendFuelButton = createTextButton(
@@ -460,6 +465,7 @@ class EconomyInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game) 
                 max = 1f,
                 stepSize = 0.01f,
                 default = singleResourceData.resourceTargetProportion.storage.toFloat(),
+                scale = gdxSettings.imageScale,
             )
 
             val targetProductionSlider = createSlider(
@@ -467,6 +473,7 @@ class EconomyInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game) 
                 max = 1f,
                 stepSize = 0.01f,
                 default = singleResourceData.resourceTargetProportion.production.toFloat(),
+                scale = gdxSettings.imageScale,
             )
 
             val targetTradeSlider = createSlider(
@@ -474,6 +481,7 @@ class EconomyInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game) 
                 max = 1f,
                 stepSize = 0.01f,
                 default = singleResourceData.resourceTargetProportion.trade.toFloat(),
+                scale = gdxSettings.imageScale,
             )
 
 
@@ -541,6 +549,7 @@ class EconomyInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game) 
             max = 1f,
             stepSize = 0.01f,
             default = 0f,
+            scale = gdxSettings.imageScale,
         )
 
         val sendResourceButton = createTextButton(
@@ -697,12 +706,13 @@ class EconomyInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game) 
         nestedTable.row().space(10f)
 
         val newImportTariffSliderButtonTable = createDoubleSliderButtonTable(
-            newImportTariff.value,
-            0.01f,
-            2,
-            40f * gdxSettings.imageScale,
-            gdxSettings.soundEffectsVolume,
-            currentValue = { newImportTariff.value }
+            default = newImportTariff.value,
+            sliderStepSize = 0.01f,
+            sliderDecimalPlace = 2,
+            buttonSize = 40f * gdxSettings.imageScale,
+            sliderScale = gdxSettings.imageScale,
+            buttonSoundVolume = gdxSettings.soundEffectsVolume,
+            currentValue = { newImportTariff.value },
         ) {
             newImportTariff.value = it
         }
@@ -751,12 +761,13 @@ class EconomyInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game) 
         nestedTable.row().space(10f)
 
         val newExportTariffSliderButtonTable = createDoubleSliderButtonTable(
-            newExportTariff.value,
-            0.01f,
-            2,
-            40f * gdxSettings.imageScale,
-            gdxSettings.soundEffectsVolume,
-            currentValue = { newExportTariff.value }
+            default = newExportTariff.value,
+            sliderStepSize = 0.01f,
+            sliderDecimalPlace = 2,
+            buttonSize = 40f * gdxSettings.imageScale,
+            sliderScale = gdxSettings.imageScale,
+            buttonSoundVolume = gdxSettings.soundEffectsVolume,
+            currentValue = { newExportTariff.value },
         ) {
             newExportTariff.value = it
         }
@@ -817,6 +828,7 @@ class EconomyInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game) 
             max = 1f,
             stepSize = 0.01f,
             default = 0f,
+            scale = gdxSettings.imageScale,
         ) { fl, _ ->
             newLowIncomeTax.value = Notation.roundDecimal(fl.toDouble(), 2)
         }
@@ -868,6 +880,7 @@ class EconomyInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game) 
             max = 1f,
             stepSize = 0.01f,
             default = 0f,
+            scale = gdxSettings.imageScale,
         ) { fl, _ ->
             newMiddleIncomeTax.value = Notation.roundDecimal(fl.toDouble(), 2)
         }
@@ -919,6 +932,7 @@ class EconomyInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game) 
             max = 1f,
             stepSize = 0.01f,
             default = 0f,
+            scale = gdxSettings.imageScale,
         ) { fl, _ ->
             newHighIncomeTax.value = Notation.roundDecimal(fl.toDouble(), 2)
         }
@@ -966,12 +980,13 @@ class EconomyInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game) 
         nestedTable.row().space(10f)
 
         val changeLowMiddleBoundarySliderButtonTable = createDoubleSliderButtonTable(
-            newLowMiddleIncomeBoundary.value,
-            0.01f,
-            2,
-            40f * gdxSettings.imageScale,
-            gdxSettings.soundEffectsVolume,
-            currentValue = { newLowMiddleIncomeBoundary.value }
+            default = newLowMiddleIncomeBoundary.value,
+            sliderStepSize = 0.01f,
+            sliderDecimalPlace = 2,
+            buttonSize = 40f * gdxSettings.imageScale,
+            sliderScale = gdxSettings.imageScale,
+            buttonSoundVolume = gdxSettings.soundEffectsVolume,
+            currentValue = { newLowMiddleIncomeBoundary.value },
         ) {
             newLowMiddleIncomeBoundary.value = it
         }
@@ -1019,12 +1034,13 @@ class EconomyInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game) 
         nestedTable.row().space(10f)
 
         val changeMiddleHighBoundarySliderButtonTable = createDoubleSliderButtonTable(
-            newMiddleHighIncomeBoundary.value,
-            0.01f,
-            2,
-            40f * gdxSettings.imageScale,
-            gdxSettings.soundEffectsVolume,
-            currentValue = { newMiddleHighIncomeBoundary.value }
+            default = newMiddleHighIncomeBoundary.value,
+            sliderStepSize = 0.01f,
+            sliderDecimalPlace = 2,
+            buttonSize = 40f * gdxSettings.imageScale,
+            sliderScale = gdxSettings.imageScale,
+            buttonSoundVolume = gdxSettings.soundEffectsVolume,
+            currentValue = { newMiddleHighIncomeBoundary.value },
         ) {
             newMiddleHighIncomeBoundary.value = it
         }

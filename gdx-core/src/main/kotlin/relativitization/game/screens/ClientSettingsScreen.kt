@@ -188,11 +188,12 @@ class ClientSettingsScreen(
 
         table.add(createLabel("Music volume: ", gdxSettings.normalFontSize))
         val musicVolumeSlider = createSlider(
-            0.0f,
-            1.0f,
-            0.01f,
-            gdxSettings.musicVolume,
-            false
+            min = 0.0f,
+            max = 1.0f,
+            stepSize = 0.01f,
+            default = gdxSettings.musicVolume,
+            scale = gdxSettings.imageScale,
+            vertical = false,
         ) { musicVolume, _ ->
             gdxSettings.musicVolume = musicVolume
         }
@@ -203,11 +204,12 @@ class ClientSettingsScreen(
 
         table.add(createLabel("Sound effect volume: ", gdxSettings.normalFontSize))
         val soundEffectVolumeSlider = createSlider(
-            0.0f,
-            1.0f,
-            0.01f,
-            gdxSettings.soundEffectsVolume,
-            false
+            min = 0.0f,
+            max = 1.0f,
+            stepSize = 0.01f,
+            default = gdxSettings.soundEffectsVolume,
+            scale = gdxSettings.imageScale,
+            vertical = false,
         ) { soundEffectVolume, _ ->
             gdxSettings.soundEffectsVolume = soundEffectVolume
         }

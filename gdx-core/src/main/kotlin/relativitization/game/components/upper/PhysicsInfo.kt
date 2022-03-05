@@ -373,6 +373,7 @@ class PhysicsInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game) 
             max = game.universeClient.getUniverseData3D().universeSettings.speedOfLight.toFloat() - 0.01f,
             stepSize = 0.01f,
             default = maxSpeed.value.toFloat(),
+            scale = gdxSettings.imageScale,
         ) { fl, _ ->
             val newSpeed: Double = Notation.roundDecimal(fl.toDouble(), 2)
 
