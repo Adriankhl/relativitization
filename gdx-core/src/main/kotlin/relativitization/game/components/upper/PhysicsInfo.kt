@@ -7,14 +7,14 @@ import relativitization.game.RelativitizationGame
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.commands.AddEventCommand
 import relativitization.universe.data.commands.ChangeVelocityCommand
-import relativitization.universe.maths.physics.Double3D
-import relativitization.universe.maths.physics.Int3D
-import relativitization.universe.maths.physics.Velocity
 import relativitization.universe.data.components.physicsData
 import relativitization.universe.data.events.MoveToDouble3DEvent
 import relativitization.universe.maths.number.Notation
+import relativitization.universe.maths.physics.Double3D
+import relativitization.universe.maths.physics.Int3D
 import relativitization.universe.maths.physics.Movement.displacementToVelocity
 import relativitization.universe.maths.physics.Relativistic
+import relativitization.universe.maths.physics.Velocity
 import relativitization.universe.utils.RelativitizationLogManager
 
 class PhysicsInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game) {
@@ -76,9 +76,7 @@ class PhysicsInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game) 
 
     override fun getScreenComponent(): ScrollPane {
         val primaryPlayerData: PlayerData = game.universeClient.getValidPrimaryPlayerData()
-        if ((primaryPlayerData.playerId != playerData.playerId) ||
-            (primaryPlayerData.int4D.t != playerData.int4D.t)
-        ) {
+        if (primaryPlayerData != playerData) {
             updatePlayerData()
             updateTable()
         }

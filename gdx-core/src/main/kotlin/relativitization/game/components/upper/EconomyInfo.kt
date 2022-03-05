@@ -53,9 +53,7 @@ class EconomyInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game) 
 
     override fun getScreenComponent(): ScrollPane {
         val primaryPlayerData: PlayerData = game.universeClient.getValidPrimaryPlayerData()
-        if ((primaryPlayerData.playerId != playerData.playerId) ||
-            (primaryPlayerData.int4D.t != playerData.int4D.t)
-        ) {
+        if (primaryPlayerData != playerData) {
             updatePlayerData()
             updateTable()
         }
@@ -260,17 +258,18 @@ class EconomyInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game) 
                 gdxSettings.soundEffectsVolume,
                 extraColor = commandButtonColor,
             ) {
-                val changeFuelRestMassTargetProportionCommand = ChangeFuelRestMassTargetProportionCommand(
-                    toId = playerData.playerId,
-                    fromId = game.universeClient.getCurrentPlayerData().playerId,
-                    fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
-                    fuelRestMassTargetProportionData = FuelRestMassTargetProportionData(
-                        storage = targetStorageSlider.value.toDouble(),
-                        movement = targetMovementSlider.value.toDouble(),
-                        production = targetProductionSlider.value.toDouble(),
-                        trade = targetTradeSlider.value.toDouble(),
-                    ),
-                )
+                val changeFuelRestMassTargetProportionCommand =
+                    ChangeFuelRestMassTargetProportionCommand(
+                        toId = playerData.playerId,
+                        fromId = game.universeClient.getCurrentPlayerData().playerId,
+                        fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
+                        fuelRestMassTargetProportionData = FuelRestMassTargetProportionData(
+                            storage = targetStorageSlider.value.toDouble(),
+                            movement = targetMovementSlider.value.toDouble(),
+                            production = targetProductionSlider.value.toDouble(),
+                            trade = targetTradeSlider.value.toDouble(),
+                        ),
+                    )
 
                 game.universeClient.currentCommand = changeFuelRestMassTargetProportionCommand
             }

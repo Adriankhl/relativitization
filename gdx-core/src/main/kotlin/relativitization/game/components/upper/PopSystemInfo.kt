@@ -99,9 +99,7 @@ class PopSystemInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game
 
     override fun getScreenComponent(): ScrollPane {
         val primaryPlayerData: PlayerData = game.universeClient.getValidPrimaryPlayerData()
-        if ((primaryPlayerData.playerId != playerData.playerId) ||
-            (primaryPlayerData.int4D.t != playerData.int4D.t)
-        ) {
+        if (primaryPlayerData != playerData) {
             updatePlayerData()
             updateTable()
         }
@@ -1896,7 +1894,7 @@ class PopSystemInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game
         )
 
         val range = createDoubleTextField(
-            default = 0.25,
+            default = 2.0,
             fontSize = gdxSettings.smallFontSize
         )
 

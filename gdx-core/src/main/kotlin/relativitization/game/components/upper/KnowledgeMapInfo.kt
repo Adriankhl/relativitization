@@ -192,9 +192,7 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : UpperInfo<Table>(game) 
 
     override fun getScreenComponent(): Table {
         val primaryPlayerData: PlayerData = game.universeClient.getValidPrimaryPlayerData()
-        if ((primaryPlayerData.playerId != playerData.playerId) ||
-            (primaryPlayerData.int4D.t != playerData.int4D.t)
-        ) {
+        if (primaryPlayerData != playerData) {
             logger.debug("Update knowledge map")
             updatePlayerData()
             updateTable()
@@ -289,19 +287,33 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : UpperInfo<Table>(game) 
             50f * gdxSettings.imageScale,
             50f * gdxSettings.imageScale
         )
-        controlTable.add(knowledgeProjectTable).pad(20f)
 
-        controlTable.row()
-
-        val showInstituteAndLaboratoryCheckBox = createCheckBox(
-            text = "Show institute/laboratory",
-            default = showInstituteAndLaboratory,
-            fontSize = gdxSettings.smallFontSize,
-        ) { b, _ ->
-            showInstituteAndLaboratory = b
+        val showInstituteAndLaboratoryButton = createImageButton(
+            name = "basic/white-home",
+            rUp = 1.0f,
+            gUp = 1.0f,
+            bUp = 1.0f,
+            aUp = 1.0f,
+            rDown = 1.0f,
+            gDown = 1.0f,
+            bDown = 1.0f,
+            aDown = 0.7f,
+            rChecked = 1.0f,
+            gChecked = 1.0f,
+            bChecked = 1.0f,
+            aChecked = 0.5f,
+            soundVolume = gdxSettings.soundEffectsVolume
+        ) {
+            showInstituteAndLaboratory = !it.isChecked
             updateKnowledgeGroup()
         }
-        controlTable.add(showInstituteAndLaboratoryCheckBox).colspan(5).pad(20f).left()
+
+        controlTable.add(showInstituteAndLaboratoryButton).size(
+            50f * gdxSettings.imageScale,
+            50f * gdxSettings.imageScale
+        )
+
+        controlTable.add(knowledgeProjectTable).pad(20f)
 
         val controlScrollPane: ScrollPane = createScrollPane(controlTable)
 

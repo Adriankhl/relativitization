@@ -27,7 +27,8 @@ class DiplomacyInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game
     // Update by select box or select new player
     private var otherPlayerId: Int = playerData.playerId
 
-    private var currentDiplomacyInfoRelationType: DiplomacyInfoRelationType = DiplomacyInfoRelationType.ALL
+    private var currentDiplomacyInfoRelationType: DiplomacyInfoRelationType =
+        DiplomacyInfoRelationType.ALL
 
     init {
         // Set background color
@@ -44,9 +45,7 @@ class DiplomacyInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game
 
     override fun getScreenComponent(): ScrollPane {
         val primaryPlayerData: PlayerData = game.universeClient.getValidPrimaryPlayerData()
-        if ((primaryPlayerData.playerId != playerData.playerId) ||
-            (primaryPlayerData.int4D.t != playerData.int4D.t)
-        ) {
+        if (primaryPlayerData != playerData) {
             updatePlayerData()
             updateTable()
         }
@@ -163,7 +162,7 @@ class DiplomacyInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game
             DiplomacyInfoRelationType.WAR_AND_ENEMY -> (playerData.playerInternalData.diplomacyData().warData.warStateMap
                 .keys + playerData.playerInternalData.diplomacyData().relationMap.filterValues {
                 it.diplomaticRelationState == DiplomaticRelationState.ENEMY
-                }.keys).toList()
+            }.keys).toList()
             DiplomacyInfoRelationType.OTHER_RELATION -> playerData.playerInternalData.diplomacyData().relationMap
                 .filterValues { it.diplomaticRelationState != DiplomaticRelationState.ENEMY }.keys.toList()
         }.sorted()
@@ -210,10 +209,14 @@ class DiplomacyInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game
     private fun createWarStateTable(): Table {
         val nestedTable = Table()
 
-        if (playerData.playerInternalData.diplomacyData().warData.warStateMap.containsKey(otherPlayerId)) {
-            val warState: WarStateData = playerData.playerInternalData.diplomacyData().warData.getWarStateData(
+        if (playerData.playerInternalData.diplomacyData().warData.warStateMap.containsKey(
                 otherPlayerId
             )
+        ) {
+            val warState: WarStateData =
+                playerData.playerInternalData.diplomacyData().warData.getWarStateData(
+                    otherPlayerId
+                )
 
             nestedTable.add(
                 createLabel(
@@ -346,11 +349,12 @@ class DiplomacyInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game
                 gdxSettings.soundEffectsVolume,
                 extraColor = commandButtonColor,
             ) {
-                val declareIndependenceToDirectLeaderCommand = DeclareIndependenceToDirectLeaderCommand(
-                    toId = playerData.playerId,
-                    fromId = game.universeClient.getCurrentPlayerData().playerId,
-                    fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
-                )
+                val declareIndependenceToDirectLeaderCommand =
+                    DeclareIndependenceToDirectLeaderCommand(
+                        toId = playerData.playerId,
+                        fromId = game.universeClient.getCurrentPlayerData().playerId,
+                        fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
+                    )
 
                 game.universeClient.currentCommand = declareIndependenceToDirectLeaderCommand
             }

@@ -44,9 +44,7 @@ class ModifierInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game)
 
     override fun getScreenComponent(): ScrollPane {
         val primaryPlayerData: PlayerData = game.universeClient.getValidPrimaryPlayerData()
-        if ((primaryPlayerData.playerId != playerData.playerId) ||
-            (primaryPlayerData.int4D.t != playerData.int4D.t)
-        ) {
+        if (primaryPlayerData != playerData) {
             updatePlayerData()
             updateTable()
         }
@@ -114,7 +112,7 @@ class ModifierInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game)
 
         nestedTable.add(
             createLabel(
-            "Disable fuel increase: ${physicsModifier.disableRestMassIncreaseTimeLimit}",
+                "Disable fuel increase: ${physicsModifier.disableRestMassIncreaseTimeLimit}",
                 gdxSettings.smallFontSize
             )
         )
@@ -139,7 +137,7 @@ class ModifierInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game)
 
         nestedTable.add(
             createLabel(
-            "Disable military base recovery: ${combatModifier.disableMilitaryBaseRecoveryTimeLimit}",
+                "Disable military base recovery: ${combatModifier.disableMilitaryBaseRecoveryTimeLimit}",
                 gdxSettings.smallFontSize
             )
         )

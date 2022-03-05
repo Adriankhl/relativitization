@@ -51,9 +51,7 @@ class PlayersInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game) 
 
     override fun getScreenComponent(): ScrollPane {
         val primaryPlayerData: PlayerData = game.universeClient.getValidPrimaryPlayerData()
-        if ((primaryPlayerData.playerId != playerData.playerId) ||
-            (primaryPlayerData.int4D.t != playerData.int4D.t)
-        ) {
+        if (primaryPlayerData != playerData) {
             updatePlayerDataAndIdList()
             updateTable()
         }
@@ -366,7 +364,8 @@ class PlayersInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game) 
 
         nestedTable.add(computeSummaryButton)
 
-        nestedTable.add(hideSummaryButton).size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
+        nestedTable.add(hideSummaryButton)
+            .size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
 
         nestedTable.row().space(10f)
 
@@ -403,9 +402,10 @@ class PlayersInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game) 
 
         val otherPlayerIdList: List<Int> = when (playerSummaryOption) {
             PlayerSummaryOption.SELF_ONLY -> listOf()
-            PlayerSummaryOption.SELF_AND_SUBORDINATES -> game.universeClient.getUniverseData3D().get(
-                selectedId
-            ).playerInternalData.subordinateIdSet.toList()
+            PlayerSummaryOption.SELF_AND_SUBORDINATES -> game.universeClient.getUniverseData3D()
+                .get(
+                    selectedId
+                ).playerInternalData.subordinateIdSet.toList()
             PlayerSummaryOption.SELECTED -> game.universeClient.selectedPlayerIdList
         }
         playerSummary = Summary.computeFromUniverseData3DAtPlayer(
@@ -492,13 +492,21 @@ class PlayersInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game) 
 
         val resourceSupplyLabel = createLabel(
             "$selectedPlayerSummaryResourceType supply: " +
-                    "${playerSummary.totalResourceSupplyMap.getValue(selectedPlayerSummaryResourceType)}",
+                    "${
+                        playerSummary.totalResourceSupplyMap.getValue(
+                            selectedPlayerSummaryResourceType
+                        )
+                    }",
             gdxSettings.smallFontSize
         )
 
         val resourceDemandLabel = createLabel(
             "$selectedPlayerSummaryResourceType demand: " +
-                    "${playerSummary.totalResourceDemandMap.getValue(selectedPlayerSummaryResourceType)}",
+                    "${
+                        playerSummary.totalResourceDemandMap.getValue(
+                            selectedPlayerSummaryResourceType
+                        )
+                    }",
             gdxSettings.smallFontSize
         )
 
@@ -510,11 +518,19 @@ class PlayersInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game) 
             selectedPlayerSummaryResourceType = resourceType
             resourceSupplyLabel.setText(
                 "$selectedPlayerSummaryResourceType supply: " +
-                        "${playerSummary.totalResourceSupplyMap.getValue(selectedPlayerSummaryResourceType)}",
+                        "${
+                            playerSummary.totalResourceSupplyMap.getValue(
+                                selectedPlayerSummaryResourceType
+                            )
+                        }",
             )
             resourceDemandLabel.setText(
                 "$selectedPlayerSummaryResourceType demand: " +
-                        "${playerSummary.totalResourceDemandMap.getValue(selectedPlayerSummaryResourceType)}",
+                        "${
+                            playerSummary.totalResourceDemandMap.getValue(
+                                selectedPlayerSummaryResourceType
+                            )
+                        }",
             )
         }
 
