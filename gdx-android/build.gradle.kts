@@ -22,7 +22,7 @@ android {
 
     sourceSets {
         getByName("main") {
- 
+
             manifest.srcFile("AndroidManifest.xml")
             res.srcDir("res")
             assets.srcDir("../../relativitization-art/assets")
@@ -52,7 +52,6 @@ android {
                 implementation("androidx.lifecycle:lifecycle-runtime-ktx:${Versions.androidLifeCycleKtxVersion}")
                 implementation("androidx.fragment:fragment-ktx:${Versions.androidFragmentKtxVersion}")
                 implementation("androidx.appcompat:appcompat:${Versions.androidAppCompatVersion}")
-                implementation("com.google.android.gms:play-services-ads:${Versions.playServiceAdsVersion}")
 
 
                 implementation("com.badlogicgames.gdx:gdx-backend-android:${Versions.gdxVersion}")
@@ -91,6 +90,7 @@ android {
         base.archivesName.set("relativitization")
     }
 
+    // In the future, this may integrate gms services, the clean build should work without gms
     flavorDimensions += "gms"
     productFlavors {
         create("clean") {
@@ -98,19 +98,14 @@ android {
             applicationIdSuffix = ".clean"
             versionNameSuffix = "-clean"
         }
-        create("ads") {
-            dimension = "gms"
-            applicationIdSuffix = ".ads"
-            versionNameSuffix = "-ads"
-        }
     }
 
 
     compileOptions {
-      sourceCompatibility(JavaVersion.VERSION_11)
-      targetCompatibility(JavaVersion.VERSION_11)
+        sourceCompatibility(JavaVersion.VERSION_11)
+        targetCompatibility(JavaVersion.VERSION_11)
     }
- 
+
     buildTypes {
         release {
             isMinifyEnabled = false
