@@ -10,6 +10,8 @@ plugins {
 val natives: Configuration by configurations.creating
 
 android {
+    namespace = "relativitization.app.android"
+
     compileSdk = 31
 
     buildFeatures {

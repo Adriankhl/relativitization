@@ -26,7 +26,7 @@ object Versions {
     const val dataframeVersion = "0.8.0-rc-7"
 
     // Android
-    const val androidGradlePluginVersion = "7.1.2"
+    const val androidGradlePluginVersion = "7.3.0-alpha05"
     const val androidAppCompatVersion = "1.4.1"
     const val androidLifeCycleKtxVersion = "2.4.1"
     const val androidFragmentKtxVersion = "1.4.1"
