@@ -39,7 +39,7 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
         info.getScreenComponent(),
         false
     )
-    private val topBar: GameScreenTopBar = GameScreenTopBar(game, info)
+    private val topBar: GameScreenTopBar = GameScreenTopBar(game, this::syncComponentSetting)
 
     // Button to trigger gdx settings change
     private val playerDeadBackground = createImage(
@@ -238,6 +238,8 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
 
     private fun syncComponentSetting() {
         info.reRegisterUpperInfoComponent()
+        gdxSettings.worldMapAndInfoSplitAmount = worldMapAndInfo.splitAmount
+        gdxSettings.upperInfoAndBottomCommandSplitAmount = info.infoAndCommand.splitAmount
     }
 
     companion object {

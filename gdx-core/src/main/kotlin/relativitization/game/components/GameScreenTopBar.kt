@@ -20,7 +20,7 @@ import kotlin.reflect.full.primaryConstructor
 
 class GameScreenTopBar(
     val game: RelativitizationGame,
-    private val gameScreenInfo: GameScreenInfo,
+    private val syncGameScreenComponentSettings: () -> Unit,
 ) : ScreenComponent<ScrollPane>(game.assets) {
     private val gdxSettings = game.gdxSettings
     private val table: Table = Table()
@@ -309,7 +309,7 @@ class GameScreenTopBar(
                 gdxSettings.showingUpperInfo = infoName
             }
 
-            gameScreenInfo.reRegisterUpperInfoComponent()
+            syncGameScreenComponentSettings()
 
             game.changeGdxSettings()
         }

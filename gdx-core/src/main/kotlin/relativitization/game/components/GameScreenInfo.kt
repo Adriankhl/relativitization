@@ -23,12 +23,11 @@ class GameScreenInfo(val game: RelativitizationGame) : ScreenComponent<SplitPane
     )
     private val bottomCommandInfo: BottomCommandInfo = BottomCommandInfo(game)
 
-    private val infoAndCommand = createSplitPane(
+    val infoAndCommand = createSplitPane(
         upperInfoContainer,
         bottomCommandInfo.getScreenComponent(),
         true
     )
-
 
     init {
         // Add child screen component
