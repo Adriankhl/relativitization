@@ -72,6 +72,14 @@ tasks.register("createOutputDir") {
     }
 }
 
+tasks.register("outputVersionTxt") {
+    doLast {
+        File(
+            "${artDirectory.path}/outputs/version.txt"
+        ).writeText(Versions.appVersionName)
+    }
+}
+
 tasks.register("packageAssets") {
     doLast {
         exec {
@@ -90,6 +98,7 @@ tasks.register("packageAll") {
     dependsOn("cleanArt")
     dependsOn("cleanWine")
     dependsOn("createOutputDir")
+    dependsOn("outputVersionTxt")
     dependsOn("packageAssets")
     dependsOn(":gdx-android:assembleDebug")
     dependsOn(":gdx-desktop:fatJar")
