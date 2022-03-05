@@ -9,10 +9,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.Align
 import kotlinx.coroutines.runBlocking
 import relativitization.game.RelativitizationGame
-import relativitization.universe.maths.physics.Double2D
 import relativitization.universe.maths.number.Notation
 import relativitization.universe.maths.number.ScientificNotation
 import relativitization.universe.maths.number.toScientificNotation
+import relativitization.universe.maths.physics.Double2D
 import relativitization.universe.maths.physics.Intervals
 import relativitization.universe.utils.I18NString
 import kotlin.math.PI
@@ -492,7 +492,8 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets) {
             } else {
                 newExponent
             }
-            val newCoefficient: Double = Notation.roundDecimal(originalValue.coefficient, sliderDecimalPlace)
+            val newCoefficient: Double =
+                Notation.roundDecimal(originalValue.coefficient, sliderDecimalPlace)
 
             val newValue = ScientificNotation(
                 newCoefficient,
@@ -525,7 +526,8 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets) {
             } else {
                 newExponent
             }
-            val newCoefficient: Double = Notation.roundDecimal(originalValue.coefficient, sliderDecimalPlace)
+            val newCoefficient: Double =
+                Notation.roundDecimal(originalValue.coefficient, sliderDecimalPlace)
 
             val newValue = ScientificNotation(
                 newCoefficient,
@@ -599,29 +601,51 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets) {
             game: RelativitizationGame,
             component: ScreenComponent<T>
         ) {
-            game.onGdxSettingsChangeFunctionList.remove(component::onGdxSettingsChange)
+            game.onGdxSettingsChangeFunctionList.removeIf {
+                it == component::onGdxSettingsChange
+            }
 
             val universeClient = game.universeClient
             runBlocking {
                 universeClient.removeFromOnServerStatusChangeFunctionList(component::onServerStatusChange)
             }
 
-            universeClient.onUniverseData3DChangeFunctionList.remove(component::onUniverseData3DChange)
+            universeClient.onUniverseData3DChangeFunctionList.removeIf {
+                it == component::onUniverseData3DChange
+            }
 
-            universeClient.onUniverseDataViewChangeFunctionList.remove(component::onUniverseDataViewChange)
+            universeClient.onUniverseDataViewChangeFunctionList.removeIf {
+                it == component::onUniverseDataViewChange
+            }
 
-            universeClient.onPrimarySelectedInt3DChangeFunctionList.remove(component::onPrimarySelectedInt3DChange)
-            universeClient.onPrimarySelectedPlayerIdChangeFunctionList.remove(component::onPrimarySelectedPlayerIdChange)
-            universeClient.onSelectedPlayerIdListChangeFunctionList.remove(component::onSelectedPlayerIdListChange)
+            universeClient.onPrimarySelectedInt3DChangeFunctionList.removeIf {
+                it == component::onPrimarySelectedInt3DChange
+            }
+            universeClient.onPrimarySelectedPlayerIdChangeFunctionList.removeIf {
+                it == component::onPrimarySelectedPlayerIdChange
+            }
+            universeClient.onSelectedPlayerIdListChangeFunctionList.removeIf {
+                it == component::onSelectedPlayerIdListChange
+            }
 
-            universeClient.onMapCenterPlayerIdChangeFunctionList.remove(component::onMapCenterPlayerIdChange)
+            universeClient.onMapCenterPlayerIdChangeFunctionList.removeIf {
+                it == component::onMapCenterPlayerIdChange
+            }
 
-            universeClient.onCommandListChangeFunctionList.remove(component::onCommandListChange)
-            universeClient.onCurrentCommandChangeFunctionList.remove(component::onCurrentCommandChange)
+            universeClient.onCommandListChangeFunctionList.removeIf {
+                it == component::onCommandListChange
+            }
+            universeClient.onCurrentCommandChangeFunctionList.removeIf {
+                it == component::onCurrentCommandChange
+            }
 
-            universeClient.onIsPlayerDeadChangeFunctionList.remove(component::onIsPlayerDeadChange)
+            universeClient.onIsPlayerDeadChangeFunctionList.removeIf {
+                it == component::onIsPlayerDeadChange
+            }
 
-            universeClient.onSelectedKnowledgeDouble2D.remove(component::onSelectedKnowledgeDouble2DChange)
+            universeClient.onSelectedKnowledgeDouble2D.removeIf {
+                it == component::onSelectedKnowledgeDouble2DChange
+            }
         }
 
         fun <T : Actor> addAllComponentToClient(

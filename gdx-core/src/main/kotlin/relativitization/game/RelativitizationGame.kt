@@ -19,11 +19,15 @@ import relativitization.universe.utils.RelativitizationLogManager
  */
 class RelativitizationGame(
     val universeClient: UniverseClient,
+    defaultScale: Double,
     private val onDispose: () -> Unit,
 ) : Game() {
 
-    val gdxSettings: GdxSettings =
-        GdxSettings.loadOrDefault(universeClient.universeClientSettings.programDir)
+    val gdxSettings: GdxSettings = GdxSettings.loadOrDefault(
+        universeClient.universeClientSettings.programDir,
+        defaultScale,
+    )
+
     val onGdxSettingsChangeFunctionList: MutableList<() -> Unit> = mutableListOf()
 
     // call when gdx setting is changed

@@ -45,7 +45,7 @@ fun main() {
 
     val adminPassword: String = List(10) { Rand.rand().nextInt(0, 10) }.joinToString(separator = "")
 
-    val serverAddress: String = "127.0.0.1"
+    val serverAddress = "127.0.0.1"
     val serverPort: Int = ServerPort.findAvailablePort()
 
     val universeServerSettings = UniverseServerSettings(adminPassword = adminPassword)
@@ -55,16 +55,16 @@ fun main() {
         serverPort = serverPort,
     )
 
-    val universeServer: UniverseServer = UniverseServer(
+    val universeServer = UniverseServer(
         universeServerSettings = universeServerSettings,
         serverAddress = serverAddress,
         serverPort = serverPort
     )
-    val universeClient: UniverseClient = UniverseClient(universeClientSettings)
+    val universeClient = UniverseClient(universeClientSettings)
 
     runBlocking {
         launch(Dispatchers.Default.limitedParallelism(1)) {
-            val game = RelativitizationGame(universeClient) {
+            val game = RelativitizationGame(universeClient, 1.0) {
                 runBlocking { universeServer.stop() }
             }
 
@@ -99,9 +99,9 @@ private fun packImages() {
     settings.filterMin = Texture.TextureFilter.MipMapLinearLinear
 
     // Pack if outdated
-    val atlasFileName: String = "relativitization-asset"
-    val atlasFile: File = File("$atlasFileName.atlas")
-    val input: String = "./${Assets.dir()}/images/pack"
+    val atlasFileName = "relativitization-asset"
+    val atlasFile = File("$atlasFileName.atlas")
+    val input = "./${Assets.dir()}/images/pack"
     if (!atlasFile.exists() || isAtlasOutdated(atlasFile, input)) {
         logger.info("Pack atlas")
         TexturePacker.process(settings, input, ".", atlasFileName)

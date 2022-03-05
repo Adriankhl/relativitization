@@ -4,6 +4,7 @@ import kotlinx.serialization.Serializable
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.utils.RelativitizationLogManager
 import java.io.File
+import kotlin.math.max
 
 @Serializable
 data class GdxSettings(
@@ -43,14 +44,41 @@ data class GdxSettings(
             return DataSerializer.decode(settingString)
         }
 
-        fun loadOrDefault(programDir: String): GdxSettings {
+        /**
+         * Load settings or create a default setting
+         *
+         * @param programDir load settings from this directory
+         * @param defaultScale scale the graphics by this value for default settings
+         */
+        fun loadOrDefault(
+            programDir: String,
+            defaultScale: Double,
+        ): GdxSettings {
             return try {
                 logger.debug("Trying to load gdx settings")
                 // This can fail due to having older version of setting or file doesn't exist
                 load(programDir)
             } catch (e: Throwable) {
                 logger.debug("Load gdx settings fail, use default settings")
-                GdxSettings()
+                val gdxSettings = GdxSettings()
+                gdxSettings.smallFontSize = (gdxSettings.smallFontSize * defaultScale).toInt()
+                gdxSettings.normalFontSize = (gdxSettings.normalFontSize * defaultScale).toInt()
+                gdxSettings.bigFontSize = (gdxSettings.bigFontSize * defaultScale).toInt()
+                gdxSettings.hugeFontSize = (gdxSettings.hugeFontSize * defaultScale).toInt()
+                gdxSettings.maxFontSize = max(
+                    72,
+                    gdxSettings.hugeFontSize,
+                )
+
+                gdxSettings.imageScale = (gdxSettings.imageScale * defaultScale).toFloat()
+
+                gdxSettings.worldMapAndInfoSplitAmount = (1.0 - (1.0 -
+                        gdxSettings.worldMapAndInfoSplitAmount) * defaultScale).toFloat()
+
+                gdxSettings.upperInfoAndBottomCommandSplitAmount = (1.0 - (1.0 -
+                        gdxSettings.upperInfoAndBottomCommandSplitAmount) * defaultScale).toFloat()
+
+                gdxSettings
             }
         }
     }

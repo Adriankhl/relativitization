@@ -8,7 +8,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.ActorFunction
 import relativitization.universe.data.PlayerData
-import relativitization.universe.maths.physics.Double2D
 import relativitization.universe.data.components.defaults.popsystem.pop.engineer.laboratory.LaboratoryData
 import relativitization.universe.data.components.defaults.popsystem.pop.scholar.institute.InstituteData
 import relativitization.universe.data.components.defaults.science.knowledge.AppliedResearchField
@@ -17,6 +16,7 @@ import relativitization.universe.data.components.defaults.science.knowledge.Basi
 import relativitization.universe.data.components.defaults.science.knowledge.BasicResearchProjectData
 import relativitization.universe.data.components.playerScienceData
 import relativitization.universe.data.components.popSystemData
+import relativitization.universe.maths.physics.Double2D
 import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.math.max
 import kotlin.math.min
@@ -32,7 +32,14 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : UpperInfo<Table>(game) 
 
     private val knowledgeGroup: Group = Group()
 
-    private val knowledgeGroupScrollPane: ScrollPane = createScrollPane(knowledgeGroup, this::onGdxSettingsChange)
+    private val knowledgeGroupScrollPane: ScrollPane =
+        createScrollPane(knowledgeGroup, this::onGdxSettingsChange)
+
+    // Store old value to prevent meaningless render
+    private var oldKnowledgeMapProjectIconZoom = gdxSettings.knowledgeMapProjectIconZoom
+    private var oldKnowledgeMapZoomRelativeToFullMap = gdxSettings.knowledgeMapZoomRelativeToFullMap
+    private var oldKnowledgeGroupScrollPaneWidth = knowledgeGroupScrollPane.width
+    private var oldKnowledgeGroupScrollPaneHeight = knowledgeGroupScrollPane.height
 
     private val table: Table = Table()
 
@@ -182,8 +189,11 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : UpperInfo<Table>(game) 
     }
 
     override fun getScreenComponent(): Table {
-        val primaryPlayerData: PlayerData = game.universeClient.getPrimarySelectedPlayerData()
-        if ((primaryPlayerData.playerId != playerData.playerId) || (primaryPlayerData.int4D.t != playerData.int4D.t)) {
+        val primaryPlayerData: PlayerData = game.universeClient.getValidPrimaryPlayerData()
+        if ((primaryPlayerData.playerId != playerData.playerId) ||
+            (primaryPlayerData.int4D.t != playerData.int4D.t)
+        ) {
+            logger.debug("Update knowledge map")
             updatePlayerData()
             updateTable()
             updateKnowledgeGroup()
@@ -208,7 +218,17 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : UpperInfo<Table>(game) 
     }
 
     override fun onGdxSettingsChange() {
-        updateKnowledgeGroup()
+        if ((oldKnowledgeMapProjectIconZoom != gdxSettings.knowledgeMapProjectIconZoom) ||
+            (oldKnowledgeMapZoomRelativeToFullMap != gdxSettings.knowledgeMapZoomRelativeToFullMap) ||
+            (oldKnowledgeGroupScrollPaneWidth != knowledgeGroupScrollPane.width) ||
+            (oldKnowledgeGroupScrollPaneHeight != knowledgeGroupScrollPane.height)
+        ) {
+            oldKnowledgeMapProjectIconZoom = gdxSettings.knowledgeMapProjectIconZoom
+            oldKnowledgeMapZoomRelativeToFullMap = gdxSettings.knowledgeMapZoomRelativeToFullMap
+            oldKnowledgeGroupScrollPaneWidth = knowledgeGroupScrollPane.width
+            oldKnowledgeGroupScrollPaneHeight = knowledgeGroupScrollPane.height
+            updateKnowledgeGroup()
+        }
     }
 
     override fun onSelectedKnowledgeDouble2DChange() {
@@ -216,11 +236,7 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : UpperInfo<Table>(game) 
     }
 
     private fun updatePlayerData() {
-        playerData = if (game.universeClient.isPrimarySelectedPlayerIdValid()) {
-            game.universeClient.getPrimarySelectedPlayerData()
-        } else {
-            game.universeClient.getCurrentPlayerData()
-        }
+        playerData = game.universeClient.getValidPrimaryPlayerData()
     }
 
     private fun updateTable() {

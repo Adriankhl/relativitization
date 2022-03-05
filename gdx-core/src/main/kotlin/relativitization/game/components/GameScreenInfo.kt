@@ -7,6 +7,7 @@ import relativitization.game.RelativitizationGame
 import relativitization.game.components.bottom.BottomCommandInfo
 import relativitization.game.components.upper.*
 import relativitization.game.utils.ScreenComponent
+import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.reflect.full.primaryConstructor
 
 class GameScreenInfo(val game: RelativitizationGame) : ScreenComponent<SplitPane>(game.assets) {
@@ -61,11 +62,17 @@ class GameScreenInfo(val game: RelativitizationGame) : ScreenComponent<SplitPane
     }
 
     private fun getCurrentUpperInfoComponent(): ScreenComponent<Actor> {
-        return upperInfoMap.getValue(gdxSettings.showingUpperInfo)
+        return upperInfoMap.getOrElse(gdxSettings.showingUpperInfo) {
+            upperInfoMap.values.first()
+        }
     }
 
     fun reRegisterUpperInfoComponent() {
         upperInfoMap.values.forEach { removeAllComponentFromClient(game, it) }
         addAllComponentToClient(game, getCurrentUpperInfoComponent())
+    }
+
+    companion object {
+        private val logger = RelativitizationLogManager.getLogger()
     }
 }

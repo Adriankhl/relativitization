@@ -50,8 +50,10 @@ class PlayersInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game) 
     }
 
     override fun getScreenComponent(): ScrollPane {
-        val primaryPlayerData: PlayerData = game.universeClient.getPrimarySelectedPlayerData()
-        if ((primaryPlayerData.playerId != playerData.playerId) || (primaryPlayerData.int4D.t != playerData.int4D.t)) {
+        val primaryPlayerData: PlayerData = game.universeClient.getValidPrimaryPlayerData()
+        if ((primaryPlayerData.playerId != playerData.playerId) ||
+            (primaryPlayerData.int4D.t != playerData.int4D.t)
+        ) {
             updatePlayerDataAndIdList()
             updateTable()
         }
@@ -76,11 +78,7 @@ class PlayersInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game) 
     }
 
     private fun updatePlayerDataAndIdList() {
-        playerData = if (game.universeClient.isPrimarySelectedPlayerIdValid()) {
-            game.universeClient.getPrimarySelectedPlayerData()
-        } else {
-            game.universeClient.getCurrentPlayerData()
-        }
+        playerData = game.universeClient.getValidPrimaryPlayerData()
 
         if (viewedPlayerIdList.isEmpty()) {
             viewingIdIndex = 0

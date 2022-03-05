@@ -236,6 +236,10 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
         )
     }
 
+    private fun syncComponentSetting() {
+        info.reRegisterUpperInfoComponent()
+    }
+
     companion object {
         private val logger = RelativitizationLogManager.getLogger()
     }

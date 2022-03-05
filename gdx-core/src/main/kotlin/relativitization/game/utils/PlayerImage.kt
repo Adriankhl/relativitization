@@ -304,12 +304,12 @@ object PlayerImage {
             }
             maxComponent.first == 'x' -> {
                 if (velocity.vx > 0) {
-                    val primaryDirection: Float = 90f
+                    val primaryDirection = 90f
                     val adjusted: Float =
                         (-velocity.vy / magMaxComponent * 15 - velocity.vz / magMaxComponent * 5).toFloat()
                     primaryDirection + adjusted
                 } else {
-                    val primaryDirection: Float = 270f
+                    val primaryDirection = 270f
                     val adjusted: Float =
                         (velocity.vy / magMaxComponent * 15 + velocity.vz / magMaxComponent * 5).toFloat()
                     primaryDirection + adjusted
@@ -317,12 +317,12 @@ object PlayerImage {
             }
             maxComponent.first == 'y' -> {
                 if (velocity.vy > 0) {
-                    val primaryDirection: Float = 0f
+                    val primaryDirection = 0f
                     val adjusted: Float =
                         (velocity.vx / magMaxComponent * 15 + velocity.vz / magMaxComponent * 5).toFloat()
                     primaryDirection + adjusted
                 } else {
-                    val primaryDirection: Float = 180f
+                    val primaryDirection = 180f
                     val adjusted: Float =
                         (-velocity.vx / magMaxComponent * 15 - velocity.vz / magMaxComponent * 5).toFloat()
                     primaryDirection + adjusted
@@ -330,12 +330,12 @@ object PlayerImage {
             }
             maxComponent.first == 'z' -> {
                 if (velocity.vz > 0) {
-                    val primaryDirection: Float = 45f
+                    val primaryDirection = 45f
                     val adjusted: Float =
                         (velocity.vx / magMaxComponent * 15 - velocity.vy / magMaxComponent * 5).toFloat()
                     primaryDirection + adjusted
                 } else {
-                    val primaryDirection: Float = 225f
+                    val primaryDirection = 225f
                     val adjusted: Float =
                         (-velocity.vx / magMaxComponent * 15 + velocity.vy / magMaxComponent * 5).toFloat()
                     primaryDirection + adjusted
@@ -408,7 +408,7 @@ object PlayerImage {
             when {
                 ((xTime <= yTime) && (xTime <= zTime)) -> {
                     if (xPositive) {
-                        val primaryDirection: Float = 90f
+                        val primaryDirection = 90f
                         val adjustment: Float =
                             (-velocity.vy / velocityMag * 15 - velocity.vz / velocityMag * 5).toFloat()
                         val realAdjustment: Float = if (maxComponent.first == 'x') {
@@ -418,7 +418,7 @@ object PlayerImage {
                         }
                         primaryDirection + realAdjustment
                     } else {
-                        val primaryDirection: Float = 270f
+                        val primaryDirection = 270f
                         val adjustment: Float =
                             (velocity.vy / velocityMag * 15 + velocity.vz / velocityMag * 5).toFloat()
                         val realAdjustment: Float = if (maxComponent.first == 'x') {
@@ -431,7 +431,7 @@ object PlayerImage {
                 }
                 ((yTime <= xTime) && (yTime <= zTime)) -> {
                     if (yPositive) {
-                        val primaryDirection: Float = 0f
+                        val primaryDirection = 0f
                         val adjustment: Float =
                             (velocity.vx / velocityMag * 15 + velocity.vz / velocityMag * 5).toFloat()
                         val realAdjustment: Float = if (maxComponent.first == 'y') {
@@ -441,7 +441,7 @@ object PlayerImage {
                         }
                         primaryDirection + realAdjustment
                     } else {
-                        val primaryDirection: Float = 180f
+                        val primaryDirection = 180f
                         val adjustment: Float =
                             (-velocity.vx / velocityMag * 15 - velocity.vz / velocityMag * 5).toFloat()
                         val realAdjustment: Float = if (maxComponent.first == 'y') {
@@ -454,7 +454,7 @@ object PlayerImage {
                 }
                 else -> {
                     if (zPositive) {
-                        val primaryDirection: Float = 45f
+                        val primaryDirection = 45f
                         val adjustment: Float =
                             (velocity.vx / velocityMag * 15 - velocity.vy / velocityMag * 5).toFloat()
                         val realAdjustment: Float = if (maxComponent.first == 'z') {
@@ -464,7 +464,7 @@ object PlayerImage {
                         }
                         primaryDirection + realAdjustment
                     } else {
-                        val primaryDirection: Float = 225f
+                        val primaryDirection = 225f
                         val adjustment: Float =
                             (-velocity.vx / velocityMag * 15 + velocity.vy / velocityMag * 5).toFloat()
                         val realAdjustment: Float = if (maxComponent.first == 'z') {

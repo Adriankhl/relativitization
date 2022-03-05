@@ -37,7 +37,7 @@ class AndroidLauncher : AppCompatActivity(), AndroidFragmentApplication.Callback
             Rand.rand().nextInt(0, 10) }.joinToString(separator = ""
         )
 
-        val serverAddress: String = "127.0.0.1"
+        val serverAddress = "127.0.0.1"
         val serverPort: Int = ServerPort.findAvailablePort()
 
         val universeServerSettings = UniverseServerSettings(
@@ -52,12 +52,12 @@ class AndroidLauncher : AppCompatActivity(), AndroidFragmentApplication.Callback
         )
 
 
-        val universeServer: UniverseServer = UniverseServer(
+        val universeServer = UniverseServer(
             universeServerSettings = universeServerSettings,
             serverAddress = serverAddress,
             serverPort = serverPort
         )
-        val universeClient: UniverseClient = UniverseClient(universeClientSettings)
+        val universeClient = UniverseClient(universeClientSettings)
 
         val relativitizationGameFragment = RelativitizationGameFragment(
             universeClient = universeClient,
@@ -93,7 +93,7 @@ class RelativitizationGameFragment(
         savedInstanceState: Bundle?
     ): View {
         return initializeForView(
-            RelativitizationGame(universeClient) {
+            RelativitizationGame(universeClient, 1.5) {
                 runBlocking { universeServer.stop() }
             }
         )

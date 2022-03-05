@@ -628,6 +628,17 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
     }
 
     /**
+     * Get primary selected player data if valid
+     */
+    fun getValidPrimaryPlayerData(): PlayerData {
+        return if (isPrimarySelectedPlayerIdValid()) {
+            getPrimarySelectedPlayerData()
+        } else {
+            getCurrentPlayerData()
+        }
+    }
+
+    /**
      * Get current player
      * Get from plan if plan is at the same time slice as current universe 3d data, else get from
      * universe 3d data
@@ -655,7 +666,9 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
 
     suspend fun removeFromOnServerStatusChangeFunctionList(function: () -> Unit) {
         mutex.withLock {
-            onServerStatusChangeFunctionList.remove(function)
+            onServerStatusChangeFunctionList.removeIf {
+                it == function
+            }
         }
     }
 

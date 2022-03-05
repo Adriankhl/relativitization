@@ -98,8 +98,10 @@ class PopSystemInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game
     }
 
     override fun getScreenComponent(): ScrollPane {
-        val primaryPlayerData: PlayerData = game.universeClient.getPrimarySelectedPlayerData()
-        if ((primaryPlayerData.playerId != playerData.playerId) || (primaryPlayerData.int4D.t != playerData.int4D.t)) {
+        val primaryPlayerData: PlayerData = game.universeClient.getValidPrimaryPlayerData()
+        if ((primaryPlayerData.playerId != playerData.playerId) ||
+            (primaryPlayerData.int4D.t != playerData.int4D.t)
+        ) {
             updatePlayerData()
             updateTable()
         }
@@ -131,12 +133,7 @@ class PopSystemInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game
     }
 
     private fun updatePlayerData() {
-        playerData = if (game.universeClient.isPrimarySelectedPlayerIdValid()) {
-            game.universeClient.getPrimarySelectedPlayerData()
-        } else {
-            game.universeClient.getCurrentPlayerData()
-        }
-
+        playerData = game.universeClient.getValidPrimaryPlayerData()
 
         if (!playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(carrierId)) {
             carrierId = playerData.playerInternalData
