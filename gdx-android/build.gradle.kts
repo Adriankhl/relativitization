@@ -90,13 +90,12 @@ android {
         base.archivesName.set("relativitization")
     }
 
-    // In the future, this may integrate gms services, the clean build should work without gms
-    flavorDimensions += "gms"
+    flavorDimensions += "version"
     productFlavors {
-        create("clean") {
-            dimension = "gms"
-            applicationIdSuffix = ".clean"
-            versionNameSuffix = "-clean"
+        create("free") {
+            dimension = "version"
+            applicationIdSuffix = ".free"
+            versionNameSuffix = "-free"
         }
     }
 

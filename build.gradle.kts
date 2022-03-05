@@ -153,7 +153,7 @@ tasks.register("packageAll") {
             commandLine(
                 "cp",
                 "-r",
-                winePath + "/relativitization-win",
+                "$winePath/relativitization-win",
                 "."
             )
         }
@@ -163,7 +163,7 @@ tasks.register("packageAll") {
             workingDir = artDirectory
             commandLine(
                 "cp",
-                "../relativitization/gdx-android/build/outputs/apk/clean/debug/relativitization-clean-debug.apk",
+                "../relativitization/gdx-android/build/outputs/apk/free/debug/relativitization-free-debug.apk",
                 "./outputs/relativitization.apk"
             )
         }
