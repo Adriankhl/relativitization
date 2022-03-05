@@ -89,6 +89,20 @@ android {
         base.archivesName.set("relativitization")
     }
 
+    flavorDimensions += "gms"
+    productFlavors {
+        create("clean") {
+            dimension = "gms"
+            applicationIdSuffix = ".clean"
+            versionNameSuffix = "-clean"
+        }
+        create("ads") {
+            dimension = "gms"
+            applicationIdSuffix = ".ads"
+            versionNameSuffix = "-ads"
+        }
+    }
+
 
     compileOptions {
       sourceCompatibility(JavaVersion.VERSION_11)
