@@ -80,7 +80,7 @@ tasks.register<Jar>("fatJar") {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 
     manifest {
-        attributes["Implementation-Version"] = Versions.appVersion
+        attributes["Implementation-Version"] = Versions.appVersionName
         attributes["Main-Class"] = mainClassPath
         attributes["Multi-Release"] = "true"
     }

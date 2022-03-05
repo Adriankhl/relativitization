@@ -1,7 +1,13 @@
 object Versions {
     const val appName = "Relativitization"
-    const val appCodeNumber = 2
-    const val appVersion = "0.2"
+
+    // app version
+    private const val appVersionMajor = 0
+    private const val appVersionMinor = 2
+    private const val appVersionPatch = 0
+    const val appVersionCode: Int =
+        10000 * appVersionMajor + 100 * appVersionMinor + appVersionPatch
+    const val appVersionName = "$appVersionMajor.$appVersionMinor.$appVersionPatch"
 
     // Kotlin multiplatform
     const val kotlinVersion = "1.6.10"

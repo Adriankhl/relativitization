@@ -1,4 +1,3 @@
-import com.android.build.gradle.internal.tasks.StripDebugSymbolsTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 
@@ -84,8 +83,8 @@ android {
         applicationId = "relativitization.app.android"
         minSdk = 26
         targetSdk = 31
-        versionCode = Versions.appCodeNumber
-        versionName = Versions.appVersion
+        versionCode = Versions.appVersionCode
+        versionName = Versions.appVersionName
 
         base.archivesName.set("relativitization")
     }
