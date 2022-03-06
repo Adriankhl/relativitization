@@ -9,6 +9,7 @@ import relativitization.game.components.upper.UpperInfo
 import relativitization.game.screens.ClientSettingsScreen
 import relativitization.game.screens.HelpScreen
 import relativitization.game.utils.ScreenComponent
+import relativitization.universe.communication.UniverseServerStatusMessage
 import relativitization.universe.data.commands.DummyCommand
 import relativitization.universe.data.components.defaults.physics.FuelRestMassData
 import relativitization.universe.data.components.physicsData
@@ -464,7 +465,9 @@ class GameScreenTopBar(
     }
 
     // About server status
-    private val serverStatusNameAndTimeLabel: Label = createLabel("", gdxSettings.smallFontSize)
+    private var oldServerStatus: UniverseServerStatusMessage =
+        game.universeClient.getCurrentServerStatus()
+    private val serverStatusNameLabel: Label = createLabel("", gdxSettings.smallFontSize)
     private val serverUniverseTimeLabel: Label = createLabel("", gdxSettings.smallFontSize)
     private val timeLeftLabel: Label = createLabel("", gdxSettings.smallFontSize)
 
@@ -701,7 +704,7 @@ class GameScreenTopBar(
     private fun createServerStatusTable(): Table {
         val nestedTable = Table()
 
-        nestedTable.add(serverStatusNameAndTimeLabel)
+        nestedTable.add(serverStatusNameLabel)
 
         nestedTable.row()
 
@@ -801,31 +804,31 @@ class GameScreenTopBar(
      */
     private fun updateServerStatusLabels() {
         // copy to prevent change
-        val serverStatus = game.universeClient.getCurrentServerStatus().copy()
+        val serverStatus = game.universeClient.getCurrentServerStatus()
 
-        val connectionText = if (serverStatus.success) {
-            if (serverStatus.isUniverseRunning) {
-                "running"
+        if (serverStatus != oldServerStatus) {
+            val connectionText = if (serverStatus.success) {
+                if (serverStatus.isUniverseRunning) {
+                    "running"
+                } else {
+                    "stopped"
+                }
             } else {
-                "stopped"
+                "disconnected"
             }
-        } else {
-            "disconnected"
+
+            val timeLeftText = if (serverStatus.isServerWaitingInput) {
+                "${serverStatus.timeLeft / 1000} s"
+            } else {
+                "waiting data"
+            }
+
+            serverStatusNameLabel.setText("Status: ${serverStatus.universeName} ($connectionText)")
+
+            serverUniverseTimeLabel.setText("Server universe time: ${serverStatus.currentUniverseTime}")
+
+            timeLeftLabel.setText("Input time left: $timeLeftText")
         }
-
-        val timeLeftText = if (serverStatus.isServerWaitingInput) {
-            "${serverStatus.timeLeft / 1000} s"
-        } else {
-            "waiting data"
-        }
-
-        serverStatusNameAndTimeLabel.setText("Server status: ${serverStatus.universeName} ($connectionText)")
-
-        serverUniverseTimeLabel.setText("Server universe time: ${serverStatus.currentUniverseTime}")
-
-        timeLeftLabel.setText(
-            "Input time left: $timeLeftText"
-        )
     }
 
     /**
