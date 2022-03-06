@@ -50,14 +50,14 @@ data class GenerateSettings(
             return decode(settingString)
         }
 
-        fun loadOrDefault(programDir: String): GenerateSettings {
+        fun loadOrDefault(programDir: String, default: GenerateSettings): GenerateSettings {
             return try {
                 logger.debug("Trying to load generate settings")
                 // This can fail due to having older version of setting or file doesn't exist
                 load(programDir)
             } catch (e: Throwable) {
                 logger.debug("Load generate settings fail, use default settings")
-                GenerateSettings()
+                default
             }
         }
     }

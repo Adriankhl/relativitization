@@ -51,8 +51,10 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
     val runOnceFunctionCoroutineList: CoroutineList<() -> Unit> = CoroutineList()
 
     // for generate universe
-    var generateSettings: GenerateSettings =
-        GenerateSettings.loadOrDefault(universeClientSettings.programDir)
+    var generateSettings: GenerateSettings = GenerateSettings.loadOrDefault(
+        universeClientSettings.programDir,
+        GenerateSettings(),
+    )
 
     // For changing server setting
     var universeServerSettings: UniverseServerSettings = UniverseServerSettings(
