@@ -153,8 +153,6 @@ class GameScreenControlBar(
             updateUpdateToLatestButton()
 
             updatePreviousNextUniverseDataButton()
-
-            game.universeClient.currentCommand = DummyCommand()
         }
 
         uploadButton.image.setColor(1.0f, 1.0f, 1.0f, 1.0f)

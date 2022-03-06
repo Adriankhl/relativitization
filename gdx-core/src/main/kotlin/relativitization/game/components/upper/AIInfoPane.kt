@@ -69,19 +69,37 @@ class AIInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane>(gam
 
         nestedTable.add(
             createLabel(
-                "AI: ",
+                "Auto compute: ",
                 gdxSettings.smallFontSize,
             )
         )
 
-        val aiSelectBox = createSelectBox(
+        val autoAISelectBox = createSelectBox(
+            AI::class.sealedSubclasses.map { it.objectInstance!!.name() },
+            game.universeClient.autoAIName,
+            gdxSettings.smallFontSize
+        ) { s, _ ->
+            game.universeClient.autoAIName = s
+        }
+        nestedTable.add(autoAISelectBox)
+
+        nestedTable.row().space(20f)
+
+        nestedTable.add(
+            createLabel(
+                "Manual compute: ",
+                gdxSettings.smallFontSize,
+            )
+        )
+
+        val manualAISelectBox = createSelectBox(
             AI::class.sealedSubclasses.map { it.objectInstance!!.name() },
             aiName,
             gdxSettings.smallFontSize
         ) { s, _ ->
             aiName = s
         }
-        nestedTable.add(aiSelectBox).pad(10f)
+        nestedTable.add(manualAISelectBox).pad(10f)
 
         return nestedTable
     }

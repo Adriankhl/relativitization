@@ -13,6 +13,9 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import relativitization.universe.UniverseClientSettings
 import relativitization.universe.UniverseServerSettings
+import relativitization.universe.ai.AICollection
+import relativitization.universe.ai.EmptyAI
+import relativitization.universe.ai.name
 import relativitization.universe.communication.*
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.PlayerData
@@ -61,6 +64,9 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
         programDir = universeClientSettings.programDir,
         adminPassword = universeClientSettings.adminPassword
     )
+
+    // Use this AI to auto-compute command list after update to latest
+    var autoAIName: String = EmptyAI.name()
 
     // Server status, use default universe name from server setting
     // Set private because this should be updated with mutex
@@ -400,7 +406,22 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
         planDataAtPlayer = currentUniverseData3DAtPlayer.getPlanDataAtPlayer {
             onCommandListChangeFunctionList.forEach { it() }
         }
-        planDataAtPlayer.onCommandListChange()
+
+        if (autoAIName != EmptyAI.name()) {
+            val commandList: List<Command> = AICollection.compute(
+                planDataAtPlayer.universeData3DAtPlayer,
+                autoAIName,
+            )
+            planDataAtPlayer.addAllCommand(commandList)
+        } else {
+            planDataAtPlayer.onCommandListChange()
+        }
+
+        currentCommand = if (planDataAtPlayer.commandList.isEmpty()) {
+            DummyCommand()
+        } else {
+            planDataAtPlayer.commandList.last()
+        }
 
         isNewDataReady.set(false)
     }
