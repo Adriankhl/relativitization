@@ -29,6 +29,14 @@ allprojects {
     }
 }
 
+tasks.getByName("clean").doLast {
+    delete("./universe/saves")
+}
+
+tasks.register("cleanAll") {
+    dependsOn("clean")
+}
+
 tasks.register("cleanArt") {
     doLast {
         // art directory may not be a git repository
