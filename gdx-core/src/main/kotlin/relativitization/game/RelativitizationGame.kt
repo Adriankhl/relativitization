@@ -43,6 +43,9 @@ class RelativitizationGame(
 
     var isGameStarted: Boolean = false
 
+    // Avoid infinite looping, exit() may call dispose()
+    private var isGameDisposed = false
+
     override fun create() {
         Gdx.input.setCatchKey(Input.Keys.BACK, true)
         Gdx.graphics.isContinuousRendering = gdxSettings.isContinuousRendering
@@ -55,18 +58,14 @@ class RelativitizationGame(
         setScreen(MainMenuScreen(this))
     }
 
-    // Avoid infinite looping, exit() may call dispose()
-    private var isGameDisposed = false
     override fun dispose() {
         if (!isGameDisposed) {
             isGameDisposed = true
             logger.debug("Stopping game")
             clear()
-            runBlocking {
-                backgroundMusic.stop()
-                assets.dispose()
-            }
             exit()
+            backgroundMusic.stop()
+            assets.dispose()
             logger.debug("Game stopped")
         }
     }
