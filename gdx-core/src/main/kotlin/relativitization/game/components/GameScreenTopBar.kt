@@ -15,6 +15,7 @@ import relativitization.universe.data.components.defaults.physics.FuelRestMassDa
 import relativitization.universe.data.components.physicsData
 import relativitization.universe.maths.number.toScientificNotation
 import relativitization.universe.maths.physics.Intervals.intDelay
+import kotlin.math.max
 import kotlin.math.min
 import kotlin.reflect.full.primaryConstructor
 
@@ -467,9 +468,7 @@ class GameScreenTopBar(
     // About server status
     private var oldServerStatus: UniverseServerStatusMessage =
         game.universeClient.getCurrentServerStatus()
-    private val serverStatusNameLabel: Label = createLabel("", gdxSettings.smallFontSize)
-    private val serverUniverseTimeLabel: Label = createLabel("", gdxSettings.smallFontSize)
-    private val timeLeftLabel: Label = createLabel("", gdxSettings.smallFontSize)
+    private val serverStatusLabel: Label = createLabel("", gdxSettings.smallFontSize)
 
     // About fuel
     private val fuelTradeLabel: Label = createLabel("", gdxSettings.smallFontSize)
@@ -481,7 +480,6 @@ class GameScreenTopBar(
     private val viewControlTable: Table = createViewControlTable()
     private val currentUniverseDataTable: Table = createCurrentUniverseDataTable()
     private val fuelRestMassDataTable: Table = createFuelRestMassDataTable()
-    private val serverStatusTable: Table = createServerStatusTable()
     private val stopWaitingTable: Table = createStopWaitingTable()
     private val runOrStopUniverseTable: Table = createRunStopUniverseTable()
 
@@ -494,7 +492,7 @@ class GameScreenTopBar(
         scrollPane.setClamp(true)
         scrollPane.setOverscroll(false, false)
 
-        updateServerStatusLabels()
+        updateServerStatusLabel()
 
         updateCurrentUniverseDataLabel()
 
@@ -521,7 +519,7 @@ class GameScreenTopBar(
         table.add(bottomCommandInfoButton)
             .size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
 
-        table.add(serverStatusTable).pad(10f)
+        table.add(serverStatusLabel).pad(10f)
 
         table.add(updateToLatestButton)
             .size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
@@ -545,7 +543,7 @@ class GameScreenTopBar(
      * Put these functions here to ensure thread safe
      */
     fun render() {
-        updateServerStatusLabels()
+        updateServerStatusLabel()
         updateRunAndStopButton()
         runBlocking {
             updatePreviousNextUniverseDataButton()
@@ -566,7 +564,7 @@ class GameScreenTopBar(
     }
 
     override fun onUniverseData3DChange() {
-        updateServerStatusLabels()
+        updateServerStatusLabel()
         updateCurrentUniverseDataLabel()
         runBlocking {
             updateUpdateToLatestButton()
@@ -699,25 +697,6 @@ class GameScreenTopBar(
     }
 
     /**
-     * Create a table to display server status
-     */
-    private fun createServerStatusTable(): Table {
-        val nestedTable = Table()
-
-        nestedTable.add(serverStatusNameLabel)
-
-        nestedTable.row()
-
-        nestedTable.add(serverUniverseTimeLabel)
-
-        nestedTable.row()
-
-        nestedTable.add(timeLeftLabel)
-
-        return nestedTable
-    }
-
-    /**
      * Create a table for controlling time slice
      */
     private fun createCurrentUniverseDataTable(): Table {
@@ -802,7 +781,7 @@ class GameScreenTopBar(
     /**
      * Update the text label showing the server status
      */
-    private fun updateServerStatusLabels() {
+    private fun updateServerStatusLabel() {
         // copy to prevent change
         val serverStatus = game.universeClient.getCurrentServerStatus()
 
@@ -823,11 +802,20 @@ class GameScreenTopBar(
                 "waiting data"
             }
 
-            serverStatusNameLabel.setText("Status: ${serverStatus.universeName} ($connectionText)")
+            val firstLine = "Status: ${serverStatus.universeName} ($connectionText)"
+            val secondLine = "Server universe time: ${serverStatus.currentUniverseTime}"
+            val thirdLine = "Input time left: $timeLeftText"
 
-            serverUniverseTimeLabel.setText("Server universe time: ${serverStatus.currentUniverseTime}")
+            val maxLength: Int = max(max(firstLine.length, secondLine.length), thirdLine.length)
+            val firstIndentNum: Int = (maxLength - firstLine.length) / 2
+            val secondIndentNum: Int = (maxLength - secondLine.length) / 2
+            val thirdIndentNum: Int = (maxLength - thirdLine.length) / 2
 
-            timeLeftLabel.setText("Input time left: $timeLeftText")
+            serverStatusLabel.setText(
+                " ".repeat(firstIndentNum) + firstLine + " ".repeat(firstIndentNum) + "\n" +
+                        " ".repeat(secondIndentNum) + secondLine + " ".repeat(secondIndentNum) + "\n" +
+                        " ".repeat(thirdIndentNum) + thirdLine + " ".repeat(thirdIndentNum)
+            )
         }
     }
 
