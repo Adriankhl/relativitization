@@ -61,7 +61,8 @@ class AndroidLauncher : AppCompatActivity(), AndroidFragmentApplication.Callback
 
         val relativitizationGameFragment = RelativitizationGameFragment(
             universeClient = universeClient,
-            universeServer = universeServer
+            universeServer = universeServer,
+            this::finishAndRemoveTask
         )
 
         val trans: FragmentTransaction = supportFragmentManager.beginTransaction()
@@ -85,6 +86,7 @@ class AndroidLauncher : AppCompatActivity(), AndroidFragmentApplication.Callback
 class RelativitizationGameFragment(
     private val universeClient: UniverseClient,
     private val universeServer: UniverseServer,
+    private val exit: () -> Unit,
 ) : AndroidFragmentApplication() {
 
     override fun onCreateView(
@@ -93,7 +95,11 @@ class RelativitizationGameFragment(
         savedInstanceState: Bundle?
     ): View {
         return initializeForView(
-            RelativitizationGame(universeClient, 1.5) {
+            RelativitizationGame(
+                universeClient,
+                1.5,
+                exit,
+            ) {
                 runBlocking { universeServer.stop() }
             }
         )

@@ -1,6 +1,7 @@
 package relativitization.app.desktop
 
 import com.badlogic.gdx.Files
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration
 import com.badlogic.gdx.graphics.Texture
@@ -64,7 +65,11 @@ fun main() {
 
     runBlocking {
         launch(Dispatchers.Default.limitedParallelism(1)) {
-            val game = RelativitizationGame(universeClient, 1.0) {
+            val game = RelativitizationGame(
+                universeClient = universeClient,
+                defaultScale = 1.0,
+                exit = { Gdx.app.exit() }
+            ) {
                 runBlocking { universeServer.stop() }
             }
 

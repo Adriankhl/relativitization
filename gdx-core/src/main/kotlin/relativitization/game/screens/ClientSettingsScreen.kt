@@ -58,8 +58,8 @@ class ClientSettingsScreen(
 
         var isReset: Boolean = false
 
-        val confirmButton = createTextButton(
-            "Confirm",
+        val exitButton = createTextButton(
+            "Exit game",
             gdxSettings.normalFontSize,
             gdxSettings.soundEffectsVolume
         ) {
@@ -67,7 +67,9 @@ class ClientSettingsScreen(
                 if (isReset) {
                     game.cleanSettings()
                 }
-                game.universeClient.addToOnServerStatusChangeFunctionList { Gdx.app.exit() }
+                game.universeClient.runOnceFunctionCoroutineList.add {
+                    game.exit()
+                }
             }
         }
 
@@ -78,38 +80,44 @@ class ClientSettingsScreen(
         ) {
             isReset = false
             it.isVisible = false
-            confirmButton.isVisible = false
+            exitButton.isVisible = false
         }
 
         val quitGameButton = createTextButton(
-            "Quit game",
+            "Quit",
             gdxSettings.normalFontSize,
             gdxSettings.soundEffectsVolume
         ) {
             isReset = false
-            confirmButton.isVisible = true
+            exitButton.isVisible = true
             cancelButton.isVisible = true
         }
 
-        val resetAndQuitGameButton = createTextButton(
-            "Reset and quit",
+        val resetButton = createTextButton(
+            "Reset",
             gdxSettings.normalFontSize,
             gdxSettings.soundEffectsVolume
         ) {
             isReset = true
-            confirmButton.isVisible = true
+            exitButton.isVisible = true
             cancelButton.isVisible = true
         }
 
-        nestedTable.add(quitGameButton).pad(10f)
-        nestedTable.add(resetAndQuitGameButton).pad(10f)
+        val quiteGameTable = Table()
+        quiteGameTable.add(quitGameButton).pad(10f)
+        quiteGameTable.add(resetButton).pad(10f)
+
+        nestedTable.add(quiteGameTable)
 
         nestedTable.row().space(10f)
 
-        nestedTable.add(confirmButton).space(10f)
-        nestedTable.add(cancelButton)
+        val confirmTable = Table()
+        confirmTable.add(exitButton).space(10f)
+        confirmTable.add(cancelButton)
 
-        confirmButton.isVisible = false
+        nestedTable.add(confirmTable)
+
+        exitButton.isVisible = false
         cancelButton.isVisible = false
 
         return nestedTable

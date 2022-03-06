@@ -16,11 +16,14 @@ import java.io.File
  * The main game graphical interface
  *
  * @property universeClient the GUI independent client
+ * @property defaultScale the default scale of UI
+ * @property exit call this to exit app
  * @property onDispose function to execute on dispose
  */
 class RelativitizationGame(
     val universeClient: UniverseClient,
-    defaultScale: Double,
+    private val defaultScale: Double,
+    val exit: () -> Unit,
     private val onDispose: () -> Unit,
 ) : Game() {
 
