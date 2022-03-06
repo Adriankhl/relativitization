@@ -387,7 +387,7 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets) {
             max = max,
             stepSize = stepSize,
             default = default,
-            scale = 1f,
+            scale = height / 15f,
             vertical = vertical,
             function = function
         )
