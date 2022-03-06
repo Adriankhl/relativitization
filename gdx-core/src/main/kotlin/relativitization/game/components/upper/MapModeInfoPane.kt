@@ -41,14 +41,14 @@ class MapModeInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane
     private fun updateTable() {
         table.clear()
 
-        val headerLabel = createLabel(
-            "Map mode",
-            gdxSettings.bigFontSize
-        )
+        table.add(
+            createLabel(
+                "Map mode",
+                gdxSettings.bigFontSize
+            )
+        ).pad(20f)
 
-        table.add(headerLabel).pad(20f)
-
-        table.row().space(20f)
+        table.row().space(10f)
 
         table.add(createMapColorModeTable())
     }

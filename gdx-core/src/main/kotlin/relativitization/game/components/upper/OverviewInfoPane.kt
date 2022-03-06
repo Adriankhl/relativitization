@@ -62,12 +62,14 @@ class OverviewInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPan
     private fun updateTable() {
         table.clear()
 
-        val headerLabel =
-            createLabel("Overview: player ${playerData.playerId}", gdxSettings.bigFontSize)
+        table.add(
+            createLabel(
+                "Overview: player ${playerData.playerId}",
+                gdxSettings.bigFontSize
+            )
+        ).pad(20f)
 
-        table.add(headerLabel)
-
-        table.row().space(20f)
+        table.row().space(10f)
 
         val playerImageWidgetGroup = PlayerImage.getPlayerImageWidgetGroup(
             playerData = playerData,

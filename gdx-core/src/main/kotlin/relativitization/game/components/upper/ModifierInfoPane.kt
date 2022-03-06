@@ -80,9 +80,9 @@ class ModifierInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPan
                 "Modifier: player ${playerData.playerId}",
                 gdxSettings.bigFontSize
             )
-        )
+        ).pad(20f)
 
-        table.row().spaceTop(30f)
+        table.row().space(10f)
 
         table.add(createPhysicsModifierTable())
 

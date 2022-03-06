@@ -64,12 +64,14 @@ class EventsInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane>
     private fun updateTable() {
         table.clear()
 
-        val headerLabel =
-            createLabel("Event list: player ${playerData.playerId}", gdxSettings.bigFontSize)
+        table.add(
+            createLabel(
+                "Event list: player ${playerData.playerId}",
+                gdxSettings.bigFontSize
+            )
+        ).pad(20f)
 
-        table.add(headerLabel)
-
-        table.row().space(20f)
+        table.row().space(10f)
 
         for (eventKey in playerData.playerInternalData.eventDataMap.keys) {
             val eventDataTable = createEventTable(eventKey)

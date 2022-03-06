@@ -86,12 +86,12 @@ class DiplomacyInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
     private fun updateTable() {
         table.clear()
 
-        val headerLabel = createLabel(
-            "Diplomacy: player ${playerData.playerId}",
-            gdxSettings.bigFontSize
-        )
-
-        table.add(headerLabel).pad(20f)
+        table.add(
+            createLabel(
+                "Diplomacy: player ${playerData.playerId}",
+                gdxSettings.bigFontSize
+            )
+        ).pad(20f)
 
         table.row().space(10f)
 

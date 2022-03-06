@@ -148,9 +148,9 @@ class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
                 "Pop system: player ${playerData.playerId}",
                 gdxSettings.bigFontSize
             )
-        )
+        ).pad(20f)
 
-        table.row().space(20f)
+        table.row().space(10f)
 
         table.add(createLabel("Carrier:", gdxSettings.normalFontSize))
 

@@ -44,14 +44,14 @@ class AIInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane>(gam
     private fun updateTable() {
         table.clear()
 
-        val headerLabel = createLabel(
-            "AI: Player ${game.universeClient.universeClientSettings.playerId}",
-            gdxSettings.bigFontSize
-        )
+        table.add(
+            createLabel(
+                "AI: Player ${game.universeClient.universeClientSettings.playerId}",
+                gdxSettings.bigFontSize
+            )
+        ).pad(20f)
 
-        table.add(headerLabel).pad(20f)
-
-        table.row().space(20f)
+        table.row().space(10f)
 
         table.add(createAISelectionTable())
 
@@ -132,8 +132,10 @@ class AIInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane>(gam
                 val successNum: Int = successList.filter { it.success }.size
                 val failedNum: Int = successList.filter { !it.success }.size
                 game.universeClient.currentCommand = CannotSendCommand(
-                    reason = I18NString(singleMessage = "Success: $successNum, " +
-                            "failed (include execute failure on other player): $failedNum. ")
+                    reason = I18NString(
+                        singleMessage = "Success: $successNum, " +
+                                "failed (include execute failure on other player): $failedNum. "
+                    )
                 )
             } else {
                 game.universeClient.currentCommand = game.universeClient.planDataAtPlayer

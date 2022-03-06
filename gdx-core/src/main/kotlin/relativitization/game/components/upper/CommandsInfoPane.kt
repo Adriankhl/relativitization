@@ -52,11 +52,14 @@ class CommandsInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPan
     private fun updateTable() {
         table.clear()
 
-        val headerLabel = createLabel("Command list: ", gdxSettings.bigFontSize)
+        table.add(
+            createLabel(
+                "Command list: ",
+                gdxSettings.bigFontSize
+            )
+        ).pad(20f)
 
-        table.add(headerLabel)
-
-        table.row().space(20f)
+        table.row().space(10f)
 
         for (command in commandList) {
             val commandTable = createCommandTable(command)

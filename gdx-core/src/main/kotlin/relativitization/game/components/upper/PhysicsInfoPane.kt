@@ -162,7 +162,7 @@ class PhysicsInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane
             )
         ).pad(20f)
 
-        table.row().space(20f)
+        table.row().space(10f)
 
         table.add(
             createLabel(

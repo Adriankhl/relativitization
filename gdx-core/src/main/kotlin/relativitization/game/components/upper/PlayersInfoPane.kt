@@ -102,12 +102,14 @@ class PlayersInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane
     private fun updateTable() {
         table.clear()
 
-        val headerLabel =
-            createLabel("Selected: player ${playerData.playerId}", gdxSettings.bigFontSize)
+        table.add(
+            createLabel(
+                "Selected: player ${playerData.playerId}",
+                gdxSettings.bigFontSize
+            )
+        ).pad(20f)
 
-        table.add(headerLabel)
-
-        table.row().space(20f)
+        table.row().space(10f)
 
         table.add(createPlayerImageAndButtonTable())
 

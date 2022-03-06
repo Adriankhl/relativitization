@@ -71,14 +71,14 @@ class PoliticsInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPan
     private fun updateTable() {
         table.clear()
 
-        val headerLabel = createLabel(
-            "Politics: player ${playerData.playerId}",
-            gdxSettings.bigFontSize
-        )
+        table.add(
+            createLabel(
+                "Politics: player ${playerData.playerId}",
+                gdxSettings.bigFontSize
+            )
+        ).pad(20f)
 
-        table.add(headerLabel).pad(20f)
-
-        table.row().space(20f)
+        table.row().space(10f)
 
         table.add(createMergePlayerTable())
 
