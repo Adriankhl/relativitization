@@ -81,7 +81,7 @@ class AIInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane>(gam
         ) { s, _ ->
             aiName = s
         }
-        nestedTable.add(aiSelectBox)
+        nestedTable.add(aiSelectBox).pad(10f)
 
         return nestedTable
     }
@@ -105,9 +105,9 @@ class AIInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane>(gam
 
             updateTable()
         }
-        nestedTable.add(computeButton)
+        nestedTable.add(computeButton).pad(5f)
 
-        nestedTable.row().space(20f)
+        nestedTable.row()
 
         val useAllButton = createTextButton(
             "Use all",
@@ -142,7 +142,7 @@ class AIInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane>(gam
                     .commandList.lastOrNull() ?: DummyCommand()
             }
         }
-        nestedTable.add(useAllButton)
+        nestedTable.add(useAllButton).pad(5f)
 
         return nestedTable
     }
