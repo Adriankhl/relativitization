@@ -8,7 +8,9 @@ import relativitization.universe.data.commands.CannotSendCommand
 import relativitization.universe.data.commands.ExecuteWarningCommand
 import relativitization.universe.data.commands.name
 
-class BottomCommandInfo(val game: RelativitizationGame) : ScreenComponent<ScrollPane>(game.assets) {
+class BottomCommandInfoPane(
+    val game: RelativitizationGame,
+) : ScreenComponent<ScrollPane>(game.assets) {
 
     private val gdxSettings = game.gdxSettings
 

@@ -21,7 +21,7 @@ import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.math.max
 import kotlin.math.min
 
-class KnowledgeMapInfo(val game: RelativitizationGame) : UpperInfo<Table>(game) {
+class KnowledgeMapInfoPane(val game: RelativitizationGame) : UpperInfoPane<Table>(game) {
     override val infoName: String = "Knowledge Map"
 
     override val infoPriority: Int = 8

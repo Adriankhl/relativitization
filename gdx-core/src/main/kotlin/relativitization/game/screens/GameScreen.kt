@@ -9,8 +9,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import relativitization.game.RelativitizationGame
-import relativitization.game.components.GameScreenInfo
-import relativitization.game.components.GameScreenTopBar
+import relativitization.game.components.GameScreenInfoPane
+import relativitization.game.components.GameScreenControlBar
 import relativitization.game.components.GameScreenWorldMap
 import relativitization.game.utils.TableScreen
 import relativitization.universe.utils.RelativitizationLogManager
@@ -33,13 +33,13 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
     }
 
     private val worldMap: GameScreenWorldMap = GameScreenWorldMap(game)
-    private val info: GameScreenInfo = GameScreenInfo(game)
-    private val worldMapAndInfo = createSplitPane(
+    private val infoPane: GameScreenInfoPane = GameScreenInfoPane(game)
+    private val worldMapInfoPane = createSplitPane(
         worldMap.getScreenComponent(),
-        info.getScreenComponent(),
+        infoPane.getScreenComponent(),
         false
     )
-    private val topBar: GameScreenTopBar = GameScreenTopBar(game, this::syncComponentSetting)
+    private val topBar: GameScreenControlBar = GameScreenControlBar(game, this::syncComponentSetting)
 
     // Button to trigger gdx settings change
     private val playerDeadBackground = createImage(
@@ -66,7 +66,7 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
 
     init {
         addChildScreenComponent(worldMap)
-        addChildScreenComponent(info)
+        addChildScreenComponent(infoPane)
         addChildScreenComponent(topBar)
 
         addAllComponentToClient(game, this)
@@ -81,7 +81,7 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
         super.show()
 
         // Adjust split pane position from gdx setting
-        worldMapAndInfo.splitAmount = gdxSettings.worldMapAndInfoSplitAmount
+        worldMapInfoPane.splitAmount = gdxSettings.worldMapInfoPaneSplitAmount
 
         // Fix minimal top Bar height to preferred height
         root.add(topBar.getScreenComponent()).growX().top()
@@ -90,7 +90,7 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
 
         root.row()
 
-        root.add(worldMapAndInfo).growX().growY()
+        root.add(worldMapInfoPane).growX().growY()
 
         stage.addListener(object : InputListener() {
             override fun keyTyped(event: InputEvent?, character: Char): Boolean {
@@ -204,14 +204,14 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
     }
 
     override fun onGdxSettingsChange() {
-        if (gdxSettings.isInfoShowing) {
-            worldMapAndInfo.splitAmount = gdxSettings.worldMapAndInfoSplitAmount
+        if (gdxSettings.isInfoPaneShow) {
+            worldMapInfoPane.splitAmount = gdxSettings.worldMapInfoPaneSplitAmount
         } else {
             // Only update the stored split amount of the split screen is not too close to the edge
-            if (worldMapAndInfo.splitAmount < worldMapAndInfo.maxSplitAmount * 0.9) {
-                gdxSettings.worldMapAndInfoSplitAmount = worldMapAndInfo.splitAmount
+            if (worldMapInfoPane.splitAmount < worldMapInfoPane.maxSplitAmount * 0.9) {
+                gdxSettings.worldMapInfoPaneSplitAmount = worldMapInfoPane.splitAmount
             }
-            worldMapAndInfo.splitAmount = worldMapAndInfo.maxSplitAmount
+            worldMapInfoPane.splitAmount = worldMapInfoPane.maxSplitAmount
         }
     }
 
@@ -243,12 +243,12 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
     }
 
     private fun syncComponentSetting() {
-        info.reRegisterUpperInfoComponent()
-        if (worldMapAndInfo.splitAmount < 0.99f) {
-            gdxSettings.worldMapAndInfoSplitAmount = worldMapAndInfo.splitAmount
+        infoPane.reRegisterUpperInfoComponent()
+        if (worldMapInfoPane.splitAmount < 0.99f) {
+            gdxSettings.worldMapInfoPaneSplitAmount = worldMapInfoPane.splitAmount
         }
-        if (info.infoAndCommand.splitAmount < 0.99f) {
-            gdxSettings.upperInfoAndBottomCommandInfoSplitAmount = info.infoAndCommand.splitAmount
+        if (infoPane.fullInfoPane.splitAmount < 0.99f) {
+            gdxSettings.infoPaneSplitAmount = infoPane.fullInfoPane.splitAmount
         }
     }
 

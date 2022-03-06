@@ -13,7 +13,7 @@ import relativitization.universe.data.components.defaults.science.knowledge.Basi
 import relativitization.universe.data.components.defaults.science.knowledge.KnowledgeData
 import relativitization.universe.data.components.playerScienceData
 
-class ScienceInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game) {
+class ScienceInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane>(game) {
     override val infoName: String = "Science"
 
     override val infoPriority: Int = 9

@@ -9,7 +9,7 @@ import relativitization.universe.data.components.defaults.modifier.DiplomacyModi
 import relativitization.universe.data.components.defaults.modifier.PhysicsModifierData
 import relativitization.universe.data.components.modifierData
 
-class ModifierInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game) {
+class ModifierInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane>(game) {
     override val infoName: String = "Modifier"
 
     override val infoPriority: Int = 13

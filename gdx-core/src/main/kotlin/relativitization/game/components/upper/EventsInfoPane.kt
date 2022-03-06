@@ -8,7 +8,7 @@ import relativitization.universe.data.commands.SelectEventChoiceCommand
 import relativitization.universe.data.events.EventData
 import relativitization.universe.data.events.name
 
-class EventsInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game) {
+class EventsInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane>(game) {
     override val infoName: String = "Events"
 
     override val infoPriority: Int = 5

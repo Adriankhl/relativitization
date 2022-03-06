@@ -23,11 +23,11 @@ data class GdxSettings(
     var imageScale: Float = 1.0f,
     var knowledgeMapZoomRelativeToFullMap: Float = 1.0f,
     var knowledgeMapProjectIconZoom: Float = 1.0f,
-    var isInfoShowing: Boolean = true,
-    var worldMapAndInfoSplitAmount: Float = 0.7f,
-    var isBottomCommandInfoShowing: Boolean = true,
-    var upperInfoAndBottomCommandInfoSplitAmount: Float = 0.8f,
-    var showingUpperInfo: String = "Overview",
+    var isInfoPaneShow: Boolean = true,
+    var worldMapInfoPaneSplitAmount: Float = 0.7f,
+    var isBottomCommandInfoPaneShow: Boolean = true,
+    var infoPaneSplitAmount: Float = 0.8f,
+    var upperInfoPaneChoice: String = "Overview",
     var mapPlayerColorMode: MapPlayerColorMode = MapPlayerColorMode.ONE_COLOR_PER_PLAYER,
     var language: Language = Language.ENGLISH,
 ) {
@@ -72,11 +72,11 @@ data class GdxSettings(
 
                 gdxSettings.imageScale = (gdxSettings.imageScale * defaultScale).toFloat()
 
-                gdxSettings.worldMapAndInfoSplitAmount = (1.0 - (1.0 -
-                        gdxSettings.worldMapAndInfoSplitAmount) * defaultScale).toFloat()
+                gdxSettings.worldMapInfoPaneSplitAmount = (1.0 - (1.0 -
+                        gdxSettings.worldMapInfoPaneSplitAmount) * defaultScale).toFloat()
 
-                gdxSettings.upperInfoAndBottomCommandInfoSplitAmount = (1.0 - (1.0 -
-                        gdxSettings.upperInfoAndBottomCommandInfoSplitAmount) * defaultScale).toFloat()
+                gdxSettings.infoPaneSplitAmount = (1.0 - (1.0 -
+                        gdxSettings.infoPaneSplitAmount) * defaultScale).toFloat()
 
                 gdxSettings
             }

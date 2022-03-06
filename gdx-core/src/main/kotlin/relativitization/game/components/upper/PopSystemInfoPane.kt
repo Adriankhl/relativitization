@@ -35,7 +35,7 @@ import relativitization.universe.data.components.popSystemData
 import relativitization.universe.maths.number.Notation
 import relativitization.universe.utils.RelativitizationLogManager
 
-class PopSystemInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game) {
+class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane>(game) {
     override val infoName: String = "Pop System"
 
     override val infoPriority: Int = 7

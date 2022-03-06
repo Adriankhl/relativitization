@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import kotlinx.coroutines.runBlocking
 import relativitization.game.Language
 import relativitization.game.RelativitizationGame
-import relativitization.game.components.upper.UpperInfo
+import relativitization.game.components.upper.UpperInfoPane
 import relativitization.game.utils.Assets
 import relativitization.game.utils.TableScreen
 import relativitization.universe.utils.RelativitizationLogManager
@@ -354,72 +354,71 @@ class ClientSettingsScreen(
 
         table.add(createLabel("Show info: ", gdxSettings.normalFontSize))
         val showingInfoTickImageButton = createTickImageButton(
-            gdxSettings.isInfoShowing,
+            gdxSettings.isInfoPaneShow,
             gdxSettings.soundEffectsVolume,
         ) {
-            gdxSettings.isInfoShowing = it
+            gdxSettings.isInfoPaneShow = it
         }
         table.add(showingInfoTickImageButton).size(50f * gdxSettings.imageScale)
 
         table.row().space(10f)
 
-        table.add(createLabel("WorldMap and Info split: ", gdxSettings.normalFontSize))
-        val worldMapAndInfoSplitAmountTextField = createTextField(
-            gdxSettings.worldMapAndInfoSplitAmount.toString(),
+        table.add(createLabel("World map info pane split: ", gdxSettings.normalFontSize))
+        val worldMapInfoPaneSplitAmountTextField = createTextField(
+            gdxSettings.worldMapInfoPaneSplitAmount.toString(),
             gdxSettings.normalFontSize
-        ) { worldMapAndInfoSplitAmount, _ ->
+        ) { worldMapInfoPaneSplitAmount, _ ->
             try {
-                gdxSettings.worldMapAndInfoSplitAmount = worldMapAndInfoSplitAmount.toFloat()
+                gdxSettings.worldMapInfoPaneSplitAmount = worldMapInfoPaneSplitAmount.toFloat()
             } catch (e: NumberFormatException) {
-                logger.error("Invalid worldMapAndInfoSplitAmount")
+                logger.error("Invalid worldMapInfoPaneSplitAmount")
             }
         }
-        table.add(worldMapAndInfoSplitAmountTextField)
+        table.add(worldMapInfoPaneSplitAmountTextField)
 
         table.row().space(10f)
 
         table.add(createLabel("Show bottom command: ", gdxSettings.normalFontSize))
         val showingBottomCommandTickImageButton = createTickImageButton(
-            gdxSettings.isBottomCommandInfoShowing,
+            gdxSettings.isBottomCommandInfoPaneShow,
             gdxSettings.soundEffectsVolume,
         ) {
-            gdxSettings.isBottomCommandInfoShowing = it
+            gdxSettings.isBottomCommandInfoPaneShow = it
         }
         table.add(showingBottomCommandTickImageButton).size(50f * gdxSettings.imageScale)
 
         table.row().space(10f)
 
-        table.add(createLabel("Info and command split: ", gdxSettings.normalFontSize))
-        val upperInfoAndBottomCommandSplitAmountTextField = createTextField(
-            gdxSettings.upperInfoAndBottomCommandInfoSplitAmount.toString(),
+        table.add(createLabel("Info pane split: ", gdxSettings.normalFontSize))
+        val infoPaneSplitAmountTextField = createTextField(
+            gdxSettings.infoPaneSplitAmount.toString(),
             gdxSettings.normalFontSize
-        ) { upperInfoAndBottomCommandSplitAmount, _ ->
+        ) { infoPaneSplitAmount, _ ->
             try {
-                gdxSettings.upperInfoAndBottomCommandInfoSplitAmount =
-                    upperInfoAndBottomCommandSplitAmount.toFloat()
+                gdxSettings.infoPaneSplitAmount = infoPaneSplitAmount.toFloat()
             } catch (e: NumberFormatException) {
-                logger.error("Invalid worldMapAndInfoSplitAmount")
+                logger.error("Invalid infoPaneSplitAmount")
             }
         }
-        table.add(upperInfoAndBottomCommandSplitAmountTextField)
+        table.add(infoPaneSplitAmountTextField)
 
         table.row().space(10f)
 
         table.add(createLabel("Showing upper info: ", gdxSettings.normalFontSize))
-        val showingUpperInfoSelectBox = createSelectBox(
-            UpperInfo::class.sealedSubclasses.map {
+        val upperInfoPaneSelectBox = createSelectBox(
+            UpperInfoPane::class.sealedSubclasses.map {
                 it.primaryConstructor!!.call(game)
             }.sortedBy {
                 it.infoPriority
             }.map {
                 it.infoName
             },
-            gdxSettings.showingUpperInfo,
+            gdxSettings.upperInfoPaneChoice,
             gdxSettings.normalFontSize
         ) { showingUpperInfo, _ ->
-            gdxSettings.showingUpperInfo = showingUpperInfo
+            gdxSettings.upperInfoPaneChoice = showingUpperInfo
         }
-        table.add(showingUpperInfoSelectBox)
+        table.add(upperInfoPaneSelectBox)
 
         table.row().space(10f)
 

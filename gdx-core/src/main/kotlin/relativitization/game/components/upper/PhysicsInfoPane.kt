@@ -17,7 +17,7 @@ import relativitization.universe.maths.physics.Relativistic
 import relativitization.universe.maths.physics.Velocity
 import relativitization.universe.utils.RelativitizationLogManager
 
-class PhysicsInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game) {
+class PhysicsInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane>(game) {
     override val infoName: String = "Physics"
 
     override val infoPriority: Int = 4

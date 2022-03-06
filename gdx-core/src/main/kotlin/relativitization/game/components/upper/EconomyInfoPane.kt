@@ -13,7 +13,7 @@ import relativitization.universe.data.components.physicsData
 import relativitization.universe.data.components.playerScienceData
 import relativitization.universe.maths.number.Notation
 
-class EconomyInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game) {
+class EconomyInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane>(game) {
     override val infoName: String = "Economy"
 
     override val infoPriority: Int = 12

@@ -10,7 +10,7 @@ import relativitization.universe.ai.name
 import relativitization.universe.data.commands.*
 import relativitization.universe.utils.I18NString
 
-class AIInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game) {
+class AIInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane>(game) {
     override val infoName: String = "AI"
 
     override val infoPriority: Int = 2

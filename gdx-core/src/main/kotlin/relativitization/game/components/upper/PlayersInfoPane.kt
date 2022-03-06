@@ -10,7 +10,7 @@ import relativitization.game.utils.Summary
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.components.defaults.economy.ResourceType
 
-class PlayersInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game) {
+class PlayersInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane>(game) {
     override val infoName: String = "Players"
 
     override val infoPriority: Int = 3

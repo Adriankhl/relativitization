@@ -5,7 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*
 import io.ktor.http.*
 import kotlinx.coroutines.runBlocking
 import relativitization.game.RelativitizationGame
-import relativitization.game.components.upper.UpperInfo
+import relativitization.game.components.upper.UpperInfoPane
 import relativitization.game.screens.ClientSettingsScreen
 import relativitization.game.screens.HelpScreen
 import relativitization.game.utils.ScreenComponent
@@ -20,7 +20,7 @@ import kotlin.math.min
 import kotlin.reflect.full.primaryConstructor
 
 
-class GameScreenTopBar(
+class GameScreenControlBar(
     val game: RelativitizationGame,
     private val syncGameScreenComponentSettings: () -> Unit,
 ) : ScreenComponent<ScrollPane>(game.assets) {
@@ -286,12 +286,12 @@ class GameScreenTopBar(
         aChecked = 0.5f,
         soundVolume = gdxSettings.soundEffectsVolume
     ) {
-        gdxSettings.isBottomCommandInfoShowing = !it.isChecked
+        gdxSettings.isBottomCommandInfoPaneShow = !it.isChecked
         syncGameScreenComponentSettings()
         game.changeGdxSettings()
     }
 
-    private val upperInfoButtonList: List<TextButton> = UpperInfo::class.sealedSubclasses.map {
+    private val upperInfoPaneButtonList: List<TextButton> = UpperInfoPane::class.sealedSubclasses.map {
         it.primaryConstructor!!.call(game)
     }.sortedBy {
         it.infoPriority
@@ -304,12 +304,12 @@ class GameScreenTopBar(
             soundVolume = gdxSettings.soundEffectsVolume
         ) {
             // If hiding, show the panel
-            if ((gdxSettings.showingUpperInfo == infoName) && gdxSettings.isInfoShowing) {
-                gdxSettings.isInfoShowing = false
-                gdxSettings.showingUpperInfo = infoName
+            if ((gdxSettings.upperInfoPaneChoice == infoName) && gdxSettings.isInfoPaneShow) {
+                gdxSettings.isInfoPaneShow = false
+                gdxSettings.upperInfoPaneChoice = infoName
             } else {
-                gdxSettings.isInfoShowing = true
-                gdxSettings.showingUpperInfo = infoName
+                gdxSettings.isInfoPaneShow = true
+                gdxSettings.upperInfoPaneChoice = infoName
             }
 
             syncGameScreenComponentSettings()
@@ -508,7 +508,7 @@ class GameScreenTopBar(
 
         table.add(fuelLabel).pad(10f)
 
-        upperInfoButtonList.forEach {
+        upperInfoPaneButtonList.forEach {
             table.add(it).pad(10f)
         }
 

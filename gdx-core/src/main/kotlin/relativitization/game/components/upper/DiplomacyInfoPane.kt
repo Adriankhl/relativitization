@@ -10,7 +10,7 @@ import relativitization.universe.data.components.defaults.diplomacy.DiplomaticRe
 import relativitization.universe.data.components.defaults.diplomacy.WarStateData
 import relativitization.universe.data.components.diplomacyData
 
-class DiplomacyInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game) {
+class DiplomacyInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane>(game) {
     override val infoName: String = "Diplomacy"
 
     override val infoPriority: Int = 11

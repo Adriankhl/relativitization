@@ -6,7 +6,7 @@ import relativitization.game.RelativitizationGame
 import relativitization.game.utils.PlayerImage
 import relativitization.universe.data.PlayerData
 
-class OverviewInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game) {
+class OverviewInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane>(game) {
     override val infoName: String = "Overview"
 
     override val infoPriority: Int = 1

@@ -10,7 +10,7 @@ import relativitization.universe.data.commands.GrantIndependenceCommand
 import relativitization.universe.data.components.politicsData
 import relativitization.universe.data.events.AskToMergeCarrierEvent
 
-class PoliticsInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game) {
+class PoliticsInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane>(game) {
     override val infoName: String = "Politics"
 
     override val infoPriority: Int = 10

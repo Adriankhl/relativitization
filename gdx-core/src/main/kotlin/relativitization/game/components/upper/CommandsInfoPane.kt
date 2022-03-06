@@ -7,7 +7,7 @@ import relativitization.game.RelativitizationGame
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.commands.name
 
-class CommandsInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game) {
+class CommandsInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane>(game) {
     override val infoName: String = "Commands"
 
     override val infoPriority: Int = 6

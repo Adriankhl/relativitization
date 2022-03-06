@@ -5,7 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.MapPlayerColorMode
 import relativitization.game.RelativitizationGame
 
-class MapModeInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game) {
+class MapModeInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane>(game) {
     override val infoName: String = "Map mode"
 
     override val infoPriority: Int = 14
