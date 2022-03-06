@@ -4,7 +4,6 @@ import kotlinx.serialization.Serializable
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.utils.RelativitizationLogManager
 import java.io.File
-import kotlin.math.max
 
 @Serializable
 data class GdxSettings(
@@ -27,6 +26,7 @@ data class GdxSettings(
     var worldMapInfoPaneSplitAmount: Float = 0.7f,
     var isBottomCommandInfoPaneShow: Boolean = true,
     var infoPaneSplitAmount: Float = 0.8f,
+    var isControlBarTop: Boolean = true,
     var upperInfoPaneChoice: String = "Overview",
     var mapPlayerColorMode: MapPlayerColorMode = MapPlayerColorMode.ONE_COLOR_PER_PLAYER,
     var language: Language = Language.ENGLISH,

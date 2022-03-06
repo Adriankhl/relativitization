@@ -1,6 +1,5 @@
 package relativitization.app.android
 
-import android.app.Application
 import android.content.pm.ApplicationInfo
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -79,6 +78,7 @@ class AndroidLauncher : AppCompatActivity(), AndroidFragmentApplication.Callback
         defaultGdxSettings.imageScale = 1.5f
         defaultGdxSettings.worldMapInfoPaneSplitAmount = 0.55f
         defaultGdxSettings.infoPaneSplitAmount = 0.7f
+        defaultGdxSettings.isControlBarTop = false
 
         val relativitizationGameFragment = RelativitizationGameFragment(
             universeClient = universeClient,

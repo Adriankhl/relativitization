@@ -83,14 +83,25 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
         // Adjust split pane position from gdx setting
         worldMapInfoPane.splitAmount = gdxSettings.worldMapInfoPaneSplitAmount
 
-        // Fix minimal top Bar height to preferred height
-        root.add(topBar.getScreenComponent()).growX().top()
-            .minHeight(topBar.getScreenComponent().prefHeight)
-            .maxHeight(topBar.getScreenComponent().prefHeight)
+        if (gdxSettings.isControlBarTop) {
+            // Fix minimal top Bar height to preferred height
+            root.add(topBar.getScreenComponent()).growX().top()
+                .minHeight(topBar.getScreenComponent().prefHeight)
+                .maxHeight(topBar.getScreenComponent().prefHeight)
 
-        root.row()
+            root.row()
 
-        root.add(worldMapInfoPane).growX().growY()
+            root.add(worldMapInfoPane).growX().growY()
+        } else {
+            root.add(worldMapInfoPane).growX().growY()
+
+            root.row()
+
+            // Fix minimal top Bar height to preferred height
+            root.add(topBar.getScreenComponent()).growX().bottom()
+                .minHeight(topBar.getScreenComponent().prefHeight)
+                .maxHeight(topBar.getScreenComponent().prefHeight)
+        }
 
         stage.addListener(object : InputListener() {
             override fun keyTyped(event: InputEvent?, character: Char): Boolean {

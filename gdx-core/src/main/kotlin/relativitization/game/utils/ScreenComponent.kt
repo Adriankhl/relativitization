@@ -327,7 +327,7 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets) {
             rUp = 1.0f,
             gUp = 1.0f,
             bUp = 1.0f,
-            aUp = 1.0f,
+            aUp = 0.5f,
             rDown = 1.0f,
             gDown = 1.0f,
             bDown = 1.0f,
@@ -335,7 +335,7 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets) {
             rChecked = 1.0f,
             gChecked = 1.0f,
             bChecked = 1.0f,
-            aChecked = 0.5f,
+            aChecked = 1.0f,
             soundVolume = soundVolume
         ) {
             function(it.isChecked)

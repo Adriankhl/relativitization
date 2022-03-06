@@ -56,7 +56,7 @@ class ClientSettingsScreen(
     private fun createQuitTable(): Table {
         val nestedTable = Table()
 
-        var isReset: Boolean = false
+        var isReset = false
 
         val exitButton = createTextButton(
             "Exit game",
@@ -134,7 +134,7 @@ class ClientSettingsScreen(
 
         addGdxSettings(table)
 
-        table.row().space(20f)
+        table.row().space(20f).padTop(50f)
 
         val universeClientSettingsLabel = createLabel(
             "Universe client settings:",
@@ -404,7 +404,18 @@ class ClientSettingsScreen(
 
         table.row().space(10f)
 
-        table.add(createLabel("Showing upper info: ", gdxSettings.normalFontSize))
+        table.add(createLabel("Control bar on top: ", gdxSettings.normalFontSize))
+        val controlBarTopTickImageButton = createTickImageButton(
+            gdxSettings.isControlBarTop,
+            gdxSettings.soundEffectsVolume
+        ) {
+            gdxSettings.isControlBarTop = it
+        }
+        table.add(controlBarTopTickImageButton).size(50f * gdxSettings.imageScale)
+
+        table.row().space(10f)
+
+        table.add(createLabel("Upper info: ", gdxSettings.normalFontSize))
         val upperInfoPaneSelectBox = createSelectBox(
             UpperInfoPane::class.sealedSubclasses.map {
                 it.primaryConstructor!!.call(game)
