@@ -185,7 +185,6 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets) {
         function
     )
 
-
     /**
      * Create image
      */

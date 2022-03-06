@@ -37,7 +37,7 @@ class GameScreenInfo(val game: RelativitizationGame) : ScreenComponent<SplitPane
 
         upperInfoContainer.fill()
 
-        infoAndCommand.splitAmount = gdxSettings.upperInfoAndBottomCommandSplitAmount
+        infoAndCommand.splitAmount = gdxSettings.upperInfoAndBottomCommandInfoSplitAmount
     }
 
     override fun getScreenComponent(): SplitPane {
@@ -49,12 +49,12 @@ class GameScreenInfo(val game: RelativitizationGame) : ScreenComponent<SplitPane
         upperInfoContainer.actor = getCurrentUpperInfoComponent().getScreenComponent()
 
         // Show bottom command or not
-        if (gdxSettings.showingBottomCommand) {
-            infoAndCommand.splitAmount = gdxSettings.upperInfoAndBottomCommandSplitAmount
+        if (gdxSettings.isBottomCommandInfoShowing) {
+            infoAndCommand.splitAmount = gdxSettings.upperInfoAndBottomCommandInfoSplitAmount
         } else {
             // Only update the stored split amount of the split screen is not too close to the edge
             if (infoAndCommand.splitAmount < infoAndCommand.maxSplitAmount * 0.9) {
-                gdxSettings.upperInfoAndBottomCommandSplitAmount = infoAndCommand.splitAmount
+                gdxSettings.upperInfoAndBottomCommandInfoSplitAmount = infoAndCommand.splitAmount
             }
             infoAndCommand.splitAmount = infoAndCommand.maxSplitAmount
         }

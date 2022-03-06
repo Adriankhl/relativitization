@@ -284,7 +284,8 @@ class GameScreenTopBar(
         aChecked = 0.5f,
         soundVolume = gdxSettings.soundEffectsVolume
     ) {
-        gdxSettings.showingBottomCommand = !it.isChecked
+        gdxSettings.isBottomCommandInfoShowing = !it.isChecked
+        syncGameScreenComponentSettings()
         game.changeGdxSettings()
     }
 
@@ -301,16 +302,15 @@ class GameScreenTopBar(
             soundVolume = gdxSettings.soundEffectsVolume
         ) {
             // If hiding, show the panel
-            if ((gdxSettings.showingUpperInfo == infoName) && gdxSettings.showingInfo) {
-                gdxSettings.showingInfo = false
+            if ((gdxSettings.showingUpperInfo == infoName) && gdxSettings.isInfoShowing) {
+                gdxSettings.isInfoShowing = false
                 gdxSettings.showingUpperInfo = infoName
             } else {
-                gdxSettings.showingInfo = true
+                gdxSettings.isInfoShowing = true
                 gdxSettings.showingUpperInfo = infoName
             }
 
             syncGameScreenComponentSettings()
-
             game.changeGdxSettings()
         }
     }

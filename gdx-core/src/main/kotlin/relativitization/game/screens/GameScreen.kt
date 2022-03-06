@@ -154,7 +154,13 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
                 return true
             }
 
-            override fun touchUp(event: InputEvent?, x: Float, y: Float, pointer: Int, button: Int) {
+            override fun touchUp(
+                event: InputEvent?,
+                x: Float,
+                y: Float,
+                pointer: Int,
+                button: Int
+            ) {
                 if (originalZoom != gdxSettings.mapZoomRelativeToFullMap) {
                     game.changeGdxSettings()
                 }
@@ -198,7 +204,7 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
     }
 
     override fun onGdxSettingsChange() {
-        if (gdxSettings.showingInfo) {
+        if (gdxSettings.isInfoShowing) {
             worldMapAndInfo.splitAmount = gdxSettings.worldMapAndInfoSplitAmount
         } else {
             // Only update the stored split amount of the split screen is not too close to the edge
@@ -238,8 +244,15 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
 
     private fun syncComponentSetting() {
         info.reRegisterUpperInfoComponent()
-        gdxSettings.worldMapAndInfoSplitAmount = worldMapAndInfo.splitAmount
-        gdxSettings.upperInfoAndBottomCommandSplitAmount = info.infoAndCommand.splitAmount
+        if (!gdxSettings.isInfoShowing && (worldMapAndInfo.splitAmount < 0.99f)) {
+            gdxSettings.worldMapAndInfoSplitAmount = worldMapAndInfo.splitAmount
+        }
+        if (gdxSettings.isInfoShowing &&
+            !gdxSettings.isBottomCommandInfoShowing &&
+            (info.infoAndCommand.splitAmount < 0.99f)
+        ) {
+            gdxSettings.upperInfoAndBottomCommandInfoSplitAmount = info.infoAndCommand.splitAmount
+        }
     }
 
     companion object {

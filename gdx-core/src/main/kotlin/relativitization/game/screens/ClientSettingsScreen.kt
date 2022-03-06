@@ -330,10 +330,10 @@ class ClientSettingsScreen(
 
         table.add(createLabel("Show info: ", gdxSettings.normalFontSize))
         val showingInfoTickImageButton = createTickImageButton(
-            gdxSettings.showingInfo,
+            gdxSettings.isInfoShowing,
             gdxSettings.soundEffectsVolume,
         ) {
-            gdxSettings.showingInfo = it
+            gdxSettings.isInfoShowing = it
         }
         table.add(showingInfoTickImageButton).size(50f * gdxSettings.imageScale)
 
@@ -356,10 +356,10 @@ class ClientSettingsScreen(
 
         table.add(createLabel("Show bottom command: ", gdxSettings.normalFontSize))
         val showingBottomCommandTickImageButton = createTickImageButton(
-            gdxSettings.showingBottomCommand,
+            gdxSettings.isBottomCommandInfoShowing,
             gdxSettings.soundEffectsVolume,
         ) {
-            gdxSettings.showingBottomCommand = it
+            gdxSettings.isBottomCommandInfoShowing = it
         }
         table.add(showingBottomCommandTickImageButton).size(50f * gdxSettings.imageScale)
 
@@ -367,11 +367,11 @@ class ClientSettingsScreen(
 
         table.add(createLabel("Info and command split: ", gdxSettings.normalFontSize))
         val upperInfoAndBottomCommandSplitAmountTextField = createTextField(
-            gdxSettings.upperInfoAndBottomCommandSplitAmount.toString(),
+            gdxSettings.upperInfoAndBottomCommandInfoSplitAmount.toString(),
             gdxSettings.normalFontSize
         ) { upperInfoAndBottomCommandSplitAmount, _ ->
             try {
-                gdxSettings.upperInfoAndBottomCommandSplitAmount =
+                gdxSettings.upperInfoAndBottomCommandInfoSplitAmount =
                     upperInfoAndBottomCommandSplitAmount.toFloat()
             } catch (e: NumberFormatException) {
                 logger.error("Invalid worldMapAndInfoSplitAmount")
