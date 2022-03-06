@@ -244,13 +244,10 @@ class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
 
     private fun syncComponentSetting() {
         info.reRegisterUpperInfoComponent()
-        if (!gdxSettings.isInfoShowing && (worldMapAndInfo.splitAmount < 0.99f)) {
+        if (worldMapAndInfo.splitAmount < 0.99f) {
             gdxSettings.worldMapAndInfoSplitAmount = worldMapAndInfo.splitAmount
         }
-        if (gdxSettings.isInfoShowing &&
-            !gdxSettings.isBottomCommandInfoShowing &&
-            (info.infoAndCommand.splitAmount < 0.99f)
-        ) {
+        if (info.infoAndCommand.splitAmount < 0.99f) {
             gdxSettings.upperInfoAndBottomCommandInfoSplitAmount = info.infoAndCommand.splitAmount
         }
     }

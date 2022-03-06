@@ -83,8 +83,19 @@ object ActorFunction {
     /**
      * Create split pane
      */
-    fun createSplitPane(skin: Skin, actor1: Actor, actor2: Actor, vertical: Boolean) =
-        SplitPane(actor1, actor2, vertical, skin)
+    fun createSplitPane(
+        skin: Skin,
+        actor1: Actor,
+        actor2: Actor,
+        vertical: Boolean
+    ): SplitPane {
+        val splitPane = SplitPane(actor1, actor2, vertical, skin)
+
+        splitPane.style.handle.minWidth = 10f
+        splitPane.style.handle.minHeight = 10f
+
+        return splitPane
+    }
 
 
     /**
