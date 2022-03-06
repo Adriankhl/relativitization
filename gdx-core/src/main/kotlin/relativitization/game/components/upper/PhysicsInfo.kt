@@ -366,18 +366,20 @@ class PhysicsInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game) 
 
         nestedTable.row().space(10f)
 
-        val maxSpeedSlider = createSlider(
+        val maxSpeedSliderContainer = createSliderContainer(
             min = 0f,
-            max = game.universeClient.getUniverseData3D().universeSettings.speedOfLight.toFloat() - 0.01f,
+            max = game.universeClient.getUniverseData3D().universeSettings
+                .speedOfLight.toFloat() - 0.01f,
             stepSize = 0.01f,
             default = maxSpeed.value.toFloat(),
-            scale = gdxSettings.imageScale,
+            width = 150f * gdxSettings.imageScale,
+            height = 15f * gdxSettings.imageScale,
         ) { fl, _ ->
             val newSpeed: Double = Notation.roundDecimal(fl.toDouble(), 2)
 
             maxSpeed.value = newSpeed
         }
-        nestedTable.add(maxSpeedSlider).colspan(2)
+        nestedTable.add(maxSpeedSliderContainer).colspan(2)
 
         return nestedTable
     }

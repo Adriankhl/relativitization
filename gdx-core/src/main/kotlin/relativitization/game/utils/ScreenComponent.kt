@@ -305,14 +305,14 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets) {
     }
 
     /**
-     * Create check box
+     * Create check box, should use createTickImageButton instead
      *
      * @param text Description of the option
      * @param default the default value of the text
      * @param fontSize the font size of the text
      * @param function the function acted after the text field has changed, take this check box as parameter
      */
-    fun createCheckBox(
+    private fun createCheckBox(
         text: String,
         default: Boolean,
         fontSize: Int,
@@ -322,7 +322,7 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets) {
     fun createTickImageButton(
         default: Boolean,
         soundVolume: Float,
-        function: (Boolean) -> Unit = { _, -> }
+        function: (Boolean) -> Unit = { _ -> }
     ): ImageButton {
         val tickImage = createImageButton(
             name = "basic/white-tick",
@@ -348,11 +348,11 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets) {
     }
 
     /**
-     * Create slider
+     * Create slider, prefer createSliderContainer
      *
      * @param function the function acted after the text field has changed, take this check box as parameter
      */
-    fun createSlider(
+    private fun createSlider(
         min: Float,
         max: Float,
         stepSize: Float,
@@ -370,6 +370,34 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets) {
         vertical = vertical,
         function = function
     )
+
+    /**
+     * Create a slider with a specific width and height
+     */
+    fun createSliderContainer(
+        min: Float,
+        max: Float,
+        stepSize: Float,
+        default: Float,
+        width: Float,
+        height: Float,
+        vertical: Boolean = false,
+        function: (Float, Slider) -> Unit = { _, _ -> },
+    ): Container<Slider> {
+        val slider = createSlider(
+            min = min,
+            max = max,
+            stepSize = stepSize,
+            default = default,
+            scale = 1f,
+            vertical = vertical,
+            function = function
+        )
+        val container = Container(slider)
+        container.isTransform = true
+        container.size(width, height)
+        return container
+    }
 
     /**
      * Create gdx list

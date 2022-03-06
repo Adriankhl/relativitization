@@ -216,40 +216,44 @@ class EconomyInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game) 
         nestedTable.row().space(30f)
 
         if (playerData.playerId == game.universeClient.getUniverseData3D().id) {
-            val targetStorageSlider = createSlider(
+            val targetStorageSliderContainer = createSliderContainer(
                 min = 0f,
                 max = 1f,
                 stepSize = 0.01f,
                 default = playerData.playerInternalData.physicsData()
                     .fuelRestMassTargetProportionData.storage.toFloat(),
-                scale = gdxSettings.imageScale,
+                width = 150f * gdxSettings.imageScale,
+                height = 15f * gdxSettings.imageScale,
             )
 
-            val targetMovementSlider = createSlider(
+            val targetMovementSliderContainer = createSliderContainer(
                 min = 0f,
                 max = 1f,
                 stepSize = 0.01f,
                 default = playerData.playerInternalData.physicsData()
                     .fuelRestMassTargetProportionData.movement.toFloat(),
-                scale = gdxSettings.imageScale,
+                width = 150f * gdxSettings.imageScale,
+                height = 15f * gdxSettings.imageScale,
             )
 
-            val targetProductionSlider = createSlider(
+            val targetProductionSliderContainer = createSliderContainer(
                 min = 0f,
                 max = 1f,
                 stepSize = 0.01f,
                 default = playerData.playerInternalData.physicsData()
                     .fuelRestMassTargetProportionData.production.toFloat(),
-                scale = gdxSettings.imageScale,
+                width = 150f * gdxSettings.imageScale,
+                height = 15f * gdxSettings.imageScale,
             )
 
-            val targetTradeSlider = createSlider(
+            val targetTradeSliderContainer = createSliderContainer(
                 min = 0f,
                 max = 1f,
                 stepSize = 0.01f,
                 default = playerData.playerInternalData.physicsData()
                     .fuelRestMassTargetProportionData.trade.toFloat(),
-                scale = gdxSettings.imageScale,
+                width = 150f * gdxSettings.imageScale,
+                height = 15f * gdxSettings.imageScale,
             )
 
             val changeFuelRestMassTargetProportionButton = createTextButton(
@@ -264,10 +268,10 @@ class EconomyInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game) 
                         fromId = game.universeClient.getCurrentPlayerData().playerId,
                         fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
                         fuelRestMassTargetProportionData = FuelRestMassTargetProportionData(
-                            storage = targetStorageSlider.value.toDouble(),
-                            movement = targetMovementSlider.value.toDouble(),
-                            production = targetProductionSlider.value.toDouble(),
-                            trade = targetTradeSlider.value.toDouble(),
+                            storage = targetStorageSliderContainer.actor.value.toDouble(),
+                            movement = targetMovementSliderContainer.actor.value.toDouble(),
+                            production = targetProductionSliderContainer.actor.value.toDouble(),
+                            trade = targetTradeSliderContainer.actor.value.toDouble(),
                         ),
                     )
 
@@ -284,7 +288,7 @@ class EconomyInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game) 
                 )
             )
 
-            nestedTable.add(targetStorageSlider)
+            nestedTable.add(targetStorageSliderContainer)
 
             nestedTable.row().space(10f)
 
@@ -295,7 +299,7 @@ class EconomyInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game) 
                 )
             )
 
-            nestedTable.add(targetMovementSlider)
+            nestedTable.add(targetMovementSliderContainer)
 
             nestedTable.row().space(10f)
 
@@ -306,7 +310,7 @@ class EconomyInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game) 
                 )
             )
 
-            nestedTable.add(targetProductionSlider)
+            nestedTable.add(targetProductionSliderContainer)
 
             nestedTable.row().space(10f)
 
@@ -317,18 +321,19 @@ class EconomyInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game) 
                 )
             )
 
-            nestedTable.add(targetTradeSlider)
+            nestedTable.add(targetTradeSliderContainer)
 
             nestedTable.row().space(30f)
         }
 
 
-        val sendFuelSlider = createSlider(
+        val sendFuelSliderContainer = createSliderContainer(
             min = 0f,
             max = 1f,
             stepSize = 0.01f,
             default = 0f,
-            scale = gdxSettings.imageScale,
+            width = 150f * gdxSettings.imageScale,
+            height = 15f * gdxSettings.imageScale,
         )
 
         val sendFuelButton = createTextButton(
@@ -342,7 +347,7 @@ class EconomyInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game) 
                 fromId = game.universeClient.getCurrentPlayerData().playerId,
                 fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
                 amount = game.universeClient.getCurrentPlayerData().playerInternalData.physicsData()
-                    .fuelRestMassData.storage * sendFuelSlider.value,
+                    .fuelRestMassData.storage * sendFuelSliderContainer.actor.value,
                 senderFuelLossFractionPerDistance = game.universeClient.getCurrentPlayerData()
                     .playerInternalData.playerScienceData()
                     .playerScienceApplicationData.fuelLogisticsLossFractionPerDistance
@@ -354,7 +359,7 @@ class EconomyInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game) 
 
         nestedTable.row().space(10f)
 
-        nestedTable.add(sendFuelSlider).colspan(2)
+        nestedTable.add(sendFuelSliderContainer).colspan(2)
 
         return nestedTable
     }
@@ -459,28 +464,31 @@ class EconomyInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game) 
         nestedTable.row().space(30f)
 
         if (playerData.playerId == game.universeClient.getUniverseData3D().id) {
-            val targetStorageSlider = createSlider(
+            val targetStorageSliderContainer = createSliderContainer(
                 min = 0f,
                 max = 1f,
                 stepSize = 0.01f,
                 default = singleResourceData.resourceTargetProportion.storage.toFloat(),
-                scale = gdxSettings.imageScale,
+                width = 150f * gdxSettings.imageScale,
+                height = 15f * gdxSettings.imageScale,
             )
 
-            val targetProductionSlider = createSlider(
+            val targetProductionSliderContainer = createSliderContainer(
                 min = 0f,
                 max = 1f,
                 stepSize = 0.01f,
                 default = singleResourceData.resourceTargetProportion.production.toFloat(),
-                scale = gdxSettings.imageScale,
+                width = 150f * gdxSettings.imageScale,
+                height = 15f * gdxSettings.imageScale,
             )
 
-            val targetTradeSlider = createSlider(
+            val targetTradeSliderContainer = createSliderContainer(
                 min = 0f,
                 max = 1f,
                 stepSize = 0.01f,
                 default = singleResourceData.resourceTargetProportion.trade.toFloat(),
-                scale = gdxSettings.imageScale,
+                width = 150f * gdxSettings.imageScale,
+                height = 15f * gdxSettings.imageScale,
             )
 
 
@@ -497,9 +505,9 @@ class EconomyInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game) 
                     resourceType = selectedResourceType,
                     resourceQualityClass = selectedResourceQualityClass,
                     resourceTargetProportionData = ResourceTargetProportionData(
-                        storage = targetStorageSlider.value.toDouble(),
-                        production = targetProductionSlider.value.toDouble(),
-                        trade = targetTradeSlider.value.toDouble(),
+                        storage = targetStorageSliderContainer.actor.value.toDouble(),
+                        production = targetProductionSliderContainer.actor.value.toDouble(),
+                        trade = targetTradeSliderContainer.actor.value.toDouble(),
                     ),
                 )
 
@@ -516,7 +524,7 @@ class EconomyInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game) 
                 )
             )
 
-            nestedTable.add(targetStorageSlider)
+            nestedTable.add(targetStorageSliderContainer)
 
             nestedTable.row().space(10f)
 
@@ -527,7 +535,7 @@ class EconomyInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game) 
                 )
             )
 
-            nestedTable.add(targetProductionSlider)
+            nestedTable.add(targetProductionSliderContainer)
 
             nestedTable.row().space(10f)
 
@@ -538,17 +546,18 @@ class EconomyInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game) 
                 )
             )
 
-            nestedTable.add(targetTradeSlider)
+            nestedTable.add(targetTradeSliderContainer)
 
             nestedTable.row().space(30f)
         }
 
-        val sendResourceSlider = createSlider(
+        val sendResourceSliderContainer = createSliderContainer(
             min = 0f,
             max = 1f,
             stepSize = 0.01f,
             default = 0f,
-            scale = gdxSettings.imageScale,
+            width = 150f * gdxSettings.imageScale,
+            height = 15f * gdxSettings.imageScale,
         )
 
         val sendResourceButton = createTextButton(
@@ -564,7 +573,8 @@ class EconomyInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game) 
                 resourceType = selectedResourceType,
                 resourceQualityClass = selectedResourceQualityClass,
                 resourceQualityData = singleResourceData.resourceQuality,
-                amount = singleResourceData.resourceAmount.storage * sendResourceSlider.value,
+                amount = singleResourceData.resourceAmount.storage * sendResourceSliderContainer
+                    .actor.value,
                 senderResourceLossFractionPerDistance = game.universeClient.getCurrentPlayerData()
                     .playerInternalData.playerScienceData()
                     .playerScienceApplicationData.resourceLogisticsLossFractionPerDistance,
@@ -576,7 +586,7 @@ class EconomyInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game) 
 
         nestedTable.row().space(10f)
 
-        nestedTable.add(sendResourceSlider).colspan(2)
+        nestedTable.add(sendResourceSliderContainer).colspan(2)
 
         return nestedTable
     }
@@ -822,16 +832,17 @@ class EconomyInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game) 
 
         nestedTable.row().space(10f)
 
-        val changeLowIncomeTaxSlider = createSlider(
+        val changeLowIncomeTaxSliderContainer = createSliderContainer(
             min = 0f,
             max = 1f,
             stepSize = 0.01f,
             default = 0f,
-            scale = gdxSettings.imageScale,
+            width = 150f * gdxSettings.imageScale,
+            height = 15f * gdxSettings.imageScale,
         ) { fl, _ ->
             newLowIncomeTax.value = Notation.roundDecimal(fl.toDouble(), 2)
         }
-        nestedTable.add(changeLowIncomeTaxSlider).colspan(2)
+        nestedTable.add(changeLowIncomeTaxSliderContainer).colspan(2)
 
         nestedTable.row().spaceTop(30f)
 
@@ -874,16 +885,17 @@ class EconomyInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game) 
 
         nestedTable.row().space(10f)
 
-        val changeMiddleIncomeTaxSlider = createSlider(
+        val changeMiddleIncomeTaxSliderContainer = createSliderContainer(
             min = 0f,
             max = 1f,
             stepSize = 0.01f,
             default = 0f,
-            scale = gdxSettings.imageScale,
+            width = 150f * gdxSettings.imageScale,
+            height = 15f * gdxSettings.imageScale,
         ) { fl, _ ->
             newMiddleIncomeTax.value = Notation.roundDecimal(fl.toDouble(), 2)
         }
-        nestedTable.add(changeMiddleIncomeTaxSlider).colspan(2)
+        nestedTable.add(changeMiddleIncomeTaxSliderContainer).colspan(2)
 
         nestedTable.row().spaceTop(30f)
 
@@ -926,16 +938,17 @@ class EconomyInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game) 
 
         nestedTable.row().space(10f)
 
-        val changeHighIncomeTaxSlider = createSlider(
+        val changeHighIncomeTaxSliderContainer = createSliderContainer(
             min = 0f,
             max = 1f,
             stepSize = 0.01f,
             default = 0f,
-            scale = gdxSettings.imageScale,
+            width = 150f * gdxSettings.imageScale,
+            height = 15f * gdxSettings.imageScale,
         ) { fl, _ ->
             newHighIncomeTax.value = Notation.roundDecimal(fl.toDouble(), 2)
         }
-        nestedTable.add(changeHighIncomeTaxSlider).colspan(2)
+        nestedTable.add(changeHighIncomeTaxSliderContainer).colspan(2)
 
         nestedTable.row().spaceTop(30f)
 

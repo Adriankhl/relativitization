@@ -1407,16 +1407,17 @@ class PopSystemInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game
 
         nestedTable.row().space(10f)
 
-        val qualityLevelSlider = createSlider(
+        val qualityLevelSliderContainer = createSliderContainer(
             min = 0f,
             max = 1f,
             stepSize = 0.01f,
             default = 1f,
-            scale = gdxSettings.imageScale,
+            width = 150f * gdxSettings.imageScale,
+            height = 15f * gdxSettings.imageScale,
         ) { fl, _ ->
             qualityLevel.value = Notation.roundDecimal(fl.toDouble(), 2)
         }
-        nestedTable.add(qualityLevelSlider).colspan(2)
+        nestedTable.add(qualityLevelSliderContainer).colspan(2)
 
         nestedTable.row().space(10f)
 
@@ -1635,16 +1636,17 @@ class PopSystemInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game
 
         nestedTable.row().space(10f)
 
-        val qualityLevelSlider = createSlider(
+        val qualityLevelSliderContainer = createSliderContainer(
             min = 0f,
             max = 1f,
             stepSize = 0.01f,
             default = 1f,
-            scale = gdxSettings.imageScale,
+            width = 150f * gdxSettings.imageScale,
+            height = 15f * gdxSettings.imageScale,
         ) { fl, _ ->
             qualityLevel.value = Notation.roundDecimal(fl.toDouble(), 2)
         }
-        nestedTable.add(qualityLevelSlider).colspan(2)
+        nestedTable.add(qualityLevelSliderContainer).colspan(2)
 
         nestedTable.row().space(10f)
 
@@ -2774,16 +2776,17 @@ class PopSystemInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game
 
         nestedTable.row().space(10f)
 
-        val newCarrierQualitySlider = createSlider(
+        val newCarrierQualitySliderContainer = createSliderContainer(
             min = 0f,
             max = 1f,
             stepSize = 0.01f,
             default = 1f,
-            scale = gdxSettings.imageScale,
+            width = 150f * gdxSettings.imageScale,
+            height = 15f * gdxSettings.imageScale,
         ) { fl, _ ->
             newCarrierQuality.value = Notation.roundDecimal(fl.toDouble(), 2)
         }
-        nestedTable.add(newCarrierQualitySlider).colspan(2)
+        nestedTable.add(newCarrierQualitySliderContainer).colspan(2)
 
         return nestedTable
     }
@@ -2810,12 +2813,13 @@ class PopSystemInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game
             )
         )
 
-        val storageFractionSlider = createSlider(
+        val storageFractionSliderContainer = createSliderContainer(
             min = 0f,
             max = 1f,
             stepSize = 0.01f,
             default = 0.2f,
-            scale = gdxSettings.imageScale,
+            width = 150f * gdxSettings.imageScale,
+            height = 15f * gdxSettings.imageScale,
         )
 
         val splitCarrierButton = createTextButton(
@@ -2829,7 +2833,7 @@ class PopSystemInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game
                 fromId = game.universeClient.getCurrentPlayerData().playerId,
                 fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
                 carrierIdList = newPlayerCarrierIdSet.toList(),
-                storageFraction = storageFractionSlider.value.toDouble(),
+                storageFraction = storageFractionSliderContainer.actor.value.toDouble(),
             )
 
             game.universeClient.currentCommand = splitCarrierCommand
@@ -2891,7 +2895,7 @@ class PopSystemInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game
             )
         )
 
-        nestedTable.add(storageFractionSlider)
+        nestedTable.add(storageFractionSliderContainer)
 
         return nestedTable
     }

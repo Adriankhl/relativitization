@@ -54,7 +54,7 @@ class ClientSettingsScreen(
     }
 
     private fun createQuitTable(): Table {
-        val nestedTable: Table = Table()
+        val nestedTable = Table()
 
         val confirmButton = createTextButton(
             "Confirm",
@@ -98,7 +98,7 @@ class ClientSettingsScreen(
     }
 
     private fun createClientSettingsScrollPane(): ScrollPane {
-        val table: Table = Table()
+        val table = Table()
 
         val scrollPane: ScrollPane = createScrollPane(table)
 
@@ -186,12 +186,13 @@ class ClientSettingsScreen(
         table.row().space(10f)
 
         table.add(createLabel("Music volume: ", gdxSettings.normalFontSize))
-        val musicVolumeSlider = createSlider(
+        val musicVolumeSlider = createSliderContainer(
             min = 0.0f,
             max = 1.0f,
             stepSize = 0.01f,
             default = gdxSettings.musicVolume,
-            scale = gdxSettings.imageScale,
+            width = 150f * gdxSettings.imageScale,
+            height = 15f * gdxSettings.imageScale,
             vertical = false,
         ) { musicVolume, _ ->
             gdxSettings.musicVolume = musicVolume
@@ -202,12 +203,13 @@ class ClientSettingsScreen(
         table.row().space(10f)
 
         table.add(createLabel("Sound effect volume: ", gdxSettings.normalFontSize))
-        val soundEffectVolumeSlider = createSlider(
+        val soundEffectVolumeSlider = createSliderContainer(
             min = 0.0f,
             max = 1.0f,
             stepSize = 0.01f,
             default = gdxSettings.soundEffectsVolume,
-            scale = gdxSettings.imageScale,
+            width = 150f * gdxSettings.imageScale,
+            height = 15f * gdxSettings.imageScale,
             vertical = false,
         ) { soundEffectVolume, _ ->
             gdxSettings.soundEffectsVolume = soundEffectVolume
