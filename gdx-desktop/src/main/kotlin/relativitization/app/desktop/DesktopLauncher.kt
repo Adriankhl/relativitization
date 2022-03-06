@@ -28,13 +28,23 @@ private val logger = RelativitizationLogManager.getLogger()
 
 @ExperimentalCoroutinesApi
 fun main() {
+    // Reduce logging for release build
+    val isLoggingRelease: Boolean = try {
+        System.getProperty("logging") == "release"
+    } catch (e: Throwable) {
+        false
+    }
 
     // Set log level
-    Configurator.setRootLevel(Level.DEBUG)
-    Configurator.setLevel("Translation", Level.ERROR)
-    Configurator.setLevel("UniverseServerInternal", Level.ERROR)
-    Configurator.setLevel("UniverseClient", Level.ERROR)
-    Configurator.setLevel("ActorFunction", Level.ERROR)
+    if (isLoggingRelease) {
+        Configurator.setRootLevel(Level.ERROR)
+    } else {
+        Configurator.setRootLevel(Level.DEBUG)
+        Configurator.setLevel("Translation", Level.ERROR)
+        Configurator.setLevel("UniverseServerInternal", Level.ERROR)
+        Configurator.setLevel("UniverseClient", Level.ERROR)
+        Configurator.setLevel("ActorFunction", Level.ERROR)
+    }
 
     // pack images to atlas
     packImages()
