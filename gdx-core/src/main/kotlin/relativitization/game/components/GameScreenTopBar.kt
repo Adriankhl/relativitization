@@ -259,7 +259,7 @@ class GameScreenTopBar(
                 it.image.setColor(0.0f, 1.0f, 0.0f, 1.0f)
 
                 // Ask server to stop waiting
-                if (stopWaitingSelectBox.selected == "After input") {
+                if (waitSelectBox.selected == "You only") {
                     game.universeClient.httpPostStopWaiting()
                 }
             } else {
@@ -380,9 +380,9 @@ class GameScreenTopBar(
         game.universeClient.changeUniverseDataView()
     }
 
-    private val stopWaitingSelectBox: SelectBox<String> = createSelectBox(
-        itemList = listOf("No", "After input", "Always"),
-        default = "No",
+    private val waitSelectBox: SelectBox<String> = createSelectBox(
+        itemList = listOf("All human", "You only", "No"),
+        default = "All human",
         fontSize = gdxSettings.smallFontSize
     )
 
@@ -554,7 +554,7 @@ class GameScreenTopBar(
         runBlocking {
             if (game.universeClient.getCurrentServerStatus().isServerWaitingInput) {
                 // Ask server to stop waiting
-                if (stopWaitingSelectBox.selected == "Always") {
+                if (waitSelectBox.selected == "No") {
                     game.universeClient.httpPostStopWaiting()
                 }
             }
@@ -597,9 +597,9 @@ class GameScreenTopBar(
      */
     private fun createStopWaitingTable(): Table {
         val nestedTable = Table()
-        nestedTable.add(createLabel("Server stop waiting (admin): ", gdxSettings.smallFontSize))
+        nestedTable.add(createLabel("Wait (admin): ", gdxSettings.smallFontSize))
         nestedTable.row().space(10f)
-        nestedTable.add(stopWaitingSelectBox)
+        nestedTable.add(waitSelectBox)
         return nestedTable
     }
 
