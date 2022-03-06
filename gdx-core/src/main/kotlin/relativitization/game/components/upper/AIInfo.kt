@@ -13,7 +13,7 @@ import relativitization.universe.utils.I18NString
 class AIInfo(val game: RelativitizationGame) : UpperInfo<ScrollPane>(game) {
     override val infoName: String = "AI"
 
-    override val infoPriority: Int = 1
+    override val infoPriority: Int = 2
 
     private val gdxSettings = game.gdxSettings
 
