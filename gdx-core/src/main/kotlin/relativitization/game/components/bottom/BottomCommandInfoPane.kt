@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.commands.CannotSendCommand
+import relativitization.universe.data.commands.DummyCommand
 import relativitization.universe.data.commands.ExecuteWarningCommand
 import relativitization.universe.data.commands.name
 
@@ -35,9 +36,10 @@ class BottomCommandInfoPane(
         rChecked = 1.0f,
         gChecked = 1.0f,
         bChecked = 1.0f,
-        aChecked = 1.0f,
+        aChecked = 0.5f,
         soundVolume = gdxSettings.soundEffectsVolume
     ) {
+        it.isChecked = false
         game.universeClient.previousCommand()
     }
 
@@ -54,9 +56,10 @@ class BottomCommandInfoPane(
         rChecked = 1.0f,
         gChecked = 1.0f,
         bChecked = 1.0f,
-        aChecked = 1.0f,
+        aChecked = 0.5f,
         soundVolume = gdxSettings.soundEffectsVolume
     ) {
+        it.isChecked = false
         game.universeClient.nextCommand()
     }
 
@@ -144,8 +147,25 @@ class BottomCommandInfoPane(
         commandDescriptionLabel.setText(translate(game.universeClient.currentCommand.description()))
         commandTimeLabel.setText(translate("Time: ") + "${game.universeClient.currentCommand.fromInt4D.t}")
 
-        if (game.universeClient.currentCommand is CannotSendCommand ||
-            game.universeClient.currentCommand is ExecuteWarningCommand
+        if (game.universeClient.hasPreviousCommand()) {
+            enableActor(previousCommandButton)
+            previousCommandButton.isChecked = false
+        } else {
+            disableActor(previousCommandButton)
+            previousCommandButton.isChecked = true
+        }
+
+        if (game.universeClient.hasNextCommand()) {
+            enableActor(nextCommandButton)
+            nextCommandButton.isChecked = false
+        } else {
+            disableActor(nextCommandButton)
+            nextCommandButton.isChecked = true
+        }
+
+        if ((game.universeClient.currentCommand is CannotSendCommand) ||
+            (game.universeClient.currentCommand is ExecuteWarningCommand) ||
+            (game.universeClient.currentCommand is DummyCommand)
         ) {
             disableActor(confirmCommandTextButton)
             disableActor(cancelCommandTextButton)

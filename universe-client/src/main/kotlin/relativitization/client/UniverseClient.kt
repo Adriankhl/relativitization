@@ -19,10 +19,10 @@ import relativitization.universe.data.PlayerData
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.*
-import relativitization.universe.maths.physics.Double2D
-import relativitization.universe.maths.physics.Int3D
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.generate.method.GenerateSettings
+import relativitization.universe.maths.physics.Double2D
+import relativitization.universe.maths.physics.Int3D
 import relativitization.universe.utils.CoroutineBoolean
 import relativitization.universe.utils.CoroutineList
 import relativitization.universe.utils.RelativitizationLogManager
@@ -51,7 +51,8 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
     val runOnceFunctionCoroutineList: CoroutineList<() -> Unit> = CoroutineList()
 
     // for generate universe
-    var generateSettings: GenerateSettings = GenerateSettings.loadOrDefault(universeClientSettings.programDir)
+    var generateSettings: GenerateSettings =
+        GenerateSettings.loadOrDefault(universeClientSettings.programDir)
 
     // For changing server setting
     var universeServerSettings: UniverseServerSettings = UniverseServerSettings(
@@ -230,10 +231,11 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
      * Whether the client should update the universe data cache
      */
     private fun shouldUpdateCache(universeServerStatusMessage: UniverseServerStatusMessage): Boolean {
-        val differentName =
-            universeServerStatusMessage.universeName != universeData3DCache.universeSettings.universeName
-        val differentTime =
-            universeServerStatusMessage.currentUniverseTime != universeData3DCache.center.t
+        val differentName = (universeServerStatusMessage.universeName !=
+                universeData3DCache.universeSettings.universeName)
+        val differentTime = (universeServerStatusMessage.currentUniverseTime !=
+                universeData3DCache.center.t)
+
         return (universeServerStatusMessage.success &&
                 universeServerStatusMessage.isUniverseRunning &&
                 universeServerStatusMessage.hasUniverse &&
@@ -348,7 +350,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
     private suspend fun updateUniverseData3DMap() {
         universeData3DMapMutex.withLock {
             val name: String = universeData3DName(
-                universeData3DCache, 
+                universeData3DCache,
                 universeData3DMap.keys.toList()
             )
             universeData3DMap[name] = universeData3DCache
@@ -361,11 +363,11 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
 
     /**
      * Clear old universe data by client settings
-     */ 
+     */
     private fun clearUniverseData3DByMaxStored() {
         if (universeData3DMap.size > universeClientSettings.maxStoredUniverseData3DAtPlayer) {
-            val currentName: String = universeData3DMap.filterValues { 
-                it == currentUniverseData3DAtPlayer 
+            val currentName: String = universeData3DMap.filterValues {
+                it == currentUniverseData3DAtPlayer
             }.keys.lastOrNull() ?: ""
 
             universeData3DMap.keys.take(
@@ -487,7 +489,8 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
      */
     suspend fun getCurrentData3DName(): String {
         universeData3DMapMutex.withLock {
-            return universeData3DMap.filterValues { it == currentUniverseData3DAtPlayer }.keys.lastOrNull() ?: ""
+            return universeData3DMap.filterValues { it == currentUniverseData3DAtPlayer }.keys.lastOrNull()
+                ?: ""
         }
     }
 
@@ -572,22 +575,40 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
     }
 
     /**
+     * Whether there is a previous command
+     */
+    fun hasPreviousCommand(): Boolean {
+        return if (isCurrentCommandStored()) {
+            planDataAtPlayer.commandList.first() != currentCommand
+        } else {
+            planDataAtPlayer.commandList.isNotEmpty()
+        }
+    }
+
+    /**
      * Change to previous command
      */
     fun previousCommand() {
-        if (isCurrentCommandStored()) {
-            val index = planDataAtPlayer.commandList.indexOf(currentCommand)
-            if (index > 0) {
-                currentCommand = planDataAtPlayer.commandList[index - 1]
+        if (hasPreviousCommand()) {
+            currentCommand = if (isCurrentCommandStored()) {
+                val index = planDataAtPlayer.commandList.indexOf(currentCommand)
+                planDataAtPlayer.commandList[index - 1]
             } else {
-                logger.debug("Can't goto previous command, already the earliest one")
+                planDataAtPlayer.commandList.last()
             }
         } else {
-            if (planDataAtPlayer.commandList.isNotEmpty()) {
-                currentCommand = planDataAtPlayer.commandList.last()
-            } else {
-                logger.debug("Can't goto previous command, the command list is empty")
-            }
+            logger.debug("Can't goto previous command")
+        }
+    }
+
+    /**
+     * Whether there is next command
+     */
+    fun hasNextCommand(): Boolean {
+        return if (isCurrentCommandStored()) {
+            planDataAtPlayer.commandList.last() != currentCommand
+        } else {
+            false
         }
     }
 
@@ -595,15 +616,11 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
      * Change to next command
      */
     fun nextCommand() {
-        if (isCurrentCommandStored()) {
+        if (hasNextCommand()) {
             val index = planDataAtPlayer.commandList.indexOf(currentCommand)
-            if (index < planDataAtPlayer.commandList.size - 1) {
-                currentCommand = planDataAtPlayer.commandList[index + 1]
-            } else {
-                logger.debug("Can't goto next command, already the latest one")
-            }
+            currentCommand = planDataAtPlayer.commandList[index + 1]
         } else {
-            logger.debug("Can't goto next command, the current command is not stored")
+            logger.debug("Can't goto next command")
         }
     }
 
