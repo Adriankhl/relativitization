@@ -3,9 +3,8 @@ package relativitization.game.utils
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.NinePatch
 import com.badlogic.gdx.scenes.scene2d.Actor
-import com.badlogic.gdx.scenes.scene2d.InputEvent
+import com.badlogic.gdx.scenes.scene2d.Touchable
 import com.badlogic.gdx.scenes.scene2d.ui.*
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.Align
 import kotlinx.coroutines.runBlocking
 import relativitization.game.RelativitizationGame
@@ -455,8 +454,6 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets) {
         g: Float,
         b: Float,
         a: Float,
-        soundVolume: Float,
-        function: (Image) -> Unit = { }
     ): Image {
         // Create new nine patch and edit this
         val arrowNinePatch =
@@ -483,13 +480,16 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets) {
 
         image.setColor(r, g, b, a)
 
-        image.addListener(object : ClickListener() {
-            override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                val sound = assets.getSound("click1.ogg")
-                sound.play(soundVolume)
-                function(image)
-            }
-        })
+        // Arrow is not clickable
+        //image.addListener(object : ClickListener() {
+        //    override fun clicked(event: InputEvent?, x: Float, y: Float) {
+        //        val sound = assets.getSound("click1.ogg")
+        //        sound.play(soundVolume)
+        //        function(image)
+        //    }
+        //})
+
+        image.touchable = Touchable.disabled
 
         return image
     }

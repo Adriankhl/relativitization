@@ -807,8 +807,7 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : UpperInfo<Table>(game) 
             g = color.g,
             b = color.b,
             a = color.a,
-            soundVolume = gdxSettings.soundEffectsVolume,
-        ) {}
+        )
     }
 
     /**
@@ -836,8 +835,7 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : UpperInfo<Table>(game) 
             g = color.g,
             b = color.b,
             a = color.a,
-            soundVolume = gdxSettings.soundEffectsVolume,
-        ) {}
+        )
     }
 
     /**
@@ -864,8 +862,7 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : UpperInfo<Table>(game) 
             g = color.g,
             b = color.b,
             a = color.a,
-            soundVolume = gdxSettings.soundEffectsVolume,
-        ) {}
+        )
     }
 
     /**
@@ -892,8 +889,7 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : UpperInfo<Table>(game) 
             g = color.g,
             b = color.b,
             a = color.a,
-            soundVolume = gdxSettings.soundEffectsVolume,
-        ) {}
+        )
     }
 
     /**
