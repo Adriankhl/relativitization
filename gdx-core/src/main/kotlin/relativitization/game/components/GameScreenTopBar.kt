@@ -91,26 +91,26 @@ class GameScreenTopBar(
         }
     )
 
-    private val clearOldDataButton: ImageButton = createImageButton(
-        name = "basic/white-bin",
-        rUp = 1.0f,
-        gUp = 1.0f,
-        bUp = 1.0f,
-        aUp = 1.0f,
-        rDown = 1.0f,
-        gDown = 1.0f,
-        bDown = 1.0f,
-        aDown = 0.7f,
-        rChecked = 1.0f,
-        gChecked = 1.0f,
-        bChecked = 1.0f,
-        aChecked = 1.0f,
-        soundVolume = gdxSettings.soundEffectsVolume
-    ) {
-        runBlocking {
-            game.universeClient.clearOldData3D()
-        }
-    }
+    //private val clearOldDataButton: ImageButton = createImageButton(
+    //    name = "basic/white-bin",
+    //    rUp = 1.0f,
+    //    gUp = 1.0f,
+    //    bUp = 1.0f,
+    //    aUp = 1.0f,
+    //    rDown = 1.0f,
+    //    gDown = 1.0f,
+    //    bDown = 1.0f,
+    //    aDown = 0.7f,
+    //    rChecked = 1.0f,
+    //    gChecked = 1.0f,
+    //    bChecked = 1.0f,
+    //    aChecked = 1.0f,
+    //    soundVolume = gdxSettings.soundEffectsVolume
+    //) {
+    //    runBlocking {
+    //        game.universeClient.clearOldData3D()
+    //    }
+    //}
 
     private val clearSelectedButton: ImageButton = createImageButton(
         name = "basic/white-circle-arrow",
@@ -656,26 +656,15 @@ class GameScreenTopBar(
     private fun createCurrentUniverseDataTable(): Table {
         val nestedTable = Table()
 
-        val topTable = Table()
+        nestedTable.add(universeDataSelectBoxContainer).colspan(2)
 
-        val bottomTable = Table()
+        nestedTable.row().space(5f)
 
-        topTable.add(previousUniverseData3DButton)
-            .size(30f * gdxSettings.imageScale, 30f * gdxSettings.imageScale)
+        nestedTable.add(previousUniverseData3DButton)
+            .size(40f * gdxSettings.imageScale, 40f * gdxSettings.imageScale)
 
-        topTable.add(universeDataSelectBoxContainer)
-
-        topTable.add(nextUniverseData3DButton)
-            .size(30f * gdxSettings.imageScale, 30f * gdxSettings.imageScale)
-
-        bottomTable.add(clearOldDataButton)
-            .size(30f * gdxSettings.imageScale, 30f * gdxSettings.imageScale)
-
-        nestedTable.add(topTable)
-
-        nestedTable.row().space(10f)
-
-        nestedTable.add(bottomTable)
+        nestedTable.add(nextUniverseData3DButton)
+            .size(40f * gdxSettings.imageScale, 40f * gdxSettings.imageScale)
 
         return nestedTable
     }
@@ -686,7 +675,12 @@ class GameScreenTopBar(
     private fun createRunStopUniverseTable(): Table {
         val nestedTable = Table()
 
-        nestedTable.add(createLabel("Stop server (admin):", gdxSettings.smallFontSize)).colspan(2)
+        nestedTable.add(
+            createLabel(
+                "Run / stop (admin):",
+                gdxSettings.smallFontSize
+            )
+        ).colspan(2)
 
         nestedTable.row().space(10f)
 

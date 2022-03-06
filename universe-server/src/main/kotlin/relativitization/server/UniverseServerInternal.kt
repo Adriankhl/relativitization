@@ -77,7 +77,10 @@ class UniverseServerInternal(
 
             if (isUniverseRunning.isTrue()) {
                 mutex.withLock {
-                    if (allHumanInputReady() || (!isServerWaitingInput.isTrue()) || exceedTimeLimit()) {
+                    if (allHumanInputReady() ||
+                        !isServerWaitingInput.isTrue() ||
+                        exceedTimeLimit()
+                    ) {
                         isServerWaitingInput.set(false)
                         setTimeLeftTo(0L)
                         logger.debug("Not accepting new input")
