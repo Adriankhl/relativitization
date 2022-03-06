@@ -299,7 +299,7 @@ class GameScreenControlBar(
         it.infoName
     }.map { infoName ->
         createTextButton(
-            infoName,
+            text = infoName,
             fontSize = gdxSettings.normalFontSize,
             soundVolume = gdxSettings.soundEffectsVolume
         ) {

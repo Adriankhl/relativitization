@@ -17,6 +17,7 @@ import kotlinx.coroutines.runBlocking
 import org.apache.logging.log4j.Level
 import org.apache.logging.log4j.core.config.Configurator
 import relativitization.client.UniverseClient
+import relativitization.game.GdxSettings
 import relativitization.game.RelativitizationGame
 import relativitization.server.UniverseServer
 import relativitization.universe.UniverseClientSettings
@@ -62,7 +63,6 @@ class AndroidLauncher : AppCompatActivity(), AndroidFragmentApplication.Callback
             serverPort = serverPort,
         )
 
-
         val universeServer = UniverseServer(
             universeServerSettings = universeServerSettings,
             serverAddress = serverAddress,
@@ -70,8 +70,19 @@ class AndroidLauncher : AppCompatActivity(), AndroidFragmentApplication.Callback
         )
         val universeClient = UniverseClient(universeClientSettings)
 
+        // Default gdx settings
+        val defaultGdxSettings = GdxSettings()
+        defaultGdxSettings.smallFontSize = 24
+        defaultGdxSettings.normalFontSize = 36
+        defaultGdxSettings.bigFontSize = 48
+        defaultGdxSettings.hugeFontSize = 60
+        defaultGdxSettings.imageScale = 1.5f
+        defaultGdxSettings.worldMapInfoPaneSplitAmount = 0.55f
+        defaultGdxSettings.infoPaneSplitAmount = 0.7f
+
         val relativitizationGameFragment = RelativitizationGameFragment(
             universeClient = universeClient,
+            defaultGdxSettings = defaultGdxSettings,
         ) {
             runBlocking {
                 universeServer.stop()
@@ -100,6 +111,7 @@ class AndroidLauncher : AppCompatActivity(), AndroidFragmentApplication.Callback
 
 class RelativitizationGameFragment(
     private val universeClient: UniverseClient,
+    private val defaultGdxSettings: GdxSettings,
     private val exit: () -> Unit,
 ) : AndroidFragmentApplication() {
 
@@ -111,7 +123,7 @@ class RelativitizationGameFragment(
         return initializeForView(
             RelativitizationGame(
                 universeClient = universeClient,
-                defaultScale = 1.5,
+                defaultGdxSettings = defaultGdxSettings,
                 exit = exit,
             )
         )

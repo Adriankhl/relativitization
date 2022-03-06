@@ -48,37 +48,18 @@ data class GdxSettings(
          * Load settings or create a default setting
          *
          * @param programDir load settings from this directory
-         * @param defaultScale scale the graphics by this value for default settings
+         * @param default return this default if settings cannot be loaded
          */
         fun loadOrDefault(
             programDir: String,
-            defaultScale: Double,
+            default: GdxSettings,
         ): GdxSettings {
             return try {
                 logger.debug("Trying to load gdx settings")
                 // This can fail due to having older version of setting or file doesn't exist
                 load(programDir)
             } catch (e: Throwable) {
-                logger.debug("Load gdx settings fail, use default settings")
-                val gdxSettings = GdxSettings()
-                gdxSettings.smallFontSize = (gdxSettings.smallFontSize * defaultScale).toInt()
-                gdxSettings.normalFontSize = (gdxSettings.normalFontSize * defaultScale).toInt()
-                gdxSettings.bigFontSize = (gdxSettings.bigFontSize * defaultScale).toInt()
-                gdxSettings.hugeFontSize = (gdxSettings.hugeFontSize * defaultScale).toInt()
-                gdxSettings.maxFontSize = max(
-                    72,
-                    gdxSettings.hugeFontSize,
-                )
-
-                gdxSettings.imageScale = (gdxSettings.imageScale * defaultScale).toFloat()
-
-                gdxSettings.worldMapInfoPaneSplitAmount = (1.0 - (1.0 -
-                        gdxSettings.worldMapInfoPaneSplitAmount) * defaultScale).toFloat()
-
-                gdxSettings.infoPaneSplitAmount = (1.0 - (1.0 -
-                        gdxSettings.infoPaneSplitAmount) * defaultScale).toFloat()
-
-                gdxSettings
+                default
             }
         }
     }

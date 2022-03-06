@@ -5,7 +5,6 @@ import com.badlogic.gdx.Game
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.audio.Music
-import kotlinx.coroutines.runBlocking
 import relativitization.client.UniverseClient
 import relativitization.game.screens.MainMenuScreen
 import relativitization.game.utils.Assets
@@ -16,18 +15,18 @@ import java.io.File
  * The main game graphical interface
  *
  * @property universeClient the GUI independent client
- * @property defaultScale the default scale of UI
+ * @property defaultGdxSettings the default gdx settings
  * @property exit call this to exit app
  */
 class RelativitizationGame(
     val universeClient: UniverseClient,
-    private val defaultScale: Double,
+    private val defaultGdxSettings: GdxSettings,
     val exit: () -> Unit,
 ) : Game() {
 
     val gdxSettings: GdxSettings = GdxSettings.loadOrDefault(
         universeClient.universeClientSettings.programDir,
-        defaultScale,
+        defaultGdxSettings,
     )
 
     val onGdxSettingsChangeFunctionList: MutableList<() -> Unit> = mutableListOf()

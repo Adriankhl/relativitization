@@ -14,6 +14,7 @@ import kotlinx.coroutines.runBlocking
 import org.apache.logging.log4j.Level
 import org.apache.logging.log4j.core.config.Configurator
 import relativitization.client.UniverseClient
+import relativitization.game.GdxSettings
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.Assets
 import relativitization.server.UniverseServer
@@ -77,7 +78,7 @@ fun main() {
         launch(Dispatchers.Default.limitedParallelism(1)) {
             val game = RelativitizationGame(
                 universeClient = universeClient,
-                defaultScale = 1.0,
+                defaultGdxSettings = GdxSettings(),
             ) {
                 runBlocking {
                     universeServer.stop()
