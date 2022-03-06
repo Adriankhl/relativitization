@@ -86,3 +86,11 @@
 
 # okio
 -dontwarn org.codehaus.mojo.animal_sniffer.*
+
+# log4j and logback
+-dontwarn javax.**
+-dontwarn java.lang.management.**
+-dontwarn sun.reflect.Reflection
+-dontwarn org.osgi.framework.**
+-dontwarn com.lmax.disruptor.**
+-dontwarn org.codehaus.janino.**
