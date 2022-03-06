@@ -19,6 +19,8 @@
 #   public *;
 #}
 
+# Libgdx
+
 -verbose
 
 -dontwarn android.support.**
@@ -34,6 +36,11 @@
    <init>(com.badlogic.gdx.Application, android.content.Context, java.lang.Object, com.badlogic.gdx.backends.android.AndroidApplicationConfiguration);
 }
 
+-keep class com.badlogic.**{
+   **[] $VALUES;
+    *;
+}
+
 #-keepclassmembers class com.badlogic.gdx.physics.box2d.World {
 #   boolean contactFilter(long, long);
 #   void    beginContact(long);
@@ -43,6 +50,8 @@
 #   boolean reportFixture(long);
 #   float   reportRayFixture(long, float, float, float, float, float);
 #}
+
+# Kotlin serialization
 
 # Keep `Companion` object fields of serializable classes.
 # This avoids serializer lookup through `getDeclaredClasses` as done for named companion objects.
@@ -94,3 +103,4 @@
 -dontwarn org.osgi.framework.**
 -dontwarn com.lmax.disruptor.**
 -dontwarn org.codehaus.janino.**
+-dontwarn org.codehaus.commons.compiler.CompileException

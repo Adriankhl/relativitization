@@ -1,6 +1,3 @@
-import com.android.build.api.dsl.Lint
-import com.android.build.api.dsl.LintOptions
-import com.android.builder.model.SigningConfig
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 
@@ -109,14 +106,16 @@ android {
 
     buildTypes {
         getByName("release") {
-            isMinifyEnabled = true
-            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
+            // Disable proguard, since it breaks reflection
+            //proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
+            isMinifyEnabled = false
         }
 
         getByName("debug") {
+            // Disable proguard, since it breaks reflection
+            //proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
             isMinifyEnabled = false
             isDebuggable = true
-            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
         }
 
         // standalone release, without sign
