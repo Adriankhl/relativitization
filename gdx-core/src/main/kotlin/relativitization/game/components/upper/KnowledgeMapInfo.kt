@@ -248,12 +248,20 @@ class KnowledgeMapInfo(val game: RelativitizationGame) : UpperInfo<Table>(game) 
 
         updateKnowledgeGroup()
 
-        table.add(
-            createLabel(
-                "Knowledge map: player ${playerData.playerId}",
-                gdxSettings.bigFontSize,
-            )
+        val knowledgeMapHeader = createLabel(
+            "Knowledge map: player ${playerData.playerId}",
+            gdxSettings.bigFontSize,
         )
+        val knowledgeMapHeaderScrollPane = createScrollPane(knowledgeMapHeader)
+        // Configure scroll pane
+        knowledgeMapHeaderScrollPane.fadeScrollBars = false
+        knowledgeMapHeaderScrollPane.setClamp(true)
+        knowledgeMapHeaderScrollPane.setOverscroll(false, false)
+        knowledgeMapHeaderScrollPane.setScrollingDisabled(false, true)
+
+        table.add(
+            knowledgeMapHeaderScrollPane
+        ).minHeight(knowledgeMapHeader.prefHeight)
 
         table.row().space(20f)
 
