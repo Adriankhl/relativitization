@@ -25,11 +25,19 @@ import relativitization.utils.ServerPort
 @ExperimentalCoroutinesApi
 class AndroidLauncher : AppCompatActivity(), AndroidFragmentApplication.Callbacks {
     override fun onCreate(savedInstanceState: Bundle?) {
-        Configurator.setRootLevel(Level.DEBUG)
-        Configurator.setLevel("Translation", Level.ERROR)
-        Configurator.setLevel("UniverseServerInternal", Level.ERROR)
-        Configurator.setLevel("UniverseClient", Level.ERROR)
-        Configurator.setLevel("ActorFunction", Level.ERROR)
+        // Reduce logging for release build
+        val isLoggerRelease: Boolean = !BuildConfig.DEBUG
+
+        // Set log level
+        if (isLoggerRelease) {
+            Configurator.setRootLevel(Level.OFF)
+        } else {
+            Configurator.setRootLevel(Level.DEBUG)
+            Configurator.setLevel("Translation", Level.ERROR)
+            Configurator.setLevel("UniverseServerInternal", Level.ERROR)
+            Configurator.setLevel("UniverseClient", Level.ERROR)
+            Configurator.setLevel("ActorFunction", Level.ERROR)
+        }
 
         super.onCreate(savedInstanceState)
 
