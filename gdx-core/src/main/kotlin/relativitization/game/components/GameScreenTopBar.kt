@@ -471,15 +471,11 @@ class GameScreenTopBar(
     private val serverStatusLabel: Label = createLabel("", gdxSettings.smallFontSize)
 
     // About fuel
-    private val fuelTradeLabel: Label = createLabel("", gdxSettings.smallFontSize)
-    private val fuelProductionLabel: Label = createLabel("", gdxSettings.smallFontSize)
-    private val fuelMovementLabel: Label = createLabel("", gdxSettings.smallFontSize)
-    private val fuelStorageLabel: Label = createLabel("", gdxSettings.smallFontSize)
+    private val fuelLabel: Label = createLabel("", gdxSettings.smallFontSize)
 
     // Tables
     private val viewControlTable: Table = createViewControlTable()
     private val currentUniverseDataTable: Table = createCurrentUniverseDataTable()
-    private val fuelRestMassDataTable: Table = createFuelRestMassDataTable()
     private val stopWaitingTable: Table = createStopWaitingTable()
     private val runOrStopUniverseTable: Table = createRunStopUniverseTable()
 
@@ -510,7 +506,7 @@ class GameScreenTopBar(
         table.add(clearCommandListButton)
             .size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
 
-        table.add(fuelRestMassDataTable).pad(10f)
+        table.add(fuelLabel).pad(10f)
 
         upperInfoButtonList.forEach {
             table.add(it).pad(10f)
@@ -655,48 +651,6 @@ class GameScreenTopBar(
     }
 
     /**
-     * Create a table to display fuel data
-     */
-    private fun createFuelRestMassDataTable(): Table {
-        val nestedTable = Table()
-
-        nestedTable.add(
-            createLabel(
-                "Fuel",
-                gdxSettings.smallFontSize
-            )
-        ).colspan(3)
-
-        nestedTable.row().space(0f)
-
-        nestedTable.add(fuelTradeLabel)
-
-        nestedTable.add(
-            createLabel(
-                " | ",
-                gdxSettings.smallFontSize
-            )
-        )
-
-        nestedTable.add(fuelProductionLabel)
-
-        nestedTable.row().space(0f)
-
-        nestedTable.add(fuelMovementLabel)
-
-        nestedTable.add(
-            createLabel(
-                " | ",
-                gdxSettings.smallFontSize
-            )
-        )
-
-        nestedTable.add(fuelStorageLabel)
-
-        return nestedTable
-    }
-
-    /**
      * Create a table for controlling time slice
      */
     private fun createCurrentUniverseDataTable(): Table {
@@ -769,13 +723,30 @@ class GameScreenTopBar(
 
         val storage: String = fuelRestMassData.storage.toScientificNotation().toString(2)
 
-        fuelTradeLabel.setText(trade)
+        //val firstLine = "Fuel"
+        //val secondLine = if (trade.length >= movement.length) {
+        //    "$trade | $production"
+        //} else {
+        //    " ".repeat(movement.length - trade.length) + "$trade | $production"
+        //}
+        //val thirdLine = if (trade.length <= movement.length) {
+        //    "$movement | $storage"
+        //} else {
+        //    " ".repeat(trade.length - movement.length) + "$movement | $storage"
+        //}
 
-        fuelProductionLabel.setText(production)
+        //val maxLength: Int = max(max(firstLine.length, secondLine.length), thirdLine.length)
+        //val firstIndentNum: Int = (maxLength - firstLine.length) / 2 + 3
 
-        fuelMovementLabel.setText(movement)
+        //fuelLabel.setText(
+        //    " ".repeat(firstIndentNum) + firstLine + "\n" +
+        //            secondLine + "\n" +
+        //            thirdLine
+        //)
 
-        fuelStorageLabel.setText(storage)
+        val firstLine = "$trade | $production"
+        val secondLine = "$movement | $storage"
+        fuelLabel.setText(firstLine + "\n" + secondLine)
     }
 
     /**
