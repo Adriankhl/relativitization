@@ -1,3 +1,4 @@
+import com.android.builder.model.SigningConfig
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 
@@ -99,22 +100,27 @@ android {
         }
     }
 
-
     compileOptions {
         sourceCompatibility(JavaVersion.VERSION_11)
         targetCompatibility(JavaVersion.VERSION_11)
     }
 
     buildTypes {
-        release {
+        getByName("release") {
+            isMinifyEnabled = true
+            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
+        }
+
+        getByName("debug") {
             isMinifyEnabled = false
             isDebuggable = true
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
         }
-        debug {
-            isMinifyEnabled = false
-            isDebuggable = true
-            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
+
+        // standalone release, without sign
+        create("standalone") {
+            initWith(getByName("release"))
+            signingConfig = getByName("debug").signingConfig
         }
     }
 }
