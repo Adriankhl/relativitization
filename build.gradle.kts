@@ -100,7 +100,7 @@ tasks.register("packageAll") {
     dependsOn("createOutputDir")
     dependsOn("outputVersionTxt")
     dependsOn("packageAssets")
-    dependsOn(":gdx-android:assembleDebug")
+    dependsOn(":gdx-android:assembleStandalone")
     dependsOn(":gdx-desktop:fatJar")
 
     doLast {
@@ -163,7 +163,7 @@ tasks.register("packageAll") {
             workingDir = artDirectory
             commandLine(
                 "cp",
-                "../relativitization/gdx-android/build/outputs/apk/free/debug/relativitization-free-debug.apk",
+                "../relativitization/gdx-android/build/outputs/apk/free/standalone/relativitization-free-standalone.apk",
                 "./outputs/relativitization.apk"
             )
         }

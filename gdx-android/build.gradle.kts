@@ -1,3 +1,5 @@
+import com.android.build.api.dsl.Lint
+import com.android.build.api.dsl.LintOptions
 import com.android.builder.model.SigningConfig
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
@@ -122,6 +124,10 @@ android {
             initWith(getByName("release"))
             signingConfig = getByName("debug").signingConfig
         }
+    }
+
+    lint {
+        checkReleaseBuilds = false
     }
 }
 
