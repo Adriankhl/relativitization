@@ -18,13 +18,11 @@ import java.io.File
  * @property universeClient the GUI independent client
  * @property defaultScale the default scale of UI
  * @property exit call this to exit app
- * @property onDispose function to execute on dispose
  */
 class RelativitizationGame(
     val universeClient: UniverseClient,
     private val defaultScale: Double,
     val exit: () -> Unit,
-    private val onDispose: () -> Unit,
 ) : Game() {
 
     val gdxSettings: GdxSettings = GdxSettings.loadOrDefault(
@@ -57,17 +55,20 @@ class RelativitizationGame(
         setScreen(MainMenuScreen(this))
     }
 
-
+    // Avoid infinite looping, exit() may call dispose()
+    private var isGameDisposed = false
     override fun dispose() {
-        logger.debug("Stopping game")
-        clear()
-        runBlocking {
-            backgroundMusic.stop()
-            assets.dispose()
-            universeClient.stop()
+        if (!isGameDisposed) {
+            isGameDisposed = true
+            logger.debug("Stopping game")
+            clear()
+            runBlocking {
+                backgroundMusic.stop()
+                assets.dispose()
+            }
+            exit()
+            logger.debug("Game stopped")
         }
-        onDispose()
-        logger.debug("Game stopped")
     }
 
 
@@ -113,16 +114,10 @@ class RelativitizationGame(
 
     fun clearOnChangeFunctionList() {
         onGdxSettingsChangeFunctionList.clear()
-        runBlocking {
-            universeClient.clearOnChangeFunctionList()
-        }
     }
 
     fun clear() {
         clearOnChangeFunctionList()
-        runBlocking {
-            universeClient.clear()
-        }
     }
 
     fun cleanSettings() {

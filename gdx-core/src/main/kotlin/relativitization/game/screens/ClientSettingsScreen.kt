@@ -67,9 +67,7 @@ class ClientSettingsScreen(
                 if (isReset) {
                     game.cleanSettings()
                 }
-                game.universeClient.runOnceFunctionCoroutineList.add {
-                    game.exit()
-                }
+                game.dispose()
             }
         }
 

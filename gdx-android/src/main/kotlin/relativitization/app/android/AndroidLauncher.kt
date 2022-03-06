@@ -1,5 +1,7 @@
 package relativitization.app.android
 
+import android.app.Application
+import android.content.pm.ApplicationInfo
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -26,7 +28,8 @@ import relativitization.utils.ServerPort
 class AndroidLauncher : AppCompatActivity(), AndroidFragmentApplication.Callbacks {
     override fun onCreate(savedInstanceState: Bundle?) {
         // Reduce logging for release build
-        val isLoggerRelease: Boolean = !BuildConfig.DEBUG
+        val isLoggerRelease: Boolean =
+            (applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE) != 0
 
         // Set log level
         if (isLoggerRelease) {
@@ -69,9 +72,13 @@ class AndroidLauncher : AppCompatActivity(), AndroidFragmentApplication.Callback
 
         val relativitizationGameFragment = RelativitizationGameFragment(
             universeClient = universeClient,
-            universeServer = universeServer,
-            this::finishAndRemoveTask
-        )
+        ) {
+            runBlocking {
+                universeServer.stop()
+                universeClient.stop()
+            }
+            finishAndRemoveTask()
+        }
 
         val trans: FragmentTransaction = supportFragmentManager.beginTransaction()
 
@@ -93,7 +100,6 @@ class AndroidLauncher : AppCompatActivity(), AndroidFragmentApplication.Callback
 
 class RelativitizationGameFragment(
     private val universeClient: UniverseClient,
-    private val universeServer: UniverseServer,
     private val exit: () -> Unit,
 ) : AndroidFragmentApplication() {
 
@@ -104,12 +110,10 @@ class RelativitizationGameFragment(
     ): View {
         return initializeForView(
             RelativitizationGame(
-                universeClient,
-                1.5,
-                exit,
-            ) {
-                runBlocking { universeServer.stop() }
-            }
+                universeClient = universeClient,
+                defaultScale = 1.5,
+                exit = exit,
+            )
         )
     }
 }

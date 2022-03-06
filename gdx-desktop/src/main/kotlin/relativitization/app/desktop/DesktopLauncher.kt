@@ -78,9 +78,12 @@ fun main() {
             val game = RelativitizationGame(
                 universeClient = universeClient,
                 defaultScale = 1.0,
-                exit = { Gdx.app.exit() }
             ) {
-                runBlocking { universeServer.stop() }
+                runBlocking {
+                    universeServer.stop()
+                    universeClient.stop()
+                }
+                Gdx.app.exit()
             }
 
             try {
