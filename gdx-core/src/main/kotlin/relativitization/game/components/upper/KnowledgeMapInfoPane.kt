@@ -263,7 +263,7 @@ class KnowledgeMapInfoPane(val game: RelativitizationGame) : UpperInfoPane<Table
             knowledgeMapHeaderScrollPane
         ).minHeight(knowledgeMapHeader.prefHeight).pad(20f)
 
-        table.row().space(20f)
+        table.row()
 
         table.add(knowledgeBar)
 
@@ -711,6 +711,7 @@ class KnowledgeMapInfoPane(val game: RelativitizationGame) : UpperInfoPane<Table
             BasicResearchField.HUMANITY -> Color.RED
         }
 
+        // 0 sound volume to avoid double sound
         return createImage(
             name = "science/book1",
             xPos = ((project.xCor - knowledgeMapMinX() + knowledgeMapMargin()) * actualZoom() -
@@ -725,7 +726,7 @@ class KnowledgeMapInfoPane(val game: RelativitizationGame) : UpperInfoPane<Table
             g = rgb.g,
             b = rgb.b,
             a = if (isProjectDone) 1.0f else 0.5f,
-            soundVolume = gdxSettings.soundEffectsVolume
+            soundVolume = 0f,
         ) {
             selectedBasicResearchProjectData = project
             isBasicProjectSelected = true
@@ -760,6 +761,7 @@ class KnowledgeMapInfoPane(val game: RelativitizationGame) : UpperInfoPane<Table
             AppliedResearchField.MILITARY_TECHNOLOGY -> Color.NAVY
         }
 
+        // 0 sound volume to avoid double sound
         return createImage(
             name = "science/wrench1",
             xPos = ((project.xCor - knowledgeMapMinX() + knowledgeMapMargin()) * actualZoom() -
@@ -774,7 +776,7 @@ class KnowledgeMapInfoPane(val game: RelativitizationGame) : UpperInfoPane<Table
             g = rgb.g,
             b = rgb.b,
             a = if (isProjectDone) 1.0f else 0.5f,
-            soundVolume = gdxSettings.soundEffectsVolume
+            soundVolume = 0f,
         ) {
             selectedAppliedResearchProjectData = project
             isBasicProjectSelected = false
@@ -905,6 +907,7 @@ class KnowledgeMapInfoPane(val game: RelativitizationGame) : UpperInfoPane<Table
         instituteData: InstituteData,
     ): List<Image> {
 
+        // 0 sound volume to avoid double sound
         val rangeImage = createImage(
             name = "basic/white-circle",
             xPos = ((instituteData.instituteInternalData.xCor - knowledgeMapMinX() + knowledgeMapMargin()) * actualZoom() -
@@ -919,9 +922,10 @@ class KnowledgeMapInfoPane(val game: RelativitizationGame) : UpperInfoPane<Table
             g = 1.0f,
             b = 1.0f,
             a = 0.5f,
-            soundVolume = gdxSettings.soundEffectsVolume
+            soundVolume = 0f,
         )
 
+        // 0 sound volume to avoid double sound
         val instituteImage = createImage(
             name = "science/institute1",
             xPos = ((instituteData.instituteInternalData.xCor - knowledgeMapMinX() + knowledgeMapMargin()) * actualZoom() -
@@ -936,7 +940,7 @@ class KnowledgeMapInfoPane(val game: RelativitizationGame) : UpperInfoPane<Table
             g = 1.0f,
             b = 1.0f,
             a = 1.0f,
-            soundVolume = gdxSettings.soundEffectsVolume
+            soundVolume = 0f,
         ) {
             selectedCarrierId = carrierId
             selectedInstituteId = instituteId
@@ -962,6 +966,7 @@ class KnowledgeMapInfoPane(val game: RelativitizationGame) : UpperInfoPane<Table
         laboratoryData: LaboratoryData,
     ): List<Image> {
 
+        // 0 sound volume to avoid double sound
         val rangeImage = createImage(
             name = "basic/white-circle",
             xPos = ((laboratoryData.laboratoryInternalData.xCor - knowledgeMapMinX() + knowledgeMapMargin()) * actualZoom() -
@@ -976,9 +981,10 @@ class KnowledgeMapInfoPane(val game: RelativitizationGame) : UpperInfoPane<Table
             g = 1.0f,
             b = 1.0f,
             a = 0.5f,
-            soundVolume = gdxSettings.soundEffectsVolume
+            soundVolume = 0f,
         )
 
+        // 0 sound volume to avoid double sound
         val laboratoryImage = createImage(
             name = "science/laboratory1",
             xPos = ((laboratoryData.laboratoryInternalData.xCor - knowledgeMapMinX() + knowledgeMapMargin()) * actualZoom() -
@@ -993,7 +999,7 @@ class KnowledgeMapInfoPane(val game: RelativitizationGame) : UpperInfoPane<Table
             g = 1.0f,
             b = 1.0f,
             a = 1.0f,
-            soundVolume = gdxSettings.soundEffectsVolume
+            soundVolume = 0f,
         ) {
             selectedCarrierId = carrierId
             selectedLaboratoryId = laboratoryId
