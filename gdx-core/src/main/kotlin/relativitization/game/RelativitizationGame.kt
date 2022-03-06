@@ -10,6 +10,7 @@ import relativitization.client.UniverseClient
 import relativitization.game.screens.MainMenuScreen
 import relativitization.game.utils.Assets
 import relativitization.universe.utils.RelativitizationLogManager
+import java.io.File
 
 /**
  * The main game graphical interface
@@ -118,6 +119,27 @@ class RelativitizationGame(
         clearOnChangeFunctionList()
         runBlocking {
             universeClient.clear()
+        }
+    }
+
+    fun cleanSettings() {
+        val gdxSettingsFile = File(
+            universeClient.universeClientSettings.programDir + "/GdxSettings.json"
+        )
+        val generateSettingsFile = File(
+        universeClient.universeClientSettings.programDir + "/GenerateSettings.json"
+        )
+
+        if (gdxSettingsFile.delete()) {
+            logger.debug("Deleted: ${gdxSettingsFile.name}")
+        } else {
+            logger.debug("Delete failed: ${gdxSettingsFile.name}")
+        }
+
+        if (generateSettingsFile.delete()) {
+            logger.debug("Deleted: ${generateSettingsFile.name}")
+        } else {
+            logger.debug("Delete failed: ${generateSettingsFile.name}")
         }
     }
 

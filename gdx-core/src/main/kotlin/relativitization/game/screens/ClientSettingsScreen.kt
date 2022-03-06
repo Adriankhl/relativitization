@@ -56,12 +56,17 @@ class ClientSettingsScreen(
     private fun createQuitTable(): Table {
         val nestedTable = Table()
 
+        var isReset: Boolean = false
+
         val confirmButton = createTextButton(
             "Confirm",
             gdxSettings.normalFontSize,
             gdxSettings.soundEffectsVolume
         ) {
             runBlocking {
+                if (isReset) {
+                    game.cleanSettings()
+                }
                 game.universeClient.addToOnServerStatusChangeFunctionList { Gdx.app.exit() }
             }
         }
@@ -71,6 +76,7 @@ class ClientSettingsScreen(
             gdxSettings.normalFontSize,
             gdxSettings.soundEffectsVolume
         ) {
+            isReset = false
             it.isVisible = false
             confirmButton.isVisible = false
         }
@@ -80,11 +86,23 @@ class ClientSettingsScreen(
             gdxSettings.normalFontSize,
             gdxSettings.soundEffectsVolume
         ) {
+            isReset = false
             confirmButton.isVisible = true
             cancelButton.isVisible = true
         }
 
-        nestedTable.add(quitGameButton).colspan(2)
+        val resetAndQuitGameButton = createTextButton(
+            "Reset and quit",
+            gdxSettings.normalFontSize,
+            gdxSettings.soundEffectsVolume
+        ) {
+            isReset = true
+            confirmButton.isVisible = true
+            cancelButton.isVisible = true
+        }
+
+        nestedTable.add(quitGameButton).pad(10f)
+        nestedTable.add(resetAndQuitGameButton).pad(10f)
 
         nestedTable.row().space(10f)
 
