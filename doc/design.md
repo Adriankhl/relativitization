@@ -85,3 +85,28 @@
 
 # Diplomacy
 * Ally, enemy, puppet
+
+# Keep it simple
+
+* Only one dimension in resource quality
+* Beside factory and research, other pop functionalities depend on size only.
+* Only adult population
+* No migration
+* No work at other carrier
+* No minimum wage and unemployment benefit
+* Unused centralization
+* No pop buy resource from other player
+* No alliance
+
+# Current unused data
+
+* Size of factory and institute
+* Open and close factory
+* Size of carrier
+* Child and elder population
+* Quality 2 and 3 of resources
+* Reputation of research institute and laboratory
+* Centralization
+* Ally
+* Player specific tariff
+* Fuel tariff
