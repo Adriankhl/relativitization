@@ -1,12 +1,13 @@
 # Relativitization
 
-Turn-based strategy game / agent-based simulation framework / social model in 4D, relativistic spacetime.
+Turn-based strategy game / agent-based simulation framework / social model in 4D, relativistic
+spacetime.
 
 * [Buy the game from itch.io](https://adriankhl.itch.io/relativitization)
-* [See the game documentation](https://github.com/Adriankhl/relativitization-game-doc) if you want to know more about
-  the game
-* [See the framework documentation](https://github.com/Adriankhl/relativitization-framework-doc) if you want to
-  implement your model or alternative game mechanics
+* [See the game documentation](https://github.com/Adriankhl/relativitization-game-doc) if you want
+  to know more about the game
+* [See the framework documentation](https://github.com/Adriankhl/relativitization-framework-doc) if
+  you want to implement your model or alternative game mechanics
 
 ## Table of Contents
 
@@ -33,28 +34,31 @@ Turn-based strategy game / agent-based simulation framework / social model in 4D
 
 ## Introduction
 
-Our interstellar future is always an interesting scenario to think about. There are great imaginations about all kinds
-of possible interstellar society in books, movies, and games. Unfortunately, while the space computer games are fun to
-play, the essential physics - relativity, is often missing.
+Our interstellar future is always an interesting scenario to think about. There are great
+imaginations about all kinds of possible interstellar society in books, movies, and games.
+Unfortunately, while the space computer games are fun to play, the essential physics - relativity,
+is often missing.
 
-Relativitization is an attempt to create a turn-based strategy / simulation game that respect special relativity. Since
-building an academic social model can be quite similar to designing mechanisms in a simulation / strategy game, this can
-also be used as an agent-based simulation framework for social scientists to build interstellar social models.
+Relativitization is an attempt to create a turn-based strategy / simulation game that respect
+special relativity. Since building an academic social model can be quite similar to designing
+mechanisms in a simulation / strategy game, this can also be used as an agent-based simulation
+framework for social scientists to build interstellar social models.
 
-The source code is licensed under GPLv3, you are free to modify things in the `universe` to build your model, and you
-can simulate your model via a terminal. Typically, this should be sufficient for academic studies.
+The source code is licensed under GPLv3, you are free to modify things in the `universe` to build
+your model, and you can simulate your model via a terminal. Typically, this should be sufficient for
+academic studies.
 
-To encourage people to support this project financially, the assets of the game are not opened. You need
-to [buy the assets](https://adriankhl.itch.io/relativitization) to actually play the game.
+To encourage people to support this project financially, the assets of the game are not opened. You
+need to [buy the assets](https://adriankhl.itch.io/relativitization) to actually play the game.
 
-Under specific circumstances, such as for educational purposes, or if you are a programmer who would like to contribute,
-it may be possible to get free download-keys for the game. Please email your request
-to [relativitization@gmail.com](relativitization@gmail.com).
+Under specific circumstances, such as for educational purposes, or if you are a programmer who would
+like to contribute, it may be possible to get free download-keys for the game. Please email your
+request to [relativitization@gmail.com](relativitization@gmail.com).
 
 ## Run simulations
 
-The following assumes you are using a Linux terminal. If you are working with Windows, you need to use the
-Windows-equivalent commands, such as changing `./gradlew` to `gradlew.bat`.
+The following assumes you are using a Linux terminal. If you are working with Windows, you need to
+use the Windows-equivalent commands, such as changing `./gradlew` to `gradlew.bat`.
 
 You can run simulations of your model on the command line. This is an example model:
 `./simulations/src/main/kotlin/relativitization/game/TypicalGame.kt`.
@@ -67,8 +71,8 @@ You can run the main function by:
 
 Note that the main class has an additional `Kt` after the file name in Kotlin convention.
 
-The default configuration can take up to 50% of the ram in your PC. If you think it is too little or too much,
-open `./simulations/build.gradle.kts` and modify the line
+The default configuration can take up to 50% of the ram in your PC. If you think it is too little or
+too much, open `./simulations/build.gradle.kts` and modify the line
 `applicationDefaultJvmArgs = listOf("-XX:MaxRAMPercentage=50")`.
 
 ## Build the game
@@ -108,12 +112,13 @@ This will produce a `Relativitization.jar` in `../relativitization-art/assets`:
 ./gradlew :gdx-desktop:fatJar
 ```
 
-### Build Android (debug) apk
+### Build Android apk
 
-This will produce a `relativitization-debug.apk` in `gdx-android/build/outputs/apk/debug`:
+This will produce a `relativitization-free-standalone.apk`
+in `gdx-android/build/outputs/apk/free/standalone`:
 
 ```
-./gradlew :gdx-android:assembleDebug
+./gradlew :gdx-android:assembleStandalone
 ```
 
 ## Generate documentation
@@ -131,9 +136,10 @@ If you encounter a bug, please check to see if there is any existing issue befor
 If you want to propose your ideas about the game, please use
 [relativitization-game-doc](https://github.com/Adriankhl/relativitization-game-doc) instead.
 
-Pull requests are welcome. To leave the possibility of changing the license of this project open, you are required to
-sign a contributor license agreement to indicate that your contribution is under the MIT license. The instruction will
-appear after your pull request has been created, just copy and paste a sentence in the comment.
+Pull requests are welcome. To leave the possibility of changing the license of this project open,
+you are required to sign a contributor license agreement to indicate that your contribution is under
+the MIT license. The instruction will appear after your pull request has been created, just copy and
+paste a sentence in the comment.
 
 ## License
 
