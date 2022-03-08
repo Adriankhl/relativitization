@@ -120,12 +120,16 @@ class RelativitizationGameFragment(
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return initializeForView(
+        val view: View = initializeForView(
             RelativitizationGame(
                 universeClient = universeClient,
                 defaultGdxSettings = defaultGdxSettings,
                 exit = exit,
             )
         )
+
+        view.keepScreenOn = true
+
+        return view
     }
 }
