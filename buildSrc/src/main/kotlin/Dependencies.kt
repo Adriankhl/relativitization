@@ -5,8 +5,11 @@ object Versions {
     private const val appVersionMajor = 0
     private const val appVersionMinor = 2
     private const val appVersionPatch = 0
-    const val appVersionCode: Int =
-        10000 * appVersionMajor + 100 * appVersionMinor + appVersionPatch
+    private const val appVersionBuild = 0
+    const val appVersionCode: Int = 1000000 * appVersionMajor +
+            10000 * appVersionMinor +
+            100 * appVersionPatch +
+            appVersionBuild
     const val appVersionName = "$appVersionMajor.$appVersionMinor.$appVersionPatch"
 
     // Kotlin multiplatform
