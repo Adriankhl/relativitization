@@ -6,7 +6,7 @@
 * Game: always diffuse known project
 * Game: auto-confirm current command
 * UI: Optimize upper info update in GUI
-* UI: Allow displaying control pane at top or bottom
+* UI: Choices to displaying control pane at top or bottom
 
 ## 0.1
 
