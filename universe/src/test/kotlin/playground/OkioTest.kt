@@ -5,7 +5,6 @@ import okio.Path.Companion.toPath
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.serializer.DataSerializer
 import kotlin.test.Ignore
-import kotlin.test.Test
 
 
 internal class OkioTest {

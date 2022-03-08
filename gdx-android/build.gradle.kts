@@ -9,6 +9,8 @@ plugins {
 
 val natives: Configuration by configurations.creating
 
+val androidKeyDir: String = System.getProperty("user.dir") + "/../android/"
+
 android {
     namespace = "relativitization.app.android"
 
@@ -90,6 +92,18 @@ android {
         base.archivesName.set("relativitization")
     }
 
+   signingConfigs {
+        create("release") {
+            // You need to specify either an absolute path or include the
+            // keystore file in the same directory as the build.gradle file.
+            storeFile = file("$androidKeyDir/relativitization-release.jks")
+            storePassword = file("$androidKeyDir/relativitization-release-key-password.txt").readText().trim()
+            keyAlias = "relativitization-release-key"
+            keyPassword = File("$androidKeyDir/relativitization-release-key-password.txt").readText().trim()
+        }
+    }
+
+
     flavorDimensions += "version"
     productFlavors {
         create("free") {
@@ -109,6 +123,9 @@ android {
             // Disable proguard, since it breaks reflection
             //proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
             isMinifyEnabled = false
+
+            signingConfig = signingConfigs.getByName("release")
+
         }
 
         getByName("debug") {

@@ -109,6 +109,7 @@ tasks.register("packageAll") {
     dependsOn("outputVersionTxt")
     dependsOn("packageAssets")
     dependsOn(":gdx-android:assembleStandalone")
+    dependsOn(":gdx-android:bundleRelease")
     dependsOn(":gdx-desktop:fatJar")
 
     doLast {
@@ -174,13 +175,23 @@ tasks.register("packageAll") {
             )
         }
 
-        // Copy the windows package directory here
+        // Copy android standalone apk
         exec {
             workingDir = artDirectory
             commandLine(
                 "cp",
                 "../relativitization/gdx-android/build/outputs/apk/free/standalone/relativitization-free-standalone.apk",
                 "./outputs/relativitization.apk"
+            )
+        }
+
+        // copy android release apk
+        exec {
+            workingDir = artDirectory
+            commandLine(
+                "cp",
+                "../relativitization/gdx-android/build/outputs/bundle/freeRelease/relativitization-free-release.aab",
+                "./outputs/relativitization-release.aab"
             )
         }
 
