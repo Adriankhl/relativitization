@@ -33,6 +33,21 @@ tasks.getByName("clean").doLast {
     delete("./universe/saves")
 }
 
+tasks.register("updateModelGitignore") {
+    val gitignoreFile = File(".gitignore")
+    File("model-gitignore.txt").writeText(gitignoreFile.readText())
+
+    val allFilePathList: List<String> = File(".").walkTopDown().map {
+        it.toRelativeString(File("."))
+    }.filter {
+        it.matches(Regex("^(gradle.*|.*kts?)$"))
+    }.toList()
+
+    allFilePathList.forEach {
+        File("model-gitignore.txt").appendText(it + "\n")
+    }
+}
+
 tasks.register("cleanAll") {
     dependsOn("clean")
 }
