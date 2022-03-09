@@ -44,6 +44,9 @@ saves*
 # Ignore assets
 assets*
 
+# base project for modelign
+relativitization-model-base
+
 # Latex
 *.aux
 *.pdf
