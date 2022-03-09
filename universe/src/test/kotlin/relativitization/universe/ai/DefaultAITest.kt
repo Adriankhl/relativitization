@@ -34,15 +34,10 @@ internal class DefaultAITest {
                 mechanismCollectionName = DefaultMechanismLists.name(),
                 globalMechanismCollectionName = DefaultGlobalMechanismList.name(),
                 speedOfLight = 1.0,
-                xDim = 3,
-                yDim = 3,
+                xDim = 10,
+                yDim = 10,
                 zDim = 3,
-                tDim = 8,
-                playerAfterImageDuration = 4,
-                playerHistoricalInt4DLength = 4,
                 groupEdgeLength = 0.01,
-                otherIntMap = mutableMapOf(),
-                otherDoubleMap = mutableMapOf(),
             )
         )
 
