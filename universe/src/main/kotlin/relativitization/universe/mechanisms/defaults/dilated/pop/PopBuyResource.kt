@@ -70,7 +70,7 @@ object PopBuyResource : Mechanism() {
         val numDesire: Int = commonPopData.desireResourceMap.size
         val availableFuel: Double = commonPopData.saving / numDesire
 
-        val isBuyFromThisPlayerPrioritized: Boolean = isBuyFromThisPlayerPrioritized(
+        val mustBuyFromThisPlayer: Boolean = mustBuyFromThisPlayer(
             resourceType = resourceType,
             desireAmount = desireAmount,
             desireQualityData = desireQuality,
@@ -79,7 +79,7 @@ object PopBuyResource : Mechanism() {
             economyData = economyData,
         )
 
-        return if (isBuyFromThisPlayerPrioritized) {
+        return if (mustBuyFromThisPlayer) {
             buyFromThisPlayer(
                 resourceType = resourceType,
                 desireAmount = desireAmount,
@@ -91,6 +91,9 @@ object PopBuyResource : Mechanism() {
             )
             listOf()
         } else {
+            // Compare this player and other players
+
+
             listOf()
         }
     }
@@ -99,7 +102,7 @@ object PopBuyResource : Mechanism() {
      * Whether the pop must buy the resource from this player
      * True if satisfaction is low and there are enough resource
      */
-    fun isBuyFromThisPlayerPrioritized(
+    fun mustBuyFromThisPlayer(
         resourceType: ResourceType,
         desireAmount: Double,
         desireQualityData: MutableResourceQualityData,

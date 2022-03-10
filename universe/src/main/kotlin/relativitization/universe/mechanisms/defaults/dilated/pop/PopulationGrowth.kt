@@ -11,7 +11,6 @@ import relativitization.universe.data.components.popSystemData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.mechanisms.Mechanism
 import relativitization.universe.utils.RelativitizationLogManager
-import kotlin.math.min
 import kotlin.math.pow
 
 object PopulationGrowth : Mechanism() {
@@ -129,8 +128,9 @@ object PopulationGrowth : Mechanism() {
             }
         }
 
-        // Population increase if > 1.0, else population decrease
-        val overallFactor: Double = educationFactor * idealPopulationFactor * medicFactor * satisfaction - 1.0
+        // Population increase if > 0.0, else population decrease
+        val overallFactor: Double =
+            educationFactor * idealPopulationFactor * medicFactor * satisfaction - 1.0
 
         val actualOverallFactor: Double = when {
             overallFactor > 1.0 -> {

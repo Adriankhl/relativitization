@@ -7,6 +7,9 @@ import relativitization.universe.data.components.defaults.popsystem.pop.PopType
 
 /**
  * Export center of pop
+ *
+ * @property exportDataMap map from carrier id in other player to pop type to a list of export
+ * to consider,
  */
 @Serializable
 data class PopExportCenterData(

@@ -20,16 +20,16 @@ data class MutableExportData(
     val popExportCenterMap: MutableMap<Int, MutablePopExportCenterData> = mutableMapOf(),
 ) {
     fun totalExportAmount(): Double {
-        val playerExportAmount: Double = playerExportCenterMap.values.sumOf {
-            it.exportDataList.sumOf {
+        val playerExportAmount: Double = playerExportCenterMap.values.sumOf { exportCenter ->
+            exportCenter.exportDataList.sumOf {
                 it.amountPerTime
             }
         }
 
-        val popExportAmount: Double = popExportCenterMap.values.sumOf {
-            it.exportDataMap.values.sumOf {
-                it.values.sumOf {
-                    it.sumOf {
+        val popExportAmount: Double = popExportCenterMap.values.sumOf { popExportCenter ->
+            popExportCenter.exportDataMap.values.sumOf { popExportCenterMap ->
+                popExportCenterMap.values.sumOf { popExportCenterList ->
+                    popExportCenterList.sumOf {
                         it.amountPerTime
                     }
                 }
@@ -49,6 +49,7 @@ data class MutableExportData(
         val playerExportCenterToRemove: Set<Int> = playerExportCenterMap.filter { (_, exportCenter) ->
             exportCenter.exportDataList.isEmpty()
         }.keys
+
         playerExportCenterToRemove.forEach {
             playerExportCenterMap.remove(it)
         }
@@ -57,6 +58,7 @@ data class MutableExportData(
         val popExportCenterToRemove: Set<Int> = playerExportCenterMap.filter { (_, exportCenter) ->
             exportCenter.exportDataList.isEmpty()
         }.keys
+
         popExportCenterToRemove.forEach {
             popExportCenterMap.remove(it)
         }
