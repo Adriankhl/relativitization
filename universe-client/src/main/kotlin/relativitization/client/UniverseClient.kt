@@ -244,7 +244,8 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
         val differentTime = (universeServerStatusMessage.currentUniverseTime !=
                 universeData3DCache.center.t)
 
-        return (universeServerStatusMessage.success &&
+        return ((universeClientSettings.playerId != -1) &&
+                universeServerStatusMessage.success &&
                 universeServerStatusMessage.isUniverseRunning &&
                 universeServerStatusMessage.hasUniverse &&
                 universeServerStatusMessage.isServerWaitingInput &&

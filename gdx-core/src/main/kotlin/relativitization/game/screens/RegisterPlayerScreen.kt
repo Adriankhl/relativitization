@@ -11,6 +11,7 @@ import kotlinx.coroutines.runBlocking
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.TableScreen
 import relativitization.universe.UniverseClientSettings
+import relativitization.universe.data.serializer.DataSerializer
 
 class RegisterPlayerScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
     private val gdxSettings = game.gdxSettings
@@ -25,6 +26,10 @@ class RegisterPlayerScreen(val game: RelativitizationGame) : TableScreen(game.as
                 val httpCode = game.universeClient.httpPostRegisterPlayer()
                 if (httpCode == HttpStatusCode.OK) {
                     disableActor(button)
+
+                    // Update primary selected id
+                    game.universeClient.primarySelectedPlayerId =
+                        game.universeClient.universeClientSettings.playerId
                     registerStatusLabel.setText("Registered player id: ${game.universeClient.universeClientSettings.playerId}")
                 } else {
                     registerStatusLabel.setText("Register player fail, http code: $httpCode")
@@ -131,10 +136,12 @@ class RegisterPlayerScreen(val game: RelativitizationGame) : TableScreen(game.as
             idList.getOrElse(0) { -1 },
             gdxSettings.normalFontSize
         ) { id, _ ->
-            val newUniverseClientSettings: UniverseClientSettings =
-                game.universeClient.universeClientSettings.copy(
-                    playerId = id
-                )
+            val newUniverseClientSettings: UniverseClientSettings = DataSerializer.copy(
+                game.universeClient.universeClientSettings
+            )
+
+            newUniverseClientSettings.playerId = id
+
             runBlocking {
                 game.universeClient.setUniverseClientSettings(newUniverseClientSettings)
             }
