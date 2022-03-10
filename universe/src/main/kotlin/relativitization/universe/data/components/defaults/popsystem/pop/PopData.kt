@@ -140,7 +140,7 @@ data class CommonPopData(
     val unemploymentBenefit: Double = 0.0,
     val satisfaction: Double = 0.0,
     val salaryPerEmployee: Double = 1E-6,
-    val saving: Double = 1.0,
+    val saving: Double = 0.0,
     val desireResourceMap: Map<ResourceType, ResourceDesireData> = mapOf(),
     val resourceInputMap: Map<ResourceType, ResourceDesireData> = mapOf(),
     val lastResourceInputMap: Map<ResourceType, ResourceDesireData> = mapOf(),

@@ -404,8 +404,9 @@ object PopBuyResource : Mechanism() {
             1.0
         }
 
+        // Reduced the amount by priceFraction if not enough saving
         val amountToBuy: Double = idealAmountToBuy * priceFraction
-        val totalPriceToPay: Double = idealTotalPrice * amountToBuy
+        val totalPriceToPay: Double = idealTotalPrice * priceFraction
 
         economyData.resourceData.getResourceAmountData(
             resourceType,
@@ -493,10 +494,11 @@ object PopBuyResource : Mechanism() {
         )
 
         // price adjusted by logistic loss and tariff
-        val idealTotalPrice: Double = thisEconomyData.resourceData.getResourcePrice(
-            resourceType,
-            qualityClass
-        ) * actualDesireAmount * exportTariffFactor * importTariffFactor / fuelRemainFraction
+        val idealTotalPrice: Double = otherPlayerData.playerInternalData.economyData()
+            .resourceData.getResourcePrice(
+                resourceType,
+                qualityClass
+            ) * actualDesireAmount * exportTariffFactor * importTariffFactor / fuelRemainFraction
 
         val totalPriceToPay: Double = min(idealTotalPrice, availableFuel)
 

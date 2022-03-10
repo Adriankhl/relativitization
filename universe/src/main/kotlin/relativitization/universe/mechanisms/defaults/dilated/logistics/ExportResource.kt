@@ -35,7 +35,7 @@ object ExportResource : Mechanism() {
                 val playerExportCenterToRemove: List<Int> =
                     mutableCarrierData.allPopData.servicePopData.exportData.playerExportCenterMap
                         .keys.filter { playerId ->
-                            universeData3DAtPlayer.playerDataMap.containsKey(playerId)
+                            !universeData3DAtPlayer.playerDataMap.containsKey(playerId)
                         }
 
                 playerExportCenterToRemove.forEach { playerId ->
@@ -46,7 +46,7 @@ object ExportResource : Mechanism() {
                 val popExportCenterToRemove: List<Int> =
                     mutableCarrierData.allPopData.servicePopData.exportData.popExportCenterMap
                         .keys.filter { playerId ->
-                            universeData3DAtPlayer.playerDataMap.containsKey(playerId)
+                            !universeData3DAtPlayer.playerDataMap.containsKey(playerId)
                         }
 
                 popExportCenterToRemove.forEach { playerId ->
@@ -283,7 +283,7 @@ object ExportResource : Mechanism() {
                     price * amount
                 )
                 mutablePlayerData.playerInternalData.economyData().taxData.storedFuelRestMass +=
-                    price * amount * (tariffFactor - 1.0) / tariffFactor
+                    price * amount * (tariffFactor - 1.0)
 
                 SendResourceCommand(
                     toId = mutablePlayerSingleExportData.targetPlayerId,
@@ -369,8 +369,7 @@ object ExportResource : Mechanism() {
                         mutablePlayerData.playerInternalData.physicsData()
                             .addInternalFuel(price * amount)
                         mutablePlayerData.playerInternalData.economyData().taxData
-                            .storedFuelRestMass += price * amount * (tariffFactor - 1.0) /
-                                tariffFactor
+                            .storedFuelRestMass += price * amount * (tariffFactor - 1.0)
 
                         SendResourceToPopCommand(
                             toId = ownerPlayerId,
