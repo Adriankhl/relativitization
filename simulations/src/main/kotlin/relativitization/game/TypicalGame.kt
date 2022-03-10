@@ -5,6 +5,7 @@ import relativitization.universe.data.MutableUniverseSettings
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.commands.DefaultCommandAvailability
 import relativitization.universe.data.commands.name
+import relativitization.universe.data.components.physicsData
 import relativitization.universe.data.components.popSystemData
 import relativitization.universe.generate.method.GenerateSettings
 import relativitization.universe.generate.method.GenerateUniverseMethodCollection
@@ -43,7 +44,8 @@ fun main() {
 
         println(
             "Turn: $turn. Player: ${universe.availablePlayers().size}. Dead: ${universe.getDeadIdList().size}. " +
-                    "Carrier: ${gameStatus.numCarrier}. Population: ${gameStatus.totalPopulation}"
+                    "Carrier: ${gameStatus.numCarrier}. Population: ${gameStatus.totalPopulation}. "  +
+                    "Fuel Rest mass: ${gameStatus.totalFuelRestMass}"
         )
     }
 }
@@ -51,10 +53,12 @@ fun main() {
 internal class GameStatus(
     val numCarrier: Int,
     val totalPopulation: Double,
+    val totalFuelRestMass: Double,
 ) {
     companion object {
         fun compute(universe: Universe): GameStatus {
-            val gameStatus = GameStatus(0, 0.0)
+            val gameStatus = GameStatus(0, 0.0, 0.0)
+
             return universe.availablePlayers().fold(gameStatus) { status, id ->
                 val universeDataAtPlayer: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(id)
 
@@ -64,9 +68,13 @@ internal class GameStatus(
                 val localPopulation: Double = universeDataAtPlayer.getCurrentPlayerData().playerInternalData
                     .popSystemData().totalAdultPopulation()
 
+                val totalFuelRestMass: Double = universeDataAtPlayer.getCurrentPlayerData().playerInternalData
+                    .physicsData().fuelRestMassData.total()
+
                 val newStatus = GameStatus(
                     numCarrier = status.numCarrier + numLocalCarrier,
-                    totalPopulation = status.totalPopulation + localPopulation
+                    totalPopulation = status.totalPopulation + localPopulation,
+                    totalFuelRestMass = status.totalFuelRestMass + totalFuelRestMass,
                 )
 
                 newStatus

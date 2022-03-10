@@ -42,7 +42,8 @@ fun main() {
 
         println(
             "Turn: $turn. Player: ${universe.availablePlayers().size}. Dead: ${universe.getDeadIdList().size}. " +
-                    "Carrier: ${gameStatus.numCarrier}. Population: ${gameStatus.totalPopulation}"
+                    "Carrier: ${gameStatus.numCarrier}. Population: ${gameStatus.totalPopulation}. "  +
+                    "Rest mass: ${gameStatus.totalPopulation}"
         )
     }
 }
