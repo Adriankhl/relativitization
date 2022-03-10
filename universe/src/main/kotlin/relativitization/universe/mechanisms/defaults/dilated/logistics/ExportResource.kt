@@ -27,10 +27,32 @@ object ExportResource : Mechanism() {
         universeGlobalData: UniverseGlobalData
     ): List<Command> {
 
-        // Clear export center with zero fuel rest mass left
+        // Clear export centers with zero fuel rest mass left and centers from dead player
         mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values
             .forEach { mutableCarrierData ->
                 mutableCarrierData.allPopData.servicePopData.exportData.clearExportCenterData()
+
+                val playerExportCenterToRemove: List<Int> =
+                    mutableCarrierData.allPopData.servicePopData.exportData.playerExportCenterMap
+                        .keys.filter { playerId ->
+                            universeData3DAtPlayer.playerDataMap.containsKey(playerId)
+                        }
+
+                playerExportCenterToRemove.forEach { playerId ->
+                    mutableCarrierData.allPopData.servicePopData.exportData.playerExportCenterMap
+                        .remove(playerId)
+                }
+
+                val popExportCenterToRemove: List<Int> =
+                    mutableCarrierData.allPopData.servicePopData.exportData.popExportCenterMap
+                        .keys.filter { playerId ->
+                            universeData3DAtPlayer.playerDataMap.containsKey(playerId)
+                        }
+
+                popExportCenterToRemove.forEach { playerId ->
+                    mutableCarrierData.allPopData.servicePopData.exportData.popExportCenterMap
+                        .remove(playerId)
+                }
             }
 
         val exportToPlayerCommandList: List<Command> =
