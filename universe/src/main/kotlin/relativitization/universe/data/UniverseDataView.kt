@@ -211,7 +211,7 @@ data class UniverseData3DAtPlayer(
      */
     fun get(id: Int): PlayerData {
         return playerDataMap.getOrElse(id) {
-            logger.error("id $id not in playerDataMap or zeroDelayDataMap")
+            logger.error("id $id not in playerDataMap")
             PlayerData(-1)
         }
     }
