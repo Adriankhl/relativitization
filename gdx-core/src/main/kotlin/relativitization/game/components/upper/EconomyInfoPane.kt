@@ -419,7 +419,7 @@ class EconomyInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane
 
         nestedTable.add(
             createLabel(
-                "Quality: ${singleResourceData.resourceQuality.quality1}",
+                "Quality: ${singleResourceData.resourceQuality.quality}",
                 gdxSettings.smallFontSize
             )
         ).colspan(2)
@@ -428,7 +428,7 @@ class EconomyInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane
 
         nestedTable.add(
             createLabel(
-                "Quality lower bound: ${singleResourceData.resourceQualityLowerBound.quality1}",
+                "Quality lower bound: ${singleResourceData.resourceQualityLowerBound.quality}",
                 gdxSettings.smallFontSize
             )
         ).colspan(2)

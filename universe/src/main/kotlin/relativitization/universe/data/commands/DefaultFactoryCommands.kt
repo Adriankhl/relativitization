@@ -230,7 +230,7 @@ data class BuildForeignResourceFactoryCommand(
             toId.toString(),
             maxNumEmployee.toString(),
             (resourceFactoryInternalData.maxOutputAmountPerEmployee * maxNumEmployee).toString(),
-            resourceFactoryInternalData.maxOutputResourceQualityData.quality1.toString(),
+            resourceFactoryInternalData.maxOutputResourceQualityData.quality.toString(),
             storedFuelRestMass.toString(),
         )
     )

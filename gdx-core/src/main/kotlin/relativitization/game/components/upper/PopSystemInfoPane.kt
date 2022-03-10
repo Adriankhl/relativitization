@@ -544,7 +544,7 @@ class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
         nestedTable.row()
         nestedTable.add(
             createLabel(
-                "Quality: ${resourceDesireData.desireQuality.quality1}",
+                "Quality: ${resourceDesireData.desireQuality.quality}",
                 gdxSettings.smallFontSize
             ),
         )
@@ -1019,7 +1019,7 @@ class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
 
         nestedTable.add(
             createLabel(
-                "Max. quality: ${resourceFactoryData.resourceFactoryInternalData.maxOutputResourceQualityData.quality1}",
+                "Max. quality: ${resourceFactoryData.resourceFactoryInternalData.maxOutputResourceQualityData.quality}",
                 gdxSettings.smallFontSize
             )
         )
@@ -1028,7 +1028,7 @@ class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
 
         nestedTable.add(
             createLabel(
-                "Last quality: ${resourceFactoryData.lastOutputQuality.quality1}",
+                "Last quality: ${resourceFactoryData.lastOutputQuality.quality}",
                 gdxSettings.smallFontSize
             )
         )
@@ -1062,7 +1062,7 @@ class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
 
             nestedTable.add(
                 createLabel(
-                    "Max. $resourceType input quality: ${inputResource.qualityData.quality1}",
+                    "Max. $resourceType input quality: ${inputResource.qualityData.quality}",
                     gdxSettings.smallFontSize
                 )
             )
@@ -1071,7 +1071,7 @@ class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
 
             nestedTable.add(
                 createLabel(
-                    "Last $resourceType input quality: ${lastInputResource.qualityData.quality1}",
+                    "Last $resourceType input quality: ${lastInputResource.qualityData.quality}",
                     gdxSettings.smallFontSize
                 )
             )

@@ -7,14 +7,17 @@ import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.commands.PopBuyResourceCommand
 import relativitization.universe.data.components.*
-import relativitization.universe.data.components.defaults.economy.MutableResourceQualityData
-import relativitization.universe.data.components.defaults.economy.ResourceQualityClass
-import relativitization.universe.data.components.defaults.economy.ResourceType
+import relativitization.universe.data.components.defaults.economy.*
 import relativitization.universe.data.components.defaults.popsystem.pop.MutableCommonPopData
 import relativitization.universe.data.components.defaults.popsystem.pop.PopType
 import relativitization.universe.data.global.UniverseGlobalData
+import relativitization.universe.maths.algebra.Logistic
+import relativitization.universe.maths.physics.Int4D
+import relativitization.universe.maths.physics.Intervals
+import relativitization.universe.maths.sampling.WeightedReservoir
 import relativitization.universe.mechanisms.Mechanism
 import kotlin.math.min
+import kotlin.math.pow
 
 /**
  * Pop buy resource to fulfill their desire
@@ -31,16 +34,28 @@ object PopBuyResource : Mechanism() {
         val neighborList: List<PlayerData> = universeData3DAtPlayer.getNeighbour(1)
 
         val commandList: List<Command> = mutablePlayerData.playerInternalData.popSystemData()
-            .carrierDataMap.values.map { mutableCarrierData ->
+            .carrierDataMap.map { (carrierId, mutableCarrierData) ->
                 PopType.values().map { popType ->
                     val commonPopData = mutableCarrierData.allPopData.getCommonPopData(popType)
+
+                    // available saving for this resource, compute before buying resource
+                    val numDesire: Int = min(commonPopData.desireResourceMap.size, 1)
+                    val availableFuel: Double = commonPopData.saving / numDesire
+
                     commonPopData.desireResourceMap.keys.map { resourceType ->
                         buyResource(
-                            resourceType,
-                            commonPopData,
-                            mutablePlayerData.playerInternalData.physicsData(),
-                            mutablePlayerData.playerInternalData.economyData(),
-                            neighborList,
+                            resourceType = resourceType,
+                            availableFuel = availableFuel,
+                            carrierId = carrierId,
+                            popType = popType,
+                            commonPopData = commonPopData,
+                            playerId = mutablePlayerData.playerId,
+                            int4D = mutablePlayerData.int4D.toInt4D(),
+                            topLeaderId = mutablePlayerData.topLeaderId(),
+                            physicsData = mutablePlayerData.playerInternalData.physicsData(),
+                            economyData = mutablePlayerData.playerInternalData.economyData(),
+                            playerScienceData = mutablePlayerData.playerInternalData.playerScienceData(),
+                            neighborList = neighborList,
                         )
                     }
                 }
@@ -55,9 +70,16 @@ object PopBuyResource : Mechanism() {
      */
     fun buyResource(
         resourceType: ResourceType,
+        availableFuel: Double,
+        carrierId: Int,
+        popType: PopType,
         commonPopData: MutableCommonPopData,
+        playerId: Int,
+        int4D: Int4D,
+        topLeaderId: Int,
         physicsData: MutablePhysicsData,
         economyData: MutableEconomyData,
+        playerScienceData: MutablePlayerScienceData,
         neighborList: List<PlayerData>,
     ): List<PopBuyResourceCommand> {
         // Desire of this resource
@@ -65,10 +87,6 @@ object PopBuyResource : Mechanism() {
             commonPopData.desireResourceMap.getValue(resourceType).desireAmount
         val desireQuality: MutableResourceQualityData =
             commonPopData.desireResourceMap.getValue(resourceType).desireQuality
-
-        // available saving for this resource
-        val numDesire: Int = commonPopData.desireResourceMap.size
-        val availableFuel: Double = commonPopData.saving / numDesire
 
         val mustBuyFromThisPlayer: Boolean = mustBuyFromThisPlayer(
             resourceType = resourceType,
@@ -79,7 +97,7 @@ object PopBuyResource : Mechanism() {
             economyData = economyData,
         )
 
-        return if (mustBuyFromThisPlayer) {
+        return if (mustBuyFromThisPlayer || neighborList.isEmpty()) {
             buyFromThisPlayer(
                 resourceType = resourceType,
                 desireAmount = desireAmount,
@@ -91,10 +109,63 @@ object PopBuyResource : Mechanism() {
             )
             listOf()
         } else {
-            // Compare this player and other players
+            val neighborScoreMap: Map<PlayerData, Double> = neighborList.associateWith {
+                buyResourcePlayerScore(
+                    resourceType = resourceType,
+                    desireAmount = desireAmount,
+                    desireQualityData = desireQuality,
+                    availableFuel = availableFuel,
+                    thisInt4D = int4D,
+                    thisTopPlayerId = topLeaderId,
+                    thisPlayerScienceData = playerScienceData,
+                    thisTaxRateData = economyData.taxData.taxRateData,
+                    otherInt4D = it.int4D,
+                    otherTopPlayerId = it.topLeaderId(),
+                    otherPlayerScienceData = it.playerInternalData.playerScienceData(),
+                    otherEconomyData = it.playerInternalData.economyData(),
+                )
+            }
 
+            val (otherPlayer, otherScore) = neighborScoreMap.maxByOrNull { it.value }!!
 
-            listOf()
+            val thisScore: Double = buyResourceThisPlayerScore(
+                resourceType = resourceType,
+                desireAmount = desireAmount,
+                desireQualityData = desireQuality,
+                availableFuel = availableFuel,
+                thisEconomyData = economyData,
+            )
+
+            if (thisScore >= otherScore) {
+                buyFromThisPlayer(
+                    resourceType = resourceType,
+                    desireAmount = desireAmount,
+                    desireQualityData = desireQuality,
+                    availableFuel = availableFuel,
+                    commonPopData = commonPopData,
+                    physicsData = physicsData,
+                    economyData = economyData,
+                )
+                listOf()
+            } else {
+                listOf(
+                    computePopBuyResourceCommand(
+                        resourceType = resourceType,
+                        desireAmount = desireAmount,
+                        desireQualityData = desireQuality,
+                        availableFuel = availableFuel,
+                        carrierId = carrierId,
+                        popType = popType,
+                        commonPopData = commonPopData,
+                        thisPlayerId = playerId,
+                        thisInt4D = int4D,
+                        thisTopPlayerId = topLeaderId,
+                        thisEconomyData = economyData,
+                        thisPlayerScienceData = playerScienceData,
+                        otherPlayerData = otherPlayer,
+                    )
+                )
+            }
         }
     }
 
@@ -130,111 +201,165 @@ object PopBuyResource : Mechanism() {
     }
 
     /**
-     * Compute the resource quality class if the pop buy from this market
-     *
-     * @param commonPopData the pop to buy resource
-     * @param economyData the market
+     * A score to rank player to buy resource from
      */
-    fun computeDesireResourceQualityClassMap(
-        commonPopData: MutableCommonPopData,
-        economyData: MutableEconomyData,
-    ): Map<ResourceType, ResourceQualityClass> {
-        val numDesire: Int = commonPopData.desireResourceMap.size
+    fun buyResourcePlayerScore(
+        resourceType: ResourceType,
+        desireAmount: Double,
+        desireQualityData: MutableResourceQualityData,
+        availableFuel: Double,
+        thisInt4D: Int4D,
+        thisTopPlayerId: Int,
+        thisPlayerScienceData: MutablePlayerScienceData,
+        thisTaxRateData: MutableTaxRateData,
+        otherInt4D: Int4D,
+        otherTopPlayerId: Int,
+        otherPlayerScienceData: PlayerScienceData,
+        otherEconomyData: EconomyData,
+    ): Double {
+        val distance: Int = Intervals.intDistance(thisInt4D, otherInt4D)
+        val fuelLossFractionPerDistance: Double =
+            (thisPlayerScienceData.playerScienceApplicationData.fuelLogisticsLossFractionPerDistance +
+                    otherPlayerScienceData.playerScienceApplicationData
+                        .fuelLogisticsLossFractionPerDistance) * 0.5
+        val resourceLossFractionPerDistance: Double =
+            (thisPlayerScienceData.playerScienceApplicationData.resourceLogisticsLossFractionPerDistance +
+                    otherPlayerScienceData.playerScienceApplicationData
+                        .resourceLogisticsLossFractionPerDistance) * 0.5
 
-        return if (numDesire > 0) {
-            // Approximate the available fuel per resource by the average
-            val availableFuelPerResource: Double = commonPopData.saving / numDesire
+        val sameTopLeaderId: Boolean = thisTopPlayerId == otherTopPlayerId
 
-            commonPopData.desireResourceMap.map { (resourceType, desireData) ->
-                val selectedClass: ResourceQualityClass =
-                    economyData.resourceData.tradeQualityClass(
-                        resourceType,
-                        desireData.desireAmount,
-                        desireData.desireQuality,
-                        availableFuelPerResource,
-                        true,
-                    )
-                resourceType to selectedClass
-            }.toMap()
+        val importTariffFactor: Double = if (sameTopLeaderId) {
+            1.0
         } else {
-            mapOf()
+            1.0 + thisTaxRateData.importTariff.getResourceTariffRate(
+                otherTopPlayerId,
+                resourceType,
+            )
         }
-    }
 
-    /**
-     * Compute the resource quality class if the pop buy from this market
-     *
-     * @param commonPopData the pop to buy resource
-     * @param economyData the market
-     */
-    fun computeDesireResourceQualityClassMap(
-        commonPopData: MutableCommonPopData,
-        economyData: EconomyData,
-    ): Map<ResourceType, ResourceQualityClass> {
-        val numDesire: Int = commonPopData.desireResourceMap.size
-
-        return if (numDesire > 0) {
-            // Approximate the available fuel per resource by the average
-            val availableFuelPerResource: Double = commonPopData.saving / numDesire
-
-            commonPopData.desireResourceMap.map { (resourceType, desireData) ->
-                val selectedClass: ResourceQualityClass =
-                    economyData.resourceData.tradeQualityClass(
-                        resourceType,
-                        desireData.desireAmount,
-                        desireData.desireQuality.toResourceQualityData(),
-                        availableFuelPerResource,
-                        true,
-                    )
-                resourceType to selectedClass
-            }.toMap()
+        val exportTariffFactor: Double = if (sameTopLeaderId) {
+            1.0
         } else {
-            mapOf()
+            1.0 + otherEconomyData.taxData.taxRateData.exportTariff.getResourceTariffRate(
+                thisTopPlayerId,
+                resourceType,
+            )
         }
+
+        val fuelRemainFraction: Double = if (distance <= Intervals.sameCubeIntDistance()) {
+            1.0
+        } else {
+            (1.0 - fuelLossFractionPerDistance).pow(distance)
+        }
+
+        val resourceRemainFraction: Double = if (distance <= Intervals.sameCubeIntDistance()) {
+            1.0
+        } else {
+            (1.0 - resourceLossFractionPerDistance).pow(distance)
+        }
+
+        // Desire adjusted by logistic loss
+        val actualDesireAmount: Double = desireAmount / resourceRemainFraction
+
+        val qualityClass: ResourceQualityClass = otherEconomyData.resourceData.tradeQualityClass(
+            resourceType = resourceType,
+            amount = actualDesireAmount,
+            targetQuality = desireQualityData.toResourceQualityData(),
+            budget = availableFuel,
+            preferHighQualityClass = true,
+            tariffFactor = importTariffFactor * exportTariffFactor,
+        )
+
+        val availableAmount: Double = otherEconomyData.resourceData.getTradeResourceAmount(
+            resourceType,
+            qualityClass
+        )
+
+        val resourceQuality: ResourceQualityData = otherEconomyData.resourceData
+            .getResourceQuality(resourceType, qualityClass)
+
+        val price: Double = otherEconomyData.resourceData.getResourcePrice(
+            resourceType,
+            qualityClass
+        )
+
+        // price adjusted by logistic loss and tariff
+        val actualPrice: Double = price * exportTariffFactor * importTariffFactor /
+                fuelRemainFraction
+
+        val isResourceSufficient: Boolean = availableAmount >= actualDesireAmount
+        val isFuelSufficient: Boolean = availableFuel >= actualPrice * actualDesireAmount
+
+        val sufficientResourceScore: Double = if (isResourceSufficient) {
+            100.0
+        } else {
+            0.0
+        }
+
+        val sufficientFuelScore: Double = if (isFuelSufficient) {
+            100.0
+        } else {
+            0.0
+        }
+
+        val resourceQualityScore: Double =
+            Logistic.standardLogistic(resourceQuality.quality * 0.001)
+
+        return sufficientResourceScore + sufficientFuelScore + resourceQualityScore
     }
 
     /**
-     * Compute the resource amount, without considering price
+     * A score to rank (this) player to buy resource from
      */
-    fun computeDesireResourceAmountMap(
-        commonPopData: MutableCommonPopData,
-        economyData: MutableEconomyData,
-        desireResourceClassMap: Map<ResourceType, ResourceQualityClass>
-    ): Map<ResourceType, Double> {
+    fun buyResourceThisPlayerScore(
+        resourceType: ResourceType,
+        desireAmount: Double,
+        desireQualityData: MutableResourceQualityData,
+        availableFuel: Double,
+        thisEconomyData: MutableEconomyData,
+    ): Double {
+        val qualityClass: ResourceQualityClass = thisEconomyData.resourceData.tradeQualityClass(
+            resourceType = resourceType,
+            amount = desireAmount,
+            targetQuality = desireQualityData,
+            budget = availableFuel,
+            preferHighQualityClass = true,
+        )
 
-        return commonPopData.desireResourceMap.map { (resourceType, desireData) ->
-            val selectedClass: ResourceQualityClass = desireResourceClassMap.getValue(resourceType)
-            resourceType to min(
-                economyData.resourceData.getTradeResourceAmount(
-                    resourceType,
-                    selectedClass
-                ),
-                desireData.desireAmount
-            )
-        }.toMap()
+        val availableAmount: Double = thisEconomyData.resourceData.getTradeResourceAmount(
+            resourceType,
+            qualityClass
+        )
+
+        val resourceQuality: MutableResourceQualityData = thisEconomyData.resourceData
+            .getResourceQuality(resourceType, qualityClass)
+
+        val price: Double = thisEconomyData.resourceData.getResourcePrice(
+            resourceType,
+            qualityClass
+        )
+
+        val isResourceSufficient: Boolean = availableAmount >= desireAmount
+        val isFuelSufficient: Boolean = availableFuel >= price * desireAmount
+
+        val sufficientResourceScore: Double = if (isResourceSufficient) {
+            100.0
+        } else {
+            0.0
+        }
+
+        val sufficientFuelScore: Double = if (isFuelSufficient) {
+            100.0
+        } else {
+            0.0
+        }
+
+        val resourceQualityScore: Double =
+            Logistic.standardLogistic(resourceQuality.quality * 0.001)
+
+        return sufficientResourceScore + sufficientFuelScore + resourceQualityScore
     }
-
-    /**
-     * Compute the resource amount, without considering price
-     */
-    fun computeDesireResourceAmountMap(
-        commonPopData: MutableCommonPopData,
-        economyData: EconomyData,
-        desireResourceClassMap: Map<ResourceType, ResourceQualityClass>
-    ): Map<ResourceType, Double> {
-
-        return commonPopData.desireResourceMap.map { (resourceType, desireData) ->
-            val selectedClass: ResourceQualityClass = desireResourceClassMap.getValue(resourceType)
-            resourceType to min(
-                economyData.resourceData.getTradeResourceAmount(
-                    resourceType,
-                    selectedClass
-                ),
-                desireData.desireAmount
-            )
-        }.toMap()
-    }
-
 
     fun buyFromThisPlayer(
         resourceType: ResourceType,
@@ -245,7 +370,6 @@ object PopBuyResource : Mechanism() {
         physicsData: MutablePhysicsData,
         economyData: MutableEconomyData,
     ) {
-
         val qualityClass: ResourceQualityClass = economyData.resourceData.tradeQualityClass(
             resourceType = resourceType,
             amount = desireAmount,
@@ -268,20 +392,20 @@ object PopBuyResource : Mechanism() {
         // Amount to buy without considering the price
         val idealAmountToBuy: Double = min(availableAmount, desireAmount)
 
-        val price: Double = economyData.resourceData.getResourcePrice(
+        val idealTotalPrice: Double = economyData.resourceData.getResourcePrice(
             resourceType,
             qualityClass
         ) * idealAmountToBuy
 
         // If saving is smaller than total price, only buy a fraction
-        val priceFraction: Double = if (price > 0.0) {
-            min(commonPopData.saving / price, 1.0)
+        val priceFraction: Double = if (idealTotalPrice > 0.0) {
+            min(commonPopData.saving / idealTotalPrice, 1.0)
         } else {
             1.0
         }
 
         val amountToBuy: Double = idealAmountToBuy * priceFraction
-        val priceToPay: Double = price * amountToBuy
+        val totalPriceToPay: Double = idealTotalPrice * amountToBuy
 
         economyData.resourceData.getResourceAmountData(
             resourceType,
@@ -293,8 +417,119 @@ object PopBuyResource : Mechanism() {
             resourceQuality,
             amountToBuy,
         )
+        commonPopData.saving -= totalPriceToPay
+        physicsData.addInternalFuel(totalPriceToPay)
+    }
 
-        commonPopData.saving -= priceToPay
-        physicsData.addInternalFuel(priceToPay)
+    fun computePopBuyResourceCommand(
+        resourceType: ResourceType,
+        desireAmount: Double,
+        desireQualityData: MutableResourceQualityData,
+        availableFuel: Double,
+        carrierId: Int,
+        popType: PopType,
+        commonPopData: MutableCommonPopData,
+        thisPlayerId: Int,
+        thisInt4D: Int4D,
+        thisTopPlayerId: Int,
+        thisEconomyData: MutableEconomyData,
+        thisPlayerScienceData: MutablePlayerScienceData,
+        otherPlayerData: PlayerData,
+    ): PopBuyResourceCommand {
+
+        val distance: Int = Intervals.intDistance(thisInt4D, otherPlayerData.int4D)
+        val fuelLossFractionPerDistance: Double =
+            (thisPlayerScienceData.playerScienceApplicationData.fuelLogisticsLossFractionPerDistance +
+                    otherPlayerData.playerInternalData.playerScienceData().playerScienceApplicationData
+                        .fuelLogisticsLossFractionPerDistance) * 0.5
+        val resourceLossFractionPerDistance: Double =
+            (thisPlayerScienceData.playerScienceApplicationData.resourceLogisticsLossFractionPerDistance +
+                    otherPlayerData.playerInternalData.playerScienceData().playerScienceApplicationData
+                        .resourceLogisticsLossFractionPerDistance) * 0.5
+
+        val sameTopLeaderId: Boolean = thisTopPlayerId == otherPlayerData.topLeaderId()
+
+        val importTariffFactor: Double = if (sameTopLeaderId) {
+            1.0
+        } else {
+            1.0 + thisEconomyData.taxData.taxRateData.importTariff.getResourceTariffRate(
+                otherPlayerData.topLeaderId(),
+                resourceType,
+            )
+        }
+
+        val exportTariffFactor: Double = if (sameTopLeaderId) {
+            1.0
+        } else {
+            1.0 + otherPlayerData.playerInternalData.economyData().taxData.taxRateData.exportTariff
+                .getResourceTariffRate(
+                    thisTopPlayerId,
+                    resourceType,
+                )
+        }
+
+        val fuelRemainFraction: Double = if (distance <= Intervals.sameCubeIntDistance()) {
+            1.0
+        } else {
+            (1.0 - fuelLossFractionPerDistance).pow(distance)
+        }
+
+        val resourceRemainFraction: Double = if (distance <= Intervals.sameCubeIntDistance()) {
+            1.0
+        } else {
+            (1.0 - resourceLossFractionPerDistance).pow(distance)
+        }
+
+        // Desire adjusted by logistic loss
+        val actualDesireAmount: Double = desireAmount / resourceRemainFraction
+
+        val qualityClass: ResourceQualityClass = thisEconomyData.resourceData.tradeQualityClass(
+            resourceType = resourceType,
+            amount = actualDesireAmount,
+            targetQuality = desireQualityData,
+            budget = availableFuel,
+            preferHighQualityClass = true,
+            tariffFactor = importTariffFactor * exportTariffFactor,
+        )
+
+        // price adjusted by logistic loss and tariff
+        val idealTotalPrice: Double = thisEconomyData.resourceData.getResourcePrice(
+            resourceType,
+            qualityClass
+        ) * actualDesireAmount * exportTariffFactor * importTariffFactor / fuelRemainFraction
+
+        val totalPriceToPay: Double = min(idealTotalPrice, availableFuel)
+
+        // Pick carrier id by service pop
+        val targetCarrierId: Int = WeightedReservoir.aRes(
+            1,
+            otherPlayerData.playerInternalData.popSystemData().carrierDataMap.keys.toList(),
+        ) {
+            otherPlayerData.playerInternalData.popSystemData().carrierDataMap.getValue(it)
+                .allPopData.servicePopData.commonPopData.adultPopulation
+        }.first()
+
+        // pay the price
+        commonPopData.saving -= totalPriceToPay
+
+        // add import tariff
+        thisEconomyData.taxData.storedFuelRestMass += totalPriceToPay *
+                (importTariffFactor - 1.0) / importTariffFactor
+
+        return PopBuyResourceCommand(
+            toId = otherPlayerData.playerId,
+            fromId = thisPlayerId,
+            fromInt4D = thisInt4D,
+            fromCarrierId = carrierId,
+            fromPopType = popType,
+            targetTopLeaderId = otherPlayerData.topLeaderId(),
+            targetCarrierId = targetCarrierId,
+            resourceType = resourceType,
+            resourceQualityClass = qualityClass,
+            fuelRestMassAmount = totalPriceToPay / importTariffFactor,
+            amountPerTime = actualDesireAmount,
+            senderFuelLossFractionPerDistance = thisPlayerScienceData.playerScienceApplicationData
+                .fuelLogisticsLossFractionPerDistance,
+        )
     }
 }

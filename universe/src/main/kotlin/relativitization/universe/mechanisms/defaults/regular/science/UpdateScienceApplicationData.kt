@@ -188,7 +188,7 @@ object UpdateScienceApplicationData : Mechanism() {
 
     fun computeIdealFoodFactory(mutableKnowledgeData: MutableKnowledgeData): MutableResourceFactoryInternalData {
         val maxOutputResourceQualityData: MutableResourceQualityData = MutableResourceQualityData(
-            quality1 = log2(mutableKnowledgeData.appliedResearchData.foodTechnologyLevel + 2.0),
+            quality = log2(mutableKnowledgeData.appliedResearchData.foodTechnologyLevel + 2.0),
         )
 
         val fuelRestMassConsumptionRatePerEmployee = 2.0
@@ -200,13 +200,13 @@ object UpdateScienceApplicationData : Mechanism() {
         val inputResourceMap: MutableMap<ResourceType, MutableInputResourceData> = mutableMapOf(
             ResourceType.ANIMAL to MutableInputResourceData(
                 qualityData = MutableResourceQualityData(
-                    quality1 = log2(mutableKnowledgeData.appliedResearchData.foodTechnologyLevel + 2.0),
+                    quality = log2(mutableKnowledgeData.appliedResearchData.foodTechnologyLevel + 2.0),
                 ),
                 amount = 1.0
             ),
             ResourceType.PLANT to MutableInputResourceData(
                 qualityData = MutableResourceQualityData(
-                    quality1 = log2(mutableKnowledgeData.appliedResearchData.foodTechnologyLevel + 2.0),
+                    quality = log2(mutableKnowledgeData.appliedResearchData.foodTechnologyLevel + 2.0),
                 ),
                 amount = 1.0
             ),
@@ -224,7 +224,7 @@ object UpdateScienceApplicationData : Mechanism() {
 
     fun computeIdealClothFactory(mutableKnowledgeData: MutableKnowledgeData): MutableResourceFactoryInternalData {
         val maxOutputResourceQualityData: MutableResourceQualityData = MutableResourceQualityData(
-            quality1 = log2(mutableKnowledgeData.appliedResearchData.materialTechnologyLevel + 2.0),
+            quality = log2(mutableKnowledgeData.appliedResearchData.materialTechnologyLevel + 2.0),
         )
 
         val fuelRestMassConsumptionRatePerEmployee = 2.0
@@ -236,13 +236,13 @@ object UpdateScienceApplicationData : Mechanism() {
         val inputResourceMap: MutableMap<ResourceType, MutableInputResourceData> = mutableMapOf(
             ResourceType.ANIMAL to MutableInputResourceData(
                 qualityData = MutableResourceQualityData(
-                    quality1 = log2(mutableKnowledgeData.appliedResearchData.materialTechnologyLevel + 2.0),
+                    quality = log2(mutableKnowledgeData.appliedResearchData.materialTechnologyLevel + 2.0),
                 ),
                 amount = 1.0
             ),
             ResourceType.PLASTIC to MutableInputResourceData(
                 qualityData = MutableResourceQualityData(
-                    quality1 = log2(mutableKnowledgeData.appliedResearchData.materialTechnologyLevel + 2.0),
+                    quality = log2(mutableKnowledgeData.appliedResearchData.materialTechnologyLevel + 2.0),
                 ),
                 amount = 1.0
             ),
@@ -260,7 +260,7 @@ object UpdateScienceApplicationData : Mechanism() {
 
     fun computeIdealHouseholdGoodFactory(mutableKnowledgeData: MutableKnowledgeData): MutableResourceFactoryInternalData {
         val maxOutputResourceQualityData: MutableResourceQualityData = MutableResourceQualityData(
-            quality1 = log2(mutableKnowledgeData.appliedResearchData.artTechnologyLevel + 2.0),
+            quality = log2(mutableKnowledgeData.appliedResearchData.artTechnologyLevel + 2.0),
         )
 
         val fuelRestMassConsumptionRatePerEmployee = 2.0
@@ -272,13 +272,13 @@ object UpdateScienceApplicationData : Mechanism() {
         val inputResourceMap: MutableMap<ResourceType, MutableInputResourceData> = mutableMapOf(
             ResourceType.PLANT to MutableInputResourceData(
                 qualityData = MutableResourceQualityData(
-                    quality1 = log2(mutableKnowledgeData.appliedResearchData.artTechnologyLevel + 2.0),
+                    quality = log2(mutableKnowledgeData.appliedResearchData.artTechnologyLevel + 2.0),
                 ),
                 amount = 1.0
             ),
             ResourceType.PLASTIC to MutableInputResourceData(
                 qualityData = MutableResourceQualityData(
-                    quality1 = log2(mutableKnowledgeData.appliedResearchData.artTechnologyLevel + 2.0),
+                    quality = log2(mutableKnowledgeData.appliedResearchData.artTechnologyLevel + 2.0),
                 ),
                 amount = 1.0
             ),
@@ -296,7 +296,7 @@ object UpdateScienceApplicationData : Mechanism() {
 
     fun computeIdealResearchEquipmentFactory(mutableKnowledgeData: MutableKnowledgeData): MutableResourceFactoryInternalData {
         val maxOutputResourceQualityData: MutableResourceQualityData = MutableResourceQualityData(
-            quality1 = log2(mutableKnowledgeData.appliedResearchData.materialTechnologyLevel + 2.0),
+            quality = log2(mutableKnowledgeData.appliedResearchData.materialTechnologyLevel + 2.0),
         )
 
         val fuelRestMassConsumptionRatePerEmployee = 2.0
@@ -308,13 +308,13 @@ object UpdateScienceApplicationData : Mechanism() {
         val inputResourceMap: MutableMap<ResourceType, MutableInputResourceData> = mutableMapOf(
             ResourceType.ANIMAL to MutableInputResourceData(
                 qualityData = MutableResourceQualityData(
-                    quality1 = log2(mutableKnowledgeData.appliedResearchData.materialTechnologyLevel + 2.0),
+                    quality = log2(mutableKnowledgeData.appliedResearchData.materialTechnologyLevel + 2.0),
                 ),
                 amount = 1.0
             ),
             ResourceType.METAL to MutableInputResourceData(
                 qualityData = MutableResourceQualityData(
-                    quality1 = log2(mutableKnowledgeData.appliedResearchData.materialTechnologyLevel + 2.0),
+                    quality = log2(mutableKnowledgeData.appliedResearchData.materialTechnologyLevel + 2.0),
                 ),
                 amount = 1.0
             ),
@@ -332,7 +332,7 @@ object UpdateScienceApplicationData : Mechanism() {
 
     fun computeIdealMedicineFactory(mutableKnowledgeData: MutableKnowledgeData): MutableResourceFactoryInternalData {
         val maxOutputResourceQualityData: MutableResourceQualityData = MutableResourceQualityData(
-            quality1 = log2(mutableKnowledgeData.appliedResearchData.biomedicalTechnologyLevel + 2.0),
+            quality = log2(mutableKnowledgeData.appliedResearchData.biomedicalTechnologyLevel + 2.0),
         )
 
         val fuelRestMassConsumptionRatePerEmployee = 2.0
@@ -344,13 +344,13 @@ object UpdateScienceApplicationData : Mechanism() {
         val inputResourceMap: MutableMap<ResourceType, MutableInputResourceData> = mutableMapOf(
             ResourceType.PLANT to MutableInputResourceData(
                 qualityData = MutableResourceQualityData(
-                    quality1 = log2(mutableKnowledgeData.appliedResearchData.biomedicalTechnologyLevel + 2.0),
+                    quality = log2(mutableKnowledgeData.appliedResearchData.biomedicalTechnologyLevel + 2.0),
                 ),
                 amount = 1.0
             ),
             ResourceType.METAL to MutableInputResourceData(
                 qualityData = MutableResourceQualityData(
-                    quality1 = log2(mutableKnowledgeData.appliedResearchData.biomedicalTechnologyLevel + 2.0),
+                    quality = log2(mutableKnowledgeData.appliedResearchData.biomedicalTechnologyLevel + 2.0),
                 ),
                 amount = 1.0
             ),
@@ -368,7 +368,7 @@ object UpdateScienceApplicationData : Mechanism() {
 
     fun computeIdealAmmunitionFactory(mutableKnowledgeData: MutableKnowledgeData): MutableResourceFactoryInternalData {
         val maxOutputResourceQualityData: MutableResourceQualityData = MutableResourceQualityData(
-            quality1 = log2(mutableKnowledgeData.appliedResearchData.militaryTechnologyLevel + 2.0),
+            quality = log2(mutableKnowledgeData.appliedResearchData.militaryTechnologyLevel + 2.0),
         )
 
         val fuelRestMassConsumptionRatePerEmployee = 2.0
@@ -380,13 +380,13 @@ object UpdateScienceApplicationData : Mechanism() {
         val inputResourceMap: MutableMap<ResourceType, MutableInputResourceData> = mutableMapOf(
             ResourceType.METAL to MutableInputResourceData(
                 qualityData = MutableResourceQualityData(
-                    quality1 = log2(mutableKnowledgeData.appliedResearchData.militaryTechnologyLevel + 2.0),
+                    quality = log2(mutableKnowledgeData.appliedResearchData.militaryTechnologyLevel + 2.0),
                 ),
                 amount = 1.0
             ),
             ResourceType.PLASTIC to MutableInputResourceData(
                 qualityData = MutableResourceQualityData(
-                    quality1 = log2(mutableKnowledgeData.appliedResearchData.militaryTechnologyLevel + 2.0),
+                    quality = log2(mutableKnowledgeData.appliedResearchData.militaryTechnologyLevel + 2.0),
                 ),
                 amount = 1.0
             ),
@@ -404,7 +404,7 @@ object UpdateScienceApplicationData : Mechanism() {
 
     fun computeIdealEntertainmentQuality(mutableKnowledgeData: MutableKnowledgeData): MutableResourceQualityData {
         return MutableResourceQualityData(
-            quality1 = log2(mutableKnowledgeData.appliedResearchData.informationTechnologyLevel + 2.0),
+            quality = log2(mutableKnowledgeData.appliedResearchData.informationTechnologyLevel + 2.0),
         )
     }
 

@@ -262,7 +262,7 @@ object TestingFixedMinimal : TestingGenerateUniverseMethod() {
             MutableResourceFactoryInternalData(
                 outputResource = ResourceType.PLANT,
                 maxOutputResourceQualityData = MutableResourceQualityData(
-                    quality1 = 0.0,
+                    quality = 0.0,
                 ),
                 maxOutputAmountPerEmployee = 1.0,
                 inputResourceMap = mutableMapOf(),

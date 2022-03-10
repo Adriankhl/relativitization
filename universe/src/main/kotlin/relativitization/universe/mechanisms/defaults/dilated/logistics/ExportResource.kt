@@ -72,10 +72,10 @@ object ExportResource : Mechanism() {
         ).topLeaderId()
         val sameTopLeaderId: Boolean = (mutablePlayerData.topLeaderId() == targetTopLeaderId)
         val tariffFactor: Double = if (sameTopLeaderId) {
-            0.0
+            1.0
         } else {
-            mutablePlayerData.playerInternalData.economyData().taxData.taxRateData.exportTariff
-                .getResourceTariffRate(
+            1.0 + mutablePlayerData.playerInternalData.economyData().taxData.taxRateData
+                .exportTariff.getResourceTariffRate(
                     topLeaderId = targetTopLeaderId,
                     resourceType = mutablePlayerSingleExportData.resourceType
                 )
@@ -109,9 +109,9 @@ object ExportResource : Mechanism() {
             mutablePlayerSingleExportData.resourceType,
             mutablePlayerSingleExportData.resourceQualityClass
         )
-        val priceFraction: Double = if ((price * requiredAmount * (1.0 + tariffFactor)) > 0.0) {
+        val priceFraction: Double = if ((price * requiredAmount * tariffFactor) > 0.0) {
             mutablePlayerSingleExportData.storedFuelRestMass /
-                    (price * requiredAmount * (1.0 + tariffFactor))
+                    (price * requiredAmount * tariffFactor)
         } else {
             1.0
         }
@@ -143,10 +143,10 @@ object ExportResource : Mechanism() {
         ).topLeaderId()
         val sameTopLeaderId: Boolean = (mutablePlayerData.topLeaderId() == targetTopLeaderId)
         val tariffFactor: Double = if (sameTopLeaderId) {
-            0.0
+            1.0
         } else {
-            mutablePlayerData.playerInternalData.economyData().taxData.taxRateData.exportTariff
-                .getResourceTariffRate(
+            1.0 + mutablePlayerData.playerInternalData.economyData().taxData.taxRateData
+                .exportTariff.getResourceTariffRate(
                     topLeaderId = targetTopLeaderId,
                     resourceType = mutablePopSingleExportData.resourceType
                 )
@@ -180,9 +180,9 @@ object ExportResource : Mechanism() {
             mutablePopSingleExportData.resourceType,
             mutablePopSingleExportData.resourceQualityClass
         )
-        val priceFraction: Double = if ((price * requiredAmount * (1.0 + tariffFactor)) > 0.0) {
+        val priceFraction: Double = if ((price * requiredAmount * tariffFactor) > 0.0) {
             mutablePopSingleExportData.storedFuelRestMass /
-                    (price * requiredAmount * (1.0 + tariffFactor))
+                    (price * requiredAmount * tariffFactor)
         } else {
             1.0
         }
@@ -215,9 +215,9 @@ object ExportResource : Mechanism() {
                 val sameTopLeaderId: Boolean =
                     (mutablePlayerData.topLeaderId() == targetTopLeaderId)
                 val tariffFactor: Double = if (sameTopLeaderId) {
-                    0.0
+                    1.0
                 } else {
-                    mutablePlayerData.playerInternalData.economyData().taxData.taxRateData
+                    1.0 + mutablePlayerData.playerInternalData.economyData().taxData.taxRateData
                         .exportTariff.getResourceTariffRate(
                             topLeaderId = targetTopLeaderId,
                             resourceType = mutablePlayerSingleExportData.resourceType
@@ -254,14 +254,14 @@ object ExportResource : Mechanism() {
                     resourceQualityClass = mutablePlayerSingleExportData.resourceQualityClass
                 ).trade -= amount
                 mutablePlayerSingleExportData.storedFuelRestMass -=
-                    price * amount * (1.0 + tariffFactor)
+                    price * amount * tariffFactor
 
                 // Add tariff to player storage
                 mutablePlayerData.playerInternalData.physicsData().addInternalFuel(
                     price * amount
                 )
                 mutablePlayerData.playerInternalData.economyData().taxData.storedFuelRestMass +=
-                    price * amount * tariffFactor
+                    price * amount * (tariffFactor - 1.0) / tariffFactor
 
                 SendResourceCommand(
                     toId = mutablePlayerSingleExportData.targetPlayerId,
@@ -298,10 +298,10 @@ object ExportResource : Mechanism() {
                         val sameTopLeaderId: Boolean =
                             (mutablePlayerData.topLeaderId() == targetTopLeaderId)
                         val tariffFactor: Double = if (sameTopLeaderId) {
-                            0.0
+                            1.0
                         } else {
-                            mutablePlayerData.playerInternalData.economyData().taxData.taxRateData
-                                .exportTariff.getResourceTariffRate(
+                            1.0 + mutablePlayerData.playerInternalData.economyData().taxData
+                                .taxRateData.exportTariff.getResourceTariffRate(
                                     topLeaderId = targetTopLeaderId,
                                     resourceType = mutablePopSingleExportData.resourceType
                                 )
@@ -341,13 +341,14 @@ object ExportResource : Mechanism() {
                             resourceQualityClass = mutablePopSingleExportData.resourceQualityClass
                         ).trade -= amount
                         mutablePopSingleExportData.storedFuelRestMass -=
-                            price * amount * (1.0 + tariffFactor)
+                            price * amount * tariffFactor
 
                         // Add tariff to player storage
                         mutablePlayerData.playerInternalData.physicsData()
                             .addInternalFuel(price * amount)
                         mutablePlayerData.playerInternalData.economyData().taxData
-                            .storedFuelRestMass += price * amount * tariffFactor
+                            .storedFuelRestMass += price * amount * (tariffFactor - 1.0) /
+                                tariffFactor
 
                         SendResourceToPopCommand(
                             toId = ownerPlayerId,

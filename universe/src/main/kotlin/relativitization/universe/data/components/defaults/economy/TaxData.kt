@@ -49,10 +49,6 @@ data class TariffData(
         return tariffRatePlayerMap.getOrDefault(topLeaderId, defaultTariffRate)
             .getResourceTariffRate(resourceType)
     }
-
-    fun getFuelTariffRate(topLeaderId: Int): Double {
-        return tariffRatePlayerMap.getOrDefault(topLeaderId, defaultTariffRate).fuelTariffRate
-    }
 }
 
 @Serializable
@@ -64,16 +60,11 @@ data class MutableTariffData(
         return tariffRatePlayerMap.getOrDefault(topLeaderId, defaultTariffRate)
             .getResourceTariffRate(resourceType)
     }
-
-    fun getFuelTariffRate(topLeaderId: Int): Double {
-        return tariffRatePlayerMap.getOrDefault(topLeaderId, defaultTariffRate).fuelTariffRate
-    }
 }
 
 @Serializable
 data class TariffRateData(
     val resourceTariffRateMap: Map<ResourceType, Double> = mapOf(),
-    val fuelTariffRate: Double = 0.0,
 ) {
     fun getResourceTariffRate(resourceType: ResourceType): Double =
         resourceTariffRateMap.getOrDefault(resourceType, 0.0)
@@ -82,7 +73,6 @@ data class TariffRateData(
 @Serializable
 data class MutableTariffRateData(
     var resourceTariffRateMap: MutableMap<ResourceType, Double> = mutableMapOf(),
-    var fuelTariffRate: Double = 0.0,
 ) {
     fun getResourceTariffRate(resourceType: ResourceType): Double =
         resourceTariffRateMap.getOrDefault(resourceType, 0.0)

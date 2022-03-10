@@ -177,6 +177,7 @@ data class ResourceData(
      * @param budget the budget to buy this resource
      * @param preferHighQualityClass prefer high quality class that satisfy the requirement,
      * prefer low quality class if false
+     * @param tariffFactor if the trade is affected by tariff
      */
     fun tradeQualityClass(
         resourceType: ResourceType,
@@ -184,12 +185,13 @@ data class ResourceData(
         targetQuality: ResourceQualityData,
         budget: Double,
         preferHighQualityClass: Boolean,
+        tariffFactor: Double = 1.0,
     ): ResourceQualityClass {
         val satisfyList: List<Pair<ResourceQualityClass, Boolean>> =
             ResourceQualityClass.values().toList().map {
                 val b1: Boolean = getResourceQuality(resourceType, it).geq(targetQuality)
                 val b2: Boolean = getTradeResourceAmount(resourceType, it) >= amount
-                val b3: Boolean = budget >= getResourcePrice(resourceType, it) * amount
+                val b3: Boolean = budget >= getResourcePrice(resourceType, it) * amount * tariffFactor
                 it to (b1 && b2 && b3)
             }
         return if (preferHighQualityClass) {
@@ -371,6 +373,7 @@ data class MutableResourceData(
      * @param budget the budget to buy this resource
      * @param preferHighQualityClass prefer high quality class that satisfy the requirement,
      * prefer low quality class if false
+     * @param tariffFactor if the trade is affected by tariff
      */
     fun tradeQualityClass(
         resourceType: ResourceType,
@@ -378,12 +381,13 @@ data class MutableResourceData(
         targetQuality: MutableResourceQualityData,
         budget: Double,
         preferHighQualityClass: Boolean,
+        tariffFactor: Double = 1.0,
     ): ResourceQualityClass {
         val satisfyList: List<Pair<ResourceQualityClass, Boolean>> =
             ResourceQualityClass.values().toList().map {
                 val b1: Boolean = getResourceQuality(resourceType, it).geq(targetQuality)
                 val b2: Boolean = getTradeResourceAmount(resourceType, it) >= amount
-                val b3: Boolean = budget >= getResourcePrice(resourceType, it) * amount
+                val b3: Boolean = budget >= getResourcePrice(resourceType, it) * amount * tariffFactor
                 it to (b1 && b2 && b3)
             }
         return if (preferHighQualityClass) {
@@ -423,45 +427,45 @@ data class MutableResourceData(
 
 @Serializable
 data class ResourceQualityData(
-    val quality1: Double = 0.0,
+    val quality: Double = 0.0,
 ) {
     operator fun plus(other: ResourceQualityData): ResourceQualityData =
         ResourceQualityData(
-            quality1 + other.quality1,
+            quality + other.quality,
         )
 
 
     operator fun plus(other: MutableResourceQualityData): ResourceQualityData =
         ResourceQualityData(
-            quality1 + other.quality1,
+            quality + other.quality,
         )
 
     operator fun plus(num: Double): ResourceQualityData =
         ResourceQualityData(
-            quality1 + num,
+            quality + num,
         )
 
     operator fun times(d: Double): ResourceQualityData = ResourceQualityData(
-        quality1 * d,
+        quality * d,
     )
 
     /**
      * If quality equals to zero, the output equal to zero instead of undefined
      */
     operator fun div(d: Double): ResourceQualityData = ResourceQualityData(
-        if (quality1 != 0.0) {
-            quality1 / d
+        if (quality != 0.0) {
+            quality / d
         } else {
             0.0
         }
     )
 
-    fun square(): Double = quality1 * quality1
+    fun square(): Double = quality * quality
 
     fun mag(): Double = sqrt(square())
 
     fun toMutableResourceQualityData(): MutableResourceQualityData = MutableResourceQualityData(
-        quality1,
+        quality,
     )
 
 
@@ -469,63 +473,63 @@ data class ResourceQualityData(
      * Greater than or equal
      */
     fun geq(other: ResourceQualityData): Boolean {
-        return (quality1 >= other.quality1)
+        return (quality >= other.quality)
     }
 
     /**
      * Less than or equal
      */
     fun leq(other: ResourceQualityData): Boolean {
-        return (quality1 <= other.quality1)
+        return (quality <= other.quality)
     }
 
     /**
      * Resource difference
      */
     fun squareDiff(other: ResourceQualityData): Double {
-        return (quality1 - other.quality1).pow(2)
+        return (quality - other.quality).pow(2)
     }
 
     fun squareDiff(other: MutableResourceQualityData): Double {
-        return (quality1 - other.quality1).pow(2)
+        return (quality - other.quality).pow(2)
     }
 }
 
 @Serializable
 data class MutableResourceQualityData(
-    var quality1: Double = 0.0,
+    var quality: Double = 0.0,
 ) {
     operator fun plus(other: MutableResourceQualityData): MutableResourceQualityData =
         MutableResourceQualityData(
-            quality1 + other.quality1,
+            quality + other.quality,
         )
 
     operator fun plus(num: Double): MutableResourceQualityData =
         MutableResourceQualityData(
-            quality1 + num,
+            quality + num,
         )
 
     operator fun minus(other: MutableResourceQualityData): MutableResourceQualityData =
         MutableResourceQualityData(
-            quality1 - other.quality1,
+            quality - other.quality,
         )
 
     operator fun times(d: Double): MutableResourceQualityData = MutableResourceQualityData(
-        quality1 * d,
+        quality * d,
     )
 
     /**
      * If quality equals to zero, the output equal to zero instead of undefined
      */
     operator fun div(d: Double): MutableResourceQualityData = MutableResourceQualityData(
-        if (quality1 != 0.0) {
-            quality1 / d
+        if (quality != 0.0) {
+            quality / d
         } else {
             0.0
         },
     )
 
-    fun square(): Double = quality1 * quality1
+    fun square(): Double = quality * quality
 
     fun mag(): Double = sqrt(square())
 
@@ -544,24 +548,24 @@ data class MutableResourceQualityData(
         val delta1: MutableResourceQualityData = (other - this) * changeFactor
         val delta2: MutableResourceQualityData = (other - this)
         val delta3: MutableResourceQualityData = MutableResourceQualityData(
-            quality1 = 1.0 * delta1.quality1.sign,
+            quality = 1.0 * delta1.quality.sign,
         ) * minChange
 
-        val deltaQuality1: Double = if (abs(delta1.quality1) > minChange) {
-            delta1.quality1
-        } else if (abs(delta2.quality1) > minChange) {
-            delta3.quality1
+        val deltaQuality1: Double = if (abs(delta1.quality) > minChange) {
+            delta1.quality
+        } else if (abs(delta2.quality) > minChange) {
+            delta3.quality
         } else {
-            delta2.quality1
+            delta2.quality
         }
 
         return MutableResourceQualityData(
-            quality1 + deltaQuality1,
+            quality + deltaQuality1,
         )
     }
 
     fun toResourceQualityData(): ResourceQualityData = ResourceQualityData(
-        quality1,
+        quality,
     )
 
     fun updateQuality(
@@ -570,7 +574,7 @@ data class MutableResourceQualityData(
         newData: MutableResourceQualityData
     ) {
         if (originalAmount + newAmount > 0.0) {
-            quality1 = (originalAmount * quality1 + newAmount * newData.quality1) /
+            quality = (originalAmount * quality + newAmount * newData.quality) /
                     (originalAmount + newAmount)
         } else {
             logger.debug("Add 0 new resource to 0 original resource")
@@ -581,25 +585,25 @@ data class MutableResourceQualityData(
      * Greater than or equal
      */
     fun geq(other: MutableResourceQualityData): Boolean {
-        return (quality1 >= other.quality1)
+        return (quality >= other.quality)
     }
 
     /**
      * Less than or equal
      */
     fun leq(other: MutableResourceQualityData): Boolean {
-        return (quality1 <= other.quality1)
+        return (quality <= other.quality)
     }
 
     /**
      * Resource difference
      */
     fun squareDiff(other: ResourceQualityData): Double {
-        return (quality1 - other.quality1).pow(2)
+        return (quality - other.quality).pow(2)
     }
 
     fun squareDiff(other: MutableResourceQualityData): Double {
-        return (quality1 - other.quality1).pow(2)
+        return (quality - other.quality).pow(2)
     }
 
     /**
@@ -607,7 +611,7 @@ data class MutableResourceQualityData(
      */
     fun combineMin(other: MutableResourceQualityData): MutableResourceQualityData {
         return MutableResourceQualityData(
-            quality1 = min(quality1, other.quality1),
+            quality = min(quality, other.quality),
         )
     }
 
@@ -616,7 +620,7 @@ data class MutableResourceQualityData(
      */
     fun combineMax(other: MutableResourceQualityData): MutableResourceQualityData {
         return MutableResourceQualityData(
-            quality1 = max(quality1, other.quality1),
+            quality = max(quality, other.quality),
         )
     }
 

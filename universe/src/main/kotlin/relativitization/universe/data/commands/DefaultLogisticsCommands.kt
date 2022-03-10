@@ -7,12 +7,12 @@ import relativitization.universe.data.components.*
 import relativitization.universe.data.components.defaults.economy.ResourceQualityClass
 import relativitization.universe.data.components.defaults.economy.ResourceQualityData
 import relativitization.universe.data.components.defaults.economy.ResourceType
-import relativitization.universe.maths.physics.Int4D
 import relativitization.universe.data.components.defaults.popsystem.pop.PopType
 import relativitization.universe.data.components.defaults.popsystem.pop.service.export.MutablePlayerExportCenterData
 import relativitization.universe.data.components.defaults.popsystem.pop.service.export.MutablePlayerSingleExportData
 import relativitization.universe.data.components.defaults.popsystem.pop.service.export.MutablePopExportCenterData
 import relativitization.universe.data.components.defaults.popsystem.pop.service.export.MutablePopSingleExportData
+import relativitization.universe.maths.physics.Int4D
 import relativitization.universe.maths.physics.Intervals
 import relativitization.universe.utils.I18NString
 import relativitization.universe.utils.IntString
@@ -121,8 +121,9 @@ data class SendFuelFromStorageCommand(
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
-        val receiverLossFractionPerDistance: Double = playerData.playerInternalData.playerScienceData()
-            .playerScienceApplicationData.fuelLogisticsLossFractionPerDistance
+        val receiverLossFractionPerDistance: Double =
+            playerData.playerInternalData.playerScienceData()
+                .playerScienceApplicationData.fuelLogisticsLossFractionPerDistance
 
         val lossFractionPerDistance: Double =
             (receiverLossFractionPerDistance + senderFuelLossFractionPerDistance) * 0.5
@@ -423,8 +424,9 @@ data class SendResourceCommand(
     ): CommandErrorMessage = CommandErrorMessage(false)
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
-        val receiverLossFractionPerDistance: Double =
-            playerData.playerInternalData.playerScienceData().playerScienceApplicationData.resourceLogisticsLossFractionPerDistance
+        val receiverLossFractionPerDistance: Double = playerData.playerInternalData
+            .playerScienceData().playerScienceApplicationData
+            .resourceLogisticsLossFractionPerDistance
 
         val lossFractionPerDistance: Double =
             (receiverLossFractionPerDistance + senderResourceLossFractionPerDistance) * 0.5
@@ -481,8 +483,9 @@ data class SendResourceToPopCommand(
     ): CommandErrorMessage = CommandErrorMessage(false)
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
-        val receiverLossFractionPerDistance: Double =
-            playerData.playerInternalData.playerScienceData().playerScienceApplicationData.resourceLogisticsLossFractionPerDistance
+        val receiverLossFractionPerDistance: Double = playerData.playerInternalData
+            .playerScienceData().playerScienceApplicationData
+            .resourceLogisticsLossFractionPerDistance
 
         val lossFractionPerDistance: Double =
             (receiverLossFractionPerDistance + senderResourceLossFractionPerDistance) * 0.5
@@ -572,8 +575,9 @@ data class PopBuyResourceCommand(
 
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
-        val receiverLossFractionPerDistance: Double = playerData.playerInternalData.playerScienceData()
-            .playerScienceApplicationData.fuelLogisticsLossFractionPerDistance
+        val receiverLossFractionPerDistance: Double =
+            playerData.playerInternalData.playerScienceData()
+                .playerScienceApplicationData.fuelLogisticsLossFractionPerDistance
 
         val lossFractionPerDistance: Double =
             (receiverLossFractionPerDistance + senderFuelLossFractionPerDistance) * 0.5
@@ -679,15 +683,17 @@ data class PlayerBuyResourceCommand(
 
         // Compute import tariff
         val tariffFactor: Double = if (sameTopLeaderId) {
-            0.0
+            1.0
         } else {
-            playerData.playerInternalData.economyData().taxData.taxRateData.importTariff.getResourceTariffRate(
-                topLeaderId = targetTopLeaderId, resourceType = resourceType
-            )
+            1.0 + playerData.playerInternalData.economyData().taxData.taxRateData.importTariff
+                .getResourceTariffRate(
+                    topLeaderId = targetTopLeaderId, resourceType = resourceType
+                )
         }
 
         val hasAmount = CommandErrorMessage(
-            playerData.playerInternalData.physicsData().fuelRestMassData.trade >= fuelRestMassAmount * (1.0 + tariffFactor),
+            playerData.playerInternalData.physicsData().fuelRestMassData.trade >=
+                    fuelRestMassAmount * tariffFactor,
             I18NString(
                 listOf(
                     NormalString("Trade fuel amount "),
@@ -704,7 +710,8 @@ data class PlayerBuyResourceCommand(
         )
 
         val isLossFractionValid = CommandErrorMessage(
-            playerData.playerInternalData.playerScienceData().playerScienceApplicationData.fuelLogisticsLossFractionPerDistance <= senderFuelLossFractionPerDistance,
+            playerData.playerInternalData.playerScienceData().playerScienceApplicationData
+                .fuelLogisticsLossFractionPerDistance <= senderFuelLossFractionPerDistance,
             I18NString(
                 listOf(
                     NormalString("Sender fuel loss fraction per distance"),
@@ -738,18 +745,21 @@ data class PlayerBuyResourceCommand(
 
         // Compute import tariff
         val tariffFactor: Double = if (sameTopLeaderId) {
-            0.0
+            1.0
         } else {
-            playerData.playerInternalData.economyData().taxData.taxRateData.importTariff.getResourceTariffRate(
-                topLeaderId = targetTopLeaderId, resourceType = resourceType
-            )
+            1.0 + playerData.playerInternalData.economyData().taxData.taxRateData.importTariff
+                .getResourceTariffRate(
+                    topLeaderId = targetTopLeaderId, resourceType = resourceType
+                )
         }
 
         // Consume resource
-        playerData.playerInternalData.physicsData().removeExternalTradeFuel(fuelRestMassAmount * (1.0 + tariffFactor))
+        playerData.playerInternalData.physicsData()
+            .removeExternalTradeFuel(fuelRestMassAmount * tariffFactor)
 
         // Add tariff to storage
-        playerData.playerInternalData.economyData().taxData.storedFuelRestMass += fuelRestMassAmount * tariffFactor
+        playerData.playerInternalData.economyData().taxData.storedFuelRestMass +=
+            fuelRestMassAmount * (tariffFactor - 1.0) / tariffFactor
     }
 
     override fun canExecute(

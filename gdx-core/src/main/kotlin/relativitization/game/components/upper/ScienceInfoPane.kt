@@ -453,7 +453,7 @@ class ScienceInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane
 
         nestedTable.add(
             createLabel(
-                "Ideal entertainment quality: ${scienceApplicationData.idealEntertainmentQuality.quality1}",
+                "Ideal entertainment quality: ${scienceApplicationData.idealEntertainmentQuality.quality}",
                 gdxSettings.smallFontSize
             )
         )
@@ -572,7 +572,7 @@ class ScienceInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane
 
         nestedTable.add(
             createLabel(
-                "Output quality: ${idealFactory.maxOutputResourceQualityData.quality1}",
+                "Output quality: ${idealFactory.maxOutputResourceQualityData.quality}",
                 gdxSettings.smallFontSize
             )
         )
@@ -591,7 +591,7 @@ class ScienceInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane
 
             nestedTable.add(
                 createLabel(
-                    "Input $resourceType quality: ${inputResourceData.qualityData.quality1}",
+                    "Input $resourceType quality: ${inputResourceData.qualityData.quality}",
                     gdxSettings.smallFontSize
                 )
             )
