@@ -18,7 +18,7 @@ internal class FileTest {
 
             val modelGitignore: List<String> = File("../model-gitignore.txt").readLines()
 
-            println(allFileList.filter { !modelGitignore.contains(it) })
+            assert(allFileList.all { modelGitignore.contains(it) })
         }
     }
 }
