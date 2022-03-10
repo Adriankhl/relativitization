@@ -176,7 +176,8 @@ class GameScreenWorldMap(
             val groupId: Int = game.universeClient.getUniverseData3D().get(id).groupId
             val int3D: Int3D = game.universeClient.getUniverseData3D().get(id).int4D.toInt3D()
             val playerRectangle = data3D2DProjection.data3DToRectangle(int3D, groupId, id)
-            println("player rectangle: $playerRectangle")
+
+            logger.debug("player rectangle: $playerRectangle")
 
             val images = getPlayerImages(
                 playerData = game.universeClient.getUniverseData3D().get(id),
