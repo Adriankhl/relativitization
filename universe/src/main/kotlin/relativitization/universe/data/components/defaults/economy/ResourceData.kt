@@ -166,6 +166,47 @@ data class ResourceData(
         resourceType: ResourceType,
         resourceQualityClass: ResourceQualityClass
     ): Double = getSingleResourceData(resourceType, resourceQualityClass).resourcePrice
+
+    /**
+     * Get resource quality class with target quality, amount and budget for trade
+     * Default to quality class with maximum amount if none of them satisfy the requirement
+     *
+     * @param resourceType the type of required resource
+     * @param amount the target amount to get
+     * @param targetQuality the target quality of the resource to get
+     * @param budget the budget to buy this resource
+     * @param preferHighQualityClass prefer high quality class that satisfy the requirement,
+     * prefer low quality class if false
+     */
+    fun tradeQualityClass(
+        resourceType: ResourceType,
+        amount: Double,
+        targetQuality: ResourceQualityData,
+        budget: Double,
+        preferHighQualityClass: Boolean,
+    ): ResourceQualityClass {
+        val satisfyList: List<Pair<ResourceQualityClass, Boolean>> =
+            ResourceQualityClass.values().toList().map {
+                val b1: Boolean = getResourceQuality(resourceType, it).geq(targetQuality)
+                val b2: Boolean = getTradeResourceAmount(resourceType, it) >= amount
+                val b3: Boolean = budget >= getResourcePrice(resourceType, it) * amount
+                it to (b1 && b2 && b3)
+            }
+        return if (preferHighQualityClass) {
+            satisfyList.firstOrNull { it.second }?.first ?: run {
+                ResourceQualityClass.values().maxByOrNull {
+                    getTradeResourceAmount(resourceType, it)
+                } ?: ResourceQualityClass.THIRD
+            }
+        } else {
+            satisfyList.lastOrNull { it.second }?.first ?: run {
+                ResourceQualityClass.values().maxByOrNull {
+                    getTradeResourceAmount(resourceType, it)
+                } ?: ResourceQualityClass.THIRD
+            }
+        }
+    }
+
 }
 
 @Serializable
