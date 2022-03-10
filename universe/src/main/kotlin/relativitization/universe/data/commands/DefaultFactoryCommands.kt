@@ -73,7 +73,8 @@ data class BuildForeignFuelFactoryCommand(
 
         val isTopLeader: Boolean = playerData.isTopLeader()
         val allowConstruction = CommandErrorMessage(
-            isTopLeader || playerData.playerInternalData.politicsData().allowSubordinateBuildFactory,
+            isTopLeader ||
+                    playerData.playerInternalData.politicsData().allowSubordinateBuildFactory,
             I18NString("Not allow to build factory. ")
         )
 
@@ -88,7 +89,8 @@ data class BuildForeignFuelFactoryCommand(
         val fuelNeeded: Double = playerData.playerInternalData.playerScienceData()
             .playerScienceApplicationData.newFuelFactoryFuelNeededByConstruction(maxNumEmployee)
         val hasFuel = CommandErrorMessage(
-            playerData.playerInternalData.physicsData().fuelRestMassData.production >= fuelNeeded + storedFuelRestMass,
+            playerData.playerInternalData.physicsData().fuelRestMassData.production >=
+                    fuelNeeded + storedFuelRestMass,
             I18NString("Not enough fuel rest mass. ")
         )
 
@@ -116,7 +118,9 @@ data class BuildForeignFuelFactoryCommand(
         val fuelNeeded: Double = playerData.playerInternalData.playerScienceData()
             .playerScienceApplicationData.newFuelFactoryFuelNeededByConstruction(maxNumEmployee)
 
-        playerData.playerInternalData.physicsData().removeExternalProductionFuel(fuelNeeded + storedFuelRestMass)
+        playerData.playerInternalData.physicsData().removeExternalProductionFuel(
+            fuelNeeded + storedFuelRestMass
+        )
 
     }
 
@@ -140,7 +144,9 @@ data class BuildForeignFuelFactoryCommand(
         )
 
         val hasCarrier = CommandErrorMessage(
-            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(targetCarrierId),
+            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(
+                targetCarrierId
+            ),
             I18NString("Carrier does not exist. ")
         )
 
@@ -246,7 +252,8 @@ data class BuildForeignResourceFactoryCommand(
 
         val isTopLeader: Boolean = playerData.isTopLeader()
         val allowConstruction = CommandErrorMessage(
-            isTopLeader || playerData.playerInternalData.politicsData().allowSubordinateBuildFactory,
+            isTopLeader ||
+                    playerData.playerInternalData.politicsData().allowSubordinateBuildFactory,
             I18NString("Not allow to build factory. ")
         )
 
@@ -261,14 +268,15 @@ data class BuildForeignResourceFactoryCommand(
             I18NString("Factory internal data is not valid. ")
         )
 
-        val fuelNeeded: Double = playerData.playerInternalData.playerScienceData().playerScienceApplicationData
-            .newResourceFactoryFuelNeededByConstruction(
+        val fuelNeeded: Double = playerData.playerInternalData.playerScienceData()
+            .playerScienceApplicationData.newResourceFactoryFuelNeededByConstruction(
                 outputResourceType = resourceFactoryInternalData.outputResource,
                 maxNumEmployee = maxNumEmployee,
                 qualityLevel = qualityLevel,
             )
         val hasFuel = CommandErrorMessage(
-            playerData.playerInternalData.physicsData().fuelRestMassData.production >= fuelNeeded + storedFuelRestMass,
+            playerData.playerInternalData.physicsData().fuelRestMassData.production >=
+                    fuelNeeded + storedFuelRestMass,
             I18NString("Not enough fuel rest mass. ")
         )
 
@@ -292,13 +300,15 @@ data class BuildForeignResourceFactoryCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ) {
-        val fuelNeeded: Double = playerData.playerInternalData.playerScienceData().playerScienceApplicationData
-            .newResourceFactoryFuelNeededByConstruction(
+        val fuelNeeded: Double = playerData.playerInternalData.playerScienceData()
+            .playerScienceApplicationData.newResourceFactoryFuelNeededByConstruction(
                 outputResourceType = resourceFactoryInternalData.outputResource,
                 maxNumEmployee = maxNumEmployee,
                 qualityLevel = qualityLevel,
             )
-        playerData.playerInternalData.physicsData().removeExternalProductionFuel(fuelNeeded + storedFuelRestMass)
+        playerData.playerInternalData.physicsData().removeExternalProductionFuel(
+            fuelNeeded + storedFuelRestMass
+        )
 
     }
 
@@ -322,7 +332,9 @@ data class BuildForeignResourceFactoryCommand(
         )
 
         val hasCarrier = CommandErrorMessage(
-            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(targetCarrierId),
+            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(
+                targetCarrierId
+            ),
             I18NString("Carrier does not exist. ")
         )
 
@@ -336,9 +348,8 @@ data class BuildForeignResourceFactoryCommand(
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
 
-        val carrier: MutableCarrierData = playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
-            targetCarrierId
-        )
+        val carrier: MutableCarrierData = playerData.playerInternalData.popSystemData()
+            .carrierDataMap.getValue(targetCarrierId)
 
         carrier.allPopData.labourerPopData.addResourceFactory(
             MutableResourceFactoryData(
@@ -402,7 +413,8 @@ data class BuildLocalFuelFactoryCommand(
 
         val isTopLeader: Boolean = playerData.isTopLeader()
         val allowSubordinateConstruction = CommandErrorMessage(
-            isTopLeader || playerData.playerInternalData.politicsData().allowSubordinateBuildFactory,
+            isTopLeader ||
+                    playerData.playerInternalData.politicsData().allowSubordinateBuildFactory,
             I18NString("Not allow to build factory. ")
         )
 
@@ -434,18 +446,22 @@ data class BuildLocalFuelFactoryCommand(
         val isSenderTopLeader: Boolean = fromId == playerData.topLeaderId()
 
         val canSenderBuild = CommandErrorMessage(
-            isSenderTopLeader || playerData.playerInternalData.politicsData().allowSubordinateBuildFactory,
+            isSenderTopLeader ||
+                    playerData.playerInternalData.politicsData().allowSubordinateBuildFactory,
             I18NString("Sender cannot build. ")
         )
 
         val canLeaderBuild = CommandErrorMessage(
-            isSelf || playerData.playerInternalData.politicsData().allowLeaderBuildLocalFactory,
+            isSelf ||
+                    playerData.playerInternalData.politicsData().allowLeaderBuildLocalFactory,
             I18NString("Sender is not a top leader. ")
         )
 
 
         val hasCarrier = CommandErrorMessage(
-            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(targetCarrierId),
+            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(
+                targetCarrierId
+            ),
             I18NString("Carrier does not exist. ")
         )
 
@@ -453,7 +469,8 @@ data class BuildLocalFuelFactoryCommand(
             .playerScienceApplicationData.newFuelFactoryFuelNeededByConstruction(maxNumEmployee)
 
         val hasFuel = CommandErrorMessage(
-            playerData.playerInternalData.physicsData().fuelRestMassData.production >= requiredFuel,
+            playerData.playerInternalData.physicsData().fuelRestMassData.production >=
+                    requiredFuel,
             I18NString("Not enough fuel. ")
         )
 
@@ -556,7 +573,8 @@ data class BuildLocalResourceFactoryCommand(
 
         val isTopLeader: Boolean = playerData.isTopLeader()
         val allowSubordinateConstruction = CommandErrorMessage(
-            isTopLeader || playerData.playerInternalData.politicsData().allowSubordinateBuildFactory,
+            isTopLeader ||
+                    playerData.playerInternalData.politicsData().allowSubordinateBuildFactory,
             I18NString("Not allow to build factory. ")
         )
 
@@ -588,30 +606,35 @@ data class BuildLocalResourceFactoryCommand(
         val isSenderTopLeader: Boolean = fromId == playerData.topLeaderId()
 
         val canSenderBuild = CommandErrorMessage(
-            isSenderTopLeader || playerData.playerInternalData.politicsData().allowSubordinateBuildFactory,
+            isSenderTopLeader ||
+                    playerData.playerInternalData.politicsData().allowSubordinateBuildFactory,
             I18NString("Sender cannot build. ")
         )
 
         val canLeaderBuild = CommandErrorMessage(
-            isSelf || playerData.playerInternalData.politicsData().allowLeaderBuildLocalFactory,
+            isSelf ||
+                    playerData.playerInternalData.politicsData().allowLeaderBuildLocalFactory,
             I18NString("Sender is not a top leader. ")
         )
 
 
         val hasCarrier = CommandErrorMessage(
-            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(targetCarrierId),
+            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(
+                targetCarrierId
+            ),
             I18NString("Carrier does not exist. ")
         )
 
-        val requiredFuel: Double = playerData.playerInternalData.playerScienceData().playerScienceApplicationData
-            .newResourceFactoryFuelNeededByConstruction(
+        val requiredFuel: Double = playerData.playerInternalData.playerScienceData()
+            .playerScienceApplicationData.newResourceFactoryFuelNeededByConstruction(
                 outputResourceType = outputResourceType,
                 maxNumEmployee = maxNumEmployee,
                 qualityLevel = qualityLevel
             )
 
         val hasFuel = CommandErrorMessage(
-            playerData.playerInternalData.physicsData().fuelRestMassData.production >= requiredFuel,
+            playerData.playerInternalData.physicsData().fuelRestMassData.production >=
+                    requiredFuel,
             I18NString("Not enough fuel. ")
         )
 
@@ -633,14 +656,15 @@ data class BuildLocalResourceFactoryCommand(
                 targetCarrierId
             )
 
-        val newResourceFactoryInternalData: MutableResourceFactoryInternalData = playerData.playerInternalData
-            .playerScienceData().playerScienceApplicationData.newResourceFactoryInternalData(
+        val newResourceFactoryInternalData: MutableResourceFactoryInternalData = playerData
+            .playerInternalData.playerScienceData().playerScienceApplicationData
+            .newResourceFactoryInternalData(
                 outputResourceType = outputResourceType,
                 qualityLevel = qualityLevel
             )
 
-        val requiredFuel: Double = playerData.playerInternalData.playerScienceData().playerScienceApplicationData
-            .newResourceFactoryFuelNeededByConstruction(
+        val requiredFuel: Double = playerData.playerInternalData.playerScienceData()
+            .playerScienceApplicationData.newResourceFactoryFuelNeededByConstruction(
                 outputResourceType = outputResourceType,
                 maxNumEmployee = maxNumEmployee,
                 qualityLevel = qualityLevel
@@ -712,7 +736,9 @@ data class RemoveForeignFuelFactoryCommand(
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
         val hasCarrier = CommandErrorMessage(
-            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(targetCarrierId),
+            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(
+                targetCarrierId
+            ),
             I18NString("Carrier does not exist. ")
         )
 
@@ -808,7 +834,9 @@ data class RemoveForeignResourceFactoryCommand(
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
         val hasCarrier = CommandErrorMessage(
-            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(targetCarrierId),
+            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(
+                targetCarrierId
+            ),
             I18NString("Carrier does not exist. ")
         )
 
@@ -906,7 +934,9 @@ data class RemoveLocalFuelFactoryCommand(
         )
 
         val hasCarrier = CommandErrorMessage(
-            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(targetCarrierId),
+            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(
+                targetCarrierId
+            ),
             I18NString("Carrier does not exist. ")
         )
 
@@ -966,7 +996,9 @@ data class RemoveLocalFuelFactoryCommand(
         )
 
         val hasCarrier = CommandErrorMessage(
-            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(targetCarrierId),
+            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(
+                targetCarrierId
+            ),
             I18NString("Carrier does not exist. ")
         )
 
@@ -1072,7 +1104,9 @@ data class RemoveLocalResourceFactoryCommand(
         )
 
         val hasCarrier = CommandErrorMessage(
-            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(targetCarrierId),
+            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(
+                targetCarrierId
+            ),
             I18NString("Carrier does not exist. ")
         )
 
@@ -1134,7 +1168,9 @@ data class RemoveLocalResourceFactoryCommand(
         )
 
         val hasCarrier = CommandErrorMessage(
-            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(targetCarrierId),
+            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(
+                targetCarrierId
+            ),
             I18NString("Carrier does not exist. ")
         )
 
@@ -1242,7 +1278,8 @@ data class SupplyForeignFuelFactoryCommand(
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
         val hasFuel = CommandErrorMessage(
-            playerData.playerInternalData.physicsData().fuelRestMassData.production >= amount,
+            playerData.playerInternalData.physicsData().fuelRestMassData.production >=
+                    amount,
             I18NString("Not enough fuel rest mass. ")
         )
 
@@ -1265,7 +1302,9 @@ data class SupplyForeignFuelFactoryCommand(
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
         val hasCarrier = CommandErrorMessage(
-            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(targetCarrierId),
+            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(
+                targetCarrierId
+            ),
             I18NString("Carrier does not exist. ")
         )
 
@@ -1284,7 +1323,8 @@ data class SupplyForeignFuelFactoryCommand(
         )
 
         val isFuelIncreaseEnable = CommandErrorMessage(
-            playerData.playerInternalData.modifierData().physicsModifierData.disableRestMassIncreaseTimeLimit <= 0,
+            playerData.playerInternalData.modifierData().physicsModifierData
+                .disableRestMassIncreaseTimeLimit <= 0,
             I18NString("Fuel increase is disabled. ")
         )
 
@@ -1350,7 +1390,9 @@ data class OpenLocalFuelFactoryCommand(
         )
 
         val hasCarrier = CommandErrorMessage(
-            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(targetCarrierId),
+            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(
+                targetCarrierId
+            ),
             I18NString("Carrier does not exist. ")
         )
 
@@ -1389,7 +1431,9 @@ data class OpenLocalFuelFactoryCommand(
         )
 
         val hasCarrier = CommandErrorMessage(
-            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(targetCarrierId),
+            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(
+                targetCarrierId
+            ),
             I18NString("Carrier does not exist. ")
         )
 
@@ -1476,7 +1520,9 @@ data class CloseLocalFuelFactoryCommand(
         )
 
         val hasCarrier = CommandErrorMessage(
-            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(targetCarrierId),
+            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(
+                targetCarrierId
+            ),
             I18NString("Carrier does not exist. ")
         )
 
@@ -1515,7 +1561,9 @@ data class CloseLocalFuelFactoryCommand(
         )
 
         val hasCarrier = CommandErrorMessage(
-            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(targetCarrierId),
+            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(
+                targetCarrierId
+            ),
             I18NString("Carrier does not exist. ")
         )
 
@@ -1602,7 +1650,8 @@ data class SupplyForeignResourceFactoryCommand(
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
         val hasFuel = CommandErrorMessage(
-            playerData.playerInternalData.physicsData().fuelRestMassData.production >= amount,
+            playerData.playerInternalData.physicsData().fuelRestMassData.production >=
+                    amount,
             I18NString("Not enough fuel rest mass. ")
         )
 
@@ -1625,7 +1674,9 @@ data class SupplyForeignResourceFactoryCommand(
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
         val hasCarrier = CommandErrorMessage(
-            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(targetCarrierId),
+            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(
+                targetCarrierId
+            ),
             I18NString("Carrier does not exist. ")
         )
 
@@ -1647,7 +1698,8 @@ data class SupplyForeignResourceFactoryCommand(
 
 
         val isFuelIncreaseEnable = CommandErrorMessage(
-            playerData.playerInternalData.modifierData().physicsModifierData.disableRestMassIncreaseTimeLimit <= 0,
+            playerData.playerInternalData.modifierData().physicsModifierData
+                .disableRestMassIncreaseTimeLimit <= 0,
             I18NString("Fuel increase is disabled. ")
         )
 
@@ -1713,7 +1765,9 @@ data class OpenLocalResourceFactoryCommand(
         )
 
         val hasCarrier = CommandErrorMessage(
-            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(targetCarrierId),
+            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(
+                targetCarrierId
+            ),
             I18NString("Carrier does not exist. ")
         )
 
@@ -1752,7 +1806,9 @@ data class OpenLocalResourceFactoryCommand(
         )
 
         val hasCarrier = CommandErrorMessage(
-            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(targetCarrierId),
+            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(
+                targetCarrierId
+            ),
             I18NString("Carrier does not exist. ")
         )
 
@@ -1839,7 +1895,9 @@ data class CloseLocalResourceFactoryCommand(
         )
 
         val hasCarrier = CommandErrorMessage(
-            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(targetCarrierId),
+            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(
+                targetCarrierId
+            ),
             I18NString("Carrier does not exist. ")
         )
 
@@ -1878,7 +1936,9 @@ data class CloseLocalResourceFactoryCommand(
         )
 
         val hasCarrier = CommandErrorMessage(
-            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(targetCarrierId),
+            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(
+                targetCarrierId
+            ),
             I18NString("Carrier does not exist. ")
         )
 
