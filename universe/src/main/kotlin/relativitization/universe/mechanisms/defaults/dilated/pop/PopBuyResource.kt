@@ -200,114 +200,6 @@ object PopBuyResource : Mechanism() {
         }
     }
 
-    /**
-     * A score to rank player to buy resource from
-     */
-    fun buyResourcePlayerScore(
-        resourceType: ResourceType,
-        desireAmount: Double,
-        desireQualityData: MutableResourceQualityData,
-        availableFuel: Double,
-        thisInt4D: Int4D,
-        thisTopPlayerId: Int,
-        thisPlayerScienceData: MutablePlayerScienceData,
-        thisTaxRateData: MutableTaxRateData,
-        otherInt4D: Int4D,
-        otherTopPlayerId: Int,
-        otherPlayerScienceData: PlayerScienceData,
-        otherEconomyData: EconomyData,
-    ): Double {
-        val distance: Int = Intervals.intDistance(thisInt4D, otherInt4D)
-        val fuelLossFractionPerDistance: Double =
-            (thisPlayerScienceData.playerScienceApplicationData.fuelLogisticsLossFractionPerDistance +
-                    otherPlayerScienceData.playerScienceApplicationData
-                        .fuelLogisticsLossFractionPerDistance) * 0.5
-        val resourceLossFractionPerDistance: Double =
-            (thisPlayerScienceData.playerScienceApplicationData.resourceLogisticsLossFractionPerDistance +
-                    otherPlayerScienceData.playerScienceApplicationData
-                        .resourceLogisticsLossFractionPerDistance) * 0.5
-
-        val sameTopLeaderId: Boolean = thisTopPlayerId == otherTopPlayerId
-
-        val importTariffFactor: Double = if (sameTopLeaderId) {
-            1.0
-        } else {
-            1.0 + thisTaxRateData.importTariff.getResourceTariffRate(
-                otherTopPlayerId,
-                resourceType,
-            )
-        }
-
-        val exportTariffFactor: Double = if (sameTopLeaderId) {
-            1.0
-        } else {
-            1.0 + otherEconomyData.taxData.taxRateData.exportTariff.getResourceTariffRate(
-                thisTopPlayerId,
-                resourceType,
-            )
-        }
-
-        val fuelRemainFraction: Double = if (distance <= Intervals.sameCubeIntDistance()) {
-            1.0
-        } else {
-            (1.0 - fuelLossFractionPerDistance).pow(distance)
-        }
-
-        val resourceRemainFraction: Double = if (distance <= Intervals.sameCubeIntDistance()) {
-            1.0
-        } else {
-            (1.0 - resourceLossFractionPerDistance).pow(distance)
-        }
-
-        // Desire adjusted by logistic loss
-        val actualDesireAmount: Double = desireAmount / resourceRemainFraction
-
-        val qualityClass: ResourceQualityClass = otherEconomyData.resourceData.tradeQualityClass(
-            resourceType = resourceType,
-            amount = actualDesireAmount,
-            targetQuality = desireQualityData.toResourceQualityData(),
-            budget = availableFuel,
-            preferHighQualityClass = true,
-            tariffFactor = importTariffFactor * exportTariffFactor,
-        )
-
-        val availableAmount: Double = otherEconomyData.resourceData.getTradeResourceAmount(
-            resourceType,
-            qualityClass
-        )
-
-        val resourceQuality: ResourceQualityData = otherEconomyData.resourceData
-            .getResourceQuality(resourceType, qualityClass)
-
-        val price: Double = otherEconomyData.resourceData.getResourcePrice(
-            resourceType,
-            qualityClass
-        )
-
-        // price adjusted by logistic loss and tariff
-        val actualPrice: Double = price * exportTariffFactor * importTariffFactor /
-                fuelRemainFraction
-
-        val isResourceSufficient: Boolean = availableAmount >= actualDesireAmount
-        val isFuelSufficient: Boolean = availableFuel >= actualPrice * actualDesireAmount
-
-        val sufficientResourceScore: Double = if (isResourceSufficient) {
-            100.0
-        } else {
-            0.0
-        }
-
-        val sufficientFuelScore: Double = if (isFuelSufficient) {
-            100.0
-        } else {
-            0.0
-        }
-
-        val resourceQualityScore: Double =
-            Logistic.standardLogistic(resourceQuality.quality * 0.001)
-
-        return sufficientResourceScore + sufficientFuelScore + resourceQualityScore
-    }
 
     /**
      * A score to rank (this) player to buy resource from
@@ -422,6 +314,121 @@ object PopBuyResource : Mechanism() {
         physicsData.addInternalFuel(totalPriceToPay)
     }
 
+    /**
+     * A score to rank player to buy resource from
+     */
+    fun buyResourcePlayerScore(
+        resourceType: ResourceType,
+        desireAmount: Double,
+        desireQualityData: MutableResourceQualityData,
+        availableFuel: Double,
+        thisInt4D: Int4D,
+        thisTopPlayerId: Int,
+        thisPlayerScienceData: MutablePlayerScienceData,
+        thisTaxRateData: MutableTaxRateData,
+        otherInt4D: Int4D,
+        otherTopPlayerId: Int,
+        otherPlayerScienceData: PlayerScienceData,
+        otherEconomyData: EconomyData,
+    ): Double {
+        // Compute fuel and resource logistic loss by distance
+        val distance: Int = Intervals.intDistance(thisInt4D, otherInt4D)
+
+        val fuelLossFractionPerDistance: Double =
+            (thisPlayerScienceData.playerScienceApplicationData
+                .fuelLogisticsLossFractionPerDistance + otherPlayerScienceData
+                .playerScienceApplicationData.fuelLogisticsLossFractionPerDistance) * 0.5
+
+        val resourceLossFractionPerDistance: Double =
+            (thisPlayerScienceData.playerScienceApplicationData
+                .resourceLogisticsLossFractionPerDistance + otherPlayerScienceData
+                .playerScienceApplicationData.resourceLogisticsLossFractionPerDistance) * 0.5
+
+        val fuelRemainFraction: Double = if (distance <= Intervals.sameCubeIntDistance()) {
+            1.0
+        } else {
+            (1.0 - fuelLossFractionPerDistance).pow(distance)
+        }
+
+        val resourceRemainFraction: Double = if (distance <= Intervals.sameCubeIntDistance()) {
+            1.0
+        } else {
+            (1.0 - resourceLossFractionPerDistance).pow(distance)
+        }
+
+        // Get export and import tariffs
+        val sameTopLeaderId: Boolean = thisTopPlayerId == otherTopPlayerId
+
+        val importTariffFactor: Double = if (sameTopLeaderId) {
+            1.0
+        } else {
+            1.0 + thisTaxRateData.importTariff.getResourceTariffRate(
+                otherTopPlayerId,
+                resourceType,
+            )
+        }
+
+        val exportTariffFactor: Double = if (sameTopLeaderId) {
+            1.0
+        } else {
+            1.0 + otherEconomyData.taxData.taxRateData.exportTariff.getResourceTariffRate(
+                thisTopPlayerId,
+                resourceType,
+            )
+        }
+
+
+        // Desire adjusted by logistic loss
+        val actualDesireAmount: Double = desireAmount / resourceRemainFraction
+
+        val qualityClass: ResourceQualityClass = otherEconomyData.resourceData.tradeQualityClass(
+            resourceType = resourceType,
+            amount = actualDesireAmount,
+            targetQuality = desireQualityData.toResourceQualityData(),
+            budget = availableFuel,
+            preferHighQualityClass = true,
+            tariffFactor = importTariffFactor * exportTariffFactor,
+        )
+
+        val availableAmount: Double = otherEconomyData.resourceData.getTradeResourceAmount(
+            resourceType,
+            qualityClass
+        )
+
+        val resourceQuality: ResourceQualityData = otherEconomyData.resourceData
+            .getResourceQuality(resourceType, qualityClass)
+
+        val price: Double = otherEconomyData.resourceData.getResourcePrice(
+            resourceType,
+            qualityClass
+        )
+
+        // price adjusted by logistic loss and tariff
+        val actualPrice: Double = price * exportTariffFactor * importTariffFactor /
+                fuelRemainFraction
+
+        val isResourceSufficient: Boolean = availableAmount >= actualDesireAmount
+        val isFuelSufficient: Boolean = availableFuel >= actualPrice * actualDesireAmount
+
+        val sufficientResourceScore: Double = if (isResourceSufficient) {
+            100.0
+        } else {
+            0.0
+        }
+
+        val sufficientFuelScore: Double = if (isFuelSufficient) {
+            100.0
+        } else {
+            0.0
+        }
+
+        val resourceQualityScore: Double =
+            Logistic.standardLogistic(resourceQuality.quality * 0.001)
+
+        return sufficientResourceScore + sufficientFuelScore + resourceQualityScore
+    }
+
+
     fun computePopBuyResourceCommand(
         resourceType: ResourceType,
         desireAmount: Double,
@@ -437,17 +444,34 @@ object PopBuyResource : Mechanism() {
         thisPlayerScienceData: MutablePlayerScienceData,
         otherPlayerData: PlayerData,
     ): PopBuyResourceCommand {
-
+        // Compute fuel and resource logistic loss by distance
         val distance: Int = Intervals.intDistance(thisInt4D, otherPlayerData.int4D)
-        val fuelLossFractionPerDistance: Double =
-            (thisPlayerScienceData.playerScienceApplicationData.fuelLogisticsLossFractionPerDistance +
-                    otherPlayerData.playerInternalData.playerScienceData().playerScienceApplicationData
-                        .fuelLogisticsLossFractionPerDistance) * 0.5
-        val resourceLossFractionPerDistance: Double =
-            (thisPlayerScienceData.playerScienceApplicationData.resourceLogisticsLossFractionPerDistance +
-                    otherPlayerData.playerInternalData.playerScienceData().playerScienceApplicationData
-                        .resourceLogisticsLossFractionPerDistance) * 0.5
 
+        val fuelLossFractionPerDistance: Double =
+            (thisPlayerScienceData.playerScienceApplicationData
+                .fuelLogisticsLossFractionPerDistance + otherPlayerData.playerInternalData
+                .playerScienceData().playerScienceApplicationData
+                .fuelLogisticsLossFractionPerDistance) * 0.5
+
+        val resourceLossFractionPerDistance: Double =
+            (thisPlayerScienceData.playerScienceApplicationData
+                .resourceLogisticsLossFractionPerDistance + otherPlayerData.playerInternalData
+                .playerScienceData().playerScienceApplicationData
+                .resourceLogisticsLossFractionPerDistance) * 0.5
+
+        val fuelRemainFraction: Double = if (distance <= Intervals.sameCubeIntDistance()) {
+            1.0
+        } else {
+            (1.0 - fuelLossFractionPerDistance).pow(distance)
+        }
+
+        val resourceRemainFraction: Double = if (distance <= Intervals.sameCubeIntDistance()) {
+            1.0
+        } else {
+            (1.0 - resourceLossFractionPerDistance).pow(distance)
+        }
+
+        // Get import and export tariff
         val sameTopLeaderId: Boolean = thisTopPlayerId == otherPlayerData.topLeaderId()
 
         val importTariffFactor: Double = if (sameTopLeaderId) {
@@ -469,17 +493,6 @@ object PopBuyResource : Mechanism() {
                 )
         }
 
-        val fuelRemainFraction: Double = if (distance <= Intervals.sameCubeIntDistance()) {
-            1.0
-        } else {
-            (1.0 - fuelLossFractionPerDistance).pow(distance)
-        }
-
-        val resourceRemainFraction: Double = if (distance <= Intervals.sameCubeIntDistance()) {
-            1.0
-        } else {
-            (1.0 - resourceLossFractionPerDistance).pow(distance)
-        }
 
         // Desire adjusted by logistic loss
         val actualDesireAmount: Double = desireAmount / resourceRemainFraction

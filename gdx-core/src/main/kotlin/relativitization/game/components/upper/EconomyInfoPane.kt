@@ -12,6 +12,8 @@ import relativitization.universe.data.components.economyData
 import relativitization.universe.data.components.physicsData
 import relativitization.universe.data.components.playerScienceData
 import relativitization.universe.maths.number.Notation
+import relativitization.universe.maths.physics.Intervals
+import kotlin.math.pow
 
 class EconomyInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane>(game) {
     override val infoName: String = "Economy"
@@ -416,6 +418,24 @@ class EconomyInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane
         ).colspan(2)
 
         nestedTable.row().space(10f)
+
+        // Actual price adjusted by logistic loss and tariffs
+        val actualPrice: Double = actualPrice(
+            selectedResourceType,
+            selectedResourceQualityClass,
+            game.universeClient.getCurrentPlayerData(),
+            playerData,
+        )
+
+        nestedTable.add(
+            createLabel(
+                "Actual price: $actualPrice",
+                gdxSettings.smallFontSize
+            )
+        ).colspan(2)
+
+        nestedTable.row().space(10f)
+
 
         nestedTable.add(
             createLabel(
@@ -1059,5 +1079,71 @@ class EconomyInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane
         nestedTable.add(changeMiddleHighBoundarySliderButtonTable).colspan(2)
 
         return nestedTable
+    }
+
+    /**
+     * Compute the actual price adjusted by tariffs and logistic loss
+     */
+    private fun actualPrice(
+        resourceType: ResourceType,
+        resourceQualityClass: ResourceQualityClass,
+        buyer: PlayerData,
+        seller: PlayerData,
+    ): Double {
+        val distance: Int = Intervals.intDistance(buyer.int4D, seller.int4D)
+
+        val fuelLossFractionPerDistance: Double =
+            (buyer.playerInternalData.playerScienceData().playerScienceApplicationData
+                .fuelLogisticsLossFractionPerDistance + seller.playerInternalData
+                .playerScienceData().playerScienceApplicationData
+                .fuelLogisticsLossFractionPerDistance) * 0.5
+
+        val resourceLossFractionPerDistance: Double =
+            (buyer.playerInternalData.playerScienceData().playerScienceApplicationData
+                .resourceLogisticsLossFractionPerDistance + seller.playerInternalData
+                .playerScienceData().playerScienceApplicationData
+                .resourceLogisticsLossFractionPerDistance) * 0.5
+
+        val fuelRemainFraction: Double = if (distance <= Intervals.sameCubeIntDistance()) {
+            1.0
+        } else {
+            (1.0 - fuelLossFractionPerDistance).pow(distance)
+        }
+
+        val resourceRemainFraction: Double = if (distance <= Intervals.sameCubeIntDistance()) {
+            1.0
+        } else {
+            (1.0 - resourceLossFractionPerDistance).pow(distance)
+        }
+
+        // Get import and export tariff
+        val sameTopLeaderId: Boolean = seller.topLeaderId() == buyer.topLeaderId()
+
+        val importTariffFactor: Double = if (sameTopLeaderId) {
+            1.0
+        } else {
+            1.0 + buyer.playerInternalData.economyData().taxData.taxRateData.importTariff
+                .getResourceTariffRate(
+                    seller.topLeaderId(),
+                    resourceType,
+                )
+        }
+
+        val exportTariffFactor: Double = if (sameTopLeaderId) {
+            1.0
+        } else {
+            1.0 + seller.playerInternalData.economyData().taxData.taxRateData.exportTariff
+                .getResourceTariffRate(
+                    buyer.topLeaderId(),
+                    resourceType,
+                )
+        }
+
+        val price: Double = buyer.playerInternalData.economyData().resourceData.getResourcePrice(
+            resourceType, resourceQualityClass,
+        )
+
+        return price * importTariffFactor * exportTariffFactor / fuelRemainFraction /
+                resourceRemainFraction
     }
 }
