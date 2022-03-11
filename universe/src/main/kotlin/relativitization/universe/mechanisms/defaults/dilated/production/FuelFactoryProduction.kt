@@ -30,14 +30,16 @@ object FuelFactoryProduction : Mechanism() {
                 }
             }
 
-        val totalFuelProductionInPlayer: Double = mutablePlayerData.playerInternalData.popSystemData()
-            .carrierDataMap.values.sumOf { carrierData ->
-                carrierData.allPopData.labourerPopData.fuelFactoryMap.values.sumOf { fuelFactoryData ->
-                    computeOutAmount(fuelFactoryData)
+        val totalFuelProductionInPlayer: Double =
+            mutablePlayerData.playerInternalData.popSystemData()
+                .carrierDataMap.values.sumOf { carrierData ->
+                    carrierData.allPopData.labourerPopData.fuelFactoryMap.values.sumOf { fuelFactoryData ->
+                        computeOutAmount(fuelFactoryData)
+                    }
                 }
-            }
 
-        val totalFuelProductionInCube: Double = totalFuelProductionInNeighbor + totalFuelProductionInPlayer
+        val totalFuelProductionInCube: Double =
+            totalFuelProductionInNeighbor + totalFuelProductionInPlayer
 
         val maxFuelPerCubeFactor: Double = if (totalFuelProductionInCube > maxFuelPerCube) {
             maxFuelPerCube / totalFuelProductionInCube
@@ -45,8 +47,11 @@ object FuelFactoryProduction : Mechanism() {
             1.0
         }
 
+        val isFuelProductionEnable: Boolean = mutablePlayerData.playerInternalData.modifierData()
+            .physicsModifierData.disableRestMassIncreaseTimeLimit <= 0
+
         // Do self factory production first if it is not disabled
-        if (mutablePlayerData.playerInternalData.modifierData().physicsModifierData.disableRestMassIncreaseTimeLimit <= 0) {
+        if (isFuelProductionEnable) {
             mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.forEach { carrier ->
                 carrier.allPopData.labourerPopData.fuelFactoryMap.values.filter { factory ->
                     (factory.ownerPlayerId == mutablePlayerData.playerId) && (factory.isOpened)
@@ -61,8 +66,17 @@ object FuelFactoryProduction : Mechanism() {
         }
 
         // Production by factory owned by other
-        val logisticCommandList: List<Command> =
+        val logisticCommandList: List<Command> = if (isFuelProductionEnable) {
             mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.map { carrier ->
+                // Remove dead player factories
+                val factoryToRemove: Set<Int> = carrier.allPopData.labourerPopData.fuelFactoryMap
+                    .filter { (_, factory) ->
+                        !universeData3DAtPlayer.playerDataMap.containsKey(factory.ownerPlayerId)
+                    }.keys
+                factoryToRemove.forEach {
+                    carrier.allPopData.labourerPopData.fuelFactoryMap.remove(it)
+                }
+
                 carrier.allPopData.labourerPopData.fuelFactoryMap.values.filter { factory ->
                     (factory.ownerPlayerId != mutablePlayerData.playerId) && (factory.isOpened)
                 }.map { factory ->
@@ -73,6 +87,9 @@ object FuelFactoryProduction : Mechanism() {
                     )
                 }
             }.flatten()
+        } else {
+            listOf()
+        }
 
 
 
