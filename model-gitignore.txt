@@ -151,6 +151,7 @@ universe/src/main/kotlin/relativitization/universe/ai/defaults/node/subordinate/
 universe/src/main/kotlin/relativitization/universe/ai/defaults/node/other/diplomacy/DeclareWarReasoner.kt
 universe/src/main/kotlin/relativitization/universe/ai/defaults/node/other/diplomacy/ProposePeaceReasoner.kt
 universe/src/main/kotlin/relativitization/universe/ai/defaults/node/other/OtherPlayerReasoner.kt
+universe/src/main/kotlin/relativitization/universe/ai/defaults/node/other/construction/ForeignFactoryReasoner.kt
 universe/src/main/kotlin/relativitization/universe/ai/defaults/consideration/diplomacy/DiplomaticConsiderations.kt
 universe/src/main/kotlin/relativitization/universe/ai/defaults/consideration/building/FactoryConsiderations.kt
 universe/src/main/kotlin/relativitization/universe/ai/defaults/consideration/building/InstituteConsiderations.kt
@@ -184,7 +185,6 @@ universe/src/main/kotlin/relativitization/universe/data/commands/DefaultDiplomac
 universe/src/main/kotlin/relativitization/universe/data/commands/DefaultDummyCommands.kt
 universe/src/main/kotlin/relativitization/universe/data/commands/DefaultEconomyCommands.kt
 universe/src/main/kotlin/relativitization/universe/data/commands/DefaultEventCommands.kt
-universe/src/main/kotlin/relativitization/universe/data/commands/DefaultFactoryCommands.kt
 universe/src/main/kotlin/relativitization/universe/data/commands/DefaultHierarchyCommands.kt
 universe/src/main/kotlin/relativitization/universe/data/commands/DefaultLogisticsCommands.kt
 universe/src/main/kotlin/relativitization/universe/data/commands/DefaultModifierCommands.kt
@@ -192,6 +192,7 @@ universe/src/main/kotlin/relativitization/universe/data/commands/DefaultPhysicsC
 universe/src/main/kotlin/relativitization/universe/data/commands/DefaultPoliticsCommands.kt
 universe/src/main/kotlin/relativitization/universe/data/commands/DefaultRemovePlayerCommands.kt
 universe/src/main/kotlin/relativitization/universe/data/commands/DefaultScienceCommands.kt
+universe/src/main/kotlin/relativitization/universe/data/commands/DefaultFactoryCommands.kt
 universe/src/main/kotlin/relativitization/universe/data/events/DefaultEvent.kt
 universe/src/main/kotlin/relativitization/universe/data/events/DefaultPhysicsEvents.kt
 universe/src/main/kotlin/relativitization/universe/data/events/DefaultRemovePlayerEvents.kt
@@ -293,10 +294,10 @@ universe/src/main/kotlin/relativitization/universe/mechanisms/defaults/dilated/m
 universe/src/main/kotlin/relativitization/universe/mechanisms/defaults/dilated/pop/Educate.kt
 universe/src/main/kotlin/relativitization/universe/mechanisms/defaults/dilated/pop/Employment.kt
 universe/src/main/kotlin/relativitization/universe/mechanisms/defaults/dilated/pop/Migration.kt
-universe/src/main/kotlin/relativitization/universe/mechanisms/defaults/dilated/pop/PopBuyResource.kt
 universe/src/main/kotlin/relativitization/universe/mechanisms/defaults/dilated/pop/PopulationGrowth.kt
 universe/src/main/kotlin/relativitization/universe/mechanisms/defaults/dilated/pop/UpdateDesire.kt
 universe/src/main/kotlin/relativitization/universe/mechanisms/defaults/dilated/pop/UpdateSatisfaction.kt
+universe/src/main/kotlin/relativitization/universe/mechanisms/defaults/dilated/pop/PopBuyResource.kt
 universe/src/main/kotlin/relativitization/universe/mechanisms/defaults/dilated/military/UpdateMilitaryBase.kt
 universe/src/main/kotlin/relativitization/universe/mechanisms/defaults/dilated/production/BaseStellarFuelProduction.kt
 universe/src/main/kotlin/relativitization/universe/mechanisms/defaults/dilated/production/EntertainmentProduction.kt
