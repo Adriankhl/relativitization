@@ -1,8 +1,12 @@
 package relativitization.universe.ai.defaults.node.other.construction
 
+import relativitization.universe.ai.defaults.consideration.building.NoSelfFuelFactoryAndNoStarConsideration
+import relativitization.universe.ai.defaults.consideration.building.NoSelfResourceFactoryConsideration
 import relativitization.universe.ai.defaults.utils.*
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.PlayerData
+import relativitization.universe.data.components.defaults.economy.ResourceType
+import relativitization.universe.data.components.playerScienceData
 import relativitization.universe.data.components.popSystemData
 
 class ForeignFactoryReasoner : SequenceReasoner() {
@@ -58,7 +62,29 @@ class BuildForeignFuelFactoryOption(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<DualUtilityConsideration> {
-        TODO("Not yet implemented")
+        val noSelfFuelFactoryAndNoStarConsideration = NoSelfFuelFactoryAndNoStarConsideration(
+            rankIfTrue = 0,
+            multiplierIfTrue = 0.0,
+            bonusIfTrue = 0.0,
+        )
+
+        val noSelfResourceFactoryConsiderationList: List<DualUtilityConsideration> =
+            ResourceType.values().map {
+                NoSelfResourceFactoryConsideration(
+                    resourceType = it,
+                    rankIfTrue = 0,
+                    multiplierIfTrue = 0.0,
+                    bonusIfTrue = 0.0
+                )
+            }
+
+        val minFuelNeeded: Double = planDataAtPlayer.getCurrentMutablePlayerData()
+            .playerInternalData.playerScienceData().playerScienceApplicationData
+            .newFuelFactoryFuelNeededByConstruction(1.0)
+
+        return listOf(
+            noSelfFuelFactoryAndNoStarConsideration,
+        ) + noSelfResourceFactoryConsiderationList
     }
 
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {

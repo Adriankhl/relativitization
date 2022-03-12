@@ -785,8 +785,8 @@ data class PlayerBuyResourceCommand(
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
-        val receiverLossFractionPerDistance: Double =
-            playerData.playerInternalData.playerScienceData().playerScienceApplicationData.fuelLogisticsLossFractionPerDistance
+        val receiverLossFractionPerDistance: Double = playerData.playerInternalData
+            .playerScienceData().playerScienceApplicationData.fuelLogisticsLossFractionPerDistance
 
         val lossFractionPerDistance: Double =
             (receiverLossFractionPerDistance + senderFuelLossFractionPerDistance) * 0.5

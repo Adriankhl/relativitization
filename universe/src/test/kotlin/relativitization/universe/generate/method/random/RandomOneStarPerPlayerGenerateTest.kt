@@ -75,14 +75,18 @@ internal class RandomOneStarPerPlayerGenerateTest {
                     senderTopLeaderId = 1,
                     targetCarrierId = 0,
                     ownerId = 1,
-                    resourceFactoryInternalData = view7.get(1).playerInternalData.playerScienceData()
-                        .playerScienceApplicationData.newResourceFactoryInternalData(
+                    resourceFactoryInternalData = view7.get(1).playerInternalData
+                        .playerScienceData().playerScienceApplicationData
+                        .newResourceFactoryInternalData(
                             it,
                             1.0
                         ),
                     qualityLevel = 1.0,
                     maxNumEmployee = 1.0,
                     storedFuelRestMass = 0.0,
+                    senderFuelLossFractionPerDistance = view7.get(1).playerInternalData
+                        .playerScienceData().playerScienceApplicationData
+                        .fuelLogisticsLossFractionPerDistance,
                 )
             )
         }

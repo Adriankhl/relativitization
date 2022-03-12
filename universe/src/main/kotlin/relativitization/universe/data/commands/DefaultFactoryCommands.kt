@@ -9,10 +9,12 @@ import relativitization.universe.maths.physics.Int4D
 import relativitization.universe.data.components.defaults.popsystem.MutableCarrierData
 import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.*
 import relativitization.universe.data.serializer.DataSerializer
+import relativitization.universe.maths.physics.Intervals
 import relativitization.universe.utils.I18NString
 import relativitization.universe.utils.IntString
 import relativitization.universe.utils.NormalString
 import relativitization.universe.utils.RelativitizationLogManager
+import kotlin.math.pow
 
 /**
  * Build a fuel factory on player
@@ -21,8 +23,9 @@ import relativitization.universe.utils.RelativitizationLogManager
  * @property targetCarrierId build factory on that carrier
  * @property ownerId who own this factory
  * @property fuelFactoryInternalData data of the factory
- * @property storedFuelRestMass fuel stored in the newly built factory
  * @property maxNumEmployee maximum number of employee
+ * @property storedFuelRestMass fuel stored in the newly built factory
+ * @property senderFuelLossFractionPerDistance determine loss of stored fuel rest mass
  */
 @Serializable
 data class BuildForeignFuelFactoryCommand(
@@ -35,6 +38,7 @@ data class BuildForeignFuelFactoryCommand(
     val fuelFactoryInternalData: FuelFactoryInternalData,
     val maxNumEmployee: Double,
     val storedFuelRestMass: Double,
+    val senderFuelLossFractionPerDistance: Double,
 ) : DefaultCommand() {
     override fun description(): I18NString = I18NString(
         listOf(
@@ -99,6 +103,24 @@ data class BuildForeignFuelFactoryCommand(
             I18NString("Number of employee should be >= 1. ")
         )
 
+        val isLossFractionValid = CommandErrorMessage(
+            playerData.playerInternalData.playerScienceData().playerScienceApplicationData
+                .fuelLogisticsLossFractionPerDistance <= senderFuelLossFractionPerDistance,
+            I18NString(
+                listOf(
+                    NormalString("Sender fuel loss fraction per distance"),
+                    IntString(0),
+                    NormalString(" is greater than "),
+                    IntString(1),
+                    NormalString(". ")
+                ),
+                listOf(
+                    playerData.playerInternalData.playerScienceData().playerScienceApplicationData
+                        .fuelLogisticsLossFractionPerDistance.toString(),
+                    senderFuelLossFractionPerDistance.toString()
+                )
+            )
+        )
 
         return CommandErrorMessage(
             listOf(
@@ -107,6 +129,7 @@ data class BuildForeignFuelFactoryCommand(
                 validFactoryInternalData,
                 hasFuel,
                 isMaxNumEmployeeValid,
+                isLossFractionValid,
             )
         )
     }
@@ -159,6 +182,23 @@ data class BuildForeignFuelFactoryCommand(
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+        val receiverLossFractionPerDistance: Double = playerData.playerInternalData
+            .playerScienceData().playerScienceApplicationData.fuelLogisticsLossFractionPerDistance
+
+        val lossFractionPerDistance: Double =
+            (receiverLossFractionPerDistance + senderFuelLossFractionPerDistance) * 0.5
+
+        val distance: Int = Intervals.intDistance(
+            fromInt4D,
+            playerData.int4D
+        )
+
+        val remainFraction: Double = if (distance <= Intervals.sameCubeIntDistance()) {
+            1.0
+        } else {
+            (1.0 - lossFractionPerDistance).pow(distance)
+        }
+
         val carrier: MutableCarrierData =
             playerData.playerInternalData.popSystemData().carrierDataMap.getValue(targetCarrierId)
 
@@ -168,7 +208,7 @@ data class BuildForeignFuelFactoryCommand(
                 fuelFactoryInternalData = DataSerializer.copy(fuelFactoryInternalData),
                 maxNumEmployee = maxNumEmployee,
                 isOpened = true,
-                storedFuelRestMass = storedFuelRestMass,
+                storedFuelRestMass = storedFuelRestMass * remainFraction,
                 lastOutputAmount = 0.0,
                 lastNumEmployee = 0.0
             )
@@ -190,8 +230,9 @@ data class BuildForeignFuelFactoryCommand(
  * @property ownerId who own this factory
  * @property resourceFactoryInternalData data of the factory
  * @property qualityLevel the quality of the factory, relative to tech level
- * @property storedFuelRestMass fuel stored in the newly built factory
  * @property maxNumEmployee maximum number of employee
+ * @property storedFuelRestMass fuel stored in the newly built factory
+ * @property senderFuelLossFractionPerDistance determine loss of stored fuel rest mass
  */
 @Serializable
 data class BuildForeignResourceFactoryCommand(
@@ -205,6 +246,7 @@ data class BuildForeignResourceFactoryCommand(
     val qualityLevel: Double,
     val maxNumEmployee: Double,
     val storedFuelRestMass: Double,
+    val senderFuelLossFractionPerDistance: Double,
 ) : DefaultCommand() {
     override fun description(): I18NString = I18NString(
         listOf(
@@ -285,6 +327,25 @@ data class BuildForeignResourceFactoryCommand(
             I18NString("Max. number of employee should be >= 1. ")
         )
 
+        val isLossFractionValid = CommandErrorMessage(
+            playerData.playerInternalData.playerScienceData().playerScienceApplicationData
+                .fuelLogisticsLossFractionPerDistance <= senderFuelLossFractionPerDistance,
+            I18NString(
+                listOf(
+                    NormalString("Sender fuel loss fraction per distance"),
+                    IntString(0),
+                    NormalString(" is greater than "),
+                    IntString(1),
+                    NormalString(". ")
+                ),
+                listOf(
+                    playerData.playerInternalData.playerScienceData().playerScienceApplicationData
+                        .fuelLogisticsLossFractionPerDistance.toString(),
+                    senderFuelLossFractionPerDistance.toString()
+                )
+            )
+        )
+
         return CommandErrorMessage(
             listOf(
                 sameTopLeaderId,
@@ -292,6 +353,7 @@ data class BuildForeignResourceFactoryCommand(
                 validFactoryInternalData,
                 hasFuel,
                 isMaxNumEmployeeValid,
+                isLossFractionValid,
             )
         )
     }
@@ -347,6 +409,22 @@ data class BuildForeignResourceFactoryCommand(
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+        val receiverLossFractionPerDistance: Double = playerData.playerInternalData
+            .playerScienceData().playerScienceApplicationData.fuelLogisticsLossFractionPerDistance
+
+        val lossFractionPerDistance: Double =
+            (receiverLossFractionPerDistance + senderFuelLossFractionPerDistance) * 0.5
+
+        val distance: Int = Intervals.intDistance(
+            fromInt4D,
+            playerData.int4D
+        )
+
+        val remainFraction: Double = if (distance <= Intervals.sameCubeIntDistance()) {
+            1.0
+        } else {
+            (1.0 - lossFractionPerDistance).pow(distance)
+        }
 
         val carrier: MutableCarrierData = playerData.playerInternalData.popSystemData()
             .carrierDataMap.getValue(targetCarrierId)
@@ -359,7 +437,7 @@ data class BuildForeignResourceFactoryCommand(
                 isOpened = true,
                 lastOutputAmount = 0.0,
                 lastInputResourceMap = mutableMapOf(),
-                storedFuelRestMass = storedFuelRestMass,
+                storedFuelRestMass = storedFuelRestMass * remainFraction,
                 lastNumEmployee = 0.0
             )
         )
@@ -1243,6 +1321,7 @@ data class RemoveLocalResourceFactoryCommand(
  * @property targetCarrierId supply the factory from that carrier
  * @property targetFuelFactoryId supply the factory with that ID
  * @property amount the amount of fuel supplied to the factory
+ * @property senderFuelLossFractionPerDistance determine loss of fuel supplied
  */
 @Serializable
 data class SupplyForeignFuelFactoryCommand(
@@ -1251,7 +1330,8 @@ data class SupplyForeignFuelFactoryCommand(
     override val fromInt4D: Int4D,
     val targetCarrierId: Int,
     val targetFuelFactoryId: Int,
-    val amount: Double
+    val amount: Double,
+    val senderFuelLossFractionPerDistance: Double,
 ) : DefaultCommand() {
     override fun description(): I18NString = I18NString(
         listOf(
@@ -1283,9 +1363,29 @@ data class SupplyForeignFuelFactoryCommand(
             I18NString("Not enough fuel rest mass. ")
         )
 
+        val isLossFractionValid = CommandErrorMessage(
+            playerData.playerInternalData.playerScienceData().playerScienceApplicationData
+                .fuelLogisticsLossFractionPerDistance <= senderFuelLossFractionPerDistance,
+            I18NString(
+                listOf(
+                    NormalString("Sender fuel loss fraction per distance"),
+                    IntString(0),
+                    NormalString(" is greater than "),
+                    IntString(1),
+                    NormalString(". ")
+                ),
+                listOf(
+                    playerData.playerInternalData.playerScienceData().playerScienceApplicationData
+                        .fuelLogisticsLossFractionPerDistance.toString(),
+                    senderFuelLossFractionPerDistance.toString()
+                )
+            )
+        )
+
         return CommandErrorMessage(
             listOf(
-                hasFuel
+                hasFuel,
+                isLossFractionValid,
             )
         )
     }
@@ -1338,6 +1438,23 @@ data class SupplyForeignFuelFactoryCommand(
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+        val receiverLossFractionPerDistance: Double = playerData.playerInternalData
+            .playerScienceData().playerScienceApplicationData.fuelLogisticsLossFractionPerDistance
+
+        val lossFractionPerDistance: Double =
+            (receiverLossFractionPerDistance + senderFuelLossFractionPerDistance) * 0.5
+
+        val distance: Int = Intervals.intDistance(
+            fromInt4D,
+            playerData.int4D
+        )
+
+        val remainFraction: Double = if (distance <= Intervals.sameCubeIntDistance()) {
+            1.0
+        } else {
+            (1.0 - lossFractionPerDistance).pow(distance)
+        }
+
         val carrier: MutableCarrierData =
             playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
                 targetCarrierId
@@ -1345,7 +1462,161 @@ data class SupplyForeignFuelFactoryCommand(
 
         carrier.allPopData.labourerPopData.fuelFactoryMap.getValue(
             targetFuelFactoryId
-        ).storedFuelRestMass += amount
+        ).storedFuelRestMass += amount * remainFraction
+    }
+}
+
+/**
+ * Supply fuel to a resource factory in foreign player
+ *
+ * @property targetCarrierId supply the factory from that carrier
+ * @property targetResourceFactoryId supply the factory with that ID
+ * @property amount the amount of fuel supplied to the factory
+ * @property senderFuelLossFractionPerDistance determine loss of fuel supplied
+ */
+@Serializable
+data class SupplyForeignResourceFactoryCommand(
+    override val toId: Int,
+    override val fromId: Int,
+    override val fromInt4D: Int4D,
+    val targetCarrierId: Int,
+    val targetResourceFactoryId: Int,
+    val amount: Double,
+    val senderFuelLossFractionPerDistance: Double,
+) : DefaultCommand() {
+    override fun description(): I18NString = I18NString(
+        listOf(
+            NormalString("Send "),
+            IntString(0),
+            NormalString(" fuel to the foreign resource factory with Id "),
+            IntString(1),
+            NormalString(" at carrier "),
+            IntString(2),
+            NormalString(" of player "),
+            IntString(3),
+            NormalString(". "),
+        ),
+        listOf(
+            amount.toString(),
+            targetResourceFactoryId.toString(),
+            targetCarrierId.toString(),
+            toId.toString(),
+        )
+    )
+
+    override fun canSend(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): CommandErrorMessage {
+        val hasFuel = CommandErrorMessage(
+            playerData.playerInternalData.physicsData().fuelRestMassData.production >=
+                    amount,
+            I18NString("Not enough fuel rest mass. ")
+        )
+
+        val isLossFractionValid = CommandErrorMessage(
+            playerData.playerInternalData.playerScienceData().playerScienceApplicationData
+                .fuelLogisticsLossFractionPerDistance <= senderFuelLossFractionPerDistance,
+            I18NString(
+                listOf(
+                    NormalString("Sender fuel loss fraction per distance"),
+                    IntString(0),
+                    NormalString(" is greater than "),
+                    IntString(1),
+                    NormalString(". ")
+                ),
+                listOf(
+                    playerData.playerInternalData.playerScienceData().playerScienceApplicationData
+                        .fuelLogisticsLossFractionPerDistance.toString(),
+                    senderFuelLossFractionPerDistance.toString()
+                )
+            )
+        )
+
+        return CommandErrorMessage(
+            listOf(
+                hasFuel,
+                isLossFractionValid,
+            )
+        )
+    }
+
+    override fun selfExecuteBeforeSend(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ) {
+        playerData.playerInternalData.physicsData().removeExternalProductionFuel(amount)
+    }
+
+    override fun canExecute(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): CommandErrorMessage {
+        val hasCarrier = CommandErrorMessage(
+            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(
+                targetCarrierId
+            ),
+            I18NString("Carrier does not exist. ")
+        )
+
+        val hasResourceFactory = CommandErrorMessage(
+            if (hasCarrier.success) {
+                val carrier: MutableCarrierData =
+                    playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
+                        targetCarrierId
+                    )
+
+                carrier.allPopData.labourerPopData.resourceFactoryMap.containsKey(
+                    targetResourceFactoryId
+                )
+            } else {
+                false
+            },
+            I18NString("Resource factory does not exist. ")
+        )
+
+
+        val isFuelIncreaseEnable = CommandErrorMessage(
+            playerData.playerInternalData.modifierData().physicsModifierData
+                .disableRestMassIncreaseTimeLimit <= 0,
+            I18NString("Fuel increase is disabled. ")
+        )
+
+        return CommandErrorMessage(
+            listOf(
+                hasCarrier,
+                hasResourceFactory,
+                isFuelIncreaseEnable,
+            )
+        )
+    }
+
+    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+        val receiverLossFractionPerDistance: Double = playerData.playerInternalData
+            .playerScienceData().playerScienceApplicationData.fuelLogisticsLossFractionPerDistance
+
+        val lossFractionPerDistance: Double =
+            (receiverLossFractionPerDistance + senderFuelLossFractionPerDistance) * 0.5
+
+        val distance: Int = Intervals.intDistance(
+            fromInt4D,
+            playerData.int4D
+        )
+
+        val remainFraction: Double = if (distance <= Intervals.sameCubeIntDistance()) {
+            1.0
+        } else {
+            (1.0 - lossFractionPerDistance).pow(distance)
+        }
+
+        val carrier: MutableCarrierData =
+            playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
+                targetCarrierId
+            )
+
+        carrier.allPopData.labourerPopData.resourceFactoryMap.getValue(
+            targetResourceFactoryId
+        ).storedFuelRestMass += amount * remainFraction
     }
 }
 
@@ -1606,121 +1877,6 @@ data class CloseLocalFuelFactoryCommand(
 
     companion object {
         private val logger = RelativitizationLogManager.getLogger()
-    }
-}
-
-/**
- * Supply fuel to a resource factory in foreign player
- *
- * @property targetCarrierId supply the factory from that carrier
- * @property targetResourceFactoryId supply the factory with that ID
- * @property amount the amount of fuel supplied to the factory
- */
-@Serializable
-data class SupplyForeignResourceFactoryCommand(
-    override val toId: Int,
-    override val fromId: Int,
-    override val fromInt4D: Int4D,
-    val targetCarrierId: Int,
-    val targetResourceFactoryId: Int,
-    val amount: Double
-) : DefaultCommand() {
-    override fun description(): I18NString = I18NString(
-        listOf(
-            NormalString("Send "),
-            IntString(0),
-            NormalString(" fuel to the foreign resource factory with Id "),
-            IntString(1),
-            NormalString(" at carrier "),
-            IntString(2),
-            NormalString(" of player "),
-            IntString(3),
-            NormalString(". "),
-        ),
-        listOf(
-            amount.toString(),
-            targetResourceFactoryId.toString(),
-            targetCarrierId.toString(),
-            toId.toString(),
-        )
-    )
-
-    override fun canSend(
-        playerData: MutablePlayerData,
-        universeSettings: UniverseSettings
-    ): CommandErrorMessage {
-        val hasFuel = CommandErrorMessage(
-            playerData.playerInternalData.physicsData().fuelRestMassData.production >=
-                    amount,
-            I18NString("Not enough fuel rest mass. ")
-        )
-
-        return CommandErrorMessage(
-            listOf(
-                hasFuel
-            )
-        )
-    }
-
-    override fun selfExecuteBeforeSend(
-        playerData: MutablePlayerData,
-        universeSettings: UniverseSettings
-    ) {
-        playerData.playerInternalData.physicsData().removeExternalProductionFuel(amount)
-    }
-
-    override fun canExecute(
-        playerData: MutablePlayerData,
-        universeSettings: UniverseSettings
-    ): CommandErrorMessage {
-        val hasCarrier = CommandErrorMessage(
-            playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(
-                targetCarrierId
-            ),
-            I18NString("Carrier does not exist. ")
-        )
-
-        val hasResourceFactory = CommandErrorMessage(
-            if (hasCarrier.success) {
-                val carrier: MutableCarrierData =
-                    playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
-                        targetCarrierId
-                    )
-
-                carrier.allPopData.labourerPopData.resourceFactoryMap.containsKey(
-                    targetResourceFactoryId
-                )
-            } else {
-                false
-            },
-            I18NString("Resource factory does not exist. ")
-        )
-
-
-        val isFuelIncreaseEnable = CommandErrorMessage(
-            playerData.playerInternalData.modifierData().physicsModifierData
-                .disableRestMassIncreaseTimeLimit <= 0,
-            I18NString("Fuel increase is disabled. ")
-        )
-
-        return CommandErrorMessage(
-            listOf(
-                hasCarrier,
-                hasResourceFactory,
-                isFuelIncreaseEnable,
-            )
-        )
-    }
-
-    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
-        val carrier: MutableCarrierData =
-            playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
-                targetCarrierId
-            )
-
-        carrier.allPopData.labourerPopData.resourceFactoryMap.getValue(
-            targetResourceFactoryId
-        ).storedFuelRestMass += amount
     }
 }
 

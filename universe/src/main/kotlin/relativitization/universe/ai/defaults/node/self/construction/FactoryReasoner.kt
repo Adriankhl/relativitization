@@ -191,6 +191,9 @@ class BuildNewFuelFactoryOption(
                 fuelFactoryInternalData = DataSerializer.copy(idealFactory),
                 maxNumEmployee = maxNumEmployee,
                 storedFuelRestMass = 0.0,
+                senderFuelLossFractionPerDistance = planDataAtPlayer.getCurrentMutablePlayerData()
+                    .playerInternalData.playerScienceData().playerScienceApplicationData
+                    .fuelLogisticsLossFractionPerDistance,
             )
         )
     }
@@ -446,6 +449,9 @@ class BuildNewResourceFactoryOption(
                 qualityLevel = 1.0,
                 maxNumEmployee = maxNumEmployee,
                 storedFuelRestMass = 0.0,
+                senderFuelLossFractionPerDistance = planDataAtPlayer.getCurrentMutablePlayerData()
+                    .playerInternalData.playerScienceData().playerScienceApplicationData
+                    .fuelLogisticsLossFractionPerDistance,
             )
         )
     }

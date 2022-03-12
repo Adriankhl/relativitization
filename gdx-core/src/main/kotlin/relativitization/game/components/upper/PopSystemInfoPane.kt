@@ -813,7 +813,10 @@ class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
                 fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
                 targetCarrierId = carrierId,
                 targetFuelFactoryId = fuelFactoryId,
-                amount = supplyFuelAmount.value
+                amount = supplyFuelAmount.value,
+                senderFuelLossFractionPerDistance = game.universeClient.getCurrentPlayerData()
+                    .playerInternalData.playerScienceData().playerScienceApplicationData
+                    .fuelLogisticsLossFractionPerDistance,
             )
             game.universeClient.currentCommand = supplyForeignFuelFactoryCommand
         }
@@ -1151,7 +1154,10 @@ class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
                 fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
                 targetCarrierId = carrierId,
                 targetResourceFactoryId = resourceFactoryId,
-                amount = supplyFuelAmount.value
+                amount = supplyFuelAmount.value,
+                senderFuelLossFractionPerDistance = game.universeClient.getCurrentPlayerData()
+                    .playerInternalData.playerScienceData().playerScienceApplicationData
+                    .fuelLogisticsLossFractionPerDistance,
             )
             game.universeClient.currentCommand = supplyForeignResourceFactoryCommand
         }
@@ -1232,6 +1238,9 @@ class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
                     .playerScienceApplicationData.newFuelFactoryInternalData(),
                 maxNumEmployee = maxNumEmployee.value,
                 storedFuelRestMass = storedFuelRestMass.value,
+                senderFuelLossFractionPerDistance = game.universeClient.getCurrentPlayerData()
+                    .playerInternalData.playerScienceData().playerScienceApplicationData
+                    .fuelLogisticsLossFractionPerDistance,
             )
 
             game.universeClient.currentCommand = buildForeignFuelFactoryCommand
@@ -1366,6 +1375,9 @@ class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
                 qualityLevel = qualityLevel.value,
                 maxNumEmployee = maxNumEmployee.value,
                 storedFuelRestMass = storedFuelRestMass.value,
+                senderFuelLossFractionPerDistance = game.universeClient.getCurrentPlayerData()
+                    .playerInternalData.playerScienceData().playerScienceApplicationData
+                    .fuelLogisticsLossFractionPerDistance,
             )
 
             game.universeClient.currentCommand = buildForeignResourceFactoryCommand

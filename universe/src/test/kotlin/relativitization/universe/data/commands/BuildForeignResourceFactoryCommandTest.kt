@@ -39,13 +39,16 @@ internal class BuildForeignResourceFactoryCommandTest {
             senderTopLeaderId = playerData.topLeaderId(),
             targetCarrierId = 0,
             ownerId = 1,
-            resourceFactoryInternalData = playerData.playerInternalData.playerScienceData().playerScienceApplicationData.newResourceFactoryInternalData(
-                outputResourceType = ResourceType.PLANT,
-                qualityLevel = 1.0
-            ),
+            resourceFactoryInternalData = playerData.playerInternalData.playerScienceData()
+                .playerScienceApplicationData.newResourceFactoryInternalData(
+                    outputResourceType = ResourceType.PLANT,
+                    qualityLevel = 1.0
+                ),
             qualityLevel = 1.0,
             maxNumEmployee = 1.0,
             storedFuelRestMass = 0.0,
+            senderFuelLossFractionPerDistance = playerData.playerInternalData.playerScienceData()
+                .playerScienceApplicationData.fuelLogisticsLossFractionPerDistance,
         )
 
         runBlocking {
