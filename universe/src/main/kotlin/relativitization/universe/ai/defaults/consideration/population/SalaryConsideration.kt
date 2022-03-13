@@ -10,7 +10,7 @@ import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.math.pow
 
 /**
- * Check whether the salary of labourer in a foreign carrier compare to a reference salary
+ * Check whether the salary of labourer in a foreign carrier is less than a reference salary
  *
  * @property otherPlayerId the id of another player
  * @property otherPlayerCarrierId the id of the carrier with the labourer
@@ -20,7 +20,7 @@ import kotlin.math.pow
  * @property rank the rank of this consideration
  * @property multiplier the multiplier of this consideration
  */
-class ForeignLabourerSalaryConsideration(
+class ForeignLabourerLessSalaryConsideration(
     private val otherPlayerId: Int,
     private val otherPlayerCarrierId: Int,
     private val referenceSalary: Double,
@@ -37,15 +37,14 @@ class ForeignLabourerSalaryConsideration(
             .playerInternalData.popSystemData().carrierDataMap.getValue(otherPlayerCarrierId)
             .allPopData.labourerPopData.commonPopData.salaryPerEmployee
 
-        return if (referenceSalary > 0.0) {
-            DualUtilityData(
-                rank,
-                multiplier,
-                initialBonus * exponent.pow(salary / referenceSalary)
-            )
-        } else {
-            logger.debug("reference salary <= 0.0")
+        return if ((referenceSalary >= salary) || (salary <= 0.0)) {
             DualUtilityDataFactory.noImpact()
+        } else {
+            DualUtilityData(
+                rank = rank,
+                multiplier = multiplier,
+                bonus = initialBonus * exponent.pow(referenceSalary / salary)
+            )
         }
     }
 

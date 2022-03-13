@@ -1,5 +1,6 @@
 package relativitization.universe.ai.defaults.node.other
 
+import relativitization.universe.ai.defaults.node.other.construction.ForeignFactoryReasoner
 import relativitization.universe.ai.defaults.node.other.diplomacy.DeclareWarReasoner
 import relativitization.universe.ai.defaults.node.other.diplomacy.ProposePeaceReasoner
 import relativitization.universe.ai.defaults.utils.AINode
@@ -13,6 +14,7 @@ class OtherPlayerReasoner : SequenceReasoner() {
         planState: PlanState
     ): List<AINode> {
         return listOf(
+            ForeignFactoryReasoner(),
             ProposePeaceReasoner(),
             DeclareWarReasoner(),
         )
