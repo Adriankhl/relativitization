@@ -127,23 +127,7 @@ class SufficientSelfFuelFactoryAtCarrierConsideration(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): DualUtilityData {
-        val carrier: MutableCarrierData = planDataAtPlayer.getCurrentMutablePlayerData()
-            .playerInternalData.popSystemData().carrierDataMap.getValue(carrierId)
-
-        val selfFuelFactoryList: List<MutableFuelFactoryData> =
-            carrier.allPopData.labourerPopData.fuelFactoryMap.values.filter {
-                it.ownerPlayerId == planDataAtPlayer.getCurrentMutablePlayerData().playerId
-            }
-
-        val totalMaxEmployee: Double = selfFuelFactoryList.fold(0.0) { acc, fuelFactory ->
-            acc + fuelFactory.maxNumEmployee
-        }
-
-        val totalLabourerPopulation: Double =
-            carrier.allPopData.labourerPopData.commonPopData.adultPopulation
-
-        // Sufficient if fuel factory position is more than half of the labourer population
-        return if (totalMaxEmployee >= totalLabourerPopulation * 0.5) {
+        return if (isTrue(planDataAtPlayer, carrierId)) {
             DualUtilityData(
                 rank = rankIfTrue,
                 multiplier = multiplierIfTrue,
@@ -155,6 +139,31 @@ class SufficientSelfFuelFactoryAtCarrierConsideration(
                 multiplier = multiplierIfFalse,
                 bonus = bonusIfFalse
             )
+        }
+    }
+
+    companion object {
+        fun isTrue(
+            planDataAtPlayer: PlanDataAtPlayer,
+            carrierId: Int,
+        ): Boolean {
+            val carrier: MutableCarrierData = planDataAtPlayer.getCurrentMutablePlayerData()
+                .playerInternalData.popSystemData().carrierDataMap.getValue(carrierId)
+
+            val selfFuelFactoryList: List<MutableFuelFactoryData> =
+                carrier.allPopData.labourerPopData.fuelFactoryMap.values.filter {
+                    it.ownerPlayerId == planDataAtPlayer.getCurrentMutablePlayerData().playerId
+                }
+
+            val totalMaxEmployee: Double = selfFuelFactoryList.fold(0.0) { acc, fuelFactory ->
+                acc + fuelFactory.maxNumEmployee
+            }
+
+            val totalLabourerPopulation: Double =
+                carrier.allPopData.labourerPopData.commonPopData.adultPopulation
+
+            // Sufficient if fuel factory position is more than half of the labourer population
+            return totalMaxEmployee >= totalLabourerPopulation * 0.5
         }
     }
 }
@@ -447,27 +456,7 @@ class SufficientSelfResourceFactoryAtCarrierConsideration(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): DualUtilityData {
-        val carrier: MutableCarrierData = planDataAtPlayer.getCurrentMutablePlayerData()
-            .playerInternalData.popSystemData().carrierDataMap.getValue(carrierId)
-
-        val selfResourceFactoryList: List<MutableResourceFactoryData> =
-            carrier.allPopData.labourerPopData.resourceFactoryMap.values.filter {
-                val isThisResource: Boolean =
-                    it.resourceFactoryInternalData.outputResource == resourceType
-                val isSelf: Boolean =
-                    it.ownerPlayerId == planDataAtPlayer.getCurrentMutablePlayerData().playerId
-                isThisResource && isSelf
-            }
-
-        val totalMaxEmployee: Double = selfResourceFactoryList.fold(0.0) { acc, resourceFactory ->
-            acc + resourceFactory.maxNumEmployee
-        }
-
-        val totalLabourerPopulation: Double =
-            carrier.allPopData.labourerPopData.commonPopData.adultPopulation
-
-        // Sufficient if resource factory position is more than 0.1 of the labourer population
-        return if (totalMaxEmployee >= totalLabourerPopulation * 0.1) {
+       return if (isTrue(planDataAtPlayer, carrierId, resourceType)) {
             DualUtilityData(
                 rank = rankIfTrue,
                 multiplier = multiplierIfTrue,
@@ -479,6 +468,36 @@ class SufficientSelfResourceFactoryAtCarrierConsideration(
                 multiplier = multiplierIfFalse,
                 bonus = bonusIfFalse
             )
+        }
+    }
+
+    companion object {
+        fun isTrue(
+            planDataAtPlayer: PlanDataAtPlayer,
+            carrierId: Int,
+            resourceType: ResourceType,
+        ) : Boolean {
+            val carrier: MutableCarrierData = planDataAtPlayer.getCurrentMutablePlayerData()
+                .playerInternalData.popSystemData().carrierDataMap.getValue(carrierId)
+
+            val selfResourceFactoryList: List<MutableResourceFactoryData> =
+                carrier.allPopData.labourerPopData.resourceFactoryMap.values.filter {
+                    val isThisResource: Boolean =
+                        it.resourceFactoryInternalData.outputResource == resourceType
+                    val isSelf: Boolean =
+                        it.ownerPlayerId == planDataAtPlayer.getCurrentMutablePlayerData().playerId
+                    isThisResource && isSelf
+                }
+
+            val totalMaxEmployee: Double = selfResourceFactoryList.fold(0.0) { acc, resourceFactory ->
+                acc + resourceFactory.maxNumEmployee
+            }
+
+            val totalLabourerPopulation: Double =
+                carrier.allPopData.labourerPopData.commonPopData.adultPopulation
+
+            // Sufficient if resource factory position is more than 0.1 of the labourer population
+            return totalMaxEmployee >= totalLabourerPopulation * 0.1
         }
     }
 }

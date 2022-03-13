@@ -2,7 +2,9 @@ package relativitization.universe.ai.defaults.node.other.construction
 
 import relativitization.universe.ai.defaults.consideration.building.NoSelfFuelFactoryAndNoStarConsideration
 import relativitization.universe.ai.defaults.consideration.building.NoSelfResourceFactoryConsideration
-import relativitization.universe.ai.defaults.consideration.fuel.SufficientProductionFuelConsideration
+import relativitization.universe.ai.defaults.consideration.building.SufficientSelfFuelFactoryAtCarrierConsideration
+import relativitization.universe.ai.defaults.consideration.building.SufficientSelfResourceFactoryAtCarrierConsideration
+import relativitization.universe.ai.defaults.consideration.general.BooleanConsideration
 import relativitization.universe.ai.defaults.utils.*
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.PlayerData
@@ -18,13 +20,38 @@ class ForeignFactoryReasoner : SequenceReasoner() {
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<AINode> {
-        // Only use 0.1 of production fuel to construct foreign factory
-        planState.foreignConstructionFuel = planDataAtPlayer.getCurrentMutablePlayerData()
-            .playerInternalData.physicsData().fuelRestMassData.production * 0.1
+        // Only build foreign if there are sufficient self factories
+        val isSelfFuelFactorySufficient: Boolean = planDataAtPlayer.getCurrentMutablePlayerData()
+            .playerInternalData.popSystemData().carrierDataMap.keys.all {
+                SufficientSelfFuelFactoryAtCarrierConsideration.isTrue(
+                    planDataAtPlayer,
+                    it
+                )
+            }
 
-        return listOf(
-            NewForeignFuelFactoryReasoner()
-        )
+        val isSelfResourceFactorySufficient: Boolean = planDataAtPlayer
+            .getCurrentMutablePlayerData().playerInternalData.popSystemData().carrierDataMap
+            .keys.all { carrierId ->
+                ResourceType.factoryResourceList.all { resourceType ->
+                    SufficientSelfResourceFactoryAtCarrierConsideration.isTrue(
+                        planDataAtPlayer,
+                        carrierId,
+                        resourceType
+                    )
+                }
+            }
+
+        return if (isSelfFuelFactorySufficient && isSelfResourceFactorySufficient) {
+            // Only use 0.1 of production fuel to construct foreign factory
+            planState.foreignConstructionFuel = planDataAtPlayer.getCurrentMutablePlayerData()
+                .playerInternalData.physicsData().fuelRestMassData.production * 0.1
+
+            listOf(
+                NewForeignFuelFactoryReasoner()
+            )
+        } else {
+            listOf()
+        }
     }
 }
 
@@ -104,47 +131,26 @@ class BuildForeignFuelFactoryOption(
     private val carrierId: Int,
     private val fuelRemainFraction: Double,
 ) : DualUtilityOption() {
-    // Max production fuel fraction used to build the factory
-    private val maxProductionFuelFraction: Double = 0.01
-
     override fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<DualUtilityConsideration> {
-        val noSelfFuelFactoryAndNoStarConsideration = NoSelfFuelFactoryAndNoStarConsideration(
-            rankIfTrue = 0,
-            multiplierIfTrue = 0.0,
-            bonusIfTrue = 0.0,
-        )
-
-        val noSelfResourceFactoryConsiderationList: List<DualUtilityConsideration> =
-            ResourceType.values().map {
-                NoSelfResourceFactoryConsideration(
-                    resourceType = it,
-                    rankIfTrue = 0,
-                    multiplierIfTrue = 0.0,
-                    bonusIfTrue = 0.0
-                )
-            }
-
         // Make sure all self carriers have sufficient fuel and resource factory
-
         val minFuelNeeded: Double = planDataAtPlayer.getCurrentMutablePlayerData()
             .playerInternalData.playerScienceData().playerScienceApplicationData
             .newFuelFactoryFuelNeededByConstruction(1.0 / fuelRemainFraction)
-        val sufficientProductionFuelConsideration = SufficientProductionFuelConsideration(
-            requiredProductionFuelRestMass = minFuelNeeded / maxProductionFuelFraction,
+        val sufficientFuelConsideration = BooleanConsideration(
             rankIfTrue = 0,
             multiplierIfTrue = 1.0,
             bonusIfTrue = 0.0,
             rankIfFalse = 0,
             multiplierIfFalse = 0.0,
-            bonusIfFalse = 0.0
-        )
+            bonusIfFalse = 0.0,
+        ) { _, _ ->
+            planState.foreignConstructionFuel > minFuelNeeded
+        }
 
-        return listOf(noSelfFuelFactoryAndNoStarConsideration) +
-                noSelfResourceFactoryConsiderationList +
-                sufficientProductionFuelConsideration
+        return listOf(sufficientFuelConsideration)
     }
 
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
