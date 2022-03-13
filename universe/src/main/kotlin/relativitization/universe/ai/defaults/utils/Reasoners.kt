@@ -12,18 +12,11 @@ abstract class Reasoner : AINode() {
 }
 
 abstract class SequenceReasoner : Reasoner() {
-
-    protected open fun updateStatus(
-        planDataAtPlayer: PlanDataAtPlayer, planState: PlanState
-    ) { }
-
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
         logger.debug("${this::class.simpleName} (SequenceReasoner) updating data")
 
         val subNodeList: List<AINode> = getSubNodeList(planDataAtPlayer, planState)
         subNodeList.forEach { it.updatePlan(planDataAtPlayer, planState) }
-
-        updateStatus(planDataAtPlayer, planState)
     }
 
     companion object {
@@ -36,10 +29,6 @@ abstract class DualUtilityReasoner : Reasoner() {
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<DualUtilityOption>
-
-    protected open fun updateStatus(
-        planDataAtPlayer: PlanDataAtPlayer, planState: PlanState
-    ) { }
 
     override fun getSubNodeList(
         planDataAtPlayer: PlanDataAtPlayer,
@@ -54,8 +43,6 @@ abstract class DualUtilityReasoner : Reasoner() {
         val selectedDualUtilityOption: DualUtilityOption = selectOption(planDataAtPlayer, planState)
 
         selectedDualUtilityOption.updatePlan(planDataAtPlayer, planState)
-
-        updateStatus(planDataAtPlayer, planState)
     }
 
     private fun selectOption(

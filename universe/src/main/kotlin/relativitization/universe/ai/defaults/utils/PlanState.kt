@@ -2,7 +2,9 @@ package relativitization.universe.ai.defaults.utils
 
 /**
  * For storing plan state for communication between nodes
+ *
+ * @property foreignConstructionFuel fuel to construct foreign factories
  */
 class PlanState(
-    val interestPlayerId: MutableList<Int> = mutableListOf(),
+    var foreignConstructionFuel: Double = 0.0,
 )
