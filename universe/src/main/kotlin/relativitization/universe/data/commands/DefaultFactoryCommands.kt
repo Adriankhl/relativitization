@@ -158,7 +158,7 @@ data class BuildForeignFuelFactoryCommand(
 
         val isSenderTopLeader: Boolean = fromId == playerData.topLeaderId()
 
-        val canSubordinateBuild: Boolean = (!isSenderTopLeader &&
+        val canSubordinateBuild: Boolean = (sameTopLeaderId && !isSenderTopLeader &&
                 playerData.playerInternalData.politicsData().allowSubordinateBuildFactory)
 
         val allowConstruction = CommandErrorMessage(
@@ -385,7 +385,7 @@ data class BuildForeignResourceFactoryCommand(
 
         val isSenderTopLeader: Boolean = fromId == playerData.topLeaderId()
 
-        val canSubordinateBuild: Boolean = (!isSenderTopLeader &&
+        val canSubordinateBuild: Boolean = (sameTopLeaderId && !isSenderTopLeader &&
                 playerData.playerInternalData.politicsData().allowSubordinateBuildFactory)
 
         val allowConstruction = CommandErrorMessage(
