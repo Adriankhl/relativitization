@@ -1,7 +1,5 @@
 package relativitization.universe.ai.defaults.node.other.construction
 
-import relativitization.universe.ai.defaults.consideration.building.NoSelfFuelFactoryAndNoStarConsideration
-import relativitization.universe.ai.defaults.consideration.building.NoSelfResourceFactoryConsideration
 import relativitization.universe.ai.defaults.consideration.building.SufficientSelfFuelFactoryAtCarrierConsideration
 import relativitization.universe.ai.defaults.consideration.building.SufficientSelfResourceFactoryAtCarrierConsideration
 import relativitization.universe.ai.defaults.consideration.general.BooleanConsideration
