@@ -7,6 +7,8 @@ import relativitization.universe.ai.defaults.utils.*
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.components.defaults.economy.ResourceType
+import relativitization.universe.data.components.defaults.popsystem.pop.MutableCommonPopData
+import relativitization.universe.data.components.defaults.popsystem.pop.PopType
 import relativitization.universe.data.components.physicsData
 import relativitization.universe.data.components.playerScienceData
 import relativitization.universe.data.components.popSystemData
@@ -75,11 +77,11 @@ class NewForeignFuelFactoryAtPlayerReasoner(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<AINode> {
-        // Compute fuel remain fraction from science
         val thisPlayerData: PlayerData = planDataAtPlayer.universeData3DAtPlayer
             .getCurrentPlayerData()
         val otherPlayerData: PlayerData = planDataAtPlayer.universeData3DAtPlayer.get(playerId)
 
+        // Compute fuel remain fraction
         val distance: Int = Intervals.intDistance(thisPlayerData.int4D, otherPlayerData.int4D)
 
         val fuelLossFractionPerDistance: Double =
@@ -93,6 +95,16 @@ class NewForeignFuelFactoryAtPlayerReasoner(
         } else {
             (1.0 - fuelLossFractionPerDistance).pow(distance)
         }
+
+        // Compute average labourer salary of self
+        val totalSelfLabourerSalary: Double = planDataAtPlayer.getCurrentMutablePlayerData()
+            .playerInternalData.popSystemData().carrierDataMap.values.sumOf {
+                val commonPopData: MutableCommonPopData = it.allPopData.getCommonPopData(
+                    PopType.LABOURER
+                )
+                commonPopData.salaryPerEmployee * commonPopData.adultPopulation *
+                        commonPopData.employmentRate
+            }
 
         return otherPlayerData.playerInternalData.popSystemData().carrierDataMap.keys.map {
             NewForeignFuelFactoryAtCarrierReasoner(playerId, it, fuelRemainFraction)

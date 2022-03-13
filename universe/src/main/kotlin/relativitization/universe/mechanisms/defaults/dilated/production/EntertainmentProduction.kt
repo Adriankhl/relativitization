@@ -27,7 +27,7 @@ object EntertainmentProduction : Mechanism() {
 
             val amount: Double = computeEntertainmentAmount(
                 entertainerPopData.commonPopData.adultPopulation *
-                        (1.0 - entertainerPopData.commonPopData.unemploymentRate)
+                        entertainerPopData.commonPopData.employmentRate
             )
 
             val qualityData: MutableResourceQualityData = computeEntertainmentQuality(

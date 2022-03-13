@@ -120,7 +120,7 @@ data class MutableAllPopData(
  * @property adultPopulation amount of adult population
  * @property elderlyPopulation amount of elderly population
  * @property educationLevel the education level of the population
- * @property unemploymentRate rate of unemployed adult
+ * @property employmentRate rate of employed adult
  * @property unemploymentBenefit the total amount of the unemployment benefit of the unemployed population
  * @property satisfaction how satisfy is the population
  * @property saving saving of the population in fuel rest mass
@@ -136,7 +136,7 @@ data class CommonPopData(
     val adultPopulation: Double = 100.0,
     val elderlyPopulation: Double = 0.0,
     val educationLevel: Double = 1.0,
-    val unemploymentRate: Double = 0.0,
+    val employmentRate: Double = 1.0,
     val unemploymentBenefit: Double = 0.0,
     val satisfaction: Double = 0.0,
     val salaryPerEmployee: Double = 1E-6,
@@ -152,7 +152,7 @@ data class MutableCommonPopData(
     var adultPopulation: Double = 100.0,
     var elderlyPopulation: Double = 0.0,
     var educationLevel: Double = 1.0,
-    var unemploymentRate: Double = 0.0,
+    var employmentRate: Double = 1.0,
     var unemploymentBenefit: Double = 0.0,
     var satisfaction: Double = 0.0,
     var salaryPerEmployee: Double = 1E-6,
@@ -162,16 +162,16 @@ data class MutableCommonPopData(
     var lastResourceInputMap: MutableMap<ResourceType, MutableResourceDesireData> = mutableMapOf(),
 ) {
     fun numEmployee(): Double = when {
-        unemploymentRate > 1.0 -> {
-            MutableCommonPopData.Companion.logger.error("Unemployment rate > 1.0")
-            0.0
-        }
-        unemploymentRate < 0.0 -> {
-            MutableCommonPopData.Companion.logger.error("Unemployment rate < 0.0")
+        employmentRate > 1.0 -> {
+            logger.error("Employment rate > 1.0")
             adultPopulation
         }
+        employmentRate < 0.0 -> {
+            logger.error("Employment rate < 0.0")
+            0.0
+        }
         else -> {
-            adultPopulation * (1.0 - unemploymentRate)
+            adultPopulation * employmentRate
         }
     }
 

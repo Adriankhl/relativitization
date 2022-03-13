@@ -140,7 +140,7 @@ data class MutablePopSystemData(
                 val commonPopData: MutableCommonPopData =
                     mutableCarrierData.allPopData.getCommonPopData(popType)
                 commonPopData.salaryPerEmployee * commonPopData.adultPopulation *
-                        (1.0 - commonPopData.unemploymentRate)
+                        commonPopData.employmentRate
             }
         }
 

@@ -378,7 +378,7 @@ class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
 
         nestedTable.add(
             createLabel(
-                "Unemployment rate: ${commonPopData.unemploymentRate}",
+                "Employment rate: ${commonPopData.employmentRate}",
                 gdxSettings.smallFontSize
             )
         )

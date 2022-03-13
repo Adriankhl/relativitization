@@ -126,7 +126,7 @@ object Summary {
                     val commonPopData: CommonPopData =
                         carrierData.allPopData.entertainerPopData.commonPopData
                     EntertainmentProduction.computeEntertainmentAmount(
-                        commonPopData.adultPopulation * (1.0 - commonPopData.unemploymentRate)
+                        commonPopData.adultPopulation * commonPopData.employmentRate
                     )
                 } else {
                     0.0

@@ -164,11 +164,13 @@ universe/src/main/kotlin/relativitization/universe/ai/defaults/consideration/fue
 universe/src/main/kotlin/relativitization/universe/ai/defaults/consideration/subordinate/DirectSubordinateConsiderations.kt
 universe/src/main/kotlin/relativitization/universe/ai/defaults/consideration/event/MovementEventConsiderations.kt
 universe/src/main/kotlin/relativitization/universe/ai/defaults/consideration/population/PopulationDensityConsiderations.kt
+universe/src/main/kotlin/relativitization/universe/ai/defaults/consideration/population/SalaryConsideration.kt
 universe/src/main/kotlin/relativitization/universe/ai/defaults/consideration/military/MilitaryStrengthConsiderations.kt
 universe/src/main/kotlin/relativitization/universe/ai/defaults/consideration/military/WarStateConsiderations.kt
 universe/src/main/kotlin/relativitization/universe/ai/defaults/consideration/position/DistanceConsiderations.kt
 universe/src/main/kotlin/relativitization/universe/ai/defaults/consideration/position/EnemyPositionConsiderations.kt
 universe/src/main/kotlin/relativitization/universe/ai/defaults/consideration/hierarchy/HierarchyConsiderations.kt
+universe/src/main/kotlin/relativitization/universe/ai/defaults/consideration/general/BooleanConsideration.kt
 universe/src/main/kotlin/relativitization/universe/ai/defaults/score/MilitaryScore.kt
 universe/src/main/kotlin/relativitization/universe/ai/AI.kt
 universe/src/main/kotlin/relativitization/universe/ai/DefaultSalaryAI.kt

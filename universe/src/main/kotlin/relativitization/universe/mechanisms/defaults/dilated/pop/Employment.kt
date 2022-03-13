@@ -5,7 +5,6 @@ import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.components.*
-import relativitization.universe.data.components.defaults.physics.MutableFuelRestMassData
 import relativitization.universe.data.components.defaults.popsystem.MutableCarrierData
 import relativitization.universe.data.components.defaults.popsystem.pop.MutableCommonPopData
 import relativitization.universe.data.components.defaults.popsystem.pop.engineer.MutableEngineerPopData
@@ -309,12 +308,12 @@ object Employment : Mechanism() {
                 acc + mutableResourceFactoryData.lastNumEmployee
             }
 
-        // Compute unemployment rate, allow a small error from floating point operation
-        val actualUnemploymentRate: Double = (1.0 - actualNumEmployee / availableEmployee)
-        labourerPopData.commonPopData.unemploymentRate = when {
-            (actualUnemploymentRate > 1.0) && (actualUnemploymentRate < 1.01) -> 1.0
-            (actualUnemploymentRate > -0.01) && (actualUnemploymentRate < 0.0) -> 0.0
-            else -> actualUnemploymentRate
+        // Compute employment rate, allow a small error from floating point operation
+        val actualEmploymentRate: Double = actualNumEmployee / availableEmployee
+        labourerPopData.commonPopData.employmentRate = when {
+            (actualEmploymentRate > 1.0) && (actualEmploymentRate < 1.01) -> 1.0
+            (actualEmploymentRate > -0.01) && (actualEmploymentRate < 0.0) -> 0.0
+            else -> actualEmploymentRate
         }
     }
 
@@ -380,12 +379,12 @@ object Employment : Mechanism() {
                 acc + mutableInstituteData.lastNumEmployee
             }
 
-        // Compute unemployment rate, allow a small error from floating point operation
-        val actualUnemploymentRate: Double = (1.0 - actualNumEmployee / availableEmployee)
-        scholarPopData.commonPopData.unemploymentRate = when {
-            (actualUnemploymentRate > 1.0) && (actualUnemploymentRate < 1.01) -> 1.0
-            (actualUnemploymentRate > -0.01) && (actualUnemploymentRate < 0.0) -> 0.0
-            else -> actualUnemploymentRate
+        // Compute employment rate, allow a small error from floating point operation
+        val actualEmploymentRate: Double = actualNumEmployee / availableEmployee
+        scholarPopData.commonPopData.employmentRate = when {
+            (actualEmploymentRate > 1.0) && (actualEmploymentRate < 1.01) -> 1.0
+            (actualEmploymentRate > -0.01) && (actualEmploymentRate < 0.0) -> 0.0
+            else -> actualEmploymentRate
         }
     }
 
@@ -452,12 +451,12 @@ object Employment : Mechanism() {
                 acc + mutableLaboratoryData.lastNumEmployee
             }
 
-        // Compute unemployment rate, allow a small error from floating point operation
-        val actualUnemploymentRate: Double = (1.0 - actualNumEmployee / availableEmployee)
-        engineerPopData.commonPopData.unemploymentRate = when {
-            (actualUnemploymentRate > 1.0) && (actualUnemploymentRate < 1.01) -> 1.0
-            (actualUnemploymentRate > -0.01) && (actualUnemploymentRate < 0.0) -> 0.0
-            else -> actualUnemploymentRate
+        // Compute employment rate, allow a small error from floating point operation
+        val actualEmploymentRate: Double = actualNumEmployee / availableEmployee
+        engineerPopData.commonPopData.employmentRate = when {
+            (actualEmploymentRate > 1.0) && (actualEmploymentRate < 1.01) -> 1.0
+            (actualEmploymentRate > -0.01) && (actualEmploymentRate < 0.0) -> 0.0
+            else -> actualEmploymentRate
         }
     }
 
@@ -481,7 +480,7 @@ object Employment : Mechanism() {
         val availableFuel: Double = mutablePhysicsData.fuelRestMassData.production
 
         if (availableFuel >= maxPayWithTax) {
-            soldierPopData.commonPopData.unemploymentRate = 0.0
+            soldierPopData.commonPopData.employmentRate = 1.0
 
             // Update military base employment
             soldierPopData.militaryBaseData.lastNumEmployee =
@@ -492,7 +491,7 @@ object Employment : Mechanism() {
             soldierPopData.commonPopData.saving += maxPay
             mutableEconomyData.taxData.storedFuelRestMass += tax
         } else {
-            soldierPopData.commonPopData.unemploymentRate = 1.0
+            soldierPopData.commonPopData.employmentRate = 0.0
 
             // Update military base employment
             soldierPopData.militaryBaseData.lastNumEmployee = 0.0
@@ -519,14 +518,14 @@ object Employment : Mechanism() {
         val availableFuel: Double = mutablePhysicsData.fuelRestMassData.production
 
         if (availableFuel >= maxPayWithTax) {
-            commonPopData.unemploymentRate = 0.0
+            commonPopData.employmentRate = 1.0
 
             // Pay salary and tax here
             mutablePhysicsData.removeInternalProductionFuel(maxPayWithTax)
             commonPopData.saving += maxPay
             mutableEconomyData.taxData.storedFuelRestMass += tax
         } else {
-            commonPopData.unemploymentRate = 1.0
+            commonPopData.employmentRate = 0.0
         }
     }
 }
