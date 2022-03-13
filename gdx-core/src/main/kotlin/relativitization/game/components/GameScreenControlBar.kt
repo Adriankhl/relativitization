@@ -10,7 +10,6 @@ import relativitization.game.screens.ClientSettingsScreen
 import relativitization.game.screens.HelpScreen
 import relativitization.game.utils.ScreenComponent
 import relativitization.universe.communication.UniverseServerStatusMessage
-import relativitization.universe.data.commands.DummyCommand
 import relativitization.universe.data.components.defaults.physics.FuelRestMassData
 import relativitization.universe.data.components.physicsData
 import relativitization.universe.maths.number.toScientificNotation
@@ -289,35 +288,47 @@ class GameScreenControlBar(
         game.changeGdxSettings()
     }
 
-    private val upperInfoPaneButtonList: List<TextButton> = UpperInfoPane::class.sealedSubclasses.map {
-        it.primaryConstructor!!.call(game)
-    }.sortedBy {
-        it.infoPriority
-    }.map {
-        it.infoName
-    }.map { infoName ->
-        createTextButton(
-            text = infoName,
-            fontSize = gdxSettings.normalFontSize,
-            soundVolume = gdxSettings.soundEffectsVolume
-        ) {
-            // If hiding, show the panel
-            if ((gdxSettings.upperInfoPaneChoice == infoName) && gdxSettings.isInfoPaneShow) {
-                gdxSettings.isInfoPaneShow = false
-                gdxSettings.upperInfoPaneChoice = infoName
-            } else {
-                gdxSettings.isInfoPaneShow = true
-                gdxSettings.upperInfoPaneChoice = infoName
-            }
+    private val upperInfoPaneButtonList: List<TextButton> =
+        UpperInfoPane::class.sealedSubclasses.map {
+            it.primaryConstructor!!.call(game)
+        }.sortedBy {
+            it.infoPriority
+        }.map {
+            it.infoName
+        }.map { infoName ->
+            createTextButton(
+                text = infoName,
+                fontSize = gdxSettings.normalFontSize,
+                soundVolume = gdxSettings.soundEffectsVolume
+            ) {
+                // If hiding, show the panel
+                if ((gdxSettings.upperInfoPaneChoice == infoName) && gdxSettings.isInfoPaneShow) {
+                    gdxSettings.isInfoPaneShow = false
+                    gdxSettings.upperInfoPaneChoice = infoName
+                } else {
+                    gdxSettings.isInfoPaneShow = true
+                    gdxSettings.upperInfoPaneChoice = infoName
+                }
 
-            syncGameScreenComponentSettings()
-            game.changeGdxSettings()
+                syncGameScreenComponentSettings()
+                game.changeGdxSettings()
+            }
         }
-    }
 
     private val tCoordinateLabel = createLabel(
         text = "t: ${game.universeClient.getUniverseData3D().center.t}",
         fontSize = gdxSettings.smallFontSize
+    )
+
+    private val timeDelayLabel = createLabel(
+        "delay: ${
+            intDelay(
+                game.universeClient.primarySelectedInt3D,
+                game.universeClient.getPrimarySelectedPlayerData().int4D.toInt3D(),
+                game.universeClient.getUniverseData3D().universeSettings.speedOfLight,
+            )
+        }",
+        gdxSettings.smallFontSize
     )
 
     private val xCoordinateSelectBox: SelectBox<Int> = createSelectBox(
@@ -613,6 +624,8 @@ class GameScreenControlBar(
 
         leftTopTable.add(tCoordinateLabel).space(10f)
 
+        leftTopTable.add(timeDelayLabel).space(10f)
+
         leftTopTable.add(createLabel("z limit:", gdxSettings.smallFontSize))
         leftTopTable.add(zLimitSelectBox).space(10f)
 
@@ -841,11 +854,15 @@ class GameScreenControlBar(
      * Update coordinates
      */
     private fun updateTCoordinate() {
-        val t: Int = game.universeClient.getUniverseData3D().center.t - intDelay(
+        val delay: Int = intDelay(
             game.universeClient.primarySelectedInt3D,
             game.universeClient.getUniverseData3D().center.toInt3D(),
             game.universeClient.getUniverseData3D().universeSettings.speedOfLight
         )
+
+        timeDelayLabel.setText("delay: $delay")
+
+        val t: Int = game.universeClient.getUniverseData3D().center.t - delay
 
         tCoordinateLabel.setText("t: $t")
     }
