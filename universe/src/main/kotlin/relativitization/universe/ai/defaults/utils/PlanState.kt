@@ -17,11 +17,14 @@ import kotlin.math.pow
  * @property averageSelfLabourerSalary the average salary of self labourer
  * @property fuelRemainFractionMap map from other player id to the remain fraction if fuel is sent
  * from the current player to that player
+ * @property resourceRemainFractionMap map from other player id to the remain fraction if resource
+ * is sent from the current player to that player
  */
 class PlanState(
     var foreignFactoryFuel: Double = 0.0,
     private var averageSelfLabourerSalary: Double = -1.0,
     private val fuelRemainFractionMap: MutableMap<Int, Double> = mutableMapOf(),
+    private val resourceRemainFractionMap: MutableMap<Int, Double> = mutableMapOf(),
 ) {
     fun fillForeignFactoryFuel(
         fraction: Double,
@@ -99,5 +102,40 @@ class PlanState(
         }
 
         return fuelRemainFractionMap.getValue(otherPlayerId)
+    }
+
+    fun updateResourceRemainFraction(
+        otherPlayerId: Int,
+        planDataAtPlayer: PlanDataAtPlayer,
+    ) {
+        val thisPlayerData: PlayerData = planDataAtPlayer.universeData3DAtPlayer
+            .getCurrentPlayerData()
+        val otherPlayerData: PlayerData = planDataAtPlayer.universeData3DAtPlayer.get(otherPlayerId)
+
+        // Compute fuel remain fraction
+        val distance: Int = Intervals.intDistance(thisPlayerData.int4D, otherPlayerData.int4D)
+
+        val resourceLossFractionPerDistance: Double =
+            (thisPlayerData.playerInternalData.playerScienceData().playerScienceApplicationData
+                .resourceLogisticsLossFractionPerDistance + otherPlayerData.playerInternalData
+                .playerScienceData().playerScienceApplicationData
+                .resourceLogisticsLossFractionPerDistance) * 0.5
+
+        resourceRemainFractionMap[otherPlayerId] = if (distance <= Intervals.sameCubeIntDistance()) {
+            1.0
+        } else {
+            (1.0 - resourceLossFractionPerDistance).pow(distance)
+        }
+    }
+
+    fun resourceRemainFraction(
+        otherPlayerId: Int,
+        planDataAtPlayer: PlanDataAtPlayer,
+    ): Double {
+        if (!resourceRemainFractionMap.containsKey(otherPlayerId)) {
+            updateResourceRemainFraction(otherPlayerId, planDataAtPlayer)
+        }
+
+        return resourceRemainFractionMap.getValue(otherPlayerId)
     }
 }

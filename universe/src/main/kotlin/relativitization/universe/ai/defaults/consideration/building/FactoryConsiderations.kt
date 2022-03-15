@@ -5,11 +5,13 @@ import relativitization.universe.ai.defaults.utils.DualUtilityData
 import relativitization.universe.ai.defaults.utils.DualUtilityDataFactory
 import relativitization.universe.ai.defaults.utils.PlanState
 import relativitization.universe.data.PlanDataAtPlayer
+import relativitization.universe.data.components.defaults.economy.ResourceQualityClass
 import relativitization.universe.data.components.defaults.economy.ResourceType
 import relativitization.universe.data.components.defaults.popsystem.CarrierData
 import relativitization.universe.data.components.defaults.popsystem.CarrierType
 import relativitization.universe.data.components.defaults.popsystem.MutableCarrierData
 import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.*
+import relativitization.universe.data.components.economyData
 import relativitization.universe.data.components.playerScienceData
 import relativitization.universe.data.components.popSystemData
 
@@ -699,11 +701,10 @@ class SufficientLabourerEmploymentConsideration(
 }
 
 /**
- * Check if a new fuel factory has lower cost
+ * Check if a new foreign fuel factory has lower cost than local factory
  *
  * @property otherPlayerId the id of the player with this factory
  * @property otherCarrierId the id of the carrier with this factory
- * @property fuelFactoryId the id of the fuel factory
  * @property rankIfTrue rank of dual utility if this is true
  * @property multiplierIfTrue multiplier of dual utility if this is true
  * @property bonusIfTrue bonus of dual utility if this is true
@@ -735,7 +736,8 @@ class NewForeignFuelFactoryLowerCostConsideration(
 
         val salary: Double = carrier.allPopData.labourerPopData.commonPopData.salaryPerEmployee
 
-        // cost per output
+        // cost per output, divided by 2 fuel remain fraction since the fuel has to send back and
+        // forth
         val cost: Double = salary / fuelRemainFraction / fuelRemainFraction
 
         val averageSelfSalary: Double = planState.averageSelfLabourerSalary(planDataAtPlayer)
@@ -799,10 +801,11 @@ class ForeignFuelFactoryLowerCostConsideration(
 
         val outputRatio: Double = fuelFactory.fuelFactoryInternalData.maxOutputAmountPerEmployee
 
-        val salary: Double = carrier.allPopData.labourerPopData.commonPopData.salaryPerEmployee
+        val salaryPerEmployee: Double = carrier.allPopData.labourerPopData.commonPopData.salaryPerEmployee
 
-        // cost per output
-        val costPerOutput: Double = salary / fuelRemainFraction / fuelRemainFraction /
+        // cost per output, divided by 2 fuel remain fraction since the fuel has to send back and
+        // forth
+        val costPerOutput: Double = salaryPerEmployee / fuelRemainFraction / fuelRemainFraction /
                 outputRatio
 
         val selfIdealFuelFactory: MutableFuelFactoryInternalData = planDataAtPlayer
@@ -816,6 +819,122 @@ class ForeignFuelFactoryLowerCostConsideration(
         val selfCostPerOutput: Double = averageSelfSalary / selfOutputRatio
 
         return if (costPerOutput < selfCostPerOutput) {
+            DualUtilityData(
+                rank = rankIfTrue,
+                multiplier = multiplierIfTrue,
+                bonus = bonusIfTrue
+            )
+        } else {
+            DualUtilityData(
+                rank = rankIfFalse,
+                multiplier = multiplierIfFalse,
+                bonus = bonusIfFalse
+            )
+        }
+    }
+}
+
+/**
+ * Check if a new foreign resource factory has lower cost than local factory
+ *
+ * @property otherPlayerId the id of the player with this factory
+ * @property otherCarrierId the id of the carrier with this factory
+ * @property rankIfTrue rank of dual utility if this is true
+ * @property multiplierIfTrue multiplier of dual utility if this is true
+ * @property bonusIfTrue bonus of dual utility if this is true
+ * @property rankIfFalse rank of dual utility if this is false
+ * @property multiplierIfFalse multiplier of dual utility if this is false
+ * @property bonusIfFalse bonus of dual utility if this is false
+ */
+class NewForeignResourceFactoryLowerCostConsideration(
+    private val otherPlayerId: Int,
+    private val otherCarrierId: Int,
+    private val resourceType: ResourceType,
+    private val rankIfTrue: Int,
+    private val multiplierIfTrue: Double,
+    private val bonusIfTrue: Double,
+    private val rankIfFalse: Int,
+    private val multiplierIfFalse: Double,
+    private val bonusIfFalse: Double,
+) : DualUtilityConsideration() {
+    override fun getDualUtilityData(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planState: PlanState
+    ): DualUtilityData {
+        val carrier: CarrierData = planDataAtPlayer.universeData3DAtPlayer.get(otherPlayerId)
+            .playerInternalData.popSystemData().carrierDataMap.getValue(otherCarrierId)
+
+        val fuelRemainFraction: Double = planState.fuelRemainFraction(
+            otherPlayerId,
+            planDataAtPlayer,
+        )
+
+        val resourceRemainFraction: Double = planState.resourceRemainFraction(
+            otherPlayerId,
+            planDataAtPlayer,
+        )
+
+        val selfIdealResourceFactory: MutableResourceFactoryInternalData = planDataAtPlayer
+            .getCurrentMutablePlayerData().playerInternalData.playerScienceData()
+            .playerScienceApplicationData.getIdealResourceFactory(resourceType)
+
+        val salaryPerEmployee: Double =
+            carrier.allPopData.labourerPopData.commonPopData.salaryPerEmployee
+
+        val inputCost: Double =  selfIdealResourceFactory.inputResourceMap.keys.fold(
+            0.0
+        ) { acc, resourceType ->
+            val inputResourceData: MutableInputResourceData =
+                selfIdealResourceFactory.inputResourceMap.getValue(resourceType)
+
+            // Estimate the quality class with amount=1.0
+            val qualityClass: ResourceQualityClass = planDataAtPlayer.universeData3DAtPlayer
+                .get(otherPlayerId).playerInternalData.economyData().resourceData
+                .tradeQualityClass(
+                    resourceType = resourceType,
+                    amount = 1.0,
+                    targetQuality = inputResourceData.qualityData.toResourceQualityData(),
+                    budget = 1E100,
+                    preferHighQualityClass = false
+                )
+            val price: Double = inputResourceData.amount * planDataAtPlayer.universeData3DAtPlayer
+                .get(otherPlayerId).playerInternalData.economyData().resourceData
+                .getResourcePrice(resourceType, qualityClass)
+            acc + price
+        }
+
+        // cost per output
+        val cost: Double = (salaryPerEmployee + inputCost +
+                selfIdealResourceFactory.fuelRestMassConsumptionRatePerEmployee) /
+                fuelRemainFraction / resourceRemainFraction
+
+        val averageSelfSalary: Double = planState.averageSelfLabourerSalary(planDataAtPlayer)
+
+        // Estimate cost if input resource from self
+        val selfInputCost: Double = selfIdealResourceFactory.inputResourceMap.keys.fold(
+            0.0
+        ) { acc, resourceType ->
+            val inputResourceData: MutableInputResourceData =
+                selfIdealResourceFactory.inputResourceMap.getValue(resourceType)
+
+            // Estimate the quality class with amount=1.0
+            val qualityClass: ResourceQualityClass = planDataAtPlayer.getCurrentMutablePlayerData()
+                .playerInternalData.economyData().resourceData.productionQualityClass(
+                    resourceType,
+                    1.0,
+                    inputResourceData.qualityData,
+                    false,
+                )
+            val price: Double = inputResourceData.amount * planDataAtPlayer
+                .getCurrentMutablePlayerData().playerInternalData.economyData().resourceData
+                .getResourcePrice(resourceType, qualityClass)
+            acc + price
+        }
+
+        val selfCost: Double = averageSelfSalary + selfInputCost +
+                selfIdealResourceFactory.fuelRestMassConsumptionRatePerEmployee
+
+        return if (cost < selfCost) {
             DualUtilityData(
                 rank = rankIfTrue,
                 multiplier = multiplierIfTrue,
