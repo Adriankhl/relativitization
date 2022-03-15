@@ -261,7 +261,7 @@ class RemoveSpecificSelfFuelFactoryOption(
             multiplierIfFalse = 0.0,
             bonusIfFalse = 0.0
         ),
-        OutdatedFuelFactoryConsideration(
+        OutdatedSelfFuelFactoryConsideration(
             carrierId = carrierId,
             fuelFactoryId = fuelFactoryId,
             rankIfTrue = 1,

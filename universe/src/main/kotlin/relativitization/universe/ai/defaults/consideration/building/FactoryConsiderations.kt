@@ -6,12 +6,10 @@ import relativitization.universe.ai.defaults.utils.DualUtilityDataFactory
 import relativitization.universe.ai.defaults.utils.PlanState
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.components.defaults.economy.ResourceType
+import relativitization.universe.data.components.defaults.popsystem.CarrierData
 import relativitization.universe.data.components.defaults.popsystem.CarrierType
 import relativitization.universe.data.components.defaults.popsystem.MutableCarrierData
-import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.MutableFuelFactoryData
-import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.MutableFuelFactoryInternalData
-import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.MutableResourceFactoryData
-import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.MutableResourceFactoryInternalData
+import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.*
 import relativitization.universe.data.components.playerScienceData
 import relativitization.universe.data.components.popSystemData
 
@@ -59,7 +57,7 @@ class NoSelfFuelFactoryAndNoStarConsideration(
  * @property rankIfTrue rank of dual utility if this is true
  * @property multiplierIfTrue multiplier of dual utility if this is true
  */
-class OutdatedFuelFactoryConsideration(
+class OutdatedSelfFuelFactoryConsideration(
     private val carrierId: Int,
     private val fuelFactoryId: Int,
     private val rankIfTrue: Int,
@@ -82,7 +80,7 @@ class OutdatedFuelFactoryConsideration(
 
         val idealOutputRatio: Double = idealFuelFactory.maxOutputAmountPerEmployee
 
-        return if (outputRatio == idealOutputRatio) {
+        return if (outputRatio >= idealOutputRatio) {
             DualUtilityDataFactory.noImpact()
         } else {
             if (outputRatio > 0.0) {
@@ -685,6 +683,139 @@ class SufficientLabourerEmploymentConsideration(
             }
 
         return if (isSufficient) {
+            DualUtilityData(
+                rank = rankIfTrue,
+                multiplier = multiplierIfTrue,
+                bonus = bonusIfTrue
+            )
+        } else {
+            DualUtilityData(
+                rank = rankIfFalse,
+                multiplier = multiplierIfFalse,
+                bonus = bonusIfFalse
+            )
+        }
+    }
+}
+
+/**
+ * Check if a new fuel factory has lower cost
+ *
+ * @property otherPlayerId the id of the player with this factory
+ * @property otherCarrierId the id of the carrier with this factory
+ * @property fuelFactoryId the id of the fuel factory
+ * @property rankIfTrue rank of dual utility if this is true
+ * @property multiplierIfTrue multiplier of dual utility if this is true
+ * @property bonusIfTrue bonus of dual utility if this is true
+ * @property rankIfFalse rank of dual utility if this is false
+ * @property multiplierIfFalse multiplier of dual utility if this is false
+ * @property bonusIfFalse bonus of dual utility if this is false
+ */
+class NewForeignFuelFactoryLowerCostConsideration(
+    private val otherPlayerId: Int,
+    private val otherCarrierId: Int,
+    private val rankIfTrue: Int,
+    private val multiplierIfTrue: Double,
+    private val bonusIfTrue: Double,
+    private val rankIfFalse: Int,
+    private val multiplierIfFalse: Double,
+    private val bonusIfFalse: Double,
+) : DualUtilityConsideration() {
+    override fun getDualUtilityData(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planState: PlanState
+    ): DualUtilityData {
+        val carrier: CarrierData = planDataAtPlayer.universeData3DAtPlayer.get(otherPlayerId)
+            .playerInternalData.popSystemData().carrierDataMap.getValue(otherCarrierId)
+
+        val fuelRemainFraction: Double = planState.fuelRemainFraction(
+            otherPlayerId,
+            planDataAtPlayer
+        )
+
+        val salary: Double = carrier.allPopData.labourerPopData.commonPopData.salaryPerEmployee
+
+        // cost per output
+        val cost: Double = salary / fuelRemainFraction / fuelRemainFraction
+
+        val averageSelfSalary: Double = planState.averageSelfLabourerSalary(planDataAtPlayer)
+
+        val selfCost: Double = averageSelfSalary
+
+        return if (cost < selfCost) {
+            DualUtilityData(
+                rank = rankIfTrue,
+                multiplier = multiplierIfTrue,
+                bonus = bonusIfTrue
+            )
+        } else {
+            DualUtilityData(
+                rank = rankIfFalse,
+                multiplier = multiplierIfFalse,
+                bonus = bonusIfFalse
+            )
+        }
+    }
+}
+
+/**
+ * Check if a specific fuel factory has lower cost
+ *
+ * @property otherPlayerId the id of the player with this factory
+ * @property otherCarrierId the id of the carrier with this factory
+ * @property fuelFactoryId the id of the fuel factory
+ * @property rankIfTrue rank of dual utility if this is true
+ * @property multiplierIfTrue multiplier of dual utility if this is true
+ * @property bonusIfTrue bonus of dual utility if this is true
+ * @property rankIfFalse rank of dual utility if this is false
+ * @property multiplierIfFalse multiplier of dual utility if this is false
+ * @property bonusIfFalse bonus of dual utility if this is false
+ */
+class ForeignFuelFactoryLowerCostConsideration(
+    private val otherPlayerId: Int,
+    private val otherCarrierId: Int,
+    private val fuelFactoryId: Int,
+    private val rankIfTrue: Int,
+    private val multiplierIfTrue: Double,
+    private val bonusIfTrue: Double,
+    private val rankIfFalse: Int,
+    private val multiplierIfFalse: Double,
+    private val bonusIfFalse: Double,
+) : DualUtilityConsideration() {
+    override fun getDualUtilityData(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planState: PlanState
+    ): DualUtilityData {
+        val carrier: CarrierData = planDataAtPlayer.universeData3DAtPlayer.get(otherPlayerId)
+            .playerInternalData.popSystemData().carrierDataMap.getValue(otherCarrierId)
+
+        val fuelFactory: FuelFactoryData = carrier.allPopData.labourerPopData.fuelFactoryMap
+            .getValue(fuelFactoryId)
+
+        val fuelRemainFraction: Double = planState.fuelRemainFraction(
+            otherPlayerId,
+            planDataAtPlayer
+        )
+
+        val outputRatio: Double = fuelFactory.fuelFactoryInternalData.maxOutputAmountPerEmployee
+
+        val salary: Double = carrier.allPopData.labourerPopData.commonPopData.salaryPerEmployee
+
+        // cost per output
+        val costPerOutput: Double = salary / fuelRemainFraction / fuelRemainFraction /
+                outputRatio
+
+        val selfIdealFuelFactory: MutableFuelFactoryInternalData = planDataAtPlayer
+            .getCurrentMutablePlayerData().playerInternalData.playerScienceData()
+            .playerScienceApplicationData.idealFuelFactory
+
+        val selfOutputRatio: Double = selfIdealFuelFactory.maxOutputAmountPerEmployee
+
+        val averageSelfSalary: Double = planState.averageSelfLabourerSalary(planDataAtPlayer)
+
+        val selfCostPerOutput: Double = averageSelfSalary / selfOutputRatio
+
+        return if (costPerOutput < selfCostPerOutput) {
             DualUtilityData(
                 rank = rankIfTrue,
                 multiplier = multiplierIfTrue,

@@ -1,25 +1,22 @@
 package relativitization.universe.ai.defaults.node.other.construction
 
+import relativitization.universe.ai.defaults.consideration.building.ForeignFuelFactoryLowerCostConsideration
+import relativitization.universe.ai.defaults.consideration.building.NewForeignFuelFactoryLowerCostConsideration
 import relativitization.universe.ai.defaults.consideration.building.SufficientSelfFuelFactoryAtCarrierConsideration
 import relativitization.universe.ai.defaults.consideration.building.SufficientSelfResourceFactoryAtCarrierConsideration
 import relativitization.universe.ai.defaults.consideration.general.BooleanConsideration
-import relativitization.universe.ai.defaults.consideration.population.ForeignLabourerLessSalaryConsideration
 import relativitization.universe.ai.defaults.utils.*
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.commands.BuildForeignFuelFactoryCommand
+import relativitization.universe.data.commands.SupplyForeignFuelFactoryCommand
 import relativitization.universe.data.components.defaults.economy.ResourceType
-import relativitization.universe.data.components.defaults.popsystem.pop.MutableCommonPopData
-import relativitization.universe.data.components.defaults.popsystem.pop.PopType
 import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.MutableFuelFactoryInternalData
-import relativitization.universe.data.components.physicsData
 import relativitization.universe.data.components.playerScienceData
 import relativitization.universe.data.components.politicsData
 import relativitization.universe.data.components.popSystemData
 import relativitization.universe.data.serializer.DataSerializer
-import relativitization.universe.maths.physics.Intervals
 import relativitization.universe.maths.random.Rand
-import kotlin.math.pow
 
 class ForeignFactoryReasoner : SequenceReasoner() {
     override fun getSubNodeList(
@@ -49,7 +46,8 @@ class ForeignFactoryReasoner : SequenceReasoner() {
 
         return if (isSelfFuelFactorySufficient && isSelfResourceFactorySufficient) {
             listOf(
-                NewForeignFuelFactoryReasoner()
+                NewForeignFuelFactoryReasoner(),
+                SupplyForeignFuelFactoryReasoner(),
             )
         } else {
             listOf()
@@ -66,9 +64,8 @@ class NewForeignFuelFactoryReasoner : SequenceReasoner() {
             1
         ).shuffled(Rand.rand())
 
-        // Only use 0.1 of production fuel to construct foreign factory
-        planState.foreignConstructionFuel = planDataAtPlayer.getCurrentMutablePlayerData()
-            .playerInternalData.physicsData().fuelRestMassData.production * 0.05
+        // Only use 0.05 of production fuel to construct foreign factory
+        planState.fillForeignFactoryFuel(0.05, planDataAtPlayer)
 
         return neighborList.map { playerData ->
             NewForeignFuelFactoryAtPlayerReasoner(playerData.playerId)
@@ -98,52 +95,12 @@ class NewForeignFuelFactoryAtPlayerReasoner(
             .playerInternalData.politicsData().allowForeignInvestor
 
         return if (isTopLeader || canBuildAsSubordinate || canForeignInvestorBuild) {
-
-            // Compute fuel remain fraction
-            val distance: Int = Intervals.intDistance(thisPlayerData.int4D, otherPlayerData.int4D)
-
-            val fuelLossFractionPerDistance: Double =
-                (thisPlayerData.playerInternalData.playerScienceData().playerScienceApplicationData
-                    .fuelLogisticsLossFractionPerDistance + otherPlayerData.playerInternalData
-                    .playerScienceData().playerScienceApplicationData
-                    .fuelLogisticsLossFractionPerDistance) * 0.5
-
-            val fuelRemainFraction: Double = if (distance <= Intervals.sameCubeIntDistance()) {
-                1.0
-            } else {
-                (1.0 - fuelLossFractionPerDistance).pow(distance)
-            }
-
-            // Compute average labourer salary of self
-            val totalSelfLabourerSalary: Double = planDataAtPlayer.getCurrentMutablePlayerData()
-                .playerInternalData.popSystemData().carrierDataMap.values.sumOf {
-                    val commonPopData: MutableCommonPopData = it.allPopData.getCommonPopData(
-                        PopType.LABOURER
-                    )
-                    commonPopData.salaryPerEmployee * commonPopData.adultPopulation *
-                            commonPopData.employmentRate
-                }
-            val totalSelfLabourer: Double = planDataAtPlayer.getCurrentMutablePlayerData()
-                .playerInternalData.popSystemData().carrierDataMap.values.sumOf {
-                    it.allPopData.getCommonPopData(
-                        PopType.LABOURER
-                    ).adultPopulation
-                }
-
-            val averageSalary: Double = if (totalSelfLabourer > 0.0) {
-                totalSelfLabourerSalary / totalSelfLabourer
-            } else {
-                0.0
-            }
-
             otherPlayerData.playerInternalData.popSystemData().carrierDataMap.keys.shuffled(
                 Rand.rand()
             ).map {
                 NewForeignFuelFactoryAtCarrierReasoner(
                     playerId = playerId,
                     carrierId = it,
-                    fuelRemainFraction = fuelRemainFraction,
-                    averageSelfLabourerSalary = averageSalary
                 )
             }
         } else {
@@ -155,14 +112,10 @@ class NewForeignFuelFactoryAtPlayerReasoner(
 /**
  * Consider building a fuel factory at a foreign carrier
  *
- * @property fuelRemainFraction the estimated remain fraction of fuel after logistic loss
- * @property averageSelfLabourerSalary average salary of labourer
  */
 class NewForeignFuelFactoryAtCarrierReasoner(
     private val playerId: Int,
     private val carrierId: Int,
-    private val fuelRemainFraction: Double,
-    private val averageSelfLabourerSalary: Double,
 ) : DualUtilityReasoner() {
     override fun getOptionList(
         planDataAtPlayer: PlanDataAtPlayer,
@@ -171,8 +124,6 @@ class NewForeignFuelFactoryAtCarrierReasoner(
         BuildForeignFuelFactoryOption(
             playerId = playerId,
             carrierId = carrierId,
-            fuelRemainFraction = fuelRemainFraction,
-            averageSelfLabourerSalary = averageSelfLabourerSalary
         ),
         DoNothingDualUtilityOption(rank = 1, multiplier = 1.0, bonus = 1.0),
     )
@@ -180,15 +131,10 @@ class NewForeignFuelFactoryAtCarrierReasoner(
 
 /**
  * Option to build a foreign fuel factory at a carrier
- *
- * @property fuelRemainFraction the estimated remain fraction of fuel after logistic loss
- * @property averageSelfLabourerSalary average salary of labourer
  */
 class BuildForeignFuelFactoryOption(
     private val playerId: Int,
     private val carrierId: Int,
-    private val fuelRemainFraction: Double,
-    private val averageSelfLabourerSalary: Double,
 ) : DualUtilityOption() {
     // maximum fraction of fuel to be used to construct the foreign factory
     private val maxFuelFraction: Double = 0.1
@@ -197,6 +143,11 @@ class BuildForeignFuelFactoryOption(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<DualUtilityConsideration> {
+        val fuelRemainFraction: Double = planState.fuelRemainFraction(
+            playerId,
+            planDataAtPlayer,
+        )
+
         // Make sure all self carriers have sufficient fuel and resource factory
         val minFuelNeeded: Double = planDataAtPlayer.getCurrentMutablePlayerData()
             .playerInternalData.playerScienceData().playerScienceApplicationData
@@ -211,24 +162,26 @@ class BuildForeignFuelFactoryOption(
             multiplierIfFalse = 0.0,
             bonusIfFalse = 0.0,
         ) { _, _ ->
-            planState.foreignConstructionFuel * maxFuelFraction > minFuelNeeded
+            planState.foreignFactoryFuel * maxFuelFraction > minFuelNeeded
         }
 
-        // Compare the salary adjusted by logistic loss
-        // Prob > 0 if salary is lower then average self salary
-        val foreignLabourerLessSalaryConsideration = ForeignLabourerLessSalaryConsideration(
-            otherPlayerId = playerId,
-            otherPlayerCarrierId = carrierId,
-            referenceSalary = averageSelfLabourerSalary * fuelRemainFraction * fuelRemainFraction,
-            initialBonus = 0.1,
-            exponent = 2.0,
-            rank = 1,
-            multiplier = 1.0
-        )
+        // Compare the cost to set up a local fuel factory and a foreign factory
+        val newForeignFuelFactoryLowerCostConsideration =
+            NewForeignFuelFactoryLowerCostConsideration(
+                otherPlayerId = playerId,
+                otherCarrierId = carrierId,
+                rankIfTrue = 1,
+                multiplierIfTrue = 1.0,
+                bonusIfTrue = 0.01,
+                rankIfFalse = 0,
+                multiplierIfFalse = 0.0,
+                bonusIfFalse = 0.0
+
+            )
 
         return listOf(
             sufficientFuelConsideration,
-            foreignLabourerLessSalaryConsideration,
+            newForeignFuelFactoryLowerCostConsideration,
         )
     }
 
@@ -247,10 +200,10 @@ class BuildForeignFuelFactoryOption(
             .playerScienceApplicationData
             .newFuelFactoryFuelNeededByConstruction(1.0)
 
-        val fuelAvailable: Double = planState.foreignConstructionFuel * 0.1
+        val fuelAvailable: Double = planState.foreignFactoryFuel * maxFuelFraction
 
         // Update plan state
-        planState.foreignConstructionFuel -= fuelAvailable
+        planState.foreignFactoryFuel -= fuelAvailable
 
         val maxNumEmployee: Double = fuelAvailable * 0.5 / fuelNeededPerEmployee
         val storedFuelRestMass: Double = fuelAvailable * 0.5
@@ -273,3 +226,131 @@ class BuildForeignFuelFactoryOption(
         )
     }
 }
+
+class SupplyForeignFuelFactoryReasoner : SequenceReasoner() {
+    override fun getSubNodeList(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planState: PlanState
+    ): List<AINode> {
+        val neighborList: List<PlayerData> = planDataAtPlayer.universeData3DAtPlayer.getNeighbour(
+            1
+        ).shuffled(Rand.rand())
+
+        // Only use 0.05 of production fuel to supply foreign factory
+        planState.fillForeignFactoryFuel(0.05, planDataAtPlayer)
+
+        return neighborList.map { playerData ->
+            SupplyForeignFuelFactoryAtPlayerReasoner(playerData.playerId)
+        }
+    }
+}
+
+class SupplyForeignFuelFactoryAtPlayerReasoner(
+    private val playerId: Int,
+) : SequenceReasoner() {
+    override fun getSubNodeList(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planState: PlanState
+    ): List<AINode> {
+        val otherPlayerData: PlayerData = planDataAtPlayer.universeData3DAtPlayer.get(playerId)
+
+        return otherPlayerData.playerInternalData.popSystemData().carrierDataMap.keys.shuffled(
+            Rand.rand()
+        ).map {
+            SupplyForeignFuelFactoryAtCarrierReasoner(
+                playerId = playerId,
+                carrierId = it,
+            )
+        }
+    }
+}
+
+/**
+ * Consider building a fuel factory at a foreign carrier
+ *
+ */
+class SupplyForeignFuelFactoryAtCarrierReasoner(
+    private val playerId: Int,
+    private val carrierId: Int,
+) : SequenceReasoner() {
+    override fun getSubNodeList(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planState: PlanState
+    ): List<AINode> {
+        return planDataAtPlayer.universeData3DAtPlayer.get(playerId).playerInternalData
+            .popSystemData().carrierDataMap.getValue(carrierId).allPopData.labourerPopData
+            .fuelFactoryMap.filter {
+                it.value.ownerPlayerId == planDataAtPlayer.getCurrentMutablePlayerData().playerId
+            }.keys.shuffled(Rand.rand()).map {
+                SupplyOwnedForeignFuelFactoryReasoner(
+                    playerId = playerId,
+                    carrierId = carrierId,
+                    fuelFactoryId = it,
+                )
+            }
+    }
+}
+
+class SupplyOwnedForeignFuelFactoryReasoner(
+    private val playerId: Int,
+    private val carrierId: Int,
+    private val fuelFactoryId: Int,
+) : DualUtilityReasoner() {
+    override fun getOptionList(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planState: PlanState
+    ): List<DualUtilityOption> = listOf(
+        SupplyOwnedForeignFuelFactoryOption(
+            playerId = playerId,
+            carrierId = carrierId,
+            fuelFactoryId = fuelFactoryId,
+        ),
+        DoNothingDualUtilityOption(rank = 1, multiplier = 1.0, bonus = 1.0)
+    )
+}
+
+class SupplyOwnedForeignFuelFactoryOption(
+    private val playerId: Int,
+    private val carrierId: Int,
+    private val fuelFactoryId: Int,
+) : DualUtilityOption() {
+    override fun getConsiderationList(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planState: PlanState
+    ): List<DualUtilityConsideration> {
+        val foreignFuelFactoryLowerCostConsideration = ForeignFuelFactoryLowerCostConsideration(
+            otherPlayerId = playerId,
+            otherCarrierId = carrierId,
+            fuelFactoryId = fuelFactoryId,
+            rankIfTrue = 1,
+            multiplierIfTrue = 1.0,
+            bonusIfTrue = 0.1,
+            rankIfFalse = 0,
+            multiplierIfFalse = 0.0,
+            bonusIfFalse = 0.0
+        )
+        return listOf(
+            foreignFuelFactoryLowerCostConsideration
+        )
+    }
+
+    override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
+        val fuelAvailable: Double = planState.foreignFactoryFuel * 0.1
+        planState.foreignFactoryFuel -= fuelAvailable
+
+        planDataAtPlayer.addCommand(
+            SupplyForeignFuelFactoryCommand(
+                toId = playerId,
+                fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+                fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
+                targetCarrierId = carrierId,
+                targetFuelFactoryId = fuelFactoryId,
+                amount = fuelAvailable,
+                senderFuelLossFractionPerDistance = planDataAtPlayer.getCurrentMutablePlayerData()
+                    .playerInternalData.playerScienceData().playerScienceApplicationData
+                    .fuelLogisticsLossFractionPerDistance,
+            )
+        )
+    }
+}
+
