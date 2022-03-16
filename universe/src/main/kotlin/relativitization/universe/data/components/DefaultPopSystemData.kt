@@ -5,8 +5,6 @@ import kotlinx.serialization.Serializable
 import relativitization.universe.data.MutablePlayerInternalData
 import relativitization.universe.data.PlayerInternalData
 import relativitization.universe.data.components.defaults.popsystem.*
-import relativitization.universe.data.components.defaults.popsystem.pop.CommonPopData
-import relativitization.universe.data.components.defaults.popsystem.pop.MutableCommonPopData
 import relativitization.universe.data.components.defaults.popsystem.pop.PopType
 import relativitization.universe.maths.collection.ListFind
 import relativitization.universe.maths.random.Rand
@@ -68,8 +66,8 @@ data class PopSystemData(
      * Compute total salary of a specific pop type
      */
     fun totalSalary(popType: PopType): Double {
-        return carrierDataMap.values.fold(0.0) { acc, CarrierData ->
-            val commonPopData = CarrierData.allPopData.getCommonPopData(popType)
+        return carrierDataMap.values.fold(0.0) { acc, carrierData ->
+            val commonPopData = carrierData.allPopData.getCommonPopData(popType)
             val totalSalary: Double = commonPopData.salaryPerEmployee(generalPopSystemData) *
                     commonPopData.adultPopulation *
                     commonPopData.employmentRate
@@ -115,6 +113,21 @@ data class PopSystemData(
         return carrierDataMap.values.fold(0.0) { acc, carrierData ->
             acc + PopType.values().sumOf { popType ->
                 carrierData.allPopData.getCommonPopData(popType).saving
+            }
+        }
+    }
+
+    /**
+     * Compute the satisfaction times the population
+     */
+    fun totalSatisfaction(): Double {
+        return carrierDataMap.values.fold(0.0) { acc, carrierData ->
+            acc + PopType.values().sumOf { popType ->
+                val commonPopData = carrierData.allPopData.getCommonPopData(popType)
+                val totalSatisfaction: Double = commonPopData.satisfaction *
+                        commonPopData.adultPopulation
+
+                acc + totalSatisfaction
             }
         }
     }
@@ -289,6 +302,21 @@ data class MutablePopSystemData(
         return carrierDataMap.values.fold(0.0) { acc, carrierData ->
             acc + PopType.values().sumOf { popType ->
                 carrierData.allPopData.getCommonPopData(popType).saving
+            }
+        }
+    }
+
+    /**
+     * Compute the satisfaction times the population
+     */
+    fun totalSatisfaction(): Double {
+        return carrierDataMap.values.fold(0.0) { acc, carrierData ->
+            acc + PopType.values().sumOf { popType ->
+                val commonPopData = carrierData.allPopData.getCommonPopData(popType)
+                val totalSatisfaction: Double = commonPopData.satisfaction *
+                        commonPopData.adultPopulation
+
+                acc + totalSatisfaction
             }
         }
     }

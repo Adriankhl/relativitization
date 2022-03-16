@@ -43,13 +43,16 @@ fun main() {
 
         val gameStatus: GameStatus = GameStatus.compute(universe)
 
+        val averageSatisfaction: Double = gameStatus.totalSatisfaction / gameStatus.totalPopulation
+
         println(
             "Turn: $turn. Player: ${universe.availablePlayers().size}. " +
                     "Dead: ${universe.getDeadIdList().size}. " +
                     "Carrier: ${gameStatus.numCarrier}. " +
                     "Population: ${gameStatus.totalPopulation.toScientificNotation().toString(2)}. "  +
                     "Fuel: ${gameStatus.totalFuelRestMass.toScientificNotation().toString(2)}. " +
-                    "Saving: ${gameStatus.totalSaving.toScientificNotation().toString(2)}"
+                    "Saving: ${gameStatus.totalSaving.toScientificNotation().toString(2)}. " +
+                    "Satisfaction: ${averageSatisfaction.toScientificNotation().toString(2)}. "
         )
     }
 }
@@ -59,6 +62,7 @@ internal class GameStatus(
     val totalPopulation: Double,
     val totalFuelRestMass: Double,
     val totalSaving: Double,
+    val totalSatisfaction: Double,
 ) {
     companion object {
         fun compute(universe: Universe): GameStatus {
@@ -67,28 +71,34 @@ internal class GameStatus(
                 totalPopulation = 0.0,
                 totalFuelRestMass = 0.0,
                 totalSaving = 0.0,
+                totalSatisfaction = 0.0,
             )
 
             return universe.availablePlayers().fold(gameStatus) { status, id ->
-                val universeDataAtPlayer: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(id)
+                val universeDataAtPlayer: UniverseData3DAtPlayer =
+                    universe.getUniverse3DViewAtPlayer(id)
 
-                val numLocalCarrier: Int = universeDataAtPlayer.getCurrentPlayerData().playerInternalData
-                    .popSystemData().numCarrier()
+                val numLocalCarrier: Int = universeDataAtPlayer.getCurrentPlayerData()
+                    .playerInternalData.popSystemData().numCarrier()
 
-                val localPopulation: Double = universeDataAtPlayer.getCurrentPlayerData().playerInternalData
-                    .popSystemData().totalAdultPopulation()
+                val localPopulation: Double = universeDataAtPlayer.getCurrentPlayerData()
+                    .playerInternalData.popSystemData().totalAdultPopulation()
 
-                val totalFuelRestMass: Double = universeDataAtPlayer.getCurrentPlayerData().playerInternalData
-                    .physicsData().fuelRestMassData.total()
+                val localFuelRestMass: Double = universeDataAtPlayer.getCurrentPlayerData()
+                    .playerInternalData.physicsData().fuelRestMassData.total()
 
-                val totalSaving: Double = universeDataAtPlayer.getCurrentPlayerData().playerInternalData
-                    .popSystemData().totalSaving()
+                val localSaving: Double = universeDataAtPlayer.getCurrentPlayerData()
+                    .playerInternalData.popSystemData().totalSaving()
+
+                val localSatisfaction: Double = universeDataAtPlayer.getCurrentPlayerData()
+                    .playerInternalData.popSystemData().totalSatisfaction()
 
                 val newStatus = GameStatus(
                     numCarrier = status.numCarrier + numLocalCarrier,
                     totalPopulation = status.totalPopulation + localPopulation,
-                    totalFuelRestMass = status.totalFuelRestMass + totalFuelRestMass,
-                    totalSaving = status.totalSaving  + totalSaving,
+                    totalFuelRestMass = status.totalFuelRestMass + localFuelRestMass,
+                    totalSaving = status.totalSaving  + localSaving,
+                    totalSatisfaction = status.totalSatisfaction + localSatisfaction,
                 )
 
                 newStatus
