@@ -13,28 +13,29 @@ import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.mechanisms.Mechanism
 
 object UpdateResourceQualityBound : Mechanism() {
+    // Parameters
+    // Determine the maximum amount ratio of resource quality class
+    private const val idealFirstClassAmountRatio: Double = 0.1
+    private const val idealSecondClassAmountRatio: Double = 0.3
+    private const val amountChangeFactor: Double = 0.2
+    // Determine how the bound should change
+    private const val maxClassQualityBoundRatio: Double = 5.0
+    private const val minQualityClassDiff: Double = 0.1
+    private const val qualityBoundChangeFactor: Double = 1.2
+
     override fun process(
         mutablePlayerData: MutablePlayerData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
         universeSettings: UniverseSettings,
         universeGlobalData: UniverseGlobalData
     ): List<Command> {
-        // Parameters
-        // Determine the maximum amount ratio of resource quality class
-        val idealFirstClassAmountRatio: Double = 0.1
-        val idealSecondClassAmountRatio: Double = 0.3
-        val amountChangeFactor: Double = 0.2
-        // Determine how the bound should change
-        val maxClassQualityBoundRatio: Double = 5.0
-        val minQualityClassDiff: Double = 0.1
-        val qualityBoundChangeFactor: Double = 1.2
 
         ResourceType.values().forEach { resourceType ->
             val qualityMap: Map<ResourceQualityClass, MutableSingleResourceData> =
-                ResourceQualityClass.values().map { resourceQualityClass ->
-                    resourceQualityClass to mutablePlayerData.playerInternalData.economyData()
+                ResourceQualityClass.values().associateWith { resourceQualityClass ->
+                    mutablePlayerData.playerInternalData.economyData()
                         .resourceData.getSingleResourceData(resourceType, resourceQualityClass)
-                }.toMap()
+                }
 
             val totalAmount: Double =
                 qualityMap.values.fold(0.0) { acc, mutableSingleResourceData ->
@@ -117,7 +118,6 @@ object UpdateResourceQualityBound : Mechanism() {
                     ).resourceQualityLowerBound,
                     amountRatio = secondRatio,
                     idealAmountRatio = idealSecondClassAmountRatio,
-                    qualityBoundChangeFactor = qualityBoundChangeFactor,
                     minQualityBound = minSecondQualityBound,
                     maxQualityBound = minSecondQualityBound * maxClassQualityBoundRatio,
                 )
@@ -135,7 +135,6 @@ object UpdateResourceQualityBound : Mechanism() {
                     ).resourceQualityLowerBound,
                     amountRatio = firstRatio,
                     idealAmountRatio = idealFirstClassAmountRatio,
-                    qualityBoundChangeFactor = qualityBoundChangeFactor,
                     minQualityBound = minFirstQualityBound,
                     maxQualityBound = minFirstQualityBound * maxClassQualityBoundRatio,
                 )
@@ -158,7 +157,6 @@ object UpdateResourceQualityBound : Mechanism() {
         currentBound: MutableResourceQualityData,
         amountRatio: Double,
         idealAmountRatio: Double,
-        qualityBoundChangeFactor: Double,
         minQualityBound: MutableResourceQualityData,
         maxQualityBound: MutableResourceQualityData,
     ): MutableResourceQualityData {

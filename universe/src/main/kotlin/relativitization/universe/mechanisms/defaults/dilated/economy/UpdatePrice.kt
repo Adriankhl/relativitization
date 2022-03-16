@@ -13,11 +13,23 @@ import relativitization.universe.data.components.economyData
 import relativitization.universe.data.components.popSystemData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.mechanisms.Mechanism
-import kotlin.math.log2
-import kotlin.math.max
-import kotlin.math.min
+import relativitization.universe.utils.RelativitizationLogManager
 
 object UpdatePrice : Mechanism() {
+    private val logger = RelativitizationLogManager.getLogger()
+
+    // Parameters
+    // Determine how need and available amount should be compared
+    private const val needToAvailableFactor: Double = 10.0
+
+    // Determine maximum price change
+    private const val maxPriceIncreaseFactor: Double = 1.25
+    private const val maxPriceDecreaseFactor: Double = 0.8
+
+    // Determine the maximum and minimum price relative to base salary
+    private const val maxPriceFactor: Double = 10.0
+    private const val minPriceFactor: Double = 0.05
+
     override fun process(
         mutablePlayerData: MutablePlayerData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
@@ -27,8 +39,9 @@ object UpdatePrice : Mechanism() {
         val tradeNeedMap: Map<ResourceType, Map<ResourceQualityClass, Double>> =
             computeResourceTradeNeedMap(mutablePlayerData)
 
-        // Use average salary to bound the price of resources
-        val averageSalary: Double = mutablePlayerData.playerInternalData.popSystemData().averageSalary()
+        // Use base salary to bound the price
+        val baseSalaryPerEmployee: Double =
+            mutablePlayerData.playerInternalData.popSystemData().generalPopSystemData.baseSalaryPerEmployee
 
         ResourceType.values().forEach { resourceType ->
             ResourceQualityClass.values().forEach { resourceQualityClass ->
@@ -43,7 +56,7 @@ object UpdatePrice : Mechanism() {
                     ),
                     amountNeeded = tradeNeedMap.getValue(resourceType)
                         .getValue(resourceQualityClass),
-                    averageSalary = averageSalary,
+                    baseSalaryPerEmployee = baseSalaryPerEmployee,
                 )
 
                 resourceData.getSingleResourceData(
@@ -84,9 +97,9 @@ object UpdatePrice : Mechanism() {
                             budget = commonPopData.saving,
                             preferHighQualityClass = true
                         )
+
                     val originalAmount: Double =
                         tradeNeedMap.getValue(resourceType).getValue(qualityClass)
-
                     tradeNeedMap.getValue(resourceType)[qualityClass] =
                         originalAmount + desireData.desireAmount
                 }
@@ -174,68 +187,56 @@ object UpdatePrice : Mechanism() {
      * @param oldPrice the old price of the resource
      * @param amountAvailable the available amount of the resource for trading
      * @param amountNeeded the amount of the resource needed
-     * @param averageSalary the average salary of the population
+     * @param baseSalaryPerEmployee the base salary of the population
      */
     private fun computeNewPrice(
         oldPrice: Double,
         amountAvailable: Double,
         amountNeeded: Double,
-        averageSalary: Double,
+        baseSalaryPerEmployee: Double
     ): Double {
-        // Determine how need and available amount should be compared
-        val needAvailableFactor: Double = 10.0
-
-        val resourceRatio: Double = if (amountAvailable > 0.0) {
-            amountNeeded * needAvailableFactor / amountAvailable
-        } else {
-            // Set the ratio to a very high value
-            Double.MAX_VALUE * 1E-10
-        }
-
-        // Use log2 to reduce price change
-        val priceChangeFactor: Double = when {
-            resourceRatio > 1.0 -> {
-                log2(resourceRatio + 1.0)
-            }
-            resourceRatio > 0.0 -> {
-                1.0 / log2((1.0 / resourceRatio) + 1.0)
-            }
-            else -> {
-                0.0
-            }
-        }
-
         // Maximum price and minimum price are determined by average salary of the population
         // Unevenly scaled since one pop need several resources
-        val maxPrice: Double = averageSalary * 10.0
-        val minPrice: Double = averageSalary * 0.01
+        val maxPrice: Double = baseSalaryPerEmployee * maxPriceFactor
+        val minPrice: Double = baseSalaryPerEmployee * minPriceFactor
 
-        val newPrice: Double = oldPrice * priceChangeFactor
-
-        when {
-            oldPrice > maxPrice -> oldPrice - (oldPrice - maxPrice) * 0.2
-            oldPrice < minPrice -> oldPrice + (minPrice - oldPrice) * 0.2
-        }
-
-        // Try to keep price within range, while not allowing a big instant change
-        return if ((newPrice >= minPrice) && (newPrice <= maxPrice)) {
-            newPrice
-        } else {
-            when {
-                (newPrice > maxPrice) && (oldPrice > maxPrice) -> {
-                    val priceReference: Double = min(newPrice, oldPrice)
-                    priceReference - (priceReference - maxPrice) * 0.2
+        return when {
+            oldPrice > maxPrice -> oldPrice * maxPriceDecreaseFactor
+            oldPrice < minPrice -> oldPrice * maxPriceIncreaseFactor
+            else -> {
+                val needToAvailableRatio: Double = if (amountAvailable > 0.0) {
+                    amountNeeded * needToAvailableFactor / amountAvailable
+                } else {
+                    // Set the ratio to a very high value
+                    Double.MAX_VALUE * 1E-10
                 }
-                (newPrice < minPrice) && (oldPrice < minPrice) -> {
-                    val priceReference: Double = max(newPrice, oldPrice)
-                    priceReference + (minPrice - priceReference) * 0.2
-                }
-                else -> {
-                    if (newPrice > maxPrice) {
-                        maxPrice
-                    } else {
-                        minPrice
+
+                // Compute the price change factor to modify the old price
+                val priceChangeFactor: Double = when {
+                    needToAvailableRatio > 5.0 -> maxPriceIncreaseFactor
+                    (needToAvailableRatio > 1.0) -> {
+                        ((5.0 - needToAvailableRatio) / 4.0) * (maxPriceIncreaseFactor - 1.0) + 1.0
                     }
+                    (needToAvailableRatio > 0.2) -> {
+                        ((needToAvailableRatio - 0.2) / 0.8) *
+                                (1.0 - maxPriceDecreaseFactor) +
+                                maxPriceDecreaseFactor
+                    }
+                    needToAvailableRatio >= 0.0 -> {
+                        maxPriceDecreaseFactor
+                    }
+                    else -> {
+                        logger.error("Need is smaller than 0")
+                        1.0
+                    }
+                }
+
+                val targetPrice: Double = oldPrice * priceChangeFactor
+
+                when {
+                    targetPrice > maxPrice -> maxPrice
+                    targetPrice < minPrice -> minPrice
+                    else -> targetPrice
                 }
             }
         }
