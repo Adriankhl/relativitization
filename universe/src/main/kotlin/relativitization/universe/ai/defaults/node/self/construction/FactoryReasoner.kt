@@ -3,6 +3,7 @@ package relativitization.universe.ai.defaults.node.self.construction
 import relativitization.universe.ai.defaults.consideration.building.*
 import relativitization.universe.ai.defaults.consideration.fuel.IncreasingProductionFuelConsideration
 import relativitization.universe.ai.defaults.consideration.fuel.SufficientProductionFuelConsideration
+import relativitization.universe.ai.defaults.consideration.position.DistanceMultiplierConsideration
 import relativitization.universe.ai.defaults.utils.*
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.commands.BuildForeignFuelFactoryCommand
@@ -16,6 +17,8 @@ import relativitization.universe.data.components.physicsData
 import relativitization.universe.data.components.playerScienceData
 import relativitization.universe.data.components.popSystemData
 import relativitization.universe.data.serializer.DataSerializer
+import relativitization.universe.maths.physics.Int3D
+import relativitization.universe.maths.physics.Intervals
 import relativitization.universe.maths.random.Rand
 import kotlin.math.max
 import kotlin.math.min
@@ -207,7 +210,7 @@ class RemoveFuelFactoryReasoner : SequenceReasoner() {
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<AINode> {
-        val removeSelfFuelFactoryList: List<AINode> =
+        val removeSelfFuelFactoryList: List<DualUtilityReasoner> =
             planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData.popSystemData()
                 .carrierDataMap.map { (carrierId, carrierData) ->
                     // Only consider self fuel factory
@@ -218,7 +221,22 @@ class RemoveFuelFactoryReasoner : SequenceReasoner() {
                     }
                 }.flatten()
 
-        return removeSelfFuelFactoryList
+        val removeOtherFuelFactoryList: List<DualUtilityReasoner> =
+            planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData.popSystemData()
+                .carrierDataMap.map { (carrierId, carrierData) ->
+                    // Only consider other fuel factory
+                    carrierData.allPopData.labourerPopData.fuelFactoryMap.filter { (_, fuelFactory) ->
+                        fuelFactory.ownerPlayerId != planDataAtPlayer.getCurrentMutablePlayerData().playerId
+                    }.map { (fuelFactoryId, fuelFactory) ->
+                        RemoveOtherFuelFactoryReasoner(
+                            carrierId = carrierId,
+                            fuelFactoryId = fuelFactoryId,
+                            ownerId = fuelFactory.ownerPlayerId
+                        )
+                    }
+                }.flatten()
+
+        return removeSelfFuelFactoryList + removeOtherFuelFactoryList
     }
 }
 
@@ -276,6 +294,63 @@ class RemoveSpecificSelfFuelFactoryOption(
             bonusIfFalse = 0.0
         )
     )
+
+    override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
+        planDataAtPlayer.addCommand(
+            RemoveLocalFuelFactoryCommand(
+                toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+                fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+                fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
+                targetCarrierId = carrierId,
+                targetFuelFactoryId = fuelFactoryId,
+            )
+        )
+    }
+}
+
+
+/**
+ * Consider removing fuel factory of other players
+ */
+class RemoveOtherFuelFactoryReasoner(
+    private val carrierId: Int,
+    private val fuelFactoryId: Int,
+    private val ownerId: Int,
+) : DualUtilityReasoner() {
+    override fun getOptionList(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planState: PlanState
+    ): List<DualUtilityOption> = listOf(
+        RemoveSpecificOtherFuelFactoryOption(carrierId, fuelFactoryId, ownerId),
+        DoNothingDualUtilityOption(rank = 1, multiplier = 1.0, bonus = 1.0),
+    )
+}
+
+/**
+ * Dual utility option to remove a specific fuel factory
+ */
+class RemoveSpecificOtherFuelFactoryOption(
+    private val carrierId: Int,
+    private val fuelFactoryId: Int,
+    private val ownerId: Int,
+) : DualUtilityOption() {
+    override fun getConsiderationList(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planState: PlanState
+    ): List<DualUtilityConsideration> {
+        val distanceMultiplierConsideration = DistanceMultiplierConsideration(
+            otherPlayerId = ownerId,
+            minDistance = Intervals.intDistance(Int3D(0, 0, 0), Int3D(2, 2, 2)),
+            initialMultiplier = 0.5,
+            exponent = 1.1,
+            rank = 1,
+            bonus = 1.0,
+        )
+
+        return listOf(
+            distanceMultiplierConsideration
+        )
+    }
 
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
         planDataAtPlayer.addCommand(

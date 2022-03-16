@@ -1032,34 +1032,11 @@ data class RemoveLocalFuelFactoryCommand(
             I18NString("Fuel factory does not exist. ")
         )
 
-        val isRemoveAllowed = CommandErrorMessage(
-            if (hasFuelFactory.success) {
-                val carrier: MutableCarrierData =
-                    playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
-                        targetCarrierId
-                    )
-
-                val ownerId: Int = carrier.allPopData.labourerPopData.fuelFactoryMap.getValue(
-                    targetFuelFactoryId
-                ).ownerPlayerId
-
-                // Allow removal of local factory if the player is the owner,
-                // the owner is not a leader, or leader building is not allowed
-                (ownerId == playerData.playerId) ||
-                        !playerData.isLeader(ownerId) ||
-                        !playerData.playerInternalData.politicsData().isLeaderBuildLocalFactoryAllowed
-            } else {
-                false
-            },
-            I18NString("Not allow to remove this factory. ")
-        )
-
         return CommandErrorMessage(
             listOf(
                 isSelf,
                 hasCarrier,
                 hasFuelFactory,
-                isRemoveAllowed,
             )
         )
     }
@@ -1094,34 +1071,11 @@ data class RemoveLocalFuelFactoryCommand(
             I18NString("Fuel factory does not exist. ")
         )
 
-        val isRemoveAllowed = CommandErrorMessage(
-            if (hasFuelFactory.success) {
-                val carrier: MutableCarrierData =
-                    playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
-                        targetCarrierId
-                    )
-
-                val ownerId: Int = carrier.allPopData.labourerPopData.fuelFactoryMap.getValue(
-                    targetFuelFactoryId
-                ).ownerPlayerId
-
-                // Allow removal of local factory if the player is the owner,
-                // the owner is not a leader, or leader building is not allowed
-                (ownerId == playerData.playerId) ||
-                        !playerData.isLeader(ownerId) ||
-                        !playerData.playerInternalData.politicsData().isLeaderBuildLocalFactoryAllowed
-            } else {
-                false
-            },
-            I18NString("Not allow to remove this local factory. ")
-        )
-
         return CommandErrorMessage(
             listOf(
                 isSelf,
                 hasCarrier,
                 hasFuelFactory,
-                isRemoveAllowed,
             )
         )
     }

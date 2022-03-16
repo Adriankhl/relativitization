@@ -2,6 +2,7 @@ package relativitization.universe.ai.defaults.consideration.position
 
 import relativitization.universe.ai.defaults.utils.DualUtilityConsideration
 import relativitization.universe.ai.defaults.utils.DualUtilityData
+import relativitization.universe.ai.defaults.utils.DualUtilityDataFactory
 import relativitization.universe.ai.defaults.utils.PlanState
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.PlayerData
@@ -13,6 +14,7 @@ import kotlin.math.pow
  * Consider the distance between this player and the other player to change the multiplier
  *
  * @property otherPlayerId the id of the other player
+ * @property minDistance no impact if the distance is smaller than this
  * @property initialMultiplier the multiplier when the distance is zero
  * @property exponent exponentially modify the multiplier as the distance increases
  * @property rank rank of the dual utility data
@@ -20,6 +22,7 @@ import kotlin.math.pow
  */
 class DistanceMultiplierConsideration(
     private val otherPlayerId: Int,
+    private val minDistance: Int,
     private val initialMultiplier: Double,
     private val exponent: Double,
     private val rank: Int,
@@ -40,10 +43,14 @@ class DistanceMultiplierConsideration(
             Intervals.intDistance(otherInt4D, thisInt4D)
         }
 
-        return DualUtilityData(
-            rank = rank,
-            multiplier = initialMultiplier * exponent.pow(distance),
-            bonus = bonus
-        )
+        return if (distance < minDistance) {
+            DualUtilityDataFactory.noImpact()
+        } else {
+            DualUtilityData(
+                rank = rank,
+                multiplier = initialMultiplier * exponent.pow(distance),
+                bonus = bonus
+            )
+        }
     }
 }

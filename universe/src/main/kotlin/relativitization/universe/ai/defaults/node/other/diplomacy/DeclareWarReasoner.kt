@@ -15,6 +15,7 @@ import relativitization.universe.data.commands.DeclareIndependenceToDirectLeader
 import relativitization.universe.data.commands.DeclareIndependenceToTopLeaderCommand
 import relativitization.universe.data.commands.DeclareWarCommand
 import relativitization.universe.maths.physics.Int3D
+import relativitization.universe.maths.physics.Intervals
 
 class DeclareWarReasoner : SequenceReasoner() {
     override fun getSubNodeList(
@@ -282,6 +283,7 @@ class DeclareIndependenceToDirectLeaderOption(
         ),
         DistanceMultiplierConsideration(
             otherPlayerId = planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData.directLeaderId,
+            minDistance = Intervals.sameCubeIntDistance() + 1,
             initialMultiplier = 1.0,
             exponent = 1.2,
             rank = 0,
@@ -364,6 +366,7 @@ class DeclareIndependenceToTopLeaderOption(
         ),
         DistanceMultiplierConsideration(
             otherPlayerId = planDataAtPlayer.getCurrentMutablePlayerData().topLeaderId(),
+            minDistance = Intervals.sameCubeIntDistance() + 1,
             initialMultiplier = 1.0,
             exponent = 1.2,
             rank = 0,
