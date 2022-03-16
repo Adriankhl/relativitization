@@ -4,6 +4,8 @@ import kotlinx.serialization.Serializable
 import relativitization.universe.data.components.defaults.economy.MutableResourceQualityData
 import relativitization.universe.data.components.defaults.economy.ResourceQualityData
 import relativitization.universe.data.components.defaults.economy.ResourceType
+import relativitization.universe.data.components.defaults.popsystem.GeneralPopSystemData
+import relativitization.universe.data.components.defaults.popsystem.MutableGeneralPopSystemData
 import relativitization.universe.data.components.defaults.popsystem.pop.educator.EducatorPopData
 import relativitization.universe.data.components.defaults.popsystem.pop.educator.MutableEducatorPopData
 import relativitization.universe.data.components.defaults.popsystem.pop.engineer.EngineerPopData
@@ -121,10 +123,9 @@ data class MutableAllPopData(
  * @property elderlyPopulation amount of elderly population
  * @property educationLevel the education level of the population
  * @property employmentRate rate of employed adult
- * @property unemploymentBenefit the total amount of the unemployment benefit of the unemployed population
  * @property satisfaction how satisfy is the population
  * @property saving saving of the population in fuel rest mass
- * @property salaryPerEmployee the salary per employee per turn of the employed population
+ * @property salaryFactor multiply this with the base salary to get the actual salary
  * @property desireResourceMap the desire resources of the population
  * @property resourceInputMap store the resource input to this population to fulfill the desire,
  * should be cleared after calculating the effect of the input
@@ -137,14 +138,20 @@ data class CommonPopData(
     val elderlyPopulation: Double = 0.0,
     val educationLevel: Double = 1.0,
     val employmentRate: Double = 1.0,
-    val unemploymentBenefit: Double = 0.0,
     val satisfaction: Double = 0.0,
-    val salaryPerEmployee: Double = 1E-6,
+    val salaryFactor: Double = 1.0,
     val saving: Double = 0.0,
     val desireResourceMap: Map<ResourceType, ResourceDesireData> = mapOf(),
     val resourceInputMap: Map<ResourceType, ResourceDesireData> = mapOf(),
     val lastResourceInputMap: Map<ResourceType, ResourceDesireData> = mapOf(),
-)
+) {
+    /**
+     * Compute the salary per employee of this pop
+     */
+    fun salaryPerEmployee(generalPopSystemData: GeneralPopSystemData): Double {
+        return generalPopSystemData.baseSalaryPerEmployee * salaryFactor
+    }
+}
 
 @Serializable
 data class MutableCommonPopData(
@@ -153,14 +160,17 @@ data class MutableCommonPopData(
     var elderlyPopulation: Double = 0.0,
     var educationLevel: Double = 1.0,
     var employmentRate: Double = 1.0,
-    var unemploymentBenefit: Double = 0.0,
     var satisfaction: Double = 0.0,
-    var salaryPerEmployee: Double = 1E-6,
+    var salaryFactor: Double = 1.0,
     var saving: Double = 0.0,
     var desireResourceMap: MutableMap<ResourceType, MutableResourceDesireData> = mutableMapOf(),
     var resourceInputMap: MutableMap<ResourceType, MutableResourceDesireData> = mutableMapOf(),
     var lastResourceInputMap: MutableMap<ResourceType, MutableResourceDesireData> = mutableMapOf(),
 ) {
+    fun salaryPerEmployee(generalPopSystemData: MutableGeneralPopSystemData): Double {
+        return generalPopSystemData.baseSalaryPerEmployee * salaryFactor
+    }
+
     fun numEmployee(): Double = when {
         employmentRate > 1.0 -> {
             logger.error("Employment rate > 1.0")

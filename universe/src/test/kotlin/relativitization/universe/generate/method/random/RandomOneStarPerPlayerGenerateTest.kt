@@ -93,13 +93,13 @@ internal class RandomOneStarPerPlayerGenerateTest {
 
         PopType.values().forEach {
             commandList7.add(
-                ChangeSalaryCommand(
+                ChangeSalaryFactorCommand(
                     toId = 1,
                     fromId = 1,
                     fromInt4D = view7.get(1).int4D,
                     carrierId = 0,
                     popType = it,
-                    salary = 1E-4,
+                    salaryFactor = 2.0,
                 )
             )
         }

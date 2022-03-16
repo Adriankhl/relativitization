@@ -2,7 +2,6 @@ package relativitization.universe.ai.defaults.utils
 
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.PlayerData
-import relativitization.universe.data.components.defaults.popsystem.pop.MutableCommonPopData
 import relativitization.universe.data.components.defaults.popsystem.pop.PopType
 import relativitization.universe.data.components.physicsData
 import relativitization.universe.data.components.playerScienceData
@@ -14,6 +13,7 @@ import kotlin.math.pow
  * For caching variables to share between AI node
  *
  * @property foreignFactoryFuel fuel for foreign factories
+ * @property totalAdultPopulation total adult population of self
  * @property averageSelfLabourerSalary the average salary of self labourer
  * @property fuelRemainFractionMap map from other player id to the remain fraction if fuel is sent
  * from the current player to that player
@@ -22,6 +22,7 @@ import kotlin.math.pow
  */
 class PlanState(
     var foreignFactoryFuel: Double = 0.0,
+    private var totalAdultPopulation: Double = -1.0,
     private var averageSelfLabourerSalary: Double = -1.0,
     private val fuelRemainFractionMap: MutableMap<Int, Double> = mutableMapOf(),
     private val resourceRemainFractionMap: MutableMap<Int, Double> = mutableMapOf(),
@@ -34,29 +35,27 @@ class PlanState(
             .physicsData().fuelRestMassData.production * fraction
     }
 
+    fun updateTotalPopulation(
+        planDataAtPlayer: PlanDataAtPlayer
+    ) {
+        totalAdultPopulation = planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData
+            .popSystemData().totalAdultPopulation()
+    }
+
+    fun totalAdultPopulation(
+        planDataAtPlayer: PlanDataAtPlayer
+    ): Double {
+        if (totalAdultPopulation == -1.0) {
+            updateTotalPopulation(planDataAtPlayer)
+        }
+        return totalAdultPopulation
+    }
+
     fun updateAverageSelfLabourerSalary(
         planDataAtPlayer: PlanDataAtPlayer
     ) {
-        // Compute average labourer salary of self
-        val totalSelfLabourerSalary: Double = planDataAtPlayer.getCurrentMutablePlayerData()
-            .playerInternalData.popSystemData().carrierDataMap.values.sumOf {
-                val commonPopData: MutableCommonPopData = it.allPopData.getCommonPopData(
-                    PopType.LABOURER
-                )
-                commonPopData.salaryPerEmployee * commonPopData.adultPopulation *
-                        commonPopData.employmentRate
-            }
-        val totalSelfLabourer: Double = planDataAtPlayer.getCurrentMutablePlayerData()
-            .playerInternalData.popSystemData().carrierDataMap.values.sumOf {
-                it.allPopData.getCommonPopData(
-                    PopType.LABOURER
-                ).adultPopulation
-            }
-        averageSelfLabourerSalary = if (totalSelfLabourer > 0.0) {
-            totalSelfLabourerSalary / totalSelfLabourer
-        } else {
-            0.0
-        }
+        averageSelfLabourerSalary = planDataAtPlayer.getCurrentMutablePlayerData()
+            .playerInternalData.popSystemData().averageSalary(PopType.LABOURER)
     }
 
     fun averageSelfLabourerSalary(

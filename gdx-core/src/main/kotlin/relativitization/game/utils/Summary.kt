@@ -23,10 +23,14 @@ object Summary {
         thisPlayer: PlayerData,
         otherPlayerList: List<PlayerData> = listOf(),
     ): PlayerSummary {
-        val allPlayerId: List<Int> = listOf(thisPlayer.playerId) + otherPlayerList.map { it.playerId }
+        val allPlayerData: List<PlayerData> = listOf(thisPlayer) + otherPlayerList
 
-        val carrierList: List<CarrierData> = thisPlayer.playerInternalData.popSystemData().carrierDataMap.values +
-                otherPlayerList.flatMap { it.playerInternalData.popSystemData().carrierDataMap.values }
+        val allPlayerId: List<Int> = allPlayerData.map { it.playerId }
+
+        val carrierList: List<CarrierData> = thisPlayer.playerInternalData.popSystemData()
+            .carrierDataMap.values + otherPlayerList.flatMap {
+            it.playerInternalData.popSystemData().carrierDataMap.values
+            }
 
         val totalPopulation: Double = carrierList.sumOf {
             it.allPopData.totalAdultPopulation()
@@ -40,23 +44,26 @@ object Summary {
             it.allPopData.soldierPopData.militaryBaseData.shield
         }
 
-        val totalFuelDemand: Double = carrierList.sumOf { carrierData ->
-            val totalSalary: Double = PopType.values().sumOf { popType ->
-                val commonPopData: CommonPopData = carrierData.allPopData.getCommonPopData(popType)
-                commonPopData.salaryPerEmployee * commonPopData.adultPopulation
-            }
-            val totalResourceFactoryConsumption: Double = carrierData.allPopData.labourerPopData.resourceFactoryMap
-                .values.sumOf { resourceFactory ->
+        val totalSalary: Double = allPlayerData.sumOf {
+            it.playerInternalData.popSystemData().totalSalary()
+        }
+
+        val totalFactoryConsumption: Double = carrierList.sumOf { carrierData ->
+            val totalResourceFactoryConsumption: Double = carrierData.allPopData.labourerPopData
+                .resourceFactoryMap.values.sumOf { resourceFactory ->
                     // only consider self resource factory
                     if (allPlayerId.contains(resourceFactory.ownerPlayerId)) {
-                        resourceFactory.resourceFactoryInternalData.fuelRestMassConsumptionRatePerEmployee *
-                                resourceFactory.maxNumEmployee * resourceFactory.employeeFraction()
+                        resourceFactory.resourceFactoryInternalData
+                            .fuelRestMassConsumptionRatePerEmployee * resourceFactory
+                            .maxNumEmployee * resourceFactory.employeeFraction()
                     } else {
                         0.0
                     }
                 }
-            totalSalary + totalResourceFactoryConsumption
+            totalResourceFactoryConsumption
         }
+
+        val totalFuelDemand: Double = totalSalary + totalFactoryConsumption
 
         val totalFuelSupply: Double = carrierList.sumOf { carrierData ->
             val baseProduction: Double = BaseStellarFuelProduction.baseFuelProduction(

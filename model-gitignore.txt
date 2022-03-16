@@ -164,7 +164,6 @@ universe/src/main/kotlin/relativitization/universe/ai/defaults/consideration/fue
 universe/src/main/kotlin/relativitization/universe/ai/defaults/consideration/subordinate/DirectSubordinateConsiderations.kt
 universe/src/main/kotlin/relativitization/universe/ai/defaults/consideration/event/MovementEventConsiderations.kt
 universe/src/main/kotlin/relativitization/universe/ai/defaults/consideration/population/PopulationDensityConsiderations.kt
-universe/src/main/kotlin/relativitization/universe/ai/defaults/consideration/population/SalaryConsideration.kt
 universe/src/main/kotlin/relativitization/universe/ai/defaults/consideration/military/MilitaryStrengthConsiderations.kt
 universe/src/main/kotlin/relativitization/universe/ai/defaults/consideration/military/WarStateConsiderations.kt
 universe/src/main/kotlin/relativitization/universe/ai/defaults/consideration/position/DistanceConsiderations.kt
@@ -232,6 +231,7 @@ universe/src/main/kotlin/relativitization/universe/data/components/defaults/pops
 universe/src/main/kotlin/relativitization/universe/data/components/defaults/popsystem/pop/entertainer/EntertainerPopData.kt
 universe/src/main/kotlin/relativitization/universe/data/components/defaults/popsystem/pop/PopData.kt
 universe/src/main/kotlin/relativitization/universe/data/components/defaults/popsystem/CarrierData.kt
+universe/src/main/kotlin/relativitization/universe/data/components/defaults/popsystem/GeneralPopSystemData.kt
 universe/src/main/kotlin/relativitization/universe/data/components/defaults/science/knowledge/AppliedResearchData.kt
 universe/src/main/kotlin/relativitization/universe/data/components/defaults/science/knowledge/BasicResearchData.kt
 universe/src/main/kotlin/relativitization/universe/data/components/defaults/science/knowledge/KnowledgeData.kt

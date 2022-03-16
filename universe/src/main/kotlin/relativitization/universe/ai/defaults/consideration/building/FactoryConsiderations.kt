@@ -5,15 +5,14 @@ import relativitization.universe.ai.defaults.utils.DualUtilityData
 import relativitization.universe.ai.defaults.utils.DualUtilityDataFactory
 import relativitization.universe.ai.defaults.utils.PlanState
 import relativitization.universe.data.PlanDataAtPlayer
+import relativitization.universe.data.components.*
 import relativitization.universe.data.components.defaults.economy.ResourceQualityClass
 import relativitization.universe.data.components.defaults.economy.ResourceType
 import relativitization.universe.data.components.defaults.popsystem.CarrierData
 import relativitization.universe.data.components.defaults.popsystem.CarrierType
 import relativitization.universe.data.components.defaults.popsystem.MutableCarrierData
+import relativitization.universe.data.components.defaults.popsystem.MutableGeneralPopSystemData
 import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.*
-import relativitization.universe.data.components.economyData
-import relativitization.universe.data.components.playerScienceData
-import relativitization.universe.data.components.popSystemData
 
 /**
  * Check if there is no self fuel factory and no stellar pop system
@@ -726,19 +725,22 @@ class NewForeignFuelFactoryLowerCostConsideration(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): DualUtilityData {
-        val carrier: CarrierData = planDataAtPlayer.universeData3DAtPlayer.get(otherPlayerId)
-            .playerInternalData.popSystemData().carrierDataMap.getValue(otherCarrierId)
+        val popSystemData: PopSystemData = planDataAtPlayer.universeData3DAtPlayer
+            .get(otherPlayerId).playerInternalData.popSystemData()
+
+        val carrier: CarrierData = popSystemData.carrierDataMap.getValue(otherCarrierId)
 
         val fuelRemainFraction: Double = planState.fuelRemainFraction(
             otherPlayerId,
             planDataAtPlayer
         )
 
-        val salary: Double = carrier.allPopData.labourerPopData.commonPopData.salaryPerEmployee
+        val salaryPerEmployee: Double = carrier.allPopData.labourerPopData.commonPopData
+            .salaryPerEmployee(popSystemData.generalPopSystemData)
 
         // cost per output, divided by 2 fuel remain fraction since the fuel has to send back and
         // forth
-        val cost: Double = salary / fuelRemainFraction / fuelRemainFraction
+        val cost: Double = salaryPerEmployee / fuelRemainFraction / fuelRemainFraction
 
         val averageSelfSalary: Double = planState.averageSelfLabourerSalary(planDataAtPlayer)
 
@@ -788,8 +790,10 @@ class ForeignFuelFactoryLowerCostConsideration(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): DualUtilityData {
-        val carrier: CarrierData = planDataAtPlayer.universeData3DAtPlayer.get(otherPlayerId)
-            .playerInternalData.popSystemData().carrierDataMap.getValue(otherCarrierId)
+        val popSystemData: PopSystemData = planDataAtPlayer.universeData3DAtPlayer
+            .get(otherPlayerId).playerInternalData.popSystemData()
+
+        val carrier: CarrierData = popSystemData.carrierDataMap.getValue(otherCarrierId)
 
         val fuelFactory: FuelFactoryData = carrier.allPopData.labourerPopData.fuelFactoryMap
             .getValue(fuelFactoryId)
@@ -801,7 +805,8 @@ class ForeignFuelFactoryLowerCostConsideration(
 
         val outputRatio: Double = fuelFactory.fuelFactoryInternalData.maxOutputAmountPerEmployee
 
-        val salaryPerEmployee: Double = carrier.allPopData.labourerPopData.commonPopData.salaryPerEmployee
+        val salaryPerEmployee: Double = carrier.allPopData.labourerPopData.commonPopData
+            .salaryPerEmployee(popSystemData.generalPopSystemData)
 
         // cost per output, divided by 2 fuel remain fraction since the fuel has to send back and
         // forth
@@ -861,8 +866,10 @@ class NewForeignResourceFactoryLowerCostConsideration(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): DualUtilityData {
-        val carrier: CarrierData = planDataAtPlayer.universeData3DAtPlayer.get(otherPlayerId)
-            .playerInternalData.popSystemData().carrierDataMap.getValue(otherCarrierId)
+        val popSystemData: PopSystemData = planDataAtPlayer.universeData3DAtPlayer
+            .get(otherPlayerId).playerInternalData.popSystemData()
+
+        val carrier: CarrierData = popSystemData.carrierDataMap.getValue(otherCarrierId)
 
         val fuelRemainFraction: Double = planState.fuelRemainFraction(
             otherPlayerId,
@@ -878,8 +885,8 @@ class NewForeignResourceFactoryLowerCostConsideration(
             .getCurrentMutablePlayerData().playerInternalData.playerScienceData()
             .playerScienceApplicationData.getIdealResourceFactory(resourceType)
 
-        val salaryPerEmployee: Double =
-            carrier.allPopData.labourerPopData.commonPopData.salaryPerEmployee
+        val salaryPerEmployee: Double = carrier.allPopData.labourerPopData.commonPopData
+            .salaryPerEmployee(popSystemData.generalPopSystemData)
 
         val inputCost: Double =  selfIdealResourceFactory.inputResourceMap.keys.fold(
             0.0

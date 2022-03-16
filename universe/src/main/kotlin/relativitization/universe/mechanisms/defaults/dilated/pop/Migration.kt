@@ -41,7 +41,7 @@ object Migration : Mechanism() {
                 if (carrierIdList.size >= 2) {
                     val emigrateId: Int = carrierIdList.minByOrNull {
                         val commonPop: MutableCommonPopData = commonPopMap.getValue(it)
-                        commonPop.salaryPerEmployee * commonPop.employmentRate
+                        commonPop.salaryFactor * commonPop.employmentRate
                     } ?: -1
 
                     val emigrateCommonPop: MutableCommonPopData = commonPopMap.getValue(emigrateId)

@@ -6,6 +6,7 @@ import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.components.*
 import relativitization.universe.data.components.defaults.popsystem.MutableCarrierData
+import relativitization.universe.data.components.defaults.popsystem.MutableGeneralPopSystemData
 import relativitization.universe.data.components.defaults.popsystem.pop.MutableCommonPopData
 import relativitization.universe.data.components.defaults.popsystem.pop.engineer.MutableEngineerPopData
 import relativitization.universe.data.components.defaults.popsystem.pop.labourer.MutableLabourerPopData
@@ -26,6 +27,7 @@ object Employment : Mechanism() {
         mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.forEach {
             updateEmployment(
                 it,
+                mutablePlayerData.playerInternalData.popSystemData().generalPopSystemData,
                 mutablePlayerData.playerInternalData.physicsData(),
                 mutablePlayerData.playerInternalData.economyData(),
                 universeData3DAtPlayer,
@@ -37,12 +39,14 @@ object Employment : Mechanism() {
 
     fun updateEmployment(
         carrierData: MutableCarrierData,
+        mutableGeneralPopSystemData: MutableGeneralPopSystemData,
         mutablePhysicsData: MutablePhysicsData,
         mutableEconomyData: MutableEconomyData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
     ) {
         updateLabourerEmployment(
             carrierData.allPopData.labourerPopData,
+            mutableGeneralPopSystemData,
             mutablePhysicsData,
             mutableEconomyData,
             universeData3DAtPlayer,
@@ -50,42 +54,49 @@ object Employment : Mechanism() {
 
         updateSoldierEmployment(
             carrierData.allPopData.soldierPopData,
+            mutableGeneralPopSystemData,
             mutablePhysicsData,
             mutableEconomyData,
         )
 
         updateCommonEmployment(
             carrierData.allPopData.entertainerPopData.commonPopData,
+            mutableGeneralPopSystemData,
             mutablePhysicsData,
             mutableEconomyData,
         )
 
         updateCommonEmployment(
             carrierData.allPopData.servicePopData.commonPopData,
+            mutableGeneralPopSystemData,
             mutablePhysicsData,
             mutableEconomyData,
         )
 
         updateCommonEmployment(
             carrierData.allPopData.medicPopData.commonPopData,
+            mutableGeneralPopSystemData,
             mutablePhysicsData,
             mutableEconomyData,
         )
 
         updateCommonEmployment(
             carrierData.allPopData.educatorPopData.commonPopData,
+            mutableGeneralPopSystemData,
             mutablePhysicsData,
             mutableEconomyData,
         )
 
         updateEngineerEmployment(
             carrierData.allPopData.engineerPopData,
+            mutableGeneralPopSystemData,
             mutablePhysicsData,
             mutableEconomyData,
         )
 
         updateScholarEmployment(
             carrierData.allPopData.scholarPopData,
+            mutableGeneralPopSystemData,
             mutablePhysicsData,
             mutableEconomyData,
         )
@@ -98,11 +109,13 @@ object Employment : Mechanism() {
      */
     fun updateLabourerEmployment(
         labourerPopData: MutableLabourerPopData,
+        mutableGeneralPopSystemData: MutableGeneralPopSystemData,
         mutablePhysicsData: MutablePhysicsData,
         mutableEconomyData: MutableEconomyData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
     ) {
-        val salary: Double = labourerPopData.commonPopData.salaryPerEmployee
+        val salary: Double =
+            labourerPopData.commonPopData.salaryPerEmployee(mutableGeneralPopSystemData)
 
         val incomeTax: Double =
             mutableEconomyData.taxData.taxRateData.incomeTax.getIncomeTax(salary)
@@ -319,10 +332,12 @@ object Employment : Mechanism() {
 
     fun updateScholarEmployment(
         scholarPopData: MutableScholarPopData,
+        mutableGeneralPopSystemData: MutableGeneralPopSystemData,
         mutablePhysicsData: MutablePhysicsData,
         mutableEconomyData: MutableEconomyData,
     ) {
-        val salary: Double = scholarPopData.commonPopData.salaryPerEmployee
+        val salary: Double =
+            scholarPopData.commonPopData.salaryPerEmployee(mutableGeneralPopSystemData)
 
         val incomeTax: Double =
             mutableEconomyData.taxData.taxRateData.incomeTax.getIncomeTax(salary)
@@ -391,10 +406,12 @@ object Employment : Mechanism() {
 
     fun updateEngineerEmployment(
         engineerPopData: MutableEngineerPopData,
+        mutableGeneralPopSystemData: MutableGeneralPopSystemData,
         mutablePhysicsData: MutablePhysicsData,
         mutableEconomyData: MutableEconomyData,
     ) {
-        val salary: Double = engineerPopData.commonPopData.salaryPerEmployee
+        val salary: Double =
+            engineerPopData.commonPopData.salaryPerEmployee(mutableGeneralPopSystemData)
 
         val incomeTax: Double =
             mutableEconomyData.taxData.taxRateData.incomeTax.getIncomeTax(salary)
@@ -465,10 +482,12 @@ object Employment : Mechanism() {
      */
     fun updateSoldierEmployment(
         soldierPopData: MutableSoldierPopData,
+        mutableGeneralPopSystemData: MutableGeneralPopSystemData,
         mutablePhysicsData: MutablePhysicsData,
         mutableEconomyData: MutableEconomyData,
     ) {
-        val salary: Double = soldierPopData.commonPopData.salaryPerEmployee
+        val salary: Double =
+            soldierPopData.commonPopData.salaryPerEmployee(mutableGeneralPopSystemData)
 
         val incomeTax: Double =
             mutableEconomyData.taxData.taxRateData.incomeTax.getIncomeTax(salary)
@@ -503,10 +522,11 @@ object Employment : Mechanism() {
      */
     fun updateCommonEmployment(
         commonPopData: MutableCommonPopData,
+        mutableGeneralPopSystemData: MutableGeneralPopSystemData,
         mutablePhysicsData: MutablePhysicsData,
         mutableEconomyData: MutableEconomyData,
     ) {
-        val salary: Double = commonPopData.salaryPerEmployee
+        val salary: Double = commonPopData.salaryPerEmployee(mutableGeneralPopSystemData)
 
         val incomeTax: Double =
             mutableEconomyData.taxData.taxRateData.incomeTax.getIncomeTax(salary)

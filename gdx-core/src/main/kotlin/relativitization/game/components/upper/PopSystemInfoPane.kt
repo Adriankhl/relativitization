@@ -3,6 +3,7 @@ package relativitization.game.components.upper
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.ui.Container
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
+import com.badlogic.gdx.scenes.scene2d.ui.Slider
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.RelativitizationGame
 import relativitization.universe.data.PlayerData
@@ -394,27 +395,18 @@ class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
 
         nestedTable.row().space(10f)
 
+        nestedTable.row().space(10f)
+
         nestedTable.add(
             createLabel(
-                "Total salary: ${commonPopData.salaryPerEmployee * commonPopData.adultPopulation}",
+                "Salary factor: ${commonPopData.salaryFactor}",
                 gdxSettings.smallFontSize
             )
         )
 
         nestedTable.row().space(10f)
 
-        nestedTable.row().space(10f)
-
-        nestedTable.add(
-            createLabel(
-                "Salary per employee: ${commonPopData.salaryPerEmployee}",
-                gdxSettings.smallFontSize
-            )
-        )
-
-        nestedTable.row().space(10f)
-
-        nestedTable.add(createTargetSalaryTable(commonPopData.salaryPerEmployee))
+        nestedTable.add(createTargetSalaryTable(commonPopData.salaryFactor))
 
         nestedTable.row().space(10f)
 
@@ -462,31 +454,31 @@ class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
         return nestedTable
     }
 
-    private fun createTargetSalaryTable(defaultSalary: Double): Table {
+    private fun createTargetSalaryTable(defaultSalaryFactor: Double): Table {
         val nestedTable = Table()
 
-        val targetSalary = createDoubleTextField(
-            default = defaultSalary,
+        val targetSalaryFactor = createDoubleTextField(
+            default = defaultSalaryFactor,
             fontSize = gdxSettings.smallFontSize
         )
 
 
         val changeSalaryTextButton = createTextButton(
-            text = "Change salary",
+            text = "Change salary factor",
             fontSize = gdxSettings.smallFontSize,
             soundVolume = gdxSettings.soundEffectsVolume,
             extraColor = commandButtonColor,
         ) {
-            val changeSalaryCommand = ChangeSalaryCommand(
+            val changeSalaryFactorCommand = ChangeSalaryFactorCommand(
                 toId = playerData.playerId,
                 fromId = game.universeClient.getCurrentPlayerData().playerId,
                 fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
                 carrierId = carrierId,
                 popType = popType,
-                salary = targetSalary.value,
+                salaryFactor = targetSalaryFactor.value,
             )
 
-            game.universeClient.currentCommand = changeSalaryCommand
+            game.universeClient.currentCommand = changeSalaryFactorCommand
         }
         nestedTable.add(changeSalaryTextButton).colspan(2)
 
@@ -494,26 +486,26 @@ class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
 
         nestedTable.add(
             createLabel(
-                "Target salary: ",
+                "Target salary factor: ",
                 gdxSettings.smallFontSize
             )
         )
 
-        nestedTable.add(targetSalary.textField)
+        nestedTable.add(targetSalaryFactor.textField)
 
         nestedTable.row().space(10f)
 
-        val targetSalarySliderButtonTable = createDoubleSliderButtonTable(
-            default = targetSalary.value,
-            sliderStepSize = 0.01f,
-            sliderDecimalPlace = 2,
-            buttonSize = 40f * gdxSettings.imageScale,
-            sliderScale = gdxSettings.imageScale,
-            buttonSoundVolume = gdxSettings.soundEffectsVolume,
-            currentValue = { targetSalary.value },
-        ) {
-            targetSalary.value = it
+        val targetSalarySliderButtonTable = createSliderContainer(
+            min = 1.0f,
+            max = 10.0f,
+            stepSize = 0.1f,
+            default = defaultSalaryFactor.toFloat(),
+            width = 150f * gdxSettings.imageScale,
+            height = 15f * gdxSettings.imageScale,
+        ) { fl, _ ->
+            targetSalaryFactor.value = Notation.roundDecimal(fl.toDouble(), 1)
         }
+
         nestedTable.add(targetSalarySliderButtonTable).colspan(2)
 
         return nestedTable

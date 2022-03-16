@@ -4,13 +4,10 @@ import relativitization.universe.ai.defaults.consideration.fuel.IncreasingProduc
 import relativitization.universe.ai.defaults.consideration.fuel.PopulationSavingHighCompareToProduction
 import relativitization.universe.ai.defaults.utils.*
 import relativitization.universe.data.PlanDataAtPlayer
-import relativitization.universe.data.commands.ChangeSalaryCommand
+import relativitization.universe.data.commands.ChangeBaseSalaryCommand
+import relativitization.universe.data.commands.ChangeSalaryFactorCommand
 import relativitization.universe.data.components.*
-import relativitization.universe.data.components.defaults.economy.MutableResourceData
-import relativitization.universe.data.components.defaults.economy.ResourceQualityClass
 import relativitization.universe.data.components.defaults.popsystem.MutableCarrierData
-import relativitization.universe.data.components.defaults.popsystem.pop.MutableCommonPopData
-import relativitization.universe.data.components.defaults.popsystem.pop.MutableResourceDesireData
 import relativitization.universe.data.components.defaults.popsystem.pop.PopType
 import kotlin.math.max
 import kotlin.math.min
@@ -24,60 +21,80 @@ class SalaryReasoner : SequenceReasoner() {
         val popSystemData: MutablePopSystemData = planDataAtPlayer.getCurrentMutablePlayerData()
             .playerInternalData.popSystemData()
 
-        val totalAdultPopulation: Double = popSystemData.totalAdultPopulation()
-
-        // Compute the order of the ratio between population and ideal population for all carriers.
+        // Compute the map from carrier id to the order of the ratio
+        // between population and ideal population for all carriers.
         // Carrier with lower ratio should have a higher salary to attract immigrant
-        val populationRatioOrder: List<Int> = popSystemData.carrierDataMap.keys.sortedByDescending {
-            val carrier: MutableCarrierData = popSystemData.carrierDataMap.getValue(it)
-            if (carrier.carrierInternalData.idealPopulation > 0.0) {
-                carrier.allPopData.totalAdultPopulation() /
-                        carrier.carrierInternalData.idealPopulation
-            } else {
-                1.0
-            }
-        }
-
-        val adjustSalaryReasonerList: List<AdjustSalaryReasoner> = popSystemData.carrierDataMap
-            .keys.map { carrierId ->
-                PopType.values().map { popType ->
-                    AdjustSalaryReasoner(
-                        carrierId,
-                        popType,
-                        totalAdultPopulation,
-                        populationRatioOrder,
-                    )
+        val populationRatioOrderMap: Map<Int, Int> = popSystemData.carrierDataMap.keys
+            .sortedByDescending {
+                val carrier: MutableCarrierData = popSystemData.carrierDataMap.getValue(it)
+                if (carrier.carrierInternalData.idealPopulation > 0.0) {
+                    carrier.allPopData.totalAdultPopulation() /
+                            carrier.carrierInternalData.idealPopulation
+                } else {
+                    1.0
                 }
-            }.flatten()
+            }.mapIndexed { index, i ->
+                i to index
+            }.toMap()
 
-        return adjustSalaryReasonerList
+        val adjustSalaryFactorAINodeList: List<AdjustSalaryFactorAINode> = popSystemData.carrierDataMap
+            .keys.map { carrierId ->
+                AdjustSalaryFactorAINode(
+                    carrierId,
+                    populationRatioOrderMap,
+                )
+            }
+
+        return adjustSalaryFactorAINodeList + listOf(
+            AdjustBaseSalaryReasoner()
+        )
     }
 }
 
-class AdjustSalaryReasoner(
+class AdjustSalaryFactorAINode(
     private val carrierId: Int,
-    private val popType: PopType,
-    private val totalAdultPopulation: Double,
-    private val populationRatioOrder: List<Int>,
-) : DualUtilityReasoner() {
+    private val populationRatioOrderMap: Map<Int, Int>,
+) : AINode() {
+    override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
+        // Compute an factor determined by the order of population ratio to enhance migration
+        val salaryFactor: Double = 1.0 + if (populationRatioOrderMap.isNotEmpty()) {
+            val step: Double = 1.0 / populationRatioOrderMap.size
+            step * populationRatioOrderMap.getValue(carrierId)
+        } else {
+            0.0
+        }
+
+        PopType.values().forEach { popType ->
+            planDataAtPlayer.addCommand(
+                ChangeSalaryFactorCommand(
+                    toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+                    fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+                    fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
+                    carrierId = carrierId,
+                    popType = popType,
+                    salaryFactor = salaryFactor,
+                )
+            )
+        }
+    }
+}
+
+/**
+ *
+ */
+class AdjustBaseSalaryReasoner() : DualUtilityReasoner() {
     override fun getOptionList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<DualUtilityOption> = listOf(
-        IncreaseSalaryOption(carrierId, popType, totalAdultPopulation),
-        DecreaseSalaryOption(carrierId, popType),
-        GoodSalaryOption(carrierId, popType, totalAdultPopulation, populationRatioOrder),
+        DoNothingDualUtilityOption(rank = 1, multiplier = 1.0, bonus = 1.0)
     )
 }
 
 /**
  * Increase salary if production fuel is increasing
  */
-class IncreaseSalaryOption(
-    private val carrierId: Int,
-    private val popType: PopType,
-    private val totalAdultPopulation: Double,
-) : DualUtilityOption() {
+class IncreaseBaseSalaryOption() : DualUtilityOption() {
     override fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -101,37 +118,33 @@ class IncreaseSalaryOption(
         // Multiply this to get the new salary
         val salaryMultiplier: Double = 1.25
 
-        val commonPopData: MutableCommonPopData = planDataAtPlayer.getCurrentMutablePlayerData()
-            .playerInternalData.popSystemData().carrierDataMap.getValue(carrierId).allPopData
-            .getCommonPopData(popType)
-
         val physicsData: MutablePhysicsData = planDataAtPlayer.getCurrentMutablePlayerData()
             .playerInternalData.physicsData()
 
-        val currentSalary: Double = commonPopData.salaryPerEmployee
+        val currentBaseSalaryPerEmployee: Double = planDataAtPlayer.getCurrentMutablePlayerData()
+            .playerInternalData.popSystemData().generalPopSystemData.baseSalaryPerEmployee
+
+        val totalAdultPopulation: Double = planState.totalAdultPopulation(planDataAtPlayer)
 
         // Bound the salary by production fuel
-        val maxFuelAsSalaryPerEmployee: Double = if (totalAdultPopulation > 0.0) {
-            // Only use 0.1 of the production fuel as salary
-            0.1 * physicsData.fuelRestMassData.production / totalAdultPopulation
+        val maxFuelAsBaseSalaryPerEmployee: Double = if (totalAdultPopulation > 0.0) {
+            // Only use 0.05 of the production fuel as base salary
+            0.05 * physicsData.fuelRestMassData.production / totalAdultPopulation
         } else {
-            1.0
+            0.05 * physicsData.fuelRestMassData.production
         }
 
-        val newSalary: Double = listOf(
-            maxSalary,
-            currentSalary * salaryMultiplier,
-            max(maxFuelAsSalaryPerEmployee, currentSalary),
-        ).minOf { it }
+        val newBaseSalary: Double = min(
+            min(maxSalary, maxFuelAsBaseSalaryPerEmployee),
+            currentBaseSalaryPerEmployee * salaryMultiplier
+        )
 
         planDataAtPlayer.addCommand(
-            ChangeSalaryCommand(
+            ChangeBaseSalaryCommand(
                 toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
                 fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
                 fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
-                carrierId = carrierId,
-                popType = popType,
-                salary = newSalary,
+                baseSalaryPerEmployee = newBaseSalary,
             )
         )
     }
@@ -141,10 +154,7 @@ class IncreaseSalaryOption(
 /**
  * Decrease salary if production fuel is decreasing
  */
-class DecreaseSalaryOption(
-    private val carrierId: Int,
-    private val popType: PopType,
-) : DualUtilityOption() {
+class DecreaseSalaryOption() : DualUtilityOption() {
     override fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -159,9 +169,7 @@ class DecreaseSalaryOption(
                 bonusIfFalse = 1.0
             ),
             PopulationSavingHighCompareToProduction(
-                carrierId = carrierId,
-                popType = popType,
-                productionFuelRatio = 0.5,
+                productionFuelFactor = 0.5,
                 rankIfTrue = 5,
                 multiplierIfTrue = 1.0,
                 bonusIfTrue = 1.0,
@@ -179,114 +187,22 @@ class DecreaseSalaryOption(
         // Multiply this to get the new salary
         val salaryMultiplier: Double = 0.8
 
-        val currentSalary: Double = planDataAtPlayer.getCurrentMutablePlayerData()
-            .playerInternalData.popSystemData().carrierDataMap.getValue(carrierId).allPopData
-            .getCommonPopData(popType).salaryPerEmployee
 
-        val newSalary: Double = max(minSalary, currentSalary * salaryMultiplier)
+        val currentBaseSalaryPerEmployee: Double = planDataAtPlayer.getCurrentMutablePlayerData()
+            .playerInternalData.popSystemData().generalPopSystemData.baseSalaryPerEmployee
+
+        val newBaseSalary: Double = max(
+            minSalary,
+            currentBaseSalaryPerEmployee * salaryMultiplier
+        )
 
         planDataAtPlayer.addCommand(
-            ChangeSalaryCommand(
+            ChangeBaseSalaryCommand(
                 toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
                 fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
                 fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
-                carrierId = carrierId,
-                popType = popType,
-                salary = newSalary,
+                baseSalaryPerEmployee = newBaseSalary,
             )
         )
-    }
-}
-
-/**
- * Increase the salary to a good value: higher than the desire if production fuel is sufficient
- */
-class GoodSalaryOption(
-    private val carrierId: Int,
-    private val popType: PopType,
-    private val totalAdultPopulation: Double,
-    private val populationRatioOrder: List<Int>,
-) : DualUtilityOption() {
-    override fun getConsiderationList(
-        planDataAtPlayer: PlanDataAtPlayer,
-        planState: PlanState
-    ): List<DualUtilityConsideration> = listOf(
-        PlainDualUtilityConsideration(1, 1.0, 0.1)
-    )
-
-    override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
-        val commonPopData: MutableCommonPopData = planDataAtPlayer.getCurrentMutablePlayerData()
-            .playerInternalData.popSystemData().carrierDataMap.getValue(carrierId).allPopData
-            .getCommonPopData(popType)
-
-        // Bound the salary
-        val currentSalary: Double = commonPopData.salaryPerEmployee
-        val minSalary: Double = currentSalary
-        val maxSalary: Double = 1E10
-
-        val resourceData: MutableResourceData = planDataAtPlayer.getCurrentMutablePlayerData()
-            .playerInternalData.economyData().resourceData
-
-        val physicsData: MutablePhysicsData = planDataAtPlayer.getCurrentMutablePlayerData()
-            .playerInternalData.physicsData()
-
-        // Compute total fuel needed to buy all the desire resource
-        val desireResourceFuelNeeded: Double = commonPopData.desireResourceMap.keys.fold(
-            0.0
-        ) { acc, resourceType ->
-            val desireData: MutableResourceDesireData = commonPopData.desireResourceMap.getValue(
-                resourceType
-            )
-            val qualityClass: ResourceQualityClass = resourceData.tradeQualityClass(
-                resourceType = resourceType,
-                amount = desireData.desireAmount,
-                targetQuality = desireData.desireQuality,
-                budget = commonPopData.saving,
-                preferHighQualityClass = true,
-            )
-            val price: Double = resourceData.getResourcePrice(resourceType, qualityClass)
-            acc + price * desireData.desireAmount
-        }
-
-        // Bound the salary by production fuel
-        val maxFuelAsSalary: Double = if (totalAdultPopulation > 0.0) {
-            // Only use 0.1 of the production fuel as salary
-            0.1 * physicsData.fuelRestMassData.production * commonPopData.adultPopulation /
-                    totalAdultPopulation
-        } else {
-            1.0
-        }
-
-        // Compute an extra factor determined by the order of population ratio to enhance migration
-        val populationOrderRatioFactor: Double = 1.0 + if (populationRatioOrder.isNotEmpty()) {
-            0.05 + 0.05 * populationRatioOrder.indexOf(carrierId) / populationRatioOrder.size
-        } else {
-            0.1
-        }
-
-        if (commonPopData.adultPopulation > 0.0) {
-            // Multiply by 1.1 so the pop can save their salary
-            val salaryPerAdultPopulation: Double = min(
-                desireResourceFuelNeeded,
-                maxFuelAsSalary
-            ) / commonPopData.adultPopulation
-
-            val salary: Double = when {
-                salaryPerAdultPopulation > maxSalary -> maxSalary
-                salaryPerAdultPopulation < minSalary -> minSalary
-                else -> salaryPerAdultPopulation
-            } * populationOrderRatioFactor
-
-            planDataAtPlayer.addCommand(
-                ChangeSalaryCommand(
-                    toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                    fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                    fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
-                    carrierId = carrierId,
-                    popType = popType,
-                    salary = salary,
-                )
-            )
-        }
     }
 }

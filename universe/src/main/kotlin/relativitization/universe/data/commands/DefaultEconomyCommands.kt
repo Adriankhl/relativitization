@@ -622,24 +622,91 @@ data class ChangeResourceTargetProportionCommand(
 }
 
 /**
- * Change the salary of pop
+ * Change the base salary of all pop system
+ *
+ * @property baseSalaryPerEmployee the new base salary per employee
+ */
+@Serializable
+data class ChangeBaseSalaryCommand(
+    override val toId: Int,
+    override val fromId: Int,
+    override val fromInt4D: Int4D,
+    val baseSalaryPerEmployee: Double,
+) : DefaultCommand() {
+    override fun description(): I18NString = I18NString(
+        listOf(
+            NormalString("Change the base salary to "),
+            IntTranslateString(0),
+            NormalString(". ")
+        ),
+        listOf(
+            baseSalaryPerEmployee.toString(),
+        ),
+    )
+
+    override fun canSend(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): CommandErrorMessage {
+        val isSelf = CommandErrorMessage(
+            playerData.playerId == toId,
+            CommandI18NStringFactory.isNotToSelf(fromId, toId)
+        )
+
+        val isBaseSalaryValid = CommandErrorMessage(
+            baseSalaryPerEmployee >= 0.0,
+            I18NString("Base salary is not valid")
+        )
+
+        return CommandErrorMessage(
+            listOf(
+                isSelf,
+                isBaseSalaryValid,
+            )
+        )
+    }
+
+    override fun canExecute(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): CommandErrorMessage {
+        val isSelf = CommandErrorMessage(
+            playerData.playerId == fromId,
+            CommandI18NStringFactory.isNotFromSelf(playerData.playerId, fromId)
+        )
+
+        return CommandErrorMessage(
+            listOf(
+                isSelf,
+            )
+        )
+    }
+
+    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+        playerData.playerInternalData.popSystemData().generalPopSystemData
+            .baseSalaryPerEmployee = baseSalaryPerEmployee
+    }
+}
+
+/**
+ * Change the salary factor of a pop in a specific carrier
  *
  * @property carrierId the id of the carrier where the pop is located
  * @property popType the type of the pop
- * @property salary the new salary
+ * @property salaryFactor the new salary factor
  */
 @Serializable
-data class ChangeSalaryCommand(
+data class ChangeSalaryFactorCommand(
     override val toId: Int,
     override val fromId: Int,
     override val fromInt4D: Int4D,
     val carrierId: Int,
     val popType: PopType,
-    val salary: Double,
+    val salaryFactor: Double,
 ) : DefaultCommand() {
     override fun description(): I18NString = I18NString(
         listOf(
-            NormalString("Change the salary of pop "),
+            NormalString("Change the salary factor of pop "),
             IntTranslateString(0),
             NormalString(" in carrier "),
             IntString(1),
@@ -650,7 +717,7 @@ data class ChangeSalaryCommand(
         listOf(
             popType.toString(),
             carrierId.toString(),
-            salary.toString(),
+            salaryFactor.toString(),
         ),
     )
 
@@ -668,10 +735,16 @@ data class ChangeSalaryCommand(
             I18NString("Carrier does not exist. ")
         )
 
+        val isSalaryFactorValid = CommandErrorMessage(
+            (salaryFactor >= 1.0) && (salaryFactor <= 10.0),
+            I18NString("Salary factor is not valid")
+        )
+
         return CommandErrorMessage(
             listOf(
                 isSelf,
-                hasCarrier
+                hasCarrier,
+                isSalaryFactorValid,
             )
         )
     }
@@ -701,6 +774,6 @@ data class ChangeSalaryCommand(
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
         playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
             carrierId
-        ).allPopData.getCommonPopData(popType).salaryPerEmployee = salary
+        ).allPopData.getCommonPopData(popType).salaryFactor = salaryFactor
     }
 }
