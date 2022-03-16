@@ -22,10 +22,10 @@ object MergePlayer : Mechanism() {
 
         // Change agree merge state to false if the player is a top leader
         if (mutablePlayerData.isTopLeader()) {
-            mutablePlayerData.playerInternalData.politicsData().agreeMerge = false
+            mutablePlayerData.playerInternalData.politicsData().hasAgreedMerge = false
         }
 
-        return if ((mutablePlayerData.playerInternalData.politicsData().agreeMerge) &&
+        return if ((mutablePlayerData.playerInternalData.politicsData().hasAgreedMerge) &&
             (!mutablePlayerData.isTopLeader())
         ) {
 

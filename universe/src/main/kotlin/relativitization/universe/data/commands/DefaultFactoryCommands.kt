@@ -78,7 +78,7 @@ data class BuildForeignFuelFactoryCommand(
         val isTopLeader: Boolean = playerData.isTopLeader()
         val allowConstruction = CommandErrorMessage(
             isTopLeader ||
-                    playerData.playerInternalData.politicsData().allowSubordinateBuildFactory,
+                    playerData.playerInternalData.politicsData().isSubordinateBuildFactoryAllowed,
             I18NString("Not allow to build factory. ")
         )
 
@@ -154,12 +154,12 @@ data class BuildForeignFuelFactoryCommand(
         val sameTopLeaderId: Boolean = playerData.topLeaderId() == senderTopLeaderId
 
         val canForeignInvestorBuild: Boolean = (!sameTopLeaderId &&
-                playerData.playerInternalData.politicsData().allowForeignInvestor)
+                playerData.playerInternalData.politicsData().isForeignInvestorAllowed)
 
         val isSenderTopLeader: Boolean = fromId == playerData.topLeaderId()
 
         val canSubordinateBuild: Boolean = (sameTopLeaderId && !isSenderTopLeader &&
-                playerData.playerInternalData.politicsData().allowSubordinateBuildFactory)
+                playerData.playerInternalData.politicsData().isSubordinateBuildFactoryAllowed)
 
         val allowConstruction = CommandErrorMessage(
             isSenderTopLeader || canForeignInvestorBuild || canSubordinateBuild,
@@ -295,7 +295,7 @@ data class BuildForeignResourceFactoryCommand(
         val isTopLeader: Boolean = playerData.isTopLeader()
         val allowConstruction = CommandErrorMessage(
             isTopLeader ||
-                    playerData.playerInternalData.politicsData().allowSubordinateBuildFactory,
+                    playerData.playerInternalData.politicsData().isSubordinateBuildFactoryAllowed,
             I18NString("Not allow to build factory. ")
         )
 
@@ -381,12 +381,12 @@ data class BuildForeignResourceFactoryCommand(
         val sameTopLeaderId: Boolean = playerData.topLeaderId() == senderTopLeaderId
 
         val canForeignInvestorBuild: Boolean = (!sameTopLeaderId &&
-                playerData.playerInternalData.politicsData().allowForeignInvestor)
+                playerData.playerInternalData.politicsData().isForeignInvestorAllowed)
 
         val isSenderTopLeader: Boolean = fromId == playerData.topLeaderId()
 
         val canSubordinateBuild: Boolean = (sameTopLeaderId && !isSenderTopLeader &&
-                playerData.playerInternalData.politicsData().allowSubordinateBuildFactory)
+                playerData.playerInternalData.politicsData().isSubordinateBuildFactoryAllowed)
 
         val allowConstruction = CommandErrorMessage(
             isSenderTopLeader || canForeignInvestorBuild || canSubordinateBuild,
@@ -492,7 +492,7 @@ data class BuildLocalFuelFactoryCommand(
         val isTopLeader: Boolean = playerData.isTopLeader()
         val allowSubordinateConstruction = CommandErrorMessage(
             isTopLeader ||
-                    playerData.playerInternalData.politicsData().allowSubordinateBuildFactory,
+                    playerData.playerInternalData.politicsData().isSubordinateBuildFactoryAllowed,
             I18NString("Not allow to build factory. ")
         )
 
@@ -525,13 +525,13 @@ data class BuildLocalFuelFactoryCommand(
 
         val canSenderBuild = CommandErrorMessage(
             isSenderTopLeader ||
-                    playerData.playerInternalData.politicsData().allowSubordinateBuildFactory,
+                    playerData.playerInternalData.politicsData().isSubordinateBuildFactoryAllowed,
             I18NString("Sender cannot build. ")
         )
 
         val canLeaderBuild = CommandErrorMessage(
             isSelf ||
-                    playerData.playerInternalData.politicsData().allowLeaderBuildLocalFactory,
+                    playerData.playerInternalData.politicsData().isLeaderBuildLocalFactoryAllowed,
             I18NString("Sender is not a top leader. ")
         )
 
@@ -652,7 +652,7 @@ data class BuildLocalResourceFactoryCommand(
         val isTopLeader: Boolean = playerData.isTopLeader()
         val allowSubordinateConstruction = CommandErrorMessage(
             isTopLeader ||
-                    playerData.playerInternalData.politicsData().allowSubordinateBuildFactory,
+                    playerData.playerInternalData.politicsData().isSubordinateBuildFactoryAllowed,
             I18NString("Not allow to build factory. ")
         )
 
@@ -685,13 +685,13 @@ data class BuildLocalResourceFactoryCommand(
 
         val canSenderBuild = CommandErrorMessage(
             isSenderTopLeader ||
-                    playerData.playerInternalData.politicsData().allowSubordinateBuildFactory,
+                    playerData.playerInternalData.politicsData().isSubordinateBuildFactoryAllowed,
             I18NString("Sender cannot build. ")
         )
 
         val canLeaderBuild = CommandErrorMessage(
             isSelf ||
-                    playerData.playerInternalData.politicsData().allowLeaderBuildLocalFactory,
+                    playerData.playerInternalData.politicsData().isLeaderBuildLocalFactoryAllowed,
             I18NString("Sender is not a top leader. ")
         )
 
@@ -1047,7 +1047,7 @@ data class RemoveLocalFuelFactoryCommand(
                 // the owner is not a leader, or leader building is not allowed
                 (ownerId == playerData.playerId) ||
                         !playerData.isLeader(ownerId) ||
-                        !playerData.playerInternalData.politicsData().allowLeaderBuildLocalFactory
+                        !playerData.playerInternalData.politicsData().isLeaderBuildLocalFactoryAllowed
             } else {
                 false
             },
@@ -1109,7 +1109,7 @@ data class RemoveLocalFuelFactoryCommand(
                 // the owner is not a leader, or leader building is not allowed
                 (ownerId == playerData.playerId) ||
                         !playerData.isLeader(ownerId) ||
-                        !playerData.playerInternalData.politicsData().allowLeaderBuildLocalFactory
+                        !playerData.playerInternalData.politicsData().isLeaderBuildLocalFactoryAllowed
             } else {
                 false
             },
@@ -1219,7 +1219,7 @@ data class RemoveLocalResourceFactoryCommand(
                 // the owner is not a leader, or leader building is not allowed
                 (ownerId == playerData.playerId) ||
                         !playerData.isLeader(ownerId) ||
-                        !playerData.playerInternalData.politicsData().allowLeaderBuildLocalFactory
+                        !playerData.playerInternalData.politicsData().isLeaderBuildLocalFactoryAllowed
             } else {
                 false
             },
@@ -1283,7 +1283,7 @@ data class RemoveLocalResourceFactoryCommand(
                 // the owner is not a leader, or leader building is not allowed
                 (ownerId == playerData.playerId) ||
                         !playerData.isLeader(ownerId) ||
-                        !playerData.playerInternalData.politicsData().allowLeaderBuildLocalFactory
+                        !playerData.playerInternalData.politicsData().isLeaderBuildLocalFactoryAllowed
             } else {
                 false
             },

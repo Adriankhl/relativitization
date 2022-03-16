@@ -58,6 +58,6 @@ data class AgreeMergeCommand(
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
-        playerData.playerInternalData.politicsData().agreeMerge = true
+        playerData.playerInternalData.politicsData().hasAgreedMerge = true
     }
 }

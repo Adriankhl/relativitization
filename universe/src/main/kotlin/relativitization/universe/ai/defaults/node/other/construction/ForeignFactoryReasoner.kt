@@ -93,10 +93,10 @@ class NewForeignFuelFactoryAtPlayerReasoner(
 
         val isTopLeaderSame: Boolean = otherPlayerData.topLeaderId() == thisPlayerData.topLeaderId()
         val canBuildAsSubordinate: Boolean = isTopLeaderSame && otherPlayerData.playerInternalData
-            .politicsData().allowSubordinateBuildFactory
+            .politicsData().isSubordinateBuildFactoryAllowed
 
         val canForeignInvestorBuild: Boolean = !isTopLeaderSame && otherPlayerData
-            .playerInternalData.politicsData().allowForeignInvestor
+            .playerInternalData.politicsData().isForeignInvestorAllowed
 
         return if (isTopLeader || canBuildAsSubordinate || canForeignInvestorBuild) {
             otherPlayerData.playerInternalData.popSystemData().carrierDataMap.keys.shuffled(

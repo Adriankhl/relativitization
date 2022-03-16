@@ -9,20 +9,20 @@ import kotlin.math.abs
 /**
  * Data related to politics
  *
- * @property agreeMerge agree remove this player and merge carriers to direct leader
+ * @property hasAgreedMerge agree remove this player and merge carriers to direct leader
  * @property centralizationLevel describe the centralization of the player, currently unused
- * @property allowSubordinateBuildFactory whether subordinate is allowed to build factory
- * @property allowLeaderBuildLocalFactory whether leader of a player is allowed to build local factory in the player
- * @property allowForeignInvestor whether foreign player is allowed to build factory
+ * @property isSubordinateBuildFactoryAllowed whether subordinate is allowed to build factory
+ * @property isLeaderBuildLocalFactoryAllowed whether leader of a player is allowed to build local factory in the player
+ * @property isForeignInvestorAllowed whether foreign player is allowed to build factory
  */
 @Serializable
 @SerialName("PoliticsData")
 data class PoliticsData(
-    val agreeMerge: Boolean = false,
+    val hasAgreedMerge: Boolean = false,
     val centralizationLevel: Int = 0,
-    val allowSubordinateBuildFactory: Boolean = false,
-    val allowLeaderBuildLocalFactory: Boolean = true,
-    val allowForeignInvestor: Boolean = true,
+    val isSubordinateBuildFactoryAllowed: Boolean = false,
+    val isLeaderBuildLocalFactoryAllowed: Boolean = true,
+    val isForeignInvestorAllowed: Boolean = true,
 ) : DefaultPlayerDataComponent() {
     /**
      * Compute the ideology distance between player to represent how different between the two
@@ -30,22 +30,22 @@ data class PoliticsData(
     fun ideologyDistance(politicsData: PoliticsData): Double {
         val centralizationDistance: Double =
             abs(centralizationLevel - politicsData.centralizationLevel).toDouble()
-        val allowSubordinateBuildFactoryDistance =
-            if (allowSubordinateBuildFactory == politicsData.allowSubordinateBuildFactory) {
+        val isSubordinateBuildFactoryAllowedDistance =
+            if (isSubordinateBuildFactoryAllowed == politicsData.isSubordinateBuildFactoryAllowed) {
                 0.0
             } else {
                 1.0
             }
 
-        val allowForeignInvestorDistance =
-            if (allowForeignInvestor == politicsData.allowForeignInvestor) {
+        val isForeignInvestorAllowedDistance =
+            if (isForeignInvestorAllowed == politicsData.isForeignInvestorAllowed) {
                 0.0
             } else {
                 1.0
             }
         return (centralizationDistance +
-                allowSubordinateBuildFactoryDistance +
-                allowForeignInvestorDistance
+                isSubordinateBuildFactoryAllowedDistance +
+                isForeignInvestorAllowedDistance
                 )
     }
 }
@@ -53,11 +53,11 @@ data class PoliticsData(
 @Serializable
 @SerialName("PoliticsData")
 data class MutablePoliticsData(
-    var agreeMerge: Boolean = false,
+    var hasAgreedMerge: Boolean = false,
     var centralizationLevel: Int = 0,
-    var allowSubordinateBuildFactory: Boolean = false,
-    var allowLeaderBuildLocalFactory: Boolean = true,
-    var allowForeignInvestor: Boolean = true,
+    var isSubordinateBuildFactoryAllowed: Boolean = false,
+    var isLeaderBuildLocalFactoryAllowed: Boolean = true,
+    var isForeignInvestorAllowed: Boolean = true,
 ) : MutableDefaultPlayerDataComponent()
 
 fun PlayerInternalData.politicsData(): PoliticsData =

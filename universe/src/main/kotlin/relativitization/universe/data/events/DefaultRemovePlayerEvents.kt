@@ -137,6 +137,6 @@ data class AskToMergeCarrierEvent(
         universeData3DAtPlayer: UniverseData3DAtPlayer
     ): Boolean {
         // Only cancel this event if the player agree to merge
-        return universeData3DAtPlayer.getCurrentPlayerData().playerInternalData.politicsData().agreeMerge
+        return universeData3DAtPlayer.getCurrentPlayerData().playerInternalData.politicsData().hasAgreedMerge
     }
 }

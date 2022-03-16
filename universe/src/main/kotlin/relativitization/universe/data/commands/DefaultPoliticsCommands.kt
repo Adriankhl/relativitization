@@ -83,8 +83,8 @@ data class ChangeFactoryPolicyCommand(
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
         val politicsData: MutablePoliticsData = playerData.playerInternalData.politicsData()
-        politicsData.allowSubordinateBuildFactory = allowSubordinateBuildFactory
-        politicsData.allowLeaderBuildLocalFactory = allowLeaderBuildLocalFactory
-        politicsData.allowForeignInvestor = allowForeignInvestor
+        politicsData.isSubordinateBuildFactoryAllowed = allowSubordinateBuildFactory
+        politicsData.isLeaderBuildLocalFactoryAllowed = allowLeaderBuildLocalFactory
+        politicsData.isForeignInvestorAllowed = allowForeignInvestor
     }
 }
