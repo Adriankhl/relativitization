@@ -60,8 +60,9 @@ internal class DefaultAITest {
 
         val middleView = universe.getUniverse3DViewAtPlayer(1)
 
-        val middleAllPopData = middleView.getCurrentPlayerData().playerInternalData.popSystemData()
-            .carrierDataMap.getValue(0).allPopData
+        val middlePopSystemData = middleView.getCurrentPlayerData().playerInternalData.popSystemData()
+
+        val middleAllPopData = middlePopSystemData.carrierDataMap.getValue(0).allPopData
 
         val middleResourceData = middleView.getCurrentPlayerData().playerInternalData.economyData()
             .resourceData
@@ -71,9 +72,14 @@ internal class DefaultAITest {
 
         val middleCarrierData = middleView.getCurrentPlayerData().playerInternalData.popSystemData().carrierDataMap
 
+        val middleAdultPopulation: Double = middleView.playerDataMap.values.sumOf {
+            it.playerInternalData.popSystemData().totalAdultPopulation()
+        }
+
         middleAllPopData.labourerPopData
         middleResourceData.singleResourceMap
         middleFuelData.production
+        middleAdultPopulation > initialAdultPopulation
         middleCarrierData[0]
 
         runBlocking {
@@ -90,13 +96,13 @@ internal class DefaultAITest {
 
         val finalView = universe.getUniverse3DViewAtPlayer(1)
 
-        val allPopData = finalView.getCurrentPlayerData().playerInternalData.popSystemData()
-            .carrierDataMap.getValue(0).allPopData
+        val popSystemData = finalView.getCurrentPlayerData().playerInternalData.popSystemData()
+
+        val allPopData = popSystemData.carrierDataMap.getValue(0).allPopData
         val resourceData = finalView.getCurrentPlayerData().playerInternalData.economyData()
             .resourceData
         val fuelData = finalView.getCurrentPlayerData().playerInternalData.physicsData()
             .fuelRestMassData
-        val popSystemData = finalView.getCurrentPlayerData().playerInternalData.popSystemData()
         val carrierData = finalView.getCurrentPlayerData().playerInternalData.popSystemData().carrierDataMap
 
         allPopData.labourerPopData

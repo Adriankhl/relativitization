@@ -215,7 +215,7 @@ object UpdatePrice : Mechanism() {
                 val priceChangeFactor: Double = when {
                     needToAvailableRatio > 5.0 -> maxPriceIncreaseFactor
                     (needToAvailableRatio > 1.0) -> {
-                        ((5.0 - needToAvailableRatio) / 4.0) * (maxPriceIncreaseFactor - 1.0) + 1.0
+                        ((needToAvailableRatio - 1.0) / 4.0) * (maxPriceIncreaseFactor - 1.0) + 1.0
                     }
                     (needToAvailableRatio > 0.2) -> {
                         ((needToAvailableRatio - 0.2) / 0.8) *

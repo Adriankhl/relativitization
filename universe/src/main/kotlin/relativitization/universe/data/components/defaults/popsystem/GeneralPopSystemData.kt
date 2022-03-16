@@ -9,10 +9,10 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class GeneralPopSystemData(
-    val baseSalaryPerEmployee: Double = 0.01,
+    val baseSalaryPerEmployee: Double = 1E-5,
 )
 
 @Serializable
 data class MutableGeneralPopSystemData(
-    var baseSalaryPerEmployee: Double = 0.01,
+    var baseSalaryPerEmployee: Double = 1E-5,
 )

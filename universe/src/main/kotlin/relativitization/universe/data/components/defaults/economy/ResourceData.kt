@@ -699,7 +699,7 @@ data class SingleResourceData(
     val resourceTargetProportion: ResourceTargetProportionData = ResourceTargetProportionData(),
     val resourceQuality: ResourceQualityData = ResourceQualityData(),
     val resourceQualityLowerBound: ResourceQualityData = ResourceQualityData(),
-    val resourcePrice: Double = 0.001,
+    val resourcePrice: Double = 1E-6,
 )
 
 @Serializable
@@ -708,7 +708,7 @@ data class MutableSingleResourceData(
     var resourceTargetProportion: MutableResourceTargetProportionData = MutableResourceTargetProportionData(),
     var resourceQuality: MutableResourceQualityData = MutableResourceQualityData(),
     var resourceQualityLowerBound: MutableResourceQualityData = MutableResourceQualityData(),
-    var resourcePrice: Double = 0.001,
+    var resourcePrice: Double = 1E-6,
 ) {
     /**
      * Add resource to this data

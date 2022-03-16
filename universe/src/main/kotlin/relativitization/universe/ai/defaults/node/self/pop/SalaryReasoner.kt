@@ -87,6 +87,8 @@ class AdjustBaseSalaryReasoner() : DualUtilityReasoner() {
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<DualUtilityOption> = listOf(
+        IncreaseBaseSalaryOption(),
+        DecreaseBaseSalaryOption(),
         DoNothingDualUtilityOption(rank = 1, multiplier = 1.0, bonus = 1.0)
     )
 }
@@ -154,7 +156,7 @@ class IncreaseBaseSalaryOption() : DualUtilityOption() {
 /**
  * Decrease salary if production fuel is decreasing
  */
-class DecreaseSalaryOption() : DualUtilityOption() {
+class DecreaseBaseSalaryOption() : DualUtilityOption() {
     override fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
