@@ -272,9 +272,9 @@ class RemoveSpecificSelfFuelFactoryOption(
         SufficientFuelFactoryAtCarrierAfterRemoveConsideration(
             carrierId = carrierId,
             fuelFactoryId = fuelFactoryId,
-            rankIfTrue = 1,
+            rankIfTrue = 0,
             multiplierIfTrue = 1.0,
-            bonusIfTrue = 1.0,
+            bonusIfTrue = 0.05,
             rankIfFalse = 0,
             multiplierIfFalse = 0.0,
             bonusIfFalse = 0.0
@@ -288,7 +288,7 @@ class RemoveSpecificSelfFuelFactoryOption(
         IncreasingProductionFuelConsideration(
             rankIfTrue = 0,
             multiplierIfTrue = 1.0,
-            bonusIfTrue = 0.1,
+            bonusIfTrue = 0.05,
             rankIfFalse = 0,
             multiplierIfFalse = 0.1,
             bonusIfFalse = 0.0
@@ -597,7 +597,7 @@ class RemoveSpecificSelfResourceFactoryOption(
                 resourceFactoryId = resourceFactoryId,
                 rankIfTrue = 0,
                 multiplierIfTrue = 1.0,
-                bonusIfTrue = 0.0,
+                bonusIfTrue = 0.05,
                 rankIfFalse = 0,
                 multiplierIfFalse = 0.0,
                 bonusIfFalse = 0.0
@@ -611,7 +611,7 @@ class RemoveSpecificSelfResourceFactoryOption(
             IncreasingProductionFuelConsideration(
                 rankIfTrue = 0,
                 multiplierIfTrue = 1.0,
-                bonusIfTrue = 0.1,
+                bonusIfTrue = 0.05,
                 rankIfFalse = 0,
                 multiplierIfFalse = 0.1,
                 bonusIfFalse = 0.0
