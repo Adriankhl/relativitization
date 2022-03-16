@@ -3,7 +3,6 @@ package relativitization.game.components.upper
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.ui.Container
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
-import com.badlogic.gdx.scenes.scene2d.ui.Slider
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.RelativitizationGame
 import relativitization.universe.data.PlayerData
@@ -12,6 +11,7 @@ import relativitization.universe.data.components.defaults.economy.ResourceQualit
 import relativitization.universe.data.components.defaults.economy.ResourceType
 import relativitization.universe.data.components.defaults.popsystem.CarrierData
 import relativitization.universe.data.components.defaults.popsystem.CarrierInternalData
+import relativitization.universe.data.components.defaults.popsystem.GeneralPopSystemData
 import relativitization.universe.data.components.defaults.popsystem.pop.AllPopData
 import relativitization.universe.data.components.defaults.popsystem.pop.CommonPopData
 import relativitization.universe.data.components.defaults.popsystem.pop.PopType
@@ -74,14 +74,16 @@ class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
 
     private var exportCenterResourceQualityClass: ResourceQualityClass = ResourceQualityClass.FIRST
 
+    // Variable to determine whether general data or carrier detail should be showed
+    private var showGeneralPopSystemData: Boolean = true
+
     // Variable to determine which information is shown, only one should be true
     private var showCarrierInfo: Boolean = true
     private var showNewCarrierInfo: Boolean = false
     private var showNewPlayerInfo: Boolean = false
 
-    // Variables to determine whether pop info is shown
-    private var showCommonPopInfo: Boolean = true
-
+    // Variables to determine whether common pop data or pop-specific info should be showed
+    private var showCommonPopData: Boolean = true
 
     init {
         // Set background color
@@ -133,11 +135,7 @@ class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
 
     private fun updatePlayerData() {
         playerData = game.universeClient.getValidPrimaryPlayerData()
-
-        if (!playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(carrierId)) {
-            carrierId = playerData.playerInternalData
-                .popSystemData().carrierDataMap.keys.firstOrNull() ?: -1
-        }
+        updateCarrierId()
     }
 
 
@@ -153,45 +151,14 @@ class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
 
         table.row().space(10f)
 
-        table.add(createLabel("Carrier:", gdxSettings.normalFontSize))
-
-        table.row()
-
-        val carrierIdSelectBox = createSelectBox(
-            playerData.playerInternalData.popSystemData().carrierDataMap.keys.toList(),
-            carrierId,
-            gdxSettings.smallFontSize,
-        ) { id, _ ->
-            carrierId = id
-            updateCarrierTable()
-        }
-        table.add(carrierIdSelectBox)
-
-        table.row().space(10f)
-
-        table.add(createInfoOptionTable())
+        table.add(createPopSystemInfoOptionTable())
 
         table.row().space(20f)
 
-        if (showCarrierInfo) {
-            if (playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(carrierId)) {
-                updateCarrierTable()
-            }
-            table.add(carrierTable)
-
-            table.row().space(30f)
-        }
-
-        if (showNewCarrierInfo) {
-            table.add(createNewCarrierTable())
-
-            table.row().space(30f)
-        }
-
-        if (showNewPlayerInfo) {
-            table.add(createNewPlayerTable())
-
-            table.row().space(30f)
+        if (showGeneralPopSystemData) {
+            table.add(createGeneralPopSystemInfoTable()).top()
+        } else {
+            table.add(createCarrierInfoTable()).top()
         }
 
         // Add empty space for Android keyboard input
@@ -200,11 +167,163 @@ class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
         table.add(emptyLabel).minHeight(Gdx.graphics.height.toFloat())
     }
 
-    private fun createInfoOptionTable(): Table {
+
+    private fun updateCarrierId() {
+        // Update carrier id in case if there is no such carrier
+        carrierId = if (playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(carrierId)) {
+            carrierId
+        } else {
+            playerData.playerInternalData.popSystemData().carrierDataMap.keys.firstOrNull() ?: -1
+        }
+    }
+
+    private fun createPopSystemInfoOptionTable(): Table {
         val nestedTable = Table()
+
+        val showGeneralInfoButton = createTextButton(
+            "General",
+            gdxSettings.smallFontSize,
+            gdxSettings.soundEffectsVolume
+        ) {
+            showGeneralPopSystemData = true
+            updateTable()
+        }
+        nestedTable.add(showGeneralInfoButton).pad(5f)
 
         val showCarrierInfoButton = createTextButton(
             "Carrier",
+            gdxSettings.smallFontSize,
+            gdxSettings.soundEffectsVolume
+        ) {
+            showGeneralPopSystemData = false
+            updateTable()
+        }
+        nestedTable.add(showCarrierInfoButton).pad(5f)
+
+        return nestedTable
+    }
+
+    private fun createGeneralPopSystemInfoTable(): Table {
+        val nestedTable = Table()
+
+        val generalPopSystemData: GeneralPopSystemData =
+            playerData.playerInternalData.popSystemData().generalPopSystemData
+
+        nestedTable.add(
+            createLabel(
+                "Base salary: ",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.add(
+            createLabel(
+                "${generalPopSystemData.baseSalaryPerEmployee}",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.row().space(10f)
+
+        val targetBaseSalary = createDoubleTextField(
+            generalPopSystemData.baseSalaryPerEmployee,
+            gdxSettings.smallFontSize
+        )
+
+        val changeBaseSalaryTextButton = createTextButton(
+            "Change base salary",
+            gdxSettings.smallFontSize,
+            gdxSettings.soundEffectsVolume
+        ) {
+            val changeBaseSalaryCommand = ChangeBaseSalaryCommand(
+                toId = playerData.playerId,
+                fromId = game.universeClient.getCurrentPlayerData().playerId,
+                fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
+                baseSalaryPerEmployee = targetBaseSalary.value,
+            )
+            game.universeClient.currentCommand = changeBaseSalaryCommand
+        }
+        nestedTable.add(changeBaseSalaryTextButton).colspan(2)
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "Target base salary: ",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.add(targetBaseSalary.textField)
+
+        nestedTable.row().space(10f)
+
+        val targetBaseSalarySliderButtonTable = createDoubleSliderButtonTable(
+            default = targetBaseSalary.value,
+            sliderStepSize = 0.01f,
+            sliderDecimalPlace = 2,
+            buttonSize = 40f * gdxSettings.imageScale,
+            sliderScale = gdxSettings.imageScale,
+            buttonSoundVolume = gdxSettings.soundEffectsVolume,
+            currentValue = { targetBaseSalary.value },
+        ) {
+            targetBaseSalary.value = it
+        }
+
+        nestedTable.add(targetBaseSalarySliderButtonTable).colspan(2)
+
+        return nestedTable
+    }
+
+    private fun createCarrierInfoTable(): Table {
+        val nestedTable = Table()
+
+        val carrierIdTable = Table()
+
+        carrierIdTable.add(createLabel("Carrier:", gdxSettings.normalFontSize)).pad(5f)
+
+        updateCarrierId()
+        val carrierIdSelectBox = createSelectBox(
+            playerData.playerInternalData.popSystemData().carrierDataMap.keys.toList(),
+            carrierId,
+            gdxSettings.smallFontSize,
+        ) { id, _ ->
+            carrierId = id
+            updateCarrierTable()
+        }
+        carrierIdTable.add(carrierIdSelectBox).pad(5f)
+
+        nestedTable.add(carrierIdTable)
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(createCarrierInfoOptionTable()).colspan(2)
+
+        nestedTable.row().space(20f)
+
+        if (showCarrierInfo) {
+            if (playerData.playerInternalData.popSystemData().carrierDataMap.containsKey(carrierId)) {
+                updateCarrierTable()
+            }
+            nestedTable.add(carrierTable).colspan(2)
+        }
+
+        if (showNewCarrierInfo) {
+            nestedTable.add(createNewCarrierTable()).colspan(2)
+        }
+
+        if (showNewPlayerInfo) {
+            nestedTable.add(createNewPlayerTable()).colspan(2)
+        }
+
+        return nestedTable
+    }
+
+    private fun createCarrierInfoOptionTable(): Table {
+        val nestedTable = Table()
+
+        val showCarrierDetailButton = createTextButton(
+            "Details",
             gdxSettings.smallFontSize,
             gdxSettings.soundEffectsVolume
         ) {
@@ -213,7 +332,7 @@ class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
             showNewPlayerInfo = false
             updateTable()
         }
-        nestedTable.add(showCarrierInfoButton).pad(5f)
+        nestedTable.add(showCarrierDetailButton).pad(5f)
 
         val showNewCarrierInfoButton = createTextButton(
             "New carrier",
@@ -242,8 +361,11 @@ class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
         return nestedTable
     }
 
+
     private fun updateCarrierTable() {
         carrierTable.clear()
+
+        updateCarrierId()
 
         val carrier: CarrierData =
             playerData.playerInternalData.popSystemData().carrierDataMap.getValue(carrierId)
@@ -277,15 +399,29 @@ class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
 
         carrierTable.row().space(30f)
 
+        val buttonTable = Table()
+
         val commonPopTextButton = createTextButton(
             text = "Common",
             fontSize = gdxSettings.smallFontSize,
             soundVolume = gdxSettings.soundEffectsVolume
         ) {
-            showCommonPopInfo = !showCommonPopInfo
+            showCommonPopData = true
             updateTable()
         }
-        carrierTable.add(commonPopTextButton).colspan(2)
+        buttonTable.add(commonPopTextButton).pad(5f)
+
+        val specificPopTextButton = createTextButton(
+            text = "Specific",
+            fontSize = gdxSettings.smallFontSize,
+            soundVolume = gdxSettings.soundEffectsVolume
+        ) {
+            showCommonPopData = false
+            updateTable()
+        }
+        buttonTable.add(specificPopTextButton).pad(5f)
+
+        carrierTable.add(buttonTable).colspan(2)
 
         carrierTable.row().space(20f)
 
@@ -331,33 +467,27 @@ class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
     private fun createPopTable(allPopData: AllPopData): Table {
         val nestedTable = Table()
 
-        if (showCommonPopInfo) {
+        if (showCommonPopData) {
             nestedTable.add(createCommonPopTable(allPopData.getCommonPopData(popType)))
 
-            nestedTable.row().space(30f)
+        } else {
+            when (popType) {
+                PopType.LABOURER -> nestedTable.add(createLabourerTable(allPopData.labourerPopData))
+                PopType.SCHOLAR -> nestedTable.add(createScholarTable(allPopData.scholarPopData))
+                PopType.ENGINEER -> nestedTable.add(createEngineerTable(allPopData.engineerPopData))
+                PopType.EDUCATOR -> nestedTable.add(Table())
+                PopType.MEDIC -> nestedTable.add(Table())
+                PopType.SERVICE_WORKER -> nestedTable.add(createServiceTable(allPopData.servicePopData))
+                PopType.ENTERTAINER -> nestedTable.add(Table())
+                PopType.SOLDIER -> nestedTable.add(createSoldierTable(allPopData.soldierPopData))
+            }
         }
-
-        when (popType) {
-            PopType.LABOURER -> nestedTable.add(createLabourerTable(allPopData.labourerPopData))
-            PopType.SCHOLAR -> nestedTable.add(createScholarTable(allPopData.scholarPopData))
-            PopType.ENGINEER -> nestedTable.add(createEngineerTable(allPopData.engineerPopData))
-            PopType.EDUCATOR -> nestedTable.add(Table())
-            PopType.MEDIC -> nestedTable.add(Table())
-            PopType.SERVICE_WORKER -> nestedTable.add(createServiceTable(allPopData.servicePopData))
-            PopType.ENTERTAINER -> nestedTable.add(Table())
-            PopType.SOLDIER -> nestedTable.add(createSoldierTable(allPopData.soldierPopData))
-        }
-
 
         return nestedTable
     }
 
     private fun createCommonPopTable(commonPopData: CommonPopData): Table {
         val nestedTable = Table()
-
-        nestedTable.add(createLabel("Common pop data: ", gdxSettings.normalFontSize))
-
-        nestedTable.row().space(10f)
 
         nestedTable.add(
             createLabel(
@@ -463,7 +593,7 @@ class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
         )
 
 
-        val changeSalaryTextButton = createTextButton(
+        val changeSalaryFactorTextButton = createTextButton(
             text = "Change salary factor",
             fontSize = gdxSettings.smallFontSize,
             soundVolume = gdxSettings.soundEffectsVolume,
@@ -480,7 +610,7 @@ class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
 
             game.universeClient.currentCommand = changeSalaryFactorCommand
         }
-        nestedTable.add(changeSalaryTextButton).colspan(2)
+        nestedTable.add(changeSalaryFactorTextButton).colspan(2)
 
         nestedTable.row().space(10f)
 
@@ -547,15 +677,6 @@ class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
 
     private fun createLabourerTable(labourerPopData: LabourerPopData): Table {
         val nestedTable = Table()
-
-        nestedTable.add(
-            createLabel(
-                "Labourer data: ",
-                gdxSettings.normalFontSize
-            )
-        )
-
-        nestedTable.row().space(30f)
 
         nestedTable.add(
             createLabel(
@@ -1714,15 +1835,6 @@ class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
 
         nestedTable.add(
             createLabel(
-                "Scholar data: ",
-                gdxSettings.normalFontSize
-            )
-        )
-
-        nestedTable.row().space(30f)
-
-        nestedTable.add(
-            createLabel(
                 "Institutes: ",
                 gdxSettings.normalFontSize
             )
@@ -2047,15 +2159,6 @@ class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
 
     private fun createEngineerTable(engineerPopData: EngineerPopData): Table {
         val nestedTable = Table()
-
-        nestedTable.add(
-            createLabel(
-                "Engineer data: ",
-                gdxSettings.normalFontSize
-            )
-        )
-
-        nestedTable.row().space(30f)
 
         nestedTable.add(
             createLabel(
@@ -2385,15 +2488,6 @@ class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
 
         nestedTable.add(
             createLabel(
-                "Service worker data: ",
-                gdxSettings.normalFontSize
-            )
-        )
-
-        nestedTable.row().space(30f)
-
-        nestedTable.add(
-            createLabel(
                 "Export centers: ",
                 gdxSettings.normalFontSize
             )
@@ -2696,15 +2790,6 @@ class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
 
     private fun createSoldierTable(soldierPopData: SoldierPopData): Table {
         val nestedTable = Table()
-
-        nestedTable.add(
-            createLabel(
-                "Soldier data: ",
-                gdxSettings.normalFontSize
-            )
-        )
-
-        nestedTable.row().space(20f)
 
         nestedTable.add(
             createLabel(
