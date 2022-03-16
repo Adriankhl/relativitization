@@ -11,6 +11,7 @@ import relativitization.universe.generate.method.random.RandomOneStarPerPlayerGe
 import relativitization.universe.global.DefaultGlobalMechanismList
 import relativitization.universe.global.name
 import relativitization.universe.maths.number.Notation
+import relativitization.universe.maths.number.toScientificNotation
 import relativitization.universe.mechanisms.DefaultMechanismLists
 import relativitization.universe.mechanisms.name
 
@@ -45,9 +46,9 @@ fun main() {
             "Turn: $turn. Player: ${universe.availablePlayers().size}. " +
                     "Dead: ${universe.getDeadIdList().size}. " +
                     "Carrier: ${gameStatus.numCarrier}. " +
-                    "Population: ${Notation.roundDecimal(gameStatus.totalPopulation, 2)}. "  +
-                    "Fuel: ${Notation.roundDecimal(gameStatus.totalFuelRestMass, 2)}. " +
-                    "Saving: ${Notation.roundDecimal(gameStatus.totalSaving, 2)}"
+                    "Population: ${gameStatus.totalPopulation.toScientificNotation().toDouble(2)}. "  +
+                    "Fuel: ${gameStatus.totalFuelRestMass.toScientificNotation().toDouble(2)}. " +
+                    "Saving: ${gameStatus.totalSaving.toScientificNotation().toDouble(2)}"
         )
     }
 }
