@@ -46,5 +46,10 @@ tasks {
 
 application {
     mainClass.set(project.properties["mainClass"].toString())
-    applicationDefaultJvmArgs = listOf("-XX:MaxRAMPercentage=50")
+    val ramPercentage: String = project.properties.getOrDefault(
+        "ramPercentage",
+        "50"
+    ).toString()
+    println("MaxRAMPercentage: $ramPercentage")
+    applicationDefaultJvmArgs = listOf("-XX:MaxRAMPercentage=$ramPercentage")
 }
