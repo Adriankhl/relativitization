@@ -13,6 +13,7 @@ import relativitization.universe.generate.method.name
 import relativitization.universe.generate.method.random.RandomOneStarPerPlayerGenerate
 import relativitization.universe.global.DefaultGlobalMechanismList
 import relativitization.universe.global.name
+import relativitization.universe.maths.number.Notation
 import relativitization.universe.mechanisms.DefaultMechanismLists
 import relativitization.universe.mechanisms.name
 
@@ -43,9 +44,12 @@ fun main() {
         val gameStatus: GameStatus = GameStatus.compute(universe)
 
         println(
-            "Turn: $turn. Player: ${universe.availablePlayers().size}. Dead: ${universe.getDeadIdList().size}. " +
-                    "Carrier: ${gameStatus.numCarrier}. Population: ${gameStatus.totalPopulation}. "  +
-                    "Fuel Rest mass: ${gameStatus.totalFuelRestMass}"
+            "Turn: $turn. Player: ${universe.availablePlayers().size}. " +
+                    "Dead: ${universe.getDeadIdList().size}. " +
+                    "Carrier: ${gameStatus.numCarrier}. " +
+                    "Population: ${Notation.roundDecimal(gameStatus.totalPopulation, 2)}. "  +
+                    "Fuel: ${Notation.roundDecimal(gameStatus.totalFuelRestMass, 2)}. " +
+                    "Saving: ${Notation.roundDecimal(gameStatus.totalSaving, 2)}"
         )
     }
 }
@@ -54,10 +58,16 @@ internal class GameStatus(
     val numCarrier: Int,
     val totalPopulation: Double,
     val totalFuelRestMass: Double,
+    val totalSaving: Double,
 ) {
     companion object {
         fun compute(universe: Universe): GameStatus {
-            val gameStatus = GameStatus(0, 0.0, 0.0)
+            val gameStatus = GameStatus(
+                numCarrier = 0,
+                totalPopulation = 0.0,
+                totalFuelRestMass = 0.0,
+                totalSaving = 0.0,
+            )
 
             return universe.availablePlayers().fold(gameStatus) { status, id ->
                 val universeDataAtPlayer: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(id)
@@ -71,10 +81,14 @@ internal class GameStatus(
                 val totalFuelRestMass: Double = universeDataAtPlayer.getCurrentPlayerData().playerInternalData
                     .physicsData().fuelRestMassData.total()
 
+                val totalSaving: Double = universeDataAtPlayer.getCurrentPlayerData().playerInternalData
+                    .popSystemData().totalSaving()
+
                 val newStatus = GameStatus(
                     numCarrier = status.numCarrier + numLocalCarrier,
                     totalPopulation = status.totalPopulation + localPopulation,
                     totalFuelRestMass = status.totalFuelRestMass + totalFuelRestMass,
+                    totalSaving = status.totalSaving  + totalSaving,
                 )
 
                 newStatus

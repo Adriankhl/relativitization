@@ -10,6 +10,7 @@ import relativitization.universe.generate.method.name
 import relativitization.universe.generate.method.random.RandomOneStarPerPlayerGenerate
 import relativitization.universe.global.DefaultGlobalMechanismList
 import relativitization.universe.global.name
+import relativitization.universe.maths.number.Notation
 import relativitization.universe.mechanisms.DefaultMechanismLists
 import relativitization.universe.mechanisms.name
 
@@ -41,9 +42,12 @@ fun main() {
         val gameStatus: GameStatus = GameStatus.compute(universe)
 
         println(
-            "Turn: $turn. Player: ${universe.availablePlayers().size}. Dead: ${universe.getDeadIdList().size}. " +
-                    "Carrier: ${gameStatus.numCarrier}. Population: ${gameStatus.totalPopulation}. "  +
-                    "Rest mass: ${gameStatus.totalPopulation}"
+            "Turn: $turn. Player: ${universe.availablePlayers().size}. " +
+                    "Dead: ${universe.getDeadIdList().size}. " +
+                    "Carrier: ${gameStatus.numCarrier}. " +
+                    "Population: ${Notation.roundDecimal(gameStatus.totalPopulation, 2)}. "  +
+                    "Fuel: ${Notation.roundDecimal(gameStatus.totalFuelRestMass, 2)}. " +
+                    "Saving: ${Notation.roundDecimal(gameStatus.totalSaving, 2)}"
         )
     }
 }
