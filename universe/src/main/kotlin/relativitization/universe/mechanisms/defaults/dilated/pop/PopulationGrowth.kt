@@ -71,15 +71,17 @@ object PopulationGrowth : Mechanism() {
             medicPopData.commonPopData.adultPopulation * medicPopData.commonPopData.satisfaction
         }
 
-        return if (totalPopulation > 0.0) {
-            if (effectiveMedicPopulation * 10.0 > totalPopulation) {
-                1.0
-            } else {
-                effectiveMedicPopulation * 10.0 / totalPopulation
-            }
+        val medicLevel: Double = if (totalPopulation > 0.0) {
+            effectiveMedicPopulation * 10.0 / totalPopulation
         } else {
-            logger.error("computeMedicFactor: population <= 0.0")
+            logger.debug("total population $totalPopulation <= 0.0")
             1.0
+        }
+
+        return when {
+            medicLevel > 1.0 -> 1.25
+            medicLevel < 0.0 -> 0.8
+            else -> medicLevel * 0.45 + 0.8
         }
     }
 
@@ -105,9 +107,9 @@ object PopulationGrowth : Mechanism() {
             if (popType == PopType.SCHOLAR || popType == PopType.ENGINEER) {
                 // Modifier by education level, range from 0.5 to 1.5
                 when {
-                    educationLevel > 1.0 -> 1.5
-                    educationLevel < 0.0 -> 0.5
-                    else -> educationLevel + 0.5
+                    educationLevel > 1.0 -> 1.25
+                    educationLevel < 0.0 -> 0.8
+                    else -> educationLevel * 0.45 + 0.8
                 }
             } else {
                 1.0
