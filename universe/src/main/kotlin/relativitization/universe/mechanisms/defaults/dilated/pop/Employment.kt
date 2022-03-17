@@ -114,11 +114,11 @@ object Employment : Mechanism() {
         mutableEconomyData: MutableEconomyData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
     ) {
-        val salary: Double =
+        val salaryPerEmployee: Double =
             labourerPopData.commonPopData.salaryPerEmployee(mutableGeneralPopSystemData)
 
         val incomeTax: Double =
-            mutableEconomyData.taxData.taxRateData.incomeTax.getIncomeTax(salary)
+            mutableEconomyData.taxData.taxRateData.incomeTax.getIncomeTax(salaryPerEmployee)
 
         // Available population to work
         val availableEmployee: Double = labourerPopData.commonPopData.adultPopulation
@@ -156,8 +156,8 @@ object Employment : Mechanism() {
         }.fold(0.0) { acc, mutableFuelFactoryData ->
             val maxNumEmployee: Double = mutableFuelFactoryData.maxNumEmployee
 
-            val maxPaidEmployee: Double = if (salary > 0.0) {
-                val payWithTax: Double = salary * (1.0 + incomeTax)
+            val maxPaidEmployee: Double = if (salaryPerEmployee > 0.0) {
+                val payWithTax: Double = salaryPerEmployee * (1.0 + incomeTax)
                 mutableFuelFactoryData.storedFuelRestMass / payWithTax
             } else {
                 maxNumEmployee
@@ -171,8 +171,8 @@ object Employment : Mechanism() {
                 (it.ownerPlayerId != universeData3DAtPlayer.getCurrentPlayerData().playerId) && (it.isOpened)
             }.fold(0.0) { acc, mutableResourceFactoryData ->
                 val maxNumEmployee: Double = mutableResourceFactoryData.maxNumEmployee
-                val maxPaidEmployee: Double = if (salary > 0.0) {
-                    val payWithTax: Double = salary * (1.0 + incomeTax)
+                val maxPaidEmployee: Double = if (salaryPerEmployee > 0.0) {
+                    val payWithTax: Double = salaryPerEmployee * (1.0 + incomeTax)
                     mutableResourceFactoryData.storedFuelRestMass / payWithTax
                 } else {
                     maxNumEmployee
@@ -202,7 +202,7 @@ object Employment : Mechanism() {
 
             val maxNumEmployee: Double = it.maxNumEmployee
             val newNumEmployee: Double = maxNumEmployee * employeeFraction
-            val pay: Double = newNumEmployee * salary
+            val pay: Double = newNumEmployee * salaryPerEmployee
             val tax: Double = pay * incomeTax
             val payWithTax: Double = pay + tax
             val availableFuel: Double = mutablePhysicsData.fuelRestMassData.production
@@ -229,7 +229,7 @@ object Employment : Mechanism() {
 
             val maxNumEmployee: Double = it.maxNumEmployee
             val newNumEmployee: Double = maxNumEmployee * employeeFraction
-            val pay: Double = newNumEmployee * salary
+            val pay: Double = newNumEmployee * salaryPerEmployee
             val tax: Double = pay * incomeTax
             val payWithTax: Double = pay + tax
             val availableFuel: Double = mutablePhysicsData.fuelRestMassData.production
@@ -257,8 +257,8 @@ object Employment : Mechanism() {
             val maxNumEmployee: Double = it.maxNumEmployee
 
             val maxNewNumEmployee: Double = maxNumEmployee * employeeFraction
-            val maxPaidEmployee: Double = if (salary > 0.0) {
-                val singlePayWithTax: Double = salary * (1.0 + incomeTax)
+            val maxPaidEmployee: Double = if (salaryPerEmployee > 0.0) {
+                val singlePayWithTax: Double = salaryPerEmployee * (1.0 + incomeTax)
                 it.storedFuelRestMass / singlePayWithTax
             } else {
                 maxNewNumEmployee
@@ -267,7 +267,7 @@ object Employment : Mechanism() {
                 maxNewNumEmployee,
                 maxPaidEmployee,
             )
-            val pay: Double = newNumEmployee * salary
+            val pay: Double = newNumEmployee * salaryPerEmployee
             val payWithTax: Double = pay * (1.0 + incomeTax)
 
             // Always hire employee
@@ -288,8 +288,8 @@ object Employment : Mechanism() {
 
             val maxNumEmployee: Double = it.maxNumEmployee
             val maxNewNumEmployee: Double = maxNumEmployee * employeeFraction
-            val maxPaidEmployee: Double = if (salary > 0.0) {
-                val singlePayWithTax: Double = salary * (1.0 + incomeTax)
+            val maxPaidEmployee: Double = if (salaryPerEmployee > 0.0) {
+                val singlePayWithTax: Double = salaryPerEmployee * (1.0 + incomeTax)
                 it.storedFuelRestMass / singlePayWithTax
             } else {
                 maxNewNumEmployee
@@ -298,7 +298,7 @@ object Employment : Mechanism() {
                 maxNewNumEmployee,
                 maxPaidEmployee,
             )
-            val pay: Double = newNumEmployee * salary
+            val pay: Double = newNumEmployee * salaryPerEmployee
             val payWithTax: Double = pay * (1.0 + incomeTax)
 
             // Always hire employee
@@ -336,11 +336,11 @@ object Employment : Mechanism() {
         mutablePhysicsData: MutablePhysicsData,
         mutableEconomyData: MutableEconomyData,
     ) {
-        val salary: Double =
+        val salaryPerEmployee: Double =
             scholarPopData.commonPopData.salaryPerEmployee(mutableGeneralPopSystemData)
 
         val incomeTax: Double =
-            mutableEconomyData.taxData.taxRateData.incomeTax.getIncomeTax(salary)
+            mutableEconomyData.taxData.taxRateData.incomeTax.getIncomeTax(salaryPerEmployee)
 
         // Available population to work
         val availableEmployee: Double = scholarPopData.commonPopData.adultPopulation
@@ -368,7 +368,7 @@ object Employment : Mechanism() {
         scholarPopData.instituteMap.values.forEach {
             val maxNumEmployee: Double = it.instituteInternalData.maxNumEmployee
             val newNumEmployee: Double = maxNumEmployee * instituteEmployeeFraction
-            val pay: Double = newNumEmployee * salary
+            val pay: Double = newNumEmployee * salaryPerEmployee
             val tax: Double = pay * incomeTax
             val payWithTax: Double = pay + tax
             val availableFuel: Double = mutablePhysicsData.fuelRestMassData.production
@@ -410,11 +410,11 @@ object Employment : Mechanism() {
         mutablePhysicsData: MutablePhysicsData,
         mutableEconomyData: MutableEconomyData,
     ) {
-        val salary: Double =
+        val salaryPerEmployee: Double =
             engineerPopData.commonPopData.salaryPerEmployee(mutableGeneralPopSystemData)
 
         val incomeTax: Double =
-            mutableEconomyData.taxData.taxRateData.incomeTax.getIncomeTax(salary)
+            mutableEconomyData.taxData.taxRateData.incomeTax.getIncomeTax(salaryPerEmployee)
 
         // Available population to work
         val availableEmployee: Double = engineerPopData.commonPopData.adultPopulation
@@ -442,7 +442,7 @@ object Employment : Mechanism() {
         engineerPopData.laboratoryMap.values.forEach {
             val maxNumEmployee: Double = it.laboratoryInternalData.maxNumEmployee
             val newNumEmployee: Double = maxNumEmployee * laboratoryEmployeeFraction
-            val pay: Double = newNumEmployee * salary
+            val pay: Double = newNumEmployee * salaryPerEmployee
             val tax: Double = pay * incomeTax
             val payWithTax: Double = pay + tax
             val availableFuel: Double = mutablePhysicsData.fuelRestMassData.production
@@ -486,13 +486,13 @@ object Employment : Mechanism() {
         mutablePhysicsData: MutablePhysicsData,
         mutableEconomyData: MutableEconomyData,
     ) {
-        val salary: Double =
+        val salaryPerEmployee: Double =
             soldierPopData.commonPopData.salaryPerEmployee(mutableGeneralPopSystemData)
 
         val incomeTax: Double =
-            mutableEconomyData.taxData.taxRateData.incomeTax.getIncomeTax(salary)
+            mutableEconomyData.taxData.taxRateData.incomeTax.getIncomeTax(salaryPerEmployee)
 
-        val maxPay: Double = soldierPopData.commonPopData.adultPopulation * salary
+        val maxPay: Double = soldierPopData.commonPopData.adultPopulation * salaryPerEmployee
         val tax: Double = maxPay * incomeTax
         val maxPayWithTax: Double = maxPay + tax
 
@@ -526,12 +526,12 @@ object Employment : Mechanism() {
         mutablePhysicsData: MutablePhysicsData,
         mutableEconomyData: MutableEconomyData,
     ) {
-        val salary: Double = commonPopData.salaryPerEmployee(mutableGeneralPopSystemData)
+        val salaryPerEmployee: Double = commonPopData.salaryPerEmployee(mutableGeneralPopSystemData)
 
         val incomeTax: Double =
-            mutableEconomyData.taxData.taxRateData.incomeTax.getIncomeTax(salary)
+            mutableEconomyData.taxData.taxRateData.incomeTax.getIncomeTax(salaryPerEmployee)
 
-        val maxPay: Double = commonPopData.adultPopulation * salary
+        val maxPay: Double = commonPopData.adultPopulation * salaryPerEmployee
         val tax: Double = maxPay * incomeTax
         val maxPayWithTax: Double = maxPay + tax
 
