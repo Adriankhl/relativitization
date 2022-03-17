@@ -14,6 +14,9 @@ import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.mechanisms.Mechanism
 
 object EntertainmentProduction : Mechanism() {
+    // Parameters
+    private const val entertainmentOutputFactor: Double = 20.0
+
     override fun process(
         mutablePlayerData: MutablePlayerData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
@@ -50,7 +53,7 @@ object EntertainmentProduction : Mechanism() {
     fun computeEntertainmentAmount(
         numEmployee: Double,
     ): Double {
-        return numEmployee * 20.0
+        return numEmployee * entertainmentOutputFactor
     }
 
     /**

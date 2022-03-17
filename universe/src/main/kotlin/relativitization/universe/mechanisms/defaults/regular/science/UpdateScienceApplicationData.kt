@@ -18,13 +18,24 @@ import relativitization.universe.mechanisms.Mechanism
 import kotlin.math.log2
 
 object UpdateScienceApplicationData : Mechanism() {
+    // Parameters
+    // Ideal spaceship
+    private const val spaceshipCoreRestMassFactor: Double = 1E6
+
+    // Fuel factory
+    private const val fuelFactoryOutputFactor: Double = 20.0
+
+    // Resource factory
+    private const val fuelConsumptionFactor: Double = 2.0
+    private const val primaryResourceOutputFactor: Double = 600.0
+    private const val secondaryResourceOutputFactor: Double = 200.0
+
     override fun process(
         mutablePlayerData: MutablePlayerData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
         universeSettings: UniverseSettings,
         universeGlobalData: UniverseGlobalData
     ): List<Command> {
-
         val scienceData: MutablePlayerScienceData =
             mutablePlayerData.playerInternalData.playerScienceData()
 
@@ -74,10 +85,12 @@ object UpdateScienceApplicationData : Mechanism() {
     }
 
     fun computeIdealShip(mutableKnowledgeData: MutableKnowledgeData): MutableCarrierInternalData {
-
         val coreRestMass: Double =
-            (mutableKnowledgeData.appliedResearchData.architectureTechnologyLevel + 1.0) * 1E6
+            (mutableKnowledgeData.appliedResearchData.architectureTechnologyLevel + 1.0) *
+                    spaceshipCoreRestMassFactor
 
+        // Set a high value to encourage movement
+        // May reconsider this
         val maxMovementDeltaFuelRestMass: Double = coreRestMass * 1E4
 
         val idealPopulation: Double = coreRestMass
@@ -91,14 +104,13 @@ object UpdateScienceApplicationData : Mechanism() {
     }
 
     fun computeIdealFuelFactory(mutableKnowledgeData: MutableKnowledgeData): MutableFuelFactoryInternalData {
-
-        val maxOutputAmountPerEmployee: Double = 20.0 * log2(
+        val maxOutputAmountPerEmployee: Double = fuelFactoryOutputFactor * log2(
             mutableKnowledgeData.appliedResearchData.energyTechnologyLevel / 100.0 + 2.0
         )
 
         return MutableFuelFactoryInternalData(
             maxOutputAmountPerEmployee = maxOutputAmountPerEmployee,
-            sizePerEmployee = 1.0,
+            sizePerEmployee = 50.0,
         )
     }
 
@@ -107,9 +119,9 @@ object UpdateScienceApplicationData : Mechanism() {
             log2(mutableKnowledgeData.appliedResearchData.environmentalTechnologyLevel + 2.0),
         )
 
-        val fuelRestMassConsumptionRatePerEmployee = 2.0
+        val fuelRestMassConsumptionRatePerEmployee = fuelConsumptionFactor
 
-        val maxOutputAmountPerEmployee: Double = 600.0 * log2(
+        val maxOutputAmountPerEmployee: Double = primaryResourceOutputFactor * log2(
             mutableKnowledgeData.appliedResearchData.environmentalTechnologyLevel / 100.0 + 2.0
         )
 
@@ -128,9 +140,9 @@ object UpdateScienceApplicationData : Mechanism() {
             log2(mutableKnowledgeData.appliedResearchData.biomedicalTechnologyLevel + 2.0),
         )
 
-        val fuelRestMassConsumptionRatePerEmployee = 2.0
+        val fuelRestMassConsumptionRatePerEmployee = fuelConsumptionFactor
 
-        val maxOutputAmountPerEmployee: Double = 600.0 * log2(
+        val maxOutputAmountPerEmployee: Double = primaryResourceOutputFactor * log2(
             mutableKnowledgeData.appliedResearchData.biomedicalTechnologyLevel / 100.0 + 2.0
         )
 
@@ -149,9 +161,9 @@ object UpdateScienceApplicationData : Mechanism() {
             log2(mutableKnowledgeData.appliedResearchData.machineryTechnologyLevel + 2.0),
         )
 
-        val fuelRestMassConsumptionRatePerEmployee = 2.0
+        val fuelRestMassConsumptionRatePerEmployee = fuelConsumptionFactor
 
-        val maxOutputAmountPerEmployee: Double = 600.0 * log2(
+        val maxOutputAmountPerEmployee: Double = primaryResourceOutputFactor * log2(
             mutableKnowledgeData.appliedResearchData.biomedicalTechnologyLevel / 100.0 + 2.0
         )
 
@@ -170,9 +182,9 @@ object UpdateScienceApplicationData : Mechanism() {
             log2(mutableKnowledgeData.appliedResearchData.chemicalTechnologyLevel + 2.0),
         )
 
-        val fuelRestMassConsumptionRatePerEmployee = 2.0
+        val fuelRestMassConsumptionRatePerEmployee = fuelConsumptionFactor
 
-        val maxOutputAmountPerEmployee: Double = 600.0 * log2(
+        val maxOutputAmountPerEmployee: Double = primaryResourceOutputFactor * log2(
             mutableKnowledgeData.appliedResearchData.biomedicalTechnologyLevel / 100.0 + 2.0
         )
 
@@ -191,9 +203,9 @@ object UpdateScienceApplicationData : Mechanism() {
             quality = log2(mutableKnowledgeData.appliedResearchData.foodTechnologyLevel + 2.0),
         )
 
-        val fuelRestMassConsumptionRatePerEmployee = 2.0
+        val fuelRestMassConsumptionRatePerEmployee = fuelConsumptionFactor
 
-        val maxOutputAmountPerEmployee: Double = 200.0 * log2(
+        val maxOutputAmountPerEmployee: Double = secondaryResourceOutputFactor * log2(
             mutableKnowledgeData.appliedResearchData.foodTechnologyLevel / 100.0 + 2.0
         )
 
@@ -227,9 +239,9 @@ object UpdateScienceApplicationData : Mechanism() {
             quality = log2(mutableKnowledgeData.appliedResearchData.materialTechnologyLevel + 2.0),
         )
 
-        val fuelRestMassConsumptionRatePerEmployee = 2.0
+        val fuelRestMassConsumptionRatePerEmployee = fuelConsumptionFactor
 
-        val maxOutputAmountPerEmployee: Double = 200.0 * log2(
+        val maxOutputAmountPerEmployee: Double = secondaryResourceOutputFactor * log2(
             mutableKnowledgeData.appliedResearchData.foodTechnologyLevel / 100.0 + 2.0
         )
 
@@ -263,9 +275,9 @@ object UpdateScienceApplicationData : Mechanism() {
             quality = log2(mutableKnowledgeData.appliedResearchData.artTechnologyLevel + 2.0),
         )
 
-        val fuelRestMassConsumptionRatePerEmployee = 2.0
+        val fuelRestMassConsumptionRatePerEmployee = fuelConsumptionFactor
 
-        val maxOutputAmountPerEmployee: Double = 200.0 * log2(
+        val maxOutputAmountPerEmployee: Double = secondaryResourceOutputFactor * log2(
             mutableKnowledgeData.appliedResearchData.foodTechnologyLevel / 100.0 + 2.0
         )
 
@@ -299,9 +311,9 @@ object UpdateScienceApplicationData : Mechanism() {
             quality = log2(mutableKnowledgeData.appliedResearchData.materialTechnologyLevel + 2.0),
         )
 
-        val fuelRestMassConsumptionRatePerEmployee = 2.0
+        val fuelRestMassConsumptionRatePerEmployee = fuelConsumptionFactor
 
-        val maxOutputAmountPerEmployee: Double = 40.0 * log2(
+        val maxOutputAmountPerEmployee: Double = secondaryResourceOutputFactor * 0.5 * log2(
             mutableKnowledgeData.appliedResearchData.foodTechnologyLevel / 100.0 + 2.0
         )
 
@@ -335,9 +347,9 @@ object UpdateScienceApplicationData : Mechanism() {
             quality = log2(mutableKnowledgeData.appliedResearchData.biomedicalTechnologyLevel + 2.0),
         )
 
-        val fuelRestMassConsumptionRatePerEmployee = 2.0
+        val fuelRestMassConsumptionRatePerEmployee = fuelConsumptionFactor
 
-        val maxOutputAmountPerEmployee: Double = 20.0 * log2(
+        val maxOutputAmountPerEmployee: Double = secondaryResourceOutputFactor * 0.25 * log2(
             mutableKnowledgeData.appliedResearchData.foodTechnologyLevel / 100.0 + 2.0
         )
 
@@ -371,9 +383,9 @@ object UpdateScienceApplicationData : Mechanism() {
             quality = log2(mutableKnowledgeData.appliedResearchData.militaryTechnologyLevel + 2.0),
         )
 
-        val fuelRestMassConsumptionRatePerEmployee = 2.0
+        val fuelRestMassConsumptionRatePerEmployee = fuelConsumptionFactor
 
-        val maxOutputAmountPerEmployee: Double = 20.0 * log2(
+        val maxOutputAmountPerEmployee: Double = secondaryResourceOutputFactor * 0.25 * log2(
             mutableKnowledgeData.appliedResearchData.foodTechnologyLevel / 100.0 + 2.0
         )
 

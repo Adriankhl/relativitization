@@ -11,16 +11,16 @@ import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.mechanisms.Mechanism
 
 object FuelFactoryProduction : Mechanism() {
+    // Parameters
+    // max fuel produced per cube in space, prevent unlimited fuel and population
+    private const val maxFuelPerCube: Double = 1E9
+
     override fun process(
         mutablePlayerData: MutablePlayerData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
         universeSettings: UniverseSettings,
         universeGlobalData: UniverseGlobalData
     ): List<Command> {
-        // Parameters
-        // max fuel produced per cube in space, prevent unlimited fuel and population
-        val maxFuelPerCube: Double = 1E9
-
         val totalFuelProductionInNeighbor: Double =
             universeData3DAtPlayer.getNeighbour(0).sumOf { playerData ->
                 playerData.playerInternalData.popSystemData().carrierDataMap.values.sumOf { carrierData ->
