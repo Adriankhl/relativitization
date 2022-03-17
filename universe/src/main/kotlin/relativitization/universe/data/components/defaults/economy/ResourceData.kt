@@ -596,6 +596,15 @@ data class MutableResourceQualityData(
     }
 
     /**
+     * Minimum of this or other
+     */
+    fun min(other: MutableResourceQualityData): MutableResourceQualityData {
+        return MutableResourceQualityData(
+            min(this.quality, other.quality)
+        )
+    }
+
+    /**
      * Resource difference
      */
     fun squareDiff(other: ResourceQualityData): Double {

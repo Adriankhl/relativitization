@@ -287,8 +287,13 @@ object ResourceFactoryProduction : Mechanism() {
             else -> educationLevel + 0.5
         }
 
-        return resourceFactoryData.resourceFactoryInternalData.maxOutputResourceQualityData *
+        val targetQuality: MutableResourceQualityData = resourceFactoryData
+            .resourceFactoryInternalData.maxOutputResourceQualityData *
                 avgFraction * educationLevelMultiplier
+
+        return resourceFactoryData.resourceFactoryInternalData.maxOutputResourceQualityData.min(
+            targetQuality
+        )
     }
 
     /**
