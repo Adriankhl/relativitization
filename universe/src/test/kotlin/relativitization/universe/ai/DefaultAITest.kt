@@ -27,7 +27,7 @@ internal class DefaultAITest {
             numPlayer = 1,
             numHumanPlayer = 1,
             otherIntMap = mutableMapOf("numExtraStellarSystem" to 3),
-            otherDoubleMap = mutableMapOf("initialPopulation" to 1E6),
+            otherDoubleMap = mutableMapOf("initialPopulation" to 1E5),
             universeSettings = MutableUniverseSettings(
                 universeName = "One player test",
                 commandCollectionName = DefaultCommandAvailability.name(),
