@@ -124,10 +124,7 @@ data class PopSystemData(
         return carrierDataMap.values.fold(0.0) { acc, carrierData ->
             acc + PopType.values().sumOf { popType ->
                 val commonPopData = carrierData.allPopData.getCommonPopData(popType)
-                val totalSatisfaction: Double = commonPopData.satisfaction *
-                        commonPopData.adultPopulation
-
-                acc + totalSatisfaction
+                commonPopData.satisfaction * commonPopData.adultPopulation
             }
         }
     }
