@@ -17,7 +17,7 @@ object Versions {
     const val kotlinxCoroutineVersion = "1.6.0"
     const val kotlinxSerializationVersion = "1.3.2"
     const val kotlinxDateTimeVersion = "0.3.2"
-    const val ktorVersion = "1.6.7"
+    const val ktorVersion = "1.6.8"
     const val okioVersion = "3.0.0"
 
     // Documentation
@@ -29,11 +29,11 @@ object Versions {
     const val dataframeVersion = "0.8.0-rc-7"
 
     // Android
-    const val androidGradlePluginVersion = "7.3.0-alpha06"
+    const val androidGradlePluginVersion = "7.3.0-alpha07"
     const val androidAppCompatVersion = "1.4.1"
     const val androidLifeCycleKtxVersion = "2.4.1"
     const val androidFragmentKtxVersion = "1.4.1"
 
     // Unused in relativitization, for ktor
-    const val logbackVersion = "1.2.10"
+    const val logbackVersion = "1.2.11"
 }
