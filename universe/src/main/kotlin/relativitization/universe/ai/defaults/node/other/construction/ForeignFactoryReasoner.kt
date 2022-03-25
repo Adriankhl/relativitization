@@ -48,10 +48,12 @@ class ForeignFactoryReasoner : SequenceReasoner() {
                 RemoveForeignFuelFactoryReasoner(),
                 NewForeignResourceFactoryReasoner(),
                 SupplyForeignResourceFactoryReasoner(),
+                RemoveForeignResourceFactoryReasoner(),
             )
         } else {
             listOf(
                 RemoveForeignFuelFactoryReasoner(),
+                RemoveForeignResourceFactoryReasoner(),
             )
         }
     }
@@ -392,7 +394,7 @@ class RemoveForeignFuelFactoryAtPlayerReasoner(
 }
 
 /**
- * Consider building a fuel factory at a foreign carrier
+ * Consider removing a fuel factory at a foreign carrier
  *
  */
 class RemoveForeignFuelFactoryAtCarrierReasoner(
@@ -453,7 +455,7 @@ class RemoveOwnedForeignFuelFactoryOption(
             bonusIfTrue = 0.0,
             rankIfFalse = 1,
             multiplierIfFalse = 1.0,
-            bonusIfFalse = 0.05
+            bonusIfFalse = 0.01,
         )
         return listOf(
             foreignFuelFactoryLowerCostConsideration
@@ -778,6 +780,124 @@ class SupplyOwnedForeignResourceFactoryOption(
                 senderFuelLossFractionPerDistance = planDataAtPlayer.getCurrentMutablePlayerData()
                     .playerInternalData.playerScienceData().playerScienceApplicationData
                     .fuelLogisticsLossFractionPerDistance,
+            )
+        )
+    }
+}
+
+
+class RemoveForeignResourceFactoryReasoner : SequenceReasoner() {
+    override fun getSubNodeList(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planState: PlanState
+    ): List<AINode> {
+        val neighborList: List<PlayerData> = planDataAtPlayer.universeData3DAtPlayer.getNeighbour(
+            1
+        ).shuffled(Rand.rand())
+
+        return neighborList.map { playerData ->
+            RemoveForeignResourceFactoryAtPlayerReasoner(playerData.playerId)
+        }
+    }
+}
+
+class RemoveForeignResourceFactoryAtPlayerReasoner(
+    private val playerId: Int,
+) : SequenceReasoner() {
+    override fun getSubNodeList(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planState: PlanState
+    ): List<AINode> {
+        val otherPlayerData: PlayerData = planDataAtPlayer.universeData3DAtPlayer.get(playerId)
+
+        return otherPlayerData.playerInternalData.popSystemData().carrierDataMap.keys.shuffled(
+            Rand.rand()
+        ).map {
+            RemoveForeignResourceFactoryAtCarrierReasoner(
+                playerId = playerId,
+                carrierId = it,
+            )
+        }
+    }
+}
+
+/**
+ * Consider removing a resource factory at a foreign carrier
+ */
+class RemoveForeignResourceFactoryAtCarrierReasoner(
+    private val playerId: Int,
+    private val carrierId: Int,
+) : SequenceReasoner() {
+    override fun getSubNodeList(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planState: PlanState
+    ): List<AINode> {
+        return planDataAtPlayer.universeData3DAtPlayer.get(playerId).playerInternalData
+            .popSystemData().carrierDataMap.getValue(carrierId).allPopData.labourerPopData
+            .resourceFactoryMap.filter {
+                it.value.ownerPlayerId == planDataAtPlayer.getCurrentMutablePlayerData().playerId
+            }.keys.shuffled(Rand.rand()).map {
+                RemoveOwnedForeignResourceFactoryReasoner(
+                    playerId = playerId,
+                    carrierId = carrierId,
+                    resourceFactoryId = it,
+                )
+            }
+    }
+}
+
+class RemoveOwnedForeignResourceFactoryReasoner(
+    private val playerId: Int,
+    private val carrierId: Int,
+    private val resourceFactoryId: Int,
+) : DualUtilityReasoner() {
+    override fun getOptionList(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planState: PlanState
+    ): List<DualUtilityOption> = listOf(
+        RemoveOwnedForeignResourceFactoryOption(
+            playerId = playerId,
+            carrierId = carrierId,
+            resourceFactoryId = resourceFactoryId,
+        ),
+        DoNothingDualUtilityOption(rank = 1, multiplier = 1.0, bonus = 1.0)
+    )
+}
+
+class RemoveOwnedForeignResourceFactoryOption(
+    private val playerId: Int,
+    private val carrierId: Int,
+    private val resourceFactoryId: Int,
+) : DualUtilityOption() {
+    override fun getConsiderationList(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planState: PlanState
+    ): List<DualUtilityConsideration> {
+        val foreignResourceFactoryLowerCostConsideration =
+            ForeignResourceFactoryLowerCostConsideration(
+                otherPlayerId = playerId,
+                otherCarrierId = carrierId,
+                resourceFactoryId = resourceFactoryId,
+                rankIfTrue = 0,
+                multiplierIfTrue = 0.0,
+                bonusIfTrue = 0.0,
+                rankIfFalse = 1,
+                multiplierIfFalse = 1.0,
+                bonusIfFalse = 0.01,
+            )
+        return listOf(
+            foreignResourceFactoryLowerCostConsideration
+        )
+    }
+
+    override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
+        planDataAtPlayer.addCommand(
+            RemoveForeignResourceFactoryCommand(
+                toId = playerId,
+                fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+                fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
+                targetCarrierId = carrierId,
+                targetResourceFactoryId = resourceFactoryId,
             )
         )
     }
