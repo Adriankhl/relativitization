@@ -924,21 +924,21 @@ class NewForeignResourceFactoryLowerCostConsideration(
 
         val otherInputCost: Double = selfIdealResourceFactory.inputResourceMap.keys.fold(
             0.0
-        ) { acc, resourceType ->
+        ) { acc, inputResourceType ->
             val inputResourceData: MutableInputResourceData =
-                selfIdealResourceFactory.inputResourceMap.getValue(resourceType)
+                selfIdealResourceFactory.inputResourceMap.getValue(inputResourceType)
 
             // Estimate the quality class with amount=1.0
             val qualityClass: ResourceQualityClass = otherPlayerData.playerInternalData
                 .economyData().resourceData.tradeQualityClass(
-                    resourceType = resourceType,
+                    resourceType = inputResourceType,
                     amount = 1.0,
                     targetQuality = inputResourceData.qualityData.toResourceQualityData(),
                     budget = 1E100,
                     preferHighQualityClass = false
                 )
             val price: Double = inputResourceData.amount * otherPlayerData.playerInternalData
-                .economyData().resourceData.getResourcePrice(resourceType, qualityClass)
+                .economyData().resourceData.getResourcePrice(inputResourceType, qualityClass)
 
             acc + price
         }
@@ -958,21 +958,21 @@ class NewForeignResourceFactoryLowerCostConsideration(
         // Estimate cost if input resource from self
         val selfInputCost: Double = selfIdealResourceFactory.inputResourceMap.keys.fold(
             0.0
-        ) { acc, resourceType ->
+        ) { acc, inputResourceType ->
             val inputResourceData: MutableInputResourceData =
-                selfIdealResourceFactory.inputResourceMap.getValue(resourceType)
+                selfIdealResourceFactory.inputResourceMap.getValue(inputResourceType)
 
             // Estimate the quality class with amount 1.0
             val qualityClass: ResourceQualityClass = planDataAtPlayer.getCurrentMutablePlayerData()
                 .playerInternalData.economyData().resourceData.productionQualityClass(
-                    resourceType = resourceType,
+                    resourceType = inputResourceType,
                     amount = 1.0,
                     targetQuality = inputResourceData.qualityData,
                     preferHighQualityClass = false,
                 )
             val price: Double = inputResourceData.amount * planDataAtPlayer
                 .getCurrentMutablePlayerData().playerInternalData.economyData().resourceData
-                .getResourcePrice(resourceType, qualityClass)
+                .getResourcePrice(inputResourceType, qualityClass)
 
             acc + price
         }
@@ -1043,7 +1043,7 @@ class ForeignResourceFactoryLowerCostConsideration(
         val otherResourceFactoryData: ResourceFactoryData = otherCarrier.allPopData.labourerPopData
             .resourceFactoryMap.getValue(resourceFactoryId)
 
-        val resourceType: ResourceType =
+        val outPutResourceType: ResourceType =
             otherResourceFactoryData.resourceFactoryInternalData.outputResource
 
         val otherSalaryPerEmployee: Double = otherCarrier.allPopData.labourerPopData.commonPopData
@@ -1058,21 +1058,21 @@ class ForeignResourceFactoryLowerCostConsideration(
             otherResourceFactoryData.resourceFactoryInternalData.maxOutputAmountPerEmployee
 
         val otherInputCost: Double = otherResourceFactoryData.resourceFactoryInternalData
-            .inputResourceMap.keys.fold(0.0) { acc, resourceType ->
+            .inputResourceMap.keys.fold(0.0) { acc, inputResourceType ->
                 val inputResourceData: InputResourceData = otherResourceFactoryData
-                    .resourceFactoryInternalData.inputResourceMap.getValue(resourceType)
+                    .resourceFactoryInternalData.inputResourceMap.getValue(inputResourceType)
 
                 // Estimate the quality class with amount=1.0
                 val qualityClass: ResourceQualityClass = otherPlayerData.playerInternalData
                     .economyData().resourceData.tradeQualityClass(
-                        resourceType = resourceType,
+                        resourceType = inputResourceType,
                         amount = 1.0,
                         targetQuality = inputResourceData.qualityData,
                         budget = 1E100,
                         preferHighQualityClass = false
                     )
                 val price: Double = inputResourceData.amount * otherPlayerData.playerInternalData
-                    .economyData().resourceData.getResourcePrice(resourceType, qualityClass)
+                    .economyData().resourceData.getResourcePrice(inputResourceType, qualityClass)
 
                 acc + price
             }
@@ -1084,7 +1084,7 @@ class ForeignResourceFactoryLowerCostConsideration(
 
         val selfIdealResourceFactory: MutableResourceFactoryInternalData = planDataAtPlayer
             .getCurrentMutablePlayerData().playerInternalData.playerScienceData()
-            .playerScienceApplicationData.getIdealResourceFactory(resourceType)
+            .playerScienceApplicationData.getIdealResourceFactory(outPutResourceType)
 
         val averageSelfSalary: Double = planState.averageSelfLabourerSalary(planDataAtPlayer)
 
@@ -1098,21 +1098,21 @@ class ForeignResourceFactoryLowerCostConsideration(
         // Estimate cost if input resource from self
         val selfInputCost: Double = selfIdealResourceFactory.inputResourceMap.keys.fold(
             0.0
-        ) { acc, resourceType ->
+        ) { acc, inputResourceType ->
             val inputResourceData: MutableInputResourceData =
-                selfIdealResourceFactory.inputResourceMap.getValue(resourceType)
+                selfIdealResourceFactory.inputResourceMap.getValue(inputResourceType)
 
             // Estimate the quality class with amount 1.0
             val qualityClass: ResourceQualityClass = planDataAtPlayer.getCurrentMutablePlayerData()
                 .playerInternalData.economyData().resourceData.productionQualityClass(
-                    resourceType = resourceType,
+                    resourceType = inputResourceType,
                     amount = 1.0,
                     targetQuality = inputResourceData.qualityData,
                     preferHighQualityClass = false,
                 )
             val price: Double = inputResourceData.amount * planDataAtPlayer
                 .getCurrentMutablePlayerData().playerInternalData.economyData().resourceData
-                .getResourcePrice(resourceType, qualityClass)
+                .getResourcePrice(inputResourceType, qualityClass)
 
             acc + price
         }
