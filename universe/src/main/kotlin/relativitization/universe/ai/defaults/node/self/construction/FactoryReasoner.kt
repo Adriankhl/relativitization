@@ -33,15 +33,13 @@ class FactoryReasoner : SequenceReasoner() {
             NewFuelFactoryReasoner(),
         )
 
-        val resourceReasonerList: List<AINode> =
-            ResourceType.factoryResourceList.map {
-                listOf(
-                    RemoveResourceFactoryReasoner(it),
-                    NewResourceFactoryReasoner(it),
-                )
-            }.flatten()
+        val removeResourceFactoryReasoner = RemoveResourceFactoryReasoner()
 
-        return fuelReasonerList + resourceReasonerList
+        val newResourceReasonerList: List<AINode> = ResourceType.factoryResourceList.map {
+            NewResourceFactoryReasoner(it)
+        }
+
+        return fuelReasonerList + removeResourceFactoryReasoner + newResourceReasonerList
     }
 }
 
@@ -535,9 +533,7 @@ class BuildNewResourceFactoryOption(
 /**
  * Remove resource factory reasoner
  */
-class RemoveResourceFactoryReasoner(
-    private val resourceType: ResourceType,
-) : SequenceReasoner() {
+class RemoveResourceFactoryReasoner : SequenceReasoner() {
     override fun getSubNodeList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -545,35 +541,48 @@ class RemoveResourceFactoryReasoner(
         val removeSelfResourceFactoryList: List<AINode> =
             planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData.popSystemData()
                 .carrierDataMap.map { (carrierId, carrierData) ->
-                    // Only consider self fuel factory
+                    // Only consider self resource factory
                     carrierData.allPopData.labourerPopData.resourceFactoryMap.filter { (_, resourceFactory) ->
-                        val isThisResource: Boolean =
-                            resourceFactory.resourceFactoryInternalData.outputResource == resourceType
-                        val isSelf: Boolean =
-                            resourceFactory.ownerPlayerId == planDataAtPlayer.getCurrentMutablePlayerData().playerId
-                        isThisResource && isSelf
+                        resourceFactory.ownerPlayerId == planDataAtPlayer.getCurrentMutablePlayerData().playerId
                     }.keys.shuffled(Rand.rand()).map { resourceFactoryId ->
                         RemoveSpecificSelfResourceFactoryReasoner(carrierId, resourceFactoryId)
                     }
                 }.flatten()
 
-        return removeSelfResourceFactoryList
+
+        val removeOtherResourceFactoryList: List<DualUtilityReasoner> =
+            planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData.popSystemData()
+                .carrierDataMap.map { (carrierId, carrierData) ->
+                    // Only consider other resource factory
+                    carrierData.allPopData.labourerPopData.resourceFactoryMap.filter { (_, resourceFactory) ->
+                        resourceFactory.ownerPlayerId != planDataAtPlayer.getCurrentMutablePlayerData().playerId
+                    }.map { (resourceFactoryId, resourceFactory) ->
+                        RemoveOtherResourceFactoryReasoner(
+                            carrierId = carrierId,
+                            resourceFactoryId = resourceFactoryId,
+                            ownerId = resourceFactory.ownerPlayerId,
+                        )
+                    }
+                }.flatten()
+
+
+        return removeSelfResourceFactoryList + removeOtherResourceFactoryList
     }
 }
 
 /**
- * Remove a specific fuel factory
+ * Remove a specific resource factory
  */
 class RemoveSpecificSelfResourceFactoryReasoner(
     private val carrierId: Int,
-    private val fuelFactoryId: Int,
+    private val resourceFactoryId: Int,
 ) : DualUtilityReasoner() {
     override fun getOptionList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<DualUtilityOption> {
         return listOf(
-            RemoveSpecificSelfResourceFactoryOption(carrierId, fuelFactoryId),
+            RemoveSpecificSelfResourceFactoryOption(carrierId, resourceFactoryId),
             DoNothingDualUtilityOption(rank = 1, multiplier = 1.0, bonus = 1.0),
         )
     }
@@ -616,6 +625,62 @@ class RemoveSpecificSelfResourceFactoryOption(
                 multiplierIfFalse = 0.1,
                 bonusIfFalse = 0.0
             )
+        )
+    }
+
+    override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
+        planDataAtPlayer.addCommand(
+            RemoveLocalResourceFactoryCommand(
+                toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+                fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+                fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
+                targetCarrierId = carrierId,
+                targetResourceFactoryId = resourceFactoryId,
+            )
+        )
+    }
+}
+
+/**
+ * Consider removing resource factory of other players
+ */
+class RemoveOtherResourceFactoryReasoner(
+    private val carrierId: Int,
+    private val resourceFactoryId: Int,
+    private val ownerId: Int,
+) : DualUtilityReasoner() {
+    override fun getOptionList(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planState: PlanState
+    ): List<DualUtilityOption> = listOf(
+        RemoveSpecificOtherResourceFactoryOption(carrierId, resourceFactoryId, ownerId),
+        DoNothingDualUtilityOption(rank = 1, multiplier = 1.0, bonus = 1.0),
+    )
+}
+
+/**
+ * Dual utility option to remove a specific resource factory
+ */
+class RemoveSpecificOtherResourceFactoryOption(
+    private val carrierId: Int,
+    private val resourceFactoryId: Int,
+    private val ownerId: Int,
+) : DualUtilityOption() {
+    override fun getConsiderationList(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planState: PlanState
+    ): List<DualUtilityConsideration> {
+        val distanceMultiplierConsideration = DistanceMultiplierConsideration(
+            otherPlayerId = ownerId,
+            minDistance = Intervals.intDistance(Int3D(0, 0, 0), Int3D(2, 2, 2)),
+            initialMultiplier = 0.5,
+            exponent = 1.1,
+            rank = 1,
+            bonus = 1.0,
+        )
+
+        return listOf(
+            distanceMultiplierConsideration
         )
     }
 
