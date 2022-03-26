@@ -68,15 +68,6 @@ object FuelFactoryProduction : Mechanism() {
         // Production by factory owned by other
         val logisticCommandList: List<Command> = if (isFuelProductionEnable) {
             mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.map { carrier ->
-                // Remove dead player factories
-                val factoryToRemove: Set<Int> = carrier.allPopData.labourerPopData.fuelFactoryMap
-                    .filter { (_, factory) ->
-                        !universeData3DAtPlayer.playerDataMap.containsKey(factory.ownerPlayerId)
-                    }.keys
-                factoryToRemove.forEach {
-                    carrier.allPopData.labourerPopData.fuelFactoryMap.remove(it)
-                }
-
                 carrier.allPopData.labourerPopData.fuelFactoryMap.values.filter { factory ->
                     (factory.ownerPlayerId != mutablePlayerData.playerId) && (factory.isOpened)
                 }.map { factory ->
