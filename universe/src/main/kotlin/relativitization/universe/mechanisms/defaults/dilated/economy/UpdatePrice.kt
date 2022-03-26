@@ -130,12 +130,13 @@ object UpdatePrice : Mechanism() {
                         playerData.playerInternalData.economyData().resourceData.tradeQualityClass(
                             resourceType = resourceType,
                             amount = resourceFactory.resourceFactoryInternalData.inputResourceMap
-                                .getValue(resourceType).amount *
-                                    resourceFactory.resourceFactoryInternalData.maxOutputAmountPerEmployee *
+                                .getValue(resourceType).amountPerOutput *
+                                    resourceFactory.resourceFactoryInternalData
+                                        .maxOutputAmountPerEmployee *
                                     resourceFactory.maxNumEmployee *
                                     resourceFactory.employeeFraction(),
-                            targetQuality = resourceFactory.resourceFactoryInternalData.inputResourceMap
-                                .getValue(resourceType).qualityData,
+                            targetQuality = resourceFactory.resourceFactoryInternalData
+                                .inputResourceMap.getValue(resourceType).qualityData,
                             budget = budgetPerResource,
                             preferHighQualityClass = false
                         )
@@ -143,7 +144,7 @@ object UpdatePrice : Mechanism() {
                         tradeNeedMap.getValue(resourceType).getValue(qualityClass)
 
                     val amountToAdd: Double = resourceFactory.resourceFactoryInternalData
-                        .inputResourceMap.getValue(resourceType).amount *
+                        .inputResourceMap.getValue(resourceType).amountPerOutput *
                             resourceFactory.resourceFactoryInternalData.maxOutputAmountPerEmployee *
                             resourceFactory.maxNumEmployee *
                             resourceFactory.employeeFraction()

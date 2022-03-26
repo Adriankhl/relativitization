@@ -1173,8 +1173,6 @@ class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
         nestedTable.row().space(10f)
 
         resourceFactoryData.resourceFactoryInternalData.inputResourceMap.forEach { (resourceType, inputResource) ->
-            val lastInputResource: InputResourceData = resourceFactoryData.lastInputResourceMap
-                .getOrDefault(resourceType, InputResourceData(amount = 0.0))
 
             nestedTable.add(
                 createLabel(
@@ -1184,6 +1182,9 @@ class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
             )
 
             nestedTable.row().space(10f)
+
+            val lastInputResource: InputResourceData = resourceFactoryData.lastInputResourceMap
+                .getOrDefault(resourceType, InputResourceData(amountPerOutput = 0.0))
 
             nestedTable.add(
                 createLabel(
@@ -1205,7 +1206,7 @@ class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
 
             nestedTable.add(
                 createLabel(
-                    "Last $resourceType input: ${lastInputResource.amount}",
+                    "Last $resourceType input: ${resourceFactoryData.lastInputAmount(resourceType)}",
                     gdxSettings.smallFontSize
                 )
             )

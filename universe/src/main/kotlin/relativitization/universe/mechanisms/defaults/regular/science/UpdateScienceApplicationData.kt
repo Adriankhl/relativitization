@@ -214,13 +214,13 @@ object UpdateScienceApplicationData : Mechanism() {
                 qualityData = MutableResourceQualityData(
                     quality = log2(mutableKnowledgeData.appliedResearchData.foodTechnologyLevel + 2.0),
                 ),
-                amount = 1.0
+                amountPerOutput = 1.0
             ),
             ResourceType.PLANT to MutableInputResourceData(
                 qualityData = MutableResourceQualityData(
                     quality = log2(mutableKnowledgeData.appliedResearchData.foodTechnologyLevel + 2.0),
                 ),
-                amount = 1.0
+                amountPerOutput = 1.0
             ),
         )
 
@@ -250,13 +250,13 @@ object UpdateScienceApplicationData : Mechanism() {
                 qualityData = MutableResourceQualityData(
                     quality = log2(mutableKnowledgeData.appliedResearchData.materialTechnologyLevel + 2.0),
                 ),
-                amount = 1.0
+                amountPerOutput = 1.0
             ),
             ResourceType.PLASTIC to MutableInputResourceData(
                 qualityData = MutableResourceQualityData(
                     quality = log2(mutableKnowledgeData.appliedResearchData.materialTechnologyLevel + 2.0),
                 ),
-                amount = 1.0
+                amountPerOutput = 1.0
             ),
         )
 
@@ -286,13 +286,13 @@ object UpdateScienceApplicationData : Mechanism() {
                 qualityData = MutableResourceQualityData(
                     quality = log2(mutableKnowledgeData.appliedResearchData.artTechnologyLevel + 2.0),
                 ),
-                amount = 1.0
+                amountPerOutput = 1.0
             ),
             ResourceType.PLASTIC to MutableInputResourceData(
                 qualityData = MutableResourceQualityData(
                     quality = log2(mutableKnowledgeData.appliedResearchData.artTechnologyLevel + 2.0),
                 ),
-                amount = 1.0
+                amountPerOutput = 1.0
             ),
         )
 
@@ -322,13 +322,13 @@ object UpdateScienceApplicationData : Mechanism() {
                 qualityData = MutableResourceQualityData(
                     quality = log2(mutableKnowledgeData.appliedResearchData.materialTechnologyLevel + 2.0),
                 ),
-                amount = 1.0
+                amountPerOutput = 1.0
             ),
             ResourceType.METAL to MutableInputResourceData(
                 qualityData = MutableResourceQualityData(
                     quality = log2(mutableKnowledgeData.appliedResearchData.materialTechnologyLevel + 2.0),
                 ),
-                amount = 1.0
+                amountPerOutput = 1.0
             ),
         )
 
@@ -358,13 +358,13 @@ object UpdateScienceApplicationData : Mechanism() {
                 qualityData = MutableResourceQualityData(
                     quality = log2(mutableKnowledgeData.appliedResearchData.biomedicalTechnologyLevel + 2.0),
                 ),
-                amount = 1.0
+                amountPerOutput = 1.0
             ),
             ResourceType.METAL to MutableInputResourceData(
                 qualityData = MutableResourceQualityData(
                     quality = log2(mutableKnowledgeData.appliedResearchData.biomedicalTechnologyLevel + 2.0),
                 ),
-                amount = 1.0
+                amountPerOutput = 1.0
             ),
         )
 
@@ -394,13 +394,13 @@ object UpdateScienceApplicationData : Mechanism() {
                 qualityData = MutableResourceQualityData(
                     quality = log2(mutableKnowledgeData.appliedResearchData.militaryTechnologyLevel + 2.0),
                 ),
-                amount = 1.0
+                amountPerOutput = 1.0
             ),
             ResourceType.PLASTIC to MutableInputResourceData(
                 qualityData = MutableResourceQualityData(
                     quality = log2(mutableKnowledgeData.appliedResearchData.militaryTechnologyLevel + 2.0),
                 ),
-                amount = 1.0
+                amountPerOutput = 1.0
             ),
         )
 

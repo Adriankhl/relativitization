@@ -600,7 +600,7 @@ class ScienceInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane
 
             nestedTable.add(
                 createLabel(
-                    "Input $resourceType amount per output: ${inputResourceData.amount}",
+                    "Input $resourceType amount per output: ${inputResourceData.amountPerOutput}",
                     gdxSettings.smallFontSize
                 )
             )

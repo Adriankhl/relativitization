@@ -99,7 +99,7 @@ object Summary {
                         resourceFactory.resourceFactoryInternalData.inputResourceMap.getOrDefault(
                             resourceType,
                             InputResourceData(),
-                        ).amount * resourceFactory.resourceFactoryInternalData.maxOutputAmountPerEmployee *
+                        ).amountPerOutput * resourceFactory.resourceFactoryInternalData.maxOutputAmountPerEmployee *
                                 resourceFactory.maxNumEmployee *
                                 resourceFactory.employeeFraction()
                     }

@@ -937,7 +937,7 @@ class NewForeignResourceFactoryLowerCostConsideration(
                     budget = 1E100,
                     preferHighQualityClass = false
                 )
-            val price: Double = inputResourceData.amount * otherPlayerData.playerInternalData
+            val price: Double = inputResourceData.amountPerOutput * otherPlayerData.playerInternalData
                 .economyData().resourceData.getResourcePrice(inputResourceType, qualityClass)
 
             acc + price
@@ -970,7 +970,7 @@ class NewForeignResourceFactoryLowerCostConsideration(
                     targetQuality = inputResourceData.qualityData,
                     preferHighQualityClass = false,
                 )
-            val price: Double = inputResourceData.amount * planDataAtPlayer
+            val price: Double = inputResourceData.amountPerOutput * planDataAtPlayer
                 .getCurrentMutablePlayerData().playerInternalData.economyData().resourceData
                 .getResourcePrice(inputResourceType, qualityClass)
 
@@ -1071,7 +1071,7 @@ class ForeignResourceFactoryLowerCostConsideration(
                         budget = 1E100,
                         preferHighQualityClass = false
                     )
-                val price: Double = inputResourceData.amount * otherPlayerData.playerInternalData
+                val price: Double = inputResourceData.amountPerOutput * otherPlayerData.playerInternalData
                     .economyData().resourceData.getResourcePrice(inputResourceType, qualityClass)
 
                 acc + price
@@ -1110,7 +1110,7 @@ class ForeignResourceFactoryLowerCostConsideration(
                     targetQuality = inputResourceData.qualityData,
                     preferHighQualityClass = false,
                 )
-            val price: Double = inputResourceData.amount * planDataAtPlayer
+            val price: Double = inputResourceData.amountPerOutput * planDataAtPlayer
                 .getCurrentMutablePlayerData().playerInternalData.economyData().resourceData
                 .getResourcePrice(inputResourceType, qualityClass)
 

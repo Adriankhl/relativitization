@@ -32,8 +32,14 @@ data class ResourceFactoryData(
 ) {
     fun maxInputAmount(resourceType: ResourceType): Double {
         val amountPerUnit: Double =
-            resourceFactoryInternalData.inputResourceMap[resourceType]?.amount ?: 0.0
+            resourceFactoryInternalData.inputResourceMap[resourceType]?.amountPerOutput ?: 0.0
         return amountPerUnit * resourceFactoryInternalData.maxOutputAmountPerEmployee * maxNumEmployee
+    }
+
+    fun lastInputAmount(resourceType: ResourceType): Double {
+        val amountPerUnit: Double =
+            lastInputResourceMap[resourceType]?.amountPerOutput ?: 0.0
+        return amountPerUnit * lastOutputAmount
     }
 
     fun employeeFraction(): Double =
@@ -54,7 +60,7 @@ data class MutableResourceFactoryData(
 ) {
     fun maxInputAmount(resourceType: ResourceType): Double {
         val amountPerUnit: Double =
-            resourceFactoryInternalData.inputResourceMap[resourceType]?.amount ?: 0.0
+            resourceFactoryInternalData.inputResourceMap[resourceType]?.amountPerOutput ?: 0.0
         return amountPerUnit * resourceFactoryInternalData.maxOutputAmountPerEmployee * maxNumEmployee
     }
 
@@ -67,18 +73,18 @@ data class MutableResourceFactoryData(
  *
  * @property qualityData maximum input resource quality, quality exceeding this
  * won't improve the output quality
- * @property amount amount of resource required to produce one unit of output resource
+ * @property amountPerOutput amount of resource required to produce one unit of output resource
  */
 @Serializable
 data class InputResourceData(
     val qualityData: ResourceQualityData = ResourceQualityData(),
-    val amount: Double = 1.0,
+    val amountPerOutput: Double = 1.0,
 ) {
     fun squareDiff(other: InputResourceData): Double {
         val qualityDiff: Double =
             qualityData.squareDiff(other.qualityData)
 
-        val amountDiff: Double = (amount - other.amount).pow(2)
+        val amountDiff: Double = (amountPerOutput - other.amountPerOutput).pow(2)
 
         return qualityDiff + amountDiff
     }
@@ -87,7 +93,7 @@ data class InputResourceData(
         val qualityDiff: Double =
             qualityData.squareDiff(other.qualityData)
 
-        val amountDiff: Double = (amount - other.amount).pow(2)
+        val amountDiff: Double = (amountPerOutput - other.amountPerOutput).pow(2)
 
         return qualityDiff + amountDiff
     }
@@ -96,13 +102,13 @@ data class InputResourceData(
 @Serializable
 data class MutableInputResourceData(
     var qualityData: MutableResourceQualityData = MutableResourceQualityData(),
-    var amount: Double = 1.0,
+    var amountPerOutput: Double = 1.0,
 ) {
     fun squareDiff(other: InputResourceData): Double {
         val qualityDiff: Double =
             qualityData.squareDiff(other.qualityData)
 
-        val amountDiff: Double = (amount - other.amount).pow(2)
+        val amountDiff: Double = (amountPerOutput - other.amountPerOutput).pow(2)
 
         return qualityDiff + amountDiff
     }
@@ -111,7 +117,7 @@ data class MutableInputResourceData(
         val qualityDiff: Double =
             qualityData.squareDiff(other.qualityData)
 
-        val amountDiff: Double = (amount - other.amount).pow(2)
+        val amountDiff: Double = (amountPerOutput - other.amountPerOutput).pow(2)
 
         return qualityDiff + amountDiff
     }
