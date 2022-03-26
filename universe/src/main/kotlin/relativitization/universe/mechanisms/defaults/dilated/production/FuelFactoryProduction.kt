@@ -34,7 +34,7 @@ object FuelFactoryProduction : Mechanism() {
             mutablePlayerData.playerInternalData.popSystemData()
                 .carrierDataMap.values.sumOf { carrierData ->
                     carrierData.allPopData.labourerPopData.fuelFactoryMap.values.sumOf { fuelFactoryData ->
-                        computeOutAmount(fuelFactoryData)
+                        computeOutputAmount(fuelFactoryData)
                     }
                 }
 
@@ -112,9 +112,9 @@ object FuelFactoryProduction : Mechanism() {
     }
 
     /**
-     * Compute the out amount of fuel factory, ignoring maxFuelPerCube
+     * Compute the output amount of fuel factory, ignoring maxFuelPerCube
      */
-    fun computeOutAmount(
+    fun computeOutputAmount(
         mutableFuelFactoryData: MutableFuelFactoryData
     ): Double {
         val amountFraction: Double = productAmountFraction(
@@ -125,7 +125,6 @@ object FuelFactoryProduction : Mechanism() {
                 mutableFuelFactoryData.fuelFactoryInternalData.maxOutputAmountPerEmployee *
                 amountFraction
     }
-
 
     /**
      * Consume and produce resource
@@ -139,7 +138,7 @@ object FuelFactoryProduction : Mechanism() {
         physicsData: MutablePhysicsData,
         maxFuelPerCubeFactor: Double,
     ) {
-        val outputAmount: Double = computeOutAmount(mutableFuelFactoryData) * maxFuelPerCubeFactor
+        val outputAmount: Double = computeOutputAmount(mutableFuelFactoryData) * maxFuelPerCubeFactor
 
         mutableFuelFactoryData.lastOutputAmount = outputAmount
 
@@ -160,7 +159,7 @@ object FuelFactoryProduction : Mechanism() {
     ): Command {
         val toId: Int = mutableFuelFactoryData.ownerPlayerId
 
-        val outputAmount: Double = computeOutAmount(mutableFuelFactoryData) * maxFuelPerCubeFactor
+        val outputAmount: Double = computeOutputAmount(mutableFuelFactoryData) * maxFuelPerCubeFactor
 
         mutableFuelFactoryData.lastOutputAmount = outputAmount
 
