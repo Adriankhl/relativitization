@@ -100,8 +100,13 @@ object UpdatePrice : Mechanism() {
 
                     val originalAmount: Double =
                         tradeNeedMap.getValue(resourceType).getValue(qualityClass)
-                    tradeNeedMap.getValue(resourceType)[qualityClass] =
-                        originalAmount + desireData.desireAmount
+
+                    val amountToAdd: Double = desireData.desireAmount
+                    if (amountToAdd < 0.0) {
+                        logger.error("pop desire smaller than 0.0")
+                    }
+
+                    tradeNeedMap.getValue(resourceType)[qualityClass] = originalAmount + amountToAdd
                 }
             }
         }
@@ -137,12 +142,16 @@ object UpdatePrice : Mechanism() {
                     val originalAmount: Double =
                         tradeNeedMap.getValue(resourceType).getValue(qualityClass)
 
-                    tradeNeedMap.getValue(resourceType)[qualityClass] = originalAmount +
-                            resourceFactory.resourceFactoryInternalData.inputResourceMap
-                                .getValue(resourceType).amount *
+                    val amountToAdd: Double = resourceFactory.resourceFactoryInternalData
+                        .inputResourceMap.getValue(resourceType).amount *
                             resourceFactory.resourceFactoryInternalData.maxOutputAmountPerEmployee *
                             resourceFactory.maxNumEmployee *
                             resourceFactory.employeeFraction()
+                    if (amountToAdd < 0.0) {
+                        logger.error("resource factory input desire smaller than 0.0")
+                    }
+
+                    tradeNeedMap.getValue(resourceType)[qualityClass] = originalAmount + amountToAdd
                 }
             }
         }
@@ -157,8 +166,13 @@ object UpdatePrice : Mechanism() {
                     val originalAmount: Double =
                         tradeNeedMap.getValue(resourceType).getValue(qualityClass)
 
-                    tradeNeedMap.getValue(resourceType)[qualityClass] =
-                        originalAmount + playerSingleExport.amountPerTime
+
+                    val amountToAdd: Double = playerSingleExport.amountPerTime
+                    if (amountToAdd < 0.0) {
+                        logger.error("player export desire smaller than 0.0")
+                    }
+
+                    tradeNeedMap.getValue(resourceType)[qualityClass] = originalAmount + amountToAdd
                 }
             }
 
@@ -172,8 +186,12 @@ object UpdatePrice : Mechanism() {
                     val originalAmount: Double =
                         tradeNeedMap.getValue(resourceType).getValue(qualityClass)
 
-                    tradeNeedMap.getValue(resourceType)[qualityClass] =
-                        originalAmount + popSingleExport.amountPerTime
+                    val amountToAdd: Double = popSingleExport.amountPerTime
+                    if (amountToAdd < 0.0) {
+                        logger.error("pop export desire smaller than 0.0")
+                    }
+
+                    tradeNeedMap.getValue(resourceType)[qualityClass] = originalAmount + amountToAdd
                 }
             }
         }

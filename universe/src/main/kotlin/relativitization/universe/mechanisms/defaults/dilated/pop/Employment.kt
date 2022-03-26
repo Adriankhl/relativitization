@@ -14,9 +14,12 @@ import relativitization.universe.data.components.defaults.popsystem.pop.scholar.
 import relativitization.universe.data.components.defaults.popsystem.pop.soldier.MutableSoldierPopData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.mechanisms.Mechanism
+import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.math.min
 
 object Employment : Mechanism() {
+    private val logger = RelativitizationLogManager.getLogger()
+
     override fun process(
         mutablePlayerData: MutablePlayerData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
@@ -162,6 +165,11 @@ object Employment : Mechanism() {
             } else {
                 maxNumEmployee
             }
+
+            if (maxPaidEmployee < 0.0) {
+                logger.error("maxPaidEmployee in foreign fuel factory < 0.0")
+            }
+
             acc + min(maxNumEmployee, maxPaidEmployee)
         }
 
@@ -177,6 +185,11 @@ object Employment : Mechanism() {
                 } else {
                     maxNumEmployee
                 }
+
+                if (maxPaidEmployee < 0.0) {
+                    logger.error("maxPaidEmployee in foreign resource factory < 0.0")
+                }
+
                 acc + min(maxNumEmployee, maxPaidEmployee)
             }
 
@@ -207,6 +220,10 @@ object Employment : Mechanism() {
             val payWithTax: Double = pay + tax
             val availableFuel: Double = mutablePhysicsData.fuelRestMassData.production
 
+            if (newNumEmployee < 0.0) {
+                logger.error("number of employee < 0.0 in self fuel factory")
+            }
+
             // Decide employee and payment based on the remaining labourer and fuel
             if (availableFuel - payWithTax >= 0.0) {
                 // Update number of employee
@@ -233,6 +250,10 @@ object Employment : Mechanism() {
             val tax: Double = pay * incomeTax
             val payWithTax: Double = pay + tax
             val availableFuel: Double = mutablePhysicsData.fuelRestMassData.production
+
+            if (newNumEmployee < 0.0) {
+                logger.error("number of employee < 0.0 in self resource factory")
+            }
 
             // Decide employee and payment based on the remaining labourer and fuel
             if (availableFuel - payWithTax >= 0.0) {
@@ -267,6 +288,11 @@ object Employment : Mechanism() {
                 maxNewNumEmployee,
                 maxPaidEmployee,
             )
+
+            if (newNumEmployee < 0.0) {
+                logger.error("number of employee < 0.0 in other fuel factory")
+            }
+
             val pay: Double = newNumEmployee * salaryPerEmployee
             val payWithTax: Double = pay * (1.0 + incomeTax)
 
@@ -298,6 +324,11 @@ object Employment : Mechanism() {
                 maxNewNumEmployee,
                 maxPaidEmployee,
             )
+
+            if (newNumEmployee < 0.0) {
+                logger.error("number of employee < 0.0 in other resource factory")
+            }
+
             val pay: Double = newNumEmployee * salaryPerEmployee
             val payWithTax: Double = pay * (1.0 + incomeTax)
 
