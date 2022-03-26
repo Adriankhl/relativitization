@@ -91,8 +91,6 @@ object FuelFactoryProduction : Mechanism() {
             listOf()
         }
 
-
-
         return logisticCommandList
     }
 

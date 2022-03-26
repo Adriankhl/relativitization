@@ -28,29 +28,40 @@ class DistanceMultiplierConsideration(
     private val rank: Int,
     private val bonus: Double,
 ) : DualUtilityConsideration() {
-    override fun getDualUtilityData(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState): DualUtilityData {
-        val otherPlayerData: PlayerData = planDataAtPlayer.universeData3DAtPlayer.get(otherPlayerId)
+    override fun getDualUtilityData(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planState: PlanState
+    ): DualUtilityData {
+        val hasOtherPlayer: Boolean =
+            planDataAtPlayer.universeData3DAtPlayer.playerDataMap.containsKey(otherPlayerId)
 
-        val otherInt4D: Int4D = otherPlayerData.int4D
-        val otherGroup: Int = otherPlayerData.groupId
+        return if (hasOtherPlayer) {
+            val otherPlayerData: PlayerData =
+                planDataAtPlayer.universeData3DAtPlayer.get(otherPlayerId)
 
-        val thisInt4D: Int4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D()
-        val thisGroup: Int = planDataAtPlayer.getCurrentMutablePlayerData().groupId
+            val otherInt4D: Int4D = otherPlayerData.int4D
+            val otherGroup: Int = otherPlayerData.groupId
 
-        val distance: Int = if ((otherInt4D == thisInt4D) && (otherGroup == thisGroup)) {
-            0
+            val thisInt4D: Int4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D()
+            val thisGroup: Int = planDataAtPlayer.getCurrentMutablePlayerData().groupId
+
+            val distance: Int = if ((otherInt4D == thisInt4D) && (otherGroup == thisGroup)) {
+                0
+            } else {
+                Intervals.intDistance(otherInt4D, thisInt4D)
+            }
+
+            if (distance < minDistance) {
+                DualUtilityDataFactory.noImpact()
+            } else {
+                DualUtilityData(
+                    rank = rank,
+                    multiplier = initialMultiplier * exponent.pow(distance),
+                    bonus = bonus
+                )
+            }
         } else {
-            Intervals.intDistance(otherInt4D, thisInt4D)
-        }
-
-        return if (distance < minDistance) {
             DualUtilityDataFactory.noImpact()
-        } else {
-            DualUtilityData(
-                rank = rank,
-                multiplier = initialMultiplier * exponent.pow(distance),
-                bonus = bonus
-            )
         }
     }
 }
