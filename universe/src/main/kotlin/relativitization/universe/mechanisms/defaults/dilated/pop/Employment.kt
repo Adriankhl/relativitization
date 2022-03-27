@@ -14,6 +14,7 @@ import relativitization.universe.data.components.defaults.popsystem.pop.scholar.
 import relativitization.universe.data.components.defaults.popsystem.pop.soldier.MutableSoldierPopData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.mechanisms.Mechanism
+import relativitization.universe.mechanisms.defaults.dilated.production.ResourceFactoryProduction
 import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.math.min
 
@@ -305,6 +306,17 @@ object Employment : Mechanism() {
             it.storedFuelRestMass -= payWithTax
             labourerPopData.commonPopData.saving += pay
             mutableEconomyData.taxData.storedFuelRestMass += pay * incomeTax
+
+            if (it.storedFuelRestMass < 0.0) {
+                // Log as debug if the negative number is small, which may be caused by floating point
+                // arithmetic error
+                if (it.storedFuelRestMass < -0.01) {
+                    logger.error("Fuel factory stored fuel ${it.storedFuelRestMass} < 0.0")
+                } else {
+                    logger.debug("Fuel factory stored fuel ${it.storedFuelRestMass} < 0.0")
+                }
+                it.storedFuelRestMass = 0.0
+            }
         }
 
         // Other player factory, don't pay from player fuel storage here
@@ -342,6 +354,17 @@ object Employment : Mechanism() {
             it.storedFuelRestMass -= payWithTax
             labourerPopData.commonPopData.saving += pay
             mutableEconomyData.taxData.storedFuelRestMass += pay * incomeTax
+
+            if (it.storedFuelRestMass < 0.0) {
+                // Log as debug if the negative number is small, which may be caused by floating point
+                // arithmetic error
+                if (it.storedFuelRestMass < -0.01) {
+                    logger.error("Resource factory stored fuel ${it.storedFuelRestMass} < 0.0")
+                } else {
+                    logger.debug("Resource factory stored fuel ${it.storedFuelRestMass} < 0.0")
+                }
+                it.storedFuelRestMass = 0.0
+            }
         }
 
         // Actual number of employee, for computation of unemployment rate
