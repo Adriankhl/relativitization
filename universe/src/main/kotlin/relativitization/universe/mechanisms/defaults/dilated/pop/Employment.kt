@@ -295,7 +295,8 @@ object Employment : Mechanism() {
             }
 
             val pay: Double = newNumEmployee * salaryPerEmployee
-            val payWithTax: Double = pay * (1.0 + incomeTax)
+            val tax: Double = pay * incomeTax
+            val payWithTax: Double = pay + tax
 
             // Always hire employee
 
@@ -305,7 +306,7 @@ object Employment : Mechanism() {
             // Pay salary and tax here, it does not use the player fuel
             it.storedFuelRestMass -= payWithTax
             labourerPopData.commonPopData.saving += pay
-            mutableEconomyData.taxData.storedFuelRestMass += pay * incomeTax
+            mutableEconomyData.taxData.storedFuelRestMass += tax
 
             if (it.storedFuelRestMass < 0.0) {
                 // Log as debug if the negative number is small, which may be caused by floating point
@@ -342,7 +343,8 @@ object Employment : Mechanism() {
             }
 
             val pay: Double = newNumEmployee * salaryPerEmployee
-            val payWithTax: Double = pay * (1.0 + incomeTax)
+            val tax: Double = pay * incomeTax
+            val payWithTax: Double = pay + tax
 
             // Always hire employee
 
@@ -353,7 +355,7 @@ object Employment : Mechanism() {
             // Pay salary and tax here, it does not use the player fuel
             it.storedFuelRestMass -= payWithTax
             labourerPopData.commonPopData.saving += pay
-            mutableEconomyData.taxData.storedFuelRestMass += pay * incomeTax
+            mutableEconomyData.taxData.storedFuelRestMass += tax
 
             if (it.storedFuelRestMass < 0.0) {
                 // Log as debug if the negative number is small, which may be caused by floating point

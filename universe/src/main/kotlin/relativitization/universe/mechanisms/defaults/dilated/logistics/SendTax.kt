@@ -21,12 +21,18 @@ object SendTax : Mechanism() {
 
         val fraction: Double = 0.5
 
-        val fuelRestMass: Double =
+        val fuelRestMassToSend: Double =
             mutablePlayerData.playerInternalData.economyData().taxData.storedFuelRestMass
+
+        // Clear stored fuel in tax
+        mutablePlayerData.playerInternalData.economyData().taxData.storedFuelRestMass = 0.0
 
         val numTaxReceiver: Int = mutablePlayerData.getLeaderAndSelfIdList().size
 
-        val fractionList: List<Double> = Fraction.oneFractionList(numTaxReceiver, fraction).reversed()
+        val fractionList: List<Double> = Fraction.oneFractionList(
+            numTaxReceiver,
+            fraction
+        ).reversed()
 
         // Send fuel command
         val commandList: List<Command> =
@@ -35,13 +41,11 @@ object SendTax : Mechanism() {
                     toId = id,
                     fromId = universeData3DAtPlayer.getCurrentPlayerData().playerId,
                     fromInt4D = universeData3DAtPlayer.getCurrentPlayerData().int4D,
-                    amount = fuelRestMass * fractionList[index],
+                    amount = fuelRestMassToSend * fractionList[index],
                     senderFuelLossFractionPerDistance = mutablePlayerData.playerInternalData.playerScienceData()
                         .playerScienceApplicationData.fuelLogisticsLossFractionPerDistance,
                 )
             }
-
-        // Clear stored fuel in tax
 
         return commandList
     }
