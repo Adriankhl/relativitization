@@ -51,7 +51,7 @@ fun main() {
                     "Carrier: ${gameStatus.numCarrier}. " +
                     "Population: ${gameStatus.totalPopulation.toScientificNotation().toString(2)}. "  +
                     "Fuel: ${gameStatus.totalFuelRestMass.toScientificNotation().toString(2)}. " +
-                    "Production: ${gameStatus.totalFuelProduction.toScientificNotation().toString(2)}" +
+                    "Production: ${gameStatus.totalFuelProduction.toScientificNotation().toString(2)}. " +
                     "Saving: ${gameStatus.totalSaving.toScientificNotation().toString(2)}. " +
                     "Satisfaction: ${averageSatisfaction.toScientificNotation().toString(2)}. "
         )
