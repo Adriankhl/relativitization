@@ -24,6 +24,16 @@ object PopulationGrowth : Mechanism() {
     ): List<Command> {
         mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.forEach { mutableCarrierData ->
             val totalPopulation: Double = mutableCarrierData.allPopData.totalAdultPopulation()
+
+            val averageSalaryFactor: Double = if (totalPopulation > 0.0) {
+                PopType.values().sumOf { popType ->
+                    mutableCarrierData.allPopData.getCommonPopData(popType).adultPopulation *
+                            mutableCarrierData.allPopData.getCommonPopData(popType).salaryFactor
+                } / totalPopulation
+            } else {
+                1.0
+            }
+
             val medicFactor: Double = computeMedicFactor(
                 mutableCarrierData.allPopData.medicPopData,
                 totalPopulation,
@@ -41,6 +51,8 @@ object PopulationGrowth : Mechanism() {
                         medicFactor = medicFactor,
                         satisfaction = commonPopData.satisfaction,
                         educationLevel = commonPopData.educationLevel,
+                        currentSalaryFactor = commonPopData.salaryFactor,
+                        averageSalaryFactor = averageSalaryFactor,
                         currentPopulation = commonPopData.adultPopulation,
                         currentTotalPopulation = totalPopulation,
                         idealTotalPopulation = mutableCarrierData.carrierInternalData.idealPopulation,
@@ -93,6 +105,8 @@ object PopulationGrowth : Mechanism() {
         medicFactor: Double,
         satisfaction: Double,
         educationLevel: Double,
+        currentSalaryFactor: Double,
+        averageSalaryFactor: Double,
         currentPopulation: Double,
         currentTotalPopulation: Double,
         idealTotalPopulation: Double,
@@ -130,22 +144,29 @@ object PopulationGrowth : Mechanism() {
             }
         }
 
-        // Population increase if > 0.0, else population decrease
-        val overallFactor: Double =
-            educationFactor * idealPopulationFactor * medicFactor * satisfaction - 1.0
+        // Add bonus if salary factor is higher than average
+        val salaryBonus: Double = (currentSalaryFactor - averageSalaryFactor) * 0.01
 
-        val actualOverallFactor: Double = when {
-            overallFactor > 1.0 -> {
+        // Population increase if > 0.0, else population decrease
+        val overallChangeFactor: Double = educationFactor *
+                idealPopulationFactor *
+                medicFactor *
+                satisfaction -
+                1.0 +
+                salaryBonus
+
+        val actualOverallChangeFactor: Double = when {
+            overallChangeFactor > 1.0 -> {
                 1.0
             }
-            overallFactor < -1.0 -> {
+            overallChangeFactor < -1.0 -> {
                 -1.0
             }
             else -> {
-                overallFactor
+                overallChangeFactor
             }
         }
 
-        return currentPopulation + maxPopulationChange * actualOverallFactor + constantPopulationGrowth
+        return currentPopulation + maxPopulationChange * actualOverallChangeFactor + constantPopulationGrowth
     }
 }
