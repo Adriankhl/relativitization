@@ -51,20 +51,51 @@ class SalaryReasoner : SequenceReasoner() {
     }
 }
 
+/**
+ * Adjust the salary of pop in a carrier
+ *
+ * @property category the id of the carrier
+ * @property populationRatioOrderMap a map from carrier id to the descending order of
+ * population / ideal population among all carrier
+ */
 class AdjustSalaryFactorAINode(
     private val carrierId: Int,
     private val populationRatioOrderMap: Map<Int, Int>,
 ) : AINode() {
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
         // Compute an factor determined by the order of population ratio to enhance migration
-        val salaryFactor: Double = 1.0 + if (populationRatioOrderMap.isNotEmpty()) {
+        val populationOrderBonus: Double = if (populationRatioOrderMap.isNotEmpty()) {
             val step: Double = 1.0 / populationRatioOrderMap.size
             step * populationRatioOrderMap.getValue(carrierId)
         } else {
             0.0
         }
 
+        val carrier: MutableCarrierData = planDataAtPlayer.getCurrentMutablePlayerData()
+            .playerInternalData.popSystemData().carrierDataMap.getValue(carrierId)
+
+        val totalCarrierPopulation: Double = carrier.allPopData.totalAdultPopulation()
+
         PopType.values().forEach { popType ->
+
+            // Target to get even population for all type
+            val targetPopulationFraction: Double = 1.0 / PopType.values().size
+
+            val currentPopulationFraction: Double = if (totalCarrierPopulation > 0.0) {
+                carrier.allPopData.getCommonPopData(
+                    popType
+                ).adultPopulation / totalCarrierPopulation
+            } else {
+                targetPopulationFraction
+            }
+
+            val targetPopulationBonus: Double = when {
+                currentPopulationFraction < targetPopulationFraction -> 5.0
+                else -> 0.0
+            }
+
+            val salaryFactor: Double = 1.0 + populationOrderBonus + targetPopulationBonus
+
             planDataAtPlayer.addCommand(
                 ChangeSalaryFactorCommand(
                     toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
