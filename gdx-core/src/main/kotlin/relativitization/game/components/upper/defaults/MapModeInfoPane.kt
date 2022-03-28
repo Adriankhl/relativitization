@@ -1,9 +1,10 @@
-package relativitization.game.components.upper
+package relativitization.game.components.upper.defaults
 
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.MapPlayerColorMode
 import relativitization.game.RelativitizationGame
+import relativitization.game.components.upper.UpperInfoPane
 
 class MapModeInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane>(game) {
     override val infoName: String = "Map mode"

@@ -13,9 +13,9 @@ fun AI.name(): String = this::class.simpleName.toString()
 object AICollection {
     private val logger = RelativitizationLogManager.getLogger()
 
-    private val aiList: List<AI> = AI::class.sealedSubclasses.map { it.objectInstance!! }
-
-    val aiNameMap: Map<String, AI> = aiList.associateBy {
+    val aiNameMap: Map<String, AI> = AI::class.sealedSubclasses.map {
+        it.objectInstance!!
+    }.associateBy {
         it.name()
     }
 

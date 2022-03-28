@@ -27,12 +27,12 @@ fun GlobalMechanismList.name(): String = this::class.simpleName.toString()
 object GlobalMechanismCollection {
     private val logger = RelativitizationLogManager.getLogger()
 
-    private val globalMechanismListList: List<GlobalMechanismList> =
-        GlobalMechanismList::class.sealedSubclasses.map { it.objectInstance!! }
-
-    val globalMechanismListMap: Map<String, GlobalMechanismList> = globalMechanismListList.associateBy {
-        it.name()
-    }
+    val globalMechanismListMap: Map<String, GlobalMechanismList> = GlobalMechanismList::class
+        .sealedSubclasses.map {
+            it.objectInstance!!
+        }.associateBy {
+            it.name()
+        }
 
     fun globalProcess(
         universeData: UniverseData

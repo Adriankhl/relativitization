@@ -1,8 +1,9 @@
-package relativitization.game.components.upper
+package relativitization.game.components.upper.defaults
 
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.RelativitizationGame
+import relativitization.game.components.upper.UpperInfoPane
 import relativitization.universe.ai.AI
 import relativitization.universe.ai.AICollection
 import relativitization.universe.ai.DefaultAI

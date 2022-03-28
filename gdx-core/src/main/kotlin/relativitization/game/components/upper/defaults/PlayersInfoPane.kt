@@ -1,9 +1,10 @@
-package relativitization.game.components.upper
+package relativitization.game.components.upper.defaults
 
 import com.badlogic.gdx.scenes.scene2d.ui.Container
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.RelativitizationGame
+import relativitization.game.components.upper.UpperInfoPane
 import relativitization.game.utils.PlayerImage
 import relativitization.game.utils.PlayerSummary
 import relativitization.game.utils.Summary

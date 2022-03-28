@@ -140,7 +140,8 @@ sealed class Command {
     protected open fun selfExecuteBeforeSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ) { }
+    ) {
+    }
 
     /**
      * Check and self execute
@@ -286,14 +287,12 @@ fun CommandAvailability.name(): String = this::class.simpleName.toString()
 object CommandCollection {
     private val logger = RelativitizationLogManager.getLogger()
 
-    private val commandAvailabilityList: List<CommandAvailability> =
-        CommandAvailability::class.sealedSubclasses.map {
+    val commandAvailabilityNameMap: Map<String, CommandAvailability> = CommandAvailability::class
+        .sealedSubclasses.map {
             it.objectInstance!!
+        }.associateBy {
+            it.name()
         }
-
-    val commandAvailabilityNameMap: Map<String, CommandAvailability> = commandAvailabilityList.associateBy {
-        it.name()
-    }
 
     fun hasCommand(universeSettings: UniverseSettings, command: Command): Boolean {
         return if (universeSettings.commandCollectionName != AllCommandAvailability.name()) {
@@ -327,7 +326,7 @@ data class CommandErrorMessage(
         I18NString.combine(i18NStringList)
     )
 
-    constructor(commandErrorMessageList: List<CommandErrorMessage>): this(
+    constructor(commandErrorMessageList: List<CommandErrorMessage>) : this(
         commandErrorMessageList.all { it.success },
         commandErrorMessageList.filter { !it.success }.map { it.errorMessage }
     )

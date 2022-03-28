@@ -38,12 +38,12 @@ fun MechanismLists.name(): String = this::class.simpleName.toString()
 object MechanismCollection {
     private val logger = RelativitizationLogManager.getLogger()
 
-    private val mechanismListsList: List<MechanismLists> =
-        MechanismLists::class.sealedSubclasses.map { it.objectInstance!! }
-
-    val mechanismListsMap: Map<String, MechanismLists> = mechanismListsList.associateBy {
-        it.name()
-    }
+    val mechanismListsMap: Map<String, MechanismLists> = MechanismLists::class.sealedSubclasses
+        .map {
+            it.objectInstance!!
+        }.associateBy {
+            it.name()
+        }
 
     fun processMechanismCollection(
         mutablePlayerData: MutablePlayerData,
@@ -59,8 +59,10 @@ object MechanismCollection {
         val regularMechanismCommandList: List<Command> =
             mechanismLists.regularMechanismList.map { mechanism ->
                 if (mutablePlayerData.playerInternalData.isAlive) {
-                    logger.debug("Process regular mechanism ${mechanism::class.simpleName} on " +
-                            "player ${mutablePlayerData.playerId}")
+                    logger.debug(
+                        "Process regular mechanism ${mechanism::class.simpleName} on " +
+                                "player ${mutablePlayerData.playerId}"
+                    )
                     mechanism.process(
                         mutablePlayerData,
                         universeData3DAtPlayer,
@@ -68,8 +70,10 @@ object MechanismCollection {
                         universeData.universeGlobalData
                     )
                 } else {
-                    logger.debug("Player ${mutablePlayerData.playerId} is not alive," +
-                            " regular mechanism not processed")
+                    logger.debug(
+                        "Player ${mutablePlayerData.playerId} is not alive," +
+                                " regular mechanism not processed"
+                    )
                     listOf()
                 }
             }.flatten()
@@ -78,8 +82,10 @@ object MechanismCollection {
         val dilatedMechanismCommandList: List<Command> =
             if (mutablePlayerData.isDilationActionTurn) {
                 mechanismLists.dilatedMechanismList.map { mechanism ->
-                    logger.debug("Process dilated mechanism ${mechanism::class.simpleName} on " +
-                            "player ${mutablePlayerData.playerId}")
+                    logger.debug(
+                        "Process dilated mechanism ${mechanism::class.simpleName} on " +
+                                "player ${mutablePlayerData.playerId}"
+                    )
                     if (mutablePlayerData.playerInternalData.isAlive) {
                         mechanism.process(
                             mutablePlayerData,
