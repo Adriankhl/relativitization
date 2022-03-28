@@ -21,8 +21,6 @@ import relativitization.universe.utils.RelativitizationLogManager
 class PhysicsInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane>(game) {
     override val infoName: String = "Physics"
 
-    override val infoPriority: Int = 4
-
     private val gdxSettings = game.gdxSettings
 
     private var table: Table = Table()

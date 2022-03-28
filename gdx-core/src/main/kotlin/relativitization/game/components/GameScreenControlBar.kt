@@ -5,7 +5,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.*
 import io.ktor.http.*
 import kotlinx.coroutines.runBlocking
 import relativitization.game.RelativitizationGame
+import relativitization.game.components.upper.DefaultUpperInfoPaneList
 import relativitization.game.components.upper.UpperInfoPane
+import relativitization.game.components.upper.UpperInfoPaneCollection
 import relativitization.game.screens.ClientSettingsScreen
 import relativitization.game.screens.HelpScreen
 import relativitization.game.utils.ScreenComponent
@@ -288,12 +290,10 @@ class GameScreenControlBar(
         game.changeGdxSettings()
     }
 
-    private val upperInfoPaneButtonList: List<TextButton> =
-        UpperInfoPane::class.sealedSubclasses.map {
-            it.primaryConstructor!!.call(game)
-        }.sortedBy {
-            it.infoPriority
-        }.map {
+    private val upperInfoPaneButtonList: List<TextButton> = UpperInfoPaneCollection
+        .upperInfoPaneListMap.getValue(
+            gdxSettings.upperInfoPaneListName,
+        ).getUpperInfoPaneList(game).map {
             it.infoName
         }.map { infoName ->
             createTextButton(

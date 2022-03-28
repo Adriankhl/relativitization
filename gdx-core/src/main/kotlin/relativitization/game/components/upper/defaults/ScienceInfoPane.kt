@@ -17,8 +17,6 @@ import relativitization.universe.data.components.playerScienceData
 class ScienceInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane>(game) {
     override val infoName: String = "Science"
 
-    override val infoPriority: Int = 9
-
     private val gdxSettings = game.gdxSettings
 
     private var table: Table = Table()

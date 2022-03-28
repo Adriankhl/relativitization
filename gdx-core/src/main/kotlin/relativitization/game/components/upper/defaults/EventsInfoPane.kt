@@ -12,8 +12,6 @@ import relativitization.universe.data.events.name
 class EventsInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane>(game) {
     override val infoName: String = "Events"
 
-    override val infoPriority: Int = 5
-
     private val gdxSettings = game.gdxSettings
 
     private var table: Table = Table()

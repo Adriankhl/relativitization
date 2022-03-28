@@ -19,8 +19,6 @@ import kotlin.math.pow
 class EconomyInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane>(game) {
     override val infoName: String = "Economy"
 
-    override val infoPriority: Int = 12
-
     private val gdxSettings = game.gdxSettings
 
     private var table: Table = Table()

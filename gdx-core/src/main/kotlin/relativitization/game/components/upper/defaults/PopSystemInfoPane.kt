@@ -40,8 +40,6 @@ import relativitization.universe.utils.RelativitizationLogManager
 class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane>(game) {
     override val infoName: String = "Pop System"
 
-    override val infoPriority: Int = 7
-
     private val gdxSettings = game.gdxSettings
 
     private var table: Table = Table()

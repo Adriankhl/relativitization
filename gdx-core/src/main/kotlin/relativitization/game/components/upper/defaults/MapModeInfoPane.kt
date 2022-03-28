@@ -9,8 +9,6 @@ import relativitization.game.components.upper.UpperInfoPane
 class MapModeInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane>(game) {
     override val infoName: String = "Map mode"
 
-    override val infoPriority: Int = 14
-
     private val gdxSettings = game.gdxSettings
 
     private var table: Table = Table()

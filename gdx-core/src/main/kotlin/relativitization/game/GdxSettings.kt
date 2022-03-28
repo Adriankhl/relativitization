@@ -1,6 +1,8 @@
 package relativitization.game
 
 import kotlinx.serialization.Serializable
+import relativitization.game.components.upper.DefaultUpperInfoPaneList
+import relativitization.game.components.upper.UpperInfoPaneCollection
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.utils.RelativitizationLogManager
 import java.io.File
@@ -27,6 +29,7 @@ data class GdxSettings(
     var isBottomCommandInfoPaneShow: Boolean = true,
     var infoPaneSplitAmount: Float = 0.8f,
     var isControlBarTop: Boolean = true,
+    var upperInfoPaneListName: String = UpperInfoPaneCollection.upperInfoPaneListMap.keys.first(),
     var upperInfoPaneChoice: String = "Overview",
     var mapPlayerColorMode: MapPlayerColorMode = MapPlayerColorMode.ONE_COLOR_PER_PLAYER,
     var language: Language = Language.ENGLISH,

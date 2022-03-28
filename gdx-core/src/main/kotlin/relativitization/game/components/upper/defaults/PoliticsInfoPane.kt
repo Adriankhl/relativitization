@@ -14,8 +14,6 @@ import relativitization.universe.data.events.AskToMergeCarrierEvent
 class PoliticsInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane>(game) {
     override val infoName: String = "Politics"
 
-    override val infoPriority: Int = 10
-
     private val gdxSettings = game.gdxSettings
 
     private var table: Table = Table()

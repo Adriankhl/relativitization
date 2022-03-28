@@ -9,13 +9,10 @@ abstract class UpperInfoPane<out T : Actor>(
 ) : ScreenComponent<T>(game.assets) {
     // The name of the upper info
     abstract val infoName: String
-
-    // The priority of this info to show on the left, the lower, the more towards the left
-    abstract val infoPriority: Int
 }
 
 sealed class UpperInfoPaneList {
-    abstract val upperInfoPaneList: List<UpperInfoPane<Actor>>
+    abstract fun getUpperInfoPaneList(game: RelativitizationGame): List<UpperInfoPane<Actor>>
 }
 
 fun UpperInfoPaneList.name(): String = this::class.simpleName.toString()

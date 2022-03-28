@@ -25,8 +25,6 @@ import kotlin.math.min
 class KnowledgeMapInfoPane(val game: RelativitizationGame) : UpperInfoPane<Table>(game) {
     override val infoName: String = "Knowledge Map"
 
-    override val infoPriority: Int = 8
-
     private val gdxSettings = game.gdxSettings
 
     private val knowledgeBar: Table = Table()

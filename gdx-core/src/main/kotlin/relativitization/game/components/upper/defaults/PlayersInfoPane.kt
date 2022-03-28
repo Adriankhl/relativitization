@@ -14,8 +14,6 @@ import relativitization.universe.data.components.defaults.economy.ResourceType
 class PlayersInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane>(game) {
     override val infoName: String = "Players"
 
-    override val infoPriority: Int = 3
-
     private val gdxSettings = game.gdxSettings
 
     private val table: Table = Table()

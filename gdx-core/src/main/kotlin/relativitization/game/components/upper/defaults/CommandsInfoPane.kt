@@ -11,8 +11,6 @@ import relativitization.universe.data.commands.name
 class CommandsInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane>(game) {
     override val infoName: String = "Commands"
 
-    override val infoPriority: Int = 6
-
     private val gdxSettings = game.gdxSettings
 
     private var table: Table = Table()

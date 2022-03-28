@@ -10,8 +10,6 @@ import relativitization.universe.data.PlayerData
 class OverviewInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane>(game) {
     override val infoName: String = "Overview"
 
-    override val infoPriority: Int = 1
-
     private val gdxSettings = game.gdxSettings
 
     private val table: Table = Table()

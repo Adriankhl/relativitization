@@ -5,7 +5,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Container
 import com.badlogic.gdx.scenes.scene2d.ui.SplitPane
 import relativitization.game.RelativitizationGame
 import relativitization.game.components.bottom.BottomCommandInfoPane
+import relativitization.game.components.upper.DefaultUpperInfoPaneList
 import relativitization.game.components.upper.UpperInfoPane
+import relativitization.game.components.upper.UpperInfoPaneCollection
 import relativitization.game.utils.ScreenComponent
 import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.reflect.full.primaryConstructor
@@ -15,10 +17,11 @@ class GameScreenInfoPane(
 ) : ScreenComponent<SplitPane>(game.assets) {
     private val gdxSettings = game.gdxSettings
 
-    private val upperInfoPaneMap: Map<String, UpperInfoPane<Actor>> =
-        UpperInfoPane::class.sealedSubclasses.associate {
-            val info = it.primaryConstructor!!.call(game)
-            info.infoName to info
+    private val upperInfoPaneMap: Map<String, UpperInfoPane<Actor>> = UpperInfoPaneCollection
+        .upperInfoPaneListMap.getValue(
+            gdxSettings.upperInfoPaneListName,
+        ).getUpperInfoPaneList(game).associateBy {
+            it.infoName
         }
 
     private val upperInfoPaneContainer: Container<Actor> = Container(

@@ -14,8 +14,6 @@ import relativitization.universe.utils.I18NString
 class AIInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane>(game) {
     override val infoName: String = "AI"
 
-    override val infoPriority: Int = 2
-
     private val gdxSettings = game.gdxSettings
 
     private val table: Table = Table()

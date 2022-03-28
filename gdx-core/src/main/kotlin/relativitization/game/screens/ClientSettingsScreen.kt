@@ -6,7 +6,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import kotlinx.coroutines.runBlocking
 import relativitization.game.Language
 import relativitization.game.RelativitizationGame
+import relativitization.game.components.upper.DefaultUpperInfoPaneList
 import relativitization.game.components.upper.UpperInfoPane
+import relativitization.game.components.upper.UpperInfoPaneCollection
 import relativitization.game.utils.Assets
 import relativitization.game.utils.TableScreen
 import relativitization.universe.utils.RelativitizationLogManager
@@ -415,13 +417,24 @@ class ClientSettingsScreen(
 
         table.row().space(10f)
 
+        table.add(createLabel("Upper info list: ", gdxSettings.normalFontSize))
+        val upperInfoPaneListSelectBox = createSelectBox(
+            UpperInfoPaneCollection.upperInfoPaneListMap.keys.toList(),
+            gdxSettings.upperInfoPaneChoice,
+            gdxSettings.normalFontSize
+        ) { upperInfoPaneListName, _ ->
+            gdxSettings.upperInfoPaneListName = upperInfoPaneListName
+        }
+        table.add(upperInfoPaneListSelectBox)
+
+        table.row().space(10f)
+
         table.add(createLabel("Upper info: ", gdxSettings.normalFontSize))
         val upperInfoPaneSelectBox = createSelectBox(
-            UpperInfoPane::class.sealedSubclasses.map {
-                it.primaryConstructor!!.call(game)
-            }.sortedBy {
-                it.infoPriority
-            }.map {
+            UpperInfoPaneCollection.upperInfoPaneListMap.getOrDefault(
+                gdxSettings.upperInfoPaneListName,
+                DefaultUpperInfoPaneList
+            ).getUpperInfoPaneList(game).map {
                 it.infoName
             },
             gdxSettings.upperInfoPaneChoice,

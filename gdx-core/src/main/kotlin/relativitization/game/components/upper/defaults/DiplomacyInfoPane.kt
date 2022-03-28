@@ -14,8 +14,6 @@ import relativitization.universe.data.components.diplomacyData
 class DiplomacyInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane>(game) {
     override val infoName: String = "Diplomacy"
 
-    override val infoPriority: Int = 11
-
     private val gdxSettings = game.gdxSettings
 
     private var table: Table = Table()

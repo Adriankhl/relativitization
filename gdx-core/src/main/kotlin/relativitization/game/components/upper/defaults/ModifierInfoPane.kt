@@ -13,8 +13,6 @@ import relativitization.universe.data.components.modifierData
 class ModifierInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane>(game) {
     override val infoName: String = "Modifier"
 
-    override val infoPriority: Int = 13
-
     private val gdxSettings = game.gdxSettings
 
     private var table: Table = Table()
