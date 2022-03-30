@@ -4,10 +4,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.ScreenComponent
-import relativitization.universe.data.commands.CannotSendCommand
-import relativitization.universe.data.commands.DummyCommand
-import relativitization.universe.data.commands.ExecuteWarningCommand
-import relativitization.universe.data.commands.name
+import relativitization.universe.data.commands.*
+import relativitization.universe.data.events.name
 
 class BottomCommandInfoPane(
     val game: RelativitizationGame,
@@ -143,9 +141,14 @@ class BottomCommandInfoPane(
     }
 
     private fun update() {
-        commandNameLabel.setText(translate(game.universeClient.currentCommand.name()))
-        commandDescriptionLabel.setText(translate(game.universeClient.currentCommand.description()))
-        commandTimeLabel.setText(translate("Time: ") + "${game.universeClient.currentCommand.fromInt4D.t}")
+        val currentCommand: Command = game.universeClient.currentCommand
+        if (currentCommand is AddEventCommand) {
+            commandNameLabel.setText(translate(currentCommand.event.name()))
+        } else {
+            commandNameLabel.setText(translate(currentCommand.name()))
+        }
+        commandDescriptionLabel.setText(translate(currentCommand.description()))
+        commandTimeLabel.setText(translate("Time: ") + "${currentCommand.fromInt4D.t}")
 
         if (game.universeClient.hasPreviousCommand()) {
             enableActor(previousCommandButton)
