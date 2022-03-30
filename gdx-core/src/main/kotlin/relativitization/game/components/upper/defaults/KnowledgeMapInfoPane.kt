@@ -260,7 +260,7 @@ class KnowledgeMapInfoPane(val game: RelativitizationGame) : UpperInfoPane<Table
 
         table.add(
             knowledgeMapHeaderScrollPane
-        ).minHeight(knowledgeMapHeader.prefHeight).pad(20f)
+        ).minHeight(knowledgeMapHeader.prefHeight)
 
         table.row()
 
