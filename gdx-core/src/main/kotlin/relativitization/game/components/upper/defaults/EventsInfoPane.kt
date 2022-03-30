@@ -112,7 +112,7 @@ class EventsInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane>
 
         nestedTable.row().space(10f)
 
-        for (choice in eventData.event.choiceDescription) {
+        for (choice in eventData.event.choiceDescription()) {
             val selectChoiceButton = createTextButton(
                 "${choice.key}",
                 gdxSettings.smallFontSize,

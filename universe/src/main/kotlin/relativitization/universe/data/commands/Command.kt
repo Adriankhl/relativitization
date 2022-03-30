@@ -26,7 +26,6 @@ sealed class Command {
      */
     open fun description(): I18NString = I18NString("")
 
-
     /**
      * Check to see if fromId match
      */

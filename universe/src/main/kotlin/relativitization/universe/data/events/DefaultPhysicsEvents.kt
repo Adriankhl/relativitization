@@ -44,7 +44,7 @@ data class MoveToDouble3DEvent(
         ),
     )
 
-    override val choiceDescription: Map<Int, I18NString> = mapOf(
+    override fun choiceDescription(): Map<Int, I18NString> = mapOf(
         0 to I18NString(
             listOf(
                 NormalString("Moving to position "),

@@ -33,7 +33,7 @@ data class AskToMergeCarrierEvent(
         )
     )
 
-    override val choiceDescription: Map<Int, I18NString> = mapOf(
+    override fun choiceDescription(): Map<Int, I18NString> = mapOf(
         0 to I18NString("Accept. Warning! You are going to die"),
         1 to I18NString("Reject")
     )

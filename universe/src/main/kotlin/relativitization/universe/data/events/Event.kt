@@ -23,27 +23,27 @@ sealed class Event {
     abstract val stayTime: Int
 
     // Description of the event
-    abstract fun description(): I18NString
+    open fun description(): I18NString = I18NString("")
 
     // Available choice description
-    abstract val choiceDescription: Map<Int, I18NString>
+    open fun choiceDescription(): Map<Int, I18NString> = mapOf()
 
     /**
      * Whether the player can send this event to other player
      */
-    abstract fun canSend(
+    open fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CommandErrorMessage
+    ): CommandErrorMessage = CommandErrorMessage(true)
 
 
     /**
      * Whether this event can be added to the player
      */
-    abstract fun canExecute(
+    open fun canExecute(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
-    ): CommandErrorMessage
+    ): CommandErrorMessage = CommandErrorMessage(true)
 
     /**
      * Action and generate commands depending on the choice
