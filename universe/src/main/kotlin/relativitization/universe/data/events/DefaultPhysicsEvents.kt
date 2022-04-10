@@ -2,20 +2,19 @@ package relativitization.universe.data.events
 
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.MutablePlayerData
-import relativitization.universe.data.PlayerData
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
-import relativitization.universe.data.commands.*
-import relativitization.universe.maths.physics.Double3D
+import relativitization.universe.data.commands.Command
+import relativitization.universe.data.commands.CommandErrorMessage
+import relativitization.universe.data.commands.CommandI18NStringFactory
 import relativitization.universe.data.components.physicsData
+import relativitization.universe.data.serializer.DataSerializer
+import relativitization.universe.maths.physics.Double3D
 import relativitization.universe.maths.physics.Movement
-import relativitization.universe.maths.physics.Movement.targetDouble3DByPhotonRocket
-import relativitization.universe.maths.physics.TargetVelocityData
 import relativitization.universe.utils.I18NString
 import relativitization.universe.utils.IntString
 import relativitization.universe.utils.NormalString
 import relativitization.universe.utils.RelativitizationLogManager
-import kotlin.math.min
 
 /**
  * Automatically change player velocity to move to a location
@@ -25,7 +24,6 @@ import kotlin.math.min
 data class MoveToDouble3DEvent(
     override val toId: Int,
     override val fromId: Int,
-    override val stayTime: Int,
     val targetDouble3D: Double3D,
     val maxSpeed: Double,
 ) : DefaultEvent() {
@@ -34,7 +32,7 @@ data class MoveToDouble3DEvent(
         listOf(
             NormalString("Player "),
             IntString(0),
-            NormalString(" moving to "),
+            NormalString(" move to "),
             IntString(1),
             NormalString(". "),
         ),
@@ -45,22 +43,8 @@ data class MoveToDouble3DEvent(
     )
 
     override fun choiceDescription(): Map<Int, I18NString> = mapOf(
-        0 to I18NString(
-            listOf(
-                NormalString("Moving to position "),
-                IntString(0),
-                NormalString(". "),
-            ),
-            listOf(
-                targetDouble3D.toString()
-            )
-        ),
-        1 to I18NString(
-            listOf(
-                NormalString("Cancel this command. ")
-            ),
-            listOf()
-        )
+        0 to I18NString("Accept"),
+        1 to I18NString("Reject")
     )
 
     override fun canSend(
@@ -119,95 +103,58 @@ data class MoveToDouble3DEvent(
         )
     }
 
+    override fun stayTime(): Int = if (fromId == toId) {
+        0
+    } else {
+        5
+    }
+
     override fun choiceAction(
         mutablePlayerData: MutablePlayerData,
-        eventId: Int,
-        mutableEventRecordData: MutableEventRecordData,
-        universeData3DAtPlayer: UniverseData3DAtPlayer
-    ): List<Command> {
-        // only if counter > 0, skip first turn to allow player choose
-        return if ((mutableEventRecordData.stayCounter > 0) && (mutableEventRecordData.choice == 0)) {
-            val playerData: PlayerData = universeData3DAtPlayer.getCurrentPlayerData()
+        universeData3DAtPlayer: UniverseData3DAtPlayer,
+        universeSettings: UniverseSettings,
+    ): Map<Int, () -> List<Command>> = mapOf(
+        0 to {
+            mutablePlayerData.playerInternalData.physicsData().targetDouble3DData.hasTarget = true
 
-            if (maxSpeed > universeData3DAtPlayer.universeSettings.speedOfLight) {
-                logger.error("maxSpeed greater than the speed of light")
-            }
+            mutablePlayerData.playerInternalData.physicsData().targetDouble3DData.commanderId =
+                fromId
 
-            // disable fuel production by one turn
-            val disableFuelIncreaseCommand = DisableFuelIncreaseCommand(
-                toId = playerData.playerId,
-                fromId = playerData.playerId,
-                fromInt4D = playerData.int4D,
-                disableFuelIncreaseTimeLimit = 1,
-            )
+            mutablePlayerData.playerInternalData.physicsData().targetDouble3DData.maxSpeed =
+                maxSpeed
 
-            val targetVelocityData: TargetVelocityData = targetDouble3DByPhotonRocket(
-                initialRestMass = playerData.playerInternalData.physicsData().totalRestMass(),
-                maxDeltaRestMass = playerData.playerInternalData.physicsData().fuelRestMassData.maxMovementDeltaRestMass(),
-                initialVelocity = playerData.velocity,
-                maxSpeed = min(maxSpeed, universeData3DAtPlayer.universeSettings.speedOfLight),
-                initialDouble3D = playerData.double4D.toDouble3D(),
-                targetDouble3D = targetDouble3D,
-                speedOfLight = universeData3DAtPlayer.universeSettings.speedOfLight
-            )
-
-            val changeVelocityCommand = ChangeVelocityCommand(
-                toId = toId,
-                fromId = toId,
-                fromInt4D = universeData3DAtPlayer.get(toId).int4D,
-                targetVelocity = targetVelocityData.newVelocity
-            )
-
-            changeVelocityCommand.checkAndExecute(
-                mutablePlayerData,
-                universeData3DAtPlayer.universeSettings
-            )
-            disableFuelIncreaseCommand.checkAndExecute(
-                mutablePlayerData,
-                universeData3DAtPlayer.universeSettings
-            )
+            mutablePlayerData.playerInternalData.physicsData().targetDouble3DData.target =
+                DataSerializer.copy(targetDouble3D)
 
             listOf()
-        } else {
-            listOf()
-        }
-    }
+        },
+        1 to { listOf() }
+    )
 
 
     override fun defaultChoice(
         mutablePlayerData: MutablePlayerData,
-        eventId: Int,
-        mutableEventRecordData: MutableEventRecordData,
-        universeData3DAtPlayer: UniverseData3DAtPlayer
+        universeData3DAtPlayer: UniverseData3DAtPlayer,
+        universeSettings: UniverseSettings
     ): Int {
-        val eventDataMap: Map<Int, EventData> = universeData3DAtPlayer.getCurrentPlayerData().playerInternalData
-            .eventDataMap
-
-        val otherMovementEventMap: Map<Int, EventData> = eventDataMap.filter { (id, eventData) ->
-            (eventData.event is MoveToDouble3DEvent) && (id != eventId)
-        }
-        return if (otherMovementEventMap.isEmpty()) {
+        return if (fromId == mutablePlayerData.playerId) {
             0
         } else {
             1
         }
     }
 
-    override fun shouldCancelThisEvent(
-        eventId: Int,
-        mutableEventRecordData: MutableEventRecordData,
-        universeData3DAtPlayer: UniverseData3DAtPlayer
+    override fun shouldCancel(
+        mutablePlayerData: MutablePlayerData,
+        universeData3DAtPlayer: UniverseData3DAtPlayer,
+        universeSettings: UniverseSettings,
     ): Boolean {
-        return if (mutableEventRecordData.hasChoice && (mutableEventRecordData.choice == 1)) {
-            true
-        } else {
-            val sameDouble3D: Boolean =
-                universeData3DAtPlayer.getCurrentPlayerData().double4D.toDouble3D() == targetDouble3D
-            val zeroVelocity: Boolean =
-                universeData3DAtPlayer.getCurrentPlayerData().velocity.mag() <= 0.0
+        val sameDouble3D: Boolean =
+            universeData3DAtPlayer.getCurrentPlayerData().double4D.toDouble3D() == targetDouble3D
+        val zeroVelocity: Boolean =
+            universeData3DAtPlayer.getCurrentPlayerData().velocity.mag() <= 0.0
 
-            sameDouble3D && zeroVelocity
-        }
+        return sameDouble3D && zeroVelocity
     }
 
     companion object {

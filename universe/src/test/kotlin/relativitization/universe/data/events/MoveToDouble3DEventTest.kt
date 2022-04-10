@@ -28,7 +28,6 @@ internal class MoveToDouble3DEventTest {
         val event = MoveToDouble3DEvent(
             toId = 2,
             fromId = 1,
-            stayTime = 999,
             targetDouble3D = view6.get(3).groupCenterDouble3D(view6.universeSettings.groupEdgeLength),
             maxSpeed = 0.2
 
@@ -84,7 +83,6 @@ internal class MoveToDouble3DEventTest {
         val event = MoveToDouble3DEvent(
             toId = 1,
             fromId = 1,
-            stayTime = 999,
             targetDouble3D = view6.get(3).groupCenterDouble3D(view6.universeSettings.groupEdgeLength),
             maxSpeed = 0.2
 

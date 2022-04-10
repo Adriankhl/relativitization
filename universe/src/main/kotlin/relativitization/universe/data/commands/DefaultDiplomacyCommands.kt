@@ -3,10 +3,11 @@ package relativitization.universe.data.commands
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseSettings
-import relativitization.universe.data.components.defaults.diplomacy.DiplomaticRelationState
-import relativitization.universe.maths.physics.Int4D
+import relativitization.universe.data.components.defaults.diplomacy.war.MutableWarData
+import relativitization.universe.data.components.defaults.diplomacy.war.WarCoreData
+import relativitization.universe.data.components.defaults.diplomacy.war.WarReason
 import relativitization.universe.data.components.diplomacyData
-import relativitization.universe.data.components.modifierData
+import relativitization.universe.maths.physics.Int4D
 import relativitization.universe.utils.I18NString
 import relativitization.universe.utils.IntString
 import relativitization.universe.utils.NormalString
@@ -20,6 +21,7 @@ data class DeclareWarCommand(
     override val fromId: Int,
     override val fromInt4D: Int4D,
 ) : DefaultCommand() {
+
     override fun description(): I18NString = I18NString(
         listOf(
             NormalString("Declare war on "),
@@ -46,12 +48,14 @@ data class DeclareWarCommand(
         )
 
         val isNotInWar = CommandErrorMessage(
-            !playerData.playerInternalData.diplomacyData().warData.warStateMap.containsKey(toId),
+            !playerData.playerInternalData.diplomacyData().relationData.selfWarDataMap
+                .containsKey(toId),
             I18NString("Target is in war with you. ")
         )
 
-        val isNotInPeaceTreaty = CommandErrorMessage(
-            !playerData.playerInternalData.modifierData().diplomacyModifierData.hasPeaceTreaty(toId),
+
+        val isNotInPeace = CommandErrorMessage(
+            !playerData.playerInternalData.diplomacyData().peacePlayerIdSet.contains(toId),
             I18NString("Target is in peace with you. ")
         )
 
@@ -60,7 +64,7 @@ data class DeclareWarCommand(
                 isNotLeaderOrSelf,
                 isNotSubordinateOrSelf,
                 isNotInWar,
-                isNotInPeaceTreaty,
+                isNotInPeace,
             )
         )
     }
@@ -69,67 +73,43 @@ data class DeclareWarCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ) {
-        playerData.playerInternalData.diplomacyData().getDiplomaticRelationData(
-            toId
-        ).diplomaticRelationState = DiplomaticRelationState.ENEMY
+        val warData = MutableWarData(
+            warCoreData = WarCoreData(
+                supportId = fromId,
+                opponentId = toId,
+                startTime = playerData.int4D.t,
+                warReason = WarReason.INVASION,
+                isOffensive = true,
+                isDefensive = false,
+            ),
+        )
 
-        playerData.playerInternalData.diplomacyData().warData.getWarStateData(
-            toId
-        ).initialSubordinateSet = playerData.playerInternalData.subordinateIdSet.toMutableSet()
-
-        playerData.playerInternalData.diplomacyData().warData.getWarStateData(
-            toId
-        ).startTime = playerData.int4D.t
-
-        playerData.playerInternalData.diplomacyData().warData.getWarStateData(
-            toId
-        ).isOffensive = true
-
-        playerData.playerInternalData.diplomacyData().warData.getWarStateData(
-            toId
-        ).warTargetTopLeaderId = toId
+        playerData.playerInternalData.diplomacyData().relationData.addSelfWar(warData)
     }
 
     override fun canExecute(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
-        // Not already in war
-        val isNotInWar = CommandErrorMessage(
-            !playerData.playerInternalData.diplomacyData().warData.warStateMap.containsKey(fromId),
-            I18NString("Target is in war with you. ")
-        )
-
-        return CommandErrorMessage(
-            listOf(
-                isNotInWar,
-            )
-        )
+        return CommandErrorMessage(true)
     }
 
     override fun execute(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings,
     ) {
-        playerData.playerInternalData.diplomacyData().getDiplomaticRelationData(
-            fromId
-        ).diplomaticRelationState = DiplomaticRelationState.ENEMY
+        val warData = MutableWarData(
+            warCoreData = WarCoreData(
+                supportId = toId,
+                opponentId = fromId,
+                startTime = playerData.int4D.t,
+                warReason = WarReason.INVASION,
+                isOffensive = false,
+                isDefensive = true,
+            ),
+        )
 
-        playerData.playerInternalData.diplomacyData().warData.getWarStateData(
-            fromId
-        ).initialSubordinateSet = playerData.playerInternalData.subordinateIdSet.toMutableSet()
-
-        playerData.playerInternalData.diplomacyData().warData.getWarStateData(
-            fromId
-        ).startTime = playerData.int4D.t
-
-        playerData.playerInternalData.diplomacyData().warData.getWarStateData(
-            fromId
-        ).isOffensive = false
-
-        playerData.playerInternalData.diplomacyData().warData.getWarStateData(
-            fromId
-        ).warTargetTopLeaderId = fromId
+        playerData.playerInternalData.diplomacyData().relationData.addSelfWar(warData)
     }
 }
 
@@ -164,17 +144,17 @@ data class DeclareIndependenceToDirectLeaderCommand(
 
         val isNotSelf = CommandErrorMessage(
             playerData.playerId != toId,
-
             I18NString("Cannot declare war on self. ")
         )
 
         val isNotInWar = CommandErrorMessage(
-            !playerData.playerInternalData.diplomacyData().warData.warStateMap.containsKey(toId),
+            !playerData.playerInternalData.diplomacyData().relationData.selfWarDataMap
+                .containsKey(toId),
             I18NString("Target is in war with you. ")
         )
 
-        val isNotInPeaceTreaty = CommandErrorMessage(
-            !playerData.playerInternalData.modifierData().diplomacyModifierData.hasPeaceTreaty(toId),
+        val isNotInPeace = CommandErrorMessage(
+            !playerData.playerInternalData.diplomacyData().peacePlayerIdSet.contains(toId),
             I18NString("Target is in peace with you. ")
         )
 
@@ -183,7 +163,7 @@ data class DeclareIndependenceToDirectLeaderCommand(
                 isDirectLeader,
                 isNotSelf,
                 isNotInWar,
-                isNotInPeaceTreaty,
+                isNotInPeace,
             )
         )
     }
@@ -198,32 +178,18 @@ data class DeclareIndependenceToDirectLeaderCommand(
         }
         playerData.changeDirectLeader(newLeaderIdList)
 
-        // Change diplomatic relation state
-        playerData.playerInternalData.diplomacyData().getDiplomaticRelationData(
-            toId
-        ).diplomaticRelationState = DiplomaticRelationState.ENEMY
+        val warData = MutableWarData(
+            warCoreData = WarCoreData(
+                supportId = fromId,
+                opponentId = toId,
+                startTime = playerData.int4D.t,
+                warReason = WarReason.INDEPENDENCE,
+                isOffensive = true,
+                isDefensive = false,
+            ),
+        )
 
-        // Add war state
-        playerData.playerInternalData.diplomacyData().warData.getWarStateData(
-            toId
-        ).initialSubordinateSet = playerData.playerInternalData.subordinateIdSet.toMutableSet()
-
-        playerData.playerInternalData.diplomacyData().warData.getWarStateData(
-            toId
-        ).startTime = playerData.int4D.t
-
-        // Auto propose peace
-        playerData.playerInternalData.diplomacyData().warData.getWarStateData(
-            toId
-        ).proposePeace = true
-
-        playerData.playerInternalData.diplomacyData().warData.getWarStateData(
-            toId
-        ).isOffensive = true
-
-        playerData.playerInternalData.diplomacyData().warData.getWarStateData(
-            toId
-        ).warTargetTopLeaderId = toId
+        playerData.playerInternalData.diplomacyData().relationData.addSelfWar(warData)
     }
 
 
@@ -231,44 +197,25 @@ data class DeclareIndependenceToDirectLeaderCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
-        // Not already in war
-        val isNotInWar = CommandErrorMessage(
-            !playerData.playerInternalData.diplomacyData().warData.warStateMap.containsKey(fromId),
-            I18NString("Target is in war with you. ")
-        )
-
-        return CommandErrorMessage(
-            listOf(
-                isNotInWar
-            )
-        )
+        return CommandErrorMessage(true)
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
         // Remove subordinate
         playerData.removeSubordinateId(fromId)
 
-        // Change diplomatic relation state
-        playerData.playerInternalData.diplomacyData().getDiplomaticRelationData(
-            fromId
-        ).diplomaticRelationState = DiplomaticRelationState.ENEMY
+        val warData = MutableWarData(
+            warCoreData = WarCoreData(
+                supportId = toId,
+                opponentId = fromId,
+                startTime = playerData.int4D.t,
+                warReason = WarReason.INDEPENDENCE,
+                isOffensive = false,
+                isDefensive = true,
+            ),
+        )
 
-        // Add war state
-        playerData.playerInternalData.diplomacyData().warData.getWarStateData(
-            fromId
-        ).initialSubordinateSet = playerData.playerInternalData.subordinateIdSet.toMutableSet()
-
-        playerData.playerInternalData.diplomacyData().warData.getWarStateData(
-            fromId
-        ).startTime = playerData.int4D.t
-
-        playerData.playerInternalData.diplomacyData().warData.getWarStateData(
-            fromId
-        ).isOffensive = false
-
-        playerData.playerInternalData.diplomacyData().warData.getWarStateData(
-            fromId
-        ).warTargetTopLeaderId = fromId
+        playerData.playerInternalData.diplomacyData().relationData.addSelfWar(warData)
     }
 }
 
@@ -307,12 +254,13 @@ data class DeclareIndependenceToTopLeaderCommand(
         )
 
         val isNotInWar = CommandErrorMessage(
-            !playerData.playerInternalData.diplomacyData().warData.warStateMap.containsKey(toId),
+            !playerData.playerInternalData.diplomacyData().relationData.selfWarDataMap
+                .containsKey(toId),
             I18NString("Target is in war with you. ")
         )
 
-        val isNotInPeaceTreaty = CommandErrorMessage(
-            !playerData.playerInternalData.modifierData().diplomacyModifierData.hasPeaceTreaty(toId),
+        val isNotInPeace = CommandErrorMessage(
+            !playerData.playerInternalData.diplomacyData().peacePlayerIdSet.contains(toId),
             I18NString("Target is in peace with you. ")
         )
 
@@ -321,7 +269,7 @@ data class DeclareIndependenceToTopLeaderCommand(
                 isTopLeader,
                 isNotSelf,
                 isNotInWar,
-                isNotInPeaceTreaty,
+                isNotInPeace,
             )
         )
     }
@@ -335,32 +283,18 @@ data class DeclareIndependenceToTopLeaderCommand(
             listOf()
         )
 
-        // Change diplomatic relation state
-        playerData.playerInternalData.diplomacyData().getDiplomaticRelationData(
-            toId
-        ).diplomaticRelationState = DiplomaticRelationState.ENEMY
+        val warData = MutableWarData(
+            warCoreData = WarCoreData(
+                supportId = fromId,
+                opponentId = toId,
+                startTime = playerData.int4D.t,
+                warReason = WarReason.INDEPENDENCE,
+                isOffensive = true,
+                isDefensive = false,
+            ),
+        )
 
-        // Add war state
-        playerData.playerInternalData.diplomacyData().warData.getWarStateData(
-            toId
-        ).initialSubordinateSet = playerData.playerInternalData.subordinateIdSet.toMutableSet()
-
-        playerData.playerInternalData.diplomacyData().warData.getWarStateData(
-            toId
-        ).startTime = playerData.int4D.t
-
-        // Auto propose peace
-        playerData.playerInternalData.diplomacyData().warData.getWarStateData(
-            toId
-        ).proposePeace = true
-
-        playerData.playerInternalData.diplomacyData().warData.getWarStateData(
-            toId
-        ).isOffensive = true
-
-        playerData.playerInternalData.diplomacyData().warData.getWarStateData(
-            toId
-        ).warTargetTopLeaderId = toId
+        playerData.playerInternalData.diplomacyData().relationData.addSelfWar(warData)
     }
 
 
@@ -368,121 +302,26 @@ data class DeclareIndependenceToTopLeaderCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
-        // Not already in war
-        val isNotInWar = CommandErrorMessage(
-            !playerData.playerInternalData.diplomacyData().warData.warStateMap.containsKey(fromId),
-            I18NString("Target is in war with you. ")
-        )
-
-        return CommandErrorMessage(
-            listOf(
-                isNotInWar
-            )
-        )
+        return CommandErrorMessage(true)
     }
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
         // Remove subordinate
         playerData.removeSubordinateId(fromId)
 
-        // Change diplomatic relation state
-        playerData.playerInternalData.diplomacyData().getDiplomaticRelationData(
-            fromId
-        ).diplomaticRelationState = DiplomaticRelationState.ENEMY
 
-        // Add war state
-        playerData.playerInternalData.diplomacyData().warData.getWarStateData(
-            fromId
-        ).initialSubordinateSet = playerData.playerInternalData.subordinateIdSet.toMutableSet()
-
-        playerData.playerInternalData.diplomacyData().warData.getWarStateData(
-            fromId
-        ).startTime = playerData.int4D.t
-
-        playerData.playerInternalData.diplomacyData().warData.getWarStateData(
-            fromId
-        ).isOffensive = false
-
-        playerData.playerInternalData.diplomacyData().warData.getWarStateData(
-            fromId
-        ).warTargetTopLeaderId = fromId
-    }
-}
-
-/**
- * Change player war state to propose peace
- * Send to the player himself instead of target player
- *
- * @property targetPlayerId the target player which is in war
- */
-@Serializable
-data class ProposePeaceCommand(
-    override val toId: Int,
-    override val fromId: Int,
-    override val fromInt4D: Int4D,
-    val targetPlayerId: Int,
-) : DefaultCommand() {
-    override fun description(): I18NString = I18NString(
-        listOf(
-            NormalString("Propose peace with "),
-            IntString(0),
-            NormalString(". "),
-        ),
-        listOf(
-            targetPlayerId.toString(),
-        )
-    )
-
-    override fun canSend(
-        playerData: MutablePlayerData,
-        universeSettings: UniverseSettings
-    ): CommandErrorMessage {
-        val isSelf = CommandErrorMessage(
-            playerData.playerId == toId,
-            I18NString("Is not sending to self. ")
-        )
-
-        val isInWar = CommandErrorMessage(
-            playerData.playerInternalData.diplomacyData().warData.warStateMap.containsKey(
-                targetPlayerId
+        val warData = MutableWarData(
+            warCoreData = WarCoreData(
+                supportId = toId,
+                opponentId = fromId,
+                startTime = playerData.int4D.t,
+                warReason = WarReason.INDEPENDENCE,
+                isOffensive = false,
+                isDefensive = true,
             ),
-            I18NString("Is not in war with target. ")
         )
 
-        return CommandErrorMessage(
-            listOf(
-                isSelf,
-                isInWar,
-            )
-        )
-    }
-
-    override fun canExecute(
-        playerData: MutablePlayerData,
-        universeSettings: UniverseSettings
-    ): CommandErrorMessage {
-        val isSelf = CommandErrorMessage(
-            playerData.playerId == fromId,
-            CommandI18NStringFactory.isNotFromSelf(playerData.playerId, fromId)
-        )
-
-        val isInWar = CommandErrorMessage(
-            playerData.playerInternalData.diplomacyData().warData.warStateMap.containsKey(targetPlayerId),
-            I18NString("Target is not in war with you. ")
-        )
-
-        return CommandErrorMessage(
-            listOf(
-                isSelf,
-                isInWar,
-            )
-        )
-    }
-
-    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
-        playerData.playerInternalData.diplomacyData().warData.warStateMap.getValue(
-            targetPlayerId
-        ).proposePeace = true
+        playerData.playerInternalData.diplomacyData().relationData.addSelfWar(warData)
     }
 }
 
@@ -520,9 +359,8 @@ data class SurrenderCommand(
         )
 
         val isInWar = CommandErrorMessage(
-            playerData.playerInternalData.diplomacyData().warData.warStateMap.containsKey(
-                targetPlayerId
-            ),
+            playerData.playerInternalData.diplomacyData().relationData.selfWarDataMap
+                .containsKey(targetPlayerId),
             I18NString("Is not in war with target. ")
         )
 
@@ -544,7 +382,8 @@ data class SurrenderCommand(
         )
 
         val isInWar = CommandErrorMessage(
-            playerData.playerInternalData.diplomacyData().warData.warStateMap.containsKey(targetPlayerId),
+            playerData.playerInternalData.diplomacyData().relationData.selfWarDataMap
+                .containsKey(targetPlayerId),
             I18NString("Target is not in war with you. ")
         )
 
@@ -558,5 +397,30 @@ data class SurrenderCommand(
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
         playerData.changeDirectLeader(listOf(targetPlayerId))
+    }
+}
+
+/**
+ * Accept peace to remove war
+ */
+@Serializable
+data class AcceptPeaceCommand(
+    override val toId: Int,
+    override val fromId: Int,
+    override val fromInt4D: Int4D,
+) : DefaultCommand() {
+
+    override fun canSend(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): CommandErrorMessage = CommandErrorMessage(false)
+
+    override fun canExecute(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): CommandErrorMessage = CommandErrorMessage(true)
+
+    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+        playerData.playerInternalData.diplomacyData().relationData.selfWarDataMap.remove(fromId)
     }
 }

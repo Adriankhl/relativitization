@@ -3,10 +3,14 @@ package relativitization.universe.data.commands
 import kotlinx.coroutines.runBlocking
 import relativitization.universe.Universe
 import relativitization.universe.data.components.diplomacyData
+import relativitization.universe.data.events.ProposePeaceEvent
+import relativitization.universe.data.events.name
 import relativitization.universe.generate.method.GenerateSettings
 import relativitization.universe.generate.method.GenerateUniverseMethodCollection
 import relativitization.universe.generate.method.name
 import relativitization.universe.generate.method.testing.TestingFixedMinimal
+import relativitization.universe.maths.physics.Int3D
+import relativitization.universe.maths.physics.Int4D
 import kotlin.test.Test
 
 internal class ProposePeaceCommandTest {
@@ -23,8 +27,14 @@ internal class ProposePeaceCommandTest {
         val view6At3 = universe.getUniverse3DViewAtPlayer(3)
         val view6At5 = universe.getUniverse3DViewAtPlayer(5)
 
-        assert(view6At3.getCurrentPlayerData().playerInternalData.diplomacyData().warData.warStateMap.isEmpty())
-        assert(view6At5.getCurrentPlayerData().playerInternalData.diplomacyData().warData.warStateMap.isEmpty())
+        assert(
+            view6At3.getCurrentPlayerData().playerInternalData.diplomacyData().relationData
+                .selfWarDataMap.isEmpty()
+        )
+        assert(
+            view6At5.getCurrentPlayerData().playerInternalData.diplomacyData().relationData
+                .selfWarDataMap.isEmpty()
+        )
 
         runBlocking {
             universe.postProcessUniverse(
@@ -47,9 +57,13 @@ internal class ProposePeaceCommandTest {
 
 
 
-        assert(view8At3.getCurrentPlayerData().playerInternalData.diplomacyData().warData.warStateMap.isEmpty())
         assert(
-            view8At5.getCurrentPlayerData().playerInternalData.diplomacyData().warData.warStateMap.keys == setOf(3)
+            view8At3.getCurrentPlayerData().playerInternalData.diplomacyData().relationData
+                .selfWarDataMap.isEmpty()
+        )
+        assert(
+            view8At5.getCurrentPlayerData().playerInternalData.diplomacyData().relationData
+                .selfWarDataMap.keys == setOf(3)
         )
 
         runBlocking {
@@ -68,31 +82,63 @@ internal class ProposePeaceCommandTest {
 
 
         assert(
-            view10At3.getCurrentPlayerData().playerInternalData.diplomacyData().warData.warStateMap.keys == setOf(5)
+            view10At3.getCurrentPlayerData().playerInternalData.diplomacyData().relationData
+                .selfWarDataMap.keys == setOf(5)
         )
         assert(
-            view10At5.getCurrentPlayerData().playerInternalData.diplomacyData().warData.warStateMap.keys == setOf(3)
+            view10At5.getCurrentPlayerData().playerInternalData.diplomacyData().relationData
+                .selfWarDataMap.keys == setOf(3)
+        )
+
+        val proposePeaceEvent = ProposePeaceEvent(
+            toId = 5,
+            fromId = 3,
+        )
+        val addEventCommand = AddEventCommand(
+            proposePeaceEvent,
+            fromInt4D = view10At3.getCurrentPlayerData().int4D,
         )
 
         runBlocking {
             universe.postProcessUniverse(
                 mapOf(
-                    3 to listOf(
-                        ProposePeaceCommand(
-                            toId = 3,
-                            fromId = 3,
-                            fromInt4D = view10At3.getCurrentPlayerData().int4D,
-                            targetPlayerId = 5
-                        )
-                    ),
+                    3 to listOf(addEventCommand),
+                ),
+                mapOf()
+            )
+            universe.preProcessUniverse()
+        }
+
+
+        runBlocking {
+            for (i in (1..3)) {
+                universe.postProcessUniverse(
+                    mapOf(),
+                    mapOf()
+                )
+                universe.preProcessUniverse()
+            }
+        }
+
+        val view13At5 = universe.getUniverse3DViewAtPlayer(5)
+
+        assert(
+            view13At5.getCurrentPlayerData().playerInternalData.eventDataMap.isNotEmpty()
+        )
+
+        runBlocking {
+            universe.postProcessUniverse(
+                mapOf(
                     5 to listOf(
-                        ProposePeaceCommand(
+                        SelectEventChoiceCommand(
                             toId = 5,
                             fromId = 5,
-                            fromInt4D = view10At5.getCurrentPlayerData().int4D,
-                            targetPlayerId = 3
+                            fromInt4D = view13At5.getCurrentPlayerData().int4D,
+                            eventKey = 0,
+                            eventName = ProposePeaceEvent::class.name(),
+                            choice = 0
                         )
-                    )
+                    ),
                 ),
                 mapOf()
             )
@@ -113,8 +159,14 @@ internal class ProposePeaceCommandTest {
         val viewFinalAt3 = universe.getUniverse3DViewAtPlayer(3)
         val viewFinalAt5 = universe.getUniverse3DViewAtPlayer(5)
 
-        assert(viewFinalAt3.getCurrentPlayerData().playerInternalData.diplomacyData().warData.warStateMap.isEmpty())
-        assert(viewFinalAt5.getCurrentPlayerData().playerInternalData.diplomacyData().warData.warStateMap.isEmpty())
+        assert(
+            viewFinalAt3.getCurrentPlayerData().playerInternalData.diplomacyData().relationData
+                .selfWarDataMap.isEmpty()
+        )
+        assert(
+            viewFinalAt5.getCurrentPlayerData().playerInternalData.diplomacyData().relationData
+                .selfWarDataMap.isEmpty()
+        )
 
     }
 }

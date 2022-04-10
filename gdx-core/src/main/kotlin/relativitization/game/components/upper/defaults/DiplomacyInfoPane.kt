@@ -6,10 +6,9 @@ import relativitization.game.RelativitizationGame
 import relativitization.game.components.upper.UpperInfoPane
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.commands.*
-import relativitization.universe.data.components.defaults.diplomacy.DiplomaticRelationData
-import relativitization.universe.data.components.defaults.diplomacy.DiplomaticRelationState
-import relativitization.universe.data.components.defaults.diplomacy.WarStateData
+import relativitization.universe.data.components.defaults.diplomacy.war.WarData
 import relativitization.universe.data.components.diplomacyData
+import relativitization.universe.data.events.ProposePeaceEvent
 
 class DiplomacyInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane>(game) {
     override val infoName: String = "Diplomacy"
@@ -156,14 +155,15 @@ class DiplomacyInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
     private fun computeOtherPlayerIdList(): List<Int> {
         return when (currentDiplomacyInfoRelationType) {
             DiplomacyInfoRelationType.ALL -> game.universeClient.getUniverseData3D().playerDataMap.keys.toList()
-            DiplomacyInfoRelationType.WAR -> playerData.playerInternalData.diplomacyData().warData.warStateMap.keys
-                .toList()
-            DiplomacyInfoRelationType.WAR_AND_ENEMY -> (playerData.playerInternalData.diplomacyData().warData.warStateMap
-                .keys + playerData.playerInternalData.diplomacyData().relationMap.filterValues {
-                it.diplomaticRelationState == DiplomaticRelationState.ENEMY
-            }.keys).toList()
-            DiplomacyInfoRelationType.OTHER_RELATION -> playerData.playerInternalData.diplomacyData().relationMap
-                .filterValues { it.diplomaticRelationState != DiplomaticRelationState.ENEMY }.keys.toList()
+            DiplomacyInfoRelationType.SELF_WAR -> playerData.playerInternalData.diplomacyData()
+                .relationData.selfWarDataMap.keys.toList()
+            DiplomacyInfoRelationType.OTHER_WAR -> (playerData.playerInternalData.diplomacyData()
+                .relationData.subordinateWarDataMap.keys + playerData.playerInternalData
+                .diplomacyData().relationData.allyWarDataMap.keys).toList()
+            DiplomacyInfoRelationType.ENEMY -> playerData.playerInternalData
+                .diplomacyData().relationData.enemyIdSet.toList()
+            DiplomacyInfoRelationType.ALLY -> playerData.playerInternalData.diplomacyData()
+                .relationData.allyMap.keys.toList()
         }.sorted()
     }
 
@@ -181,25 +181,32 @@ class DiplomacyInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
 
             nestedTable.row().space(10f)
 
-            val diplomaticRelationData: DiplomaticRelationData =
-                playerData.playerInternalData.diplomacyData()
-                    .getDiplomaticRelationData(otherPlayerId)
+            val isAlly: Boolean = playerData.playerInternalData.diplomacyData().relationData
+                .isAlly(otherPlayerId)
+            val isEnemy: Boolean = playerData.playerInternalData.diplomacyData().relationData
+                .isEnemy(otherPlayerId)
 
-            nestedTable.add(
-                createLabel(
-                    "Relation: ${diplomaticRelationData.relation}",
-                    gdxSettings.smallFontSize
-                )
-            )
+            val relationTable = Table()
 
-            nestedTable.row().space(10f)
+            if (isAlly) {
+                relationTable.add(
+                    createLabel(
+                        "Ally",
+                        gdxSettings.normalFontSize
+                    )
+                ).space(10f)
+            }
 
-            nestedTable.add(
-                createLabel(
-                    "Diplomatic state: ${diplomaticRelationData.diplomaticRelationState}",
-                    gdxSettings.smallFontSize
-                )
-            )
+            if (isEnemy) {
+                relationTable.add(
+                    createLabel(
+                        "Enemy",
+                        gdxSettings.normalFontSize
+                    )
+                ).space(10f)
+            }
+
+            nestedTable.add(relationTable)
         }
 
         return nestedTable
@@ -208,14 +215,12 @@ class DiplomacyInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
     private fun createWarStateTable(): Table {
         val nestedTable = Table()
 
-        if (playerData.playerInternalData.diplomacyData().warData.warStateMap.containsKey(
-                otherPlayerId
-            )
+        if (
+            playerData.playerInternalData.diplomacyData().relationData.selfWarDataMap
+                .containsKey(otherPlayerId)
         ) {
-            val warState: WarStateData =
-                playerData.playerInternalData.diplomacyData().warData.getWarStateData(
-                    otherPlayerId
-                )
+            val warData: WarData = playerData.playerInternalData.diplomacyData().relationData
+                .selfWarDataMap.getValue(otherPlayerId)
 
             nestedTable.add(
                 createLabel(
@@ -228,31 +233,30 @@ class DiplomacyInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
 
             nestedTable.add(
                 createLabel(
-                    "War start time: ${warState.startTime}",
+                    "War start time: ${warData.warCoreData.startTime}",
                     gdxSettings.smallFontSize
                 )
             )
 
             nestedTable.row().space(10f)
 
+            val warTypeText: String = if (warData.warCoreData.isOffensive) {
+                if (warData.warCoreData.isDefensive) {
+                    "War type: offensive + defensive"
+                } else {
+                    "War type: defensive"
+                }
+            } else {
+                if (warData.warCoreData.isDefensive) {
+                    "War type: defensive"
+                } else {
+                    ""
+                }
+            }
+
             nestedTable.add(
                 createLabel(
-                    "War type: ${
-                        if (warState.isOffensive) {
-                            "Offensive"
-                        } else {
-                            "Defensive"
-                        }
-                    }",
-                    gdxSettings.smallFontSize
-                )
-            )
-
-            nestedTable.row().space(10f)
-
-            nestedTable.add(
-                createLabel(
-                    "Proposed peace: ${warState.proposePeace}",
+                    warTypeText,
                     gdxSettings.smallFontSize
                 )
             )
@@ -266,14 +270,17 @@ class DiplomacyInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
                     gdxSettings.soundEffectsVolume,
                     extraColor = commandButtonColor,
                 ) {
-                    val proposePeaceCommand = ProposePeaceCommand(
-                        toId = game.universeClient.getCurrentPlayerData().playerId,
+                    val proposePeaceEvent = ProposePeaceEvent(
+                        toId = otherPlayerId,
                         fromId = game.universeClient.getCurrentPlayerData().playerId,
-                        fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
-                        targetPlayerId = otherPlayerId
                     )
 
-                    game.universeClient.currentCommand = proposePeaceCommand
+                    val addEventCommand = AddEventCommand(
+                        proposePeaceEvent,
+                        fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
+                    )
+
+                    game.universeClient.currentCommand = addEventCommand
                 }
                 nestedTable.add(proposePeaceButton)
 
@@ -388,9 +395,10 @@ class DiplomacyInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
 
 enum class DiplomacyInfoRelationType(val value: String) {
     ALL("All"),
-    WAR("War"),
-    WAR_AND_ENEMY("War and enemy"),
-    OTHER_RELATION("Other relation"),
+    SELF_WAR("Self war"),
+    OTHER_WAR("Other war"),
+    ENEMY("Enemy"),
+    ALLY("Ally"),
     ;
 
     override fun toString(): String {

@@ -6,6 +6,7 @@ import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.components.diplomacyData
 import relativitization.universe.data.components.economyData
+import relativitization.universe.data.components.modifierData
 import relativitization.universe.data.components.popSystemData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.mechanisms.Mechanism
@@ -24,35 +25,35 @@ object ClearDeadPlayer : Mechanism() {
 
         val allPlayerId: Set<Int> = universeData3DAtPlayer.playerDataMap.keys
 
+        // Don't clear war, since the peace treaty should be handled for dead player in UpdateWar
+
         // Clear diplomatic relation
-        // Don't clear war, UpdateWarState handle this
-        val toRemoveRelationKeys: List<Int> = mutablePlayerData.playerInternalData.diplomacyData()
-            .relationMap.keys.filter {
+        mutablePlayerData.playerInternalData.diplomacyData().relationData.relationMap.keys
+            .removeAll {
                 !allPlayerId.contains(it)
             }
-        toRemoveRelationKeys.forEach {
-            mutablePlayerData.playerInternalData.diplomacyData().relationMap.remove(it)
+
+        // Clear enemy
+        mutablePlayerData.playerInternalData.diplomacyData().relationData.enemyIdSet.removeAll {
+            !allPlayerId.contains(it)
+        }
+
+        // Clear ally
+        mutablePlayerData.playerInternalData.diplomacyData().relationData.allyMap.keys.removeAll {
+            !allPlayerId.contains(it)
         }
 
         // Clear export tariff
-        val toRemoveExportTariffKeys: List<Int> = mutablePlayerData.playerInternalData
-            .economyData().taxData.taxRateData.exportTariff.tariffRatePlayerMap.keys.filter {
+        mutablePlayerData.playerInternalData.economyData().taxData.taxRateData.exportTariff
+            .tariffRatePlayerMap.keys.removeAll {
                 !allPlayerId.contains(it)
             }
-        toRemoveExportTariffKeys.forEach {
-            mutablePlayerData.playerInternalData.economyData().taxData.taxRateData.exportTariff
-                .tariffRatePlayerMap.remove(it)
-        }
 
         // Clear import tariff
-        val toRemoveImportTariffKeys: List<Int> = mutablePlayerData.playerInternalData
-            .economyData().taxData.taxRateData.importTariff.tariffRatePlayerMap.keys.filter {
+        mutablePlayerData.playerInternalData.economyData().taxData.taxRateData.importTariff
+            .tariffRatePlayerMap.keys.removeAll {
                 !allPlayerId.contains(it)
             }
-        toRemoveImportTariffKeys.forEach {
-            mutablePlayerData.playerInternalData.economyData().taxData.taxRateData.importTariff
-                .tariffRatePlayerMap.remove(it)
-        }
 
         // Clear subordinate and direct subordinate
         val newLeaderIdList: List<Int> = mutablePlayerData.playerInternalData.leaderIdList.filter {
@@ -69,21 +70,21 @@ object ClearDeadPlayer : Mechanism() {
         // Clear factory owned by dead players
         mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values
             .forEach { carrier ->
-                val toRemoveFuelFactoryKeys: Set<Int> = carrier.allPopData.labourerPopData
-                    .fuelFactoryMap.filter { (_, factory) ->
+                carrier.allPopData.labourerPopData.fuelFactoryMap.entries
+                    .removeAll { (_, factory) ->
                         !allPlayerId.contains(factory.ownerPlayerId)
-                    }.keys
-                toRemoveFuelFactoryKeys.forEach {
-                    carrier.allPopData.labourerPopData.fuelFactoryMap.remove(it)
-                }
+                    }
 
-                val toRemoveResourceFactoryKeys: Set<Int> = carrier.allPopData.labourerPopData
-                    .resourceFactoryMap.filter { (_, factory) ->
+                carrier.allPopData.labourerPopData.resourceFactoryMap.entries
+                    .removeAll { (_, factory) ->
                         !allPlayerId.contains(factory.ownerPlayerId)
-                    }.keys
-                toRemoveResourceFactoryKeys.forEach {
-                    carrier.allPopData.labourerPopData.resourceFactoryMap.remove(it)
-                }
+                    }
+            }
+
+        // Clear modifier
+        mutablePlayerData.playerInternalData.modifierData().diplomacyModifierData.peaceTreaty
+            .keys.removeAll {
+                !allPlayerId.contains(it)
             }
 
         return listOf()

@@ -21,8 +21,6 @@ data class AskToMergeCarrierEvent(
     override val fromId: Int
 ) : DefaultEvent() {
 
-    override val stayTime: Int = 1
-
     override fun description(): I18NString = I18NString(
         listOf(
             NormalString("Merge all your carriers to player "),
@@ -80,49 +78,22 @@ data class AskToMergeCarrierEvent(
 
     override fun choiceAction(
         mutablePlayerData: MutablePlayerData,
-        eventId: Int,
-        mutableEventRecordData: MutableEventRecordData,
-        universeData3DAtPlayer: UniverseData3DAtPlayer
-    ): List<Command> {
-        // only if counter > 0, skip first turn to allow player choose
-        return if (mutableEventRecordData.stayCounter > 0) {
-            if (mutableEventRecordData.choice == 0) {
-                val agreeMergeCommand = AgreeMergeCommand(
-                    toId = toId,
-                    fromId = toId,
-                    fromInt4D = universeData3DAtPlayer.getCurrentPlayerData().int4D
-                )
-
-                agreeMergeCommand.checkAndExecute(
-                    mutablePlayerData,
-                    universeData3DAtPlayer.universeSettings
-                )
-
-                listOf()
-            } else {
-                val declareIndependenceToDirectLeaderCommand = DeclareIndependenceToDirectLeaderCommand(
-                    toId = fromId,
-                    fromId = toId,
-                    fromInt4D = universeData3DAtPlayer.getCurrentPlayerData().int4D
-                )
-
-                declareIndependenceToDirectLeaderCommand.checkAndSelfExecuteBeforeSend(
-                    mutablePlayerData,
-                    universeData3DAtPlayer.universeSettings
-                )
-
-                listOf(declareIndependenceToDirectLeaderCommand)
-            }
-        } else {
+        universeData3DAtPlayer: UniverseData3DAtPlayer,
+        universeSettings: UniverseSettings,
+    ): Map<Int, () -> List<Command>> = mapOf(
+        0 to {
+            mutablePlayerData.playerInternalData.politicsData().hasAgreedMerge = true
+            listOf()
+        },
+        1 to {
             listOf()
         }
-    }
+    )
 
     override fun defaultChoice(
         mutablePlayerData: MutablePlayerData,
-        eventId: Int,
-        mutableEventRecordData: MutableEventRecordData,
-        universeData3DAtPlayer: UniverseData3DAtPlayer
+        universeData3DAtPlayer: UniverseData3DAtPlayer,
+        universeSettings: UniverseSettings,
     ): Int {
         return when (universeData3DAtPlayer.getCurrentPlayerData().playerType) {
             PlayerType.HUMAN -> 1
@@ -131,12 +102,13 @@ data class AskToMergeCarrierEvent(
         }
     }
 
-    override fun shouldCancelThisEvent(
-        eventId: Int,
-        mutableEventRecordData: MutableEventRecordData,
-        universeData3DAtPlayer: UniverseData3DAtPlayer
+    override fun shouldCancel(
+        mutablePlayerData: MutablePlayerData,
+        universeData3DAtPlayer: UniverseData3DAtPlayer,
+        universeSettings: UniverseSettings,
     ): Boolean {
         // Only cancel this event if the player agree to merge
-        return universeData3DAtPlayer.getCurrentPlayerData().playerInternalData.politicsData().hasAgreedMerge
+        return universeData3DAtPlayer.getCurrentPlayerData().playerInternalData.politicsData()
+            .hasAgreedMerge
     }
 }

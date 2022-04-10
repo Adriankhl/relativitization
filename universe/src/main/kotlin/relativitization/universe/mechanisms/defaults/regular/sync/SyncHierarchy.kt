@@ -76,7 +76,7 @@ object SyncHierarchy : Mechanism() {
         mutablePlayerData.playerInternalData.subordinateIdSet.removeAll {
             // Subordinates of subordinate may contain dead player
             !universeData3DAtPlayer.playerDataMap.containsKey(it) ||
-                    (universeData3DAtPlayer.get(it).playerInternalData.directLeaderId != mutablePlayerData.playerId) ||
+                    !universeData3DAtPlayer.get(it).isLeader(mutablePlayerData.playerId) ||
                     mutablePlayerData.isLeaderOrSelf(it)
         }
 

@@ -35,7 +35,7 @@ class PlanState(
             .physicsData().fuelRestMassData.production * fraction
     }
 
-    fun updateTotalPopulation(
+    private fun updateTotalPopulation(
         planDataAtPlayer: PlanDataAtPlayer
     ) {
         totalAdultPopulation = planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData
@@ -51,7 +51,7 @@ class PlanState(
         return totalAdultPopulation
     }
 
-    fun updateAverageSelfLabourerSalary(
+    private fun updateAverageSelfLabourerSalary(
         planDataAtPlayer: PlanDataAtPlayer
     ) {
         averageSelfLabourerSalary = planDataAtPlayer.getCurrentMutablePlayerData()
@@ -68,7 +68,7 @@ class PlanState(
         return averageSelfLabourerSalary
     }
 
-    fun updateFuelRemainFraction(
+    private fun updateFuelRemainFraction(
         otherPlayerId: Int,
         planDataAtPlayer: PlanDataAtPlayer,
     ) {
@@ -103,7 +103,7 @@ class PlanState(
         return fuelRemainFractionMap.getValue(otherPlayerId)
     }
 
-    fun updateResourceRemainFraction(
+    private fun updateResourceRemainFraction(
         otherPlayerId: Int,
         planDataAtPlayer: PlanDataAtPlayer,
     ) {

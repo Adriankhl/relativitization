@@ -7,9 +7,9 @@ import relativitization.universe.mechanisms.defaults.dilated.economy.UpdatePrice
 import relativitization.universe.mechanisms.defaults.dilated.economy.UpdateResourceQualityBound
 import relativitization.universe.mechanisms.defaults.dilated.history.StoreFuelRestMassHistory
 import relativitization.universe.mechanisms.defaults.regular.dead.ClearDeadPlayer
-import relativitization.universe.mechanisms.defaults.regular.diplomacy.UpdateDiplomaticRelation
-import relativitization.universe.mechanisms.defaults.regular.diplomacy.UpdateDiplomaticRelationState
-import relativitization.universe.mechanisms.defaults.regular.diplomacy.UpdateWarState
+import relativitization.universe.mechanisms.defaults.regular.diplomacy.UpdateRelation
+import relativitization.universe.mechanisms.defaults.regular.diplomacy.UpdateEnemy
+import relativitization.universe.mechanisms.defaults.regular.diplomacy.UpdateWar
 import relativitization.universe.mechanisms.defaults.regular.economy.UpdateTaxRate
 import relativitization.universe.mechanisms.defaults.regular.events.AutoEventCollection
 import relativitization.universe.mechanisms.defaults.regular.events.ProcessEvents
@@ -27,7 +27,10 @@ import relativitization.universe.mechanisms.defaults.dilated.production.Resource
 import relativitization.universe.mechanisms.defaults.dilated.research.DiscoverKnowledge
 import relativitization.universe.mechanisms.defaults.dilated.research.KnowledgeDiffusion
 import relativitization.universe.mechanisms.defaults.regular.ai.ClearRecentCommand
+import relativitization.universe.mechanisms.defaults.regular.diplomacy.UpdateAlly
 import relativitization.universe.mechanisms.defaults.regular.factory.ClearLocalFactoryStoredFuel
+import relativitization.universe.mechanisms.defaults.regular.diplomacy.UpdatePeacePlayer
+import relativitization.universe.mechanisms.defaults.regular.movement.MoveToTarget
 import relativitization.universe.mechanisms.defaults.regular.science.UpdateScienceApplicationData
 import relativitization.universe.mechanisms.defaults.regular.storage.BalanceFuel
 import relativitization.universe.mechanisms.defaults.regular.storage.BalanceResource
@@ -46,9 +49,12 @@ object DefaultMechanismLists : MechanismLists() {
         ClearLocalFactoryStoredFuel,
         BalanceFuel,
         BalanceResource,
-        UpdateWarState,
-        UpdateDiplomaticRelation,
-        UpdateDiplomaticRelationState,
+        MoveToTarget,
+        UpdateWar,
+        UpdatePeacePlayer,
+        UpdateRelation,
+        UpdateEnemy,
+        UpdateAlly,
         MergePlayer,
         UpdateTaxRate,
         UpdatePoliticsData,

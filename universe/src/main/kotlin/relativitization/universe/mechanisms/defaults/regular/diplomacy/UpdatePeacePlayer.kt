@@ -9,30 +9,23 @@ import relativitization.universe.data.components.modifierData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.mechanisms.Mechanism
 
-object UpdateDiplomaticRelation : Mechanism() {
+object UpdatePeacePlayer : Mechanism() {
     override fun process(
         mutablePlayerData: MutablePlayerData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
         universeSettings: UniverseSettings,
         universeGlobalData: UniverseGlobalData
     ): List<Command> {
-        // Parameters
-        // Max relation change by receiving fuel
-        val maxReceiveFuelChange: Double = 100.0
 
-        val modifierIdSet: Set<Int> =
-            mutablePlayerData.playerInternalData.modifierData().diplomacyModifierData.relationModifierMap.keys
+        val allPeaceTreaty: Set<Int> = mutablePlayerData.playerInternalData.modifierData()
+            .diplomacyModifierData.peaceTreaty.keys
 
-        mutablePlayerData.playerInternalData.diplomacyData().relationMap.forEach { (id, relationData) ->
-            relationData.relation = 0.0
-            if (modifierIdSet.contains(id)) {
-                relationData.relation +=
-                    mutablePlayerData.playerInternalData.modifierData().diplomacyModifierData.getRelationChange(
-                        id = id,
-                        maxReceiveFuelChange = maxReceiveFuelChange,
-                    )
-            }
-        }
+        val peacePlayerSet: Set<Int> = allPeaceTreaty.flatMap {
+            universeData3DAtPlayer.get(it).getSubordinateAndSelfIdSet()
+        }.toSet()
+
+        mutablePlayerData.playerInternalData.diplomacyData().peacePlayerIdSet.clear()
+        mutablePlayerData.playerInternalData.diplomacyData().peacePlayerIdSet.addAll(peacePlayerSet)
 
         return listOf()
     }

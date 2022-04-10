@@ -34,7 +34,9 @@ class RelationConsideration(
 
         return DualUtilityData(
             rank = rank,
-            multiplier = initialMultiplier * exponent.pow(diplomacyData.getRelation(otherPlayerId)),
+            multiplier = initialMultiplier * exponent.pow(
+                diplomacyData.relationData.getRelation(otherPlayerId)
+            ),
             bonus = bonus,
         )
     }

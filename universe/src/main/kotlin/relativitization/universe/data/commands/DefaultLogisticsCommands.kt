@@ -157,7 +157,7 @@ data class SendFuelFromStorageCommand(
         val duration: Int = 10
 
         playerData.playerInternalData.modifierData().diplomacyModifierData.addReceiveFuelToRelationModifier(
-            id = fromId,
+            otherPlayerId = fromId,
             relationChange = relationChange,
             duration = duration,
         )

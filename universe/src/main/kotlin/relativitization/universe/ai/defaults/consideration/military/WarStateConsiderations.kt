@@ -4,8 +4,7 @@ import relativitization.universe.ai.defaults.utils.DualUtilityConsideration
 import relativitization.universe.ai.defaults.utils.DualUtilityData
 import relativitization.universe.ai.defaults.utils.PlanState
 import relativitization.universe.data.PlanDataAtPlayer
-import relativitization.universe.data.components.defaults.diplomacy.DiplomaticRelationState
-import relativitization.universe.data.components.defaults.diplomacy.MutableWarStateData
+import relativitization.universe.data.components.defaults.diplomacy.war.MutableWarData
 import relativitization.universe.data.components.diplomacyData
 
 /**
@@ -26,9 +25,12 @@ class HasEnemyConsideration(
     private val multiplierIfFalse: Double,
     private val bonusIfFalse: Double,
 ) : DualUtilityConsideration() {
-    override fun getDualUtilityData(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState): DualUtilityData {
-        val hasEnemy: Boolean = planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData.diplomacyData()
-            .relationMap.values.any { it.diplomaticRelationState == DiplomaticRelationState.ENEMY }
+    override fun getDualUtilityData(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planState: PlanState
+    ): DualUtilityData {
+        val hasEnemy: Boolean = planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData
+            .diplomacyData().relationData.enemyIdSet.isNotEmpty()
 
         return if (hasEnemy) {
             DualUtilityData(
@@ -64,11 +66,19 @@ class InWarConsideration(
     private val multiplierIfFalse: Double,
     private val bonusIfFalse: Double,
 ) : DualUtilityConsideration() {
-    override fun getDualUtilityData(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState): DualUtilityData {
-        val isInWar: Boolean = planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData.diplomacyData()
-            .warData.warStateMap.isNotEmpty()
+    override fun getDualUtilityData(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planState: PlanState
+    ): DualUtilityData {
+        val hasSelfWar: Boolean = planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData
+            .diplomacyData().relationData.selfWarDataMap.isNotEmpty()
+        val hasSubordinateWar: Boolean = planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData
+            .diplomacyData().relationData.subordinateWarDataMap.isNotEmpty()
+        val hasAllyWar: Boolean = planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData
+            .diplomacyData().relationData.allyWarDataMap.isNotEmpty()
 
-        return if (isInWar) {
+
+        return if (hasSelfWar || hasSubordinateWar || hasAllyWar) {
             DualUtilityData(
                 rank = rankIfTrue,
                 multiplier = multiplierIfTrue,
@@ -104,9 +114,13 @@ class InWarWithPlayerConsideration(
     private val multiplierIfFalse: Double,
     private val bonusIfFalse: Double,
 ) : DualUtilityConsideration() {
-    override fun getDualUtilityData(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState): DualUtilityData {
-        val atWarWithPlayer: Boolean = planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData.diplomacyData()
-            .warData.warStateMap.containsKey(otherPlayerId)
+    override fun getDualUtilityData(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planState: PlanState
+    ): DualUtilityData {
+        val atWarWithPlayer: Boolean = planDataAtPlayer.getCurrentMutablePlayerData()
+            .playerInternalData.diplomacyData().relationData.selfWarDataMap
+            .containsKey(otherPlayerId)
 
         return if (atWarWithPlayer) {
             DualUtilityData(
@@ -145,62 +159,17 @@ class WarLossConsideration(
         planState: PlanState
     ): DualUtilityData {
 
-        val warState: MutableWarStateData = planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData
-            .diplomacyData().warData.warStateMap.getValue(otherPlayerId)
+        val warData: MutableWarData = planDataAtPlayer.getCurrentMutablePlayerData()
+            .playerInternalData.diplomacyData().relationData.selfWarDataMap.getValue(otherPlayerId)
 
-        val numOriginalSubordinate: Int = planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData
-            .subordinateIdSet.filter { warState.initialSubordinateSet.contains(it) }.size
-
-        val lossFraction: Double = if (warState.initialSubordinateSet.isNotEmpty()) {
-            1.0 - numOriginalSubordinate.toDouble() /  warState.initialSubordinateSet.size.toDouble()
-        } else {
-            0.0
-        }
+        val lossFraction: Double = 1.0 - warData.populationFraction(
+            planState.totalAdultPopulation(planDataAtPlayer)
+        )
 
         return DualUtilityData(
             rank = rank,
             multiplier = (maxMultiplier - minMultiplier) * lossFraction + minMultiplier,
             bonus = bonus
         )
-    }
-}
-
-/**
- * Check if peace has already proposed
- *
- * @property otherPlayerId the id of the other player to consider
- * @property rankIfTrue rank of dual utility if this is true
- * @property multiplierIfTrue multiplier of dual utility if this is true
- * @property bonusIfTrue bonus of dual utility if this is true
- * @property rankIfFalse rank of dual utility if this is false
- * @property multiplierIfFalse multiplier of dual utility if this is false
- * @property bonusIfFalse bonus of dual utility if this is false
- */
-class HasProposedPeaceConsideration(
-    private val otherPlayerId: Int,
-    private val rankIfTrue: Int,
-    private val multiplierIfTrue: Double,
-    private val bonusIfTrue: Double,
-    private val rankIfFalse: Int,
-    private val multiplierIfFalse: Double,
-    private val bonusIfFalse: Double,
-) : DualUtilityConsideration() {
-    override fun getDualUtilityData(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState): DualUtilityData {
-        val warState: MutableWarStateData = planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData
-            .diplomacyData().warData.warStateMap.getValue(otherPlayerId)
-
-        return if (warState.proposePeace) {
-            DualUtilityData(
-                rank = rankIfTrue,
-                multiplier = multiplierIfTrue,
-                bonus = bonusIfTrue
-            )
-        } else {
-            DualUtilityData(
-                rank = rankIfFalse,
-                multiplier = multiplierIfFalse,
-                bonus = bonusIfFalse
-            )
-        }
     }
 }

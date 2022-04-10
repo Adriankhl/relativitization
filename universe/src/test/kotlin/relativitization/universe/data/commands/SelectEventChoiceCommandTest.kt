@@ -27,8 +27,7 @@ internal class SelectEventChoiceCommandTest {
 
         val event = MoveToDouble3DEvent(
             toId = 2,
-            fromId = 2,
-            stayTime = 999,
+            fromId = 1,
             targetDouble3D = view6.get(3).groupCenterDouble3D(view6.universeSettings.groupEdgeLength),
             maxSpeed = 0.2
 
@@ -43,10 +42,10 @@ internal class SelectEventChoiceCommandTest {
         runBlocking {
             universe.postProcessUniverse(
                 mapOf(
-                    1 to listOf()
+                    1 to listOf(addEventCommand)
                 ),
                 mapOf(
-                    2 to listOf(addEventCommand),
+                    2 to listOf(),
                     3 to listOf(),
                     4 to listOf()
                 )
@@ -63,7 +62,6 @@ internal class SelectEventChoiceCommandTest {
             eventKey = 0,
             eventName = view7.getCurrentPlayerData().playerInternalData.eventDataMap.getValue(0).event.name(),
             choice = 1
-
         )
 
         runBlocking {

@@ -187,7 +187,6 @@ universe/src/main/kotlin/relativitization/universe/data/commands/DefaultDiplomac
 universe/src/main/kotlin/relativitization/universe/data/commands/DefaultDummyCommands.kt
 universe/src/main/kotlin/relativitization/universe/data/commands/DefaultEventCommands.kt
 universe/src/main/kotlin/relativitization/universe/data/commands/DefaultHierarchyCommands.kt
-universe/src/main/kotlin/relativitization/universe/data/commands/DefaultModifierCommands.kt
 universe/src/main/kotlin/relativitization/universe/data/commands/DefaultPhysicsCommands.kt
 universe/src/main/kotlin/relativitization/universe/data/commands/DefaultScienceCommands.kt
 universe/src/main/kotlin/relativitization/universe/data/commands/DefaultLogisticsCommands.kt
@@ -199,14 +198,16 @@ universe/src/main/kotlin/relativitization/universe/data/events/DefaultEvent.kt
 universe/src/main/kotlin/relativitization/universe/data/events/DefaultPhysicsEvents.kt
 universe/src/main/kotlin/relativitization/universe/data/events/Event.kt
 universe/src/main/kotlin/relativitization/universe/data/events/DefaultRemovePlayerEvents.kt
+universe/src/main/kotlin/relativitization/universe/data/events/DefaultDiplomacyEvents.kt
 universe/src/main/kotlin/relativitization/universe/data/serializer/DataSerializer.kt
 universe/src/main/kotlin/relativitization/universe/data/global/components/DefaultGlobalDataComponent.kt
 universe/src/main/kotlin/relativitization/universe/data/global/components/defaults/science/knowledge/ProjectGeneration.kt
 universe/src/main/kotlin/relativitization/universe/data/global/components/DefaultUniverseScienceData.kt
 universe/src/main/kotlin/relativitization/universe/data/global/components/GlobalDataComponent.kt
 universe/src/main/kotlin/relativitization/universe/data/global/UniverseGlobalData.kt
-universe/src/main/kotlin/relativitization/universe/data/components/defaults/diplomacy/DiplomaticRelationData.kt
-universe/src/main/kotlin/relativitization/universe/data/components/defaults/diplomacy/WarData.kt
+universe/src/main/kotlin/relativitization/universe/data/components/defaults/diplomacy/RelationData.kt
+universe/src/main/kotlin/relativitization/universe/data/components/defaults/diplomacy/war/WarData.kt
+universe/src/main/kotlin/relativitization/universe/data/components/defaults/diplomacy/ally/AllianceData.kt
 universe/src/main/kotlin/relativitization/universe/data/components/defaults/economy/SocialSecurityData.kt
 universe/src/main/kotlin/relativitization/universe/data/components/defaults/economy/TaxData.kt
 universe/src/main/kotlin/relativitization/universe/data/components/defaults/economy/ResourceData.kt
@@ -214,6 +215,7 @@ universe/src/main/kotlin/relativitization/universe/data/components/defaults/modi
 universe/src/main/kotlin/relativitization/universe/data/components/defaults/modifier/PhysicsModifierData.kt
 universe/src/main/kotlin/relativitization/universe/data/components/defaults/modifier/DiplomacyModifierData.kt
 universe/src/main/kotlin/relativitization/universe/data/components/defaults/physics/FuelRestMassData.kt
+universe/src/main/kotlin/relativitization/universe/data/components/defaults/physics/TargetDouble3DData.kt
 universe/src/main/kotlin/relativitization/universe/data/components/defaults/popsystem/pop/medic/MedicPopData.kt
 universe/src/main/kotlin/relativitization/universe/data/components/defaults/popsystem/pop/scholar/institute/InstituteData.kt
 universe/src/main/kotlin/relativitization/universe/data/components/defaults/popsystem/pop/scholar/ScholarPopData.kt
@@ -276,9 +278,11 @@ universe/src/main/kotlin/relativitization/universe/maths/collection/Fraction.kt
 universe/src/main/kotlin/relativitization/universe/maths/number/Notation.kt
 universe/src/main/kotlin/relativitization/universe/maths/random/Rand.kt
 universe/src/main/kotlin/relativitization/universe/mechanisms/defaults/regular/dead/ClearDeadPlayer.kt
-universe/src/main/kotlin/relativitization/universe/mechanisms/defaults/regular/diplomacy/UpdateDiplomaticRelation.kt
-universe/src/main/kotlin/relativitization/universe/mechanisms/defaults/regular/diplomacy/UpdateDiplomaticRelationState.kt
-universe/src/main/kotlin/relativitization/universe/mechanisms/defaults/regular/diplomacy/UpdateWarState.kt
+universe/src/main/kotlin/relativitization/universe/mechanisms/defaults/regular/diplomacy/UpdateRelation.kt
+universe/src/main/kotlin/relativitization/universe/mechanisms/defaults/regular/diplomacy/UpdateEnemy.kt
+universe/src/main/kotlin/relativitization/universe/mechanisms/defaults/regular/diplomacy/UpdateWar.kt
+universe/src/main/kotlin/relativitization/universe/mechanisms/defaults/regular/diplomacy/UpdateAlly.kt
+universe/src/main/kotlin/relativitization/universe/mechanisms/defaults/regular/diplomacy/UpdatePeacePlayer.kt
 universe/src/main/kotlin/relativitization/universe/mechanisms/defaults/regular/economy/UpdateTaxRate.kt
 universe/src/main/kotlin/relativitization/universe/mechanisms/defaults/regular/events/AutoEventCollection.kt
 universe/src/main/kotlin/relativitization/universe/mechanisms/defaults/regular/events/ProcessEvents.kt
@@ -293,6 +297,7 @@ universe/src/main/kotlin/relativitization/universe/mechanisms/defaults/regular/f
 universe/src/main/kotlin/relativitization/universe/mechanisms/defaults/regular/ai/ClearRecentCommand.kt
 universe/src/main/kotlin/relativitization/universe/mechanisms/defaults/regular/storage/BalanceFuel.kt
 universe/src/main/kotlin/relativitization/universe/mechanisms/defaults/regular/storage/BalanceResource.kt
+universe/src/main/kotlin/relativitization/universe/mechanisms/defaults/regular/movement/MoveToTarget.kt
 universe/src/main/kotlin/relativitization/universe/mechanisms/defaults/dilated/modifier/UpdateModifierByProperTime.kt
 universe/src/main/kotlin/relativitization/universe/mechanisms/defaults/dilated/pop/Educate.kt
 universe/src/main/kotlin/relativitization/universe/mechanisms/defaults/dilated/pop/UpdateDesire.kt

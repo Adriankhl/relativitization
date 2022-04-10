@@ -5,7 +5,6 @@ import relativitization.universe.ai.defaults.utils.DualUtilityData
 import relativitization.universe.ai.defaults.utils.PlanState
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.PlayerData
-import relativitization.universe.data.components.defaults.diplomacy.DiplomaticRelationState
 import relativitization.universe.data.components.diplomacyData
 
 /**
@@ -28,13 +27,15 @@ class EnemyNeighbourConsideration(
     private val multiplierIfFalse: Double,
     private val bonusIfFalse: Double,
 ) : DualUtilityConsideration() {
-    override fun getDualUtilityData(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState): DualUtilityData {
-        val neighbour: List<PlayerData> = planDataAtPlayer.universeData3DAtPlayer.getNeighbour(range)
+    override fun getDualUtilityData(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planState: PlanState
+    ): DualUtilityData {
+        val neighbour: List<PlayerData> =
+            planDataAtPlayer.universeData3DAtPlayer.getNeighbour(range)
 
-        val hasEnemy: Boolean = planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData.diplomacyData()
-            .relationMap.filterValues {
-                it.diplomaticRelationState == DiplomaticRelationState.ENEMY
-            }.keys.any { enemyId ->
+        val hasEnemy: Boolean = planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData
+            .diplomacyData().relationData.enemyIdSet.any { enemyId ->
                 neighbour.any {
                     it.playerId == enemyId
                 }
@@ -75,17 +76,19 @@ class FightingEnemyConsideration(
     private val multiplierIfFalse: Double,
     private val bonusIfFalse: Double,
 ) : DualUtilityConsideration() {
-    override fun getDualUtilityData(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState): DualUtilityData {
-        val sameCubeNeighbour: List<PlayerData> = planDataAtPlayer.universeData3DAtPlayer.getNeighbour(0)
+    override fun getDualUtilityData(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planState: PlanState
+    ): DualUtilityData {
+        val sameCubeNeighbour: List<PlayerData> =
+            planDataAtPlayer.universeData3DAtPlayer.getNeighbour(0)
 
-        val hasEnemy: Boolean = planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData.diplomacyData()
-            .relationMap.filterValues {
-                it.diplomaticRelationState == DiplomaticRelationState.ENEMY
-            }.keys.any { enemyId ->
-                sameCubeNeighbour.any {
-                    it.playerId == enemyId
+        val hasEnemy: Boolean = planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData
+            .diplomacyData().relationData.enemyIdSet.any { enemyId ->
+                    sameCubeNeighbour.any {
+                        it.playerId == enemyId
+                    }
                 }
-            }
 
         return if (hasEnemy) {
             DualUtilityData(

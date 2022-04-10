@@ -65,11 +65,12 @@ object AutoCombat : Mechanism() {
         mutablePlayerData: MutablePlayerData,
         neighborList: List<PlayerData>,
     ): List<PlayerData> {
-
         // player view the neighbor as enemy, or neighbor that views the player as enemy
         return neighborList.filter { neighbor ->
-            mutablePlayerData.playerInternalData.diplomacyData().isEnemyOf(neighbor) ||
-                    neighbor.playerInternalData.diplomacyData().isEnemyOf(mutablePlayerData)
+            mutablePlayerData.playerInternalData.diplomacyData().relationData.enemyIdSet
+                .contains(neighbor.playerId) ||
+                    neighbor.playerInternalData.diplomacyData().relationData.enemyIdSet
+                        .contains(mutablePlayerData.playerId)
         }
     }
 }

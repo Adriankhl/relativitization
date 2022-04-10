@@ -131,7 +131,11 @@ data class SplitCarrierCommand(
         // copy diplomacy data and remove the war state
         val newDiplomacyData: MutableDiplomacyData =
             DataSerializer.copy(playerData.playerInternalData.diplomacyData())
-        newDiplomacyData.warData.warStateMap.clear()
+        newDiplomacyData.relationData.allyMap.clear()
+        newDiplomacyData.relationData.enemyIdSet.clear()
+        newDiplomacyData.relationData.selfWarDataMap.clear()
+        newDiplomacyData.relationData.subordinateWarDataMap.clear()
+        newDiplomacyData.relationData.allyWarDataMap.clear()
         newPlayerInternalData.diplomacyData(newDiplomacyData)
 
         // copy economy data

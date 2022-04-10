@@ -2,14 +2,12 @@ package relativitization.game.utils
 
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.scenes.scene2d.ui.Image
-import com.badlogic.gdx.scenes.scene2d.ui.Stack
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup
 import com.badlogic.gdx.utils.Align
 import relativitization.game.MapPlayerColorMode
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.PlayerType
 import relativitization.universe.data.UniverseData3DAtPlayer
-import relativitization.universe.data.components.defaults.diplomacy.DiplomaticRelationState
 import relativitization.universe.maths.physics.Double3D
 import relativitization.universe.maths.physics.Velocity
 import relativitization.universe.data.components.defaults.popsystem.CarrierType
@@ -79,12 +77,12 @@ object PlayerImage {
                     playerData.playerId == primaryPlayerData.playerId -> {
                         Color(0f, 1f, 0f, 1f)
                     }
-                    primaryPlayerData.playerInternalData.diplomacyData().getRelationState(
-                        playerData.playerId
-                    ) == DiplomaticRelationState.ENEMY -> {
+                    primaryPlayerData.playerInternalData.diplomacyData().relationData
+                        .isEnemy(playerData.playerId) -> {
                         Color(1f, 0f, 0f, 1f)
                     }
-                    primaryPlayerData.playerInternalData.diplomacyData().isEnemyOf(playerData) -> {
+                    playerData.playerInternalData.diplomacyData().relationData
+                        .isEnemy(primaryPlayerData.playerId) -> {
                         Color(0.5f, 0f, 0f, 1f)
                     }
                     primaryPlayerData.isLeader(playerData.playerId) -> {
@@ -204,8 +202,10 @@ object PlayerImage {
 
             // player view the neighbor as enemy, or neighbor that views the player as enemy
             val neighborEnemyList: List<PlayerData> = neighborList.filter { neighbor ->
-                playerData.playerInternalData.diplomacyData().isEnemyOf(neighbor) ||
-                        neighbor.playerInternalData.diplomacyData().isEnemyOf(playerData)
+                playerData.playerInternalData.diplomacyData().relationData.enemyIdSet
+                    .contains(neighbor.playerId) ||
+                        neighbor.playerInternalData.diplomacyData().relationData.enemyIdSet
+                            .contains(playerData.playerId)
             }
 
             // Determine if it is in combat or not

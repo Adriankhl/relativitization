@@ -316,6 +316,7 @@ data class Double3D(val x: Double, val y: Double, val z: Double) {
 
 @Serializable
 data class MutableDouble3D(var x: Double, var y: Double, var z: Double) {
+    fun toDouble3D() = Double3D(x, y, z)
     fun atInt3D(int3D: MutableInt3D): Boolean {
         return (floor(x).toInt() == int3D.x) && (floor(y).toInt() == int3D.y) && (floor(z).toInt() == int3D.z)
     }

@@ -27,8 +27,14 @@ internal class DeclareWarCommandTest {
         assert(view6At6.getCurrentPlayerData().double4D.x == 1.4)
         assert(view6At5.getCurrentPlayerData().groupId != view6At6.getCurrentPlayerData().groupId)
 
-        assert(view6At5.getCurrentPlayerData().playerInternalData.diplomacyData().warData.warStateMap.isEmpty())
-        assert(view6At6.getCurrentPlayerData().playerInternalData.diplomacyData().warData.warStateMap.isEmpty())
+        assert(
+            view6At5.getCurrentPlayerData().playerInternalData.diplomacyData().relationData
+                .selfWarDataMap.isEmpty()
+        )
+        assert(
+            view6At6.getCurrentPlayerData().playerInternalData.diplomacyData().relationData
+                .selfWarDataMap.isEmpty()
+        )
 
         runBlocking {
             universe.postProcessUniverse(
@@ -51,11 +57,12 @@ internal class DeclareWarCommandTest {
 
 
         assert(
-            view7At5.getCurrentPlayerData().playerInternalData.diplomacyData().warData.warStateMap.containsKey(
-                6
-            )
+            view7At5.getCurrentPlayerData().playerInternalData.diplomacyData().relationData
+                .selfWarDataMap.containsKey(6)
         )
-        assert(view7At6.getCurrentPlayerData().playerInternalData.diplomacyData().warData.warStateMap.isEmpty())
+        assert(view7At6.getCurrentPlayerData().playerInternalData.diplomacyData().relationData
+            .selfWarDataMap.isEmpty()
+        )
 
         runBlocking {
             universe.postProcessUniverse(
@@ -71,14 +78,12 @@ internal class DeclareWarCommandTest {
 
 
         assert(
-            view8At5.getCurrentPlayerData().playerInternalData.diplomacyData().warData.warStateMap.containsKey(
-                6
-            )
+            view8At5.getCurrentPlayerData().playerInternalData.diplomacyData().relationData
+                .selfWarDataMap.containsKey(6)
         )
         assert(
-            view8At6.getCurrentPlayerData().playerInternalData.diplomacyData().warData.warStateMap.containsKey(
-                5
-            )
+            view8At6.getCurrentPlayerData().playerInternalData.diplomacyData().relationData
+                .selfWarDataMap.containsKey(5)
         )
     }
 }

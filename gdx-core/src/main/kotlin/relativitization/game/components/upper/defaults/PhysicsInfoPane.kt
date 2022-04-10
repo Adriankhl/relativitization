@@ -448,7 +448,6 @@ class PhysicsInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane
             val moveToDouble3DEvent = MoveToDouble3DEvent(
                 toId = playerData.playerId,
                 fromId = game.universeClient.getCurrentPlayerData().playerId,
-                stayTime = Int.MAX_VALUE,
                 targetDouble3D = Double3D(targetX.value, targetY.value, targetZ.value),
                 maxSpeed = maxSpeed.value,
             )

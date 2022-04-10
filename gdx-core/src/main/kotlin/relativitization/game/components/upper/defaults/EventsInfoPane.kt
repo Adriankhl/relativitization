@@ -95,11 +95,11 @@ class EventsInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane>
 
         nestedTable.row().space(10f)
 
-        val stayTimeLabel = createLabel(
-            "Stay time: ${eventData.event.stayTime}  Counter: ${eventData.eventRecordData.stayCounter}",
+        val timeLeftLabel = createLabel(
+            "Time left: ${eventData.event.stayTime() - eventData.eventRecordData.stayCounter}",
             gdxSettings.smallFontSize
         )
-        nestedTable.add(stayTimeLabel).colspan(2)
+        nestedTable.add(timeLeftLabel).colspan(2)
 
         nestedTable.row().space(10f)
 

@@ -28,8 +28,14 @@ internal class AutoCombatTest {
         assert(view6At6.getCurrentPlayerData().double4D.x == 1.4)
         assert(view6At5.getCurrentPlayerData().groupId != view6At6.getCurrentPlayerData().groupId)
 
-        assert(view6At5.getCurrentPlayerData().playerInternalData.diplomacyData().warData.warStateMap.isEmpty())
-        assert(view6At6.getCurrentPlayerData().playerInternalData.diplomacyData().warData.warStateMap.isEmpty())
+        assert(
+            view6At5.getCurrentPlayerData().playerInternalData.diplomacyData().relationData
+                .selfWarDataMap.isEmpty()
+        )
+        assert(
+            view6At6.getCurrentPlayerData().playerInternalData.diplomacyData().relationData
+                .selfWarDataMap.isEmpty()
+        )
 
         runBlocking {
             universe.postProcessUniverse(

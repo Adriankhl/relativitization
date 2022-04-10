@@ -7,7 +7,6 @@ import relativitization.universe.ai.defaults.utils.*
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.commands.AddEventCommand
-import relativitization.universe.data.components.defaults.diplomacy.DiplomaticRelationState
 import relativitization.universe.data.components.diplomacyData
 import relativitization.universe.data.components.physicsData
 import relativitization.universe.data.events.MoveToDouble3DEvent
@@ -69,21 +68,24 @@ class MoveDirectSubordinateToNearbyEnemyOption(
 
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
         val enemyIdSet: Set<Int> = planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData
-            .diplomacyData().relationMap.filterValues {
-                it.diplomaticRelationState == DiplomaticRelationState.ENEMY
-            }.filterKeys {
+            .diplomacyData().relationData.enemyIdSet.filter {
                 planDataAtPlayer.universeData3DAtPlayer.playerDataMap.containsKey(it)
-            }.keys
+            }.toSet()
 
 
         if (enemyIdSet.isNotEmpty()) {
             // map from enemy id to integer distance
             val enemyDistanceMap: Map<Int, Int> = enemyIdSet.associateWith {
                 val enemyData: PlayerData = planDataAtPlayer.universeData3DAtPlayer.get(it)
-                Intervals.intDistance(enemyData.int4D, planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D())
+                Intervals.intDistance(
+                    enemyData.int4D,
+                    planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D()
+                )
             }
             val closestDistance: Int = enemyDistanceMap.values.minOf { it }
-            val closestEnemyList: List<Int> = enemyDistanceMap.filterValues { it == closestDistance }.keys.toList()
+            val closestEnemyList: List<Int> = enemyDistanceMap.filterValues {
+                it == closestDistance
+            }.keys.toList()
 
             val enemyId: Int = closestEnemyList[Rand.rand().nextInt(closestEnemyList.size)]
             val enemy: PlayerData = planDataAtPlayer.universeData3DAtPlayer.get(enemyId)
@@ -93,9 +95,11 @@ class MoveDirectSubordinateToNearbyEnemyOption(
             val maxSpeedEstimate: Double = Movement.maxSpeedSimpleEstimation(
                 initialRestMass = planDataAtPlayer.universeData3DAtPlayer.get(directSubordinateId)
                     .playerInternalData.physicsData().totalRestMass(),
-                initialVelocity = planDataAtPlayer.universeData3DAtPlayer.get(directSubordinateId).velocity,
-                movementFuelRestMass = planDataAtPlayer.universeData3DAtPlayer.get(directSubordinateId)
-                    .playerInternalData.physicsData().fuelRestMassData.movement * 0.5,
+                initialVelocity = planDataAtPlayer.universeData3DAtPlayer.get(directSubordinateId)
+                    .velocity,
+                movementFuelRestMass = planDataAtPlayer.universeData3DAtPlayer
+                    .get(directSubordinateId).playerInternalData.physicsData()
+                    .fuelRestMassData.movement * 0.5,
                 speedOfLight = planDataAtPlayer.universeData3DAtPlayer.universeSettings.speedOfLight
             )
 
@@ -104,7 +108,6 @@ class MoveDirectSubordinateToNearbyEnemyOption(
             val event = MoveToDouble3DEvent(
                 toId = directSubordinateId,
                 fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                stayTime = 99,
                 targetDouble3D = enemy.double4D.toDouble3D(),
                 maxSpeed = maxSpeed,
             )

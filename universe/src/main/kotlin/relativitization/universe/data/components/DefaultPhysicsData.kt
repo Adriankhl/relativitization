@@ -4,10 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.MutablePlayerInternalData
 import relativitization.universe.data.PlayerInternalData
-import relativitization.universe.data.components.defaults.physics.FuelRestMassData
-import relativitization.universe.data.components.defaults.physics.MutableFuelRestMassData
-import relativitization.universe.data.components.defaults.physics.MutableFuelRestMassTargetProportionData
-import relativitization.universe.data.components.defaults.physics.FuelRestMassTargetProportionData
+import relativitization.universe.data.components.defaults.physics.*
 import kotlin.math.min
 
 /**
@@ -17,6 +14,7 @@ import kotlin.math.min
  * @property otherRestMass the other rest mass of the player, e.g., fuel stored in pop and factory
  * @property fuelRestMassData various data of fuel rest mass
  * @property fuelRestMassTargetProportionData target fuel rest mass proportion in the categories
+ * @property targetDouble3DData the target position to move to
  */
 @Serializable
 @SerialName("PhysicsData")
@@ -25,6 +23,7 @@ data class PhysicsData(
     val otherRestMass: Double = 0.0,
     val fuelRestMassData: FuelRestMassData = FuelRestMassData(),
     val fuelRestMassTargetProportionData: FuelRestMassTargetProportionData = FuelRestMassTargetProportionData(),
+    val targetDouble3DData: TargetDouble3DData = TargetDouble3DData(),
 ) : DefaultPlayerDataComponent() {
     fun totalRestMass() = coreRestMass + otherRestMass + fuelRestMassData.total()
 }
@@ -37,6 +36,7 @@ data class MutablePhysicsData(
     var fuelRestMassData: MutableFuelRestMassData = MutableFuelRestMassData(),
     var fuelRestMassTargetProportionData: MutableFuelRestMassTargetProportionData =
         MutableFuelRestMassTargetProportionData(),
+    var targetDouble3DData: MutableTargetDouble3DData = MutableTargetDouble3DData(),
 ) : MutableDefaultPlayerDataComponent() {
     fun totalRestMass() = coreRestMass + otherRestMass + fuelRestMassData.total()
 

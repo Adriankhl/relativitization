@@ -42,8 +42,6 @@ data class MutableDiplomacyModifierData(
     var peaceTreaty: MutableMap<Int, Int> = mutableMapOf(),
     var relationModifierMap: MutableMap<Int, MutableRelationModifier> = mutableMapOf(),
 ) {
-
-
     /**
      * Update the time by universe time
      */
@@ -94,15 +92,17 @@ data class MutableDiplomacyModifierData(
     /**
      * Get relation change by modifier
      *
-     * @param id relation change between the player of the id and this player
+     * @param otherPlayerId relation change between the player of the id and this player
      * @param maxReceiveFuelChange max change from receiving fuel
      */
     fun getRelationChange(
-        id: Int,
+        otherPlayerId: Int,
         maxReceiveFuelChange: Double
     ): Double {
-        return if (relationModifierMap.containsKey(id)) {
-            relationModifierMap.getValue(id).getOverallRelationChange(maxReceiveFuelChange)
+        return if (relationModifierMap.containsKey(otherPlayerId)) {
+            relationModifierMap.getValue(otherPlayerId).getOverallRelationChange(
+                maxReceiveFuelChange
+            )
         } else {
             0.0
         }
@@ -111,16 +111,16 @@ data class MutableDiplomacyModifierData(
     /**
      * Add receive fuel relation modifier
      *
-     * @param id relation change between the player of the id and this player
+     * @param otherPlayerId relation change between the player of the id and this player
      * @param relationChange the amount of relation change
      * @param duration the duration of this effect left, in player time, affected by time dilation
      */
     fun addReceiveFuelToRelationModifier(
-        id: Int,
+        otherPlayerId: Int,
         relationChange: Double,
         duration: Int,
     ) {
-        relationModifierMap.getOrPut(id) {
+        relationModifierMap.getOrPut(otherPlayerId) {
             MutableRelationModifier()
         }.receiveFuelList.add(
             MutableSingleRelationModifier(
@@ -184,7 +184,9 @@ data class MutableRelationModifier(
     fun getOverallRelationChange(
         maxReceiveFuelChange: Double
     ): Double {
-        val totalChange: Double = receiveFuelList.fold(0.0) { acc, mutableSingleRelationModifier ->
+        val totalChange: Double = receiveFuelList.fold(
+            0.0
+        ) { acc, mutableSingleRelationModifier ->
             acc + mutableSingleRelationModifier.change
         }
 

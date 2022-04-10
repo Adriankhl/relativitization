@@ -7,88 +7,26 @@ import relativitization.universe.data.MutablePlayerInternalData
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.PlayerInternalData
 import relativitization.universe.data.components.defaults.diplomacy.*
+import relativitization.universe.data.components.defaults.diplomacy.war.MutableWarData
+import relativitization.universe.data.components.defaults.diplomacy.war.WarData
 
 /**
- * @property relationMap map from other player id to the DiplomaticRelationData view by this player
+ * @property relationData describe the relation between this player and other players
+ * @property peacePlayerIdSet this player cannot declare war on the players in this set
  */
 @Serializable
 @SerialName("DiplomacyData")
 data class DiplomacyData(
-    val relationMap: Map<Int, DiplomaticRelationData> = mapOf(),
-    val warData: WarData = WarData(),
-) : DefaultPlayerDataComponent() {
-    fun getDiplomaticRelationData(id: Int): DiplomaticRelationData {
-        return relationMap.getOrDefault(id, DiplomaticRelationData())
-    }
-
-    fun getRelation(id: Int): Double = getDiplomaticRelationData(id).relation
-
-    fun getRelationState(id: Int): DiplomaticRelationState =
-        getDiplomaticRelationData(id).diplomaticRelationState
-
-    /**
-     * @param playerData whether this player is an enemy of the player with this diplomatic data
-     */
-    fun isEnemyOf(playerData: PlayerData): Boolean =
-        playerData.getLeaderAndSelfIdList().any {
-            getRelationState(it) == DiplomaticRelationState.ENEMY
-        }
-
-    /**
-     * @param playerData whether this player is an enemy of the player with this diplomatic data
-     */
-    fun isEnemyOf(playerData: MutablePlayerData): Boolean =
-        playerData.getLeaderAndSelfIdList().any {
-            getRelationState(it) == DiplomaticRelationState.ENEMY
-        }
-}
+    val relationData: RelationData = RelationData(),
+    val peacePlayerIdSet: Set<Int> = setOf(),
+) : DefaultPlayerDataComponent()
 
 @Serializable
 @SerialName("DiplomacyData")
 data class MutableDiplomacyData(
-    var relationMap: MutableMap<Int, MutableDiplomaticRelationData> = mutableMapOf(),
-    var warData: MutableWarData = MutableWarData(),
-) : MutableDefaultPlayerDataComponent() {
-    fun getDiplomaticRelationData(id: Int): MutableDiplomaticRelationData {
-        return relationMap.getOrPut(id) { MutableDiplomaticRelationData() }
-    }
-
-    fun getRelation(id: Int): Double = getDiplomaticRelationData(id).relation
-
-
-    fun getRelationState(id: Int): DiplomaticRelationState =
-        getDiplomaticRelationData(id).diplomaticRelationState
-
-    /**
-     * Clear relation with neutral player and zero relation
-     */
-    fun clearZeroRelationNeutral() {
-        val toClearSet: Set<Int> = relationMap.filter { (_, relationData) ->
-            (relationData.diplomaticRelationState == DiplomaticRelationState.NEUTRAL) && (relationData.relation == 0.0)
-        }.keys
-
-        toClearSet.forEach {
-            relationMap.remove(it)
-        }
-    }
-
-
-    /**
-     * @param playerData whether this player is an enemy of the player with this diplomatic data
-     */
-    fun isEnemyOf(playerData: PlayerData): Boolean =
-        playerData.getLeaderAndSelfIdList().any {
-            getRelationState(it) == DiplomaticRelationState.ENEMY
-        }
-
-    /**
-     * @param playerData whether this player is an enemy of the player with this diplomatic data
-     */
-    fun isEnemyOf(playerData: MutablePlayerData): Boolean =
-        playerData.getLeaderAndSelfIdList().any {
-            getRelationState(it) == DiplomaticRelationState.ENEMY
-        }
-}
+    var relationData: MutableRelationData = MutableRelationData(),
+    val peacePlayerIdSet: MutableSet<Int> = mutableSetOf(),
+) : MutableDefaultPlayerDataComponent()
 
 fun PlayerInternalData.diplomacyData(): DiplomacyData =
     playerDataComponentMap.getOrDefault(DiplomacyData::class, DiplomacyData())

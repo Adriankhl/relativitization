@@ -19,9 +19,6 @@ sealed class Event {
     // The event sent from this player id, -1 if this is an auto-event
     abstract val fromId: Int
 
-    // how many turns will this event stay in the player data
-    abstract val stayTime: Int
-
     // Description of the event
     open fun description(): I18NString = I18NString("")
 
@@ -46,46 +43,47 @@ sealed class Event {
     ): CommandErrorMessage = CommandErrorMessage(true)
 
     /**
+     * How many turns will this event stay in the player data
+     */
+    open fun stayTime(): Int = 5
+
+    /**
      * Action and generate commands depending on the choice
      *
      * @param mutablePlayerData the player data containing this event
-     * @param eventId the id of this event in eventMap
-     * @param mutableEventRecordData the record data of this event
      * @param universeData3DAtPlayer the 3d data to determine the generated command
+     * @param universeSettings the universe setting
      */
     abstract fun choiceAction(
         mutablePlayerData: MutablePlayerData,
-        eventId: Int,
-        mutableEventRecordData: MutableEventRecordData,
-        universeData3DAtPlayer: UniverseData3DAtPlayer
-    ): List<Command>
+        universeData3DAtPlayer: UniverseData3DAtPlayer,
+        universeSettings: UniverseSettings,
+    ): Map<Int, () -> List<Command>>
 
     /**
      * Generate default choice if no choice is decided, i.e., choice = 0
      *
      * @param mutablePlayerData the player data containing this event
-     * @param eventId the id of this event in eventMap
-     * @param mutableEventRecordData the record data of this event
      * @param universeData3DAtPlayer the 3d data to determine the generated command
+     * @param universeSettings the universe setting
      */
     abstract fun defaultChoice(
         mutablePlayerData: MutablePlayerData,
-        eventId: Int,
-        mutableEventRecordData: MutableEventRecordData,
-        universeData3DAtPlayer: UniverseData3DAtPlayer
+        universeData3DAtPlayer: UniverseData3DAtPlayer,
+        universeSettings: UniverseSettings,
     ): Int
 
     /**
-     * Whether this event should be cancel, such as the player made a choice or some condition has been met
+     * Whether this event should be cancel, such as some condition has been met
      *
-     * @param eventId the id of this event in eventMap
-     * @param mutableEventRecordData the record data of this event
+     * @param mutablePlayerData the player data containing this event    *
      * @param universeData3DAtPlayer the universe data view by the player having this event
+     * @param universeSettings the universe setting
      */
-    abstract fun shouldCancelThisEvent(
-        eventId: Int,
-        mutableEventRecordData: MutableEventRecordData,
-        universeData3DAtPlayer: UniverseData3DAtPlayer
+    abstract fun shouldCancel(
+        mutablePlayerData: MutablePlayerData,
+        universeData3DAtPlayer: UniverseData3DAtPlayer,
+        universeSettings: UniverseSettings,
     ): Boolean
 
     companion object {
