@@ -135,6 +135,7 @@ universe/src/main/kotlin/relativitization/universe/ai/defaults/node/self/constru
 universe/src/main/kotlin/relativitization/universe/ai/defaults/node/self/construction/FactoryReasoner.kt
 universe/src/main/kotlin/relativitization/universe/ai/defaults/node/self/event/EventReasoner.kt
 universe/src/main/kotlin/relativitization/universe/ai/defaults/node/self/event/MovementEventReasoner.kt
+universe/src/main/kotlin/relativitization/universe/ai/defaults/node/self/event/WarEventReasoner.kt
 universe/src/main/kotlin/relativitization/universe/ai/defaults/node/self/SelfReasoner.kt
 universe/src/main/kotlin/relativitization/universe/ai/defaults/node/self/pop/SalaryReasoner.kt
 universe/src/main/kotlin/relativitization/universe/ai/defaults/node/self/storage/BalanceFuelReasoner.kt

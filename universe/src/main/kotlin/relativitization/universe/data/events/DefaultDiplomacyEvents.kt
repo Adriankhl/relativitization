@@ -61,9 +61,20 @@ data class ProposePeaceEvent(
                 .containsKey(fromId),
             I18NString("Is not in war with target. ")
         )
+
+        val isProposePeaceEventNotExist = CommandErrorMessage(
+            playerData.playerInternalData.eventDataMap.filterValues {
+                it.event is ProposePeaceEvent
+            }.values.all {
+                it.event.fromId != fromId
+            },
+            I18NString("Propose peace event already exists. ")
+        )
+
         return CommandErrorMessage(
             listOf(
                 isInWar,
+                isProposePeaceEventNotExist,
             )
         )
     }

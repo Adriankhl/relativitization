@@ -159,12 +159,18 @@ class WarLossConsideration(
         planState: PlanState
     ): DualUtilityData {
 
-        val warData: MutableWarData = planDataAtPlayer.getCurrentMutablePlayerData()
-            .playerInternalData.diplomacyData().relationData.selfWarDataMap.getValue(otherPlayerId)
+        val hasWar: Boolean = planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData
+            .diplomacyData().relationData.selfWarDataMap.containsKey(otherPlayerId)
 
-        val lossFraction: Double = 1.0 - warData.populationFraction(
-            planState.totalAdultPopulation(planDataAtPlayer)
-        )
+        val lossFraction: Double = if (hasWar) {
+            val warData: MutableWarData = planDataAtPlayer.getCurrentMutablePlayerData()
+                .playerInternalData.diplomacyData().relationData.selfWarDataMap.getValue(otherPlayerId)
+            1.0 - warData.populationFraction(
+                planState.totalAdultPopulation(planDataAtPlayer)
+            )
+        } else {
+            0.0
+        }
 
         return DualUtilityData(
             rank = rank,

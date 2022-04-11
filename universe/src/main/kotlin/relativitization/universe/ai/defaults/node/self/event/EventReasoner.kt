@@ -11,7 +11,8 @@ class EventReasoner : SequenceReasoner() {
         planState: PlanState
     ): List<AINode> {
         return listOf(
-            PickMoveToDouble3DEventReasoner()
+            PickMoveToDouble3DEventReasoner(),
+            WarEventReasoner(),
         )
     }
 }
