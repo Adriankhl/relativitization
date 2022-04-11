@@ -1,3 +1,6 @@
+import java.nio.file.Files
+import java.nio.file.StandardCopyOption
+
 plugins {
     kotlin("jvm") version Versions.kotlinVersion
     kotlin("plugin.serialization") version Versions.kotlinVersion
@@ -62,13 +65,25 @@ tasks.register("createModelBase") {
             "buildSrc",
             "universe",
             "simulations"
-        ).forEach {
-            File(it).copyRecursively(File("$baseDir/$it"))
+        ).forEach { dir ->
+            File(dir).walkTopDown().forEach {
+                Files.copy(
+                    it.toPath(),
+                    File("$baseDir/$it").toPath(),
+                    StandardCopyOption.COPY_ATTRIBUTES
+                )
+            }
         }
         File(".").list()!!.filter {
             it.matches(Regex("^(gradle.*|.*kts)$"))
-        }.forEach {
-            File(it).copyRecursively(File("$baseDir/$it"))
+        }.forEach { dir ->
+            File(dir).walkTopDown().forEach {
+                Files.copy(
+                    it.toPath(),
+                    File("$baseDir/$it").toPath(),
+                    StandardCopyOption.COPY_ATTRIBUTES
+                )
+            }
         }
     }
 }
