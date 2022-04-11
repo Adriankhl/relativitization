@@ -93,14 +93,20 @@ android {
     }
 
    signingConfigs {
-        create("release") {
-            // You need to specify either an absolute path or include the
-            // keystore file in the same directory as the build.gradle file.
-            storeFile = file("$androidKeyDir/relativitization-release.jks")
-            storePassword = file("$androidKeyDir/relativitization-release-key-password.txt").readText().trim()
-            keyAlias = "relativitization-release-key"
-            keyPassword = File("$androidKeyDir/relativitization-release-key-password.txt").readText().trim()
-        }
+       if (File(androidKeyDir).exists()) {
+           create("release") {
+               // You need to specify either an absolute path or include the
+               // keystore file in the same directory as the build.gradle file.
+               storeFile = File("$androidKeyDir/relativitization-release.jks")
+               storePassword =
+                   File("$androidKeyDir/relativitization-release-key-password.txt").readText()
+                       .trim()
+               keyAlias = "relativitization-release-key"
+               keyPassword =
+                   File("$androidKeyDir/relativitization-release-key-password.txt").readText()
+                       .trim()
+           }
+       }
     }
 
 
@@ -119,13 +125,13 @@ android {
     }
 
     buildTypes {
-        getByName("release") {
-            // Disable proguard, since it breaks reflection
-            //proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
-            isMinifyEnabled = false
-
-            signingConfig = signingConfigs.getByName("release")
-
+        if (File(androidKeyDir).exists()) {
+            getByName("release") {
+                // Disable proguard, since it breaks reflection
+                //proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
+                isMinifyEnabled = false
+                signingConfig = signingConfigs.getByName("release")
+            }
         }
 
         getByName("debug") {

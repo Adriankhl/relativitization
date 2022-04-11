@@ -6,6 +6,11 @@ plugins {
     id("org.jetbrains.dokka")
 }
 
+val ramPercentage: String = project.properties.getOrDefault(
+    "ramPercentage",
+    "50"
+).toString()
+
 kotlin {
     sourceSets {
         val main by getting {
@@ -44,12 +49,17 @@ tasks {
     }
 }
 
+tasks.register("showRamPercentage") {
+    doLast {
+        println("MaxRAMPercentage: $ramPercentage")
+    }
+}
+
+tasks.withType<JavaExec>().configureEach {
+    dependsOn("showRamPercentage")
+}
+
 application {
     mainClass.set(project.properties["mainClass"].toString())
-    val ramPercentage: String = project.properties.getOrDefault(
-        "ramPercentage",
-        "50"
-    ).toString()
-    println("MaxRAMPercentage: $ramPercentage")
     applicationDefaultJvmArgs = listOf("-XX:MaxRAMPercentage=$ramPercentage")
 }
