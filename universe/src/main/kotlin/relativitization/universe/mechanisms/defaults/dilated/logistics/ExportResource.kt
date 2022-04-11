@@ -32,27 +32,15 @@ object ExportResource : Mechanism() {
             .forEach { mutableCarrierData ->
                 mutableCarrierData.allPopData.servicePopData.exportData.clearExportCenterData()
 
-                val playerExportCenterToRemove: List<Int> =
-                    mutableCarrierData.allPopData.servicePopData.exportData.playerExportCenterMap
-                        .keys.filter { playerId ->
-                            !universeData3DAtPlayer.playerDataMap.containsKey(playerId)
-                        }
+                mutableCarrierData.allPopData.servicePopData.exportData.playerExportCenterMap
+                    .keys.removeAll { playerId ->
+                        !universeData3DAtPlayer.playerDataMap.containsKey(playerId)
+                    }
 
-                playerExportCenterToRemove.forEach { playerId ->
-                    mutableCarrierData.allPopData.servicePopData.exportData.playerExportCenterMap
-                        .remove(playerId)
-                }
-
-                val popExportCenterToRemove: List<Int> =
-                    mutableCarrierData.allPopData.servicePopData.exportData.popExportCenterMap
-                        .keys.filter { playerId ->
-                            !universeData3DAtPlayer.playerDataMap.containsKey(playerId)
-                        }
-
-                popExportCenterToRemove.forEach { playerId ->
-                    mutableCarrierData.allPopData.servicePopData.exportData.popExportCenterMap
-                        .remove(playerId)
-                }
+                mutableCarrierData.allPopData.servicePopData.exportData.popExportCenterMap
+                    .keys.removeAll { playerId ->
+                        !universeData3DAtPlayer.playerDataMap.containsKey(playerId)
+                    }
             }
 
         val exportToPlayerCommandList: List<Command> =

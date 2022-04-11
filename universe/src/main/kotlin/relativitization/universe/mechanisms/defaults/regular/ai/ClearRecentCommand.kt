@@ -5,8 +5,8 @@ import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.components.aiData
-import relativitization.universe.maths.physics.Int3D
 import relativitization.universe.data.global.UniverseGlobalData
+import relativitization.universe.maths.physics.Int3D
 import relativitization.universe.maths.physics.Intervals
 import relativitization.universe.mechanisms.Mechanism
 
@@ -20,8 +20,8 @@ object ClearRecentCommand : Mechanism() {
         // Parameters
         val removeTimeFactor: Int = 3
 
-        val toRemoveSet: Set<Int> = mutablePlayerData.playerInternalData.aiData()
-            .recentCommandTimeMap.filter { (otherId, time) ->
+        mutablePlayerData.playerInternalData.aiData().recentCommandTimeMap.entries
+            .removeAll { (otherId, time) ->
                 // Remove if player does not exist
                 val noPlayer: Boolean = !universeData3DAtPlayer.playerDataMap.containsKey(otherId)
 
@@ -35,14 +35,11 @@ object ClearRecentCommand : Mechanism() {
                     ),
                     universeSettings.speedOfLight
                 )
-                val isOld: Boolean = mutablePlayerData.int4D.t - time > (maxTimeDelay * removeTimeFactor)
+                val isOld: Boolean =
+                    mutablePlayerData.int4D.t - time > (maxTimeDelay * removeTimeFactor)
 
                 noPlayer || isOld
-            }.keys
-
-        toRemoveSet.forEach {
-            mutablePlayerData.playerInternalData.aiData().recentCommandTimeMap.remove(it)
-        }
+            }
 
         return listOf()
     }

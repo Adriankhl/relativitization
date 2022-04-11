@@ -117,13 +117,9 @@ data class MutablePopExportCenterData(
                 }
             }
 
-            val popKeyToRemove: Set<PopType> = popMap.filter { it.value.isEmpty() }.keys
-            popKeyToRemove.forEach {
-                popMap.remove(it)
-            }
+            popMap.values.removeAll { it.isEmpty() }
         }
-        val carrierIdToRemove: Set<Int> = exportDataMap.filter { it.value.isEmpty() }.keys
-        carrierIdToRemove.forEach { exportDataMap.remove(it) }
+        exportDataMap.values.removeAll { it.isEmpty() }
     }
 }
 

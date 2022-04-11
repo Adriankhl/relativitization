@@ -46,10 +46,9 @@ data class MutableDiplomacyModifierData(
      * Update the time by universe time
      */
     fun updateByUniverseTime() {
-        val toRemoveTreaty: Set<Int> = peaceTreaty.filter {
-            it.value <= 0
-        }.keys
-        toRemoveTreaty.forEach { peaceTreaty.remove(it) }
+        peaceTreaty.values.removeAll {
+            it <= 0
+        }
 
         val allPeaceTreatyId: Set<Int> = peaceTreaty.keys
         allPeaceTreatyId.forEach {

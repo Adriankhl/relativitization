@@ -20,15 +20,16 @@ object UpdateAlly : Mechanism() {
         universeGlobalData: UniverseGlobalData
     ): List<Command> {
 
-        val allAlly: Set<Int> =
-            mutablePlayerData.playerInternalData.diplomacyData().relationData.allyMap.keys
-
         // Remove all dead player, enemy, and broken alliance
-        val allyToKeep: Set<Int> = allAlly.filter {
-            universeData3DAtPlayer.playerDataMap.containsKey(it)
-        }.filter {
-            !mutablePlayerData.playerInternalData.diplomacyData().relationData.isEnemy(it)
-        }.filter {
+        mutablePlayerData.playerInternalData.diplomacyData().relationData.allyMap.keys.removeAll {
+            !universeData3DAtPlayer.playerDataMap.containsKey(it)
+        }
+
+        mutablePlayerData.playerInternalData.diplomacyData().relationData.allyMap.keys.removeAll {
+            mutablePlayerData.playerInternalData.diplomacyData().relationData.isEnemy(it)
+        }
+
+        mutablePlayerData.playerInternalData.diplomacyData().relationData.allyMap.keys.removeAll {
             val otherPlayerData: PlayerData = universeData3DAtPlayer.get(it)
             val otherInt4D: Int4D = otherPlayerData.int4D
             val timeDelay: Int = Intervals.intDelay(
@@ -41,18 +42,12 @@ object UpdateAlly : Mechanism() {
                 .diplomacyData().relationData.allyMap.getValue(it)
 
             if ((mutablePlayerData.int4D.t - allianceData.startTime) >= 2 * timeDelay) {
-                otherPlayerData.playerInternalData.diplomacyData().relationData.isAlly(
+                !otherPlayerData.playerInternalData.diplomacyData().relationData.isAlly(
                     mutablePlayerData.playerId
                 )
             } else {
-                true
+                false
             }
-        }.toSet()
-
-        val allyToRemove: Set<Int> = allAlly - allyToKeep
-
-        allyToRemove.forEach {
-            mutablePlayerData.playerInternalData.diplomacyData().relationData.relationMap.remove(it)
         }
 
         return listOf()

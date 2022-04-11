@@ -175,13 +175,9 @@ class UniverseServerInternal(
      * Clear inactive player registration: id and password
      */
     private fun clearInactive() {
-        val oldIdList = humanIdPasswordMap.keys.toList()
-
-        // Don't clear dead player
-        val toRemoveIdList =
-            oldIdList.filter { id -> !availableHumanIdList.contains(id) && !deadIdList.contains(id) }
-        for (id in toRemoveIdList) {
-            humanIdPasswordMap.remove(id)
+        humanIdPasswordMap.keys.removeAll { id ->
+            // Don't clear dead player
+            !availableHumanIdList.contains(id) && !deadIdList.contains(id)
         }
     }
 

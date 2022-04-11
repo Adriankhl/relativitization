@@ -107,12 +107,8 @@ data class MutableUniverseScienceData(
         commonSenseKnowledgeData.startFromAppliedResearchId = newStartFromAppliedResearchId
 
         // Clear old projects
-        basicResearchProjectDataMap.keys.filter { it < newStartFromBasicResearchId }.forEach {
-            basicResearchProjectDataMap.remove(it)
-        }
-        appliedResearchProjectDataMap.keys.filter { it < newStartFromAppliedResearchId }.forEach {
-            appliedResearchProjectDataMap.remove(it)
-        }
+        basicResearchProjectDataMap.keys.removeAll { it < newStartFromBasicResearchId }
+        appliedResearchProjectDataMap.keys.removeAll { it < newStartFromAppliedResearchId }
     }
 
     fun getNewBasicResearchId(): Int = (basicResearchProjectDataMap.keys.maxOrNull()

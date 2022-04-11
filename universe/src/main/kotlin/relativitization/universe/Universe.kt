@@ -315,12 +315,7 @@ class Universe(
      */
     private suspend fun processCommandMap() = coroutineScope {
         // Remove non-existing player from the command map
-        val noIdList: List<Int> =
-            universeData.commandMap.keys.filter { !playerCollection.hasPlayer(it) }
-
-        for (id in noIdList) {
-            universeData.commandMap.remove(id)
-        }
+        universeData.commandMap.keys.removeAll { !playerCollection.hasPlayer(it) }
 
         universeData.commandMap.pmap { id, commandList ->
             val playerInt4D: Int4D = playerCollection.getPlayerInt4D(id)
@@ -613,7 +608,8 @@ class Universe(
                     // data needed to be replaced by pointer to older playerData3D to reduce memory usage
                     val toBeReplaced: List<PlayerData> = playerDataList.filter { playerData ->
                         if (timePlayerDataMap.containsKey(playerData.int4D.t)) {
-                            timePlayerDataMap.getValue(playerData.int4D.t).containsKey(playerData.playerId)
+                            timePlayerDataMap.getValue(playerData.int4D.t)
+                                .containsKey(playerData.playerId)
                         } else {
                             false
                         }
@@ -629,8 +625,11 @@ class Universe(
                     playerDataList.addAll(replaceWith)
 
                     // Store data in int4DPlayerDataMap
-                    playerDataList.forEach { playerData->
-                        timePlayerDataMap.getOrDefault(playerData.int4D.t, mutableMapOf())[playerData.playerId] =
+                    playerDataList.forEach { playerData ->
+                        timePlayerDataMap.getOrDefault(
+                            playerData.int4D.t,
+                            mutableMapOf()
+                        )[playerData.playerId] =
                             playerData
                     }
                 }

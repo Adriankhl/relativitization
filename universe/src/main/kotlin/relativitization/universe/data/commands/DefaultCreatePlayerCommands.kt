@@ -8,10 +8,10 @@ import relativitization.universe.data.components.*
 import relativitization.universe.data.components.defaults.economy.MutableSingleResourceData
 import relativitization.universe.data.components.defaults.economy.ResourceQualityClass
 import relativitization.universe.data.components.defaults.economy.ResourceType
-import relativitization.universe.maths.physics.Int4D
 import relativitization.universe.data.components.defaults.physics.MutableFuelRestMassTargetProportionData
 import relativitization.universe.data.components.defaults.popsystem.CarrierType
 import relativitization.universe.data.serializer.DataSerializer
+import relativitization.universe.maths.physics.Int4D
 import relativitization.universe.utils.I18NString
 import relativitization.universe.utils.IntString
 import relativitization.universe.utils.NormalString
@@ -110,18 +110,13 @@ data class SplitCarrierCommand(
         // Split carrier, process pop system data first since it is the most important
         val newPopSystemData: MutablePopSystemData =
             DataSerializer.copy(playerData.playerInternalData.popSystemData())
-        val toRemoveCarrierId: List<Int> = newPopSystemData.carrierDataMap.keys.filter {
+        newPopSystemData.carrierDataMap.keys.removeAll {
             !carrierIdList.contains(it)
         }
-        toRemoveCarrierId.forEach { newPopSystemData.carrierDataMap.remove(it) }
         newPlayerInternalData.popSystemData(newPopSystemData)
 
-        val toRemoveOriginalCarrierId: List<Int> =
-            playerData.playerInternalData.popSystemData().carrierDataMap.keys.filter {
-                carrierIdList.contains(it)
-            }
-        toRemoveOriginalCarrierId.forEach {
-            playerData.playerInternalData.popSystemData().carrierDataMap.remove(it)
+        playerData.playerInternalData.popSystemData().carrierDataMap.keys.removeAll {
+            carrierIdList.contains(it)
         }
 
         // copy ai data
@@ -146,7 +141,10 @@ data class SplitCarrierCommand(
         ResourceType.values().forEach { resourceType ->
             ResourceQualityClass.values().forEach { resourceQualityClass ->
                 val singleResourceData: MutableSingleResourceData =
-                    newEconomyData.resourceData.getSingleResourceData(resourceType, resourceQualityClass)
+                    newEconomyData.resourceData.getSingleResourceData(
+                        resourceType,
+                        resourceQualityClass
+                    )
                 singleResourceData.resourceAmount.storage = 0.0
                 singleResourceData.resourceAmount.production = 0.0
                 singleResourceData.resourceAmount.trade = 0.0
@@ -189,9 +187,10 @@ data class SplitCarrierCommand(
         val newPhysicsData = MutablePhysicsData()
 
         // Check if there is stellar system in player
-        val hasStellarSystem: Boolean = newPlayerInternalData.popSystemData().carrierDataMap.values.any {
-            it.carrierType == CarrierType.STELLAR
-        }
+        val hasStellarSystem: Boolean =
+            newPlayerInternalData.popSystemData().carrierDataMap.values.any {
+                it.carrierType == CarrierType.STELLAR
+            }
 
         // Adjust the fuel proportion based on whether the player has stellar system
         newPhysicsData.fuelRestMassTargetProportionData = if (hasStellarSystem) {
