@@ -1,8 +1,8 @@
 package relativitization.universe.ai.defaults.node.self.movement
 
+import relativitization.universe.ai.defaults.consideration.event.HasMovementTargetConsideration
 import relativitization.universe.ai.defaults.consideration.position.EnemyNeighbourConsideration
 import relativitization.universe.ai.defaults.consideration.position.FightingEnemyConsideration
-import relativitization.universe.ai.defaults.consideration.event.HasMovementEventConsideration
 import relativitization.universe.ai.defaults.consideration.fuel.SufficientFuelMaxSpeedConsideration
 import relativitization.universe.ai.defaults.consideration.population.HigherPopulationDensityThenNeighborCubeConsideration
 import relativitization.universe.ai.defaults.utils.*
@@ -56,7 +56,15 @@ class MoveToLowerDensityCubeOption : DualUtilityOption() {
             multiplierIfFalse = 0.0,
             bonusIfFalse = 0.0
         ),
-        HasMovementEventConsideration(rankIfTrue = 0, multiplierIfTrue = 0.0, bonusIfTrue = 0.0),
+        HasMovementTargetConsideration(
+            rankIfTrue = 0,
+            multiplierIfTrue = 0.0,
+            bonusIfTrue = 0.0,
+            rankIfFalse = 0,
+            multiplierIfFalse = 1.0,
+            bonusIfFalse = 0.0
+
+        )
     )
 
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
@@ -137,7 +145,15 @@ class MoveToEnemyOption : DualUtilityOption() {
             multiplierIfFalse = 0.0,
             bonusIfFalse = 0.0
         ),
-        HasMovementEventConsideration(rankIfTrue = 0, multiplierIfTrue = 0.0, bonusIfTrue = 0.0),
+        HasMovementTargetConsideration(
+            rankIfTrue = 0,
+            multiplierIfTrue = 0.0,
+            bonusIfTrue = 0.0,
+            rankIfFalse = 0,
+            multiplierIfFalse = 1.0,
+            bonusIfFalse = 0.0
+
+        )
     )
 
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {

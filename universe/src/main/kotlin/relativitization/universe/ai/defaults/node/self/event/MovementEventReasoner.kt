@@ -2,15 +2,13 @@ package relativitization.universe.ai.defaults.node.self.event
 
 import relativitization.universe.ai.defaults.consideration.hierarchy.HierarchyRelationConsideration
 import relativitization.universe.ai.defaults.consideration.diplomacy.RelationConsideration
-import relativitization.universe.ai.defaults.utils.DualUtilityConsideration
-import relativitization.universe.ai.defaults.utils.DualUtilityOption
-import relativitization.universe.ai.defaults.utils.DualUtilityReasoner
-import relativitization.universe.ai.defaults.utils.PlanState
+import relativitization.universe.ai.defaults.consideration.event.HasMovementTargetConsideration
+import relativitization.universe.ai.defaults.utils.*
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.commands.SelectEventChoiceCommand
-import relativitization.universe.data.events.EventData
 import relativitization.universe.data.events.MoveToDouble3DEvent
+import relativitization.universe.data.events.MutableEventData
 import relativitization.universe.data.events.name
 
 /**
@@ -21,10 +19,10 @@ class PickMoveToDouble3DEventReasoner : DualUtilityReasoner() {
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<DualUtilityOption> {
-        val movementEventKeySet: Set<Int> = planDataAtPlayer.universeData3DAtPlayer.getCurrentPlayerData()
-            .playerInternalData.eventDataMap.filter {
+        val movementEventKeySet: Set<Int> = planDataAtPlayer.getCurrentMutablePlayerData()
+            .playerInternalData.eventDataMap.filterValues {
                 // Filter out MoveToDouble3DEvent
-                it.value.event is MoveToDouble3DEvent
+                it.event is MoveToDouble3DEvent
             }.keys
 
         return movementEventKeySet.map {
@@ -32,7 +30,7 @@ class PickMoveToDouble3DEventReasoner : DualUtilityReasoner() {
                 eventKey = it,
                 otherEventKeySet = movementEventKeySet - it
             )
-        }
+        } + DoNothingDualUtilityOption(rank = 1, multiplier = 1.0, bonus = 1.0)
     }
 }
 
@@ -52,7 +50,7 @@ class PickMoveToDouble3DEventDualUtilityOption(
         planState: PlanState
     ): List<DualUtilityConsideration> {
 
-        val movementEventData: EventData = planDataAtPlayer.universeData3DAtPlayer.getCurrentPlayerData()
+        val movementEventData: MutableEventData = planDataAtPlayer.getCurrentMutablePlayerData()
             .playerInternalData.eventDataMap.getValue(eventKey)
 
         return listOf(
@@ -74,6 +72,14 @@ class PickMoveToDouble3DEventDualUtilityOption(
                 rank = 0,
                 bonus = 0.0,
             ),
+            HasMovementTargetConsideration(
+                rankIfTrue = 0,
+                multiplierIfTrue = 0.0,
+                bonusIfTrue = 0.0,
+                rankIfFalse = 0,
+                multiplierIfFalse = 1.0,
+                bonusIfFalse = 0.0
+            )
         )
     }
 
@@ -87,7 +93,14 @@ class PickMoveToDouble3DEventDualUtilityOption(
                 eventName = MoveToDouble3DEvent::class.name(),
                 choice = 1,
             )
-        }
+        } + SelectEventChoiceCommand(
+            toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+            fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+            fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
+            eventKey = eventKey,
+            eventName = MoveToDouble3DEvent::class.name(),
+            choice = 0,
+        )
 
         planDataAtPlayer.addAllCommand(commandList)
     }
