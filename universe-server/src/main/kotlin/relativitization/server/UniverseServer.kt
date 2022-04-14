@@ -1,12 +1,13 @@
 package relativitization.server
 
-import io.ktor.application.*
-import io.ktor.features.*
 import io.ktor.http.*
-import io.ktor.response.*
-import io.ktor.serialization.*
+import io.ktor.serialization.kotlinx.json.*
+import io.ktor.server.application.*
 import io.ktor.server.cio.*
 import io.ktor.server.engine.*
+import io.ktor.server.plugins.contentnegotiation.*
+import io.ktor.server.plugins.statuspages.*
+import io.ktor.server.response.*
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
@@ -16,7 +17,6 @@ import relativitization.server.routes.registerUniverseStatusRoutes
 import relativitization.universe.UniverseServerSettings
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.utils.RelativitizationLogManager
-import kotlin.math.log
 
 
 class UniverseServer(
@@ -35,35 +35,28 @@ class UniverseServer(
 
     private val ktorServer = embeddedServer(
         CIO,
+        host = serverAddress,
+        port = serverPort,
         configure = {
             connectionIdleTimeoutSeconds = 30
         },
-        environment = applicationEngineEnvironment {
-
-            module {
-                install(ContentNegotiation) {
-                    json(DataSerializer.format)
-                }
-                install(StatusPages) {
-                    exception<Throwable> {
-                        logger.warn("Wrong request causing exception in server")
-                        call.respondText(
-                            "Something wrong in the request",
-                            ContentType.Text.Plain,
-                            HttpStatusCode.InternalServerError
-                        )
-                    }
-                }
-                registerUniverseStatusRoutes(universeServerInternal)
-                registerCreateUniverseRoutes(universeServerInternal)
-                registerRunUniverseRoutes(universeServerInternal)
+        module = {
+            install(ContentNegotiation) {
+                json(DataSerializer.format)
             }
-
-            connector {
-                host = serverAddress
-                port = serverPort
+            install(StatusPages) {
+                exception<Throwable> { call, cause ->
+                    logger.warn("Wrong request causing exception in server, cause: $cause")
+                    call.respondText(
+                        text = "Something wrong in the request, cause $cause",
+                        contentType = ContentType.Text.Plain,
+                        status = HttpStatusCode.InternalServerError
+                    )
+                }
             }
-
+            registerUniverseStatusRoutes(universeServerInternal)
+            registerCreateUniverseRoutes(universeServerInternal)
+            registerRunUniverseRoutes(universeServerInternal)
         }
     )
 

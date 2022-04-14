@@ -1,6 +1,6 @@
 package relativitization.coroutine
 
-import io.ktor.client.features.*
+import io.ktor.client.plugins.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
@@ -38,7 +38,7 @@ internal class CoroutineTest {
                                 requestTimeoutMillis = 1000
                             }
                         }
-                    println("$i " + response.readText())
+                    println("$i " + response.bodyAsText())
                 }
             }
             delay(10000)
@@ -113,7 +113,7 @@ internal class CoroutineTest {
                 val response: HttpResponse =
                     universeClient.ktorClient.post("http://127.0.0.1:29979/create/new") {
                         contentType(ContentType.Application.Json)
-                        body = "sdfsdf"
+                        setBody("wrong body")
                         timeout {
                             requestTimeoutMillis = 1000
                             connectTimeoutMillis = 1000

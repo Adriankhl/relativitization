@@ -17,7 +17,7 @@ object Versions {
     const val kotlinxCoroutineVersion = "1.6.1"
     const val kotlinxSerializationVersion = "1.3.2"
     const val kotlinxDateTimeVersion = "0.3.2"
-    const val ktorVersion = "1.6.8"
+    const val ktorVersion = "2.0.0"
     const val okioVersion = "3.0.0"
 
     // Documentation
