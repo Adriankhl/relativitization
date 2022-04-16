@@ -3,10 +3,10 @@ package relativitization.universe.data.commands
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseSettings
-import relativitization.universe.maths.physics.Int4D
 import relativitization.universe.data.events.Event
 import relativitization.universe.data.events.MutableEventData
 import relativitization.universe.data.events.name
+import relativitization.universe.maths.physics.Int4D
 import relativitization.universe.utils.I18NString
 import relativitization.universe.utils.IntString
 import relativitization.universe.utils.NormalString
@@ -55,7 +55,7 @@ data class AddEventCommand(
         )
 
         val canAdd = CommandErrorMessage(
-            canAddEvent(universeSettings, event),
+            canAddEvent(event, universeSettings),
             I18NString("Cannot add this event by command. ")
         )
 
@@ -80,7 +80,7 @@ data class AddEventCommand(
     ): CommandErrorMessage {
 
         val canAdd = CommandErrorMessage(
-            canAddEvent(universeSettings, event),
+            canAddEvent(event, universeSettings),
             I18NString("Cannot add this event by command. ")
         )
 
@@ -99,7 +99,7 @@ data class AddEventCommand(
      * Add event data to player data
      */
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
-        val eventData: MutableEventData = MutableEventData(event)
+        val eventData = MutableEventData(event)
         playerData.playerInternalData.addEventData(eventData)
     }
 
@@ -114,17 +114,18 @@ data class AddEventCommand(
         /**
          * Whether player can add this event to other player, used by AddEventCommand
          */
-        fun canAddEvent(universeSettings: UniverseSettings, event: Event): Boolean {
-            val commandAvailability: CommandAvailability = CommandCollection.commandAvailabilityNameMap.getOrElse(
-                universeSettings.commandCollectionName
-            ) {
-                logger.error("No add event command collection name: ${universeSettings.commandCollectionName} found")
-                DefaultCommandAvailability
-            }
+        fun canAddEvent(event: Event, universeSettings: UniverseSettings): Boolean {
+            val commandAvailability: CommandAvailability = CommandCollection
+                .commandAvailabilityNameMap.getOrElse(
+                    universeSettings.commandCollectionName
+                ) {
+                    logger.error("No add event command collection name: " +
+                            "${universeSettings.commandCollectionName} found")
+                    DefaultCommandAvailability
+                }
 
             return if (commandAvailability.name() != AllCommandAvailability.name()) {
-                val addEventList: List<String> = commandAvailability.addEventList
-                addEventList.contains(event.name())
+                commandAvailability.addEventList.contains(event.name())
             } else {
                 true
             }

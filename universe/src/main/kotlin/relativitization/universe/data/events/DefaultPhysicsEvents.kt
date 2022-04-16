@@ -32,11 +32,14 @@ data class MoveToDouble3DEvent(
         listOf(
             NormalString("Player "),
             IntString(0),
-            NormalString(" move to "),
+            NormalString(" ask player "),
             IntString(1),
+            NormalString(" move to "),
+            IntString(2),
             NormalString(". "),
         ),
         listOf(
+            fromId.toString(),
             toId.toString(),
             targetDouble3D.toString()
         ),

@@ -3,6 +3,7 @@ package relativitization.universe.data.commands
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseSettings
+import relativitization.universe.data.components.defaults.diplomacy.ally.MutableAllianceData
 import relativitization.universe.data.components.defaults.diplomacy.war.MutableWarData
 import relativitization.universe.data.components.defaults.diplomacy.war.WarCoreData
 import relativitization.universe.data.components.defaults.diplomacy.war.WarReason
@@ -422,5 +423,31 @@ data class AcceptPeaceCommand(
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
         playerData.playerInternalData.diplomacyData().relationData.selfWarDataMap.remove(fromId)
+    }
+}
+
+/**
+ * Accept alliance
+ */
+@Serializable
+data class AcceptAllianceCommand(
+    override val toId: Int,
+    override val fromId: Int,
+    override val fromInt4D: Int4D,
+) : DefaultCommand() {
+
+    override fun canSend(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): CommandErrorMessage = CommandErrorMessage(false)
+
+    override fun canExecute(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): CommandErrorMessage = CommandErrorMessage(true)
+
+    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+        playerData.playerInternalData.diplomacyData().relationData.allyMap[fromId] =
+            MutableAllianceData(playerData.int4D.t)
     }
 }

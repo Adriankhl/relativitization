@@ -23,17 +23,18 @@ data class AskToMergeCarrierEvent(
 
     override fun description(): I18NString = I18NString(
         listOf(
-            NormalString("Merge all your carriers to player "),
-            IntString(0)
+            NormalString("Give all carriers of  "),
+            IntString(0),
+            NormalString(" to direct leader. ")
         ),
         listOf(
-            fromId.toString()
+            toId.toString()
         )
     )
 
     override fun choiceDescription(): Map<Int, I18NString> = mapOf(
-        0 to I18NString("Accept. Warning! You are going to die"),
-        1 to I18NString("Reject")
+        0 to I18NString("Accept and die"),
+        1 to I18NString("Reject and declare war")
     )
 
     override fun canSend(
@@ -86,7 +87,21 @@ data class AskToMergeCarrierEvent(
             listOf()
         },
         1 to {
-            listOf()
+            // Declare war if reject
+            val declareIndependenceToDirectLeaderCommand = DeclareIndependenceToDirectLeaderCommand(
+                toId = fromId,
+                fromId = toId,
+                fromInt4D = universeData3DAtPlayer.getCurrentPlayerData().int4D
+            )
+
+            declareIndependenceToDirectLeaderCommand.checkAndExecute(
+                mutablePlayerData,
+                universeSettings,
+            )
+
+            listOf(
+                declareIndependenceToDirectLeaderCommand
+            )
         }
     )
 
@@ -108,7 +123,12 @@ data class AskToMergeCarrierEvent(
         universeSettings: UniverseSettings,
     ): Boolean {
         // Only cancel this event if the player agree to merge
-        return universeData3DAtPlayer.getCurrentPlayerData().playerInternalData.politicsData()
-            .hasAgreedMerge
+        val hasAgreedMerge: Boolean = universeData3DAtPlayer.getCurrentPlayerData()
+            .playerInternalData.politicsData().hasAgreedMerge
+
+        val isNotDirectLeader: Boolean =
+            mutablePlayerData.playerInternalData.directLeaderId != fromId
+
+        return hasAgreedMerge || isNotDirectLeader
     }
 }
