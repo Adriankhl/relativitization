@@ -451,3 +451,77 @@ data class AcceptAllianceCommand(
             MutableAllianceData(playerData.int4D.t)
     }
 }
+
+/**
+ * Remove an ally
+ * Send to the player himself instead of target player
+ * The ally should automatically remove this player from ally after seeing this
+ *
+ * @property targetPlayerId the target player which is in war
+ */
+@Serializable
+data class RemoveAllyCommand(
+    override val toId: Int,
+    override val fromId: Int,
+    override val fromInt4D: Int4D,
+    val targetPlayerId: Int,
+) : DefaultCommand() {
+    override fun description(): I18NString = I18NString(
+        listOf(
+            NormalString("Break alliance with player "),
+            IntString(0),
+            NormalString(". "),
+        ),
+        listOf(
+            targetPlayerId.toString(),
+        )
+    )
+
+    override fun canSend(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): CommandErrorMessage {
+        val isSelf = CommandErrorMessage(
+            playerData.playerId == toId,
+            I18NString("Is not sending to self. ")
+        )
+
+        val isAlly = CommandErrorMessage(
+            playerData.playerInternalData.diplomacyData().relationData.isAlly(targetPlayerId),
+            I18NString("Is not an ally. ")
+        )
+
+        return CommandErrorMessage(
+            listOf(
+                isSelf,
+                isAlly,
+            )
+        )
+    }
+
+    override fun canExecute(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): CommandErrorMessage {
+        val isSelf = CommandErrorMessage(
+            playerData.playerId == fromId,
+            CommandI18NStringFactory.isNotFromSelf(playerData.playerId, fromId)
+        )
+
+        val isAlly = CommandErrorMessage(
+            playerData.playerInternalData.diplomacyData().relationData.isAlly(targetPlayerId),
+            I18NString("Is not an ally. ")
+        )
+
+        return CommandErrorMessage(
+            listOf(
+                isSelf,
+                isAlly,
+            )
+        )
+    }
+
+    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+        playerData.playerInternalData.diplomacyData().relationData.allyMap.remove(targetPlayerId)
+    }
+}
