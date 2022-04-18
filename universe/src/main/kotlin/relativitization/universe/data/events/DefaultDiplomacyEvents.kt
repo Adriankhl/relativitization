@@ -157,7 +157,7 @@ data class ProposeAllianceEvent(
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
         val isNotEnemy = CommandErrorMessage(
-            playerData.playerInternalData.diplomacyData().relationData.isEnemy(toId),
+            !playerData.playerInternalData.diplomacyData().relationData.isEnemy(toId),
             I18NString("Target is enemy. ")
         )
 
@@ -182,12 +182,12 @@ data class ProposeAllianceEvent(
         )
 
         val isNotEnemy = CommandErrorMessage(
-            playerData.playerInternalData.diplomacyData().relationData.isEnemy(fromId),
+            !playerData.playerInternalData.diplomacyData().relationData.isEnemy(fromId),
             I18NString("Target is enemy. ")
         )
 
         val isNotAlly = CommandErrorMessage(
-            playerData.playerInternalData.diplomacyData().relationData.isAlly(fromId),
+            !playerData.playerInternalData.diplomacyData().relationData.isAlly(fromId),
             I18NString("Target is ally. ")
         )
 

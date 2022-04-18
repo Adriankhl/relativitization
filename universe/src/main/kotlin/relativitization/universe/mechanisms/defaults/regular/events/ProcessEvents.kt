@@ -72,7 +72,7 @@ object ProcessEvents : Mechanism() {
                 )
 
                 if (choiceMap.containsKey(defaultChoice)) {
-                    choiceMap.getValue(it.eventRecordData.choice)()
+                    choiceMap.getValue(defaultChoice)()
                 } else {
                     logger.error("Invalid default choice $defaultChoice for event $it")
                     listOf()

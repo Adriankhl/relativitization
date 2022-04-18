@@ -356,6 +356,7 @@ universe/src/test/kotlin/relativitization/universe/data/commands/SplitCarrierCom
 universe/src/test/kotlin/relativitization/universe/data/commands/SurrenderCommandTest.kt
 universe/src/test/kotlin/relativitization/universe/data/commands/BuildForeignResourceFactoryCommandTest.kt
 universe/src/test/kotlin/relativitization/universe/data/events/MoveToDouble3DEventTest.kt
+universe/src/test/kotlin/relativitization/universe/data/events/ProposeAllianceEventTest.kt
 universe/src/test/kotlin/relativitization/universe/data/components/economy/MutableResourceQualityDataTest.kt
 universe/src/test/kotlin/relativitization/universe/data/components/economy/ResourceQualityClassTest.kt
 universe/src/test/kotlin/relativitization/universe/data/components/PlayerDataComponentMapTest.kt

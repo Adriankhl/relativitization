@@ -4,12 +4,13 @@ import kotlinx.coroutines.runBlocking
 import relativitization.universe.Universe
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.commands.AddEventCommand
-import relativitization.universe.maths.physics.Double4D
-import relativitization.universe.maths.physics.Int4D
+import relativitization.universe.data.commands.SelectEventChoiceCommand
 import relativitization.universe.generate.method.GenerateSettings
 import relativitization.universe.generate.method.GenerateUniverseMethodCollection
 import relativitization.universe.generate.method.name
 import relativitization.universe.generate.method.testing.TestingFixedMinimal
+import relativitization.universe.maths.physics.Double4D
+import relativitization.universe.maths.physics.Int4D
 import kotlin.test.Test
 
 internal class MoveToDouble3DEventTest {
@@ -28,7 +29,8 @@ internal class MoveToDouble3DEventTest {
         val event = MoveToDouble3DEvent(
             toId = 2,
             fromId = 1,
-            targetDouble3D = view6.get(3).groupCenterDouble3D(view6.universeSettings.groupEdgeLength),
+            targetDouble3D = view6.get(3)
+                .groupCenterDouble3D(view6.universeSettings.groupEdgeLength),
             maxSpeed = 0.2
 
         )
@@ -48,6 +50,26 @@ internal class MoveToDouble3DEventTest {
             universe.preProcessUniverse()
         }
 
+        val view7At2: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(2)
+
+        runBlocking {
+            universe.postProcessUniverse(
+                mapOf(),
+                mapOf(
+                    2 to listOf(
+                        SelectEventChoiceCommand(
+                            toId = 2,
+                            fromId = 2,
+                            fromInt4D = view7At2.getCurrentPlayerData().int4D,
+                            eventKey = 0,
+                            eventName = MoveToDouble3DEvent::class.name(),
+                            choice = 0,
+                        )
+                    )
+                )
+            )
+            universe.preProcessUniverse()
+        }
 
         runBlocking {
             for (i in 1..20) {
@@ -60,6 +82,9 @@ internal class MoveToDouble3DEventTest {
         }
 
         val finalView: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
+        assert(
+            finalView.get(2).int4D.toInt3D() == finalView.get(3).int4D.toInt3D()
+        )
         assert(
             finalView.get(2).double4D.toDouble3D() == finalView.get(3)
                 .groupCenterDouble3D(finalView.universeSettings.groupEdgeLength)
@@ -83,7 +108,8 @@ internal class MoveToDouble3DEventTest {
         val event = MoveToDouble3DEvent(
             toId = 1,
             fromId = 1,
-            targetDouble3D = view6.get(3).groupCenterDouble3D(view6.universeSettings.groupEdgeLength),
+            targetDouble3D = view6.get(3)
+                .groupCenterDouble3D(view6.universeSettings.groupEdgeLength),
             maxSpeed = 0.2
 
         )

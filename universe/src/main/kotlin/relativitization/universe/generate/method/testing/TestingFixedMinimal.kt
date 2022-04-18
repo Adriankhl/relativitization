@@ -7,8 +7,6 @@ import relativitization.universe.data.components.*
 import relativitization.universe.data.components.defaults.economy.MutableResourceQualityData
 import relativitization.universe.data.components.defaults.economy.ResourceQualityClass
 import relativitization.universe.data.components.defaults.economy.ResourceType
-import relativitization.universe.maths.physics.MutableDouble4D
-import relativitization.universe.maths.physics.MutableInt4D
 import relativitization.universe.data.components.defaults.popsystem.pop.engineer.laboratory.MutableLaboratoryData
 import relativitization.universe.data.components.defaults.popsystem.pop.engineer.laboratory.MutableLaboratoryInternalData
 import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.MutableFuelFactoryData
@@ -27,6 +25,8 @@ import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.generate.method.GenerateSettings
 import relativitization.universe.global.defaults.science.UpdateUniverseScienceData
 import relativitization.universe.maths.grid.Grids.create4DGrid
+import relativitization.universe.maths.physics.MutableDouble4D
+import relativitization.universe.maths.physics.MutableInt4D
 import kotlin.reflect.full.createInstance
 
 object TestingFixedMinimal : TestingGenerateUniverseMethod() {
@@ -164,7 +164,11 @@ object TestingFixedMinimal : TestingGenerateUniverseMethod() {
 
         // Add carrier system to player 1
         playerData1.playerInternalData.popSystemData().addStellarSystem(1E30)
-        playerData1.playerInternalData.popSystemData().addSpaceShip(1.0, 100.0, 1000.0)
+        playerData1.playerInternalData.popSystemData().addSpaceShip(
+            coreRestMass = 1.0,
+            maxDeltaFuelRestMass = 100.0,
+            idealPopulation = 1000.0
+        )
 
         // Add fuel and resource to player 1
         playerData1.playerInternalData.physicsData().fuelRestMassData.production = 1E100
@@ -249,16 +253,17 @@ object TestingFixedMinimal : TestingGenerateUniverseMethod() {
         ).allPopData.engineerPopData.addLaboratory(mutableLaboratoryData)
 
 
-
         // Add ideal fuel factory to player 1
-        playerData1.playerInternalData.playerScienceData().playerScienceApplicationData.idealFuelFactory =
+        playerData1.playerInternalData.playerScienceData().playerScienceApplicationData
+            .idealFuelFactory =
             MutableFuelFactoryInternalData(
                 maxOutputAmountPerEmployee = 0.1,
                 sizePerEmployee = 1.0
             )
 
         // Add ideal plant factory to player 1
-        playerData1.playerInternalData.playerScienceData().playerScienceApplicationData.idealResourceFactoryMap[ResourceType.PLANT] =
+        playerData1.playerInternalData.playerScienceData().playerScienceApplicationData
+            .idealResourceFactoryMap[ResourceType.PLANT] =
             MutableResourceFactoryInternalData(
                 outputResource = ResourceType.PLANT,
                 maxOutputResourceQualityData = MutableResourceQualityData(
@@ -306,7 +311,11 @@ object TestingFixedMinimal : TestingGenerateUniverseMethod() {
         playerData2.double4D = MutableDouble4D(0.0, 0.1, 0.1, 0.1)
 
         // Add spaceship to player 2
-        playerData2.playerInternalData.popSystemData().addSpaceShip(1.0, 100.0, 1000.0)
+        playerData2.playerInternalData.popSystemData().addSpaceShip(
+            coreRestMass = 1.0,
+            maxDeltaFuelRestMass = 100.0,
+            idealPopulation = 1000.0
+        )
 
         // Add fuel to player 2 for movement
         playerData2.playerInternalData.physicsData().fuelRestMassData.movement = 100.0
@@ -334,7 +343,11 @@ object TestingFixedMinimal : TestingGenerateUniverseMethod() {
 
         // Add carrier system to player 3
         playerData3.playerInternalData.popSystemData().addStellarSystem(2E30)
-        playerData3.playerInternalData.popSystemData().addSpaceShip(1.0, 100.0, 1000.0)
+        playerData3.playerInternalData.popSystemData().addSpaceShip(
+            coreRestMass = 1.0,
+            maxDeltaFuelRestMass = 100.0,
+            idealPopulation = 1000.0
+        )
 
         // Add fuel to player 3
         playerData3.playerInternalData.physicsData().fuelRestMassData.movement = 100.0
@@ -347,7 +360,11 @@ object TestingFixedMinimal : TestingGenerateUniverseMethod() {
         // Player 4
 
         // Add spaceShip to player 4
-        playerData4.playerInternalData.popSystemData().addSpaceShip(1.0, 100.0, 1000.0)
+        playerData4.playerInternalData.popSystemData().addSpaceShip(
+            coreRestMass = 1.0,
+            maxDeltaFuelRestMass = 100.0,
+            idealPopulation = 1000.0
+        )
 
         // Add fuel to player 4
         playerData4.playerInternalData.physicsData().fuelRestMassData.movement = 100.0
