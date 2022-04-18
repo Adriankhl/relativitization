@@ -76,6 +76,15 @@ data class MoveToDouble3DEvent(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
+        val isEventUnique = CommandErrorMessage(
+            playerData.playerInternalData.eventDataMap.filterValues {
+                it.event is MoveToDouble3DEvent
+            }.values.all {
+                it.event.fromId != fromId
+            },
+            I18NString("Event already exists. ")
+        )
+
         val isLeaderOrSelf = CommandErrorMessage(
             playerData.isLeaderOrSelf(fromId),
             I18NString("Sender is not leader or self. ")
@@ -100,6 +109,7 @@ data class MoveToDouble3DEvent(
 
         return CommandErrorMessage(
             listOf(
+                isEventUnique,
                 isLeaderOrSelf,
                 hasFuel,
             )
@@ -110,6 +120,19 @@ data class MoveToDouble3DEvent(
         0
     } else {
         5
+    }
+
+    override fun shouldCancel(
+        mutablePlayerData: MutablePlayerData,
+        universeData3DAtPlayer: UniverseData3DAtPlayer,
+        universeSettings: UniverseSettings,
+    ): Boolean {
+        val sameDouble3D: Boolean =
+            universeData3DAtPlayer.getCurrentPlayerData().double4D.toDouble3D() == targetDouble3D
+        val zeroVelocity: Boolean =
+            universeData3DAtPlayer.getCurrentPlayerData().velocity.mag() <= 0.0
+
+        return sameDouble3D && zeroVelocity
     }
 
     override fun choiceAction(
@@ -145,19 +168,6 @@ data class MoveToDouble3DEvent(
         } else {
             1
         }
-    }
-
-    override fun shouldCancel(
-        mutablePlayerData: MutablePlayerData,
-        universeData3DAtPlayer: UniverseData3DAtPlayer,
-        universeSettings: UniverseSettings,
-    ): Boolean {
-        val sameDouble3D: Boolean =
-            universeData3DAtPlayer.getCurrentPlayerData().double4D.toDouble3D() == targetDouble3D
-        val zeroVelocity: Boolean =
-            universeData3DAtPlayer.getCurrentPlayerData().velocity.mag() <= 0.0
-
-        return sameDouble3D && zeroVelocity
     }
 
     companion object {

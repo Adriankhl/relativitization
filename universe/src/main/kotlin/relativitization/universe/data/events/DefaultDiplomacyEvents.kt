@@ -9,7 +9,10 @@ import relativitization.universe.data.commands.AcceptPeaceCommand
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.commands.CommandErrorMessage
 import relativitization.universe.data.components.defaults.diplomacy.ally.MutableAllianceData
+import relativitization.universe.data.components.defaults.diplomacy.war.MutableWarData
+import relativitization.universe.data.components.defaults.diplomacy.war.WarCoreData
 import relativitization.universe.data.components.diplomacyData
+import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.utils.I18NString
 import relativitization.universe.utils.IntString
 import relativitization.universe.utils.NormalString
@@ -61,27 +64,36 @@ data class ProposePeaceEvent(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
+        val isEventUnique = CommandErrorMessage(
+            playerData.playerInternalData.eventDataMap.filterValues {
+                it.event is ProposePeaceEvent
+            }.values.all {
+                it.event.fromId != fromId
+            },
+            I18NString("Event already exists. ")
+        )
+
         val isInWar = CommandErrorMessage(
             playerData.playerInternalData.diplomacyData().relationData.selfWarDataMap
                 .containsKey(fromId),
             I18NString("Is not in war with target. ")
         )
 
-        val isProposePeaceEventNotExist = CommandErrorMessage(
-            playerData.playerInternalData.eventDataMap.filterValues {
-                it.event is ProposePeaceEvent
-            }.values.all {
-                it.event.fromId != fromId
-            },
-            I18NString("Propose peace event already exists. ")
-        )
-
         return CommandErrorMessage(
             listOf(
+                isEventUnique,
                 isInWar,
-                isProposePeaceEventNotExist,
             )
         )
+    }
+
+    override fun shouldCancel(
+        mutablePlayerData: MutablePlayerData,
+        universeData3DAtPlayer: UniverseData3DAtPlayer,
+        universeSettings: UniverseSettings
+    ): Boolean {
+        return !mutablePlayerData.playerInternalData.diplomacyData().relationData.selfWarDataMap
+            .containsKey(fromId)
     }
 
     override fun choiceAction(
@@ -110,12 +122,6 @@ data class ProposePeaceEvent(
         universeData3DAtPlayer: UniverseData3DAtPlayer,
         universeSettings: UniverseSettings
     ): Int = 1
-
-    override fun shouldCancel(
-        mutablePlayerData: MutablePlayerData,
-        universeData3DAtPlayer: UniverseData3DAtPlayer,
-        universeSettings: UniverseSettings
-    ): Boolean = false
 
 }
 
@@ -154,6 +160,7 @@ data class ProposeAllianceEvent(
             playerData.playerInternalData.diplomacyData().relationData.isEnemy(toId),
             I18NString("Target is enemy. ")
         )
+
         return CommandErrorMessage(
             listOf(
                 isNotEnemy
@@ -165,26 +172,46 @@ data class ProposeAllianceEvent(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
-        val isNotEnemy = CommandErrorMessage(
-            playerData.playerInternalData.diplomacyData().relationData.isEnemy(fromId),
-            I18NString("Target is enemy. ")
-        )
-
-        val isProposeAllyNotExist = CommandErrorMessage(
+        val isEventUnique = CommandErrorMessage(
             playerData.playerInternalData.eventDataMap.filterValues {
                 it.event is ProposeAllianceEvent
             }.values.all {
                 it.event.fromId != fromId
             },
-            I18NString("Propose ally event already exists. ")
+            I18NString("Event already exists. ")
+        )
+
+        val isNotEnemy = CommandErrorMessage(
+            playerData.playerInternalData.diplomacyData().relationData.isEnemy(fromId),
+            I18NString("Target is enemy. ")
+        )
+
+        val isNotAlly = CommandErrorMessage(
+            playerData.playerInternalData.diplomacyData().relationData.isAlly(fromId),
+            I18NString("Target is ally. ")
         )
 
         return CommandErrorMessage(
             listOf(
+                isEventUnique,
                 isNotEnemy,
-                isProposeAllyNotExist
+                isNotAlly,
             )
         )
+    }
+
+    override fun shouldCancel(
+        mutablePlayerData: MutablePlayerData,
+        universeData3DAtPlayer: UniverseData3DAtPlayer,
+        universeSettings: UniverseSettings
+    ): Boolean {
+        val isEnemy: Boolean = mutablePlayerData.playerInternalData.diplomacyData().relationData
+            .isEnemy(fromId)
+
+        val isAlly: Boolean = mutablePlayerData.playerInternalData.diplomacyData().relationData
+            .isAlly(fromId)
+
+        return isEnemy || isAlly
     }
 
     override fun choiceAction(
@@ -220,10 +247,132 @@ data class ProposeAllianceEvent(
         universeData3DAtPlayer: UniverseData3DAtPlayer,
         universeSettings: UniverseSettings
     ): Int = 1
+}
+
+/**
+ * Call an ally to join a war
+ */
+@Serializable
+data class CallAllyToWarEvent(
+    override val toId: Int,
+    override val fromId: Int,
+    val warTargetId: Int,
+) : DefaultEvent() {
+    override fun description(): I18NString = I18NString(
+        listOf(
+            NormalString("Player "),
+            IntString(0),
+            NormalString(" call ally player "),
+            IntString(1),
+            NormalString(" to join war against player "),
+            IntString(2),
+            NormalString(". "),
+        ),
+        listOf(
+            fromId.toString(),
+            toId.toString(),
+            warTargetId.toString(),
+        )
+    )
+
+    override fun choiceDescription(): Map<Int, I18NString> = mapOf(
+        0 to I18NString("Accept"),
+        1 to I18NString("Reject"),
+    )
+
+    override fun canSend(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): CommandErrorMessage {
+        val isAlly = CommandErrorMessage(
+            playerData.playerInternalData.diplomacyData().relationData.isAlly(toId),
+            I18NString("Target is not ally. ")
+        )
+
+        return CommandErrorMessage(
+            listOf(
+                isAlly,
+            )
+        )
+    }
+
+    override fun canExecute(
+        playerData: MutablePlayerData,
+        universeSettings: UniverseSettings
+    ): CommandErrorMessage {
+        val isEventUnique = CommandErrorMessage(
+            playerData.playerInternalData.eventDataMap.values.all {
+                if (it.event is CallAllyToWarEvent) {
+                    (it.event.fromId != fromId) || (it.event.warTargetId != warTargetId)
+                } else {
+                    true
+                }
+            },
+            I18NString("Event already exists. ")
+        )
+
+        val isAlly = CommandErrorMessage(
+            playerData.playerInternalData.diplomacyData().relationData.isAlly(fromId),
+            I18NString("Target is not ally. ")
+        )
+
+        return CommandErrorMessage(
+            listOf(
+                isEventUnique,
+                isAlly,
+            )
+        )
+    }
 
     override fun shouldCancel(
         mutablePlayerData: MutablePlayerData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
         universeSettings: UniverseSettings
-    ): Boolean = false
+    ): Boolean {
+        val isTargetDead: Boolean = !universeData3DAtPlayer.playerDataMap.containsKey(warTargetId)
+
+        val isNotAlly: Boolean = !mutablePlayerData.playerInternalData.diplomacyData().relationData
+            .isAlly(fromId)
+
+        val isAllyDead: Boolean = !universeData3DAtPlayer.playerDataMap.containsKey(fromId)
+
+        val isWarNotExist: Boolean = if (isAllyDead) {
+            false
+        } else {
+            !universeData3DAtPlayer.get(fromId).playerInternalData.diplomacyData().relationData
+                .selfWarDataMap.containsKey(warTargetId)
+        }
+
+        return isTargetDead || isNotAlly || isAllyDead || isWarNotExist
+    }
+
+    override fun choiceAction(
+        mutablePlayerData: MutablePlayerData,
+        universeData3DAtPlayer: UniverseData3DAtPlayer,
+        universeSettings: UniverseSettings,
+    ): Map<Int, () -> List<Command>> = mapOf(
+        0 to {
+            if (
+                !mutablePlayerData.playerInternalData.diplomacyData().relationData
+                    .hasAllyWar(fromId, warTargetId)
+            ) {
+                val warCoreData: WarCoreData = universeData3DAtPlayer.get(fromId).playerInternalData
+                    .diplomacyData().relationData.selfWarDataMap.getValue(warTargetId).warCoreData
+                mutablePlayerData.playerInternalData.diplomacyData().relationData.addAllyWar(
+                    MutableWarData(DataSerializer.copy(warCoreData))
+                )
+            }
+
+            listOf()
+        },
+        1 to {
+            listOf()
+        }
+    )
+
+    override fun defaultChoice(
+        mutablePlayerData: MutablePlayerData,
+        universeData3DAtPlayer: UniverseData3DAtPlayer,
+        universeSettings: UniverseSettings
+    ): Int = 1
 }

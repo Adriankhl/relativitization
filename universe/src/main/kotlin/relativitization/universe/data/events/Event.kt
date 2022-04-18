@@ -48,6 +48,20 @@ sealed class Event {
     open fun stayTime(): Int = 5
 
     /**
+     * Whether this event should be cancelled, such as some conditions have been met
+     *
+     * @param mutablePlayerData the player data containing this event    *
+     * @param universeData3DAtPlayer the universe data view by the player having this event
+     * @param universeSettings the universe setting
+     */
+    abstract fun shouldCancel(
+        mutablePlayerData: MutablePlayerData,
+        universeData3DAtPlayer: UniverseData3DAtPlayer,
+        universeSettings: UniverseSettings,
+    ): Boolean
+
+
+    /**
      * Action and generate commands depending on the choice
      *
      * @param mutablePlayerData the player data containing this event
@@ -72,19 +86,6 @@ sealed class Event {
         universeData3DAtPlayer: UniverseData3DAtPlayer,
         universeSettings: UniverseSettings,
     ): Int
-
-    /**
-     * Whether this event should be cancel, such as some condition has been met
-     *
-     * @param mutablePlayerData the player data containing this event    *
-     * @param universeData3DAtPlayer the universe data view by the player having this event
-     * @param universeSettings the universe setting
-     */
-    abstract fun shouldCancel(
-        mutablePlayerData: MutablePlayerData,
-        universeData3DAtPlayer: UniverseData3DAtPlayer,
-        universeSettings: UniverseSettings,
-    ): Boolean
 
     companion object {
         private val logger = RelativitizationLogManager.getLogger()

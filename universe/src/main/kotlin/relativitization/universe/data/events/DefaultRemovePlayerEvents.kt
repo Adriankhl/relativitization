@@ -59,6 +59,13 @@ data class AskToMergeCarrierEvent(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
+        val isEventUnique = CommandErrorMessage(
+            !playerData.playerInternalData.eventDataMap.values.any {
+                it.event is MoveToDouble3DEvent
+            },
+            I18NString("Event already exists. ")
+        )
+
         val isDirectLeader = CommandErrorMessage(
             playerData.playerInternalData.directLeaderId == fromId,
             CommandI18NStringFactory.isNotDirectLeader(playerData.playerId, fromId),
@@ -71,10 +78,26 @@ data class AskToMergeCarrierEvent(
 
         return CommandErrorMessage(
             listOf(
+                isEventUnique,
                 isDirectLeader,
                 isNotTopLeader,
             )
         )
+    }
+
+    override fun shouldCancel(
+        mutablePlayerData: MutablePlayerData,
+        universeData3DAtPlayer: UniverseData3DAtPlayer,
+        universeSettings: UniverseSettings,
+    ): Boolean {
+        // Only cancel this event if the player agree to merge
+        val hasAgreedMerge: Boolean = universeData3DAtPlayer.getCurrentPlayerData()
+            .playerInternalData.politicsData().hasAgreedMerge
+
+        val isNotDirectLeader: Boolean =
+            mutablePlayerData.playerInternalData.directLeaderId != fromId
+
+        return hasAgreedMerge || isNotDirectLeader
     }
 
     override fun choiceAction(
@@ -117,18 +140,4 @@ data class AskToMergeCarrierEvent(
         }
     }
 
-    override fun shouldCancel(
-        mutablePlayerData: MutablePlayerData,
-        universeData3DAtPlayer: UniverseData3DAtPlayer,
-        universeSettings: UniverseSettings,
-    ): Boolean {
-        // Only cancel this event if the player agree to merge
-        val hasAgreedMerge: Boolean = universeData3DAtPlayer.getCurrentPlayerData()
-            .playerInternalData.politicsData().hasAgreedMerge
-
-        val isNotDirectLeader: Boolean =
-            mutablePlayerData.playerInternalData.directLeaderId != fromId
-
-        return hasAgreedMerge || isNotDirectLeader
-    }
 }
