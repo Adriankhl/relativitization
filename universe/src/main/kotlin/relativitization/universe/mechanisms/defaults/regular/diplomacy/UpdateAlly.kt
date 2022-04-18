@@ -20,13 +20,17 @@ object UpdateAlly : Mechanism() {
         universeGlobalData: UniverseGlobalData
     ): List<Command> {
 
-        // Remove all dead player, enemy, and broken alliance
+        // Remove all dead player, leader or subordinate, enemy, and broken alliance
         mutablePlayerData.playerInternalData.diplomacyData().relationData.allyMap.keys.removeAll {
             !universeData3DAtPlayer.playerDataMap.containsKey(it)
         }
 
         mutablePlayerData.playerInternalData.diplomacyData().relationData.allyMap.keys.removeAll {
             mutablePlayerData.playerInternalData.diplomacyData().relationData.isEnemy(it)
+        }
+
+        mutablePlayerData.playerInternalData.diplomacyData().relationData.allyMap.keys.removeAll {
+            mutablePlayerData.isSubOrdinateOrSelf(it) || mutablePlayerData.isLeader(it)
         }
 
         mutablePlayerData.playerInternalData.diplomacyData().relationData.allyMap.keys.removeAll {
