@@ -242,7 +242,7 @@ object UpdateWar : Mechanism() {
                                 !mutablePlayerData.isLeaderOrSelf(opponentId)
 
                         !isSupportIdCorrect || !isOpponentIdCorrect || !isSubordinate ||
-                                !isWarExist || !isDefensive || isOpponentValid
+                                !isWarExist || !isDefensive || !isOpponentValid
                     } else {
                         true
                     }
@@ -338,7 +338,7 @@ object UpdateWar : Mechanism() {
                                 !mutablePlayerData.isLeaderOrSelf(opponentId)
 
                         !isSupportIdCorrect || !isOpponentIdCorrect || !isAlly || !isWarExist ||
-                                isOpponentValid
+                                !isOpponentValid
                     } else {
                         true
                     }

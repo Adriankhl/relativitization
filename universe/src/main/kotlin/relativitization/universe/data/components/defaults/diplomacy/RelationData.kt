@@ -155,13 +155,13 @@ data class MutableRelationData(
     fun addSubordinateWar(warData: MutableWarData) {
         subordinateWarDataMap.getOrPut(warData.warCoreData.supportId) {
             mutableMapOf()
-        }[warData.warCoreData.opponentId]
+        }[warData.warCoreData.opponentId] = warData
     }
 
     fun addAllyWar(warData: MutableWarData) {
         allyWarDataMap.getOrPut(warData.warCoreData.supportId) {
             mutableMapOf()
-        }[warData.warCoreData.opponentId]
+        }[warData.warCoreData.opponentId] = warData
     }
 
     companion object {
