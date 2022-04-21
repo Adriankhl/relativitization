@@ -185,5 +185,37 @@ internal class CallAllyToWarEventTest {
             view19At3.getCurrentPlayerData().playerInternalData.diplomacyData().relationData
                 .isEnemy(5)
         )
+
+        runBlocking {
+            for (i in 1..3) {
+                universe.postProcessUniverse(
+                    mapOf(),
+                    mapOf()
+                )
+                universe.preProcessUniverse()
+            }
+        }
+
+        val viewFinalAt5: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(5)
+
+        assert(
+            viewFinalAt5.getCurrentPlayerData().playerInternalData.diplomacyData().relationData
+                .isEnemy(1)
+        )
+
+        assert(
+            viewFinalAt5.getCurrentPlayerData().playerInternalData.diplomacyData().relationData
+                .isEnemy(3)
+        )
+
+        assert(
+            viewFinalAt5.getCurrentPlayerData().playerInternalData.diplomacyData().relationData
+                .isEnemy(2)
+        )
+
+        assert(
+            viewFinalAt5.getCurrentPlayerData().playerInternalData.diplomacyData().relationData
+                .selfWarDataMap.keys == setOf(1)
+        )
     }
 }
