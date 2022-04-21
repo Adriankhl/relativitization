@@ -331,6 +331,9 @@ data class CallAllyToWarEvent(
     ): Boolean {
         val isTargetDead: Boolean = !universeData3DAtPlayer.playerDataMap.containsKey(warTargetId)
 
+        val isTargetInvalid: Boolean = mutablePlayerData.isLeaderOrSelf(warTargetId) ||
+                mutablePlayerData.isSubOrdinate(warTargetId)
+
         val isNotAlly: Boolean = !mutablePlayerData.playerInternalData.diplomacyData().relationData
             .isAlly(fromId)
 
@@ -343,7 +346,7 @@ data class CallAllyToWarEvent(
                 .selfWarDataMap.containsKey(warTargetId)
         }
 
-        return isTargetDead || isNotAlly || isAllyDead || isWarNotExist
+        return isTargetDead || isTargetInvalid || isNotAlly || isAllyDead || isWarNotExist
     }
 
     override fun choiceAction(
@@ -366,6 +369,8 @@ data class CallAllyToWarEvent(
             listOf()
         },
         1 to {
+            mutablePlayerData.playerInternalData.diplomacyData().relationData.allyMap
+                .remove(fromId)
             listOf()
         }
     )

@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
  * Data describing a war where this player has involved
  *
  * @property warCoreData the core data of the war
- * @property opponentLeaderIdList the leader id list of the opponent of this war, for peace treaty
+ * @property opponentLeaderIdList the id of leaders of the opponent that are involved in this war
  * @property hasInitialized whether the data has properly initialized
  * @property initialTotalPopulation the population (including subordinates) when the war begin
  */

@@ -33,6 +33,7 @@ object UpdateWar : Mechanism() {
         updateSelfWar(mutablePlayerData, universeData3DAtPlayer, universeSettings)
         updateSubordinateWar(mutablePlayerData, universeData3DAtPlayer)
         updateAllyWar(mutablePlayerData, universeData3DAtPlayer)
+        updateAllySubordinateWar(mutablePlayerData, universeData3DAtPlayer)
 
         return listOf()
     }
@@ -75,6 +76,15 @@ object UpdateWar : Mechanism() {
                     warData.initializePopulation(totalPopulation)
                 }
             }
+
+        mutablePlayerData.playerInternalData.diplomacyData().relationData.allySubordinateWarDataMap
+            .forEach { (_, outerWarDataMap) ->
+                outerWarDataMap.forEach { (_, innerWarDataMap) ->
+                    innerWarDataMap.forEach { (_, warData) ->
+                        warData.initializePopulation(totalPopulation)
+                    }
+                }
+            }
     }
 
     private fun updateSelfWar(
@@ -93,14 +103,14 @@ object UpdateWar : Mechanism() {
 
         // Clear self war with incorrect id
         mutablePlayerData.playerInternalData.diplomacyData().relationData.selfWarDataMap
-            .entries.removeAll { (id, warData) ->
+            .entries.removeAll { (opponentId, warData) ->
                 val isSelfIdCorrect: Boolean =
                     warData.warCoreData.supportId == mutablePlayerData.playerId
                 if (!isSelfIdCorrect) {
                     logger.error("Self war incorrect supportId")
                 }
 
-                val isOpponentIdCorrect: Boolean = warData.warCoreData.opponentId == id
+                val isOpponentIdCorrect: Boolean = warData.warCoreData.opponentId == opponentId
                 if (!isOpponentIdCorrect) {
                     logger.error("Self war incorrect opponentId")
                 }
@@ -193,14 +203,20 @@ object UpdateWar : Mechanism() {
                 .remove(otherPlayerId)
         }
 
-
-        // Update war target top leader id
+        // Update war leader only for offensive war
         mutablePlayerData.playerInternalData.diplomacyData().relationData.selfWarDataMap
             .forEach { (otherPlayerId, warData) ->
                 warData.opponentLeaderIdList.clear()
-                warData.opponentLeaderIdList.addAll(
-                    universeData3DAtPlayer.get(otherPlayerId).playerInternalData.leaderIdList
-                )
+
+                if (warData.warCoreData.isOffensive) {
+                    warData.opponentLeaderIdList.addAll(
+                        universeData3DAtPlayer.get(otherPlayerId).playerInternalData.leaderIdList
+                            .filter {
+                                !mutablePlayerData.isLeaderOrSelf(it) &&
+                                        !mutablePlayerData.isSubOrdinate(it)
+                            }
+                    )
+                }
             }
     }
 
@@ -216,6 +232,9 @@ object UpdateWar : Mechanism() {
                         .containsKey(warData.warCoreData.supportId)
 
                     if (hasPlayer) {
+                        val subordinatePlayerData: PlayerData = universeData3DAtPlayer
+                            .get(warData.warCoreData.supportId)
+
                         val isSupportIdCorrect: Boolean =
                             supportId == warData.warCoreData.supportId
                         val isOpponentIdCorrect: Boolean =
@@ -224,14 +243,12 @@ object UpdateWar : Mechanism() {
                         val isSubordinate: Boolean =
                             mutablePlayerData.isSubOrdinate(warData.warCoreData.supportId)
 
-                        val isWarExist: Boolean = universeData3DAtPlayer
-                            .get(warData.warCoreData.supportId).playerInternalData.diplomacyData()
-                            .relationData.selfWarDataMap
+                        val isWarExist: Boolean = subordinatePlayerData.playerInternalData
+                            .diplomacyData().relationData.selfWarDataMap
                             .containsKey(warData.warCoreData.opponentId)
 
                         val isDefensive: Boolean = if (isWarExist) {
-                            universeData3DAtPlayer
-                                .get(warData.warCoreData.supportId).playerInternalData.diplomacyData()
+                            subordinatePlayerData.playerInternalData.diplomacyData()
                                 .relationData.selfWarDataMap
                                 .getValue(warData.warCoreData.opponentId).warCoreData.isDefensive
                         } else {
@@ -273,21 +290,14 @@ object UpdateWar : Mechanism() {
 
         // Update war data
         mutablePlayerData.playerInternalData.diplomacyData().relationData.subordinateWarDataMap
-            .forEach { (_, warDataMap) ->
-                warDataMap.forEach { (_, warData) ->
-                    val hasPlayer: Boolean = universeData3DAtPlayer.playerDataMap
-                        .containsKey(warData.warCoreData.opponentId)
-                    if (hasPlayer) {
-                        warData.opponentLeaderIdList.clear()
-                        warData.opponentLeaderIdList.addAll(
-                            universeData3DAtPlayer.get(warData.warCoreData.opponentId)
-                                .playerInternalData.leaderIdList
-                        )
-                    }
-
+            .forEach { (supportId, warDataMap) ->
+                warDataMap.forEach { (opponentId, warData) ->
                     val subordinateWarData: WarData = universeData3DAtPlayer
-                        .get(warData.warCoreData.supportId).playerInternalData.diplomacyData()
-                        .relationData.selfWarDataMap.getValue(warData.warCoreData.opponentId)
+                        .get(supportId).playerInternalData.diplomacyData()
+                        .relationData.selfWarDataMap.getValue(opponentId)
+
+                    warData.opponentLeaderIdList.clear()
+                    warData.opponentLeaderIdList.addAll(subordinateWarData.opponentLeaderIdList)
 
                     warData.warCoreData = DataSerializer.copy(subordinateWarData.warCoreData)
                 }
@@ -326,10 +336,8 @@ object UpdateWar : Mechanism() {
                         val isWarExist: Boolean = if (
                             allyPlayerData.int4D.t >= warData.warCoreData.startTime
                         ) {
-                            universeData3DAtPlayer
-                                .get(warData.warCoreData.supportId).playerInternalData
-                                .diplomacyData().relationData.selfWarDataMap
-                                .containsKey(warData.warCoreData.opponentId)
+                            allyPlayerData.playerInternalData.diplomacyData().relationData
+                                .selfWarDataMap.containsKey(warData.warCoreData.opponentId)
                         } else {
                             true
                         }
@@ -345,25 +353,19 @@ object UpdateWar : Mechanism() {
                 }
             }
 
-
         // Update war data
         mutablePlayerData.playerInternalData.diplomacyData().relationData.allyWarDataMap
-            .forEach { (_, warDataMap) ->
-                warDataMap.forEach { (_, warData) ->
-                    val hasPlayer: Boolean = universeData3DAtPlayer.playerDataMap
-                        .containsKey(warData.warCoreData.opponentId)
-                    if (hasPlayer) {
-                        warData.opponentLeaderIdList.clear()
-                        warData.opponentLeaderIdList.addAll(
-                            universeData3DAtPlayer.get(warData.warCoreData.opponentId)
-                                .playerInternalData.leaderIdList
-                        )
-                    }
-
+            .forEach { (supportId, warDataMap) ->
+                warDataMap.forEach { (opponentId, warData) ->
                     val allyWarData: WarData =
-                        universeData3DAtPlayer.get(warData.warCoreData.supportId)
+                        universeData3DAtPlayer.get(supportId)
                             .playerInternalData.diplomacyData().relationData.selfWarDataMap
-                            .getValue(warData.warCoreData.opponentId)
+                            .getValue(opponentId)
+
+                    warData.opponentLeaderIdList.clear()
+                    warData.opponentLeaderIdList.addAll(
+                        allyWarData.opponentLeaderIdList
+                    )
 
                     warData.warCoreData = DataSerializer.copy(allyWarData.warCoreData)
                 }
@@ -371,5 +373,83 @@ object UpdateWar : Mechanism() {
 
         mutablePlayerData.playerInternalData.diplomacyData().relationData.allyWarDataMap.values
             .removeAll { it.isEmpty() }
+    }
+
+    private fun updateAllySubordinateWar(
+        mutablePlayerData: MutablePlayerData,
+        universeData3DAtPlayer: UniverseData3DAtPlayer,
+    ) {
+        // Remove invalid ally subordinate war
+        mutablePlayerData.playerInternalData.diplomacyData().relationData.allySubordinateWarDataMap
+            .forEach { (allyId, outerWarDataMap) ->
+                outerWarDataMap.forEach { (supportId, innerWarDataMap) ->
+                    innerWarDataMap.entries.removeAll { (opponentId, warData) ->
+                        val hasPlayer: Boolean = universeData3DAtPlayer.playerDataMap
+                            .containsKey(allyId)
+
+                        if (hasPlayer) {
+                            val allyPlayerData: PlayerData = universeData3DAtPlayer
+                                .get(allyId)
+
+                            val isSupportIdCorrect: Boolean =
+                                supportId == warData.warCoreData.supportId
+                            val isOpponentIdCorrect: Boolean =
+                                opponentId == warData.warCoreData.opponentId
+
+                            val isAlly: Boolean = mutablePlayerData.playerInternalData
+                                .diplomacyData().relationData.isAlly(allyId)
+
+                            // Check start time to prevent war disappeared in after image
+                            val isWarExist: Boolean = if (
+                                allyPlayerData.int4D.t >= warData.warCoreData.startTime
+                            ) {
+                                allyPlayerData.playerInternalData.diplomacyData().relationData
+                                    .hasSubordinateWar(supportId, opponentId)
+                            } else {
+                                true
+                            }
+
+                            val isOpponentValid: Boolean =
+                                !mutablePlayerData.isLeader(opponentId) &&
+                                        !mutablePlayerData.isLeaderOrSelf(opponentId)
+
+                            !isSupportIdCorrect || !isOpponentIdCorrect || !isAlly || !isWarExist ||
+                                    !isOpponentValid
+                        } else {
+                            true
+                        }
+                    }
+                }
+            }
+
+        // Update war data
+        mutablePlayerData.playerInternalData.diplomacyData().relationData.allySubordinateWarDataMap
+            .forEach { (allyId, outerWarDataMap) ->
+                outerWarDataMap.forEach { (supportId, innerWarDataMap) ->
+                    innerWarDataMap.forEach { (opponentId, warData) ->
+                        val allySubordinateWarData: WarData =
+                            universeData3DAtPlayer.get(allyId)
+                                .playerInternalData.diplomacyData().relationData
+                                .subordinateWarDataMap.getValue(supportId)
+                                .getValue(opponentId)
+
+                        warData.opponentLeaderIdList.clear()
+                        warData.opponentLeaderIdList.addAll(
+                            allySubordinateWarData.opponentLeaderIdList
+                        )
+
+                        warData.warCoreData =
+                            DataSerializer.copy(allySubordinateWarData.warCoreData)
+                    }
+                }
+            }
+
+        mutablePlayerData.playerInternalData.diplomacyData().relationData.allySubordinateWarDataMap
+            .forEach { (_, outerMap) ->
+                outerMap.values.removeAll { it.isEmpty() }
+            }
+
+        mutablePlayerData.playerInternalData.diplomacyData().relationData.allySubordinateWarDataMap
+            .values.removeAll { it.isEmpty() }
     }
 }

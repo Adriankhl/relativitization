@@ -4,6 +4,7 @@ import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
+import relativitization.universe.data.components.defaults.diplomacy.MutableRelationData
 import relativitization.universe.data.components.diplomacyData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.mechanisms.Mechanism
@@ -18,25 +19,86 @@ object UpdateEnemy : Mechanism() {
         universeSettings: UniverseSettings,
         universeGlobalData: UniverseGlobalData
     ): List<Command> {
-        val allWarTargetId: Set<Int> = mutablePlayerData.playerInternalData.diplomacyData()
-            .relationData.allWarTargetId()
+        val relationData: MutableRelationData = mutablePlayerData.playerInternalData.diplomacyData()
+            .relationData
 
-        val allOffensiveWarTargetId: Set<Int> = mutablePlayerData.playerInternalData.diplomacyData()
-            .relationData.allOffensiveWarTargetId()
+        val selfWarTargetId: Set<Int> = relationData.selfWarDataMap
+            .flatMap { (opponentId, warData) ->
+                computeOpponentAllySet(
+                    universeData3DAtPlayer = universeData3DAtPlayer,
+                    supportId = warData.warCoreData.supportId,
+                    opponentId = opponentId,
+                ) + computeOpponentLeaderAllySet(
+                    universeData3DAtPlayer = universeData3DAtPlayer,
+                    supportId = warData.warCoreData.supportId,
+                    opponentId = opponentId,
+                    opponentLeaderIdList = warData.opponentLeaderIdList,
+                ) + opponentId + warData.opponentLeaderIdList
+            }.filter {
+                !mutablePlayerData.isLeaderOrSelf(it) && !mutablePlayerData.isSubOrdinate(it)
+            }.toSet()
 
-        // Leaders of opponent in offensive war are enemy
-        val allOffensiveWarTargetLeaderId: Set<Int> = allOffensiveWarTargetId.flatMap {
-            if (universeData3DAtPlayer.playerDataMap.containsKey(it)) {
-                universeData3DAtPlayer.get(it).playerInternalData.leaderIdList
-            } else {
-                listOf()
-            }
-        }.filter {
-            !mutablePlayerData.isLeaderOrSelf(it) && !mutablePlayerData.isSubOrdinate(it)
-        }.toSet()
+        val subordinateWarTargetId: Set<Int> = relationData.subordinateWarDataMap
+            .flatMap { (_, warDataMap) ->
+                warDataMap.flatMap { (opponentId, warData) ->
+                    computeOpponentAllySet(
+                        universeData3DAtPlayer = universeData3DAtPlayer,
+                        supportId = warData.warCoreData.supportId,
+                        opponentId = opponentId,
+                    ) + computeOpponentLeaderAllySet(
+                        universeData3DAtPlayer = universeData3DAtPlayer,
+                        supportId = warData.warCoreData.supportId,
+                        opponentId = opponentId,
+                        opponentLeaderIdList = warData.opponentLeaderIdList,
+                    ) + opponentId + warData.opponentLeaderIdList
+                }
+            }.filter {
+                !mutablePlayerData.isLeaderOrSelf(it) && !mutablePlayerData.isSubOrdinate(it)
+            }.toSet()
+
+        val allyWarTargetId: Set<Int> = relationData.allyWarDataMap
+            .flatMap { (_, warDataMap) ->
+                warDataMap.flatMap { (opponentId, warData) ->
+                    computeOpponentAllySet(
+                        universeData3DAtPlayer = universeData3DAtPlayer,
+                        supportId = warData.warCoreData.supportId,
+                        opponentId = opponentId,
+                    ) + computeOpponentLeaderAllySet(
+                        universeData3DAtPlayer = universeData3DAtPlayer,
+                        supportId = warData.warCoreData.supportId,
+                        opponentId = opponentId,
+                        opponentLeaderIdList = warData.opponentLeaderIdList,
+                    ) + opponentId + warData.opponentLeaderIdList
+                }
+            }.filter {
+                !mutablePlayerData.isLeaderOrSelf(it) && !mutablePlayerData.isSubOrdinate(it)
+            }.toSet()
+
+        val allySubordinateWarTargetId: Set<Int> = relationData.allySubordinateWarDataMap
+            .flatMap { (_, outerWarDataMap) ->
+                outerWarDataMap.flatMap { (_, innerWarDataData) ->
+                    innerWarDataData.flatMap { (opponentId, warData) ->
+                        computeOpponentAllySet(
+                            universeData3DAtPlayer = universeData3DAtPlayer,
+                            supportId = warData.warCoreData.supportId,
+                            opponentId = opponentId,
+                        ) + computeOpponentLeaderAllySet(
+                            universeData3DAtPlayer = universeData3DAtPlayer,
+                            supportId = warData.warCoreData.supportId,
+                            opponentId = opponentId,
+                            opponentLeaderIdList = warData.opponentLeaderIdList,
+                        ) + opponentId + warData.opponentLeaderIdList
+                    }
+                }
+            }.filter {
+                !mutablePlayerData.isLeaderOrSelf(it) && !mutablePlayerData.isSubOrdinate(it)
+            }.toSet()
+
+        val allWarTargetId: Set<Int> = selfWarTargetId + subordinateWarTargetId +
+                allyWarTargetId + allySubordinateWarTargetId
 
         // All enemy from war, includes subordinate of war target
-        val allWarEnemy: Set<Int> = (allWarTargetId + allOffensiveWarTargetLeaderId).flatMap {
+        val allWarEnemy: Set<Int> = allWarTargetId.flatMap {
             if (universeData3DAtPlayer.playerDataMap.containsKey(it)) {
                 universeData3DAtPlayer.get(it).getSubordinateAndSelfIdSet()
             } else {
@@ -65,5 +127,58 @@ object UpdateEnemy : Mechanism() {
         )
 
         return listOf()
+    }
+
+    fun computeOpponentAllySet(
+        universeData3DAtPlayer: UniverseData3DAtPlayer,
+        supportId: Int,
+        opponentId: Int,
+    ): Set<Int> {
+        return if (universeData3DAtPlayer.playerDataMap.containsKey(opponentId)) {
+            universeData3DAtPlayer.get(opponentId).playerInternalData
+                .diplomacyData().relationData.allyMap.keys.filter { opponentAllyId ->
+                    if (universeData3DAtPlayer.playerDataMap.containsKey(opponentAllyId)) {
+                        // whether this player has joined the war between opponentId and supportId
+                        universeData3DAtPlayer.get(opponentAllyId).playerInternalData
+                            .diplomacyData().relationData.hasAllyWar(
+                                allyId = opponentId,
+                                opponentId = supportId
+                            )
+                    } else {
+                        false
+                    }
+                }.toSet()
+        } else {
+            setOf()
+        }
+    }
+
+    fun computeOpponentLeaderAllySet(
+        universeData3DAtPlayer: UniverseData3DAtPlayer,
+        supportId: Int,
+        opponentId: Int,
+        opponentLeaderIdList: List<Int>,
+    ): Set<Int> {
+        return opponentLeaderIdList.flatMap { opponentLeaderId ->
+            if (universeData3DAtPlayer.playerDataMap.containsKey(opponentLeaderId)) {
+                universeData3DAtPlayer.get(opponentLeaderId).playerInternalData.diplomacyData()
+                    .relationData.allyMap.keys.filter { opponentLeaderAllyId ->
+                        if (
+                            universeData3DAtPlayer.playerDataMap.containsKey(opponentLeaderAllyId)
+                        ) {
+                            universeData3DAtPlayer.get(opponentLeaderAllyId).playerInternalData
+                                .diplomacyData().relationData.hasAllySubordinateWar(
+                                    allyId = opponentLeaderAllyId,
+                                    allySubordinateId = opponentId,
+                                    opponentId = supportId,
+                                )
+                        } else {
+                            false
+                        }
+                    }
+            } else {
+                listOf()
+            }
+        }.toSet()
     }
 }

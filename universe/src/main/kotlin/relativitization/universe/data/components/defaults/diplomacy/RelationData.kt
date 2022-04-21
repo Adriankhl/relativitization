@@ -27,54 +27,7 @@ data class RelationData(
     val selfWarDataMap: Map<Int, WarData> = mapOf(),
     val subordinateWarDataMap: Map<Int, Map<Int, WarData>> = mapOf(),
     val allyWarDataMap: Map<Int, Map<Int, WarData>> = mapOf(),
-) {
-    fun isEnemy(playerId: Int): Boolean {
-        return enemyIdSet.contains(playerId)
-    }
-
-    fun isAlly(playerId: Int): Boolean {
-        return if (isEnemy(playerId)) {
-            false
-        } else {
-            allyMap.keys.contains(playerId)
-        }
-    }
-
-    fun getRelation(playerId: Int): Double = relationMap.getOrDefault(playerId, 0.0)
-
-    fun allWarTargetId(): Set<Int> = selfWarDataMap.keys + subordinateWarDataMap.values.flatMap {
-        it.keys
-    } + allyWarDataMap.values.flatMap { it.keys }
-
-    fun allOffensiveWarTargetId(): Set<Int> {
-        val selfWarId: Set<Int> = selfWarDataMap.filterValues {
-            it.warCoreData.isOffensive
-        }.keys
-
-        val subordinateWarId: Set<Int> = subordinateWarDataMap.values.flatMap { warDataMap ->
-            warDataMap.filterValues {
-                it.warCoreData.isOffensive
-            }.keys
-        }.toSet()
-
-        val allyWarId: Set<Int> = allyWarDataMap.values.flatMap { warDataMap ->
-            warDataMap.filterValues {
-                it.warCoreData.isOffensive
-            }.keys
-        }.toSet()
-
-        return selfWarId + subordinateWarId + allyWarId
-    }
-}
-
-@Serializable
-data class MutableRelationData(
-    val relationMap: MutableMap<Int, Double> = mutableMapOf(),
-    val enemyIdSet: MutableSet<Int> = mutableSetOf(),
-    val allyMap: MutableMap<Int, MutableAllianceData> = mutableMapOf(),
-    val selfWarDataMap: MutableMap<Int, MutableWarData> = mutableMapOf(),
-    val subordinateWarDataMap: MutableMap<Int, MutableMap<Int, MutableWarData>> = mutableMapOf(),
-    val allyWarDataMap: MutableMap<Int, MutableMap<Int, MutableWarData>> = mutableMapOf(),
+    val allySubordinateWarDataMap: Map<Int, Map< Int, Map<Int, WarData>>> = mapOf(),
 ) {
     fun isEnemy(playerId: Int): Boolean {
         return enemyIdSet.contains(playerId)
@@ -110,11 +63,34 @@ data class MutableRelationData(
         }
     }
 
+    fun hasAllySubordinateWar(
+        allyId: Int,
+        allySubordinateId: Int,
+        opponentId: Int,
+    ) : Boolean {
+        return if (allySubordinateWarDataMap.containsKey(allyId)) {
+            if (allySubordinateWarDataMap.getValue(allyId).containsKey(allySubordinateId)) {
+                allySubordinateWarDataMap.getValue(allyId).getValue(allySubordinateId)
+                    .containsKey(opponentId)
+            } else {
+                false
+            }
+        } else {
+            false
+        }
+    }
+
     fun getRelation(playerId: Int): Double = relationMap.getOrDefault(playerId, 0.0)
 
     fun allWarTargetId(): Set<Int> = selfWarDataMap.keys + subordinateWarDataMap.values.flatMap {
         it.keys
-    } + allyWarDataMap.values.flatMap { it.keys }
+    } + allyWarDataMap.values.flatMap {
+        it.keys
+    } + allySubordinateWarDataMap.values.flatMap { outerMap ->
+        outerMap.values.flatMap { innerMap ->
+            innerMap.keys
+        }
+    }
 
     fun allOffensiveWarTargetId(): Set<Int> {
         val selfWarId: Set<Int> = selfWarDataMap.filterValues {
@@ -133,7 +109,117 @@ data class MutableRelationData(
             }.keys
         }.toSet()
 
-        return selfWarId + subordinateWarId + allyWarId
+        val allySubordinateWarId: Set<Int> = allySubordinateWarDataMap.values.flatMap { outerMap ->
+            outerMap.values.flatMap { innerMap ->
+                innerMap.filterValues {
+                    it.warCoreData.isOffensive
+                }.keys
+            }
+        }.toSet()
+
+        return selfWarId + subordinateWarId + allyWarId + allySubordinateWarId
+    }
+}
+
+@Serializable
+data class MutableRelationData(
+    val relationMap: MutableMap<Int, Double> = mutableMapOf(),
+    val enemyIdSet: MutableSet<Int> = mutableSetOf(),
+    val allyMap: MutableMap<Int, MutableAllianceData> = mutableMapOf(),
+    val selfWarDataMap: MutableMap<Int, MutableWarData> = mutableMapOf(),
+    val subordinateWarDataMap: MutableMap<Int, MutableMap<Int, MutableWarData>> = mutableMapOf(),
+    val allyWarDataMap: MutableMap<Int, MutableMap<Int, MutableWarData>> = mutableMapOf(),
+    val allySubordinateWarDataMap: MutableMap<Int, MutableMap<Int, MutableMap<Int, MutableWarData>>> = mutableMapOf(),
+) {
+    fun isEnemy(playerId: Int): Boolean {
+        return enemyIdSet.contains(playerId)
+    }
+
+    fun isAlly(playerId: Int): Boolean {
+        return if (isEnemy(playerId)) {
+            false
+        } else {
+            allyMap.keys.contains(playerId)
+        }
+    }
+
+    fun hasSubordinateWar(
+        subordinateId: Int,
+        opponentId: Int
+    ): Boolean {
+        return if (subordinateWarDataMap.containsKey(subordinateId)) {
+            subordinateWarDataMap.getValue(subordinateId).containsKey(opponentId)
+        } else {
+            false
+        }
+    }
+
+    fun hasAllyWar(
+        allyId: Int,
+        opponentId: Int
+    ): Boolean {
+        return if (allyWarDataMap.containsKey(allyId)) {
+            allyWarDataMap.getValue(allyId).containsKey(opponentId)
+        } else {
+            false
+        }
+    }
+
+    fun hasAllySubordinateWar(
+        allyId: Int,
+        allySubordinateId: Int,
+        opponentId: Int,
+    ) : Boolean {
+        return if (allySubordinateWarDataMap.containsKey(allyId)) {
+            if (allySubordinateWarDataMap.getValue(allyId).containsKey(allySubordinateId)) {
+                allySubordinateWarDataMap.getValue(allyId).getValue(allySubordinateId)
+                    .containsKey(opponentId)
+            } else {
+                false
+            }
+        } else {
+            false
+        }
+    }
+
+    fun getRelation(playerId: Int): Double = relationMap.getOrDefault(playerId, 0.0)
+
+    fun allWarTargetId(): Set<Int> = selfWarDataMap.keys + subordinateWarDataMap.values.flatMap {
+        it.keys
+    } + allyWarDataMap.values.flatMap {
+        it.keys
+    } + allySubordinateWarDataMap.values.flatMap { outerMap ->
+        outerMap.values.flatMap { innerMap ->
+            innerMap.keys
+        }
+    }
+
+    fun allOffensiveWarTargetId(): Set<Int> {
+        val selfWarId: Set<Int> = selfWarDataMap.filterValues {
+            it.warCoreData.isOffensive
+        }.keys
+
+        val subordinateWarId: Set<Int> = subordinateWarDataMap.values.flatMap { warDataMap ->
+            warDataMap.filterValues {
+                it.warCoreData.isOffensive
+            }.keys
+        }.toSet()
+
+        val allyWarId: Set<Int> = allyWarDataMap.values.flatMap { warDataMap ->
+            warDataMap.filterValues {
+                it.warCoreData.isOffensive
+            }.keys
+        }.toSet()
+
+        val allySubordinateWarId: Set<Int> = allySubordinateWarDataMap.values.flatMap { outerMap ->
+            outerMap.values.flatMap { innerMap ->
+                innerMap.filterValues {
+                    it.warCoreData.isOffensive
+                }.keys
+            }
+        }.toSet()
+
+        return selfWarId + subordinateWarId + allyWarId + allySubordinateWarId
     }
 
     fun addSelfWar(warData: MutableWarData) {
@@ -160,6 +246,14 @@ data class MutableRelationData(
 
     fun addAllyWar(warData: MutableWarData) {
         allyWarDataMap.getOrPut(warData.warCoreData.supportId) {
+            mutableMapOf()
+        }[warData.warCoreData.opponentId] = warData
+    }
+
+    fun addAllySubordinateWar(allyId: Int, warData: MutableWarData) {
+        allySubordinateWarDataMap.getOrPut(allyId) {
+            mutableMapOf()
+        }.getOrPut(warData.warCoreData.supportId) {
             mutableMapOf()
         }[warData.warCoreData.opponentId] = warData
     }
