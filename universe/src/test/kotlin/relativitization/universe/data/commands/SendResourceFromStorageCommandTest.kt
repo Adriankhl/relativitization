@@ -23,10 +23,10 @@ internal class SendResourceFromStorageCommandTest {
                 )
             )
         )
-        val view6: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
+        val view1: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
 
-        val playerData1 = view6.get(1)
-        val playerData2 = view6.get(2)
+        val playerData1 = view1.get(1)
+        val playerData2 = view1.get(2)
 
         val resourceData1 = playerData1.playerInternalData.economyData().resourceData
         val resourceData2 = playerData2.playerInternalData.economyData().resourceData
@@ -71,10 +71,10 @@ internal class SendResourceFromStorageCommandTest {
             universe.preProcessUniverse()
         }
 
-        val view7: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
+        val view2: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
 
-        val newPlayerData1 = view7.get(1)
-        val newPlayerData2 = view7.get(2)
+        val newPlayerData1 = view2.get(1)
+        val newPlayerData2 = view2.get(2)
 
         val newResourceData1 = newPlayerData1.playerInternalData.economyData().resourceData
         val newResourceData2 = newPlayerData2.playerInternalData.economyData().resourceData

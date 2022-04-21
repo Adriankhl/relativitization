@@ -23,11 +23,11 @@ internal class ProposeAllianceEventTest {
             )
         )
 
-        val view6At1: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
-        val view6At3: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(3)
+        val view1At1: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
+        val view1At3: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(3)
 
         assert(
-            view6At1.getCurrentPlayerData().playerInternalData.diplomacyData().relationData.allyMap
+            view1At1.getCurrentPlayerData().playerInternalData.diplomacyData().relationData.allyMap
                 .isEmpty()
         )
 
@@ -38,7 +38,7 @@ internal class ProposeAllianceEventTest {
 
         val command = AddEventCommand(
             event,
-            view6At3.getCurrentPlayerData().int4D,
+            view1At3.getCurrentPlayerData().int4D,
         )
 
         runBlocking {
@@ -61,10 +61,10 @@ internal class ProposeAllianceEventTest {
             }
         }
 
-        val view12At1: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
+        val view2At1: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
 
         assert(
-            view12At1.getCurrentPlayerData().playerInternalData.eventDataMap.isNotEmpty()
+            view2At1.getCurrentPlayerData().playerInternalData.eventDataMap.isNotEmpty()
         )
 
         runBlocking {
@@ -74,7 +74,7 @@ internal class ProposeAllianceEventTest {
                         SelectEventChoiceCommand(
                             toId = 1,
                             fromId = 1,
-                            fromInt4D = view12At1.getCurrentPlayerData().int4D,
+                            fromInt4D = view2At1.getCurrentPlayerData().int4D,
                             eventKey = 0,
                             eventName = ProposeAllianceEvent::class.name(),
                             choice = 0
@@ -86,20 +86,20 @@ internal class ProposeAllianceEventTest {
             universe.preProcessUniverse()
         }
 
-        val view13At1: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
-        val view13At3: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(3)
+        val view3At1: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
+        val view3At3: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(3)
 
         assert(
-            view13At1.getCurrentPlayerData().playerInternalData.eventDataMap.isEmpty()
+            view3At1.getCurrentPlayerData().playerInternalData.eventDataMap.isEmpty()
         )
 
         assert(
-            view13At1.getCurrentPlayerData().playerInternalData.diplomacyData().relationData
+            view3At1.getCurrentPlayerData().playerInternalData.diplomacyData().relationData
                 .isAlly(3)
         )
 
         assert(
-            view13At3.getCurrentPlayerData().playerInternalData.diplomacyData().relationData
+            view3At3.getCurrentPlayerData().playerInternalData.diplomacyData().relationData
                 .allyMap.isEmpty()
         )
 
@@ -114,16 +114,16 @@ internal class ProposeAllianceEventTest {
             }
         }
 
-        val viewFinalAt1: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
-        val viewFinalAt3: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(3)
+        val view4At1: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
+        val view4At3: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(3)
 
         assert(
-            viewFinalAt1.getCurrentPlayerData().playerInternalData.diplomacyData().relationData
+            view4At1.getCurrentPlayerData().playerInternalData.diplomacyData().relationData
                 .isAlly(3)
         )
 
         assert(
-            viewFinalAt3.getCurrentPlayerData().playerInternalData.diplomacyData().relationData
+            view4At3.getCurrentPlayerData().playerInternalData.diplomacyData().relationData
                 .isAlly(1)
         )
     }

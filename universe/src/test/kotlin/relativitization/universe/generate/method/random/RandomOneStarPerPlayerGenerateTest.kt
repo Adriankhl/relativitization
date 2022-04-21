@@ -51,31 +51,31 @@ internal class RandomOneStarPerPlayerGenerateTest {
             GenerateUniverseMethodCollection.generate(generateSetting),
         )
 
-        val view7 = universe.getUniverse3DViewAtPlayer(1)
+        val view1 = universe.getUniverse3DViewAtPlayer(1)
 
-        val commandList7: MutableList<Command> = mutableListOf()
+        val commandList: MutableList<Command> = mutableListOf()
 
-        commandList7.add(
+        commandList.add(
             SendFuelFromStorageCommand(
                 toId = 1,
                 fromId = 1,
-                fromInt4D = view7.get(1).int4D,
+                fromInt4D = view1.get(1).int4D,
                 amount = 1E7,
-                senderFuelLossFractionPerDistance = view7.getCurrentPlayerData().playerInternalData.playerScienceData()
+                senderFuelLossFractionPerDistance = view1.getCurrentPlayerData().playerInternalData.playerScienceData()
                     .playerScienceApplicationData.fuelLogisticsLossFractionPerDistance
             )
         )
 
         ResourceType.factoryResourceList.forEach {
-            commandList7.add(
+            commandList.add(
                 BuildForeignResourceFactoryCommand(
                     toId = 1,
                     fromId = 1,
-                    fromInt4D = view7.get(1).int4D,
+                    fromInt4D = view1.get(1).int4D,
                     senderTopLeaderId = 1,
                     targetCarrierId = 0,
                     ownerId = 1,
-                    resourceFactoryInternalData = view7.get(1).playerInternalData
+                    resourceFactoryInternalData = view1.get(1).playerInternalData
                         .playerScienceData().playerScienceApplicationData
                         .newResourceFactoryInternalData(
                             it,
@@ -84,7 +84,7 @@ internal class RandomOneStarPerPlayerGenerateTest {
                     qualityLevel = 1.0,
                     maxNumEmployee = 1.0,
                     storedFuelRestMass = 0.0,
-                    senderFuelLossFractionPerDistance = view7.get(1).playerInternalData
+                    senderFuelLossFractionPerDistance = view1.get(1).playerInternalData
                         .playerScienceData().playerScienceApplicationData
                         .fuelLogisticsLossFractionPerDistance,
                 )
@@ -92,11 +92,11 @@ internal class RandomOneStarPerPlayerGenerateTest {
         }
 
         PopType.values().forEach {
-            commandList7.add(
+            commandList.add(
                 ChangeSalaryFactorCommand(
                     toId = 1,
                     fromId = 1,
-                    fromInt4D = view7.get(1).int4D,
+                    fromInt4D = view1.get(1).int4D,
                     carrierId = 0,
                     popType = it,
                     salaryFactor = 2.0,
@@ -107,7 +107,7 @@ internal class RandomOneStarPerPlayerGenerateTest {
         runBlocking {
             universe.postProcessUniverse(
                 mapOf(
-                    1 to commandList7
+                    1 to commandList
                 ),
                 mapOf()
             )

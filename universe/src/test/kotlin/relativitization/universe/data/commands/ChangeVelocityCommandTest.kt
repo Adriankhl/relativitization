@@ -22,13 +22,13 @@ internal class ChangeVelocityCommandTest {
                 )
             )
         )
-        val view6: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
-        assert(view6.get(2).int4D == Int4D(6, 0, 0, 0))
+        val view1: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
+        assert(view1.get(2).int4D == Int4D(6, 0, 0, 0))
 
         val command = ChangeVelocityCommand(
             toId = 2,
             fromId = 1,
-            fromInt4D = view6.getCurrentPlayerData().int4D,
+            fromInt4D = view1.getCurrentPlayerData().int4D,
             targetVelocity = Velocity(0.1, 0.0, 0.0),
         )
 
@@ -42,9 +42,9 @@ internal class ChangeVelocityCommandTest {
             universe.preProcessUniverse()
         }
 
-        val view7: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
+        val view2: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
 
         // Since player 2 left player 1, player 1 can only see the after image which is at t = 7
-        assert(view7.get(2).int4D == Int4D(6, 0, 0, 0))
+        assert(view2.get(2).int4D == Int4D(6, 0, 0, 0))
     }
 }

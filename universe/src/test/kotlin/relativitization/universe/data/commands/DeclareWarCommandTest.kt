@@ -20,19 +20,19 @@ internal class DeclareWarCommandTest {
             )
         )
 
-        val view6At5 = universe.getUniverse3DViewAtPlayer(5)
-        val view6At6 = universe.getUniverse3DViewAtPlayer(6)
+        val view1At5 = universe.getUniverse3DViewAtPlayer(5)
+        val view1At6 = universe.getUniverse3DViewAtPlayer(6)
 
-        assert(view6At5.getCurrentPlayerData().double4D.x == 1.5)
-        assert(view6At6.getCurrentPlayerData().double4D.x == 1.4)
-        assert(view6At5.getCurrentPlayerData().groupId != view6At6.getCurrentPlayerData().groupId)
+        assert(view1At5.getCurrentPlayerData().double4D.x == 1.5)
+        assert(view1At6.getCurrentPlayerData().double4D.x == 1.4)
+        assert(view1At5.getCurrentPlayerData().groupId != view1At6.getCurrentPlayerData().groupId)
 
         assert(
-            view6At5.getCurrentPlayerData().playerInternalData.diplomacyData().relationData
+            view1At5.getCurrentPlayerData().playerInternalData.diplomacyData().relationData
                 .selfWarDataMap.isEmpty()
         )
         assert(
-            view6At6.getCurrentPlayerData().playerInternalData.diplomacyData().relationData
+            view1At6.getCurrentPlayerData().playerInternalData.diplomacyData().relationData
                 .selfWarDataMap.isEmpty()
         )
 
@@ -43,7 +43,7 @@ internal class DeclareWarCommandTest {
                         DeclareWarCommand(
                             toId = 6,
                             fromId = 5,
-                            fromInt4D = view6At5.getCurrentPlayerData().int4D,
+                            fromInt4D = view1At5.getCurrentPlayerData().int4D,
                         )
                     )
                 ),
@@ -52,15 +52,15 @@ internal class DeclareWarCommandTest {
             universe.preProcessUniverse()
         }
 
-        val view7At5 = universe.getUniverse3DViewAtPlayer(5)
-        val view7At6 = universe.getUniverse3DViewAtPlayer(6)
-
+        val view2At5 = universe.getUniverse3DViewAtPlayer(5)
+        val view2At6 = universe.getUniverse3DViewAtPlayer(6)
 
         assert(
-            view7At5.getCurrentPlayerData().playerInternalData.diplomacyData().relationData
+            view2At5.getCurrentPlayerData().playerInternalData.diplomacyData().relationData
                 .selfWarDataMap.containsKey(6)
         )
-        assert(view7At6.getCurrentPlayerData().playerInternalData.diplomacyData().relationData
+
+        assert(view2At6.getCurrentPlayerData().playerInternalData.diplomacyData().relationData
             .selfWarDataMap.isEmpty()
         )
 
@@ -73,16 +73,16 @@ internal class DeclareWarCommandTest {
         }
 
 
-        val view8At5 = universe.getUniverse3DViewAtPlayer(5)
-        val view8At6 = universe.getUniverse3DViewAtPlayer(6)
+        val view3At5 = universe.getUniverse3DViewAtPlayer(5)
+        val view3At6 = universe.getUniverse3DViewAtPlayer(6)
 
 
         assert(
-            view8At5.getCurrentPlayerData().playerInternalData.diplomacyData().relationData
+            view3At5.getCurrentPlayerData().playerInternalData.diplomacyData().relationData
                 .selfWarDataMap.containsKey(6)
         )
         assert(
-            view8At6.getCurrentPlayerData().playerInternalData.diplomacyData().relationData
+            view3At6.getCurrentPlayerData().playerInternalData.diplomacyData().relationData
                 .selfWarDataMap.containsKey(5)
         )
     }

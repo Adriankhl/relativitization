@@ -24,7 +24,7 @@ internal class CallAllyToWarEventTest {
             )
         )
 
-        val view6At1: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
+        val view1At1: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
 
         val event = ProposeAllianceEvent(
             toId = 3,
@@ -33,7 +33,7 @@ internal class CallAllyToWarEventTest {
 
         val proposeAllianceCommand = AddEventCommand(
             event,
-            view6At1.getCurrentPlayerData().int4D,
+            view1At1.getCurrentPlayerData().int4D,
         )
 
         runBlocking {
@@ -56,7 +56,7 @@ internal class CallAllyToWarEventTest {
             }
         }
 
-        val view10At3: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(3)
+        val view2At3: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(3)
 
         runBlocking {
             universe.postProcessUniverse(
@@ -66,7 +66,7 @@ internal class CallAllyToWarEventTest {
                         SelectEventChoiceCommand(
                             toId = 3,
                             fromId = 3,
-                            fromInt4D = view10At3.getCurrentPlayerData().int4D,
+                            fromInt4D = view2At3.getCurrentPlayerData().int4D,
                             eventKey = 0,
                             eventName = ProposeAllianceEvent::class.name(),
                             choice = 0
@@ -87,16 +87,16 @@ internal class CallAllyToWarEventTest {
             }
         }
 
-        val view14At1: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
-        val view14At3: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(3)
+        val view3At1: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
+        val view3At3: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(3)
 
         assert(
-            view14At1.getCurrentPlayerData().playerInternalData.diplomacyData().relationData
+            view3At1.getCurrentPlayerData().playerInternalData.diplomacyData().relationData
                 .isAlly(3)
         )
 
         assert(
-            view14At3.getCurrentPlayerData().playerInternalData.diplomacyData().relationData
+            view3At3.getCurrentPlayerData().playerInternalData.diplomacyData().relationData
                 .isAlly(1)
         )
 
@@ -107,7 +107,7 @@ internal class CallAllyToWarEventTest {
                         DeclareWarCommand(
                             toId = 5,
                             fromId = 1,
-                            fromInt4D = view14At1.getCurrentPlayerData().int4D,
+                            fromInt4D = view3At1.getCurrentPlayerData().int4D,
                         ),
                         AddEventCommand(
                             CallAllyToWarEvent(
@@ -115,7 +115,7 @@ internal class CallAllyToWarEventTest {
                                 fromId = 1,
                                 warTargetId = 5
                             ),
-                            fromInt4D = view14At1.getCurrentPlayerData().int4D,
+                            fromInt4D = view3At1.getCurrentPlayerData().int4D,
                         )
                     )
                 ),
@@ -124,16 +124,16 @@ internal class CallAllyToWarEventTest {
             universe.preProcessUniverse()
         }
 
-        val view15At1: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
-        val view15At3: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(3)
+        val view4At1: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
+        val view4At3: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(3)
 
         assert(
-            view15At1.getCurrentPlayerData().playerInternalData.diplomacyData().relationData
+            view4At1.getCurrentPlayerData().playerInternalData.diplomacyData().relationData
                 .isEnemy(5)
         )
 
         assert(
-            !view15At3.getCurrentPlayerData().playerInternalData.diplomacyData().relationData
+            !view4At3.getCurrentPlayerData().playerInternalData.diplomacyData().relationData
                 .isEnemy(5)
         )
 
@@ -147,7 +147,7 @@ internal class CallAllyToWarEventTest {
             }
         }
 
-        val view18At3: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(3)
+        val view5At3: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(3)
 
         runBlocking {
             universe.postProcessUniverse(
@@ -157,7 +157,7 @@ internal class CallAllyToWarEventTest {
                         SelectEventChoiceCommand(
                             toId = 3,
                             fromId = 3,
-                            fromInt4D = view18At3.getCurrentPlayerData().int4D,
+                            fromInt4D = view5At3.getCurrentPlayerData().int4D,
                             eventKey = 0,
                             eventName = CallAllyToWarEvent::class.name(),
                             choice = 0
@@ -168,21 +168,21 @@ internal class CallAllyToWarEventTest {
             universe.preProcessUniverse()
         }
 
-        val view19At1: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
-        val view19At3: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(3)
+        val view6At1: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
+        val view6At3: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(3)
 
         assert(
-            view19At1.getCurrentPlayerData().playerInternalData.diplomacyData().relationData
+            view6At1.getCurrentPlayerData().playerInternalData.diplomacyData().relationData
                 .isEnemy(5)
         )
 
         assert(
-            view19At3.getCurrentPlayerData().playerInternalData.diplomacyData().relationData
+            view6At3.getCurrentPlayerData().playerInternalData.diplomacyData().relationData
                 .allyWarDataMap.containsKey(1)
         )
 
         assert(
-            view19At3.getCurrentPlayerData().playerInternalData.diplomacyData().relationData
+            view6At3.getCurrentPlayerData().playerInternalData.diplomacyData().relationData
                 .isEnemy(5)
         )
 
@@ -196,25 +196,25 @@ internal class CallAllyToWarEventTest {
             }
         }
 
-        val viewFinalAt5: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(5)
+        val view7At5: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(5)
 
         assert(
-            viewFinalAt5.getCurrentPlayerData().playerInternalData.diplomacyData().relationData
+            view7At5.getCurrentPlayerData().playerInternalData.diplomacyData().relationData
                 .isEnemy(1)
         )
 
         assert(
-            viewFinalAt5.getCurrentPlayerData().playerInternalData.diplomacyData().relationData
+            view7At5.getCurrentPlayerData().playerInternalData.diplomacyData().relationData
                 .isEnemy(3)
         )
 
         assert(
-            viewFinalAt5.getCurrentPlayerData().playerInternalData.diplomacyData().relationData
+            view7At5.getCurrentPlayerData().playerInternalData.diplomacyData().relationData
                 .isEnemy(2)
         )
 
         assert(
-            viewFinalAt5.getCurrentPlayerData().playerInternalData.diplomacyData().relationData
+            view7At5.getCurrentPlayerData().playerInternalData.diplomacyData().relationData
                 .selfWarDataMap.keys == setOf(1)
         )
     }

@@ -21,19 +21,19 @@ internal class AutoCombatTest {
             )
         )
 
-        val view6At5 = universe.getUniverse3DViewAtPlayer(5)
-        val view6At6 = universe.getUniverse3DViewAtPlayer(6)
+        val view1At5 = universe.getUniverse3DViewAtPlayer(5)
+        val view1At6 = universe.getUniverse3DViewAtPlayer(6)
 
-        assert(view6At5.getCurrentPlayerData().double4D.x == 1.5)
-        assert(view6At6.getCurrentPlayerData().double4D.x == 1.4)
-        assert(view6At5.getCurrentPlayerData().groupId != view6At6.getCurrentPlayerData().groupId)
+        assert(view1At5.getCurrentPlayerData().double4D.x == 1.5)
+        assert(view1At6.getCurrentPlayerData().double4D.x == 1.4)
+        assert(view1At5.getCurrentPlayerData().groupId != view1At6.getCurrentPlayerData().groupId)
 
         assert(
-            view6At5.getCurrentPlayerData().playerInternalData.diplomacyData().relationData
+            view1At5.getCurrentPlayerData().playerInternalData.diplomacyData().relationData
                 .selfWarDataMap.isEmpty()
         )
         assert(
-            view6At6.getCurrentPlayerData().playerInternalData.diplomacyData().relationData
+            view1At6.getCurrentPlayerData().playerInternalData.diplomacyData().relationData
                 .selfWarDataMap.isEmpty()
         )
 
@@ -44,7 +44,7 @@ internal class AutoCombatTest {
                         DeclareWarCommand(
                             toId = 6,
                             fromId = 5,
-                            fromInt4D = view6At5.getCurrentPlayerData().int4D,
+                            fromInt4D = view1At5.getCurrentPlayerData().int4D,
                         )
                     )
                 ),
@@ -64,10 +64,10 @@ internal class AutoCombatTest {
         }
 
 
-        val finalViewAt5 = universe.getUniverse3DViewAtPlayer(5)
-        val finalViewAt6 = universe.getUniverse3DViewAtPlayer(6)
-        assert(finalViewAt5.getCurrentPlayerData().isSubOrdinateOrSelf(6))
-        assert(!finalViewAt6.getCurrentPlayerData().isTopLeader())
-        assert(finalViewAt6.getCurrentPlayerData().playerInternalData.directLeaderId == 5)
+        val view2At5 = universe.getUniverse3DViewAtPlayer(5)
+        val view2At6 = universe.getUniverse3DViewAtPlayer(6)
+        assert(view2At5.getCurrentPlayerData().isSubOrdinateOrSelf(6))
+        assert(!view2At6.getCurrentPlayerData().isTopLeader())
+        assert(view2At6.getCurrentPlayerData().playerInternalData.directLeaderId == 5)
     }
 }

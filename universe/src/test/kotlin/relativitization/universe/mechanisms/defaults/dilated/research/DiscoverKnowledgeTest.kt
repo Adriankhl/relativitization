@@ -21,13 +21,15 @@ internal class DiscoverKnowledgeTest {
             )
         )
 
-        val view6: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
+        val view1: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
 
-        assert(!view6.get(1).playerInternalData.playerScienceData().doneBasicResearchProjectList.any {
-            it.basicResearchId == 2
-        })
+        assert(
+            !view1.get(1).playerInternalData.playerScienceData().doneBasicResearchProjectList.any {
+                it.basicResearchId == 2
+            }
+        )
 
-        assert(!view6.get(1).playerInternalData.playerScienceData().doneAppliedResearchProjectList.any {
+        assert(!view1.get(1).playerInternalData.playerScienceData().doneAppliedResearchProjectList.any {
             it.appliedResearchId == 2
         })
 
@@ -40,13 +42,13 @@ internal class DiscoverKnowledgeTest {
             universe.preProcessUniverse()
         }
 
-        val view7: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
+        val view2: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
 
         // There is a small probability to fail, since research is not guarantee to success
-        assert(view7.get(1).playerInternalData.playerScienceData().doneBasicResearchProjectList.any {
+        assert(view2.get(1).playerInternalData.playerScienceData().doneBasicResearchProjectList.any {
             it.basicResearchId == 2
         })
-        assert(view7.get(1).playerInternalData.playerScienceData().doneAppliedResearchProjectList.any {
+        assert(view2.get(1).playerInternalData.playerScienceData().doneAppliedResearchProjectList.any {
             it.appliedResearchId == 2
         })
     }

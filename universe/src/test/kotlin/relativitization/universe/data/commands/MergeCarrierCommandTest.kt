@@ -22,11 +22,11 @@ internal class MergeCarrierCommandTest {
             )
         )
 
-        val view6At1 = universe.getUniverse3DViewAtPlayer(1)
-        val view6At2 = universe.getUniverse3DViewAtPlayer(2)
+        val view1At1 = universe.getUniverse3DViewAtPlayer(1)
+        val view1At2 = universe.getUniverse3DViewAtPlayer(2)
 
-        assert(view6At1.getCurrentPlayerData().int4D == view6At2.getCurrentPlayerData().int4D)
-        assert(view6At1.getCurrentPlayerData().groupId == view6At2.getCurrentPlayerData().groupId)
+        assert(view1At1.getCurrentPlayerData().int4D == view1At2.getCurrentPlayerData().int4D)
+        assert(view1At1.getCurrentPlayerData().groupId == view1At2.getCurrentPlayerData().groupId)
 
         val event = AskToMergeCarrierEvent(
             toId = 2,
@@ -39,7 +39,7 @@ internal class MergeCarrierCommandTest {
                     1 to listOf(
                         AddEventCommand(
                             event = event,
-                            fromInt4D = view6At1.getCurrentPlayerData().int4D,
+                            fromInt4D = view1At1.getCurrentPlayerData().int4D,
                         )
                     )
                 ),
@@ -49,9 +49,9 @@ internal class MergeCarrierCommandTest {
         }
 
 
-        val view7At2 = universe.getUniverse3DViewAtPlayer(2)
+        val view2At2 = universe.getUniverse3DViewAtPlayer(2)
 
-        assert(view7At2.getCurrentPlayerData().playerInternalData.eventDataMap.size == 1)
+        assert(view2At2.getCurrentPlayerData().playerInternalData.eventDataMap.size == 1)
 
         runBlocking {
             universe.postProcessUniverse(
@@ -60,7 +60,7 @@ internal class MergeCarrierCommandTest {
                         SelectEventChoiceCommand(
                             toId = 2,
                             fromId = 2,
-                            fromInt4D = view7At2.getCurrentPlayerData().int4D,
+                            fromInt4D = view2At2.getCurrentPlayerData().int4D,
                             eventKey = 0,
                             eventName = event.name(),
                             choice = 0
@@ -72,9 +72,9 @@ internal class MergeCarrierCommandTest {
             universe.preProcessUniverse()
         }
 
-        val view8At1 = universe.getUniverse3DViewAtPlayer(1)
+        val view3At1 = universe.getUniverse3DViewAtPlayer(1)
 
         assert(!universe.availablePlayers().contains(2))
-        assert(view8At1.getCurrentPlayerData().playerInternalData.popSystemData().carrierDataMap.size == 3)
+        assert(view3At1.getCurrentPlayerData().playerInternalData.popSystemData().carrierDataMap.size == 3)
     }
 }

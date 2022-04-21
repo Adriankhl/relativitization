@@ -23,9 +23,9 @@ internal class BuildForeignResourceFactoryCommandTest {
                 )
             )
         )
-        val view6: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
+        val view1: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
 
-        val playerData = view6.get(1)
+        val playerData = view1.get(1)
 
         val originalFuelRestMassData = playerData.playerInternalData.physicsData().fuelRestMassData
 
@@ -61,8 +61,8 @@ internal class BuildForeignResourceFactoryCommandTest {
             universe.preProcessUniverse()
         }
 
-        val view7: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
-        val newPlayerData = view7.get(1)
+        val view2: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
+        val newPlayerData = view2.get(1)
         val factoryMap = newPlayerData.playerInternalData.popSystemData().carrierDataMap.getValue(
             0
         ).allPopData.labourerPopData.resourceFactoryMap

@@ -22,20 +22,20 @@ internal class SelectEventChoiceCommandTest {
                 )
             )
         )
-        val view6: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(2)
-        assert(view6.get(2).int4D == Int4D(6, 0, 0, 0))
+        val view1: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(2)
+        assert(view1.get(2).int4D == Int4D(6, 0, 0, 0))
 
         val event = MoveToDouble3DEvent(
             toId = 2,
             fromId = 1,
-            targetDouble3D = view6.get(3).groupCenterDouble3D(view6.universeSettings.groupEdgeLength),
+            targetDouble3D = view1.get(3).groupCenterDouble3D(view1.universeSettings.groupEdgeLength),
             maxSpeed = 0.2
 
         )
 
         val addEventCommand = AddEventCommand(
             event,
-            view6.getCurrentPlayerData().int4D
+            view1.getCurrentPlayerData().int4D
         )
 
         // Add Command
@@ -53,14 +53,14 @@ internal class SelectEventChoiceCommandTest {
             universe.preProcessUniverse()
         }
 
-        val view7: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(2)
+        val view2: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(2)
 
         val selectEventChoiceCommand = SelectEventChoiceCommand(
-            toId = view7.id,
-            fromId = view7.id,
-            fromInt4D = view7.getCurrentPlayerData().int4D,
+            toId = view2.id,
+            fromId = view2.id,
+            fromInt4D = view2.getCurrentPlayerData().int4D,
             eventKey = 0,
-            eventName = view7.getCurrentPlayerData().playerInternalData.eventDataMap.getValue(0).event.name(),
+            eventName = view2.getCurrentPlayerData().playerInternalData.eventDataMap.getValue(0).event.name(),
             choice = 1
         )
 
@@ -78,8 +78,8 @@ internal class SelectEventChoiceCommandTest {
             universe.preProcessUniverse()
         }
 
-        val view8: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(2)
+        val view3: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(2)
 
-        assert(view8.getCurrentPlayerData().playerInternalData.eventDataMap.isEmpty())
+        assert(view3.getCurrentPlayerData().playerInternalData.eventDataMap.isEmpty())
     }
 }
