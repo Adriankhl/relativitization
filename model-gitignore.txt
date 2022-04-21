@@ -276,6 +276,7 @@ universe/src/main/kotlin/relativitization/universe/maths/physics/Velocity.kt
 universe/src/main/kotlin/relativitization/universe/maths/sampling/WeightedReservoir.kt
 universe/src/main/kotlin/relativitization/universe/maths/collection/ListFind.kt
 universe/src/main/kotlin/relativitization/universe/maths/collection/Fraction.kt
+universe/src/main/kotlin/relativitization/universe/maths/collection/DoubleRange.kt
 universe/src/main/kotlin/relativitization/universe/maths/number/Notation.kt
 universe/src/main/kotlin/relativitization/universe/maths/random/Rand.kt
 universe/src/main/kotlin/relativitization/universe/mechanisms/defaults/regular/dead/ClearDeadPlayer.kt
