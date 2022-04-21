@@ -18,10 +18,10 @@ object Versions {
     const val kotlinxSerializationVersion = "1.3.2"
     const val kotlinxDateTimeVersion = "0.3.2"
     const val ktorVersion = "2.0.0"
-    const val okioVersion = "3.0.0"
+    const val okioVersion = "3.1.0"
 
     // Documentation
-    const val dokkaVersion = "1.6.10"
+    const val dokkaVersion = "1.6.20"
 
     // JVM
     const val gdxVersion = "1.10.0"
