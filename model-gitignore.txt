@@ -383,6 +383,7 @@ universe/src/test/kotlin/relativitization/universe/generate/method/random/Random
 universe/src/test/kotlin/relativitization/universe/mechanisms/defaults/dilated/production/FuelFactoryProductionTest.kt
 universe/src/test/kotlin/relativitization/universe/mechanisms/defaults/dilated/research/DiscoverKnowledgeTest.kt
 universe/src/test/kotlin/relativitization/universe/mechanisms/defaults/dilated/combat/AutoCombatTest.kt
+universe/src/test/kotlin/relativitization/universe/mechanisms/defaults/regular/diplomacy/UpdateWarTest.kt
 universe/src/test/kotlin/relativitization/universe/utils/I18NStringTest.kt
 universe/src/test/kotlin/relativitization/universe/ai/DefaultAITest.kt
 universe/src/test/kotlin/relativitization/universe/UniverseTest.kt
