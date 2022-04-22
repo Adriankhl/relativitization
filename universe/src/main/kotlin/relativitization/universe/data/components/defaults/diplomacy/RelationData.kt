@@ -37,7 +37,7 @@ data class RelationData(
         return if (isEnemy(playerId)) {
             false
         } else {
-            allyMap.keys.contains(playerId)
+            allyMap.containsKey(playerId)
         }
     }
 

@@ -359,6 +359,7 @@ universe/src/test/kotlin/relativitization/universe/data/commands/BuildForeignRes
 universe/src/test/kotlin/relativitization/universe/data/events/MoveToDouble3DEventTest.kt
 universe/src/test/kotlin/relativitization/universe/data/events/ProposeAllianceEventTest.kt
 universe/src/test/kotlin/relativitization/universe/data/events/CallAllyToWarEventTest.kt
+universe/src/test/kotlin/relativitization/universe/data/events/CallAllyToSubordinateWarEventTest.kt
 universe/src/test/kotlin/relativitization/universe/data/components/economy/MutableResourceQualityDataTest.kt
 universe/src/test/kotlin/relativitization/universe/data/components/economy/ResourceQualityClassTest.kt
 universe/src/test/kotlin/relativitization/universe/data/components/PlayerDataComponentMapTest.kt

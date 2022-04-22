@@ -126,5 +126,29 @@ internal class ProposeAllianceEventTest {
             view4At3.getCurrentPlayerData().playerInternalData.diplomacyData().relationData
                 .isAlly(1)
         )
+
+        runBlocking {
+            for (i in 1..10) {
+                universe.postProcessUniverse(
+                    mapOf(),
+                    mapOf()
+                )
+                universe.preProcessUniverse()
+            }
+        }
+
+
+        val view5At1: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
+        val view5At3: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(3)
+
+        assert(
+            view5At1.getCurrentPlayerData().playerInternalData.diplomacyData().relationData
+                .isAlly(3)
+        )
+
+        assert(
+            view5At3.getCurrentPlayerData().playerInternalData.diplomacyData().relationData
+                .isAlly(1)
+        )
     }
 }

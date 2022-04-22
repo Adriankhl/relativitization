@@ -168,7 +168,7 @@ object UpdateEnemy : Mechanism() {
                         ) {
                             universeData3DAtPlayer.get(opponentLeaderAllyId).playerInternalData
                                 .diplomacyData().relationData.hasAllySubordinateWar(
-                                    allyId = opponentLeaderAllyId,
+                                    allyId = opponentLeaderId,
                                     allySubordinateId = opponentId,
                                     opponentId = supportId,
                                 )
