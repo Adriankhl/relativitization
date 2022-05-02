@@ -9,7 +9,6 @@ plugins {
 
 val artDirectory = File("../relativitization-art")
 val artGitDirectory = File("../relativitization-art/.git")
-val winePath = "${System.getProperty("user.home")}/.wine/drive_c/relativitization-output"
 
 buildscript {
     repositories {
@@ -88,10 +87,6 @@ tasks.register("createModelBase") {
     }
 }
 
-tasks.register("cleanAll") {
-    dependsOn("clean")
-}
-
 tasks.register("cleanArt") {
     doLast {
         // art directory may not be a git repository
@@ -108,20 +103,6 @@ tasks.register("cleanArt") {
     }
 }
 
-tasks.register("cleanWine") {
-    doLast {
-        if (File(winePath).exists()) {
-            exec {
-                commandLine(
-                    "rm",
-                    "-r",
-                    winePath
-                )
-            }
-        }
-    }
-}
-
 tasks.register("createOutputDir") {
     doLast {
         exec {
@@ -131,6 +112,44 @@ tasks.register("createOutputDir") {
                 "outputs",
             )
 
+        }
+    }
+}
+
+tasks.register("downloadWindowsJDK") {
+    doLast {
+        val windowsJDKDir = File("${artDirectory.path}/windows-jdk")
+        if (!windowsJDKDir.exists()) {
+            windowsJDKDir.mkdir()
+
+            exec {
+                workingDir = windowsJDKDir
+                commandLine(
+                    "wget",
+                    "https://api.adoptium.net/v3/binary/latest/17/ga/windows/x64/jdk/hotspot/normal/eclipse?project=jdk",
+                    "-O",
+                    "jdk.zip",
+                )
+            }
+
+            exec {
+                workingDir = windowsJDKDir
+                commandLine(
+                    "unzip",
+                    "jdk.zip",
+                )
+            }
+        }
+
+        if (!File("$(windowsJDKDir.path}/jdk").exists()) {
+            exec {
+                workingDir = windowsJDKDir           
+                commandLine(
+                    "bash",
+                    "-c",
+                    "find . -maxdepth 1 -name \"jdk-*\" -exec mv {} jdk \\;",
+                )
+            }
         }
     }
 }
@@ -157,15 +176,8 @@ tasks.register("packageAssets") {
     }
 }
 
-tasks.register("packageAll") {
-    dependsOn("cleanArt")
-    dependsOn("cleanWine")
-    dependsOn("createOutputDir")
-    dependsOn("outputVersionTxt")
-    dependsOn("packageAssets")
-    dependsOn(":gdx-android:assembleStandalone")
-    dependsOn(":gdx-android:bundleRelease")
-    dependsOn(":gdx-desktop:fatJar")
+tasks.register("packageLinux") {
+    mustRunAfter(":gdx-desktop:fatJar")
 
     doLast {
         // package for linux
@@ -192,16 +204,36 @@ tasks.register("packageAll") {
             )
         }
 
+        // zip the linux package
+        exec {
+            workingDir = artDirectory
+            commandLine(
+                "zip",
+                "-r",
+                "./outputs/relativitization-linux.zip",
+                "./relativitization-linux",
+            )
+        }
+    }
+}
+
+tasks.register("packageWindows") {
+    mustRunAfter(":gdx-desktop:fatJar")
+
+    doLast {
         // cross-building package for windows with wine
         exec {
             workingDir = artDirectory
             commandLine(
-                "wine",
-                "../windows/jdk/jdk-17/bin/jpackage.exe",
+                "flatpak",
+                "--filesystem=home",
+                "run",
+                "org.winehq.Wine",
+                "./windows-jdk/jdk/bin/jpackage.exe",
                 "--input",
                 "./assets",
                 "--dest",
-                "C:/relativitization-output",
+                "C:/",
                 "--name",
                 "relativitization-win",
                 "--main-jar",
@@ -219,17 +251,42 @@ tasks.register("packageAll") {
             )
         }
 
-        // Copy the windows package directory here
+        // zip the windows package
         exec {
             workingDir = artDirectory
             commandLine(
-                "cp",
-                "-r",
-                "$winePath/relativitization-win",
+                "mv",
+                "${System.getProperty("user.home")}/.var/app/org.winehq.Wine/data/wine/drive_c/relativitization-win",
                 "."
             )
         }
 
+        // zip the windows package
+        exec {
+            workingDir = artDirectory
+            commandLine(
+                "zip",
+                "-r",
+                "./outputs/relativitization-win.zip",
+                "./relativitization-win",
+            )
+        }
+    }
+}
+
+tasks.register("packageAll") {
+    dependsOn("cleanArt")
+    dependsOn("createOutputDir")
+    dependsOn("downloadWindowsJDK")
+    dependsOn("outputVersionTxt")
+    dependsOn("packageAssets")
+    dependsOn(":gdx-android:assembleStandalone")
+    dependsOn(":gdx-android:bundleRelease")
+    dependsOn(":gdx-desktop:fatJar")
+    dependsOn("packageLinux")
+    dependsOn("packageWindows")
+
+    doLast {
         // Copy android standalone apk
         exec {
             workingDir = artDirectory
@@ -272,26 +329,5 @@ tasks.register("packageAll") {
             )
         }
 
-        // zip the linux package
-        exec {
-            workingDir = artDirectory
-            commandLine(
-                "zip",
-                "-r",
-                "./outputs/relativitization-linux.zip",
-                "./relativitization-linux",
-            )
-        }
-
-        // zip the windows package
-        exec {
-            workingDir = artDirectory
-            commandLine(
-                "zip",
-                "-r",
-                "./outputs/relativitization-win.zip",
-                "./relativitization-win",
-            )
-        }
     }
 }
