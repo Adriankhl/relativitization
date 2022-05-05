@@ -79,7 +79,9 @@ tasks.register("createModelBase") {
         File(".").list()!!.filter {
             it.matches(Regex("^(gradle.*|.*kts)$"))
         }.forEach { dir ->
-            File(dir).walkTopDown().forEach {
+            File(dir).walkTopDown().filter {
+                it.isFile
+            }.forEach {
                 val targetFile = File("$baseDir/${it.path}")
                 targetFile.parentFile.mkdirs()
                 Files.copy(
