@@ -36,10 +36,16 @@ tasks.getByName("clean").doLast {
     delete("relativitization-model-base")
 }
 
-tasks.register("updateModelGitignore") {
+// Create base project for creating model outside of this directory
+tasks.register("createModelBase") {
     doLast {
+        val baseDir = "${projectDir.path}/relativitization-model-base"
+
+        File(baseDir).mkdir()
+
         val gitignoreFile = File(".gitignore")
-        File("model-gitignore.txt").writeText(gitignoreFile.readText())
+        val targetGitIgnoreFile = File("$baseDir/.gitignore")
+        targetGitIgnoreFile.writeText(gitignoreFile.readText())
 
         val allFilePathList: List<String> = File(".").walkTopDown().map {
             it.toRelativeString(File("."))
@@ -48,16 +54,9 @@ tasks.register("updateModelGitignore") {
         }.toList()
 
         allFilePathList.forEach {
-            File("model-gitignore.txt").appendText(it + "\n")
+            targetGitIgnoreFile.appendText(it + "\n")
         }
-    }
-}
 
-// Create base project for creating model outside of this directory
-tasks.register("createModelBase") {
-    dependsOn("updateModelGitignore")
-    doLast {
-        val baseDir = "${projectDir.path}/relativitization-model-base"
         listOf(
             "buildSrc",
             "universe",
@@ -76,6 +75,7 @@ tasks.register("createModelBase") {
                 )
             }
         }
+
         File(".").list()!!.filter {
             it.matches(Regex("^(gradle.*|.*kts)$"))
         }.forEach { dir ->
