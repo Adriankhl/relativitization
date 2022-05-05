@@ -6,10 +6,10 @@ import relativitization.universe.data.commands.CommandErrorMessage
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.maths.physics.Int3D
 import relativitization.universe.maths.physics.Int4D
+import relativitization.universe.maths.physics.Intervals
 import relativitization.universe.utils.I18NString
 import relativitization.universe.utils.RelativitizationLogManager
-import kotlin.math.max
-import kotlin.math.min
+import kotlin.math.ceil
 
 @Serializable
 data class UniverseData3DAtGrid(
@@ -192,7 +192,7 @@ data class UniverseData3DAtPlayer(
     /**
      * Get list of int3D at the surface of a greater cube, with the current center
      *
-     * @param halfEdgeLLength half of the length of the edge of the greater cube
+     * @param halfEdgeLLength half of the edge length of the greater cube + 0.5
      */
     fun getInt3DAtCubeSurface(halfEdgeLLength: Int): List<Int3D> {
         return center.toInt3D().getInt3DSurfaceList(
@@ -240,49 +240,78 @@ data class UniverseData3DAtPlayer(
     }
 
     /**
-     * Get neighbour player in the same group, excluding self
+     * Get player within a cube centered at the current player, get same group player if
+     * halfEdgeLength = 0
+     *
+     * @param halfEdgeLength half of the edge length of the cube + 0.5
      */
-    fun getGroupNeighbour(): List<PlayerData> {
-        val currentPlayer: PlayerData = getCurrentPlayerData()
-        return get(currentPlayer.int4D.toInt3D()).getValue(currentPlayer.groupId).filter {
-            // Filter out afterimage player data, which have different t coordinate
-            (it.int4D.t == currentPlayer.int4D.t) && (it.playerId != currentPlayer.playerId)
+    fun getPlayerInCube(halfEdgeLength: Int): List<PlayerData> {
+        return when {
+            halfEdgeLength < 0 -> {
+                logger.error("halfEdgeLength <= 0")
+                listOf()
+            }
+            halfEdgeLength == 0 -> {
+                val currentPlayer: PlayerData = getCurrentPlayerData()
+                get(currentPlayer.int4D.toInt3D()).getValue(currentPlayer.groupId).filter {
+                    // Filter out afterimage player data, which have different t coordinate
+                    (it.int4D.t == currentPlayer.int4D.t) && (it.playerId != currentPlayer.playerId)
+                }
+            }
+            else -> {
+                val currentPlayer: PlayerData = getCurrentPlayerData()
+                val int3D: Int3D = currentPlayer.int4D.toInt3D()
+
+                int3D.getInt3DCubeList(
+                    halfEdgeLength,
+                    minX = 0,
+                    maxX = universeSettings.xDim - 1,
+                    minY = 0,
+                    maxY = universeSettings.yDim - 1,
+                    minZ = 0,
+                    maxZ = universeSettings.zDim - 1
+                ).flatMap {
+                    get(it).values.flatten()
+                }
+            }
         }
     }
 
     /**
-     * Get neighbour player within a cube containing current player, excluding self
+     * Get player within a cube centered at the current player, get same group player if
+     * halfEdgeLength = 0, excluding self
      *
-     * @param range half of the length of the cube
+     * @param halfEdgeLength half of the edge length of the cube + 0.5
+     *
      */
-    fun getNeighbourAndSelf(range: Int): List<PlayerData> {
+    fun getNeighbourInCube(halfEdgeLength: Int): List<PlayerData> {
         val currentPlayer: PlayerData = getCurrentPlayerData()
-        val int3D: Int3D = currentPlayer.int4D.toInt3D()
-        val minX: Int = max(int3D.x - range, 0)
-        val maxX: Int = min(int3D.x + range, universeSettings.xDim - 1)
-        val minY: Int = max(int3D.y - range, 0)
-        val maxY: Int = min(int3D.y + range, universeSettings.yDim - 1)
-        val minZ: Int = max(int3D.z - range, 0)
-        val maxZ: Int = min(int3D.z + range, universeSettings.zDim - 1)
-
-        return (minX..maxX).map { x ->
-            (minY..maxY).map { y ->
-                (minZ..maxZ).map { z ->
-                    get(Int3D(x, y, z)).values
-                }
-            }
-        }.flatten().flatten().flatten().flatten()
+        return getPlayerInCube(halfEdgeLength).filter {
+            it.playerId != currentPlayer.playerId
+        }
     }
 
     /**
-     * Get neighbour player within a cube containing current player, excluding self
+     * Get player within a sphere centered at the current player
      *
-     * @param range half of the length of the cube
-     *
+     * @param radius the radius of the sphere
      */
-    fun getNeighbour(range: Int): List<PlayerData> {
+    fun getPlayerInSphere(radius: Double): List<PlayerData> {
         val currentPlayer: PlayerData = getCurrentPlayerData()
-        return getNeighbourAndSelf(range).filter {
+        return getPlayerInCube(ceil(radius).toInt()).filter {
+            Intervals.distance(it.double4D, currentPlayer.double4D) <= radius
+        }
+    }
+
+
+    /**
+     * Get neighbour within a sphere centered at the current player, excluding self
+     *
+     * @param radius the radius of the sphere
+     */
+    fun getNeighbourInSphere(radius: Double): List<PlayerData> {
+        val currentPlayer: PlayerData = getCurrentPlayerData()
+        return getPlayerInSphere(radius).filter {
             it.playerId != currentPlayer.playerId
         }
     }

@@ -12,7 +12,7 @@ import relativitization.universe.mechanisms.Mechanism
 object UpdateRelation : Mechanism() {
     // Parameters
     // Max relation change by receiving fuel
-    private const val inRelationRange: Int = 3
+    private const val inRelationRange: Int = 4
 
     override fun process(
         mutablePlayerData: MutablePlayerData,
@@ -22,7 +22,7 @@ object UpdateRelation : Mechanism() {
     ): List<Command> {
         // Only consider the relation of neighbors, leader, and subordinate
         val playerIdSet: Set<Int> =
-            universeData3DAtPlayer.getNeighbour(inRelationRange).map { it.playerId }.toSet() +
+            universeData3DAtPlayer.getNeighbourInCube(inRelationRange).map { it.playerId }.toSet() +
                     mutablePlayerData.playerInternalData.leaderIdList.toSet() +
                     mutablePlayerData.playerInternalData.subordinateIdSet.toSet()
 

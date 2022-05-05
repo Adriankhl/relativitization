@@ -38,7 +38,7 @@ class MoveDirectSubordinateToNearbyEnemyOption(
         planState: PlanState
     ): List<DualUtilityConsideration> = listOf(
         EnemyNeighbourConsideration(
-            range = 2,
+            range = 3,
             rankIfTrue = 1,
             multiplierIfTrue = 1.0,
             bonusIfTrue = 1.0,

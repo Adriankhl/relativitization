@@ -64,9 +64,8 @@ class NewForeignFuelFactoryReasoner : SequenceReasoner() {
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<AINode> {
-        val neighborList: List<PlayerData> = planDataAtPlayer.universeData3DAtPlayer.getNeighbour(
-            1
-        ).shuffled(Rand.rand())
+        val neighborList: List<PlayerData> = planDataAtPlayer.universeData3DAtPlayer
+            .getNeighbourInCube(2).shuffled(Rand.rand())
 
         // Only use 0.05 of production fuel to construct foreign factory
         planState.fillForeignFactoryFuel(0.05, planDataAtPlayer)
@@ -236,9 +235,8 @@ class SupplyForeignFuelFactoryReasoner : SequenceReasoner() {
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<AINode> {
-        val neighborList: List<PlayerData> = planDataAtPlayer.universeData3DAtPlayer.getNeighbour(
-            1
-        ).shuffled(Rand.rand())
+        val neighborList: List<PlayerData> = planDataAtPlayer.universeData3DAtPlayer
+            .getNeighbourInCube(2).shuffled(Rand.rand())
 
         // Only use 0.05 of production fuel to supply foreign factory
         planState.fillForeignFactoryFuel(0.05, planDataAtPlayer)
@@ -363,9 +361,8 @@ class RemoveForeignFuelFactoryReasoner : SequenceReasoner() {
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<AINode> {
-        val neighborList: List<PlayerData> = planDataAtPlayer.universeData3DAtPlayer.getNeighbour(
-            1
-        ).shuffled(Rand.rand())
+        val neighborList: List<PlayerData> = planDataAtPlayer.universeData3DAtPlayer
+            .getNeighbourInCube(2).shuffled(Rand.rand())
 
         return neighborList.map { playerData ->
             RemoveForeignFuelFactoryAtPlayerReasoner(playerData.playerId)
@@ -480,9 +477,8 @@ class NewForeignResourceFactoryReasoner : SequenceReasoner() {
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<AINode> {
-        val neighborList: List<PlayerData> = planDataAtPlayer.universeData3DAtPlayer.getNeighbour(
-            1
-        ).shuffled(Rand.rand())
+        val neighborList: List<PlayerData> = planDataAtPlayer.universeData3DAtPlayer
+            .getNeighbourInCube(2).shuffled(Rand.rand())
 
         // Only use 0.05 of production fuel to construct foreign factory
         planState.fillForeignFactoryFuel(0.05, planDataAtPlayer)
@@ -662,9 +658,8 @@ class SupplyForeignResourceFactoryReasoner : SequenceReasoner() {
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<AINode> {
-        val neighborList: List<PlayerData> = planDataAtPlayer.universeData3DAtPlayer.getNeighbour(
-            1
-        ).shuffled(Rand.rand())
+        val neighborList: List<PlayerData> = planDataAtPlayer.universeData3DAtPlayer
+            .getNeighbourInCube(2).shuffled(Rand.rand())
 
         // Only use 0.05 of production fuel to supply foreign factory
         planState.fillForeignFactoryFuel(0.05, planDataAtPlayer)
@@ -791,9 +786,8 @@ class RemoveForeignResourceFactoryReasoner : SequenceReasoner() {
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<AINode> {
-        val neighborList: List<PlayerData> = planDataAtPlayer.universeData3DAtPlayer.getNeighbour(
-            1
-        ).shuffled(Rand.rand())
+        val neighborList: List<PlayerData> = planDataAtPlayer.universeData3DAtPlayer
+            .getNeighbourInCube(2).shuffled(Rand.rand())
 
         return neighborList.map { playerData ->
             RemoveForeignResourceFactoryAtPlayerReasoner(playerData.playerId)

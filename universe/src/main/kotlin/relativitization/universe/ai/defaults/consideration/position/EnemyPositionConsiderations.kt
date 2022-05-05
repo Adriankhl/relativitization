@@ -32,7 +32,7 @@ class EnemyNeighbourConsideration(
         planState: PlanState
     ): DualUtilityData {
         val neighbour: List<PlayerData> =
-            planDataAtPlayer.universeData3DAtPlayer.getNeighbour(range)
+            planDataAtPlayer.universeData3DAtPlayer.getNeighbourInCube(range)
 
         val hasEnemy: Boolean = planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData
             .diplomacyData().relationData.enemyIdSet.any { enemyId ->
@@ -81,7 +81,7 @@ class FightingEnemyConsideration(
         planState: PlanState
     ): DualUtilityData {
         val sameCubeNeighbour: List<PlayerData> =
-            planDataAtPlayer.universeData3DAtPlayer.getNeighbour(0)
+            planDataAtPlayer.universeData3DAtPlayer.getNeighbourInCube(1)
 
         val hasEnemy: Boolean = planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData
             .diplomacyData().relationData.enemyIdSet.any { enemyId ->

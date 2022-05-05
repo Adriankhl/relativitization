@@ -22,7 +22,7 @@ object FuelFactoryProduction : Mechanism() {
         universeGlobalData: UniverseGlobalData
     ): List<Command> {
         val totalFuelProductionInNeighbor: Double =
-            universeData3DAtPlayer.getNeighbour(0).sumOf { playerData ->
+            universeData3DAtPlayer.getNeighbourInCube(1).sumOf { playerData ->
                 playerData.playerInternalData.popSystemData().carrierDataMap.values.sumOf { carrierData ->
                     carrierData.allPopData.labourerPopData.fuelFactoryMap.values.sumOf { fuelFactoryData ->
                         fuelFactoryData.lastOutputAmount

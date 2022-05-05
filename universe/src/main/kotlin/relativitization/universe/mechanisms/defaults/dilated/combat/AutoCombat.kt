@@ -26,7 +26,7 @@ object AutoCombat : Mechanism() {
         // enemy in the same cube
         val sameCubeEnemy: List<PlayerData> = computeEnemyList(
             mutablePlayerData,
-            universeData3DAtPlayer.getNeighbour(0)
+            universeData3DAtPlayer.getNeighbourInCube(1)
         ).shuffled(Rand.rand())
 
         val physicsData: MutablePhysicsData = mutablePlayerData.playerInternalData.physicsData()

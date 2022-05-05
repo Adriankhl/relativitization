@@ -31,14 +31,12 @@ class HigherPopulationDensityThenNeighborCubeConsideration(
     ): DualUtilityData {
         // All population in the cube, exclude self
         val otherPopulation: Double = planDataAtPlayer.universeData3DAtPlayer
-            .getNeighbour(0).fold(0.0) { acc, playerData ->
+            .getNeighbourInCube(1).fold(0.0) { acc, playerData ->
                 acc + playerData.playerInternalData.popSystemData().totalAdultPopulation()
             }
 
         val allNeighborCube: List<Int3D> = planDataAtPlayer.universeData3DAtPlayer
-            .getInt3DAtCubeSurface(
-                1
-            )
+            .getInt3DAtCubeSurface(2)
 
         val allNeighborPopulation: List<Double> = allNeighborCube.map { int3D ->
             planDataAtPlayer.universeData3DAtPlayer.get(int3D).values.flatten().fold(

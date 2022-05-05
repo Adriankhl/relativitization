@@ -69,14 +69,12 @@ class MoveToLowerDensityCubeOption : DualUtilityOption() {
 
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
         val otherPopulation: Double = planDataAtPlayer.universeData3DAtPlayer
-            .getNeighbour(0).fold(0.0) { acc, playerData ->
+            .getNeighbourInCube(1).fold(0.0) { acc, playerData ->
                 acc + playerData.playerInternalData.popSystemData().totalAdultPopulation()
             }
 
         val allNeighborCube: List<Int3D> = planDataAtPlayer.universeData3DAtPlayer
-            .getInt3DAtCubeSurface(
-                1
-            )
+            .getInt3DAtCubeSurface(2)
 
         val neighborCubeWithLowerPopulation: List<Int3D> = allNeighborCube.filter {
             val populationAtCube: Double =
@@ -119,7 +117,7 @@ class MoveToEnemyOption : DualUtilityOption() {
         planState: PlanState
     ): List<DualUtilityConsideration> = listOf(
         EnemyNeighbourConsideration(
-            range = 2,
+            range = 3,
             rankIfTrue = 1,
             multiplierIfTrue = 1.0,
             bonusIfTrue = 1.0,

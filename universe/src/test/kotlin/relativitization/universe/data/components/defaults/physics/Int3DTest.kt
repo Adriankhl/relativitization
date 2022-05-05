@@ -13,7 +13,7 @@ internal class Int3DTest {
         }.flatten().flatten() - i1
 
         val il1 = i1.getInt3DSurfaceList(
-            halfEdgeLength = 1,
+            halfEdgeLength = 2,
             minX = 0,
             maxX = 2,
             minY = 0,

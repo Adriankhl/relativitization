@@ -45,7 +45,7 @@ class SpaceConflictReasoner : DualUtilityReasoner() {
 
         val allNeighbourInt3DSet: Set<Int3D> = subordinateInt3DSet.flatMap {
             it.getInt3DCubeList(
-                halfEdgeLength = 1,
+                halfEdgeLength = 2,
                 minX = 0,
                 maxX = planDataAtPlayer.universeData3DAtPlayer.universeSettings.xDim - 1,
                 minY = 0,

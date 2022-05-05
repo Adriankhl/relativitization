@@ -22,8 +22,8 @@ object KnowledgeDiffusion : Mechanism() {
         universeGlobalData: UniverseGlobalData
     ): List<Command> {
 
-        // The size of the cube where diffusion happen
-        val diffusionRange: Int = 1
+        // The half edge length + 0.5 of the cube where diffusion happen
+        val diffusionRange: Int = 2
 
         // Diffusion probability
         val basicResearchDiffusionProb: Double = 0.01
@@ -33,7 +33,7 @@ object KnowledgeDiffusion : Mechanism() {
         val sameTopLeaderMultiplier: Double = 5.0
 
         // Diffuse done projects by probability
-        universeData3DAtPlayer.getNeighbour(diffusionRange).forEach { playerData ->
+        universeData3DAtPlayer.getNeighbourInCube(diffusionRange).forEach { playerData ->
             val actualBasicResearchDiffusionProb: Double =
                 if (playerData.topLeaderId() == mutablePlayerData.topLeaderId()) {
                     basicResearchDiffusionProb * sameTopLeaderMultiplier
@@ -72,7 +72,7 @@ object KnowledgeDiffusion : Mechanism() {
         }
 
         // Diffuse all visible project as known project
-        universeData3DAtPlayer.getNeighbour(diffusionRange).forEach { playerData ->
+        universeData3DAtPlayer.getNeighbourInCube(diffusionRange).forEach { playerData ->
             val thisPlayerScienceData: MutablePlayerScienceData =
                 mutablePlayerData.playerInternalData.playerScienceData()
             val otherPlayerScienceData: PlayerScienceData = playerData.playerInternalData.playerScienceData()

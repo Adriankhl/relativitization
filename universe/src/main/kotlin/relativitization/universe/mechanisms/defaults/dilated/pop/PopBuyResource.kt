@@ -31,7 +31,7 @@ object PopBuyResource : Mechanism() {
         universeSettings: UniverseSettings,
         universeGlobalData: UniverseGlobalData
     ): List<Command> {
-        val neighborList: List<PlayerData> = universeData3DAtPlayer.getNeighbour(1)
+        val neighborList: List<PlayerData> = universeData3DAtPlayer.getNeighbourInCube(2)
 
         val commandList: List<Command> = mutablePlayerData.playerInternalData.popSystemData()
             .carrierDataMap.map { (carrierId, mutableCarrierData) ->

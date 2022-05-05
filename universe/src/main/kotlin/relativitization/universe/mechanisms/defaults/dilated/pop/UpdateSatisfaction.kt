@@ -27,7 +27,7 @@ object UpdateSatisfaction : Mechanism() {
         // Parameters
         val satisfactionUpdateFactor: Double = 0.5
         val satisfactionMaxIncreaseDiff: Double = 3.0
-        val averageDesireInputQualityRange: Int = 2
+        val averageDesireInputQualityRange: Int = 3
         val unevennessMaxBonus: Double = 0.2
 
         val averageDesireInputQualityMap: Map<ResourceType, ResourceQualityData> =
@@ -87,7 +87,7 @@ object UpdateSatisfaction : Mechanism() {
         }
 
         val neighbors: List<PlayerData> =
-            universeData3DAtPlayer.getNeighbour(averageDesireInputQualityRange)
+            universeData3DAtPlayer.getNeighbourInCube(averageDesireInputQualityRange)
 
         neighbors.forEach { playerData ->
             playerData.playerInternalData.popSystemData().carrierDataMap.values.forEach { carrier ->
