@@ -55,21 +55,24 @@ tasks.register("updateModelGitignore") {
 
 // Create base project for creating model outside of this directory
 tasks.register("createModelBase") {
-    dependsOn("clean")
     dependsOn("updateModelGitignore")
     doLast {
-        val baseDir = "relativitization-model-base"
-        File(baseDir).mkdir()
+        val baseDir = "${projectDir.path}/relativitization-model-base"
         listOf(
             "buildSrc",
             "universe",
             "simulations"
         ).forEach { dir ->
-            File(dir).walkTopDown().forEach {
+            File(dir).walkTopDown().filter {
+                it.name.matches(Regex("^.*kts?$"))
+            }.forEach {
+                val targetFile = File("$baseDir/${it.path}")
+                targetFile.parentFile.mkdirs()
                 Files.copy(
                     it.toPath(),
-                    File("$baseDir/$it").toPath(),
-                    StandardCopyOption.COPY_ATTRIBUTES
+                    targetFile.toPath(),
+                    StandardCopyOption.COPY_ATTRIBUTES,
+                    StandardCopyOption.REPLACE_EXISTING,
                 )
             }
         }
@@ -77,10 +80,13 @@ tasks.register("createModelBase") {
             it.matches(Regex("^(gradle.*|.*kts)$"))
         }.forEach { dir ->
             File(dir).walkTopDown().forEach {
+                val targetFile = File("$baseDir/${it.path}")
+                targetFile.parentFile.mkdirs()
                 Files.copy(
                     it.toPath(),
-                    File("$baseDir/$it").toPath(),
-                    StandardCopyOption.COPY_ATTRIBUTES
+                    targetFile.toPath(),
+                    StandardCopyOption.COPY_ATTRIBUTES,
+                    StandardCopyOption.REPLACE_EXISTING,
                 )
             }
         }
