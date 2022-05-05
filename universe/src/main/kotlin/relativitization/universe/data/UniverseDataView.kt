@@ -298,7 +298,7 @@ data class UniverseData3DAtPlayer(
      */
     fun getPlayerInSphere(radius: Double): List<PlayerData> {
         val currentPlayer: PlayerData = getCurrentPlayerData()
-        return getPlayerInCube(ceil(radius).toInt()).filter {
+        return getPlayerInCube(ceil(radius + 0.5).toInt()).filter {
             Intervals.distance(it.double4D, currentPlayer.double4D) <= radius
         }
     }
