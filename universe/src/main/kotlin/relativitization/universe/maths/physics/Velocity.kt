@@ -100,23 +100,28 @@ data class Velocity(val vx: Double, val vy: Double, val vz: Double) {
      * https://www.bogotobogo.com/Algorithms/uniform_distribution_sphere.php
      */
     fun randomRotate(maxRotateTheta: Double): Velocity {
-        val originalMag: Double = mag()
+        return if (maxRotateTheta > 0.0) {
+            val originalMag: Double = mag()
 
-        val axisPair: Pair<Velocity, Velocity> = perpendicularUnitVectorPair()
-        val xAxis: Velocity = axisPair.first
-        val yAxis: Velocity = axisPair.second
-        val zAxis: Velocity = scaleVelocity(1.0)
+            val axisPair: Pair<Velocity, Velocity> = perpendicularUnitVectorPair()
+            val xAxis: Velocity = axisPair.first
+            val yAxis: Velocity = axisPair.second
+            val zAxis: Velocity = scaleVelocity(1.0)
 
-        // the angular coordinate where the original vector is the z-axis
-        val phi: Double = 2.0 * PI * Rand.rand().nextDouble()
-        // Bound the uniform random number for theta
-        val minRand: Double = (cos(maxRotateTheta) + 1.0) * 0.5
-        val maxRand: Double = 1.0
-        val theta: Double = acos(2.0 * Rand.rand().nextDouble(minRand, maxRand) - 1.0)
+            // the angular coordinate where the original vector is the z-axis
+            val phi: Double = 2.0 * PI * Rand.rand().nextDouble()
+            // Bound the uniform random number for theta
+            val minRand: Double = (cos(maxRotateTheta) + 1.0) * 0.5
+            val maxRand: Double = 1.0
+            val theta: Double = acos(2.0 * Rand.rand().nextDouble(minRand, maxRand) - 1.0)
 
-        val newUnitVector: Velocity = xAxis * cos(phi) * sin(theta) + yAxis * sin(phi) * cos(theta) + zAxis * cos(theta)
+            val newUnitVector: Velocity =
+                xAxis * cos(phi) * sin(theta) + yAxis * sin(phi) * cos(theta) + zAxis * cos(theta)
 
-        return newUnitVector * originalMag
+            newUnitVector * originalMag
+        } else {
+            this
+        }
     }
 }
 
