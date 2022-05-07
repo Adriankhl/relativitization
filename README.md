@@ -63,10 +63,10 @@ use the Windows-equivalent commands, such as changing `./gradlew` to `gradlew.ba
 You can run simulations of your model on the command line. This is an example model:
 `./simulations/src/main/kotlin/relativitization/game/TypicalGame.kt`.
 
-You can run the main function with maximum 25% ram usage by:
+You can run the main function with 2 active processor and maximum 25% ram usage by:
 
 ```
-./gradlew :simulations:run -PmainClass=relativitization.game.TypicalGameKt -PramPercentage=25
+./gradlew :simulations:run -PmainClass=relativitization.game.TypicalGameKt -PprocessorCount=2 -PramPercentage=25
 ```
 
 Note that the main class has an additional `Kt` after the file name in Kotlin convention.

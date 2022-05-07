@@ -6,9 +6,14 @@ plugins {
     id("org.jetbrains.dokka")
 }
 
+val processorCount: String = project.properties.getOrDefault(
+    "processorCount",
+    "NA"
+).toString()
+
 val ramPercentage: String = project.properties.getOrDefault(
     "ramPercentage",
-    "50"
+    "NA"
 ).toString()
 
 kotlin {
@@ -49,17 +54,26 @@ tasks {
     }
 }
 
-tasks.register("showRamPercentage") {
+tasks.register("showJVMArgs") {
     doLast {
+        println("ActiveProcessorCount: $processorCount")
         println("MaxRAMPercentage: $ramPercentage")
     }
 }
 
 tasks.withType<JavaExec>().configureEach {
-    dependsOn("showRamPercentage")
+    dependsOn("showJVMArgs")
 }
 
 application {
     mainClass.set(project.properties["mainClass"].toString())
-    applicationDefaultJvmArgs = listOf("-XX:MaxRAMPercentage=$ramPercentage")
+    applicationDefaultJvmArgs = if (processorCount != "NA") {
+        listOf("-XX:ActiveProcessorCount=$processorCount")
+    } else {
+        listOf()
+    } + if (ramPercentage != "NA") {
+        listOf("-XX:MaxRAMPercentage=$ramPercentage")
+    } else {
+        listOf()
+    }
 }
