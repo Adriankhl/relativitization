@@ -38,6 +38,8 @@ tasks.getByName("clean").doLast {
 
 // Create base project for creating model outside of this directory
 tasks.register("createModelBase") {
+    delete("relativitization-model-base")
+
     doLast {
         val baseDir = "${projectDir.path}/relativitization-model-base"
 
