@@ -1,15 +1,15 @@
-package relativitization.universe.generate.method
+package relativitization.universe.generate
 
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.MutableUniverseSettings
 import relativitization.universe.data.UniverseData
 import relativitization.universe.data.serializer.DataSerializer.decode
 import relativitization.universe.data.serializer.DataSerializer.encode
-import relativitization.universe.generate.method.abm.ABMGenerateUniverseMethod
-import relativitization.universe.generate.method.random.RandomGenerateUniverseMethod
-import relativitization.universe.generate.method.random.RandomOneStarPerPlayerGenerate
-import relativitization.universe.generate.method.testing.TestingFixedMinimal
-import relativitization.universe.generate.method.testing.TestingGenerateUniverseMethod
+import relativitization.universe.generate.abm.ABMGenerateUniverseMethod
+import relativitization.universe.generate.random.RandomGenerateUniverseMethod
+import relativitization.universe.generate.random.RandomOneStarPerPlayerGenerate
+import relativitization.universe.generate.testing.TestingFixedMinimal
+import relativitization.universe.generate.testing.TestingGenerateUniverseMethod
 import relativitization.universe.utils.FileUtils
 import relativitization.universe.utils.RelativitizationLogManager
 

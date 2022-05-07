@@ -7,10 +7,10 @@ import relativitization.universe.data.commands.DefaultCommandAvailability
 import relativitization.universe.data.commands.name
 import relativitization.universe.data.components.physicsData
 import relativitization.universe.data.components.popSystemData
-import relativitization.universe.generate.method.GenerateSettings
-import relativitization.universe.generate.method.GenerateUniverseMethodCollection
-import relativitization.universe.generate.method.name
-import relativitization.universe.generate.method.random.RandomOneStarPerPlayerGenerate
+import relativitization.universe.generate.GenerateSettings
+import relativitization.universe.generate.GenerateUniverseMethodCollection
+import relativitization.universe.generate.name
+import relativitization.universe.generate.random.RandomOneStarPerPlayerGenerate
 import relativitization.universe.global.DefaultGlobalMechanismList
 import relativitization.universe.global.name
 import relativitization.universe.maths.number.toScientificNotation

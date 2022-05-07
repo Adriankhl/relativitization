@@ -5,10 +5,10 @@ import relativitization.universe.Universe
 import relativitization.universe.data.components.diplomacyData
 import relativitization.universe.data.events.ProposePeaceEvent
 import relativitization.universe.data.events.name
-import relativitization.universe.generate.method.GenerateSettings
-import relativitization.universe.generate.method.GenerateUniverseMethodCollection
-import relativitization.universe.generate.method.name
-import relativitization.universe.generate.method.testing.TestingFixedMinimal
+import relativitization.universe.generate.GenerateSettings
+import relativitization.universe.generate.GenerateUniverseMethodCollection
+import relativitization.universe.generate.name
+import relativitization.universe.generate.testing.TestingFixedMinimal
 import kotlin.test.Test
 
 internal class ProposePeaceCommandTest {

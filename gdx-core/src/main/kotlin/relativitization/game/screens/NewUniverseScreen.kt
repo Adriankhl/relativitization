@@ -10,8 +10,8 @@ import relativitization.game.utils.TableScreen
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.CommandCollection
 import relativitization.universe.data.serializer.DataSerializer
-import relativitization.universe.generate.method.GenerateSettings
-import relativitization.universe.generate.method.GenerateUniverseMethodCollection
+import relativitization.universe.generate.GenerateSettings
+import relativitization.universe.generate.GenerateUniverseMethodCollection
 import relativitization.universe.global.GlobalMechanismCollection
 import relativitization.universe.maths.physics.Int3D
 import relativitization.universe.maths.physics.Intervals

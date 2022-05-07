@@ -2,10 +2,10 @@ package relativitization.universe
 
 import relativitization.universe.data.MutableUniverseSettings
 import relativitization.universe.data.UniverseData
-import relativitization.universe.generate.method.GenerateSettings
-import relativitization.universe.generate.method.GenerateUniverseMethodCollection
-import relativitization.universe.generate.method.name
-import relativitization.universe.generate.method.testing.TestingFixedMinimal
+import relativitization.universe.generate.GenerateSettings
+import relativitization.universe.generate.GenerateUniverseMethodCollection
+import relativitization.universe.generate.name
+import relativitization.universe.generate.testing.TestingFixedMinimal
 import kotlin.test.Test
 
 internal class UniverseTest {

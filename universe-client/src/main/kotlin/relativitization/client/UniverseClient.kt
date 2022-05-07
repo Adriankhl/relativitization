@@ -24,7 +24,7 @@ import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.*
 import relativitization.universe.data.serializer.DataSerializer
-import relativitization.universe.generate.method.GenerateSettings
+import relativitization.universe.generate.GenerateSettings
 import relativitization.universe.maths.physics.Double2D
 import relativitization.universe.maths.physics.Int3D
 import relativitization.universe.utils.CoroutineBoolean

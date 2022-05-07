@@ -1,4 +1,4 @@
-package relativitization.universe.generate.method.testing
+package relativitization.universe.generate.testing
 
 import relativitization.universe.ai.EmptyAI
 import relativitization.universe.ai.name
@@ -22,7 +22,7 @@ import relativitization.universe.data.global.MutableUniverseGlobalData
 import relativitization.universe.data.global.components.MutableDefaultGlobalDataComponent
 import relativitization.universe.data.global.components.universeScienceData
 import relativitization.universe.data.serializer.DataSerializer
-import relativitization.universe.generate.method.GenerateSettings
+import relativitization.universe.generate.GenerateSettings
 import relativitization.universe.global.defaults.science.UpdateUniverseScienceData
 import relativitization.universe.maths.grid.Grids.create4DGrid
 import relativitization.universe.maths.physics.MutableDouble4D

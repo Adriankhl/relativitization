@@ -9,7 +9,7 @@ import relativitization.universe.data.global.components.MutableUniverseScienceDa
 import relativitization.universe.data.global.components.UniverseScienceData
 import relativitization.universe.data.global.components.universeScienceData
 import relativitization.universe.data.serializer.DataSerializer
-import relativitization.universe.generate.science.DefaultGenerateUniverseScienceData
+import relativitization.universe.generate.random.science.DefaultGenerateUniverseScienceData
 import relativitization.universe.global.GlobalMechanism
 import kotlin.math.max
 

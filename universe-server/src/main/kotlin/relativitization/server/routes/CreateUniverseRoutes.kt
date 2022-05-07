@@ -10,7 +10,7 @@ import relativitization.universe.Universe
 import relativitization.universe.communication.LoadUniverseMessage
 import relativitization.universe.communication.NewUniverseMessage
 import relativitization.universe.data.UniverseData
-import relativitization.universe.generate.method.GenerateUniverseMethodCollection
+import relativitization.universe.generate.GenerateUniverseMethodCollection
 import relativitization.universe.utils.RelativitizationLogManager
 
 private val logger = RelativitizationLogManager.getLogger()

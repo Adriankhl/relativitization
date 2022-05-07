@@ -1,4 +1,4 @@
-package relativitization.universe.generate.method.random
+package relativitization.universe.generate.random
 
 import relativitization.universe.data.*
 import relativitization.universe.data.components.*
@@ -14,8 +14,8 @@ import relativitization.universe.data.global.components.defaults.science.knowled
 import relativitization.universe.data.global.components.defaults.science.knowledge.MutableProjectGenerationData
 import relativitization.universe.data.global.components.universeScienceData
 import relativitization.universe.data.serializer.DataSerializer
-import relativitization.universe.generate.method.GenerateSettings
-import relativitization.universe.generate.science.DefaultGenerateUniverseScienceData
+import relativitization.universe.generate.GenerateSettings
+import relativitization.universe.generate.random.science.DefaultGenerateUniverseScienceData
 import relativitization.universe.global.defaults.science.UpdateUniverseScienceData
 import relativitization.universe.maths.grid.Grids
 import relativitization.universe.maths.random.Rand
