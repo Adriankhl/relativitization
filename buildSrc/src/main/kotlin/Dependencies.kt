@@ -16,17 +16,17 @@ object Versions {
     const val kotlinVersion = "1.6.21"
     const val kotlinxCoroutineVersion = "1.6.1"
     const val kotlinxSerializationVersion = "1.3.2"
-    const val kotlinxDateTimeVersion = "0.3.2"
-    const val ktorVersion = "2.0.0"
+    const val kotlinxDateTimeVersion = "0.3.3"
+    const val ktorVersion = "2.0.1"
     const val okioVersion = "3.1.0"
 
     // Documentation
-    const val dokkaVersion = "1.6.20"
+    const val dokkaVersion = "1.6.21"
 
     // JVM
     const val gdxVersion = "1.10.0"
     const val log4jVersion = "2.17.2"
-    const val dataframeVersion = "0.8.0-rc-7"
+    const val dataframeVersion = "0.8.0-rc-8"
 
     // Android
     const val androidGradlePluginVersion = "7.3.0-alpha09"
