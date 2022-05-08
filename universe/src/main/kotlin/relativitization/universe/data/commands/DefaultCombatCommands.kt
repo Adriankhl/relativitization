@@ -9,7 +9,6 @@ import relativitization.universe.data.components.defaults.popsystem.MutableCarri
 import relativitization.universe.data.components.modifierData
 import relativitization.universe.data.components.physicsData
 import relativitization.universe.data.components.popSystemData
-import relativitization.universe.maths.random.Rand
 import relativitization.universe.utils.RelativitizationLogManager
 
 /**
@@ -33,20 +32,22 @@ data class DamageCommand(
 
     override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
         // Disable military base recovery by 1 turn
-        playerData.playerInternalData.modifierData().combatModifierData.disableMilitaryBaseRecoveryByTime(
-            1
-        )
+        playerData.playerInternalData.modifierData().combatModifierData
+            .disableMilitaryBaseRecoveryByTime(1)
 
-        val carrierIdList: MutableList<Int> = playerData.playerInternalData.popSystemData().carrierDataMap.keys
-            .shuffled(Rand.rand()).toMutableList()
+        val carrierDataMap: Map<Int, MutableCarrierData> = playerData.playerInternalData
+            .popSystemData().carrierDataMap
+
+        val carrierIdList: List<Int> = carrierDataMap.keys.sortedBy {
+            carrierDataMap.getValue(it).allPopData.totalAdultPopulation()
+        }
 
         // Use attack to destroy carrier, until used up or no carrier left
         var attackAcc: Double = attack
 
         // Attack consume shield
         carrierIdList.forEach {
-            val carrierData: MutableCarrierData = playerData.playerInternalData.popSystemData().carrierDataMap
-                .getValue(it)
+            val carrierData: MutableCarrierData = carrierDataMap.getValue(it)
 
             val shield: Double = carrierData.allPopData.soldierPopData.militaryBaseData.shield
 

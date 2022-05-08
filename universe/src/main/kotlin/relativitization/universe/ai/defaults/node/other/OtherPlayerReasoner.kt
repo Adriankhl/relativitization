@@ -7,16 +7,17 @@ import relativitization.universe.ai.defaults.utils.AINode
 import relativitization.universe.ai.defaults.utils.PlanState
 import relativitization.universe.ai.defaults.utils.SequenceReasoner
 import relativitization.universe.data.PlanDataAtPlayer
+import kotlin.random.Random
 
-class OtherPlayerReasoner : SequenceReasoner() {
+class OtherPlayerReasoner(random: Random) : SequenceReasoner(random) {
     override fun getSubNodeList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<AINode> {
         return listOf(
-            ForeignFactoryReasoner(),
-            ProposePeaceReasoner(),
-            DeclareWarReasoner(),
+            ForeignFactoryReasoner(random),
+            ProposePeaceReasoner(random),
+            DeclareWarReasoner(random),
         )
     }
 }

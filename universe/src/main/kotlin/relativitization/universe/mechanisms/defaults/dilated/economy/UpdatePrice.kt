@@ -14,6 +14,7 @@ import relativitization.universe.data.components.popSystemData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.mechanisms.Mechanism
 import relativitization.universe.utils.RelativitizationLogManager
+import kotlin.random.Random
 
 object UpdatePrice : Mechanism() {
     private val logger = RelativitizationLogManager.getLogger()
@@ -34,7 +35,8 @@ object UpdatePrice : Mechanism() {
         mutablePlayerData: MutablePlayerData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
         universeSettings: UniverseSettings,
-        universeGlobalData: UniverseGlobalData
+        universeGlobalData: UniverseGlobalData,
+        random: Random
     ): List<Command> {
         val tradeNeedMap: Map<ResourceType, Map<ResourceQualityClass, Double>> =
             computeResourceTradeNeedMap(mutablePlayerData)

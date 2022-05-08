@@ -1,5 +1,6 @@
 package relativitization.universe.data
 
+import kotlinx.datetime.Clock
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.commands.DefaultCommandAvailability
 import relativitization.universe.data.commands.name
@@ -42,6 +43,7 @@ data class UniverseSettings(
     val playerAfterImageDuration: Int = maxDelayAfterMove(speedOfLight),
     val playerHistoricalInt4DLength: Int = playerAfterImageDuration,
     val groupEdgeLength: Double = 0.01,
+    val randomSeed: Long = Clock.System.now().epochSeconds,
     val otherIntMap: Map<String, Int> = mapOf(),
     val otherDoubleMap: Map<String, Double> = mapOf(),
     val otherStringMap: Map<String, String> = mapOf(),
@@ -78,6 +80,7 @@ data class MutableUniverseSettings(
     var playerAfterImageDuration: Int = maxDelayAfterMove(speedOfLight),
     var playerHistoricalInt4DLength: Int = playerAfterImageDuration,
     var groupEdgeLength: Double = 0.01,
+    var randomSeed: Long = Clock.System.now().epochSeconds,
     val otherIntMap: MutableMap<String, Int> = mutableMapOf(),
     val otherDoubleMap: MutableMap<String, Double> = mutableMapOf(),
     val otherStringMap: MutableMap<String, String> = mutableMapOf(),

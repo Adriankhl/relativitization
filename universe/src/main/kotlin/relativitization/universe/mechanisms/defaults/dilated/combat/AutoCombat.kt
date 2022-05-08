@@ -12,29 +12,30 @@ import relativitization.universe.data.components.physicsData
 import relativitization.universe.data.components.popSystemData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.mechanisms.Mechanism
-import relativitization.universe.maths.random.Rand
 import kotlin.math.min
+import kotlin.random.Random
 
 object AutoCombat : Mechanism() {
     override fun process(
         mutablePlayerData: MutablePlayerData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
         universeSettings: UniverseSettings,
-        universeGlobalData: UniverseGlobalData
+        universeGlobalData: UniverseGlobalData,
+        random: Random
     ): List<Command> {
 
         // enemy in the same cube
         val sameCubeEnemy: List<PlayerData> = computeEnemyList(
             mutablePlayerData,
             universeData3DAtPlayer.getNeighbourInCube(1)
-        ).shuffled(Rand.rand())
+        ).shuffled(random)
 
         val physicsData: MutablePhysicsData = mutablePlayerData.playerInternalData.physicsData()
 
         return if (sameCubeEnemy.isNotEmpty()) {
             mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.map {
                 // Randomly pick target enemy
-                val targetEnemy: PlayerData = sameCubeEnemy[Rand.rand().nextInt(sameCubeEnemy.size)]
+                val targetEnemy: PlayerData = sameCubeEnemy[random.nextInt(sameCubeEnemy.size)]
 
                 val attack: Double = min(
                     it.allPopData.soldierPopData.militaryBaseData.attack,

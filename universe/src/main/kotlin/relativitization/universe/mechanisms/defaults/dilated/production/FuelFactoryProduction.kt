@@ -9,6 +9,7 @@ import relativitization.universe.data.components.*
 import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.MutableFuelFactoryData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.mechanisms.Mechanism
+import kotlin.random.Random
 
 object FuelFactoryProduction : Mechanism() {
     // Parameters
@@ -19,7 +20,8 @@ object FuelFactoryProduction : Mechanism() {
         mutablePlayerData: MutablePlayerData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
         universeSettings: UniverseSettings,
-        universeGlobalData: UniverseGlobalData
+        universeGlobalData: UniverseGlobalData,
+        random: Random
     ): List<Command> {
         val totalFuelProductionInNeighbor: Double =
             universeData3DAtPlayer.getNeighbourInCube(1).sumOf { playerData ->

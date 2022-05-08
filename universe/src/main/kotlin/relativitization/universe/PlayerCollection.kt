@@ -6,12 +6,12 @@ import relativitization.universe.maths.grid.Grids.create3DGrid
 import relativitization.universe.maths.grid.Grids.double4DToGroupId
 import relativitization.universe.maths.physics.Int4D
 import relativitization.universe.maths.physics.MutableDouble4D
-import relativitization.universe.maths.physics.MutableVelocity
 import relativitization.universe.maths.physics.Velocity
 import relativitization.universe.utils.RandomName.randomPlayerName
 import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.math.abs
 import kotlin.math.floor
+import kotlin.random.Random
 
 class PlayerCollection(
     private val xDim: Int,
@@ -63,8 +63,8 @@ class PlayerCollection(
     /**
      * Get all player id
      */
-    fun getIdList(): List<Int> {
-        return playerMap.keys.toList()
+    fun getIdSet(): Set<Int> {
+        return playerMap.keys
     }
 
     /**
@@ -176,8 +176,12 @@ class PlayerCollection(
     /**
      * Add new player from playerData and clear newPlayerList
      */
-    fun addNewPlayerFromPlayerData(universeState: UniverseState) {
-        val newPlayerList: List<PlayerData> = playerMap.map { (_, playerData) ->
+    fun addNewPlayerFromPlayerData(
+        universeState: UniverseState,
+    ) {
+        // Sort to ensure the same outcome
+        val newPlayerList: List<PlayerData> = playerMap.keys.sorted().map { id ->
+            val playerData: MutablePlayerData = playerMap.getValue(id)
             playerData.newPlayerList.map { mutableNewPlayerInternalData ->
                 val newPlayerId: Int = universeState.getNewPlayerId()
 
@@ -209,7 +213,6 @@ class PlayerCollection(
         // Clean all newPlayerList
         playerMap.forEach { (_, playerData) -> playerData.newPlayerList.clear() }
     }
-
 
     /**
      * Does 4 things
@@ -287,7 +290,9 @@ class PlayerCollection(
             }
 
             // Clean up unnecessary int4DHistory
-            playerData.int4DHistory.removeAll { time - it.t > universeSettings.playerHistoricalInt4DLength }
+            playerData.int4DHistory.removeAll {
+                time - it.t > universeSettings.playerHistoricalInt4DLength
+            }
         }
     }
 

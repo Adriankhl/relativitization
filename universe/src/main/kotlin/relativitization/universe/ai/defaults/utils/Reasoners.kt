@@ -3,15 +3,16 @@ package relativitization.universe.ai.defaults.utils
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.maths.sampling.WeightedReservoir
 import relativitization.universe.utils.RelativitizationLogManager
+import kotlin.random.Random
 
-abstract class Reasoner : AINode() {
+abstract class Reasoner(random: Random) : AINode(random) {
     abstract fun getSubNodeList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<AINode>
 }
 
-abstract class SequenceReasoner : Reasoner() {
+abstract class SequenceReasoner(random: Random) : Reasoner(random) {
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
         logger.debug("${this::class.simpleName} (SequenceReasoner) updating data")
 
@@ -24,7 +25,7 @@ abstract class SequenceReasoner : Reasoner() {
     }
 }
 
-abstract class DualUtilityReasoner : Reasoner() {
+abstract class DualUtilityReasoner(random: Random) : Reasoner(random) {
     abstract fun getOptionList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -40,14 +41,17 @@ abstract class DualUtilityReasoner : Reasoner() {
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
         logger.debug("${this::class.simpleName} (DualUtilityReasoner) updating data")
 
-        val selectedDualUtilityOption: DualUtilityOption = selectOption(planDataAtPlayer, planState)
+        val selectedDualUtilityOption: DualUtilityOption = selectOption(
+            planDataAtPlayer = planDataAtPlayer,
+            planState = planState,
+        )
 
         selectedDualUtilityOption.updatePlan(planDataAtPlayer, planState)
     }
 
     private fun selectOption(
         planDataAtPlayer: PlanDataAtPlayer,
-        planState: PlanState
+        planState: PlanState,
     ): DualUtilityOption {
         val dualUtilityOptionList: List<DualUtilityOption> =
             getOptionList(planDataAtPlayer, planState)
@@ -71,11 +75,14 @@ abstract class DualUtilityReasoner : Reasoner() {
             WeightedReservoir.aRes(
                 1,
                 maxRankValidDualUtilityOptionWeightMap.keys.toList(),
+                random,
             ) {
                 maxRankValidDualUtilityOptionWeightMap.getValue(it)
             }.first()
         } else {
-            EmptyDualUtilityOption()
+            EmptyDualUtilityOption(
+                random = random,
+            )
         }
     }
 

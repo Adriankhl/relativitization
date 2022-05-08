@@ -5,6 +5,7 @@ import relativitization.universe.data.components.defaults.science.knowledge.Appl
 import relativitization.universe.data.components.defaults.science.knowledge.BasicResearchField
 import relativitization.universe.data.global.components.UniverseScienceData
 import relativitization.universe.generate.random.science.DefaultGenerateUniverseScienceData
+import kotlin.random.Random
 import kotlin.test.Test
 
 internal class DefaultGenerateUniverseScienceDataTest {
@@ -20,7 +21,8 @@ internal class DefaultGenerateUniverseScienceDataTest {
                 maxBasicReference = 10,
                 maxAppliedReference = 10,
                 maxDifficulty = 1.0,
-                maxSignificance = 1.0
+                maxSignificance = 1.0,
+                random = Random,
             )
 
         newUniverseScienceData.basicResearchProjectDataMap.forEach {

@@ -1,8 +1,8 @@
 package relativitization.universe.maths.physics
 
 import kotlinx.serialization.Serializable
-import relativitization.universe.maths.random.Rand
 import kotlin.math.*
+import kotlin.random.Random
 
 @Serializable
 data class Velocity(val vx: Double, val vy: Double, val vz: Double) {
@@ -99,7 +99,10 @@ data class Velocity(val vx: Double, val vy: Double, val vz: Double) {
      * original vector is the z axis
      * https://www.bogotobogo.com/Algorithms/uniform_distribution_sphere.php
      */
-    fun randomRotate(maxRotateTheta: Double): Velocity {
+    fun randomRotate(
+        maxRotateTheta: Double,
+        random: Random,
+    ): Velocity {
         return if (maxRotateTheta > 0.0) {
             val originalMag: Double = mag()
 
@@ -109,11 +112,11 @@ data class Velocity(val vx: Double, val vy: Double, val vz: Double) {
             val zAxis: Velocity = scaleVelocity(1.0)
 
             // the angular coordinate where the original vector is the z-axis
-            val phi: Double = 2.0 * PI * Rand.rand().nextDouble()
+            val phi: Double = 2.0 * PI * random.nextDouble()
             // Bound the uniform random number for theta
             val minRand: Double = (cos(maxRotateTheta) + 1.0) * 0.5
             val maxRand: Double = 1.0
-            val theta: Double = acos(2.0 * Rand.rand().nextDouble(minRand, maxRand) - 1.0)
+            val theta: Double = acos(2.0 * random.nextDouble(minRand, maxRand) - 1.0)
 
             val newUnitVector: Velocity =
                 xAxis * cos(phi) * sin(theta) + yAxis * sin(phi) * cos(theta) + zAxis * cos(theta)

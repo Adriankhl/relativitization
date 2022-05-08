@@ -11,13 +11,15 @@ import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.maths.physics.Int4D
 import relativitization.universe.maths.physics.Intervals
 import relativitization.universe.mechanisms.Mechanism
+import kotlin.random.Random
 
 object UpdateAlly : Mechanism() {
     override fun process(
         mutablePlayerData: MutablePlayerData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
         universeSettings: UniverseSettings,
-        universeGlobalData: UniverseGlobalData
+        universeGlobalData: UniverseGlobalData,
+        random: Random
     ): List<Command> {
 
         // Remove all dead player, leader or subordinate, enemy, and broken alliance

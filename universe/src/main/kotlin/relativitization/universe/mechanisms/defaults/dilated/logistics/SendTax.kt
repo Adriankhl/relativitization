@@ -10,13 +10,15 @@ import relativitization.universe.data.components.playerScienceData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.maths.collection.Fraction
 import relativitization.universe.mechanisms.Mechanism
+import kotlin.random.Random
 
 object SendTax : Mechanism() {
     override fun process(
         mutablePlayerData: MutablePlayerData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
         universeSettings: UniverseSettings,
-        universeGlobalData: UniverseGlobalData
+        universeGlobalData: UniverseGlobalData,
+        random: Random
     ): List<Command> {
 
         val fraction: Double = 0.5

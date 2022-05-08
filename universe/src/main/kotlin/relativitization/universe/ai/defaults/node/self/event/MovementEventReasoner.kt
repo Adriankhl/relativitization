@@ -10,11 +10,12 @@ import relativitization.universe.data.commands.SelectEventChoiceCommand
 import relativitization.universe.data.events.MoveToDouble3DEvent
 import relativitization.universe.data.events.MutableEventData
 import relativitization.universe.data.events.name
+import kotlin.random.Random
 
 /**
  * Reasoner to pick only one MoveToDouble3D event
  */
-class PickMoveToDouble3DEventReasoner : DualUtilityReasoner() {
+class PickMoveToDouble3DEventReasoner(random: Random) : DualUtilityReasoner(random) {
     override fun getOptionList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -28,9 +29,15 @@ class PickMoveToDouble3DEventReasoner : DualUtilityReasoner() {
         return movementEventKeySet.map {
             PickMoveToDouble3DEventDualUtilityOption(
                 eventKey = it,
-                otherEventKeySet = movementEventKeySet - it
+                otherEventKeySet = movementEventKeySet - it,
+                random = random,
             )
-        } + DoNothingDualUtilityOption(rank = 1, multiplier = 1.0, bonus = 1.0)
+        } + DoNothingDualUtilityOption(
+            rank = 1,
+            multiplier = 1.0,
+            bonus = 1.0,
+            random = random,
+        )
     }
 }
 
@@ -43,8 +50,8 @@ class PickMoveToDouble3DEventReasoner : DualUtilityReasoner() {
 class PickMoveToDouble3DEventDualUtilityOption(
     private val eventKey: Int,
     private val otherEventKeySet: Set<Int>,
-) : DualUtilityOption() {
-
+    random: Random,
+) : DualUtilityOption(random) {
     override fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState

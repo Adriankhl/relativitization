@@ -5,31 +5,32 @@ import relativitization.universe.ai.defaults.utils.PlanState
 import relativitization.universe.ai.defaults.utils.SequenceReasoner
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.commands.*
+import kotlin.random.Random
 
-class TaxReasoner : SequenceReasoner() {
+class TaxReasoner(random: Random) : SequenceReasoner(random) {
     override fun getSubNodeList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<AINode> = listOf(
-        IncomeBoundaryReasoner(),
-        IncomeTaxReasoner(),
+        IncomeBoundaryReasoner(random),
+        IncomeTaxReasoner(random),
     )
 }
 
 /**
  * Set the boundary of low, middle and high income
  */
-class IncomeBoundaryReasoner : SequenceReasoner() {
+class IncomeBoundaryReasoner(random: Random) : SequenceReasoner(random) {
     override fun getSubNodeList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<AINode> = listOf(
-        LowMiddleIncomeBoundaryAINode(),
-        MiddleHighIncomeBoundaryAINode(),
+        LowMiddleIncomeBoundaryAINode(random),
+        MiddleHighIncomeBoundaryAINode(random),
     )
 }
 
-class LowMiddleIncomeBoundaryAINode : AINode() {
+class LowMiddleIncomeBoundaryAINode(random: Random) : AINode(random) {
     override fun updatePlan(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -48,7 +49,7 @@ class LowMiddleIncomeBoundaryAINode : AINode() {
     }
 }
 
-class MiddleHighIncomeBoundaryAINode : AINode() {
+class MiddleHighIncomeBoundaryAINode(random: Random) : AINode(random) {
     override fun updatePlan(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -70,18 +71,18 @@ class MiddleHighIncomeBoundaryAINode : AINode() {
 /**
  * Set the income tax
  */
-class IncomeTaxReasoner : SequenceReasoner() {
+class IncomeTaxReasoner(random: Random) : SequenceReasoner(random) {
     override fun getSubNodeList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<AINode> = listOf(
-        LowIncomeTaxAINode(),
-        MiddleIncomeTaxAINode(),
-        HighIncomeTaxAINode(),
+        LowIncomeTaxAINode(random),
+        MiddleIncomeTaxAINode(random),
+        HighIncomeTaxAINode(random),
     )
 }
 
-class LowIncomeTaxAINode : AINode() {
+class LowIncomeTaxAINode(random: Random) : AINode(random) {
     override fun updatePlan(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -99,7 +100,7 @@ class LowIncomeTaxAINode : AINode() {
     }
 }
 
-class MiddleIncomeTaxAINode : AINode() {
+class MiddleIncomeTaxAINode(random: Random) : AINode(random) {
     override fun updatePlan(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -117,7 +118,7 @@ class MiddleIncomeTaxAINode : AINode() {
     }
 }
 
-class HighIncomeTaxAINode : AINode() {
+class HighIncomeTaxAINode(random: Random) : AINode(random) {
     override fun updatePlan(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState

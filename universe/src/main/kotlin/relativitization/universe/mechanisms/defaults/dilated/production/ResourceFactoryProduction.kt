@@ -17,6 +17,7 @@ import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.mechanisms.Mechanism
 import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.math.max
+import kotlin.random.Random
 
 /**
  * Produce resources, fuel needs special treatments
@@ -28,7 +29,8 @@ object ResourceFactoryProduction : Mechanism() {
         mutablePlayerData: MutablePlayerData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
         universeSettings: UniverseSettings,
-        universeGlobalData: UniverseGlobalData
+        universeGlobalData: UniverseGlobalData,
+        random: Random
     ): List<Command> {
 
         // Do self factory production first

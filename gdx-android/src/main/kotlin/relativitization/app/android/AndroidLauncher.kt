@@ -21,8 +21,8 @@ import relativitization.game.RelativitizationGame
 import relativitization.server.UniverseServer
 import relativitization.universe.UniverseClientSettings
 import relativitization.universe.UniverseServerSettings
-import relativitization.universe.maths.random.Rand
 import relativitization.utils.ServerPort
+import kotlin.random.Random
 
 @ExperimentalCoroutinesApi
 class AndroidLauncher : AppCompatActivity(), AndroidFragmentApplication.Callbacks {
@@ -45,8 +45,8 @@ class AndroidLauncher : AppCompatActivity(), AndroidFragmentApplication.Callback
         super.onCreate(savedInstanceState)
 
         val adminPassword: String = List(10) {
-            Rand.rand().nextInt(0, 10) }.joinToString(separator = ""
-        )
+            Random(System.currentTimeMillis()).nextInt(0, 10)
+        }.joinToString(separator = "")
 
         val serverAddress = "127.0.0.1"
         val serverPort: Int = ServerPort.findAvailablePort()

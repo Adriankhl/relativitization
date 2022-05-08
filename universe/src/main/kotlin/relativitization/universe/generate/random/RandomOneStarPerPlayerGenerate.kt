@@ -18,18 +18,21 @@ import relativitization.universe.generate.GenerateSettings
 import relativitization.universe.generate.random.science.DefaultGenerateUniverseScienceData
 import relativitization.universe.global.defaults.science.UpdateUniverseScienceData
 import relativitization.universe.maths.grid.Grids
-import relativitization.universe.maths.random.Rand
 import relativitization.universe.mechanisms.defaults.dilated.pop.UpdateDesire
 import relativitization.universe.mechanisms.defaults.regular.science.UpdateScienceApplicationData
 import relativitization.universe.mechanisms.defaults.regular.sync.SyncPlayerScienceData
 import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.math.floor
+import kotlin.random.Random
 import kotlin.reflect.full.createInstance
 
 object RandomOneStarPerPlayerGenerate : RandomGenerateUniverseMethod() {
     private val logger = RelativitizationLogManager.getLogger()
 
-    override fun generate(settings: GenerateSettings): UniverseData {
+    override fun generate(
+        settings: GenerateSettings,
+        random: Random,
+    ): UniverseData {
         val universeSettings: UniverseSettings = DataSerializer.copy(settings.universeSettings)
 
         val mutableUniverseGlobalData = MutableUniverseGlobalData()
@@ -259,6 +262,7 @@ object RandomOneStarPerPlayerGenerate : RandomGenerateUniverseMethod() {
                 maxAppliedReference = 10,
                 maxDifficulty = 1.0,
                 maxSignificance = 1.0,
+                random = random,
             )
         mutableUniverseGlobalData.universeScienceData(DataSerializer.copy(newUniverseScienceData))
 
@@ -295,15 +299,15 @@ object RandomOneStarPerPlayerGenerate : RandomGenerateUniverseMethod() {
             }
 
             // Random location, avoid too close to the boundary by adding a 0.1 width margin
-            mutablePlayerData.double4D.x = Rand.rand().nextDouble(
+            mutablePlayerData.double4D.x = random.nextDouble(
                 0.1,
                 universeSettings.xDim.toDouble() - 0.1
             )
-            mutablePlayerData.double4D.y = Rand.rand().nextDouble(
+            mutablePlayerData.double4D.y = random.nextDouble(
                 0.1,
                 universeSettings.yDim.toDouble() - 0.1
             )
-            mutablePlayerData.double4D.z = Rand.rand().nextDouble(
+            mutablePlayerData.double4D.z = random.nextDouble(
                 0.1,
                 universeSettings.zDim.toDouble() - 0.1
             )
@@ -312,7 +316,7 @@ object RandomOneStarPerPlayerGenerate : RandomGenerateUniverseMethod() {
             mutablePlayerData.int4D.z = floor(mutablePlayerData.double4D.z).toInt()
 
             // Add random stellar system
-            mutablePlayerData.playerInternalData.popSystemData().addRandomStellarSystem()
+            mutablePlayerData.playerInternalData.popSystemData().addRandomStellarSystem(random)
 
             // Change initial population
             mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.forEach { carrier ->
@@ -328,7 +332,7 @@ object RandomOneStarPerPlayerGenerate : RandomGenerateUniverseMethod() {
 
             // Add random basic and applied projects as done projects
             mutableUniverseGlobalData.universeScienceData().basicResearchProjectDataMap.values
-                .shuffled(Rand.rand()).take(5).forEach {
+                .shuffled(random).take(5).forEach {
                     mutablePlayerData.playerInternalData.playerScienceData()
                         .doneBasicResearchProject(
                             it,
@@ -336,7 +340,7 @@ object RandomOneStarPerPlayerGenerate : RandomGenerateUniverseMethod() {
                         )
                 }
             mutableUniverseGlobalData.universeScienceData().appliedResearchProjectDataMap.values
-                .shuffled(Rand.rand()).take(5).forEach {
+                .shuffled(random).take(5).forEach {
                     mutablePlayerData.playerInternalData.playerScienceData()
                         .doneAppliedResearchProject(
                             it,
@@ -351,7 +355,7 @@ object RandomOneStarPerPlayerGenerate : RandomGenerateUniverseMethod() {
                         .doneBasicResearchProjectList.all {
                             it.basicResearchId != universeProject.basicResearchId
                         }
-                }.shuffled(Rand.rand()).take(5).forEach {
+                }.shuffled(random).take(5).forEach {
                     mutablePlayerData.playerInternalData.playerScienceData()
                         .knownBasicResearchProject(
                             it,
@@ -363,7 +367,7 @@ object RandomOneStarPerPlayerGenerate : RandomGenerateUniverseMethod() {
                         .doneAppliedResearchProjectList.all {
                             it.appliedResearchId != universeProject.appliedResearchId
                         }
-                }.shuffled(Rand.rand()).take(5).forEach {
+                }.shuffled(random).take(5).forEach {
                     mutablePlayerData.playerInternalData.playerScienceData()
                         .knownAppliedResearchProject(
                             it,
@@ -381,6 +385,7 @@ object RandomOneStarPerPlayerGenerate : RandomGenerateUniverseMethod() {
                 universeData3DAtPlayer = UniverseData3DAtPlayer(),
                 universeSettings = universeSettings,
                 universeGlobalData = universeGlobalData,
+                random = random,
             )
 
 
@@ -390,6 +395,7 @@ object RandomOneStarPerPlayerGenerate : RandomGenerateUniverseMethod() {
                 universeData3DAtPlayer = UniverseData3DAtPlayer(),
                 universeSettings = universeSettings,
                 universeGlobalData = universeGlobalData,
+                random = random,
             )
 
             // Update desire of pop
@@ -398,6 +404,7 @@ object RandomOneStarPerPlayerGenerate : RandomGenerateUniverseMethod() {
                 universeData3DAtPlayer = UniverseData3DAtPlayer(),
                 universeSettings = universeSettings,
                 universeGlobalData = universeGlobalData,
+                random = random,
             )
 
             mutablePlayerData.syncData()

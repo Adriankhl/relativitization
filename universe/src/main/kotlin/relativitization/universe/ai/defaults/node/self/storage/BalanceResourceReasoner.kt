@@ -10,8 +10,9 @@ import relativitization.universe.data.components.defaults.economy.ResourceQualit
 import relativitization.universe.data.components.defaults.economy.ResourceType
 import relativitization.universe.data.components.economyData
 import relativitization.universe.data.serializer.DataSerializer
+import kotlin.random.Random
 
-class BalanceResourceReasoner : SequenceReasoner() {
+class BalanceResourceReasoner(random: Random) : SequenceReasoner(random) {
     override fun getSubNodeList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -20,7 +21,8 @@ class BalanceResourceReasoner : SequenceReasoner() {
             listOf(
                 BalanceResourceProportionAINode(
                     resourceType,
-                    resourceQualityClass
+                    resourceQualityClass,
+                    random,
                 )
             )
         }
@@ -33,7 +35,8 @@ class BalanceResourceReasoner : SequenceReasoner() {
 class BalanceResourceProportionAINode(
     val resourceType: ResourceType,
     val resourceQualityClass: ResourceQualityClass,
-) : AINode() {
+    random: Random
+) : AINode(random) {
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
         val resourceTargetProportion: MutableResourceTargetProportionData =
             if (ResourceType.isProductionResource(resourceType)) {

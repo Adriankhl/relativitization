@@ -7,10 +7,10 @@ import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.*
 import relativitization.universe.data.components.politicsData
-import relativitization.universe.maths.random.Rand
 import relativitization.universe.utils.I18NString
 import relativitization.universe.utils.IntString
 import relativitization.universe.utils.NormalString
+import kotlin.random.Random
 
 /**
  * Ask to merge this player to its direct leader
@@ -132,12 +132,12 @@ data class AskToMergeCarrierEvent(
         mutablePlayerData: MutablePlayerData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
         universeSettings: UniverseSettings,
+        random: Random,
     ): Int {
         return when (universeData3DAtPlayer.getCurrentPlayerData().playerType) {
             PlayerType.HUMAN -> 1
             PlayerType.NONE -> 0
-            PlayerType.AI -> Rand.rand().nextInt(0, 2)
+            PlayerType.AI -> random.nextInt(0, 2)
         }
     }
-
 }

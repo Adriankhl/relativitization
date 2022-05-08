@@ -23,7 +23,7 @@ import relativitization.universe.UniverseServerSettings
 import relativitization.universe.utils.RelativitizationLogManager
 import relativitization.utils.ServerPort
 import java.io.File
-import relativitization.universe.maths.random.Rand
+import kotlin.random.Random
 
 private val logger = RelativitizationLogManager.getLogger()
 
@@ -55,7 +55,9 @@ fun main() {
     config.setWindowIcon(Files.FileType.Internal, "./${Assets.dir()}/images/normal/logo/logo.png")
     config.setHdpiMode(HdpiMode.Logical)
 
-    val adminPassword: String = List(10) { Rand.rand().nextInt(0, 10) }.joinToString(separator = "")
+    val adminPassword: String = List(10) {
+        Random(System.currentTimeMillis()).nextInt(0, 10)
+    }.joinToString(separator = "")
 
     val serverAddress = "127.0.0.1"
     val serverPort: Int = ServerPort.findAvailablePort()

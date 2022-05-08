@@ -27,10 +27,14 @@ import relativitization.universe.global.defaults.science.UpdateUniverseScienceDa
 import relativitization.universe.maths.grid.Grids.create4DGrid
 import relativitization.universe.maths.physics.MutableDouble4D
 import relativitization.universe.maths.physics.MutableInt4D
+import kotlin.random.Random
 import kotlin.reflect.full.createInstance
 
 object TestingFixedMinimal : TestingGenerateUniverseMethod() {
-    override fun generate(settings: GenerateSettings): UniverseData {
+    override fun generate(
+        settings: GenerateSettings,
+        random: Random
+    ): UniverseData {
         val universeSettings: UniverseSettings = DataSerializer.copy(settings.universeSettings)
 
         val mutableUniverseData4D = MutableUniverseData4D(

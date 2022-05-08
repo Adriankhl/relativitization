@@ -9,13 +9,15 @@ import relativitization.universe.data.components.economyData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.mechanisms.Mechanism
+import kotlin.random.Random
 
 object UpdateTaxRate : Mechanism() {
     override fun process(
         mutablePlayerData: MutablePlayerData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
         universeSettings: UniverseSettings,
-        universeGlobalData: UniverseGlobalData
+        universeGlobalData: UniverseGlobalData,
+        random: Random
     ): List<Command> {
 
         // Only do the sync if the player is not a top leader

@@ -8,6 +8,7 @@ import relativitization.universe.data.components.diplomacyData
 import relativitization.universe.data.components.modifierData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.mechanisms.Mechanism
+import kotlin.random.Random
 
 object UpdateRelation : Mechanism() {
     // Parameters
@@ -18,7 +19,8 @@ object UpdateRelation : Mechanism() {
         mutablePlayerData: MutablePlayerData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
         universeSettings: UniverseSettings,
-        universeGlobalData: UniverseGlobalData
+        universeGlobalData: UniverseGlobalData,
+        random: Random
     ): List<Command> {
         // Only consider the relation of neighbors, leader, and subordinate
         val playerIdSet: Set<Int> =

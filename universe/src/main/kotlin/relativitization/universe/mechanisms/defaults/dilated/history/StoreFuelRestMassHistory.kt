@@ -10,13 +10,15 @@ import relativitization.universe.data.components.physicsData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.mechanisms.Mechanism
+import kotlin.random.Random
 
 object StoreFuelRestMassHistory : Mechanism() {
     override fun process(
         mutablePlayerData: MutablePlayerData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
         universeSettings: UniverseSettings,
-        universeGlobalData: UniverseGlobalData
+        universeGlobalData: UniverseGlobalData,
+        random: Random
     ): List<Command> {
         val aiData: MutableAIData = mutablePlayerData.playerInternalData.aiData()
 

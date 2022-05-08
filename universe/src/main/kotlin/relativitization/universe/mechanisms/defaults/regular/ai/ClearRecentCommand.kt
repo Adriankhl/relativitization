@@ -9,13 +9,15 @@ import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.maths.physics.Int3D
 import relativitization.universe.maths.physics.Intervals
 import relativitization.universe.mechanisms.Mechanism
+import kotlin.random.Random
 
 object ClearRecentCommand : Mechanism() {
     override fun process(
         mutablePlayerData: MutablePlayerData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
         universeSettings: UniverseSettings,
-        universeGlobalData: UniverseGlobalData
+        universeGlobalData: UniverseGlobalData,
+        random: Random
     ): List<Command> {
         // Parameters
         val removeTimeFactor: Int = 3

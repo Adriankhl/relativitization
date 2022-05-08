@@ -8,6 +8,7 @@ import relativitization.universe.data.commands.AddDirectSubordinateCommand
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.mechanisms.Mechanism
+import kotlin.random.Random
 
 /**
  * Sync leader and subordinate
@@ -17,7 +18,8 @@ object SyncHierarchy : Mechanism() {
         mutablePlayerData: MutablePlayerData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
         universeSettings: UniverseSettings,
-        universeGlobalData: UniverseGlobalData
+        universeGlobalData: UniverseGlobalData,
+        random: Random
     ): List<Command> {
 
         // Add all leaders of direct leader

@@ -7,17 +7,18 @@ import relativitization.universe.data.commands.SelectEventChoiceCommand
 import relativitization.universe.data.events.MutableEventData
 import relativitization.universe.data.events.ProposePeaceEvent
 import relativitization.universe.data.events.name
+import kotlin.random.Random
 
-class WarEventReasoner : SequenceReasoner() {
+class WarEventReasoner(random: Random) : SequenceReasoner(random) {
     override fun getSubNodeList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<AINode> = listOf(
-        AllProposePeaceEventReasoner()
+        AllProposePeaceEventReasoner(random)
     )
 }
 
-class AllProposePeaceEventReasoner : SequenceReasoner() {
+class AllProposePeaceEventReasoner(random: Random) : SequenceReasoner(random) {
     override fun getSubNodeList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -28,26 +29,34 @@ class AllProposePeaceEventReasoner : SequenceReasoner() {
             }.keys
 
         return eventKeySet.map {
-            ProposePeaceEventReasoner(it)
+            ProposePeaceEventReasoner(it, random)
         }
     }
 }
 
 class ProposePeaceEventReasoner(
-    private val eventKey: Int
-) : DualUtilityReasoner() {
+    private val eventKey: Int,
+    random: Random
+) : DualUtilityReasoner(random) {
     override fun getOptionList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<DualUtilityOption> = listOf(
-        AcceptPeaceOption(eventKey),
-        RejectPeaceOption(eventKey),
+        AcceptPeaceOption(
+            eventKey = eventKey,
+            random = random,
+        ),
+        RejectPeaceOption(
+            eventKey = eventKey,
+            random = random,
+        ),
     )
 }
 
 class AcceptPeaceOption(
-    private val eventKey: Int
-) : DualUtilityOption() {
+    private val eventKey: Int,
+    random: Random
+) : DualUtilityOption(random) {
     override fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -81,8 +90,9 @@ class AcceptPeaceOption(
 }
 
 class RejectPeaceOption(
-    private val eventKey: Int
-) : DualUtilityOption() {
+    private val eventKey: Int,
+    random: Random,
+) : DualUtilityOption(random) {
     override fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState

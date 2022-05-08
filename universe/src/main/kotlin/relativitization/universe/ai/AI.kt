@@ -3,9 +3,13 @@ package relativitization.universe.ai
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.commands.Command
 import relativitization.universe.utils.RelativitizationLogManager
+import kotlin.random.Random
 
 sealed class AI {
-    abstract fun compute(universeData3DAtPlayer: UniverseData3DAtPlayer): List<Command>
+    abstract fun compute(
+        universeData3DAtPlayer: UniverseData3DAtPlayer,
+        random: Random,
+    ): List<Command>
 }
 
 fun AI.name(): String = this::class.simpleName.toString()
@@ -21,6 +25,7 @@ object AICollection {
 
     fun compute(
         universeData3DAtPlayer: UniverseData3DAtPlayer,
+        random: Random,
         aiName: String = "",
     ): List<Command> {
         val actualAIName: String = if (aiNameMap.containsKey(aiName)) {
@@ -36,6 +41,6 @@ object AICollection {
             EmptyAI
         }
 
-        return ai.compute(universeData3DAtPlayer)
+        return ai.compute(universeData3DAtPlayer, random)
     }
 }

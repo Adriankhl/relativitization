@@ -31,6 +31,7 @@ import relativitization.universe.utils.CoroutineBoolean
 import relativitization.universe.utils.CoroutineList
 import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.properties.Delegates
+import kotlin.random.Random
 
 /**
  * @property universeClientSettings settings of the client, should only be updated by setUniverseClientSettings()
@@ -412,6 +413,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
         if (autoAIName != EmptyAI.name()) {
             val commandList: List<Command> = AICollection.compute(
                 planDataAtPlayer.universeData3DAtPlayer,
+                Random(System.currentTimeMillis()),
                 autoAIName,
             )
             planDataAtPlayer.addAllCommand(commandList)

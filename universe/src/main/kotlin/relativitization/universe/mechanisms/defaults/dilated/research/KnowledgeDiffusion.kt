@@ -12,14 +12,15 @@ import relativitization.universe.data.components.playerScienceData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.global.defaults.science.UpdateUniverseScienceData
 import relativitization.universe.mechanisms.Mechanism
-import relativitization.universe.maths.random.Rand
+import kotlin.random.Random
 
 object KnowledgeDiffusion : Mechanism() {
     override fun process(
         mutablePlayerData: MutablePlayerData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
         universeSettings: UniverseSettings,
-        universeGlobalData: UniverseGlobalData
+        universeGlobalData: UniverseGlobalData,
+        random: Random
     ): List<Command> {
 
         // The half edge length + 0.5 of the cube where diffusion happen
@@ -42,9 +43,10 @@ object KnowledgeDiffusion : Mechanism() {
                 }
 
             computeBasicResearchDiffusion(
-                actualBasicResearchDiffusionProb,
-                mutablePlayerData.playerInternalData.playerScienceData(),
-                playerData.playerInternalData.playerScienceData(),
+                diffusionProb = actualBasicResearchDiffusionProb,
+                thisScienceData = mutablePlayerData.playerInternalData.playerScienceData(),
+                otherScienceData = playerData.playerInternalData.playerScienceData(),
+                random = random,
             ).forEach {
                 mutablePlayerData.playerInternalData.playerScienceData().doneBasicResearchProject(
                     it,
@@ -60,9 +62,10 @@ object KnowledgeDiffusion : Mechanism() {
                 }
 
             computeAppliedResearchDiffusion(
-                actualAppliedResearchDiffusionProb,
-                mutablePlayerData.playerInternalData.playerScienceData(),
-                playerData.playerInternalData.playerScienceData(),
+                diffusionProb = actualAppliedResearchDiffusionProb,
+                thisScienceData = mutablePlayerData.playerInternalData.playerScienceData(),
+                otherScienceData = playerData.playerInternalData.playerScienceData(),
+                random = random,
             ).forEach {
                 mutablePlayerData.playerInternalData.playerScienceData().doneAppliedResearchProject(
                     it,
@@ -100,11 +103,12 @@ object KnowledgeDiffusion : Mechanism() {
         diffusionProb: Double,
         thisScienceData: MutablePlayerScienceData,
         otherScienceData: PlayerScienceData,
+        random: Random,
     ): List<BasicResearchProjectData> {
         return otherScienceData.doneBasicResearchProjectList.filter { otherProject ->
             !thisScienceData.isBasicProjectDone(otherProject)
         }.filter {
-            Rand.rand().nextDouble() < diffusionProb
+            random.nextDouble() < diffusionProb
         }.distinctBy { it.basicResearchId }
     }
 
@@ -112,11 +116,12 @@ object KnowledgeDiffusion : Mechanism() {
         diffusionProb: Double,
         thisScienceData: MutablePlayerScienceData,
         otherScienceData: PlayerScienceData,
+        random: Random,
     ): List<AppliedResearchProjectData> {
         return otherScienceData.doneAppliedResearchProjectList.filter { otherProject ->
             !thisScienceData.isAppliedProjectDone(otherProject)
         }.filter {
-            Rand.rand().nextDouble() < diffusionProb
+            random.nextDouble() < diffusionProb
         }.distinctBy { it.appliedResearchId }
     }
 }

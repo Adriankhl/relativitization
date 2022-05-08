@@ -8,6 +8,7 @@ import relativitization.universe.data.commands.Command
 import relativitization.universe.data.commands.CommandErrorMessage
 import relativitization.universe.utils.I18NString
 import relativitization.universe.utils.RelativitizationLogManager
+import kotlin.random.Random
 import kotlin.reflect.KClass
 
 @Serializable
@@ -80,11 +81,13 @@ sealed class Event {
      * @param mutablePlayerData the player data containing this event
      * @param universeData3DAtPlayer the 3d data to determine the generated command
      * @param universeSettings the universe setting
+     * @param random random number generator
      */
     abstract fun defaultChoice(
         mutablePlayerData: MutablePlayerData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
         universeSettings: UniverseSettings,
+        random: Random,
     ): Int
 
     companion object {

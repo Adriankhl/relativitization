@@ -14,6 +14,7 @@ import relativitization.universe.maths.physics.TargetVelocityData
 import relativitization.universe.mechanisms.Mechanism
 import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.math.min
+import kotlin.random.Random
 
 object MoveToTarget : Mechanism() {
     private val logger = RelativitizationLogManager.getLogger()
@@ -22,7 +23,8 @@ object MoveToTarget : Mechanism() {
         mutablePlayerData: MutablePlayerData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
         universeSettings: UniverseSettings,
-        universeGlobalData: UniverseGlobalData
+        universeGlobalData: UniverseGlobalData,
+        random: Random
     ): List<Command> {
         val targetDouble3DData: MutableTargetDouble3DData = mutablePlayerData.playerInternalData
             .physicsData().targetDouble3DData

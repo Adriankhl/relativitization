@@ -16,6 +16,7 @@ import relativitization.universe.data.components.playerScienceData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.mechanisms.Mechanism
 import kotlin.math.log2
+import kotlin.random.Random
 
 object UpdateScienceApplicationData : Mechanism() {
     // Parameters
@@ -34,7 +35,8 @@ object UpdateScienceApplicationData : Mechanism() {
         mutablePlayerData: MutablePlayerData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
         universeSettings: UniverseSettings,
-        universeGlobalData: UniverseGlobalData
+        universeGlobalData: UniverseGlobalData,
+        random: Random
     ): List<Command> {
         val scienceData: MutablePlayerScienceData =
             mutablePlayerData.playerInternalData.playerScienceData()

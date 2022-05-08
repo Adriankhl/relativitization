@@ -13,6 +13,7 @@ import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.utils.I18NString
 import relativitization.universe.utils.IntString
 import relativitization.universe.utils.NormalString
+import kotlin.random.Random
 
 /**
  * Propose peace to a war
@@ -117,7 +118,8 @@ data class ProposePeaceEvent(
     override fun defaultChoice(
         mutablePlayerData: MutablePlayerData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
-        universeSettings: UniverseSettings
+        universeSettings: UniverseSettings,
+        random: Random
     ): Int = 1
 
 }
@@ -242,7 +244,8 @@ data class ProposeAllianceEvent(
     override fun defaultChoice(
         mutablePlayerData: MutablePlayerData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
-        universeSettings: UniverseSettings
+        universeSettings: UniverseSettings,
+        random: Random
     ): Int = 1
 }
 
@@ -382,7 +385,8 @@ data class CallAllyToWarEvent(
     override fun defaultChoice(
         mutablePlayerData: MutablePlayerData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
-        universeSettings: UniverseSettings
+        universeSettings: UniverseSettings,
+        random: Random
     ): Int = 1
 }
 
@@ -542,6 +546,7 @@ data class CallAllyToSubordinateWarEvent(
     override fun defaultChoice(
         mutablePlayerData: MutablePlayerData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
-        universeSettings: UniverseSettings
+        universeSettings: UniverseSettings,
+        random: Random
     ): Int = 1
 }

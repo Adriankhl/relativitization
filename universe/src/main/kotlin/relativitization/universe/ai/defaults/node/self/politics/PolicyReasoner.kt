@@ -5,17 +5,18 @@ import relativitization.universe.ai.defaults.utils.PlanState
 import relativitization.universe.ai.defaults.utils.SequenceReasoner
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.commands.ChangeFactoryPolicyCommand
+import kotlin.random.Random
 
-class PolicyReasoner : SequenceReasoner() {
+class PolicyReasoner(random: Random) : SequenceReasoner(random) {
     override fun getSubNodeList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<AINode> = listOf(
-        FactoryPolicyAINode()
+        FactoryPolicyAINode(random)
     )
 }
 
-class FactoryPolicyAINode : AINode() {
+class FactoryPolicyAINode(random: Random) : AINode(random) {
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
         // Only top leader can change policy
         if (planDataAtPlayer.getCurrentPlayerData().isTopLeader()) {

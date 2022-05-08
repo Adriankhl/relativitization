@@ -10,6 +10,7 @@ import relativitization.universe.data.components.physicsData
 import relativitization.universe.data.components.popSystemData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.mechanisms.Mechanism
+import kotlin.random.Random
 
 /**
  * Produce basic fuel from stellar system regardless of pop
@@ -19,7 +20,8 @@ object BaseStellarFuelProduction : Mechanism() {
         mutablePlayerData: MutablePlayerData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
         universeSettings: UniverseSettings,
-        universeGlobalData: UniverseGlobalData
+        universeGlobalData: UniverseGlobalData,
+        random: Random
     ): List<Command> {
 
         // Produce if only fuel increase is not disable

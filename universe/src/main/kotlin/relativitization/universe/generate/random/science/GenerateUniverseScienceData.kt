@@ -11,10 +11,10 @@ import relativitization.universe.data.global.components.defaults.science.knowled
 import relativitization.universe.data.global.components.defaults.science.knowledge.MutableProjectGenerationData
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.maths.physics.Intervals
-import relativitization.universe.maths.random.Rand
 import relativitization.universe.maths.sampling.WeightedReservoir
 import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.math.*
+import kotlin.random.Random
 
 object DefaultGenerateUniverseScienceData {
     private val logger = RelativitizationLogManager.getLogger()
@@ -29,6 +29,7 @@ object DefaultGenerateUniverseScienceData {
      * @param maxAppliedReference maximum amount of reference of a project to other applied projects
      * @param maxDifficulty maximum difficulty of a project
      * @param maxSignificance maximum significance of a project
+     * @param random random number generator
      */
     fun generate(
         universeScienceData: UniverseScienceData,
@@ -38,6 +39,7 @@ object DefaultGenerateUniverseScienceData {
         maxAppliedReference: Int,
         maxDifficulty: Double,
         maxSignificance: Double,
+        random: Random,
     ): UniverseScienceData {
 
         if (numBasicResearchProjectGenerate < 0 || numAppliedResearchProjectGenerate < 0) {
@@ -64,6 +66,7 @@ object DefaultGenerateUniverseScienceData {
                     maxAppliedReference = maxAppliedReference,
                     maxDifficulty = maxDifficulty,
                     maxSignificance = maxSignificance,
+                    random = random,
                 )
                 mutableUniverseScienceData.addBasicResearchProjectData(newBasic)
 
@@ -73,6 +76,7 @@ object DefaultGenerateUniverseScienceData {
                     maxAppliedReference = maxAppliedReference,
                     maxDifficulty = maxDifficulty,
                     maxSignificance = maxSignificance,
+                    random = random,
                 )
                 mutableUniverseScienceData.addAppliedResearchProjectData(newApplied)
             }
@@ -88,6 +92,7 @@ object DefaultGenerateUniverseScienceData {
                     maxAppliedReference = maxAppliedReference,
                     maxDifficulty = maxDifficulty,
                     maxSignificance = maxSignificance,
+                    random = random,
                 )
                 mutableUniverseScienceData.addBasicResearchProjectData(newBasic)
             }
@@ -101,6 +106,7 @@ object DefaultGenerateUniverseScienceData {
                     maxAppliedReference = maxAppliedReference,
                     maxDifficulty = maxDifficulty,
                     maxSignificance = maxSignificance,
+                    random = random,
                 )
                 mutableUniverseScienceData.addAppliedResearchProjectData(newApplied)
             }
@@ -125,6 +131,7 @@ object DefaultGenerateUniverseScienceData {
         maxAppliedReference: Int,
         maxDifficulty: Double,
         maxSignificance: Double,
+        random: Random,
     ): BasicResearchProjectData {
         val generationDataList: List<MutableBasicResearchProjectGenerationData> =
             mutableUniverseScienceData.universeProjectGenerationData.basicResearchProjectGenerationDataList
@@ -133,8 +140,9 @@ object DefaultGenerateUniverseScienceData {
             generationDataList.isNotEmpty()
         ) {
             WeightedReservoir.aRes(
-                1,
-                generationDataList
+                numItem = 1,
+                itemList = generationDataList,
+                random = random,
             ) {
                 it.projectGenerationData.weight
             }.first()
@@ -146,8 +154,8 @@ object DefaultGenerateUniverseScienceData {
             )
         }
 
-        val angle: Double = Rand.rand().nextDouble(0.0, PI)
-        val radialDistance: Double = Rand.rand().nextDouble(
+        val angle: Double = random.nextDouble(0.0, PI)
+        val radialDistance: Double = random.nextDouble(
             0.0,
             generationData.projectGenerationData.range
         )
@@ -157,12 +165,13 @@ object DefaultGenerateUniverseScienceData {
         val yCor: Double =
             generationData.projectGenerationData.centerY + radialDistance * sin(angle)
 
-        val numReferenceBasicResearch: Int = Rand.rand().nextInt(1, maxBasicReference)
-        val numReferenceAppliedResearch: Int = Rand.rand().nextInt(1, maxAppliedReference)
+        val numReferenceBasicResearch: Int = random.nextInt(1, maxBasicReference)
+        val numReferenceAppliedResearch: Int = random.nextInt(1, maxAppliedReference)
 
         val referenceBasicResearchIdList: List<Int> = WeightedReservoir.aRes(
             numItem = numReferenceBasicResearch,
             itemList = mutableUniverseScienceData.basicResearchProjectDataMap.keys.toList(),
+            random = random,
         ) {
             val basicData: BasicResearchProjectData =
                 mutableUniverseScienceData.basicResearchProjectDataMap.getValue(it)
@@ -173,6 +182,7 @@ object DefaultGenerateUniverseScienceData {
         val referenceAppliedResearchIdList: List<Int> = WeightedReservoir.aRes(
             numItem = numReferenceAppliedResearch,
             itemList = mutableUniverseScienceData.appliedResearchProjectDataMap.keys.toList(),
+            random = random,
         ) {
             val appliedData: AppliedResearchProjectData =
                 mutableUniverseScienceData.appliedResearchProjectDataMap.getValue(it)
@@ -186,8 +196,8 @@ object DefaultGenerateUniverseScienceData {
             basicResearchField = generationData.basicResearchField,
             xCor = xCor,
             yCor = yCor,
-            difficulty = Rand.rand().nextDouble(0.0, maxDifficulty),
-            significance = Rand.rand().nextDouble(0.0, maxSignificance),
+            difficulty = random.nextDouble(0.0, maxDifficulty),
+            significance = random.nextDouble(0.0, maxSignificance),
             referenceBasicResearchIdList = referenceBasicResearchIdList,
             referenceAppliedResearchIdList = referenceAppliedResearchIdList,
         )
@@ -202,6 +212,7 @@ object DefaultGenerateUniverseScienceData {
      * @param maxAppliedReference maximum amount of reference of a project to other applied projects
      * @param maxDifficulty maximum difficulty of a project
      * @param maxSignificance maximum significance of a project
+     * @param random random number generator
      */
     private fun generateAppliedResearchProjectData(
         mutableUniverseScienceData: MutableUniverseScienceData,
@@ -209,6 +220,7 @@ object DefaultGenerateUniverseScienceData {
         maxAppliedReference: Int,
         maxDifficulty: Double,
         maxSignificance: Double,
+        random: Random,
     ): AppliedResearchProjectData {
         val generationDataList: List<MutableAppliedResearchProjectGenerationData> =
             mutableUniverseScienceData.universeProjectGenerationData.appliedResearchProjectGenerationDataList
@@ -217,8 +229,9 @@ object DefaultGenerateUniverseScienceData {
             generationDataList.isNotEmpty()
         ) {
             WeightedReservoir.aRes(
-                1,
-                generationDataList
+                numItem = 1,
+                itemList = generationDataList,
+                random = random,
             ) {
                 it.projectGenerationData.weight
             }.first()
@@ -230,8 +243,8 @@ object DefaultGenerateUniverseScienceData {
             )
         }
 
-        val angle: Double = Rand.rand().nextDouble(0.0, PI)
-        val radialDistance: Double = Rand.rand().nextDouble(
+        val angle: Double = random.nextDouble(0.0, PI)
+        val radialDistance: Double = random.nextDouble(
             0.0,
             generationData.projectGenerationData.range
         )
@@ -241,12 +254,13 @@ object DefaultGenerateUniverseScienceData {
         val yCor: Double =
             generationData.projectGenerationData.centerY + radialDistance * sin(angle)
 
-        val numReferenceBasicResearch: Int = Rand.rand().nextInt(1, maxBasicReference)
-        val numReferenceAppliedResearch: Int = Rand.rand().nextInt(1, maxAppliedReference)
+        val numReferenceBasicResearch: Int = random.nextInt(1, maxBasicReference)
+        val numReferenceAppliedResearch: Int = random.nextInt(1, maxAppliedReference)
 
         val referenceBasicResearchIdList: List<Int> = WeightedReservoir.aRes(
             numItem = numReferenceBasicResearch,
             itemList = mutableUniverseScienceData.basicResearchProjectDataMap.keys.toList(),
+            random = random,
         ) {
             val basicData: BasicResearchProjectData =
                 mutableUniverseScienceData.basicResearchProjectDataMap.getValue(it)
@@ -257,6 +271,7 @@ object DefaultGenerateUniverseScienceData {
         val referenceAppliedResearchIdList: List<Int> = WeightedReservoir.aRes(
             numItem = numReferenceAppliedResearch,
             itemList = mutableUniverseScienceData.appliedResearchProjectDataMap.keys.toList(),
+            random = random,
         ) {
             val appliedData: AppliedResearchProjectData =
                 mutableUniverseScienceData.appliedResearchProjectDataMap.getValue(it)
@@ -270,8 +285,8 @@ object DefaultGenerateUniverseScienceData {
             appliedResearchField = generationData.appliedResearchField,
             xCor = xCor,
             yCor = yCor,
-            difficulty = Rand.rand().nextDouble(0.0, maxDifficulty),
-            significance = Rand.rand().nextDouble(0.0, maxSignificance),
+            difficulty = random.nextDouble(0.0, maxDifficulty),
+            significance = random.nextDouble(0.0, maxSignificance),
             referenceBasicResearchIdList = referenceBasicResearchIdList,
             referenceAppliedResearchIdList = referenceAppliedResearchIdList,
         )

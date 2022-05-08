@@ -14,11 +14,11 @@ import relativitization.universe.maths.physics.Int3D
 import relativitization.universe.maths.physics.Int4D
 import relativitization.universe.maths.physics.Intervals.intDelay
 import relativitization.universe.maths.physics.Relativistic
-import relativitization.universe.maths.random.Rand
 import relativitization.universe.mechanisms.MechanismCollection.processMechanismCollection
 import relativitization.universe.utils.FileUtils
 import relativitization.universe.utils.RelativitizationLogManager
 import relativitization.universe.utils.pmap
+import kotlin.random.Random
 
 /**
  * Main class representing the 4D universe
@@ -33,8 +33,18 @@ class Universe(
     private val universeData: UniverseData,
     private val programDir: String = ".",
     private val saveWhenInit: Boolean = false,
-    private val alwaysSaveLatest: Boolean = false
+    private val alwaysSaveLatest: Boolean = false,
 ) {
+    // For generating other Random object
+    private val masterRandom = Random(universeData.universeSettings.randomSeed)
+
+    private val universeRandom = Random(masterRandom.nextInt())
+    private val playerRandomMap: MutableMap<Int, Random> = universeData
+        .getCurrentPlayerDataList().map {
+            it.playerId
+        }.associateWith {
+            Random(masterRandom.nextInt())
+        }.toMutableMap()
 
     private val xDim = universeData.universeSettings.xDim
     private val yDim = universeData.universeSettings.yDim
@@ -61,6 +71,7 @@ class Universe(
             saveAll()
         }
     }
+
 
     /**
      * Get universe name
@@ -133,7 +144,10 @@ class Universe(
             ).idToUniverseData3DAtPlayer()
 
             playerId3D[int3D.x][int3D.y][int3D.z].map { id ->
-                id to AICollection.compute(viewMap.getValue(id))
+                id to AICollection.compute(
+                    viewMap.getValue(id),
+                    playerRandomMap.getValue(id),
+                )
             }
         }.flatten().toMap()
     }
@@ -214,10 +228,25 @@ class Universe(
     }
 
     /**
+     * Update command map of universe data
+     *
+     * @param newCommandMap command map from
+     */
+    private fun updateCommandMap(newCommandMap: Map<Int, List<Command>>) {
+        newCommandMap.keys.sorted().shuffled(universeRandom).forEach { fromId ->
+            newCommandMap.getValue(fromId).forEach { command ->
+                universeData.commandMap.getOrPut(command.toId) {
+                    mutableListOf()
+                }.add(command)
+            }
+        }
+    }
+
+    /**
      * Compute the time dilation residue and isDilationTurn
      */
     private suspend fun processTimeDilation() {
-        playerCollection.getIdList().pmap {
+        playerCollection.getIdSet().pmap {
             val mutablePlayerData: MutablePlayerData = playerCollection.getPlayer(it)
 
             val gamma: Double = Relativistic.gamma(
@@ -247,12 +276,14 @@ class Universe(
         val playerId3D: List<List<List<List<Int>>>> = playerCollection.getPlayerId3D()
 
         // Mechanism process, execute produced commands on same group, and return remaining command
-        val commandList: List<Command> = int3DList.pmap { int3D ->
+        val newCommandMap: Map<Int, List<Command>> = int3DList.filter {
+            playerId3D[it.x][it.y][it.z].isNotEmpty()
+        }.pmap { int3D ->
             val viewMap = universeData.toUniverseData3DAtGrid(
                 Int4D(time, int3D)
             ).idToUniverseData3DAtPlayer()
 
-            val playerIdAtGrid: List<Int> = playerId3D[int3D.x][int3D.y][int3D.z]
+            val playerIdAtGrid: List<Int> = playerId3D[int3D.x][int3D.y][int3D.z].sorted()
 
             // Process the mechanisms and compute a map from player id and the command it produces
             val commandMap: Map<Int, List<Command>> = playerIdAtGrid.associateWith { id ->
@@ -261,53 +292,55 @@ class Universe(
                 val commandListFromPlayer: List<Command> = processMechanismCollection(
                     playerCollection.getPlayer(id),
                     universeData3DAtPlayer,
-                    universeData
+                    universeData,
+                    playerRandomMap.getValue(id),
                 )
 
                 commandListFromPlayer
             }
 
-            // Differentiate the commands should be executed immediately, e.g., self and same group player
-            // or commands to be saved to command Map
-            // In principle, this shouldn't contain self commands since they should be integrated in the mechanism process
-            val commandPairList: List<Pair<List<Command>, List<Command>>> =
-                playerIdAtGrid.map { fromId ->
+            // Differentiate the commands should be executed immediately, e.g., self and same
+            // group player or commands to be saved to command Map
+            // In principle, this shouldn't contain self commands since they should
+            // be integrated in the mechanism process
+            val commandPairMap: Map<Int, Pair<List<Command>, List<Command>>> =
+                playerIdAtGrid.associateWith { fromId ->
                     val otherCommandList: List<Command> = commandMap.getValue(fromId)
 
-                    val (sameGroupCommandList, commandStoreList) = otherCommandList.partition { command ->
-                        val inGrid: Boolean = playerIdAtGrid.contains(command.toId)
-                        // prevent get non existing player
-                        val sameGroup: Boolean = if (inGrid) {
-                            playerCollection.getPlayer(
-                                command.fromId
-                            ).groupId == playerCollection.getPlayer(command.toId).groupId
-                        } else {
-                            false
+                    val (sameGroupCommandList, commandStoreList) = otherCommandList
+                        .partition { command ->
+                            val inGrid: Boolean = playerIdAtGrid.contains(command.toId)
+                            // prevent get non existing player
+                            val sameGroup: Boolean = if (inGrid) {
+                                playerCollection.getPlayer(
+                                    command.fromId
+                                ).groupId == playerCollection.getPlayer(command.toId).groupId
+                            } else {
+                                false
+                            }
+                            inGrid && sameGroup
                         }
-                        inGrid && sameGroup
-                    }
 
                     Pair(sameGroupCommandList, commandStoreList)
                 }
 
             // Shuffled by fromId and execute command on neighbour (same group)
-            val sameGroupCommandList: List<Command> = commandPairList.map {
-                it.first
-            }.shuffled(Rand.rand()).flatten()
-            sameGroupCommandList.forEach { command ->
-                command.checkAndExecute(
-                    playerCollection.getPlayer(command.toId),
-                    universeData.universeSettings
-                )
+            commandPairMap.keys.sorted().shuffled(
+                playerRandomMap.getValue(playerIdAtGrid.first())
+            ).forEach { fromId ->
+                commandPairMap.getValue(fromId).first.forEach { command ->
+                    command.checkAndExecute(
+                        playerCollection.getPlayer(command.toId),
+                        universeData.universeSettings,
+                    )
+                }
             }
+            commandPairMap.mapValues { it.value.second }
+        }.reduce { acc, map ->
+            acc + map
+        }
 
-            // filter out dead player
-            commandPairList.map { it.second }.flatten().filter {
-                playerCollection.hasPlayer(it.toId)
-            }
-        }.flatten()
-
-        addToCommandMap(universeData.commandMap, commandList)
+        updateCommandMap(newCommandMap)
     }
 
     /**
@@ -350,20 +383,28 @@ class Universe(
     private fun processDeadAndNewPlayer() {
         playerCollection.cleanDeadPlayer()
         playerCollection.addNewPlayerFromPlayerData(universeData.universeState)
+        playerRandomMap.keys.removeAll {
+            !playerCollection.hasPlayer(it)
+        }
+        playerCollection.getIdSet().filter {
+            !playerRandomMap.containsKey(it)
+        }.sorted().forEach {
+            playerRandomMap[it] = Random(masterRandom.nextInt())
+        }
     }
 
     /**
      * Process human and AI command input
      *
-     * @param originalHumanInputCommands map from player id to the command list from this player
-     * @param originalAiInputCommands map from player id to the command list computed by AI
+     * @param originalHumanInputCommandMap map from player id to the command list from this player
+     * @param originalAiInputCommandMap map from player id to the command list computed by AI
      */
     private suspend fun processCommandInput(
-        originalHumanInputCommands: Map<Int, List<Command>>,
-        originalAiInputCommands: Map<Int, List<Command>>
+        originalHumanInputCommandMap: Map<Int, List<Command>>,
+        originalAiInputCommandMap: Map<Int, List<Command>>
     ) {
         // Filter out non-existing player
-        val humanInputCommands: Map<Int, List<Command>> = originalHumanInputCommands.filter {
+        val humanInputCommandMap: Map<Int, List<Command>> = originalHumanInputCommandMap.filter {
             playerCollection.hasPlayer(it.key)
         }.mapValues { (_, commandList) ->
             // Filter out commands to dead player
@@ -371,35 +412,24 @@ class Universe(
                 playerCollection.hasPlayer(it.toId)
             }
         }
-        val aiInputCommands: Map<Int, List<Command>> = originalAiInputCommands.filter {
+        val aiInputCommandMap: Map<Int, List<Command>> = originalAiInputCommandMap.filter {
             playerCollection.hasPlayer(it.key)
         }.mapValues { (_, commandList) ->
             // Filter out commands to dead player
             commandList.filter {
                 playerCollection.hasPlayer(it.toId)
             }
-        }
-
-        // Add two input command map, prefer human input commands
-        // Add empty command list to player in playerCollection when there is no input
-        val inputCommands: Map<Int, List<Command>> = aiInputCommands.filter { (id, _) ->
-            !humanInputCommands.containsKey(id)
-        } + humanInputCommands + playerCollection.getIdList().filter {
-            !humanInputCommands.containsKey(it) && !aiInputCommands.containsKey(it)
-        }.map {
-            logger.debug("Player $it has no input command")
-            it to listOf()
         }
 
         // Default all player type to Ai
-        for ((id, _) in aiInputCommands) {
+        for ((id, _) in aiInputCommandMap) {
             if (playerCollection.getPlayer(id).playerType != PlayerType.NONE) {
                 playerCollection.getPlayer(id).playerType = PlayerType.AI
             }
         }
 
         // Then change the player type to human if there is human input
-        for ((id, _) in humanInputCommands) {
+        for ((id, _) in humanInputCommandMap) {
             if (playerCollection.getPlayer(id).playerType != PlayerType.NONE) {
                 playerCollection.getPlayer(id).playerType = PlayerType.HUMAN
             }
@@ -407,8 +437,19 @@ class Universe(
 
         val noneTypePlayerIdList: List<Int> = playerCollection.getNoneIdList()
 
+        // Add two input command map, prefer human input commands
+        // Add empty command list to player in playerCollection when there is no input
+        val inputCommandMap: Map<Int, List<Command>> = aiInputCommandMap.filter { (id, _) ->
+            !humanInputCommandMap.containsKey(id)
+        } + humanInputCommandMap + playerCollection.getIdSet().filter {
+            !humanInputCommandMap.containsKey(it) && !aiInputCommandMap.containsKey(it)
+        }.map {
+            logger.debug("Player $it has no input command")
+            it to listOf()
+        }
+
         // Check whether the command is valid, self execute the command
-        val validOtherCommandMap: Map<Int, List<Command>> = inputCommands.filter { (id, _) ->
+        val validOtherCommandMap: Map<Int, List<Command>> = inputCommandMap.filter { (id, _) ->
             !noneTypePlayerIdList.contains(id)
         }.mapValues { (id, commandList) ->
             val playerData: MutablePlayerData = playerCollection.getPlayer(id)
@@ -433,46 +474,49 @@ class Universe(
 
         val playerId3D: List<List<List<List<Int>>>> = playerCollection.getPlayerId3D()
 
-        val commandList: List<Command> = int3DList.pmap { int3D ->
-            val playerIdAtGrid: List<Int> = playerId3D[int3D.x][int3D.y][int3D.z]
-            val commandPairList: List<Pair<List<Command>, List<Command>>> =
-                playerIdAtGrid.map { fromId ->
+        val newCommandMap: Map<Int, List<Command>> = int3DList.filter {
+            playerId3D[it.x][it.y][it.z].isNotEmpty()
+        }.pmap { int3D ->
+            val playerIdAtGrid: List<Int> = playerId3D[int3D.x][int3D.y][int3D.z].sorted()
+            val commandPairMap: Map<Int, Pair<List<Command>, List<Command>>> =
+                playerIdAtGrid.associateWith { fromId ->
                     val otherCommandList: List<Command> = validOtherCommandMap.getValue(fromId)
 
-                    val (sameGroupCommandList, commandStoreList) = otherCommandList.partition { command ->
-                        val inGrid: Boolean = playerIdAtGrid.contains(command.toId)
-                        // prevent get non existing player
-                        val sameGroup: Boolean = if (inGrid) {
-                            playerCollection.getPlayer(
-                                command.fromId
-                            ).groupId == playerCollection.getPlayer(command.toId).groupId
-                        } else {
-                            false
+                    val (sameGroupCommandList, commandStoreList) = otherCommandList
+                        .partition { command ->
+                            val inGrid: Boolean = playerIdAtGrid.contains(command.toId)
+                            // prevent get non existing player
+                            val sameGroup: Boolean = if (inGrid) {
+                                playerCollection.getPlayer(
+                                    command.fromId
+                                ).groupId == playerCollection.getPlayer(command.toId).groupId
+                            } else {
+                                false
+                            }
+                            inGrid && sameGroup
                         }
-                        inGrid && sameGroup
-                    }
 
                     Pair(sameGroupCommandList, commandStoreList)
                 }
 
             // Shuffled by fromId and execute command on neighbour (same group)
-            val sameGroupCommandList: List<Command> = commandPairList.map {
-                it.first
-            }.shuffled(Rand.rand()).flatten()
-            sameGroupCommandList.forEach { command ->
-                command.checkAndExecute(
-                    playerCollection.getPlayer(command.toId),
-                    universeData.universeSettings
-                )
+            commandPairMap.keys.sorted().shuffled(
+                playerRandomMap.getValue(playerIdAtGrid.first())
+            ).forEach { fromId ->
+                commandPairMap.getValue(fromId).first.forEach { command ->
+                    command.checkAndExecute(
+                        playerCollection.getPlayer(command.toId),
+                        universeData.universeSettings,
+                    )
+                }
             }
 
-            // return remaining commands
-            commandPairList.map { it.second }.flatten().filter {
-                playerCollection.hasPlayer(it.toId)
-            }
-        }.flatten()
+            commandPairMap.mapValues { it.value.second }
+        }.reduce { acc, map ->
+            acc + map
+        }
 
-        addToCommandMap(universeData.commandMap, commandList)
+        updateCommandMap(newCommandMap)
     }
 
     /**
@@ -485,7 +529,7 @@ class Universe(
         logger.debug("Start preProcessUniverse()")
 
         logger.debug("Run global mechanisms")
-        GlobalMechanismCollection.globalProcess(universeData)
+        GlobalMechanismCollection.globalProcess(universeData, universeRandom)
 
         logger.debug("Process time dilation")
         processTimeDilation()
@@ -647,24 +691,6 @@ class Universe(
                 commandMap = commandMap,
                 universeGlobalData = universeGlobalData
             )
-        }
-
-        /**
-         * Transform and add command list to commandMap
-         */
-        fun addToCommandMap(
-            commandMap: MutableMap<Int, MutableList<Command>>,
-            commandList: List<Command>
-        ) {
-            val listGroup: Map<Int, List<Command>> = commandList.groupBy { it.toId }
-            listGroup.forEach { (id, commandList) ->
-                val shuffledCommandList: List<Command> = Rand.groupByAndShuffle(
-                    commandList
-                ) {
-                    it.fromId
-                }
-                commandMap.getOrPut(id) { mutableListOf() }.addAll(shuffledCommandList)
-            }
         }
     }
 }

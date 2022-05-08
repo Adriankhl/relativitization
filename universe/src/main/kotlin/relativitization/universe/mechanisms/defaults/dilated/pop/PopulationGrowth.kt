@@ -12,6 +12,7 @@ import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.mechanisms.Mechanism
 import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.math.pow
+import kotlin.random.Random
 
 object PopulationGrowth : Mechanism() {
     private val logger = RelativitizationLogManager.getLogger()
@@ -20,7 +21,8 @@ object PopulationGrowth : Mechanism() {
         mutablePlayerData: MutablePlayerData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
         universeSettings: UniverseSettings,
-        universeGlobalData: UniverseGlobalData
+        universeGlobalData: UniverseGlobalData,
+        random: Random
     ): List<Command> {
         mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.forEach { mutableCarrierData ->
             val totalPopulation: Double = mutableCarrierData.allPopData.totalAdultPopulation()

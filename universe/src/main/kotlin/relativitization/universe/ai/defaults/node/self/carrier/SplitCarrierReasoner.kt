@@ -11,20 +11,25 @@ import relativitization.universe.data.components.MutablePopSystemData
 import relativitization.universe.data.components.defaults.economy.ResourceType
 import relativitization.universe.data.components.defaults.popsystem.CarrierType
 import relativitization.universe.data.components.popSystemData
-import relativitization.universe.maths.random.Rand
 import relativitization.universe.utils.RelativitizationLogManager
+import kotlin.random.Random
 
-class SplitCarrierReasoner : DualUtilityReasoner() {
+class SplitCarrierReasoner(random: Random) : DualUtilityReasoner(random) {
     override fun getOptionList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<DualUtilityOption> = listOf(
-        SplitCarrierOption(),
-        DoNothingDualUtilityOption(rank = 1, multiplier = 1.0, bonus = 1.0)
+        SplitCarrierOption(random = random,),
+        DoNothingDualUtilityOption(
+            rank = 1,
+            multiplier = 1.0,
+            bonus = 1.0,
+            random = random,
+        )
     )
 }
 
-class SplitCarrierOption : DualUtilityOption() {
+class SplitCarrierOption(random: Random) : DualUtilityOption(random) {
     override fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -75,7 +80,7 @@ class SplitCarrierOption : DualUtilityOption() {
                     }
                 }
             isSpaceship && hasFuelFactory && hasAllResourceFactory
-        }.keys.toList().shuffled(Rand.rand())
+        }.keys.toList().shuffled(random)
 
         // Only split if there are two valid carrier
         if (carrierIdList.size >= 2) {

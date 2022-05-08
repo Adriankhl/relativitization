@@ -12,6 +12,7 @@ import relativitization.universe.generate.testing.TestingFixedMinimal
 import relativitization.universe.generate.testing.TestingGenerateUniverseMethod
 import relativitization.universe.utils.FileUtils
 import relativitization.universe.utils.RelativitizationLogManager
+import kotlin.random.Random
 
 /**
  * Settings for universe generation, pass to GenerateUniverseMethod
@@ -67,7 +68,10 @@ data class GenerateSettings(
  * Base class of any method to generate universe data
  */
 abstract class GenerateUniverseMethod {
-    abstract fun generate(settings: GenerateSettings): UniverseData
+    abstract fun generate(
+        settings: GenerateSettings,
+        random: Random,
+    ): UniverseData
 }
 
 fun GenerateUniverseMethod.name(): String = this::class.simpleName.toString()
@@ -110,6 +114,6 @@ object GenerateUniverseMethodCollection {
                 TestingFixedMinimal
             }
 
-        return generateMethod.generate(settings)
+        return generateMethod.generate(settings, Random(settings.universeSettings.randomSeed))
     }
 }

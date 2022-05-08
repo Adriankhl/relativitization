@@ -13,9 +13,9 @@ import relativitization.universe.data.components.playerScienceData
 import relativitization.universe.data.components.politicsData
 import relativitization.universe.data.components.popSystemData
 import relativitization.universe.data.serializer.DataSerializer
-import relativitization.universe.maths.random.Rand
+import kotlin.random.Random
 
-class ForeignFactoryReasoner : SequenceReasoner() {
+class ForeignFactoryReasoner(random: Random) : SequenceReasoner(random) {
     override fun getSubNodeList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -43,42 +43,43 @@ class ForeignFactoryReasoner : SequenceReasoner() {
 
         return if (isSelfFuelFactorySufficient && isSelfResourceFactorySufficient) {
             listOf(
-                NewForeignFuelFactoryReasoner(),
-                SupplyForeignFuelFactoryReasoner(),
-                RemoveForeignFuelFactoryReasoner(),
-                NewForeignResourceFactoryReasoner(),
-                SupplyForeignResourceFactoryReasoner(),
-                RemoveForeignResourceFactoryReasoner(),
+                NewForeignFuelFactoryReasoner(random),
+                SupplyForeignFuelFactoryReasoner(random),
+                RemoveForeignFuelFactoryReasoner(random),
+                NewForeignResourceFactoryReasoner(random),
+                SupplyForeignResourceFactoryReasoner(random),
+                RemoveForeignResourceFactoryReasoner(random),
             )
         } else {
             listOf(
-                RemoveForeignFuelFactoryReasoner(),
-                RemoveForeignResourceFactoryReasoner(),
+                RemoveForeignFuelFactoryReasoner(random),
+                RemoveForeignResourceFactoryReasoner(random),
             )
         }
     }
 }
 
-class NewForeignFuelFactoryReasoner : SequenceReasoner() {
+class NewForeignFuelFactoryReasoner(random: Random) : SequenceReasoner(random) {
     override fun getSubNodeList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<AINode> {
         val neighborList: List<PlayerData> = planDataAtPlayer.universeData3DAtPlayer
-            .getNeighbourInCube(2).shuffled(Rand.rand())
+            .getNeighbourInCube(2).shuffled(random)
 
         // Only use 0.05 of production fuel to construct foreign factory
         planState.fillForeignFactoryFuel(0.05, planDataAtPlayer)
 
         return neighborList.map { playerData ->
-            NewForeignFuelFactoryAtPlayerReasoner(playerData.playerId)
+            NewForeignFuelFactoryAtPlayerReasoner(playerData.playerId, random)
         }
     }
 }
 
 class NewForeignFuelFactoryAtPlayerReasoner(
     private val playerId: Int,
-) : SequenceReasoner() {
+    random: Random
+) : SequenceReasoner(random) {
     override fun getSubNodeList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -99,11 +100,12 @@ class NewForeignFuelFactoryAtPlayerReasoner(
 
         return if (isTopLeader || canBuildAsSubordinate || canBuildAsForeignInvestor) {
             otherPlayerData.playerInternalData.popSystemData().carrierDataMap.keys.shuffled(
-                Rand.rand()
+                random
             ).map {
                 NewForeignFuelFactoryAtCarrierReasoner(
                     playerId = playerId,
                     carrierId = it,
+                    random,
                 )
             }
         } else {
@@ -119,7 +121,8 @@ class NewForeignFuelFactoryAtPlayerReasoner(
 class NewForeignFuelFactoryAtCarrierReasoner(
     private val playerId: Int,
     private val carrierId: Int,
-) : DualUtilityReasoner() {
+    random: Random,
+) : DualUtilityReasoner(random) {
     override fun getOptionList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -127,8 +130,9 @@ class NewForeignFuelFactoryAtCarrierReasoner(
         BuildForeignFuelFactoryOption(
             playerId = playerId,
             carrierId = carrierId,
+            random = random,
         ),
-        DoNothingDualUtilityOption(rank = 1, multiplier = 1.0, bonus = 1.0),
+        DoNothingDualUtilityOption(rank = 1, multiplier = 1.0, bonus = 1.0, random = random,),
     )
 }
 
@@ -138,7 +142,8 @@ class NewForeignFuelFactoryAtCarrierReasoner(
 class BuildForeignFuelFactoryOption(
     private val playerId: Int,
     private val carrierId: Int,
-) : DualUtilityOption() {
+    random: Random,
+) : DualUtilityOption(random) {
     // maximum fraction of fuel to be used to construct the foreign factory
     private val maxFuelFraction: Double = 0.1
 
@@ -230,26 +235,27 @@ class BuildForeignFuelFactoryOption(
     }
 }
 
-class SupplyForeignFuelFactoryReasoner : SequenceReasoner() {
+class SupplyForeignFuelFactoryReasoner(random: Random) : SequenceReasoner(random) {
     override fun getSubNodeList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<AINode> {
         val neighborList: List<PlayerData> = planDataAtPlayer.universeData3DAtPlayer
-            .getNeighbourInCube(2).shuffled(Rand.rand())
+            .getNeighbourInCube(2).shuffled(random)
 
         // Only use 0.05 of production fuel to supply foreign factory
         planState.fillForeignFactoryFuel(0.05, planDataAtPlayer)
 
         return neighborList.map { playerData ->
-            SupplyForeignFuelFactoryAtPlayerReasoner(playerData.playerId)
+            SupplyForeignFuelFactoryAtPlayerReasoner(playerData.playerId, random)
         }
     }
 }
 
 class SupplyForeignFuelFactoryAtPlayerReasoner(
     private val playerId: Int,
-) : SequenceReasoner() {
+    random: Random
+) : SequenceReasoner(random) {
     override fun getSubNodeList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -257,11 +263,12 @@ class SupplyForeignFuelFactoryAtPlayerReasoner(
         val otherPlayerData: PlayerData = planDataAtPlayer.universeData3DAtPlayer.get(playerId)
 
         return otherPlayerData.playerInternalData.popSystemData().carrierDataMap.keys.shuffled(
-            Rand.rand()
+            random
         ).map {
             SupplyForeignFuelFactoryAtCarrierReasoner(
                 playerId = playerId,
                 carrierId = it,
+                random = random,
             )
         }
     }
@@ -274,7 +281,8 @@ class SupplyForeignFuelFactoryAtPlayerReasoner(
 class SupplyForeignFuelFactoryAtCarrierReasoner(
     private val playerId: Int,
     private val carrierId: Int,
-) : SequenceReasoner() {
+    random: Random,
+) : SequenceReasoner(random) {
     override fun getSubNodeList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -283,11 +291,12 @@ class SupplyForeignFuelFactoryAtCarrierReasoner(
             .popSystemData().carrierDataMap.getValue(carrierId).allPopData.labourerPopData
             .fuelFactoryMap.filter {
                 it.value.ownerPlayerId == planDataAtPlayer.getCurrentMutablePlayerData().playerId
-            }.keys.shuffled(Rand.rand()).map {
+            }.keys.shuffled(random).map {
                 SupplyOwnedForeignFuelFactoryReasoner(
                     playerId = playerId,
                     carrierId = carrierId,
                     fuelFactoryId = it,
+                    random = random,
                 )
             }
     }
@@ -297,7 +306,8 @@ class SupplyOwnedForeignFuelFactoryReasoner(
     private val playerId: Int,
     private val carrierId: Int,
     private val fuelFactoryId: Int,
-) : DualUtilityReasoner() {
+    random: Random,
+) : DualUtilityReasoner(random) {
     override fun getOptionList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -306,8 +316,14 @@ class SupplyOwnedForeignFuelFactoryReasoner(
             playerId = playerId,
             carrierId = carrierId,
             fuelFactoryId = fuelFactoryId,
+            random = random,
         ),
-        DoNothingDualUtilityOption(rank = 1, multiplier = 1.0, bonus = 1.0)
+        DoNothingDualUtilityOption(
+            rank = 1,
+            multiplier = 1.0,
+            bonus = 1.0,
+            random = random,
+        )
     )
 }
 
@@ -315,7 +331,8 @@ class SupplyOwnedForeignFuelFactoryOption(
     private val playerId: Int,
     private val carrierId: Int,
     private val fuelFactoryId: Int,
-) : DualUtilityOption() {
+    random: Random,
+) : DualUtilityOption(random) {
     override fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -356,23 +373,24 @@ class SupplyOwnedForeignFuelFactoryOption(
     }
 }
 
-class RemoveForeignFuelFactoryReasoner : SequenceReasoner() {
+class RemoveForeignFuelFactoryReasoner(random: Random) : SequenceReasoner(random) {
     override fun getSubNodeList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<AINode> {
         val neighborList: List<PlayerData> = planDataAtPlayer.universeData3DAtPlayer
-            .getNeighbourInCube(2).shuffled(Rand.rand())
+            .getNeighbourInCube(2).shuffled(random)
 
         return neighborList.map { playerData ->
-            RemoveForeignFuelFactoryAtPlayerReasoner(playerData.playerId)
+            RemoveForeignFuelFactoryAtPlayerReasoner(playerData.playerId, random)
         }
     }
 }
 
 class RemoveForeignFuelFactoryAtPlayerReasoner(
     private val playerId: Int,
-) : SequenceReasoner() {
+    random: Random
+) : SequenceReasoner(random) {
     override fun getSubNodeList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -380,11 +398,12 @@ class RemoveForeignFuelFactoryAtPlayerReasoner(
         val otherPlayerData: PlayerData = planDataAtPlayer.universeData3DAtPlayer.get(playerId)
 
         return otherPlayerData.playerInternalData.popSystemData().carrierDataMap.keys.shuffled(
-            Rand.rand()
+            random
         ).map {
             RemoveForeignFuelFactoryAtCarrierReasoner(
                 playerId = playerId,
                 carrierId = it,
+                random = random,
             )
         }
     }
@@ -397,7 +416,8 @@ class RemoveForeignFuelFactoryAtPlayerReasoner(
 class RemoveForeignFuelFactoryAtCarrierReasoner(
     private val playerId: Int,
     private val carrierId: Int,
-) : SequenceReasoner() {
+    random: Random,
+) : SequenceReasoner(random) {
     override fun getSubNodeList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -406,11 +426,12 @@ class RemoveForeignFuelFactoryAtCarrierReasoner(
             .popSystemData().carrierDataMap.getValue(carrierId).allPopData.labourerPopData
             .fuelFactoryMap.filter {
                 it.value.ownerPlayerId == planDataAtPlayer.getCurrentMutablePlayerData().playerId
-            }.keys.shuffled(Rand.rand()).map {
+            }.keys.shuffled(random).map {
                 RemoveOwnedForeignFuelFactoryReasoner(
                     playerId = playerId,
                     carrierId = carrierId,
                     fuelFactoryId = it,
+                    random = random,
                 )
             }
     }
@@ -420,7 +441,8 @@ class RemoveOwnedForeignFuelFactoryReasoner(
     private val playerId: Int,
     private val carrierId: Int,
     private val fuelFactoryId: Int,
-) : DualUtilityReasoner() {
+    random: Random,
+) : DualUtilityReasoner(random) {
     override fun getOptionList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -429,8 +451,14 @@ class RemoveOwnedForeignFuelFactoryReasoner(
             playerId = playerId,
             carrierId = carrierId,
             fuelFactoryId = fuelFactoryId,
+            random = random,
         ),
-        DoNothingDualUtilityOption(rank = 1, multiplier = 1.0, bonus = 1.0)
+        DoNothingDualUtilityOption(
+            rank = 1,
+            multiplier = 1.0,
+            bonus = 1.0,
+            random = random,
+        )
     )
 }
 
@@ -438,7 +466,8 @@ class RemoveOwnedForeignFuelFactoryOption(
     private val playerId: Int,
     private val carrierId: Int,
     private val fuelFactoryId: Int,
-) : DualUtilityOption() {
+    random: Random,
+) : DualUtilityOption(random) {
     override fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -472,26 +501,27 @@ class RemoveOwnedForeignFuelFactoryOption(
     }
 }
 
-class NewForeignResourceFactoryReasoner : SequenceReasoner() {
+class NewForeignResourceFactoryReasoner(random: Random) : SequenceReasoner(random) {
     override fun getSubNodeList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<AINode> {
         val neighborList: List<PlayerData> = planDataAtPlayer.universeData3DAtPlayer
-            .getNeighbourInCube(2).shuffled(Rand.rand())
+            .getNeighbourInCube(2).shuffled(random)
 
         // Only use 0.05 of production fuel to construct foreign factory
         planState.fillForeignFactoryFuel(0.05, planDataAtPlayer)
 
         return neighborList.map { playerData ->
-            NewForeignResourceFactoryAtPlayerReasoner(playerData.playerId)
+            NewForeignResourceFactoryAtPlayerReasoner(playerData.playerId, random)
         }
     }
 }
 
 class NewForeignResourceFactoryAtPlayerReasoner(
     private val playerId: Int,
-) : SequenceReasoner() {
+    random: Random,
+) : SequenceReasoner(random) {
     override fun getSubNodeList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -512,13 +542,14 @@ class NewForeignResourceFactoryAtPlayerReasoner(
 
         return if (isTopLeader || canBuildAsSubordinate || canBuildAsForeignInvestor) {
             otherPlayerData.playerInternalData.popSystemData().carrierDataMap.keys.shuffled(
-                Rand.rand()
+                random
             ).map { carrierId ->
                 ResourceType.factoryResourceList.map { resourceType ->
                     NewForeignResourceFactoryAtCarrierReasoner(
                         playerId = playerId,
                         carrierId = carrierId,
                         resourceType = resourceType,
+                        random = random,
                     )
                 }
             }.flatten()
@@ -536,7 +567,8 @@ class NewForeignResourceFactoryAtCarrierReasoner(
     private val playerId: Int,
     private val carrierId: Int,
     private val resourceType: ResourceType,
-) : DualUtilityReasoner() {
+    random: Random,
+) : DualUtilityReasoner(random) {
     override fun getOptionList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -545,8 +577,14 @@ class NewForeignResourceFactoryAtCarrierReasoner(
             playerId = playerId,
             carrierId = carrierId,
             resourceType = resourceType,
+            random = random,
         ),
-        DoNothingDualUtilityOption(rank = 1, multiplier = 1.0, bonus = 1.0),
+        DoNothingDualUtilityOption(
+            rank = 1,
+            multiplier = 1.0,
+            bonus = 1.0,
+            random = random,
+        ),
     )
 }
 
@@ -557,7 +595,8 @@ class BuildForeignResourceFactoryOption(
     private val playerId: Int,
     private val carrierId: Int,
     private val resourceType: ResourceType,
-) : DualUtilityOption() {
+    random: Random,
+) : DualUtilityOption(random) {
     // maximum fraction of fuel to be used to construct the foreign factory
     private val maxFuelFraction: Double = 0.1
 
@@ -653,26 +692,27 @@ class BuildForeignResourceFactoryOption(
     }
 }
 
-class SupplyForeignResourceFactoryReasoner : SequenceReasoner() {
+class SupplyForeignResourceFactoryReasoner(random: Random) : SequenceReasoner(random) {
     override fun getSubNodeList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<AINode> {
         val neighborList: List<PlayerData> = planDataAtPlayer.universeData3DAtPlayer
-            .getNeighbourInCube(2).shuffled(Rand.rand())
+            .getNeighbourInCube(2).shuffled(random)
 
         // Only use 0.05 of production fuel to supply foreign factory
         planState.fillForeignFactoryFuel(0.05, planDataAtPlayer)
 
         return neighborList.map { playerData ->
-            SupplyForeignResourceFactoryAtPlayerReasoner(playerData.playerId)
+            SupplyForeignResourceFactoryAtPlayerReasoner(playerData.playerId, random)
         }
     }
 }
 
 class SupplyForeignResourceFactoryAtPlayerReasoner(
     private val playerId: Int,
-) : SequenceReasoner() {
+    random: Random,
+) : SequenceReasoner(random) {
     override fun getSubNodeList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -680,11 +720,12 @@ class SupplyForeignResourceFactoryAtPlayerReasoner(
         val otherPlayerData: PlayerData = planDataAtPlayer.universeData3DAtPlayer.get(playerId)
 
         return otherPlayerData.playerInternalData.popSystemData().carrierDataMap.keys.shuffled(
-            Rand.rand()
+            random
         ).map {
             SupplyForeignResourceFactoryAtCarrierReasoner(
                 playerId = playerId,
                 carrierId = it,
+                random = random,
             )
         }
     }
@@ -697,7 +738,8 @@ class SupplyForeignResourceFactoryAtPlayerReasoner(
 class SupplyForeignResourceFactoryAtCarrierReasoner(
     private val playerId: Int,
     private val carrierId: Int,
-) : SequenceReasoner() {
+    random: Random,
+) : SequenceReasoner(random) {
     override fun getSubNodeList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -706,11 +748,12 @@ class SupplyForeignResourceFactoryAtCarrierReasoner(
             .popSystemData().carrierDataMap.getValue(carrierId).allPopData.labourerPopData
             .resourceFactoryMap.filter {
                 it.value.ownerPlayerId == planDataAtPlayer.getCurrentMutablePlayerData().playerId
-            }.keys.shuffled(Rand.rand()).map {
+            }.keys.shuffled(random).map {
                 SupplyOwnedForeignResourceFactoryReasoner(
                     playerId = playerId,
                     carrierId = carrierId,
                     resourceFactoryId = it,
+                    random = random,
                 )
             }
     }
@@ -720,7 +763,8 @@ class SupplyOwnedForeignResourceFactoryReasoner(
     private val playerId: Int,
     private val carrierId: Int,
     private val resourceFactoryId: Int,
-) : DualUtilityReasoner() {
+    random: Random,
+) : DualUtilityReasoner(random) {
     override fun getOptionList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -729,8 +773,14 @@ class SupplyOwnedForeignResourceFactoryReasoner(
             playerId = playerId,
             carrierId = carrierId,
             resourceFactoryId = resourceFactoryId,
+            random = random,
         ),
-        DoNothingDualUtilityOption(rank = 1, multiplier = 1.0, bonus = 1.0)
+        DoNothingDualUtilityOption(
+            rank = 1,
+            multiplier = 1.0,
+            bonus = 1.0,
+            random = random,
+        )
     )
 }
 
@@ -738,7 +788,8 @@ class SupplyOwnedForeignResourceFactoryOption(
     private val playerId: Int,
     private val carrierId: Int,
     private val resourceFactoryId: Int,
-) : DualUtilityOption() {
+    random: Random,
+) : DualUtilityOption(random) {
     override fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -781,23 +832,24 @@ class SupplyOwnedForeignResourceFactoryOption(
 }
 
 
-class RemoveForeignResourceFactoryReasoner : SequenceReasoner() {
+class RemoveForeignResourceFactoryReasoner(random: Random) : SequenceReasoner(random) {
     override fun getSubNodeList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<AINode> {
         val neighborList: List<PlayerData> = planDataAtPlayer.universeData3DAtPlayer
-            .getNeighbourInCube(2).shuffled(Rand.rand())
+            .getNeighbourInCube(2).shuffled(random)
 
         return neighborList.map { playerData ->
-            RemoveForeignResourceFactoryAtPlayerReasoner(playerData.playerId)
+            RemoveForeignResourceFactoryAtPlayerReasoner(playerData.playerId, random)
         }
     }
 }
 
 class RemoveForeignResourceFactoryAtPlayerReasoner(
     private val playerId: Int,
-) : SequenceReasoner() {
+    random: Random,
+) : SequenceReasoner(random) {
     override fun getSubNodeList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -805,11 +857,12 @@ class RemoveForeignResourceFactoryAtPlayerReasoner(
         val otherPlayerData: PlayerData = planDataAtPlayer.universeData3DAtPlayer.get(playerId)
 
         return otherPlayerData.playerInternalData.popSystemData().carrierDataMap.keys.shuffled(
-            Rand.rand()
+            random
         ).map {
             RemoveForeignResourceFactoryAtCarrierReasoner(
                 playerId = playerId,
                 carrierId = it,
+                random = random,
             )
         }
     }
@@ -821,7 +874,8 @@ class RemoveForeignResourceFactoryAtPlayerReasoner(
 class RemoveForeignResourceFactoryAtCarrierReasoner(
     private val playerId: Int,
     private val carrierId: Int,
-) : SequenceReasoner() {
+    random: Random
+) : SequenceReasoner(random) {
     override fun getSubNodeList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -830,11 +884,12 @@ class RemoveForeignResourceFactoryAtCarrierReasoner(
             .popSystemData().carrierDataMap.getValue(carrierId).allPopData.labourerPopData
             .resourceFactoryMap.filter {
                 it.value.ownerPlayerId == planDataAtPlayer.getCurrentMutablePlayerData().playerId
-            }.keys.shuffled(Rand.rand()).map {
+            }.keys.shuffled(random).map {
                 RemoveOwnedForeignResourceFactoryReasoner(
                     playerId = playerId,
                     carrierId = carrierId,
                     resourceFactoryId = it,
+                    random = random,
                 )
             }
     }
@@ -844,7 +899,8 @@ class RemoveOwnedForeignResourceFactoryReasoner(
     private val playerId: Int,
     private val carrierId: Int,
     private val resourceFactoryId: Int,
-) : DualUtilityReasoner() {
+    random: Random
+) : DualUtilityReasoner(random) {
     override fun getOptionList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -853,8 +909,14 @@ class RemoveOwnedForeignResourceFactoryReasoner(
             playerId = playerId,
             carrierId = carrierId,
             resourceFactoryId = resourceFactoryId,
+            random = random,
         ),
-        DoNothingDualUtilityOption(rank = 1, multiplier = 1.0, bonus = 1.0)
+        DoNothingDualUtilityOption(
+            rank = 1,
+            multiplier = 1.0,
+            bonus = 1.0,
+            random = random,
+        )
     )
 }
 
@@ -862,7 +924,8 @@ class RemoveOwnedForeignResourceFactoryOption(
     private val playerId: Int,
     private val carrierId: Int,
     private val resourceFactoryId: Int,
-) : DualUtilityOption() {
+    random: Random,
+) : DualUtilityOption(random) {
     override fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState

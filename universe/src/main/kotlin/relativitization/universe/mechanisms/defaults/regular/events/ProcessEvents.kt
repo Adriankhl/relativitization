@@ -7,6 +7,7 @@ import relativitization.universe.data.commands.Command
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.mechanisms.Mechanism
 import relativitization.universe.utils.RelativitizationLogManager
+import kotlin.random.Random
 
 object ProcessEvents : Mechanism() {
     private val logger = RelativitizationLogManager.getLogger()
@@ -14,7 +15,8 @@ object ProcessEvents : Mechanism() {
         mutablePlayerData: MutablePlayerData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
         universeSettings: UniverseSettings,
-        universeGlobalData: UniverseGlobalData
+        universeGlobalData: UniverseGlobalData,
+        random: Random
     ): List<Command> {
 
         // Remove if the event should be canceled, before the event generate any commands
@@ -68,7 +70,8 @@ object ProcessEvents : Mechanism() {
                 val defaultChoice: Int = it.event.defaultChoice(
                     mutablePlayerData,
                     universeData3DAtPlayer,
-                    universeSettings
+                    universeSettings,
+                    random,
                 )
 
                 if (choiceMap.containsKey(defaultChoice)) {

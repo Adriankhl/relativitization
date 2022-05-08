@@ -4,6 +4,7 @@ import relativitization.universe.data.UniverseData
 import relativitization.universe.data.global.MutableUniverseGlobalData
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.utils.RelativitizationLogManager
+import kotlin.random.Random
 
 abstract class GlobalMechanism {
     /**
@@ -15,6 +16,7 @@ abstract class GlobalMechanism {
     abstract fun updateGlobalData(
         mutableUniverseGlobalData: MutableUniverseGlobalData,
         universeData: UniverseData,
+        random: Random,
     )
 }
 
@@ -35,7 +37,8 @@ object GlobalMechanismCollection {
         }
 
     fun globalProcess(
-        universeData: UniverseData
+        universeData: UniverseData,
+        random: Random,
     ) {
         val mutableUniverseGlobalData: MutableUniverseGlobalData =
             DataSerializer.copy(universeData.universeGlobalData)
@@ -44,7 +47,11 @@ object GlobalMechanismCollection {
             logger.error("No global mechanism name matched, use empty mechanism")
             EmptyGlobalMechanismList
         }.globalMechanismList.forEach { globalMechanism ->
-            globalMechanism.updateGlobalData(mutableUniverseGlobalData, universeData)
+            globalMechanism.updateGlobalData(
+                mutableUniverseGlobalData = mutableUniverseGlobalData,
+                universeData = universeData,
+                random = random,
+            )
         }
 
         universeData.universeGlobalData = DataSerializer.copy(mutableUniverseGlobalData)

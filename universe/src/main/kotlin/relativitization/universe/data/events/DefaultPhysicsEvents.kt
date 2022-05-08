@@ -15,6 +15,7 @@ import relativitization.universe.utils.I18NString
 import relativitization.universe.utils.IntString
 import relativitization.universe.utils.NormalString
 import relativitization.universe.utils.RelativitizationLogManager
+import kotlin.random.Random
 
 /**
  * Automatically change player velocity to move to a location
@@ -161,7 +162,8 @@ data class MoveToDouble3DEvent(
     override fun defaultChoice(
         mutablePlayerData: MutablePlayerData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
-        universeSettings: UniverseSettings
+        universeSettings: UniverseSettings,
+        random: Random
     ): Int {
         return if (fromId == mutablePlayerData.playerId) {
             0

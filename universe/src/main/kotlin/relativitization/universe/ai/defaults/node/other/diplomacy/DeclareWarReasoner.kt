@@ -16,32 +16,34 @@ import relativitization.universe.data.commands.DeclareIndependenceToTopLeaderCom
 import relativitization.universe.data.commands.DeclareWarCommand
 import relativitization.universe.maths.physics.Int3D
 import relativitization.universe.maths.physics.Intervals
+import kotlin.random.Random
 
-class DeclareWarReasoner : SequenceReasoner() {
+class DeclareWarReasoner(random: Random) : SequenceReasoner(random) {
     override fun getSubNodeList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<AINode> = listOf(
-        DeclareIndependenceReasoner(),
-        SpaceConflictReasoner(),
+        DeclareIndependenceReasoner(random),
+        SpaceConflictReasoner(random),
     )
 }
 
 /**
  * Declare war due to space conflict
  */
-class SpaceConflictReasoner : DualUtilityReasoner() {
+class SpaceConflictReasoner(random: Random) : DualUtilityReasoner(random) {
     override fun getOptionList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<DualUtilityOption> {
 
-        val subordinateInt3DSet: Set<Int3D> = planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData
-            .subordinateIdSet.filter {
-                planDataAtPlayer.universeData3DAtPlayer.playerDataMap.containsKey(it)
-            }.map {
-                planDataAtPlayer.universeData3DAtPlayer.get(it).int4D.toInt3D()
-            }.toSet()
+        val subordinateInt3DSet: Set<Int3D> =
+            planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData
+                .subordinateIdSet.filter {
+                    planDataAtPlayer.universeData3DAtPlayer.playerDataMap.containsKey(it)
+                }.map {
+                    planDataAtPlayer.universeData3DAtPlayer.get(it).int4D.toInt3D()
+                }.toSet()
 
         val allNeighbourInt3DSet: Set<Int3D> = subordinateInt3DSet.flatMap {
             it.getInt3DCubeList(
@@ -57,7 +59,8 @@ class SpaceConflictReasoner : DualUtilityReasoner() {
 
         val currentPlayer: MutablePlayerData = planDataAtPlayer.getCurrentMutablePlayerData()
 
-        val selfMilitaryScore: Double = MilitaryScore.compute(currentPlayer.playerId, planDataAtPlayer)
+        val selfMilitaryScore: Double =
+            MilitaryScore.compute(currentPlayer.playerId, planDataAtPlayer)
 
         // Potential player in conflict
         val conflictPlayerIdSet: Set<Int> = allNeighbourInt3DSet.flatMap {
@@ -66,24 +69,30 @@ class SpaceConflictReasoner : DualUtilityReasoner() {
             !currentPlayer.isLeaderOrSelf(it) && !currentPlayer.isSubOrdinate(it)
         }.toSet()
 
-        val conflictPlayerToTopLeaderIdMap: Map<Int, Int> = conflictPlayerIdSet.associateWith { id ->
-            planDataAtPlayer.universeData3DAtPlayer.get(id).getLeaderAndSelfIdList().first { leaderId ->
-                !currentPlayer.isLeaderOrSelf(leaderId) &&
-                        !currentPlayer.isSubOrdinate(leaderId) &&
-                        planDataAtPlayer.universeData3DAtPlayer.playerDataMap.containsKey(leaderId)
+        val conflictPlayerToTopLeaderIdMap: Map<Int, Int> =
+            conflictPlayerIdSet.associateWith { id ->
+                planDataAtPlayer.universeData3DAtPlayer.get(id).getLeaderAndSelfIdList()
+                    .first { leaderId ->
+                        !currentPlayer.isLeaderOrSelf(leaderId) &&
+                                !currentPlayer.isSubOrdinate(leaderId) &&
+                                planDataAtPlayer.universeData3DAtPlayer.playerDataMap.containsKey(
+                                    leaderId
+                                )
+                    }
             }
-        }
 
-        val conflictPlayerTopLeaderMilitaryScoreMap: Map<Int, Double> = conflictPlayerToTopLeaderIdMap.values.toSet()
-            .associateWith {
-                MilitaryScore.compute(it, planDataAtPlayer)
-            }
+        val conflictPlayerTopLeaderMilitaryScoreMap: Map<Int, Double> =
+            conflictPlayerToTopLeaderIdMap.values.toSet()
+                .associateWith {
+                    MilitaryScore.compute(it, planDataAtPlayer)
+                }
 
         val declareWarOptionList: List<SpaceConflictDeclareWarOption> = conflictPlayerIdSet.map {
             val targetTopLeaderId: Int = conflictPlayerToTopLeaderIdMap.getValue(it)
-            val targetPlayerTopLeaderMilitaryScore: Double = conflictPlayerTopLeaderMilitaryScoreMap.getValue(
-                targetTopLeaderId
-            )
+            val targetPlayerTopLeaderMilitaryScore: Double =
+                conflictPlayerTopLeaderMilitaryScoreMap.getValue(
+                    targetTopLeaderId
+                )
 
             val targetPlayerId: Int = if (selfMilitaryScore > targetPlayerTopLeaderMilitaryScore) {
                 targetTopLeaderId
@@ -96,12 +105,18 @@ class SpaceConflictReasoner : DualUtilityReasoner() {
                 selfMilitaryScore = selfMilitaryScore,
                 targetPlayerTopLeaderMilitaryScore = conflictPlayerTopLeaderMilitaryScoreMap.getValue(
                     targetTopLeaderId
-                )
+                ),
+                random = random,
             )
         }
 
         return declareWarOptionList + listOf(
-            DoNothingDualUtilityOption(rank = 1, multiplier = 1.0, bonus = 1.0)
+            DoNothingDualUtilityOption(
+                rank = 1,
+                multiplier = 1.0,
+                bonus = 1.0,
+                random = random,
+            )
         )
     }
 }
@@ -117,7 +132,8 @@ class SpaceConflictDeclareWarOption(
     private val targetPlayerId: Int,
     private val selfMilitaryScore: Double,
     private val targetPlayerTopLeaderMilitaryScore: Double,
-) : DualUtilityOption() {
+    random: Random
+) : DualUtilityOption(random) {
     override fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -181,23 +197,26 @@ class SpaceConflictDeclareWarOption(
     }
 }
 
-class DeclareIndependenceReasoner : DualUtilityReasoner() {
+class DeclareIndependenceReasoner(random: Random) : DualUtilityReasoner(random) {
     override fun getOptionList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<DualUtilityOption> {
-        val hasDirectLeader: Boolean = planDataAtPlayer.universeData3DAtPlayer.playerDataMap.containsKey(
-            planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData.directLeaderId,
-        )
+        val hasDirectLeader: Boolean =
+            planDataAtPlayer.universeData3DAtPlayer.playerDataMap.containsKey(
+                planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData.directLeaderId,
+            )
 
-        val hasTopLeader: Boolean = planDataAtPlayer.universeData3DAtPlayer.playerDataMap.containsKey(
-            planDataAtPlayer.getCurrentMutablePlayerData().topLeaderId()
-        )
+        val hasTopLeader: Boolean =
+            planDataAtPlayer.universeData3DAtPlayer.playerDataMap.containsKey(
+                planDataAtPlayer.getCurrentMutablePlayerData().topLeaderId()
+            )
 
         val isTopLeader: Boolean = planDataAtPlayer.getCurrentMutablePlayerData().isTopLeader()
 
-        val isTopLeaderDirectLeader: Boolean = planDataAtPlayer.getCurrentMutablePlayerData().topLeaderId() ==
-                planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData.directLeaderId
+        val isTopLeaderDirectLeader: Boolean =
+            planDataAtPlayer.getCurrentMutablePlayerData().topLeaderId() ==
+                    planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData.directLeaderId
 
         val selfMilitaryScore: Double = MilitaryScore.compute(
             planDataAtPlayer.getCurrentMutablePlayerData().playerId,
@@ -212,7 +231,13 @@ class DeclareIndependenceReasoner : DualUtilityReasoner() {
                 planDataAtPlayer,
             )
 
-            listOf(DeclareIndependenceToDirectLeaderOption(selfMilitaryScore, directLeaderExcludeSelfMilitaryScore))
+            listOf(
+                DeclareIndependenceToDirectLeaderOption(
+                    selfMilitaryScore = selfMilitaryScore,
+                    targetMilitaryScore = directLeaderExcludeSelfMilitaryScore,
+                    random = random,
+                )
+            )
         } else {
             listOf()
         }
@@ -225,13 +250,24 @@ class DeclareIndependenceReasoner : DualUtilityReasoner() {
                     planDataAtPlayer,
                 )
 
-                listOf(DeclareIndependenceToTopLeaderOption(selfMilitaryScore, topLeaderExcludeSelfMilitaryScore))
+                listOf(
+                    DeclareIndependenceToTopLeaderOption(
+                        selfMilitaryScore = selfMilitaryScore,
+                        targetMilitaryScore = topLeaderExcludeSelfMilitaryScore,
+                        random = random,
+                    )
+                )
             } else {
                 listOf()
             }
 
         return declareIndependenceToDirectLeaderOptionList + declareIndependenceToTopLeaderOptionList + listOf(
-            DoNothingDualUtilityOption(rank = 1, multiplier = 1.0, bonus = 1.0)
+            DoNothingDualUtilityOption(
+                rank = 1,
+                multiplier = 1.0,
+                bonus = 1.0,
+                random = random,
+            )
         )
     }
 }
@@ -242,7 +278,8 @@ class DeclareIndependenceReasoner : DualUtilityReasoner() {
 class DeclareIndependenceToDirectLeaderOption(
     private val selfMilitaryScore: Double,
     private val targetMilitaryScore: Double,
-) : DualUtilityOption() {
+    random: Random,
+) : DualUtilityOption(random) {
     override fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -325,7 +362,8 @@ class DeclareIndependenceToDirectLeaderOption(
 class DeclareIndependenceToTopLeaderOption(
     private val selfMilitaryScore: Double,
     private val targetMilitaryScore: Double,
-) : DualUtilityOption() {
+    random: Random,
+) : DualUtilityOption(random) {
     override fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState

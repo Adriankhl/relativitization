@@ -9,13 +9,15 @@ import relativitization.universe.data.components.defaults.physics.MutableFuelRes
 import relativitization.universe.data.components.physicsData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.mechanisms.Mechanism
+import kotlin.random.Random
 
 object BalanceFuel : Mechanism() {
     override fun process(
         mutablePlayerData: MutablePlayerData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
         universeSettings: UniverseSettings,
-        universeGlobalData: UniverseGlobalData
+        universeGlobalData: UniverseGlobalData,
+        random: Random
     ): List<Command> {
         val target: MutableFuelRestMassTargetProportionData = mutablePlayerData.playerInternalData.physicsData()
             .fuelRestMassTargetProportionData

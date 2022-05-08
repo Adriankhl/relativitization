@@ -9,8 +9,9 @@ import relativitization.universe.data.PlayerData
 import relativitization.universe.data.components.aiData
 import relativitization.universe.maths.physics.Int3D
 import relativitization.universe.maths.physics.Intervals
+import kotlin.random.Random
 
-class DirectSubordinateReasoner : SequenceReasoner() {
+class DirectSubordinateReasoner(random: Random) : SequenceReasoner(random) {
     override fun getSubNodeList(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState): List<AINode> {
         val directSubordinateSet: Set<Int> = planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData
             .directSubordinateIdSet
@@ -47,7 +48,7 @@ class DirectSubordinateReasoner : SequenceReasoner() {
 
         return directSubordinateToConsiderList.flatMap {
             listOf(
-                DirectSubordinateMovementReasoner(it),
+                DirectSubordinateMovementReasoner(it, random),
             )
         }
     }

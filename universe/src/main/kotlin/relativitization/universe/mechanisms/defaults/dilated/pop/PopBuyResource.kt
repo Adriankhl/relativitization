@@ -18,6 +18,7 @@ import relativitization.universe.maths.sampling.WeightedReservoir
 import relativitization.universe.mechanisms.Mechanism
 import kotlin.math.min
 import kotlin.math.pow
+import kotlin.random.Random
 
 /**
  * Pop buy resource to fulfill their desire
@@ -29,7 +30,8 @@ object PopBuyResource : Mechanism() {
         mutablePlayerData: MutablePlayerData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
         universeSettings: UniverseSettings,
-        universeGlobalData: UniverseGlobalData
+        universeGlobalData: UniverseGlobalData,
+        random: Random
     ): List<Command> {
         val neighborList: List<PlayerData> = universeData3DAtPlayer.getNeighbourInCube(2)
 
@@ -56,6 +58,7 @@ object PopBuyResource : Mechanism() {
                             economyData = mutablePlayerData.playerInternalData.economyData(),
                             playerScienceData = mutablePlayerData.playerInternalData.playerScienceData(),
                             neighborList = neighborList,
+                            random = random,
                         )
                     }
                 }
@@ -81,6 +84,7 @@ object PopBuyResource : Mechanism() {
         economyData: MutableEconomyData,
         playerScienceData: MutablePlayerScienceData,
         neighborList: List<PlayerData>,
+        random: Random,
     ): List<PopBuyResourceCommand> {
         // Desire of this resource
         val desireAmount: Double =
@@ -163,6 +167,7 @@ object PopBuyResource : Mechanism() {
                         thisEconomyData = economyData,
                         thisPlayerScienceData = playerScienceData,
                         otherPlayerData = otherPlayer,
+                        random = random,
                     )
                 )
             }
@@ -443,6 +448,7 @@ object PopBuyResource : Mechanism() {
         thisEconomyData: MutableEconomyData,
         thisPlayerScienceData: MutablePlayerScienceData,
         otherPlayerData: PlayerData,
+        random: Random,
     ): PopBuyResourceCommand {
         // Compute fuel and resource logistic loss by distance
         val distance: Int = Intervals.intDistance(thisInt4D, otherPlayerData.int4D)
@@ -517,8 +523,9 @@ object PopBuyResource : Mechanism() {
 
         // Pick carrier id by service pop
         val targetCarrierId: Int = WeightedReservoir.aRes(
-            1,
-            otherPlayerData.playerInternalData.popSystemData().carrierDataMap.keys.toList(),
+            numItem = 1,
+            itemList = otherPlayerData.playerInternalData.popSystemData().carrierDataMap.keys.toList(),
+            random = random,
         ) {
             otherPlayerData.playerInternalData.popSystemData().carrierDataMap.getValue(it)
                 .allPopData.servicePopData.commonPopData.adultPopulation

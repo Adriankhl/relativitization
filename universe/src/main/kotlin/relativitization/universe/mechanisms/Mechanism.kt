@@ -7,6 +7,7 @@ import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.utils.RelativitizationLogManager
+import kotlin.random.Random
 
 abstract class Mechanism {
 
@@ -21,7 +22,8 @@ abstract class Mechanism {
         mutablePlayerData: MutablePlayerData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
         universeSettings: UniverseSettings,
-        universeGlobalData: UniverseGlobalData
+        universeGlobalData: UniverseGlobalData,
+        random: Random,
     ): List<Command>
 }
 
@@ -49,6 +51,7 @@ object MechanismCollection {
         mutablePlayerData: MutablePlayerData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
         universeData: UniverseData,
+        random: Random,
     ): List<Command> {
         val mechanismLists: MechanismLists =
             mechanismListsMap.getOrElse(universeData.universeSettings.mechanismCollectionName) {
@@ -67,7 +70,8 @@ object MechanismCollection {
                         mutablePlayerData,
                         universeData3DAtPlayer,
                         universeData.universeSettings,
-                        universeData.universeGlobalData
+                        universeData.universeGlobalData,
+                        random,
                     )
                 } else {
                     logger.debug(
@@ -91,7 +95,8 @@ object MechanismCollection {
                             mutablePlayerData,
                             universeData3DAtPlayer,
                             universeData.universeSettings,
-                            universeData.universeGlobalData
+                            universeData.universeGlobalData,
+                            random,
                         )
                     } else {
                         logger.debug("Player ${mutablePlayerData.playerId} is not alive, dilated mechanism not processed")

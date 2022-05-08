@@ -7,7 +7,7 @@ import relativitization.universe.data.PlayerInternalData
 import relativitization.universe.data.components.defaults.popsystem.*
 import relativitization.universe.data.components.defaults.popsystem.pop.PopType
 import relativitization.universe.maths.collection.ListFind
-import relativitization.universe.maths.random.Rand
+import kotlin.random.Random
 
 @Serializable
 @SerialName("PopSystemData")
@@ -155,8 +155,8 @@ data class MutablePopSystemData(
         return ListFind.minMissing(carrierDataMap.keys.toList(), 0)
     }
 
-    fun addRandomStellarSystem() {
-        val coreRestMass = Rand.rand().nextDouble(1.0e30, 2.5e30)
+    fun addRandomStellarSystem(random: Random) {
+        val coreRestMass = random.nextDouble(1.0e30, 2.5e30)
         val newCarrierInternalData = MutableCarrierInternalData(
             coreRestMass = coreRestMass,
             maxMovementDeltaFuelRestMass = 0.0,

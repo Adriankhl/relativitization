@@ -16,24 +16,33 @@ import relativitization.universe.data.components.popSystemData
 import relativitization.universe.data.events.MoveToDouble3DEvent
 import relativitization.universe.maths.physics.Intervals
 import relativitization.universe.maths.physics.Movement
-import relativitization.universe.maths.random.Rand
 import kotlin.math.min
+import kotlin.random.Random
 
-class MovementReasoner : DualUtilityReasoner() {
+class MovementReasoner(random: Random) : DualUtilityReasoner(random) {
     override fun getOptionList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<DualUtilityOption> = listOf(
-        MoveToLowerDensityCubeOption(),
-        MoveToEnemyOption(),
-        DoNothingDualUtilityOption(rank = 1, multiplier = 1.0, bonus = 1.0)
+        MoveToLowerDensityCubeOption(
+            random = random,
+        ),
+        MoveToEnemyOption(
+            random = random,
+        ),
+        DoNothingDualUtilityOption(
+            rank = 1,
+            multiplier = 1.0,
+            bonus = 1.0,
+            random = random,
+        )
     )
 }
 
 /**
  * Move to a neighbouring cube with lower density
  */
-class MoveToLowerDensityCubeOption : DualUtilityOption() {
+class MoveToLowerDensityCubeOption(random: Random) : DualUtilityOption(random) {
     override fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -86,7 +95,7 @@ class MoveToLowerDensityCubeOption : DualUtilityOption() {
             populationAtCube < otherPopulation
         }
         if (neighborCubeWithLowerPopulation.isNotEmpty()) {
-            val targetInt3D: Int3D = neighborCubeWithLowerPopulation[Rand.rand().nextInt(
+            val targetInt3D: Int3D = neighborCubeWithLowerPopulation[random.nextInt(
                 0,
                 neighborCubeWithLowerPopulation.size
             )]
@@ -111,7 +120,7 @@ class MoveToLowerDensityCubeOption : DualUtilityOption() {
 /**
  * Move to a cube with enemy
  */
-class MoveToEnemyOption : DualUtilityOption() {
+class MoveToEnemyOption(random: Random) : DualUtilityOption(random) {
     override fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -174,7 +183,7 @@ class MoveToEnemyOption : DualUtilityOption() {
                 it == closestDistance
             }.keys.toList()
 
-            val enemyId: Int = closestEnemyList[Rand.rand().nextInt(closestEnemyList.size)]
+            val enemyId: Int = closestEnemyList[random.nextInt(closestEnemyList.size)]
 
             val enemy: PlayerData = planDataAtPlayer.universeData3DAtPlayer.get(enemyId)
 

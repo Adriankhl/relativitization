@@ -6,32 +6,40 @@ import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.commands.AddEventCommand
 import relativitization.universe.data.components.diplomacyData
 import relativitization.universe.data.events.ProposePeaceEvent
+import kotlin.random.Random
 
-class ProposePeaceReasoner : SequenceReasoner() {
+class ProposePeaceReasoner(random: Random) : SequenceReasoner(random) {
     override fun getSubNodeList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<AINode> {
         return planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData.diplomacyData()
-            .relationData.selfWarDataMap.keys.map { ProposePeaceToPlayerReasoner(it) }
+            .relationData.selfWarDataMap.keys.map { ProposePeaceToPlayerReasoner(it, random) }
     }
 }
 
 class ProposePeaceToPlayerReasoner(
-    private val targetPlayerId: Int
-) : DualUtilityReasoner() {
+    private val targetPlayerId: Int,
+    random: Random,
+) : DualUtilityReasoner(random) {
     override fun getOptionList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<DualUtilityOption> = listOf(
-        ProposePeaceToPlayerOption(targetPlayerId),
-        DoNothingDualUtilityOption(rank = 1, multiplier = 1.0, bonus = 1.0)
+        ProposePeaceToPlayerOption(targetPlayerId, random = random,),
+        DoNothingDualUtilityOption(
+            rank = 1,
+            multiplier = 1.0,
+            bonus = 1.0,
+            random = random,
+        )
     )
 }
 
 class ProposePeaceToPlayerOption(
-    private val targetPlayerId: Int
-) : DualUtilityOption() {
+    private val targetPlayerId: Int,
+    random: Random,
+) : DualUtilityOption(random) {
     override fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState

@@ -10,6 +10,7 @@ import relativitization.universe.data.components.modifierData
 import relativitization.universe.data.components.popSystemData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.mechanisms.Mechanism
+import kotlin.random.Random
 
 /**
  * Clear data of players that are dead as observed by this player
@@ -20,7 +21,8 @@ object ClearDeadPlayer : Mechanism() {
         mutablePlayerData: MutablePlayerData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
         universeSettings: UniverseSettings,
-        universeGlobalData: UniverseGlobalData
+        universeGlobalData: UniverseGlobalData,
+        random: Random
     ): List<Command> {
 
         val allPlayerId: Set<Int> = universeData3DAtPlayer.playerDataMap.keys

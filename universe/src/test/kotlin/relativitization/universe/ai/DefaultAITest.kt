@@ -38,6 +38,7 @@ internal class DefaultAITest {
                 yDim = 10,
                 zDim = 3,
                 groupEdgeLength = 0.01,
+                randomSeed = 100L,
             )
         )
 

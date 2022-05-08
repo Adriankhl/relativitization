@@ -2,7 +2,6 @@ package relativitization.universe.ai.defaults.node.self.carrier
 
 import relativitization.universe.ai.defaults.consideration.building.SufficientLabourerEmploymentConsideration
 import relativitization.universe.ai.defaults.consideration.carrier.NumberOfSpaceShipConsideration
-import relativitization.universe.ai.defaults.consideration.carrier.SufficientPopulationRatioConsideration
 import relativitization.universe.ai.defaults.consideration.fuel.SufficientProductionFuelConsideration
 import relativitization.universe.ai.defaults.utils.*
 import relativitization.universe.data.PlanDataAtPlayer
@@ -12,21 +11,27 @@ import relativitization.universe.data.components.defaults.science.application.Mu
 import relativitization.universe.data.components.physicsData
 import relativitization.universe.data.components.playerScienceData
 import kotlin.math.pow
+import kotlin.random.Random
 
-class CarrierReasoner : DualUtilityReasoner() {
+class CarrierReasoner(random: Random) : DualUtilityReasoner(random) {
     override fun getOptionList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<DualUtilityOption> = listOf(
-        CreateCarrierOption(),
-        DoNothingDualUtilityOption(rank = 1, multiplier = 1.0, bonus = 1.0)
+        CreateCarrierOption(random = random,),
+        DoNothingDualUtilityOption(
+            rank = 1,
+            multiplier = 1.0,
+            bonus = 1.0,
+            random = random,
+        )
     )
 }
 
 /**
  * Create a carrier for this player
  */
-class CreateCarrierOption : DualUtilityOption() {
+class CreateCarrierOption(random: Random) : DualUtilityOption(random) {
     override fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState

@@ -15,6 +15,7 @@ import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.maths.physics.Intervals
 import relativitization.universe.mechanisms.Mechanism
 import relativitization.universe.utils.RelativitizationLogManager
+import kotlin.random.Random
 
 object UpdateWar : Mechanism() {
     private val logger = RelativitizationLogManager.getLogger()
@@ -27,7 +28,8 @@ object UpdateWar : Mechanism() {
         mutablePlayerData: MutablePlayerData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
         universeSettings: UniverseSettings,
-        universeGlobalData: UniverseGlobalData
+        universeGlobalData: UniverseGlobalData,
+        random: Random
     ): List<Command> {
         initializeWar(mutablePlayerData, universeData3DAtPlayer)
         updateSelfWar(mutablePlayerData, universeData3DAtPlayer, universeSettings)

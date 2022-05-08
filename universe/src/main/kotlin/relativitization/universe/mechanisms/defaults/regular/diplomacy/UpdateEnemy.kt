@@ -8,6 +8,7 @@ import relativitization.universe.data.components.defaults.diplomacy.MutableRelat
 import relativitization.universe.data.components.diplomacyData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.mechanisms.Mechanism
+import kotlin.random.Random
 
 /**
  * Sync leader diplomatic relation and update relation based on war state
@@ -17,7 +18,8 @@ object UpdateEnemy : Mechanism() {
         mutablePlayerData: MutablePlayerData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
         universeSettings: UniverseSettings,
-        universeGlobalData: UniverseGlobalData
+        universeGlobalData: UniverseGlobalData,
+        random: Random
     ): List<Command> {
         val relationData: MutableRelationData = mutablePlayerData.playerInternalData.diplomacyData()
             .relationData

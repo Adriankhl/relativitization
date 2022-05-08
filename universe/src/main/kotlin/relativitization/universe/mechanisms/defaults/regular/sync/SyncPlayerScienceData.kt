@@ -9,6 +9,7 @@ import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.data.global.components.universeScienceData
 import relativitization.universe.global.defaults.science.UpdateUniverseScienceData
 import relativitization.universe.mechanisms.Mechanism
+import kotlin.random.Random
 
 /**
  * Sync player science data with universe science data
@@ -18,7 +19,8 @@ object SyncPlayerScienceData : Mechanism() {
         mutablePlayerData: MutablePlayerData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
         universeSettings: UniverseSettings,
-        universeGlobalData: UniverseGlobalData
+        universeGlobalData: UniverseGlobalData,
+        random: Random
     ): List<Command> {
 
         // update player common sense

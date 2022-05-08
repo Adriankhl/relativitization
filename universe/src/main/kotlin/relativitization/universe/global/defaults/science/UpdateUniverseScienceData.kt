@@ -12,11 +12,13 @@ import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.generate.random.science.DefaultGenerateUniverseScienceData
 import relativitization.universe.global.GlobalMechanism
 import kotlin.math.max
+import kotlin.random.Random
 
 object UpdateUniverseScienceData : GlobalMechanism() {
     override fun updateGlobalData(
         mutableUniverseGlobalData: MutableUniverseGlobalData,
-        universeData: UniverseData
+        universeData: UniverseData,
+        random: Random,
     ) {
         // Parameters
         val minBasicProject: Int = 10
@@ -64,6 +66,7 @@ object UpdateUniverseScienceData : GlobalMechanism() {
             maxAppliedProject = maxAppliedProject,
             maxDifficulty = maxDifficulty,
             maxSignificance = maxSignificance,
+            random = random,
         )
 
         mutableUniverseGlobalData.universeScienceData(newUniverseScienceData)
@@ -142,6 +145,7 @@ object UpdateUniverseScienceData : GlobalMechanism() {
         maxAppliedProject: Int,
         maxDifficulty: Double,
         maxSignificance: Double,
+        random: Random,
     ): MutableUniverseScienceData {
 
         val numBasicResearchProject: Int = universeScienceData.basicResearchProjectDataMap.size
@@ -160,6 +164,7 @@ object UpdateUniverseScienceData : GlobalMechanism() {
                 maxAppliedReference = maxAppliedProject / 3,
                 maxDifficulty = maxDifficulty,
                 maxSignificance = maxSignificance,
+                random = random,
             )
         } else {
             universeScienceData

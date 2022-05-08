@@ -8,9 +8,9 @@ import relativitization.universe.data.components.defaults.popsystem.pop.MutableC
 import relativitization.universe.data.components.defaults.popsystem.pop.PopType
 import relativitization.universe.data.components.popSystemData
 import relativitization.universe.data.global.UniverseGlobalData
-import relativitization.universe.maths.random.Rand
 import relativitization.universe.mechanisms.Mechanism
 import kotlin.math.min
+import kotlin.random.Random
 
 /**
  * Population migrate from higher salary place to lower salary place
@@ -20,7 +20,8 @@ object Migration : Mechanism() {
         mutablePlayerData: MutablePlayerData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
         universeSettings: UniverseSettings,
-        universeGlobalData: UniverseGlobalData
+        universeGlobalData: UniverseGlobalData,
+        random: Random
     ): List<Command> {
         // determine the rate of migration
         val migrationRate: Double = 0.01
@@ -34,7 +35,7 @@ object Migration : Mechanism() {
 
             // Shuffle carrier id to avoid same immigration order every time
             val carrierIdList: MutableList<Int> = commonPopMap.keys.shuffled(
-                Rand.rand()
+                random
             ).toMutableList()
 
             repeat(carrierIdList.size) {
@@ -49,7 +50,7 @@ object Migration : Mechanism() {
                     carrierIdList.remove(emigrateId)
 
                     val immigrateId: Int = carrierIdList.elementAt(
-                        Rand.rand().nextInt(carrierIdList.size)
+                        random.nextInt(carrierIdList.size)
                     )
 
                     val immigrateCommonPop: MutableCommonPopData = commonPopMap.getValue(

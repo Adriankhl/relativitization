@@ -14,9 +14,9 @@ import relativitization.universe.data.components.defaults.popsystem.pop.scholar.
 import relativitization.universe.data.components.defaults.popsystem.pop.soldier.MutableSoldierPopData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.mechanisms.Mechanism
-import relativitization.universe.mechanisms.defaults.dilated.production.ResourceFactoryProduction
 import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.math.min
+import kotlin.random.Random
 
 object Employment : Mechanism() {
     private val logger = RelativitizationLogManager.getLogger()
@@ -25,7 +25,8 @@ object Employment : Mechanism() {
         mutablePlayerData: MutablePlayerData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
         universeSettings: UniverseSettings,
-        universeGlobalData: UniverseGlobalData
+        universeGlobalData: UniverseGlobalData,
+        random: Random
     ): List<Command> {
 
         mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.forEach {

@@ -12,18 +12,27 @@ import relativitization.universe.data.components.physicsData
 import relativitization.universe.data.events.MoveToDouble3DEvent
 import relativitization.universe.maths.physics.Intervals
 import relativitization.universe.maths.physics.Movement
-import relativitization.universe.maths.random.Rand
 import kotlin.math.min
+import kotlin.random.Random
 
 class DirectSubordinateMovementReasoner(
-    private val directSubordinateId: Int
-) : DualUtilityReasoner() {
+    private val directSubordinateId: Int,
+    random: Random,
+) : DualUtilityReasoner(random) {
     override fun getOptionList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<DualUtilityOption> = listOf(
-        MoveDirectSubordinateToNearbyEnemyOption(directSubordinateId),
-        DoNothingDualUtilityOption(rank = 1, multiplier = 1.0, bonus = 1.0),
+        MoveDirectSubordinateToNearbyEnemyOption(
+            directSubordinateId = directSubordinateId,
+            random = random,
+        ),
+        DoNothingDualUtilityOption(
+            rank = 1,
+            multiplier = 1.0,
+            bonus = 1.0,
+            random = random,
+        ),
     )
 }
 
@@ -31,8 +40,9 @@ class DirectSubordinateMovementReasoner(
  * Move direct subordinate to a nearby enemy
  */
 class MoveDirectSubordinateToNearbyEnemyOption(
-    private val directSubordinateId: Int
-) : DualUtilityOption() {
+    private val directSubordinateId: Int,
+    random: Random,
+) : DualUtilityOption(random) {
     override fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -87,7 +97,7 @@ class MoveDirectSubordinateToNearbyEnemyOption(
                 it == closestDistance
             }.keys.toList()
 
-            val enemyId: Int = closestEnemyList[Rand.rand().nextInt(closestEnemyList.size)]
+            val enemyId: Int = closestEnemyList[random.nextInt(closestEnemyList.size)]
             val enemy: PlayerData = planDataAtPlayer.universeData3DAtPlayer.get(enemyId)
 
             // Estimate max. speed possible, only consider 0.5 of the total movement fuel

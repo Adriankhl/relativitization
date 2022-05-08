@@ -26,7 +26,7 @@ import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.math.PI
 import kotlin.math.log2
 import kotlin.math.min
-import relativitization.universe.maths.random.Rand
+import kotlin.random.Random
 
 object DiscoverKnowledge : Mechanism() {
     private val logger = RelativitizationLogManager.getLogger()
@@ -35,7 +35,8 @@ object DiscoverKnowledge : Mechanism() {
         mutablePlayerData: MutablePlayerData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
         universeSettings: UniverseSettings,
-        universeGlobalData: UniverseGlobalData
+        universeGlobalData: UniverseGlobalData,
+        random: Random
     ): List<Command> {
 
         mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.forEach { mutableCarrierData ->
@@ -51,6 +52,7 @@ object DiscoverKnowledge : Mechanism() {
                     mutablePlayerScienceData = mutablePlayerData.playerInternalData.playerScienceData(),
                     playerScienceData = universeData3DAtPlayer.getCurrentPlayerData().playerInternalData.playerScienceData(),
                     universeScienceData = universeGlobalData.universeScienceData(),
+                    random = Random,
                 )
             }
         }
@@ -69,6 +71,7 @@ object DiscoverKnowledge : Mechanism() {
                     mutablePlayerScienceData = mutablePlayerData.playerInternalData.playerScienceData(),
                     playerScienceData = universeData3DAtPlayer.getCurrentPlayerData().playerInternalData.playerScienceData(),
                     universeScienceData = universeGlobalData.universeScienceData(),
+                    random = random,
                 )
             }
         }
@@ -212,6 +215,7 @@ object DiscoverKnowledge : Mechanism() {
         organizationStrength: Double,
         playerScienceData: PlayerScienceData,
         strengthFactor: Double = 1.0,
+        random: Random,
     ): Boolean {
 
         // Minimum range is 0.25
@@ -272,7 +276,7 @@ object DiscoverKnowledge : Mechanism() {
             0.0
         }
 
-        val success: Boolean = Rand.rand().nextDouble() < prob
+        val success: Boolean = random.nextDouble() < prob
 
         return inRange && success
     }
@@ -286,6 +290,7 @@ object DiscoverKnowledge : Mechanism() {
         mutablePlayerScienceData: MutablePlayerScienceData,
         playerScienceData: PlayerScienceData,
         universeScienceData: UniverseScienceData,
+        random: Random,
     ) {
         // Done new project
         universeScienceData.basicResearchProjectDataMap.values.filter { basicResearchProjectData ->
@@ -304,6 +309,7 @@ object DiscoverKnowledge : Mechanism() {
                 organizationRange = mutableInstituteData.instituteInternalData.range,
                 organizationStrength = mutableInstituteData.strength,
                 playerScienceData = playerScienceData,
+                random = random,
             )
 
             if (success) {
@@ -336,6 +342,7 @@ object DiscoverKnowledge : Mechanism() {
                 organizationStrength = mutableInstituteData.strength,
                 playerScienceData = playerScienceData,
                 strengthFactor = 4.0,
+                random = random,
             )
 
             if (success) {
@@ -355,6 +362,7 @@ object DiscoverKnowledge : Mechanism() {
         mutablePlayerScienceData: MutablePlayerScienceData,
         playerScienceData: PlayerScienceData,
         universeScienceData: UniverseScienceData,
+        random: Random,
     ) {
         // Done new project
         universeScienceData.appliedResearchProjectDataMap.values.filter { appliedResearchProjectData ->
@@ -373,6 +381,7 @@ object DiscoverKnowledge : Mechanism() {
                 organizationRange = mutableLaboratoryData.laboratoryInternalData.range,
                 organizationStrength = mutableLaboratoryData.strength,
                 playerScienceData = playerScienceData,
+                random = random,
             )
 
             if (success) {
@@ -405,6 +414,7 @@ object DiscoverKnowledge : Mechanism() {
                 organizationStrength = mutableLaboratoryData.strength,
                 playerScienceData = playerScienceData,
                 strengthFactor = 4.0,
+                random = Random,
             )
 
             if (success) {

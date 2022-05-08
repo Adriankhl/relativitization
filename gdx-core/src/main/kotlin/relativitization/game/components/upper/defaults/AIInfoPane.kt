@@ -10,6 +10,7 @@ import relativitization.universe.ai.DefaultAI
 import relativitization.universe.ai.name
 import relativitization.universe.data.commands.*
 import relativitization.universe.utils.I18NString
+import kotlin.random.Random
 
 class AIInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane>(game) {
     override val infoName: String = "AI"
@@ -113,7 +114,8 @@ class AIInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane>(gam
         ) {
             val commandList: List<Command> = AICollection.compute(
                 game.universeClient.getUniverseData3D(),
-                aiName
+                Random(System.currentTimeMillis()),
+                aiName,
             )
 
             aiCommandList.clear()

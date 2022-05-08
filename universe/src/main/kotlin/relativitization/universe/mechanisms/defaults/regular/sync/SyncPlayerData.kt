@@ -7,6 +7,7 @@ import relativitization.universe.data.commands.Command
 import relativitization.universe.data.components.syncData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.mechanisms.Mechanism
+import kotlin.random.Random
 
 /**
  * Sync data component before all mechanism start
@@ -16,7 +17,8 @@ object SyncPlayerData : Mechanism() {
         mutablePlayerData: MutablePlayerData,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
         universeSettings: UniverseSettings,
-        universeGlobalData: UniverseGlobalData
+        universeGlobalData: UniverseGlobalData,
+        random: Random
     ): List<Command> {
 
         mutablePlayerData.syncData()
