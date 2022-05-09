@@ -52,7 +52,7 @@ object DiscoverKnowledge : Mechanism() {
                     mutablePlayerScienceData = mutablePlayerData.playerInternalData.playerScienceData(),
                     playerScienceData = universeData3DAtPlayer.getCurrentPlayerData().playerInternalData.playerScienceData(),
                     universeScienceData = universeGlobalData.universeScienceData(),
-                    random = Random,
+                    random = random,
                 )
             }
         }
@@ -414,7 +414,7 @@ object DiscoverKnowledge : Mechanism() {
                 organizationStrength = mutableLaboratoryData.strength,
                 playerScienceData = playerScienceData,
                 strengthFactor = 4.0,
-                random = Random,
+                random = random,
             )
 
             if (success) {

@@ -22,7 +22,7 @@ internal class DefaultGenerateUniverseScienceDataTest {
                 maxAppliedReference = 10,
                 maxDifficulty = 1.0,
                 maxSignificance = 1.0,
-                random = Random,
+                random = Random(100L),
             )
 
         newUniverseScienceData.basicResearchProjectDataMap.forEach {
