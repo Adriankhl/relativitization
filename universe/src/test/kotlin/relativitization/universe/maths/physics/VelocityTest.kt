@@ -1,6 +1,7 @@
 package relativitization.universe.maths.physics
 
 import kotlin.math.abs
+import kotlin.random.Random
 import kotlin.test.Test
 
 internal class VelocityTest {
@@ -23,5 +24,16 @@ internal class VelocityTest {
         assert(v2.dot(u21) < 0.00001)
         assert(v2.dot(u22) < 0.00001)
         assert(u21.dot(u22) < 0.00001)
+    }
+
+    @Test
+    fun randomRotateTest() {
+        val v1 = Velocity(1.0, 2.0, 3.0)
+        val r1 = v1.randomRotate(0.0, Random(100L))
+
+        assert(v1 == r1)
+
+        val r2 = v1.randomRotate(0.001, Random(100L))
+        assert(v1.dot(r2) > 0.99)
     }
 }
