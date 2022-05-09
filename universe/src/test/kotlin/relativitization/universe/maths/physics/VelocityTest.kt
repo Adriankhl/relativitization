@@ -28,12 +28,17 @@ internal class VelocityTest {
 
     @Test
     fun randomRotateTest() {
-        val v1 = Velocity(1.0, 2.0, 3.0)
+        val v1 = Velocity(1.0, 2.0, 3.0).scaleVelocity(1.0)
         val r1 = v1.randomRotate(0.0, Random(100L))
 
         assert(v1 == r1)
 
         val r2 = v1.randomRotate(0.001, Random(100L))
-        assert(v1.dot(r2) > 0.99)
+        assert(v1.dot(r2) > 0.999)
+        assert(v1.dot(r2) < 1.001)
+
+        val r3 = v1.randomRotate(2.0, Random(100L))
+        assert(r3.mag() < 1.001)
+        assert(r3.mag() > 0.999)
     }
 }

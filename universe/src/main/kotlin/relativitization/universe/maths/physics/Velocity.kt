@@ -122,7 +122,7 @@ data class Velocity(val vx: Double, val vy: Double, val vz: Double) {
             val theta: Double = acos(2.0 * random.nextDouble(minRand, maxRand) - 1.0)
 
             val newUnitVector: Velocity =
-                xAxis * cos(phi) * sin(theta) + yAxis * sin(phi) * cos(theta) + zAxis * cos(theta)
+                xAxis * cos(phi) * sin(theta) + yAxis * sin(phi) * sin(theta) + zAxis * cos(theta)
 
             newUnitVector * originalMag
         } else {
