@@ -179,7 +179,7 @@ class PlayerCollection(
     fun addNewPlayerFromPlayerData(
         universeState: UniverseState,
     ) {
-        // Sort to ensure the same outcome
+        // Sort to ensure the same outcome everytime
         val newPlayerList: List<PlayerData> = playerMap.keys.sorted().map { id ->
             val playerData: MutablePlayerData = playerMap.getValue(id)
             playerData.newPlayerList.map { mutableNewPlayerInternalData ->

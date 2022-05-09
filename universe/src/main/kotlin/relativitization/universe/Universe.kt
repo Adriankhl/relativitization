@@ -38,12 +38,12 @@ class Universe(
     // For generating other Random object
     private val masterRandom = Random(universeData.universeSettings.randomSeed)
 
-    private val universeRandom = Random(masterRandom.nextInt())
+    private val universeRandom = Random(masterRandom.nextLong())
     private val playerRandomMap: MutableMap<Int, Random> = universeData
         .getCurrentPlayerDataList().map {
             it.playerId
         }.associateWith {
-            Random(masterRandom.nextInt())
+            Random(masterRandom.nextLong())
         }.toMutableMap()
 
     private val xDim = universeData.universeSettings.xDim
@@ -389,7 +389,7 @@ class Universe(
         playerCollection.getIdSet().filter {
             !playerRandomMap.containsKey(it)
         }.sorted().forEach {
-            playerRandomMap[it] = Random(masterRandom.nextInt())
+            playerRandomMap[it] = Random(masterRandom.nextLong())
         }
     }
 
