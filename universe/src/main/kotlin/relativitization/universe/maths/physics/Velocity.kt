@@ -79,17 +79,20 @@ data class Velocity(val vx: Double, val vy: Double, val vz: Double) {
      *
      * @return (vector of x-axis, vector of y-axis) where the original vector is the z axis
      */
-    private fun perpendicularUnitVectorPair(): Pair<Velocity, Velocity> {
+    fun perpendicularUnitVectorPair(): Pair<Velocity, Velocity> {
         val originalUnitVector: Velocity = scaleVelocity(1.0)
 
-        val referenceVector: Velocity = if ((originalUnitVector.vx != 0.0) || (originalUnitVector.vy != 0.0)) {
+        val referenceVector: Velocity = if (
+            (originalUnitVector.vx != 0.0) ||
+            (originalUnitVector.vy != 0.0)
+        ) {
             Velocity(0.0, 0.0, 1.0)
         } else {
-            Velocity(1.0, 0.0, 1.0)
+            Velocity(1.0, 0.0, 0.0)
         }
 
-        val vector1: Velocity = originalUnitVector.cross(referenceVector)
-        val vector2: Velocity = originalUnitVector.cross(vector1)
+        val vector1: Velocity = originalUnitVector.cross(referenceVector).scaleVelocity(1.0)
+        val vector2: Velocity = originalUnitVector.cross(vector1).scaleVelocity(1.0)
 
         return Pair(vector1, vector2)
     }
