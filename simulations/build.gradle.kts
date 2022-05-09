@@ -56,7 +56,8 @@ tasks {
 
 tasks.register("showJVMArgs") {
     doLast {
-        println("ActiveProcessorCount: $processorCount")
+        val totalNumProcessor: Int = Runtime.getRuntime().availableProcessors()
+        println("ActiveProcessorCount: $processorCount/$totalNumProcessor")
         println("MaxRAMPercentage: $ramPercentage")
     }
 }
