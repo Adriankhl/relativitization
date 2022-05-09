@@ -76,7 +76,11 @@ data class MutableUniverseSettings(
     var xDim: Int = 3,
     var yDim: Int = 3,
     var zDim: Int = 3,
-    var tDim: Int = intDelay(Int3D(0, 0, 0), Int3D(xDim - 1, yDim - 1, zDim - 1), speedOfLight) + 1,
+    var tDim: Int = intDelay(
+        Int3D(0, 0, 0),
+        Int3D(xDim - 1, yDim - 1, zDim - 1),
+        speedOfLight
+    ) + 1,
     var playerAfterImageDuration: Int = maxDelayAfterMove(speedOfLight),
     var playerHistoricalInt4DLength: Int = playerAfterImageDuration,
     var groupEdgeLength: Double = 0.01,
