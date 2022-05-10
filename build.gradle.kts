@@ -67,11 +67,13 @@ tasks.register("createModelBase") {
             File(dir).walkTopDown().filter {
                 it.name.matches(Regex("^.*kts?$"))
             }.forEach {
-                val targetFile = File("$baseDir/${it.path}")
-                targetFile.parentFile.mkdirs()
+                // Use the full path such that it works on Windows
+                val fromFile = File("${projectDir.path}/${it.path}")
+                val toFile = File("$baseDir/${it.path}")
+                toFile.parentFile.mkdirs()
                 Files.copy(
-                    it.toPath(),
-                    targetFile.toPath(),
+                    fromFile.toPath(),
+                    toFile.toPath(),
                     StandardCopyOption.COPY_ATTRIBUTES,
                     StandardCopyOption.REPLACE_EXISTING,
                 )
@@ -84,11 +86,13 @@ tasks.register("createModelBase") {
             File(dir).walkTopDown().filter {
                 it.isFile
             }.forEach {
-                val targetFile = File("$baseDir/${it.path}")
-                targetFile.parentFile.mkdirs()
+                // Use the full path such that it works on Windows
+                val fromFile = File("${projectDir.path}/${it.path}")
+                val toFile = File("$baseDir/${it.path}")
+                toFile.parentFile.mkdirs()
                 Files.copy(
-                    it.toPath(),
-                    targetFile.toPath(),
+                    fromFile.toPath(),
+                    toFile.toPath(),
                     StandardCopyOption.COPY_ATTRIBUTES,
                     StandardCopyOption.REPLACE_EXISTING,
                 )
