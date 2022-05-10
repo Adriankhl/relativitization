@@ -166,7 +166,7 @@ If you use this framework in a publication, please cite:
 
 ```
 @software{relativitization,
-  author       = {Lai Kwun Hang},
+  author       = {Lai, Kwun Hang},
   title        = {Relativitization},
   year         = 2022,
   doi          = {10.5281/zenodo.6120765},
