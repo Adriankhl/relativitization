@@ -38,14 +38,6 @@ class Universe(
     // For generating other Random object
     private val masterRandom = Random(universeData.universeSettings.randomSeed)
 
-    private val universeRandom = Random(masterRandom.nextLong())
-    private val playerRandomMap: MutableMap<Int, Random> = universeData
-        .getCurrentPlayerDataList().map {
-            it.playerId
-        }.associateWith {
-            Random(masterRandom.nextLong())
-        }.toMutableMap()
-
     private val xDim = universeData.universeSettings.xDim
     private val yDim = universeData.universeSettings.yDim
     private val zDim = universeData.universeSettings.zDim
@@ -54,6 +46,11 @@ class Universe(
     private val int3DList: List<Int3D> = create3DGrid(xDim, yDim, zDim) { x, y, z ->
         Int3D(x, y, z)
     }.flatten().flatten()
+
+    private val universeRandom = Random(masterRandom.nextLong())
+    private val int3DRandomMap: Map<Int3D, Random> = int3DList.associateWith {
+        Random(masterRandom.nextLong())
+    }
 
     private val playerCollection: PlayerCollection = PlayerCollection(
         xDim,
@@ -139,6 +136,8 @@ class Universe(
         val time: Int = universeData.universeState.getCurrentTime()
         val playerId3D: List<List<List<List<Int>>>> = playerCollection.getPlayerId3D()
         int3DList.pmap { int3D ->
+            val random: Random = int3DRandomMap.getValue(int3D)
+
             val viewMap = universeData.toUniverseData3DAtGrid(
                 Int4D(time, int3D)
             ).idToUniverseData3DAtPlayer()
@@ -146,7 +145,7 @@ class Universe(
             playerId3D[int3D.x][int3D.y][int3D.z].map { id ->
                 id to AICollection.compute(
                     viewMap.getValue(id),
-                    playerRandomMap.getValue(id),
+                    random,
                 )
             }
         }.flatten().toMap()
@@ -279,6 +278,8 @@ class Universe(
         val newCommandMap: Map<Int, List<Command>> = int3DList.filter {
             playerId3D[it.x][it.y][it.z].isNotEmpty()
         }.pmap { int3D ->
+            val random: Random = int3DRandomMap.getValue(int3D)
+
             val viewMap = universeData.toUniverseData3DAtGrid(
                 Int4D(time, int3D)
             ).idToUniverseData3DAtPlayer()
@@ -293,7 +294,7 @@ class Universe(
                     playerCollection.getPlayer(id),
                     universeData3DAtPlayer,
                     universeData,
-                    playerRandomMap.getValue(id),
+                    random,
                 )
 
                 commandListFromPlayer
@@ -325,9 +326,7 @@ class Universe(
                 }
 
             // Shuffled by fromId and execute command on neighbour (same group)
-            commandPairMap.keys.sorted().shuffled(
-                playerRandomMap.getValue(playerIdAtGrid.first())
-            ).forEach { fromId ->
+            commandPairMap.keys.sorted().shuffled(random).forEach { fromId ->
                 commandPairMap.getValue(fromId).first.forEach { command ->
                     command.checkAndExecute(
                         playerCollection.getPlayer(command.toId),
@@ -383,14 +382,6 @@ class Universe(
     private fun processDeadAndNewPlayer() {
         playerCollection.cleanDeadPlayer()
         playerCollection.addNewPlayerFromPlayerData(universeData.universeState)
-        playerRandomMap.keys.removeAll {
-            !playerCollection.hasPlayer(it)
-        }
-        playerCollection.getIdSet().filter {
-            !playerRandomMap.containsKey(it)
-        }.sorted().forEach {
-            playerRandomMap[it] = Random(masterRandom.nextLong())
-        }
     }
 
     /**
@@ -477,6 +468,8 @@ class Universe(
         val newCommandMap: Map<Int, List<Command>> = int3DList.filter {
             playerId3D[it.x][it.y][it.z].isNotEmpty()
         }.pmap { int3D ->
+            val random: Random = int3DRandomMap.getValue(int3D)
+
             val playerIdAtGrid: List<Int> = playerId3D[int3D.x][int3D.y][int3D.z].sorted()
             val commandPairMap: Map<Int, Pair<List<Command>, List<Command>>> =
                 playerIdAtGrid.associateWith { fromId ->
@@ -500,9 +493,7 @@ class Universe(
                 }
 
             // Shuffled by fromId and execute command on neighbour (same group)
-            commandPairMap.keys.sorted().shuffled(
-                playerRandomMap.getValue(playerIdAtGrid.first())
-            ).forEach { fromId ->
+            commandPairMap.keys.sorted().shuffled(random).forEach { fromId ->
                 commandPairMap.getValue(fromId).first.forEach { command ->
                     command.checkAndExecute(
                         playerCollection.getPlayer(command.toId),
