@@ -12,6 +12,7 @@ val artGitDirectory = File("../relativitization-art/.git")
 
 buildscript {
     repositories {
+        gradlePluginPortal()
         google()
     }
     dependencies {
@@ -22,7 +23,6 @@ buildscript {
 
 allprojects {
     repositories {
-        gradlePluginPortal()
         mavenLocal()
         mavenCentral()
         google()

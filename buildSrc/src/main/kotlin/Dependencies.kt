@@ -24,7 +24,7 @@ object Versions {
     const val dokkaVersion = "1.6.21"
 
     // JVM
-    const val gdxVersion = "1.10.0"
+    const val gdxVersion = "1.11.0"
     const val log4jVersion = "2.17.2"
     const val dataframeVersion = "0.8.0-rc-8"
 
