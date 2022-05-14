@@ -15,7 +15,7 @@ object Versions {
     // Kotlin multiplatform
     const val kotlinVersion = "1.6.21"
     const val kotlinxCoroutineVersion = "1.6.1"
-    const val kotlinxSerializationVersion = "1.3.2"
+    const val kotlinxSerializationVersion = "1.3.3"
     const val kotlinxDateTimeVersion = "0.3.3"
     const val ktorVersion = "2.0.1"
     const val okioVersion = "3.1.0"
