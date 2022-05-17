@@ -14,7 +14,7 @@ val androidKeyDir: String = System.getProperty("user.dir") + "/../android/"
 android {
     namespace = "relativitization.app.android"
 
-    compileSdk = 31
+    compileSdk = 32
 
     buildFeatures {
         aidl = false
