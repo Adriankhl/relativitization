@@ -330,16 +330,6 @@ class PhysicsInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane
         )
         nestedTable.add(dilatedTimeResidueLabel)
 
-        nestedTable.row().space(10f)
-
-        val newDilationTurnLabel = createLabel(
-            "Next time dilation counter: ${playerData.timeDilationCounter + 1.0 / gamma}",
-            gdxSettings.smallFontSize
-        )
-
-        nestedTable.add(newDilationTurnLabel)
-
-
         return nestedTable
     }
 
