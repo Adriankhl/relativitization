@@ -253,16 +253,10 @@ class Universe(
                 universeData.universeSettings.speedOfLight
             )
 
-            // Update dilated time residue
-            mutablePlayerData.dilatedTimeResidue += 1.0 / gamma
-
-            // Check whether this should be a time dilation action turn
-            // the residue should always be smaller than 1
-            if (mutablePlayerData.dilatedTimeResidue >= 1.0) {
-                mutablePlayerData.dilatedTimeResidue -= 1.0
-                mutablePlayerData.isDilationActionTurn = true
-            } else {
-                mutablePlayerData.isDilationActionTurn = false
+            // Update time dilation counter
+            mutablePlayerData.timeDilationCounter += 1.0 / gamma
+            if (mutablePlayerData.timeDilationCounter >= 0.0) {
+                mutablePlayerData.timeDilationCounter -= 1.0
             }
         }
     }
