@@ -172,9 +172,12 @@ class DiplomacyInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
 
         // Only show this information if the other player is not self
         if (playerData.playerId != otherPlayerId) {
+            val relation: Double = playerData.playerInternalData.diplomacyData().relationData
+                .getRelation(otherPlayerId)
+
             nestedTable.add(
                 createLabel(
-                    "Relation with: $otherPlayerId",
+                    "Relation with: $otherPlayerId ($relation)",
                     gdxSettings.normalFontSize
                 )
             )
