@@ -36,10 +36,9 @@ class AndroidLauncher : AppCompatActivity(), AndroidFragmentApplication.Callback
             Configurator.setRootLevel(Level.OFF)
         } else {
             Configurator.setRootLevel(Level.DEBUG)
-            Configurator.setLevel("Translation", Level.ERROR)
             //Configurator.setLevel("UniverseServerInternal", Level.ERROR)
-            Configurator.setLevel("UniverseClient", Level.ERROR)
-            Configurator.setLevel("ActorFunction", Level.ERROR)
+            //Configurator.setLevel("UniverseClient", Level.ERROR)
+            //Configurator.setLevel("ActorFunction", Level.ERROR)
         }
 
         super.onCreate(savedInstanceState)

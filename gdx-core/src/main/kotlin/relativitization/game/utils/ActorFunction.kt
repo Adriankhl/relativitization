@@ -24,11 +24,11 @@ object ActorFunction {
             if (trText != "") {
                 trText
             } else {
-                logger.debug("Empty translated text: $text")
+                logger.trace("Empty translated text: $text")
                 text
             }
         } catch (e: Throwable) {
-            logger.debug("No translation for $text")
+            logger.trace("No translation for $text")
             text
         }
     }

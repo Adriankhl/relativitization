@@ -210,7 +210,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
      */
     private suspend fun run() = coroutineScope {
         while (isActive) {
-            logger.debug("Client running")
+            logger.trace("Client running")
             delay(2000)
 
             // Run function
@@ -444,7 +444,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
                 if (universeData3DMap.values.indices.contains(currentIndex - 1)) {
                     universeData3DMap.values.elementAt(currentIndex - 1)
                 } else {
-                    logger.debug("No previous data")
+                    logger.trace("No previous data")
                     currentUniverseData3DAtPlayer
                 }
             } else {
@@ -464,7 +464,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
                 if (universeData3DMap.values.indices.contains(currentIndex + 1)) {
                     universeData3DMap.values.elementAt(currentIndex + 1)
                 } else {
-                    logger.debug("No next data")
+                    logger.trace("No next data")
                     currentUniverseData3DAtPlayer
                 }
             } else {
