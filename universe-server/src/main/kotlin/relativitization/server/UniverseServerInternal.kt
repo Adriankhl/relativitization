@@ -362,10 +362,34 @@ class UniverseServerInternal(
      */
     suspend fun registerPlayer(registerPlayerMessage: RegisterPlayerMessage): Boolean {
         mutex.withLock {
-            return if (isWaiting() && !humanIdPasswordMap.keys.contains(registerPlayerMessage.id)) {
+            return if (isWaiting() && !humanIdPasswordMap.containsKey(registerPlayerMessage.id)) {
                 humanIdPasswordMap[registerPlayerMessage.id] = registerPlayerMessage.password
                 availableHumanIdList.add(registerPlayerMessage.id)
                 true
+            } else {
+                false
+            }
+        }
+    }
+
+
+    /**
+     * Deregister human player from humanIdPasswordMap
+     *
+     * @return success or not
+     */
+    suspend fun deregisterPlayer(deregisterPlayerMessage: DeregisterPlayerMessage): Boolean {
+        mutex.withLock {
+            return if (isWaiting() && humanIdPasswordMap.containsKey(deregisterPlayerMessage.id)) {
+                val isPasswordCorrect: Boolean = humanIdPasswordMap[deregisterPlayerMessage.id] ==
+                        deregisterPlayerMessage.password
+                if (isPasswordCorrect) {
+                    humanIdPasswordMap.remove(deregisterPlayerMessage.id)
+                    availableHumanIdList.remove(deregisterPlayerMessage.id)
+                    true
+                } else {
+                    false
+                }
             } else {
                 false
             }

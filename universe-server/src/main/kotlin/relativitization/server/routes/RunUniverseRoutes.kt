@@ -32,10 +32,31 @@ fun Route.runUniverseRouting(universeServerInternal: UniverseServerInternal) {
     route("/run/register") {
         post {
             val registerPlayerMessage: RegisterPlayerMessage = call.receive()
-            val successfulRegister: Boolean =
+            val isRegisterSuccess: Boolean =
                 universeServerInternal.registerPlayer(registerPlayerMessage)
-            if (successfulRegister) {
+            if (isRegisterSuccess) {
                 call.respondText("Registered player", ContentType.Text.Plain, HttpStatusCode.OK)
+            } else {
+                call.respondText(
+                    "Can't register, try another id",
+                    ContentType.Text.Plain,
+                    HttpStatusCode.NotAcceptable
+                )
+            }
+        }
+    }
+
+    route("/run/deregister") {
+        post {
+            val deregisterPlayerMessage: DeregisterPlayerMessage = call.receive()
+            val isDeregisterSuccess: Boolean =
+                universeServerInternal.deregisterPlayer(deregisterPlayerMessage)
+            if (isDeregisterSuccess) {
+                call.respondText(
+                    "De-registered player",
+                    ContentType.Text.Plain,
+                    HttpStatusCode.OK
+                )
             } else {
                 call.respondText(
                     "Can't register, try another id",

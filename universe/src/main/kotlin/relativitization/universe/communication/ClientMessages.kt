@@ -24,9 +24,14 @@ data class PlayerInputMessage(
     val commandList: List<Command>,
 )
 
-
 @Serializable
 data class RegisterPlayerMessage(
+    val id: Int,
+    val password: String
+)
+
+@Serializable
+data class DeregisterPlayerMessage(
     val id: Int,
     val password: String
 )

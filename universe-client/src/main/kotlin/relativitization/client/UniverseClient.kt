@@ -930,6 +930,33 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
         }
     }
 
+    suspend fun httpPostDeregisterPlayer(): HttpStatusCode {
+        return try {
+            val serverAddress = universeClientSettings.serverAddress
+            val serverPort = universeClientSettings.serverPort
+            val playerId = universeClientSettings.playerId
+            val password = universeClientSettings.password
+            val response: HttpResponse =
+                ktorClient.post("http://$serverAddress:$serverPort/run/deregister") {
+                    contentType(ContentType.Application.Json)
+                    setBody(DeregisterPlayerMessage(playerId, password))
+                    timeout {
+                        connectTimeoutMillis = universeClientSettings.httpConnectTimeout
+                        requestTimeoutMillis = universeClientSettings.httpRequestTimeout
+                    }
+                }
+
+            logger.debug("Deregister player universe status: ${response.status}")
+            response.status
+        } catch (cause: ResponseException) {
+            logger.error("Deregister player error: " + cause.response.status)
+            cause.response.status
+        } catch (cause: Throwable) {
+            logger.error("Deregister player error: $cause")
+            HttpStatusCode.NotFound
+        }
+    }
+
     suspend fun httpPostRunUniverse(): HttpStatusCode {
         return try {
             val serverAddress = universeClientSettings.serverAddress
