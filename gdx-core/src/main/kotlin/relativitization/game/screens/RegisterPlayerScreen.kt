@@ -1,7 +1,6 @@
 package relativitization.game.screens
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.scenes.scene2d.Touchable
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
@@ -16,31 +15,8 @@ import relativitization.universe.data.serializer.DataSerializer
 class RegisterPlayerScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
     private val gdxSettings = game.gdxSettings
 
-    private val registerPlayerButton: TextButton = createTextButton(
-        "Register",
-        gdxSettings.normalFontSize,
-        gdxSettings.soundEffectsVolume
-    ) { button ->
-        if (game.universeClient.universeClientSettings.playerId >= 0) {
-            runBlocking {
-                val httpCode = game.universeClient.httpPostRegisterPlayer()
-                if (httpCode == HttpStatusCode.OK) {
-                    disableActor(button)
-
-                    // Update primary selected id
-                    game.universeClient.primarySelectedPlayerId =
-                        game.universeClient.universeClientSettings.playerId
-                    registerStatusLabel.setText("Registered player id: ${game.universeClient.universeClientSettings.playerId}")
-                } else {
-                    registerStatusLabel.setText("Register player fail, http code: $httpCode")
-                }
-            }
-        } else {
-            registerStatusLabel.setText("Player id smaller than 0, please pick a valid id")
-        }
-    }
-
-    private val registerStatusLabel = createLabel("", gdxSettings.normalFontSize)
+    private var playerId: Int = game.universeClient.universeClientSettings.playerId
+    private var password: String = game.universeClient.universeClientSettings.password
 
     override fun show() {
         super.show()
@@ -59,30 +35,70 @@ class RegisterPlayerScreen(val game: RelativitizationGame) : TableScreen(game.as
         val nestedTable = Table()
 
         val startStatusLabel = createLabel("", gdxSettings.normalFontSize)
+
         val startButton: TextButton = createTextButton(
             "Start",
             gdxSettings.bigFontSize,
             gdxSettings.soundEffectsVolume
         ) {
-            if (registerPlayerButton.touchable == Touchable.disabled) {
-                runBlocking {
-                    if (game.universeClient.getCurrentServerStatus().isUniverseRunning) {
+            runBlocking {
+                if (game.universeClient.getCurrentServerStatus().isUniverseRunning) {
+                    game.screen = LoadingGameScreen(game)
+                    dispose()
+                } else {
+                    val httpCode = game.universeClient.httpPostRunUniverse()
+                    if (httpCode == HttpStatusCode.OK) {
                         game.screen = LoadingGameScreen(game)
                         dispose()
                     } else {
-                        val httpCode = game.universeClient.httpPostRunUniverse()
-                        if (httpCode == HttpStatusCode.OK) {
-                            game.screen = LoadingGameScreen(game)
-                            dispose()
-                        } else {
-                            startStatusLabel.setText("Universe not running")
-                        }
+                        startStatusLabel.setText("Universe not running")
+                    }
+                }
+            }
+        }
+
+        disableActor(startButton)
+
+        val registerStatusLabel = createLabel("", gdxSettings.normalFontSize)
+
+        val registerPlayerButton: TextButton = createTextButton(
+            "Register",
+            gdxSettings.bigFontSize,
+            gdxSettings.soundEffectsVolume
+        ) {
+            if (playerId >= 0) {
+                val oldClientSettings: UniverseClientSettings = DataSerializer.copy(
+                    game.universeClient.universeClientSettings
+                )
+
+                // Deregister player first
+                runBlocking {
+                    game.universeClient.httpPostDeregisterPlayer()
+
+                    game.universeClient.universeClientSettings.playerId = playerId
+                    game.universeClient.universeClientSettings.password = password
+
+                    val httpCode = game.universeClient.httpPostRegisterPlayer()
+
+                    if (httpCode == HttpStatusCode.OK) {
+                        // Update primary selected id
+                        game.universeClient.primarySelectedPlayerId =
+                            game.universeClient.universeClientSettings.playerId
+                        registerStatusLabel.setText("Registered player id: " +
+                                "${game.universeClient.universeClientSettings.playerId}"
+                        )
+                        enableActor(startButton)
+                    } else {
+                        // Reset settings if it fails
+                        game.universeClient.setUniverseClientSettings(oldClientSettings)
+                        registerStatusLabel.setText("Register player fail, http code: $httpCode")
                     }
                 }
             } else {
-                startStatusLabel.setText("Please register a player id")
+                registerStatusLabel.setText("Player id smaller than 0, please pick a valid id")
             }
         }
+
 
         val cancelButton = createTextButton(
             "Cancel",
@@ -92,14 +108,15 @@ class RegisterPlayerScreen(val game: RelativitizationGame) : TableScreen(game.as
             game.screen = MainMenuScreen(game)
         }
 
+        nestedTable.add(registerPlayerButton).space(10f)
         nestedTable.add(startButton).space(10f)
         nestedTable.add(cancelButton).space(10f)
         nestedTable.row().space(10f)
-        nestedTable.add(startStatusLabel).colspan(2)
+        nestedTable.add(registerStatusLabel).colspan(3)
+        nestedTable.add(startStatusLabel).colspan(3)
 
         return nestedTable
     }
-
 
     private fun createRegisterPlayerScrollPane(): ScrollPane {
         val table = Table()
@@ -135,16 +152,8 @@ class RegisterPlayerScreen(val game: RelativitizationGame) : TableScreen(game.as
             idList,
             idList.getOrElse(0) { -1 },
             gdxSettings.normalFontSize
-        ) { id, _ ->
-            val newUniverseClientSettings: UniverseClientSettings = DataSerializer.copy(
-                game.universeClient.universeClientSettings
-            )
-
-            newUniverseClientSettings.playerId = id
-
-            runBlocking {
-                game.universeClient.setUniverseClientSettings(newUniverseClientSettings)
-            }
+        ) { newPlayerId, _ ->
+            playerId = newPlayerId
         }
 
         val updateButton = createTextButton(
@@ -152,31 +161,31 @@ class RegisterPlayerScreen(val game: RelativitizationGame) : TableScreen(game.as
             gdxSettings.normalFontSize,
             gdxSettings.soundEffectsVolume
         ) {
-                when (getPlayerTypeSelectBox.selected) {
-                    "All" -> {
-                        runBlocking {
-                            idList = game.universeClient.httpGetAvailableIdList()
-                        }
-                    }
-                    "Human only" -> {
-                        runBlocking {
-                            idList = game.universeClient.httpGetAvailableHumanIdList()
-                        }
-                    }
-                    else -> {
-                        runBlocking {
-                            idList = game.universeClient.httpGetAvailableIdList()
-                        }
+            when (getPlayerTypeSelectBox.selected) {
+                "All" -> {
+                    runBlocking {
+                        idList = game.universeClient.httpGetAvailableIdList()
                     }
                 }
-
-                // Prevent null pointer exception at playerIdSelectBox
-                if (idList.isEmpty()) {
-                    idList = listOf(-1)
+                "Human only" -> {
+                    runBlocking {
+                        idList = game.universeClient.httpGetAvailableHumanIdList()
+                    }
                 }
-
-                playerIdSelectBox.items = Array(idList.sorted().toTypedArray())
+                else -> {
+                    runBlocking {
+                        idList = game.universeClient.httpGetAvailableIdList()
+                    }
+                }
             }
+
+            // Prevent null pointer exception at playerIdSelectBox
+            if (idList.isEmpty()) {
+                idList = listOf(-1)
+            }
+
+            playerIdSelectBox.items = Array(idList.sorted().toTypedArray())
+        }
         table.add(updateButton).colspan(2)
 
         table.row().space(10f)
@@ -185,7 +194,6 @@ class RegisterPlayerScreen(val game: RelativitizationGame) : TableScreen(game.as
         table.add(playerIdSelectBox)
 
         table.row().space(10f)
-
 
         table.add(
             createLabel(
@@ -196,31 +204,10 @@ class RegisterPlayerScreen(val game: RelativitizationGame) : TableScreen(game.as
         val passwordTextField = createTextField(
             game.universeClient.universeClientSettings.password,
             gdxSettings.normalFontSize
-        ) { password, _ ->
-            val newUniverseClientSettings: UniverseClientSettings =
-                game.universeClient.universeClientSettings.copy(
-                    password = password
-                )
-            runBlocking {
-                game.universeClient.setUniverseClientSettings(newUniverseClientSettings)
-            }
+        ) { newPassword, _ ->
+            password = newPassword
         }
         table.add(passwordTextField)
-
-        table.row().space(10f)
-
-
-        table.add(
-            createLabel(
-                "Register player id, can only register once: ",
-                gdxSettings.normalFontSize
-            )
-        )
-        table.add(registerPlayerButton)
-
-        table.row().space(10f)
-
-        table.add(registerStatusLabel).colspan(2)
 
         table.row().space(10f)
 

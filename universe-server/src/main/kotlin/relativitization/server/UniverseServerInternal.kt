@@ -365,6 +365,7 @@ class UniverseServerInternal(
             return if (isWaiting() && !humanIdPasswordMap.containsKey(registerPlayerMessage.id)) {
                 humanIdPasswordMap[registerPlayerMessage.id] = registerPlayerMessage.password
                 availableHumanIdList.add(registerPlayerMessage.id)
+                logger.debug("Register player ${registerPlayerMessage.id}")
                 true
             } else {
                 false
@@ -386,6 +387,7 @@ class UniverseServerInternal(
                 if (isPasswordCorrect) {
                     humanIdPasswordMap.remove(deregisterPlayerMessage.id)
                     availableHumanIdList.remove(deregisterPlayerMessage.id)
+                    logger.debug("Deregister player ${deregisterPlayerMessage.id}")
                     true
                 } else {
                     false

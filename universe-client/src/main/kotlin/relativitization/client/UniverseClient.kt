@@ -949,7 +949,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
             logger.debug("Deregister player universe status: ${response.status}")
             response.status
         } catch (cause: ResponseException) {
-            logger.error("Deregister player error: " + cause.response.status)
+            logger.debug("Deregister player error: " + cause.response.status)
             cause.response.status
         } catch (cause: Throwable) {
             logger.error("Deregister player error: $cause")
