@@ -88,4 +88,8 @@ data class MutableUniverseSettings(
     val otherIntMap: MutableMap<String, Int> = mutableMapOf(),
     val otherDoubleMap: MutableMap<String, Double> = mutableMapOf(),
     val otherStringMap: MutableMap<String, String> = mutableMapOf(),
-)
+) {
+    fun randomizeSeed() {
+        randomSeed = Clock.System.now().epochSeconds
+    }
+}

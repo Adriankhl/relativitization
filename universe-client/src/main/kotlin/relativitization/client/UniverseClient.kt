@@ -61,6 +61,10 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
         GenerateSettings(),
     )
 
+    init {
+        generateSettings.universeSettings.randomizeSeed()
+    }
+
     // For changing server setting
     var universeServerSettings: UniverseServerSettings = UniverseServerSettings(
         programDir = universeClientSettings.programDir,
