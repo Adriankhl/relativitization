@@ -8,6 +8,7 @@ import relativitization.universe.data.PlayerData
 import relativitization.universe.data.commands.*
 import relativitization.universe.data.components.defaults.diplomacy.war.WarData
 import relativitization.universe.data.components.diplomacyData
+import relativitization.universe.data.events.ProposeAllianceEvent
 import relativitization.universe.data.events.ProposePeaceEvent
 
 class DiplomacyInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane>(game) {
@@ -98,6 +99,10 @@ class DiplomacyInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
         table.row().space(20f)
 
         table.add(createDiplomaticRelationTable())
+
+        table.row().space(20f)
+
+        table.add(createAllianceTable())
 
         table.row().space(20f)
 
@@ -210,6 +215,67 @@ class DiplomacyInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
             }
 
             nestedTable.add(relationTable)
+        }
+
+        return nestedTable
+    }
+
+    private fun createAllianceTable(): Table {
+        val nestedTable = Table()
+
+        val currentPlayerData: PlayerData = game.universeClient.getCurrentPlayerData()
+
+        if (currentPlayerData.playerId != playerData.playerId) {
+            nestedTable.add(
+                createLabel(
+                    "Alliance commands: ",
+                    gdxSettings.normalFontSize
+                )
+            )
+
+            nestedTable.row().space(10f)
+
+            val isAlly: Boolean = currentPlayerData.playerInternalData.diplomacyData().relationData
+                .isAlly(playerData.playerId)
+
+            if (isAlly) {
+                val breakAllianceButton = createTextButton(
+                    "Break alliance",
+                    gdxSettings.smallFontSize,
+                    gdxSettings.soundEffectsVolume,
+                    extraColor = commandButtonColor,
+                ) {
+                    val removeAllyCommand = RemoveAllyCommand(
+                        toId = currentPlayerData.playerId,
+                        fromId = currentPlayerData.playerId,
+                        fromInt4D = currentPlayerData.int4D,
+                        targetPlayerId = playerData.playerId,
+                    )
+
+                    game.universeClient.currentCommand = removeAllyCommand
+                }
+                nestedTable.add(breakAllianceButton)
+            } else {
+                val proposeAllianceButton = createTextButton(
+                    "Propose alliance",
+                    gdxSettings.smallFontSize,
+                    gdxSettings.soundEffectsVolume,
+                    extraColor = commandButtonColor,
+                ) {
+                    val proposeAllianceEvent = ProposeAllianceEvent(
+                        toId = playerData.playerId,
+                        fromId = currentPlayerData.playerId
+                    )
+
+                    val addEventCommand = AddEventCommand(
+                        proposeAllianceEvent,
+                        fromInt4D = currentPlayerData.int4D,
+                    )
+
+                    game.universeClient.currentCommand = addEventCommand
+                }
+                nestedTable.add(proposeAllianceButton)
+            }
         }
 
         return nestedTable
