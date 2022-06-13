@@ -42,7 +42,7 @@ fun main() {
     } else {
         Configurator.setRootLevel(Level.DEBUG)
         Configurator.setLevel("Translation", Level.ERROR)
-        Configurator.setLevel("UniverseServerInternal", Level.ERROR)
+        //Configurator.setLevel("UniverseServerInternal", Level.ERROR)
         Configurator.setLevel("UniverseClient", Level.ERROR)
         Configurator.setLevel("ActorFunction", Level.ERROR)
     }

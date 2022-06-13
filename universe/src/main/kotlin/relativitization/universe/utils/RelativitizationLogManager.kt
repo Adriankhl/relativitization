@@ -35,11 +35,15 @@ class RelativitizationLogger(
         logger.warn(message)
     }
 
+    fun info(message: String) {
+        logger.info(message)
+    }
+
     fun debug(message: String) {
         logger.debug(message)
     }
 
-    fun info(message: String) {
-        logger.info(message)
+    fun trace(message: String) {
+        logger.trace(message)
     }
 }
