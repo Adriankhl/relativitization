@@ -14,25 +14,25 @@ object Versions {
 
     // Kotlin multiplatform
     const val kotlinVersion = "1.7.0"
-    const val kotlinxCoroutineVersion = "1.6.2"
+    const val kotlinxCoroutineVersion = "1.6.3"
     const val kotlinxSerializationVersion = "1.3.3"
-    const val kotlinxDateTimeVersion = "0.3.3"
-    const val ktorVersion = "2.0.2"
-    const val okioVersion = "3.1.0"
+    const val kotlinxDateTimeVersion = "0.4.0"
+    const val ktorVersion = "2.0.3"
+    const val okioVersion = "3.2.0"
 
     // Documentation
-    const val dokkaVersion = "1.6.21"
+    const val dokkaVersion = "1.7.0"
 
     // JVM
     const val gdxVersion = "1.11.0"
     const val log4jVersion = "2.17.2"
-    const val dataframeVersion = "0.8.0-rc-9"
+    const val dataframeVersion = "0.8.0"
 
     // Android
     const val androidGradlePluginVersion = "7.2.1"
     const val androidAppCompatVersion = "1.4.2"
-    const val androidLifeCycleKtxVersion = "2.4.1"
-    const val androidFragmentKtxVersion = "1.4.1"
+    const val androidLifeCycleKtxVersion = "1.5.0"
+    const val androidFragmentKtxVersion = "1.5.0"
 
     // Unused in relativitization, for ktor
     const val logbackVersion = "1.2.11"
