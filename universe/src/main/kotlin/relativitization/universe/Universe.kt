@@ -625,42 +625,44 @@ class Universe(
             // For reusing player data in the history, e.g. when dealing with after Image
             val timePlayerDataMap: MutableMap<Int, MutableMap<Int, PlayerData>> = mutableMapOf()
             // Store the player 4D data
-            val playerData4D: MutableList<List<List<List<List<PlayerData>>>>> = mutableListOf()
+            val playerData4D: MutableList<List<List<List<Map<Int, List<PlayerData>>>>>> = mutableListOf()
+
             for (time in oldestTime..latestTime) {
-                val playerData3D: List<List<List<MutableList<PlayerData>>>> = decode(
+                val playerData3D: List<List<List<MutableMap<Int, MutableList<PlayerData>>>>> = decode(
                     FileUtils.fileToText(
                         "${saveDir}/universeData4DSlice-${time}.json"
                     )
                 )
 
-                playerData3D.flatten().flatten().forEach { playerDataList ->
-                    // data needed to be replaced by pointer to older playerData3D to reduce memory usage
-                    val toBeReplaced: List<PlayerData> = playerDataList.filter { playerData ->
-                        if (timePlayerDataMap.containsKey(playerData.int4D.t)) {
-                            timePlayerDataMap.getValue(playerData.int4D.t)
-                                .containsKey(playerData.playerId)
-                        } else {
-                            false
+                playerData3D.flatten().flatten().forEach { playerDataMap ->
+                    playerDataMap.values.forEach { playerDataList ->
+                        // data needed to be replaced by pointer to older playerData3D to reduce memory usage
+                        val toBeReplaced: List<PlayerData> = playerDataList.filter { playerData ->
+                            if (timePlayerDataMap.containsKey(playerData.int4D.t)) {
+                                timePlayerDataMap.getValue(playerData.int4D.t)
+                                    .containsKey(playerData.playerId)
+                            } else {
+                                false
+                            }
+                        }
+
+                        // replace the data with
+                        val replaceWith: List<PlayerData> = toBeReplaced.map { playerData ->
+                            timePlayerDataMap.getValue(playerData.int4D.t).getValue(playerData.playerId)
+                        }
+
+                        // Replace data
+                        playerDataList.removeAll(toBeReplaced)
+                        playerDataList.addAll(replaceWith)
+
+                        // Store data in int4DPlayerDataMap
+                        playerDataList.forEach { playerData ->
+                            timePlayerDataMap.getOrPut(playerData.int4D.t) {
+                                mutableMapOf()
+                            }[playerData.playerId] = playerData
                         }
                     }
 
-                    // replace the data with
-                    val replaceWith: List<PlayerData> = toBeReplaced.map { playerData ->
-                        timePlayerDataMap.getValue(playerData.int4D.t).getValue(playerData.playerId)
-                    }
-
-                    // Replace data
-                    playerDataList.removeAll(toBeReplaced)
-                    playerDataList.addAll(replaceWith)
-
-                    // Store data in int4DPlayerDataMap
-                    playerDataList.forEach { playerData ->
-                        timePlayerDataMap.getOrDefault(
-                            playerData.int4D.t,
-                            mutableMapOf()
-                        )[playerData.playerId] =
-                            playerData
-                    }
                 }
 
                 // Add the replaced 3d data to 4d data

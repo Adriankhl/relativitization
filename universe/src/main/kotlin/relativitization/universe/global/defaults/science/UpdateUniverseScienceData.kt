@@ -30,7 +30,7 @@ object UpdateUniverseScienceData : GlobalMechanism() {
         val mutableUniverseScienceData: MutableUniverseScienceData =
             mutableUniverseGlobalData.universeScienceData()
 
-        val allVisiblePlayerData: List<PlayerData> = universeData.getAllVisiblePlayerData()
+        val allVisiblePlayerData: List<PlayerData> = universeData.getAllVisiblePlayerDataList()
 
         val newStartFromBasicResearchId: Int = allVisiblePlayerData.minOfOrNull {
             it.playerInternalData.playerScienceData().playerKnowledgeData.startFromBasicResearchId

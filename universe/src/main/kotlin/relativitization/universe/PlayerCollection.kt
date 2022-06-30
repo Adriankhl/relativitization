@@ -11,7 +11,6 @@ import relativitization.universe.utils.RandomName.randomPlayerName
 import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.math.abs
 import kotlin.math.floor
-import kotlin.random.Random
 
 class PlayerCollection(
     private val xDim: Int,
@@ -111,23 +110,25 @@ class PlayerCollection(
     /**
      * Turn data to immutable data, and return new universe slice
      */
-    fun getUniverseSlice(universeData: UniverseData): List<List<List<List<PlayerData>>>> {
-        val playerData3D: List<List<List<MutableList<PlayerData>>>> =
+    fun getUniverseSlice(universeData: UniverseData): List<List<List<Map<Int, List<PlayerData>>>>> {
+        val playerData3D: List<List<List<MutableMap<Int, MutableList<PlayerData>>>>> =
             create3DGrid(xDim, yDim, zDim) { _, _, _ ->
-                mutableListOf()
+                mutableMapOf()
             }
 
         playerMap.forEach { (_, player) ->
-            playerData3D[player.int4D.x][player.int4D.y][player.int4D.z].add(
-                DataSerializer.copy(player)
-            )
+            playerData3D[player.int4D.x][player.int4D.y][player.int4D.z].getOrPut(
+                player.playerId
+            ) { mutableListOf() }.add(DataSerializer.copy(player))
 
             // Also add afterimage
-            player.int4DHistory.forEach { int4D ->
-                if (player.int4D.t - int4D.t < universeData.universeSettings.playerAfterImageDuration) {
-                    val oldData: PlayerData = universeData.getPlayerDataAt(int4D, player.playerId)
-                    playerData3D[oldData.int4D.x][oldData.int4D.y][oldData.int4D.z].add(oldData)
-                }
+            player.int4DHistory.filter {
+                player.int4D.t - it.t < universeData.universeSettings.playerAfterImageDuration
+            }.forEach {
+                val oldData: PlayerData = universeData.getPlayerDataAt(it, player.playerId)
+                playerData3D[oldData.int4D.x][oldData.int4D.y][oldData.int4D.z].getOrPut(
+                    player.playerId
+                ) { mutableListOf() }.add(oldData)
             }
         }
 

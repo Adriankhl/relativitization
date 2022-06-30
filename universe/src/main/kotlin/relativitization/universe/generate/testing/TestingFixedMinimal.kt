@@ -43,7 +43,7 @@ object TestingFixedMinimal : TestingGenerateUniverseMethod() {
                 universeSettings.xDim,
                 universeSettings.yDim,
                 universeSettings.zDim
-            ) { _, _, _, _ -> mutableListOf() }
+            ) { _, _, _, _ -> mutableMapOf() }
         )
 
         // Global data first

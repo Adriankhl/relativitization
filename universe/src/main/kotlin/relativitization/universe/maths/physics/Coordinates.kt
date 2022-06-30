@@ -50,6 +50,10 @@ data class Double4D(val t: Double, val x: Double, val y: Double, val z: Double) 
     fun toInt3D() = Int3D(floor(x).toInt(), floor(y).toInt(), floor(z).toInt())
     fun toDouble3D() = Double3D(x, y, z)
 
+    fun atInt3D(int3D: Int3D): Boolean {
+        return (floor(x).toInt() == int3D.x) && (floor(y).toInt() == int3D.y) && (floor(z).toInt() == int3D.z)
+    }
+
     fun atInt4D(int4D: Int4D): Boolean {
         return (floor(t).toInt() == int4D.t) && (floor(x).toInt() == int4D.x) && (floor(y).toInt() == int4D.y) &&
                 (floor(z).toInt() == int4D.z)
@@ -316,6 +320,10 @@ data class Double3D(val x: Double, val y: Double, val z: Double) {
         Double3D(x - double3D.x, y - double3D.y, z - double3D.z)
 
     fun squareMag(): Double = x * x + y * y + z * z
+
+    fun atInt3D(int3D: Int3D): Boolean {
+        return (floor(x).toInt() == int3D.x) && (floor(y).toInt() == int3D.y) && (floor(z).toInt() == int3D.z)
+    }
 
     fun normalize(): Double3D {
         val magnitude = sqrt(squareMag())

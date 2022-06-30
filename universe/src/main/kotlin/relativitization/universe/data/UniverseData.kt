@@ -96,17 +96,17 @@ data class UniverseData(
     }
 
     /**
-     * Get player data as a list at a int4D location
+     * Get a map of list of player data at an int4D location
      *
      * @param int4D 4D coordinate
      *
-     * @return list of player data, empty list if the location is not valid
+     * @return map of list of player data, empty map if the location is not valid
      */
-    private fun getPlayerDataListAt(int4D: Int4D): List<PlayerData> {
+    private fun getPlayerDataMapAt(int4D: Int4D): Map<Int, List<PlayerData>> {
         val currentTime = universeState.getCurrentTime()
         val tDim = universeSettings.tDim
         return if (isInt4DValid(int4D)) {
-            universeData4D.getPlayerDataList(
+            universeData4D.getPlayerDataAt(
                 int4D.t - currentTime + tDim - 1,
                 int4D.x,
                 int4D.y,
@@ -114,7 +114,7 @@ data class UniverseData(
             )
         } else {
             logger.debug("Getting player data at invalid coordinate")
-            listOf()
+            mapOf()
         }
     }
 
@@ -122,8 +122,8 @@ data class UniverseData(
      * Get player data at the exact int4D
      */
     fun getPlayerDataAt(int4D: Int4D, playerId: Int): PlayerData {
-        val playerDataList: List<PlayerData> = getPlayerDataListAt(int4D)
-        return playerDataList.first {
+        val playerDataMap: Map<Int, List<PlayerData>> = getPlayerDataMapAt(int4D)
+        return playerDataMap.getValue(playerId).first {
             (it.playerId == playerId) && (it.int4D == int4D)
         }
     }
@@ -131,20 +131,22 @@ data class UniverseData(
     /**
      * Get all player data which is within the view of current player
      */
-    fun getAllVisiblePlayerData(): List<PlayerData> {
+    fun getAllVisiblePlayerDataList(): List<PlayerData> {
         val tSize: Int = intDelay(
             Int3D(0, 0, 0),
             Int3D(universeSettings.xDim - 1, universeSettings.yDim - 1, universeSettings.zDim - 1),
             universeSettings.speedOfLight
         )
 
-        val data4D: List<List<List<List<List<PlayerData>>>>> = universeData4D.takeLast(tSize + 1)
-
-        return data4D.flatten().flatten().flatten().flatten()
+        return universeData4D.takeLast(tSize + 1).flatten().flatten().flatten()
+            .flatMap {
+                it.values.flatten()
+            }
     }
 
     fun toUniverseData3DAtGrid(center: Int4D): UniverseData3DAtGrid {
-        val centerPlayerDataList: List<PlayerData> = getPlayerDataListAt(center)
+        val centerPlayerDataList: List<PlayerData> = getPlayerDataMapAt(center)
+            .values.flatten()
 
         val playerDataMap: MutableMap<Int, PlayerData> = mutableMapOf()
 
@@ -157,12 +159,14 @@ data class UniverseData(
                         universeSettings.speedOfLight
                     )
                     val int4D = Int4D(center.t - delay, i, j, k)
-                    val playerDataList: List<PlayerData> = getPlayerDataListAt(int4D)
+                    val playerDataMapInt4D: Map<Int, List<PlayerData>> = getPlayerDataMapAt(int4D)
 
                     // Check repeated playerData due to movement and time delay
-                    for (playerData in playerDataList) {
-                        val id = playerData.playerId
-                        if (playerDataMap.containsKey(playerData.playerId)) {
+                    playerDataMapInt4D.forEach { (id, playerDataList) ->
+                        val playerData: PlayerData = playerDataList.maxBy {
+                            it.int4D.t
+                        }
+                        if (playerDataMap.containsKey(id)) {
                             // Take newer data if duplicate
                             if (playerData.int4D.t > playerDataMap.getValue(id).int4D.t) {
                                 playerDataMap[id] = playerData
@@ -203,7 +207,6 @@ data class UniverseData(
                 }
             }
 
-
         return UniverseData3DAtGrid(
             center = center,
             centerPlayerDataList = centerPlayerDataList,
@@ -219,19 +222,19 @@ data class UniverseData(
      * only player data at current time is included
      */
     fun getCurrentPlayerDataList(): List<PlayerData> {
-        val playerDataList: List<PlayerData> =
-            universeData4D.getLatest().flatten().flatten().flatten()
-
-        return playerDataList.groupBy { it.playerId }.map { (_, playerDataGroup) ->
-            // If player is dead, only after image is left, none should be satisfied
-            playerDataGroup.firstOrNull { it.int4D.t == universeState.getCurrentTime() }
-        }.filterNotNull()
+        return universeData4D.getLatest().flatten().flatten().flatMap { playerDataMap ->
+            playerDataMap.values.flatMap { playerDataList ->
+                playerDataList.filter {
+                    it.int4D.t == universeState.getCurrentTime()
+                }
+            }
+        }
     }
 
     /**
      * Update the universe by adding a new slice, remove the oldest slice and updating the universe state
      */
-    fun updateUniverseDropOldest(slice: List<List<List<List<PlayerData>>>>) {
+    fun updateUniverseDropOldest(slice: List<List<List<Map<Int, List<PlayerData>>>>>) {
         universeData4D.addAndRemoveFirstUniverse3DSlice(slice)
         universeState.updateTime()
         if (!isUniverseValid()) {
@@ -244,7 +247,7 @@ data class UniverseData(
      * Update universe by replacing the latest slice
      * Should not update time in the universeState
      */
-    fun updateUniverseReplaceLatest(slice: List<List<List<List<PlayerData>>>>) {
+    fun updateUniverseReplaceLatest(slice: List<List<List<Map<Int, List<PlayerData>>>>>) {
         universeData4D.addAndRemoveLastUniverse3DSlice(slice)
         if (!isUniverseValid()) {
             logger.error("Updated universe is not valid")
@@ -261,26 +264,26 @@ data class UniverseData(
  */
 @Serializable
 data class UniverseData4D(
-    private val playerData4D: MutableList<List<List<List<List<PlayerData>>>>>,
+    private val playerData4D: MutableList<List<List<List<Map<Int, List<PlayerData>>>>>>,
 ) {
     /**
      * Get player data from the 4D List
      * i, j, k, l doesn't necessarily the actual t, x, y, z
      */
-    internal fun getPlayerDataList(i: Int, j: Int, k: Int, l: Int): List<PlayerData> {
+    internal fun getPlayerDataAt(i: Int, j: Int, k: Int, l: Int): Map<Int, List<PlayerData>> {
         return playerData4D[i][j][k][l]
     }
 
     /**
      * Get latest 3D slice
      */
-    fun getLatest(): List<List<List<List<PlayerData>>>> =
+    fun getLatest(): List<List<List<Map<Int, List<PlayerData>>>>> =
         playerData4D.last()
 
     /**
      * Get latest 4D slice
      */
-    fun takeLast(tSize: Int): List<List<List<List<List<PlayerData>>>>> {
+    fun takeLast(tSize: Int): List<List<List<List<Map<Int, List<PlayerData>>>>>> {
         if (tSize > playerData4D.size) {
             logger.error("tSize is larger than the dimension of the universe")
         }
@@ -291,13 +294,15 @@ data class UniverseData4D(
     /**
      * Get all slice excluding latest
      */
-    fun getAllExcludeLatest(): List<List<List<List<List<PlayerData>>>>> =
+    fun getAllExcludeLatest(): List<List<List<List<Map<Int, List<PlayerData>>>>>> =
         playerData4D.dropLast(1)
 
     /**
      * Add one new universe 3d slice and remove the oldest one
      */
-    internal fun addAndRemoveFirstUniverse3DSlice(slice: List<List<List<List<PlayerData>>>>) {
+    internal fun addAndRemoveFirstUniverse3DSlice(
+        slice: List<List<List<Map<Int, List<PlayerData>>>>>
+    ) {
         playerData4D.removeFirst()
         playerData4D.add(slice)
     }
@@ -305,7 +310,9 @@ data class UniverseData4D(
     /**
      * Replace latest universe slice
      */
-    internal fun addAndRemoveLastUniverse3DSlice(slice: List<List<List<List<PlayerData>>>>) {
+    internal fun addAndRemoveLastUniverse3DSlice(
+        slice: List<List<List<Map<Int, List<PlayerData>>>>>
+    ) {
         playerData4D.removeLast()
         playerData4D.add(slice)
     }
@@ -341,62 +348,82 @@ data class UniverseData4D(
  */
 @Serializable
 data class MutableUniverseData4D(
-    private val playerData4D: MutableList<List<List<List<MutableList<PlayerData>>>>>,
+    private val playerData4D: MutableList<List<List<List<MutableMap<Int, MutableList<PlayerData>>>>>>,
 ) {
     /**
      * Add player data to data
      * Output error log and don't do anything if the coordinate is out of bound
      *
-     * @param mutablePlayerData the player data to be added
+     * @param playerData the player data to be added
      * @param currentTime the current time of the universe, the player data is added to the grid relative to this time
      * @param edgeLength the length of the cube defining same group of players
      */
-    private fun addPlayerData(mutablePlayerData: MutablePlayerData, currentTime: Int, edgeLength: Double) {
+    private fun addPlayerData(
+        playerData: PlayerData,
+        currentTime: Int,
+        edgeLength: Double
+    ) {
         val tSize: Int = playerData4D.size
-
-        // Modified player data double 4D if it doesn't fit int4D
-        val int4D = mutablePlayerData.int4D
-        if (!mutablePlayerData.double4D.atInt4D(int4D)) {
-            logger.debug("Add player ${mutablePlayerData.playerId}: force changing new player double4D")
-
-            if (mutablePlayerData.double4D.toMutableDouble3D().atInt3D(int4D.toMutableInt3D())) {
-                logger.debug("Force change t only")
-                mutablePlayerData.double4D.t = int4D.t.toDouble()
-            } else {
-                logger.debug("Force change double4D")
-                mutablePlayerData.double4D = int4D.toMutableDouble4DCenter()
-            }
-        }
 
         // get the player data list at the grid, or empty list if the coordinate is not correct
         val playerDataList: MutableList<PlayerData> = playerData4D.getOrElse(
-            mutablePlayerData.int4D.t - currentTime + tSize - 1
+            playerData.int4D.t - currentTime + tSize - 1
         ) {
-            logger.error("Wrong int4D ${mutablePlayerData.int4D}")
+            logger.error("Wrong int4D ${playerData.int4D}")
             listOf()
-        }.getOrElse(mutablePlayerData.int4D.x) {
-            logger.error("Wrong int4D ${mutablePlayerData.int4D}")
+        }.getOrElse(playerData.int4D.x) {
+            logger.error("Wrong int4D ${playerData.int4D}")
             listOf()
-        }.getOrElse(mutablePlayerData.int4D.y) {
-            logger.error("Wrong int4D ${mutablePlayerData.int4D}")
+        }.getOrElse(playerData.int4D.y) {
+            logger.error("Wrong int4D ${playerData.int4D}")
             listOf()
-        }.getOrElse(mutablePlayerData.int4D.z) {
-            logger.error("Wrong int4D ${mutablePlayerData.int4D}")
+        }.getOrElse(playerData.int4D.z) {
+            logger.error("Wrong int4D ${playerData.int4D}")
+            mutableMapOf()
+        }.getOrPut(playerData.playerId) {
             mutableListOf()
         }
 
+        // Modified player data double 4D if it doesn't fit int4D
+        val int4D = playerData.int4D
+
+        val playerDataWithCorrect4D: PlayerData = if (!playerData.double4D.atInt4D(int4D)) {
+            logger.debug("Add player ${playerData.playerId}: force changing new player double4D")
+            if (playerData.double4D.atInt3D(int4D.toInt3D())) {
+                logger.debug("Force change t only")
+                playerData.copy(
+                    double4D = playerData.double4D.copy(t = int4D.t.toDouble())
+                )
+            } else {
+                logger.debug("Force change double4D")
+                playerData.copy(
+                    double4D = int4D.toDouble4DCenter()
+                )
+            }
+        } else {
+            playerData
+        }
+
         // Default group player id should be player id itself
-        if (mutablePlayerData.groupId != double4DToGroupId(
-                mutablePlayerData.double4D,
+        val playerDataWithCorrectGroup: PlayerData = if (
+            playerDataWithCorrect4D.groupId != double4DToGroupId(
+                playerDataWithCorrect4D.double4D,
                 edgeLength
             )
         ) {
-            mutablePlayerData.groupId = double4DToGroupId(mutablePlayerData.double4D, edgeLength)
-            logger.debug("Default the group id to ${mutablePlayerData.groupId}")
+            logger.debug("Default the group id to ${playerDataWithCorrect4D.groupId}")
+            playerDataWithCorrect4D.copy(
+                groupId = double4DToGroupId(
+                    playerDataWithCorrect4D.double4D,
+                    edgeLength
+                )
+            )
+        } else {
+            playerDataWithCorrect4D
         }
 
         // Add player to the list
-        playerDataList.add(DataSerializer.copy(mutablePlayerData))
+        playerDataList.add(playerDataWithCorrectGroup)
     }
 
     /**
@@ -414,8 +441,18 @@ data class MutableUniverseData4D(
         playerAfterImageDuration: Int,
     ) {
         for (time in 0..playerAfterImageDuration) {
-            mutablePlayerData.int4D.t = currentTime - time
-            addPlayerData(mutablePlayerData, currentTime, edgeLength)
+            val playerData: PlayerData = DataSerializer.copy(mutablePlayerData)
+            // Fix player time
+            val playerTime: Int = currentTime - time
+            addPlayerData(
+                playerData.copy(
+                    int4D = playerData.int4D.copy(
+                        t = playerTime,
+                    )
+                ),
+                currentTime,
+                edgeLength
+            )
         }
     }
 
