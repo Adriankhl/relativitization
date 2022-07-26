@@ -106,7 +106,7 @@ data class UniverseData(
         val currentTime = universeState.getCurrentTime()
         val tDim = universeSettings.tDim
         return if (isInt4DValid(int4D)) {
-            universeData4D.getPlayerDataAt(
+            universeData4D.getPlayerDataMapAt(
                 int4D.t - currentTime + tDim - 1,
                 int4D.x,
                 int4D.y,
@@ -270,7 +270,7 @@ data class UniverseData4D(
      * Get player data from the 4D List
      * i, j, k, l doesn't necessarily the actual t, x, y, z
      */
-    internal fun getPlayerDataAt(i: Int, j: Int, k: Int, l: Int): Map<Int, List<PlayerData>> {
+    internal fun getPlayerDataMapAt(i: Int, j: Int, k: Int, l: Int): Map<Int, List<PlayerData>> {
         return playerData4D[i][j][k][l]
     }
 
