@@ -17,6 +17,7 @@ import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.mechanisms.Mechanism
 import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.math.max
+import kotlin.math.min
 import kotlin.random.Random
 
 /**
@@ -24,6 +25,10 @@ import kotlin.random.Random
  */
 object ResourceFactoryProduction : Mechanism() {
     private val logger = RelativitizationLogManager.getLogger()
+
+    // Parameters
+    // max multiplier from factory's experience
+    private const val maxExperienceMultiplier: Double = 2.0
 
     override fun process(
         mutablePlayerData: MutablePlayerData,
@@ -241,6 +246,17 @@ object ResourceFactoryProduction : Mechanism() {
     }
 
     /**
+     * Compute how much the experience of a factory increases the output
+     */
+    fun computeExperienceMultiplier(
+        experience: Double,
+    ): Double {
+        val multiplier: Double = 1.0 + experience * 0.1
+
+        return min(max(multiplier, 1.0), maxExperienceMultiplier)
+    }
+
+    /**
      * Compute the reduced quality if the input quality is lower than required
      */
     fun qualityReducedFaction(
@@ -344,11 +360,14 @@ object ResourceFactoryProduction : Mechanism() {
         )
         mutableResourceFactoryData.lastOutputQuality = outputQuality
 
+        val experienceMultiplier: Double =
+            computeExperienceMultiplier(mutableResourceFactoryData.experience)
+
         // Output amount
         val outputAmount: Double = amountFraction *
-                mutableResourceFactoryData.resourceFactoryInternalData
-                    .maxOutputAmountPerEmployee *
-                mutableResourceFactoryData.maxNumEmployee
+                mutableResourceFactoryData.resourceFactoryInternalData.maxOutputAmountPerEmployee *
+                mutableResourceFactoryData.maxNumEmployee *
+                experienceMultiplier
         mutableResourceFactoryData.lastOutputAmount = outputAmount
 
         // Consume resource

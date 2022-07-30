@@ -10,11 +10,15 @@ import relativitization.universe.data.components.defaults.popsystem.pop.labourer
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.mechanisms.Mechanism
 import kotlin.random.Random
+import kotlin.math.min
+import kotlin.math.max
 
 object FuelFactoryProduction : Mechanism() {
     // Parameters
     // max fuel produced per cube in space, prevent unlimited fuel and population
     private const val maxFuelPerCube: Double = 1E9
+    // max multiplier from factory's experience
+    private const val maxExperienceMultiplier: Double = 2.0
 
     override fun process(
         mutablePlayerData: MutablePlayerData,
@@ -105,6 +109,17 @@ object FuelFactoryProduction : Mechanism() {
     }
 
     /**
+     * Compute how much the experience of a factory increases the output
+     */
+    fun computeExperienceMultiplier(
+        experience: Double,
+    ): Double {
+        val multiplier: Double = 1.0 + experience * 0.1
+
+        return min(max(multiplier, 1.0), maxExperienceMultiplier)
+    }
+
+    /**
      * Compute the output amount of fuel factory, ignoring maxFuelPerCube
      */
     fun computeOutputAmount(
@@ -114,9 +129,12 @@ object FuelFactoryProduction : Mechanism() {
             mutableFuelFactoryData,
         )
 
+        val experienceMultiplier: Double =
+            computeExperienceMultiplier(mutableFuelFactoryData.experience)
+
         return mutableFuelFactoryData.maxNumEmployee *
                 mutableFuelFactoryData.fuelFactoryInternalData.maxOutputAmountPerEmployee *
-                amountFraction
+                amountFraction * experienceMultiplier
     }
 
     /**
