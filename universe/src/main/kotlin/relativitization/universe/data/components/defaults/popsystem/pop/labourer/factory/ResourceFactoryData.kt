@@ -17,6 +17,7 @@ import kotlin.math.pow
  * @property lastOutputAmount the output amount in the latest turn
  * @property lastInputResourceMap the input resource in the latest turn
  * @property lastNumEmployee number of employee in the last turn
+ * @property experience the longer the factory has been opening, the more the experience
  */
 @Serializable
 data class ResourceFactoryData(
@@ -29,6 +30,7 @@ data class ResourceFactoryData(
     val lastOutputQuality: ResourceQualityData = ResourceQualityData(),
     val lastInputResourceMap: Map<ResourceType, InputResourceData> = mapOf(),
     val lastNumEmployee: Double = 0.0,
+    val experience: Double = 0.0,
 ) {
     fun maxInputAmount(resourceType: ResourceType): Double {
         val amountPerUnit: Double =
@@ -57,6 +59,7 @@ data class MutableResourceFactoryData(
     var lastOutputQuality: MutableResourceQualityData = MutableResourceQualityData(),
     val lastInputResourceMap: MutableMap<ResourceType, MutableInputResourceData> = mutableMapOf(),
     var lastNumEmployee: Double = 0.0,
+    var experience: Double = 0.0,
 ) {
     fun maxInputAmount(resourceType: ResourceType): Double {
         val amountPerUnit: Double =

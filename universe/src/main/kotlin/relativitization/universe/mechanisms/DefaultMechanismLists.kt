@@ -20,10 +20,7 @@ import relativitization.universe.mechanisms.defaults.regular.modifier.UpdateModi
 import relativitization.universe.mechanisms.defaults.regular.politics.MergePlayer
 import relativitization.universe.mechanisms.defaults.regular.politics.UpdatePoliticsData
 import relativitization.universe.mechanisms.defaults.dilated.pop.*
-import relativitization.universe.mechanisms.defaults.dilated.production.BaseStellarFuelProduction
-import relativitization.universe.mechanisms.defaults.dilated.production.EntertainmentProduction
-import relativitization.universe.mechanisms.defaults.dilated.production.FuelFactoryProduction
-import relativitization.universe.mechanisms.defaults.dilated.production.ResourceFactoryProduction
+import relativitization.universe.mechanisms.defaults.dilated.production.*
 import relativitization.universe.mechanisms.defaults.dilated.research.DiscoverKnowledge
 import relativitization.universe.mechanisms.defaults.dilated.research.KnowledgeDiffusion
 import relativitization.universe.mechanisms.defaults.regular.ai.ClearRecentCommand
@@ -73,6 +70,7 @@ object DefaultMechanismLists : MechanismLists() {
         BaseStellarFuelProduction,
         FuelFactoryProduction,
         ResourceFactoryProduction,
+        UpdateFactoryExperience,
         EntertainmentProduction,
         ExportResource,
         UpdatePrice,

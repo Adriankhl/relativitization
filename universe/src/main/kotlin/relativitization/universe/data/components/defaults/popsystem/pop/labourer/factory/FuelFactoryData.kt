@@ -13,6 +13,7 @@ import kotlin.math.pow
  * @property storedFuelRestMass stored fuel to be consumed if this is owned by foreign player
  * @property lastOutputAmount the output amount in the latest turn
  * @property lastNumEmployee number of employee in the last turn
+ * @property experience the longer the factor has been opening, the more the experience
  */
 @Serializable
 data class FuelFactoryData(
@@ -23,6 +24,7 @@ data class FuelFactoryData(
     val storedFuelRestMass: Double = 0.0,
     val lastOutputAmount: Double = 0.0,
     val lastNumEmployee: Double = 0.0,
+    val experience: Double = 0.0,
 ) {
     fun employeeFraction(): Double = if (maxNumEmployee > 0.0) {
         lastNumEmployee / maxNumEmployee
@@ -40,6 +42,7 @@ data class MutableFuelFactoryData(
     var storedFuelRestMass: Double = 0.0,
     var lastOutputAmount: Double = 0.0,
     var lastNumEmployee: Double = 0.0,
+    var experience: Double = 0.0,
 ) {
     fun employeeFraction(): Double = if (maxNumEmployee > 0.0) {
         lastNumEmployee / maxNumEmployee
