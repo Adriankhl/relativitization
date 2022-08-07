@@ -55,18 +55,6 @@ class MainMenuScreen(val game: RelativitizationGame) : TableScreen(game.assets) 
 
         root.row().space(20f)
 
-        val gdxSettingsButton = createTextButton(
-            "Client Settings",
-            gdxSettings.bigFontSize,
-            gdxSettings.soundEffectsVolume
-        ) {
-            game.screen = ClientSettingsScreen(game, false)
-            dispose()
-        }
-        root.add(gdxSettingsButton).prefSize(500f, 100f)
-
-        root.row().space(20f)
-
         val helpButton = createTextButton(
             "Help",
             gdxSettings.bigFontSize,
@@ -76,6 +64,18 @@ class MainMenuScreen(val game: RelativitizationGame) : TableScreen(game.assets) 
             dispose()
         }
         root.add(helpButton).prefSize(500f, 100f)
+
+        root.row().space(20f)
+
+        val gdxSettingsButton = createTextButton(
+            "Settings",
+            gdxSettings.bigFontSize,
+            gdxSettings.soundEffectsVolume
+        ) {
+            game.screen = ClientSettingsScreen(game, false)
+            dispose()
+        }
+        root.add(gdxSettingsButton).prefSize(500f, 100f)
     }
 
     override fun resize(width: Int, height: Int) {
