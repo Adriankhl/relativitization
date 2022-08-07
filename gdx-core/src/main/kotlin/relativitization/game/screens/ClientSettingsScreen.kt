@@ -448,7 +448,7 @@ class ClientSettingsScreen(
 
         table.add(createLabel("Language: ", gdxSettings.normalFontSize))
         val languageSelectBox = createSelectBox(
-            Language.values().toList(),
+            listOf(Language.ENGLISH),
             gdxSettings.language,
             gdxSettings.normalFontSize
         ) { language, _ ->
