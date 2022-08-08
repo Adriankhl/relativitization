@@ -54,8 +54,9 @@ fun main() {
     config.setWindowIcon(Files.FileType.Internal, "./${Assets.dir()}/images/normal/logo/logo.png")
     config.setHdpiMode(HdpiMode.Logical)
 
+    val adminPasswordRandom = Random(System.currentTimeMillis())
     val adminPassword: String = List(10) {
-        Random(System.currentTimeMillis()).nextInt(0, 10)
+        adminPasswordRandom.nextInt(0, 10)
     }.joinToString(separator = "")
 
     val serverAddress = "127.0.0.1"
