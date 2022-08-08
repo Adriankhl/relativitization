@@ -15,6 +15,16 @@ import relativitization.universe.data.serializer.DataSerializer
 class RegisterPlayerScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
     private val gdxSettings = game.gdxSettings
 
+    private var idList: List<Int> = runBlocking {
+        game.universeClient.httpGetAvailableHumanIdList().sorted()
+    }
+
+    init {
+        if (idList.isNotEmpty()) {
+            game.universeClient.universeClientSettings.playerId = idList.first()
+        }
+    }
+
     private var playerId: Int = game.universeClient.universeClientSettings.playerId
     private var password: String = game.universeClient.universeClientSettings.password
 
@@ -130,8 +140,6 @@ class RegisterPlayerScreen(val game: RelativitizationGame) : TableScreen(game.as
 
         table.row().space(20f)
 
-        var idList: List<Int> = listOf()
-
         table.add(
             createLabel(
                 "Type of available players: ",
@@ -139,8 +147,8 @@ class RegisterPlayerScreen(val game: RelativitizationGame) : TableScreen(game.as
             )
         )
         val getPlayerTypeSelectBox = createSelectBox(
-            listOf("All", "Human only"),
-            "All",
+            listOf("Human only", "All"),
+            "Human only",
             gdxSettings.normalFontSize
         )
         table.add(getPlayerTypeSelectBox)
@@ -150,7 +158,7 @@ class RegisterPlayerScreen(val game: RelativitizationGame) : TableScreen(game.as
         // Define before update button but show after update button
         val playerIdSelectBox = createSelectBox(
             idList,
-            idList.getOrElse(0) { -1 },
+            playerId,
             gdxSettings.normalFontSize
         ) { newPlayerId, _ ->
             playerId = newPlayerId
@@ -162,14 +170,14 @@ class RegisterPlayerScreen(val game: RelativitizationGame) : TableScreen(game.as
             gdxSettings.soundEffectsVolume
         ) {
             when (getPlayerTypeSelectBox.selected) {
-                "All" -> {
-                    runBlocking {
-                        idList = game.universeClient.httpGetAvailableIdList()
-                    }
-                }
                 "Human only" -> {
                     runBlocking {
                         idList = game.universeClient.httpGetAvailableHumanIdList()
+                    }
+                }
+                "All" -> {
+                    runBlocking {
+                        idList = game.universeClient.httpGetAvailableIdList()
                     }
                 }
                 else -> {
