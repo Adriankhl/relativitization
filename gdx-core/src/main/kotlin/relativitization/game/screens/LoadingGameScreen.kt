@@ -17,7 +17,7 @@ class LoadingGameScreen(val game: RelativitizationGame) : TableScreen(game.asset
     )
 
     private val messageLabel = createLabel(
-        "Scroll the top bar to the right and click \"?\" to see the tutorial",
+        "Scroll the control bar to the right and click \"?\" to see the tutorial",
         gdxSettings.normalFontSize,
     )
 
@@ -35,7 +35,7 @@ class LoadingGameScreen(val game: RelativitizationGame) : TableScreen(game.asset
     override fun render(delta: Float) {
         super.render(delta)
         runBlocking {
-            if (game.universeClient.isNewDataReady.isTrue() && (loadingTime > 5.0)) {
+            if (game.universeClient.isNewDataReady.isTrue() && (loadingTime > 10.0)) {
                 Gdx.graphics.isContinuousRendering = gdxSettings.isContinuousRendering
                 game.screen = GameScreen(game)
             } else {
