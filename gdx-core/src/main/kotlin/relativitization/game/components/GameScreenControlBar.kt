@@ -5,8 +5,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.*
 import io.ktor.http.*
 import kotlinx.coroutines.runBlocking
 import relativitization.game.RelativitizationGame
-import relativitization.game.components.upper.DefaultUpperInfoPaneList
-import relativitization.game.components.upper.UpperInfoPane
 import relativitization.game.components.upper.UpperInfoPaneCollection
 import relativitization.game.screens.ClientSettingsScreen
 import relativitization.game.screens.HelpScreen
@@ -18,7 +16,6 @@ import relativitization.universe.maths.number.toScientificNotation
 import relativitization.universe.maths.physics.Intervals.intDelay
 import kotlin.math.max
 import kotlin.math.min
-import kotlin.reflect.full.primaryConstructor
 
 
 class GameScreenControlBar(

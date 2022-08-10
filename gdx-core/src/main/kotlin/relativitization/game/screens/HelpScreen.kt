@@ -103,15 +103,38 @@ class HelpScreen(
                 "Quick Guide",
                 gdxSettings.bigFontSize,
             )
-        )
+        ).colspan(2)
 
         nestedTable.row().space(30f)
 
+        val introductionText: String = """
+            You directly control one or more local pop systems, 
+            e.g., solar system and spaceship, in a relativistic universe.
+            
+            "Relativistic universe":
+            1. Information cannot travel faster than the speed of light,
+                 you see the past state of other players.
+            2. A nation consists of a hierarchy of players, 
+                 i.e., leaders and subordinates.
+            3. You send "command" to control your local pop systems,
+                 manage your nation, and interact with other players.
+            4. The faster you move, the slower your clock ticks. 
+        """.trimIndent()
+
+        nestedTable.add(
+            createLabel(
+                introductionText,
+                gdxSettings.normalFontSize
+            )
+        ).colspan(2).growX()
+
+        nestedTable.row().space(10f)
+
         val aiGuideText: String = """
+            You can use the AI to make all decisions for you every turn:
             1. Click "AI" in the control bar.
-            2. On the right side, click "Compute".
-            3. Then, click "Use all".
-            This allows the AI to make all the decisions for you in this turn.
+            2. On the right side, (click) "Compute" a list of commands.
+            3. Then, click "Use all" to accept all proposed commands.
         """.trimIndent()
 
         nestedTable.add(
@@ -119,7 +142,63 @@ class HelpScreen(
                 aiGuideText,
                 gdxSettings.normalFontSize
             )
-        )
+        ).colspan(2).growX()
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createImageButton(
+                name = "basic/white-upload",
+                rUp = 1.0f,
+                gUp = 1.0f,
+                bUp = 1.0f,
+                aUp = 1.0f,
+                rDown = 1.0f,
+                gDown = 1.0f,
+                bDown = 1.0f,
+                aDown = 0.7f,
+                rChecked = 1.0f,
+                gChecked = 1.0f,
+                bChecked = 1.0f,
+                aChecked = 1.0f,
+                soundVolume = gdxSettings.soundEffectsVolume
+            )
+        ).size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
+
+        nestedTable.add(
+            createLabel(
+                "Click this button to send out all commands. ",
+                gdxSettings.normalFontSize,
+            )
+        ).growX()
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createImageButton(
+                name = "basic/white-rightmost-triangle",
+                rUp = 1.0f,
+                gUp = 1.0f,
+                bUp = 1.0f,
+                aUp = 1.0f,
+                rDown = 1.0f,
+                gDown = 1.0f,
+                bDown = 1.0f,
+                aDown = 0.7f,
+                rChecked = 1.0f,
+                gChecked = 1.0f,
+                bChecked = 1.0f,
+                aChecked = 1.0f,
+                soundVolume = gdxSettings.soundEffectsVolume
+            )
+        ).size(50f * gdxSettings.imageScale, 50f * gdxSettings.imageScale)
+
+        nestedTable.add(
+            createLabel(
+                "When this button turns white, click to enter next turn.",
+                gdxSettings.normalFontSize,
+            )
+        ).growX()
 
         return nestedTable
     }
