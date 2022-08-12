@@ -13,6 +13,18 @@ import relativitization.universe.data.events.name
 import kotlin.random.Random
 
 /**
+ * Contain all reasoners related to movement events
+ */
+class MovementEventReasoner(random: Random) : SequenceReasoner(random) {
+    override fun getSubNodeList(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planState: PlanState
+    ): List<AINode> = listOf(
+        PickMoveToDouble3DEventReasoner(random),
+    )
+}
+
+/**
  * Reasoner to pick only one MoveToDouble3D event
  */
 class PickMoveToDouble3DEventReasoner(random: Random) : DualUtilityReasoner(random) {

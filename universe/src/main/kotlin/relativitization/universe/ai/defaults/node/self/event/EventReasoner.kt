@@ -12,7 +12,7 @@ class EventReasoner(random: Random) : SequenceReasoner(random) {
         planState: PlanState
     ): List<AINode> {
         return listOf(
-            PickMoveToDouble3DEventReasoner(random),
+            MovementEventReasoner(random),
             WarEventReasoner(random),
         )
     }
