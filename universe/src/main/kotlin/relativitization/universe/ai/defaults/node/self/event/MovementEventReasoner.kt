@@ -13,35 +13,42 @@ import relativitization.universe.data.events.name
 import kotlin.random.Random
 
 /**
- * Contain all reasoners related to movement events
+ * Contains all reasoners related to movement events
+ *
+ * @property eventNameKeyMap a map from event name to a list of associated event key
  */
-class MovementEventReasoner(random: Random) : SequenceReasoner(random) {
+class MovementEventReasoner(
+    private val eventNameKeyMap: Map<String, List<Int>>,
+    random: Random,
+) : SequenceReasoner(random) {
     override fun getSubNodeList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<AINode> = listOf(
-        PickMoveToDouble3DEventReasoner(random),
+        PickMoveToDouble3DEventReasoner(eventNameKeyMap, random),
     )
 }
 
 /**
  * Reasoner to pick only one MoveToDouble3D event
  */
-class PickMoveToDouble3DEventReasoner(random: Random) : DualUtilityReasoner(random) {
+class PickMoveToDouble3DEventReasoner(
+    private val eventNameKeyMap: Map<String, List<Int>>,
+    random: Random,
+) : DualUtilityReasoner(random) {
     override fun getOptionList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<DualUtilityOption> {
-        val movementEventKeySet: Set<Int> = planDataAtPlayer.getCurrentMutablePlayerData()
-            .playerInternalData.eventDataMap.filterValues {
-                // Filter out MoveToDouble3DEvent
-                it.event is MoveToDouble3DEvent
-            }.keys
+        val movementEventKeyList: Set<Int> = eventNameKeyMap.getOrDefault(
+            MoveToDouble3DEvent::class.name(),
+            listOf()
+        ).toSet()
 
-        return movementEventKeySet.map {
+        return movementEventKeyList.map {
             PickMoveToDouble3DEventDualUtilityOption(
                 eventKey = it,
-                otherEventKeySet = movementEventKeySet - it,
+                otherEventKeySet = movementEventKeyList - it,
                 random = random,
             )
         } + DoNothingDualUtilityOption(

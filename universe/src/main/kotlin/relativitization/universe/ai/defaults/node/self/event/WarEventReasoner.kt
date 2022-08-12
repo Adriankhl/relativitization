@@ -9,26 +9,37 @@ import relativitization.universe.data.events.ProposePeaceEvent
 import relativitization.universe.data.events.name
 import kotlin.random.Random
 
-class WarEventReasoner(random: Random) : SequenceReasoner(random) {
+/**
+ * Contains all reasoners related to war
+ *
+ * @property eventNameKeyMap a map from event name to a list of associated event key
+ */
+class WarEventReasoner(
+    private val eventNameKeyMap: Map<String, List<Int>>,
+    random: Random,
+) : SequenceReasoner(random) {
     override fun getSubNodeList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<AINode> = listOf(
-        AllProposePeaceEventReasoner(random)
+        AllProposePeaceEventReasoner(eventNameKeyMap, random)
     )
 }
 
-class AllProposePeaceEventReasoner(random: Random) : SequenceReasoner(random) {
+class AllProposePeaceEventReasoner(
+    private val eventNameKeyMap: Map<String, List<Int>>,
+    random: Random,
+) : SequenceReasoner(random) {
     override fun getSubNodeList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<AINode> {
-        val eventKeySet: Set<Int> = planDataAtPlayer.getCurrentMutablePlayerData()
-            .playerInternalData.eventDataMap.filterValues {
-                it.event is ProposePeaceEvent
-            }.keys
+        val eventKeyList: List<Int> = eventNameKeyMap.getOrDefault(
+            ProposePeaceEvent::class.name(),
+            listOf()
+        )
 
-        return eventKeySet.map {
+        return eventKeyList.map {
             ProposePeaceEventReasoner(it, random)
         }
     }
