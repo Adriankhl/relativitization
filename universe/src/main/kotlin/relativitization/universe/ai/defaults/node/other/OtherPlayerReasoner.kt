@@ -1,6 +1,7 @@
 package relativitization.universe.ai.defaults.node.other
 
 import relativitization.universe.ai.defaults.node.other.construction.ForeignFactoryReasoner
+import relativitization.universe.ai.defaults.node.other.diplomacy.AllianceReasoner
 import relativitization.universe.ai.defaults.node.other.diplomacy.DeclareWarReasoner
 import relativitization.universe.ai.defaults.node.other.diplomacy.ProposePeaceReasoner
 import relativitization.universe.ai.defaults.utils.AINode
@@ -18,6 +19,7 @@ class OtherPlayerReasoner(private val random: Random) : SequenceReasoner() {
             ForeignFactoryReasoner(random),
             ProposePeaceReasoner(random),
             DeclareWarReasoner(random),
+            AllianceReasoner(random),
         )
     }
 }
