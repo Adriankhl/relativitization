@@ -18,12 +18,11 @@ class CarrierReasoner(random: Random) : DualUtilityReasoner(random) {
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<DualUtilityOption> = listOf(
-        CreateCarrierOption(random = random,),
+        CreateCarrierOption(),
         DoNothingDualUtilityOption(
             rank = 1,
             multiplier = 1.0,
             bonus = 1.0,
-            random = random,
         )
     )
 }
@@ -31,7 +30,7 @@ class CarrierReasoner(random: Random) : DualUtilityReasoner(random) {
 /**
  * Create a carrier for this player
  */
-class CreateCarrierOption(random: Random) : DualUtilityOption(random) {
+class CreateCarrierOption : DualUtilityOption() {
     override fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState

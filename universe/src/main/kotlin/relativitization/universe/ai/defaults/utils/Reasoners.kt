@@ -5,14 +5,14 @@ import relativitization.universe.maths.sampling.WeightedReservoir
 import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.random.Random
 
-abstract class Reasoner(random: Random) : AINode(random) {
+abstract class Reasoner : AINode() {
     abstract fun getSubNodeList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<AINode>
 }
 
-abstract class SequenceReasoner(random: Random) : Reasoner(random) {
+abstract class SequenceReasoner : Reasoner() {
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
         logger.debug("${this::class.simpleName} (SequenceReasoner) updating data")
 
@@ -25,7 +25,7 @@ abstract class SequenceReasoner(random: Random) : Reasoner(random) {
     }
 }
 
-abstract class DualUtilityReasoner(random: Random) : Reasoner(random) {
+abstract class DualUtilityReasoner(private val random: Random) : Reasoner() {
     abstract fun getOptionList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -80,9 +80,7 @@ abstract class DualUtilityReasoner(random: Random) : Reasoner(random) {
                 maxRankValidDualUtilityOptionWeightMap.getValue(it)
             }.first()
         } else {
-            EmptyDualUtilityOption(
-                random = random,
-            )
+            EmptyDualUtilityOption()
         }
     }
 

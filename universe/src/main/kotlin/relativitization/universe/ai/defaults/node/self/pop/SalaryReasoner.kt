@@ -13,7 +13,7 @@ import kotlin.math.max
 import kotlin.math.min
 import kotlin.random.Random
 
-class SalaryReasoner(random: Random) : SequenceReasoner(random) {
+class SalaryReasoner(private val random: Random) : SequenceReasoner() {
     override fun getSubNodeList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -43,7 +43,6 @@ class SalaryReasoner(random: Random) : SequenceReasoner(random) {
                 AdjustSalaryFactorAINode(
                     carrierId,
                     populationRatioOrderMap,
-                    random,
                 )
             }
 
@@ -63,8 +62,7 @@ class SalaryReasoner(random: Random) : SequenceReasoner(random) {
 class AdjustSalaryFactorAINode(
     private val carrierId: Int,
     private val populationRatioOrderMap: Map<Int, Int>,
-    random: Random,
-) : AINode(random) {
+) : AINode() {
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
         // Compute an factor determined by the order of population ratio to enhance migration
         val populationOrderBonus: Double = if (populationRatioOrderMap.isNotEmpty()) {
@@ -121,17 +119,12 @@ class AdjustBaseSalaryReasoner(random: Random) : DualUtilityReasoner(random) {
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<DualUtilityOption> = listOf(
-        IncreaseBaseSalaryOption(
-            random = random,
-        ),
-        DecreaseBaseSalaryOption(
-            random = random,
-        ),
+        IncreaseBaseSalaryOption(),
+        DecreaseBaseSalaryOption(),
         DoNothingDualUtilityOption(
             rank = 1,
             multiplier = 1.0,
             bonus = 1.0,
-            random = random,
         )
     )
 }
@@ -139,7 +132,7 @@ class AdjustBaseSalaryReasoner(random: Random) : DualUtilityReasoner(random) {
 /**
  * Increase salary if production fuel is increasing
  */
-class IncreaseBaseSalaryOption(random: Random) : DualUtilityOption(random) {
+class IncreaseBaseSalaryOption : DualUtilityOption() {
     override fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -199,7 +192,7 @@ class IncreaseBaseSalaryOption(random: Random) : DualUtilityOption(random) {
 /**
  * Decrease salary if production fuel is decreasing
  */
-class DecreaseBaseSalaryOption(random: Random) : DualUtilityOption(random) {
+class DecreaseBaseSalaryOption : DualUtilityOption() {
     override fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState

@@ -20,7 +20,7 @@ import relativitization.universe.data.components.popSystemData
 import relativitization.universe.maths.physics.Intervals
 import kotlin.random.Random
 
-class InstituteReasoner(random: Random) : SequenceReasoner(random) {
+class InstituteReasoner(private val random: Random) : SequenceReasoner() {
     override fun getSubNodeList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -35,7 +35,7 @@ class InstituteReasoner(random: Random) : SequenceReasoner(random) {
 /**
  * Consider building new institutes at all carrier
  */
-class NewInstituteReasoner(random: Random) : SequenceReasoner(random) {
+class NewInstituteReasoner(private val random: Random) : SequenceReasoner() {
     override fun getSubNodeList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -50,7 +50,7 @@ class NewInstituteReasoner(random: Random) : SequenceReasoner(random) {
  */
 class NewInstituteAtCarrierReasoner(
     private val carrierId: Int,
-    random: Random
+    private val random: Random
 ) : DualUtilityReasoner(random) {
     override fun getOptionList(
         planDataAtPlayer: PlanDataAtPlayer,
@@ -65,7 +65,6 @@ class NewInstituteAtCarrierReasoner(
                 rank = 1,
                 multiplier = 1.0,
                 bonus = 1.0,
-                random = random,
             )
         )
     }
@@ -76,8 +75,8 @@ class NewInstituteAtCarrierReasoner(
  */
 class NewInstituteAtCarrierOption(
     private val carrierId: Int,
-    random: Random,
-) : DualUtilityOption(random) {
+    private val random: Random,
+) : DualUtilityOption() {
     override fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -225,7 +224,7 @@ class NewInstituteAtCarrierOption(
 /**
  * Consider building new institutes at all carrier
  */
-class RemoveInstituteReasoner(random: Random) : SequenceReasoner(random) {
+class RemoveInstituteReasoner(private val random: Random) : SequenceReasoner() {
     override fun getSubNodeList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -256,13 +255,11 @@ class RemoveSpecificInstituteReasoner(
         RemoveSpecificInstituteOption(
             carrierId = carrierId,
             instituteId = instituteId,
-            random = random,
         ),
         DoNothingDualUtilityOption(
             rank = 1,
             multiplier = 1.0,
             bonus = 1.0,
-            random = random,
         ),
     )
 }
@@ -273,8 +270,7 @@ class RemoveSpecificInstituteReasoner(
 class RemoveSpecificInstituteOption(
     private val carrierId: Int,
     private val instituteId: Int,
-    random: Random,
-) : DualUtilityOption(random) {
+) : DualUtilityOption() {
     override fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState

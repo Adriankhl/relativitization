@@ -19,8 +19,8 @@ import kotlin.random.Random
  */
 class MovementEventReasoner(
     private val eventNameKeyMap: Map<String, List<Int>>,
-    random: Random,
-) : SequenceReasoner(random) {
+    private val random: Random,
+) : SequenceReasoner() {
     override fun getSubNodeList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -49,13 +49,11 @@ class PickMoveToDouble3DEventReasoner(
             PickMoveToDouble3DEventDualUtilityOption(
                 eventKey = it,
                 otherEventKeySet = movementEventKeySet - it,
-                random = random,
             )
         } + DoNothingDualUtilityOption(
             rank = 1,
             multiplier = 1.0,
             bonus = 1.0,
-            random = random,
         )
     }
 }
@@ -69,8 +67,7 @@ class PickMoveToDouble3DEventReasoner(
 class PickMoveToDouble3DEventDualUtilityOption(
     private val eventKey: Int,
     private val otherEventKeySet: Set<Int>,
-    random: Random,
-) : DualUtilityOption(random) {
+) : DualUtilityOption() {
     override fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState

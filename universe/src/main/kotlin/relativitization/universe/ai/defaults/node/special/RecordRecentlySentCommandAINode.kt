@@ -5,9 +5,8 @@ import relativitization.universe.ai.defaults.utils.PlanState
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.commands.AddRecentCommandTimeCommand
 import relativitization.universe.data.commands.Command
-import kotlin.random.Random
 
-class RecordRecentlySentCommandAINode(random: Random) : AINode(random) {
+class RecordRecentlySentCommandAINode : AINode() {
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
         val toIdSet: Set<Int> = planDataAtPlayer.commandList.map { it.toId }.toSet()
         val allUpdateCommand: List<Command> = toIdSet.filter {

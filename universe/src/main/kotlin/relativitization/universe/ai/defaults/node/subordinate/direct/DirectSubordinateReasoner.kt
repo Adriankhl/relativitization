@@ -11,7 +11,7 @@ import relativitization.universe.maths.physics.Int3D
 import relativitization.universe.maths.physics.Intervals
 import kotlin.random.Random
 
-class DirectSubordinateReasoner(random: Random) : SequenceReasoner(random) {
+class DirectSubordinateReasoner(private val random: Random) : SequenceReasoner() {
     override fun getSubNodeList(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState): List<AINode> {
         val directSubordinateSet: Set<Int> = planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData
             .directSubordinateIdSet

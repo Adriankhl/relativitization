@@ -17,7 +17,7 @@ import kotlin.random.Random
 
 class DirectSubordinateMovementReasoner(
     private val directSubordinateId: Int,
-    random: Random,
+    private val random: Random,
 ) : DualUtilityReasoner(random) {
     override fun getOptionList(
         planDataAtPlayer: PlanDataAtPlayer,
@@ -31,7 +31,6 @@ class DirectSubordinateMovementReasoner(
             rank = 1,
             multiplier = 1.0,
             bonus = 1.0,
-            random = random,
         ),
     )
 }
@@ -41,8 +40,8 @@ class DirectSubordinateMovementReasoner(
  */
 class MoveDirectSubordinateToNearbyEnemyOption(
     private val directSubordinateId: Int,
-    random: Random,
-) : DualUtilityOption(random) {
+    private val random: Random,
+) : DualUtilityOption() {
     override fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState

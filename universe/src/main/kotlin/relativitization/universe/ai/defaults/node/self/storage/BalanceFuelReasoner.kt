@@ -10,21 +10,20 @@ import relativitization.universe.data.components.defaults.popsystem.CarrierType
 import relativitization.universe.data.components.physicsData
 import relativitization.universe.data.components.popSystemData
 import relativitization.universe.data.serializer.DataSerializer
-import kotlin.random.Random
 
-class BalanceFuelReasoner(random: Random) : SequenceReasoner(random) {
+class BalanceFuelReasoner : SequenceReasoner() {
     override fun getSubNodeList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<AINode> = listOf(
-        BalanceFuelProportionAINode(random),
+        BalanceFuelProportionAINode(),
     )
 }
 
 /**
  * Change the fuel target data
  */
-class BalanceFuelProportionAINode(random: Random) : AINode(random) {
+class BalanceFuelProportionAINode : AINode() {
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
         // If there is stellar system in player, movement should be zero
         val hasStellarSystem: Boolean = planDataAtPlayer.getCurrentMutablePlayerData()

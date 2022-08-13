@@ -23,7 +23,7 @@ import kotlin.math.max
 import kotlin.math.min
 import kotlin.random.Random
 
-class FactoryReasoner(random: Random) : SequenceReasoner(random) {
+class FactoryReasoner(private val random: Random) : SequenceReasoner() {
     override fun getSubNodeList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -46,7 +46,7 @@ class FactoryReasoner(random: Random) : SequenceReasoner(random) {
 /**
  * Iterate all carrier to consider building new fuel factory
  */
-class NewFuelFactoryReasoner(random: Random) : SequenceReasoner(random) {
+class NewFuelFactoryReasoner(private val random: Random) : SequenceReasoner() {
     override fun getSubNodeList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -70,13 +70,11 @@ class NewFuelFactoryAtCarrierReasoner(
         return listOf(
             BuildNewFuelFactoryOption(
                 carrierId = carrierId,
-                random = random
             ),
             DoNothingDualUtilityOption(
                 rank = 1,
                 multiplier = 1.0,
                 bonus = 1.0,
-                random = random,
             ),
         )
     }
@@ -87,8 +85,7 @@ class NewFuelFactoryAtCarrierReasoner(
  */
 class BuildNewFuelFactoryOption(
     private val carrierId: Int,
-    random: Random,
-) : DualUtilityOption(random) {
+) : DualUtilityOption() {
     // Max production fuel fraction used to build the factory
     private val maxProductionFuelFraction: Double = 0.1
 
@@ -213,7 +210,7 @@ class BuildNewFuelFactoryOption(
 /**
  * Remove fuel factory reasoner
  */
-class RemoveFuelFactoryReasoner(random: Random) : SequenceReasoner(random) {
+class RemoveFuelFactoryReasoner(private val random: Random) : SequenceReasoner() {
     override fun getSubNodeList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -269,13 +266,11 @@ class RemoveSpecificSelfFuelFactoryReasoner(
             RemoveSpecificSelfFuelFactoryOption(
                 carrierId = carrierId,
                 fuelFactoryId = fuelFactoryId,
-                random = random,
             ),
             DoNothingDualUtilityOption(
                 rank = 1,
                 multiplier = 1.0,
                 bonus = 1.0,
-                random = random,
             ),
         )
     }
@@ -287,8 +282,7 @@ class RemoveSpecificSelfFuelFactoryReasoner(
 class RemoveSpecificSelfFuelFactoryOption(
     private val carrierId: Int,
     private val fuelFactoryId: Int,
-    random: Random,
-) : DualUtilityOption(random) {
+) : DualUtilityOption() {
     override fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -350,13 +344,11 @@ class RemoveOtherFuelFactoryReasoner(
             carrierId = carrierId,
             fuelFactoryId = fuelFactoryId,
             ownerId = ownerId,
-            random = random,
         ),
         DoNothingDualUtilityOption(
             rank = 1,
             multiplier = 1.0,
             bonus = 1.0,
-            random = random,
         ),
     )
 }
@@ -368,8 +360,7 @@ class RemoveSpecificOtherFuelFactoryOption(
     private val carrierId: Int,
     private val fuelFactoryId: Int,
     private val ownerId: Int,
-    random: Random,
-) : DualUtilityOption(random) {
+) : DualUtilityOption() {
     override fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -406,8 +397,8 @@ class RemoveSpecificOtherFuelFactoryOption(
  */
 class NewResourceFactoryReasoner(
     private val resourceType: ResourceType,
-    random: Random
-) : SequenceReasoner(random) {
+    private val random: Random
+) : SequenceReasoner() {
     override fun getSubNodeList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -436,13 +427,11 @@ class NewResourceFactoryAtCarrierReasoner(
         BuildNewResourceFactoryOption(
             resourceType = resourceType,
             carrierId = carrierId,
-            random = random,
         ),
         DoNothingDualUtilityOption(
             rank = 1,
             multiplier = 1.0,
             bonus = 1.0,
-            random = random,
         ),
     )
 }
@@ -450,8 +439,7 @@ class NewResourceFactoryAtCarrierReasoner(
 class BuildNewResourceFactoryOption(
     private val resourceType: ResourceType,
     private val carrierId: Int,
-    random: Random,
-) : DualUtilityOption(random) {
+) : DualUtilityOption() {
     // Max production fuel fraction used to build the factory
     private val maxProductionFuelFraction: Double = 0.1
 
@@ -584,7 +572,7 @@ class BuildNewResourceFactoryOption(
 /**
  * Remove resource factory reasoner
  */
-class RemoveResourceFactoryReasoner(random: Random) : SequenceReasoner(random) {
+class RemoveResourceFactoryReasoner(private val random: Random) : SequenceReasoner() {
     override fun getSubNodeList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -642,13 +630,11 @@ class RemoveSpecificSelfResourceFactoryReasoner(
             RemoveSpecificSelfResourceFactoryOption(
                 carrierId = carrierId,
                 resourceFactoryId = resourceFactoryId,
-                random = random,
             ),
             DoNothingDualUtilityOption(
                 rank = 1,
                 multiplier = 1.0,
                 bonus = 1.0,
-                random = random,
             ),
         )
     }
@@ -661,8 +647,7 @@ class RemoveSpecificSelfResourceFactoryReasoner(
 class RemoveSpecificSelfResourceFactoryOption(
     private val carrierId: Int,
     private val resourceFactoryId: Int,
-    random: Random,
-) : DualUtilityOption(random) {
+) : DualUtilityOption() {
     override fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -725,13 +710,11 @@ class RemoveOtherResourceFactoryReasoner(
             carrierId = carrierId,
             resourceFactoryId = resourceFactoryId,
             ownerId = ownerId,
-            random = random,
         ),
         DoNothingDualUtilityOption(
             rank = 1,
             multiplier = 1.0,
             bonus = 1.0,
-            random = random,
         ),
     )
 }
@@ -743,8 +726,7 @@ class RemoveSpecificOtherResourceFactoryOption(
     private val carrierId: Int,
     private val resourceFactoryId: Int,
     private val ownerId: Int,
-    random: Random,
-) : DualUtilityOption(random) {
+) : DualUtilityOption() {
     override fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState

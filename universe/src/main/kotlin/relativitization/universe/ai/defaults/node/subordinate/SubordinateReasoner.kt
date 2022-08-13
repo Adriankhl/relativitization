@@ -7,7 +7,7 @@ import relativitization.universe.ai.defaults.utils.SequenceReasoner
 import relativitization.universe.data.PlanDataAtPlayer
 import kotlin.random.Random
 
-class SubordinateReasoner(random: Random) : SequenceReasoner(random) {
+class SubordinateReasoner(private val random: Random) : SequenceReasoner() {
     override fun getSubNodeList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState

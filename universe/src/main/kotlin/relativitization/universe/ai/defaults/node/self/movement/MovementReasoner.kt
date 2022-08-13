@@ -19,22 +19,17 @@ import relativitization.universe.maths.physics.Movement
 import kotlin.math.min
 import kotlin.random.Random
 
-class MovementReasoner(random: Random) : DualUtilityReasoner(random) {
+class MovementReasoner(private val random: Random) : DualUtilityReasoner(random) {
     override fun getOptionList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<DualUtilityOption> = listOf(
-        MoveToLowerDensityCubeOption(
-            random = random,
-        ),
-        MoveToEnemyOption(
-            random = random,
-        ),
+        MoveToLowerDensityCubeOption(random),
+        MoveToEnemyOption(random),
         DoNothingDualUtilityOption(
             rank = 1,
             multiplier = 1.0,
             bonus = 1.0,
-            random = random,
         )
     )
 }
@@ -42,7 +37,7 @@ class MovementReasoner(random: Random) : DualUtilityReasoner(random) {
 /**
  * Move to a neighbouring cube with lower density
  */
-class MoveToLowerDensityCubeOption(random: Random) : DualUtilityOption(random) {
+class MoveToLowerDensityCubeOption(private val random: Random) : DualUtilityOption() {
     override fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -120,7 +115,7 @@ class MoveToLowerDensityCubeOption(random: Random) : DualUtilityOption(random) {
 /**
  * Move to a cube with enemy
  */
-class MoveToEnemyOption(random: Random) : DualUtilityOption(random) {
+class MoveToEnemyOption(private val random: Random) : DualUtilityOption() {
     override fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState

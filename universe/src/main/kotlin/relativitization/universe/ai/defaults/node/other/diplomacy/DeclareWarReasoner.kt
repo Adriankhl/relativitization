@@ -18,7 +18,7 @@ import relativitization.universe.maths.physics.Int3D
 import relativitization.universe.maths.physics.Intervals
 import kotlin.random.Random
 
-class DeclareWarReasoner(random: Random) : SequenceReasoner(random) {
+class DeclareWarReasoner(private val random: Random) : SequenceReasoner() {
     override fun getSubNodeList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -106,7 +106,6 @@ class SpaceConflictReasoner(random: Random) : DualUtilityReasoner(random) {
                 targetPlayerTopLeaderMilitaryScore = conflictPlayerTopLeaderMilitaryScoreMap.getValue(
                     targetTopLeaderId
                 ),
-                random = random,
             )
         }
 
@@ -115,7 +114,6 @@ class SpaceConflictReasoner(random: Random) : DualUtilityReasoner(random) {
                 rank = 1,
                 multiplier = 1.0,
                 bonus = 1.0,
-                random = random,
             )
         )
     }
@@ -132,8 +130,7 @@ class SpaceConflictDeclareWarOption(
     private val targetPlayerId: Int,
     private val selfMilitaryScore: Double,
     private val targetPlayerTopLeaderMilitaryScore: Double,
-    random: Random
-) : DualUtilityOption(random) {
+) : DualUtilityOption() {
     override fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -235,7 +232,6 @@ class DeclareIndependenceReasoner(random: Random) : DualUtilityReasoner(random) 
                 DeclareIndependenceToDirectLeaderOption(
                     selfMilitaryScore = selfMilitaryScore,
                     targetMilitaryScore = directLeaderExcludeSelfMilitaryScore,
-                    random = random,
                 )
             )
         } else {
@@ -254,7 +250,6 @@ class DeclareIndependenceReasoner(random: Random) : DualUtilityReasoner(random) 
                     DeclareIndependenceToTopLeaderOption(
                         selfMilitaryScore = selfMilitaryScore,
                         targetMilitaryScore = topLeaderExcludeSelfMilitaryScore,
-                        random = random,
                     )
                 )
             } else {
@@ -266,7 +261,6 @@ class DeclareIndependenceReasoner(random: Random) : DualUtilityReasoner(random) 
                 rank = 1,
                 multiplier = 1.0,
                 bonus = 1.0,
-                random = random,
             )
         )
     }
@@ -278,8 +272,7 @@ class DeclareIndependenceReasoner(random: Random) : DualUtilityReasoner(random) 
 class DeclareIndependenceToDirectLeaderOption(
     private val selfMilitaryScore: Double,
     private val targetMilitaryScore: Double,
-    random: Random,
-) : DualUtilityOption(random) {
+) : DualUtilityOption() {
     override fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -362,8 +355,7 @@ class DeclareIndependenceToDirectLeaderOption(
 class DeclareIndependenceToTopLeaderOption(
     private val selfMilitaryScore: Double,
     private val targetMilitaryScore: Double,
-    random: Random,
-) : DualUtilityOption(random) {
+) : DualUtilityOption() {
     override fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState

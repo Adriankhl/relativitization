@@ -8,7 +8,7 @@ import relativitization.universe.data.events.MutableEventData
 import relativitization.universe.data.events.name
 import kotlin.random.Random
 
-class EventReasoner(random: Random) : SequenceReasoner(random) {
+class EventReasoner(private val random: Random) : SequenceReasoner() {
     override fun getSubNodeList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState

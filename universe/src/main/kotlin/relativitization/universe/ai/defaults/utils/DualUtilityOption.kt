@@ -2,9 +2,8 @@ package relativitization.universe.ai.defaults.utils
 
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.utils.RelativitizationLogManager
-import kotlin.random.Random
 
-abstract class DualUtilityOption(random: Random) : AINode(random) {
+abstract class DualUtilityOption : AINode() {
     abstract fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer, planState: PlanState
     ): List<DualUtilityConsideration>
@@ -49,7 +48,7 @@ abstract class DualUtilityOption(random: Random) : AINode(random) {
     }
 }
 
-class EmptyDualUtilityOption(random: Random) : DualUtilityOption(random) {
+class EmptyDualUtilityOption : DualUtilityOption() {
     override fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -62,8 +61,7 @@ class DoNothingDualUtilityOption(
     val rank: Int,
     val multiplier: Double,
     val bonus: Double,
-    random: Random,
-) : DualUtilityOption(random) {
+) : DualUtilityOption() {
     override fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState

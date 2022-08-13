@@ -16,8 +16,8 @@ import kotlin.random.Random
  */
 class WarEventReasoner(
     private val eventNameKeyMap: Map<String, List<Int>>,
-    random: Random,
-) : SequenceReasoner(random) {
+    private val random: Random,
+) : SequenceReasoner() {
     override fun getSubNodeList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -28,8 +28,8 @@ class WarEventReasoner(
 
 class AllProposePeaceEventReasoner(
     private val eventNameKeyMap: Map<String, List<Int>>,
-    random: Random,
-) : SequenceReasoner(random) {
+    private val random: Random,
+) : SequenceReasoner() {
     override fun getSubNodeList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -55,19 +55,16 @@ class ProposePeaceEventReasoner(
     ): List<DualUtilityOption> = listOf(
         AcceptPeaceOption(
             eventKey = eventKey,
-            random = random,
         ),
         RejectPeaceOption(
             eventKey = eventKey,
-            random = random,
         ),
     )
 }
 
 class AcceptPeaceOption(
     private val eventKey: Int,
-    random: Random
-) : DualUtilityOption(random) {
+) : DualUtilityOption() {
     override fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -102,8 +99,7 @@ class AcceptPeaceOption(
 
 class RejectPeaceOption(
     private val eventKey: Int,
-    random: Random,
-) : DualUtilityOption(random) {
+) : DualUtilityOption() {
     override fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState

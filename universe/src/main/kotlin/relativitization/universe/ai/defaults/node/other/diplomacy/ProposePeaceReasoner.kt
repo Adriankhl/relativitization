@@ -8,7 +8,7 @@ import relativitization.universe.data.components.diplomacyData
 import relativitization.universe.data.events.ProposePeaceEvent
 import kotlin.random.Random
 
-class ProposePeaceReasoner(random: Random) : SequenceReasoner(random) {
+class ProposePeaceReasoner(private val random: Random) : SequenceReasoner() {
     override fun getSubNodeList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -26,20 +26,18 @@ class ProposePeaceToPlayerReasoner(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<DualUtilityOption> = listOf(
-        ProposePeaceToPlayerOption(targetPlayerId, random = random,),
+        ProposePeaceToPlayerOption(targetPlayerId),
         DoNothingDualUtilityOption(
             rank = 1,
             multiplier = 1.0,
             bonus = 1.0,
-            random = random,
         )
     )
 }
 
 class ProposePeaceToPlayerOption(
     private val targetPlayerId: Int,
-    random: Random,
-) : DualUtilityOption(random) {
+) : DualUtilityOption() {
     override fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState

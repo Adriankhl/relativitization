@@ -14,22 +14,21 @@ import relativitization.universe.data.components.popSystemData
 import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.random.Random
 
-class SplitCarrierReasoner(random: Random) : DualUtilityReasoner(random) {
+class SplitCarrierReasoner(private val random: Random) : DualUtilityReasoner(random) {
     override fun getOptionList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<DualUtilityOption> = listOf(
-        SplitCarrierOption(random = random,),
+        SplitCarrierOption(random),
         DoNothingDualUtilityOption(
             rank = 1,
             multiplier = 1.0,
             bonus = 1.0,
-            random = random,
         )
     )
 }
 
-class SplitCarrierOption(random: Random) : DualUtilityOption(random) {
+class SplitCarrierOption(private val random: Random) : DualUtilityOption() {
     override fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState

@@ -17,7 +17,7 @@ import relativitization.universe.data.components.popSystemData
 import relativitization.universe.maths.physics.Intervals
 import kotlin.random.Random
 
-class LaboratoryReasoner(random: Random) : SequenceReasoner(random) {
+class LaboratoryReasoner(private val random: Random) : SequenceReasoner() {
     override fun getSubNodeList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -32,7 +32,7 @@ class LaboratoryReasoner(random: Random) : SequenceReasoner(random) {
 /**
  * Consider building new laboratory at all carrier
  */
-class NewLaboratoryReasoner(random: Random) : SequenceReasoner(random) {
+class NewLaboratoryReasoner(private val random: Random) : SequenceReasoner() {
     override fun getSubNodeList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -47,7 +47,7 @@ class NewLaboratoryReasoner(random: Random) : SequenceReasoner(random) {
  */
 class NewLaboratoryAtCarrierReasoner(
     private val carrierId: Int,
-    random: Random
+    private val random: Random
 ) : DualUtilityReasoner(random) {
     override fun getOptionList(
         planDataAtPlayer: PlanDataAtPlayer,
@@ -62,7 +62,6 @@ class NewLaboratoryAtCarrierReasoner(
                 rank = 1,
                 multiplier = 1.0,
                 bonus = 1.0,
-                random = random,
             )
         )
     }
@@ -73,8 +72,8 @@ class NewLaboratoryAtCarrierReasoner(
  */
 class NewLaboratoryAtCarrierOption(
     private val carrierId: Int,
-    random: Random,
-) : DualUtilityOption(random) {
+    private val random: Random,
+) : DualUtilityOption() {
     override fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -222,7 +221,7 @@ class NewLaboratoryAtCarrierOption(
 /**
  * Consider building new laboratories at all carrier
  */
-class RemoveLaboratoryReasoner(random: Random) : SequenceReasoner(random) {
+class RemoveLaboratoryReasoner(private val random: Random) : SequenceReasoner() {
     override fun getSubNodeList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -253,13 +252,11 @@ class RemoveSpecificLaboratoryReasoner(
         RemoveSpecificLaboratoryOption(
             carrierId = carrierId,
             laboratoryId = laboratoryId,
-            random = random,
         ),
         DoNothingDualUtilityOption(
             rank = 1,
             multiplier = 1.0,
             bonus = 1.0,
-            random = random,
         ),
     )
 }
@@ -270,8 +267,7 @@ class RemoveSpecificLaboratoryReasoner(
 class RemoveSpecificLaboratoryOption(
     private val carrierId: Int,
     private val laboratoryId: Int,
-    random: Random,
-) : DualUtilityOption(random) {
+) : DualUtilityOption() {
     override fun getConsiderationList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState

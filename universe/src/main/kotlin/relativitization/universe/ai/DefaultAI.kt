@@ -30,8 +30,8 @@ object DefaultAI : AI() {
 
 class RootReasoner(
     universeData3DAtPlayer: UniverseData3DAtPlayer,
-    random: Random
-) : SequenceReasoner(random) {
+    private val random: Random
+) : SequenceReasoner() {
 
     private val planDataAtPlayer: PlanDataAtPlayer = universeData3DAtPlayer.getPlanDataAtPlayer {}
     private val planState: PlanState = PlanState()
@@ -49,7 +49,7 @@ class RootReasoner(
         SelfReasoner(random),
         SubordinateReasoner(random),
         OtherPlayerReasoner(random),
-        RecordRecentlySentCommandAINode(random),
+        RecordRecentlySentCommandAINode(),
     )
 
     companion object {

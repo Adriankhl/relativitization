@@ -18,15 +18,15 @@ import relativitization.universe.ai.defaults.utils.SequenceReasoner
 import relativitization.universe.data.PlanDataAtPlayer
 import kotlin.random.Random
 
-class SelfReasoner(random: Random) : SequenceReasoner(random) {
+class SelfReasoner(private val random: Random) : SequenceReasoner() {
     override fun getSubNodeList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<AINode> = listOf(
         EventReasoner(random),
-        PolicyReasoner(random),
-        BalanceFuelReasoner(random),
-        BalanceResourceReasoner(random),
+        PolicyReasoner(),
+        BalanceFuelReasoner(),
+        BalanceResourceReasoner(),
         FactoryReasoner(random),
         InstituteReasoner(random),
         LaboratoryReasoner(random),
