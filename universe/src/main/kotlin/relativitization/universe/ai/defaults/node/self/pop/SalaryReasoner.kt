@@ -1,7 +1,7 @@
 package relativitization.universe.ai.defaults.node.self.pop
 
 import relativitization.universe.ai.defaults.consideration.fuel.IncreasingProductionFuelConsideration
-import relativitization.universe.ai.defaults.consideration.fuel.PopulationSavingHighCompareToProduction
+import relativitization.universe.ai.defaults.consideration.fuel.PopulationSavingHighCompareToProductionConsideration
 import relativitization.universe.ai.defaults.utils.*
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.commands.ChangeBaseSalaryCommand
@@ -206,7 +206,7 @@ class DecreaseBaseSalaryOption : DualUtilityOption() {
                 multiplierIfFalse = 1.0,
                 bonusIfFalse = 1.0
             ),
-            PopulationSavingHighCompareToProduction(
+            PopulationSavingHighCompareToProductionConsideration(
                 productionFuelFactor = 0.5,
                 rankIfTrue = 5,
                 multiplierIfTrue = 1.0,

@@ -113,7 +113,7 @@ class SufficientProductionFuelConsideration(
  * @property multiplierIfFalse multiplier of dual utility if this is false
  * @property bonusIfFalse bonus of dual utility if this is false
  */
-class PopulationSavingHighCompareToProduction(
+class PopulationSavingHighCompareToProductionConsideration(
     private val productionFuelFactor: Double,
     private val rankIfTrue: Int,
     private val multiplierIfTrue: Double,
