@@ -70,6 +70,7 @@ class AcceptAllianceOption(
             .eventDataMap.getValue(eventKey).event
         return listOf(
             TooManyAllyConsideration(
+                playerId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
                 targetNumAlly = 2,
                 rankIfTrue = 0,
                 multiplierIfTrue = 0.0,

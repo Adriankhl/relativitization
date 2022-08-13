@@ -89,6 +89,7 @@ class HasPeaceTreatyConsideration(
 /**
  * Whether this player has plenty of allies
  *
+ * @property playerId the id of the player to check
  * @property targetNumAlly see if the current number of allies is bigger than or equal to this number
  * @property rankIfTrue rank of dual utility if this is true
  * @property multiplierIfTrue multiplier of dual utility if this is true
@@ -98,6 +99,7 @@ class HasPeaceTreatyConsideration(
  * @property bonusIfFalse bonus of dual utility if this is false
  */
 class TooManyAllyConsideration(
+    private val playerId: Int,
     private val targetNumAlly: Int,
     private val rankIfTrue: Int,
     private val multiplierIfTrue: Double,
@@ -111,7 +113,7 @@ class TooManyAllyConsideration(
         planState: PlanState
     ): DualUtilityData {
 
-        val numAlly: Int = planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData
+        val numAlly: Int = planDataAtPlayer.getMutablePlayerData(playerId).playerInternalData
             .diplomacyData().relationData.allyMap.size
 
         return if (numAlly >= targetNumAlly) {
