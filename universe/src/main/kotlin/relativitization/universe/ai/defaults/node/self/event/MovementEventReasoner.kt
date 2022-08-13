@@ -40,15 +40,15 @@ class PickMoveToDouble3DEventReasoner(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<DualUtilityOption> {
-        val movementEventKeyList: Set<Int> = eventNameKeyMap.getOrDefault(
+        val movementEventKeySet: Set<Int> = eventNameKeyMap.getOrDefault(
             MoveToDouble3DEvent::class.name(),
             listOf()
         ).toSet()
 
-        return movementEventKeyList.map {
+        return movementEventKeySet.map {
             PickMoveToDouble3DEventDualUtilityOption(
                 eventKey = it,
-                otherEventKeySet = movementEventKeyList - it,
+                otherEventKeySet = movementEventKeySet - it,
                 random = random,
             )
         } + DoNothingDualUtilityOption(
