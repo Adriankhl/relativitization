@@ -25,6 +25,7 @@ class EventReasoner(private val random: Random) : SequenceReasoner() {
         return listOf(
             MovementEventReasoner(eventNameKeyMap, random),
             WarEventReasoner(eventNameKeyMap, random),
+            AllianceEventReasoner(eventNameKeyMap, random),
         )
     }
 }
