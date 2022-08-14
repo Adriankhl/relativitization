@@ -3,9 +3,14 @@ package relativitization.universe.ai.defaults.node.other.diplomacy
 import relativitization.universe.ai.defaults.consideration.diplomacy.RelationConsideration
 import relativitization.universe.ai.defaults.consideration.diplomacy.TooManyAllyConsideration
 import relativitization.universe.ai.defaults.utils.*
+import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.PlanDataAtPlayer
+import relativitization.universe.data.PlayerData
+import relativitization.universe.data.commands.AddEventCommand
 import relativitization.universe.data.commands.RemoveAllyCommand
 import relativitization.universe.data.components.diplomacyData
+import relativitization.universe.data.events.ProposeAllianceEvent
+import relativitization.universe.maths.physics.Int3D
 import kotlin.random.Random
 
 class AllianceReasoner(private val random: Random) : SequenceReasoner() {
@@ -14,7 +19,8 @@ class AllianceReasoner(private val random: Random) : SequenceReasoner() {
         planState: PlanState
     ): List<AINode> {
         return listOf(
-            RemoveAllyReasoner(random)
+            RemoveAllyReasoner(random),
+            ProposeAllianceReasoner(random),
         )
     }
 }
@@ -105,5 +111,56 @@ class RemoveSpecificAllyOption(
                 targetPlayerId = otherPlayerId,
             )
         )
+    }
+}
+
+class ProposeAllianceReasoner(
+    private val random: Random,
+) : AINode() {
+    override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
+        val playerData: MutablePlayerData = planDataAtPlayer.getCurrentMutablePlayerData()
+
+        // Only search for new ally if current number of ally is smaller than 2
+        if (playerData.playerInternalData.diplomacyData().relationData.allyMap.size <= 2) {
+            // Randomly select a cube to search for alliance
+            val xSearch: Int = random.nextInt(
+                0,
+                planDataAtPlayer.universeData3DAtPlayer.universeSettings.xDim
+            )
+            val ySearch: Int = random.nextInt(
+                0,
+                planDataAtPlayer.universeData3DAtPlayer.universeSettings.yDim
+            )
+            val zSearch: Int = random.nextInt(
+                0,
+                planDataAtPlayer.universeData3DAtPlayer.universeSettings.zDim
+            )
+
+            val playerList: List<PlayerData> = planDataAtPlayer
+                .universeData3DAtPlayer.get(Int3D(xSearch, ySearch, zSearch)).values.flatten()
+
+            val suitableAlly: List<PlayerData> = playerList.filter {
+                !playerData.isLeaderOrSelf(it.playerId) &&
+                        !playerData.isSubOrdinate(it.playerId) &&
+                        !playerData.playerInternalData.diplomacyData().relationData.isEnemy(it.playerId) &&
+                        (it.playerInternalData.diplomacyData().relationData.allyMap.size <= 2)
+            }
+
+            if (suitableAlly.isNotEmpty()) {
+                val targetAlly: PlayerData = suitableAlly.shuffled(random).first()
+
+                val event = ProposeAllianceEvent(
+                    toId = targetAlly.playerId,
+                    fromId = playerData.playerId
+                )
+
+                planDataAtPlayer.addCommand(
+                    AddEventCommand(
+                        event = event,
+                        fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
+                    )
+                )
+            }
+        }
     }
 }
