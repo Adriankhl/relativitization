@@ -183,7 +183,7 @@ class AcceptAllyWarCallOption(
                     bonusIfFalse = 0.5
                 ),
                 RelationConsideration(
-                    otherPlayerId = planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData.directLeaderId,
+                    otherPlayerId = event.fromId,
                     initialMultiplier = 1.0,
                     exponent = 1.05,
                     rank = 0,
@@ -303,7 +303,7 @@ class AcceptAllySubordinateWarCallOption(
                 ),
             )
         } else {
-            logger.error("Event is not CallAllyToWarEvent")
+            logger.error("Event is not CallAllyToSubordinateWarEvent")
             listOf()
         }
     }
