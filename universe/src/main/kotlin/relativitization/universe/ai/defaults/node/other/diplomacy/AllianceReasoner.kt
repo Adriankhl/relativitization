@@ -9,7 +9,9 @@ import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.commands.AddEventCommand
 import relativitization.universe.data.commands.RemoveAllyCommand
+import relativitization.universe.data.components.defaults.diplomacy.war.MutableWarData
 import relativitization.universe.data.components.diplomacyData
+import relativitization.universe.data.events.CallAllyToSubordinateWarEvent
 import relativitization.universe.data.events.CallAllyToWarEvent
 import relativitization.universe.data.events.ProposeAllianceEvent
 import relativitization.universe.maths.physics.Int3D
@@ -23,6 +25,8 @@ class AllianceReasoner(private val random: Random) : SequenceReasoner() {
         return listOf(
             RemoveAllyReasoner(random),
             ProposeAllianceReasoner(random),
+            CallAllyToWarReasoner(random),
+            CallAllyToSubordinateWarReasoner(random),
         )
     }
 }
@@ -227,6 +231,94 @@ class CallAllyToWarOption(
             toId = allyId,
             fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
             warTargetId = opponentId
+        )
+
+        planDataAtPlayer.addCommand(
+            AddEventCommand(
+                event = event,
+                fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
+            )
+        )
+    }
+}
+
+class CallAllyToSubordinateWarReasoner(private val random: Random) : SequenceReasoner() {
+    override fun getSubNodeList(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planState: PlanState
+    ): List<AINode> {
+        val subordinateWarDataMap: Map<Int, Map<Int, MutableWarData>> =
+            planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData.diplomacyData()
+                .relationData.subordinateWarDataMap
+
+        return subordinateWarDataMap.flatMap { (subordinateId, opponentMap) ->
+            opponentMap.keys.flatMap {opponentId ->
+                planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData.diplomacyData()
+                    .relationData.allyMap.keys.filter { allyId ->
+                        !planState.isCommandSentRecently(allyId, planDataAtPlayer)
+                    }.map { allyId ->
+                        CallSpecificAllyToSpecificSubordinateWarReasoner(
+                            subordinateId = subordinateId,
+                            opponentId = opponentId,
+                            allyId = allyId,
+                            random = random
+                        )
+                    }
+            }
+        }
+    }
+}
+
+class CallSpecificAllyToSpecificSubordinateWarReasoner(
+    private val subordinateId: Int,
+    private val opponentId: Int,
+    private val allyId: Int,
+    random: Random,
+) : DualUtilityReasoner(random) {
+    override fun getOptionList(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planState: PlanState
+    ): List<DualUtilityOption> {
+        return listOf(
+            CallAllyToSubordinateWarOption(
+                subordinateId = subordinateId,
+                opponentId = opponentId,
+                allyId = allyId
+            ),
+            DoNothingDualUtilityOption(rank = 1, multiplier = 1.0, bonus = 1.0),
+        )
+    }
+}
+
+class CallAllyToSubordinateWarOption(
+    private val subordinateId: Int,
+    private val opponentId: Int,
+    private val allyId: Int,
+) : DualUtilityOption() {
+    override fun getConsiderationList(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planState: PlanState
+    ): List<DualUtilityConsideration> {
+        return listOf(
+            InDefensiveWarConsideration(
+                playerId = subordinateId,
+                warTargetId = opponentId,
+                rankIfTrue = 1,
+                multiplierIfTrue = 1.0,
+                bonusIfTrue = 0.05,
+                rankIfFalse = 1,
+                multiplierIfFalse = 1.0,
+                bonusIfFalse = 0.005,
+            )
+        )
+    }
+
+    override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
+        val event = CallAllyToSubordinateWarEvent(
+            toId = allyId,
+            fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+            subordinateId = subordinateId,
+            warTargetId = opponentId,
         )
 
         planDataAtPlayer.addCommand(
