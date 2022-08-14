@@ -183,7 +183,7 @@ class WarLossConsideration(
 /**
  * Check if this player is in defensive war with target
  *
- * @property otherPlayerId the id of the other player to consider
+ * @property playerId the id of the player to consider
  * @property warTargetId the id of the war target
  * @property rankIfTrue rank of dual utility if this is true
  * @property multiplierIfTrue multiplier of dual utility if this is true
@@ -193,7 +193,7 @@ class WarLossConsideration(
  * @property bonusIfFalse bonus of dual utility if this is false
  */
 class InDefensiveWarConsideration(
-    private val otherPlayerId: Int,
+    private val playerId: Int,
     private val warTargetId: Int,
     private val rankIfTrue: Int,
     private val multiplierIfTrue: Double,
@@ -207,12 +207,12 @@ class InDefensiveWarConsideration(
         planState: PlanState
     ): DualUtilityData {
         val otherWarDataMap: Map<Int, MutableWarData> = planDataAtPlayer
-            .getMutablePlayerData(otherPlayerId).playerInternalData
+            .getMutablePlayerData(playerId).playerInternalData
             .diplomacyData().relationData.selfWarDataMap
 
-        val hasWar: Boolean = otherWarDataMap.containsKey(otherPlayerId)
+        val hasWar: Boolean = otherWarDataMap.containsKey(playerId)
         val isDefensive: Boolean = if (hasWar) {
-            otherWarDataMap.getValue(otherPlayerId).warCoreData.isDefensive
+            otherWarDataMap.getValue(playerId).warCoreData.isDefensive
         } else {
             false
         }

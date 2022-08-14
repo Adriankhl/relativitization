@@ -173,7 +173,7 @@ class AcceptAllyWarCallOption(
         return if (event is CallAllyToWarEvent) {
             listOf(
                 InDefensiveWarConsideration(
-                    otherPlayerId = event.fromId,
+                    playerId = event.fromId,
                     warTargetId = event.warTargetId,
                     rankIfTrue = 2,
                     multiplierIfTrue = 1.0,
@@ -285,7 +285,7 @@ class AcceptAllySubordinateWarCallOption(
         return if (event is CallAllyToSubordinateWarEvent) {
             listOf(
                 InDefensiveWarConsideration(
-                    otherPlayerId = event.subordinateId,
+                    playerId = event.subordinateId,
                     warTargetId = event.warTargetId,
                     rankIfTrue = 1,
                     multiplierIfTrue = 1.0,

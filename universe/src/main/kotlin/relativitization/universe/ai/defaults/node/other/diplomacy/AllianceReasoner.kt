@@ -2,6 +2,7 @@ package relativitization.universe.ai.defaults.node.other.diplomacy
 
 import relativitization.universe.ai.defaults.consideration.diplomacy.RelationConsideration
 import relativitization.universe.ai.defaults.consideration.diplomacy.TooManyAllyConsideration
+import relativitization.universe.ai.defaults.consideration.military.InDefensiveWarConsideration
 import relativitization.universe.ai.defaults.utils.*
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.PlanDataAtPlayer
@@ -9,6 +10,7 @@ import relativitization.universe.data.PlayerData
 import relativitization.universe.data.commands.AddEventCommand
 import relativitization.universe.data.commands.RemoveAllyCommand
 import relativitization.universe.data.components.diplomacyData
+import relativitization.universe.data.events.CallAllyToWarEvent
 import relativitization.universe.data.events.ProposeAllianceEvent
 import relativitization.universe.maths.physics.Int3D
 import kotlin.random.Random
@@ -162,5 +164,76 @@ class ProposeAllianceReasoner(
                 )
             }
         }
+    }
+}
+
+class CallAllyToWarReasoner(private val random: Random) : SequenceReasoner() {
+    override fun getSubNodeList(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planState: PlanState
+    ): List<AINode> {
+        return planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData.diplomacyData()
+            .relationData.selfWarDataMap.keys.flatMap { opponentId ->
+                planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData.diplomacyData()
+                    .relationData.allyMap.keys.filter { allyId ->
+                        !planState.isCommandSentRecently(allyId, planDataAtPlayer)
+                    }.map { allyId ->
+                        CallSpecificAllyToSpecificWarReasoner(opponentId, allyId, random)
+                    }
+            }
+    }
+}
+
+class CallSpecificAllyToSpecificWarReasoner(
+    private val opponentId: Int,
+    private val allyId: Int,
+    random: Random,
+) : DualUtilityReasoner(random) {
+    override fun getOptionList(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planState: PlanState
+    ): List<DualUtilityOption> {
+        return listOf(
+            CallAllyToWarOption(opponentId = opponentId, allyId = allyId),
+            DoNothingDualUtilityOption(rank = 1, multiplier = 1.0, bonus = 1.0),
+        )
+    }
+}
+
+class CallAllyToWarOption(
+    private val opponentId: Int,
+    private val allyId: Int,
+) : DualUtilityOption() {
+    override fun getConsiderationList(
+        planDataAtPlayer: PlanDataAtPlayer,
+        planState: PlanState
+    ): List<DualUtilityConsideration> {
+        return listOf(
+            InDefensiveWarConsideration(
+                playerId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+                warTargetId = opponentId,
+                rankIfTrue = 2,
+                multiplierIfTrue = 1.0,
+                bonusIfTrue = 1.0,
+                rankIfFalse = 1,
+                multiplierIfFalse = 1.0,
+                bonusIfFalse = 0.5,
+            )
+        )
+    }
+
+    override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
+        val event = CallAllyToWarEvent(
+            toId = allyId,
+            fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
+            warTargetId = opponentId
+        )
+
+        planDataAtPlayer.addCommand(
+            AddEventCommand(
+                event = event,
+                fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
+            )
+        )
     }
 }
