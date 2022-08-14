@@ -2,10 +2,12 @@ package relativitization.universe.ai.defaults.utils
 
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.PlayerData
+import relativitization.universe.data.components.aiData
 import relativitization.universe.data.components.defaults.popsystem.pop.PopType
 import relativitization.universe.data.components.physicsData
 import relativitization.universe.data.components.playerScienceData
 import relativitization.universe.data.components.popSystemData
+import relativitization.universe.maths.physics.Int3D
 import relativitization.universe.maths.physics.Intervals
 import kotlin.math.pow
 
@@ -19,6 +21,8 @@ import kotlin.math.pow
  * from the current player to that player
  * @property resourceRemainFractionMap map from other player id to the remain fraction if resource
  * is sent from the current player to that player
+ * @property recentlySentCommandIdSet a set of player id where this player has recently sent
+ * commands to, and the effect of the command has not been observed yet
  */
 class PlanState(
     var foreignFactoryFuel: Double = 0.0,
@@ -26,6 +30,7 @@ class PlanState(
     private var averageSelfLabourerSalary: Double = -1.0,
     private val fuelRemainFractionMap: MutableMap<Int, Double> = mutableMapOf(),
     private val resourceRemainFractionMap: MutableMap<Int, Double> = mutableMapOf(),
+    private val recentlySentCommandIdSet: MutableSet<Int> = mutableSetOf(),
 ) {
     fun fillForeignFactoryFuel(
         fraction: Double,
@@ -136,5 +141,40 @@ class PlanState(
         }
 
         return resourceRemainFractionMap.getValue(otherPlayerId)
+    }
+
+    fun isCommandSentRecently(
+        otherPlayerId: Int,
+        planDataAtPlayer: PlanDataAtPlayer,
+    ): Boolean {
+        if (recentlySentCommandIdSet.isEmpty()) {
+            val recentCommandTimeMap: Map<Int, Int> =
+                planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData.aiData().recentCommandTimeMap
+
+            val currentTime: Int = planDataAtPlayer.universeData3DAtPlayer.center.t
+            val currentInt3D: Int3D = planDataAtPlayer.universeData3DAtPlayer.center.toInt3D()
+
+            // Only consider direct subordinates that this player has not recently sent command to
+            val recentCommandTooOldSet: Set<Int> =  recentCommandTimeMap.filterKeys {
+                planDataAtPlayer.universeData3DAtPlayer.playerDataMap.containsKey(it)
+            }.filter { (id, time) ->
+                val otherPlayerData: PlayerData = planDataAtPlayer.universeData3DAtPlayer.get(id)
+
+                // Time needed for information to travel to the player and back
+                val timeRequired: Int = Intervals.intDelay(
+                    currentInt3D,
+                    otherPlayerData.int4D.toInt3D(),
+                    planDataAtPlayer.universeData3DAtPlayer.universeSettings.speedOfLight
+                ) * 2
+
+                timeRequired <= currentTime - time
+            }.keys
+
+            recentlySentCommandIdSet.addAll(
+                recentCommandTimeMap.keys - recentCommandTooOldSet
+            )
+        }
+
+        return recentlySentCommandIdSet.contains(otherPlayerId)
     }
 }
