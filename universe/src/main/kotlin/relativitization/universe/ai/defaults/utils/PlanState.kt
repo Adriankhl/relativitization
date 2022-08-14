@@ -143,6 +143,12 @@ class PlanState(
         return resourceRemainFractionMap.getValue(otherPlayerId)
     }
 
+    /**
+     * Check if this player has interacted with another player via one or more commands recently
+     *
+     * @param otherPlayerId the id of the other player
+     * @param planDataAtPlayer the plan data of the current player
+     */
     fun isCommandSentRecently(
         otherPlayerId: Int,
         planDataAtPlayer: PlanDataAtPlayer,
