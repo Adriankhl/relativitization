@@ -120,6 +120,9 @@ class RemoveSpecificAllyOption(
     }
 }
 
+/**
+ * Consider proposing alliance, number of alliance should be smaller than or equal to 2
+ */
 class ProposeAllianceReasoner(
     private val random: Random,
 ) : AINode() {
@@ -171,6 +174,9 @@ class ProposeAllianceReasoner(
     }
 }
 
+/**
+ * Consider calling ally to self war
+ */
 class CallAllyToWarReasoner(private val random: Random) : SequenceReasoner() {
     override fun getSubNodeList(
         planDataAtPlayer: PlanDataAtPlayer,
@@ -242,6 +248,9 @@ class CallAllyToWarOption(
     }
 }
 
+/**
+ * Consider calling ally to subordinate war
+ */
 class CallAllyToSubordinateWarReasoner(private val random: Random) : SequenceReasoner() {
     override fun getSubNodeList(
         planDataAtPlayer: PlanDataAtPlayer,
