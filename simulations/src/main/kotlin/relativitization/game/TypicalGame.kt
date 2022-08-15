@@ -5,6 +5,7 @@ import relativitization.universe.data.MutableUniverseSettings
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.commands.DefaultCommandAvailability
 import relativitization.universe.data.commands.name
+import relativitization.universe.data.components.diplomacyData
 import relativitization.universe.data.components.physicsData
 import relativitization.universe.data.components.popSystemData
 import relativitization.universe.generate.GenerateSettings
@@ -53,7 +54,8 @@ fun main() {
                     "Fuel: ${gameStatus.totalFuelRestMass.toScientificNotation().toString(2)}. " +
                     "Production: ${gameStatus.totalFuelProduction.toScientificNotation().toString(2)}. " +
                     "Saving: ${gameStatus.totalSaving.toScientificNotation().toString(2)}. " +
-                    "Satisfaction: ${averageSatisfaction.toScientificNotation().toString(2)}. "
+                    "Satisfaction: ${averageSatisfaction.toScientificNotation().toString(2)}. " +
+                    "Alliance: ${gameStatus.totalNumAlly}, "
         )
     }
 }
@@ -65,6 +67,7 @@ internal class GameStatus(
     val totalFuelProduction: Double = 0.0,
     val totalSaving: Double = 0.0,
     val totalSatisfaction: Double= 0.0,
+    val totalNumAlly: Int = 0,
 ) {
     companion object {
         fun compute(universe: Universe): GameStatus {
@@ -94,6 +97,9 @@ internal class GameStatus(
                 val localSatisfaction: Double = universeDataAtPlayer.getCurrentPlayerData()
                     .playerInternalData.popSystemData().totalSatisfaction()
 
+                val localNumAlly: Int = universeDataAtPlayer.getCurrentPlayerData()
+                    .playerInternalData.diplomacyData().relationData.allyMap.size
+
                 val newStatus = GameStatus(
                     numCarrier = status.numCarrier + numLocalCarrier,
                     totalPopulation = status.totalPopulation + localPopulation,
@@ -101,6 +107,7 @@ internal class GameStatus(
                     totalFuelProduction = status.totalFuelProduction + localFuelProduction,
                     totalSaving = status.totalSaving  + localSaving,
                     totalSatisfaction = status.totalSatisfaction + localSatisfaction,
+                    totalNumAlly = status.totalNumAlly + localNumAlly,
                 )
 
                 newStatus
