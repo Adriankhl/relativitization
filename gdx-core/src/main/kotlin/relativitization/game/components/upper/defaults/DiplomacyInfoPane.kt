@@ -8,8 +8,10 @@ import relativitization.universe.data.PlayerData
 import relativitization.universe.data.commands.*
 import relativitization.universe.data.components.defaults.diplomacy.war.WarData
 import relativitization.universe.data.components.diplomacyData
+import relativitization.universe.data.events.CallAllyToWarEvent
 import relativitization.universe.data.events.ProposeAllianceEvent
 import relativitization.universe.data.events.ProposePeaceEvent
+import relativitization.universe.maths.physics.Int4D
 
 class DiplomacyInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane>(game) {
     override val infoName: String = "Diplomacy"
@@ -106,7 +108,7 @@ class DiplomacyInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
 
         table.row().space(20f)
 
-        table.add(createWarStateTable())
+        table.add(createSelfWarTable())
 
         table.row().space(20f)
 
@@ -162,9 +164,11 @@ class DiplomacyInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
             DiplomacyInfoRelationType.ALL -> game.universeClient.getUniverseData3D().playerDataMap.keys.toList()
             DiplomacyInfoRelationType.SELF_WAR -> playerData.playerInternalData.diplomacyData()
                 .relationData.selfWarDataMap.keys.toList()
-            DiplomacyInfoRelationType.OTHER_WAR -> (playerData.playerInternalData.diplomacyData()
-                .relationData.subordinateWarDataMap.keys + playerData.playerInternalData
-                .diplomacyData().relationData.allyWarDataMap.keys).toList()
+            DiplomacyInfoRelationType.SUBORDINATE_WAR -> playerData.playerInternalData.diplomacyData()
+                .relationData.subordinateWarDataMap.keys.toList()
+            DiplomacyInfoRelationType.ALLY_WAR -> (playerData.playerInternalData.diplomacyData()
+                .relationData.allyWarDataMap.keys + playerData.playerInternalData
+                .diplomacyData().relationData.allySubordinateWarDataMap.keys).toList()
             DiplomacyInfoRelationType.ENEMY -> playerData.playerInternalData
                 .diplomacyData().relationData.enemyIdSet.toList()
             DiplomacyInfoRelationType.ALLY -> playerData.playerInternalData.diplomacyData()
@@ -281,57 +285,136 @@ class DiplomacyInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
         return nestedTable
     }
 
-    private fun createWarStateTable(): Table {
+    /**
+     * Table to display information for all wars
+     */
+    private fun createGeneralWarDataTable(warData: WarData): Table {
         val nestedTable = Table()
 
-        if (
+        nestedTable.add(
+            createLabel(
+                "War start time: ${warData.warCoreData.startTime}",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.row().space(10f)
+
+        val warTypeText: String = if (warData.warCoreData.isOffensive) {
+            if (warData.warCoreData.isDefensive) {
+                "War type: offensive + defensive"
+            } else {
+                "War type: defensive"
+            }
+        } else {
+            if (warData.warCoreData.isDefensive) {
+                "War type: defensive"
+            } else {
+                ""
+            }
+        }
+
+        nestedTable.add(
+            createLabel(
+                warTypeText,
+                gdxSettings.smallFontSize
+            )
+        )
+
+        return nestedTable
+    }
+
+    private fun createCallAllyToWarTable(
+        allyIdList: List<Int>,
+        fromId: Int,
+        fromInt4D: Int4D,
+        warTargetId: Int,
+    ): Table {
+        val nestedTable = Table()
+
+        val allySelectBox = createSelectBox(
+            allyIdList,
+            allyIdList.first(),
+            gdxSettings.smallFontSize
+        )
+
+        val callAllyToSelfWarButton = createTextButton(
+            "Call ally to self war",
+            gdxSettings.smallFontSize,
+            gdxSettings.soundEffectsVolume,
+            extraColor = commandButtonColor,
+        ) {
+            val event = CallAllyToWarEvent(
+                toId = allySelectBox.selected,
+                fromId = fromId,
+                warTargetId = warTargetId
+            )
+
+            val addEventCommand = AddEventCommand(
+                event = event,
+                fromInt4D = fromInt4D,
+            )
+
+            game.universeClient.currentCommand = addEventCommand
+        }
+
+        nestedTable.add(callAllyToSelfWarButton).colspan(2)
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "Select ally: ",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.add(allySelectBox)
+
+        return nestedTable
+    }
+
+    private fun createSelfWarTable(): Table {
+        val nestedTable = Table()
+
+        val isInSelfWar: Boolean =
             playerData.playerInternalData.diplomacyData().relationData.selfWarDataMap
                 .containsKey(otherPlayerId)
-        ) {
+
+        if (isInSelfWar) {
             val warData: WarData = playerData.playerInternalData.diplomacyData().relationData
                 .selfWarDataMap.getValue(otherPlayerId)
 
             nestedTable.add(
                 createLabel(
-                    "In war",
+                    "In self war",
                     gdxSettings.normalFontSize
                 )
             )
 
             nestedTable.row().space(10f)
 
-            nestedTable.add(
-                createLabel(
-                    "War start time: ${warData.warCoreData.startTime}",
-                    gdxSettings.smallFontSize
-                )
-            )
-
-            nestedTable.row().space(10f)
-
-            val warTypeText: String = if (warData.warCoreData.isOffensive) {
-                if (warData.warCoreData.isDefensive) {
-                    "War type: offensive + defensive"
-                } else {
-                    "War type: defensive"
-                }
-            } else {
-                if (warData.warCoreData.isDefensive) {
-                    "War type: defensive"
-                } else {
-                    ""
-                }
-            }
-
-            nestedTable.add(
-                createLabel(
-                    warTypeText,
-                    gdxSettings.smallFontSize
-                )
-            )
+            nestedTable.add(createGeneralWarDataTable(warData))
 
             if (playerData.playerId == game.universeClient.getUniverseData3D().id) {
                 nestedTable.row().space(10f)
+
+                val allyIdList: List<Int> = playerData.playerInternalData.diplomacyData()
+                    .relationData.allyMap.keys.toList()
+
+                // Add call ally to war table if ally is not empty
+                if (allyIdList.isNotEmpty()) {
+                    nestedTable.add(
+                        createCallAllyToWarTable(
+                            allyIdList = allyIdList,
+                            fromId = playerData.playerId,
+                            fromInt4D = playerData.int4D,
+                            warTargetId = otherPlayerId,
+                        )
+                    )
+
+                    nestedTable.row().space(10f)
+                }
 
                 val proposePeaceButton = createTextButton(
                     "Propose peace",
@@ -465,7 +548,8 @@ class DiplomacyInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
 enum class DiplomacyInfoRelationType(val value: String) {
     ALL("All"),
     SELF_WAR("Self war"),
-    OTHER_WAR("Other war"),
+    SUBORDINATE_WAR("Subordinate war"),
+    ALLY_WAR("Ally war"),
     ENEMY("Enemy"),
     ALLY("Ally"),
     ;
