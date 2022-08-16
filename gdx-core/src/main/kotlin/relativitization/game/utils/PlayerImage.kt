@@ -91,6 +91,10 @@ object PlayerImage {
                     primaryPlayerData.isSubOrdinate(playerData.playerId) -> {
                         Color(0f, 0.5f, 0f, 1f)
                     }
+                    primaryPlayerData.playerInternalData.diplomacyData().relationData
+                        .isAlly(playerData.playerId) -> {
+                        Color(0f, 0f, 1f, 1f)
+                    }
                     primaryPlayerData.topLeaderId() == playerData.topLeaderId() -> {
                         Color(0.5f, 0.5f, 0f, 1f)
                     }
@@ -262,7 +266,7 @@ object PlayerImage {
         soundVolume: Float,
         mapPlayerColorMode: MapPlayerColorMode,
         function: (Image) -> Unit = {}
-    ): WidgetGroup{
+    ): WidgetGroup {
         val imageList = getPlayerImages(
             playerData = playerData,
             universeData3DAtPlayer = universeData3DAtPlayer,
