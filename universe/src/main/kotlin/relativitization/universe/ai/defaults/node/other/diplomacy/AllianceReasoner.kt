@@ -186,12 +186,15 @@ class CallAllyToWarReasoner(private val random: Random) : SequenceReasoner() {
             .relationData.selfWarDataMap.keys.flatMap { opponentId ->
                 planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData.diplomacyData()
                     .relationData.allyMap.keys.filter { allyId ->
-                        val notRecentlyCommand: Boolean =
-                            !planState.isCommandSentRecently(allyId, planDataAtPlayer)
+                        val hasRecentCommand: Boolean =
+                            planState.isCommandSentRecently(allyId, planDataAtPlayer)
+
+                        val hasPlayer: Boolean =
+                            planDataAtPlayer.universeData3DAtPlayer.playerDataMap.containsKey(allyId)
 
                         // Filter out allies that have already joined the war
-                        val notAlreadyAtWar: Boolean =
-                            if (planDataAtPlayer.universeData3DAtPlayer.playerDataMap.containsKey(allyId)) {
+                        val isAlreadyAtWar: Boolean =
+                            if (hasPlayer) {
                                 planDataAtPlayer.getMutablePlayerData(allyId).playerInternalData
                                     .diplomacyData().relationData.hasAllyWar(
                                         allyId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
@@ -201,7 +204,7 @@ class CallAllyToWarReasoner(private val random: Random) : SequenceReasoner() {
                                 false
                             }
 
-                        notRecentlyCommand && notAlreadyAtWar
+                        !hasRecentCommand && hasPlayer && !isAlreadyAtWar
                     }.map { allyId ->
                         CallSpecificAllyToSpecificWarReasoner(opponentId, allyId, random)
                     }
@@ -279,12 +282,16 @@ class CallAllyToSubordinateWarReasoner(private val random: Random) : SequenceRea
             opponentMap.keys.flatMap {opponentId ->
                 planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData.diplomacyData()
                     .relationData.allyMap.keys.filter { allyId ->
-                        val notRecentlyCommand: Boolean =
-                            !planState.isCommandSentRecently(allyId, planDataAtPlayer)
+                        val hasRecentCommand: Boolean =
+                            planState.isCommandSentRecently(allyId, planDataAtPlayer)
+
+
+                        val hasPlayer: Boolean =
+                            planDataAtPlayer.universeData3DAtPlayer.playerDataMap.containsKey(allyId)
 
                         // Filter out allies that have already joined the war
-                        val notAlreadyAtWar: Boolean =
-                            if (planDataAtPlayer.universeData3DAtPlayer.playerDataMap.containsKey(allyId)) {
+                        val isAlreadyAtWar: Boolean =
+                            if (hasPlayer) {
                                 planDataAtPlayer.getMutablePlayerData(allyId).playerInternalData
                                     .diplomacyData().relationData.hasAllySubordinateWar(
                                         allyId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
@@ -292,10 +299,10 @@ class CallAllyToSubordinateWarReasoner(private val random: Random) : SequenceRea
                                         opponentId = opponentId,
                                     )
                             } else {
-                                false
+                                true
                             }
 
-                        notRecentlyCommand && notAlreadyAtWar
+                        !hasRecentCommand && hasPlayer && !isAlreadyAtWar
                     }.map { allyId ->
                         CallSpecificAllyToSpecificSubordinateWarReasoner(
                             subordinateId = subordinateId,
