@@ -35,62 +35,64 @@ spacetime.
 ## Introduction
 
 Our interstellar future is always an interesting scenario to think about. There are great
-imaginations about all kinds of possible interstellar society in books, movies, and games.
+imaginations about all kinds of possible interstellar societies in books, movies, and games.
 Unfortunately, while the space computer games are fun to play, the essential physics - relativity,
 is often missing.
+This project, Relativitization, is an attempt to create a turn-based strategy / simulation game that
+obeys special relativity.
 
-Relativitization is an attempt to create a turn-based strategy / simulation game that respect
-special relativity. Since building an academic social model can be quite similar to designing
-mechanisms in a simulation / strategy game, this can also be used as an agent-based simulation
-framework for social scientists to build interstellar social models.
+Besides being a playable game, this is also a flexible computational framework
+which helps people to build other games or agent-based models on top of the framework.
+For example, social scientists can utilize the framework to create interstellar social models.
+Let's see if simulations can give us meaningful insights.
 
-The source code is licensed under GPLv3, you are free to modify things in the `universe` to build
-your model, and you can simulate your model via a terminal. Typically, this should be sufficient for
-academic studies.
-
-To encourage people to support this project financially, the assets of the game are not opened. You
-need to [buy the assets](https://adriankhl.itch.io/relativitization) to actually play the game.
-
-Under specific circumstances, such as for educational purposes, or if you are a programmer who would
-like to contribute, it may be possible to get free download-keys for the game. Please email your
-request to [relativitization@gmail.com](relativitization@gmail.com).
-
-## Run simulations
+## Build the game
 
 The following assumes you are using a Linux terminal. If you are working with Windows, you need to
 use the Windows-equivalent commands, such as changing `./gradlew` to `gradlew.bat`.
-
-You can run simulations of your model on the command line. This is an example model:
-`./simulations/src/main/kotlin/relativitization/game/TypicalGame.kt`.
-
-You can run the main function with 2 active processor and maximum 25% ram usage by:
-
-```
-./gradlew :simulations:run -PmainClass=relativitization.game.TypicalGameKt -PprocessorCount=2 -PramPercentage=25
-```
-
-Note that the main class has an additional `Kt` after the file name in Kotlin convention.
-
-## Build the game
 
 ### Prerequisite
 
 It is recommended to use jdk 17 to build and run the game.
 
-Create a `../relativitization-art` directory. Get the `relativitization-assets.zip`
-from [itch.io](https://adriankhl.itch.io/relativitization), unzip it and copy the
-`assets` directory into `../relativitization-art`.
+First create a directory to hold everything related to Relativitization:
 
-Alternatively, create `../relativitization-art/assets`, and copy these directories:
+```
+mkdir relativitization-project
+```
 
-* `fonts`
-* `images`
-* `music`
-* `skin`
-* `sounds`
-* `translations`
+Navigate into the directory, clone this project:
 
-from your game into `../relativitization-art/assets`.
+```
+cd relativitization-project
+git clone https://github.com/Adriankhl/relativitization.git
+```
+
+Create a `relativitization-art` directory and download the
+[game assets](https://filedn.com/lT8KEAGhB7RXdUYN4ykED5Y/relativitization-assets/assets.zip) to the directory:
+
+```
+mkdir relativitization-art
+wget -P relativitization-art https://filedn.com/lT8KEAGhB7RXdUYN4ykED5Y/relativitization-assets/assets.zip
+```
+
+Extract the zip file to `./relativitization-art/assets`:
+```
+7z x relativitization-art/assets.zip -orelativitization-art/
+```
+
+You should have:
+
+* `./relativitization-art/assets/fonts`
+* `./relativitization-art/assets/images`
+* `./relativitization-art/assets/license`
+* ...
+
+Now, navigate into `./relativitization` and you are ready to build the game:
+
+```
+cd relativitization
+```
 
 ### Run desktop application
 
@@ -117,9 +119,22 @@ in `gdx-android/build/outputs/apk/free/standalone`:
 ./gradlew :gdx-android:assembleStandalone
 ```
 
+## Run simulations
+
+You can create your own model and run it on your command line. This is an simple example:
+`./simulations/src/main/kotlin/relativitization/game/TypicalGame.kt`.
+
+Run the main function with 2 active processor and 25% maximum ram usage:
+
+```
+./gradlew :simulations:run -PmainClass=relativitization.game.TypicalGameKt -PprocessorCount=2 -PramPercentage=25
+```
+
+Note that the main class has an additional `Kt` after the file name in Kotlin's convention.
+
 ## Generate documentation
 
-This will produce documentation html pages in `build/dokka/htmlMultiModule`:
+This will produce html documentation pages to `build/dokka/htmlMultiModule`:
 
 ```
 ./gradlew dokkaHtmlMultimodule
@@ -176,12 +191,13 @@ If you use this framework in a publication, please cite:
 ```
 
 Also consider citing
-this [paper](https://github.com/Adriankhl/relativitization-framework-doc/blob/main/papers/on-social-simulation-in-4D-relativistic-spacetime/pdf/paper.pdf):
+this [paper](https://arxiv.org/abs/2206.11019):
 
 ```
-@article{lai2022simulation,
-    title   = {On social simulation in 4D relativistic spacetime}, 
-    author  = {Lai Kwun Hang},
-    year    = {2022},
+@article{lai2022social,
+  title={On social simulation in 4D relativistic spacetime},
+  author={Lai, Kwun Hang},
+  journal={arXiv preprint arXiv:2206.11019},
+  year={2022}
 }
 ```
