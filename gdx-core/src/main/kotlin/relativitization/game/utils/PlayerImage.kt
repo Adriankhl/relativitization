@@ -93,6 +93,10 @@ object PlayerImage {
                     }
                     primaryPlayerData.playerInternalData.diplomacyData().relationData
                         .isAlly(playerData.playerId) -> {
+                        Color(0.3f, 0.3f, 1f, 1f)
+                    }
+                    primaryPlayerData.playerInternalData.diplomacyData().relationData
+                        .allyMap.keys.any { playerData.isLeader(it) } -> {
                         Color(0f, 0f, 1f, 1f)
                     }
                     primaryPlayerData.topLeaderId() == playerData.topLeaderId() -> {
