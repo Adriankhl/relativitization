@@ -131,9 +131,9 @@ class HelpScreen(
         nestedTable.row().space(10f)
 
         val aiGuideText: String = """
-            You can use the AI to make all decisions for you every turn:
-            1. Click "AI" in the control bar.
-            2. On the right side, (click) "Compute" a list of commands.
+            Rely on the AI to make all decisions for you every turn:
+            1. Click "AI" in the control bar to open the "AI" pane.
+            2. Click "Compute" in the "AI" pane to propose a list of commands.
             3. Then, click "Use all" to accept all proposed commands.
         """.trimIndent()
 
@@ -195,7 +195,7 @@ class HelpScreen(
 
         nestedTable.add(
             createLabel(
-                "When this button turns white, click to enter next turn.",
+                "When this button turns white, click it to enter next turn.",
                 gdxSettings.normalFontSize,
             )
         ).growX()
