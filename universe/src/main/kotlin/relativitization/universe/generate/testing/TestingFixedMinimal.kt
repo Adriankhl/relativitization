@@ -4,6 +4,7 @@ import relativitization.universe.ai.EmptyAI
 import relativitization.universe.ai.name
 import relativitization.universe.data.*
 import relativitization.universe.data.components.*
+import relativitization.universe.data.components.defaults.diplomacy.ally.MutableAllianceData
 import relativitization.universe.data.components.defaults.economy.MutableResourceQualityData
 import relativitization.universe.data.components.defaults.economy.ResourceQualityClass
 import relativitization.universe.data.components.defaults.economy.ResourceType
@@ -129,7 +130,7 @@ object TestingFixedMinimal : TestingGenerateUniverseMethod() {
         // Totally 6 player
         val universeState = UniverseState(
             currentTime = universeSettings.tDim - 1,
-            maxPlayerId = 6,
+            maxPlayerId = 7,
         )
         val playerData1 = MutablePlayerData(1)
         val playerData2 = MutablePlayerData(2)
@@ -137,6 +138,7 @@ object TestingFixedMinimal : TestingGenerateUniverseMethod() {
         val playerData4 = MutablePlayerData(4)
         val playerData5 = MutablePlayerData(5)
         val playerData6 = MutablePlayerData(6)
+        val playerData7 = MutablePlayerData(7)
 
         // Add all default data components
         MutableDefaultPlayerDataComponent::class.sealedSubclasses.forEach {
@@ -146,6 +148,7 @@ object TestingFixedMinimal : TestingGenerateUniverseMethod() {
             playerData4.playerInternalData.playerDataComponentMap.put(it.createInstance())
             playerData5.playerInternalData.playerDataComponentMap.put(it.createInstance())
             playerData6.playerInternalData.playerDataComponentMap.put(it.createInstance())
+            playerData7.playerInternalData.playerDataComponentMap.put(it.createInstance())
         }
 
 
@@ -309,6 +312,10 @@ object TestingFixedMinimal : TestingGenerateUniverseMethod() {
             0
         ).allPopData.labourerPopData.addFuelFactory(fuelFactory1)
 
+        // player 1 is an ally of player 7
+        playerData1.playerInternalData.diplomacyData().relationData.allyMap[7] =
+            MutableAllianceData(0)
+
         // Player 2
 
         // Move player 2 to (0.1, 0.1, 0.1) to avoid boundary
@@ -409,6 +416,17 @@ object TestingFixedMinimal : TestingGenerateUniverseMethod() {
             0
         ).allPopData.soldierPopData.militaryBaseData.shield = 2000.0
 
+        // Player 7
+
+        playerData7.int4D = MutableInt4D(0, 0, 1, 0)
+        playerData7.double4D = MutableDouble4D(0.0, 0.0, 1.1, 0.0)
+
+        // Add stellar system
+        playerData7.playerInternalData.popSystemData().addStellarSystem(1.0E30)
+
+        // Player 7 is an ally of player 1
+        playerData7.playerInternalData.diplomacyData().relationData.allyMap[1] =
+                MutableAllianceData(0)
 
         // Add player data to universe data 4D
         playerData1.syncData()
@@ -449,6 +467,13 @@ object TestingFixedMinimal : TestingGenerateUniverseMethod() {
         playerData6.syncData()
         mutableUniverseData4D.addPlayerDataToLatestWithAfterImage(
             playerData6,
+            universeState.getCurrentTime(),
+            universeSettings.groupEdgeLength,
+            universeSettings.playerAfterImageDuration
+        )
+        playerData7.syncData()
+        mutableUniverseData4D.addPlayerDataToLatestWithAfterImage(
+            playerData7,
             universeState.getCurrentTime(),
             universeSettings.groupEdgeLength,
             universeSettings.playerAfterImageDuration

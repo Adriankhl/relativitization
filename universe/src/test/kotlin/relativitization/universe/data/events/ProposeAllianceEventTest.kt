@@ -27,8 +27,8 @@ internal class ProposeAllianceEventTest {
         val view1At3: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(3)
 
         assert(
-            view1At1.getCurrentPlayerData().playerInternalData.diplomacyData().relationData.allyMap
-                .isEmpty()
+            view1At1.getCurrentPlayerData().playerInternalData.diplomacyData().relationData
+                .allyMap.size == 1
         )
 
         val event = ProposeAllianceEvent(
