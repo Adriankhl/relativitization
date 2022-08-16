@@ -8,6 +8,7 @@ import relativitization.universe.data.PlayerData
 import relativitization.universe.data.commands.*
 import relativitization.universe.data.components.defaults.diplomacy.war.WarData
 import relativitization.universe.data.components.diplomacyData
+import relativitization.universe.data.events.CallAllyToSubordinateWarEvent
 import relativitization.universe.data.events.CallAllyToWarEvent
 import relativitization.universe.data.events.ProposeAllianceEvent
 import relativitization.universe.data.events.ProposePeaceEvent
@@ -161,19 +162,58 @@ class DiplomacyInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
 
     private fun computeOtherPlayerIdList(): List<Int> {
         return when (currentDiplomacyInfoRelationType) {
-            DiplomacyInfoRelationType.ALL -> game.universeClient.getUniverseData3D().playerDataMap.keys.toList()
-            DiplomacyInfoRelationType.SELF_WAR -> playerData.playerInternalData.diplomacyData()
-                .relationData.selfWarDataMap.keys.toList()
-            DiplomacyInfoRelationType.SUBORDINATE_WAR -> playerData.playerInternalData.diplomacyData()
-                .relationData.subordinateWarDataMap.keys.toList()
-            DiplomacyInfoRelationType.ALLY_WAR -> (playerData.playerInternalData.diplomacyData()
-                .relationData.allyWarDataMap.keys + playerData.playerInternalData
-                .diplomacyData().relationData.allySubordinateWarDataMap.keys).toList()
-            DiplomacyInfoRelationType.ENEMY -> playerData.playerInternalData
-                .diplomacyData().relationData.enemyIdSet.toList()
-            DiplomacyInfoRelationType.ALLY -> playerData.playerInternalData.diplomacyData()
-                .relationData.allyMap.keys.toList()
-        }.sorted()
+            DiplomacyInfoRelationType.ALL -> {
+                game.universeClient.getUniverseData3D().playerDataMap.keys.toList()
+            }
+            DiplomacyInfoRelationType.SELF_WAR_TARGET -> {
+                playerData.playerInternalData.diplomacyData().relationData.selfWarDataMap.keys
+                    .toList()
+            }
+            DiplomacyInfoRelationType.SELF_DEFENSIVE_WAR_TARGET -> {
+                playerData.playerInternalData.diplomacyData()
+                    .relationData.selfWarDataMap.filterValues {
+                        it.warCoreData.isDefensive
+                    }.keys.toList()
+            }
+            DiplomacyInfoRelationType.SELF_OFFENSIVE_WAR_TARGET -> {
+                playerData.playerInternalData.diplomacyData()
+                    .relationData.selfWarDataMap.filterValues {
+                        it.warCoreData.isOffensive
+                    }.keys.toList()
+            }
+            DiplomacyInfoRelationType.SUBORDINATE -> {
+                playerData.playerInternalData.subordinateIdSet.toList()
+            }
+            DiplomacyInfoRelationType.SUBORDINATE_IN_DEFENSIVE_WAR -> {
+                playerData.playerInternalData.subordinateIdSet.filter {
+                    game.universeClient.getUniverseData3D().playerDataMap.containsKey(it)
+                }.filter { playerId ->
+                    game.universeClient.getUniverseData3D().get(playerId).playerInternalData
+                        .diplomacyData().relationData.selfWarDataMap.values.any {
+                            it.warCoreData.isOffensive
+                        }
+                }
+            }
+            DiplomacyInfoRelationType.SUBORDINATE_WAR_TARGET -> {
+                playerData.playerInternalData.diplomacyData().relationData.subordinateWarDataMap
+                    .keys.toList()
+            }
+            DiplomacyInfoRelationType.ALLY -> {
+                playerData.playerInternalData.diplomacyData().relationData.allyMap.keys.toList()
+            }
+            DiplomacyInfoRelationType.ALLY_WAR_TARGET -> {
+                playerData.playerInternalData.diplomacyData().relationData.allyWarDataMap.values
+                    .flatMap { it.keys } + playerData.playerInternalData.diplomacyData()
+                    .relationData.allySubordinateWarDataMap.values.flatMap { allySubordinateMap ->
+                        allySubordinateMap.values.flatMap {
+                            it.keys
+                        }
+                    }
+            }
+            DiplomacyInfoRelationType.ENEMY -> {
+                playerData.playerInternalData.diplomacyData().relationData.allyMap.keys.toList()
+            }
+        }
     }
 
     private fun createDiplomaticRelationTable(): Table {
@@ -374,12 +414,63 @@ class DiplomacyInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
         return nestedTable
     }
 
+    private fun createCallAllyToSubordinateWarTable(
+        allyIdList: List<Int>,
+        fromId: Int,
+        fromInt4D: Int4D,
+        subordinateId: Int,
+        warTargetId: Int,
+    ): Table {
+        val nestedTable = Table()
+
+        val allySelectBox = createSelectBox(
+            allyIdList,
+            allyIdList.first(),
+            gdxSettings.smallFontSize
+        )
+
+        val callAllyToSubordinateWarButton = createTextButton(
+            "Call ally to subordinate war",
+            gdxSettings.smallFontSize,
+            gdxSettings.soundEffectsVolume,
+            extraColor = commandButtonColor,
+        ) {
+            val event = CallAllyToSubordinateWarEvent(
+                toId = allySelectBox.selected,
+                fromId = fromId,
+                subordinateId = subordinateId,
+                warTargetId = warTargetId
+            )
+
+            val addEventCommand = AddEventCommand(
+                event = event,
+                fromInt4D = fromInt4D,
+            )
+
+            game.universeClient.currentCommand = addEventCommand
+        }
+
+        nestedTable.add(callAllyToSubordinateWarButton).colspan(2)
+
+        nestedTable.row().space(10f)
+
+        nestedTable.add(
+            createLabel(
+                "Select ally: ",
+                gdxSettings.smallFontSize
+            )
+        )
+
+        nestedTable.add(allySelectBox)
+
+        return nestedTable
+    }
+
     private fun createSelfWarTable(): Table {
         val nestedTable = Table()
 
-        val isInSelfWar: Boolean =
-            playerData.playerInternalData.diplomacyData().relationData.selfWarDataMap
-                .containsKey(otherPlayerId)
+        val isInSelfWar: Boolean = playerData.playerInternalData.diplomacyData().relationData
+            .selfWarDataMap.containsKey(otherPlayerId)
 
         if (isInSelfWar) {
             val warData: WarData = playerData.playerInternalData.diplomacyData().relationData
@@ -387,7 +478,7 @@ class DiplomacyInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
 
             nestedTable.add(
                 createLabel(
-                    "In self war",
+                    "In war",
                     gdxSettings.normalFontSize
                 )
             )
@@ -396,6 +487,7 @@ class DiplomacyInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
 
             nestedTable.add(createGeneralWarDataTable(warData))
 
+            // Create this table if the selected player is the game player
             if (playerData.playerId == game.universeClient.getUniverseData3D().id) {
                 nestedTable.row().space(10f)
 
@@ -454,6 +546,34 @@ class DiplomacyInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
                     game.universeClient.currentCommand = surrenderCommand
                 }
                 nestedTable.add(surrenderButton)
+            }
+
+            // Create this table if the selected player is a subordinate of the game player
+            // and the game player has joined the war
+            val isCurrentPlayerInThisWar: Boolean = game.universeClient.getUniverseData3D()
+                .getCurrentPlayerData().playerInternalData.diplomacyData()
+                .relationData.hasSubordinateWar(playerData.playerId, otherPlayerId)
+            if (isCurrentPlayerInThisWar) {
+                nestedTable.row().space(10f)
+
+                val allyIdList: List<Int> = game.universeClient.getUniverseData3D()
+                    .getCurrentPlayerData().playerInternalData.diplomacyData()
+                    .relationData.allyMap.keys.toList()
+
+                // Add call ally to war table if ally is not empty
+                if (allyIdList.isNotEmpty()) {
+                    nestedTable.add(
+                        createCallAllyToSubordinateWarTable(
+                            allyIdList = allyIdList,
+                            fromId = game.universeClient.getUniverseData3D().getCurrentPlayerData()
+                                .playerId,
+                            fromInt4D = game.universeClient.getUniverseData3D()
+                                .getCurrentPlayerData().int4D,
+                            subordinateId = playerData.playerId,
+                            warTargetId = otherPlayerId,
+                        )
+                    )
+                }
             }
         }
 
@@ -547,11 +667,15 @@ class DiplomacyInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
 
 enum class DiplomacyInfoRelationType(val value: String) {
     ALL("All"),
-    SELF_WAR("Self war"),
-    SUBORDINATE_WAR("Subordinate war"),
-    ALLY_WAR("Ally war"),
-    ENEMY("Enemy"),
+    SELF_WAR_TARGET("Self war target"),
+    SELF_DEFENSIVE_WAR_TARGET("Self defensive war target"),
+    SELF_OFFENSIVE_WAR_TARGET("Self offensive war target"),
+    SUBORDINATE("Subordinate"),
+    SUBORDINATE_IN_DEFENSIVE_WAR("Subordinate in defensive war"),
+    SUBORDINATE_WAR_TARGET("Subordinate war target"),
     ALLY("Ally"),
+    ALLY_WAR_TARGET("Ally war target"),
+    ENEMY("Enemy"),
     ;
 
     override fun toString(): String {
