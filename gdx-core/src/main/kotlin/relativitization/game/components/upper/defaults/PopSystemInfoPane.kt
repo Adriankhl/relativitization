@@ -232,7 +232,8 @@ class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
         val changeBaseSalaryTextButton = createTextButton(
             "Change base salary",
             gdxSettings.smallFontSize,
-            gdxSettings.soundEffectsVolume
+            gdxSettings.soundEffectsVolume,
+            extraColor = commandButtonColor,
         ) {
             val changeBaseSalaryCommand = ChangeBaseSalaryCommand(
                 toId = playerData.playerId,
