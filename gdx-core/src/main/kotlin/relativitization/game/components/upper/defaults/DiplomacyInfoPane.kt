@@ -113,6 +113,10 @@ class DiplomacyInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
 
         table.row().space(20f)
 
+        table.add(createOtherWarTable())
+
+        table.row().space(20f)
+
         table.add(createWarCommandTable())
     }
 
@@ -478,7 +482,7 @@ class DiplomacyInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
 
             nestedTable.add(
                 createLabel(
-                    "In war",
+                    "In war (self)",
                     gdxSettings.normalFontSize
                 )
             )
@@ -575,6 +579,120 @@ class DiplomacyInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
                     )
                 }
             }
+        }
+
+        return nestedTable
+    }
+
+    /**
+     * Display information about the war between primarily selected player's
+     * subordinate/ally/ally's subordinate and other selected player if the primarily selected
+     * player is involved in the war
+     */
+    private fun createOtherWarTable(): Table {
+        val nestedTable = Table()
+
+        val isInSubordinateWar: Boolean = playerData.playerInternalData.diplomacyData()
+            .relationData.subordinateWarDataMap.values.any {
+                it.containsKey(otherPlayerId)
+            }
+
+        val isInAllyWar: Boolean = playerData.playerInternalData.diplomacyData()
+            .relationData.allyWarDataMap.values.any {
+                it.containsKey(otherPlayerId)
+            }
+
+        val isInAllySubordinateWar: Boolean = playerData.playerInternalData.diplomacyData()
+            .relationData.allySubordinateWarDataMap.values.any { allySubordinateMap ->
+                allySubordinateMap.values.any {
+                    it.containsKey(otherPlayerId)
+                }
+            }
+
+        if (isInSubordinateWar || isInAllyWar || isInAllySubordinateWar) {
+            nestedTable.add(
+                createLabel(
+                    "In war (other)",
+                    gdxSettings.normalFontSize
+                )
+            ).colspan(2)
+        }
+
+        if (isInSubordinateWar) {
+            nestedTable.row().space(10f)
+
+            nestedTable.add(
+                createLabel(
+                    "Subordinate: ",
+                    gdxSettings.smallFontSize
+                )
+            )
+
+            val inWarSubordinateList: List<Int> = playerData.playerInternalData.diplomacyData()
+                .relationData.subordinateWarDataMap.filterValues {
+                    it.containsKey(otherPlayerId)
+                }.keys.toList()
+
+            nestedTable.add(
+                createSelectBox(
+                    inWarSubordinateList,
+                    inWarSubordinateList.first(),
+                    gdxSettings.smallFontSize
+                )
+            )
+        }
+
+        if (isInAllyWar) {
+            nestedTable.row().space(10f)
+
+            nestedTable.add(
+                createLabel(
+                    "Ally: ",
+                    gdxSettings.smallFontSize
+                )
+            )
+
+            val inWarAllyList: List<Int> = playerData.playerInternalData.diplomacyData()
+                .relationData.allyWarDataMap.filterValues {
+                    it.containsKey(otherPlayerId)
+                }.keys.toList()
+
+            nestedTable.add(
+                createSelectBox(
+                    inWarAllyList,
+                    inWarAllyList.first(),
+                    gdxSettings.smallFontSize
+                )
+            )
+        }
+
+        if (isInAllySubordinateWar) {
+            nestedTable.row().space(10f)
+
+            nestedTable.add(
+                createLabel(
+                    "Ally's subordinate: ",
+                    gdxSettings.smallFontSize
+                )
+            )
+
+            val inWarAllySubordinateList: List<Pair<Int, Int>> = playerData.playerInternalData
+                .diplomacyData().relationData.allySubordinateWarDataMap
+                .flatMap { (allyId, allySubordinateMap) ->
+                    allySubordinateMap.filterValues {
+                        it.containsKey(otherPlayerId)
+                    }.keys.map {
+                        Pair(allyId, it)
+                    }
+                }
+
+            nestedTable.add(
+                createSelectBox(
+                    inWarAllySubordinateList,
+                    inWarAllySubordinateList.first(),
+                    gdxSettings.smallFontSize,
+                )
+            )
         }
 
         return nestedTable
