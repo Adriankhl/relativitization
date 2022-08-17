@@ -435,6 +435,15 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
     }
 
     /**
+     * Get latest universe data 3D
+     */
+    suspend fun getLatestUniverseData3D(): UniverseData3DAtPlayer {
+        return universeData3DMapMutex.withLock {
+            universeData3DMap.values.last()
+        }
+    }
+
+    /**
      * Return stored previous universe data, if not previous data, return the current data
      */
     suspend fun getPreviousUniverseData3D(): UniverseData3DAtPlayer {

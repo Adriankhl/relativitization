@@ -9,13 +9,16 @@ import relativitization.game.components.upper.UpperInfoPaneCollection
 import relativitization.game.screens.ClientSettingsScreen
 import relativitization.game.screens.HelpScreen
 import relativitization.game.utils.ScreenComponent
+import relativitization.universe.ai.AICollection
 import relativitization.universe.communication.UniverseServerStatusMessage
+import relativitization.universe.data.commands.Command
 import relativitization.universe.data.components.defaults.physics.FuelRestMassData
 import relativitization.universe.data.components.physicsData
 import relativitization.universe.maths.number.toScientificNotation
 import relativitization.universe.maths.physics.Intervals.intDelay
 import kotlin.math.max
 import kotlin.math.min
+import kotlin.random.Random
 
 
 class GameScreenControlBar(
@@ -391,7 +394,7 @@ class GameScreenControlBar(
     }
 
     private val waitSelectBox: SelectBox<String> = createSelectBox(
-        itemList = listOf("All human", "You only", "No"),
+        itemList = listOf("All human", "You only", "Auto AI", "No"),
         default = "All human",
         fontSize = gdxSettings.smallFontSize
     )
@@ -558,6 +561,18 @@ class GameScreenControlBar(
     override fun onServerStatusChange() {
         runBlocking {
             if (game.universeClient.getCurrentServerStatus().isServerWaitingInput) {
+                // Auto compute and upload command
+                if (waitSelectBox.selected == "Auto AI") {
+                    val commandList: List<Command> = AICollection.compute(
+                        game.universeClient.getLatestUniverseData3D(),
+                        Random(System.currentTimeMillis()),
+                        game.universeClient.autoAIName,
+                    )
+                    game.universeClient.httpPostHumanInput(
+                        commandList
+                    )
+                }
+
                 // Ask server to stop waiting
                 if (waitSelectBox.selected == "No") {
                     game.universeClient.httpPostStopWaiting()
