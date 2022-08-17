@@ -252,7 +252,9 @@ class GameScreenControlBar(
         soundVolume = gdxSettings.soundEffectsVolume
     ) {
         runBlocking {
-            val httpCode = game.universeClient.httpPostHumanInput()
+            val httpCode = game.universeClient.httpPostHumanInput(
+                game.universeClient.planDataAtPlayer.commandList
+            )
             if (httpCode == HttpStatusCode.OK) {
                 it.image.setColor(0.0f, 1.0f, 0.0f, 1.0f)
 

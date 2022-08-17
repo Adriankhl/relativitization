@@ -1009,7 +1009,14 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
     }
 
 
-    suspend fun httpPostHumanInput(): HttpStatusCode {
+    /**
+     * Upload human input to the server
+     *
+     * @param commandList a list of commands as the human input
+     */
+    suspend fun httpPostHumanInput(
+        commandList: List<Command>
+    ): HttpStatusCode {
         return try {
             val serverAddress = universeClientSettings.serverAddress
             val serverPort = universeClientSettings.serverPort
@@ -1018,7 +1025,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
             val response: HttpResponse =
                 ktorClient.post("http://$serverAddress:$serverPort/run/input") {
                     contentType(ContentType.Application.Json)
-                    setBody(PlayerInputMessage(playerId, password, planDataAtPlayer.commandList))
+                    setBody(PlayerInputMessage(playerId, password, commandList))
                     timeout {
                         connectTimeoutMillis = universeClientSettings.httpConnectTimeout
                         requestTimeoutMillis = universeClientSettings.httpRequestTimeout
