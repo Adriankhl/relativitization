@@ -74,6 +74,7 @@ tasks.withType<JavaExec> {
 }
 
 tasks.register<Jar>("fatJar") {
+    mustRunAfter(":packageAssets")
     mustRunAfter(":gdx-android:assembleStandalone")
     mustRunAfter(":gdx-android:bundleRelease")
 

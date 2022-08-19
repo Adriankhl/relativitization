@@ -102,6 +102,13 @@ tasks.register("createModelBase") {
 
 tasks.register("cleanArt") {
     doLast {
+        delete("../relativitization-art/assets/saves")
+        delete("../relativitization-art/assets/Relativitization.jar")
+    }
+}
+
+tasks.register("cleanArtGit") {
+    doLast {
         // art directory may not be a git repository
         if (artGitDirectory.exists()) {
             exec {
@@ -114,6 +121,12 @@ tasks.register("cleanArt") {
             }
         }
     }
+}
+
+tasks.register("cleanAll") {
+    dependsOn("clean")
+    dependsOn("cleanArt")
+    dependsOn("cleanArtGit")
 }
 
 tasks.register("createOutputDir") {
@@ -168,6 +181,8 @@ tasks.register("downloadWindowsJDK") {
 }
 
 tasks.register("outputVersionTxt") {
+    dependsOn("createOutputDir")
+
     doLast {
         File(
             "${artDirectory.path}/outputs/version.txt"
@@ -176,6 +191,8 @@ tasks.register("outputVersionTxt") {
 }
 
 tasks.register("packageAssets") {
+    dependsOn("createOutputDir")
+
     doLast {
         exec {
             workingDir = artDirectory
@@ -190,7 +207,8 @@ tasks.register("packageAssets") {
 }
 
 tasks.register("packageLinux") {
-    mustRunAfter(":gdx-desktop:fatJar")
+    dependsOn(":gdx-desktop:fatJar")
+    dependsOn("createOutputDir")
 
     doLast {
         // package for linux
@@ -231,7 +249,8 @@ tasks.register("packageLinux") {
 }
 
 tasks.register("packageWindows") {
-    mustRunAfter(":gdx-desktop:fatJar")
+    dependsOn(":gdx-desktop:fatJar")
+    dependsOn("createOutputDir")
 
     doLast {
         // cross-building package for windows with wine
@@ -288,7 +307,6 @@ tasks.register("packageWindows") {
 }
 
 tasks.register("packageAll") {
-    dependsOn("cleanArt")
     dependsOn("createOutputDir")
     dependsOn("downloadWindowsJDK")
     dependsOn("outputVersionTxt")
@@ -341,6 +359,5 @@ tasks.register("packageAll") {
                 "./relativitization-jar",
             )
         }
-
     }
 }
