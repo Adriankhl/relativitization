@@ -104,6 +104,12 @@ tasks.register("cleanArt") {
     doLast {
         delete("../relativitization-art/assets/saves")
         delete("../relativitization-art/assets/Relativitization.jar")
+        delete("../relativitization-art/assets/GdxSettings.json")
+        delete("../relativitization-art/outputs")
+        delete("../relativitization-art/relativitization-jar")
+        delete("../relativitization-art/relativitization-linux")
+        delete("../relativitization-art/relativitization-win")
+        delete("../relativitization-art/windows-jdk")
     }
 }
 
@@ -126,7 +132,7 @@ tasks.register("cleanArtGit") {
 tasks.register("cleanAll") {
     dependsOn("clean")
     dependsOn("cleanArt")
-    dependsOn("cleanArtGit")
+//    dependsOn("cleanArtGit")
 }
 
 tasks.register("createOutputDir") {
