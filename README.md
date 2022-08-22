@@ -13,8 +13,8 @@ spacetime.
 
 1. [Project layout](#project-layout)
 2. [Introduction](#introduction)
-3. [Run simulations](#run-simulations)
-4. [Build the game](#build-the-game)
+3. [Build the game](#build-the-game)
+4. [Run simulations](#run-simulations)
 5. [Generate documentation](#generate-documentation)
 6. [Contribute](#contribute)
 7. [License](#license)
