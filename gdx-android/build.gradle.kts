@@ -14,7 +14,8 @@ val androidKeyDir: String = System.getProperty("user.dir") + "/../android/"
 android {
     namespace = "relativitization.app.android"
 
-    compileSdk = 32
+    compileSdk = 33
+    ndkVersion = "25.1.8937393"
 
     buildFeatures {
         aidl = false
@@ -85,7 +86,7 @@ android {
     defaultConfig {
         applicationId = "relativitization.app.android"
         minSdk = 26
-        targetSdk = 32
+        targetSdk = 33
         versionCode = Versions.appVersionCode
         versionName = Versions.appVersionName
 
