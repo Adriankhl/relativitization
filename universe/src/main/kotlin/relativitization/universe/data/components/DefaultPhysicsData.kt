@@ -174,10 +174,10 @@ data class MutablePhysicsData(
 }
 
 fun PlayerInternalData.physicsData(): PhysicsData =
-    playerDataComponentMap.getOrDefault(PhysicsData::class, PhysicsData())
+    playerDataComponentMap.get()
 
 fun MutablePlayerInternalData.physicsData(): MutablePhysicsData =
-    playerDataComponentMap.getOrDefault(MutablePhysicsData::class, MutablePhysicsData())
+    playerDataComponentMap.get()
 
 fun MutablePlayerInternalData.physicsData(newPhysicsData: MutablePhysicsData) =
     playerDataComponentMap.put(newPhysicsData)

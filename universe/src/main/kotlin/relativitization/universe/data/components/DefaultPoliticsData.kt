@@ -61,10 +61,10 @@ data class MutablePoliticsData(
 ) : MutableDefaultPlayerDataComponent()
 
 fun PlayerInternalData.politicsData(): PoliticsData =
-    playerDataComponentMap.getOrDefault(PoliticsData::class, PoliticsData())
+    playerDataComponentMap.get()
 
 fun MutablePlayerInternalData.politicsData(): MutablePoliticsData =
-    playerDataComponentMap.getOrDefault(MutablePoliticsData::class, MutablePoliticsData())
+    playerDataComponentMap.get()
 
 fun MutablePlayerInternalData.politicsData(newPoliticsData: MutablePoliticsData) =
     playerDataComponentMap.put(newPoliticsData)

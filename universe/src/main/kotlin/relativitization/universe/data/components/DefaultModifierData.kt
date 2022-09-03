@@ -42,10 +42,10 @@ data class MutableModifierData(
 }
 
 fun PlayerInternalData.modifierData(): ModifierData =
-    playerDataComponentMap.getOrDefault(ModifierData::class, ModifierData())
+    playerDataComponentMap.get()
 
 fun MutablePlayerInternalData.modifierData(): MutableModifierData =
-    playerDataComponentMap.getOrDefault(MutableModifierData::class, MutableModifierData())
+    playerDataComponentMap.get()
 
 fun MutablePlayerInternalData.modifierData(newModifierData: MutableModifierData) =
     playerDataComponentMap.put(newModifierData)

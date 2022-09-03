@@ -2,8 +2,6 @@ package relativitization.universe.data.components
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import relativitization.universe.ai.DefaultAI
-import relativitization.universe.ai.name
 import relativitization.universe.data.MutablePlayerInternalData
 import relativitization.universe.data.PlayerInternalData
 import relativitization.universe.data.components.defaults.ai.FuelRestMassHistoryData
@@ -45,10 +43,10 @@ enum class AITask(val value: String) {
 }
 
 fun PlayerInternalData.aiData(): AIData =
-    playerDataComponentMap.getOrDefault(AIData::class, AIData())
+    playerDataComponentMap.get()
 
 fun MutablePlayerInternalData.aiData(): MutableAIData =
-    playerDataComponentMap.getOrDefault(MutableAIData::class, MutableAIData())
+    playerDataComponentMap.get()
 
 fun MutablePlayerInternalData.aiData(newAIData: MutableAIData) =
     playerDataComponentMap.put(newAIData)

@@ -320,10 +320,10 @@ data class MutablePopSystemData(
 }
 
 fun PlayerInternalData.popSystemData(): PopSystemData =
-    playerDataComponentMap.getOrDefault(PopSystemData::class, PopSystemData())
+    playerDataComponentMap.get()
 
 fun MutablePlayerInternalData.popSystemData(): MutablePopSystemData =
-    playerDataComponentMap.getOrDefault(MutablePopSystemData::class, MutablePopSystemData())
+    playerDataComponentMap.get()
 
 fun MutablePlayerInternalData.popSystemData(newPopSystemData: MutablePopSystemData) =
     playerDataComponentMap.put(newPopSystemData)

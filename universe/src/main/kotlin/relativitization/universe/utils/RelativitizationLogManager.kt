@@ -9,11 +9,15 @@ object RelativitizationLogManager {
     private val useDefaultLoggerName: Boolean =
         System.getProperty("java.specification.vendor") == "The Android Project"
 
+    private val commonLogger = RelativitizationLogger("CommonLogger")
+
     fun getLogger(): RelativitizationLogger = if (useDefaultLoggerName) {
         RelativitizationLogger("DefaultLogger")
     } else {
         RelativitizationLogger()
     }
+
+    fun getCommonLogger(): RelativitizationLogger = commonLogger
 
     fun getLogger(name: String): RelativitizationLogger = RelativitizationLogger(name)
 }

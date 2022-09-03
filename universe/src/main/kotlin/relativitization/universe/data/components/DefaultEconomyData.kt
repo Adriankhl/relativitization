@@ -26,10 +26,10 @@ data class MutableEconomyData(
 ) : MutableDefaultPlayerDataComponent()
 
 fun PlayerInternalData.economyData(): EconomyData =
-    playerDataComponentMap.getOrDefault(EconomyData::class, EconomyData())
+    playerDataComponentMap.get()
 
 fun MutablePlayerInternalData.economyData(): MutableEconomyData =
-    playerDataComponentMap.getOrDefault(MutableEconomyData::class, MutableEconomyData())
+    playerDataComponentMap.get()
 
 fun MutablePlayerInternalData.economyData(newEconomyData: MutableEconomyData) =
     playerDataComponentMap.put(newEconomyData)

@@ -2,13 +2,9 @@ package relativitization.universe.data.components
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.MutablePlayerInternalData
-import relativitization.universe.data.PlayerData
 import relativitization.universe.data.PlayerInternalData
 import relativitization.universe.data.components.defaults.diplomacy.*
-import relativitization.universe.data.components.defaults.diplomacy.war.MutableWarData
-import relativitization.universe.data.components.defaults.diplomacy.war.WarData
 
 /**
  * @property relationData describe the relation between this player and other players
@@ -29,10 +25,10 @@ data class MutableDiplomacyData(
 ) : MutableDefaultPlayerDataComponent()
 
 fun PlayerInternalData.diplomacyData(): DiplomacyData =
-    playerDataComponentMap.getOrDefault(DiplomacyData::class, DiplomacyData())
+    playerDataComponentMap.get()
 
 fun MutablePlayerInternalData.diplomacyData(): MutableDiplomacyData =
-    playerDataComponentMap.getOrDefault(MutableDiplomacyData::class, MutableDiplomacyData())
+    playerDataComponentMap.get()
 
 fun MutablePlayerInternalData.diplomacyData(newDiplomacyData: MutableDiplomacyData) =
     playerDataComponentMap.put(newDiplomacyData)

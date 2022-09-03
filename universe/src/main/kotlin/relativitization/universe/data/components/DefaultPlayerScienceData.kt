@@ -271,13 +271,10 @@ data class MutablePlayerScienceData(
 }
 
 fun PlayerInternalData.playerScienceData(): PlayerScienceData =
-    playerDataComponentMap.getOrDefault(PlayerScienceData::class, PlayerScienceData())
+    playerDataComponentMap.get()
 
 fun MutablePlayerInternalData.playerScienceData(): MutablePlayerScienceData =
-    playerDataComponentMap.getOrDefault(
-        MutablePlayerScienceData::class,
-        MutablePlayerScienceData()
-    )
+    playerDataComponentMap.get()
 
 fun MutablePlayerInternalData.playerScienceData(newPlayerScienceData: MutablePlayerScienceData) =
     playerDataComponentMap.put(newPlayerScienceData)
