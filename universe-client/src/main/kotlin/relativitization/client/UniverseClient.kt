@@ -310,14 +310,16 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
      */
     suspend fun clearOnChangeFunctionList() {
         // use mutex since it affect the run loop
+        onCommandListChangeFunctionList.clear()
+        onCurrentCommandChangeFunctionList.clear()
+        onIsPlayerDeadChangeFunctionList.clear()
+        onMapCenterPlayerIdChangeFunctionList.clear()
+        onPrimarySelectedInt3DChangeFunctionList.clear()
+        onPrimarySelectedPlayerIdChangeFunctionList.clear()
+        onSelectedPlayerIdListChangeFunctionList.clear()
         mutex.withLock {
             onServerStatusChangeFunctionList.clear()
         }
-        onPrimarySelectedInt3DChangeFunctionList.clear()
-        onCommandListChangeFunctionList.clear()
-        onCurrentCommandChangeFunctionList.clear()
-        onPrimarySelectedPlayerIdChangeFunctionList.clear()
-        onSelectedPlayerIdListChangeFunctionList.clear()
         onUniverseData3DChangeFunctionList.clear()
         onUniverseDataViewChangeFunctionList.clear()
     }
