@@ -1,6 +1,7 @@
 package relativitization.game.screens
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Screen
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import kotlinx.coroutines.runBlocking
@@ -16,7 +17,7 @@ import kotlin.reflect.full.primaryConstructor
 
 class ClientSettingsScreen(
     val game: RelativitizationGame,
-    private val inGame: Boolean
+    private val inGame: Boolean,
 ) : TableScreen(game.assets) {
     private val gdxSettings = game.gdxSettings
     private val universeClientSettings = game.universeClient.universeClientSettings
@@ -417,17 +418,19 @@ class ClientSettingsScreen(
 
         table.row().space(10f)
 
-        table.add(createLabel("Upper info list: ", gdxSettings.normalFontSize))
-        val upperInfoPaneListSelectBox = createSelectBox(
-            UpperInfoPaneCollection.upperInfoPaneListMap.keys.toList(),
-            gdxSettings.upperInfoPaneChoice,
-            gdxSettings.normalFontSize
-        ) { upperInfoPaneListName, _ ->
-            gdxSettings.upperInfoPaneListName = upperInfoPaneListName
-        }
-        table.add(upperInfoPaneListSelectBox)
+        if (!inGame) {
+            table.add(createLabel("Upper info list: ", gdxSettings.normalFontSize))
+            val upperInfoPaneListSelectBox = createSelectBox(
+                UpperInfoPaneCollection.upperInfoPaneListMap.keys.toList(),
+                gdxSettings.upperInfoPaneChoice,
+                gdxSettings.normalFontSize
+            ) { upperInfoPaneListName, _ ->
+                gdxSettings.upperInfoPaneListName = upperInfoPaneListName
+            }
+            table.add(upperInfoPaneListSelectBox)
 
-        table.row().space(10f)
+            table.row().space(10f)
+        }
 
         if (inGame) {
             table.add(createLabel("Upper info: ", gdxSettings.normalFontSize))

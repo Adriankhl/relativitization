@@ -1,6 +1,7 @@
 package relativitization.game.components
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Screen
 import com.badlogic.gdx.scenes.scene2d.ui.*
 import io.ktor.http.*
 import kotlinx.coroutines.runBlocking
@@ -415,7 +416,15 @@ class GameScreenControlBar(
         aChecked = 1.0f,
         soundVolume = gdxSettings.soundEffectsVolume
     ) {
+        val originalScreen: Screen = game.screen
+
+        runBlocking {
+            game.universeClient.clearOnChangeFunctionList()
+        }
+
         game.screen = ClientSettingsScreen(game, true)
+
+        originalScreen.dispose()
     }
 
     private val runUniverseButton = createTextButton(
