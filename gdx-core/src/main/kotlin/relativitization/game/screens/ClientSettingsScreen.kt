@@ -429,22 +429,24 @@ class ClientSettingsScreen(
 
         table.row().space(10f)
 
-        table.add(createLabel("Upper info: ", gdxSettings.normalFontSize))
-        val upperInfoPaneSelectBox = createSelectBox(
-            UpperInfoPaneCollection.upperInfoPaneListMap.getOrDefault(
-                gdxSettings.upperInfoPaneListName,
-                DefaultUpperInfoPaneList
-            ).getUpperInfoPaneList(game).map {
-                it.infoName
-            },
-            gdxSettings.upperInfoPaneChoice,
-            gdxSettings.normalFontSize
-        ) { showingUpperInfo, _ ->
-            gdxSettings.upperInfoPaneChoice = showingUpperInfo
-        }
-        table.add(upperInfoPaneSelectBox)
+        if (inGame) {
+            table.add(createLabel("Upper info: ", gdxSettings.normalFontSize))
+            val upperInfoPaneSelectBox = createSelectBox(
+                UpperInfoPaneCollection.upperInfoPaneListMap.getOrDefault(
+                    gdxSettings.upperInfoPaneListName,
+                    DefaultUpperInfoPaneList
+                ).getUpperInfoPaneList(game).map {
+                    it.infoName
+                },
+                gdxSettings.upperInfoPaneChoice,
+                gdxSettings.normalFontSize
+            ) { showingUpperInfo, _ ->
+                gdxSettings.upperInfoPaneChoice = showingUpperInfo
+            }
+            table.add(upperInfoPaneSelectBox)
 
-        table.row().space(10f)
+            table.row().space(10f)
+        }
 
         table.add(createLabel("Language: ", gdxSettings.normalFontSize))
         val languageSelectBox = createSelectBox(
