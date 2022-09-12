@@ -102,9 +102,10 @@ tasks.register("createModelBase") {
 
 tasks.register("cleanArt") {
     doLast {
-        delete("../relativitization-art/assets/saves")
-        delete("../relativitization-art/assets/Relativitization.jar")
         delete("../relativitization-art/assets/GdxSettings.json")
+        delete("../relativitization-art/assets/GenerateSettings.json")
+        delete("../relativitization-art/assets/Relativitization.jar")
+        delete("../relativitization-art/assets/saves")
         delete("../relativitization-art/outputs")
         delete("../relativitization-art/relativitization-jar")
         delete("../relativitization-art/relativitization-linux")
