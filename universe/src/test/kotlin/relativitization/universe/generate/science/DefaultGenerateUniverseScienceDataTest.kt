@@ -4,6 +4,10 @@ package relativitization.universe.generate.science
 import relativitization.universe.data.components.defaults.science.knowledge.AppliedResearchField
 import relativitization.universe.data.components.defaults.science.knowledge.BasicResearchField
 import relativitization.universe.data.global.components.UniverseScienceData
+import relativitization.universe.data.global.components.defaults.science.knowledge.AppliedResearchProjectGenerationData
+import relativitization.universe.data.global.components.defaults.science.knowledge.BasicResearchProjectGenerationData
+import relativitization.universe.data.global.components.defaults.science.knowledge.ProjectGenerationData
+import relativitization.universe.data.global.components.defaults.science.knowledge.UniverseProjectGenerationData
 import relativitization.universe.generate.random.science.DefaultGenerateUniverseScienceData
 import kotlin.random.Random
 import kotlin.test.Test
@@ -11,7 +15,32 @@ import kotlin.test.Test
 internal class DefaultGenerateUniverseScienceDataTest {
     @Test
     fun testGenerateDefaultField() {
-        val universeScienceData: UniverseScienceData = UniverseScienceData()
+        val universeScienceData = UniverseScienceData(
+            universeProjectGenerationData = UniverseProjectGenerationData(
+                basicResearchProjectGenerationDataList = listOf(
+                    BasicResearchProjectGenerationData(
+                        basicResearchField = BasicResearchField.MATHEMATICS,
+                        projectGenerationData = ProjectGenerationData(
+                            centerX = 0.0,
+                            centerY = 0.0,
+                            range = 1.0,
+                            weight = 1.0,
+                        )
+                    )
+                ),
+                appliedResearchProjectGenerationDataList = listOf(
+                   AppliedResearchProjectGenerationData(
+                       appliedResearchField = AppliedResearchField.ENERGY_TECHNOLOGY,
+                       projectGenerationData = ProjectGenerationData(
+                           centerX = 0.0,
+                           centerY = 0.0,
+                           range = 1.0,
+                           weight = 1.0,
+                       )
+                   )
+                )
+            )
+        )
 
         val newUniverseScienceData: UniverseScienceData =
             DefaultGenerateUniverseScienceData.generate(

@@ -36,10 +36,11 @@ internal class DataSerializerTest {
     fun sealSubclassTest() {
 
         val data1: Project = OwnedProject("kotlinx.coroutines", "kotlin")
-        println(format.encodeToString(data1))
+        val s1 = format.encodeToString(data1)
 
 
         val data2: GrandProject = OwnedProject("kotlinx.coroutines", "kotlin")
-        println(format.encodeToString(data2))
+        val s2 = format.encodeToString(data2)
+        assert(s1 == s2)
     }
 }

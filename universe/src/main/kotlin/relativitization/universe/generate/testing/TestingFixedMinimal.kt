@@ -21,6 +21,9 @@ import relativitization.universe.data.components.defaults.science.knowledge.Basi
 import relativitization.universe.data.components.defaults.science.knowledge.BasicResearchProjectData
 import relativitization.universe.data.global.MutableUniverseGlobalData
 import relativitization.universe.data.global.components.MutableDefaultGlobalDataComponent
+import relativitization.universe.data.global.components.defaults.science.knowledge.MutableAppliedResearchProjectGenerationData
+import relativitization.universe.data.global.components.defaults.science.knowledge.MutableBasicResearchProjectGenerationData
+import relativitization.universe.data.global.components.defaults.science.knowledge.MutableProjectGenerationData
 import relativitization.universe.data.global.components.universeScienceData
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.generate.GenerateSettings
@@ -126,8 +129,34 @@ object TestingFixedMinimal : TestingGenerateUniverseMethod() {
         mutableUniverseScienceData.addAppliedResearchProjectData(applied1)
         mutableUniverseScienceData.addAppliedResearchProjectData(applied2)
 
+        // Add research generate data to prevent error
+        mutableUniverseScienceData.universeProjectGenerationData
+            .basicResearchProjectGenerationDataList.add(
+                MutableBasicResearchProjectGenerationData(
+                    basicResearchField = BasicResearchField.MATHEMATICS,
+                    projectGenerationData = MutableProjectGenerationData(
+                        centerX = 0.0,
+                        centerY = 0.0,
+                        range = 1.0,
+                        weight = 1.0,
+                    )
+                )
+            )
 
-        // Totally 6 player
+        mutableUniverseScienceData.universeProjectGenerationData
+            .appliedResearchProjectGenerationDataList.add(
+                MutableAppliedResearchProjectGenerationData(
+                    appliedResearchField = AppliedResearchField.ENERGY_TECHNOLOGY,
+                    projectGenerationData = MutableProjectGenerationData(
+                        centerX = 0.0,
+                        centerY = 0.0,
+                        range = 3.0,
+                        weight = 1.0,
+                    )
+                )
+            )
+
+        // 7 players in total
         val universeState = UniverseState(
             currentTime = universeSettings.tDim - 1,
             maxPlayerId = 7,
@@ -426,7 +455,7 @@ object TestingFixedMinimal : TestingGenerateUniverseMethod() {
 
         // Player 7 is an ally of player 1
         playerData7.playerInternalData.diplomacyData().relationData.allyMap[1] =
-                MutableAllianceData(0)
+            MutableAllianceData(0)
 
         // Add player data to universe data 4D
         playerData1.syncData()

@@ -31,7 +31,10 @@ internal class UniverseTest {
         val universe = Universe(universeData)
         universe.saveAll()
         val universeLoad = Universe.loadUniverseLatest("save-load-test", ".")
-        println(universeLoad)
+
+        //println(universeLoad)
+
+        assert(universe.getCurrentPlayerDataList() == universeLoad.getCurrentPlayerDataList())
     }
 
     @Test

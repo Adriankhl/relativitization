@@ -21,8 +21,8 @@ internal class ServerStatusTest {
             }
             delay(1000)
             val status = universeClient.httpGetUniverseServerStatus()
-            println(status)
-            assert(status.isServerWaitingInput == false)
+            //println(status)
+            assert(!status.isServerWaitingInput)
             universeServer.stop()
         }
     }
@@ -35,12 +35,15 @@ internal class ServerStatusTest {
             launch {
                 universeServer.start()
             }
+
+            delay(1000)
+
             while (universeClient.httpPostNewUniverse() != HttpStatusCode.OK) {
                 delay(1000)
             }
             val status = universeClient.httpGetUniverseServerStatus()
-            println(status)
-            assert(status.hasUniverse == true)
+            //println(status)
+            assert(status.hasUniverse)
             universeServer.stop()
         }
     }

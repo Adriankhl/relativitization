@@ -60,7 +60,7 @@ internal class MovementTest {
         var currentDouble3D1 = Double3D(0.0, 0.0, 0.0)
         var currentVelocity1 = Velocity(0.0, 0.0, 0.0)
 
-        val l1 = (1..10).toList().map {
+        (1..10).toList().map {
             val v1: TargetVelocityData = targetDouble3DByPhotonRocket(
                 initialRestMass = currentRestMass1,
                 maxDeltaRestMass = 0.1,
@@ -74,12 +74,12 @@ internal class MovementTest {
             currentVelocity1 = v1.newVelocity
             currentDouble3D1 += v1.newVelocity.displacement(1)
 
-            println("Velocity 1: $currentVelocity1")
-            println("Double3D 1: $currentDouble3D1")
-            println("Rest mass 1: $currentRestMass1")
+            //println("Velocity 1: $currentVelocity1")
+            //println("Double3D 1: $currentDouble3D1")
+            //println("Rest mass 1: $currentRestMass1")
         }
 
-        println(l1)
+        //println(l1)
 
         assert(currentDouble3D1 == Double3D(1.0, 0.0, 0.0))
 
@@ -87,7 +87,7 @@ internal class MovementTest {
         var currentDouble3D2 = Double3D(0.0, 0.0, 0.0)
         var currentVelocity2 = Velocity(0.0, -0.3, 0.0)
 
-        val l2 = (1..10).toList().map {
+        (1..10).toList().map {
             val v2: TargetVelocityData = targetDouble3DByPhotonRocket(
                 initialRestMass = currentRestMass2,
                 maxDeltaRestMass = 0.1,
@@ -101,12 +101,12 @@ internal class MovementTest {
             currentVelocity2 = v2.newVelocity
             currentDouble3D2 += v2.newVelocity.displacement(1)
 
-            println("Velocity 2: $currentVelocity2")
-            println("Double3D 2: $currentDouble3D2")
-            println("Rest mass 2: $currentRestMass2")
+            //println("Velocity 2: $currentVelocity2")
+            //println("Double3D 2: $currentDouble3D2")
+            //println("Rest mass 2: $currentRestMass2")
         }
 
-        println(l2)
+        //println(l2)
 
         assert(currentDouble3D2 == Double3D(1.0, 0.0, 0.0))
 
@@ -114,7 +114,7 @@ internal class MovementTest {
         var currentDouble3D3 = Double3D(0.0, 0.0, 0.0)
         var currentVelocity3 = Velocity(0.5, 0.0, 0.0)
 
-        val l6 = (1..30).toList().map {
+        (1..30).toList().map {
             val v3: TargetVelocityData = targetDouble3DByPhotonRocket(
                 initialRestMass = currentRestMass3,
                 maxDeltaRestMass = 0.05,
@@ -128,12 +128,12 @@ internal class MovementTest {
             currentVelocity3 = v3.newVelocity
             currentDouble3D3 += v3.newVelocity.displacement(1)
 
-            println("Velocity 3: $currentVelocity3")
-            println("Double3D 3: $currentDouble3D3")
-            println("Rest mass 3: $currentRestMass3")
+            //println("Velocity 3: $currentVelocity3")
+            //println("Double3D 3: $currentDouble3D3")
+            //println("Rest mass 3: $currentRestMass3")
         }
 
-        println(l6)
+        //println(l6)
 
         assert(currentDouble3D3 == Double3D(1.0, 0.0, 0.0))
 
@@ -141,7 +141,7 @@ internal class MovementTest {
         var currentDouble3D4 = Double3D(1.0, 0.0, 0.0)
         var currentVelocity4 = Velocity(0.6, 0.0, 0.0)
 
-        val l4 = (1..30).toList().map {
+        (1..30).toList().map {
             val v4: TargetVelocityData = targetDouble3DByPhotonRocket(
                 initialRestMass = currentRestMass4,
                 maxDeltaRestMass = 0.1,
@@ -155,12 +155,12 @@ internal class MovementTest {
             currentVelocity4 = v4.newVelocity
             currentDouble3D4 += v4.newVelocity.displacement(1)
 
-            println("Velocity 4: $currentVelocity4")
-            println("Double3D 4: $currentDouble3D4")
-            println("Rest mass 4: $currentRestMass4")
+            //println("Velocity 4: $currentVelocity4")
+            //println("Double3D 4: $currentDouble3D4")
+            //println("Rest mass 4: $currentRestMass4")
         }
 
-        println(l4)
+        //println(l4)
 
         assert(currentDouble3D4 == Double3D(1.0, 0.0, 0.0))
 
@@ -172,7 +172,7 @@ internal class MovementTest {
         var currentDouble3D1 = Double3D(0.0, 0.0, 0.0)
         var currentVelocity1 = Velocity(0.0, 0.0, 0.0)
 
-        val l1 = (1..10).toList().map {
+        (1..10).toList().map {
             val v1: TargetVelocityData = targetDouble3DByPhotonRocket(
                 initialRestMass = currentRestMass1,
                 maxDeltaRestMass = 0.1,
@@ -186,12 +186,12 @@ internal class MovementTest {
             currentVelocity1 = v1.newVelocity
             currentDouble3D1 += v1.newVelocity.displacement(1)
 
-            println("Velocity 1: $currentVelocity1")
-            println("Double3D 1: $currentDouble3D1")
-            println("Rest mass 1: $currentRestMass1")
+            //println("Velocity 1: $currentVelocity1")
+            //println("Double3D 1: $currentDouble3D1")
+            //println("Rest mass 1: $currentRestMass1")
         }
 
-        println(l1)
+        //println(l1)
 
         val e1: Double = requiredDeltaRestMassSimpleEstimation(
             initialRestMass = 1.0,
@@ -207,7 +207,7 @@ internal class MovementTest {
         var currentDouble3D2 = Double3D(0.0, 0.0, 0.0)
         var currentVelocity2 = Velocity(0.0, -0.3, 0.0)
 
-        val l2 = (1..10).toList().map {
+        (1..10).toList().map {
             val v2: TargetVelocityData = targetDouble3DByPhotonRocket(
                 initialRestMass = currentRestMass2,
                 maxDeltaRestMass = 0.1,
@@ -221,12 +221,12 @@ internal class MovementTest {
             currentVelocity2 = v2.newVelocity
             currentDouble3D2 += v2.newVelocity.displacement(1)
 
-            println("Velocity 2: $currentVelocity2")
-            println("Double3D 2: $currentDouble3D2")
-            println("Rest mass 2: $currentRestMass2")
+            //println("Velocity 2: $currentVelocity2")
+            //println("Double3D 2: $currentDouble3D2")
+            //println("Rest mass 2: $currentRestMass2")
         }
 
-        println(l2)
+        //println(l2)
 
         val e2: Double = requiredDeltaRestMassSimpleEstimation(
             initialRestMass = 1.0,
