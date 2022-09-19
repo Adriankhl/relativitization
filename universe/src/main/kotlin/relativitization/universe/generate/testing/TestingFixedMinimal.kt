@@ -32,7 +32,6 @@ import relativitization.universe.maths.grid.Grids.create4DGrid
 import relativitization.universe.maths.physics.MutableDouble4D
 import relativitization.universe.maths.physics.MutableInt4D
 import kotlin.random.Random
-import kotlin.reflect.full.createInstance
 
 object TestingFixedMinimal : TestingGenerateUniverseMethod() {
     override fun generate(
@@ -54,8 +53,8 @@ object TestingFixedMinimal : TestingGenerateUniverseMethod() {
         val mutableUniverseGlobalData = MutableUniverseGlobalData()
 
         // Add all default data component
-        MutableDefaultGlobalDataComponent::class.sealedSubclasses.forEach {
-            mutableUniverseGlobalData.globalDataComponentMap.put(it.createInstance())
+        MutableDefaultGlobalDataComponent.createComponentList().forEach {
+            mutableUniverseGlobalData.globalDataComponentMap.put(it)
         }
 
         // Create basic and applied project
@@ -170,16 +169,27 @@ object TestingFixedMinimal : TestingGenerateUniverseMethod() {
         val playerData7 = MutablePlayerData(7)
 
         // Add all default data components
-        MutableDefaultPlayerDataComponent::class.sealedSubclasses.forEach {
-            playerData1.playerInternalData.playerDataComponentMap.put(it.createInstance())
-            playerData2.playerInternalData.playerDataComponentMap.put(it.createInstance())
-            playerData3.playerInternalData.playerDataComponentMap.put(it.createInstance())
-            playerData4.playerInternalData.playerDataComponentMap.put(it.createInstance())
-            playerData5.playerInternalData.playerDataComponentMap.put(it.createInstance())
-            playerData6.playerInternalData.playerDataComponentMap.put(it.createInstance())
-            playerData7.playerInternalData.playerDataComponentMap.put(it.createInstance())
+        MutableDefaultPlayerDataComponent.createComponentList().forEach {
+            playerData1.playerInternalData.playerDataComponentMap.put(it)
         }
-
+        MutableDefaultPlayerDataComponent.createComponentList().forEach {
+            playerData2.playerInternalData.playerDataComponentMap.put(it)
+        }
+        MutableDefaultPlayerDataComponent.createComponentList().forEach {
+            playerData3.playerInternalData.playerDataComponentMap.put(it)
+        }
+        MutableDefaultPlayerDataComponent.createComponentList().forEach {
+            playerData4.playerInternalData.playerDataComponentMap.put(it)
+        }
+        MutableDefaultPlayerDataComponent.createComponentList().forEach {
+            playerData5.playerInternalData.playerDataComponentMap.put(it)
+        }
+        MutableDefaultPlayerDataComponent.createComponentList().forEach {
+            playerData6.playerInternalData.playerDataComponentMap.put(it)
+        }
+        MutableDefaultPlayerDataComponent.createComponentList().forEach {
+            playerData7.playerInternalData.playerDataComponentMap.put(it)
+        }
 
         // Change AI to EmptyAI to for deterministic testing
         playerData1.playerInternalData.aiName = EmptyAI.name()

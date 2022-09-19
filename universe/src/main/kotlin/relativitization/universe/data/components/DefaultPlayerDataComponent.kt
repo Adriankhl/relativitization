@@ -5,10 +5,40 @@ import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.MutablePlayerInternalData
 
 @Serializable
-sealed class DefaultPlayerDataComponent : PlayerDataComponent()
+sealed class DefaultPlayerDataComponent : PlayerDataComponent() {
+    companion object {
+        fun createComponentList(): List<DefaultPlayerDataComponent> {
+            return listOf(
+                AIData(),
+                DiplomacyData(),
+                EconomyData(),
+                ModifierData(),
+                PhysicsData(),
+                PlayerScienceData(),
+                PoliticsData(),
+                PopSystemData(),
+            )
+        }
+    }
+}
 
 @Serializable
-sealed class MutableDefaultPlayerDataComponent : MutablePlayerDataComponent()
+sealed class MutableDefaultPlayerDataComponent : MutablePlayerDataComponent() {
+    companion object {
+        fun createComponentList(): List<MutableDefaultPlayerDataComponent> {
+            return listOf(
+                MutableAIData(),
+                MutableDiplomacyData(),
+                MutableEconomyData(),
+                MutableModifierData(),
+                MutablePhysicsData(),
+                MutablePlayerScienceData(),
+                MutablePoliticsData(),
+                MutablePopSystemData(),
+            )
+        }
+    }
+}
 
 /**
  * Synchronize different data component to ensure consistency

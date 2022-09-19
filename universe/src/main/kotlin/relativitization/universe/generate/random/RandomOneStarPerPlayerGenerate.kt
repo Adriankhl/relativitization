@@ -24,7 +24,6 @@ import relativitization.universe.mechanisms.defaults.regular.sync.SyncPlayerScie
 import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.math.floor
 import kotlin.random.Random
-import kotlin.reflect.full.createInstance
 
 object RandomOneStarPerPlayerGenerate : RandomGenerateUniverseMethod() {
     private val logger = RelativitizationLogManager.getLogger()
@@ -38,8 +37,8 @@ object RandomOneStarPerPlayerGenerate : RandomGenerateUniverseMethod() {
         val mutableUniverseGlobalData = MutableUniverseGlobalData()
 
         // Add all default data component
-        MutableDefaultGlobalDataComponent::class.sealedSubclasses.forEach {
-            mutableUniverseGlobalData.globalDataComponentMap.put(it.createInstance())
+        MutableDefaultGlobalDataComponent.createComponentList().forEach {
+            mutableUniverseGlobalData.globalDataComponentMap.put(it)
         }
 
         // Add project generation data for all basic research field
@@ -287,8 +286,8 @@ object RandomOneStarPerPlayerGenerate : RandomGenerateUniverseMethod() {
         for (playerId in 1..settings.numPlayer) {
             val mutablePlayerData = MutablePlayerData(universeState.getNewPlayerId())
 
-            MutableDefaultPlayerDataComponent::class.sealedSubclasses.forEach {
-                mutablePlayerData.playerInternalData.playerDataComponentMap.put(it.createInstance())
+            MutableDefaultPlayerDataComponent.createComponentList().forEach {
+                mutablePlayerData.playerInternalData.playerDataComponentMap.put(it)
             }
 
             // First n players are human player
