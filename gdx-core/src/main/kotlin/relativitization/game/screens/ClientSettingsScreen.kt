@@ -1,19 +1,16 @@
 package relativitization.game.screens
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.Screen
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import kotlinx.coroutines.runBlocking
 import relativitization.game.Language
 import relativitization.game.RelativitizationGame
 import relativitization.game.components.upper.DefaultUpperInfoPaneList
-import relativitization.game.components.upper.UpperInfoPane
 import relativitization.game.components.upper.UpperInfoPaneCollection
 import relativitization.game.utils.Assets
 import relativitization.game.utils.TableScreen
 import relativitization.universe.utils.RelativitizationLogManager
-import kotlin.reflect.full.primaryConstructor
 
 class ClientSettingsScreen(
     val game: RelativitizationGame,
