@@ -33,6 +33,30 @@ internal class DefaultPlayerDataComponentTest {
         l2.forEach { element2 ->
             assert(l1.any { element2.simpleName!!.drop(7) == it.simpleName })
         }
+    }
 
+    @Test
+    fun componentListTest() {
+        val l1: List<DefaultPlayerDataComponent> = DefaultPlayerDataComponent::class
+            .sealedSubclasses.sortedBy {
+                it.name()
+            }.map {
+                it.createInstance()
+            }
+
+        val l2: List<DefaultPlayerDataComponent> = DefaultPlayerDataComponent.createComponentList()
+
+        assert(l1 == l2)
+
+        val l3: List<MutableDefaultPlayerDataComponent> = MutableDefaultPlayerDataComponent::class
+            .sealedSubclasses.sortedBy {
+                it.name()
+            }.map {
+                it.createInstance()
+            }
+
+        val l4: List<MutableDefaultPlayerDataComponent> = MutableDefaultPlayerDataComponent
+            .createComponentList()
+        assert(l3 == l4)
     }
 }
