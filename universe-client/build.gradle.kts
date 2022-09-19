@@ -24,6 +24,10 @@ kotlin {
             }
         }
     }
+
+    jvmToolchain {
+        languageVersion.set(JavaLanguageVersion.of(Versions.jdkVersion))
+    }
 }
 
 tasks.withType<KotlinCompile>().configureEach {

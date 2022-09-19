@@ -11,6 +11,12 @@ val natives: Configuration by configurations.creating
 
 val androidKeyDir: String = System.getProperty("user.dir") + "/../android/"
 
+kotlin {
+    jvmToolchain {
+        languageVersion.set(JavaLanguageVersion.of(Versions.jdkVersion))
+    }
+}
+
 android {
     namespace = "relativitization.app.android"
 

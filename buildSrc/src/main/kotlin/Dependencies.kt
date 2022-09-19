@@ -12,6 +12,9 @@ object Versions {
             appVersionBuild
     const val appVersionName = "$appVersionMajor.$appVersionMinor.$appVersionPatch"
 
+    // JDK
+    const val jdkVersion = 17
+
     // Kotlin multiplatform
     const val kotlinVersion = "1.7.10"
     const val kotlinxCoroutineVersion = "1.6.4"
