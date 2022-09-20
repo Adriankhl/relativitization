@@ -407,7 +407,7 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
 
         table.row().space(10f)
 
-        table.add(createLabel("Player after image duration: ", gdxSettings.normalFontSize))
+        table.add(createLabel("After image duration: ", gdxSettings.normalFontSize))
 
         table.add(playerAfterImageLabel)
 
@@ -415,7 +415,7 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
 
         table.add(
             createLabel(
-                "Player trajectory length (>= after image duration): ",
+                "Trajectory length: ",
                 gdxSettings.normalFontSize
             )
         )
