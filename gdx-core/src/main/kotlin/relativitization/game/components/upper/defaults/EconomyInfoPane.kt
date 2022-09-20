@@ -667,7 +667,7 @@ class EconomyInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane
 
         nestedTable.add(
             createLabel(
-                "Tariff:",
+                "Tariff: ",
                 gdxSettings.normalFontSize
             )
         ).colspan(2)
@@ -805,7 +805,7 @@ class EconomyInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane
 
         nestedTable.add(
             createLabel(
-                "Income tax:",
+                "Income tax: ",
                 gdxSettings.normalFontSize
             )
         ).colspan(2)

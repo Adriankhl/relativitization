@@ -649,16 +649,16 @@ class GameScreenControlBar(
 
         leftTopTable.add(timeDelayLabel).space(10f)
 
-        leftTopTable.add(createLabel("z limit:", gdxSettings.smallFontSize))
+        leftTopTable.add(createLabel("z limit: ", gdxSettings.smallFontSize))
         leftTopTable.add(zLimitSelectBox).space(10f)
 
-        leftBottomTable.add(createLabel("x:", gdxSettings.smallFontSize))
+        leftBottomTable.add(createLabel("x: ", gdxSettings.smallFontSize))
         leftBottomTable.add(xCoordinateSelectBox).space(10f)
 
-        leftBottomTable.add(createLabel("y:", gdxSettings.smallFontSize))
+        leftBottomTable.add(createLabel("y: ", gdxSettings.smallFontSize))
         leftBottomTable.add(yCoordinateSelectBox).space(10f)
 
-        leftBottomTable.add(createLabel("z:", gdxSettings.smallFontSize))
+        leftBottomTable.add(createLabel("z: ", gdxSettings.smallFontSize))
         leftBottomTable.add(zCoordinateSelectBox).space(10f)
 
         rightTable.add(confirmViewButton)

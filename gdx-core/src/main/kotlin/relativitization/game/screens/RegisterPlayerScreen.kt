@@ -133,7 +133,7 @@ class RegisterPlayerScreen(val game: RelativitizationGame) : TableScreen(game.as
 
         table.add(
             createLabel(
-                "Register player settings :",
+                "Register player settings:",
                 gdxSettings.hugeFontSize
             )
         ).colspan(2)

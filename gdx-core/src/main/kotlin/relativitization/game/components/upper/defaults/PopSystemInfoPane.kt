@@ -280,7 +280,7 @@ class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
 
         val carrierIdTable = Table()
 
-        carrierIdTable.add(createLabel("Carrier:", gdxSettings.normalFontSize)).pad(5f)
+        carrierIdTable.add(createLabel("Carrier: ", gdxSettings.normalFontSize)).pad(5f)
 
         updateCarrierId()
         val carrierIdSelectBox = createSelectBox(
