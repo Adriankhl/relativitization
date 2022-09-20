@@ -19,28 +19,20 @@
 #   public *;
 #}
 
-# Libgdx
+# libGDX
 
 -verbose
 
--dontwarn android.support.**
 -dontwarn com.badlogic.gdx.backends.android.AndroidFragmentApplication
--dontwarn com.badlogic.gdx.utils.GdxBuild
--dontwarn com.badlogic.gdx.physics.box2d.utils.Box2DBuild
+#-dontwarn com.badlogic.gdx.utils.GdxBuild
+#-dontwarn com.badlogic.gdx.physics.box2d.utils.Box2DBuild
 -dontwarn com.badlogic.gdx.jnigen.BuildTarget*
--dontwarn com.badlogic.gdx.graphics.g2d.freetype.FreetypeBuild
+#-dontwarn com.badlogic.gdx.graphics.g2d.freetype.FreetypeBuild
 
+# Required if using Gdx-Controllers extension
 #-keep class com.badlogic.gdx.controllers.android.AndroidControllers
 
--keepclassmembers class com.badlogic.gdx.backends.android.AndroidInput* {
-   <init>(com.badlogic.gdx.Application, android.content.Context, java.lang.Object, com.badlogic.gdx.backends.android.AndroidApplicationConfiguration);
-}
-
--keep class com.badlogic.**{
-   **[] $VALUES;
-    *;
-}
-
+# Required if using Box2D extension
 #-keepclassmembers class com.badlogic.gdx.physics.box2d.World {
 #   boolean contactFilter(long, long);
 #   void    beginContact(long);
@@ -51,7 +43,7 @@
 #   float   reportRayFixture(long, float, float, float, float, float);
 #}
 
-# Kotlin serialization
+# kotlinx.serialization
 
 # Keep `Companion` object fields of serializable classes.
 # This avoids serializer lookup through `getDeclaredClasses` as done for named companion objects.
@@ -64,7 +56,7 @@
 -if @kotlinx.serialization.Serializable class ** {
     static **$* *;
 }
--keepclassmembers class <1>$<3> {
+-keepclassmembers class <2>$<3> {
     kotlinx.serialization.KSerializer serializer(...);
 }
 
@@ -94,13 +86,11 @@
 #}
 
 # okio
+
 -dontwarn org.codehaus.mojo.animal_sniffer.*
 
 # log4j and logback
--dontwarn javax.**
--dontwarn java.lang.management.**
--dontwarn sun.reflect.Reflection
--dontwarn org.osgi.framework.**
--dontwarn com.lmax.disruptor.**
--dontwarn org.codehaus.janino.**
--dontwarn org.codehaus.commons.compiler.CompileException
+
+-dontwarn org.apache.logging.log4j.**
+-keepattributes Signature
+-keep class org.apache.logging.log4j.** { *; }
