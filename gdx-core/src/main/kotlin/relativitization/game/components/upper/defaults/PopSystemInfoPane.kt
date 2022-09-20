@@ -2934,11 +2934,12 @@ class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
         nestedTable.row().space(10f)
 
         val newPlayerCarrierIdLabel = createLabel(
-            "Carriers in new player: $newPlayerCarrierIdSet",
+            "Carriers in new player: ",
             gdxSettings.smallFontSize
         )
-        newPlayerCarrierIdLabel.wrap = true
-        nestedTable.add(newPlayerCarrierIdLabel).colspan(2).left()
+        nestedTable.add(newPlayerCarrierIdLabel)
+
+        nestedTable.add(newPlayerCarrierIdSelectBoxContainer)
 
         nestedTable.row().space(10f)
 
@@ -2948,16 +2949,13 @@ class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
             gdxSettings.soundEffectsVolume,
         ) {
             newPlayerCarrierIdSet.add(carrierId)
-            newPlayerCarrierIdLabel.setText("Carriers in new player: $newPlayerCarrierIdSet")
             newPlayerCarrierIdSelectBoxContainer.actor = createSelectBox(
                 newPlayerCarrierIdSet.toList(),
                 newPlayerCarrierIdSet.firstOrNull() ?: -1,
                 gdxSettings.smallFontSize
             )
         }
-        nestedTable.add(addButton).colspan(2)
-
-        nestedTable.row().space(10f)
+        nestedTable.add(addButton)
 
         val removeButton = createTextButton(
             "Remove",
@@ -2965,7 +2963,6 @@ class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
             gdxSettings.soundEffectsVolume,
         ) {
             newPlayerCarrierIdSet.remove(newPlayerCarrierIdSelectBoxContainer.actor.selected)
-            newPlayerCarrierIdLabel.setText("Carriers in new player: $newPlayerCarrierIdSet")
             newPlayerCarrierIdSelectBoxContainer.actor = createSelectBox(
                 newPlayerCarrierIdSet.toList(),
                 newPlayerCarrierIdSet.firstOrNull() ?: -1,
@@ -2973,8 +2970,6 @@ class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
             )
         }
         nestedTable.add(removeButton)
-
-        nestedTable.add(newPlayerCarrierIdSelectBoxContainer)
 
         nestedTable.row().space(10f)
 
