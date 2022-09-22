@@ -22,7 +22,7 @@ kotlin {
                 implementation("io.ktor:ktor-server-status-pages:${Versions.ktorVersion}")
                 implementation("org.apache.logging.log4j:log4j-api:${Versions.log4jVersion}")
                 implementation("org.apache.logging.log4j:log4j-core:${Versions.log4jVersion}")
-                implementation("org.apache.logging.log4j:log4j-slf4j-impl:${Versions.log4jVersion}")
+                implementation("org.apache.logging.log4j:log4j-slf4j2-impl:${Versions.log4jVersion}")
             }
         }
     }
