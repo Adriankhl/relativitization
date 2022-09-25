@@ -103,7 +103,7 @@ class PoliticsInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPan
         nestedTable.row().space(10f)
 
         val askToMergeButton = createTextButton(
-            "Ast to merge",
+            "Ask to merge",
             gdxSettings.smallFontSize,
             gdxSettings.soundEffectsVolume,
             extraColor = commandButtonColor,
