@@ -14,31 +14,31 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.apache.logging.log4j.Level
-import org.apache.logging.log4j.core.config.Configurator
 import relativitization.client.UniverseClient
 import relativitization.game.GdxSettings
 import relativitization.game.RelativitizationGame
 import relativitization.server.UniverseServer
 import relativitization.universe.UniverseClientSettings
 import relativitization.universe.UniverseServerSettings
+import relativitization.universe.utils.RelativitizationLogManager
 import relativitization.utils.ServerPort
 import kotlin.random.Random
 
 @ExperimentalCoroutinesApi
 class AndroidLauncher : AppCompatActivity(), AndroidFragmentApplication.Callbacks {
     override fun onCreate(savedInstanceState: Bundle?) {
-        // Reduce logging for release build
-        val isLoggerRelease: Boolean =
-            (applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE) != 0
+        // This doesn't work
+        //val isLoggerRelease: Boolean =
+        // (applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE) != 0
 
-        // Set log level
+        // Reduce logging for release build
+        val isLoggerRelease: Boolean = BuildConfig.VERSION_NAME.matches(Regex(".*Debug"))
+
+        // Set log level for default logger - the one used in android app
         if (isLoggerRelease) {
-            Configurator.setRootLevel(Level.OFF)
+            RelativitizationLogManager.setSimpleLoggerLevel(Level.OFF)
         } else {
-            Configurator.setRootLevel(Level.DEBUG)
-            //Configurator.setLevel("UniverseServerInternal", Level.ERROR)
-            //Configurator.setLevel("UniverseClient", Level.ERROR)
-            //Configurator.setLevel("ActorFunction", Level.ERROR)
+            RelativitizationLogManager.setSimpleLoggerLevel(Level.DEBUG)
         }
 
         super.onCreate(savedInstanceState)
