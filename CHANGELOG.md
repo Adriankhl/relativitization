@@ -1,3 +1,7 @@
+## 0.2.2
+
+* Fix: android crash
+
 ## 0.2.1
 
 * UI: Simplify new universe generation screen
