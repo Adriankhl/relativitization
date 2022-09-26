@@ -1,3 +1,7 @@
+## 0.2.3
+
+* Core: add universe boundary setting
+
 ## 0.2.2
 
 * Fix: android crash
