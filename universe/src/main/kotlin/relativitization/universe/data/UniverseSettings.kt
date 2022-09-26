@@ -39,7 +39,12 @@ data class UniverseSettings(
     val xDim: Int = 3,
     val yDim: Int = 3,
     val zDim: Int = 3,
-    val tDim: Int = intDelay(Int3D(0, 0, 0), Int3D(xDim - 1, yDim - 1, zDim - 1), speedOfLight) + 1,
+    val tDim: Int = intDelay(
+        Int3D(0, 0, 0),
+        Int3D(xDim - 1, yDim - 1, zDim - 1),
+        speedOfLight
+    ) + 1,
+    val universeBoundary: UniverseBoundary = UniverseBoundary.REFLECTIVE,
     val playerAfterImageDuration: Int = maxDelayAfterMove(speedOfLight),
     val playerHistoricalInt4DLength: Int = playerAfterImageDuration,
     val groupEdgeLength: Double = 0.01,
@@ -81,6 +86,7 @@ data class MutableUniverseSettings(
         Int3D(xDim - 1, yDim - 1, zDim - 1),
         speedOfLight
     ) + 1,
+    var universeBoundary: UniverseBoundary = UniverseBoundary.REFLECTIVE,
     var playerAfterImageDuration: Int = maxDelayAfterMove(speedOfLight),
     var playerHistoricalInt4DLength: Int = playerAfterImageDuration,
     var groupEdgeLength: Double = 0.01,
@@ -91,5 +97,14 @@ data class MutableUniverseSettings(
 ) {
     fun randomizeSeed() {
         randomSeed = Clock.System.now().epochSeconds
+    }
+}
+
+enum class UniverseBoundary(val value: String) {
+    REFLECTIVE("Reflective"),
+    ABSORBING("Absorbing"),
+    ;
+    override fun toString(): String {
+        return value
     }
 }

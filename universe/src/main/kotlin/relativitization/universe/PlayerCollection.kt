@@ -235,35 +235,83 @@ class PlayerCollection(
             playerData.double4D.z += originalVelocity.vz
 
             // Check boundaries and ensure double 4D is within boundaries
-            // If exceeds boundaries, reflect the velocity
+            // If exceeds boundaries, change the velocity according to the boundary condition
             if (playerData.double4D.x <= 0.0) {
                 playerData.double4D.x = 0.000001
-                playerData.velocity.vx = abs(originalVelocity.vx)
+
+                when (universeSettings.universeBoundary) {
+                    UniverseBoundary.REFLECTIVE -> {
+                        playerData.velocity.vx = abs(originalVelocity.vx)
+                    }
+                    UniverseBoundary.ABSORBING -> {
+                        playerData.velocity.vx = 0.0
+                    }
+                }
             }
 
             if (playerData.double4D.x >= universeSettings.xDim.toDouble()) {
                 playerData.double4D.x = universeSettings.xDim.toDouble() - 0.000001
-                playerData.velocity.vx = -abs(originalVelocity.vx)
+
+                when (universeSettings.universeBoundary) {
+                    UniverseBoundary.REFLECTIVE -> {
+                        playerData.velocity.vx = -abs(originalVelocity.vx)
+                    }
+                    UniverseBoundary.ABSORBING -> {
+                        playerData.velocity.vx = 0.0
+                    }
+                }
             }
 
             if (playerData.double4D.y <= 0.0) {
                 playerData.double4D.y = 0.000001
-                playerData.velocity.vy = abs(originalVelocity.vy)
+
+                when (universeSettings.universeBoundary) {
+                    UniverseBoundary.REFLECTIVE -> {
+                        playerData.velocity.vy = abs(originalVelocity.vy)
+                    }
+                    UniverseBoundary.ABSORBING -> {
+                        playerData.velocity.vy = 0.0
+                    }
+                }
             }
 
             if (playerData.double4D.y >= universeSettings.yDim.toDouble()) {
                 playerData.double4D.y = universeSettings.yDim.toDouble() - 0.000001
-                playerData.velocity.vy = -abs(originalVelocity.vy)
+
+                when (universeSettings.universeBoundary) {
+                    UniverseBoundary.REFLECTIVE -> {
+                        playerData.velocity.vy = -abs(originalVelocity.vy)
+                    }
+                    UniverseBoundary.ABSORBING -> {
+                        playerData.velocity.vy = 0.0
+                    }
+                }
             }
 
             if (playerData.double4D.z <= 0.0) {
                 playerData.double4D.z = 0.000001
-                playerData.velocity.vz = abs(originalVelocity.vz)
+
+                when (universeSettings.universeBoundary) {
+                    UniverseBoundary.REFLECTIVE -> {
+                        playerData.velocity.vz = abs(originalVelocity.vz)
+                    }
+                    UniverseBoundary.ABSORBING -> {
+                        playerData.velocity.vz = 0.0
+                    }
+                }
             }
 
             if (playerData.double4D.z >= universeSettings.zDim.toDouble()) {
                 playerData.double4D.z = universeSettings.zDim.toDouble() - 0.000001
-                playerData.velocity.vz = -abs(originalVelocity.vz)
+
+                when (universeSettings.universeBoundary) {
+                    UniverseBoundary.REFLECTIVE -> {
+                        playerData.velocity.vz = -abs(originalVelocity.vz)
+                    }
+                    UniverseBoundary.ABSORBING -> {
+                        playerData.velocity.vz = 0.0
+                    }
+                }
             }
         }
 
