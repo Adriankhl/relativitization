@@ -7,6 +7,7 @@ import io.ktor.http.*
 import kotlinx.coroutines.runBlocking
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.TableScreen
+import relativitization.universe.data.UniverseBoundary
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.CommandCollection
 import relativitization.universe.data.serializer.DataSerializer
@@ -406,6 +407,18 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
         table.add(zDimSelectBox)
 
         table.row().space(10f)
+
+        table.add(createLabel("Universe boundary: ", gdxSettings.normalFontSize))
+        val universeBoundarySelectBox = createSelectBox(
+            UniverseBoundary.values().toList(),
+            generateSettings.universeSettings.universeBoundary,
+            gdxSettings.normalFontSize
+        ) { universeBoundary, _ ->
+            generateSettings.universeSettings.universeBoundary = universeBoundary
+        }
+        table.add(universeBoundarySelectBox)
+
+        table.row().space(20f)
 
         table.add(createLabel("After image duration: ", gdxSettings.normalFontSize))
 
