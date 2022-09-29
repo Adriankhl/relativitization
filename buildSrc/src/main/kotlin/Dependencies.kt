@@ -16,7 +16,7 @@ object Versions {
     const val jdkVersion = 17
 
     // Kotlin multiplatform
-    const val kotlinVersion = "1.7.10"
+    const val kotlinVersion = "1.7.20"
     const val kotlinxCoroutineVersion = "1.6.4"
     const val kotlinxSerializationVersion = "1.4.0"
     const val kotlinxDateTimeVersion = "0.4.0"
