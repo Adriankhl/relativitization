@@ -2,7 +2,6 @@ package relativitization.universe.data
 
 import kotlinx.serialization.Serializable
 import relativitization.universe.ai.DefaultAI
-import relativitization.universe.ai.name
 import relativitization.universe.data.components.MutablePlayerDataComponentMap
 import relativitization.universe.data.components.PlayerDataComponentMap
 import relativitization.universe.data.events.EventData

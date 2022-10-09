@@ -16,6 +16,7 @@ import kotlin.random.Random
 object DefaultAI : AI() {
     private val logger = RelativitizationLogManager.getLogger()
 
+    override fun name(): String = "Default"
     override fun compute(
         universeData3DAtPlayer: UniverseData3DAtPlayer,
         random: Random,

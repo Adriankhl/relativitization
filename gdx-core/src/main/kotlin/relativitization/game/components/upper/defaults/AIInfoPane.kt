@@ -7,7 +7,6 @@ import relativitization.game.components.upper.UpperInfoPane
 import relativitization.universe.ai.AI
 import relativitization.universe.ai.AICollection
 import relativitization.universe.ai.DefaultAI
-import relativitization.universe.ai.name
 import relativitization.universe.data.commands.*
 import relativitization.universe.utils.I18NString
 import kotlin.random.Random

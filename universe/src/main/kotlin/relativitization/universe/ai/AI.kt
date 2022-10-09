@@ -6,13 +6,13 @@ import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.random.Random
 
 sealed class AI {
+    abstract fun name(): String
+
     abstract fun compute(
         universeData3DAtPlayer: UniverseData3DAtPlayer,
         random: Random,
     ): List<Command>
 }
-
-fun AI.name(): String = this::class.simpleName.toString()
 
 object AICollection {
     private val logger = RelativitizationLogManager.getLogger()

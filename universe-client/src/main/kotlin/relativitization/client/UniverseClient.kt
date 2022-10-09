@@ -16,7 +16,6 @@ import relativitization.universe.UniverseClientSettings
 import relativitization.universe.UniverseServerSettings
 import relativitization.universe.ai.AICollection
 import relativitization.universe.ai.EmptyAI
-import relativitization.universe.ai.name
 import relativitization.universe.communication.*
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.PlayerData

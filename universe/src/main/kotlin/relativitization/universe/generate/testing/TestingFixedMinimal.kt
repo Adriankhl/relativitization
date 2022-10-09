@@ -1,7 +1,6 @@
 package relativitization.universe.generate.testing
 
 import relativitization.universe.ai.EmptyAI
-import relativitization.universe.ai.name
 import relativitization.universe.data.*
 import relativitization.universe.data.components.*
 import relativitization.universe.data.components.defaults.diplomacy.ally.MutableAllianceData
