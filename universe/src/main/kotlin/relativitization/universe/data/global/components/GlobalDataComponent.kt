@@ -4,7 +4,6 @@ import kotlinx.serialization.Serializable
 import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.reflect.KClass
 
-
 @Serializable
 sealed class GlobalDataComponent
 

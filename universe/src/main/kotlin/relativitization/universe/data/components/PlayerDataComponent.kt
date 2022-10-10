@@ -132,7 +132,6 @@ data class MutablePlayerDataComponentMap(
         dataMap.remove(T::class.keyM())
     }
 
-
     companion object {
         private val logger = RelativitizationLogManager.getLogger()
     }
