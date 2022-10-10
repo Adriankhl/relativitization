@@ -68,13 +68,13 @@ data class GenerateSettings(
  * Base class of any method to generate universe data
  */
 abstract class GenerateUniverseMethod {
+    abstract fun name(): String
+
     abstract fun generate(
         settings: GenerateSettings,
         random: Random,
     ): UniverseData
 }
-
-fun GenerateUniverseMethod.name(): String = this::class.simpleName.toString()
 
 /**
  * A collection of universe generation method

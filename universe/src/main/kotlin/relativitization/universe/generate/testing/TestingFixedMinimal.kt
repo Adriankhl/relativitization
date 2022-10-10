@@ -33,6 +33,8 @@ import relativitization.universe.maths.physics.MutableInt4D
 import kotlin.random.Random
 
 object TestingFixedMinimal : TestingGenerateUniverseMethod() {
+    override fun name(): String = "Test - fixed minimal"
+
     override fun generate(
         settings: GenerateSettings,
         random: Random

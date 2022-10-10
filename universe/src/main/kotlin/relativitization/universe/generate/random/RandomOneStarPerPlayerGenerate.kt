@@ -28,6 +28,8 @@ import kotlin.random.Random
 object RandomOneStarPerPlayerGenerate : RandomGenerateUniverseMethod() {
     private val logger = RelativitizationLogManager.getLogger()
 
+    override fun name(): String = "One star per player"
+
     override fun generate(
         settings: GenerateSettings,
         random: Random,

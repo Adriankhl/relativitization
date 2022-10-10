@@ -5,7 +5,6 @@ import relativitization.universe.Universe
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.generate.GenerateSettings
 import relativitization.universe.generate.GenerateUniverseMethodCollection
-import relativitization.universe.generate.name
 import relativitization.universe.generate.testing.TestingFixedMinimal
 import kotlin.test.Test
 

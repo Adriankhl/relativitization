@@ -7,7 +7,6 @@ import relativitization.universe.data.commands.DefaultCommandAvailability
 import relativitization.universe.data.commands.name
 import relativitization.universe.generate.GenerateSettings
 import relativitization.universe.generate.GenerateUniverseMethodCollection
-import relativitization.universe.generate.name
 import relativitization.universe.global.DefaultGlobalMechanismList
 import relativitization.universe.mechanisms.DefaultMechanismLists
 import kotlin.test.Test

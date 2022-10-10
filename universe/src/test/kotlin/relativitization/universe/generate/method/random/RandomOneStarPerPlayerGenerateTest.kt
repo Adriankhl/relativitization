@@ -12,7 +12,6 @@ import relativitization.universe.data.components.playerScienceData
 import relativitization.universe.data.components.popSystemData
 import relativitization.universe.generate.GenerateSettings
 import relativitization.universe.generate.GenerateUniverseMethodCollection
-import relativitization.universe.generate.name
 import relativitization.universe.generate.random.RandomOneStarPerPlayerGenerate
 import relativitization.universe.global.DefaultGlobalMechanismList
 import relativitization.universe.mechanisms.DefaultMechanismLists

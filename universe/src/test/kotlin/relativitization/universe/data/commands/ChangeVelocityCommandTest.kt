@@ -8,7 +8,6 @@ import relativitization.universe.maths.physics.Int4D
 import relativitization.universe.maths.physics.Velocity
 import relativitization.universe.generate.GenerateSettings
 import relativitization.universe.generate.GenerateUniverseMethodCollection
-import relativitization.universe.generate.name
 import relativitization.universe.generate.testing.TestingFixedMinimal
 import kotlin.test.Test
 
