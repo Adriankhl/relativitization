@@ -1,6 +1,9 @@
 package relativitization.universe.data.components
 
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.serializer
 import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.reflect.KClass
 
@@ -13,24 +16,26 @@ sealed class MutablePlayerDataComponent
 /**
  * The key for the component in PlayerDataComponentMap
  */
-fun <T : PlayerDataComponent> KClass<T>.keyI(): String = this.simpleName.toString()
+@OptIn(InternalSerializationApi::class, ExperimentalSerializationApi::class)
+fun <T : PlayerDataComponent> KClass<T>.keyI(): String = this.serializer().descriptor.serialName
 
 /**
- * The key for the component in MutablePlayerDataComponentMap, the first 7 characters
- * should be "Mutable", they are dropped to match keyI()
+ * The key for the component in MutablePlayerDataComponentMap
  */
-fun <T : MutablePlayerDataComponent> KClass<T>.keyM(): String = this.simpleName.toString().drop(7)
+@OptIn(InternalSerializationApi::class, ExperimentalSerializationApi::class)
+fun <T : MutablePlayerDataComponent> KClass<T>.keyM(): String = this.serializer().descriptor.serialName
 
 /**
  * The key for the component in PlayerDataComponentMap
  */
-fun PlayerDataComponent.keyI(): String = this::class.simpleName.toString()
+@OptIn(InternalSerializationApi::class, ExperimentalSerializationApi::class)
+fun PlayerDataComponent.keyI(): String = this::class.serializer().descriptor.serialName
 
 /**
- * The key for the component in MutablePlayerDataComponentMap, the first 7 characters
- * should be "Mutable", they are dropped to match keyI()
+ * The key for the component in MutablePlayerDataComponentMap
  */
-fun MutablePlayerDataComponent.keyM(): String = this::class.simpleName.toString().drop(7)
+@OptIn(InternalSerializationApi::class, ExperimentalSerializationApi::class)
+fun MutablePlayerDataComponent.keyM(): String = this::class.serializer().descriptor.serialName
 
 
 @Serializable

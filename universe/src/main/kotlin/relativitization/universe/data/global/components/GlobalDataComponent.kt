@@ -1,6 +1,9 @@
 package relativitization.universe.data.global.components
 
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.serializer
 import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.reflect.KClass
 
@@ -13,24 +16,26 @@ sealed class MutableGlobalDataComponent
 /**
  * The key for the component in GlobalDataComponentMap
  */
-fun <T : GlobalDataComponent> KClass<T>.keyI(): String = this.simpleName.toString()
+@OptIn(InternalSerializationApi::class, ExperimentalSerializationApi::class)
+fun <T : GlobalDataComponent> KClass<T>.keyI(): String = this.serializer().descriptor.serialName
 
 /**
- * The key for the component in MutableGlobalDataComponentMap, the first 7 characters
- * should be "Mutable", they are dropped to match keyI()
+ * The key for the component in MutableGlobalDataComponentMap
  */
-fun <T : MutableGlobalDataComponent> KClass<T>.keyM(): String = this.simpleName.toString().drop(7)
+@OptIn(InternalSerializationApi::class, ExperimentalSerializationApi::class)
+fun <T : MutableGlobalDataComponent> KClass<T>.keyM(): String = this.serializer().descriptor.serialName
 
 /**
  * The key for the component in GlobalDataComponentMap
  */
-fun GlobalDataComponent.keyI(): String = this::class.simpleName.toString()
+@OptIn(InternalSerializationApi::class, ExperimentalSerializationApi::class)
+fun GlobalDataComponent.keyI(): String = this::class.serializer().descriptor.serialName
 
 /**
- * The key for the component in MutableGlobalDataComponentMap, the first 7 characters
- * should be "Mutable", they are dropped to match keyI()
+ * The key for the component in MutableGlobalDataComponentMap
  */
-fun MutableGlobalDataComponent.keyM(): String = this::class.simpleName.toString().drop(7)
+@OptIn(InternalSerializationApi::class, ExperimentalSerializationApi::class)
+fun MutableGlobalDataComponent.keyM(): String = this::class.serializer().descriptor.serialName
 
 @Serializable
 data class GlobalDataComponentMap(
