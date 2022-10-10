@@ -8,7 +8,7 @@ internal class DefaultGlobalDataComponentTest {
     fun componentListTest() {
         val l1: List<DefaultGlobalDataComponent> = DefaultGlobalDataComponent::class
             .sealedSubclasses.sortedBy {
-                it.name()
+                it.keyI()
             }.map {
                 it.createInstance()
             }
@@ -19,7 +19,7 @@ internal class DefaultGlobalDataComponentTest {
 
         val l3: List<MutableDefaultGlobalDataComponent> = MutableDefaultGlobalDataComponent::class
             .sealedSubclasses.sortedBy {
-                it.name()
+                it.keyM()
             }.map {
                 it.createInstance()
             }

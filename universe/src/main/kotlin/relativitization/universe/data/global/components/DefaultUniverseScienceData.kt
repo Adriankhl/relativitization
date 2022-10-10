@@ -123,13 +123,10 @@ data class MutableUniverseScienceData(
 }
 
 fun UniverseGlobalData.universeScienceData(): UniverseScienceData =
-    globalDataComponentMap.getOrDefault(UniverseScienceData::class, UniverseScienceData())
+    globalDataComponentMap.get()
 
 fun MutableUniverseGlobalData.universeScienceData(): MutableUniverseScienceData =
-    globalDataComponentMap.getOrDefault(
-        MutableUniverseScienceData::class,
-        MutableUniverseScienceData()
-    )
+    globalDataComponentMap.get()
 
 fun MutableUniverseGlobalData.universeScienceData(newUniverseScienceData: MutableUniverseScienceData) {
     globalDataComponentMap.put(newUniverseScienceData)

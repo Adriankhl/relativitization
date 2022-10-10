@@ -4,40 +4,75 @@ import kotlinx.serialization.Serializable
 import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.reflect.KClass
 
-sealed class GlobalDataComponentCommon
 
 @Serializable
-sealed class GlobalDataComponent : GlobalDataComponentCommon()
+sealed class GlobalDataComponent
 
 @Serializable
-sealed class MutableGlobalDataComponent : GlobalDataComponentCommon()
+sealed class MutableGlobalDataComponent
 
-fun <T : GlobalDataComponentCommon> KClass<T>.name(): String = this.simpleName.toString()
+/**
+ * The key for the component in GlobalDataComponentMap
+ */
+fun <T : GlobalDataComponent> KClass<T>.keyI(): String = this.simpleName.toString()
 
-fun GlobalDataComponent.name(): String = this::class.simpleName.toString()
+/**
+ * The key for the component in MutableGlobalDataComponentMap, the first 7 characters
+ * should be "Mutable", they are dropped to match keyI()
+ */
+fun <T : MutableGlobalDataComponent> KClass<T>.keyM(): String = this.simpleName.toString().drop(7)
 
-fun MutableGlobalDataComponent.name(): String = this::class.simpleName.toString()
+/**
+ * The key for the component in GlobalDataComponentMap
+ */
+fun GlobalDataComponent.keyI(): String = this::class.simpleName.toString()
+
+/**
+ * The key for the component in MutableGlobalDataComponentMap, the first 7 characters
+ * should be "Mutable", they are dropped to match keyI()
+ */
+fun MutableGlobalDataComponent.keyM(): String = this::class.simpleName.toString().drop(7)
 
 @Serializable
 data class GlobalDataComponentMap(
     val dataMap: Map<String, GlobalDataComponent> = mapOf(),
 ) {
     constructor(dataList: List<GlobalDataComponent>) : this(
-        dataMap = dataList.associateBy {
-            (it.name())
-        }
+        dataMap = dataList.associateBy { it.keyI() }
     )
 
     internal inline fun <reified T : GlobalDataComponent> getOrDefault(
-        key: KClass<T>,
         defaultValue: T
     ): T {
-        val data: GlobalDataComponent? = dataMap[key.name()]
+        val data: GlobalDataComponent = dataMap.getOrElse(defaultValue.keyI()) {
+            RelativitizationLogManager.getCommonLogger().error(
+                "Cannot find component ${defaultValue.keyI()} in global data map, use default value"
+            )
+            defaultValue
+        }
+
         return if (data is T) {
             data
         } else {
-            logger.error("Cannot find component ${key.name()} in data map, use default value")
+            RelativitizationLogManager.getCommonLogger().error(
+                "Global component ${data.keyI()} has incorrect type, use default value"
+            )
             defaultValue
+        }
+    }
+
+    inline fun <reified T : GlobalDataComponent> get(): T {
+        val data: GlobalDataComponent = dataMap.getOrElse(T::class.keyI()) {
+            RelativitizationLogManager.getCommonLogger().error(
+                "Cannot find component ${T::class.keyI()} in global data map"
+            )
+            throw NoSuchElementException("No global data component ${T::class.keyI()}")
+        }
+
+        return if (data is T) {
+            data
+        } else {
+            throw ClassCastException("Incorrect global data component type")
         }
     }
 
@@ -52,33 +87,52 @@ data class MutableGlobalDataComponentMap(
     val dataMap: MutableMap<String, MutableGlobalDataComponent> = mutableMapOf(),
 ) {
     constructor(dataList: List<MutableGlobalDataComponent>) : this(
-        dataMap = dataList.associateBy {
-            // Drop first 7 character "Mutable"
-            (it.name()).drop(7)
-        }.toMutableMap()
+        dataMap = dataList.associateBy { it.keyM() }.toMutableMap()
     )
 
     internal inline fun <reified T : MutableGlobalDataComponent> getOrDefault(
-        key: KClass<T>,
         defaultValue: T
     ): T {
-        val data: MutableGlobalDataComponent? = dataMap[(key.name()).drop(7)]
+        val data: MutableGlobalDataComponent = dataMap.getOrElse(defaultValue.keyM()) {
+            RelativitizationLogManager.getCommonLogger().error(
+                "Cannot find mutable global component ${defaultValue.keyM()} in data map, use default value"
+            )
+            defaultValue
+        }
+
         return if (data is T) {
             data
         } else {
-            logger.error("Cannot find component ${key.name()} in data map, use default value")
+            RelativitizationLogManager.getCommonLogger().error(
+                "Mutable global component ${data.keyM()} has incorrect type, use default value"
+            )
             defaultValue
         }
     }
 
+    inline fun <reified T : MutableGlobalDataComponent> get(): T {
+        val data: MutableGlobalDataComponent = dataMap.getOrElse(T::class.keyM()) {
+            RelativitizationLogManager.getCommonLogger().error(
+                "Cannot find mutable global component ${T::class.keyM()} in data map"
+            )
+            throw NoSuchElementException("No mutable global data component ${T::class.keyM()}")
+        }
+
+        return if (data is T) {
+            data
+        } else {
+            throw ClassCastException("Incorrect mutable global data component type")
+        }
+    }
+
     fun <T : MutableGlobalDataComponent> put(dataComponent: T) {
-        dataMap[(dataComponent.name()).drop(7)] = dataComponent
+        dataMap[dataComponent.keyM()] = dataComponent
     }
 
-    fun <T : MutableGlobalDataComponent> remove(key: KClass<T>) {
-        dataMap.remove((key.name()).drop(7))
-    }
 
+    inline fun <reified T : MutableGlobalDataComponent> remove() {
+        dataMap.remove(T::class.keyM())
+    }
 
     companion object {
         private val logger = RelativitizationLogManager.getLogger()
