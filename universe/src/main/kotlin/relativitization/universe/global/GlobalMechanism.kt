@@ -22,9 +22,9 @@ abstract class GlobalMechanism {
 
 sealed class GlobalMechanismList {
     abstract val globalMechanismList: List<GlobalMechanism>
-}
 
-fun GlobalMechanismList.name(): String = this::class.simpleName.toString()
+    abstract fun name(): String
+}
 
 object GlobalMechanismCollection {
     private val logger = RelativitizationLogManager.getLogger()

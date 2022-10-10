@@ -5,7 +5,6 @@ import kotlinx.serialization.Serializable
 import relativitization.universe.data.commands.DefaultCommandAvailability
 import relativitization.universe.data.commands.name
 import relativitization.universe.global.DefaultGlobalMechanismList
-import relativitization.universe.global.name
 import relativitization.universe.maths.physics.Int3D
 import relativitization.universe.maths.physics.Intervals.intDelay
 import relativitization.universe.maths.physics.Intervals.maxDelayAfterMove
