@@ -87,4 +87,6 @@ object DefaultMechanismLists : MechanismLists() {
         StoreFuelRestMassHistory,
         SyncPlayerData,
     )
+
+    override fun name(): String = "Default"
 }

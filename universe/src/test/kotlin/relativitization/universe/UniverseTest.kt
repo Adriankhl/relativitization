@@ -13,7 +13,6 @@ import relativitization.universe.generate.testing.TestingFixedMinimal
 import relativitization.universe.global.DefaultGlobalMechanismList
 import relativitization.universe.global.name
 import relativitization.universe.mechanisms.DefaultMechanismLists
-import relativitization.universe.mechanisms.name
 import kotlin.test.Test
 
 internal class UniverseTest {

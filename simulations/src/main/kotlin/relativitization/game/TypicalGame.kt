@@ -16,7 +16,6 @@ import relativitization.universe.global.DefaultGlobalMechanismList
 import relativitization.universe.global.name
 import relativitization.universe.maths.number.toScientificNotation
 import relativitization.universe.mechanisms.DefaultMechanismLists
-import relativitization.universe.mechanisms.name
 
 fun main() {
     val generateSetting = GenerateSettings(

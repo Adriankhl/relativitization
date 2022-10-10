@@ -11,7 +11,6 @@ import relativitization.universe.generate.name
 import relativitization.universe.global.DefaultGlobalMechanismList
 import relativitization.universe.global.name
 import relativitization.universe.mechanisms.DefaultMechanismLists
-import relativitization.universe.mechanisms.name
 import kotlin.test.Test
 
 internal class RandomOneStarPerPlayerGenerateTest {

@@ -33,9 +33,9 @@ sealed class MechanismLists {
 
     // Mechanisms that are affected by time dilation
     abstract val dilatedMechanismList: List<Mechanism>
-}
 
-fun MechanismLists.name(): String = this::class.simpleName.toString()
+    abstract fun name(): String
+}
 
 object MechanismCollection {
     private val logger = RelativitizationLogManager.getLogger()

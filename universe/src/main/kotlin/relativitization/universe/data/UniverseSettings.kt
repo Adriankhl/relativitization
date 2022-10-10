@@ -10,7 +10,6 @@ import relativitization.universe.maths.physics.Int3D
 import relativitization.universe.maths.physics.Intervals.intDelay
 import relativitization.universe.maths.physics.Intervals.maxDelayAfterMove
 import relativitization.universe.mechanisms.DefaultMechanismLists
-import relativitization.universe.mechanisms.name
 
 /**
  * Setting data
