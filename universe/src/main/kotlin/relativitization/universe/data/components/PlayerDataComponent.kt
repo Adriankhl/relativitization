@@ -4,19 +4,33 @@ import kotlinx.serialization.Serializable
 import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.reflect.KClass
 
-sealed class PlayerDataComponentCommon
+@Serializable
+sealed class PlayerDataComponent
 
 @Serializable
-sealed class PlayerDataComponent : PlayerDataComponentCommon()
+sealed class MutablePlayerDataComponent
 
-@Serializable
-sealed class MutablePlayerDataComponent : PlayerDataComponentCommon()
+/**
+ * The key for the component in PlayerDataComponentMap
+ */
+fun <T : PlayerDataComponent> KClass<T>.keyI(): String = this.simpleName.toString()
 
-fun <T : PlayerDataComponentCommon> KClass<T>.name(): String = this.simpleName.toString()
+/**
+ * The key for the component in MutablePlayerDataComponentMap, the first 7 characters
+ * should be "Mutable", they are dropped to match keyI()
+ */
+fun <T : MutablePlayerDataComponent> KClass<T>.keyM(): String = this.simpleName.toString().drop(7)
 
-fun PlayerDataComponent.name(): String = this::class.simpleName.toString()
+/**
+ * The key for the component in PlayerDataComponentMap
+ */
+fun PlayerDataComponent.keyI(): String = this::class.simpleName.toString()
 
-fun MutablePlayerDataComponent.name(): String = this::class.simpleName.toString()
+/**
+ * The key for the component in MutablePlayerDataComponentMap, the first 7 characters
+ * should be "Mutable", they are dropped to match keyI()
+ */
+fun MutablePlayerDataComponent.keyM(): String = this::class.simpleName.toString().drop(7)
 
 
 @Serializable
@@ -24,17 +38,15 @@ data class PlayerDataComponentMap(
     val dataMap: Map<String, PlayerDataComponent> = mapOf(),
 ) {
     constructor(dataList: List<PlayerDataComponent>) : this(
-        dataMap = dataList.associateBy {
-            (it.name())
-        }
+        dataMap = dataList.associateBy { it.keyI() }
     )
 
     inline fun <reified T : PlayerDataComponent> getOrDefault(
         defaultValue: T
     ): T {
-        val data: PlayerDataComponent = dataMap.getOrElse(defaultValue.name()) {
+        val data: PlayerDataComponent = dataMap.getOrElse(defaultValue.keyI()) {
             RelativitizationLogManager.getCommonLogger().error(
-                "Cannot find component ${defaultValue.name()} in data map, use default value"
+                "Cannot find component ${defaultValue.keyI()} in data map, use default value"
             )
             defaultValue
         }
@@ -47,11 +59,11 @@ data class PlayerDataComponentMap(
     }
 
     inline fun <reified T : PlayerDataComponent> get(): T {
-        val data: PlayerDataComponent = dataMap.getOrElse(T::class.name()) {
+        val data: PlayerDataComponent = dataMap.getOrElse(T::class.keyI()) {
             RelativitizationLogManager.getCommonLogger().error(
-                "Cannot find component ${T::class.name()} in data map"
+                "Cannot find component ${T::class.keyI()} in data map"
             )
-            throw NoSuchElementException("No data component ${T::class.name()}")
+            throw NoSuchElementException("No data component ${T::class.keyI()}")
         }
 
         return if (data is T) {
@@ -71,18 +83,15 @@ data class MutablePlayerDataComponentMap(
     val dataMap: MutableMap<String, MutablePlayerDataComponent> = mutableMapOf(),
 ) {
     constructor(dataList: List<MutablePlayerDataComponent>) : this(
-        dataMap = dataList.associateBy {
-            // Drop first 7 character "Mutable"
-            (it.name()).drop(7)
-        }.toMutableMap()
+        dataMap = dataList.associateBy { it.keyM() }.toMutableMap()
     )
 
     inline fun <reified T : MutablePlayerDataComponent> getOrDefault(
         defaultValue: T
     ): T {
-        val data: MutablePlayerDataComponent = dataMap.getOrElse(defaultValue.name().drop(7)) {
+        val data: MutablePlayerDataComponent = dataMap.getOrElse(defaultValue.keyM()) {
             RelativitizationLogManager.getCommonLogger().error(
-                "Cannot find component ${defaultValue.name()} in data map, use default value"
+                "Cannot find mutable component ${defaultValue.keyM()} in data map, use default value"
             )
             defaultValue
         }
@@ -95,11 +104,11 @@ data class MutablePlayerDataComponentMap(
     }
 
     inline fun <reified T : MutablePlayerDataComponent> get(): T {
-        val data: MutablePlayerDataComponent = dataMap.getOrElse(T::class.name().drop(7)) {
+        val data: MutablePlayerDataComponent = dataMap.getOrElse(T::class.keyM()) {
             RelativitizationLogManager.getCommonLogger().error(
-                "Cannot find mutable component ${T::class.name()} in data map"
+                "Cannot find mutable component ${T::class.keyM()} in data map"
             )
-            throw NoSuchElementException("No mutable data component ${T::class.name()}")
+            throw NoSuchElementException("No mutable data component ${T::class.keyM()}")
         }
 
         return if (data is T) {
@@ -110,11 +119,11 @@ data class MutablePlayerDataComponentMap(
     }
 
     fun <T : MutablePlayerDataComponent> put(dataComponent: T) {
-        dataMap[(dataComponent.name()).drop(7)] = dataComponent
+        dataMap[dataComponent.keyM()] = dataComponent
     }
 
     inline fun <reified T : MutablePlayerDataComponent> remove() {
-        dataMap.remove((T::class.name()).drop(7))
+        dataMap.remove(T::class.keyM())
     }
 
 

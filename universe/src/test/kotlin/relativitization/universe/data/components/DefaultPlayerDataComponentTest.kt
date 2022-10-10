@@ -39,7 +39,7 @@ internal class DefaultPlayerDataComponentTest {
     fun componentListTest() {
         val l1: List<DefaultPlayerDataComponent> = DefaultPlayerDataComponent::class
             .sealedSubclasses.sortedBy {
-                it.name()
+                it.keyI()
             }.map {
                 it.createInstance()
             }
@@ -50,7 +50,7 @@ internal class DefaultPlayerDataComponentTest {
 
         val l3: List<MutableDefaultPlayerDataComponent> = MutableDefaultPlayerDataComponent::class
             .sealedSubclasses.sortedBy {
-                it.name()
+                it.keyM()
             }.map {
                 it.createInstance()
             }
