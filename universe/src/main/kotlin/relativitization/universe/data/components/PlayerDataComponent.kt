@@ -54,6 +54,9 @@ data class PlayerDataComponentMap(
         return if (data is T) {
             data
         } else {
+            RelativitizationLogManager.getCommonLogger().error(
+                "Component ${data.keyI()} has incorrect type, use default value"
+            )
             defaultValue
         }
     }
@@ -99,6 +102,9 @@ data class MutablePlayerDataComponentMap(
         return if (data is T) {
             data
         } else {
+            RelativitizationLogManager.getCommonLogger().error(
+                "Mutable component ${data.keyM()} has incorrect type, use default value"
+            )
             defaultValue
         }
     }
