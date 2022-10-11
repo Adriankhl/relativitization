@@ -243,7 +243,7 @@ class PlayerCollection(
                     UniverseBoundary.REFLECTIVE -> {
                         playerData.velocity.vx = abs(originalVelocity.vx)
                     }
-                    UniverseBoundary.ABSORBING -> {
+                    UniverseBoundary.ABSORPTIVE -> {
                         playerData.velocity.vx = 0.0
                     }
                 }
@@ -256,7 +256,7 @@ class PlayerCollection(
                     UniverseBoundary.REFLECTIVE -> {
                         playerData.velocity.vx = -abs(originalVelocity.vx)
                     }
-                    UniverseBoundary.ABSORBING -> {
+                    UniverseBoundary.ABSORPTIVE -> {
                         playerData.velocity.vx = 0.0
                     }
                 }
@@ -269,7 +269,7 @@ class PlayerCollection(
                     UniverseBoundary.REFLECTIVE -> {
                         playerData.velocity.vy = abs(originalVelocity.vy)
                     }
-                    UniverseBoundary.ABSORBING -> {
+                    UniverseBoundary.ABSORPTIVE -> {
                         playerData.velocity.vy = 0.0
                     }
                 }
@@ -282,7 +282,7 @@ class PlayerCollection(
                     UniverseBoundary.REFLECTIVE -> {
                         playerData.velocity.vy = -abs(originalVelocity.vy)
                     }
-                    UniverseBoundary.ABSORBING -> {
+                    UniverseBoundary.ABSORPTIVE -> {
                         playerData.velocity.vy = 0.0
                     }
                 }
@@ -295,7 +295,7 @@ class PlayerCollection(
                     UniverseBoundary.REFLECTIVE -> {
                         playerData.velocity.vz = abs(originalVelocity.vz)
                     }
-                    UniverseBoundary.ABSORBING -> {
+                    UniverseBoundary.ABSORPTIVE -> {
                         playerData.velocity.vz = 0.0
                     }
                 }
@@ -308,7 +308,7 @@ class PlayerCollection(
                     UniverseBoundary.REFLECTIVE -> {
                         playerData.velocity.vz = -abs(originalVelocity.vz)
                     }
-                    UniverseBoundary.ABSORBING -> {
+                    UniverseBoundary.ABSORPTIVE -> {
                         playerData.velocity.vz = 0.0
                     }
                 }

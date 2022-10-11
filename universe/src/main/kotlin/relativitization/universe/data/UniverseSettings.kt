@@ -99,7 +99,7 @@ data class MutableUniverseSettings(
 
 enum class UniverseBoundary(val value: String) {
     REFLECTIVE("Reflective"),
-    ABSORBING("Absorbing"),
+    ABSORPTIVE("Absorptive"),
     ;
     override fun toString(): String {
         return value
