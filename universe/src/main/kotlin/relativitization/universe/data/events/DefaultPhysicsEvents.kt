@@ -28,6 +28,7 @@ data class MoveToDouble3DEvent(
     val targetDouble3D: Double3D,
     val maxSpeed: Double,
 ) : DefaultEvent() {
+    override fun name(): String = "Move To Location"
 
     override fun description(): I18NString = I18NString(
         listOf(

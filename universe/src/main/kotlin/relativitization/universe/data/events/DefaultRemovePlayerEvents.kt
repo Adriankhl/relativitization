@@ -20,6 +20,7 @@ data class AskToMergeCarrierEvent(
     override val toId: Int,
     override val fromId: Int
 ) : DefaultEvent() {
+    override fun name(): String = "Ask To Merge Carrier"
 
     override fun description(): I18NString = I18NString(
         listOf(

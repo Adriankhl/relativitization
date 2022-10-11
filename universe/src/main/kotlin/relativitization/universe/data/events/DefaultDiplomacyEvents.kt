@@ -23,6 +23,8 @@ data class ProposePeaceEvent(
     override val toId: Int,
     override val fromId: Int,
 ) : DefaultEvent() {
+    override fun name(): String = "Propose Peace"
+
     override fun description(): I18NString = I18NString(
         listOf(
             NormalString("Propose peace between player "),
@@ -132,6 +134,8 @@ data class ProposeAllianceEvent(
     override val toId: Int,
     override val fromId: Int,
 ) : DefaultEvent() {
+    override fun name(): String = "Propose Alliance"
+
     override fun description(): I18NString = I18NString(
         listOf(
             NormalString("Propose alliance between player "),
@@ -258,6 +262,7 @@ data class CallAllyToWarEvent(
     override val fromId: Int,
     val warTargetId: Int,
 ) : DefaultEvent() {
+    override fun name(): String = "Call Ally To War"
     override fun description(): I18NString = I18NString(
         listOf(
             NormalString("Player "),
@@ -400,6 +405,7 @@ data class CallAllyToSubordinateWarEvent(
     val subordinateId: Int,
     val warTargetId: Int,
 ) : DefaultEvent() {
+    override fun name(): String = "Call Ally To Subordinate War"
     override fun description(): I18NString = I18NString(
         listOf(
             NormalString("Player "),
