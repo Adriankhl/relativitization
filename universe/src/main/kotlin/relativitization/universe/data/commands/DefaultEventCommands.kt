@@ -22,6 +22,8 @@ data class AddEventCommand(
     override val toId: Int = event.toId
     override val fromId: Int = event.fromId
 
+    override fun name(): String = "Add Event"
+
     override fun description(): I18NString = I18NString(
         listOf(
             NormalString("Add event ("),
@@ -146,6 +148,7 @@ data class SelectEventChoiceCommand(
     val eventKey: Int,
     val choice: Int,
 ) : DefaultCommand() {
+    override fun name(): String = "Select Event Choice"
 
     override fun description(): I18NString = I18NString(
         listOf(

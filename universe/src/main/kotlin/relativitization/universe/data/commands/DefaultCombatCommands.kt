@@ -23,6 +23,8 @@ data class DamageCommand(
     override val fromInt4D: Int4D,
     val attack: Double,
 ) : DefaultCommand() {
+    override fun name(): String = "Damage"
+
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings

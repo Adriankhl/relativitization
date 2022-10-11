@@ -24,6 +24,7 @@ data class MergeCarrierCommand(
     override val fromInt4D: Int4D,
     val carrierList: List<CarrierData>
 ) : DefaultCommand() {
+    override fun name(): String = "Merge Carrier"
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings

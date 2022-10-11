@@ -19,6 +19,8 @@ data class AddRecentCommandTimeCommand(
     override val fromInt4D: Int4D,
     val recentCommandPlayerId: Int,
 ) : DefaultCommand() {
+    override fun name(): String = "Add Recent Command Time"
+
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings

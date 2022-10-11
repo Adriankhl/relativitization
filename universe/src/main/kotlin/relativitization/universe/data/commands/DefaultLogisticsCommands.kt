@@ -34,6 +34,7 @@ data class SendFuelFromStorageCommand(
     val amount: Double,
     val senderFuelLossFractionPerDistance: Double,
 ) : DefaultCommand() {
+    override fun name(): String = "Send Fuel (Storage)"
     override fun description(): I18NString = I18NString(
         listOf(
             NormalString("Send "),
@@ -192,6 +193,8 @@ data class SendResourceFromStorageCommand(
     val amount: Double,
     val senderResourceLossFractionPerDistance: Double,
 ) : DefaultCommand() {
+    override fun name(): String = "Send Resource (Storage)"
+
     override fun description(): I18NString = I18NString(
         listOf(
             NormalString("Send "),
@@ -351,6 +354,8 @@ data class SendFuelCommand(
     val amount: Double,
     val senderFuelLossFractionPerDistance: Double,
 ) : DefaultCommand() {
+    override fun name(): String = "Send Fuel"
+
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
@@ -418,6 +423,8 @@ data class SendResourceCommand(
     val amount: Double,
     val senderResourceLossFractionPerDistance: Double,
 ) : DefaultCommand() {
+    override fun name(): String = "Send Resource"
+
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
@@ -477,6 +484,8 @@ data class SendResourceToPopCommand(
     val amount: Double,
     val senderResourceLossFractionPerDistance: Double,
 ) : DefaultCommand() {
+    override fun name(): String = "Send Resource (Pop)"
+
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
@@ -546,6 +555,8 @@ data class PopBuyResourceCommand(
     val amountPerTime: Double,
     val senderFuelLossFractionPerDistance: Double,
 ) : DefaultCommand() {
+    override fun name(): String = "Pop Buy Resource"
+
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
@@ -648,6 +659,8 @@ data class PlayerBuyResourceCommand(
     val amountPerTime: Double,
     val senderFuelLossFractionPerDistance: Double,
 ) : DefaultCommand() {
+    override fun name(): String = "Player Buy Resource"
+
     override fun description(): I18NString = I18NString(
         listOf(
             NormalString("Send "),

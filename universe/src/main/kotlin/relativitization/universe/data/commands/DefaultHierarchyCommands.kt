@@ -16,6 +16,7 @@ data class AddDirectSubordinateCommand(
     override val fromId: Int,
     override val fromInt4D: Int4D
 ) : DefaultCommand() {
+    override fun name(): String = "Add Direct Subordinate"
     override fun canSend(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings

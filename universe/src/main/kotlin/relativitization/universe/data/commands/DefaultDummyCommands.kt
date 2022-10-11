@@ -14,6 +14,7 @@ data class DummyCommand(
     override val fromId: Int = -1,
     override val fromInt4D: Int4D = Int4D(0, 0, 0, 0),
 ) : DefaultCommand() {
+    override fun name(): String = "Nothing"
 
     override fun description(): I18NString = I18NString(
         listOf(NormalString("Do nothing")),
@@ -43,6 +44,7 @@ data class CannotSendCommand(
     override val fromInt4D: Int4D = Int4D(0, 0, 0, 0),
     val reason: I18NString,
 ) : DefaultCommand() {
+    override fun name(): String = "Something Wrong"
 
     override fun description(): I18NString = reason
 
@@ -69,6 +71,7 @@ data class ExecuteWarningCommand(
     override val fromInt4D: Int4D = Int4D(0, 0, 0, 0),
     val reason: I18NString,
 ) : DefaultCommand() {
+    override fun name(): String = "Warning"
 
     override fun description(): I18NString = reason
 

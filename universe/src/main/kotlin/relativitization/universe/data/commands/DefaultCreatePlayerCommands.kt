@@ -30,6 +30,8 @@ data class SplitCarrierCommand(
     val carrierIdList: List<Int>,
     val storageFraction: Double,
 ) : DefaultCommand() {
+    override fun name(): String = "Split Carrier"
+
     override fun description(): I18NString = I18NString(
         listOf(
             NormalString("Create new player with carriers: "),
@@ -244,6 +246,8 @@ data class GrantIndependenceCommand(
     override val fromId: Int,
     override val fromInt4D: Int4D
 ) : DefaultCommand() {
+    override fun name(): String = "Grant Independence"
+
     override fun description(): I18NString = I18NString(
         listOf(
             NormalString("Grant independence to "),

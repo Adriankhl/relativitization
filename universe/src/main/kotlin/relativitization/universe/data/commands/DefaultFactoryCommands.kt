@@ -40,6 +40,8 @@ data class BuildForeignFuelFactoryCommand(
     val storedFuelRestMass: Double,
     val senderFuelLossFractionPerDistance: Double,
 ) : DefaultCommand() {
+    override fun name(): String = "Build Foreign Fuel Factory"
+
     override fun description(): I18NString = I18NString(
         listOf(
             NormalString("Build a foreign fuel factory owned by player "),
@@ -248,6 +250,8 @@ data class BuildForeignResourceFactoryCommand(
     val storedFuelRestMass: Double,
     val senderFuelLossFractionPerDistance: Double,
 ) : DefaultCommand() {
+    override fun name(): String = "Build Foreign Resource Factory"
+
     override fun description(): I18NString = I18NString(
         listOf(
             NormalString("Build a foreign "),
@@ -463,6 +467,8 @@ data class BuildLocalFuelFactoryCommand(
     val targetCarrierId: Int,
     val maxNumEmployee: Double,
 ) : DefaultCommand() {
+    override fun name(): String = "Build Local Fuel Factory"
+
     override fun description(): I18NString = I18NString(
         listOf(
             NormalString("Build a local fuel factory with quality level at carrier "),
@@ -617,6 +623,8 @@ data class BuildLocalResourceFactoryCommand(
     val qualityLevel: Double,
     val maxNumEmployee: Double,
 ) : DefaultCommand() {
+    override fun name(): String = "Build Local Resource Factory"
+
     override fun description(): I18NString = I18NString(
         listOf(
             NormalString("Build a local "),
@@ -785,6 +793,8 @@ data class RemoveForeignFuelFactoryCommand(
     val targetCarrierId: Int,
     val targetFuelFactoryId: Int
 ) : DefaultCommand() {
+    override fun name(): String = "Remove Foreign Fuel Factory"
+
     override fun description(): I18NString = I18NString(
         listOf(
             NormalString("Remove a foreign fuel factory with Id "),
@@ -883,6 +893,8 @@ data class RemoveForeignResourceFactoryCommand(
     val targetCarrierId: Int,
     val targetResourceFactoryId: Int
 ) : DefaultCommand() {
+    override fun name(): String = "Remove Foreign Resource Factory"
+
     override fun description(): I18NString = I18NString(
         listOf(
             NormalString("Remove a foreign resource factory with Id "),
@@ -984,6 +996,8 @@ data class RemoveLocalFuelFactoryCommand(
     val targetCarrierId: Int,
     val targetFuelFactoryId: Int
 ) : DefaultCommand() {
+    override fun name(): String = "Remove Local Fuel Factory"
+
     override fun description(): I18NString = I18NString(
         listOf(
             NormalString("Remove a local factory with id "),
@@ -1109,6 +1123,8 @@ data class RemoveLocalResourceFactoryCommand(
     val targetCarrierId: Int,
     val targetResourceFactoryId: Int
 ) : DefaultCommand() {
+    override fun name(): String = "Remove Local Resource Factory"
+
     override fun description(): I18NString = I18NString(
         listOf(
             NormalString("Remove a resource factory with id "),
@@ -1241,6 +1257,8 @@ data class SupplyForeignFuelFactoryCommand(
     val amount: Double,
     val senderFuelLossFractionPerDistance: Double,
 ) : DefaultCommand() {
+    override fun name(): String = "Supply Foreign Fuel Factory"
+
     override fun description(): I18NString = I18NString(
         listOf(
             NormalString("Send "),
@@ -1392,6 +1410,8 @@ data class SupplyForeignResourceFactoryCommand(
     val amount: Double,
     val senderFuelLossFractionPerDistance: Double,
 ) : DefaultCommand() {
+    override fun name(): String = "Supply Foreign Resource Factory"
+
     override fun description(): I18NString = I18NString(
         listOf(
             NormalString("Send "),
@@ -1542,6 +1562,8 @@ data class OpenLocalFuelFactoryCommand(
     val targetCarrierId: Int,
     val targetFuelFactoryId: Int
 ) : DefaultCommand() {
+    override fun name(): String = "Open Local Fuel Factory"
+
     override fun description(): I18NString = I18NString(
         listOf(
             NormalString("Open a fuel factory with id "),
@@ -1672,6 +1694,8 @@ data class CloseLocalFuelFactoryCommand(
     val targetCarrierId: Int,
     val targetFuelFactoryId: Int
 ) : DefaultCommand() {
+    override fun name(): String = "Close Local Fuel Factory"
+
     override fun description(): I18NString = I18NString(
         listOf(
             NormalString("Close a fuel factory with id "),
@@ -1802,6 +1826,8 @@ data class OpenLocalResourceFactoryCommand(
     val targetCarrierId: Int,
     val targetResourceFactoryId: Int
 ) : DefaultCommand() {
+    override fun name(): String = "Open Local Resource Factory"
+
     override fun description(): I18NString = I18NString(
         listOf(
             NormalString("Open a resource factory with id "),
@@ -1932,6 +1958,8 @@ data class CloseLocalResourceFactoryCommand(
     val targetCarrierId: Int,
     val targetResourceFactoryId: Int
 ) : DefaultCommand() {
+    override fun name(): String = "Close Local Resource Factory"
+
     override fun description(): I18NString = I18NString(
         listOf(
             NormalString("Close a resource factory with id "),

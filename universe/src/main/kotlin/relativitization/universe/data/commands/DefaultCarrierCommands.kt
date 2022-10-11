@@ -24,6 +24,7 @@ data class BuildLocalCarrierCommand(
     override val fromInt4D: Int4D,
     val qualityLevel: Double,
 ) : DefaultCommand() {
+    override fun name(): String = "Build Local Carrier"
     override fun description(): I18NString = I18NString(
         listOf(
             NormalString("Build a new carrier with quality level "),

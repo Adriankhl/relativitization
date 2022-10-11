@@ -22,6 +22,7 @@ data class DeclareWarCommand(
     override val fromId: Int,
     override val fromInt4D: Int4D,
 ) : DefaultCommand() {
+    override fun name(): String = "Declare War"
 
     override fun description(): I18NString = I18NString(
         listOf(
@@ -123,6 +124,7 @@ data class DeclareIndependenceToDirectLeaderCommand(
     override val fromId: Int,
     override val fromInt4D: Int4D
 ) : DefaultCommand() {
+    override fun name(): String = "Declare Independence (Direct)"
     override fun description(): I18NString = I18NString(
         listOf(
             NormalString("Declare independence and war on direct leader: id "),
@@ -229,6 +231,8 @@ data class DeclareIndependenceToTopLeaderCommand(
     override val fromId: Int,
     override val fromInt4D: Int4D
 ) : DefaultCommand() {
+    override fun name(): String = "Declare Independence (Top)"
+
     override fun description(): I18NString = I18NString(
         listOf(
             NormalString("Declare independence and war on top leader: id "),
@@ -339,6 +343,8 @@ data class SurrenderCommand(
     override val fromInt4D: Int4D,
     val targetPlayerId: Int,
 ) : DefaultCommand() {
+    override fun name(): String = "Surrender"
+
     override fun description(): I18NString = I18NString(
         listOf(
             NormalString("Surrender and become subordinate of "),
@@ -410,6 +416,7 @@ data class AcceptPeaceCommand(
     override val fromId: Int,
     override val fromInt4D: Int4D,
 ) : DefaultCommand() {
+    override fun name(): String = "Accept Peace"
 
     override fun canSend(
         playerData: MutablePlayerData,
@@ -435,6 +442,7 @@ data class AcceptAllianceCommand(
     override val fromId: Int,
     override val fromInt4D: Int4D,
 ) : DefaultCommand() {
+    override fun name(): String = "Accept Alliance"
 
     override fun canSend(
         playerData: MutablePlayerData,
@@ -466,6 +474,8 @@ data class RemoveAllyCommand(
     override val fromInt4D: Int4D,
     val targetPlayerId: Int,
 ) : DefaultCommand() {
+    override fun name(): String = "Remove Ally"
+
     override fun description(): I18NString = I18NString(
         listOf(
             NormalString("Break alliance with player "),

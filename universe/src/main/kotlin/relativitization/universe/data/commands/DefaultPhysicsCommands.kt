@@ -20,6 +20,7 @@ data class ChangeVelocityCommand(
     override val fromInt4D: Int4D,
     val targetVelocity: Velocity,
 ) : DefaultCommand() {
+    override fun name(): String = "Change Velocity"
 
     override fun description(): I18NString = I18NString(
         listOf(
@@ -121,6 +122,8 @@ data class ChangeFuelRestMassTargetProportionCommand(
     override val fromInt4D: Int4D,
     val fuelRestMassTargetProportionData: FuelRestMassTargetProportionData,
 ) : DefaultCommand() {
+    override fun name(): String = "Change Fuel Target"
+
     override fun description(): I18NString = I18NString(
         listOf(
             NormalString("Change the target fuel rest mass proportion to storage: "),

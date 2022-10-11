@@ -29,6 +29,8 @@ data class BuildInstituteCommand(
     val carrierId: Int,
     val instituteInternalData: InstituteInternalData,
 ) : DefaultCommand() {
+    override fun name(): String = "Build Institute"
+
     override fun description(): I18NString = I18NString(
         listOf(
             NormalString("Build an institute in carrier "),
@@ -145,6 +147,8 @@ data class BuildLaboratoryCommand(
     val carrierId: Int,
     val laboratoryInternalData: LaboratoryInternalData,
 ) : DefaultCommand() {
+    override fun name(): String = "Build Laboratory"
+
     override fun description(): I18NString = I18NString(
         listOf(
             NormalString("Build a laboratory in carrier "),
@@ -261,6 +265,8 @@ data class RemoveInstituteCommand(
     val carrierId: Int,
     val instituteId: Int,
 ) : DefaultCommand() {
+    override fun name(): String = "Remove Institute"
+
     override fun description(): I18NString = I18NString(
         listOf(
             NormalString("Remove institute "),
@@ -364,6 +370,8 @@ data class RemoveLaboratoryCommand(
     val carrierId: Int,
     val laboratoryId: Int,
 ) : DefaultCommand() {
+    override fun name(): String = "Remove Laboratory"
+
     override fun description(): I18NString = I18NString(
         listOf(
             NormalString("Remove laboratory "),
