@@ -23,6 +23,11 @@ sealed class Command {
     abstract val fromInt4D: Int4D
 
     /**
+     * Name of the command
+     */
+    open fun name(): String = ""
+
+    /**
      * Description of the command, default to empty description
      */
     open fun description(): I18NString = I18NString("")
@@ -269,10 +274,6 @@ sealed class Command {
         private val logger = RelativitizationLogManager.getLogger()
     }
 }
-
-fun Command.name(): String = this::class.simpleName.toString()
-
-fun <T : Command> KClass<T>.name(): String = this.simpleName.toString()
 
 sealed class CommandAvailability {
     // Command list allowed to be sent and executed
