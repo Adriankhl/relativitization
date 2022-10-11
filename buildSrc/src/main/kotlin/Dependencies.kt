@@ -15,6 +15,12 @@ object Versions {
     // JDK
     const val jdkVersion = 17
 
+    // Gradle plugin
+    const val gradleVersionPluginVersion = "0.42.0"
+
+    // Documentation
+    const val dokkaVersion = "1.7.10"
+
     // Kotlin multiplatform
     const val kotlinVersion = "1.7.20"
     const val kotlinxCoroutineVersion = "1.6.4"
@@ -22,9 +28,6 @@ object Versions {
     const val kotlinxDateTimeVersion = "0.4.0"
     const val ktorVersion = "2.1.2"
     const val okioVersion = "3.2.0"
-
-    // Documentation
-    const val dokkaVersion = "1.7.10"
 
     // JVM
     const val gdxVersion = "1.11.0"

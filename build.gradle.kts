@@ -5,6 +5,7 @@ plugins {
     kotlin("jvm") version Versions.kotlinVersion
     kotlin("plugin.serialization") version Versions.kotlinVersion
     id("org.jetbrains.dokka") version Versions.dokkaVersion
+    id("com.github.ben-manes.versions") version Versions.gradleVersionPluginVersion
 }
 
 val artDirectory = File("../relativitization-art")
@@ -27,6 +28,23 @@ allprojects {
         google()
         maven { url = uri("https://oss.sonatype.org/content/repositories/snapshots/") }
         maven { url = uri("https://oss.sonatype.org/content/repositories/releases/") }
+    }
+}
+
+tasks.withType<com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask> {
+    fun isNonStable(version: String): Boolean {
+        return listOf(
+            "-alpha",
+            "-beta",
+            "-dev",
+            "-rc",
+        ).any {
+            version.toLowerCase().contains(it)
+        }
+    }
+    rejectVersionIf {
+        // ignored jacoco: https://github.com/ben-manes/gradle-versions-plugin/issues/534
+        (candidate.group == "org.jacoco") || isNonStable(candidate.version)
     }
 }
 
@@ -176,7 +194,7 @@ tasks.register("downloadWindowsJDK") {
 
         if (!File("$(windowsJDKDir.path}/jdk").exists()) {
             exec {
-                workingDir = windowsJDKDir           
+                workingDir = windowsJDKDir
                 commandLine(
                     "bash",
                     "-c",
