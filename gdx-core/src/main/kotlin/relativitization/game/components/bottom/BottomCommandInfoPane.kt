@@ -5,7 +5,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.ScreenComponent
 import relativitization.universe.data.commands.*
-import relativitization.universe.data.events.name
 
 class BottomCommandInfoPane(
     val game: RelativitizationGame,

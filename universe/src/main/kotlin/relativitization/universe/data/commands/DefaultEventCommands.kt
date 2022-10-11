@@ -5,7 +5,6 @@ import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.events.Event
 import relativitization.universe.data.events.MutableEventData
-import relativitization.universe.data.events.name
 import relativitization.universe.maths.physics.Int4D
 import relativitization.universe.utils.I18NString
 import relativitization.universe.utils.IntString
@@ -125,7 +124,7 @@ data class AddEventCommand(
                 }
 
             return if (commandAvailability.name() != AllCommandAvailability.name()) {
-                commandAvailability.addEventList.contains(event.name())
+                commandAvailability.canAddEvent(event)
             } else {
                 true
             }
@@ -137,7 +136,6 @@ data class AddEventCommand(
  * Select event choice, can only apply to player himself
  *
  * @property eventKey the index of the event in eventDataList
- * @property eventName name of the event, for ensuring the command acts on the correct event
  * @property choice the player choice on the event
  */
 @Serializable
@@ -146,7 +144,6 @@ data class SelectEventChoiceCommand(
     override val fromId: Int,
     override val fromInt4D: Int4D,
     val eventKey: Int,
-    val eventName: String,
     val choice: Int,
 ) : DefaultCommand() {
 
@@ -163,7 +160,6 @@ data class SelectEventChoiceCommand(
         listOf(
             choice.toString(),
             eventKey.toString(),
-            eventName,
         ),
     )
 
@@ -206,12 +202,8 @@ data class SelectEventChoiceCommand(
         // Check if eventIndex is in range
         if (eventDataMap.containsKey(eventKey)) {
             val eventData: MutableEventData = eventDataMap.getValue(eventKey)
-            if (eventData.event.name() == eventName) {
-                eventData.eventRecordData.hasChoice = true
-                eventData.eventRecordData.choice = choice
-            } else {
-                logger.error("Can't select event choice, wrong event name")
-            }
+            eventData.eventRecordData.hasChoice = true
+            eventData.eventRecordData.choice = choice
         } else {
             logger.error("Can't select event choice, index out of range")
         }

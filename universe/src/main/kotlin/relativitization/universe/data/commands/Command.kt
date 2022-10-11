@@ -3,6 +3,7 @@ package relativitization.universe.data.commands
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseSettings
+import relativitization.universe.data.events.Event
 import relativitization.universe.maths.physics.Int4D
 import relativitization.universe.utils.I18NString
 import relativitization.universe.utils.IntString
@@ -275,10 +276,30 @@ fun <T : Command> KClass<T>.name(): String = this.simpleName.toString()
 
 sealed class CommandAvailability {
     // Command list allowed to be sent and executed
-    abstract val commandList: List<String>
+    abstract val commandList: List<KClass<out Command>>
 
     // Event list allowed to be added by AddEventCommand
-    abstract val addEventList: List<String>
+    abstract val addEventList: List<KClass<out Event>>
+
+    private val commandNameSet: Set<String> by lazy {
+        commandList.map {
+            it.simpleName.toString()
+        }.toSet()
+    }
+
+    private val addEventNameSet: Set<String> by lazy {
+        addEventList.map {
+            it.simpleName.toString()
+        }.toSet()
+    }
+
+    fun hasCommand(command: Command): Boolean {
+        return commandNameSet.contains(command::class.simpleName)
+    }
+
+    fun canAddEvent(event: Event): Boolean {
+        return addEventNameSet.contains(event::class.simpleName)
+    }
 }
 
 fun CommandAvailability.name(): String = this::class.simpleName.toString()
@@ -298,7 +319,7 @@ object CommandCollection {
             if (commandAvailabilityNameMap.containsKey(universeSettings.commandCollectionName)) {
                 commandAvailabilityNameMap.getValue(
                     universeSettings.commandCollectionName
-                ).commandList.contains(command.name())
+                ).hasCommand(command)
             } else {
                 logger.error("No command collection name: ${universeSettings.commandCollectionName} found")
                 false

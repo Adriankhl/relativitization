@@ -61,7 +61,6 @@ internal class MoveToDouble3DEventTest {
                             fromId = 2,
                             fromInt4D = view2At2.getCurrentPlayerData().int4D,
                             eventKey = 0,
-                            eventName = MoveToDouble3DEvent::class.name(),
                             choice = 0,
                         )
                     )

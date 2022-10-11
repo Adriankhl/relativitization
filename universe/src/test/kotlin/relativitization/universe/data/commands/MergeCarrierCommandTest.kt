@@ -4,7 +4,6 @@ import kotlinx.coroutines.runBlocking
 import relativitization.universe.Universe
 import relativitization.universe.data.components.popSystemData
 import relativitization.universe.data.events.AskToMergeCarrierEvent
-import relativitization.universe.data.events.name
 import relativitization.universe.generate.GenerateSettings
 import relativitization.universe.generate.GenerateUniverseMethodCollection
 import relativitization.universe.generate.testing.TestingFixedMinimal
@@ -61,7 +60,6 @@ internal class MergeCarrierCommandTest {
                             fromId = 2,
                             fromInt4D = view2At2.getCurrentPlayerData().int4D,
                             eventKey = 0,
-                            eventName = event.name(),
                             choice = 0
                         )
                     )

@@ -9,7 +9,6 @@ import relativitization.universe.data.commands.Command
 import relativitization.universe.data.commands.SelectEventChoiceCommand
 import relativitization.universe.data.events.MoveToDouble3DEvent
 import relativitization.universe.data.events.MutableEventData
-import relativitization.universe.data.events.name
 import kotlin.random.Random
 
 /**
@@ -41,7 +40,7 @@ class PickMoveToDouble3DEventReasoner(
         planState: PlanState
     ): List<DualUtilityOption> {
         val movementEventKeySet: Set<Int> = eventNameKeyMap.getOrDefault(
-            MoveToDouble3DEvent::class.name(),
+            MoveToDouble3DEvent::class.keyName(),
             listOf()
         ).toSet()
 
@@ -113,7 +112,6 @@ class PickMoveToDouble3DEventDualUtilityOption(
                 fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
                 fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
                 eventKey = it,
-                eventName = MoveToDouble3DEvent::class.name(),
                 choice = 1,
             )
         } + SelectEventChoiceCommand(
@@ -121,7 +119,6 @@ class PickMoveToDouble3DEventDualUtilityOption(
             fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
             fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
             eventKey = eventKey,
-            eventName = MoveToDouble3DEvent::class.name(),
             choice = 0,
         )
 

@@ -4,7 +4,6 @@ import kotlinx.coroutines.runBlocking
 import relativitization.universe.Universe
 import relativitization.universe.data.components.diplomacyData
 import relativitization.universe.data.events.ProposePeaceEvent
-import relativitization.universe.data.events.name
 import relativitization.universe.generate.GenerateSettings
 import relativitization.universe.generate.GenerateUniverseMethodCollection
 import relativitization.universe.generate.testing.TestingFixedMinimal
@@ -132,7 +131,6 @@ internal class ProposePeaceCommandTest {
                             fromId = 5,
                             fromInt4D = view4At5.getCurrentPlayerData().int4D,
                             eventKey = 0,
-                            eventName = ProposePeaceEvent::class.name(),
                             choice = 0
                         )
                     ),

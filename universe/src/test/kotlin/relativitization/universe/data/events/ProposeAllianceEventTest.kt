@@ -75,7 +75,6 @@ internal class ProposeAllianceEventTest {
                             fromId = 1,
                             fromInt4D = view2At1.getCurrentPlayerData().int4D,
                             eventKey = 0,
-                            eventName = ProposeAllianceEvent::class.name(),
                             choice = 0
                         )
                     )

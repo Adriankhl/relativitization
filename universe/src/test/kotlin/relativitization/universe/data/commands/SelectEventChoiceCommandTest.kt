@@ -5,7 +5,6 @@ import relativitization.universe.Universe
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.maths.physics.Int4D
 import relativitization.universe.data.events.MoveToDouble3DEvent
-import relativitization.universe.data.events.name
 import relativitization.universe.generate.GenerateSettings
 import relativitization.universe.generate.GenerateUniverseMethodCollection
 import relativitization.universe.generate.testing.TestingFixedMinimal
@@ -59,7 +58,6 @@ internal class SelectEventChoiceCommandTest {
             fromId = view2.id,
             fromInt4D = view2.getCurrentPlayerData().int4D,
             eventKey = 0,
-            eventName = view2.getCurrentPlayerData().playerInternalData.eventDataMap.getValue(0).event.name(),
             choice = 1
         )
 

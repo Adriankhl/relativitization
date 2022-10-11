@@ -38,7 +38,7 @@ class AllProposePeaceEventReasoner(
         planState: PlanState
     ): List<AINode> {
         val eventKeyList: List<Int> = eventNameKeyMap.getOrDefault(
-            ProposePeaceEvent::class.name(),
+            ProposePeaceEvent::class.keyName(),
             listOf()
         )
 
@@ -93,7 +93,6 @@ class AcceptPeaceOption(
                 fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
                 fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
                 eventKey = eventKey,
-                eventName = ProposePeaceEvent::class.name(),
                 choice = 0,
             )
         )
@@ -119,7 +118,6 @@ class RejectPeaceOption(
                 fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
                 fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
                 eventKey = eventKey,
-                eventName = ProposePeaceEvent::class.name(),
                 choice = 1,
             )
         )
@@ -135,7 +133,7 @@ class AllCallAllyToWarEventReasoner(
         planState: PlanState
     ): List<AINode> {
         val eventKeyList: List<Int> = eventNameKeyMap.getOrDefault(
-            CallAllyToWarEvent::class.name(),
+            CallAllyToWarEvent::class.keyName(),
             listOf(),
         )
 
@@ -202,7 +200,6 @@ class AcceptAllyWarCallOption(
             fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
             fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
             eventKey = eventKey,
-            eventName = CallAllyToWarEvent::class.name(),
             choice = 0,
         )
     }
@@ -231,7 +228,6 @@ class RejectAllyWarCallOption(
                 fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
                 fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
                 eventKey = eventKey,
-                eventName = CallAllyToWarEvent::class.name(),
                 choice = 1,
             )
         )
@@ -247,7 +243,7 @@ class AllCallAllyToSubordinateWarEventReasoner(
         planState: PlanState
     ): List<AINode> {
         val eventKeyList: List<Int> = eventNameKeyMap.getOrDefault(
-            CallAllyToSubordinateWarEvent::class.name(),
+            CallAllyToSubordinateWarEvent::class.keyName(),
             listOf(),
         )
 
@@ -314,7 +310,6 @@ class AcceptAllySubordinateWarCallOption(
             fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
             fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
             eventKey = eventKey,
-            eventName = CallAllyToSubordinateWarEvent::class.name(),
             choice = 0,
         )
     }
@@ -343,7 +338,6 @@ class RejectAllySubordinateWarCallOption(
                 fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
                 fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
                 eventKey = eventKey,
-                eventName = CallAllyToSubordinateWarEvent::class.name(),
                 choice = 1,
             )
         )

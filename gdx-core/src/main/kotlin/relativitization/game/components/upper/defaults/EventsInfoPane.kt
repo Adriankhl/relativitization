@@ -7,7 +7,6 @@ import relativitization.game.components.upper.UpperInfoPane
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.commands.SelectEventChoiceCommand
 import relativitization.universe.data.events.EventData
-import relativitization.universe.data.events.name
 
 class EventsInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane>(game) {
     override val infoName: String = "Events"
@@ -125,7 +124,6 @@ class EventsInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane>
                     fromInt4D = game.universeClient.getUniverseData3D()
                         .getCurrentPlayerData().int4D,
                     eventKey = eventKey,
-                    eventName = eventData.event.name(),
                     choice = choice.key
                 )
 

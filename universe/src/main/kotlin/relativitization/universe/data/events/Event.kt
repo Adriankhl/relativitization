@@ -9,7 +9,6 @@ import relativitization.universe.data.commands.CommandErrorMessage
 import relativitization.universe.utils.I18NString
 import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.random.Random
-import kotlin.reflect.KClass
 
 @Serializable
 sealed class Event {
@@ -19,6 +18,9 @@ sealed class Event {
 
     // The event sent from this player id, -1 if this is an auto-event
     abstract val fromId: Int
+
+    // Name of the event
+    open fun name(): String = ""
 
     // Description of the event
     open fun description(): I18NString = I18NString("")
@@ -94,10 +96,6 @@ sealed class Event {
         private val logger = RelativitizationLogManager.getLogger()
     }
 }
-
-fun Event.name(): String = this::class.simpleName.toString()
-
-fun <T : Event> KClass<T>.name(): String = this.simpleName.toString()
 
 /**
  * Unit of event data

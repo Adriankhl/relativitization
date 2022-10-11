@@ -7,7 +7,6 @@ import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.commands.SelectEventChoiceCommand
 import relativitization.universe.data.events.Event
 import relativitization.universe.data.events.ProposeAllianceEvent
-import relativitization.universe.data.events.name
 import kotlin.random.Random
 
 /**
@@ -34,7 +33,7 @@ class AllProposeAllianceEventReasoner(
         planState: PlanState
     ): List<AINode> {
         val eventKeyList: List<Int> = eventNameKeyMap.getOrDefault(
-            ProposeAllianceEvent::class.name(),
+            ProposeAllianceEvent::class.keyName(),
             listOf(),
         )
 
@@ -96,7 +95,6 @@ class AcceptAllianceOption(
                 fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
                 fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
                 eventKey = eventKey,
-                eventName = ProposeAllianceEvent::class.name(),
                 choice = 0,
             )
         )
@@ -122,7 +120,6 @@ class RejectAllianceOption(
                 fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
                 fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
                 eventKey = eventKey,
-                eventName = ProposeAllianceEvent::class.name(),
                 choice = 1,
             )
         )

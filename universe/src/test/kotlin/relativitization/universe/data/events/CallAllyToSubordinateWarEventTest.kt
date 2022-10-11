@@ -67,7 +67,6 @@ internal class CallAllyToSubordinateWarEventTest {
                             fromId = 3,
                             fromInt4D = view2At3.getCurrentPlayerData().int4D,
                             eventKey = 0,
-                            eventName = ProposeAllianceEvent::class.name(),
                             choice = 0
                         )
                     )
@@ -180,7 +179,6 @@ internal class CallAllyToSubordinateWarEventTest {
                             fromId = 3,
                             fromInt4D = view5At3.getCurrentPlayerData().int4D,
                             eventKey = 0,
-                            eventName = CallAllyToSubordinateWarEvent::class.name(),
                             choice = 0
                         )
                     )
