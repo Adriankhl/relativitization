@@ -13,4 +13,6 @@ object DefaultCommandAvailability : CommandAvailability() {
         DefaultCommand::class.sealedSubclasses
 
     override val addEventList: List<KClass<out Event>> = DefaultEvent::class.sealedSubclasses
+
+    override fun name(): String = "Default"
 }

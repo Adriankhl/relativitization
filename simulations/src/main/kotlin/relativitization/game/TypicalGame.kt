@@ -4,7 +4,6 @@ import relativitization.universe.Universe
 import relativitization.universe.data.MutableUniverseSettings
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.commands.DefaultCommandAvailability
-import relativitization.universe.data.commands.name
 import relativitization.universe.data.components.diplomacyData
 import relativitization.universe.data.components.physicsData
 import relativitization.universe.data.components.popSystemData

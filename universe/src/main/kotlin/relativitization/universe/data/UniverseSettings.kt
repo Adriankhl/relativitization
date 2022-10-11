@@ -3,7 +3,6 @@ package relativitization.universe.data
 import kotlinx.datetime.Clock
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.commands.DefaultCommandAvailability
-import relativitization.universe.data.commands.name
 import relativitization.universe.global.DefaultGlobalMechanismList
 import relativitization.universe.maths.physics.Int3D
 import relativitization.universe.maths.physics.Intervals.intDelay

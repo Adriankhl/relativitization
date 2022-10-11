@@ -294,6 +294,8 @@ sealed class CommandAvailability {
         }.toSet()
     }
 
+    abstract fun name(): String
+
     fun hasCommand(command: Command): Boolean {
         return commandNameSet.contains(command::class.simpleName)
     }
@@ -302,8 +304,6 @@ sealed class CommandAvailability {
         return addEventNameSet.contains(event::class.simpleName)
     }
 }
-
-fun CommandAvailability.name(): String = this::class.simpleName.toString()
 
 object CommandCollection {
     private val logger = RelativitizationLogManager.getLogger()
