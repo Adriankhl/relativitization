@@ -18,8 +18,6 @@ internal class SplitCarrierCommandTest {
             )
         )
 
-        val view1 = universe.getUniverse3DViewAtPlayer(1)
-
         assert(!universe.availablePlayers().contains(8))
 
         runBlocking {
