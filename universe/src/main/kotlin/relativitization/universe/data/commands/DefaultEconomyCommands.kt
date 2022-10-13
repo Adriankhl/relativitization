@@ -6,11 +6,11 @@ import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.components.defaults.economy.ResourceQualityClass
 import relativitization.universe.data.components.defaults.economy.ResourceTargetProportionData
 import relativitization.universe.data.components.defaults.economy.ResourceType
-import relativitization.universe.maths.physics.Int4D
 import relativitization.universe.data.components.defaults.popsystem.pop.PopType
 import relativitization.universe.data.components.economyData
 import relativitization.universe.data.components.popSystemData
 import relativitization.universe.data.serializer.DataSerializer
+import relativitization.universe.maths.physics.Int4D
 import relativitization.universe.utils.I18NString
 import relativitization.universe.utils.IntString
 import relativitization.universe.utils.IntTranslateString
@@ -25,14 +25,12 @@ import relativitization.universe.utils.NormalString
 @Serializable
 data class ChangeDefaultImportTariffCommand(
     override val toId: Int,
-    override val fromId: Int,
-    override val fromInt4D: Int4D,
     val resourceType: ResourceType,
     val rate: Double,
 ) : DefaultCommand() {
     override fun name(): String = "Change Default Import Tariff"
 
-    override fun description(): I18NString = I18NString(
+    override fun description(fromId: Int): I18NString = I18NString(
         listOf(
             NormalString("Change default import tariff rate of "),
             IntTranslateString(0),
@@ -53,7 +51,7 @@ data class ChangeDefaultImportTariffCommand(
 
         val isSelf = CommandErrorMessage(
             playerData.playerId == toId,
-            CommandI18NStringFactory.isNotToSelf(fromId, toId)
+            CommandI18NStringFactory.isNotToSelf(playerData.playerId, toId)
         )
 
         val isTopLeader = CommandErrorMessage(
@@ -77,6 +75,8 @@ data class ChangeDefaultImportTariffCommand(
 
     override fun canExecute(
         playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
         val isSelf = CommandErrorMessage(
@@ -91,7 +91,12 @@ data class ChangeDefaultImportTariffCommand(
         )
     }
 
-    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+    override fun execute(
+        playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
+        universeSettings: UniverseSettings
+    ) {
         playerData.playerInternalData.economyData().taxData.taxRateData
             .importTariff.defaultTariffRate.resourceTariffRateMap[resourceType] = rate
     }
@@ -106,14 +111,12 @@ data class ChangeDefaultImportTariffCommand(
 @Serializable
 data class ChangeDefaultExportTariffCommand(
     override val toId: Int,
-    override val fromId: Int,
-    override val fromInt4D: Int4D,
     val resourceType: ResourceType,
     val rate: Double,
 ) : DefaultCommand() {
     override fun name(): String = "Change Default Export Tariff"
 
-    override fun description(): I18NString = I18NString(
+    override fun description(fromId: Int): I18NString = I18NString(
         listOf(
             NormalString("Change default export tariff rate of "),
             IntTranslateString(0),
@@ -133,7 +136,7 @@ data class ChangeDefaultExportTariffCommand(
     ): CommandErrorMessage {
         val isSelf = CommandErrorMessage(
             playerData.playerId == toId,
-            CommandI18NStringFactory.isNotToSelf(fromId, toId)
+            CommandI18NStringFactory.isNotToSelf(playerData.playerId, toId)
         )
 
         val isTopLeader = CommandErrorMessage(
@@ -157,6 +160,8 @@ data class ChangeDefaultExportTariffCommand(
 
     override fun canExecute(
         playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
         val isSelf = CommandErrorMessage(
@@ -171,7 +176,12 @@ data class ChangeDefaultExportTariffCommand(
         )
     }
 
-    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+    override fun execute(
+        playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
+        universeSettings: UniverseSettings
+    ) {
         playerData.playerInternalData.economyData().taxData.taxRateData
             .exportTariff.defaultTariffRate.resourceTariffRateMap[resourceType] = rate
     }
@@ -185,13 +195,11 @@ data class ChangeDefaultExportTariffCommand(
 @Serializable
 data class ChangeLowIncomeTaxCommand(
     override val toId: Int,
-    override val fromId: Int,
-    override val fromInt4D: Int4D,
     val rate: Double,
 ) : DefaultCommand() {
     override fun name(): String = "Change Low Income Tax"
 
-    override fun description(): I18NString = I18NString(
+    override fun description(fromId: Int): I18NString = I18NString(
         listOf(
             NormalString("Change low income tax rate to "),
             IntString(0),
@@ -209,7 +217,7 @@ data class ChangeLowIncomeTaxCommand(
 
         val isSelf = CommandErrorMessage(
             playerData.playerId == toId,
-            CommandI18NStringFactory.isNotToSelf(fromId, toId)
+            CommandI18NStringFactory.isNotToSelf(playerData.playerId, toId)
         )
 
         val isTopLeader = CommandErrorMessage(
@@ -233,6 +241,8 @@ data class ChangeLowIncomeTaxCommand(
 
     override fun canExecute(
         playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
         val isSelf = CommandErrorMessage(
@@ -247,7 +257,12 @@ data class ChangeLowIncomeTaxCommand(
         )
     }
 
-    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+    override fun execute(
+        playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
+        universeSettings: UniverseSettings
+    ) {
         playerData.playerInternalData.economyData()
             .taxData.taxRateData.incomeTax.lowIncomeTaxRate = rate
     }
@@ -261,13 +276,11 @@ data class ChangeLowIncomeTaxCommand(
 @Serializable
 data class ChangeMiddleIncomeTaxCommand(
     override val toId: Int,
-    override val fromId: Int,
-    override val fromInt4D: Int4D,
     val rate: Double,
 ) : DefaultCommand() {
     override fun name(): String = "Change Middle Income Tax"
 
-    override fun description(): I18NString = I18NString(
+    override fun description(fromId: Int): I18NString = I18NString(
         listOf(
             NormalString("Change middle income tax rate to "),
             IntString(0),
@@ -285,7 +298,7 @@ data class ChangeMiddleIncomeTaxCommand(
 
         val isSelf = CommandErrorMessage(
             playerData.playerId == toId,
-            CommandI18NStringFactory.isNotToSelf(fromId, toId)
+            CommandI18NStringFactory.isNotToSelf(playerData.playerId, toId)
         )
 
         val isTopLeader = CommandErrorMessage(
@@ -309,6 +322,8 @@ data class ChangeMiddleIncomeTaxCommand(
 
     override fun canExecute(
         playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
         val isSelf = CommandErrorMessage(
@@ -323,7 +338,12 @@ data class ChangeMiddleIncomeTaxCommand(
         )
     }
 
-    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+    override fun execute(
+        playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
+        universeSettings: UniverseSettings
+    ) {
         playerData.playerInternalData.economyData()
             .taxData.taxRateData.incomeTax.middleIncomeTaxRate = rate
     }
@@ -337,13 +357,11 @@ data class ChangeMiddleIncomeTaxCommand(
 @Serializable
 data class ChangeHighIncomeTaxCommand(
     override val toId: Int,
-    override val fromId: Int,
-    override val fromInt4D: Int4D,
     val rate: Double,
 ) : DefaultCommand() {
     override fun name(): String = "Change High Income Tax"
 
-    override fun description(): I18NString = I18NString(
+    override fun description(fromId: Int): I18NString = I18NString(
         listOf(
             NormalString("Change high income tax rate to "),
             IntString(0),
@@ -360,7 +378,7 @@ data class ChangeHighIncomeTaxCommand(
     ): CommandErrorMessage {
         val isSelf = CommandErrorMessage(
             playerData.playerId == toId,
-            CommandI18NStringFactory.isNotToSelf(fromId, toId)
+            CommandI18NStringFactory.isNotToSelf(playerData.playerId, toId)
         )
 
         val isTopLeader = CommandErrorMessage(
@@ -384,6 +402,8 @@ data class ChangeHighIncomeTaxCommand(
 
     override fun canExecute(
         playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
         val isSelf = CommandErrorMessage(
@@ -398,7 +418,12 @@ data class ChangeHighIncomeTaxCommand(
         )
     }
 
-    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+    override fun execute(
+        playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
+        universeSettings: UniverseSettings
+    ) {
         playerData.playerInternalData.economyData()
             .taxData.taxRateData.incomeTax.highIncomeTaxRate = rate
     }
@@ -412,13 +437,11 @@ data class ChangeHighIncomeTaxCommand(
 @Serializable
 data class ChangeLowMiddleBoundaryCommand(
     override val toId: Int,
-    override val fromId: Int,
-    override val fromInt4D: Int4D,
     val boundary: Double,
 ) : DefaultCommand() {
     override fun name(): String = "Change Low-Middle Boundary"
 
-    override fun description(): I18NString = I18NString(
+    override fun description(fromId: Int): I18NString = I18NString(
         listOf(
             NormalString("Change the boundary between low and middle income to "),
             IntString(0),
@@ -435,7 +458,7 @@ data class ChangeLowMiddleBoundaryCommand(
     ): CommandErrorMessage {
         val isSelf = CommandErrorMessage(
             playerData.playerId == toId,
-            CommandI18NStringFactory.isNotToSelf(fromId, toId)
+            CommandI18NStringFactory.isNotToSelf(playerData.playerId, toId)
         )
 
         val isTopLeader = CommandErrorMessage(
@@ -459,6 +482,8 @@ data class ChangeLowMiddleBoundaryCommand(
 
     override fun canExecute(
         playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
         val isSelf = CommandErrorMessage(
@@ -473,7 +498,12 @@ data class ChangeLowMiddleBoundaryCommand(
         )
     }
 
-    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+    override fun execute(
+        playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
+        universeSettings: UniverseSettings
+    ) {
         playerData.playerInternalData.economyData()
             .taxData.taxRateData.incomeTax.lowMiddleBoundary = boundary
     }
@@ -487,13 +517,11 @@ data class ChangeLowMiddleBoundaryCommand(
 @Serializable
 data class ChangeMiddleHighBoundaryCommand(
     override val toId: Int,
-    override val fromId: Int,
-    override val fromInt4D: Int4D,
     val boundary: Double,
 ) : DefaultCommand() {
     override fun name(): String = "Change Middle-High Boundary"
 
-    override fun description(): I18NString = I18NString(
+    override fun description(fromId: Int): I18NString = I18NString(
         listOf(
             NormalString("Change the boundary between middle and high income to "),
             IntString(0),
@@ -510,7 +538,7 @@ data class ChangeMiddleHighBoundaryCommand(
     ): CommandErrorMessage {
         val isSelf = CommandErrorMessage(
             playerData.playerId == toId,
-            CommandI18NStringFactory.isNotToSelf(fromId, toId)
+            CommandI18NStringFactory.isNotToSelf(playerData.playerId, toId)
         )
 
         val isTopLeader = CommandErrorMessage(
@@ -536,6 +564,8 @@ data class ChangeMiddleHighBoundaryCommand(
 
     override fun canExecute(
         playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
         val isSelf = CommandErrorMessage(
@@ -550,7 +580,12 @@ data class ChangeMiddleHighBoundaryCommand(
         )
     }
 
-    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+    override fun execute(
+        playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
+        universeSettings: UniverseSettings
+    ) {
         playerData.playerInternalData.economyData()
             .taxData.taxRateData.incomeTax.middleHighBoundary = boundary
     }
@@ -566,15 +601,13 @@ data class ChangeMiddleHighBoundaryCommand(
 @Serializable
 data class ChangeResourceTargetProportionCommand(
     override val toId: Int,
-    override val fromId: Int,
-    override val fromInt4D: Int4D,
     val resourceType: ResourceType,
     val resourceQualityClass: ResourceQualityClass,
     val resourceTargetProportionData: ResourceTargetProportionData,
 ) : DefaultCommand() {
     override fun name(): String = "Change Resource Target"
 
-    override fun description(): I18NString = I18NString(
+    override fun description(fromId: Int): I18NString = I18NString(
         listOf(
             NormalString("Change the target proportion of "),
             IntTranslateString(0),
@@ -603,7 +636,7 @@ data class ChangeResourceTargetProportionCommand(
     ): CommandErrorMessage {
         val isSelf = CommandErrorMessage(
             playerData.playerId == toId,
-            CommandI18NStringFactory.isNotToSelf(fromId, toId)
+            CommandI18NStringFactory.isNotToSelf(playerData.playerId, toId)
         )
 
         return CommandErrorMessage(
@@ -615,6 +648,8 @@ data class ChangeResourceTargetProportionCommand(
 
     override fun canExecute(
         playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
         val isSelf = CommandErrorMessage(
@@ -629,7 +664,12 @@ data class ChangeResourceTargetProportionCommand(
         )
     }
 
-    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+    override fun execute(
+        playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
+        universeSettings: UniverseSettings
+    ) {
         playerData.playerInternalData.economyData().resourceData.getSingleResourceData(
                 resourceType,
                 resourceQualityClass
@@ -645,13 +685,11 @@ data class ChangeResourceTargetProportionCommand(
 @Serializable
 data class ChangeBaseSalaryCommand(
     override val toId: Int,
-    override val fromId: Int,
-    override val fromInt4D: Int4D,
     val baseSalaryPerEmployee: Double,
 ) : DefaultCommand() {
     override fun name(): String = "Change Base Salary"
 
-    override fun description(): I18NString = I18NString(
+    override fun description(fromId: Int): I18NString = I18NString(
         listOf(
             NormalString("Change the base salary to "),
             IntTranslateString(0),
@@ -668,7 +706,7 @@ data class ChangeBaseSalaryCommand(
     ): CommandErrorMessage {
         val isSelf = CommandErrorMessage(
             playerData.playerId == toId,
-            CommandI18NStringFactory.isNotToSelf(fromId, toId)
+            CommandI18NStringFactory.isNotToSelf(playerData.playerId, toId)
         )
 
         val isBaseSalaryValid = CommandErrorMessage(
@@ -686,6 +724,8 @@ data class ChangeBaseSalaryCommand(
 
     override fun canExecute(
         playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
         val isSelf = CommandErrorMessage(
@@ -700,7 +740,12 @@ data class ChangeBaseSalaryCommand(
         )
     }
 
-    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+    override fun execute(
+        playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
+        universeSettings: UniverseSettings
+    ) {
         playerData.playerInternalData.popSystemData().generalPopSystemData
             .baseSalaryPerEmployee = baseSalaryPerEmployee
     }
@@ -716,15 +761,13 @@ data class ChangeBaseSalaryCommand(
 @Serializable
 data class ChangeSalaryFactorCommand(
     override val toId: Int,
-    override val fromId: Int,
-    override val fromInt4D: Int4D,
     val carrierId: Int,
     val popType: PopType,
     val salaryFactor: Double,
 ) : DefaultCommand() {
     override fun name(): String = "Change Salary Factor"
 
-    override fun description(): I18NString = I18NString(
+    override fun description(fromId: Int): I18NString = I18NString(
         listOf(
             NormalString("Change the salary factor of pop "),
             IntTranslateString(0),
@@ -747,7 +790,7 @@ data class ChangeSalaryFactorCommand(
     ): CommandErrorMessage {
         val isSelf = CommandErrorMessage(
             playerData.playerId == toId,
-            CommandI18NStringFactory.isNotToSelf(fromId, toId)
+            CommandI18NStringFactory.isNotToSelf(playerData.playerId, toId)
         )
 
         val hasCarrier = CommandErrorMessage(
@@ -771,6 +814,8 @@ data class ChangeSalaryFactorCommand(
 
     override fun canExecute(
         playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
         val isSelf = CommandErrorMessage(
@@ -791,7 +836,12 @@ data class ChangeSalaryFactorCommand(
         )
     }
 
-    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+    override fun execute(
+        playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
+        universeSettings: UniverseSettings
+    ) {
         playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
             carrierId
         ).allPopData.getCommonPopData(popType).salaryFactor = salaryFactor

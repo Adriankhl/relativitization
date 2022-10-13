@@ -112,8 +112,6 @@ class RemoveSpecificAllyOption(
         planDataAtPlayer.addCommand(
             RemoveAllyCommand(
                 toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
                 targetPlayerId = otherPlayerId,
             )
         )
@@ -160,13 +158,11 @@ class ProposeAllianceReasoner(
 
                 val event = ProposeAllianceEvent(
                     toId = targetAlly.playerId,
-                    fromId = playerData.playerId
                 )
 
                 planDataAtPlayer.addCommand(
                     AddEventCommand(
                         event = event,
-                        fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
                     )
                 )
             }
@@ -253,14 +249,12 @@ class CallAllyToWarOption(
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
         val event = CallAllyToWarEvent(
             toId = allyId,
-            fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
             warTargetId = opponentId
         )
 
         planDataAtPlayer.addCommand(
             AddEventCommand(
                 event = event,
-                fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
             )
         )
     }
@@ -363,7 +357,6 @@ class CallAllyToSubordinateWarOption(
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
         val event = CallAllyToSubordinateWarEvent(
             toId = allyId,
-            fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
             subordinateId = subordinateId,
             warTargetId = opponentId,
         )
@@ -371,7 +364,6 @@ class CallAllyToSubordinateWarOption(
         planDataAtPlayer.addCommand(
             AddEventCommand(
                 event = event,
-                fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
             )
         )
     }

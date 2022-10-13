@@ -58,8 +58,6 @@ class BalanceResourceProportionAINode(
             planDataAtPlayer.addCommand(
                 ChangeResourceTargetProportionCommand(
                     toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                    fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                    fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
                     resourceType = resourceType,
                     resourceQualityClass = resourceQualityClass,
                     resourceTargetProportionData = DataSerializer.copy(resourceTargetProportion),

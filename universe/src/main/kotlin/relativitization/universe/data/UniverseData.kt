@@ -1,7 +1,7 @@
 package relativitization.universe.data
 
 import kotlinx.serialization.Serializable
-import relativitization.universe.data.commands.Command
+import relativitization.universe.data.commands.CommandData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.maths.grid.Grids
@@ -16,7 +16,7 @@ data class UniverseData(
     val universeData4D: UniverseData4D,
     val universeSettings: UniverseSettings,
     val universeState: UniverseState,
-    val commandMap: MutableMap<Int, MutableList<Command>>,
+    val commandMap: MutableMap<Int, MutableList<CommandData>>,
     var universeGlobalData: UniverseGlobalData,
 ) {
     /**

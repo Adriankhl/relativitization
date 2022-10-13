@@ -95,7 +95,7 @@ class EventsInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane>
         nestedTable.row().space(10f)
 
         val timeLeftLabel = createLabel(
-            "Time left: ${eventData.event.stayTime() - eventData.eventRecordData.stayCounter}",
+            "Time left: ${eventData.event.stayTime(game.universeClient.universeClientSettings.playerId) - eventData.eventRecordData.stayCounter}",
             gdxSettings.smallFontSize
         )
         nestedTable.add(timeLeftLabel).colspan(2)
@@ -103,7 +103,7 @@ class EventsInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane>
         nestedTable.row().space(10f)
 
         val eventDescriptionLabel = createLabel(
-            eventData.event.description(),
+            eventData.event.description(game.universeClient.universeClientSettings.playerId),
             gdxSettings.smallFontSize
         )
         eventDescriptionLabel.wrap = true
@@ -111,7 +111,7 @@ class EventsInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane>
 
         nestedTable.row().space(10f)
 
-        for (choice in eventData.event.choiceDescription()) {
+        for (choice in eventData.event.choiceDescription(game.universeClient.universeClientSettings.playerId)) {
             val selectChoiceButton = createTextButton(
                 "${choice.key}",
                 gdxSettings.smallFontSize,
@@ -120,9 +120,6 @@ class EventsInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane>
             ) {
                 val selectEventDataCommand = SelectEventChoiceCommand(
                     toId = playerData.playerId,
-                    fromId = game.universeClient.getUniverseData3D().id,
-                    fromInt4D = game.universeClient.getUniverseData3D()
-                        .getCurrentPlayerData().int4D,
                     eventKey = eventKey,
                     choice = choice.key
                 )

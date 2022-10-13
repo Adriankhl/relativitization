@@ -23,16 +23,12 @@ internal class CallAllyToSubordinateWarEventTest {
             )
         )
 
-        val view1At1: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
-
         val event = ProposeAllianceEvent(
             toId = 3,
-            fromId = 1
         )
 
         val proposeAllianceCommand = AddEventCommand(
             event,
-            view1At1.getCurrentPlayerData().int4D,
         )
 
         runBlocking {
@@ -55,8 +51,6 @@ internal class CallAllyToSubordinateWarEventTest {
             }
         }
 
-        val view2At3: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(3)
-
         runBlocking {
             universe.postProcessUniverse(
                 mapOf(),
@@ -64,8 +58,6 @@ internal class CallAllyToSubordinateWarEventTest {
                     3 to listOf(
                         SelectEventChoiceCommand(
                             toId = 3,
-                            fromId = 3,
-                            fromInt4D = view2At3.getCurrentPlayerData().int4D,
                             eventKey = 0,
                             choice = 0
                         )
@@ -87,7 +79,6 @@ internal class CallAllyToSubordinateWarEventTest {
 
         val view3At1: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
         val view3At3: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(3)
-        val view3At5: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(5)
 
         assert(
             view3At1.getCurrentPlayerData().playerInternalData.diplomacyData().relationData
@@ -106,8 +97,6 @@ internal class CallAllyToSubordinateWarEventTest {
                     5 to listOf(
                         DeclareWarCommand(
                             toId = 2,
-                            fromId = 5,
-                            fromInt4D = view3At5.getCurrentPlayerData().int4D
                         )
                     )
                 ),
@@ -144,11 +133,9 @@ internal class CallAllyToSubordinateWarEventTest {
                         AddEventCommand(
                             CallAllyToSubordinateWarEvent(
                                 toId = 3,
-                                fromId = 1,
                                 subordinateId = 2,
                                 warTargetId = 5,
                             ),
-                            fromInt4D = view4At1.getCurrentPlayerData().int4D,
                         )
                     )
                 ),
@@ -167,8 +154,6 @@ internal class CallAllyToSubordinateWarEventTest {
             }
         }
 
-        val view5At3: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(3)
-
         runBlocking {
             universe.postProcessUniverse(
                 mapOf(),
@@ -176,8 +161,6 @@ internal class CallAllyToSubordinateWarEventTest {
                     3 to listOf(
                         SelectEventChoiceCommand(
                             toId = 3,
-                            fromId = 3,
-                            fromInt4D = view5At3.getCurrentPlayerData().int4D,
                             eventKey = 0,
                             choice = 0
                         )

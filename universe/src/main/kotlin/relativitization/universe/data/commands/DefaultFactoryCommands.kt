@@ -5,10 +5,10 @@ import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.components.*
 import relativitization.universe.data.components.defaults.economy.ResourceType
-import relativitization.universe.maths.physics.Int4D
 import relativitization.universe.data.components.defaults.popsystem.MutableCarrierData
 import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.*
 import relativitization.universe.data.serializer.DataSerializer
+import relativitization.universe.maths.physics.Int4D
 import relativitization.universe.maths.physics.Intervals
 import relativitization.universe.utils.I18NString
 import relativitization.universe.utils.IntString
@@ -30,8 +30,6 @@ import kotlin.math.pow
 @Serializable
 data class BuildForeignFuelFactoryCommand(
     override val toId: Int,
-    override val fromId: Int,
-    override val fromInt4D: Int4D,
     val senderTopLeaderId: Int,
     val targetCarrierId: Int,
     val ownerId: Int,
@@ -42,7 +40,7 @@ data class BuildForeignFuelFactoryCommand(
 ) : DefaultCommand() {
     override fun name(): String = "Build Foreign Fuel Factory"
 
-    override fun description(): I18NString = I18NString(
+    override fun description(fromId: Int): I18NString = I18NString(
         listOf(
             NormalString("Build a foreign fuel factory owned by player "),
             IntString(0),
@@ -151,6 +149,8 @@ data class BuildForeignFuelFactoryCommand(
 
     override fun canExecute(
         playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
         val sameTopLeaderId: Boolean = playerData.topLeaderId() == senderTopLeaderId
@@ -183,7 +183,12 @@ data class BuildForeignFuelFactoryCommand(
         )
     }
 
-    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+    override fun execute(
+        playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
+        universeSettings: UniverseSettings
+    ) {
         val receiverLossFractionPerDistance: Double = playerData.playerInternalData
             .playerScienceData().playerScienceApplicationData.fuelLogisticsLossFractionPerDistance
 
@@ -239,8 +244,6 @@ data class BuildForeignFuelFactoryCommand(
 @Serializable
 data class BuildForeignResourceFactoryCommand(
     override val toId: Int,
-    override val fromId: Int,
-    override val fromInt4D: Int4D,
     val senderTopLeaderId: Int,
     val targetCarrierId: Int,
     val ownerId: Int,
@@ -252,7 +255,7 @@ data class BuildForeignResourceFactoryCommand(
 ) : DefaultCommand() {
     override fun name(): String = "Build Foreign Resource Factory"
 
-    override fun description(): I18NString = I18NString(
+    override fun description(fromId: Int): I18NString = I18NString(
         listOf(
             NormalString("Build a foreign "),
             IntString(0),
@@ -380,6 +383,8 @@ data class BuildForeignResourceFactoryCommand(
 
     override fun canExecute(
         playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
         val sameTopLeaderId: Boolean = playerData.topLeaderId() == senderTopLeaderId
@@ -412,7 +417,12 @@ data class BuildForeignResourceFactoryCommand(
         )
     }
 
-    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+    override fun execute(
+        playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
+        universeSettings: UniverseSettings
+    ) {
         val receiverLossFractionPerDistance: Double = playerData.playerInternalData
             .playerScienceData().playerScienceApplicationData.fuelLogisticsLossFractionPerDistance
 
@@ -462,14 +472,12 @@ data class BuildForeignResourceFactoryCommand(
 @Serializable
 data class BuildLocalFuelFactoryCommand(
     override val toId: Int,
-    override val fromId: Int,
-    override val fromInt4D: Int4D,
     val targetCarrierId: Int,
     val maxNumEmployee: Double,
 ) : DefaultCommand() {
     override fun name(): String = "Build Local Fuel Factory"
 
-    override fun description(): I18NString = I18NString(
+    override fun description(fromId: Int): I18NString = I18NString(
         listOf(
             NormalString("Build a local fuel factory with quality level at carrier "),
             IntString(0),
@@ -518,6 +526,8 @@ data class BuildLocalFuelFactoryCommand(
 
     override fun canExecute(
         playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
         val isLeaderOrSelf = CommandErrorMessage(
@@ -569,7 +579,12 @@ data class BuildLocalFuelFactoryCommand(
         )
     }
 
-    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+    override fun execute(
+        playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
+        universeSettings: UniverseSettings
+    ) {
 
         val carrier: MutableCarrierData =
             playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
@@ -616,8 +631,6 @@ data class BuildLocalFuelFactoryCommand(
 @Serializable
 data class BuildLocalResourceFactoryCommand(
     override val toId: Int,
-    override val fromId: Int,
-    override val fromInt4D: Int4D,
     val outputResourceType: ResourceType,
     val targetCarrierId: Int,
     val qualityLevel: Double,
@@ -625,7 +638,7 @@ data class BuildLocalResourceFactoryCommand(
 ) : DefaultCommand() {
     override fun name(): String = "Build Local Resource Factory"
 
-    override fun description(): I18NString = I18NString(
+    override fun description(fromId: Int): I18NString = I18NString(
         listOf(
             NormalString("Build a local "),
             IntString(0),
@@ -680,6 +693,8 @@ data class BuildLocalResourceFactoryCommand(
 
     override fun canExecute(
         playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
         val isLeaderOrSelf = CommandErrorMessage(
@@ -735,7 +750,12 @@ data class BuildLocalResourceFactoryCommand(
         )
     }
 
-    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+    override fun execute(
+        playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
+        universeSettings: UniverseSettings
+    ) {
 
         val carrier: MutableCarrierData =
             playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
@@ -788,14 +808,12 @@ data class BuildLocalResourceFactoryCommand(
 @Serializable
 data class RemoveForeignFuelFactoryCommand(
     override val toId: Int,
-    override val fromId: Int,
-    override val fromInt4D: Int4D,
     val targetCarrierId: Int,
     val targetFuelFactoryId: Int
 ) : DefaultCommand() {
     override fun name(): String = "Remove Foreign Fuel Factory"
 
-    override fun description(): I18NString = I18NString(
+    override fun description(fromId: Int): I18NString = I18NString(
         listOf(
             NormalString("Remove a foreign fuel factory with Id "),
             IntString(0),
@@ -821,6 +839,8 @@ data class RemoveForeignFuelFactoryCommand(
 
     override fun canExecute(
         playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
         val hasCarrier = CommandErrorMessage(
@@ -869,7 +889,12 @@ data class RemoveForeignFuelFactoryCommand(
         )
     }
 
-    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+    override fun execute(
+        playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
+        universeSettings: UniverseSettings
+    ) {
         val carrier: MutableCarrierData =
             playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
                 targetCarrierId
@@ -888,14 +913,12 @@ data class RemoveForeignFuelFactoryCommand(
 @Serializable
 data class RemoveForeignResourceFactoryCommand(
     override val toId: Int,
-    override val fromId: Int,
-    override val fromInt4D: Int4D,
     val targetCarrierId: Int,
     val targetResourceFactoryId: Int
 ) : DefaultCommand() {
     override fun name(): String = "Remove Foreign Resource Factory"
 
-    override fun description(): I18NString = I18NString(
+    override fun description(fromId: Int): I18NString = I18NString(
         listOf(
             NormalString("Remove a foreign resource factory with Id "),
             IntString(0),
@@ -921,6 +944,8 @@ data class RemoveForeignResourceFactoryCommand(
 
     override fun canExecute(
         playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
         val hasCarrier = CommandErrorMessage(
@@ -971,7 +996,12 @@ data class RemoveForeignResourceFactoryCommand(
         )
     }
 
-    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+    override fun execute(
+        playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
+        universeSettings: UniverseSettings
+    ) {
         val carrier: MutableCarrierData =
             playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
                 targetCarrierId
@@ -991,14 +1021,12 @@ data class RemoveForeignResourceFactoryCommand(
 @Serializable
 data class RemoveLocalFuelFactoryCommand(
     override val toId: Int,
-    override val fromId: Int,
-    override val fromInt4D: Int4D,
     val targetCarrierId: Int,
     val targetFuelFactoryId: Int
 ) : DefaultCommand() {
     override fun name(): String = "Remove Local Fuel Factory"
 
-    override fun description(): I18NString = I18NString(
+    override fun description(fromId: Int): I18NString = I18NString(
         listOf(
             NormalString("Remove a local factory with id "),
             IntString(0),
@@ -1022,7 +1050,7 @@ data class RemoveLocalFuelFactoryCommand(
 
         val isSelf = CommandErrorMessage(
             playerData.playerId == toId,
-            CommandI18NStringFactory.isNotToSelf(fromId, toId)
+            CommandI18NStringFactory.isNotToSelf(playerData.playerId, toId)
         )
 
         val hasCarrier = CommandErrorMessage(
@@ -1057,6 +1085,8 @@ data class RemoveLocalFuelFactoryCommand(
 
     override fun canExecute(
         playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
         val isSelf = CommandErrorMessage(
@@ -1094,7 +1124,12 @@ data class RemoveLocalFuelFactoryCommand(
         )
     }
 
-    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+    override fun execute(
+        playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
+        universeSettings: UniverseSettings
+    ) {
         val carrier: MutableCarrierData =
             playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
                 targetCarrierId
@@ -1118,14 +1153,12 @@ data class RemoveLocalFuelFactoryCommand(
 @Serializable
 data class RemoveLocalResourceFactoryCommand(
     override val toId: Int,
-    override val fromId: Int,
-    override val fromInt4D: Int4D,
     val targetCarrierId: Int,
     val targetResourceFactoryId: Int
 ) : DefaultCommand() {
     override fun name(): String = "Remove Local Resource Factory"
 
-    override fun description(): I18NString = I18NString(
+    override fun description(fromId: Int): I18NString = I18NString(
         listOf(
             NormalString("Remove a resource factory with id "),
             IntString(0),
@@ -1148,7 +1181,7 @@ data class RemoveLocalResourceFactoryCommand(
     ): CommandErrorMessage {
         val isSelf = CommandErrorMessage(
             playerData.playerId == toId,
-            CommandI18NStringFactory.isNotToSelf(fromId, toId)
+            CommandI18NStringFactory.isNotToSelf(playerData.playerId, toId)
         )
 
         val hasCarrier = CommandErrorMessage(
@@ -1185,6 +1218,8 @@ data class RemoveLocalResourceFactoryCommand(
 
     override fun canExecute(
         playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
         val isSelf = CommandErrorMessage(
@@ -1224,7 +1259,12 @@ data class RemoveLocalResourceFactoryCommand(
         )
     }
 
-    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+    override fun execute(
+        playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
+        universeSettings: UniverseSettings
+    ) {
         val carrier: MutableCarrierData =
             playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
                 targetCarrierId
@@ -1250,8 +1290,6 @@ data class RemoveLocalResourceFactoryCommand(
 @Serializable
 data class SupplyForeignFuelFactoryCommand(
     override val toId: Int,
-    override val fromId: Int,
-    override val fromInt4D: Int4D,
     val targetCarrierId: Int,
     val targetFuelFactoryId: Int,
     val amount: Double,
@@ -1259,7 +1297,7 @@ data class SupplyForeignFuelFactoryCommand(
 ) : DefaultCommand() {
     override fun name(): String = "Supply Foreign Fuel Factory"
 
-    override fun description(): I18NString = I18NString(
+    override fun description(fromId: Int): I18NString = I18NString(
         listOf(
             NormalString("Send "),
             IntString(0),
@@ -1325,6 +1363,8 @@ data class SupplyForeignFuelFactoryCommand(
 
     override fun canExecute(
         playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
         val hasCarrier = CommandErrorMessage(
@@ -1363,7 +1403,12 @@ data class SupplyForeignFuelFactoryCommand(
         )
     }
 
-    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+    override fun execute(
+        playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
+        universeSettings: UniverseSettings
+    ) {
         val receiverLossFractionPerDistance: Double = playerData.playerInternalData
             .playerScienceData().playerScienceApplicationData.fuelLogisticsLossFractionPerDistance
 
@@ -1403,8 +1448,6 @@ data class SupplyForeignFuelFactoryCommand(
 @Serializable
 data class SupplyForeignResourceFactoryCommand(
     override val toId: Int,
-    override val fromId: Int,
-    override val fromInt4D: Int4D,
     val targetCarrierId: Int,
     val targetResourceFactoryId: Int,
     val amount: Double,
@@ -1412,7 +1455,7 @@ data class SupplyForeignResourceFactoryCommand(
 ) : DefaultCommand() {
     override fun name(): String = "Supply Foreign Resource Factory"
 
-    override fun description(): I18NString = I18NString(
+    override fun description(fromId: Int): I18NString = I18NString(
         listOf(
             NormalString("Send "),
             IntString(0),
@@ -1478,6 +1521,8 @@ data class SupplyForeignResourceFactoryCommand(
 
     override fun canExecute(
         playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
         val hasCarrier = CommandErrorMessage(
@@ -1519,7 +1564,12 @@ data class SupplyForeignResourceFactoryCommand(
         )
     }
 
-    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+    override fun execute(
+        playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
+        universeSettings: UniverseSettings
+    ) {
         val receiverLossFractionPerDistance: Double = playerData.playerInternalData
             .playerScienceData().playerScienceApplicationData.fuelLogisticsLossFractionPerDistance
 
@@ -1557,14 +1607,12 @@ data class SupplyForeignResourceFactoryCommand(
 @Serializable
 data class OpenLocalFuelFactoryCommand(
     override val toId: Int,
-    override val fromId: Int,
-    override val fromInt4D: Int4D,
     val targetCarrierId: Int,
     val targetFuelFactoryId: Int
 ) : DefaultCommand() {
     override fun name(): String = "Open Local Fuel Factory"
 
-    override fun description(): I18NString = I18NString(
+    override fun description(fromId: Int): I18NString = I18NString(
         listOf(
             NormalString("Open a fuel factory with id "),
             IntString(0),
@@ -1587,7 +1635,7 @@ data class OpenLocalFuelFactoryCommand(
     ): CommandErrorMessage {
         val isSelf = CommandErrorMessage(
             playerData.playerId == toId,
-            CommandI18NStringFactory.isNotToSelf(fromId, toId)
+            CommandI18NStringFactory.isNotToSelf(playerData.playerId, toId)
         )
 
         val hasCarrier = CommandErrorMessage(
@@ -1624,6 +1672,8 @@ data class OpenLocalFuelFactoryCommand(
 
     override fun canExecute(
         playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
         val isSelf = CommandErrorMessage(
@@ -1663,7 +1713,12 @@ data class OpenLocalFuelFactoryCommand(
         )
     }
 
-    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+    override fun execute(
+        playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
+        universeSettings: UniverseSettings
+    ) {
         val carrier: MutableCarrierData =
             playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
                 targetCarrierId
@@ -1689,14 +1744,12 @@ data class OpenLocalFuelFactoryCommand(
 @Serializable
 data class CloseLocalFuelFactoryCommand(
     override val toId: Int,
-    override val fromId: Int,
-    override val fromInt4D: Int4D,
     val targetCarrierId: Int,
     val targetFuelFactoryId: Int
 ) : DefaultCommand() {
     override fun name(): String = "Close Local Fuel Factory"
 
-    override fun description(): I18NString = I18NString(
+    override fun description(fromId: Int): I18NString = I18NString(
         listOf(
             NormalString("Close a fuel factory with id "),
             IntString(0),
@@ -1719,7 +1772,7 @@ data class CloseLocalFuelFactoryCommand(
     ): CommandErrorMessage {
         val isSelf = CommandErrorMessage(
             playerData.playerId == toId,
-            CommandI18NStringFactory.isNotToSelf(fromId, toId)
+            CommandI18NStringFactory.isNotToSelf(playerData.playerId, toId)
         )
 
         val hasCarrier = CommandErrorMessage(
@@ -1756,6 +1809,8 @@ data class CloseLocalFuelFactoryCommand(
 
     override fun canExecute(
         playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
         val isSelf = CommandErrorMessage(
@@ -1795,7 +1850,12 @@ data class CloseLocalFuelFactoryCommand(
         )
     }
 
-    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+    override fun execute(
+        playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
+        universeSettings: UniverseSettings
+    ) {
         val carrier: MutableCarrierData =
             playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
                 targetCarrierId
@@ -1821,14 +1881,12 @@ data class CloseLocalFuelFactoryCommand(
 @Serializable
 data class OpenLocalResourceFactoryCommand(
     override val toId: Int,
-    override val fromId: Int,
-    override val fromInt4D: Int4D,
     val targetCarrierId: Int,
     val targetResourceFactoryId: Int
 ) : DefaultCommand() {
     override fun name(): String = "Open Local Resource Factory"
 
-    override fun description(): I18NString = I18NString(
+    override fun description(fromId: Int): I18NString = I18NString(
         listOf(
             NormalString("Open a resource factory with id "),
             IntString(0),
@@ -1851,7 +1909,7 @@ data class OpenLocalResourceFactoryCommand(
     ): CommandErrorMessage {
         val isSelf = CommandErrorMessage(
             playerData.playerId == toId,
-            CommandI18NStringFactory.isNotToSelf(fromId, toId)
+            CommandI18NStringFactory.isNotToSelf(playerData.playerId, toId)
         )
 
         val hasCarrier = CommandErrorMessage(
@@ -1888,6 +1946,8 @@ data class OpenLocalResourceFactoryCommand(
 
     override fun canExecute(
         playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
         val isSelf = CommandErrorMessage(
@@ -1927,7 +1987,12 @@ data class OpenLocalResourceFactoryCommand(
         )
     }
 
-    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+    override fun execute(
+        playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
+        universeSettings: UniverseSettings
+    ) {
         val carrier: MutableCarrierData =
             playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
                 targetCarrierId
@@ -1953,14 +2018,12 @@ data class OpenLocalResourceFactoryCommand(
 @Serializable
 data class CloseLocalResourceFactoryCommand(
     override val toId: Int,
-    override val fromId: Int,
-    override val fromInt4D: Int4D,
     val targetCarrierId: Int,
     val targetResourceFactoryId: Int
 ) : DefaultCommand() {
     override fun name(): String = "Close Local Resource Factory"
 
-    override fun description(): I18NString = I18NString(
+    override fun description(fromId: Int): I18NString = I18NString(
         listOf(
             NormalString("Close a resource factory with id "),
             IntString(0),
@@ -1983,7 +2046,7 @@ data class CloseLocalResourceFactoryCommand(
     ): CommandErrorMessage {
         val isSelf = CommandErrorMessage(
             playerData.playerId == toId,
-            CommandI18NStringFactory.isNotToSelf(fromId, toId)
+            CommandI18NStringFactory.isNotToSelf(playerData.playerId, toId)
         )
 
         val hasCarrier = CommandErrorMessage(
@@ -2020,6 +2083,8 @@ data class CloseLocalResourceFactoryCommand(
 
     override fun canExecute(
         playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
         val isSelf = CommandErrorMessage(
@@ -2059,7 +2124,12 @@ data class CloseLocalResourceFactoryCommand(
         )
     }
 
-    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+    override fun execute(
+        playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
+        universeSettings: UniverseSettings
+    ) {
         val carrier: MutableCarrierData =
             playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
                 targetCarrierId

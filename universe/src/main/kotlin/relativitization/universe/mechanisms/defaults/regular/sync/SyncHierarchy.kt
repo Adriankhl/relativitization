@@ -52,8 +52,6 @@ object SyncHierarchy : Mechanism() {
                 listOf(
                     AddDirectSubordinateCommand(
                         toId = directLeaderData.playerId,
-                        fromId = mutablePlayerData.playerId,
-                        fromInt4D = mutablePlayerData.int4D.toInt4D(),
                     )
                 )
             }

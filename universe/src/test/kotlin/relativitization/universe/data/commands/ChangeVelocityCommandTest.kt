@@ -26,8 +26,6 @@ internal class ChangeVelocityCommandTest {
 
         val command = ChangeVelocityCommand(
             toId = 2,
-            fromId = 1,
-            fromInt4D = view1.getCurrentPlayerData().int4D,
             targetVelocity = Velocity(0.1, 0.0, 0.0),
         )
 

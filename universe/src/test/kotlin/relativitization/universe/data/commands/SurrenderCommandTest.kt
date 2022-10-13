@@ -38,8 +38,6 @@ internal class SurrenderCommandTest {
                     5 to listOf(
                         DeclareWarCommand(
                             toId = 3,
-                            fromId = 5,
-                            fromInt4D = view1At5.getCurrentPlayerData().int4D,
                         )
                     )
                 ),
@@ -91,8 +89,6 @@ internal class SurrenderCommandTest {
                     3 to listOf(
                         SurrenderCommand(
                             toId = 3,
-                            fromId = 3,
-                            fromInt4D = view3At3.getCurrentPlayerData().int4D,
                             targetPlayerId = 5
                         )
                     ),
@@ -157,8 +153,6 @@ internal class SurrenderCommandTest {
                     5 to listOf(
                         DeclareWarCommand(
                             toId = 3,
-                            fromId = 5,
-                            fromInt4D = view1At5.getCurrentPlayerData().int4D,
                         )
                     )
                 ),
@@ -210,16 +204,12 @@ internal class SurrenderCommandTest {
                     3 to listOf(
                         SurrenderCommand(
                             toId = 3,
-                            fromId = 3,
-                            fromInt4D = view3At3.getCurrentPlayerData().int4D,
                             targetPlayerId = 5
                         )
                     ),
                     5 to listOf(
                         SurrenderCommand(
                             toId = 5,
-                            fromId = 5,
-                            fromInt4D = view3At5.getCurrentPlayerData().int4D,
                             targetPlayerId = 3
                         )
                     ),

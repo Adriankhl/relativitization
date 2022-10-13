@@ -17,14 +17,12 @@ import relativitization.universe.utils.RelativitizationLogManager
 @Serializable
 data class AddEventCommand(
     val event: Event,
-    override val fromInt4D: Int4D,
 ) : DefaultCommand() {
     override val toId: Int = event.toId
-    override val fromId: Int = event.fromId
 
     override fun name(): String = "Add Event"
 
-    override fun description(): I18NString = I18NString(
+    override fun description(fromId: Int): I18NString = I18NString(
         listOf(
             NormalString("Add event ("),
             IntString(0),
@@ -39,7 +37,7 @@ data class AddEventCommand(
             toId.toString(),
             fromId.toString(),
         ),
-        event.description()
+        event.description(fromId)
     )
 
     /**
@@ -49,23 +47,19 @@ data class AddEventCommand(
         playerData: MutablePlayerData,
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
-
-        val isIdValid = CommandErrorMessage(
-            isEventPlayerIdValid(),
-            I18NString("Event player id is not valid. ")
-        )
-
         val canAdd = CommandErrorMessage(
             canAddEvent(event, universeSettings),
             I18NString("Cannot add this event by command. ")
         )
 
-        val canSendEvent: CommandErrorMessage = event.canSend(playerData, universeSettings)
+        val canSendEvent: CommandErrorMessage = event.canSend(
+            playerData = playerData,
+            universeSettings = universeSettings
+        )
 
 
         return CommandErrorMessage(
             listOf(
-                isIdValid,
                 canAdd,
                 canSendEvent
             )
@@ -77,6 +71,8 @@ data class AddEventCommand(
      */
     override fun canExecute(
         playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
 
@@ -85,7 +81,11 @@ data class AddEventCommand(
             I18NString("Cannot add this event by command. ")
         )
 
-        val canExecuteEvent = event.canExecute(playerData, universeSettings)
+        val canExecuteEvent = event.canExecute(
+            playerData = playerData,
+            fromId = fromId,
+            universeSettings = universeSettings
+        )
 
         return CommandErrorMessage(
             listOf(
@@ -99,15 +99,15 @@ data class AddEventCommand(
     /**
      * Add event data to player data
      */
-    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
-        val eventData = MutableEventData(event)
+    override fun execute(
+        playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
+        universeSettings: UniverseSettings
+    ) {
+        val eventData = MutableEventData(event, fromId)
         playerData.playerInternalData.addEventData(eventData)
     }
-
-    /**
-     * Check whether the fromId and toId in the event is equal to those in the command
-     */
-    private fun isEventPlayerIdValid(): Boolean = (fromId == event.fromId) && (toId == event.toId)
 
     companion object {
         private val logger = RelativitizationLogManager.getLogger()
@@ -143,14 +143,12 @@ data class AddEventCommand(
 @Serializable
 data class SelectEventChoiceCommand(
     override val toId: Int,
-    override val fromId: Int,
-    override val fromInt4D: Int4D,
     val eventKey: Int,
     val choice: Int,
 ) : DefaultCommand() {
     override fun name(): String = "Select Event Choice"
 
-    override fun description(): I18NString = I18NString(
+    override fun description(fromId: Int): I18NString = I18NString(
         listOf(
             NormalString("Select choice "),
             IntString(0),
@@ -172,7 +170,7 @@ data class SelectEventChoiceCommand(
     ): CommandErrorMessage {
         val isSelf = CommandErrorMessage(
             playerData.playerId == toId,
-            CommandI18NStringFactory.isNotToSelf(fromId, toId)
+            CommandI18NStringFactory.isNotToSelf(playerData.playerId, toId)
         )
 
         return CommandErrorMessage(
@@ -184,6 +182,8 @@ data class SelectEventChoiceCommand(
 
     override fun canExecute(
         playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
         val isSelf = CommandErrorMessage(
@@ -198,7 +198,12 @@ data class SelectEventChoiceCommand(
         )
     }
 
-    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+    override fun execute(
+        playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
+        universeSettings: UniverseSettings
+    ) {
         val eventDataMap: MutableMap<Int, MutableEventData> =
             playerData.playerInternalData.eventDataMap
 

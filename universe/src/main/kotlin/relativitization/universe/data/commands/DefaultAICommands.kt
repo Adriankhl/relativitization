@@ -15,8 +15,6 @@ import relativitization.universe.maths.physics.Int4D
 @Serializable
 data class AddRecentCommandTimeCommand(
     override val toId: Int,
-    override val fromId: Int,
-    override val fromInt4D: Int4D,
     val recentCommandPlayerId: Int,
 ) : DefaultCommand() {
     override fun name(): String = "Add Recent Command Time"
@@ -39,6 +37,8 @@ data class AddRecentCommandTimeCommand(
 
     override fun canExecute(
         playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
         val isSelf = CommandErrorMessage(
@@ -53,7 +53,12 @@ data class AddRecentCommandTimeCommand(
         )
     }
 
-    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+    override fun execute(
+        playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
+        universeSettings: UniverseSettings
+    ) {
         playerData.playerInternalData.aiData().recentCommandTimeMap[recentCommandPlayerId] =
             playerData.int4D.t
     }

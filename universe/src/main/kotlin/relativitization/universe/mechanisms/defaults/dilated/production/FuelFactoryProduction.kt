@@ -176,8 +176,6 @@ object FuelFactoryProduction : Mechanism() {
 
         return SendFuelCommand(
             toId = toId,
-            fromId = mutablePlayerData.playerId,
-            fromInt4D = mutablePlayerData.int4D.toInt4D(),
             amount = outputAmount,
             senderFuelLossFractionPerDistance = mutablePlayerData.playerInternalData.playerScienceData()
                 .playerScienceApplicationData.fuelLogisticsLossFractionPerDistance,

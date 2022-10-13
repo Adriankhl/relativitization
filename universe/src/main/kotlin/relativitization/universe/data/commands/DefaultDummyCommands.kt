@@ -11,12 +11,10 @@ import relativitization.universe.utils.NormalString
 @Serializable
 data class DummyCommand(
     override val toId: Int = -1,
-    override val fromId: Int = -1,
-    override val fromInt4D: Int4D = Int4D(0, 0, 0, 0),
 ) : DefaultCommand() {
     override fun name(): String = "Nothing"
 
-    override fun description(): I18NString = I18NString(
+    override fun description(fromId: Int): I18NString = I18NString(
         listOf(NormalString("Do nothing")),
         listOf(),
     )
@@ -31,7 +29,12 @@ data class DummyCommand(
         )
     }
 
-    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) { }
+    override fun execute(
+        playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
+        universeSettings: UniverseSettings
+    ) { }
 }
 
 /**
@@ -40,13 +43,11 @@ data class DummyCommand(
 @Serializable
 data class CannotSendCommand(
     override val toId: Int = -1,
-    override val fromId: Int = -1,
-    override val fromInt4D: Int4D = Int4D(0, 0, 0, 0),
     val reason: I18NString,
 ) : DefaultCommand() {
     override fun name(): String = "Something Wrong"
 
-    override fun description(): I18NString = reason
+    override fun description(fromId: Int): I18NString = reason
 
     override fun canSend(
         playerData: MutablePlayerData,
@@ -55,10 +56,17 @@ data class CannotSendCommand(
 
     override fun canExecute(
         playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
         universeSettings: UniverseSettings
     ): CommandErrorMessage = CommandErrorMessage(true)
 
-    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) { }
+    override fun execute(
+        playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
+        universeSettings: UniverseSettings
+    ) { }
 }
 
 /**
@@ -67,13 +75,11 @@ data class CannotSendCommand(
 @Serializable
 data class ExecuteWarningCommand(
     override val toId: Int = -1,
-    override val fromId: Int = -1,
-    override val fromInt4D: Int4D = Int4D(0, 0, 0, 0),
     val reason: I18NString,
 ) : DefaultCommand() {
     override fun name(): String = "Warning"
 
-    override fun description(): I18NString = reason
+    override fun description(fromId: Int): I18NString = reason
 
     override fun canSend(
         playerData: MutablePlayerData,
@@ -82,8 +88,15 @@ data class ExecuteWarningCommand(
 
     override fun canExecute(
         playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
         universeSettings: UniverseSettings
     ): CommandErrorMessage = CommandErrorMessage(true)
 
-    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) { }
+    override fun execute(
+        playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
+        universeSettings: UniverseSettings
+    ) { }
 }

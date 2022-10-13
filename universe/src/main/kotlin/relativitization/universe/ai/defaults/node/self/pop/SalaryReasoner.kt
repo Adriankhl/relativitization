@@ -100,8 +100,6 @@ class AdjustSalaryFactorAINode(
             planDataAtPlayer.addCommand(
                 ChangeSalaryFactorCommand(
                     toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                    fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                    fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
                     carrierId = carrierId,
                     popType = popType,
                     salaryFactor = salaryFactor,
@@ -180,8 +178,6 @@ class IncreaseBaseSalaryOption : DualUtilityOption() {
         planDataAtPlayer.addCommand(
             ChangeBaseSalaryCommand(
                 toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
                 baseSalaryPerEmployee = newBaseSalary,
             )
         )
@@ -237,8 +233,6 @@ class DecreaseBaseSalaryOption : DualUtilityOption() {
         planDataAtPlayer.addCommand(
             ChangeBaseSalaryCommand(
                 toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
                 baseSalaryPerEmployee = newBaseSalary,
             )
         )

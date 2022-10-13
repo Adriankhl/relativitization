@@ -74,7 +74,10 @@ class CommandsInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPan
 
         val commandNameLabel = createLabel(command.name(), gdxSettings.normalFontSize)
 
-        val commandDescriptionLabel = createLabel(command.description(), gdxSettings.smallFontSize)
+        val commandDescriptionLabel = createLabel(
+            command.description(game.universeClient.universeClientSettings.playerId),
+            gdxSettings.smallFontSize
+        )
         commandDescriptionLabel.wrap = true
 
         // button to select previous time

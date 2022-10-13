@@ -41,8 +41,6 @@ object SendTax : Mechanism() {
             mutablePlayerData.getLeaderAndSelfIdList().mapIndexed { index, id ->
                 SendFuelCommand(
                     toId = id,
-                    fromId = universeData3DAtPlayer.getCurrentPlayerData().playerId,
-                    fromInt4D = universeData3DAtPlayer.getCurrentPlayerData().int4D,
                     amount = fuelRestMassToSend * fractionList[index],
                     senderFuelLossFractionPerDistance = mutablePlayerData.playerInternalData.playerScienceData()
                         .playerScienceApplicationData.fuelLogisticsLossFractionPerDistance,

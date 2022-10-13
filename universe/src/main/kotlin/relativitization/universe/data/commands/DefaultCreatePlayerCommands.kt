@@ -25,14 +25,12 @@ import relativitization.universe.utils.NormalString
 @Serializable
 data class SplitCarrierCommand(
     override val toId: Int,
-    override val fromId: Int,
-    override val fromInt4D: Int4D,
     val carrierIdList: List<Int>,
     val storageFraction: Double,
 ) : DefaultCommand() {
     override fun name(): String = "Split Carrier"
 
-    override fun description(): I18NString = I18NString(
+    override fun description(fromId: Int): I18NString = I18NString(
         listOf(
             NormalString("Create new player with carriers: "),
             IntString(0),
@@ -49,8 +47,7 @@ data class SplitCarrierCommand(
     ): CommandErrorMessage {
         val isSelf = CommandErrorMessage(
             playerData.playerId == toId,
-
-            CommandI18NStringFactory.isNotToSelf(fromId, toId)
+            CommandI18NStringFactory.isNotToSelf(playerData.playerId, toId)
         )
 
         val isCarrierIdValid = CommandErrorMessage(
@@ -89,6 +86,8 @@ data class SplitCarrierCommand(
 
     override fun canExecute(
         playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
         val isSelf = CommandErrorMessage(
@@ -103,7 +102,12 @@ data class SplitCarrierCommand(
         )
     }
 
-    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+    override fun execute(
+        playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
+        universeSettings: UniverseSettings
+    ) {
         val newPlayerInternalData = MutablePlayerInternalData(
             directLeaderId = playerData.playerId,
             leaderIdList = playerData.getLeaderAndSelfIdList().toMutableList(),
@@ -243,12 +247,10 @@ data class SplitCarrierCommand(
 @Serializable
 data class GrantIndependenceCommand(
     override val toId: Int,
-    override val fromId: Int,
-    override val fromInt4D: Int4D
 ) : DefaultCommand() {
     override fun name(): String = "Grant Independence"
 
-    override fun description(): I18NString = I18NString(
+    override fun description(fromId: Int): I18NString = I18NString(
         listOf(
             NormalString("Grant independence to "),
             IntString(0),
@@ -277,6 +279,8 @@ data class GrantIndependenceCommand(
 
     override fun canExecute(
         playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
         val isDirectLeader = CommandErrorMessage(
@@ -291,7 +295,12 @@ data class GrantIndependenceCommand(
         )
     }
 
-    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+    override fun execute(
+        playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
+        universeSettings: UniverseSettings
+    ) {
         val newLeaderIdList: List<Int> = playerData.playerInternalData.leaderIdList.filter {
             (it != playerData.playerInternalData.directLeaderId) && (it != playerData.playerId)
         }

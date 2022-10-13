@@ -116,7 +116,6 @@ class MoveDirectSubordinateToNearbyEnemyOption(
 
             val event = MoveToDouble3DEvent(
                 toId = directSubordinateId,
-                fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
                 targetDouble3D = enemy.double4D.toDouble3D(),
                 maxSpeed = maxSpeed,
             )
@@ -124,7 +123,6 @@ class MoveDirectSubordinateToNearbyEnemyOption(
             planDataAtPlayer.addCommand(
                 AddEventCommand(
                     event = event,
-                    fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
                 )
             )
         }

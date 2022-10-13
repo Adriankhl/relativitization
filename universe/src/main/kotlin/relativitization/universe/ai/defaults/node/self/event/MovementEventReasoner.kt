@@ -77,7 +77,7 @@ class PickMoveToDouble3DEventDualUtilityOption(
 
         return listOf(
             HierarchyRelationConsideration(
-                otherPlayerId = movementEventData.event.fromId,
+                otherPlayerId = movementEventData.fromId,
                 rankIfSelf = 3,
                 rankIfDirectLeader = 4,
                 rankIfOtherLeader = 2,
@@ -88,7 +88,7 @@ class PickMoveToDouble3DEventDualUtilityOption(
                 bonus = 1.0,
             ),
             RelationConsideration(
-                otherPlayerId = movementEventData.event.fromId,
+                otherPlayerId = movementEventData.fromId,
                 initialMultiplier = 1.0,
                 exponent = 1.01,
                 rank = 0,
@@ -109,15 +109,11 @@ class PickMoveToDouble3DEventDualUtilityOption(
         val commandList: List<Command> = otherEventKeySet.map {
             SelectEventChoiceCommand(
                 toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
                 eventKey = it,
                 choice = 1,
             )
         } + SelectEventChoiceCommand(
             toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-            fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-            fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
             eventKey = eventKey,
             choice = 0,
         )

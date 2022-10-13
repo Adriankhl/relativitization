@@ -12,7 +12,6 @@ import relativitization.universe.data.events.CallAllyToSubordinateWarEvent
 import relativitization.universe.data.events.CallAllyToWarEvent
 import relativitization.universe.data.events.ProposeAllianceEvent
 import relativitization.universe.data.events.ProposePeaceEvent
-import relativitization.universe.maths.physics.Int4D
 
 class DiplomacyInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane>(game) {
     override val infoName: String = "Diplomacy"
@@ -295,8 +294,6 @@ class DiplomacyInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
                 ) {
                     val removeAllyCommand = RemoveAllyCommand(
                         toId = currentPlayerData.playerId,
-                        fromId = currentPlayerData.playerId,
-                        fromInt4D = currentPlayerData.int4D,
                         targetPlayerId = playerData.playerId,
                     )
 
@@ -312,12 +309,10 @@ class DiplomacyInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
                 ) {
                     val proposeAllianceEvent = ProposeAllianceEvent(
                         toId = playerData.playerId,
-                        fromId = currentPlayerData.playerId
                     )
 
                     val addEventCommand = AddEventCommand(
                         proposeAllianceEvent,
-                        fromInt4D = currentPlayerData.int4D,
                     )
 
                     game.universeClient.currentCommand = addEventCommand
@@ -370,8 +365,6 @@ class DiplomacyInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
 
     private fun createCallAllyToWarTable(
         allyIdList: List<Int>,
-        fromId: Int,
-        fromInt4D: Int4D,
         warTargetId: Int,
     ): Table {
         val nestedTable = Table()
@@ -390,13 +383,11 @@ class DiplomacyInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
         ) {
             val event = CallAllyToWarEvent(
                 toId = allySelectBox.selected,
-                fromId = fromId,
                 warTargetId = warTargetId
             )
 
             val addEventCommand = AddEventCommand(
                 event = event,
-                fromInt4D = fromInt4D,
             )
 
             game.universeClient.currentCommand = addEventCommand
@@ -420,8 +411,6 @@ class DiplomacyInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
 
     private fun createCallAllyToSubordinateWarTable(
         allyIdList: List<Int>,
-        fromId: Int,
-        fromInt4D: Int4D,
         subordinateId: Int,
         warTargetId: Int,
     ): Table {
@@ -441,14 +430,12 @@ class DiplomacyInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
         ) {
             val event = CallAllyToSubordinateWarEvent(
                 toId = allySelectBox.selected,
-                fromId = fromId,
                 subordinateId = subordinateId,
                 warTargetId = warTargetId
             )
 
             val addEventCommand = AddEventCommand(
                 event = event,
-                fromInt4D = fromInt4D,
             )
 
             game.universeClient.currentCommand = addEventCommand
@@ -503,8 +490,6 @@ class DiplomacyInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
                     nestedTable.add(
                         createCallAllyToWarTable(
                             allyIdList = allyIdList,
-                            fromId = playerData.playerId,
-                            fromInt4D = playerData.int4D,
                             warTargetId = otherPlayerId,
                         )
                     )
@@ -520,12 +505,10 @@ class DiplomacyInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
                 ) {
                     val proposePeaceEvent = ProposePeaceEvent(
                         toId = otherPlayerId,
-                        fromId = game.universeClient.getCurrentPlayerData().playerId,
                     )
 
                     val addEventCommand = AddEventCommand(
                         proposePeaceEvent,
-                        fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
                     )
 
                     game.universeClient.currentCommand = addEventCommand
@@ -542,8 +525,6 @@ class DiplomacyInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
                 ) {
                     val surrenderCommand = SurrenderCommand(
                         toId = game.universeClient.getCurrentPlayerData().playerId,
-                        fromId = game.universeClient.getCurrentPlayerData().playerId,
-                        fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
                         targetPlayerId = otherPlayerId
                     )
 
@@ -569,10 +550,6 @@ class DiplomacyInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
                     nestedTable.add(
                         createCallAllyToSubordinateWarTable(
                             allyIdList = allyIdList,
-                            fromId = game.universeClient.getUniverseData3D().getCurrentPlayerData()
-                                .playerId,
-                            fromInt4D = game.universeClient.getUniverseData3D()
-                                .getCurrentPlayerData().int4D,
                             subordinateId = playerData.playerId,
                             warTargetId = otherPlayerId,
                         )
@@ -725,8 +702,6 @@ class DiplomacyInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
             ) {
                 val declareWarCommand = DeclareWarCommand(
                     toId = playerData.playerId,
-                    fromId = game.universeClient.getCurrentPlayerData().playerId,
-                    fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
                 )
 
                 game.universeClient.currentCommand = declareWarCommand
@@ -748,8 +723,6 @@ class DiplomacyInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
                 val declareIndependenceToDirectLeaderCommand =
                     DeclareIndependenceToDirectLeaderCommand(
                         toId = playerData.playerId,
-                        fromId = game.universeClient.getCurrentPlayerData().playerId,
-                        fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
                     )
 
                 game.universeClient.currentCommand = declareIndependenceToDirectLeaderCommand
@@ -770,8 +743,6 @@ class DiplomacyInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
             ) {
                 val declareIndependenceToTopLeaderCommand = DeclareIndependenceToTopLeaderCommand(
                     toId = playerData.playerId,
-                    fromId = game.universeClient.getCurrentPlayerData().playerId,
-                    fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
                 )
 
                 game.universeClient.currentCommand = declareIndependenceToTopLeaderCommand

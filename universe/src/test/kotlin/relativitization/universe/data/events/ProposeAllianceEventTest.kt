@@ -23,7 +23,6 @@ internal class ProposeAllianceEventTest {
         )
 
         val view1At1: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
-        val view1At3: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(3)
 
         assert(
             view1At1.getCurrentPlayerData().playerInternalData.diplomacyData().relationData
@@ -32,12 +31,10 @@ internal class ProposeAllianceEventTest {
 
         val event = ProposeAllianceEvent(
             toId = 1,
-            fromId = 3
         )
 
         val command = AddEventCommand(
             event,
-            view1At3.getCurrentPlayerData().int4D,
         )
 
         runBlocking {
@@ -72,8 +69,6 @@ internal class ProposeAllianceEventTest {
                     1 to listOf(
                         SelectEventChoiceCommand(
                             toId = 1,
-                            fromId = 1,
-                            fromInt4D = view2At1.getCurrentPlayerData().int4D,
                             eventKey = 0,
                             choice = 0
                         )

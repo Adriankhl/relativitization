@@ -32,7 +32,7 @@ class SelfReasoner(private val random: Random) : SequenceReasoner() {
         LaboratoryReasoner(random),
         SalaryReasoner(random),
         CarrierReasoner(random),
-        TaxReasoner(random),
+        TaxReasoner(),
         MovementReasoner(random),
         SplitCarrierReasoner(random),
     )

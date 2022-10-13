@@ -29,13 +29,11 @@ import kotlin.math.pow
 @Serializable
 data class SendFuelFromStorageCommand(
     override val toId: Int,
-    override val fromId: Int,
-    override val fromInt4D: Int4D,
     val amount: Double,
     val senderFuelLossFractionPerDistance: Double,
 ) : DefaultCommand() {
     override fun name(): String = "Send Fuel (Storage)"
-    override fun description(): I18NString = I18NString(
+    override fun description(fromId: Int): I18NString = I18NString(
         listOf(
             NormalString("Send "),
             IntString(0),
@@ -107,6 +105,8 @@ data class SendFuelFromStorageCommand(
 
     override fun canExecute(
         playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
         val isFuelIncreaseEnable = CommandErrorMessage(
@@ -121,7 +121,12 @@ data class SendFuelFromStorageCommand(
         )
     }
 
-    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+    override fun execute(
+        playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
+        universeSettings: UniverseSettings
+    ) {
         val receiverLossFractionPerDistance: Double =
             playerData.playerInternalData.playerScienceData()
                 .playerScienceApplicationData.fuelLogisticsLossFractionPerDistance
@@ -155,7 +160,7 @@ data class SendFuelFromStorageCommand(
         } else {
             100.0 * changeFraction
         }
-        val duration: Int = 10
+        val duration = 10
 
         playerData.playerInternalData.modifierData().diplomacyModifierData.addReceiveFuelToRelationModifier(
             otherPlayerId = fromId,
@@ -185,8 +190,6 @@ data class SendFuelFromStorageCommand(
 @Serializable
 data class SendResourceFromStorageCommand(
     override val toId: Int,
-    override val fromId: Int,
-    override val fromInt4D: Int4D,
     val resourceType: ResourceType,
     val resourceQualityClass: ResourceQualityClass,
     val resourceQualityData: ResourceQualityData,
@@ -195,7 +198,7 @@ data class SendResourceFromStorageCommand(
 ) : DefaultCommand() {
     override fun name(): String = "Send Resource (Storage)"
 
-    override fun description(): I18NString = I18NString(
+    override fun description(fromId: Int): I18NString = I18NString(
         listOf(
             NormalString("Send "),
             IntString(0),
@@ -304,12 +307,19 @@ data class SendResourceFromStorageCommand(
 
     override fun canExecute(
         playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
         return CommandErrorMessage(true)
     }
 
-    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+    override fun execute(
+        playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
+        universeSettings: UniverseSettings
+    ) {
         val receiverLossFractionPerDistance: Double =
             playerData.playerInternalData.playerScienceData().playerScienceApplicationData
                 .resourceLogisticsLossFractionPerDistance
@@ -349,8 +359,6 @@ data class SendResourceFromStorageCommand(
 @Serializable
 data class SendFuelCommand(
     override val toId: Int,
-    override val fromId: Int,
-    override val fromInt4D: Int4D,
     val amount: Double,
     val senderFuelLossFractionPerDistance: Double,
 ) : DefaultCommand() {
@@ -363,6 +371,8 @@ data class SendFuelCommand(
 
     override fun canExecute(
         playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
         val isFuelIncreaseEnable = CommandErrorMessage(
@@ -378,7 +388,12 @@ data class SendFuelCommand(
     }
 
 
-    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+    override fun execute(
+        playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
+        universeSettings: UniverseSettings
+    ) {
         val receiverLossFractionPerDistance: Double =
             playerData.playerInternalData.playerScienceData().playerScienceApplicationData.fuelLogisticsLossFractionPerDistance
 
@@ -416,8 +431,6 @@ data class SendFuelCommand(
 @Serializable
 data class SendResourceCommand(
     override val toId: Int,
-    override val fromId: Int,
-    override val fromInt4D: Int4D,
     val resourceType: ResourceType,
     val resourceQualityData: ResourceQualityData,
     val amount: Double,
@@ -430,7 +443,12 @@ data class SendResourceCommand(
         universeSettings: UniverseSettings
     ): CommandErrorMessage = CommandErrorMessage(false)
 
-    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+    override fun execute(
+        playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
+        universeSettings: UniverseSettings
+    ) {
         val receiverLossFractionPerDistance: Double = playerData.playerInternalData
             .playerScienceData().playerScienceApplicationData
             .resourceLogisticsLossFractionPerDistance
@@ -475,8 +493,6 @@ data class SendResourceCommand(
 @Serializable
 data class SendResourceToPopCommand(
     override val toId: Int,
-    override val fromId: Int,
-    override val fromInt4D: Int4D,
     val targetCarrierId: Int,
     val targetPopType: PopType,
     val resourceType: ResourceType,
@@ -491,7 +507,12 @@ data class SendResourceToPopCommand(
         universeSettings: UniverseSettings
     ): CommandErrorMessage = CommandErrorMessage(false)
 
-    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+    override fun execute(
+        playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
+        universeSettings: UniverseSettings
+    ) {
         val receiverLossFractionPerDistance: Double = playerData.playerInternalData
             .playerScienceData().playerScienceApplicationData
             .resourceLogisticsLossFractionPerDistance
@@ -543,8 +564,6 @@ data class SendResourceToPopCommand(
 @Serializable
 data class PopBuyResourceCommand(
     override val toId: Int,
-    override val fromId: Int,
-    override val fromInt4D: Int4D,
     val fromCarrierId: Int,
     val fromPopType: PopType,
     val targetTopLeaderId: Int,
@@ -564,6 +583,8 @@ data class PopBuyResourceCommand(
 
     override fun canExecute(
         playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
         val validTopLeaderId = CommandErrorMessage(
@@ -585,7 +606,12 @@ data class PopBuyResourceCommand(
     }
 
 
-    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+    override fun execute(
+        playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
+        universeSettings: UniverseSettings
+    ) {
         val receiverLossFractionPerDistance: Double =
             playerData.playerInternalData.playerScienceData()
                 .playerScienceApplicationData.fuelLogisticsLossFractionPerDistance
@@ -648,8 +674,6 @@ data class PopBuyResourceCommand(
 @Serializable
 data class PlayerBuyResourceCommand(
     override val toId: Int,
-    override val fromId: Int,
-    override val fromInt4D: Int4D,
     val targetTopLeaderId: Int,
     val targetCarrierId: Int,
     val targetPlayerIdOfExportCenter: Int,
@@ -661,7 +685,7 @@ data class PlayerBuyResourceCommand(
 ) : DefaultCommand() {
     override fun name(): String = "Player Buy Resource"
 
-    override fun description(): I18NString = I18NString(
+    override fun description(fromId: Int): I18NString = I18NString(
         listOf(
             NormalString("Send "),
             IntString(0),
@@ -777,6 +801,8 @@ data class PlayerBuyResourceCommand(
 
     override fun canExecute(
         playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
         val validTopLeaderId = CommandErrorMessage(
@@ -797,7 +823,12 @@ data class PlayerBuyResourceCommand(
         )
     }
 
-    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+    override fun execute(
+        playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
+        universeSettings: UniverseSettings
+    ) {
         val receiverLossFractionPerDistance: Double = playerData.playerInternalData
             .playerScienceData().playerScienceApplicationData.fuelLogisticsLossFractionPerDistance
 

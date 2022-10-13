@@ -21,11 +21,10 @@ import kotlin.random.Random
 @Serializable
 data class ProposePeaceEvent(
     override val toId: Int,
-    override val fromId: Int,
 ) : DefaultEvent() {
     override fun name(): String = "Propose Peace"
 
-    override fun description(): I18NString = I18NString(
+    override fun description(fromId: Int): I18NString = I18NString(
         listOf(
             NormalString("Propose peace between player "),
             IntString(0),
@@ -39,7 +38,7 @@ data class ProposePeaceEvent(
         )
     )
 
-    override fun choiceDescription(): Map<Int, I18NString> = mapOf(
+    override fun choiceDescription(fromId: Int): Map<Int, I18NString> = mapOf(
         0 to I18NString("Accept"),
         1 to I18NString("Reject"),
     )
@@ -62,13 +61,14 @@ data class ProposePeaceEvent(
 
     override fun canExecute(
         playerData: MutablePlayerData,
+        fromId: Int,
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
         val isEventUnique = CommandErrorMessage(
             playerData.playerInternalData.eventDataMap.filterValues {
                 it.event is ProposePeaceEvent
             }.values.all {
-                it.event.fromId != fromId
+                it.fromId != fromId
             },
             I18NString("Event already exists. ")
         )
@@ -89,6 +89,7 @@ data class ProposePeaceEvent(
 
     override fun shouldCancel(
         mutablePlayerData: MutablePlayerData,
+        fromId: Int,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
         universeSettings: UniverseSettings
     ): Boolean {
@@ -98,6 +99,7 @@ data class ProposePeaceEvent(
 
     override fun choiceAction(
         mutablePlayerData: MutablePlayerData,
+        fromId: Int,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
         universeSettings: UniverseSettings,
     ): Map<Int, () -> List<Command>> = mapOf(
@@ -107,8 +109,6 @@ data class ProposePeaceEvent(
             listOf(
                 AcceptPeaceCommand(
                     toId = fromId,
-                    fromId = toId,
-                    fromInt4D = mutablePlayerData.int4D.toInt4D(),
                 )
             )
         },
@@ -119,6 +119,7 @@ data class ProposePeaceEvent(
 
     override fun defaultChoice(
         mutablePlayerData: MutablePlayerData,
+        fromId: Int,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
         universeSettings: UniverseSettings,
         random: Random
@@ -132,11 +133,10 @@ data class ProposePeaceEvent(
 @Serializable
 data class ProposeAllianceEvent(
     override val toId: Int,
-    override val fromId: Int,
 ) : DefaultEvent() {
     override fun name(): String = "Propose Alliance"
 
-    override fun description(): I18NString = I18NString(
+    override fun description(fromId: Int): I18NString = I18NString(
         listOf(
             NormalString("Propose alliance between player "),
             IntString(0),
@@ -150,7 +150,7 @@ data class ProposeAllianceEvent(
         )
     )
 
-    override fun choiceDescription(): Map<Int, I18NString> = mapOf(
+    override fun choiceDescription(fromId: Int): Map<Int, I18NString> = mapOf(
         0 to I18NString("Accept"),
         1 to I18NString("Reject"),
     )
@@ -173,13 +173,14 @@ data class ProposeAllianceEvent(
 
     override fun canExecute(
         playerData: MutablePlayerData,
+        fromId: Int,
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
         val isEventUnique = CommandErrorMessage(
             playerData.playerInternalData.eventDataMap.filterValues {
                 it.event is ProposeAllianceEvent
             }.values.all {
-                it.event.fromId != fromId
+                it.fromId != fromId
             },
             I18NString("Event already exists. ")
         )
@@ -205,6 +206,7 @@ data class ProposeAllianceEvent(
 
     override fun shouldCancel(
         mutablePlayerData: MutablePlayerData,
+        fromId: Int,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
         universeSettings: UniverseSettings
     ): Boolean {
@@ -219,6 +221,7 @@ data class ProposeAllianceEvent(
 
     override fun choiceAction(
         mutablePlayerData: MutablePlayerData,
+        fromId: Int,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
         universeSettings: UniverseSettings,
     ): Map<Int, () -> List<Command>> = mapOf(
@@ -232,8 +235,6 @@ data class ProposeAllianceEvent(
                 listOf(
                     AcceptAllianceCommand(
                         toId = fromId,
-                        fromId = toId,
-                        fromInt4D = mutablePlayerData.int4D.toInt4D(),
                     )
                 )
             } else {
@@ -247,6 +248,7 @@ data class ProposeAllianceEvent(
 
     override fun defaultChoice(
         mutablePlayerData: MutablePlayerData,
+        fromId: Int,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
         universeSettings: UniverseSettings,
         random: Random
@@ -259,11 +261,10 @@ data class ProposeAllianceEvent(
 @Serializable
 data class CallAllyToWarEvent(
     override val toId: Int,
-    override val fromId: Int,
     val warTargetId: Int,
 ) : DefaultEvent() {
     override fun name(): String = "Call Ally To War"
-    override fun description(): I18NString = I18NString(
+    override fun description(fromId: Int): I18NString = I18NString(
         listOf(
             NormalString("Player "),
             IntString(0),
@@ -280,7 +281,7 @@ data class CallAllyToWarEvent(
         )
     )
 
-    override fun choiceDescription(): Map<Int, I18NString> = mapOf(
+    override fun choiceDescription(fromId: Int): Map<Int, I18NString> = mapOf(
         0 to I18NString("Accept"),
         1 to I18NString("Reject"),
     )
@@ -310,12 +311,13 @@ data class CallAllyToWarEvent(
 
     override fun canExecute(
         playerData: MutablePlayerData,
+        fromId: Int,
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
         val isEventUnique = CommandErrorMessage(
             playerData.playerInternalData.eventDataMap.values.all {
                 if (it.event is CallAllyToWarEvent) {
-                    (it.event.fromId != fromId) || (it.event.warTargetId != warTargetId)
+                    (it.fromId != fromId) || (it.event.warTargetId != warTargetId)
                 } else {
                     true
                 }
@@ -338,6 +340,7 @@ data class CallAllyToWarEvent(
 
     override fun shouldCancel(
         mutablePlayerData: MutablePlayerData,
+        fromId: Int,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
         universeSettings: UniverseSettings
     ): Boolean {
@@ -363,6 +366,7 @@ data class CallAllyToWarEvent(
 
     override fun choiceAction(
         mutablePlayerData: MutablePlayerData,
+        fromId: Int,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
         universeSettings: UniverseSettings,
     ): Map<Int, () -> List<Command>> = mapOf(
@@ -389,6 +393,7 @@ data class CallAllyToWarEvent(
 
     override fun defaultChoice(
         mutablePlayerData: MutablePlayerData,
+        fromId: Int,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
         universeSettings: UniverseSettings,
         random: Random
@@ -401,12 +406,11 @@ data class CallAllyToWarEvent(
 @Serializable
 data class CallAllyToSubordinateWarEvent(
     override val toId: Int,
-    override val fromId: Int,
     val subordinateId: Int,
     val warTargetId: Int,
 ) : DefaultEvent() {
     override fun name(): String = "Call Ally To Subordinate War"
-    override fun description(): I18NString = I18NString(
+    override fun description(fromId: Int): I18NString = I18NString(
         listOf(
             NormalString("Player "),
             IntString(0),
@@ -426,7 +430,7 @@ data class CallAllyToSubordinateWarEvent(
         )
     )
 
-    override fun choiceDescription(): Map<Int, I18NString> = mapOf(
+    override fun choiceDescription(fromId: Int): Map<Int, I18NString> = mapOf(
         0 to I18NString("Accept"),
         1 to I18NString("Reject"),
     )
@@ -442,7 +446,7 @@ data class CallAllyToSubordinateWarEvent(
 
         val isSubordinate = CommandErrorMessage(
             playerData.isSubOrdinate(subordinateId),
-            CommandI18NStringFactory.isNotSubordinate(fromId, subordinateId)
+            CommandI18NStringFactory.isNotSubordinate(playerData.playerId, subordinateId)
         )
 
         val hasWar = CommandErrorMessage(
@@ -462,12 +466,13 @@ data class CallAllyToSubordinateWarEvent(
 
     override fun canExecute(
         playerData: MutablePlayerData,
+        fromId: Int,
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
         val isEventUnique = CommandErrorMessage(
             playerData.playerInternalData.eventDataMap.values.all {
                 if (it.event is CallAllyToSubordinateWarEvent) {
-                    (it.event.fromId != fromId) ||
+                    (it.fromId != fromId) ||
                             (it.event.warTargetId != warTargetId) ||
                             (it.event.subordinateId != subordinateId)
                 } else {
@@ -492,6 +497,7 @@ data class CallAllyToSubordinateWarEvent(
 
     override fun shouldCancel(
         mutablePlayerData: MutablePlayerData,
+        fromId: Int,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
         universeSettings: UniverseSettings
     ): Boolean {
@@ -517,6 +523,7 @@ data class CallAllyToSubordinateWarEvent(
 
     override fun choiceAction(
         mutablePlayerData: MutablePlayerData,
+        fromId: Int,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
         universeSettings: UniverseSettings,
     ): Map<Int, () -> List<Command>> = mapOf(
@@ -551,6 +558,7 @@ data class CallAllyToSubordinateWarEvent(
 
     override fun defaultChoice(
         mutablePlayerData: MutablePlayerData,
+        fromId: Int,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
         universeSettings: UniverseSettings,
         random: Random

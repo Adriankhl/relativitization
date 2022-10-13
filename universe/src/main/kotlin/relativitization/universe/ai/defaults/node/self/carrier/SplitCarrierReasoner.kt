@@ -86,8 +86,6 @@ class SplitCarrierOption(private val random: Random) : DualUtilityOption() {
             planDataAtPlayer.addCommand(
                 SplitCarrierCommand(
                     toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                    fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                    fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
                     carrierIdList = carrierIdList.take(1),
                     storageFraction = 0.3,
                 )

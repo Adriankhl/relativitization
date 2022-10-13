@@ -97,7 +97,6 @@ class MoveToLowerDensityCubeOption(private val random: Random) : DualUtilityOpti
 
             val event = MoveToDouble3DEvent(
                 toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
                 targetDouble3D = targetInt3D.toDouble3DCenter(),
                 maxSpeed = 0.1
             )
@@ -105,7 +104,6 @@ class MoveToLowerDensityCubeOption(private val random: Random) : DualUtilityOpti
             planDataAtPlayer.addCommand(
                 AddEventCommand(
                     event = event,
-                    fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
                 )
             )
         }
@@ -196,7 +194,6 @@ class MoveToEnemyOption(private val random: Random) : DualUtilityOption() {
 
             val event = MoveToDouble3DEvent(
                 toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
                 targetDouble3D = enemy.double4D.toDouble3D(),
                 maxSpeed = maxSpeed,
             )
@@ -204,7 +201,6 @@ class MoveToEnemyOption(private val random: Random) : DualUtilityOption() {
             planDataAtPlayer.addCommand(
                 AddEventCommand(
                     event = event,
-                    fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
                 )
             )
         }

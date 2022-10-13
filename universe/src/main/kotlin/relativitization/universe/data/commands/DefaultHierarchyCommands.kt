@@ -13,8 +13,6 @@ import relativitization.universe.utils.I18NString
 @Serializable
 data class AddDirectSubordinateCommand(
     override val toId: Int,
-    override val fromId: Int,
-    override val fromInt4D: Int4D
 ) : DefaultCommand() {
     override fun name(): String = "Add Direct Subordinate"
     override fun canSend(
@@ -24,7 +22,12 @@ data class AddDirectSubordinateCommand(
         return CommandErrorMessage(false)
     }
 
-    override fun canExecute(playerData: MutablePlayerData, universeSettings: UniverseSettings): CommandErrorMessage {
+    override fun canExecute(
+        playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
+        universeSettings: UniverseSettings
+    ): CommandErrorMessage {
         val isNotLeader = CommandErrorMessage(
             !playerData.isLeaderOrSelf(fromId),
             I18NString("Is not leader of self. ")
@@ -37,7 +40,12 @@ data class AddDirectSubordinateCommand(
         )
     }
 
-    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+    override fun execute(
+        playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
+        universeSettings: UniverseSettings
+    ) {
         playerData.addDirectSubordinateId(fromId)
     }
 }

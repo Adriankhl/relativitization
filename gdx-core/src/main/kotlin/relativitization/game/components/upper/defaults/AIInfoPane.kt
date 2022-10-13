@@ -187,7 +187,10 @@ class AIInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane>(gam
 
         nestedTable.row().space(10f)
 
-        val commandDescriptionLabel = createLabel(command.description(), gdxSettings.smallFontSize)
+        val commandDescriptionLabel = createLabel(
+            command.description(game.universeClient.universeClientSettings.playerId),
+            gdxSettings.smallFontSize
+        )
         commandDescriptionLabel.wrap = true
         nestedTable.add(commandDescriptionLabel).growX().colspan(2)
 

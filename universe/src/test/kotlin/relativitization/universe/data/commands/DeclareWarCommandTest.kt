@@ -41,8 +41,6 @@ internal class DeclareWarCommandTest {
                     5 to listOf(
                         DeclareWarCommand(
                             toId = 6,
-                            fromId = 5,
-                            fromInt4D = view1At5.getCurrentPlayerData().int4D,
                         )
                     )
                 ),

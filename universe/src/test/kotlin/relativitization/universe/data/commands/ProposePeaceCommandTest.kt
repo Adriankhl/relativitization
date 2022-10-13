@@ -38,8 +38,6 @@ internal class ProposePeaceCommandTest {
                     5 to listOf(
                         DeclareWarCommand(
                             toId = 3,
-                            fromId = 5,
-                            fromInt4D = view1At5.getCurrentPlayerData().int4D,
                         )
                     )
                 ),
@@ -88,11 +86,9 @@ internal class ProposePeaceCommandTest {
 
         val proposePeaceEvent = ProposePeaceEvent(
             toId = 5,
-            fromId = 3,
         )
         val addEventCommand = AddEventCommand(
             proposePeaceEvent,
-            fromInt4D = view3At3.getCurrentPlayerData().int4D,
         )
 
         runBlocking {
@@ -128,8 +124,6 @@ internal class ProposePeaceCommandTest {
                     5 to listOf(
                         SelectEventChoiceCommand(
                             toId = 5,
-                            fromId = 5,
-                            fromInt4D = view4At5.getCurrentPlayerData().int4D,
                             eventKey = 0,
                             choice = 0
                         )

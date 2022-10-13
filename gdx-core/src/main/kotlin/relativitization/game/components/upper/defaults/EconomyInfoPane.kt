@@ -266,8 +266,6 @@ class EconomyInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane
                 val changeFuelRestMassTargetProportionCommand =
                     ChangeFuelRestMassTargetProportionCommand(
                         toId = playerData.playerId,
-                        fromId = game.universeClient.getCurrentPlayerData().playerId,
-                        fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
                         fuelRestMassTargetProportionData = FuelRestMassTargetProportionData(
                             storage = targetStorageSliderContainer.actor.value.toDouble(),
                             movement = targetMovementSliderContainer.actor.value.toDouble(),
@@ -345,8 +343,6 @@ class EconomyInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane
         ) {
             val sendFuelFromStorageCommand = SendFuelFromStorageCommand(
                 toId = playerData.playerId,
-                fromId = game.universeClient.getCurrentPlayerData().playerId,
-                fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
                 amount = game.universeClient.getCurrentPlayerData().playerInternalData.physicsData()
                     .fuelRestMassData.storage * sendFuelSliderContainer.actor.value,
                 senderFuelLossFractionPerDistance = game.universeClient.getCurrentPlayerData()
@@ -519,8 +515,6 @@ class EconomyInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane
             ) {
                 val changeResourceTargetProportionCommand = ChangeResourceTargetProportionCommand(
                     toId = playerData.playerId,
-                    fromId = game.universeClient.getCurrentPlayerData().playerId,
-                    fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
                     resourceType = selectedResourceType,
                     resourceQualityClass = selectedResourceQualityClass,
                     resourceTargetProportionData = ResourceTargetProportionData(
@@ -587,8 +581,6 @@ class EconomyInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane
         ) {
             val sendResourceFromStorageCommand = SendResourceFromStorageCommand(
                 toId = playerData.playerId,
-                fromId = game.universeClient.getCurrentPlayerData().playerId,
-                fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
                 resourceType = selectedResourceType,
                 resourceQualityClass = selectedResourceQualityClass,
                 resourceQualityData = singleResourceData.resourceQuality,
@@ -710,8 +702,6 @@ class EconomyInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane
         ) {
             val changeDefaultImportTariffCommand = ChangeDefaultImportTariffCommand(
                 toId = playerData.playerId,
-                fromId = game.universeClient.getCurrentPlayerData().playerId,
-                fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
                 resourceType = selectedResourceType,
                 rate = newImportTariff.value,
             )
@@ -765,8 +755,6 @@ class EconomyInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane
         ) {
             val changeDefaultExportTariffCommand = ChangeDefaultExportTariffCommand(
                 toId = playerData.playerId,
-                fromId = game.universeClient.getCurrentPlayerData().playerId,
-                fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
                 resourceType = selectedResourceType,
                 rate = newExportTariff.value,
             )
@@ -829,8 +817,6 @@ class EconomyInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane
         ) {
             val changeLowIncomeTaxCommand = ChangeLowIncomeTaxCommand(
                 toId = playerData.playerId,
-                fromId = game.universeClient.getCurrentPlayerData().playerId,
-                fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
                 rate = newLowIncomeTax.value,
             )
 
@@ -882,8 +868,6 @@ class EconomyInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane
         ) {
             val changeMiddleIncomeTaxCommand = ChangeMiddleIncomeTaxCommand(
                 toId = playerData.playerId,
-                fromId = game.universeClient.getCurrentPlayerData().playerId,
-                fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
                 rate = newMiddleIncomeTax.value,
             )
 
@@ -935,8 +919,6 @@ class EconomyInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane
         ) {
             val changeHighIncomeTaxCommand = ChangeHighIncomeTaxCommand(
                 toId = playerData.playerId,
-                fromId = game.universeClient.getCurrentPlayerData().playerId,
-                fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
                 rate = newHighIncomeTax.value,
             )
 
@@ -988,8 +970,6 @@ class EconomyInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane
         ) {
             val changeLowMiddleBoundaryCommand = ChangeLowMiddleBoundaryCommand(
                 toId = playerData.playerId,
-                fromId = game.universeClient.getCurrentPlayerData().playerId,
-                fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
                 boundary = newLowMiddleIncomeBoundary.value,
             )
 
@@ -1042,8 +1022,6 @@ class EconomyInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane
         ) {
             val changeMiddleHighBoundaryCommand = ChangeMiddleHighBoundaryCommand(
                 toId = playerData.playerId,
-                fromId = game.universeClient.getCurrentPlayerData().playerId,
-                fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
                 boundary = newMiddleHighIncomeBoundary.value,
             )
 

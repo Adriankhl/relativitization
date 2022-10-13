@@ -187,8 +187,6 @@ class SpaceConflictDeclareWarOption(
         planDataAtPlayer.addCommand(
             DeclareWarCommand(
                 toId = targetPlayerId,
-                fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
             )
         )
     }
@@ -342,8 +340,6 @@ class DeclareIndependenceToDirectLeaderOption(
         planDataAtPlayer.addCommand(
             DeclareIndependenceToDirectLeaderCommand(
                 toId = planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData.directLeaderId,
-                fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
             )
         )
     }
@@ -425,8 +421,6 @@ class DeclareIndependenceToTopLeaderOption(
         planDataAtPlayer.addCommand(
             DeclareIndependenceToTopLeaderCommand(
                 toId = planDataAtPlayer.getCurrentMutablePlayerData().topLeaderId(),
-                fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
             )
         )
     }

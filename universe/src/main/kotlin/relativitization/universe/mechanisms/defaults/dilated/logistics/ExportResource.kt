@@ -277,8 +277,6 @@ object ExportResource : Mechanism() {
 
                 SendResourceCommand(
                     toId = mutablePlayerSingleExportData.targetPlayerId,
-                    fromId = mutablePlayerData.playerId,
-                    fromInt4D = mutablePlayerData.int4D.toInt4D(),
                     resourceType = mutablePlayerSingleExportData.resourceType,
                     resourceQualityData = resourceQualityData,
                     amount = amount,
@@ -363,8 +361,6 @@ object ExportResource : Mechanism() {
 
                         SendResourceToPopCommand(
                             toId = ownerPlayerId,
-                            fromId = mutablePlayerData.playerId,
-                            fromInt4D = mutablePlayerData.int4D.toInt4D(),
                             targetCarrierId = carrierId,
                             targetPopType = popType,
                             resourceType = mutablePopSingleExportData.resourceType,

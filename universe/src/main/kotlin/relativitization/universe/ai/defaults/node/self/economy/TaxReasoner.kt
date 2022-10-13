@@ -5,14 +5,13 @@ import relativitization.universe.ai.defaults.utils.PlanState
 import relativitization.universe.ai.defaults.utils.SequenceReasoner
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.commands.*
-import kotlin.random.Random
 
-class TaxReasoner(private val random: Random) : SequenceReasoner() {
+class TaxReasoner : SequenceReasoner() {
     override fun getSubNodeList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<AINode> = listOf(
-        IncomeBoundaryReasoner(random),
+        IncomeBoundaryReasoner(),
         IncomeTaxReasoner(),
     )
 }
@@ -20,7 +19,7 @@ class TaxReasoner(private val random: Random) : SequenceReasoner() {
 /**
  * Set the boundary of low, middle and high income
  */
-class IncomeBoundaryReasoner(private val random: Random) : SequenceReasoner() {
+class IncomeBoundaryReasoner : SequenceReasoner() {
     override fun getSubNodeList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
@@ -40,8 +39,6 @@ class LowMiddleIncomeBoundaryAINode : AINode() {
             planDataAtPlayer.addCommand(
                 ChangeLowMiddleBoundaryCommand(
                     toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                    fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                    fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
                     boundary = 1E-20,
                 )
             )
@@ -59,8 +56,6 @@ class MiddleHighIncomeBoundaryAINode : AINode() {
             planDataAtPlayer.addCommand(
                 ChangeMiddleHighBoundaryCommand(
                     toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                    fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                    fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
                     boundary = 1E-15,
                 )
             )
@@ -91,8 +86,6 @@ class LowIncomeTaxAINode : AINode() {
             planDataAtPlayer.addCommand(
                 ChangeLowIncomeTaxCommand(
                     toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                    fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                    fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
                     rate = 0.001,
                 )
             )
@@ -109,8 +102,6 @@ class MiddleIncomeTaxAINode : AINode() {
             planDataAtPlayer.addCommand(
                 ChangeMiddleIncomeTaxCommand(
                     toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                    fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                    fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
                     rate = 0.01,
                 )
             )
@@ -127,8 +118,6 @@ class HighIncomeTaxAINode : AINode() {
             planDataAtPlayer.addCommand(
                 ChangeHighIncomeTaxCommand(
                     toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                    fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                    fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
                     rate = 0.1,
                 )
             )

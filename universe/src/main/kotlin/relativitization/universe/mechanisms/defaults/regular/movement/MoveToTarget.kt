@@ -64,14 +64,14 @@ object MoveToTarget : Mechanism() {
 
             val changeVelocityCommand = ChangeVelocityCommand(
                 toId = mutablePlayerData.playerId,
-                fromId = mutablePlayerData.playerId,
-                fromInt4D = mutablePlayerData.int4D.toInt4D(),
                 targetVelocity = targetVelocityData.newVelocity
             )
 
             changeVelocityCommand.checkAndExecute(
-                mutablePlayerData,
-                universeData3DAtPlayer.universeSettings
+                playerData = mutablePlayerData,
+                fromId = mutablePlayerData.playerId,
+                fromInt4D = mutablePlayerData.int4D.toInt4D(),
+                universeSettings = universeData3DAtPlayer.universeSettings
             )
         }
 

@@ -22,9 +22,10 @@ object ProcessEvents : Mechanism() {
         // Remove if the event should be canceled, before the event generate any commands
         mutablePlayerData.playerInternalData.eventDataMap.values.removeAll {
             it.event.shouldCancel(
-                mutablePlayerData,
-                universeData3DAtPlayer,
-                universeSettings
+                mutablePlayerData = mutablePlayerData,
+                fromId = it.fromId,
+                universeData3DAtPlayer = universeData3DAtPlayer,
+                universeSettings = universeSettings
             )
         }
 
@@ -35,6 +36,7 @@ object ProcessEvents : Mechanism() {
             }.flatMap {
                 val choiceMap: Map<Int, () -> List<Command>> = it.event.choiceAction(
                     mutablePlayerData = mutablePlayerData,
+                    fromId = it.fromId,
                     universeData3DAtPlayer = universeData3DAtPlayer,
                     universeSettings = universeSettings
                 )
@@ -59,19 +61,21 @@ object ProcessEvents : Mechanism() {
         // For all outdated event, get the default choice
         val outdatedCommandList: List<Command> = mutablePlayerData.playerInternalData.eventDataMap
             .values.filter {
-                it.eventRecordData.stayCounter > it.event.stayTime()
+                it.eventRecordData.stayCounter > it.event.stayTime(it.fromId)
             }.flatMap {
                 val choiceMap: Map<Int, () -> List<Command>> = it.event.choiceAction(
                     mutablePlayerData = mutablePlayerData,
+                    fromId = it.fromId,
                     universeData3DAtPlayer = universeData3DAtPlayer,
                     universeSettings = universeSettings
                 )
 
                 val defaultChoice: Int = it.event.defaultChoice(
-                    mutablePlayerData,
-                    universeData3DAtPlayer,
-                    universeSettings,
-                    random,
+                    mutablePlayerData = mutablePlayerData,
+                    fromId = it.fromId,
+                    universeData3DAtPlayer = universeData3DAtPlayer,
+                    universeSettings = universeSettings,
+                    random = random,
                 )
 
                 if (choiceMap.containsKey(defaultChoice)) {
@@ -84,7 +88,7 @@ object ProcessEvents : Mechanism() {
 
         // Remove all outdated event, after the command is generated from event
         mutablePlayerData.playerInternalData.eventDataMap.values.removeAll {
-            it.eventRecordData.stayCounter > it.event.stayTime()
+            it.eventRecordData.stayCounter > it.event.stayTime(it.fromId)
         }
 
         return commandList + outdatedCommandList

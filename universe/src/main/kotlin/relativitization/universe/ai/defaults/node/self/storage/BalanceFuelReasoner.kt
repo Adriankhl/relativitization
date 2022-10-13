@@ -49,8 +49,6 @@ class BalanceFuelProportionAINode : AINode() {
             planDataAtPlayer.addCommand(
                 ChangeFuelRestMassTargetProportionCommand(
                     toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                    fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                    fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
                     fuelRestMassTargetProportionData = DataSerializer.copy(fuelRestMassTargetProportionData),
                 )
             )

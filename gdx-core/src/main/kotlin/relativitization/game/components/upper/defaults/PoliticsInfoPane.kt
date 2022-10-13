@@ -110,12 +110,10 @@ class PoliticsInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPan
         ) {
             val askToMergeEvent = AskToMergeCarrierEvent(
                 toId = playerData.playerId,
-                fromId = game.universeClient.getCurrentPlayerData().playerId,
             )
 
             val addEventCommand = AddEventCommand(
                 event = askToMergeEvent,
-                fromInt4D = game.universeClient.getCurrentPlayerData().int4D
             )
 
             game.universeClient.currentCommand = addEventCommand
@@ -136,8 +134,6 @@ class PoliticsInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPan
         ) {
             val grantIndependenceCommand = GrantIndependenceCommand(
                 toId = playerData.playerId,
-                fromId = game.universeClient.getCurrentPlayerData().playerId,
-                fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
             )
 
             game.universeClient.currentCommand = grantIndependenceCommand
@@ -173,8 +169,6 @@ class PoliticsInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPan
         ) {
             val changeFactoryPolicyCommand = ChangeFactoryPolicyCommand(
                 toId = playerData.playerId,
-                fromId = game.universeClient.getCurrentPlayerData().playerId,
-                fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
                 allowSubordinateBuildFactory = allowSubordinateBuildFactoryTickImageButton.isChecked,
                 allowLeaderBuildLocalFactory = allowLeaderBuildLocalFactoryTickImageButton.isChecked,
                 allowForeignInvestor = allowForeignInvestorTickImageButton.isChecked,

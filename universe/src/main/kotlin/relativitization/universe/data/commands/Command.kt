@@ -16,12 +16,6 @@ sealed class Command {
     // The id of the player to receive this command
     abstract val toId: Int
 
-    // The id of the player who send this command
-    abstract val fromId: Int
-
-    // The int4D coordinates of the player who send this command
-    abstract val fromInt4D: Int4D
-
     /**
      * Name of the command
      */
@@ -29,24 +23,15 @@ sealed class Command {
 
     /**
      * Description of the command, default to empty description
+     *
+     * @param fromId the command is sent from the player of this Id
      */
-    open fun description(): I18NString = I18NString("")
-
-    /**
-     * Check to see if fromId match
-     */
-    private fun checkFromId(playerData: MutablePlayerData): Boolean {
-        return if (playerData.playerId == fromId) {
-            true
-        } else {
-            val className = this::class.qualifiedName
-            logger.error("${className}: player id not equal to command from id")
-            false
-        }
-    }
+    open fun description(fromId: Int): I18NString = I18NString("")
 
     /**
      * Check to see if toId match
+     *
+     * @param playerData check this player data
      */
     private fun checkToId(playerData: MutablePlayerData): Boolean {
         return if (playerData.playerId == toId) {
@@ -63,17 +48,18 @@ sealed class Command {
      * Check if the player (sender) can send the command, default to always true
      *
      * @param playerData the data of the player to send this command
-     * @param universeSettings the universe settings
+     * @param universeSettings settings of the universe
      */
     protected open fun canSend(
         playerData: MutablePlayerData,
-        universeSettings: UniverseSettings
+        universeSettings: UniverseSettings,
     ): CommandErrorMessage = CommandErrorMessage(true)
 
     /**
      * Check if the universe has this command, and it can be sent by the player
      *
      * @param playerData the player data to send this command
+     * @param universeSettings settings of the universe
      */
     fun canSendFromPlayer(
         playerData: MutablePlayerData,
@@ -93,47 +79,14 @@ sealed class Command {
             )
         )
 
-        val isFromIdValid = CommandErrorMessage(
-            checkFromId(playerData),
-            I18NString(
-                listOf(
-                    NormalString("Player id "),
-                    IntString(0),
-                    NormalString(" is not the same as the id "),
-                    IntString(1),
-                    NormalString(" in this command. ")
-                ),
-                listOf(
-                    playerData.playerId.toString(),
-                    fromId.toString(),
-                ),
-            )
+        val canSendErrorMessage: CommandErrorMessage = canSend(
+            playerData = playerData,
+            universeSettings = universeSettings
         )
-
-        val isFromInt4DValid = CommandErrorMessage(
-            playerData.int4D.toInt4D() == fromInt4D,
-            I18NString(
-                listOf(
-                    NormalString("Player coordinate "),
-                    IntString(0),
-                    NormalString(" is not the same as the coordinate "),
-                    IntString(1),
-                    NormalString(" in this command. ")
-                ),
-                listOf(
-                    playerData.int4D.toInt4D().toString(),
-                    fromInt4D.toString(),
-                ),
-            )
-        )
-
-        val canSendErrorMessage: CommandErrorMessage = canSend(playerData, universeSettings)
 
         return CommandErrorMessage(
             listOf(
                 hasCommand,
-                isFromIdValid,
-                isFromInt4DValid,
                 canSendErrorMessage,
             )
         )
@@ -141,32 +94,44 @@ sealed class Command {
 
     /**
      * Execute on self in order to end this command
+     *
+     * @param playerData self-execute on the player
+     * @param universeSettings settings of the universe
      */
     protected open fun selfExecuteBeforeSend(
         playerData: MutablePlayerData,
-        universeSettings: UniverseSettings
-    ) {
-    }
+        universeSettings: UniverseSettings,
+    ) { }
 
     /**
      * Check and self execute
+     *
+     * @param playerData self-execute on the player
+     * @param universeSettings settings of the universe
      */
     fun checkAndSelfExecuteBeforeSend(
         playerData: MutablePlayerData,
-        universeSettings: UniverseSettings
+        universeSettings: UniverseSettings,
     ): CommandErrorMessage {
-        val sendMessage: CommandErrorMessage = canSendFromPlayer(playerData, universeSettings)
+        val sendMessage: CommandErrorMessage = canSendFromPlayer(
+            playerData = playerData,
+            universeSettings = universeSettings
+        )
 
         if (sendMessage.success) {
             try {
-                selfExecuteBeforeSend(playerData, universeSettings)
+                selfExecuteBeforeSend(
+                    playerData = playerData,
+                    universeSettings = universeSettings
+                )
             } catch (e: Throwable) {
                 logger.error("checkAndSelfExecuteBeforeSend fail, throwable $e")
                 throw e
             }
         } else {
             val className = this::class.qualifiedName
-            logger.debug("$className cannot be sent by $fromId: ${sendMessage.errorMessage.toNormalString()}")
+            logger.debug("$className cannot be sent by ${playerData.playerId}:" +
+                    " ${sendMessage.errorMessage.toNormalString()}")
         }
 
         return sendMessage
@@ -177,10 +142,14 @@ sealed class Command {
      * Check if the player can receive the command, default to always true
      *
      * @param playerData the data of the player to execute this command
+     * @param fromId the command is sent from the player of this Id
+     * @param fromInt4D the command is sent from this location
      * @param universeSettings the universe settings
      */
     protected open fun canExecute(
         playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
         universeSettings: UniverseSettings
     ): CommandErrorMessage = CommandErrorMessage(true)
 
@@ -188,10 +157,14 @@ sealed class Command {
      * Check if the universe has this command, and it can be executed on the player
      *
      * @param playerData the command execute on this player
-     * @param universeSettings universe setting, e.g., have
+     * @param fromId the command is sent from the player of this Id
+     * @param fromInt4D the command is sent from this location
+     * @param universeSettings settings of the universe
      */
     fun canExecuteOnPlayer(
         playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
         val hasCommand = CommandErrorMessage(
@@ -225,7 +198,12 @@ sealed class Command {
             )
         )
 
-        val canExecute = canExecute(playerData, universeSettings)
+        val canExecute: CommandErrorMessage = canExecute(
+            playerData = playerData,
+            fromId = fromId,
+            fromInt4D = fromInt4D,
+            universeSettings = universeSettings
+        )
 
         return CommandErrorMessage(
             listOf(
@@ -239,25 +217,49 @@ sealed class Command {
 
     /**
      * Execute on playerData, for AI/human planning and action
+     *
+     * @param playerData the command execute on this player
+     * @param fromId the command is sent from the player of this Id
+     * @param fromInt4D the command is sent from this location
+     * @param universeSettings settings of the universe
      */
     protected abstract fun execute(
         playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
         universeSettings: UniverseSettings
     )
 
 
     /**
      * Check and execute
+     *
+     * @param playerData the command execute on this player
+     * @param fromId the command is sent from the player of this Id
+     * @param fromInt4D the command is sent from this location
+     * @param universeSettings settings of the universe
      */
     fun checkAndExecute(
         playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
-        val executeMessage: CommandErrorMessage = canExecuteOnPlayer(playerData, universeSettings)
+        val executeMessage: CommandErrorMessage = canExecuteOnPlayer(
+            playerData = playerData,
+            fromId = fromId,
+            fromInt4D = fromInt4D,
+            universeSettings = universeSettings
+        )
 
         if (executeMessage.success) {
             try {
-                execute(playerData, universeSettings)
+                execute(
+                    playerData = playerData,
+                    fromId = fromId,
+                    fromInt4D = fromInt4D,
+                    universeSettings = universeSettings
+                )
             } catch (e: Throwable) {
                 logger.error("checkAndExecute fail, throwable $e")
                 throw e
@@ -274,6 +276,20 @@ sealed class Command {
         private val logger = RelativitizationLogManager.getLogger()
     }
 }
+
+/**
+ * Holding a command and the associated data
+ *
+ * @property command the command
+ * @property fromId the command is sent from the player of this Id
+ * @property fromInt4D the command is sent from this location
+ */
+@Serializable
+data class CommandData(
+    val command: Command,
+    val fromId: Int,
+    val fromInt4D: Int4D,
+)
 
 sealed class CommandAvailability {
     // Command list allowed to be sent and executed

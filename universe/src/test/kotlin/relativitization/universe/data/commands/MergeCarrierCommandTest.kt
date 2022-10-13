@@ -28,7 +28,6 @@ internal class MergeCarrierCommandTest {
 
         val event = AskToMergeCarrierEvent(
             toId = 2,
-            fromId = 1
         )
 
         runBlocking {
@@ -37,7 +36,6 @@ internal class MergeCarrierCommandTest {
                     1 to listOf(
                         AddEventCommand(
                             event = event,
-                            fromInt4D = view1At1.getCurrentPlayerData().int4D,
                         )
                     )
                 ),
@@ -57,8 +55,6 @@ internal class MergeCarrierCommandTest {
                     2 to listOf(
                         SelectEventChoiceCommand(
                             toId = 2,
-                            fromId = 2,
-                            fromInt4D = view2At2.getCurrentPlayerData().int4D,
                             eventKey = 0,
                             choice = 0
                         )

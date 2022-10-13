@@ -379,7 +379,6 @@ class PlanDataAtPlayer(
         return getMutablePlayerData(universeData3DAtPlayer.getCurrentPlayerData().playerId)
     }
 
-
     fun resetPlayerData(playerId: Int) {
         if (playerId == universeData3DAtPlayer.getCurrentPlayerData().playerId) {
             playerDataMap[playerId] = DataSerializer.copy(universeData3DAtPlayer.get(playerId))
@@ -393,15 +392,17 @@ class PlanDataAtPlayer(
 
                 if (it.toId == playerId) {
                     it.checkAndExecute(
-                        playerData,
-                        universeData3DAtPlayer.universeSettings
+                        playerData = playerData,
+                        fromId = playerData.playerId,
+                        fromInt4D = playerData.int4D.toInt4D(),
+                        universeSettings = universeData3DAtPlayer.universeSettings
                     )
                 }
             }
-
         } else {
             playerDataMap[playerId] = DataSerializer.copy(universeData3DAtPlayer.get(playerId))
 
+            val currentPlayerData: PlayerData = getCurrentPlayerData()
             val playerData: MutablePlayerData = getMutablePlayerData(playerId)
 
             commandList.filter {
@@ -409,6 +410,8 @@ class PlanDataAtPlayer(
             }.forEach {
                 it.checkAndExecute(
                     playerData,
+                    currentPlayerData.playerId,
+                    currentPlayerData.int4D,
                     universeData3DAtPlayer.universeSettings
                 )
             }
@@ -422,14 +425,20 @@ class PlanDataAtPlayer(
             logger.error("Add command error: Player id -1")
         }
 
+        val currentPlayerData: MutablePlayerData = getCurrentMutablePlayerData()
+
         val sendCommandMessage: CommandErrorMessage = command.checkAndSelfExecuteBeforeSend(
-            getCurrentMutablePlayerData(),
+            currentPlayerData,
             universeData3DAtPlayer.universeSettings
         )
 
         return if (sendCommandMessage.success) {
-            val executeMessage: CommandErrorMessage =
-                command.checkAndExecute(targetPlayerData, universeData3DAtPlayer.universeSettings)
+            val executeMessage: CommandErrorMessage = command.checkAndExecute(
+                targetPlayerData,
+                currentPlayerData.playerId,
+                currentPlayerData.int4D.toInt4D(),
+                universeData3DAtPlayer.universeSettings
+            )
             commandList.add(command)
             executeMessage
         } else {
@@ -459,7 +468,7 @@ class PlanDataAtPlayer(
     fun removeCommand(command: Command) {
         commandList.remove(command)
         resetPlayerData(command.toId)
-        resetPlayerData(command.fromId)
+        resetPlayerData(getCurrentMutablePlayerData().playerId)
         onCommandListChange()
     }
 

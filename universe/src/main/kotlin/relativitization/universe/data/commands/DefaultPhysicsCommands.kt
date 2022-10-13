@@ -16,13 +16,11 @@ import kotlin.math.min
 @Serializable
 data class ChangeVelocityCommand(
     override val toId: Int,
-    override val fromId: Int,
-    override val fromInt4D: Int4D,
     val targetVelocity: Velocity,
 ) : DefaultCommand() {
     override fun name(): String = "Change Velocity"
 
-    override fun description(): I18NString = I18NString(
+    override fun description(fromId: Int): I18NString = I18NString(
         listOf(
             NormalString("Try to change velocity of player "),
             IntString(0),
@@ -65,6 +63,8 @@ data class ChangeVelocityCommand(
      */
     override fun canExecute(
         playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
         val isLeaderOrSelf = CommandErrorMessage(
@@ -79,7 +79,12 @@ data class ChangeVelocityCommand(
         )
     }
 
-    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings): Unit {
+    override fun execute(
+        playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
+        universeSettings: UniverseSettings
+    ) {
         val speedOfLight: Double = universeSettings.speedOfLight
 
         if (targetVelocity.mag() < speedOfLight) {
@@ -118,13 +123,11 @@ data class ChangeVelocityCommand(
 @Serializable
 data class ChangeFuelRestMassTargetProportionCommand(
     override val toId: Int,
-    override val fromId: Int,
-    override val fromInt4D: Int4D,
     val fuelRestMassTargetProportionData: FuelRestMassTargetProportionData,
 ) : DefaultCommand() {
     override fun name(): String = "Change Fuel Target"
 
-    override fun description(): I18NString = I18NString(
+    override fun description(fromId: Int): I18NString = I18NString(
         listOf(
             NormalString("Change the target fuel rest mass proportion to storage: "),
             IntString(0),
@@ -150,7 +153,7 @@ data class ChangeFuelRestMassTargetProportionCommand(
     ): CommandErrorMessage {
         val isSelf = CommandErrorMessage(
             playerData.playerId == toId,
-            CommandI18NStringFactory.isNotToSelf(fromId, toId)
+            CommandI18NStringFactory.isNotToSelf(playerData.playerId, toId)
         )
 
         return CommandErrorMessage(
@@ -162,6 +165,8 @@ data class ChangeFuelRestMassTargetProportionCommand(
 
     override fun canExecute(
         playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
         val isSelf = CommandErrorMessage(
@@ -176,7 +181,12 @@ data class ChangeFuelRestMassTargetProportionCommand(
         )
     }
 
-    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+    override fun execute(
+        playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
+        universeSettings: UniverseSettings
+    ) {
         playerData.playerInternalData.physicsData().fuelRestMassTargetProportionData =
             DataSerializer.copy(fuelRestMassTargetProportionData)
     }

@@ -524,8 +524,6 @@ object ResourceFactoryProduction : Mechanism() {
 
         return SendResourceCommand(
             toId = toId,
-            fromId = mutablePlayerData.playerId,
-            fromInt4D = mutablePlayerData.int4D.toInt4D(),
             resourceType = mutableResourceFactoryData.resourceFactoryInternalData.outputResource,
             resourceQualityData = outputQuality.toResourceQualityData(),
             amount = outputAmount,

@@ -21,8 +21,6 @@ internal class UpdateWarTest {
             )
         )
 
-        val view1At5: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(5)
-
         runBlocking {
             universe.postProcessUniverse(
                 mapOf(),
@@ -30,8 +28,6 @@ internal class UpdateWarTest {
                     5 to listOf(
                         DeclareWarCommand(
                             toId = 2,
-                            fromId = 5,
-                            fromInt4D = view1At5.getCurrentPlayerData().int4D
                         )
                     )
                 ),

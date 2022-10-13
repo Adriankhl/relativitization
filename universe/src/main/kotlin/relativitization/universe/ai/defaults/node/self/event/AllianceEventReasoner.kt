@@ -5,7 +5,7 @@ import relativitization.universe.ai.defaults.consideration.diplomacy.TooManyAlly
 import relativitization.universe.ai.defaults.utils.*
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.commands.SelectEventChoiceCommand
-import relativitization.universe.data.events.Event
+import relativitization.universe.data.events.MutableEventData
 import relativitization.universe.data.events.ProposeAllianceEvent
 import kotlin.random.Random
 
@@ -65,8 +65,8 @@ class AcceptAllianceOption(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<DualUtilityConsideration> {
-        val event: Event = planDataAtPlayer.getCurrentMutablePlayerData().playerInternalData
-            .eventDataMap.getValue(eventKey).event
+        val eventData: MutableEventData = planDataAtPlayer.getCurrentMutablePlayerData()
+            .playerInternalData.eventDataMap.getValue(eventKey)
         return listOf(
             TooManyAllyConsideration(
                 playerId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
@@ -79,7 +79,7 @@ class AcceptAllianceOption(
                 bonusIfFalse = 1.0,
             ),
             RelationConsideration(
-                otherPlayerId = event.fromId,
+                otherPlayerId = eventData.fromId,
                 initialMultiplier = 1.0,
                 exponent = 1.2,
                 rank = 1,
@@ -92,8 +92,6 @@ class AcceptAllianceOption(
         planDataAtPlayer.addCommand(
             SelectEventChoiceCommand(
                 toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
                 eventKey = eventKey,
                 choice = 0,
             )
@@ -117,8 +115,6 @@ class RejectAllianceOption(
         planDataAtPlayer.addCommand(
             SelectEventChoiceCommand(
                 toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
                 eventKey = eventKey,
                 choice = 1,
             )

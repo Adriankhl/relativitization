@@ -3,13 +3,13 @@ package relativitization.universe.data.commands
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseSettings
-import relativitization.universe.maths.physics.Int4D
 import relativitization.universe.data.components.defaults.popsystem.CarrierType
 import relativitization.universe.data.components.defaults.popsystem.MutableCarrierData
 import relativitization.universe.data.components.defaults.popsystem.MutableCarrierInternalData
 import relativitization.universe.data.components.physicsData
 import relativitization.universe.data.components.playerScienceData
 import relativitization.universe.data.components.popSystemData
+import relativitization.universe.maths.physics.Int4D
 import relativitization.universe.utils.I18NString
 import relativitization.universe.utils.IntString
 import relativitization.universe.utils.NormalString
@@ -20,12 +20,10 @@ import relativitization.universe.utils.NormalString
 @Serializable
 data class BuildLocalCarrierCommand(
     override val toId: Int,
-    override val fromId: Int,
-    override val fromInt4D: Int4D,
     val qualityLevel: Double,
 ) : DefaultCommand() {
     override fun name(): String = "Build Local Carrier"
-    override fun description(): I18NString = I18NString(
+    override fun description(fromId: Int): I18NString = I18NString(
         listOf(
             NormalString("Build a new carrier with quality level "),
             IntString(0),
@@ -65,6 +63,8 @@ data class BuildLocalCarrierCommand(
 
     override fun canExecute(
         playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
         val isSelf = CommandErrorMessage(
@@ -89,13 +89,18 @@ data class BuildLocalCarrierCommand(
         )
     }
 
-    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+    override fun execute(
+        playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
+        universeSettings: UniverseSettings
+    ) {
 
         val newCarrierInternalData: MutableCarrierInternalData =
             playerData.playerInternalData.playerScienceData().playerScienceApplicationData.newSpaceshipInternalData(
                 qualityLevel = qualityLevel
             )
-        val newCarrier: MutableCarrierData = MutableCarrierData(
+        val newCarrier = MutableCarrierData(
             carrierType = CarrierType.SPACESHIP,
             carrierInternalData = newCarrierInternalData
         )

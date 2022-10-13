@@ -105,8 +105,6 @@ class CreateCarrierOption : DualUtilityOption() {
         planDataAtPlayer.addCommand(
             BuildLocalCarrierCommand(
                 toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
                 qualityLevel = qualityLevel,
             )
         )

@@ -56,8 +56,6 @@ internal class RandomOneStarPerPlayerGenerateTest {
         commandList.add(
             SendFuelFromStorageCommand(
                 toId = 1,
-                fromId = 1,
-                fromInt4D = view1.get(1).int4D,
                 amount = 1E7,
                 senderFuelLossFractionPerDistance = view1.getCurrentPlayerData().playerInternalData.playerScienceData()
                     .playerScienceApplicationData.fuelLogisticsLossFractionPerDistance
@@ -68,8 +66,6 @@ internal class RandomOneStarPerPlayerGenerateTest {
             commandList.add(
                 BuildForeignResourceFactoryCommand(
                     toId = 1,
-                    fromId = 1,
-                    fromInt4D = view1.get(1).int4D,
                     senderTopLeaderId = 1,
                     targetCarrierId = 0,
                     ownerId = 1,
@@ -93,8 +89,6 @@ internal class RandomOneStarPerPlayerGenerateTest {
             commandList.add(
                 ChangeSalaryFactorCommand(
                     toId = 1,
-                    fromId = 1,
-                    fromInt4D = view1.get(1).int4D,
                     carrierId = 0,
                     popType = it,
                     salaryFactor = 2.0,

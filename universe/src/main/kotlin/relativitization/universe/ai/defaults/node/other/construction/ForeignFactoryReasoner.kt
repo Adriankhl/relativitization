@@ -217,8 +217,6 @@ class BuildForeignFuelFactoryOption(
         planDataAtPlayer.addCommand(
             BuildForeignFuelFactoryCommand(
                 toId = playerId,
-                fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
                 senderTopLeaderId = planDataAtPlayer.getCurrentMutablePlayerData().topLeaderId(),
                 targetCarrierId = carrierId,
                 ownerId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
@@ -355,8 +353,6 @@ class SupplyOwnedForeignFuelFactoryOption(
         planDataAtPlayer.addCommand(
             SupplyForeignFuelFactoryCommand(
                 toId = playerId,
-                fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
                 targetCarrierId = carrierId,
                 targetFuelFactoryId = fuelFactoryId,
                 amount = fuelAvailable,
@@ -484,8 +480,6 @@ class RemoveOwnedForeignFuelFactoryOption(
         planDataAtPlayer.addCommand(
             RemoveForeignFuelFactoryCommand(
                 toId = playerId,
-                fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
                 targetCarrierId = carrierId,
                 targetFuelFactoryId = fuelFactoryId,
             )
@@ -664,8 +658,6 @@ class BuildForeignResourceFactoryOption(
         planDataAtPlayer.addCommand(
             BuildForeignResourceFactoryCommand(
                 toId = playerId,
-                fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
                 senderTopLeaderId = planDataAtPlayer.getCurrentMutablePlayerData().topLeaderId(),
                 targetCarrierId = carrierId,
                 ownerId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
@@ -804,8 +796,6 @@ class SupplyOwnedForeignResourceFactoryOption(
         planDataAtPlayer.addCommand(
             SupplyForeignResourceFactoryCommand(
                 toId = playerId,
-                fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
                 targetCarrierId = carrierId,
                 targetResourceFactoryId = resourceFactoryId,
                 amount = fuelAvailable,
@@ -934,8 +924,6 @@ class RemoveOwnedForeignResourceFactoryOption(
         planDataAtPlayer.addCommand(
             RemoveForeignResourceFactoryCommand(
                 toId = playerId,
-                fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
                 targetCarrierId = carrierId,
                 targetResourceFactoryId = resourceFactoryId,
             )

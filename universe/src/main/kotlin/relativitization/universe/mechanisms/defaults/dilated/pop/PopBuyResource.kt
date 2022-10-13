@@ -540,8 +540,6 @@ object PopBuyResource : Mechanism() {
 
         return PopBuyResourceCommand(
             toId = otherPlayerData.playerId,
-            fromId = thisPlayerId,
-            fromInt4D = thisInt4D,
             fromCarrierId = carrierId,
             fromPopType = popType,
             targetTopLeaderId = otherPlayerData.topLeaderId(),

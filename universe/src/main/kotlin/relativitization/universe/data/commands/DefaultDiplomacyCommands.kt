@@ -19,12 +19,10 @@ import relativitization.universe.utils.NormalString
 @Serializable
 data class DeclareWarCommand(
     override val toId: Int,
-    override val fromId: Int,
-    override val fromInt4D: Int4D,
 ) : DefaultCommand() {
     override fun name(): String = "Declare War"
 
-    override fun description(): I18NString = I18NString(
+    override fun description(fromId: Int): I18NString = I18NString(
         listOf(
             NormalString("Declare war on "),
             IntString(0),
@@ -77,7 +75,7 @@ data class DeclareWarCommand(
     ) {
         val warData = MutableWarData(
             warCoreData = WarCoreData(
-                supportId = fromId,
+                supportId = playerData.playerId,
                 opponentId = toId,
                 startTime = playerData.int4D.t,
                 warReason = WarReason.INVASION,
@@ -91,6 +89,8 @@ data class DeclareWarCommand(
 
     override fun canExecute(
         playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
         return CommandErrorMessage(true)
@@ -98,6 +98,8 @@ data class DeclareWarCommand(
 
     override fun execute(
         playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
         universeSettings: UniverseSettings,
     ) {
         val warData = MutableWarData(
@@ -121,11 +123,9 @@ data class DeclareWarCommand(
 @Serializable
 data class DeclareIndependenceToDirectLeaderCommand(
     override val toId: Int,
-    override val fromId: Int,
-    override val fromInt4D: Int4D
 ) : DefaultCommand() {
     override fun name(): String = "Declare Independence (Direct)"
-    override fun description(): I18NString = I18NString(
+    override fun description(fromId: Int): I18NString = I18NString(
         listOf(
             NormalString("Declare independence and war on direct leader: id "),
             IntString(0),
@@ -183,7 +183,7 @@ data class DeclareIndependenceToDirectLeaderCommand(
 
         val warData = MutableWarData(
             warCoreData = WarCoreData(
-                supportId = fromId,
+                supportId = playerData.playerId,
                 opponentId = toId,
                 startTime = playerData.int4D.t,
                 warReason = WarReason.INDEPENDENCE,
@@ -198,12 +198,19 @@ data class DeclareIndependenceToDirectLeaderCommand(
 
     override fun canExecute(
         playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
         return CommandErrorMessage(true)
     }
 
-    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+    override fun execute(
+        playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
+        universeSettings: UniverseSettings
+    ) {
         // Remove subordinate
         playerData.removeSubordinateId(fromId)
 
@@ -228,12 +235,10 @@ data class DeclareIndependenceToDirectLeaderCommand(
 @Serializable
 data class DeclareIndependenceToTopLeaderCommand(
     override val toId: Int,
-    override val fromId: Int,
-    override val fromInt4D: Int4D
 ) : DefaultCommand() {
     override fun name(): String = "Declare Independence (Top)"
 
-    override fun description(): I18NString = I18NString(
+    override fun description(fromId: Int): I18NString = I18NString(
         listOf(
             NormalString("Declare independence and war on top leader: id "),
             IntString(0),
@@ -290,7 +295,7 @@ data class DeclareIndependenceToTopLeaderCommand(
 
         val warData = MutableWarData(
             warCoreData = WarCoreData(
-                supportId = fromId,
+                supportId = playerData.playerId,
                 opponentId = toId,
                 startTime = playerData.int4D.t,
                 warReason = WarReason.INDEPENDENCE,
@@ -305,12 +310,19 @@ data class DeclareIndependenceToTopLeaderCommand(
 
     override fun canExecute(
         playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
         return CommandErrorMessage(true)
     }
 
-    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+    override fun execute(
+        playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
+        universeSettings: UniverseSettings
+    ) {
         // Remove subordinate
         playerData.removeSubordinateId(fromId)
 
@@ -339,13 +351,11 @@ data class DeclareIndependenceToTopLeaderCommand(
 @Serializable
 data class SurrenderCommand(
     override val toId: Int,
-    override val fromId: Int,
-    override val fromInt4D: Int4D,
     val targetPlayerId: Int,
 ) : DefaultCommand() {
     override fun name(): String = "Surrender"
 
-    override fun description(): I18NString = I18NString(
+    override fun description(fromId: Int): I18NString = I18NString(
         listOf(
             NormalString("Surrender and become subordinate of "),
             IntString(0),
@@ -381,6 +391,8 @@ data class SurrenderCommand(
 
     override fun canExecute(
         playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
         val isSelf = CommandErrorMessage(
@@ -402,7 +414,12 @@ data class SurrenderCommand(
         )
     }
 
-    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+    override fun execute(
+        playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
+        universeSettings: UniverseSettings
+    ) {
         playerData.changeDirectLeader(listOf(targetPlayerId))
     }
 }
@@ -413,8 +430,6 @@ data class SurrenderCommand(
 @Serializable
 data class AcceptPeaceCommand(
     override val toId: Int,
-    override val fromId: Int,
-    override val fromInt4D: Int4D,
 ) : DefaultCommand() {
     override fun name(): String = "Accept Peace"
 
@@ -425,10 +440,17 @@ data class AcceptPeaceCommand(
 
     override fun canExecute(
         playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
         universeSettings: UniverseSettings
     ): CommandErrorMessage = CommandErrorMessage(true)
 
-    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+    override fun execute(
+        playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
+        universeSettings: UniverseSettings
+    ) {
         playerData.playerInternalData.diplomacyData().relationData.selfWarDataMap.remove(fromId)
     }
 }
@@ -439,8 +461,6 @@ data class AcceptPeaceCommand(
 @Serializable
 data class AcceptAllianceCommand(
     override val toId: Int,
-    override val fromId: Int,
-    override val fromInt4D: Int4D,
 ) : DefaultCommand() {
     override fun name(): String = "Accept Alliance"
 
@@ -451,10 +471,17 @@ data class AcceptAllianceCommand(
 
     override fun canExecute(
         playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
         universeSettings: UniverseSettings
     ): CommandErrorMessage = CommandErrorMessage(true)
 
-    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+    override fun execute(
+        playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
+        universeSettings: UniverseSettings
+    ) {
         playerData.playerInternalData.diplomacyData().relationData.allyMap[fromId] =
             MutableAllianceData(playerData.int4D.t)
     }
@@ -470,13 +497,11 @@ data class AcceptAllianceCommand(
 @Serializable
 data class RemoveAllyCommand(
     override val toId: Int,
-    override val fromId: Int,
-    override val fromInt4D: Int4D,
     val targetPlayerId: Int,
 ) : DefaultCommand() {
     override fun name(): String = "Remove Ally"
 
-    override fun description(): I18NString = I18NString(
+    override fun description(fromId: Int): I18NString = I18NString(
         listOf(
             NormalString("Break alliance with player "),
             IntString(0),
@@ -511,6 +536,8 @@ data class RemoveAllyCommand(
 
     override fun canExecute(
         playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
         val isSelf = CommandErrorMessage(
@@ -531,7 +558,12 @@ data class RemoveAllyCommand(
         )
     }
 
-    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+    override fun execute(
+        playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
+        universeSettings: UniverseSettings
+    ) {
         playerData.playerInternalData.diplomacyData().relationData.allyMap.remove(targetPlayerId)
     }
 }

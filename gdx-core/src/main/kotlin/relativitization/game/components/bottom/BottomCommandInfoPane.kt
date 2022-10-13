@@ -18,8 +18,6 @@ class BottomCommandInfoPane(
     private val commandNameLabel = createLabel("", gdxSettings.normalFontSize)
     private val commandDescriptionLabel = createLabel("", gdxSettings.smallFontSize)
 
-    private val commandTimeLabel = createLabel("", gdxSettings.smallFontSize)
-
     private val previousCommandButton = createImageButton(
         name = "basic/white-left-arrow",
         rUp = 1.0f,
@@ -87,8 +85,6 @@ class BottomCommandInfoPane(
         update()
 
         table.add(createHeaderTable()).spaceTop(10f).growX()
-        table.row()
-        table.add(commandTimeLabel)
 
         table.row().space(10f)
 
@@ -146,8 +142,13 @@ class BottomCommandInfoPane(
         } else {
             commandNameLabel.setText(translate(currentCommand.name()))
         }
-        commandDescriptionLabel.setText(translate(currentCommand.description()))
-        commandTimeLabel.setText(translate("Time: ") + "${currentCommand.fromInt4D.t}")
+        commandDescriptionLabel.setText(
+            translate(
+                currentCommand.description(
+                    game.universeClient.universeClientSettings.playerId
+                )
+            )
+        )
 
         if (game.universeClient.hasPreviousCommand()) {
             enableActor(previousCommandButton)

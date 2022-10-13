@@ -77,7 +77,7 @@ class AcceptPeaceOption(
 
         return listOf(
             WarLossConsideration(
-                otherPlayerId = peaceEventData.event.fromId,
+                otherPlayerId = peaceEventData.fromId,
                 minMultiplier = 0.0,
                 maxMultiplier = 2.0,
                 rank = 1,
@@ -90,8 +90,6 @@ class AcceptPeaceOption(
         planDataAtPlayer.addCommand(
             SelectEventChoiceCommand(
                 toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
                 eventKey = eventKey,
                 choice = 0,
             )
@@ -115,8 +113,6 @@ class RejectPeaceOption(
         planDataAtPlayer.addCommand(
             SelectEventChoiceCommand(
                 toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
                 eventKey = eventKey,
                 choice = 1,
             )
@@ -165,14 +161,14 @@ class AcceptAllyWarCallOption(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<DualUtilityConsideration> {
-        val event: Event = planDataAtPlayer.getCurrentMutablePlayerData()
-            .playerInternalData.eventDataMap.getValue(eventKey).event
+        val eventData: MutableEventData = planDataAtPlayer.getCurrentMutablePlayerData()
+            .playerInternalData.eventDataMap.getValue(eventKey)
 
-        return if (event is CallAllyToWarEvent) {
+        return if (eventData.event is CallAllyToWarEvent) {
             listOf(
                 InDefensiveWarConsideration(
-                    playerId = event.fromId,
-                    warTargetId = event.warTargetId,
+                    playerId = eventData.fromId,
+                    warTargetId = eventData.event.warTargetId,
                     rankIfTrue = 2,
                     multiplierIfTrue = 1.0,
                     bonusIfTrue = 1.0,
@@ -181,7 +177,7 @@ class AcceptAllyWarCallOption(
                     bonusIfFalse = 0.5
                 ),
                 RelationConsideration(
-                    otherPlayerId = event.fromId,
+                    otherPlayerId = eventData.fromId,
                     initialMultiplier = 1.0,
                     exponent = 1.05,
                     rank = 0,
@@ -197,8 +193,6 @@ class AcceptAllyWarCallOption(
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
         SelectEventChoiceCommand(
             toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-            fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-            fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
             eventKey = eventKey,
             choice = 0,
         )
@@ -225,8 +219,6 @@ class RejectAllyWarCallOption(
         planDataAtPlayer.addCommand(
             SelectEventChoiceCommand(
                 toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
                 eventKey = eventKey,
                 choice = 1,
             )
@@ -275,14 +267,14 @@ class AcceptAllySubordinateWarCallOption(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
     ): List<DualUtilityConsideration> {
-        val event: Event = planDataAtPlayer.getCurrentMutablePlayerData()
-            .playerInternalData.eventDataMap.getValue(eventKey).event
+        val eventData: MutableEventData = planDataAtPlayer.getCurrentMutablePlayerData()
+            .playerInternalData.eventDataMap.getValue(eventKey)
 
-        return if (event is CallAllyToSubordinateWarEvent) {
+        return if (eventData.event is CallAllyToSubordinateWarEvent) {
             listOf(
                 InDefensiveWarConsideration(
-                    playerId = event.subordinateId,
-                    warTargetId = event.warTargetId,
+                    playerId = eventData.event.subordinateId,
+                    warTargetId = eventData.event.warTargetId,
                     rankIfTrue = 1,
                     multiplierIfTrue = 1.0,
                     bonusIfTrue = 0.1,
@@ -291,7 +283,7 @@ class AcceptAllySubordinateWarCallOption(
                     bonusIfFalse = 0.01
                 ),
                 RelationConsideration(
-                    otherPlayerId = event.fromId,
+                    otherPlayerId = eventData.fromId,
                     initialMultiplier = 1.0,
                     exponent = 1.05,
                     rank = 0,
@@ -307,8 +299,6 @@ class AcceptAllySubordinateWarCallOption(
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
         SelectEventChoiceCommand(
             toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-            fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-            fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
             eventKey = eventKey,
             choice = 0,
         )
@@ -335,8 +325,6 @@ class RejectAllySubordinateWarCallOption(
         planDataAtPlayer.addCommand(
             SelectEventChoiceCommand(
                 toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
                 eventKey = eventKey,
                 choice = 1,
             )

@@ -48,8 +48,6 @@ object AutoCombat : Mechanism() {
                 // Adjust damage by time dilation
                 val command = DamageCommand(
                     toId = targetEnemy.playerId,
-                    fromId = mutablePlayerData.playerId,
-                    fromInt4D = mutablePlayerData.int4D.toInt4D(),
                     attack = attack
                 )
                 command

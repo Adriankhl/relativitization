@@ -204,8 +204,6 @@ class NewInstituteAtCarrierOption(
             planDataAtPlayer.addCommand(
                 BuildInstituteCommand(
                     toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                    fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                    fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
                     carrierId = carrierId,
                     instituteInternalData = InstituteInternalData(
                         xCor = newCor.x,
@@ -305,8 +303,6 @@ class RemoveSpecificInstituteOption(
         planDataAtPlayer.addCommand(
             RemoveInstituteCommand(
                 toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
                 carrierId = carrierId,
                 instituteId = instituteId,
             )

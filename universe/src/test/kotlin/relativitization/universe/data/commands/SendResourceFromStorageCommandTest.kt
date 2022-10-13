@@ -45,8 +45,6 @@ internal class SendResourceFromStorageCommandTest {
 
         val command = SendResourceFromStorageCommand(
             toId = 2,
-            fromId = 1,
-            fromInt4D = playerData1.int4D,
             resourceType = ResourceType.PLANT,
             resourceQualityClass = ResourceQualityClass.THIRD,
             resourceQualityData = resourceData1.getResourceQuality(

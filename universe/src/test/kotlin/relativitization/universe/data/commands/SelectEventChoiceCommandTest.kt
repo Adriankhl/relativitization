@@ -25,7 +25,6 @@ internal class SelectEventChoiceCommandTest {
 
         val event = MoveToDouble3DEvent(
             toId = 2,
-            fromId = 1,
             targetDouble3D = view1.get(3).groupCenterDouble3D(view1.universeSettings.groupEdgeLength),
             maxSpeed = 0.2
 
@@ -33,7 +32,6 @@ internal class SelectEventChoiceCommandTest {
 
         val addEventCommand = AddEventCommand(
             event,
-            view1.getCurrentPlayerData().int4D
         )
 
         // Add Command
@@ -55,8 +53,6 @@ internal class SelectEventChoiceCommandTest {
 
         val selectEventChoiceCommand = SelectEventChoiceCommand(
             toId = view2.id,
-            fromId = view2.id,
-            fromInt4D = view2.getCurrentPlayerData().int4D,
             eventKey = 0,
             choice = 1
         )

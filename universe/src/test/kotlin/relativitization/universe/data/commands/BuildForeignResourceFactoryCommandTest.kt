@@ -33,8 +33,6 @@ internal class BuildForeignResourceFactoryCommandTest {
 
         val command = BuildForeignResourceFactoryCommand(
             toId = 1,
-            fromId = 1,
-            fromInt4D = playerData.int4D,
             senderTopLeaderId = playerData.topLeaderId(),
             targetCarrierId = 0,
             ownerId = 1,

@@ -31,8 +31,6 @@ internal class GrantIndependenceCommandTest {
                     1 to listOf(
                         GrantIndependenceCommand(
                             toId = 2,
-                            fromId = 1,
-                            fromInt4D = view1.getCurrentPlayerData().int4D,
                         )
                     )
                 ),

@@ -28,8 +28,6 @@ internal class SplitCarrierCommandTest {
                     1 to listOf(
                         SplitCarrierCommand(
                             toId = 1,
-                            fromId = 1,
-                            fromInt4D = view1.getCurrentPlayerData().int4D,
                             carrierIdList = listOf(1),
                             storageFraction = 0.1,
                         )

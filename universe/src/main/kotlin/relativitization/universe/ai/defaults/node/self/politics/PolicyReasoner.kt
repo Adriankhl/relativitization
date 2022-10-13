@@ -22,8 +22,6 @@ class FactoryPolicyAINode : AINode() {
             planDataAtPlayer.addCommand(
                 ChangeFactoryPolicyCommand(
                     toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                    fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                    fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
                     allowSubordinateBuildFactory = true,
                     allowLeaderBuildLocalFactory = false,
                     allowForeignInvestor = false,

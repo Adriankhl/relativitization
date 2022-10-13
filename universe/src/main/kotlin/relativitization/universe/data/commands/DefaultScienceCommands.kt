@@ -3,7 +3,6 @@ package relativitization.universe.data.commands
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseSettings
-import relativitization.universe.maths.physics.Int4D
 import relativitization.universe.data.components.defaults.popsystem.MutableCarrierData
 import relativitization.universe.data.components.defaults.popsystem.pop.engineer.laboratory.LaboratoryInternalData
 import relativitization.universe.data.components.defaults.popsystem.pop.engineer.laboratory.MutableLaboratoryData
@@ -11,6 +10,7 @@ import relativitization.universe.data.components.defaults.popsystem.pop.scholar.
 import relativitization.universe.data.components.defaults.popsystem.pop.scholar.institute.MutableInstituteData
 import relativitization.universe.data.components.popSystemData
 import relativitization.universe.data.serializer.DataSerializer
+import relativitization.universe.maths.physics.Int4D
 import relativitization.universe.utils.I18NString
 import relativitization.universe.utils.IntString
 import relativitization.universe.utils.NormalString
@@ -24,14 +24,12 @@ import relativitization.universe.utils.NormalString
 @Serializable
 data class BuildInstituteCommand(
     override val toId: Int,
-    override val fromId: Int,
-    override val fromInt4D: Int4D,
     val carrierId: Int,
     val instituteInternalData: InstituteInternalData,
 ) : DefaultCommand() {
     override fun name(): String = "Build Institute"
 
-    override fun description(): I18NString = I18NString(
+    override fun description(fromId: Int): I18NString = I18NString(
         listOf(
             NormalString("Build an institute in carrier "),
             IntString(0),
@@ -63,7 +61,7 @@ data class BuildInstituteCommand(
     ): CommandErrorMessage {
         val isSelf = CommandErrorMessage(
             playerData.playerId == toId,
-            CommandI18NStringFactory.isNotToSelf(fromId, toId)
+            CommandI18NStringFactory.isNotToSelf(playerData.playerId, toId)
         )
 
         val hasCarrier = CommandErrorMessage(
@@ -99,6 +97,8 @@ data class BuildInstituteCommand(
 
     override fun canExecute(
         playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
         val isSelf = CommandErrorMessage(
@@ -119,7 +119,12 @@ data class BuildInstituteCommand(
         )
     }
 
-    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+    override fun execute(
+        playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
+        universeSettings: UniverseSettings
+    ) {
         playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
             carrierId
         ).allPopData.scholarPopData.addInstitute(
@@ -142,14 +147,12 @@ data class BuildInstituteCommand(
 @Serializable
 data class BuildLaboratoryCommand(
     override val toId: Int,
-    override val fromId: Int,
-    override val fromInt4D: Int4D,
     val carrierId: Int,
     val laboratoryInternalData: LaboratoryInternalData,
 ) : DefaultCommand() {
     override fun name(): String = "Build Laboratory"
 
-    override fun description(): I18NString = I18NString(
+    override fun description(fromId: Int): I18NString = I18NString(
         listOf(
             NormalString("Build a laboratory in carrier "),
             IntString(0),
@@ -181,7 +184,7 @@ data class BuildLaboratoryCommand(
     ): CommandErrorMessage {
         val isSelf = CommandErrorMessage(
             playerData.playerId == toId,
-            CommandI18NStringFactory.isNotToSelf(fromId, toId)
+            CommandI18NStringFactory.isNotToSelf(playerData.playerId, toId)
         )
 
         val hasCarrier = CommandErrorMessage(
@@ -217,6 +220,8 @@ data class BuildLaboratoryCommand(
 
     override fun canExecute(
         playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
         val isSelf = CommandErrorMessage(
@@ -237,7 +242,12 @@ data class BuildLaboratoryCommand(
         )
     }
 
-    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+    override fun execute(
+        playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
+        universeSettings: UniverseSettings
+    ) {
         playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
             carrierId
         ).allPopData.engineerPopData.addLaboratory(
@@ -260,14 +270,12 @@ data class BuildLaboratoryCommand(
 @Serializable
 data class RemoveInstituteCommand(
     override val toId: Int,
-    override val fromId: Int,
-    override val fromInt4D: Int4D,
     val carrierId: Int,
     val instituteId: Int,
 ) : DefaultCommand() {
     override fun name(): String = "Remove Institute"
 
-    override fun description(): I18NString = I18NString(
+    override fun description(fromId: Int): I18NString = I18NString(
         listOf(
             NormalString("Remove institute "),
             IntString(0),
@@ -287,7 +295,7 @@ data class RemoveInstituteCommand(
     ): CommandErrorMessage {
         val isSelf = CommandErrorMessage(
             playerData.playerId == toId,
-            CommandI18NStringFactory.isNotToSelf(fromId, toId)
+            CommandI18NStringFactory.isNotToSelf(playerData.playerId, toId)
         )
 
         val hasCarrier = CommandErrorMessage(
@@ -317,6 +325,8 @@ data class RemoveInstituteCommand(
 
     override fun canExecute(
         playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
         val isSelf = CommandErrorMessage(
@@ -349,7 +359,12 @@ data class RemoveInstituteCommand(
         )
     }
 
-    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+    override fun execute(
+        playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
+        universeSettings: UniverseSettings
+    ) {
         playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
             carrierId
         ).allPopData.scholarPopData.instituteMap.remove(instituteId)
@@ -365,14 +380,12 @@ data class RemoveInstituteCommand(
 @Serializable
 data class RemoveLaboratoryCommand(
     override val toId: Int,
-    override val fromId: Int,
-    override val fromInt4D: Int4D,
     val carrierId: Int,
     val laboratoryId: Int,
 ) : DefaultCommand() {
     override fun name(): String = "Remove Laboratory"
 
-    override fun description(): I18NString = I18NString(
+    override fun description(fromId: Int): I18NString = I18NString(
         listOf(
             NormalString("Remove laboratory "),
             IntString(0),
@@ -392,7 +405,7 @@ data class RemoveLaboratoryCommand(
     ): CommandErrorMessage {
         val isSelf = CommandErrorMessage(
             playerData.playerId == toId,
-            CommandI18NStringFactory.isNotToSelf(fromId, toId)
+            CommandI18NStringFactory.isNotToSelf(playerData.playerId, toId)
         )
 
         val hasCarrier = CommandErrorMessage(
@@ -423,6 +436,8 @@ data class RemoveLaboratoryCommand(
 
     override fun canExecute(
         playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
         val isSelf = CommandErrorMessage(
@@ -455,7 +470,12 @@ data class RemoveLaboratoryCommand(
         )
     }
 
-    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+    override fun execute(
+        playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
+        universeSettings: UniverseSettings
+    ) {
         playerData.playerInternalData.popSystemData().carrierDataMap.getValue(
             carrierId
         ).allPopData.engineerPopData.laboratoryMap.remove(laboratoryId)

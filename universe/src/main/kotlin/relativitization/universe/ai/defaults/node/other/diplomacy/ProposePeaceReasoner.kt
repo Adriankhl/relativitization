@@ -54,12 +54,10 @@ class ProposePeaceToPlayerOption(
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {
         val proposePeaceEvent = ProposePeaceEvent(
             toId = targetPlayerId,
-            fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId
         )
         planDataAtPlayer.addCommand(
             AddEventCommand(
                 event = proposePeaceEvent,
-                fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
             )
         )
     }

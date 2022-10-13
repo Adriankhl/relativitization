@@ -191,8 +191,6 @@ class BuildNewFuelFactoryOption(
         planDataAtPlayer.addCommand(
             BuildForeignFuelFactoryCommand(
                 toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
                 senderTopLeaderId = planDataAtPlayer.getCurrentMutablePlayerData().topLeaderId(),
                 targetCarrierId = carrierId,
                 ownerId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
@@ -317,8 +315,6 @@ class RemoveSpecificSelfFuelFactoryOption(
         planDataAtPlayer.addCommand(
             RemoveLocalFuelFactoryCommand(
                 toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
                 targetCarrierId = carrierId,
                 targetFuelFactoryId = fuelFactoryId,
             )
@@ -383,8 +379,6 @@ class RemoveSpecificOtherFuelFactoryOption(
         planDataAtPlayer.addCommand(
             RemoveLocalFuelFactoryCommand(
                 toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
                 targetCarrierId = carrierId,
                 targetFuelFactoryId = fuelFactoryId,
             )
@@ -552,8 +546,6 @@ class BuildNewResourceFactoryOption(
         planDataAtPlayer.addCommand(
             BuildForeignResourceFactoryCommand(
                 toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
                 senderTopLeaderId = planDataAtPlayer.getCurrentMutablePlayerData().topLeaderId(),
                 targetCarrierId = carrierId,
                 ownerId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
@@ -684,8 +676,6 @@ class RemoveSpecificSelfResourceFactoryOption(
         planDataAtPlayer.addCommand(
             RemoveLocalResourceFactoryCommand(
                 toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
                 targetCarrierId = carrierId,
                 targetResourceFactoryId = resourceFactoryId,
             )
@@ -749,8 +739,6 @@ class RemoveSpecificOtherResourceFactoryOption(
         planDataAtPlayer.addCommand(
             RemoveLocalResourceFactoryCommand(
                 toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
                 targetCarrierId = carrierId,
                 targetResourceFactoryId = resourceFactoryId,
             )

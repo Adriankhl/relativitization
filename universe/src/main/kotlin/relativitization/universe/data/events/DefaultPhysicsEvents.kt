@@ -24,13 +24,12 @@ import kotlin.random.Random
 @Serializable
 data class MoveToDouble3DEvent(
     override val toId: Int,
-    override val fromId: Int,
     val targetDouble3D: Double3D,
     val maxSpeed: Double,
 ) : DefaultEvent() {
     override fun name(): String = "Move To Location"
 
-    override fun description(): I18NString = I18NString(
+    override fun description(fromId: Int): I18NString = I18NString(
         listOf(
             NormalString("Player "),
             IntString(0),
@@ -47,7 +46,7 @@ data class MoveToDouble3DEvent(
         ),
     )
 
-    override fun choiceDescription(): Map<Int, I18NString> = mapOf(
+    override fun choiceDescription(fromId: Int): Map<Int, I18NString> = mapOf(
         0 to I18NString("Accept"),
         1 to I18NString("Reject")
     )
@@ -76,13 +75,14 @@ data class MoveToDouble3DEvent(
 
     override fun canExecute(
         playerData: MutablePlayerData,
+        fromId: Int,
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
         val isEventUnique = CommandErrorMessage(
             playerData.playerInternalData.eventDataMap.filterValues {
                 it.event is MoveToDouble3DEvent
             }.values.all {
-                it.event.fromId != fromId
+                it.fromId != fromId
             },
             I18NString("Event already exists. ")
         )
@@ -118,7 +118,7 @@ data class MoveToDouble3DEvent(
         )
     }
 
-    override fun stayTime(): Int = if (fromId == toId) {
+    override fun stayTime(fromId: Int): Int = if (fromId == toId) {
         0
     } else {
         5
@@ -126,6 +126,7 @@ data class MoveToDouble3DEvent(
 
     override fun shouldCancel(
         mutablePlayerData: MutablePlayerData,
+        fromId: Int,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
         universeSettings: UniverseSettings,
     ): Boolean {
@@ -139,6 +140,7 @@ data class MoveToDouble3DEvent(
 
     override fun choiceAction(
         mutablePlayerData: MutablePlayerData,
+        fromId: Int,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
         universeSettings: UniverseSettings,
     ): Map<Int, () -> List<Command>> = mapOf(
@@ -162,6 +164,7 @@ data class MoveToDouble3DEvent(
 
     override fun defaultChoice(
         mutablePlayerData: MutablePlayerData,
+        fromId: Int,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
         universeSettings: UniverseSettings,
         random: Random

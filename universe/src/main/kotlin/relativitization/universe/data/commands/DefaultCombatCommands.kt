@@ -3,12 +3,12 @@ package relativitization.universe.data.commands
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseSettings
-import relativitization.universe.maths.physics.Int4D
 import relativitization.universe.data.components.defaults.popsystem.CarrierType
 import relativitization.universe.data.components.defaults.popsystem.MutableCarrierData
 import relativitization.universe.data.components.modifierData
 import relativitization.universe.data.components.physicsData
 import relativitization.universe.data.components.popSystemData
+import relativitization.universe.maths.physics.Int4D
 import relativitization.universe.utils.RelativitizationLogManager
 
 /**
@@ -19,8 +19,6 @@ import relativitization.universe.utils.RelativitizationLogManager
 @Serializable
 data class DamageCommand(
     override val toId: Int,
-    override val fromId: Int,
-    override val fromInt4D: Int4D,
     val attack: Double,
 ) : DefaultCommand() {
     override fun name(): String = "Damage"
@@ -32,7 +30,12 @@ data class DamageCommand(
         return CommandErrorMessage(false)
     }
 
-    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+    override fun execute(
+        playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
+        universeSettings: UniverseSettings
+    ) {
         // Disable military base recovery by 1 turn
         playerData.playerInternalData.modifierData().combatModifierData
             .disableMilitaryBaseRecoveryByTime(1)

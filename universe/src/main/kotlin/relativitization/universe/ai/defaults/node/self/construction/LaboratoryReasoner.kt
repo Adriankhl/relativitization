@@ -201,8 +201,6 @@ class NewLaboratoryAtCarrierOption(
             planDataAtPlayer.addCommand(
                 BuildLaboratoryCommand(
                     toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                    fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                    fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
                     carrierId = carrierId,
                     laboratoryInternalData = LaboratoryInternalData(
                         xCor = newCor.x,
@@ -302,8 +300,6 @@ class RemoveSpecificLaboratoryOption(
         planDataAtPlayer.addCommand(
             RemoveLaboratoryCommand(
                 toId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                fromId = planDataAtPlayer.getCurrentMutablePlayerData().playerId,
-                fromInt4D = planDataAtPlayer.getCurrentMutablePlayerData().int4D.toInt4D(),
                 carrierId = carrierId,
                 laboratoryId = laboratoryId,
             )

@@ -18,11 +18,10 @@ import kotlin.random.Random
 @Serializable
 data class AskToMergeCarrierEvent(
     override val toId: Int,
-    override val fromId: Int
 ) : DefaultEvent() {
     override fun name(): String = "Ask To Merge Carrier"
 
-    override fun description(): I18NString = I18NString(
+    override fun description(fromId: Int): I18NString = I18NString(
         listOf(
             NormalString("Give all carriers of  "),
             IntString(0),
@@ -33,7 +32,7 @@ data class AskToMergeCarrierEvent(
         )
     )
 
-    override fun choiceDescription(): Map<Int, I18NString> = mapOf(
+    override fun choiceDescription(fromId: Int): Map<Int, I18NString> = mapOf(
         0 to I18NString("Accept and die"),
         1 to I18NString("Reject and declare war")
     )
@@ -45,7 +44,7 @@ data class AskToMergeCarrierEvent(
         val isDirectSubordinate = CommandErrorMessage(
             playerData.playerInternalData.directSubordinateIdSet.contains(toId),
             CommandI18NStringFactory.isNotDirectSubordinate(
-                playerId = fromId, otherPlayerId = toId
+                playerId = playerData.playerId, otherPlayerId = toId
             )
         )
 
@@ -58,6 +57,7 @@ data class AskToMergeCarrierEvent(
 
     override fun canExecute(
         playerData: MutablePlayerData,
+        fromId: Int,
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
         val isEventUnique = CommandErrorMessage(
@@ -88,6 +88,7 @@ data class AskToMergeCarrierEvent(
 
     override fun shouldCancel(
         mutablePlayerData: MutablePlayerData,
+        fromId: Int,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
         universeSettings: UniverseSettings,
     ): Boolean {
@@ -103,6 +104,7 @@ data class AskToMergeCarrierEvent(
 
     override fun choiceAction(
         mutablePlayerData: MutablePlayerData,
+        fromId: Int,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
         universeSettings: UniverseSettings,
     ): Map<Int, () -> List<Command>> = mapOf(
@@ -114,23 +116,27 @@ data class AskToMergeCarrierEvent(
             // Declare war if reject
             val declareIndependenceToDirectLeaderCommand = DeclareIndependenceToDirectLeaderCommand(
                 toId = fromId,
-                fromId = toId,
-                fromInt4D = universeData3DAtPlayer.getCurrentPlayerData().int4D
             )
 
-            declareIndependenceToDirectLeaderCommand.checkAndExecute(
-                mutablePlayerData,
-                universeSettings,
-            )
+            val message: CommandErrorMessage = declareIndependenceToDirectLeaderCommand
+                .checkAndSelfExecuteBeforeSend(
+                    mutablePlayerData,
+                    universeSettings,
+                )
 
-            listOf(
-                declareIndependenceToDirectLeaderCommand
-            )
+            if (message.success) {
+                listOf(
+                    declareIndependenceToDirectLeaderCommand
+                )
+            } else {
+                listOf()
+            }
         }
     )
 
     override fun defaultChoice(
         mutablePlayerData: MutablePlayerData,
+        fromId: Int,
         universeData3DAtPlayer: UniverseData3DAtPlayer,
         universeSettings: UniverseSettings,
         random: Random,

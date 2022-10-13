@@ -23,16 +23,12 @@ internal class CallAllyToWarEventTest {
             )
         )
 
-        val view1At1: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(1)
-
         val event = ProposeAllianceEvent(
             toId = 3,
-            fromId = 1
         )
 
         val proposeAllianceCommand = AddEventCommand(
             event,
-            view1At1.getCurrentPlayerData().int4D,
         )
 
         runBlocking {
@@ -55,8 +51,6 @@ internal class CallAllyToWarEventTest {
             }
         }
 
-        val view2At3: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(3)
-
         runBlocking {
             universe.postProcessUniverse(
                 mapOf(),
@@ -64,8 +58,6 @@ internal class CallAllyToWarEventTest {
                     3 to listOf(
                         SelectEventChoiceCommand(
                             toId = 3,
-                            fromId = 3,
-                            fromInt4D = view2At3.getCurrentPlayerData().int4D,
                             eventKey = 0,
                             choice = 0
                         )
@@ -104,16 +96,12 @@ internal class CallAllyToWarEventTest {
                     1 to listOf(
                         DeclareWarCommand(
                             toId = 5,
-                            fromId = 1,
-                            fromInt4D = view3At1.getCurrentPlayerData().int4D,
                         ),
                         AddEventCommand(
                             CallAllyToWarEvent(
                                 toId = 3,
-                                fromId = 1,
                                 warTargetId = 5
                             ),
-                            fromInt4D = view3At1.getCurrentPlayerData().int4D,
                         )
                     )
                 ),
@@ -145,8 +133,6 @@ internal class CallAllyToWarEventTest {
             }
         }
 
-        val view5At3: UniverseData3DAtPlayer = universe.getUniverse3DViewAtPlayer(3)
-
         runBlocking {
             universe.postProcessUniverse(
                 mapOf(),
@@ -154,8 +140,6 @@ internal class CallAllyToWarEventTest {
                     3 to listOf(
                         SelectEventChoiceCommand(
                             toId = 3,
-                            fromId = 3,
-                            fromInt4D = view5At3.getCurrentPlayerData().int4D,
                             eventKey = 0,
                             choice = 0
                         )

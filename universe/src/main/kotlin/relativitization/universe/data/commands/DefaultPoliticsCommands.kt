@@ -4,8 +4,8 @@ import kotlinx.serialization.Serializable
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.components.MutablePoliticsData
-import relativitization.universe.maths.physics.Int4D
 import relativitization.universe.data.components.politicsData
+import relativitization.universe.maths.physics.Int4D
 import relativitization.universe.utils.I18NString
 import relativitization.universe.utils.IntTranslateString
 import relativitization.universe.utils.NormalString
@@ -20,15 +20,13 @@ import relativitization.universe.utils.NormalString
 @Serializable
 data class ChangeFactoryPolicyCommand(
     override val toId: Int,
-    override val fromId: Int,
-    override val fromInt4D: Int4D,
     val allowSubordinateBuildFactory: Boolean = false,
     val allowLeaderBuildLocalFactory: Boolean = true,
     val allowForeignInvestor: Boolean = true,
 ) : DefaultCommand() {
     override fun name(): String = "Change Factory Policy"
 
-    override fun description(): I18NString = I18NString(
+    override fun description(fromId: Int): I18NString = I18NString(
         listOf(
             NormalString("Change the factory policy: allow subordinate build factory ("),
             IntTranslateString(0),
@@ -51,7 +49,7 @@ data class ChangeFactoryPolicyCommand(
     ): CommandErrorMessage {
         val isSelf = CommandErrorMessage(
             playerData.playerId == toId,
-            CommandI18NStringFactory.isNotToSelf(fromId, toId)
+            CommandI18NStringFactory.isNotToSelf(playerData.playerId, toId)
         )
 
         val isTopLeader = CommandErrorMessage(
@@ -69,6 +67,8 @@ data class ChangeFactoryPolicyCommand(
 
     override fun canExecute(
         playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
         val isSelf = CommandErrorMessage(
@@ -83,7 +83,12 @@ data class ChangeFactoryPolicyCommand(
         )
     }
 
-    override fun execute(playerData: MutablePlayerData, universeSettings: UniverseSettings) {
+    override fun execute(
+        playerData: MutablePlayerData,
+        fromId: Int,
+        fromInt4D: Int4D,
+        universeSettings: UniverseSettings
+    ) {
         val politicsData: MutablePoliticsData = playerData.playerInternalData.politicsData()
         politicsData.isSubordinateBuildFactoryAllowed = allowSubordinateBuildFactory
         politicsData.isLeaderBuildLocalFactoryAllowed = allowLeaderBuildLocalFactory

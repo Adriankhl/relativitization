@@ -237,8 +237,6 @@ class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
         ) {
             val changeBaseSalaryCommand = ChangeBaseSalaryCommand(
                 toId = playerData.playerId,
-                fromId = game.universeClient.getCurrentPlayerData().playerId,
-                fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
                 baseSalaryPerEmployee = targetBaseSalary.value,
             )
             game.universeClient.currentCommand = changeBaseSalaryCommand
@@ -601,8 +599,6 @@ class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
         ) {
             val changeSalaryFactorCommand = ChangeSalaryFactorCommand(
                 toId = playerData.playerId,
-                fromId = game.universeClient.getCurrentPlayerData().playerId,
-                fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
                 carrierId = carrierId,
                 popType = popType,
                 salaryFactor = targetSalaryFactor.value,
@@ -777,8 +773,6 @@ class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
             ) {
                 val removeLocalFuelFactoryCommand = RemoveLocalFuelFactoryCommand(
                     toId = playerData.playerId,
-                    fromId = game.universeClient.getCurrentPlayerData().playerId,
-                    fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
                     targetCarrierId = carrierId,
                     targetFuelFactoryId = fuelFactoryId
                 )
@@ -795,8 +789,6 @@ class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
             ) {
                 val removeForeignFuelFactoryCommand = RemoveForeignFuelFactoryCommand(
                     toId = playerData.playerId,
-                    fromId = game.universeClient.getCurrentPlayerData().playerId,
-                    fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
                     targetCarrierId = carrierId,
                     targetFuelFactoryId = fuelFactoryId
                 )
@@ -818,8 +810,6 @@ class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
             ) {
                 val closeLocalFuelFactoryCommand = CloseLocalFuelFactoryCommand(
                     toId = playerData.playerId,
-                    fromId = game.universeClient.getCurrentPlayerData().playerId,
-                    fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
                     targetCarrierId = carrierId,
                     targetFuelFactoryId = fuelFactoryId
                 )
@@ -836,8 +826,6 @@ class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
             ) {
                 val openLocalFuelFactoryCommand = OpenLocalFuelFactoryCommand(
                     toId = playerData.playerId,
-                    fromId = game.universeClient.getCurrentPlayerData().playerId,
-                    fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
                     targetCarrierId = carrierId,
                     targetFuelFactoryId = fuelFactoryId
                 )
@@ -922,8 +910,6 @@ class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
         ) {
             val supplyForeignFuelFactoryCommand = SupplyForeignFuelFactoryCommand(
                 toId = playerData.playerId,
-                fromId = game.universeClient.getCurrentPlayerData().playerId,
-                fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
                 targetCarrierId = carrierId,
                 targetFuelFactoryId = fuelFactoryId,
                 amount = supplyFuelAmount.value,
@@ -1045,8 +1031,6 @@ class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
             ) {
                 val removeLocalResourceFactoryCommand = RemoveLocalResourceFactoryCommand(
                     toId = playerData.playerId,
-                    fromId = game.universeClient.getCurrentPlayerData().playerId,
-                    fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
                     targetCarrierId = carrierId,
                     targetResourceFactoryId = resourceFactoryId,
                 )
@@ -1062,8 +1046,6 @@ class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
             ) {
                 val removeForeignResourceFactoryCommand = RemoveForeignResourceFactoryCommand(
                     toId = playerData.playerId,
-                    fromId = game.universeClient.getCurrentPlayerData().playerId,
-                    fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
                     targetCarrierId = carrierId,
                     targetResourceFactoryId = resourceFactoryId
                 )
@@ -1084,8 +1066,6 @@ class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
             ) {
                 val closeLocalResourceFactoryCommand = CloseLocalResourceFactoryCommand(
                     toId = playerData.playerId,
-                    fromId = game.universeClient.getCurrentPlayerData().playerId,
-                    fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
                     targetCarrierId = carrierId,
                     targetResourceFactoryId = resourceFactoryId,
                 )
@@ -1102,8 +1082,6 @@ class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
             ) {
                 val openLocalResourceFactoryCommand = OpenLocalResourceFactoryCommand(
                     toId = playerData.playerId,
-                    fromId = game.universeClient.getCurrentPlayerData().playerId,
-                    fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
                     targetCarrierId = carrierId,
                     targetResourceFactoryId = resourceFactoryId,
                 )
@@ -1264,8 +1242,6 @@ class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
         ) {
             val supplyForeignResourceFactoryCommand = SupplyForeignResourceFactoryCommand(
                 toId = playerData.playerId,
-                fromId = game.universeClient.getCurrentPlayerData().playerId,
-                fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
                 targetCarrierId = carrierId,
                 targetResourceFactoryId = resourceFactoryId,
                 amount = supplyFuelAmount.value,
@@ -1342,8 +1318,6 @@ class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
         ) {
             val buildForeignFuelFactoryCommand = BuildForeignFuelFactoryCommand(
                 toId = playerData.playerId,
-                fromId = game.universeClient.getCurrentPlayerData().playerId,
-                fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
                 senderTopLeaderId = game.universeClient.getCurrentPlayerData().topLeaderId(),
                 targetCarrierId = carrierId,
                 ownerId = ownerId.value,
@@ -1475,8 +1449,6 @@ class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
         ) {
             val buildForeignResourceFactoryCommand = BuildForeignResourceFactoryCommand(
                 toId = playerData.playerId,
-                fromId = game.universeClient.getCurrentPlayerData().playerId,
-                fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
                 senderTopLeaderId = game.universeClient.getCurrentPlayerData().topLeaderId(),
                 targetCarrierId = carrierId,
                 ownerId = ownerId.value,
@@ -1624,8 +1596,6 @@ class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
         ) {
             val buildLocalFuelFactoryCommand = BuildLocalFuelFactoryCommand(
                 toId = playerData.playerId,
-                fromId = game.universeClient.getCurrentPlayerData().playerId,
-                fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
                 targetCarrierId = carrierId,
                 maxNumEmployee = maxNumEmployee.value,
             )
@@ -1726,8 +1696,6 @@ class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
         ) {
             val buildLocalResourceFactoryCommand = BuildLocalResourceFactoryCommand(
                 toId = playerData.playerId,
-                fromId = game.universeClient.getCurrentPlayerData().playerId,
-                fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
                 outputResourceType = outputResourceSelectBox.selected,
                 targetCarrierId = carrierId,
                 qualityLevel = qualityLevel.value,
@@ -1916,8 +1884,6 @@ class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
         ) {
             val removeInstituteCommand = RemoveInstituteCommand(
                 toId = playerData.playerId,
-                fromId = game.universeClient.getCurrentPlayerData().playerId,
-                fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
                 carrierId = carrierId,
                 instituteId = instituteId
             )
@@ -2035,8 +2001,6 @@ class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
         ) {
             val buildInstituteCommand = BuildInstituteCommand(
                 toId = playerData.playerId,
-                fromId = game.universeClient.getCurrentPlayerData().playerId,
-                fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
                 carrierId = carrierId,
                 instituteInternalData = InstituteInternalData(
                     xCor = xCor.value,
@@ -2243,10 +2207,8 @@ class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
         ) {
             val removeLaboratoryCommand = RemoveLaboratoryCommand(
                 toId = playerData.playerId,
-                fromId = game.universeClient.getCurrentPlayerData().playerId,
-                fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
                 carrierId = carrierId,
-                laboratoryId = laboratoryId
+                laboratoryId = laboratoryId,
             )
 
             game.universeClient.currentCommand = removeLaboratoryCommand
@@ -2362,8 +2324,6 @@ class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
         ) {
             val buildLaboratoryCommand = BuildLaboratoryCommand(
                 toId = playerData.playerId,
-                fromId = game.universeClient.getCurrentPlayerData().playerId,
-                fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
                 carrierId = carrierId,
                 laboratoryInternalData = LaboratoryInternalData(
                     xCor = xCor.value,
@@ -2371,7 +2331,7 @@ class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
                     range = range.value,
                     researchEquipmentPerTime = researchEquipmentPerTime.value,
                     maxNumEmployee = maxNumEmployee.value,
-                )
+                ),
             )
 
             game.universeClient.currentCommand = buildLaboratoryCommand
@@ -2684,8 +2644,6 @@ class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
         ) {
             val playerBuyResourceCommand = PlayerBuyResourceCommand(
                 toId = playerData.playerId,
-                fromId = game.universeClient.getCurrentPlayerData().playerId,
-                fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
                 targetTopLeaderId = playerData.topLeaderId(),
                 targetCarrierId = carrierId,
                 targetPlayerIdOfExportCenter = targetPlayerId.value,
@@ -2843,8 +2801,6 @@ class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
         ) {
             val buildLocalCarrierCommand = BuildLocalCarrierCommand(
                 toId = playerData.playerId,
-                fromId = game.universeClient.getCurrentPlayerData().playerId,
-                fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
                 qualityLevel = newCarrierQuality.value,
             )
 
@@ -2920,8 +2876,6 @@ class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
         ) {
             val splitCarrierCommand = SplitCarrierCommand(
                 toId = playerData.playerId,
-                fromId = game.universeClient.getCurrentPlayerData().playerId,
-                fromInt4D = game.universeClient.getCurrentPlayerData().int4D,
                 carrierIdList = newPlayerCarrierIdSet.toList(),
                 storageFraction = storageFractionSliderContainer.actor.value.toDouble(),
             )

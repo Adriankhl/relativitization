@@ -39,8 +39,6 @@ object MergePlayer : Mechanism() {
             ) {
                 val mergeCarrierCommand: Command = MergeCarrierCommand(
                     toId = directLeader.playerId,
-                    fromId = mutablePlayerData.playerId,
-                    fromInt4D = mutablePlayerData.int4D.toInt4D(),
                     carrierList = DataSerializer.copy(mutablePlayerData.playerInternalData.popSystemData()
                         .carrierDataMap.values.toList())
                 )
