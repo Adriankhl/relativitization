@@ -34,7 +34,7 @@ sealed class MechanismLists {
     // Mechanisms that are affected by time dilation
     abstract val dilatedMechanismList: List<Mechanism>
 
-    abstract fun name(): String
+    open fun name(): String = this::class.simpleName.toString()
 }
 
 object MechanismCollection {

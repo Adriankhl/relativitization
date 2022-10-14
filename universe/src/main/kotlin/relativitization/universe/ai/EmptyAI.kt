@@ -8,8 +8,6 @@ import kotlin.random.Random
 object EmptyAI : AI() {
     private val logger = RelativitizationLogManager.getLogger()
 
-    override fun name(): String = "Empty"
-
     override fun compute(
         universeData3DAtPlayer: UniverseData3DAtPlayer,
         random: Random,

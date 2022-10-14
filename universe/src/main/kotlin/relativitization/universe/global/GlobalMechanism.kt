@@ -23,7 +23,7 @@ abstract class GlobalMechanism {
 sealed class GlobalMechanismList {
     abstract val globalMechanismList: List<GlobalMechanism>
 
-    abstract fun name(): String
+    open fun name(): String = this::class.simpleName.toString()
 }
 
 object GlobalMechanismCollection {

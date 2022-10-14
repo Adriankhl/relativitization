@@ -19,7 +19,7 @@ sealed class Event {
     /**
      * Name of the event
      */
-    open fun name(): String = ""
+    open fun name(): String = this::class.simpleName.toString()
 
     /**
      * Description of the event

@@ -19,7 +19,7 @@ sealed class Command {
     /**
      * Name of the command
      */
-    open fun name(): String = ""
+    open fun name(): String = this::class.simpleName.toString()
 
     /**
      * Description of the command, default to empty description
@@ -310,7 +310,7 @@ sealed class CommandAvailability {
         }.toSet()
     }
 
-    abstract fun name(): String
+    open fun name(): String = this::class.simpleName.toString()
 
     fun hasCommand(command: Command): Boolean {
         return commandNameSet.contains(command::class.simpleName)

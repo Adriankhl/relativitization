@@ -6,7 +6,7 @@ import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.random.Random
 
 sealed class AI {
-    abstract fun name(): String
+    open fun name(): String = this::class.simpleName.toString()
 
     abstract fun compute(
         universeData3DAtPlayer: UniverseData3DAtPlayer,

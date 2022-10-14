@@ -68,7 +68,7 @@ data class GenerateSettings(
  * Base class of any method to generate universe data
  */
 abstract class GenerateUniverseMethod {
-    abstract fun name(): String
+    open fun name(): String = this::class.simpleName.toString()
 
     abstract fun generate(
         settings: GenerateSettings,
