@@ -21,7 +21,7 @@ object SendTax : Mechanism() {
         random: Random
     ): List<Command> {
 
-        val fraction: Double = 0.5
+        val fraction = 0.5
 
         val fuelRestMassToSend: Double =
             mutablePlayerData.playerInternalData.economyData().taxData.storedFuelRestMass

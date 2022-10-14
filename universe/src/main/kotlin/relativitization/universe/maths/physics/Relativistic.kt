@@ -160,7 +160,7 @@ object Relativistic {
         val solution: QuadraticSolutions = solveQuadratic(a, b, c)
 
         // Return this if anything is wrong
-        val failTargetVelocityData: TargetVelocityData = TargetVelocityData(
+        val failTargetVelocityData = TargetVelocityData(
             TargetVelocityType.FAIL,
             initialVelocity,
             0.0

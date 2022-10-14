@@ -13,7 +13,7 @@ class LoadUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asse
     override fun show() {
         super.show()
 
-        var loadUniverseName: String = ""
+        var loadUniverseName = ""
 
         root.add(createLabel("Saved universe: ", gdxSettings.hugeFontSize))
 

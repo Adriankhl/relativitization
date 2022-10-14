@@ -61,7 +61,7 @@ object Movement {
         speedOfLight: Double,
         numIteration: Int = 100,
     ): Double {
-        var currentDistance: Double = 0.0
+        var currentDistance = 0.0
         var currentVelocity: Velocity = initialVelocity
         var currentRestMass: Double = initialRestMass
 

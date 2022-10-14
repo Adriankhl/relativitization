@@ -108,7 +108,7 @@ class BottomCommandInfoPane(
     }
 
     private fun createHeaderTable(): Table {
-        val nestedTable: Table = Table()
+        val nestedTable = Table()
 
         nestedTable.add(previousCommandButton)
             .size(40f * gdxSettings.imageScale, 40f * gdxSettings.imageScale)
@@ -130,7 +130,7 @@ class BottomCommandInfoPane(
     }
 
     private fun createButtonTable(): Table {
-        val nestedTable: Table = Table()
+        val nestedTable = Table()
 
         nestedTable.add(confirmCommandTextButton).space(10f)
 

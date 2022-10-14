@@ -27,10 +27,10 @@ object UpdateSatisfaction : Mechanism() {
         random: Random
     ): List<Command> {
         // Parameters
-        val satisfactionUpdateFactor: Double = 0.5
-        val satisfactionMaxIncreaseDiff: Double = 3.0
-        val averageDesireInputQualityRange: Int = 3
-        val unevennessMaxBonus: Double = 0.2
+        val satisfactionUpdateFactor = 0.5
+        val satisfactionMaxIncreaseDiff = 3.0
+        val averageDesireInputQualityRange = 3
+        val unevennessMaxBonus = 0.2
 
         val averageDesireInputQualityMap: Map<ResourceType, ResourceQualityData> =
             computeAverageInputResourceQualityMap(
@@ -200,7 +200,7 @@ object UpdateSatisfaction : Mechanism() {
         }
 
         // Calculate the bonus factor from unevenness, compare to a reference magnitude
-        val unevennessDiffReference: Double = 5.0
+        val unevennessDiffReference = 5.0
         val unevennessDiff: Double = if (unevennessDiffList.isNotEmpty()) {
             unevennessDiffList.fold(0.0) { acc, d ->
                 acc + d

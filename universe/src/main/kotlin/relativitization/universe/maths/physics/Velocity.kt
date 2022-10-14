@@ -123,7 +123,7 @@ data class Velocity(val vx: Double, val vy: Double, val vz: Double) {
             val phi: Double = 2.0 * PI * random.nextDouble()
             // Bound the uniform random number for theta
             val minRand: Double = (cos(maxRotateTheta) + 1.0) * 0.5
-            val maxRand: Double = 1.0
+            val maxRand = 1.0
             val theta: Double = acos(2.0 * random.nextDouble(minRand, maxRand) - 1.0)
 
             val newUnitVector: Velocity =

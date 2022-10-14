@@ -306,7 +306,7 @@ object Projections {
 
         val int3DRectangleData: List<List<List<IntRectangle>>> = data3D.mapIndexed { x, yList ->
             yList.mapIndexed { y, zList ->
-                zList.mapIndexed { z, _ ->
+                List(zList.size) { z ->
                     val gridXOffSet: Int = xOffSet + x * xyFullSpace + z * xSingleSpace
                     val gridYOffSet: Int = yOffSet + y * xyFullSpace + z * ySingleSpace
                     IntRectangle(gridXOffSet, gridYOffSet, gridWidth, gridHeight)
@@ -426,7 +426,7 @@ object Projections {
         val yDim: Int = data3D[center.x].size
         val zDim: Int = data3D[center.x][center.y].size
 
-        val xBegin: Int = 0
+        val xBegin = 0
         val xEnd: Int = xDim - 1
         val yBegin = 0
         val yEnd = yDim - 1

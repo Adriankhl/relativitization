@@ -10,7 +10,7 @@ data class TestData(val name1: Int = 1) {
 internal class ReflectionTest {
     @Ignore
     fun benchmark() {
-        val repeatTimes: Int = 100000000
+        val repeatTimes = 100000000
         val s1: Long = measureTimeMillis {
             for (i in (1..repeatTimes)) {
                 val t = TestData(i)

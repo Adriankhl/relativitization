@@ -57,7 +57,7 @@ object Educate : Mechanism() {
         educatorPopulation: Double,
         totalPopulation: Double,
     ): Double {
-        val maxDeltaEducationLevel: Double = 0.05
+        val maxDeltaEducationLevel = 0.05
 
         val idealEducatorLevel: Double = if (totalPopulation > 0.0) {
             educatorPopulation * 10.0 * educatorSatisfaction / totalPopulation

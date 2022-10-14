@@ -24,7 +24,7 @@ object Migration : Mechanism() {
         random: Random
     ): List<Command> {
         // determine the rate of migration
-        val migrationRate: Double = 0.01
+        val migrationRate = 0.01
 
         PopType.values().forEach { popType ->
             // carrier id to common pop data of a specific pop type

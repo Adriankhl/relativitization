@@ -23,7 +23,7 @@ object ResourceDecay : Mechanism() {
         random: Random
     ): List<Command> {
         // Parameters
-        val decayFactor: Double = 0.99
+        val decayFactor = 0.99
 
         ResourceType.values().forEach { resourceType ->
             ResourceQualityClass.values().forEach { resourceQualityClass ->

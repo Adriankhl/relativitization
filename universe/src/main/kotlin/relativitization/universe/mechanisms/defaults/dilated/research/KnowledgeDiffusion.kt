@@ -24,14 +24,14 @@ object KnowledgeDiffusion : Mechanism() {
     ): List<Command> {
 
         // The half edge length + 0.5 of the cube where diffusion happen
-        val diffusionRange: Int = 2
+        val diffusionRange = 2
 
         // Diffusion probability
-        val basicResearchDiffusionProb: Double = 0.01
-        val appliedResearchDiffusionProb: Double = 0.001
+        val basicResearchDiffusionProb = 0.01
+        val appliedResearchDiffusionProb = 0.001
 
         // Same top leader benefit
-        val sameTopLeaderMultiplier: Double = 5.0
+        val sameTopLeaderMultiplier = 5.0
 
         // Diffuse done projects by probability
         universeData3DAtPlayer.getNeighbourInCube(diffusionRange).forEach { playerData ->

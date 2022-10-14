@@ -20,7 +20,7 @@ object ClearRecentCommand : Mechanism() {
         random: Random
     ): List<Command> {
         // Parameters
-        val removeTimeFactor: Int = 3
+        val removeTimeFactor = 3
 
         mutablePlayerData.playerInternalData.aiData().recentCommandTimeMap.entries
             .removeAll { (otherId, time) ->

@@ -473,7 +473,7 @@ class PlanDataAtPlayer(
     }
 
     fun removeAllCommand(commandListToRemove: List<Command>) {
-        commandList.removeAll(commandListToRemove)
+        commandList.removeAll(commandListToRemove.toSet())
         val playerIdToReset: Set<Int> = (commandListToRemove.map {
             it.toId
         } + universeData3DAtPlayer.getCurrentPlayerData().playerId).toSet()

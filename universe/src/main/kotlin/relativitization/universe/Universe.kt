@@ -374,7 +374,7 @@ class Universe(
             }
 
             // Remove the command to be executed
-            commandList.removeAll(commandExecuteList)
+            commandList.removeAll(commandExecuteList.toSet())
 
             // Check and execute command
             commandExecuteList.forEach { commandData ->
@@ -687,7 +687,7 @@ class Universe(
                         }
 
                         // Replace data
-                        playerDataList.removeAll(toBeReplaced)
+                        playerDataList.removeAll(toBeReplaced.toSet())
                         playerDataList.addAll(replaceWith)
 
                         // Store data in int4DPlayerDataMap

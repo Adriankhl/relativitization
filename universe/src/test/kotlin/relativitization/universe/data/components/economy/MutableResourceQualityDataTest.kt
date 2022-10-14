@@ -6,15 +6,15 @@ import kotlin.test.Test
 internal class MutableResourceQualityDataTest {
     @Test
     fun changeToTest() {
-        val r1: MutableResourceQualityData = MutableResourceQualityData(
+        val r1 = MutableResourceQualityData(
             1.0,
         )
 
-        val r2: MutableResourceQualityData = MutableResourceQualityData(
+        val r2 = MutableResourceQualityData(
             1.5,
         )
 
-        val r3: MutableResourceQualityData = MutableResourceQualityData(
+        val r3 = MutableResourceQualityData(
             10.0,
         )
 

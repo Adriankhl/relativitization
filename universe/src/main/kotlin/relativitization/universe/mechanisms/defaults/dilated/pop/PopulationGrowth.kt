@@ -117,7 +117,7 @@ object PopulationGrowth : Mechanism() {
         val maxPopulationChange: Double = currentPopulation * 0.1
 
         // Always add 100 population to avoid 0 population
-        val constantPopulationGrowth: Double = 100.0
+        val constantPopulationGrowth = 100.0
 
         val educationFactor: Double =
             if (popType == PopType.SCHOLAR || popType == PopType.ENGINEER) {

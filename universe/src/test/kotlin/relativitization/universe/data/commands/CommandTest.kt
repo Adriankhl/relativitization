@@ -6,7 +6,7 @@ import kotlin.test.Test
 internal class CommandTest {
     @Test
     fun reflectionTest() {
-        val c1: ChangeVelocityCommand = ChangeVelocityCommand(
+        val c1 = ChangeVelocityCommand(
             toId = 2,
             targetVelocity = Velocity(0.1, 0.0, 0.0),
         )

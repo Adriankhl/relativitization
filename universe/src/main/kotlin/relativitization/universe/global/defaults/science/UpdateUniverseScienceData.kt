@@ -26,10 +26,10 @@ object UpdateUniverseScienceData : GlobalMechanism() {
         random: Random,
     ) {
         // Parameters
-        val minBasicProject: Int = 10
-        val maxBasicProject: Int = 30
-        val minAppliedProject: Int = 10
-        val maxAppliedProject: Int = 30
+        val minBasicProject = 10
+        val maxBasicProject = 30
+        val minAppliedProject = 10
+        val maxAppliedProject = 30
 
         // Update universe common sense
         val mutableUniverseScienceData: MutableUniverseScienceData =

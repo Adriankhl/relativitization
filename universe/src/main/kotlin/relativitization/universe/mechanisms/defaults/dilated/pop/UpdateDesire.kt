@@ -23,8 +23,8 @@ object UpdateDesire : Mechanism() {
         random: Random
     ): List<Command> {
         // Parameters
-        val desireQualityUpdateFactor: Double = 0.2
-        val desireQualityUpdateDiff: Double = 0.2
+        val desireQualityUpdateFactor = 0.2
+        val desireQualityUpdateDiff = 0.2
 
         mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.forEach { carrier ->
             PopType.values().forEach { popType ->

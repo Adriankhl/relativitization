@@ -145,7 +145,7 @@ class AIInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane>(gam
             val toRemoveList: List<Command> = aiCommandList.filterIndexed { index, _ ->
                 successList[index].success
             }
-            aiCommandList.removeAll(toRemoveList)
+            aiCommandList.removeAll(toRemoveList.toSet())
             updateTable()
 
             // Some commands are not executed successfully

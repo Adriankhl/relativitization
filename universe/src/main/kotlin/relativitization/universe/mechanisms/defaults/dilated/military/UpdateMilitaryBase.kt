@@ -25,9 +25,9 @@ object UpdateMilitaryBase : Mechanism() {
     ): List<Command> {
 
         // Affect the size of the shield compare to typical attack
-        val maxShieldFactor: Double = 5.0
+        val maxShieldFactor = 5.0
         // Affect how fast the shield recharge
-        val shieldChangeFactor: Double = 0.05
+        val shieldChangeFactor = 0.05
 
         mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.forEach { mutableCarrierData ->
             val newAttack: Double = computeMilitaryBaseAttack(

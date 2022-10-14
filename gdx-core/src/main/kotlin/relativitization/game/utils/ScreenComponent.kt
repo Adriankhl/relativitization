@@ -57,7 +57,7 @@ abstract class ScreenComponent<out T : Actor>(val assets: Assets) {
      * @param component a child component
      */
     fun removeChildScreenComponent(component: ScreenComponent<Actor>) {
-        allChildScreenComponentList.removeAll(component.getScreenComponentList())
+        allChildScreenComponentList.removeAll(component.getScreenComponentList().toSet())
     }
 
     /**

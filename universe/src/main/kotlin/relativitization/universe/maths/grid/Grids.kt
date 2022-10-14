@@ -27,7 +27,7 @@ object Grids {
      * @param generate a function to generate object of type T as a function of x, y coordinate
      */
     fun <T> create2DGrid(xDim: Int, yDim: Int, generate: (Int, Int) -> T): List<List<T>> =
-        List(xDim) { create1DGrid<T>(yDim) { y -> generate(it, y) } }
+        List(xDim) { create1DGrid(yDim) { y -> generate(it, y) } }
 
     /**
      * Create 3 dimensional array of T
@@ -44,7 +44,7 @@ object Grids {
         zDim: Int,
         generate: (Int, Int, Int) -> T
     ): List<List<List<T>>> =
-        List(xDim) { create2DGrid<T>(yDim, zDim) { y, z -> generate(it, y, z) } }
+        List(xDim) { create2DGrid(yDim, zDim) { y, z -> generate(it, y, z) } }
 
 
     /**
@@ -64,7 +64,7 @@ object Grids {
         zDim: Int,
         generate: (Int, Int, Int, Int) -> T
     ): MutableList<List<List<List<T>>>> =
-        MutableList(tDim) { create3DGrid<T>(xDim, yDim, zDim) { x, y, z -> generate(it, x, y, z) } }
+        MutableList(tDim) { create3DGrid(xDim, yDim, zDim) { x, y, z -> generate(it, x, y, z) } }
 
     /**
      * Whether the coordinate belong to same group in a cube
