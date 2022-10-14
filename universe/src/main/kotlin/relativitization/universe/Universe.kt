@@ -3,7 +3,14 @@ package relativitization.universe
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.runBlocking
 import relativitization.universe.ai.AICollection
-import relativitization.universe.data.*
+import relativitization.universe.data.MutablePlayerData
+import relativitization.universe.data.PlayerData
+import relativitization.universe.data.PlayerType
+import relativitization.universe.data.UniverseData
+import relativitization.universe.data.UniverseData3DAtPlayer
+import relativitization.universe.data.UniverseData4D
+import relativitization.universe.data.UniverseSettings
+import relativitization.universe.data.UniverseState
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.commands.CommandData
 import relativitization.universe.data.global.UniverseGlobalData

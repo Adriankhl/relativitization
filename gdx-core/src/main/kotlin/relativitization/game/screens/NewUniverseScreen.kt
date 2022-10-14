@@ -3,7 +3,7 @@ package relativitization.game.screens
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
-import io.ktor.http.*
+import io.ktor.http.HttpStatusCode
 import kotlinx.coroutines.runBlocking
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.TableScreen
@@ -18,6 +18,8 @@ import relativitization.universe.maths.physics.Int3D
 import relativitization.universe.maths.physics.Intervals
 import relativitization.universe.mechanisms.MechanismCollection
 import relativitization.universe.utils.RelativitizationLogManager
+import kotlin.collections.set
+import kotlin.collections.toList
 
 class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
     private val gdxSettings = game.gdxSettings

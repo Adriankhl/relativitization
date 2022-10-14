@@ -8,11 +8,11 @@ import relativitization.game.MapPlayerColorMode
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.PlayerType
 import relativitization.universe.data.UniverseData3DAtPlayer
-import relativitization.universe.maths.physics.Double3D
-import relativitization.universe.maths.physics.Velocity
 import relativitization.universe.data.components.defaults.popsystem.CarrierType
 import relativitization.universe.data.components.diplomacyData
 import relativitization.universe.data.components.popSystemData
+import relativitization.universe.maths.physics.Double3D
+import relativitization.universe.maths.physics.Velocity
 import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.math.abs
 import kotlin.math.ceil

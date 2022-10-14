@@ -1,6 +1,12 @@
 package relativitization.universe
 
-import relativitization.universe.data.*
+import relativitization.universe.data.MutablePlayerData
+import relativitization.universe.data.PlayerData
+import relativitization.universe.data.PlayerType
+import relativitization.universe.data.UniverseBoundary
+import relativitization.universe.data.UniverseData
+import relativitization.universe.data.UniverseSettings
+import relativitization.universe.data.UniverseState
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.maths.grid.Grids.create3DGrid
 import relativitization.universe.maths.grid.Grids.double4DToGroupId

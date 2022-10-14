@@ -2,13 +2,22 @@ package relativitization.universe.ai.defaults.node.self.pop
 
 import relativitization.universe.ai.defaults.consideration.fuel.IncreasingProductionFuelConsideration
 import relativitization.universe.ai.defaults.consideration.fuel.PopulationSavingHighCompareToProductionConsideration
-import relativitization.universe.ai.defaults.utils.*
+import relativitization.universe.ai.defaults.utils.AINode
+import relativitization.universe.ai.defaults.utils.DoNothingDualUtilityOption
+import relativitization.universe.ai.defaults.utils.DualUtilityConsideration
+import relativitization.universe.ai.defaults.utils.DualUtilityOption
+import relativitization.universe.ai.defaults.utils.DualUtilityReasoner
+import relativitization.universe.ai.defaults.utils.PlanState
+import relativitization.universe.ai.defaults.utils.SequenceReasoner
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.commands.ChangeBaseSalaryCommand
 import relativitization.universe.data.commands.ChangeSalaryFactorCommand
-import relativitization.universe.data.components.*
+import relativitization.universe.data.components.MutablePhysicsData
+import relativitization.universe.data.components.MutablePopSystemData
 import relativitization.universe.data.components.defaults.popsystem.MutableCarrierData
 import relativitization.universe.data.components.defaults.popsystem.pop.PopType
+import relativitization.universe.data.components.physicsData
+import relativitization.universe.data.components.popSystemData
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.random.Random

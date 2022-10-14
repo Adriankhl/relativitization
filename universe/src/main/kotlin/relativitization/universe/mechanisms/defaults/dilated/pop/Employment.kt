@@ -4,7 +4,8 @@ import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
-import relativitization.universe.data.components.*
+import relativitization.universe.data.components.MutableEconomyData
+import relativitization.universe.data.components.MutablePhysicsData
 import relativitization.universe.data.components.defaults.popsystem.MutableCarrierData
 import relativitization.universe.data.components.defaults.popsystem.MutableGeneralPopSystemData
 import relativitization.universe.data.components.defaults.popsystem.pop.MutableCommonPopData
@@ -12,6 +13,9 @@ import relativitization.universe.data.components.defaults.popsystem.pop.engineer
 import relativitization.universe.data.components.defaults.popsystem.pop.labourer.MutableLabourerPopData
 import relativitization.universe.data.components.defaults.popsystem.pop.scholar.MutableScholarPopData
 import relativitization.universe.data.components.defaults.popsystem.pop.soldier.MutableSoldierPopData
+import relativitization.universe.data.components.economyData
+import relativitization.universe.data.components.physicsData
+import relativitization.universe.data.components.popSystemData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.mechanisms.Mechanism
 import relativitization.universe.utils.RelativitizationLogManager

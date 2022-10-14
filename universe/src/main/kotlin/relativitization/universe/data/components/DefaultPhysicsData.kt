@@ -4,7 +4,12 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.MutablePlayerInternalData
 import relativitization.universe.data.PlayerInternalData
-import relativitization.universe.data.components.defaults.physics.*
+import relativitization.universe.data.components.defaults.physics.FuelRestMassData
+import relativitization.universe.data.components.defaults.physics.FuelRestMassTargetProportionData
+import relativitization.universe.data.components.defaults.physics.MutableFuelRestMassData
+import relativitization.universe.data.components.defaults.physics.MutableFuelRestMassTargetProportionData
+import relativitization.universe.data.components.defaults.physics.MutableTargetDouble3DData
+import relativitization.universe.data.components.defaults.physics.TargetDouble3DData
 import kotlin.math.min
 
 /**

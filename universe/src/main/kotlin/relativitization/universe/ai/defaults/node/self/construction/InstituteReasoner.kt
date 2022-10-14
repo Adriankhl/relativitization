@@ -4,19 +4,25 @@ import relativitization.universe.ai.defaults.consideration.building.KnownBasicPr
 import relativitization.universe.ai.defaults.consideration.building.NoInstituteAtCarrierConsideration
 import relativitization.universe.ai.defaults.consideration.building.OnlyOneInstituteConsideration
 import relativitization.universe.ai.defaults.consideration.building.SufficientInstituteConsideration
-import relativitization.universe.ai.defaults.utils.*
+import relativitization.universe.ai.defaults.utils.AINode
+import relativitization.universe.ai.defaults.utils.DoNothingDualUtilityOption
+import relativitization.universe.ai.defaults.utils.DualUtilityConsideration
+import relativitization.universe.ai.defaults.utils.DualUtilityOption
+import relativitization.universe.ai.defaults.utils.DualUtilityReasoner
+import relativitization.universe.ai.defaults.utils.PlanState
+import relativitization.universe.ai.defaults.utils.SequenceReasoner
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.commands.BuildInstituteCommand
 import relativitization.universe.data.commands.RemoveInstituteCommand
 import relativitization.universe.data.components.defaults.economy.ResourceQualityClass
 import relativitization.universe.data.components.defaults.economy.ResourceType
-import relativitization.universe.maths.physics.Double2D
 import relativitization.universe.data.components.defaults.popsystem.pop.scholar.institute.InstituteInternalData
 import relativitization.universe.data.components.defaults.popsystem.pop.scholar.institute.MutableInstituteData
 import relativitization.universe.data.components.defaults.science.knowledge.BasicResearchProjectData
 import relativitization.universe.data.components.economyData
 import relativitization.universe.data.components.playerScienceData
 import relativitization.universe.data.components.popSystemData
+import relativitization.universe.maths.physics.Double2D
 import relativitization.universe.maths.physics.Intervals
 import kotlin.random.Random
 

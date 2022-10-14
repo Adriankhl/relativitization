@@ -1,8 +1,13 @@
 package relativitization.universe.generate.testing
 
 import relativitization.universe.ai.EmptyAI
-import relativitization.universe.data.*
-import relativitization.universe.data.components.*
+import relativitization.universe.data.MutablePlayerData
+import relativitization.universe.data.MutableUniverseData4D
+import relativitization.universe.data.PlayerType
+import relativitization.universe.data.UniverseData
+import relativitization.universe.data.UniverseSettings
+import relativitization.universe.data.UniverseState
+import relativitization.universe.data.components.MutableDefaultPlayerDataComponent
 import relativitization.universe.data.components.defaults.diplomacy.ally.MutableAllianceData
 import relativitization.universe.data.components.defaults.economy.MutableResourceQualityData
 import relativitization.universe.data.components.defaults.economy.ResourceQualityClass
@@ -18,6 +23,12 @@ import relativitization.universe.data.components.defaults.science.knowledge.Appl
 import relativitization.universe.data.components.defaults.science.knowledge.AppliedResearchProjectData
 import relativitization.universe.data.components.defaults.science.knowledge.BasicResearchField
 import relativitization.universe.data.components.defaults.science.knowledge.BasicResearchProjectData
+import relativitization.universe.data.components.diplomacyData
+import relativitization.universe.data.components.economyData
+import relativitization.universe.data.components.physicsData
+import relativitization.universe.data.components.playerScienceData
+import relativitization.universe.data.components.popSystemData
+import relativitization.universe.data.components.syncData
 import relativitization.universe.data.global.MutableUniverseGlobalData
 import relativitization.universe.data.global.components.MutableDefaultGlobalDataComponent
 import relativitization.universe.data.global.components.defaults.science.knowledge.MutableAppliedResearchProjectGenerationData

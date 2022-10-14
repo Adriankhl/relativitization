@@ -4,7 +4,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.ScreenComponent
-import relativitization.universe.data.commands.*
+import relativitization.universe.data.commands.AddEventCommand
+import relativitization.universe.data.commands.CannotSendCommand
+import relativitization.universe.data.commands.Command
+import relativitization.universe.data.commands.DummyCommand
+import relativitization.universe.data.commands.ExecuteWarningCommand
 
 class BottomCommandInfoPane(
     val game: RelativitizationGame,

@@ -9,7 +9,13 @@ import relativitization.universe.data.events.MutableEventData
 import relativitization.universe.maths.collection.ListFind
 import relativitization.universe.maths.grid.Grids.double4DToGroupId
 import relativitization.universe.maths.grid.Grids.groupIdToCenterDouble3D
-import relativitization.universe.maths.physics.*
+import relativitization.universe.maths.physics.Double3D
+import relativitization.universe.maths.physics.Double4D
+import relativitization.universe.maths.physics.Int4D
+import relativitization.universe.maths.physics.MutableDouble4D
+import relativitization.universe.maths.physics.MutableInt4D
+import relativitization.universe.maths.physics.MutableVelocity
+import relativitization.universe.maths.physics.Velocity
 import relativitization.universe.utils.RelativitizationLogManager
 
 /**

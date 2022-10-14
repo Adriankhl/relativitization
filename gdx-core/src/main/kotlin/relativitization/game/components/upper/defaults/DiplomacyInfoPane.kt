@@ -5,7 +5,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.RelativitizationGame
 import relativitization.game.components.upper.UpperInfoPane
 import relativitization.universe.data.PlayerData
-import relativitization.universe.data.commands.*
+import relativitization.universe.data.commands.AddEventCommand
+import relativitization.universe.data.commands.DeclareIndependenceToDirectLeaderCommand
+import relativitization.universe.data.commands.DeclareIndependenceToTopLeaderCommand
+import relativitization.universe.data.commands.DeclareWarCommand
+import relativitization.universe.data.commands.RemoveAllyCommand
+import relativitization.universe.data.commands.SurrenderCommand
 import relativitization.universe.data.components.defaults.diplomacy.war.WarData
 import relativitization.universe.data.components.diplomacyData
 import relativitization.universe.data.events.CallAllyToSubordinateWarEvent

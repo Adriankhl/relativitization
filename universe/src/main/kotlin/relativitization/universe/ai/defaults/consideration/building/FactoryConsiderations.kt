@@ -6,13 +6,23 @@ import relativitization.universe.ai.defaults.utils.DualUtilityDataFactory
 import relativitization.universe.ai.defaults.utils.PlanState
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.PlayerData
-import relativitization.universe.data.components.*
+import relativitization.universe.data.components.PopSystemData
 import relativitization.universe.data.components.defaults.economy.ResourceQualityClass
 import relativitization.universe.data.components.defaults.economy.ResourceType
 import relativitization.universe.data.components.defaults.popsystem.CarrierData
 import relativitization.universe.data.components.defaults.popsystem.CarrierType
 import relativitization.universe.data.components.defaults.popsystem.MutableCarrierData
-import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.*
+import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.FuelFactoryData
+import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.InputResourceData
+import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.MutableFuelFactoryData
+import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.MutableFuelFactoryInternalData
+import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.MutableInputResourceData
+import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.MutableResourceFactoryData
+import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.MutableResourceFactoryInternalData
+import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.ResourceFactoryData
+import relativitization.universe.data.components.economyData
+import relativitization.universe.data.components.playerScienceData
+import relativitization.universe.data.components.popSystemData
 
 /**
  * Check if there is no self fuel factory and no stellar pop system

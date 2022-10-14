@@ -1,7 +1,6 @@
 package playground
 
 import kotlin.test.Ignore
-import kotlin.test.Test
 
 internal class CollectionTest {
     @Ignore

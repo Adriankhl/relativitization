@@ -6,7 +6,12 @@ import relativitization.universe.data.MutablePlayerInternalData
 import relativitization.universe.data.PlayerInternalData
 import relativitization.universe.data.components.defaults.science.application.MutableScienceApplicationData
 import relativitization.universe.data.components.defaults.science.application.ScienceApplicationData
-import relativitization.universe.data.components.defaults.science.knowledge.*
+import relativitization.universe.data.components.defaults.science.knowledge.AppliedResearchProjectData
+import relativitization.universe.data.components.defaults.science.knowledge.BasicResearchProjectData
+import relativitization.universe.data.components.defaults.science.knowledge.KnowledgeData
+import relativitization.universe.data.components.defaults.science.knowledge.MutableAppliedResearchData
+import relativitization.universe.data.components.defaults.science.knowledge.MutableBasicResearchData
+import relativitization.universe.data.components.defaults.science.knowledge.MutableKnowledgeData
 import relativitization.universe.data.global.components.UniverseScienceData
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.utils.RelativitizationLogManager

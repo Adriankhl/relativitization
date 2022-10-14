@@ -70,7 +70,7 @@ sealed class Event {
     /**
      * Whether this event should be cancelled, such as some conditions have been met
      *
-     * @param mutablePlayerData the player data containing this event    *
+     * @param mutablePlayerData the player data containing this event
      * @param fromId the event is sent from the player with this Id
      * @param universeData3DAtPlayer the universe data view by the player having this event
      * @param universeSettings the universe setting

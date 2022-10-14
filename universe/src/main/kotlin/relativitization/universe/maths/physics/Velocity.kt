@@ -1,7 +1,12 @@
 package relativitization.universe.maths.physics
 
 import kotlinx.serialization.Serializable
-import kotlin.math.*
+import kotlin.math.PI
+import kotlin.math.abs
+import kotlin.math.acos
+import kotlin.math.cos
+import kotlin.math.sin
+import kotlin.math.sqrt
 import kotlin.random.Random
 
 @Serializable

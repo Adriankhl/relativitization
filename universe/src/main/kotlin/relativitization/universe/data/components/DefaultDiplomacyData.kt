@@ -4,7 +4,8 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.MutablePlayerInternalData
 import relativitization.universe.data.PlayerInternalData
-import relativitization.universe.data.components.defaults.diplomacy.*
+import relativitization.universe.data.components.defaults.diplomacy.MutableRelationData
+import relativitization.universe.data.components.defaults.diplomacy.RelationData
 
 /**
  * @property relationData describe the relation between this player and other players

@@ -3,7 +3,6 @@ package relativitization.universe.data.commands
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseSettings
-import relativitization.universe.data.components.*
 import relativitization.universe.data.components.defaults.economy.ResourceQualityClass
 import relativitization.universe.data.components.defaults.economy.ResourceQualityData
 import relativitization.universe.data.components.defaults.economy.ResourceType
@@ -12,6 +11,11 @@ import relativitization.universe.data.components.defaults.popsystem.pop.service.
 import relativitization.universe.data.components.defaults.popsystem.pop.service.export.MutablePlayerSingleExportData
 import relativitization.universe.data.components.defaults.popsystem.pop.service.export.MutablePopExportCenterData
 import relativitization.universe.data.components.defaults.popsystem.pop.service.export.MutablePopSingleExportData
+import relativitization.universe.data.components.economyData
+import relativitization.universe.data.components.modifierData
+import relativitization.universe.data.components.physicsData
+import relativitization.universe.data.components.playerScienceData
+import relativitization.universe.data.components.popSystemData
 import relativitization.universe.maths.physics.Int4D
 import relativitization.universe.maths.physics.Intervals
 import relativitization.universe.utils.I18NString

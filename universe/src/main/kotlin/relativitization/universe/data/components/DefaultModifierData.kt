@@ -4,7 +4,12 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.MutablePlayerInternalData
 import relativitization.universe.data.PlayerInternalData
-import relativitization.universe.data.components.defaults.modifier.*
+import relativitization.universe.data.components.defaults.modifier.CombatModifierData
+import relativitization.universe.data.components.defaults.modifier.DiplomacyModifierData
+import relativitization.universe.data.components.defaults.modifier.MutableCombatModifierData
+import relativitization.universe.data.components.defaults.modifier.MutableDiplomacyModifierData
+import relativitization.universe.data.components.defaults.modifier.MutablePhysicsModifierData
+import relativitization.universe.data.components.defaults.modifier.PhysicsModifierData
 
 @Serializable
 @SerialName("ModifierData")

@@ -3,7 +3,11 @@ package relativitization.universe.ai.defaults.node.self.carrier
 import relativitization.universe.ai.defaults.consideration.building.SufficientLabourerEmploymentConsideration
 import relativitization.universe.ai.defaults.consideration.carrier.NumberOfSpaceShipConsideration
 import relativitization.universe.ai.defaults.consideration.fuel.SufficientProductionFuelConsideration
-import relativitization.universe.ai.defaults.utils.*
+import relativitization.universe.ai.defaults.utils.DoNothingDualUtilityOption
+import relativitization.universe.ai.defaults.utils.DualUtilityConsideration
+import relativitization.universe.ai.defaults.utils.DualUtilityOption
+import relativitization.universe.ai.defaults.utils.DualUtilityReasoner
+import relativitization.universe.ai.defaults.utils.PlanState
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.commands.BuildLocalCarrierCommand
 import relativitization.universe.data.components.defaults.physics.MutableFuelRestMassData

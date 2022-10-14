@@ -4,7 +4,11 @@ import relativitization.universe.ai.defaults.consideration.carrier.NoSpaceShipCo
 import relativitization.universe.ai.defaults.consideration.carrier.NumberOfSpaceShipConsideration
 import relativitization.universe.ai.defaults.consideration.carrier.SufficientPopulationRatioConsideration
 import relativitization.universe.ai.defaults.consideration.subordinate.NumberOfDirectSubordinateConsideration
-import relativitization.universe.ai.defaults.utils.*
+import relativitization.universe.ai.defaults.utils.DoNothingDualUtilityOption
+import relativitization.universe.ai.defaults.utils.DualUtilityConsideration
+import relativitization.universe.ai.defaults.utils.DualUtilityOption
+import relativitization.universe.ai.defaults.utils.DualUtilityReasoner
+import relativitization.universe.ai.defaults.utils.PlanState
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.commands.SplitCarrierCommand
 import relativitization.universe.data.components.MutablePopSystemData

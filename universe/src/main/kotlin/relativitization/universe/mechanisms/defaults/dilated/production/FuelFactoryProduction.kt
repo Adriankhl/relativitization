@@ -5,13 +5,17 @@ import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.commands.SendFuelCommand
-import relativitization.universe.data.components.*
+import relativitization.universe.data.components.MutablePhysicsData
 import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.MutableFuelFactoryData
+import relativitization.universe.data.components.modifierData
+import relativitization.universe.data.components.physicsData
+import relativitization.universe.data.components.playerScienceData
+import relativitization.universe.data.components.popSystemData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.mechanisms.Mechanism
-import kotlin.random.Random
-import kotlin.math.min
 import kotlin.math.max
+import kotlin.math.min
+import kotlin.random.Random
 
 object FuelFactoryProduction : Mechanism() {
     // Parameters

@@ -1,9 +1,13 @@
 package relativitization.universe.ai.defaults.node.subordinate.direct.movement
 
-import relativitization.universe.ai.defaults.consideration.position.EnemyNeighbourConsideration
 import relativitization.universe.ai.defaults.consideration.fuel.SufficientFuelMaxSpeedConsideration
 import relativitization.universe.ai.defaults.consideration.military.InWarConsideration
-import relativitization.universe.ai.defaults.utils.*
+import relativitization.universe.ai.defaults.consideration.position.EnemyNeighbourConsideration
+import relativitization.universe.ai.defaults.utils.DoNothingDualUtilityOption
+import relativitization.universe.ai.defaults.utils.DualUtilityConsideration
+import relativitization.universe.ai.defaults.utils.DualUtilityOption
+import relativitization.universe.ai.defaults.utils.DualUtilityReasoner
+import relativitization.universe.ai.defaults.utils.PlanState
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.commands.AddEventCommand

@@ -1,7 +1,11 @@
 package relativitization.universe.maths.physics
 
 import kotlinx.serialization.Serializable
-import kotlin.math.*
+import kotlin.math.abs
+import kotlin.math.floor
+import kotlin.math.max
+import kotlin.math.min
+import kotlin.math.sqrt
 
 @Serializable
 data class Int4D(val t: Int, val x: Int, val y: Int, val z: Int) {

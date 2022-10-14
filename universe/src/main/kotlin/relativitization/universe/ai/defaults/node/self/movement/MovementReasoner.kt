@@ -1,19 +1,23 @@
 package relativitization.universe.ai.defaults.node.self.movement
 
 import relativitization.universe.ai.defaults.consideration.event.HasMovementTargetConsideration
-import relativitization.universe.ai.defaults.consideration.position.EnemyNeighbourConsideration
-import relativitization.universe.ai.defaults.consideration.position.FightingEnemyConsideration
 import relativitization.universe.ai.defaults.consideration.fuel.SufficientFuelMaxSpeedConsideration
 import relativitization.universe.ai.defaults.consideration.population.HigherPopulationDensityThenNeighborCubeConsideration
-import relativitization.universe.ai.defaults.utils.*
+import relativitization.universe.ai.defaults.consideration.position.EnemyNeighbourConsideration
+import relativitization.universe.ai.defaults.consideration.position.FightingEnemyConsideration
+import relativitization.universe.ai.defaults.utils.DoNothingDualUtilityOption
+import relativitization.universe.ai.defaults.utils.DualUtilityConsideration
+import relativitization.universe.ai.defaults.utils.DualUtilityOption
+import relativitization.universe.ai.defaults.utils.DualUtilityReasoner
+import relativitization.universe.ai.defaults.utils.PlanState
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.commands.AddEventCommand
-import relativitization.universe.maths.physics.Int3D
 import relativitization.universe.data.components.diplomacyData
 import relativitization.universe.data.components.physicsData
 import relativitization.universe.data.components.popSystemData
 import relativitization.universe.data.events.MoveToDouble3DEvent
+import relativitization.universe.maths.physics.Int3D
 import relativitization.universe.maths.physics.Intervals
 import relativitization.universe.maths.physics.Movement
 import kotlin.math.min

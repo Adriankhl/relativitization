@@ -1,10 +1,20 @@
 package relativitization.universe.generate.random
 
-import relativitization.universe.data.*
-import relativitization.universe.data.components.*
+import relativitization.universe.data.MutablePlayerData
+import relativitization.universe.data.MutableUniverseData4D
+import relativitization.universe.data.PlayerType
+import relativitization.universe.data.UniverseData
+import relativitization.universe.data.UniverseData3DAtPlayer
+import relativitization.universe.data.UniverseSettings
+import relativitization.universe.data.UniverseState
+import relativitization.universe.data.components.MutableDefaultPlayerDataComponent
 import relativitization.universe.data.components.defaults.popsystem.pop.PopType
 import relativitization.universe.data.components.defaults.science.knowledge.AppliedResearchField
 import relativitization.universe.data.components.defaults.science.knowledge.BasicResearchField
+import relativitization.universe.data.components.physicsData
+import relativitization.universe.data.components.playerScienceData
+import relativitization.universe.data.components.popSystemData
+import relativitization.universe.data.components.syncData
 import relativitization.universe.data.global.MutableUniverseGlobalData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.data.global.components.MutableDefaultGlobalDataComponent

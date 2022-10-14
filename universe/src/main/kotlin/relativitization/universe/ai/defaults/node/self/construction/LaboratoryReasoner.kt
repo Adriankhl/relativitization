@@ -1,19 +1,28 @@
 package relativitization.universe.ai.defaults.node.self.construction
 
-import relativitization.universe.ai.defaults.consideration.building.*
-import relativitization.universe.ai.defaults.utils.*
+import relativitization.universe.ai.defaults.consideration.building.KnownAppliedProjectInRangeConsideration
+import relativitization.universe.ai.defaults.consideration.building.NoLaboratoryAtCarrierConsideration
+import relativitization.universe.ai.defaults.consideration.building.OnlyOneLaboratoryConsideration
+import relativitization.universe.ai.defaults.consideration.building.SufficientLaboratoryConsideration
+import relativitization.universe.ai.defaults.utils.AINode
+import relativitization.universe.ai.defaults.utils.DoNothingDualUtilityOption
+import relativitization.universe.ai.defaults.utils.DualUtilityConsideration
+import relativitization.universe.ai.defaults.utils.DualUtilityOption
+import relativitization.universe.ai.defaults.utils.DualUtilityReasoner
+import relativitization.universe.ai.defaults.utils.PlanState
+import relativitization.universe.ai.defaults.utils.SequenceReasoner
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.commands.BuildLaboratoryCommand
 import relativitization.universe.data.commands.RemoveLaboratoryCommand
 import relativitization.universe.data.components.defaults.economy.ResourceQualityClass
 import relativitization.universe.data.components.defaults.economy.ResourceType
-import relativitization.universe.maths.physics.Double2D
 import relativitization.universe.data.components.defaults.popsystem.pop.engineer.laboratory.LaboratoryInternalData
 import relativitization.universe.data.components.defaults.popsystem.pop.engineer.laboratory.MutableLaboratoryData
 import relativitization.universe.data.components.defaults.science.knowledge.AppliedResearchProjectData
 import relativitization.universe.data.components.economyData
 import relativitization.universe.data.components.playerScienceData
 import relativitization.universe.data.components.popSystemData
+import relativitization.universe.maths.physics.Double2D
 import relativitization.universe.maths.physics.Intervals
 import kotlin.random.Random
 

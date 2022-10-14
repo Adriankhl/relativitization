@@ -5,7 +5,10 @@ import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.PlayerType
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
-import relativitization.universe.data.commands.*
+import relativitization.universe.data.commands.Command
+import relativitization.universe.data.commands.CommandErrorMessage
+import relativitization.universe.data.commands.CommandI18NStringFactory
+import relativitization.universe.data.commands.DeclareIndependenceToDirectLeaderCommand
 import relativitization.universe.data.components.politicsData
 import relativitization.universe.utils.I18NString
 import relativitization.universe.utils.IntString

@@ -3,7 +3,6 @@ package relativitization.game.utils
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
-import relativitization.universe.utils.RelativitizationLogManager
 
 /**
  * A scroll pane which call a function when size change

@@ -4,7 +4,12 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.MutablePlayerInternalData
 import relativitization.universe.data.PlayerInternalData
-import relativitization.universe.data.components.defaults.economy.*
+import relativitization.universe.data.components.defaults.economy.MutableResourceData
+import relativitization.universe.data.components.defaults.economy.MutableSocialSecurityData
+import relativitization.universe.data.components.defaults.economy.MutableTaxData
+import relativitization.universe.data.components.defaults.economy.ResourceData
+import relativitization.universe.data.components.defaults.economy.SocialSecurityData
+import relativitization.universe.data.components.defaults.economy.TaxData
 
 /**
  * @property taxData data about the tax rate of various stuff

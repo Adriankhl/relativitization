@@ -1,12 +1,27 @@
 package relativitization.server.routes
 
-import io.ktor.server.application.*
-import io.ktor.http.*
-import io.ktor.server.request.*
-import io.ktor.server.response.*
-import io.ktor.server.routing.*
+import io.ktor.http.ContentType
+import io.ktor.http.HttpStatusCode
+import io.ktor.server.application.Application
+import io.ktor.server.application.call
+import io.ktor.server.request.receive
+import io.ktor.server.response.respond
+import io.ktor.server.response.respondText
+import io.ktor.server.routing.Route
+import io.ktor.server.routing.get
+import io.ktor.server.routing.post
+import io.ktor.server.routing.route
+import io.ktor.server.routing.routing
 import relativitization.server.UniverseServerInternal
-import relativitization.universe.communication.*
+import relativitization.universe.communication.CheckIsPlayerDeadMessage
+import relativitization.universe.communication.DeregisterPlayerMessage
+import relativitization.universe.communication.PlayerInputMessage
+import relativitization.universe.communication.RegisterPlayerMessage
+import relativitization.universe.communication.RunUniverseMessage
+import relativitization.universe.communication.StopUniverseMessage
+import relativitization.universe.communication.StopWaitingMessage
+import relativitization.universe.communication.UniverseData3DMessage
+import relativitization.universe.communication.UniverseServerSettingsMessage
 
 fun Route.runUniverseRouting(universeServerInternal: UniverseServerInternal) {
     route("/run/update-server-settings") {

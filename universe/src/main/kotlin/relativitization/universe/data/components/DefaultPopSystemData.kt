@@ -4,7 +4,12 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.MutablePlayerInternalData
 import relativitization.universe.data.PlayerInternalData
-import relativitization.universe.data.components.defaults.popsystem.*
+import relativitization.universe.data.components.defaults.popsystem.CarrierData
+import relativitization.universe.data.components.defaults.popsystem.CarrierType
+import relativitization.universe.data.components.defaults.popsystem.GeneralPopSystemData
+import relativitization.universe.data.components.defaults.popsystem.MutableCarrierData
+import relativitization.universe.data.components.defaults.popsystem.MutableCarrierInternalData
+import relativitization.universe.data.components.defaults.popsystem.MutableGeneralPopSystemData
 import relativitization.universe.data.components.defaults.popsystem.pop.PopType
 import relativitization.universe.maths.collection.ListFind
 import kotlin.random.Random

@@ -4,7 +4,11 @@ import kotlinx.serialization.Serializable
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
-import relativitization.universe.data.commands.*
+import relativitization.universe.data.commands.AcceptAllianceCommand
+import relativitization.universe.data.commands.AcceptPeaceCommand
+import relativitization.universe.data.commands.Command
+import relativitization.universe.data.commands.CommandErrorMessage
+import relativitization.universe.data.commands.CommandI18NStringFactory
 import relativitization.universe.data.components.defaults.diplomacy.ally.MutableAllianceData
 import relativitization.universe.data.components.defaults.diplomacy.war.MutableWarData
 import relativitization.universe.data.components.defaults.diplomacy.war.WarCoreData

@@ -1,6 +1,10 @@
 package relativitization.universe.maths.number
 
-import kotlin.math.*
+import kotlin.math.floor
+import kotlin.math.log10
+import kotlin.math.pow
+import kotlin.math.round
+import kotlin.math.sign
 
 object Notation {
     /**

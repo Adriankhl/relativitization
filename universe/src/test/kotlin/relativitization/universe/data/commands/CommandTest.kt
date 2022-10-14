@@ -1,6 +1,5 @@
 package relativitization.universe.data.commands
 
-import relativitization.universe.maths.physics.Int4D
 import relativitization.universe.maths.physics.Velocity
 import kotlin.test.Test
 

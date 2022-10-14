@@ -2,7 +2,6 @@ package playground
 
 import kotlin.system.measureTimeMillis
 import kotlin.test.Ignore
-import kotlin.test.Test
 
 data class TestData(val name1: Int = 1) {
     fun name2(): String = "name$name1"

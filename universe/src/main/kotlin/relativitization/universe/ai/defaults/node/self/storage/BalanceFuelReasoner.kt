@@ -4,7 +4,7 @@ import relativitization.universe.ai.defaults.utils.AINode
 import relativitization.universe.ai.defaults.utils.PlanState
 import relativitization.universe.ai.defaults.utils.SequenceReasoner
 import relativitization.universe.data.PlanDataAtPlayer
-import relativitization.universe.data.commands.*
+import relativitization.universe.data.commands.ChangeFuelRestMassTargetProportionCommand
 import relativitization.universe.data.components.defaults.physics.MutableFuelRestMassTargetProportionData
 import relativitization.universe.data.components.defaults.popsystem.CarrierType
 import relativitization.universe.data.components.physicsData

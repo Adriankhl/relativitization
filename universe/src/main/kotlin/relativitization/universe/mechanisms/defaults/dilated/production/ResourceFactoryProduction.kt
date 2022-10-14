@@ -5,7 +5,7 @@ import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.UniverseSettings
 import relativitization.universe.data.commands.Command
 import relativitization.universe.data.commands.SendResourceCommand
-import relativitization.universe.data.components.*
+import relativitization.universe.data.components.MutablePhysicsData
 import relativitization.universe.data.components.defaults.economy.MutableResourceData
 import relativitization.universe.data.components.defaults.economy.MutableResourceQualityData
 import relativitization.universe.data.components.defaults.economy.ResourceQualityClass
@@ -13,6 +13,10 @@ import relativitization.universe.data.components.defaults.economy.ResourceType
 import relativitization.universe.data.components.defaults.popsystem.pop.labourer.MutableLabourerPopData
 import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.MutableInputResourceData
 import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.MutableResourceFactoryData
+import relativitization.universe.data.components.economyData
+import relativitization.universe.data.components.physicsData
+import relativitization.universe.data.components.playerScienceData
+import relativitization.universe.data.components.popSystemData
 import relativitization.universe.data.global.UniverseGlobalData
 import relativitization.universe.mechanisms.Mechanism
 import relativitization.universe.utils.RelativitizationLogManager

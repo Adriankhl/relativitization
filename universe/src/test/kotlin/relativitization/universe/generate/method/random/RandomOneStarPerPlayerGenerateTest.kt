@@ -3,7 +3,11 @@ package relativitization.universe.generate.method.random
 import kotlinx.coroutines.runBlocking
 import relativitization.universe.Universe
 import relativitization.universe.data.MutableUniverseSettings
-import relativitization.universe.data.commands.*
+import relativitization.universe.data.commands.BuildForeignResourceFactoryCommand
+import relativitization.universe.data.commands.ChangeSalaryFactorCommand
+import relativitization.universe.data.commands.Command
+import relativitization.universe.data.commands.DefaultCommandAvailability
+import relativitization.universe.data.commands.SendFuelFromStorageCommand
 import relativitization.universe.data.components.defaults.economy.ResourceType
 import relativitization.universe.data.components.defaults.popsystem.pop.PopType
 import relativitization.universe.data.components.economyData

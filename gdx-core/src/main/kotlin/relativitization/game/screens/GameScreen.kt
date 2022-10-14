@@ -9,8 +9,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import relativitization.game.RelativitizationGame
-import relativitization.game.components.GameScreenInfoPane
 import relativitization.game.components.GameScreenControlBar
+import relativitization.game.components.GameScreenInfoPane
 import relativitization.game.components.GameScreenWorldMap
 import relativitization.game.utils.TableScreen
 import relativitization.universe.utils.RelativitizationLogManager

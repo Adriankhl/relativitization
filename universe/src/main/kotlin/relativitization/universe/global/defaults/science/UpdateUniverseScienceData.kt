@@ -2,7 +2,12 @@ package relativitization.universe.global.defaults.science
 
 import relativitization.universe.data.PlayerData
 import relativitization.universe.data.UniverseData
-import relativitization.universe.data.components.defaults.science.knowledge.*
+import relativitization.universe.data.components.defaults.science.knowledge.AppliedResearchField
+import relativitization.universe.data.components.defaults.science.knowledge.AppliedResearchProjectData
+import relativitization.universe.data.components.defaults.science.knowledge.BasicResearchField
+import relativitization.universe.data.components.defaults.science.knowledge.BasicResearchProjectData
+import relativitization.universe.data.components.defaults.science.knowledge.MutableAppliedResearchData
+import relativitization.universe.data.components.defaults.science.knowledge.MutableBasicResearchData
 import relativitization.universe.data.components.playerScienceData
 import relativitization.universe.data.global.MutableUniverseGlobalData
 import relativitization.universe.data.global.components.MutableUniverseScienceData

@@ -25,7 +25,7 @@ import com.badlogic.gdx.utils.I18NBundle
 import relativitization.game.GdxSettings
 import relativitization.game.Language
 import relativitization.universe.utils.RelativitizationLogManager
-import java.util.*
+import java.util.Locale
 import kotlin.random.Random
 
 data class TranslationData(

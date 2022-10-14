@@ -4,7 +4,11 @@ import relativitization.universe.ai.defaults.utils.AINode
 import relativitization.universe.ai.defaults.utils.PlanState
 import relativitization.universe.ai.defaults.utils.SequenceReasoner
 import relativitization.universe.data.PlanDataAtPlayer
-import relativitization.universe.data.commands.*
+import relativitization.universe.data.commands.ChangeHighIncomeTaxCommand
+import relativitization.universe.data.commands.ChangeLowIncomeTaxCommand
+import relativitization.universe.data.commands.ChangeLowMiddleBoundaryCommand
+import relativitization.universe.data.commands.ChangeMiddleHighBoundaryCommand
+import relativitization.universe.data.commands.ChangeMiddleIncomeTaxCommand
 
 class TaxReasoner : SequenceReasoner() {
     override fun getSubNodeList(

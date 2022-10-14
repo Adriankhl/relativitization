@@ -6,7 +6,12 @@ import relativitization.universe.data.components.defaults.economy.ResourceQualit
 import relativitization.universe.data.components.defaults.economy.ResourceType
 import relativitization.universe.data.components.defaults.popsystem.CarrierInternalData
 import relativitization.universe.data.components.defaults.popsystem.MutableCarrierInternalData
-import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.*
+import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.FuelFactoryInternalData
+import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.InputResourceData
+import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.MutableFuelFactoryInternalData
+import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.MutableInputResourceData
+import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.MutableResourceFactoryInternalData
+import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.ResourceFactoryInternalData
 import relativitization.universe.maths.algebra.Quadratic
 import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.math.min

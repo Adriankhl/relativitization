@@ -1,6 +1,11 @@
 package relativitization.universe.data
 
-import relativitization.universe.data.components.*
+import relativitization.universe.data.components.EconomyData
+import relativitization.universe.data.components.MutableEconomyData
+import relativitization.universe.data.components.MutablePhysicsData
+import relativitization.universe.data.components.MutablePlayerDataComponent
+import relativitization.universe.data.components.PhysicsData
+import relativitization.universe.data.components.PlayerDataComponent
 import relativitization.universe.data.serializer.DataSerializer
 import kotlin.test.Test
 

@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx
 import kotlinx.coroutines.runBlocking
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.TableScreen
-import relativitization.universe.maths.number.Notation
 
 class LoadingGameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
     val gdxSettings = game.gdxSettings

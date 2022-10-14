@@ -3,10 +3,19 @@ package relativitization.universe.ai.defaults.node.self.event
 import relativitization.universe.ai.defaults.consideration.diplomacy.RelationConsideration
 import relativitization.universe.ai.defaults.consideration.military.InDefensiveWarConsideration
 import relativitization.universe.ai.defaults.consideration.military.WarLossConsideration
-import relativitization.universe.ai.defaults.utils.*
+import relativitization.universe.ai.defaults.utils.AINode
+import relativitization.universe.ai.defaults.utils.DualUtilityConsideration
+import relativitization.universe.ai.defaults.utils.DualUtilityOption
+import relativitization.universe.ai.defaults.utils.DualUtilityReasoner
+import relativitization.universe.ai.defaults.utils.PlainDualUtilityConsideration
+import relativitization.universe.ai.defaults.utils.PlanState
+import relativitization.universe.ai.defaults.utils.SequenceReasoner
 import relativitization.universe.data.PlanDataAtPlayer
 import relativitization.universe.data.commands.SelectEventChoiceCommand
-import relativitization.universe.data.events.*
+import relativitization.universe.data.events.CallAllyToSubordinateWarEvent
+import relativitization.universe.data.events.CallAllyToWarEvent
+import relativitization.universe.data.events.MutableEventData
+import relativitization.universe.data.events.ProposePeaceEvent
 import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.random.Random
 

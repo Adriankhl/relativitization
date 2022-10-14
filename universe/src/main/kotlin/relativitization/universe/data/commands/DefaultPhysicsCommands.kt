@@ -3,14 +3,17 @@ package relativitization.universe.data.commands
 import kotlinx.serialization.Serializable
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.UniverseSettings
-import relativitization.universe.data.components.defaults.physics.*
+import relativitization.universe.data.components.defaults.physics.FuelRestMassTargetProportionData
 import relativitization.universe.data.components.physicsData
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.maths.physics.Int4D
 import relativitization.universe.maths.physics.Relativistic.targetVelocityByPhotonRocket
 import relativitization.universe.maths.physics.TargetVelocityData
 import relativitization.universe.maths.physics.Velocity
-import relativitization.universe.utils.*
+import relativitization.universe.utils.I18NString
+import relativitization.universe.utils.IntString
+import relativitization.universe.utils.NormalString
+import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.math.min
 
 @Serializable

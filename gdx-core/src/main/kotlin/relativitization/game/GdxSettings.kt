@@ -1,7 +1,6 @@
 package relativitization.game
 
 import kotlinx.serialization.Serializable
-import relativitization.game.components.upper.DefaultUpperInfoPaneList
 import relativitization.game.components.upper.UpperInfoPaneCollection
 import relativitization.universe.data.serializer.DataSerializer
 import relativitization.universe.utils.RelativitizationLogManager

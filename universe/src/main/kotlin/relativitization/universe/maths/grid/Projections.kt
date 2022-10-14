@@ -1,7 +1,7 @@
 package relativitization.universe.maths.grid
 
-import relativitization.universe.maths.physics.Int3D
 import relativitization.universe.maths.grid.Grids.isInt3DValid
+import relativitization.universe.maths.physics.Int3D
 import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.math.max
 import kotlin.math.min
