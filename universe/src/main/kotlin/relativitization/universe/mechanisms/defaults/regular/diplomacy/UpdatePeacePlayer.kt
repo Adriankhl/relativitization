@@ -22,7 +22,9 @@ object UpdatePeacePlayer : Mechanism() {
         val allPeaceTreaty: Set<Int> = mutablePlayerData.playerInternalData.modifierData()
             .diplomacyModifierData.peaceTreaty.keys
 
-        val peacePlayerSet: Set<Int> = allPeaceTreaty.flatMap {
+        val peacePlayerSet: Set<Int> = allPeaceTreaty.filter {
+            universeData3DAtPlayer.playerDataMap.containsKey(it)
+        }.flatMap {
             universeData3DAtPlayer.get(it).getSubordinateAndSelfIdSet()
         }.toSet()
 
