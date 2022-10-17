@@ -16,7 +16,7 @@ object Versions {
     const val jdkVersion = 17
 
     // Gradle plugin
-    const val gradleVersionPluginVersion = "0.42.0"
+    const val gradleVersionPluginVersion = "0.43.0"
 
     // Documentation
     const val dokkaVersion = "1.7.20"
