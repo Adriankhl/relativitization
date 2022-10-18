@@ -419,11 +419,11 @@ object RandomOneStarPerPlayerGenerate : RandomGenerateUniverseMethod() {
             )
 
             mutablePlayerData.syncData()
-            mutableUniverseData4D.addPlayerDataToLatestWithAfterImage(
+            mutableUniverseData4D.addPlayerDataToLatestDuration(
                 mutablePlayerData = mutablePlayerData,
                 currentTime = universeState.getCurrentTime(),
-                edgeLength = universeSettings.groupEdgeLength,
-                playerAfterImageDuration = universeSettings.playerAfterImageDuration
+                duration = universeSettings.playerAfterImageDuration,
+                edgeLength = universeSettings.groupEdgeLength
             )
         }
 

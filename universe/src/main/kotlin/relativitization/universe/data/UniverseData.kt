@@ -427,20 +427,21 @@ data class MutableUniverseData4D(
     }
 
     /**
-     * Add player data to the latest time slice, also add after image to prevent player disappearing after move
-     * Also sync data component
+     * Add player data to multiple grids with different time coordinates until current time,
+     * the same spatial coordinates stay the same
      *
      * @param mutablePlayerData the data of the player to be added
-     * @param currentTime the current time of the universe, which the player data time will be changed to this time
+     * @param currentTime the current time of the universe
+     * @param duration the data is added to all the past grids within this duration
      * @param edgeLength the length of the cube defining same group of players
      */
-    fun addPlayerDataToLatestWithAfterImage(
+    fun addPlayerDataToLatestDuration(
         mutablePlayerData: MutablePlayerData,
         currentTime: Int,
+        duration: Int,
         edgeLength: Double,
-        playerAfterImageDuration: Int,
     ) {
-        for (time in 0..playerAfterImageDuration) {
+        for (time in 0..duration) {
             val playerData: PlayerData = DataSerializer.copy(mutablePlayerData)
             // Fix player time
             val playerTime: Int = currentTime - time
