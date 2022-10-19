@@ -1,7 +1,7 @@
 package relativitization.universe.data
 
 import kotlinx.serialization.Serializable
-import relativitization.universe.ai.DefaultAI
+import relativitization.universe.ai.EmptyAI
 import relativitization.universe.data.components.MutablePlayerDataComponentMap
 import relativitization.universe.data.components.PlayerDataComponentMap
 import relativitization.universe.data.events.EventData
@@ -316,7 +316,7 @@ data class PlayerInternalData(
     val directSubordinateIdSet: Set<Int> = setOf(),
     val subordinateIdSet: Set<Int> = setOf(),
     val isAlive: Boolean = true,
-    val aiName: String = DefaultAI.name(),
+    val aiName: String = EmptyAI.name(),
     val eventDataMap: Map<Int, EventData> = mapOf(),
     val playerDataComponentMap: PlayerDataComponentMap = PlayerDataComponentMap(),
 ) {
@@ -332,7 +332,7 @@ data class MutablePlayerInternalData(
     var directSubordinateIdSet: MutableSet<Int> = mutableSetOf(),
     var subordinateIdSet: MutableSet<Int> = mutableSetOf(),
     var isAlive: Boolean = true,
-    var aiName: String = DefaultAI.name(),
+    var aiName: String = EmptyAI.name(),
     var eventDataMap: MutableMap<Int, MutableEventData> = mutableMapOf(),
     var playerDataComponentMap: MutablePlayerDataComponentMap = MutablePlayerDataComponentMap(),
 ) {

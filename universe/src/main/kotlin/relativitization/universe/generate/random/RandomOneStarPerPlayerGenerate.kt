@@ -1,5 +1,6 @@
 package relativitization.universe.generate.random
 
+import relativitization.universe.ai.DefaultAI
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.MutableUniverseData4D
 import relativitization.universe.data.PlayerType
@@ -308,6 +309,9 @@ object RandomOneStarPerPlayerGenerate : RandomGenerateUniverseMethod() {
             } else {
                 mutablePlayerData.playerType = PlayerType.AI
             }
+
+            // Default to DefaultAI
+            mutablePlayerData.playerInternalData.aiName = DefaultAI.name()
 
             // Random location, avoid too close to the boundary by adding a 0.1 width margin
             mutablePlayerData.double4D.x = random.nextDouble(

@@ -1,6 +1,7 @@
 package relativitization.universe.data.commands
 
 import kotlinx.serialization.Serializable
+import relativitization.universe.ai.DefaultAI
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.MutablePlayerInternalData
 import relativitization.universe.data.UniverseSettings
@@ -128,6 +129,7 @@ data class SplitCarrierCommand(
         val newPlayerInternalData = MutablePlayerInternalData(
             directLeaderId = playerData.playerId,
             leaderIdList = playerData.getLeaderAndSelfIdList().toMutableList(),
+            aiName = DefaultAI.name(),
         )
 
         // Split carrier, process pop system data first since it is the most important
