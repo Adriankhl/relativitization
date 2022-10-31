@@ -32,6 +32,8 @@ allprojects {
 }
 
 tasks.withType<com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask> {
+    gradleReleaseChannel = "current"
+
     fun isNonStable(version: String): Boolean {
         return listOf(
             "-alpha",
@@ -42,6 +44,7 @@ tasks.withType<com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
             version.toLowerCase().contains(it)
         }
     }
+
     rejectVersionIf {
         // ignored jacoco: https://github.com/ben-manes/gradle-versions-plugin/issues/534
         (candidate.group == "org.jacoco") || isNonStable(candidate.version)
