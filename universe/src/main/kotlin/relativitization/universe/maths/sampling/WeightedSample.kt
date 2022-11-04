@@ -30,8 +30,11 @@ object WeightedSample {
             logger.debug("Sample from random list")
             listOf()
         } else {
-            val weightList: List<Double> = validItemList.fold(listOf()) { acc, t ->
-                acc + weightFunction(t)
+            val weightList: List<Double> = validItemList.drop(1).fold(
+                listOf(weightFunction(validItemList.first()))
+            ) { acc, t ->
+                val newValue: Double = acc.last() + weightFunction(t)
+                acc + newValue
             }
 
             val totalWeight: Double = weightList.last()
