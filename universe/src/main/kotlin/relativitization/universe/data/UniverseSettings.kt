@@ -8,6 +8,7 @@ import relativitization.universe.maths.physics.Int3D
 import relativitization.universe.maths.physics.Intervals.intDelay
 import relativitization.universe.maths.physics.Intervals.maxDelayAfterMove
 import relativitization.universe.mechanisms.DefaultMechanismLists
+import relativitization.universe.utils.RelativitizationLogManager
 
 /**
  * Setting data
@@ -65,6 +66,31 @@ data class UniverseSettings(
     fun isSettingValid(): Boolean {
         return isPlayerAfterImageDurationValid() && isPlayerHistoricalInt4DLengthValid() && isTDimBigEnough()
     }
+
+    fun getOtherIntOrDefault(name: String, default: Int): Int {
+        return otherIntMap.getOrElse(name) {
+            logger.error("Missing other Int from universe settings, name: $name")
+            default
+        }
+    }
+
+    fun getOtherDoubleOrDefault(name: String, default: Double): Double {
+        return otherDoubleMap.getOrElse(name) {
+            logger.error("Missing other Double from universe settings, name: $name")
+            default
+        }
+    }
+
+    fun getOtherStringOrDefault(name: String, default: String): String {
+        return otherStringMap.getOrElse(name) {
+            logger.error("Missing other String from universe settings, name: $name")
+            default
+        }
+    }
+
+    companion object {
+        private val logger = RelativitizationLogManager.getLogger()
+    }
 }
 
 
@@ -94,6 +120,31 @@ data class MutableUniverseSettings(
 ) {
     fun randomizeSeed() {
         randomSeed = Clock.System.now().epochSeconds
+    }
+
+    fun getOtherIntOrDefault(name: String, default: Int): Int {
+        return otherIntMap.getOrElse(name) {
+            logger.error("Missing other Int from universe settings, name: $name")
+            default
+        }
+    }
+
+    fun getOtherDoubleOrDefault(name: String, default: Double): Double {
+        return otherDoubleMap.getOrElse(name) {
+            logger.error("Missing other Double from universe settings, name: $name")
+            default
+        }
+    }
+
+    fun getOtherStringOrDefault(name: String, default: String): String {
+        return otherStringMap.getOrElse(name) {
+            logger.error("Missing other String from universe settings, name: $name")
+            default
+        }
+    }
+
+    companion object {
+        private val logger = RelativitizationLogManager.getLogger()
     }
 }
 

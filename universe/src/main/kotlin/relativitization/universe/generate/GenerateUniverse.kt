@@ -41,6 +41,27 @@ data class GenerateSettings(
         )
     }
 
+    fun getOtherIntOrDefault(name: String, default: Int): Int {
+        return otherIntMap.getOrElse(name) {
+            logger.error("Missing other Int from generate settings, name: $name")
+            default
+        }
+    }
+
+    fun getOtherDoubleOrDefault(name: String, default: Double): Double {
+        return otherDoubleMap.getOrElse(name) {
+            logger.error("Missing other Double from generate settings, name: $name")
+            default
+        }
+    }
+
+    fun getOtherStringOrDefault(name: String, default: String): String {
+        return otherStringMap.getOrElse(name) {
+            logger.error("Missing other String from generate settings, name: $name")
+            default
+        }
+    }
+
     companion object {
         private val logger = RelativitizationLogManager.getLogger()
 
