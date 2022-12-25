@@ -45,7 +45,7 @@ data class UniverseData(
     /**
      * Check if the universe is valid
      */
-    fun isUniverseValidFull(): Boolean {
+    fun isUniverseValid(): Boolean {
         val isSettingValid: Boolean = universeSettings.isSettingValid()
         if (!isSettingValid) {
             logger.error("Universe setting is not valid")
@@ -62,19 +62,6 @@ data class UniverseData(
         }
 
         return isSettingValid && isDimensionValid && isStateValid
-    }
-
-    /**
-     * Check if the universe is valid, only check the state of the universe because this may
-     * change when the universe is running
-     */
-    fun isUniverseValidLite(): Boolean {
-        val isStateValid: Boolean = isStateValid()
-        if (!isStateValid) {
-            logger.error("Universe state is not valid")
-        }
-
-        return isStateValid
     }
 
     /**
@@ -235,9 +222,6 @@ data class UniverseData(
     fun updateUniverseDropOldest(slice: List<List<List<Map<Int, List<PlayerData>>>>>) {
         universeData4D.addAndRemoveFirstUniverse3DSlice(slice)
         universeState.updateTime()
-        if (!isUniverseValidLite()) {
-            logger.error("Updated universe is not valid")
-        }
     }
 
 
@@ -247,9 +231,6 @@ data class UniverseData(
      */
     fun updateUniverseReplaceLatest(slice: List<List<List<Map<Int, List<PlayerData>>>>>) {
         universeData4D.addAndRemoveLastUniverse3DSlice(slice)
-        if (!isUniverseValidLite()) {
-            logger.error("Updated universe is not valid")
-        }
     }
 
     companion object {

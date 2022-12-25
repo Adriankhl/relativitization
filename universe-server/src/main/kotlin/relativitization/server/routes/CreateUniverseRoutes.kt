@@ -36,7 +36,7 @@ fun Route.createUniverseRouting(universeServerInternal: UniverseServerInternal) 
 
                 logger.debug("Done generating universe")
 
-                if (universeData.isUniverseValidFull()) {
+                if (universeData.isUniverseValid()) {
                     universeServerInternal.setUniverse(
                         Universe(
                             universeData = universeData,
@@ -79,7 +79,7 @@ fun Route.createUniverseRouting(universeServerInternal: UniverseServerInternal) 
                     universeName = loadUniverseMessage.universeName,
                     programDir = universeServerInternal.universeServerSettings.programDir,
                 )
-                if (universeData.isUniverseValidFull()) {
+                if (universeData.isUniverseValid()) {
                     universeServerInternal.setUniverse(
                         Universe(
                             universeData = universeData,

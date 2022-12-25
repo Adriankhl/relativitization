@@ -119,7 +119,7 @@ object GenerateUniverseMethodCollection {
 
     fun isSettingValid(settings: GenerateSettings): Boolean {
         val generateData: UniverseData = generate(settings)
-        return if (generateData.isUniverseValidFull()) {
+        return if (generateData.isUniverseValid()) {
             true
         } else {
             val className = this::class.qualifiedName
