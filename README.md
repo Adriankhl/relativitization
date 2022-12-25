@@ -137,7 +137,7 @@ Note that the main class has an additional `Kt` after the file name in Kotlin's 
 This will produce html documentation pages to `build/dokka/htmlMultiModule`:
 
 ```
-./gradlew dokkaHtmlMultimodule
+./gradlew dokkaHtmlMultiModule
 ```
 
 ## Contribute
