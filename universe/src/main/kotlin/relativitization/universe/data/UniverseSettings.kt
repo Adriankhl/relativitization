@@ -5,8 +5,7 @@ import kotlinx.serialization.Serializable
 import relativitization.universe.data.commands.DefaultCommandAvailability
 import relativitization.universe.global.DefaultGlobalMechanismList
 import relativitization.universe.maths.physics.Int3D
-import relativitization.universe.maths.physics.Intervals.intDelay
-import relativitization.universe.maths.physics.Intervals.maxDelayAfterMove
+import relativitization.universe.maths.physics.Intervals
 import relativitization.universe.mechanisms.DefaultMechanismLists
 import relativitization.universe.spacetime.MinkowskiSpacetime
 import relativitization.universe.utils.RelativitizationLogManager
@@ -48,13 +47,13 @@ data class UniverseSettings(
     val xDim: Int = 3,
     val yDim: Int = 3,
     val zDim: Int = 3,
-    val tDim: Int = intDelay(
+    val tDim: Int = Intervals.intDelay(
         Int3D(0, 0, 0),
         Int3D(xDim - 1, yDim - 1, zDim - 1),
         speedOfLight
     ) + 1,
     val universeBoundary: UniverseBoundary = UniverseBoundary.REFLECTIVE,
-    val playerAfterImageDuration: Int = maxDelayAfterMove(speedOfLight),
+    val playerAfterImageDuration: Int = Intervals.maxDelayAfterMove(speedOfLight),
     val playerHistoricalInt4DLength: Int = playerAfterImageDuration,
     val groupEdgeLength: Double = 0.01,
     val randomSeed: Long = Clock.System.now().epochSeconds,
@@ -62,20 +61,17 @@ data class UniverseSettings(
     val otherDoubleMap: Map<String, Double> = mapOf(),
     val otherStringMap: Map<String, String> = mapOf(),
 ) {
-    private fun isTDimBigEnough(): Boolean {
-        return tDim > intDelay(Int3D(0, 0, 0), Int3D(xDim - 1, yDim - 1, zDim - 1), speedOfLight)
-    }
 
-    private fun isPlayerAfterImageDurationValid(): Boolean {
-        return (playerAfterImageDuration >= maxDelayAfterMove(speedOfLight)) && (playerAfterImageDuration < tDim)
-    }
 
-    private fun isPlayerHistoricalInt4DLengthValid(): Boolean {
-        return playerHistoricalInt4DLength >= playerAfterImageDuration
-    }
-
+    /**
+     * Check if the setting is valid for Minkowski spacetime, always return true for other spacetime
+     */
     fun isSettingValid(): Boolean {
-        return isPlayerAfterImageDurationValid() && isPlayerHistoricalInt4DLengthValid() && isTDimBigEnough()
+        return if (spacetimeCollectionName == MinkowskiSpacetime.name()) {
+            MinkowskiSpacetime.isUniverseSettingsValid(this)
+        } else {
+            true
+        }
     }
 
     fun getOtherIntOrDefault(name: String, default: Int): Int {
@@ -116,13 +112,13 @@ data class MutableUniverseSettings(
     var xDim: Int = 3,
     var yDim: Int = 3,
     var zDim: Int = 3,
-    var tDim: Int = intDelay(
+    var tDim: Int = Intervals.intDelay(
         Int3D(0, 0, 0),
         Int3D(xDim - 1, yDim - 1, zDim - 1),
         speedOfLight
     ) + 1,
     var universeBoundary: UniverseBoundary = UniverseBoundary.REFLECTIVE,
-    var playerAfterImageDuration: Int = maxDelayAfterMove(speedOfLight),
+    var playerAfterImageDuration: Int = Intervals.maxDelayAfterMove(speedOfLight),
     var playerHistoricalInt4DLength: Int = playerAfterImageDuration,
     var groupEdgeLength: Double = 0.01,
     var randomSeed: Long = Clock.System.now().epochSeconds,

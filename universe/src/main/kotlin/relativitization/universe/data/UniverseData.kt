@@ -9,6 +9,7 @@ import relativitization.universe.maths.grid.Grids.double4DToGroupId
 import relativitization.universe.maths.physics.Int3D
 import relativitization.universe.maths.physics.Int4D
 import relativitization.universe.maths.physics.Intervals.intDelay
+import relativitization.universe.spacetime.SpacetimeCollection
 import relativitization.universe.utils.RelativitizationLogManager
 
 @Serializable
@@ -42,20 +43,9 @@ data class UniverseData(
     }
 
     /**
-     * Check if the player data in the universeData4D is valid
-     */
-    private fun isPlayerDataValid(): Boolean {
-        val playerDataList: List<PlayerData> = getCurrentPlayerDataList()
-        val playerDataCheckList: List<Boolean> = playerDataList.map {
-            it.isValid(universeState.getCurrentTime())
-        }
-        return playerDataCheckList.all { it }
-    }
-
-    /**
      * Check if the universe is valid
      */
-    fun isUniverseValid(): Boolean {
+    fun isUniverseValidFull(): Boolean {
         val isSettingValid: Boolean = universeSettings.isSettingValid()
         if (!isSettingValid) {
             logger.error("Universe setting is not valid")
@@ -67,16 +57,24 @@ data class UniverseData(
         }
 
         val isStateValid: Boolean = isStateValid()
-        if (!isSettingValid) {
+        if (!isStateValid) {
             logger.error("Universe state is not valid")
         }
 
-        val isPlayerDataValid: Boolean = isPlayerDataValid()
-        if (!isPlayerDataValid) {
-            logger.error("Some player data is not valid")
+        return isSettingValid && isDimensionValid && isStateValid
+    }
+
+    /**
+     * Check if the universe is valid, only check the state of the universe because this may
+     * change when the universe is running
+     */
+    fun isUniverseValidLite(): Boolean {
+        val isStateValid: Boolean = isStateValid()
+        if (!isStateValid) {
+            logger.error("Universe state is not valid")
         }
 
-        return isSettingValid && isDimensionValid && isStateValid && isPlayerDataValid
+        return isStateValid
     }
 
     /**
@@ -153,10 +151,10 @@ data class UniverseData(
         for (i in 0 until universeSettings.xDim) {
             for (j in 0 until universeSettings.yDim) {
                 for (k in 0 until universeSettings.zDim) {
-                    val delay: Int = intDelay(
+                    val delay: Int = SpacetimeCollection.computeTimeDelay(
                         center.toInt3D(),
                         Int3D(i, j, k),
-                        universeSettings.speedOfLight
+                        universeSettings
                     )
                     val int4D = Int4D(center.t - delay, i, j, k)
                     val playerDataMapInt4D: Map<Int, List<PlayerData>> = getPlayerDataMapAt(int4D)
@@ -237,7 +235,7 @@ data class UniverseData(
     fun updateUniverseDropOldest(slice: List<List<List<Map<Int, List<PlayerData>>>>>) {
         universeData4D.addAndRemoveFirstUniverse3DSlice(slice)
         universeState.updateTime()
-        if (!isUniverseValid()) {
+        if (!isUniverseValidLite()) {
             logger.error("Updated universe is not valid")
         }
     }
@@ -249,7 +247,7 @@ data class UniverseData(
      */
     fun updateUniverseReplaceLatest(slice: List<List<List<Map<Int, List<PlayerData>>>>>) {
         universeData4D.addAndRemoveLastUniverse3DSlice(slice)
-        if (!isUniverseValid()) {
+        if (!isUniverseValidLite()) {
             logger.error("Updated universe is not valid")
         }
     }

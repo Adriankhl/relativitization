@@ -20,9 +20,8 @@ import relativitization.universe.global.GlobalMechanismCollection
 import relativitization.universe.maths.grid.Grids.create3DGrid
 import relativitization.universe.maths.physics.Int3D
 import relativitization.universe.maths.physics.Int4D
-import relativitization.universe.maths.physics.Intervals.intDelay
-import relativitization.universe.maths.physics.Relativistic
 import relativitization.universe.mechanisms.MechanismCollection.processMechanismCollection
+import relativitization.universe.spacetime.SpacetimeCollection
 import relativitization.universe.utils.FileUtils
 import relativitization.universe.utils.RelativitizationLogManager
 import relativitization.universe.utils.pmap
@@ -146,7 +145,7 @@ class Universe(
         int3DList.pmap { int3D ->
             val random: Random = int3DRandomMap.getValue(int3D)
 
-            val viewMap = universeData.toUniverseData3DAtGrid(
+            val viewMap: Map<Int, UniverseData3DAtPlayer> = universeData.toUniverseData3DAtGrid(
                 Int4D(time, int3D)
             ).idToUniverseData3DAtPlayer()
 
@@ -256,13 +255,14 @@ class Universe(
         playerCollection.getIdSet().pmap {
             val mutablePlayerData: MutablePlayerData = playerCollection.getPlayer(it)
 
-            val gamma: Double = Relativistic.gamma(
+            val dilatedTime: Double = SpacetimeCollection.computeDilatedTime(
+                mutablePlayerData.int4D.toInt3D(),
                 mutablePlayerData.velocity.toVelocity(),
-                universeData.universeSettings.speedOfLight
+                universeData.universeSettings,
             )
 
             // Update time dilation counter
-            mutablePlayerData.timeDilationCounter += 1.0 / gamma
+            mutablePlayerData.timeDilationCounter += dilatedTime
             if (mutablePlayerData.timeDilationCounter >= 0.0) {
                 mutablePlayerData.timeDilationCounter -= 1.0
             }
@@ -364,10 +364,10 @@ class Universe(
 
             // Determine the command to be executed by spacetime distance
             val commandExecuteList: List<CommandData> = commandList.filter {
-                val timeDelay: Int = intDelay(
+                val timeDelay: Int = SpacetimeCollection.computeTimeDelay(
                     it.fromInt4D.toInt3D(),
                     playerInt4D.toInt3D(),
-                    universeData.universeSettings.speedOfLight
+                    universeData.universeSettings
                 )
                 val timeDiff: Int = playerInt4D.t - it.fromInt4D.t
                 timeDiff >= timeDelay

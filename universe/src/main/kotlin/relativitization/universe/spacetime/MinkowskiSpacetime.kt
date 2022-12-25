@@ -7,7 +7,7 @@ import relativitization.universe.maths.physics.Relativistic
 import relativitization.universe.maths.physics.Velocity
 
 object MinkowskiSpacetime : Spacetime() {
-    override fun computeDelay(
+    override fun computeTimeDelay(
         i1: Int3D,
         i2: Int3D,
         universeSettings: UniverseSettings
@@ -19,7 +19,7 @@ object MinkowskiSpacetime : Spacetime() {
         )
     }
 
-    override fun computeDilation(
+    override fun computeDilatedTime(
         int3D: Int3D,
         velocity: Velocity,
         universeSettings: UniverseSettings
@@ -29,5 +29,34 @@ object MinkowskiSpacetime : Spacetime() {
             velocity = velocity,
             speedOfLight = universeSettings.speedOfLight
         )
+    }
+
+    private fun isTDimBigEnough(universeSettings: UniverseSettings): Boolean {
+        return universeSettings.tDim > Intervals.intDelay(
+            Int3D(0, 0, 0),
+            Int3D(
+                universeSettings.xDim - 1,
+                universeSettings.yDim - 1,
+                universeSettings.zDim - 1
+            ),
+            universeSettings.speedOfLight
+        )
+    }
+
+    private fun isPlayerAfterImageDurationValid(universeSettings: UniverseSettings): Boolean {
+        return (universeSettings.playerAfterImageDuration >= Intervals.maxDelayAfterMove(
+            universeSettings.speedOfLight
+        )) && (universeSettings.playerAfterImageDuration < universeSettings.tDim)
+    }
+
+    private fun isPlayerHistoricalInt4DLengthValid(universeSettings: UniverseSettings): Boolean {
+        return universeSettings.playerHistoricalInt4DLength >=
+                universeSettings.playerAfterImageDuration
+    }
+
+    fun isUniverseSettingsValid(universeSettings: UniverseSettings): Boolean {
+        return isTDimBigEnough(universeSettings) &&
+                isPlayerAfterImageDurationValid(universeSettings) &&
+                isPlayerHistoricalInt4DLengthValid(universeSettings)
     }
 }

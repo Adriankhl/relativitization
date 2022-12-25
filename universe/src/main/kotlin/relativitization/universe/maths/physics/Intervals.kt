@@ -113,5 +113,4 @@ object Intervals {
     fun maxDelayAfterMove(speedOfLight: Double): Int {
         return intDelay(Int3D(0, 0, 0), Int3D(1, 1, 1), speedOfLight)
     }
-
 }
