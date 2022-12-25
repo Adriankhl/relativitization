@@ -66,7 +66,7 @@ class SalaryReasoner(private val random: Random) : SequenceReasoner() {
  *
  * @property category the id of the carrier
  * @property populationRatioOrderMap a map from carrier id to the descending order of
- * population / ideal population among all carrier
+ *  population / ideal population among all carrier
  */
 class AdjustSalaryFactorAINode(
     private val carrierId: Int,

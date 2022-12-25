@@ -13,8 +13,10 @@ import relativitization.universe.data.PlanDataAtPlayer
  * @property rankIfSelf the rank of the DualUtilityData if the player is self
  * @property rankIfDirectLeader the rank of the DualUtilityData if the player is direct leader
  * @property rankIfOtherLeader the rank of the DualUtilityData if the player is other leader
- * @property rankIfDirectSubordinate the rank of the DualUtilityData if the player is direct subordinate
- * @property rankIfOtherSubordinate the rank of the DualUtilityData if the player is other subordinate
+ * @property rankIfDirectSubordinate the rank of the DualUtilityData if the player is
+ *  direct subordinate
+ * @property rankIfOtherSubordinate the rank of the DualUtilityData if the player is
+ *  other subordinate
  * @property rankIfOther the rank of the DualUtilityData if the player has no hierarchical relation
  * @property multiplier the multiplier of the DualUtilityData
  */

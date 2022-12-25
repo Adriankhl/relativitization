@@ -7,7 +7,8 @@ import kotlin.math.max
  * Modifier about diplomacy
  *
  * @property peaceTreaty store peace treaty, map from other player id to (universe) time left
- * @property relationModifierMap store relation modifier, map from other player id to relation modifier
+ * @property relationModifierMap store relation modifier, map from other player id to
+ *  relation modifier
  */
 @Serializable
 data class DiplomacyModifierData(
@@ -202,7 +203,8 @@ data class MutableRelationModifier(
  * Effect from a single improve relation act
  *
  * @property change the amount of relation change
- * @property durationLeft the duration of this effect left, in player time, affected by time dilation
+ * @property durationLeft the duration of this effect left, in player time, affected by
+ *  time dilation
  */
 @Serializable
 data class SingleRelationModifier(

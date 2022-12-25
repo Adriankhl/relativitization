@@ -18,11 +18,11 @@ import kotlin.math.pow
  * @property totalAdultPopulation total adult population of self
  * @property averageSelfLabourerSalary the average salary of self labourer
  * @property fuelRemainFractionMap map from other player id to the remain fraction if fuel is sent
- * from the current player to that player
+ *  from the current player to that player
  * @property resourceRemainFractionMap map from other player id to the remain fraction if resource
- * is sent from the current player to that player
+ *  is sent from the current player to that player
  * @property recentlySentCommandIdSet a set of player id where this player has recently sent
- * commands to, and the effect of the command has not been observed yet
+ *  commands to, and the effect of the command has not been observed yet
  */
 class PlanState(
     var foreignFactoryFuel: Double = 0.0,

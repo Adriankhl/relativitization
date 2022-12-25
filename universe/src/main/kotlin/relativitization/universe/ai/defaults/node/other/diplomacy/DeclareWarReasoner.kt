@@ -130,7 +130,8 @@ class SpaceConflictReasoner(random: Random) : DualUtilityReasoner(random) {
  *
  * @property targetPlayerId the id of the target player to declare war
  * @property selfMilitaryScore self military score
- * @property targetPlayerTopLeaderMilitaryScore the military score of the top leader of the target player
+ * @property targetPlayerTopLeaderMilitaryScore the military score of the top leader of the
+ *  target player
  */
 class SpaceConflictDeclareWarOption(
     private val targetPlayerId: Int,

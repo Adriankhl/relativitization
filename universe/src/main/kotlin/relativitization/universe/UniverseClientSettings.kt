@@ -6,7 +6,8 @@ import relativitization.universe.maths.physics.MutableInt3D
 /**
  * Client settings
  *
- * @property programDir the location of the program directories, "." for desktop and context.filesDir for android
+ * @property programDir the location of the program directories,
+ *  "." for desktop and context.filesDir for android
  * @property adminPassword admin password for accessing server
  * @property playerId id of the player
  * @property password player password, for input commands to server

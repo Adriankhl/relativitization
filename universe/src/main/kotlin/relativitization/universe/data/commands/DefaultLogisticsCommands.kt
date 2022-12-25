@@ -189,7 +189,8 @@ data class SendFuelFromStorageCommand(
  * @property resourceQualityClass the quality class of the resource
  * @property resourceQualityData the quality data of the resource
  * @property amount the amount of resource to send
- * @property senderResourceLossFractionPerDistance the loss fraction, determined by player science data
+ * @property senderResourceLossFractionPerDistance the loss fraction, determined by player
+ *  science data
  */
 @Serializable
 data class SendResourceFromStorageCommand(
@@ -430,7 +431,8 @@ data class SendFuelCommand(
  * @property resourceType the type of resource to send
  * @property resourceQualityData the quality of the resource to send
  * @property amount the amount of resource to send
- * @property senderResourceLossFractionPerDistance the loss fraction, determined by player science data
+ * @property senderResourceLossFractionPerDistance the loss fraction, determined by player
+ *  science data
  */
 @Serializable
 data class SendResourceCommand(
@@ -492,7 +494,8 @@ data class SendResourceCommand(
  * @property resourceType the type of resource to send
  * @property resourceQualityData the quality of the resource to send
  * @property amount the amount of resource to send
- * @property senderResourceLossFractionPerDistance the loss fraction, determined by player science data
+ * @property senderResourceLossFractionPerDistance the loss fraction, determined by player
+ *  science data
  */
 @Serializable
 data class SendResourceToPopCommand(

@@ -124,7 +124,7 @@ sealed class Event {
  * Unit of event data
  *
  * @property event the event
- * @param fromId the event is sent from the player with this Id
+ * @property fromId the event is sent from the player with this Id
  * @property eventRecordData the record of the event data, e.g., choice and counter
  */
 @Serializable

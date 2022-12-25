@@ -128,7 +128,7 @@ data class MutableAllPopData(
  * @property salaryFactor multiply this with the base salary to get the actual salary
  * @property desireResourceMap the desire resources of the population
  * @property resourceInputMap store the resource input to this population to fulfill the desire,
- * should be cleared after calculating the effect of the input
+ *  should be cleared after calculating the effect of the input
  * @property lastResourceInputMap store the latest resource input just before it is cleared
  */
 @Serializable

@@ -26,7 +26,8 @@ import relativitization.universe.utils.RelativitizationLogManager
  * @property knownAppliedResearchProjectList this player know these applied research projects exist
  * @property playerKnowledgeData the knowledge data own by the player, based on common sense and
  *  done projects
- * @property playerScienceApplicationData the science product data of the player, based on playerKnowledgeData
+ * @property playerScienceApplicationData the science product data of the player,
+ *  based on playerKnowledgeData
  */
 @Serializable
 @SerialName("PlayerScienceData")

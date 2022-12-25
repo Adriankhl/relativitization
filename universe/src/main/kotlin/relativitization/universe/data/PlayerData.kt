@@ -300,7 +300,8 @@ enum class PlayerType {
  * Player internal data
  *
  * @property directLeaderId the direct leader
- * @property leaderIdList list of player ids of leader, leader of leader, etc., from top leader to direct leader
+ * @property leaderIdList list of player ids of leader, leader of leader, etc.
+ *  from top leader to direct leader
  * @property directLeaderId player id of the direct leader, equals -1 if no leader
  * @property directSubordinateIdSet direct subordinates
  * @property subordinateIdSet set of player ids of the subordinates of this player

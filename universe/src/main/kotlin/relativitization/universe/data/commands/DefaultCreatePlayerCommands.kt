@@ -38,7 +38,8 @@ import relativitization.universe.utils.NormalString
  * Split carrier to create new player
  *
  * @property carrierIdList the id of the carriers to form the new player
- * @property storageFraction the fraction of fuel and resource from original player storage to new player
+ * @property storageFraction the fraction of fuel and resource from original player storage to
+ *  new player
  */
 @Serializable
 data class SplitCarrierCommand(

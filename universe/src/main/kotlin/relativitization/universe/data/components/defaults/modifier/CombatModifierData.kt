@@ -6,7 +6,8 @@ import kotlin.math.max
 /**
  * Modifier related to combat
  *
- * @property disableMilitaryBaseRecoveryTimeLimit disable military base recovery by this number of turn
+ * @property disableMilitaryBaseRecoveryTimeLimit disable military base recovery by this
+ *  number of turn
  */
 @Serializable
 data class CombatModifierData(

@@ -12,8 +12,8 @@ import relativitization.universe.data.components.defaults.ai.MutableFuelRestMass
  *
  * @property aiTask determine the current task of ai
  * @property recentCommandTimeMap a map from player id to time, store the latest time this player
- * sent a command to other player with that id, prevent repeatedly sending command due to
- * observation delay
+ *  sent a command to other player with that id, prevent repeatedly sending command due to
+ *  observation delay
  * @property fuelRestMassHistoryData history of fuel rest mass
  */
 @Serializable

@@ -75,7 +75,7 @@ data class MutableResourceFactoryData(
  * Input resource related data
  *
  * @property qualityData maximum input resource quality, quality exceeding this
- * won't improve the output quality
+ *  won't improve the output quality
  * @property amountPerOutput amount of resource required to produce one unit of output resource
  */
 @Serializable

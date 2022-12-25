@@ -80,7 +80,8 @@ import kotlin.properties.Delegates
 import kotlin.random.Random
 
 /**
- * @property universeClientSettings settings of the client, should only be updated by setUniverseClientSettings()
+ * @property universeClientSettings settings of the client,
+ *  should only be updated by setUniverseClientSettings()
  */
 class UniverseClient(var universeClientSettings: UniverseClientSettings) {
     // The main mutex for serverStatus change

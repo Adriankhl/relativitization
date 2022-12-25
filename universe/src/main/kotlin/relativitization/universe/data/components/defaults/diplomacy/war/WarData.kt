@@ -74,8 +74,8 @@ enum class WarReason(private val value: String) {
  * @property warReason why this war has started
  * @property startTime the starting time of this war
  * @property isOffensive whether the supported player is the attacker
- * @property isDefensive whether the supported player is the defender, note that a player can be both
- * attacker and defender in rare situation
+ * @property isDefensive whether the supported player is the defender, note that a player can be
+ *  both attacker and defender in rare situation
  */
 @Serializable
 data class WarCoreData(

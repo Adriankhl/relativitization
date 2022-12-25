@@ -15,9 +15,9 @@ import relativitization.universe.utils.RelativitizationLogManager
  * @property allyMap map from ally id to alliance data
  * @property selfWarDataMap map from enemy id to the war between the enemy and self
  * @property subordinateWarDataMap map from subordinate id to opponent id to the war of
- * subordinate which this player has joined
+ *  subordinate which this player has joined
  * @property allyWarDataMap map from ally id to opponent id to the war of ally which this
- * player has joined
+ *  player has joined
  */
 @Serializable
 data class RelationData(

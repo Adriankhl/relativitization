@@ -12,7 +12,8 @@ import kotlin.math.abs
  * @property hasAgreedMerge agree remove this player and merge carriers to direct leader
  * @property centralizationLevel describe the centralization of the player, currently unused
  * @property isSubordinateBuildFactoryAllowed whether subordinate is allowed to build factory
- * @property isLeaderBuildLocalFactoryAllowed whether leader of a player is allowed to build local factory in the player
+ * @property isLeaderBuildLocalFactoryAllowed whether leader of a player is allowed to build
+ *  local factory in the player
  * @property isForeignInvestorAllowed whether foreign player is allowed to build factory
  */
 @Serializable
