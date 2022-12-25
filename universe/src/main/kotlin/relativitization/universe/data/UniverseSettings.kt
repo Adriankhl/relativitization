@@ -70,6 +70,7 @@ data class UniverseSettings(
         return if (spacetimeCollectionName == MinkowskiSpacetime.name()) {
             MinkowskiSpacetime.isUniverseSettingsValid(this)
         } else {
+            logger.debug("Not Minkowski spacetime.. Skip universe settings check")
             true
         }
     }
