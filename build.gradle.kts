@@ -125,7 +125,7 @@ tasks.register("cleanArt") {
     doLast {
         delete("../relativitization-art/assets/GdxSettings.json")
         delete("../relativitization-art/assets/GenerateSettings.json")
-        delete("../relativitization-art/assets/Relativitization.jar")
+        delete("../relativitization-art/assets/relativitization.jar")
         delete("../relativitization-art/assets/saves")
         delete("../relativitization-art/outputs")
         delete("../relativitization-art/relativitization-jar")
@@ -249,7 +249,7 @@ tasks.register("packageLinux") {
                 "--name",
                 "relativitization-linux",
                 "--main-jar",
-                "Relativitization.jar",
+                "relativitization.jar",
                 "--type",
                 "app-image",
                 "--icon",
@@ -297,7 +297,7 @@ tasks.register("packageWindows") {
                 "--name",
                 "relativitization-win",
                 "--main-jar",
-                "Relativitization.jar",
+                "relativitization.jar",
                 "--type",
                 "app-image",
                 "--icon",

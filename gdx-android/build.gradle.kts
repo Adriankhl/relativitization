@@ -96,7 +96,7 @@ android {
         versionCode = Versions.appVersionCode
         versionName = Versions.appVersionName
 
-        base.archivesName.set("relativitization")
+        base.archivesName.set(Versions.appName)
     }
 
    signingConfigs {

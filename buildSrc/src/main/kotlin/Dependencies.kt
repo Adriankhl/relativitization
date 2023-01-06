@@ -1,5 +1,5 @@
 object Versions {
-    const val appName = "Relativitization"
+    const val appName = "relativitization"
 
     // app version
     private const val appVersionMajor = 0

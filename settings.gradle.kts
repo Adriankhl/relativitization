@@ -1,4 +1,3 @@
-rootProject.name = "relativitization"
 include(
     "gdx-android",
     "gdx-core",
