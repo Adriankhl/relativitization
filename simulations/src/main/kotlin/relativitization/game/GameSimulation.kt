@@ -19,6 +19,7 @@ import relativitization.universe.mechanisms.DefaultMechanismLists
 internal fun gameSingleRun(
     universeName: String = "Game",
     printStep: Boolean = false,
+    randomSeed: Long = 100L,
     xDim: Int = 10,
     yDim: Int = 10,
     zDim: Int = 3,
@@ -45,6 +46,7 @@ internal fun gameSingleRun(
             xDim = xDim,
             yDim = yDim,
             zDim = zDim,
+            randomSeed = randomSeed,
         )
     )
 
@@ -87,6 +89,7 @@ internal fun gameSingleRun(
         }
 
         val outputDataMap = mapOf(
+            "randomSeed" to randomSeed,
             "turn" to turn,
             "numPlayer" to universe.availablePlayers().size,
             "dead" to universe.getDeadIdList().size,
