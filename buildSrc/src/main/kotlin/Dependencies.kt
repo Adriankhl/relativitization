@@ -34,7 +34,7 @@ object Versions {
     // JVM
     const val gdxVersion = "1.11.0"
     const val log4jVersion = "2.19.0"
-    const val dataframeVersion = "0.8.1"
+    const val dataframeVersion = "0.9.1"
 
     // Android
     const val androidGradlePluginVersion = "7.3.1"
