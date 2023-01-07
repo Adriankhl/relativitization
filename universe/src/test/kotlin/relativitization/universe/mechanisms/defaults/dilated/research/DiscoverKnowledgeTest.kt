@@ -2,6 +2,7 @@ package relativitization.universe.mechanisms.defaults.dilated.research
 
 import kotlinx.coroutines.runBlocking
 import relativitization.universe.Universe
+import relativitization.universe.data.MutableUniverseSettings
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.components.playerScienceData
 import relativitization.universe.generate.GenerateSettings
@@ -16,6 +17,9 @@ internal class DiscoverKnowledgeTest {
             GenerateUniverseMethodCollection.generate(
                 GenerateSettings(
                     generateMethod = TestingFixedMinimal.name(),
+                    universeSettings = MutableUniverseSettings(
+                        randomSeed = 100L,
+                    )
                 )
             )
         )
