@@ -98,7 +98,9 @@ object RandomHierarchyGenerate : RandomGenerateUniverseMethod() {
                             subordinateData.playerInternalData.subordinateIdSet
                         )
 
-                        subordinateData.getSubordinateAndSelfIdSet().forEach { otherId ->
+                        subordinateData.changeDirectLeader(listOf(leaderId))
+
+                        subordinateData.playerInternalData.subordinateIdSet.forEach { otherId ->
                             val otherData: MutablePlayerData = playerIdMap.getValue(otherId)
                             otherData.playerInternalData.leaderIdList.add(0, leaderId)
                         }
