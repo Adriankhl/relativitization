@@ -82,7 +82,9 @@ object RandomHierarchyGenerate : RandomGenerateUniverseMethod() {
                     turnList.remove(leaderId)
                     remainedIdList.remove(leaderId)
                 } else {
-                    val closestIds: List<Int> = turnList.sortedBy { otherId ->
+                    val closestIds: List<Int> = turnList.filter { otherId ->
+                        otherId != leaderId
+                    }.sortedBy { otherId ->
                         Intervals.intDistance(
                             playerIdMap.getValue(leaderId).int4D.toInt3D(),
                             playerIdMap.getValue(otherId).int4D.toInt3D(),
