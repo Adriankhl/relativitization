@@ -41,12 +41,7 @@ object RandomOneStarPerPlayerGenerate : RandomGenerateUniverseMethod() {
 
     override fun name(): String = "One star per player"
 
-    override fun generate(
-        settings: GenerateSettings,
-        random: Random,
-    ): UniverseData {
-        val universeSettings: UniverseSettings = DataSerializer.copy(settings.universeSettings)
-
+    fun createUniverseGlobalData(random: Random): UniverseGlobalData {
         val mutableUniverseGlobalData = MutableUniverseGlobalData()
 
         // Add all default data component
@@ -278,33 +273,25 @@ object RandomOneStarPerPlayerGenerate : RandomGenerateUniverseMethod() {
             )
         mutableUniverseGlobalData.universeScienceData(DataSerializer.copy(newUniverseScienceData))
 
-        // Completed universe global data
-        val universeGlobalData: UniverseGlobalData = DataSerializer.copy(mutableUniverseGlobalData)
+        return DataSerializer.copy(mutableUniverseGlobalData)
+    }
 
-        val mutableUniverseData4D = MutableUniverseData4D(
-            Grids.create4DGrid(
-                universeSettings.tDim,
-                universeSettings.xDim,
-                universeSettings.yDim,
-                universeSettings.zDim
-            ) { _, _, _, _ -> mutableMapOf() }
-        )
-
-        // Only consider numPlayer, ignore numExtraStellarSystem
-        val universeState = UniverseState(
-            currentTime = universeSettings.tDim - 1,
-            maxPlayerId = 0,
-        )
-
-        for (playerId in 1..settings.numPlayer) {
-            val mutablePlayerData = MutablePlayerData(universeState.getNewPlayerId())
+    fun createMutablePlayerList(
+        generateSettings: GenerateSettings,
+        universeSettings: UniverseSettings,
+        universeGlobalData: UniverseGlobalData,
+        universeState: UniverseState,
+        random: Random,
+    ): List<MutablePlayerData> {
+        return (1..generateSettings.numPlayer).map { playerId ->
+             val mutablePlayerData = MutablePlayerData(universeState.getNewPlayerId())
 
             MutableDefaultPlayerDataComponent.createComponentList().forEach {
                 mutablePlayerData.playerInternalData.playerDataComponentMap.put(it)
             }
 
             // First n players are human player
-            if (playerId <= settings.numHumanPlayer) {
+            if (playerId <= generateSettings.numHumanPlayer) {
                 mutablePlayerData.playerType = PlayerType.HUMAN
             } else {
                 mutablePlayerData.playerType = PlayerType.AI
@@ -338,7 +325,7 @@ object RandomOneStarPerPlayerGenerate : RandomGenerateUniverseMethod() {
                 PopType.values().forEach { popType ->
                     carrier.allPopData.getCommonPopData(
                         popType
-                    ).adultPopulation = settings.otherDoubleMap.getOrElse("initialPopulation") {
+                    ).adultPopulation = generateSettings.otherDoubleMap.getOrElse("initialPopulation") {
                         logger.debug("No initialPopulation variable, default to 1E6")
                         1E6
                     }
@@ -346,7 +333,7 @@ object RandomOneStarPerPlayerGenerate : RandomGenerateUniverseMethod() {
             }
 
             // Add random basic and applied projects as done projects
-            mutableUniverseGlobalData.universeScienceData().basicResearchProjectDataMap.values
+            universeGlobalData.universeScienceData().basicResearchProjectDataMap.values
                 .shuffled(random).take(5).forEach {
                     mutablePlayerData.playerInternalData.playerScienceData()
                         .doneBasicResearchProject(
@@ -354,7 +341,7 @@ object RandomOneStarPerPlayerGenerate : RandomGenerateUniverseMethod() {
                             UpdateUniverseScienceData.basicResearchProjectFunction()
                         )
                 }
-            mutableUniverseGlobalData.universeScienceData().appliedResearchProjectDataMap.values
+            universeGlobalData.universeScienceData().appliedResearchProjectDataMap.values
                 .shuffled(random).take(5).forEach {
                     mutablePlayerData.playerInternalData.playerScienceData()
                         .doneAppliedResearchProject(
@@ -364,7 +351,7 @@ object RandomOneStarPerPlayerGenerate : RandomGenerateUniverseMethod() {
                 }
 
             // Add random basic and applied projects as known projects
-            mutableUniverseGlobalData.universeScienceData().basicResearchProjectDataMap.values
+            universeGlobalData.universeScienceData().basicResearchProjectDataMap.values
                 .filter { universeProject ->
                     mutablePlayerData.playerInternalData.playerScienceData()
                         .doneBasicResearchProjectList.all {
@@ -376,7 +363,7 @@ object RandomOneStarPerPlayerGenerate : RandomGenerateUniverseMethod() {
                             it,
                         )
                 }
-            mutableUniverseGlobalData.universeScienceData().appliedResearchProjectDataMap.values
+            universeGlobalData.universeScienceData().appliedResearchProjectDataMap.values
                 .filter { universeProject ->
                     mutablePlayerData.playerInternalData.playerScienceData()
                         .doneAppliedResearchProjectList.all {
@@ -423,6 +410,45 @@ object RandomOneStarPerPlayerGenerate : RandomGenerateUniverseMethod() {
             )
 
             mutablePlayerData.syncData()
+
+            mutablePlayerData
+        }
+    }
+
+    override fun generate(
+        generateSettings: GenerateSettings,
+        random: Random,
+    ): UniverseData {
+        val universeSettings: UniverseSettings = DataSerializer.copy(
+            generateSettings.universeSettings
+        )
+
+        val universeGlobalData: UniverseGlobalData = createUniverseGlobalData(random)
+
+        val mutableUniverseData4D = MutableUniverseData4D(
+            Grids.create4DGrid(
+                universeSettings.tDim,
+                universeSettings.xDim,
+                universeSettings.yDim,
+                universeSettings.zDim
+            ) { _, _, _, _ -> mutableMapOf() }
+        )
+
+        // Only consider numPlayer, ignore numExtraStellarSystem
+        val universeState = UniverseState(
+            currentTime = universeSettings.tDim - 1,
+            maxPlayerId = 0,
+        )
+
+        val mutablePlayerDataList: List<MutablePlayerData> = createMutablePlayerList(
+            generateSettings,
+            universeSettings,
+            universeGlobalData,
+            universeState,
+            random,
+        )
+
+        mutablePlayerDataList.forEach { mutablePlayerData ->
             mutableUniverseData4D.addPlayerDataToLatestDuration(
                 mutablePlayerData = mutablePlayerData,
                 currentTime = universeState.getCurrentTime(),

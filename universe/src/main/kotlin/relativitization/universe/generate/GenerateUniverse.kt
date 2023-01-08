@@ -92,7 +92,7 @@ abstract class GenerateUniverseMethod {
     open fun name(): String = this::class.simpleName.toString()
 
     abstract fun generate(
-        settings: GenerateSettings,
+        generateSettings: GenerateSettings,
         random: Random,
     ): UniverseData
 }
@@ -117,8 +117,8 @@ object GenerateUniverseMethodCollection {
         it.name()
     }
 
-    fun isSettingValid(settings: GenerateSettings): Boolean {
-        val generateData: UniverseData = generate(settings)
+    fun isSettingValid(generateSettings: GenerateSettings): Boolean {
+        val generateData: UniverseData = generate(generateSettings)
         return if (generateData.isUniverseValid()) {
             true
         } else {
@@ -128,13 +128,13 @@ object GenerateUniverseMethodCollection {
         }
     }
 
-    fun generate(settings: GenerateSettings): UniverseData {
+    fun generate(generateSettings: GenerateSettings): UniverseData {
         val generateMethod: GenerateUniverseMethod =
-            generateMethodMap.getOrElse(settings.generateMethod) {
+            generateMethodMap.getOrElse(generateSettings.generateMethod) {
                 logger.error("Generate method doesn't exist, using default method")
                 TestingFixedMinimalGenerate
             }
 
-        return generateMethod.generate(settings, Random(settings.universeSettings.randomSeed))
+        return generateMethod.generate(generateSettings, Random(generateSettings.universeSettings.randomSeed))
     }
 }

@@ -47,10 +47,12 @@ object TestingFixedMinimalGenerate : TestingGenerateUniverseMethod() {
     override fun name(): String = "Test - fixed minimal"
 
     override fun generate(
-        settings: GenerateSettings,
+        generateSettings: GenerateSettings,
         random: Random
     ): UniverseData {
-        val universeSettings: UniverseSettings = DataSerializer.copy(settings.universeSettings)
+        val universeSettings: UniverseSettings = DataSerializer.copy(
+            generateSettings.universeSettings
+        )
 
         val mutableUniverseData4D = MutableUniverseData4D(
             create4DGrid(
