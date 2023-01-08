@@ -8,7 +8,7 @@ import relativitization.universe.data.serializer.DataSerializer.encode
 import relativitization.universe.generate.abm.ABMGenerateUniverseMethod
 import relativitization.universe.generate.random.RandomGenerateUniverseMethod
 import relativitization.universe.generate.random.RandomOneStarPerPlayerGenerate
-import relativitization.universe.generate.testing.TestingFixedMinimal
+import relativitization.universe.generate.testing.TestingFixedMinimalGenerate
 import relativitization.universe.generate.testing.TestingGenerateUniverseMethod
 import relativitization.universe.utils.FileUtils
 import relativitization.universe.utils.RelativitizationLogManager
@@ -132,7 +132,7 @@ object GenerateUniverseMethodCollection {
         val generateMethod: GenerateUniverseMethod =
             generateMethodMap.getOrElse(settings.generateMethod) {
                 logger.error("Generate method doesn't exist, using default method")
-                TestingFixedMinimal
+                TestingFixedMinimalGenerate
             }
 
         return generateMethod.generate(settings, Random(settings.universeSettings.randomSeed))

@@ -4,7 +4,7 @@ import kotlinx.coroutines.runBlocking
 import relativitization.universe.Universe
 import relativitization.universe.generate.GenerateSettings
 import relativitization.universe.generate.GenerateUniverseMethodCollection
-import relativitization.universe.generate.testing.TestingFixedMinimal
+import relativitization.universe.generate.testing.TestingFixedMinimalGenerate
 import kotlin.test.Test
 
 internal class SplitCarrierCommandTest {
@@ -13,7 +13,7 @@ internal class SplitCarrierCommandTest {
         val universe = Universe(
             GenerateUniverseMethodCollection.generate(
                 GenerateSettings(
-                    generateMethod = TestingFixedMinimal.name(),
+                    generateMethod = TestingFixedMinimalGenerate.name(),
                 )
             )
         )

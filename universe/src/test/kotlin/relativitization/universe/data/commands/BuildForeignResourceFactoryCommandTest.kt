@@ -9,7 +9,7 @@ import relativitization.universe.data.components.playerScienceData
 import relativitization.universe.data.components.popSystemData
 import relativitization.universe.generate.GenerateSettings
 import relativitization.universe.generate.GenerateUniverseMethodCollection
-import relativitization.universe.generate.testing.TestingFixedMinimal
+import relativitization.universe.generate.testing.TestingFixedMinimalGenerate
 import kotlin.test.Test
 
 internal class BuildForeignResourceFactoryCommandTest {
@@ -18,7 +18,7 @@ internal class BuildForeignResourceFactoryCommandTest {
         val universe = Universe(
             GenerateUniverseMethodCollection.generate(
                 GenerateSettings(
-                    generateMethod = TestingFixedMinimal.name(),
+                    generateMethod = TestingFixedMinimalGenerate.name(),
                 )
             )
         )

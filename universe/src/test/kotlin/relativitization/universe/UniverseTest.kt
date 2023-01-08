@@ -7,7 +7,7 @@ import relativitization.universe.data.commands.DefaultCommandAvailability
 import relativitization.universe.generate.GenerateSettings
 import relativitization.universe.generate.GenerateUniverseMethodCollection
 import relativitization.universe.generate.random.RandomOneStarPerPlayerGenerate
-import relativitization.universe.generate.testing.TestingFixedMinimal
+import relativitization.universe.generate.testing.TestingFixedMinimalGenerate
 import relativitization.universe.global.DefaultGlobalMechanismList
 import relativitization.universe.mechanisms.DefaultMechanismLists
 import kotlin.test.Test
@@ -16,7 +16,7 @@ internal class UniverseTest {
     @Test
     fun saveLoadTest() {
         val generateSetting = GenerateSettings(
-            generateMethod = TestingFixedMinimal.name(),
+            generateMethod = TestingFixedMinimalGenerate.name(),
             numPlayer = 4,
             numHumanPlayer = 2,
             otherIntMap = mutableMapOf("numExtraStellarSystem" to 3),

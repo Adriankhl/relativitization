@@ -7,7 +7,7 @@ import relativitization.universe.data.commands.AddEventCommand
 import relativitization.universe.data.commands.SelectEventChoiceCommand
 import relativitization.universe.generate.GenerateSettings
 import relativitization.universe.generate.GenerateUniverseMethodCollection
-import relativitization.universe.generate.testing.TestingFixedMinimal
+import relativitization.universe.generate.testing.TestingFixedMinimalGenerate
 import relativitization.universe.maths.physics.Double4D
 import relativitization.universe.maths.physics.Int4D
 import kotlin.test.Test
@@ -18,7 +18,7 @@ internal class MoveToDouble3DEventTest {
         val universe = Universe(
             GenerateUniverseMethodCollection.generate(
                 GenerateSettings(
-                    generateMethod = TestingFixedMinimal.name(),
+                    generateMethod = TestingFixedMinimalGenerate.name(),
                 )
             )
         )
@@ -88,7 +88,7 @@ internal class MoveToDouble3DEventTest {
         val universe = Universe(
             GenerateUniverseMethodCollection.generate(
                 GenerateSettings(
-                    generateMethod = TestingFixedMinimal.name(),
+                    generateMethod = TestingFixedMinimalGenerate.name(),
                 )
             )
         )

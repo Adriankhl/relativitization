@@ -6,7 +6,7 @@ import relativitization.universe.data.components.diplomacyData
 import relativitization.universe.data.events.ProposePeaceEvent
 import relativitization.universe.generate.GenerateSettings
 import relativitization.universe.generate.GenerateUniverseMethodCollection
-import relativitization.universe.generate.testing.TestingFixedMinimal
+import relativitization.universe.generate.testing.TestingFixedMinimalGenerate
 import kotlin.test.Test
 
 internal class ProposePeaceCommandTest {
@@ -15,7 +15,7 @@ internal class ProposePeaceCommandTest {
         val universe = Universe(
             GenerateUniverseMethodCollection.generate(
                 GenerateSettings(
-                    generateMethod = TestingFixedMinimal.name(),
+                    generateMethod = TestingFixedMinimalGenerate.name(),
                 )
             )
         )

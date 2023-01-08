@@ -6,7 +6,7 @@ import relativitization.universe.Universe
 import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.generate.GenerateSettings
 import relativitization.universe.generate.GenerateUniverseMethodCollection
-import relativitization.universe.generate.testing.TestingFixedMinimal
+import relativitization.universe.generate.testing.TestingFixedMinimalGenerate
 import relativitization.universe.maths.physics.Int4D
 import relativitization.universe.maths.physics.Velocity
 import kotlin.test.Test
@@ -17,7 +17,7 @@ internal class ChangeVelocityCommandTest {
         val universe = Universe(
             GenerateUniverseMethodCollection.generate(
                 GenerateSettings(
-                    generateMethod = TestingFixedMinimal.name(),
+                    generateMethod = TestingFixedMinimalGenerate.name(),
                 )
             )
         )

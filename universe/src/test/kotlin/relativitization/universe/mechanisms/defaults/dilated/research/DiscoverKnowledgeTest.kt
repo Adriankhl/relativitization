@@ -7,7 +7,7 @@ import relativitization.universe.data.UniverseData3DAtPlayer
 import relativitization.universe.data.components.playerScienceData
 import relativitization.universe.generate.GenerateSettings
 import relativitization.universe.generate.GenerateUniverseMethodCollection
-import relativitization.universe.generate.testing.TestingFixedMinimal
+import relativitization.universe.generate.testing.TestingFixedMinimalGenerate
 import kotlin.test.Test
 
 internal class DiscoverKnowledgeTest {
@@ -16,7 +16,7 @@ internal class DiscoverKnowledgeTest {
         val universe = Universe(
             GenerateUniverseMethodCollection.generate(
                 GenerateSettings(
-                    generateMethod = TestingFixedMinimal.name(),
+                    generateMethod = TestingFixedMinimalGenerate.name(),
                     universeSettings = MutableUniverseSettings(
                         randomSeed = 100L,
                     )
