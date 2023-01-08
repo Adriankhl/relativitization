@@ -1,4 +1,4 @@
-package relativitization.universe.generate.method.testing
+package relativitization.universe.generate.testing
 
 import relativitization.universe.generate.GenerateUniverseMethodCollection
 import relativitization.universe.generate.testing.TestingFixedMinimalGenerate
@@ -9,6 +9,8 @@ internal class TestingFixedMinimalGenerateTest {
     fun nameTest() {
         assert(TestingFixedMinimalGenerate.name() == "Test - fixed minimal")
 
-        assert(GenerateUniverseMethodCollection.generateMethodMap.containsKey(TestingFixedMinimalGenerate.name()))
+        assert(GenerateUniverseMethodCollection.generateMethodMap.containsKey(
+            TestingFixedMinimalGenerate.name())
+        )
     }
 }

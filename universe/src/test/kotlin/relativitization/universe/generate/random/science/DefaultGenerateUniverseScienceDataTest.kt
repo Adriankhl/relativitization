@@ -1,4 +1,4 @@
-package relativitization.universe.generate.science
+package relativitization.universe.generate.random.science
 
 
 import relativitization.universe.data.components.defaults.science.knowledge.AppliedResearchField
