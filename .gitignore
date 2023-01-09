@@ -38,13 +38,11 @@ build
 !.idea/codeStyles/codeStyleConfig.xml
 local.properties
 
-# Ignore save game
-saves*
+# Ignore test generated file
+universe/saves
+simulations/data
 
-# Ignore assets
-assets*
-
-# base project for modelign
+# base project for modeling
 relativitization-model-base
 
 # Latex
