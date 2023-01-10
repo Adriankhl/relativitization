@@ -263,8 +263,11 @@ class Universe(
 
             // Update time dilation counter
             mutablePlayerData.timeDilationCounter += dilatedTime
-            if (mutablePlayerData.timeDilationCounter >= 0.0) {
+            if (mutablePlayerData.timeDilationCounter >= 1.0) {
                 mutablePlayerData.timeDilationCounter -= 1.0
+                mutablePlayerData.isTimeDilationActionTurn = true
+            } else {
+                mutablePlayerData.isTimeDilationActionTurn = false
             }
         }
     }

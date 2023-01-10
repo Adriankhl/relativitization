@@ -84,7 +84,7 @@ object MechanismCollection {
 
         // Only process dilated mechanisms if this is the dilation action turn
         val dilatedMechanismCommandList: List<Command> =
-            if (mutablePlayerData.timeDilationCounter >= 0.0) {
+            if (mutablePlayerData.isTimeDilationActionTurn) {
                 mechanismLists.dilatedMechanismList.map { mechanism ->
                     logger.debug(
                         "Process dilated mechanism ${mechanism::class.simpleName} on " +
