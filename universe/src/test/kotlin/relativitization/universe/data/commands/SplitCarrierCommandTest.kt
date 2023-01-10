@@ -18,7 +18,7 @@ internal class SplitCarrierCommandTest {
             )
         )
 
-        assert(!universe.availablePlayers().contains(8))
+        assert(!universe.availablePlayers().contains(9))
 
         runBlocking {
             universe.postProcessUniverse(
@@ -36,6 +36,6 @@ internal class SplitCarrierCommandTest {
             universe.preProcessUniverse()
         }
 
-        assert(universe.availablePlayers().contains(8))
+        assert(universe.availablePlayers().contains(9))
     }
 }

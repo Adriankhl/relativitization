@@ -169,18 +169,19 @@ object TestingFixedMinimalGenerate : TestingGenerateUniverseMethod() {
                 )
             )
 
-        // 7 players in total
+        // 8 players in total
         val universeState = UniverseState(
             currentTime = universeSettings.tDim - 1,
-            maxPlayerId = 7,
+            maxPlayerId = 0,
         )
-        val playerData1 = MutablePlayerData(1)
-        val playerData2 = MutablePlayerData(2)
-        val playerData3 = MutablePlayerData(3)
-        val playerData4 = MutablePlayerData(4)
-        val playerData5 = MutablePlayerData(5)
-        val playerData6 = MutablePlayerData(6)
-        val playerData7 = MutablePlayerData(7)
+        val playerData1 = MutablePlayerData(universeState.getNewPlayerId())
+        val playerData2 = MutablePlayerData(universeState.getNewPlayerId())
+        val playerData3 = MutablePlayerData(universeState.getNewPlayerId())
+        val playerData4 = MutablePlayerData(universeState.getNewPlayerId())
+        val playerData5 = MutablePlayerData(universeState.getNewPlayerId())
+        val playerData6 = MutablePlayerData(universeState.getNewPlayerId())
+        val playerData7 = MutablePlayerData(universeState.getNewPlayerId())
+        val playerData8 = MutablePlayerData(universeState.getNewPlayerId())
 
         // Add all default data components
         MutableDefaultPlayerDataComponent.createComponentList().forEach {
@@ -204,6 +205,9 @@ object TestingFixedMinimalGenerate : TestingGenerateUniverseMethod() {
         MutableDefaultPlayerDataComponent.createComponentList().forEach {
             playerData7.playerInternalData.playerDataComponentMap.put(it)
         }
+        MutableDefaultPlayerDataComponent.createComponentList().forEach {
+            playerData8.playerInternalData.playerDataComponentMap.put(it)
+        }
 
         // Change AI to EmptyAI to for deterministic testing
         playerData1.playerInternalData.aiName = EmptyAI.name()
@@ -212,6 +216,8 @@ object TestingFixedMinimalGenerate : TestingGenerateUniverseMethod() {
         playerData4.playerInternalData.aiName = EmptyAI.name()
         playerData5.playerInternalData.aiName = EmptyAI.name()
         playerData6.playerInternalData.aiName = EmptyAI.name()
+        playerData7.playerInternalData.aiName = EmptyAI.name()
+        playerData8.playerInternalData.aiName = EmptyAI.name()
 
 
         // Player 1 data
@@ -481,6 +487,18 @@ object TestingFixedMinimalGenerate : TestingGenerateUniverseMethod() {
         playerData7.playerInternalData.diplomacyData().relationData.allyMap[1] =
             MutableAllianceData(0)
 
+        // Player 8
+
+        // Add spaceship
+        playerData8.playerInternalData.popSystemData().addSpaceShip(
+            coreRestMass = 1.0,
+            maxDeltaFuelRestMass = 100.0,
+            idealPopulation = 1000.0
+        )
+
+        // player 8 is moving
+        playerData8.velocity.vx = 0.8
+
         // Add player data to universe data 4D
         playerData1.syncData()
         mutableUniverseData4D.addPlayerDataToLatestDuration(
@@ -527,6 +545,13 @@ object TestingFixedMinimalGenerate : TestingGenerateUniverseMethod() {
         playerData7.syncData()
         mutableUniverseData4D.addPlayerDataToLatestDuration(
             playerData7,
+            universeState.getCurrentTime(),
+            universeSettings.playerAfterImageDuration,
+            universeSettings.groupEdgeLength
+        )
+        playerData8.syncData()
+        mutableUniverseData4D.addPlayerDataToLatestDuration(
+            playerData8,
             universeState.getCurrentTime(),
             universeSettings.playerAfterImageDuration,
             universeSettings.groupEdgeLength

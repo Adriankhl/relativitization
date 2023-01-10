@@ -10,6 +10,7 @@ import relativitization.universe.generate.random.RandomOneStarPerPlayerGenerate
 import relativitization.universe.generate.testing.TestingFixedMinimalGenerate
 import relativitization.universe.global.DefaultGlobalMechanismList
 import relativitization.universe.mechanisms.DefaultMechanismLists
+import kotlin.math.pow
 import kotlin.test.Test
 
 internal class UniverseTest {
@@ -146,5 +147,48 @@ internal class UniverseTest {
         assert(
             universe1.getUniverse3DViewAtPlayer(1) == universe2.getUniverse3DViewAtPlayer(1)
         )
+    }
+
+    @Test
+    fun timeDilationTest() {
+        val generateSetting = GenerateSettings(
+            generateMethod = TestingFixedMinimalGenerate.name(),
+            numPlayer = 4,
+            numHumanPlayer = 2,
+            otherIntMap = mutableMapOf("numExtraStellarSystem" to 3),
+            otherDoubleMap = mutableMapOf("initialPopulation" to 1E6),
+            universeSettings = MutableUniverseSettings(universeName = "time-dilation-test")
+        )
+        val universeData: UniverseData = GenerateUniverseMethodCollection.generate(generateSetting)
+        val universe = Universe(universeData)
+
+        val view1 = universe.getUniverse3DViewAtPlayer(8)
+
+        assert(view1.getCurrentPlayerData().timeDilationCounter == 0.0)
+        assert(view1.getCurrentPlayerData().isTimeDilationActionTurn)
+
+        universe.pureAIStep()
+
+        val view2 = universe.getUniverse3DViewAtPlayer(8)
+
+        assert((view2.getCurrentPlayerData().timeDilationCounter - 0.6).pow(2) < 0.01)
+        assert(!view2.getCurrentPlayerData().isTimeDilationActionTurn)
+
+        universe.pureAIStep()
+
+        val view3 = universe.getUniverse3DViewAtPlayer(8)
+
+        assert((view3.getCurrentPlayerData().timeDilationCounter - 0.2).pow(2) < 0.01)
+        assert(view3.getCurrentPlayerData().isTimeDilationActionTurn)
+
+        for (i in (1..22)) {
+            universe.pureAIStep()
+        }
+
+        val view4 = universe.getUniverse3DViewAtPlayer(8)
+
+        assert((view4.getCurrentPlayerData().timeDilationCounter - 0.4).pow(2) < 0.01)
+        assert(view4.getCurrentPlayerData().isTimeDilationActionTurn)
+
     }
 }
