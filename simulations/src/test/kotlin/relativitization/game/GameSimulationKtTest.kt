@@ -50,10 +50,10 @@ internal class GameSimulationKtTest {
 
         assert(df.size().nrow == 15)
 
-        File("data").mkdirs()
-        df.writeCSV("./data/dataframe-test.csv", CSVFormat.DEFAULT.withDelimiter('|'))
+        File("testData").mkdirs()
+        df.writeCSV("./testData/dataframe-test.csv", CSVFormat.DEFAULT.withDelimiter('|'))
 
-        val dfr = DataFrame.readCSV("./data/dataframe-test.csv", delimiter = '|')
+        val dfr = DataFrame.readCSV("./testData/dataframe-test.csv", delimiter = '|')
 
         assert(dfr.size().nrow == 15)
     }

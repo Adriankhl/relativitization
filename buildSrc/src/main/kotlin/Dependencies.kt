@@ -29,7 +29,7 @@ object Versions {
     const val kotlinxSerializationVersion = "1.4.1"
     const val kotlinxDateTimeVersion = "0.4.0"
     const val ktorVersion = "2.2.2"
-    const val okioVersion = "3.2.0"
+    const val okioVersion = "3.3.0"
 
     // JVM
     const val gdxVersion = "1.11.0"

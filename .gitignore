@@ -41,6 +41,7 @@ local.properties
 # Ignore test generated file
 universe/saves
 simulations/data
+simulations/testData
 
 # base project for modeling
 relativitization-model-base

@@ -53,7 +53,7 @@ tasks.withType<com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 
 tasks.getByName("clean").doLast {
     delete("./universe/saves")
-    delete("./simulations/data")
+    delete("./simulations/testData")
     delete("relativitization-model-base")
 }
 
