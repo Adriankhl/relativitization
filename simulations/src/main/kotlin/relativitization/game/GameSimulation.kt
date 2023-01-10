@@ -112,12 +112,12 @@ internal fun gameSingleRun(
             outputDataMap.forEach {
                 val value = it.value
                 if (value is Double) {
-                    print("${it.key}: ${value.toScientificNotation().toDouble(2)}. ")
+                    print("${it.key}: ${value.toScientificNotation().toDouble(2)}, ")
                 } else {
-                    print("${it.key}: $value. ")
+                    print("${it.key}: $value, ")
                 }
             }
-            print("\n")
+            print("\b\b.\n")
         }
 
         universe.pureAIStep()
