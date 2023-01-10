@@ -114,7 +114,7 @@ data class UniverseData(
     }
 
     /**
-     * Get all player data which is within the view of current player
+     * Get all player data which is within the view of current players
      */
     fun getAllVisiblePlayerDataList(): List<PlayerData> {
         val tSize: Int = intDelay(
@@ -240,6 +240,8 @@ data class UniverseData(
 
 /**
  * 4D Grid of the PlayerData
+ * t list -> x list -> y list -> z list -> map from player id to a list of
+ * player data (include after images)
  */
 @Serializable
 data class UniverseData4D(
