@@ -442,7 +442,9 @@ class PlanDataAtPlayer(
             commandList.add(command)
             executeMessage
         } else {
-            logger.error("Cannot add command: ${sendCommandMessage.errorMessage.toNormalString()}")
+            logger.error(
+                "Cannot add command ${command.name()}: ${sendCommandMessage.errorMessage.toNormalString()}"
+            )
             CommandErrorMessage(
                 false,
                 I18NString("Cannot send this command. Self-execute check failed.  ")
