@@ -324,11 +324,19 @@ class PhysicsInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane
 
         nestedTable.row().space(10f)
 
-        val dilatedTimeResidueLabel = createLabel(
+        val timeDilationCounterLabel = createLabel(
             "Time dilation counter: ${playerData.timeDilationCounter}",
             gdxSettings.smallFontSize
         )
-        nestedTable.add(dilatedTimeResidueLabel)
+        nestedTable.add(timeDilationCounterLabel)
+
+        nestedTable.row().space(10f)
+
+        val dilationActionLabel = createLabel(
+            "Dilation action: ${playerData.isTimeDilationActionTurn}",
+            gdxSettings.smallFontSize
+        )
+        nestedTable.add(dilationActionLabel)
 
         return nestedTable
     }
