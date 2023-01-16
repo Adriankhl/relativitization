@@ -36,8 +36,12 @@ allprojects {
 tasks.withType<DependencyUpdatesTask> {
     gradleReleaseChannel = "current"
 
+    val showUnresolved: Boolean = project.hasProperty("showUnresolved")
+
     outputFormatter {
-        unresolved.dependencies.clear()
+        if (!showUnresolved) {
+            unresolved.dependencies.clear()
+        }
         val plainTextReporter = PlainTextReporter(
             project,
             revision,
