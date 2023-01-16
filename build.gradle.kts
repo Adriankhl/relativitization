@@ -1,3 +1,5 @@
+import com.github.benmanes.gradle.versions.reporter.PlainTextReporter
+import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import java.nio.file.Files
 import java.nio.file.StandardCopyOption
 
@@ -31,8 +33,18 @@ allprojects {
     }
 }
 
-tasks.withType<com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask> {
+tasks.withType<DependencyUpdatesTask> {
     gradleReleaseChannel = "current"
+
+    outputFormatter {
+        unresolved.dependencies.clear()
+        val plainTextReporter = PlainTextReporter(
+            project,
+            revision,
+            gradleReleaseChannel
+        )
+        plainTextReporter.write(System.out, this)
+    }
 
     fun isNonStable(version: String): Boolean {
         return listOf(
