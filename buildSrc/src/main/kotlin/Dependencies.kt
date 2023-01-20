@@ -14,6 +14,14 @@ object Versions {
 
     // JDK
     const val jdkVersion = 17
+    const val jvmTargetVersion = 11
+
+    // Android SDK
+    const val androidSdkVersion = 33
+    const val androidMinSdkVersion = 26
+    const val androidNdkVersion = "25.1.8937393"
+
+    // Dependency
 
     // Kotlin
     const val kotlinVersion = "1.8.0"

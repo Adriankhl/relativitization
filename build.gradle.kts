@@ -197,7 +197,7 @@ tasks.register("downloadWindowsJDK") {
                 workingDir = windowsJDKDir
                 commandLine(
                     "wget",
-                    "https://api.adoptium.net/v3/binary/latest/17/ga/windows/x64/jdk/hotspot/normal/eclipse?project=jdk",
+                    "https://api.adoptium.net/v3/binary/latest/${Versions.jdkVersion}/ga/windows/x64/jdk/hotspot/normal/eclipse?project=jdk",
                     "-O",
                     "jdk.zip",
                 )

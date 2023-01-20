@@ -20,8 +20,8 @@ kotlin {
 android {
     namespace = "relativitization.app.android"
 
-    compileSdk = 33
-    ndkVersion = "25.1.8937393"
+    compileSdk = Versions.androidSdkVersion
+    ndkVersion = Versions.androidNdkVersion
 
     buildFeatures {
         aidl = false
@@ -91,8 +91,8 @@ android {
 
     defaultConfig {
         applicationId = "relativitization.app.android"
-        minSdk = 26
-        targetSdk = 33
+        minSdk = Versions.androidMinSdkVersion
+        targetSdk = Versions.androidSdkVersion
         versionCode = Versions.appVersionCode
         versionName = Versions.appVersionName
 
@@ -127,8 +127,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility(JavaVersion.VERSION_11)
-        targetCompatibility(JavaVersion.VERSION_11)
+        sourceCompatibility(Versions.jvmTargetVersion)
+        targetCompatibility(Versions.jvmTargetVersion)
     }
 
     buildTypes {
@@ -187,9 +187,9 @@ tasks.whenTaskAdded {
 }
 
 tasks.withType<KotlinCompile>().configureEach {
-    kotlinOptions.jvmTarget = "11"
+    kotlinOptions.jvmTarget = Versions.jvmTargetVersion.toString()
 }
 
 tasks.withType<JavaCompile>().configureEach {
-    options.release.set(11)
+    options.release.set(Versions.jvmTargetVersion)
 }
