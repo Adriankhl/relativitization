@@ -27,7 +27,11 @@ internal class UniverseTest {
         val universeData: UniverseData = GenerateUniverseMethodCollection.generate(generateSetting)
         val universe = Universe(universeData)
         universe.saveAll()
-        val universeLoad = Universe.loadUniverseLatest("save-load-test", ".")
+        val universeLoad = Universe.loadUniverseLatest(
+            universeName = "save-load-test",
+            programDir = ".",
+            shouldRandomizeSeed = false
+        )
 
         //println(universeLoad)
 

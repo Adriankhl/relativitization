@@ -78,6 +78,7 @@ fun Route.createUniverseRouting(universeServerInternal: UniverseServerInternal) 
                 val universeData: UniverseData = Universe.loadUniverseLatest(
                     universeName = loadUniverseMessage.universeName,
                     programDir = universeServerInternal.universeServerSettings.programDir,
+                    shouldRandomizeSeed = true,
                 )
                 if (universeData.isUniverseValid()) {
                     universeServerInternal.setUniverse(

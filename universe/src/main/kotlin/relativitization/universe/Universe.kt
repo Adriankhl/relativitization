@@ -2,6 +2,7 @@ package relativitization.universe
 
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.runBlocking
+import kotlinx.datetime.Clock
 import relativitization.universe.ai.AICollection
 import relativitization.universe.data.MutablePlayerData
 import relativitization.universe.data.PlayerData
@@ -625,15 +626,25 @@ class Universe(
         /**
          * Load saved universe by name
          */
-        fun loadUniverseLatest(universeName: String, programDir: String): UniverseData {
+        fun loadUniverseLatest(
+            universeName: String,
+            programDir: String,
+            shouldRandomizeSeed: Boolean
+        ): UniverseData {
             val saveDir = "$programDir/saves/$universeName"
 
             // save settings, setting should be immutable, so only one save is enough
-            val universeSettings: UniverseSettings = decode(
+            val originalUniverseSettings: UniverseSettings = decode(
                 FileUtils.fileToText(
                     "${saveDir}/universeSetting.json"
                 )
             )
+
+            val universeSettings: UniverseSettings = if (shouldRandomizeSeed) {
+                originalUniverseSettings.copy(randomSeed = Clock.System.now().epochSeconds)
+            } else {
+                originalUniverseSettings
+            }
 
             // load latest universe state
             val universeState: UniverseState = decode(
