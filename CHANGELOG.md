@@ -1,6 +1,8 @@
 ## 0.2.3
 
 * Core: add universe boundary setting
+* Core: add Spacetime and spacetimeCollectionName in UniverseSettings to allow non-Minkowski spacetimeCollectionName
+* Fix: time dilation mechanism now works properly
 
 ## 0.2.2
 
