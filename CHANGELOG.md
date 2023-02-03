@@ -1,3 +1,6 @@
+## 0.2.4
+
+
 ## 0.2.3
 
 * Core: add universe boundary setting
