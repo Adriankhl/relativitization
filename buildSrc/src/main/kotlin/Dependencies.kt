@@ -24,10 +24,10 @@ object Versions {
     // Dependency
 
     // Kotlin
-    const val kotlinVersion = "1.8.0"
+    const val kotlinVersion = "1.8.10"
 
     // Gradle plugin
-    const val gradleVersionPluginVersion = "0.44.0"
+    const val gradleVersionPluginVersion = "0.45.0"
 
     // Documentation
     const val dokkaVersion = "1.7.20"
@@ -45,7 +45,7 @@ object Versions {
     const val dataframeVersion = "0.9.1"
 
     // Android
-    const val androidGradlePluginVersion = "7.4.0"
+    const val androidGradlePluginVersion = "7.4.1"
     const val androidAppCompatVersion = "1.6.0"
     const val androidLifeCycleKtxVersion = "2.5.1"
     const val androidFragmentKtxVersion = "1.5.5"
