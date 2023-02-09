@@ -46,7 +46,7 @@ object Versions {
 
     // Android
     const val androidGradlePluginVersion = "7.4.1"
-    const val androidAppCompatVersion = "1.6.0"
+    const val androidAppCompatVersion = "1.6.1"
     const val androidLifeCycleKtxVersion = "2.5.1"
     const val androidFragmentKtxVersion = "1.5.5"
 }
