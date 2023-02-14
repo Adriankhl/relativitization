@@ -2,6 +2,7 @@ import com.github.benmanes.gradle.versions.reporter.PlainTextReporter
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import java.nio.file.Files
 import java.nio.file.StandardCopyOption
+import java.util.Locale
 
 plugins {
     kotlin("jvm") version Versions.kotlinVersion
@@ -57,7 +58,7 @@ tasks.withType<DependencyUpdatesTask> {
             "-dev",
             "-rc",
         ).any {
-            version.toLowerCase().contains(it)
+            version.lowercase(Locale.getDefault()).contains(it)
         }
     }
 
