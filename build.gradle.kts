@@ -91,7 +91,7 @@ tasks.register("createModelBase") {
             it.toRelativeString(File("."))
         }.filter {
             it.matches(Regex("^(gradle.*|.*kts?)$"))
-        }.toList()
+        }.sorted().toList()
 
         allFilePathList.forEach {
             targetGitIgnoreFile.appendText(it + "\n")
