@@ -27,7 +27,7 @@ object Versions {
     const val kotlinVersion = "1.8.10"
 
     // Gradle plugin
-    const val gradleVersionPluginVersion = "0.45.0"
+    const val gradleVersionPluginVersion = "0.46.0"
 
     // Documentation
     const val dokkaVersion = "1.7.20"
@@ -41,7 +41,7 @@ object Versions {
 
     // JVM
     const val gdxVersion = "1.11.0"
-    const val log4jVersion = "2.19.0"
+    const val log4jVersion = "2.20.0"
     const val dataframeVersion = "0.9.1"
 
     // Android
