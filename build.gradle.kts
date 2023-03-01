@@ -15,10 +15,6 @@ val artDirectory = File("../relativitization-art")
 val artGitDirectory = File("../relativitization-art/.git")
 
 buildscript {
-    repositories {
-        gradlePluginPortal()
-        google()
-    }
     dependencies {
         classpath("com.android.tools.build:gradle:${Versions.androidGradlePluginVersion}")
     }
