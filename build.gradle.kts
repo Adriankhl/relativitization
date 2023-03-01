@@ -9,16 +9,11 @@ plugins {
     kotlin("plugin.serialization") version Versions.kotlinVersion
     id("org.jetbrains.dokka") version Versions.dokkaVersion
     id("com.github.ben-manes.versions") version Versions.gradleVersionPluginVersion
+    id("com.android.application") version Versions.androidGradlePluginVersion apply false
 }
 
 val artDirectory = File("../relativitization-art")
 val artGitDirectory = File("../relativitization-art/.git")
-
-buildscript {
-    dependencies {
-        classpath("com.android.tools.build:gradle:${Versions.androidGradlePluginVersion}")
-    }
-}
 
 allprojects {
     repositories {
