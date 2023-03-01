@@ -34,9 +34,9 @@ object Versions {
 
     // Kotlin multiplatform
     const val kotlinxCoroutineVersion = "1.6.4"
-    const val kotlinxSerializationVersion = "1.4.1"
+    const val kotlinxSerializationVersion = "1.5.0"
     const val kotlinxDateTimeVersion = "0.4.0"
-    const val ktorVersion = "2.2.3"
+    const val ktorVersion = "2.2.4"
     const val okioVersion = "3.3.0"
 
     // JVM
@@ -45,7 +45,7 @@ object Versions {
     const val dataframeVersion = "0.9.1"
 
     // Android
-    const val androidGradlePluginVersion = "7.4.1"
+    const val androidGradlePluginVersion = "7.4.2"
     const val androidAppCompatVersion = "1.6.1"
     const val androidLifeCycleKtxVersion = "2.5.1"
     const val androidFragmentKtxVersion = "1.5.5"
