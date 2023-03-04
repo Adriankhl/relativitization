@@ -30,7 +30,7 @@ object Versions {
     const val gradleVersionPluginVersion = "0.46.0"
 
     // Documentation
-    const val dokkaVersion = "1.7.20"
+    const val dokkaVersion = "1.8.10"
 
     // Kotlin multiplatform
     const val kotlinxCoroutineVersion = "1.6.4"
