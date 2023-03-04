@@ -29,18 +29,6 @@ tasks.withType<DependencyUpdatesTask> {
 
     val showUnresolved: Boolean = project.hasProperty("showUnresolved")
 
-    outputFormatter {
-        if (!showUnresolved) {
-            unresolved.dependencies.clear()
-        }
-        val plainTextReporter = PlainTextReporter(
-            project,
-            revision,
-            gradleReleaseChannel
-        )
-        plainTextReporter.write(System.out, this)
-    }
-
     fun isNonStable(version: String): Boolean {
         return listOf(
             "-alpha",
@@ -50,6 +38,22 @@ tasks.withType<DependencyUpdatesTask> {
         ).any {
             version.lowercase().contains(it)
         }
+    }
+
+    outputFormatter {
+        if (!showUnresolved) {
+            unresolved.dependencies.clear()
+        }
+
+        // temporary fix for: https://github.com/ben-manes/gradle-versions-plugin/issues/733
+        outdated.dependencies.removeAll { isNonStable(it.available.milestone.orEmpty()) }
+
+        val plainTextReporter = PlainTextReporter(
+            project,
+            revision,
+            gradleReleaseChannel
+        )
+        plainTextReporter.write(System.out, this)
     }
 
     rejectVersionIf {
