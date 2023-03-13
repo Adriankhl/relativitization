@@ -19,7 +19,7 @@ object Versions {
     // Android SDK
     const val androidSdkVersion = 33
     const val androidMinSdkVersion = 26
-    const val androidNdkVersion = "25.1.8937393"
+    const val androidNdkVersion = "25.2.9519652"
 
     // Dependency
 
