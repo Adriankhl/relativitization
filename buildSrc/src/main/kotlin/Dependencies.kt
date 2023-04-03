@@ -24,7 +24,7 @@ object Versions {
     // Dependency
 
     // Kotlin
-    const val kotlinVersion = "1.8.10"
+    const val kotlinVersion = "1.8.20"
 
     // Gradle plugin
     const val gradleVersionPluginVersion = "0.46.0"
