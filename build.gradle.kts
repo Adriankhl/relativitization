@@ -58,7 +58,9 @@ tasks.withType<DependencyUpdatesTask> {
 
     rejectVersionIf {
         // ignored jacoco: https://github.com/ben-manes/gradle-versions-plugin/issues/534
-        (candidate.group == "org.jacoco") || isNonStable(candidate.version)
+        // ignore wrong dataframe version: https://mvnrepository.com/artifact/org.jetbrains.kotlinx/dataframe
+        (candidate.group == "org.jacoco") || isNonStable(candidate.version) ||
+                (candidate.module == "dataframe" && candidate.version == "1548")
     }
 }
 
