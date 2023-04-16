@@ -13,15 +13,15 @@ val androidKeyDir: String = System.getProperty("user.dir") + "/../android/"
 
 kotlin {
     jvmToolchain {
-        languageVersion.set(JavaLanguageVersion.of(Versions.jdkVersion))
+        languageVersion.set(JavaLanguageVersion.of(libs.versions.jdkVersion.get()))
     }
 }
 
 android {
     namespace = "relativitization.app.android"
 
-    compileSdk = Versions.androidSdkVersion
-    ndkVersion = Versions.androidNdkVersion
+    compileSdk = libs.versions.androidSdkVersion.get().toInt()
+    ndkVersion = libs.versions.androidNdkVersion.get()
 
     buildFeatures {
         aidl = false
@@ -48,32 +48,32 @@ android {
                 implementation(project(":universe"))
 
 
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.kotlinxSerializationVersion}")
-                implementation("org.jetbrains.kotlin:kotlin-reflect:${Versions.kotlinVersion}")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.kotlinxCoroutineVersion}")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.kotlinxCoroutineVersion}")
-                implementation("io.ktor:ktor-client-core:${Versions.ktorVersion}")
-                implementation("io.ktor:ktor-client-cio:${Versions.ktorVersion}")
-                implementation("io.ktor:ktor-server-core:${Versions.ktorVersion}")
-                implementation("io.ktor:ktor-server-cio:${Versions.ktorVersion}")
+                implementation(libs.kotlinx.serialization.json)
+                implementation(libs.kotlin.reflect)
+                implementation(libs.kotlinx.coroutines.core)
+                implementation(libs.kotlinx.coroutines.android)
+                implementation(libs.ktor.client.core)
+                implementation(libs.ktor.client.cio)
+                implementation(libs.ktor.server.core)
+                implementation(libs.ktor.server.cio)
 
-                implementation("org.apache.logging.log4j:log4j-core:${Versions.log4jVersion}")
+                implementation(libs.log4j.core)
 
-                implementation("androidx.lifecycle:lifecycle-runtime-ktx:${Versions.androidLifeCycleKtxVersion}")
-                implementation("androidx.fragment:fragment-ktx:${Versions.androidFragmentKtxVersion}")
-                implementation("androidx.appcompat:appcompat:${Versions.androidAppCompatVersion}")
+                implementation(libs.androidx.lifecycle.runtime.ktx)
+                implementation(libs.androidx.fragment.ktx)
+                implementation(libs.androidx.appcompat)
 
 
-                implementation("com.badlogicgames.gdx:gdx-backend-android:${Versions.gdxVersion}")
+                implementation(libs.gdx.backend.android)
 
-                natives("com.badlogicgames.gdx:gdx-platform:${Versions.gdxVersion}:natives-armeabi-v7a")
-                natives("com.badlogicgames.gdx:gdx-platform:${Versions.gdxVersion}:natives-arm64-v8a")
-                natives("com.badlogicgames.gdx:gdx-platform:${Versions.gdxVersion}:natives-x86")
-                natives("com.badlogicgames.gdx:gdx-platform:${Versions.gdxVersion}:natives-x86_64")
-                natives("com.badlogicgames.gdx:gdx-freetype-platform:${Versions.gdxVersion}:natives-armeabi-v7a")
-                natives("com.badlogicgames.gdx:gdx-freetype-platform:${Versions.gdxVersion}:natives-arm64-v8a")
-                natives("com.badlogicgames.gdx:gdx-freetype-platform:${Versions.gdxVersion}:natives-x86")
-                natives("com.badlogicgames.gdx:gdx-freetype-platform:${Versions.gdxVersion}:natives-x86_64")
+                natives("com.badlogicgames.gdx:gdx-platform:${libs.versions.gdxVersion.get()}:natives-armeabi-v7a")
+                natives("com.badlogicgames.gdx:gdx-platform:${libs.versions.gdxVersion.get()}:natives-arm64-v8a")
+                natives("com.badlogicgames.gdx:gdx-platform:${libs.versions.gdxVersion.get()}:natives-x86")
+                natives("com.badlogicgames.gdx:gdx-platform:${libs.versions.gdxVersion.get()}:natives-x86_64")
+                natives("com.badlogicgames.gdx:gdx-freetype-platform:${libs.versions.gdxVersion.get()}:natives-armeabi-v7a")
+                natives("com.badlogicgames.gdx:gdx-freetype-platform:${libs.versions.gdxVersion.get()}:natives-arm64-v8a")
+                natives("com.badlogicgames.gdx:gdx-freetype-platform:${libs.versions.gdxVersion.get()}:natives-x86")
+                natives("com.badlogicgames.gdx:gdx-freetype-platform:${libs.versions.gdxVersion.get()}:natives-x86_64")
             }
         }
     }
@@ -94,12 +94,21 @@ android {
 
     defaultConfig {
         applicationId = "relativitization.app.android"
-        minSdk = Versions.androidMinSdkVersion
-        targetSdk = Versions.androidSdkVersion
-        versionCode = Versions.appVersionCode
-        versionName = Versions.appVersionName
+        minSdk = libs.versions.androidMinSdkVersion.get().toInt()
+        targetSdk = libs.versions.androidSdkVersion.get().toInt()
+        versionCode =  appVersionCode(
+            libs.versions.appVersionMajor.get(),
+            libs.versions.appVersionMinor.get(),
+            libs.versions.appVersionPatch.get(),
+            libs.versions.appVersionBuild.get(),
+        )
+        versionName =  appVersionName(
+            libs.versions.appVersionMajor.get(),
+            libs.versions.appVersionMinor.get(),
+            libs.versions.appVersionPatch.get(),
+        )
 
-        base.archivesName.set(Versions.appName)
+        base.archivesName.set(libs.versions.appName.get())
     }
 
    signingConfigs {
@@ -130,8 +139,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility(Versions.jvmTargetVersion)
-        targetCompatibility(Versions.jvmTargetVersion)
+        sourceCompatibility(libs.versions.jvmTargetVersion.get())
+        targetCompatibility(libs.versions.jvmTargetVersion.get())
     }
 
     buildTypes {
@@ -190,9 +199,9 @@ tasks.whenTaskAdded {
 }
 
 tasks.withType<KotlinCompile>().configureEach {
-    kotlinOptions.jvmTarget = Versions.jvmTargetVersion.toString()
+    kotlinOptions.jvmTarget = libs.versions.jvmTargetVersion.get()
 }
 
 tasks.withType<JavaCompile>().configureEach {
-    options.release.set(Versions.jvmTargetVersion)
+    options.release.set(libs.versions.jvmTargetVersion.get().toInt())
 }

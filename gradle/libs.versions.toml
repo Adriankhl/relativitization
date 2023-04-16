@@ -1,0 +1,83 @@
+[versions]
+appcompatVersion = "1.6.1"
+appName = "relativitization"
+
+# app version
+appVersionMajor = "0"
+appVersionMinor = "2"
+appVersionPatch = "4"
+appVersionBuild = "0"
+
+# JDK
+fragmentKtx = "1.5.6"
+jdkVersion = "17"
+jvmTargetVersion = "11"
+
+# Android SDK
+androidSdkVersion = "33"
+androidMinSdkVersion = "26"
+androidNdkVersion = "25.2.9519652"
+
+# Dependency
+
+# Kotlin
+kotlinVersion = "1.8.20"
+
+# Gradle plugin
+gradleVersionPluginVersion = "0.46.0"
+
+# Documentation
+dokkaVersion = "1.8.10"
+
+# Kotlin multiplatform
+kotlinxCoroutineVersion = "1.6.4"
+kotlinxSerializationVersion = "1.5.0"
+kotlinxDateTimeVersion = "0.4.0"
+ktorVersion = "2.2.4"
+lifecycleRuntimeKtx = "2.6.1"
+okioVersion = "3.3.0"
+
+# JVM
+gdxVersion = "1.11.0"
+log4jVersion = "2.20.0"
+dataframeVersion = "0.10.0"
+
+# Android
+androidGradlePluginVersion = "8.0.0"
+androidAppCompatVersion = "1.6.1"
+androidLifeCycleKtxVersion = "2.6.1"
+androidFragmentKtxVersion = "1.5.6"
+
+[libraries]
+androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidAppCompatVersion" }
+androidx-fragment-ktx = { module = "androidx.fragment:fragment-ktx", version.ref = "androidFragmentKtxVersion" }
+androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "androidLifeCycleKtxVersion" }
+dataframe = { module = "org.jetbrains.kotlinx:dataframe", version.ref = "dataframeVersion" }
+gdx = { module = "com.badlogicgames.gdx:gdx", version.ref = "gdxVersion" }
+gdx-backend-android = { module = "com.badlogicgames.gdx:gdx-backend-android", version.ref = "gdxVersion" }
+gdx-backend-lwjgl3 = { module = "com.badlogicgames.gdx:gdx-backend-lwjgl3", version.ref = "gdxVersion" }
+gdx-freetype = { module = "com.badlogicgames.gdx:gdx-freetype", version.ref = "gdxVersion" }
+kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlinVersion" }
+kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutineVersion" }
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutineVersion" }
+kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDateTimeVersion" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationVersion" }
+ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktorVersion" }
+ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktorVersion" }
+ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktorVersion" }
+ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktorVersion" }
+ktor-server-cio = { module = "io.ktor:ktor-server-cio", version.ref = "ktorVersion" }
+ktor-server-content-negotiation = { module = "io.ktor:ktor-server-content-negotiation", version.ref = "ktorVersion" }
+ktor-server-core = { module = "io.ktor:ktor-server-core", version.ref = "ktorVersion" }
+ktor-server-status-pages = { module = "io.ktor:ktor-server-status-pages", version.ref = "ktorVersion" }
+log4j-api = { module = "org.apache.logging.log4j:log4j-api", version.ref = "log4jVersion" }
+log4j-core = { module = "org.apache.logging.log4j:log4j-core", version.ref = "log4jVersion" }
+log4j-slf4j2-impl = { module = "org.apache.logging.log4j:log4j-slf4j2-impl", version.ref = "log4jVersion" }
+okio = { module = "com.squareup.okio:okio", version.ref = "okioVersion" }
+
+[plugins]
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlinVersion" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinVersion" }
+dokka = { id = "org.jetbrains.dokka", version.ref = "dokkaVersion" }
+ben-manes-versions = { id = "com.github.ben-manes.versions", version.ref = "gradleVersionPluginVersion" }
+android-application = { id = "com.android.application", version.ref = "androidGradlePluginVersion" }

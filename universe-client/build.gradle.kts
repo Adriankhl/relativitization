@@ -12,28 +12,28 @@ kotlin {
             dependencies {
                 implementation(project(":universe"))
 
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.kotlinxSerializationVersion}")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.kotlinxCoroutineVersion}")
-                implementation("org.jetbrains.kotlin:kotlin-reflect:${Versions.kotlinVersion}")
-                implementation("io.ktor:ktor-client-core:${Versions.ktorVersion}")
-                implementation("io.ktor:ktor-client-cio:${Versions.ktorVersion}")
-                implementation("io.ktor:ktor-client-content-negotiation:${Versions.ktorVersion}")
-                implementation("io.ktor:ktor-serialization-kotlinx-json:${Versions.ktorVersion}")
-                implementation("org.apache.logging.log4j:log4j-api:${Versions.log4jVersion}")
-                implementation("org.apache.logging.log4j:log4j-core:${Versions.log4jVersion}")
+                implementation(libs.kotlinx.serialization.json)
+                implementation(libs.kotlinx.coroutines.core)
+                implementation(libs.kotlin.reflect)
+                implementation(libs.ktor.client.core)
+                implementation(libs.ktor.client.cio)
+                implementation(libs.ktor.client.content.negotiation)
+                implementation(libs.ktor.serialization.kotlinx.json)
+                implementation(libs.log4j.api)
+                implementation(libs.log4j.core)
             }
         }
     }
 
     jvmToolchain {
-        languageVersion.set(JavaLanguageVersion.of(Versions.jdkVersion))
+        languageVersion.set(JavaLanguageVersion.of(libs.versions.jdkVersion.get()))
     }
 }
 
 tasks.withType<KotlinCompile>().configureEach {
-    kotlinOptions.jvmTarget = Versions.jvmTargetVersion.toString()
+    kotlinOptions.jvmTarget = libs.versions.jvmTargetVersion.get()
 }
 
 tasks.withType<JavaCompile>().configureEach {
-    options.release.set(Versions.jvmTargetVersion)
+    options.release.set(libs.versions.jvmTargetVersion.get().toInt())
 }

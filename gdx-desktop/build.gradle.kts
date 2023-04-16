@@ -20,22 +20,23 @@ kotlin {
                 implementation(project(":universe"))
 
 
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.kotlinxSerializationVersion}")
-                implementation("org.jetbrains.kotlin:kotlin-reflect:${Versions.kotlinVersion}")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.kotlinxCoroutineVersion}")
-                implementation("io.ktor:ktor-client-core:${Versions.ktorVersion}")
-                implementation("io.ktor:ktor-client-cio:${Versions.ktorVersion}")
-                implementation("io.ktor:ktor-server-core:${Versions.ktorVersion}")
-                implementation("io.ktor:ktor-server-cio:${Versions.ktorVersion}")
+                implementation(libs.kotlinx.serialization.json)
+                implementation(libs.kotlin.reflect)
+                implementation(libs.kotlinx.coroutines.core)
+                implementation(libs.ktor.client.core)
+                implementation(libs.ktor.client.cio)
+                implementation(libs.ktor.server.core)
+                implementation(libs.ktor.server.cio)
 
-                implementation("org.apache.logging.log4j:log4j-core:${Versions.log4jVersion}")
+                implementation(libs.log4j.core)
 
-                implementation("com.badlogicgames.gdx:gdx-backend-lwjgl3:${Versions.gdxVersion}")
-                implementation("com.badlogicgames.gdx:gdx-platform:${Versions.gdxVersion}:natives-desktop")
-                implementation("com.badlogicgames.gdx:gdx-freetype-platform:${Versions.gdxVersion}:natives-desktop")
+                implementation(libs.gdx.backend.lwjgl3)
+
+                implementation("com.badlogicgames.gdx:gdx-platform:${libs.versions.gdxVersion.get()}:natives-desktop")
+                implementation("com.badlogicgames.gdx:gdx-freetype-platform:${libs.versions.gdxVersion.get()}:natives-desktop")
 
                 // This is for the TexturePacker class
-                implementation("com.badlogicgames.gdx:gdx-tools:${Versions.gdxVersion}") {
+                implementation("com.badlogicgames.gdx:gdx-tools:${libs.versions.gdxVersion.get()}") {
                     exclude(group = "com.badlogicgames.gdx", module = "gdx-backend-lwjgl")
                 }
             }
@@ -49,16 +50,16 @@ kotlin {
     }
 
     jvmToolchain {
-        languageVersion.set(JavaLanguageVersion.of(Versions.jdkVersion))
+        languageVersion.set(JavaLanguageVersion.of(libs.versions.jdkVersion.get()))
     }
 }
 
 tasks.withType<KotlinCompile>().configureEach {
-    kotlinOptions.jvmTarget = Versions.jvmTargetVersion.toString()
+    kotlinOptions.jvmTarget = libs.versions.jvmTargetVersion.get()
 }
 
 tasks.withType<JavaCompile>().configureEach {
-    options.release.set(Versions.jvmTargetVersion)
+    options.release.set(libs.versions.jvmTargetVersion.get().toInt())
 }
 
 tasks {
@@ -82,13 +83,17 @@ tasks.register<Jar>("fatJar") {
     mustRunAfter(":gdx-android:assembleStandalone")
     mustRunAfter(":gdx-android:bundleRelease")
 
-    archiveBaseName.set(Versions.appName)
+    archiveBaseName.set(libs.versions.appName)
     destinationDirectory.set(assetsFiles)
 
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 
     manifest {
-        attributes["Implementation-Version"] = Versions.appVersionName
+        attributes["Implementation-Version"] = appVersionName(
+            libs.versions.appVersionMajor.get(),
+            libs.versions.appVersionMinor.get(),
+            libs.versions.appVersionPatch.get(),
+        )
         attributes["Main-Class"] = mainClassPath
         attributes["Multi-Release"] = "true"
     }

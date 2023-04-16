@@ -23,12 +23,12 @@ kotlin {
                 implementation(project(":universe"))
 
 
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.kotlinxSerializationVersion}")
-                implementation("org.jetbrains.kotlin:kotlin-reflect:${Versions.kotlinVersion}")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.kotlinxCoroutineVersion}")
+                implementation(libs.kotlinx.serialization.json)
+                implementation(libs.kotlin.reflect)
+                implementation(libs.kotlinx.coroutines.core)
 
-                implementation("org.apache.logging.log4j:log4j-core:${Versions.log4jVersion}")
-                implementation("org.jetbrains.kotlinx:dataframe:${Versions.dataframeVersion}")
+                implementation(libs.log4j.core)
+                implementation(libs.dataframe)
             }
         }
 
@@ -40,16 +40,16 @@ kotlin {
     }
 
     jvmToolchain {
-        languageVersion.set(JavaLanguageVersion.of(Versions.jdkVersion))
+        languageVersion.set(JavaLanguageVersion.of(libs.versions.jdkVersion.get()))
     }
 }
 
 tasks.withType<KotlinCompile>().configureEach {
-    kotlinOptions.jvmTarget = Versions.jvmTargetVersion.toString()
+    kotlinOptions.jvmTarget = libs.versions.jvmTargetVersion.get()
 }
 
 tasks.withType<JavaCompile>().configureEach {
-    options.release.set(Versions.jvmTargetVersion)
+    options.release.set(libs.versions.jvmTargetVersion.get().toInt())
 }
 
 tasks {

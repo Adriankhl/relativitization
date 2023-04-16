@@ -4,11 +4,11 @@ import java.nio.file.Files
 import java.nio.file.StandardCopyOption
 
 plugins {
-    kotlin("jvm") version Versions.kotlinVersion
-    kotlin("plugin.serialization") version Versions.kotlinVersion
-    id("org.jetbrains.dokka") version Versions.dokkaVersion
-    id("com.github.ben-manes.versions") version Versions.gradleVersionPluginVersion
-    id("com.android.application") version Versions.androidGradlePluginVersion apply false
+    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.dokka)
+    alias(libs.plugins.ben.manes.versions)
+    alias(libs.plugins.android.application) apply false
 }
 
 val artDirectory = File("../relativitization-art")
@@ -194,7 +194,7 @@ tasks.register("downloadWindowsJDK") {
                 workingDir = windowsJDKDir
                 commandLine(
                     "wget",
-                    "https://api.adoptium.net/v3/binary/latest/${Versions.jdkVersion}/ga/windows/x64/jdk/hotspot/normal/eclipse?project=jdk",
+                    "https://api.adoptium.net/v3/binary/latest/${libs.versions.jdkVersion.get()}/ga/windows/x64/jdk/hotspot/normal/eclipse?project=jdk",
                     "-O",
                     "jdk.zip",
                 )
@@ -228,7 +228,13 @@ tasks.register("outputVersionTxt") {
     doLast {
         File(
             "${artDirectory.path}/outputs/version.txt"
-        ).writeText(Versions.appVersionName)
+        ).writeText(
+            appVersionName(
+                libs.versions.appVersionMajor.get(),
+                libs.versions.appVersionMinor.get(),
+                libs.versions.appVersionPatch.get(),
+            )
+        )
     }
 }
 
@@ -269,7 +275,11 @@ tasks.register("packageLinux") {
                 "--icon",
                 "./assets/images/normal/logo/logo.png",
                 "--app-version",
-                Versions.appVersionName,
+                appVersionName(
+                    libs.versions.appVersionMajor.get(),
+                    libs.versions.appVersionMinor.get(),
+                    libs.versions.appVersionPatch.get(),
+                ),
                 "--java-options",
                 "-XX:MaxRAMPercentage=50",
                 "--java-options",
@@ -317,7 +327,11 @@ tasks.register("packageWindows") {
                 "--icon",
                 "./assets/images/normal/logo/logo.ico",
                 "--app-version",
-                Versions.appVersionName,
+                appVersionName(
+                    libs.versions.appVersionMajor.get(),
+                    libs.versions.appVersionMinor.get(),
+                    libs.versions.appVersionPatch.get(),
+                ),
                 "--java-options",
                 "-XX:MaxRAMPercentage=50",
                 "--java-options",
