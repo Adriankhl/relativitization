@@ -27,6 +27,7 @@ android {
         aidl = false
         renderScript = false
         shaders = false
+        buildConfig = true
     }
 
     sourceSets {
@@ -77,16 +78,18 @@ android {
         }
     }
 
-    packagingOptions {
-        // Excluding unnecessary meta-data:
-        resources.excludes.add("META-INF/DEPENDENCIES")
-        resources.excludes.add("META-INF/DEPENDENCIES.txt")
-        resources.excludes.add("META-INF/dependencies.txt")
-        resources.excludes.add("META-INF/NOTICE")
-        resources.excludes.add("META-INF/LICENSE")
-        resources.excludes.add("META-INF/LICENSE.txt")
-        resources.excludes.add("META-INF/NOTICE.txt")
-        resources.excludes.add("META-INF/robovm/ios/robovm.xml")
+    packaging {
+        resources {
+            // Excluding unnecessary meta-data:
+            excludes.add("META-INF/DEPENDENCIES")
+            excludes.add("META-INF/DEPENDENCIES.txt")
+            excludes.add("META-INF/dependencies.txt")
+            excludes.add("META-INF/NOTICE")
+            excludes.add("META-INF/LICENSE")
+            excludes.add("META-INF/LICENSE.txt")
+            excludes.add("META-INF/NOTICE.txt")
+            excludes.add("META-INF/robovm/ios/robovm.xml")
+        }
     }
 
     defaultConfig {
