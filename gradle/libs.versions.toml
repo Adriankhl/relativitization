@@ -76,8 +76,8 @@ log4j-slf4j2-impl = { module = "org.apache.logging.log4j:log4j-slf4j2-impl", ver
 okio = { module = "com.squareup.okio:okio", version.ref = "okioVersion" }
 
 [plugins]
+android-application = { id = "com.android.application", version.ref = "androidGradlePluginVersion" }
+ben-manes-versions = { id = "com.github.ben-manes.versions", version.ref = "gradleVersionPluginVersion" }
+dokka = { id = "org.jetbrains.dokka", version.ref = "dokkaVersion" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlinVersion" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinVersion" }
-dokka = { id = "org.jetbrains.dokka", version.ref = "dokkaVersion" }
-ben-manes-versions = { id = "com.github.ben-manes.versions", version.ref = "gradleVersionPluginVersion" }
-android-application = { id = "com.android.application", version.ref = "androidGradlePluginVersion" }
