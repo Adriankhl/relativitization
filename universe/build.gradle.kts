@@ -6,26 +6,19 @@ plugins {
     id("org.jetbrains.dokka")
 }
 
-kotlin {
-    sourceSets {
-        val main by getting {
-            dependencies {
-                implementation(libs.kotlinx.serialization.json)
-                implementation(libs.kotlinx.coroutines.core)
-                implementation(libs.kotlinx.datetime)
-                implementation(libs.kotlin.reflect)
-                implementation(libs.log4j.api)
-                implementation(libs.log4j.core)
-                implementation(libs.okio)
-            }
-        }
-        val test by getting {
-            dependencies {
-                implementation(kotlin("test"))
-            }
-        }
-    }
+dependencies {
+    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.datetime)
+    implementation(libs.kotlin.reflect)
+    implementation(libs.log4j.api)
+    implementation(libs.log4j.core)
+    implementation(libs.okio)
 
+    testImplementation(kotlin("test"))
+}
+
+kotlin {
     jvmToolchain {
         languageVersion.set(JavaLanguageVersion.of(libs.versions.jdkVersion.get()))
     }

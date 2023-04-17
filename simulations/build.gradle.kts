@@ -16,29 +16,20 @@ val ramPercentage: String = project.properties.getOrDefault(
     "NA"
 ).toString()
 
+dependencies {
+    implementation(project(":universe"))
+
+    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.kotlin.reflect)
+    implementation(libs.kotlinx.coroutines.core)
+
+    implementation(libs.log4j.core)
+    implementation(libs.dataframe)
+
+    testImplementation(kotlin("test"))
+}
+
 kotlin {
-    sourceSets {
-        val main by getting {
-            dependencies {
-                implementation(project(":universe"))
-
-
-                implementation(libs.kotlinx.serialization.json)
-                implementation(libs.kotlin.reflect)
-                implementation(libs.kotlinx.coroutines.core)
-
-                implementation(libs.log4j.core)
-                implementation(libs.dataframe)
-            }
-        }
-
-        val test by getting {
-            dependencies {
-                implementation(kotlin("test"))
-            }
-        }
-    }
-
     jvmToolchain {
         languageVersion.set(JavaLanguageVersion.of(libs.versions.jdkVersion.get()))
     }

@@ -40,41 +40,6 @@ android {
 
             // Comment these out, since kotlin paths should be supported by android gradle plugin
             //java.srcDir("src/main/kotlin")
-
-            dependencies {
-                implementation(project(":gdx-core"))
-                implementation(project(":universe-server"))
-                implementation(project(":universe-client"))
-                implementation(project(":universe"))
-
-
-                implementation(libs.kotlinx.serialization.json)
-                implementation(libs.kotlin.reflect)
-                implementation(libs.kotlinx.coroutines.core)
-                implementation(libs.kotlinx.coroutines.android)
-                implementation(libs.ktor.client.core)
-                implementation(libs.ktor.client.cio)
-                implementation(libs.ktor.server.core)
-                implementation(libs.ktor.server.cio)
-
-                implementation(libs.log4j.core)
-
-                implementation(libs.androidx.lifecycle.runtime.ktx)
-                implementation(libs.androidx.fragment.ktx)
-                implementation(libs.androidx.appcompat)
-
-
-                implementation(libs.gdx.backend.android)
-
-                natives("com.badlogicgames.gdx:gdx-platform:${libs.versions.gdxVersion.get()}:natives-armeabi-v7a")
-                natives("com.badlogicgames.gdx:gdx-platform:${libs.versions.gdxVersion.get()}:natives-arm64-v8a")
-                natives("com.badlogicgames.gdx:gdx-platform:${libs.versions.gdxVersion.get()}:natives-x86")
-                natives("com.badlogicgames.gdx:gdx-platform:${libs.versions.gdxVersion.get()}:natives-x86_64")
-                natives("com.badlogicgames.gdx:gdx-freetype-platform:${libs.versions.gdxVersion.get()}:natives-armeabi-v7a")
-                natives("com.badlogicgames.gdx:gdx-freetype-platform:${libs.versions.gdxVersion.get()}:natives-arm64-v8a")
-                natives("com.badlogicgames.gdx:gdx-freetype-platform:${libs.versions.gdxVersion.get()}:natives-x86")
-                natives("com.badlogicgames.gdx:gdx-freetype-platform:${libs.versions.gdxVersion.get()}:natives-x86_64")
-            }
         }
     }
 
@@ -170,6 +135,41 @@ android {
     lint {
         checkReleaseBuilds = false
     }
+}
+
+dependencies {
+    implementation(project(":gdx-core"))
+    implementation(project(":universe-server"))
+    implementation(project(":universe-client"))
+    implementation(project(":universe"))
+
+
+    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.kotlin.reflect)
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.cio)
+    implementation(libs.ktor.server.core)
+    implementation(libs.ktor.server.cio)
+
+    implementation(libs.log4j.core)
+
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.fragment.ktx)
+    implementation(libs.androidx.appcompat)
+
+
+    implementation(libs.gdx.backend.android)
+
+    natives("com.badlogicgames.gdx:gdx-platform:${libs.versions.gdxVersion.get()}:natives-armeabi-v7a")
+    natives("com.badlogicgames.gdx:gdx-platform:${libs.versions.gdxVersion.get()}:natives-arm64-v8a")
+    natives("com.badlogicgames.gdx:gdx-platform:${libs.versions.gdxVersion.get()}:natives-x86")
+    natives("com.badlogicgames.gdx:gdx-platform:${libs.versions.gdxVersion.get()}:natives-x86_64")
+    natives("com.badlogicgames.gdx:gdx-freetype-platform:${libs.versions.gdxVersion.get()}:natives-armeabi-v7a")
+    natives("com.badlogicgames.gdx:gdx-freetype-platform:${libs.versions.gdxVersion.get()}:natives-arm64-v8a")
+    natives("com.badlogicgames.gdx:gdx-freetype-platform:${libs.versions.gdxVersion.get()}:natives-x86")
+    natives("com.badlogicgames.gdx:gdx-freetype-platform:${libs.versions.gdxVersion.get()}:natives-x86_64")
 }
 
 // called every time gradle gets executed, takes the native dependencies of

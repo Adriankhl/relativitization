@@ -6,28 +6,24 @@ plugins {
     id("org.jetbrains.dokka")
 }
 
+dependencies {
+    implementation(project(":universe-client"))
+    implementation(project(":universe"))
+
+
+    implementation(libs.gdx)
+    implementation(libs.gdx.freetype)
+
+    implementation(libs.ktor.client.core)
+
+    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlin.reflect)
+    implementation(libs.log4j.api)
+    implementation(libs.log4j.core)
+}
+
 kotlin {
-    sourceSets {
-        val main by getting {
-            dependencies {
-                implementation(project(":universe-client"))
-                implementation(project(":universe"))
-
-
-                implementation(libs.gdx)
-                implementation(libs.gdx.freetype)
-
-                implementation(libs.ktor.client.core)
-
-                implementation(libs.kotlinx.serialization.json)
-                implementation(libs.kotlinx.coroutines.core)
-                implementation(libs.kotlin.reflect)
-                implementation(libs.log4j.api)
-                implementation(libs.log4j.core)
-            }
-        }
-    }
-
     jvmToolchain {
         languageVersion.set(JavaLanguageVersion.of(libs.versions.jdkVersion.get()))
     }

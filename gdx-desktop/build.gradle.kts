@@ -10,45 +10,37 @@ plugins {
 val mainClassPath = "relativitization.app.desktop.DesktopLauncherKt"
 val assetsFiles = File("../../relativitization-art/assets")
 
-kotlin {
-    sourceSets {
-        val main by getting {
-            dependencies {
-                implementation(project(":gdx-core"))
-                implementation(project(":universe-server"))
-                implementation(project(":universe-client"))
-                implementation(project(":universe"))
+dependencies {
+    implementation(project(":gdx-core"))
+    implementation(project(":universe-server"))
+    implementation(project(":universe-client"))
+    implementation(project(":universe"))
 
 
-                implementation(libs.kotlinx.serialization.json)
-                implementation(libs.kotlin.reflect)
-                implementation(libs.kotlinx.coroutines.core)
-                implementation(libs.ktor.client.core)
-                implementation(libs.ktor.client.cio)
-                implementation(libs.ktor.server.core)
-                implementation(libs.ktor.server.cio)
+    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.kotlin.reflect)
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.cio)
+    implementation(libs.ktor.server.core)
+    implementation(libs.ktor.server.cio)
 
-                implementation(libs.log4j.core)
+    implementation(libs.log4j.core)
 
-                implementation(libs.gdx.backend.lwjgl3)
+    implementation(libs.gdx.backend.lwjgl3)
 
-                implementation("com.badlogicgames.gdx:gdx-platform:${libs.versions.gdxVersion.get()}:natives-desktop")
-                implementation("com.badlogicgames.gdx:gdx-freetype-platform:${libs.versions.gdxVersion.get()}:natives-desktop")
+    implementation("com.badlogicgames.gdx:gdx-platform:${libs.versions.gdxVersion.get()}:natives-desktop")
+    implementation("com.badlogicgames.gdx:gdx-freetype-platform:${libs.versions.gdxVersion.get()}:natives-desktop")
 
-                // This is for the TexturePacker class
-                implementation("com.badlogicgames.gdx:gdx-tools:${libs.versions.gdxVersion.get()}") {
-                    exclude(group = "com.badlogicgames.gdx", module = "gdx-backend-lwjgl")
-                }
-            }
-        }
-
-        val test by getting {
-            dependencies {
-                implementation(kotlin("test"))
-            }
-        }
+    // This is for the TexturePacker class
+    implementation("com.badlogicgames.gdx:gdx-tools:${libs.versions.gdxVersion.get()}") {
+        exclude(group = "com.badlogicgames.gdx", module = "gdx-backend-lwjgl")
     }
 
+    testImplementation(kotlin("test"))
+}
+
+kotlin {
     jvmToolchain {
         languageVersion.set(JavaLanguageVersion.of(libs.versions.jdkVersion.get()))
     }
