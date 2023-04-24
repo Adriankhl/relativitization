@@ -328,6 +328,20 @@ object CommandCollection {
         AllCommandAvailability.name() to AllCommandAvailability,
     )
 
+    fun getCommandAvailabilityNames(): Set<String> = commandAvailabilityNameMap.keys
+
+    fun addCommandAvailability(commandAvailability: CommandAvailability) {
+        val commandAvailabilityName: String = commandAvailability.name()
+        if (commandAvailabilityNameMap.containsKey(commandAvailabilityName)) {
+            logger.error(
+                "Already has $commandAvailabilityName in CommandCollection, " +
+                        "replacing stored $commandAvailabilityName"
+            )
+        }
+
+        commandAvailabilityNameMap[commandAvailabilityName] = commandAvailability
+    }
+
     fun hasCommand(universeSettings: UniverseSettings, command: Command): Boolean {
         return if (universeSettings.commandCollectionName != AllCommandAvailability.name()) {
             if (commandAvailabilityNameMap.containsKey(universeSettings.commandCollectionName)) {

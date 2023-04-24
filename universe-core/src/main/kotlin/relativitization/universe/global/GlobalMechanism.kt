@@ -29,9 +29,23 @@ abstract class GlobalMechanismList {
 object GlobalMechanismCollection {
     private val logger = RelativitizationLogManager.getLogger()
 
-    private val globalMechanismListMap: MutableMap<String, GlobalMechanismList> = mutableMapOf(
+    private val globalMechanismListNameMap: MutableMap<String, GlobalMechanismList> = mutableMapOf(
         EmptyGlobalMechanismList.name() to EmptyGlobalMechanismList,
     )
+
+    fun getGlobalMechanismListNames(): Set<String> = globalMechanismListNameMap.keys
+
+    fun addGlobalMechanismList(globalMechanismList: GlobalMechanismList) {
+        val globalMechanismListName: String = globalMechanismList.name()
+        if (globalMechanismListNameMap.containsKey(globalMechanismListName)) {
+            logger.error(
+                "Already has $globalMechanismListName in GlobalMechanismCollection, " +
+                        "replacing stored $globalMechanismListName"
+            )
+        }
+
+        globalMechanismListNameMap[globalMechanismListName] = globalMechanismList
+    }
 
     fun globalProcess(
         universeData: UniverseData,
@@ -40,7 +54,7 @@ object GlobalMechanismCollection {
         val mutableUniverseGlobalData: MutableUniverseGlobalData =
             DataSerializer.copy(universeData.universeGlobalData)
 
-        globalMechanismListMap.getOrElse(universeData.universeSettings.globalMechanismCollectionName) {
+        globalMechanismListNameMap.getOrElse(universeData.universeSettings.globalMechanismCollectionName) {
             logger.error("No global mechanism name matched, use empty mechanism")
             EmptyGlobalMechanismList
         }.globalMechanismList.forEach { globalMechanism ->

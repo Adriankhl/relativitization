@@ -40,9 +40,23 @@ abstract class MechanismLists {
 object MechanismCollection {
     private val logger = RelativitizationLogManager.getLogger()
 
-    private val mechanismListsMap: MutableMap<String, MechanismLists> = mutableMapOf(
+    private val mechanismListsNameMap: MutableMap<String, MechanismLists> = mutableMapOf(
         EmptyMechanismLists.name() to EmptyMechanismLists,
     )
+
+    fun getMechanismListsNames(): Set<String> = mechanismListsNameMap.keys
+
+    fun addMechanismLists(mechanismLists: MechanismLists) {
+        val mechanismListsName: String = mechanismLists.name()
+        if (mechanismListsNameMap.containsKey(mechanismListsName)) {
+            logger.error(
+                "Already has $mechanismListsName in MechanismCollection, " +
+                        "replacing stored $mechanismListsName"
+            )
+        }
+
+        mechanismListsNameMap[mechanismListsName] = mechanismLists
+    }
 
     fun processMechanismCollection(
         mutablePlayerData: MutablePlayerData,
@@ -51,7 +65,7 @@ object MechanismCollection {
         random: Random,
     ): List<Command> {
         val mechanismLists: MechanismLists =
-            mechanismListsMap.getOrElse(universeData.universeSettings.mechanismCollectionName) {
+            mechanismListsNameMap.getOrElse(universeData.universeSettings.mechanismCollectionName) {
                 logger.error("No mechanism name matched, use empty mechanism")
                 EmptyMechanismLists
             }

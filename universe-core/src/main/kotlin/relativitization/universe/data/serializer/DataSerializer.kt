@@ -3,19 +3,28 @@ package relativitization.universe.data.serializer
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.modules.SerializersModule
 
 object DataSerializer {
-
-    val format = Json {
+    private var format: Json = Json {
         encodeDefaults = true
     }
 
+    fun getJsonFormat(): Json = format
+
+    fun updateJsonFormatModule(module: SerializersModule) {
+        format = Json {
+            encodeDefaults = true
+            serializersModule = module
+        }
+    }
+
     inline fun <reified I> encode(data: I): String {
-        return format.encodeToString(data)
+        return getJsonFormat().encodeToString(data)
     }
 
     inline fun <reified O> decode(str: String): O {
-        return format.decodeFromString(str)
+        return getJsonFormat().decodeFromString(str)
     }
 
     /**

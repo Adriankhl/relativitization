@@ -21,6 +21,17 @@ object AICollection {
         EmptyAI.name() to EmptyAI,
     )
 
+    fun getAINames(): Set<String> = aiNameMap.keys
+
+    fun addAI(ai: AI) {
+        val aiName: String = ai.name()
+        if (aiNameMap.containsKey(aiName)) {
+            logger.error("Already has $aiName in AICollection, replacing stored $aiName")
+        }
+
+        aiNameMap[aiName] = ai
+    }
+
     fun compute(
         universeData3DAtPlayer: UniverseData3DAtPlayer,
         random: Random,

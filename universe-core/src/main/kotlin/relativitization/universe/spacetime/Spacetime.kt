@@ -38,16 +38,30 @@ abstract class Spacetime {
 object SpacetimeCollection {
     private val logger = RelativitizationLogManager.getLogger()
 
-    private val spacetimeMap: MutableMap<String, Spacetime> = mutableMapOf(
+    private val spacetimeNameMap: MutableMap<String, Spacetime> = mutableMapOf(
         MinkowskiSpacetime.name() to MinkowskiSpacetime,
     )
+
+    fun getSpacetimeNames(): Set<String> = spacetimeNameMap.keys
+
+    fun addSpacetime(spacetime: Spacetime) {
+        val spacetimeName: String = spacetime.name()
+        if (spacetimeNameMap.containsKey(spacetimeName)) {
+            logger.error(
+                "Already has $spacetimeName in SpacetimeCollection, " +
+                        "replacing stored $spacetimeName"
+            )
+        }
+
+        spacetimeNameMap[spacetimeName] = spacetime
+    }
 
     fun computeTimeDelay(
         i1: Int3D,
         i2: Int3D,
         universeSettings: UniverseSettings
     ): Int {
-        val spacetime: Spacetime = spacetimeMap.getOrElse(
+        val spacetime: Spacetime = spacetimeNameMap.getOrElse(
             universeSettings.spacetimeCollectionName
         ) {
             logger.error("No spacetime name matched, use Minkowski spacetime")
@@ -62,7 +76,7 @@ object SpacetimeCollection {
         velocity: Velocity,
         universeSettings: UniverseSettings
     ): Double {
-        val spacetime: Spacetime = spacetimeMap.getOrElse(
+        val spacetime: Spacetime = spacetimeNameMap.getOrElse(
             universeSettings.spacetimeCollectionName
         ) {
             logger.error("No spacetime name matched, use Minkowski spacetime")

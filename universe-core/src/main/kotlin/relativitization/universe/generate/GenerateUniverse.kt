@@ -99,13 +99,24 @@ abstract class GenerateUniverseMethod {
 object GenerateUniverseMethodCollection {
     private val logger = RelativitizationLogManager.getLogger()
 
-    private val generateMethodList: List<GenerateUniverseMethod> = listOf(
-        EmptyUniverse,
-    )
-
     // Store all generate method
-    val generateMethodMap: Map<String, GenerateUniverseMethod> = generateMethodList.associateBy {
-        it.name()
+    private val generateUniverseMethodNameMap: MutableMap<String, GenerateUniverseMethod> =
+        mutableMapOf(
+            EmptyUniverse.name() to EmptyUniverse
+        )
+
+    fun getGenerateUniverseMethodNames(): Set<String> = generateUniverseMethodNameMap.keys
+
+    fun addGenerateUniverseMethod(generateUniverseMethod: GenerateUniverseMethod) {
+        val generateUniverseMethodName: String = generateUniverseMethod.name()
+        if (generateUniverseMethodNameMap.containsKey(generateUniverseMethodName)) {
+            logger.error(
+                "Already has $generateUniverseMethodName in GenerateUniverseMethodCollection, " +
+                        "replacing stored $generateUniverseMethodName"
+            )
+        }
+
+        generateUniverseMethodNameMap[generateUniverseMethodName] = generateUniverseMethod
     }
 
     fun isSettingValid(generateSettings: GenerateSettings): Boolean {
@@ -121,11 +132,14 @@ object GenerateUniverseMethodCollection {
 
     fun generate(generateSettings: GenerateSettings): UniverseData {
         val generateMethod: GenerateUniverseMethod =
-            generateMethodMap.getOrElse(generateSettings.generateMethod) {
+            generateUniverseMethodNameMap.getOrElse(generateSettings.generateMethod) {
                 logger.error("Generate method doesn't exist, generate an empty universe")
                 EmptyUniverse
             }
 
-        return generateMethod.generate(generateSettings, Random(generateSettings.universeSettings.randomSeed))
+        return generateMethod.generate(
+            generateSettings,
+            Random(generateSettings.universeSettings.randomSeed)
+        )
     }
 }
