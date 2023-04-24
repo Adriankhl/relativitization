@@ -8,10 +8,10 @@ import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.reflect.KClass
 
 @Serializable
-sealed class GlobalDataComponent
+abstract class GlobalDataComponent
 
 @Serializable
-sealed class MutableGlobalDataComponent
+abstract class MutableGlobalDataComponent
 
 /**
  * The key for the component in GlobalDataComponentMap

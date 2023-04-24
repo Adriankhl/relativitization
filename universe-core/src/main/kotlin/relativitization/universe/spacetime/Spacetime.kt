@@ -5,7 +5,7 @@ import relativitization.universe.maths.physics.Int3D
 import relativitization.universe.maths.physics.Velocity
 import relativitization.universe.utils.RelativitizationLogManager
 
-sealed class Spacetime {
+abstract class Spacetime {
     /**
      * Compute time delay between two points
      *
@@ -38,11 +38,9 @@ sealed class Spacetime {
 object SpacetimeCollection {
     private val logger = RelativitizationLogManager.getLogger()
 
-    val spacetimeMap: Map<String, Spacetime> = Spacetime::class.sealedSubclasses.map {
-        it.objectInstance!!
-    }.associateBy {
-        it.name()
-    }
+    private val spacetimeMap: MutableMap<String, Spacetime> = mutableMapOf(
+        MinkowskiSpacetime.name() to MinkowskiSpacetime,
+    )
 
     fun computeTimeDelay(
         i1: Int3D,

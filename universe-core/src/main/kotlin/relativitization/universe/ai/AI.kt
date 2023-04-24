@@ -5,7 +5,7 @@ import relativitization.universe.data.commands.Command
 import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.random.Random
 
-sealed class AI {
+abstract class AI {
     open fun name(): String = this::class.simpleName.toString()
 
     abstract fun compute(
@@ -17,11 +17,9 @@ sealed class AI {
 object AICollection {
     private val logger = RelativitizationLogManager.getLogger()
 
-    val aiNameMap: Map<String, AI> = AI::class.sealedSubclasses.map {
-        it.objectInstance!!
-    }.associateBy {
-        it.name()
-    }
+    private val aiNameMap: MutableMap<String, AI> = mutableMapOf(
+        EmptyAI.name() to EmptyAI,
+    )
 
     fun compute(
         universeData3DAtPlayer: UniverseData3DAtPlayer,

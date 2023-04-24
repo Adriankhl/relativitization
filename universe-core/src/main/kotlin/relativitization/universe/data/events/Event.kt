@@ -11,7 +11,7 @@ import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.random.Random
 
 @Serializable
-sealed class Event {
+abstract class Event {
 
     // The event belongs (or will belong) to this player
     abstract val toId: Int

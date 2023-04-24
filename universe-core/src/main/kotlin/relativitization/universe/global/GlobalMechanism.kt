@@ -20,7 +20,7 @@ abstract class GlobalMechanism {
     )
 }
 
-sealed class GlobalMechanismList {
+abstract class GlobalMechanismList {
     abstract val globalMechanismList: List<GlobalMechanism>
 
     open fun name(): String = this::class.simpleName.toString()
@@ -29,12 +29,9 @@ sealed class GlobalMechanismList {
 object GlobalMechanismCollection {
     private val logger = RelativitizationLogManager.getLogger()
 
-    val globalMechanismListMap: Map<String, GlobalMechanismList> = GlobalMechanismList::class
-        .sealedSubclasses.map {
-            it.objectInstance!!
-        }.associateBy {
-            it.name()
-        }
+    private val globalMechanismListMap: MutableMap<String, GlobalMechanismList> = mutableMapOf(
+        EmptyGlobalMechanismList.name() to EmptyGlobalMechanismList,
+    )
 
     fun globalProcess(
         universeData: UniverseData,

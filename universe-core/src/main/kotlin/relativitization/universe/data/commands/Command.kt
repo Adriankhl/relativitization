@@ -12,7 +12,7 @@ import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.reflect.KClass
 
 @Serializable
-sealed class Command {
+abstract class Command {
     // The id of the player to receive this command
     abstract val toId: Int
 
@@ -291,7 +291,7 @@ data class CommandData(
     val fromInt4D: Int4D,
 )
 
-sealed class CommandAvailability {
+abstract class CommandAvailability {
     // Command list allowed to be sent and executed
     abstract val commandList: List<KClass<out Command>>
 
@@ -324,12 +324,9 @@ sealed class CommandAvailability {
 object CommandCollection {
     private val logger = RelativitizationLogManager.getLogger()
 
-    val commandAvailabilityNameMap: Map<String, CommandAvailability> = CommandAvailability::class
-        .sealedSubclasses.map {
-            it.objectInstance!!
-        }.associateBy {
-            it.name()
-        }
+    private val commandAvailabilityNameMap: MutableMap<String, CommandAvailability> = mutableMapOf(
+        AllCommandAvailability.name() to AllCommandAvailability,
+    )
 
     fun hasCommand(universeSettings: UniverseSettings, command: Command): Boolean {
         return if (universeSettings.commandCollectionName != AllCommandAvailability.name()) {

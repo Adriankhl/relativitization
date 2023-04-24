@@ -27,7 +27,7 @@ abstract class Mechanism {
     ): List<Command>
 }
 
-sealed class MechanismLists {
+abstract class MechanismLists {
     // Mechanisms that are not affected by time dilation
     abstract val regularMechanismList: List<Mechanism>
 
@@ -40,12 +40,9 @@ sealed class MechanismLists {
 object MechanismCollection {
     private val logger = RelativitizationLogManager.getLogger()
 
-    val mechanismListsMap: Map<String, MechanismLists> = MechanismLists::class.sealedSubclasses
-        .map {
-            it.objectInstance!!
-        }.associateBy {
-            it.name()
-        }
+    private val mechanismListsMap: MutableMap<String, MechanismLists> = mutableMapOf(
+        EmptyMechanismLists.name() to EmptyMechanismLists,
+    )
 
     fun processMechanismCollection(
         mutablePlayerData: MutablePlayerData,

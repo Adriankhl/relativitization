@@ -8,10 +8,10 @@ import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.reflect.KClass
 
 @Serializable
-sealed class PlayerDataComponent
+abstract class PlayerDataComponent
 
 @Serializable
-sealed class MutablePlayerDataComponent
+abstract class MutablePlayerDataComponent
 
 /**
  * The key for the component in PlayerDataComponentMap
