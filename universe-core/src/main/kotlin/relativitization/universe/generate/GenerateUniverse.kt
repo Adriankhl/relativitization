@@ -5,11 +5,7 @@ import relativitization.universe.data.MutableUniverseSettings
 import relativitization.universe.data.UniverseData
 import relativitization.universe.data.serializer.DataSerializer.decode
 import relativitization.universe.data.serializer.DataSerializer.encode
-import relativitization.universe.generate.abm.ABMGenerateUniverseMethod
-import relativitization.universe.generate.random.RandomGenerateUniverseMethod
-import relativitization.universe.generate.random.RandomOneStarPerPlayerGenerate
-import relativitization.universe.generate.testing.TestingFixedMinimalGenerate
-import relativitization.universe.generate.testing.TestingGenerateUniverseMethod
+import relativitization.universe.generate.empty.EmptyUniverse
 import relativitization.universe.utils.FileUtils
 import relativitization.universe.utils.RelativitizationLogManager
 import kotlin.random.Random
@@ -25,7 +21,7 @@ import kotlin.random.Random
  */
 @Serializable
 data class GenerateSettings(
-    var generateMethod: String = RandomOneStarPerPlayerGenerate.name(),
+    var generateMethod: String = EmptyUniverse.name(),
     var numPlayer: Int = 1,
     var numHumanPlayer: Int = 1,
     val otherIntMap: MutableMap<String, Int> = mutableMapOf(),
@@ -103,14 +99,9 @@ abstract class GenerateUniverseMethod {
 object GenerateUniverseMethodCollection {
     private val logger = RelativitizationLogManager.getLogger()
 
-    private val generateMethodList: List<GenerateUniverseMethod> =
-        RandomGenerateUniverseMethod::class.sealedSubclasses.map {
-            it.objectInstance!!
-        } + TestingGenerateUniverseMethod::class.sealedSubclasses.map {
-            it.objectInstance!!
-        } + ABMGenerateUniverseMethod::class.sealedSubclasses.map {
-            it.objectInstance!!
-        }
+    private val generateMethodList: List<GenerateUniverseMethod> = listOf(
+        EmptyUniverse,
+    )
 
     // Store all generate method
     val generateMethodMap: Map<String, GenerateUniverseMethod> = generateMethodList.associateBy {
@@ -131,8 +122,8 @@ object GenerateUniverseMethodCollection {
     fun generate(generateSettings: GenerateSettings): UniverseData {
         val generateMethod: GenerateUniverseMethod =
             generateMethodMap.getOrElse(generateSettings.generateMethod) {
-                logger.error("Generate method doesn't exist, using default method")
-                TestingFixedMinimalGenerate
+                logger.error("Generate method doesn't exist, generate an empty universe")
+                EmptyUniverse
             }
 
         return generateMethod.generate(generateSettings, Random(generateSettings.universeSettings.randomSeed))

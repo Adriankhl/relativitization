@@ -2,11 +2,11 @@ package relativitization.universe.data
 
 import kotlinx.datetime.Clock
 import kotlinx.serialization.Serializable
-import relativitization.universe.data.commands.DefaultCommandAvailability
-import relativitization.universe.global.DefaultGlobalMechanismList
+import relativitization.universe.data.commands.AllCommandAvailability
+import relativitization.universe.global.EmptyGlobalMechanismList
 import relativitization.universe.maths.physics.Int3D
 import relativitization.universe.maths.physics.Intervals
-import relativitization.universe.mechanisms.DefaultMechanismLists
+import relativitization.universe.mechanisms.EmptyMechanismLists
 import relativitization.universe.spacetime.MinkowskiSpacetime
 import relativitization.universe.utils.RelativitizationLogManager
 
@@ -40,9 +40,9 @@ import relativitization.universe.utils.RelativitizationLogManager
 data class UniverseSettings(
     val universeName: String = "my universe",
     val spacetimeCollectionName: String = MinkowskiSpacetime.name(),
-    val commandCollectionName: String = DefaultCommandAvailability.name(),
-    val mechanismCollectionName: String = DefaultMechanismLists.name(),
-    val globalMechanismCollectionName: String = DefaultGlobalMechanismList.name(),
+    val commandCollectionName: String = AllCommandAvailability.name(),
+    val mechanismCollectionName: String = EmptyMechanismLists.name(),
+    val globalMechanismCollectionName: String = EmptyGlobalMechanismList.name(),
     val speedOfLight: Double = 1.0,
     val xDim: Int = 3,
     val yDim: Int = 3,
@@ -106,9 +106,9 @@ data class UniverseSettings(
 data class MutableUniverseSettings(
     var universeName: String = "my universe",
     var spacetimeCollectionName: String = MinkowskiSpacetime.name(),
-    var commandCollectionName: String = DefaultCommandAvailability.name(),
-    var mechanismCollectionName: String = DefaultMechanismLists.name(),
-    var globalMechanismCollectionName: String = DefaultGlobalMechanismList.name(),
+    var commandCollectionName: String = AllCommandAvailability.name(),
+    var mechanismCollectionName: String = EmptyMechanismLists.name(),
+    var globalMechanismCollectionName: String = EmptyGlobalMechanismList.name(),
     var speedOfLight: Double = 1.0,
     var xDim: Int = 3,
     var yDim: Int = 3,
