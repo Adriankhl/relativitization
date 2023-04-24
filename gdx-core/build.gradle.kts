@@ -8,7 +8,7 @@ plugins {
 
 dependencies {
     implementation(project(":universe-client"))
-    implementation(project(":universe"))
+    implementation(project(":universe-game"))
 
 
     implementation(libs.gdx)

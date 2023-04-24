@@ -3,9 +3,10 @@ include(
     "gdx-core",
     "gdx-desktop",
     "simulations",
-    "universe",
+    "universe-client",
+    "universe-core",
+    "universe-game",
     "universe-server",
-    "universe-client"
 )
 
 pluginManagement {

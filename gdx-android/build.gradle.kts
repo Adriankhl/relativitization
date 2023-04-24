@@ -141,7 +141,7 @@ dependencies {
     implementation(project(":gdx-core"))
     implementation(project(":universe-server"))
     implementation(project(":universe-client"))
-    implementation(project(":universe"))
+    implementation(project(":universe-game"))
 
 
     implementation(libs.kotlinx.serialization.json)

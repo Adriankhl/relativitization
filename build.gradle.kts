@@ -65,7 +65,7 @@ tasks.withType<DependencyUpdatesTask> {
 }
 
 tasks.getByName("clean").doLast {
-    delete("./universe/saves")
+    delete("./universe-game/saves")
     delete("./simulations/testData")
     delete("relativitization-model-base")
 }
@@ -95,7 +95,7 @@ tasks.register("createModelBase") {
 
         listOf(
             "buildSrc",
-            "universe",
+            "universe-game",
             "simulations"
         ).forEach { dir ->
             File(dir).walkTopDown().filter {
