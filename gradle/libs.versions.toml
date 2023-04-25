@@ -21,7 +21,7 @@ androidNdkVersion = "25.2.9519652"
 # Dependency
 
 # Kotlin
-kotlinVersion = "1.8.20"
+kotlinVersion = "1.8.21"
 
 # Gradle plugin
 gradleVersionPluginVersion = "0.46.0"
@@ -30,14 +30,14 @@ gradleVersionPluginVersion = "0.46.0"
 dokkaVersion = "1.8.10"
 
 # KSP
-kspVersion = "1.8.20-1.0.10"
+kspVersion = "1.8.20-1.0.11"
 ksergenVersion = "0.1"
 
 # Kotlin multiplatform
 kotlinxCoroutineVersion = "1.6.4"
 kotlinxSerializationVersion = "1.5.0"
 kotlinxDateTimeVersion = "0.4.0"
-ktorVersion = "2.2.4"
+ktorVersion = "2.3.0"
 lifecycleRuntimeKtx = "2.6.1"
 okioVersion = "3.3.0"
 
@@ -50,7 +50,7 @@ dataframeVersion = "0.10.0"
 androidGradlePluginVersion = "8.0.0"
 androidAppCompatVersion = "1.6.1"
 androidLifeCycleKtxVersion = "2.6.1"
-androidFragmentKtxVersion = "1.5.6"
+androidFragmentKtxVersion = "1.5.7"
 
 [libraries]
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidAppCompatVersion" }
