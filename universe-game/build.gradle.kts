@@ -8,7 +8,7 @@ plugins {
 }
 
 dependencies {
-    ksp(libs.ksergen)
+    ksp(libs.ksergen.ksp)
 
     implementation(project(":universe-core"))
 
@@ -16,6 +16,7 @@ dependencies {
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.datetime)
     implementation(libs.kotlin.reflect)
+    implementation(libs.ksergen.annotations)
     implementation(libs.log4j.api)
     implementation(libs.log4j.core)
     implementation(libs.okio)
