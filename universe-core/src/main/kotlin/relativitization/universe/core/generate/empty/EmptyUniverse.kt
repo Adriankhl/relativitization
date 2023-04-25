@@ -14,6 +14,8 @@ import relativitization.universe.core.maths.grid.Grids
 import kotlin.random.Random
 
 object EmptyUniverse : GenerateUniverseMethod() {
+    override fun name(): String = "Empty"
+
     override fun generate(generateSettings: GenerateSettings, random: Random): UniverseData {
         val mutableUniverseData4D = MutableUniverseData4D(
             Grids.create4DGrid(
