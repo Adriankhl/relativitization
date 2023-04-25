@@ -333,7 +333,7 @@ object CommandCollection {
     fun addCommandAvailability(commandAvailability: CommandAvailability) {
         val commandAvailabilityName: String = commandAvailability.name()
         if (commandAvailabilityNameMap.containsKey(commandAvailabilityName)) {
-            logger.error(
+            logger.debug(
                 "Already has $commandAvailabilityName in CommandCollection, " +
                         "replacing stored $commandAvailabilityName"
             )
@@ -348,6 +348,21 @@ object CommandCollection {
                 commandAvailabilityNameMap.getValue(
                     universeSettings.commandCollectionName
                 ).hasCommand(command)
+            } else {
+                logger.error("No command collection name: ${universeSettings.commandCollectionName} found")
+                false
+            }
+        } else {
+            true
+        }
+    }
+
+    fun canAddEvent(universeSettings: UniverseSettings, event: Event): Boolean {
+        return if (universeSettings.commandCollectionName != AllCommandAvailability.name()) {
+            if (commandAvailabilityNameMap.containsKey(universeSettings.commandCollectionName)) {
+                commandAvailabilityNameMap.getValue(
+                    universeSettings.commandCollectionName
+                ).canAddEvent(event)
             } else {
                 logger.error("No command collection name: ${universeSettings.commandCollectionName} found")
                 false

@@ -1,10 +1,10 @@
 package relativitization.universe.game.mechanisms.defaults.dilated.pop
 
-import relativitization.universe.game.data.MutablePlayerData
-import relativitization.universe.game.data.PlayerData
-import relativitization.universe.game.data.UniverseData3DAtPlayer
-import relativitization.universe.game.data.UniverseSettings
-import relativitization.universe.game.data.commands.Command
+import relativitization.universe.core.data.MutablePlayerData
+import relativitization.universe.core.data.PlayerData
+import relativitization.universe.core.data.UniverseData3DAtPlayer
+import relativitization.universe.core.data.UniverseSettings
+import relativitization.universe.core.data.commands.Command
 import relativitization.universe.game.data.commands.PopBuyResourceCommand
 import relativitization.universe.game.data.components.EconomyData
 import relativitization.universe.game.data.components.MutableEconomyData
@@ -22,12 +22,12 @@ import relativitization.universe.game.data.components.economyData
 import relativitization.universe.game.data.components.physicsData
 import relativitization.universe.game.data.components.playerScienceData
 import relativitization.universe.game.data.components.popSystemData
-import relativitization.universe.game.data.global.UniverseGlobalData
-import relativitization.universe.game.maths.algebra.Logistic
-import relativitization.universe.game.maths.physics.Int4D
-import relativitization.universe.game.maths.physics.Intervals
-import relativitization.universe.game.maths.sampling.WeightedReservoir
-import relativitization.universe.game.mechanisms.Mechanism
+import relativitization.universe.core.data.global.UniverseGlobalData
+import relativitization.universe.core.maths.algebra.Logistic
+import relativitization.universe.core.maths.physics.Int4D
+import relativitization.universe.core.maths.physics.Intervals
+import relativitization.universe.core.maths.sampling.WeightedReservoir
+import relativitization.universe.core.mechanisms.Mechanism
 import kotlin.math.min
 import kotlin.math.pow
 import kotlin.random.Random

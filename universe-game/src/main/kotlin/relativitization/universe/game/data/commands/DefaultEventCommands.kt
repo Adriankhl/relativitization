@@ -1,15 +1,20 @@
 package relativitization.universe.game.data.commands
 
 import kotlinx.serialization.Serializable
-import relativitization.universe.game.data.MutablePlayerData
-import relativitization.universe.game.data.UniverseSettings
-import relativitization.universe.game.data.events.Event
-import relativitization.universe.game.data.events.MutableEventData
-import relativitization.universe.game.maths.physics.Int4D
-import relativitization.universe.game.utils.I18NString
-import relativitization.universe.game.utils.IntString
-import relativitization.universe.game.utils.NormalString
-import relativitization.universe.game.utils.RelativitizationLogManager
+import relativitization.universe.core.data.MutablePlayerData
+import relativitization.universe.core.data.UniverseSettings
+import relativitization.universe.core.data.commands.AllCommandAvailability
+import relativitization.universe.core.data.commands.CommandAvailability
+import relativitization.universe.core.data.commands.CommandCollection
+import relativitization.universe.core.data.commands.CommandErrorMessage
+import relativitization.universe.core.data.commands.CommandI18NStringFactory
+import relativitization.universe.core.data.events.Event
+import relativitization.universe.core.data.events.MutableEventData
+import relativitization.universe.core.maths.physics.Int4D
+import relativitization.universe.core.utils.I18NString
+import relativitization.universe.core.utils.IntString
+import relativitization.universe.core.utils.NormalString
+import relativitization.universe.core.utils.RelativitizationLogManager
 
 /**
  * Add event to player
@@ -48,7 +53,7 @@ data class AddEventCommand(
         universeSettings: UniverseSettings
     ): CommandErrorMessage {
         val canAdd = CommandErrorMessage(
-            canAddEvent(event, universeSettings),
+            CommandCollection.canAddEvent(universeSettings, event),
             I18NString("Cannot add this event by command. ")
         )
 
@@ -77,7 +82,7 @@ data class AddEventCommand(
     ): CommandErrorMessage {
 
         val canAdd = CommandErrorMessage(
-            canAddEvent(event, universeSettings),
+            CommandCollection.canAddEvent(universeSettings, event),
             I18NString("Cannot add this event by command. ")
         )
 
@@ -111,25 +116,6 @@ data class AddEventCommand(
 
     companion object {
         private val logger = RelativitizationLogManager.getLogger()
-
-        /**
-         * Whether player can add this event to other player, used by AddEventCommand
-         */
-        fun canAddEvent(event: Event, universeSettings: UniverseSettings): Boolean {
-            val commandAvailability: CommandAvailability = CommandCollection.commandAvailabilityNameMap.getOrElse(
-                    universeSettings.commandCollectionName
-                ) {
-                    logger.error("No add event command collection name: " +
-                            "${universeSettings.commandCollectionName} found")
-                    DefaultCommandAvailability
-                }
-
-            return if (commandAvailability.name() != AllCommandAvailability.name()) {
-                commandAvailability.canAddEvent(event)
-            } else {
-                true
-            }
-        }
     }
 }
 

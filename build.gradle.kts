@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.dokka)
     alias(libs.plugins.ben.manes.versions)
+    alias(libs.plugins.ksp)
     alias(libs.plugins.android.application) apply false
 }
 

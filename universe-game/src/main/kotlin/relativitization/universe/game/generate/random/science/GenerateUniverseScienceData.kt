@@ -9,10 +9,10 @@ import relativitization.universe.game.data.global.components.UniverseScienceData
 import relativitization.universe.game.data.global.components.defaults.science.knowledge.MutableAppliedResearchProjectGenerationData
 import relativitization.universe.game.data.global.components.defaults.science.knowledge.MutableBasicResearchProjectGenerationData
 import relativitization.universe.game.data.global.components.defaults.science.knowledge.MutableProjectGenerationData
-import relativitization.universe.game.data.serializer.DataSerializer
-import relativitization.universe.game.maths.physics.Intervals
-import relativitization.universe.game.maths.sampling.WeightedReservoir
-import relativitization.universe.game.utils.RelativitizationLogManager
+import relativitization.universe.core.data.serializer.DataSerializer
+import relativitization.universe.core.maths.physics.Intervals
+import relativitization.universe.core.maths.sampling.WeightedReservoir
+import relativitization.universe.core.utils.RelativitizationLogManager
 import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.max

@@ -47,7 +47,7 @@ object SpacetimeCollection {
     fun addSpacetime(spacetime: Spacetime) {
         val spacetimeName: String = spacetime.name()
         if (spacetimeNameMap.containsKey(spacetimeName)) {
-            logger.error(
+            logger.debug(
                 "Already has $spacetimeName in SpacetimeCollection, " +
                         "replacing stored $spacetimeName"
             )

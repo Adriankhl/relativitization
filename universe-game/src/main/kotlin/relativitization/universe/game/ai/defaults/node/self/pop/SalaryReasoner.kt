@@ -9,7 +9,7 @@ import relativitization.universe.game.ai.defaults.utils.DualUtilityOption
 import relativitization.universe.game.ai.defaults.utils.DualUtilityReasoner
 import relativitization.universe.game.ai.defaults.utils.PlanState
 import relativitization.universe.game.ai.defaults.utils.SequenceReasoner
-import relativitization.universe.game.data.PlanDataAtPlayer
+import relativitization.universe.core.data.PlanDataAtPlayer
 import relativitization.universe.game.data.commands.ChangeBaseSalaryCommand
 import relativitization.universe.game.data.commands.ChangeSalaryFactorCommand
 import relativitization.universe.game.data.components.MutablePhysicsData

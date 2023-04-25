@@ -16,8 +16,8 @@ import relativitization.server.routes.registerCreateUniverseRoutes
 import relativitization.server.routes.registerRunUniverseRoutes
 import relativitization.server.routes.registerUniverseStatusRoutes
 import relativitization.universe.game.UniverseServerSettings
-import relativitization.universe.game.data.serializer.DataSerializer
-import relativitization.universe.game.utils.RelativitizationLogManager
+import relativitization.universe.core.data.serializer.DataSerializer
+import relativitization.universe.core.utils.RelativitizationLogManager
 
 
 class UniverseServer(
@@ -43,7 +43,7 @@ class UniverseServer(
         },
         module = {
             install(ContentNegotiation) {
-                json(DataSerializer.format)
+                json(DataSerializer.getJsonFormat())
             }
             install(StatusPages) {
                 exception<Throwable> { call, cause ->

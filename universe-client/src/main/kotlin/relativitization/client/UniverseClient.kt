@@ -25,8 +25,9 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import relativitization.universe.game.UniverseClientSettings
 import relativitization.universe.game.UniverseServerSettings
-import relativitization.universe.game.ai.AICollection
-import relativitization.universe.game.ai.EmptyAI
+import relativitization.universe.core.ai.AICollection
+import relativitization.universe.core.ai.EmptyAI
+import relativitization.universe.core.data.MutableUniverseSettings
 import relativitization.universe.game.communication.CheckIsPlayerDeadMessage
 import relativitization.universe.game.communication.DeregisterPlayerMessage
 import relativitization.universe.game.communication.LoadUniverseMessage
@@ -39,22 +40,27 @@ import relativitization.universe.game.communication.StopWaitingMessage
 import relativitization.universe.game.communication.UniverseData3DMessage
 import relativitization.universe.game.communication.UniverseServerSettingsMessage
 import relativitization.universe.game.communication.UniverseServerStatusMessage
-import relativitization.universe.game.data.PlanDataAtPlayer
-import relativitization.universe.game.data.PlayerData
-import relativitization.universe.game.data.UniverseData3DAtPlayer
-import relativitization.universe.game.data.UniverseSettings
+import relativitization.universe.core.data.PlanDataAtPlayer
+import relativitization.universe.core.data.PlayerData
+import relativitization.universe.core.data.UniverseData3DAtPlayer
+import relativitization.universe.core.data.UniverseSettings
 import relativitization.universe.game.data.commands.CannotSendCommand
-import relativitization.universe.game.data.commands.Command
-import relativitization.universe.game.data.commands.CommandErrorMessage
+import relativitization.universe.core.data.commands.Command
+import relativitization.universe.core.data.commands.CommandErrorMessage
 import relativitization.universe.game.data.commands.DummyCommand
 import relativitization.universe.game.data.commands.ExecuteWarningCommand
-import relativitization.universe.game.data.serializer.DataSerializer
-import relativitization.universe.game.generate.GenerateSettings
-import relativitization.universe.game.maths.physics.Double2D
-import relativitization.universe.game.maths.physics.Int3D
-import relativitization.universe.game.utils.CoroutineBoolean
-import relativitization.universe.game.utils.CoroutineList
-import relativitization.universe.game.utils.RelativitizationLogManager
+import relativitization.universe.core.data.serializer.DataSerializer
+import relativitization.universe.core.generate.GenerateSettings
+import relativitization.universe.core.maths.physics.Double2D
+import relativitization.universe.core.maths.physics.Int3D
+import relativitization.universe.core.utils.CoroutineBoolean
+import relativitization.universe.core.utils.CoroutineList
+import relativitization.universe.core.utils.RelativitizationLogManager
+import relativitization.universe.game.data.commands.DefaultCommandAvailability
+import relativitization.universe.game.generate.random.RandomOneStarPerPlayerGenerate
+import relativitization.universe.game.generate.testing.TestingFixedMinimalGenerate
+import relativitization.universe.game.global.DefaultGlobalMechanismList
+import relativitization.universe.game.mechanisms.DefaultMechanismLists
 import kotlin.collections.List
 import kotlin.collections.MutableList
 import kotlin.collections.MutableMap
@@ -93,7 +99,7 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
     val ktorClient = HttpClient(CIO) {
         install(HttpTimeout)
         install(ContentNegotiation) {
-            json(DataSerializer.format)
+            json(DataSerializer.getJsonFormat())
         }
     }
 
@@ -105,7 +111,14 @@ class UniverseClient(var universeClientSettings: UniverseClientSettings) {
     // for generate universe
     var generateSettings: GenerateSettings = GenerateSettings.loadOrDefault(
         universeClientSettings.programDir,
-        GenerateSettings(),
+        GenerateSettings(
+            generateMethod = RandomOneStarPerPlayerGenerate.name(),
+            universeSettings = MutableUniverseSettings(
+                commandCollectionName = DefaultCommandAvailability.name(),
+                mechanismCollectionName = DefaultMechanismLists.name(),
+                globalMechanismCollectionName = DefaultGlobalMechanismList.name(),
+            ),
+        ),
     )
 
     init {

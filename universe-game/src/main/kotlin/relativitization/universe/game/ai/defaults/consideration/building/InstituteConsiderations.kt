@@ -4,13 +4,13 @@ import relativitization.universe.game.ai.defaults.utils.DualUtilityConsideration
 import relativitization.universe.game.ai.defaults.utils.DualUtilityData
 import relativitization.universe.game.ai.defaults.utils.DualUtilityDataFactory
 import relativitization.universe.game.ai.defaults.utils.PlanState
-import relativitization.universe.game.data.PlanDataAtPlayer
+import relativitization.universe.core.data.PlanDataAtPlayer
 import relativitization.universe.game.data.components.defaults.popsystem.MutableCarrierData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.scholar.institute.MutableInstituteData
 import relativitization.universe.game.data.components.defaults.science.knowledge.BasicResearchProjectData
 import relativitization.universe.game.data.components.playerScienceData
 import relativitization.universe.game.data.components.popSystemData
-import relativitization.universe.game.maths.physics.Intervals
+import relativitization.universe.core.maths.physics.Intervals
 
 /**
  * Check if there is no institute at a carrier

@@ -1,14 +1,16 @@
 package relativitization.universe.game.data.commands
 
 import kotlinx.serialization.Serializable
-import relativitization.universe.game.data.MutablePlayerData
-import relativitization.universe.game.data.UniverseSettings
+import relativitization.universe.core.data.MutablePlayerData
+import relativitization.universe.core.data.UniverseSettings
+import relativitization.universe.core.data.commands.CommandErrorMessage
+import relativitization.universe.core.data.commands.CommandI18NStringFactory
 import relativitization.universe.game.data.components.MutablePoliticsData
 import relativitization.universe.game.data.components.politicsData
-import relativitization.universe.game.maths.physics.Int4D
-import relativitization.universe.game.utils.I18NString
-import relativitization.universe.game.utils.IntTranslateString
-import relativitization.universe.game.utils.NormalString
+import relativitization.universe.core.maths.physics.Int4D
+import relativitization.universe.core.utils.I18NString
+import relativitization.universe.core.utils.IntTranslateString
+import relativitization.universe.core.utils.NormalString
 
 /**
  * Change the factory policy of this player

@@ -3,13 +3,13 @@ package relativitization.universe.game.ai.defaults.node.self.storage
 import relativitization.universe.game.ai.defaults.utils.AINode
 import relativitization.universe.game.ai.defaults.utils.PlanState
 import relativitization.universe.game.ai.defaults.utils.SequenceReasoner
-import relativitization.universe.game.data.PlanDataAtPlayer
+import relativitization.universe.core.data.PlanDataAtPlayer
 import relativitization.universe.game.data.commands.ChangeFuelRestMassTargetProportionCommand
 import relativitization.universe.game.data.components.defaults.physics.MutableFuelRestMassTargetProportionData
 import relativitization.universe.game.data.components.defaults.popsystem.CarrierType
 import relativitization.universe.game.data.components.physicsData
 import relativitization.universe.game.data.components.popSystemData
-import relativitization.universe.game.data.serializer.DataSerializer
+import relativitization.universe.core.data.serializer.DataSerializer
 
 class BalanceFuelReasoner : SequenceReasoner() {
     override fun getSubNodeList(

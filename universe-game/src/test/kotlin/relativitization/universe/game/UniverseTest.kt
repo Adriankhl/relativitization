@@ -1,11 +1,12 @@
 package relativitization.universe.game
 
 import kotlinx.coroutines.runBlocking
-import relativitization.universe.game.data.MutableUniverseSettings
-import relativitization.universe.game.data.UniverseData
+import relativitization.universe.core.Universe
+import relativitization.universe.core.data.MutableUniverseSettings
+import relativitization.universe.core.data.UniverseData
 import relativitization.universe.game.data.commands.DefaultCommandAvailability
-import relativitization.universe.game.generate.GenerateSettings
-import relativitization.universe.game.generate.GenerateUniverseMethodCollection
+import relativitization.universe.core.generate.GenerateSettings
+import relativitization.universe.core.generate.GenerateUniverseMethodCollection
 import relativitization.universe.game.generate.random.RandomOneStarPerPlayerGenerate
 import relativitization.universe.game.generate.testing.TestingFixedMinimalGenerate
 import relativitization.universe.game.global.DefaultGlobalMechanismList
@@ -16,6 +17,8 @@ import kotlin.test.Test
 internal class UniverseTest {
     @Test
     fun saveLoadTest() {
+        GameUniverseInitializer.initialize()
+
         val generateSetting = GenerateSettings(
             generateMethod = TestingFixedMinimalGenerate.name(),
             numPlayer = 4,
@@ -40,6 +43,8 @@ internal class UniverseTest {
 
     @Test
     fun randomSeedBreakdownTest() {
+        GameUniverseInitializer.initialize()
+
         val generateSetting = GenerateSettings(
             generateMethod = RandomOneStarPerPlayerGenerate.name(),
             numPlayer = 100,
@@ -114,6 +119,8 @@ internal class UniverseTest {
 
     @Test
     fun randomSeedTest() {
+        GameUniverseInitializer.initialize()
+
         val generateSetting = GenerateSettings(
             generateMethod = RandomOneStarPerPlayerGenerate.name(),
             numPlayer = 100,
@@ -155,6 +162,8 @@ internal class UniverseTest {
 
     @Test
     fun timeDilationTest() {
+        GameUniverseInitializer.initialize()
+
         val generateSetting = GenerateSettings(
             generateMethod = TestingFixedMinimalGenerate.name(),
             numPlayer = 4,

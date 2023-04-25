@@ -1,14 +1,14 @@
 package relativitization.universe.game.mechanisms.defaults.regular.ai
 
-import relativitization.universe.game.data.MutablePlayerData
-import relativitization.universe.game.data.UniverseData3DAtPlayer
-import relativitization.universe.game.data.UniverseSettings
-import relativitization.universe.game.data.commands.Command
+import relativitization.universe.core.data.MutablePlayerData
+import relativitization.universe.core.data.UniverseData3DAtPlayer
+import relativitization.universe.core.data.UniverseSettings
+import relativitization.universe.core.data.commands.Command
 import relativitization.universe.game.data.components.aiData
-import relativitization.universe.game.data.global.UniverseGlobalData
-import relativitization.universe.game.maths.physics.Int3D
-import relativitization.universe.game.maths.physics.Intervals
-import relativitization.universe.game.mechanisms.Mechanism
+import relativitization.universe.core.data.global.UniverseGlobalData
+import relativitization.universe.core.maths.physics.Int3D
+import relativitization.universe.core.maths.physics.Intervals
+import relativitization.universe.core.mechanisms.Mechanism
 import kotlin.random.Random
 
 object ClearRecentCommand : Mechanism() {

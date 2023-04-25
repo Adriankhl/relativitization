@@ -12,7 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import relativitization.game.RelativitizationGame
 import relativitization.game.components.upper.UpperInfoPane
 import relativitization.game.utils.ActorFunction
-import relativitization.universe.game.data.PlayerData
+import relativitization.universe.core.data.PlayerData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.engineer.laboratory.LaboratoryData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.scholar.institute.InstituteData
 import relativitization.universe.game.data.components.defaults.science.knowledge.AppliedResearchField
@@ -21,8 +21,8 @@ import relativitization.universe.game.data.components.defaults.science.knowledge
 import relativitization.universe.game.data.components.defaults.science.knowledge.BasicResearchProjectData
 import relativitization.universe.game.data.components.playerScienceData
 import relativitization.universe.game.data.components.popSystemData
-import relativitization.universe.game.maths.physics.Double2D
-import relativitization.universe.game.utils.RelativitizationLogManager
+import relativitization.universe.core.maths.physics.Double2D
+import relativitization.universe.core.utils.RelativitizationLogManager
 import kotlin.math.max
 import kotlin.math.min
 

@@ -4,7 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.RelativitizationGame
 import relativitization.game.components.upper.UpperInfoPane
-import relativitization.universe.game.data.PlayerData
+import relativitization.universe.core.data.PlayerData
 import relativitization.universe.game.data.components.defaults.modifier.CombatModifierData
 import relativitization.universe.game.data.components.defaults.modifier.DiplomacyModifierData
 import relativitization.universe.game.data.components.defaults.modifier.PhysicsModifierData

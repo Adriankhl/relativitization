@@ -8,7 +8,7 @@ import relativitization.game.components.upper.UpperInfoPane
 import relativitization.game.utils.PlayerImage
 import relativitization.game.utils.PlayerSummary
 import relativitization.game.utils.Summary
-import relativitization.universe.game.data.PlayerData
+import relativitization.universe.core.data.PlayerData
 import relativitization.universe.game.data.components.defaults.economy.ResourceType
 
 class PlayersInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane>(game) {

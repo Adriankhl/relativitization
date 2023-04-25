@@ -1,24 +1,36 @@
 package relativitization.universe.game.data.events
 
 import kotlinx.coroutines.runBlocking
-import relativitization.universe.game.Universe
-import relativitization.universe.game.data.UniverseData3DAtPlayer
+import relativitization.universe.core.Universe
+import relativitization.universe.core.data.MutableUniverseSettings
+import relativitization.universe.core.data.UniverseData3DAtPlayer
 import relativitization.universe.game.data.commands.AddEventCommand
 import relativitization.universe.game.data.commands.SelectEventChoiceCommand
-import relativitization.universe.game.generate.GenerateSettings
-import relativitization.universe.game.generate.GenerateUniverseMethodCollection
+import relativitization.universe.core.generate.GenerateSettings
+import relativitization.universe.core.generate.GenerateUniverseMethodCollection
 import relativitization.universe.game.generate.testing.TestingFixedMinimalGenerate
-import relativitization.universe.game.maths.physics.Double4D
-import relativitization.universe.game.maths.physics.Int4D
+import relativitization.universe.core.maths.physics.Double4D
+import relativitization.universe.core.maths.physics.Int4D
+import relativitization.universe.game.GameUniverseInitializer
+import relativitization.universe.game.data.commands.DefaultCommandAvailability
+import relativitization.universe.game.global.DefaultGlobalMechanismList
+import relativitization.universe.game.mechanisms.DefaultMechanismLists
 import kotlin.test.Test
 
 internal class MoveToDouble3DEventTest {
     @Test
     fun fixedMinimalTest() {
+        GameUniverseInitializer.initialize()
+
         val universe = Universe(
             GenerateUniverseMethodCollection.generate(
                 GenerateSettings(
                     generateMethod = TestingFixedMinimalGenerate.name(),
+                    universeSettings = MutableUniverseSettings(
+                        commandCollectionName = DefaultCommandAvailability.name(),
+                        mechanismCollectionName = DefaultMechanismLists.name(),
+                        globalMechanismCollectionName = DefaultGlobalMechanismList.name(),
+                    ),
                 )
             )
         )

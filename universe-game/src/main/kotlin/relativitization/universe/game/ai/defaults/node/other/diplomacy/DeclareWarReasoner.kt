@@ -15,13 +15,13 @@ import relativitization.universe.game.ai.defaults.utils.DualUtilityOption
 import relativitization.universe.game.ai.defaults.utils.DualUtilityReasoner
 import relativitization.universe.game.ai.defaults.utils.PlanState
 import relativitization.universe.game.ai.defaults.utils.SequenceReasoner
-import relativitization.universe.game.data.MutablePlayerData
-import relativitization.universe.game.data.PlanDataAtPlayer
+import relativitization.universe.core.data.MutablePlayerData
+import relativitization.universe.core.data.PlanDataAtPlayer
 import relativitization.universe.game.data.commands.DeclareIndependenceToDirectLeaderCommand
 import relativitization.universe.game.data.commands.DeclareIndependenceToTopLeaderCommand
 import relativitization.universe.game.data.commands.DeclareWarCommand
-import relativitization.universe.game.maths.physics.Int3D
-import relativitization.universe.game.maths.physics.Intervals
+import relativitization.universe.core.maths.physics.Int3D
+import relativitization.universe.core.maths.physics.Intervals
 import kotlin.random.Random
 
 class DeclareWarReasoner(private val random: Random) : SequenceReasoner() {

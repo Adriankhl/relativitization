@@ -3,8 +3,8 @@ package relativitization.universe.game.ai.defaults.consideration.hierarchy
 import relativitization.universe.game.ai.defaults.utils.DualUtilityConsideration
 import relativitization.universe.game.ai.defaults.utils.DualUtilityData
 import relativitization.universe.game.ai.defaults.utils.PlanState
-import relativitization.universe.game.data.MutablePlayerData
-import relativitization.universe.game.data.PlanDataAtPlayer
+import relativitization.universe.core.data.MutablePlayerData
+import relativitization.universe.core.data.PlanDataAtPlayer
 
 /**
  * Consider the hierarchical relation with this player

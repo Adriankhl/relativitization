@@ -1,11 +1,14 @@
 package relativitization.universe.game.maths.physics
 
-import relativitization.universe.game.maths.physics.Relativistic.canTargetVelocityAtDirectionByPhotonRocket
-import relativitization.universe.game.maths.physics.Relativistic.decelerateByPhotonRocket
-import relativitization.universe.game.maths.physics.Relativistic.deltaMassByPhotonRocket
-import relativitization.universe.game.maths.physics.Relativistic.speedByPhotonRocket
-import relativitization.universe.game.maths.physics.Relativistic.targetVelocityAtDirectionPhotonRocket
-import relativitization.universe.game.maths.physics.Relativistic.targetVelocityByPhotonRocket
+import relativitization.universe.core.maths.physics.Relativistic.canTargetVelocityAtDirectionByPhotonRocket
+import relativitization.universe.core.maths.physics.Relativistic.decelerateByPhotonRocket
+import relativitization.universe.core.maths.physics.Relativistic.deltaMassByPhotonRocket
+import relativitization.universe.core.maths.physics.Relativistic.speedByPhotonRocket
+import relativitization.universe.core.maths.physics.Relativistic.targetVelocityAtDirectionPhotonRocket
+import relativitization.universe.core.maths.physics.Relativistic.targetVelocityByPhotonRocket
+import relativitization.universe.core.maths.physics.TargetVelocityData
+import relativitization.universe.core.maths.physics.TargetVelocityType
+import relativitization.universe.core.maths.physics.Velocity
 import kotlin.test.Test
 
 internal class RelativisticTest {

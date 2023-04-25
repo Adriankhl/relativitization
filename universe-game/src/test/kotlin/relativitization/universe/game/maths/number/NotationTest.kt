@@ -1,6 +1,6 @@
 package relativitization.universe.game.maths.number
 
-import relativitization.universe.game.maths.number.toScientificNotation
+import relativitization.universe.core.maths.number.toScientificNotation
 import kotlin.math.abs
 import kotlin.test.Test
 

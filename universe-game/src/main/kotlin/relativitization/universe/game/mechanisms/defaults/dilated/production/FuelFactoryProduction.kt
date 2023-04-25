@@ -1,9 +1,9 @@
 package relativitization.universe.game.mechanisms.defaults.dilated.production
 
-import relativitization.universe.game.data.MutablePlayerData
-import relativitization.universe.game.data.UniverseData3DAtPlayer
-import relativitization.universe.game.data.UniverseSettings
-import relativitization.universe.game.data.commands.Command
+import relativitization.universe.core.data.MutablePlayerData
+import relativitization.universe.core.data.UniverseData3DAtPlayer
+import relativitization.universe.core.data.UniverseSettings
+import relativitization.universe.core.data.commands.Command
 import relativitization.universe.game.data.commands.SendFuelCommand
 import relativitization.universe.game.data.components.MutablePhysicsData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.labourer.factory.MutableFuelFactoryData
@@ -11,8 +11,8 @@ import relativitization.universe.game.data.components.modifierData
 import relativitization.universe.game.data.components.physicsData
 import relativitization.universe.game.data.components.playerScienceData
 import relativitization.universe.game.data.components.popSystemData
-import relativitization.universe.game.data.global.UniverseGlobalData
-import relativitization.universe.game.mechanisms.Mechanism
+import relativitization.universe.core.data.global.UniverseGlobalData
+import relativitization.universe.core.mechanisms.Mechanism
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.random.Random

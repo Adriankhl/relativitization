@@ -1,9 +1,9 @@
 package relativitization.universe.game.mechanisms.defaults.dilated.research
 
-import relativitization.universe.game.data.MutablePlayerData
-import relativitization.universe.game.data.UniverseData3DAtPlayer
-import relativitization.universe.game.data.UniverseSettings
-import relativitization.universe.game.data.commands.Command
+import relativitization.universe.core.data.MutablePlayerData
+import relativitization.universe.core.data.UniverseData3DAtPlayer
+import relativitization.universe.core.data.UniverseSettings
+import relativitization.universe.core.data.commands.Command
 import relativitization.universe.game.data.components.MutablePlayerScienceData
 import relativitization.universe.game.data.components.PlayerScienceData
 import relativitization.universe.game.data.components.defaults.economy.MutableResourceData
@@ -19,14 +19,14 @@ import relativitization.universe.game.data.components.defaults.science.knowledge
 import relativitization.universe.game.data.components.economyData
 import relativitization.universe.game.data.components.playerScienceData
 import relativitization.universe.game.data.components.popSystemData
-import relativitization.universe.game.data.global.UniverseGlobalData
+import relativitization.universe.core.data.global.UniverseGlobalData
 import relativitization.universe.game.data.global.components.UniverseScienceData
 import relativitization.universe.game.data.global.components.universeScienceData
 import relativitization.universe.game.global.defaults.science.UpdateUniverseScienceData
-import relativitization.universe.game.maths.algebra.Logistic
-import relativitization.universe.game.maths.physics.Intervals
-import relativitization.universe.game.mechanisms.Mechanism
-import relativitization.universe.game.utils.RelativitizationLogManager
+import relativitization.universe.core.maths.algebra.Logistic
+import relativitization.universe.core.maths.physics.Intervals
+import relativitization.universe.core.mechanisms.Mechanism
+import relativitization.universe.core.utils.RelativitizationLogManager
 import kotlin.math.PI
 import kotlin.math.log2
 import kotlin.math.min

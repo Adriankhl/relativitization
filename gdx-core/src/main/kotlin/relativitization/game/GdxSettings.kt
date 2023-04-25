@@ -2,8 +2,8 @@ package relativitization.game
 
 import kotlinx.serialization.Serializable
 import relativitization.game.components.upper.UpperInfoPaneCollection
-import relativitization.universe.game.data.serializer.DataSerializer
-import relativitization.universe.game.utils.RelativitizationLogManager
+import relativitization.universe.core.data.serializer.DataSerializer
+import relativitization.universe.core.utils.RelativitizationLogManager
 import java.io.File
 
 @Serializable

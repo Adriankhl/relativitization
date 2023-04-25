@@ -1,16 +1,16 @@
 package relativitization.universe.game.generate.random
 
-import relativitization.universe.game.data.MutablePlayerData
-import relativitization.universe.game.data.MutableUniverseData4D
-import relativitization.universe.game.data.UniverseData
-import relativitization.universe.game.data.UniverseSettings
-import relativitization.universe.game.data.UniverseState
-import relativitization.universe.game.data.global.UniverseGlobalData
-import relativitization.universe.game.data.serializer.DataSerializer
-import relativitization.universe.game.generate.GenerateSettings
-import relativitization.universe.game.maths.grid.Grids
-import relativitization.universe.game.maths.physics.Intervals
-import relativitization.universe.game.utils.RelativitizationLogManager
+import relativitization.universe.core.data.MutablePlayerData
+import relativitization.universe.core.data.MutableUniverseData4D
+import relativitization.universe.core.data.UniverseData
+import relativitization.universe.core.data.UniverseSettings
+import relativitization.universe.core.data.UniverseState
+import relativitization.universe.core.data.global.UniverseGlobalData
+import relativitization.universe.core.data.serializer.DataSerializer
+import relativitization.universe.core.generate.GenerateSettings
+import relativitization.universe.core.maths.grid.Grids
+import relativitization.universe.core.maths.physics.Intervals
+import relativitization.universe.core.utils.RelativitizationLogManager
 import kotlin.random.Random
 
 object RandomHierarchyGenerate : RandomGenerateUniverseMethod() {

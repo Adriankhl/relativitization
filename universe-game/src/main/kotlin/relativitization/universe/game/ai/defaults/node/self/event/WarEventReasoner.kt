@@ -10,13 +10,14 @@ import relativitization.universe.game.ai.defaults.utils.DualUtilityReasoner
 import relativitization.universe.game.ai.defaults.utils.PlainDualUtilityConsideration
 import relativitization.universe.game.ai.defaults.utils.PlanState
 import relativitization.universe.game.ai.defaults.utils.SequenceReasoner
-import relativitization.universe.game.data.PlanDataAtPlayer
+import relativitization.universe.core.data.PlanDataAtPlayer
+import relativitization.universe.core.data.events.Event
 import relativitization.universe.game.data.commands.SelectEventChoiceCommand
 import relativitization.universe.game.data.events.CallAllyToSubordinateWarEvent
 import relativitization.universe.game.data.events.CallAllyToWarEvent
-import relativitization.universe.game.data.events.MutableEventData
+import relativitization.universe.core.data.events.MutableEventData
 import relativitization.universe.game.data.events.ProposePeaceEvent
-import relativitization.universe.game.utils.RelativitizationLogManager
+import relativitization.universe.core.utils.RelativitizationLogManager
 import kotlin.random.Random
 
 /**
@@ -173,11 +174,13 @@ class AcceptAllyWarCallOption(
         val eventData: MutableEventData = planDataAtPlayer.getCurrentMutablePlayerData()
             .playerInternalData.eventDataMap.getValue(eventKey)
 
-        return if (eventData.event is CallAllyToWarEvent) {
+        val event: Event = eventData.event
+
+        return if (event is CallAllyToWarEvent) {
             listOf(
                 InDefensiveWarConsideration(
                     playerId = eventData.fromId,
-                    warTargetId = eventData.event.warTargetId,
+                    warTargetId = event.warTargetId,
                     rankIfTrue = 2,
                     multiplierIfTrue = 1.0,
                     bonusIfTrue = 1.0,
@@ -279,11 +282,13 @@ class AcceptAllySubordinateWarCallOption(
         val eventData: MutableEventData = planDataAtPlayer.getCurrentMutablePlayerData()
             .playerInternalData.eventDataMap.getValue(eventKey)
 
-        return if (eventData.event is CallAllyToSubordinateWarEvent) {
+        val event: Event = eventData.event
+
+        return if (event is CallAllyToSubordinateWarEvent) {
             listOf(
                 InDefensiveWarConsideration(
-                    playerId = eventData.event.subordinateId,
-                    warTargetId = eventData.event.warTargetId,
+                    playerId = event.subordinateId,
+                    warTargetId = event.warTargetId,
                     rankIfTrue = 1,
                     multiplierIfTrue = 1.0,
                     bonusIfTrue = 0.1,

@@ -1,12 +1,15 @@
 package relativitization.universe.game.maths.physics
 
-import relativitization.universe.game.maths.physics.Movement.deltaMassTargetDouble3DByPhotonRocket
-import relativitization.universe.game.maths.physics.Movement.isSameDirection
-import relativitization.universe.game.maths.physics.Movement.maxSpeedToStopByPhotonRocket
-import relativitization.universe.game.maths.physics.Movement.requiredDeltaRestMassSimpleEstimation
-import relativitization.universe.game.maths.physics.Movement.stoppingDistanceByPhotonRocket
-import relativitization.universe.game.maths.physics.Movement.targetDouble3DByPhotonRocket
-import relativitization.universe.game.maths.physics.Relativistic.targetVelocityByPhotonRocket
+import relativitization.universe.core.maths.physics.Double3D
+import relativitization.universe.core.maths.physics.Movement.deltaMassTargetDouble3DByPhotonRocket
+import relativitization.universe.core.maths.physics.Movement.isSameDirection
+import relativitization.universe.core.maths.physics.Movement.maxSpeedToStopByPhotonRocket
+import relativitization.universe.core.maths.physics.Movement.requiredDeltaRestMassSimpleEstimation
+import relativitization.universe.core.maths.physics.Movement.stoppingDistanceByPhotonRocket
+import relativitization.universe.core.maths.physics.Movement.targetDouble3DByPhotonRocket
+import relativitization.universe.core.maths.physics.Relativistic.targetVelocityByPhotonRocket
+import relativitization.universe.core.maths.physics.TargetVelocityData
+import relativitization.universe.core.maths.physics.Velocity
 import kotlin.math.abs
 import kotlin.test.Test
 

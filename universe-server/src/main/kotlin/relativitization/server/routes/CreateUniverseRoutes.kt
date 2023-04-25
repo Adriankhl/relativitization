@@ -13,12 +13,12 @@ import io.ktor.server.routing.post
 import io.ktor.server.routing.route
 import io.ktor.server.routing.routing
 import relativitization.server.UniverseServerInternal
-import relativitization.universe.game.Universe
+import relativitization.universe.core.Universe
 import relativitization.universe.game.communication.LoadUniverseMessage
 import relativitization.universe.game.communication.NewUniverseMessage
-import relativitization.universe.game.data.UniverseData
-import relativitization.universe.game.generate.GenerateUniverseMethodCollection
-import relativitization.universe.game.utils.RelativitizationLogManager
+import relativitization.universe.core.data.UniverseData
+import relativitization.universe.core.generate.GenerateUniverseMethodCollection
+import relativitization.universe.core.utils.RelativitizationLogManager
 
 private val logger = RelativitizationLogManager.getLogger()
 

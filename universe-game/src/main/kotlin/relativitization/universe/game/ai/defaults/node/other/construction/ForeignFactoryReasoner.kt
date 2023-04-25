@@ -14,8 +14,8 @@ import relativitization.universe.game.ai.defaults.utils.DualUtilityOption
 import relativitization.universe.game.ai.defaults.utils.DualUtilityReasoner
 import relativitization.universe.game.ai.defaults.utils.PlanState
 import relativitization.universe.game.ai.defaults.utils.SequenceReasoner
-import relativitization.universe.game.data.PlanDataAtPlayer
-import relativitization.universe.game.data.PlayerData
+import relativitization.universe.core.data.PlanDataAtPlayer
+import relativitization.universe.core.data.PlayerData
 import relativitization.universe.game.data.commands.BuildForeignFuelFactoryCommand
 import relativitization.universe.game.data.commands.BuildForeignResourceFactoryCommand
 import relativitization.universe.game.data.commands.RemoveForeignFuelFactoryCommand
@@ -28,7 +28,7 @@ import relativitization.universe.game.data.components.defaults.popsystem.pop.lab
 import relativitization.universe.game.data.components.playerScienceData
 import relativitization.universe.game.data.components.politicsData
 import relativitization.universe.game.data.components.popSystemData
-import relativitization.universe.game.data.serializer.DataSerializer
+import relativitization.universe.core.data.serializer.DataSerializer
 import kotlin.random.Random
 
 class ForeignFactoryReasoner(private val random: Random) : SequenceReasoner() {

@@ -1,5 +1,6 @@
 package relativitization.universe.game.maths.collection
 
+import relativitization.universe.core.maths.collection.Fraction
 import kotlin.test.Test
 
 internal class FractionTest {

@@ -1,6 +1,7 @@
 package relativitization.universe.game.data.commands
 
-import relativitization.universe.game.utils.I18NString
+import relativitization.universe.core.data.commands.Command
+import relativitization.universe.core.utils.I18NString
 import kotlin.reflect.KClass
 import kotlin.test.Test
 

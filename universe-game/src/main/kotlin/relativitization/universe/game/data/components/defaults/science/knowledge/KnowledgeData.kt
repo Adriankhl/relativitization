@@ -1,8 +1,8 @@
 package relativitization.universe.game.data.components.defaults.science.knowledge
 
 import kotlinx.serialization.Serializable
-import relativitization.universe.game.maths.collection.ListFind
-import relativitization.universe.game.utils.RelativitizationLogManager
+import relativitization.universe.core.maths.collection.ListFind
+import relativitization.universe.core.utils.RelativitizationLogManager
 
 /**
  * Represent the effect of a set of research project

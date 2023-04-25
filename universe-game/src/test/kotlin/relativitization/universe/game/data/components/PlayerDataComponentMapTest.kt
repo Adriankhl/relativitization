@@ -1,5 +1,6 @@
 package relativitization.universe.game.data.components
 
+import relativitization.universe.core.data.components.PlayerDataComponentMap
 import kotlin.test.Test
 
 internal class PlayerDataComponentMapTest {

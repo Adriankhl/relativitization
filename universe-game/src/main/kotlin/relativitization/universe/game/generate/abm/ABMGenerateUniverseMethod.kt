@@ -1,5 +1,5 @@
 package relativitization.universe.game.generate.abm
 
-import relativitization.universe.game.generate.GenerateUniverseMethod
+import relativitization.universe.core.generate.GenerateUniverseMethod
 
 sealed class ABMGenerateUniverseMethod : GenerateUniverseMethod()

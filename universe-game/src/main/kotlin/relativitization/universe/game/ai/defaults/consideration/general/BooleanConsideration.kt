@@ -3,7 +3,7 @@ package relativitization.universe.game.ai.defaults.consideration.general
 import relativitization.universe.game.ai.defaults.utils.DualUtilityConsideration
 import relativitization.universe.game.ai.defaults.utils.DualUtilityData
 import relativitization.universe.game.ai.defaults.utils.PlanState
-import relativitization.universe.game.data.PlanDataAtPlayer
+import relativitization.universe.core.data.PlanDataAtPlayer
 
 /**
  * @property rankIfTrue rank of dual utility if this is true

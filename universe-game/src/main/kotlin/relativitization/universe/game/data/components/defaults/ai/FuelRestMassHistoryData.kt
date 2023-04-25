@@ -3,7 +3,7 @@ package relativitization.universe.game.data.components.defaults.ai
 import kotlinx.serialization.Serializable
 import relativitization.universe.game.data.components.defaults.physics.FuelRestMassData
 import relativitization.universe.game.data.components.defaults.physics.MutableFuelRestMassData
-import relativitization.universe.game.utils.RelativitizationLogManager
+import relativitization.universe.core.utils.RelativitizationLogManager
 
 /**
  * Store the history of fuel rest mass data

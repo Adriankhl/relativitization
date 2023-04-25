@@ -1,13 +1,13 @@
 package relativitization.universe.game.mechanisms.defaults.regular.sync
 
-import relativitization.universe.game.data.MutablePlayerData
-import relativitization.universe.game.data.PlayerData
-import relativitization.universe.game.data.UniverseData3DAtPlayer
-import relativitization.universe.game.data.UniverseSettings
+import relativitization.universe.core.data.MutablePlayerData
+import relativitization.universe.core.data.PlayerData
+import relativitization.universe.core.data.UniverseData3DAtPlayer
+import relativitization.universe.core.data.UniverseSettings
 import relativitization.universe.game.data.commands.AddDirectSubordinateCommand
-import relativitization.universe.game.data.commands.Command
-import relativitization.universe.game.data.global.UniverseGlobalData
-import relativitization.universe.game.mechanisms.Mechanism
+import relativitization.universe.core.data.commands.Command
+import relativitization.universe.core.data.global.UniverseGlobalData
+import relativitization.universe.core.mechanisms.Mechanism
 import kotlin.random.Random
 
 /**

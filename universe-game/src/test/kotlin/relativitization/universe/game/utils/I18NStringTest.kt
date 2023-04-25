@@ -1,5 +1,10 @@
 package relativitization.universe.game.utils
 
+import relativitization.universe.core.utils.I18NString
+import relativitization.universe.core.utils.IntString
+import relativitization.universe.core.utils.MessageFormatData
+import relativitization.universe.core.utils.NoTranslateString
+import relativitization.universe.core.utils.NormalString
 import kotlin.test.Test
 
 internal class I18NStringTest {

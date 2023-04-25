@@ -1,8 +1,8 @@
 package relativitization.universe.game.data.components.defaults.physics
 
 import kotlinx.serialization.Serializable
-import relativitization.universe.game.maths.physics.Double3D
-import relativitization.universe.game.maths.physics.MutableDouble3D
+import relativitization.universe.core.maths.physics.Double3D
+import relativitization.universe.core.maths.physics.MutableDouble3D
 
 /**
  * Move to this target position

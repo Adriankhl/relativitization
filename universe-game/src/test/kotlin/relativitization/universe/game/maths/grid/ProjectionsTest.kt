@@ -1,9 +1,10 @@
 package relativitization.universe.game.maths.grid
 
-import relativitization.universe.game.maths.grid.Projections.idAtGridToRectangleFunction
-import relativitization.universe.game.maths.grid.Projections.indexToRectangleFunction
-import relativitization.universe.game.maths.grid.Projections.positionToIdAtGridFunction
-import relativitization.universe.game.maths.grid.Projections.positionToIndexFunction
+import relativitization.universe.core.maths.grid.IntRectangle
+import relativitization.universe.core.maths.grid.Projections.idAtGridToRectangleFunction
+import relativitization.universe.core.maths.grid.Projections.indexToRectangleFunction
+import relativitization.universe.core.maths.grid.Projections.positionToIdAtGridFunction
+import relativitization.universe.core.maths.grid.Projections.positionToIndexFunction
 import kotlin.test.Test
 
 internal class ProjectionsTest {

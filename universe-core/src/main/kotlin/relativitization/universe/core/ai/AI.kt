@@ -26,7 +26,7 @@ object AICollection {
     fun addAI(ai: AI) {
         val aiName: String = ai.name()
         if (aiNameMap.containsKey(aiName)) {
-            logger.error("Already has $aiName in AICollection, replacing stored $aiName")
+            logger.debug("Already has $aiName in AICollection, replacing stored $aiName")
         }
 
         aiNameMap[aiName] = ai

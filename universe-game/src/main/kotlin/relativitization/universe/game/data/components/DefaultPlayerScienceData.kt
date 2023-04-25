@@ -2,8 +2,8 @@ package relativitization.universe.game.data.components
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import relativitization.universe.game.data.MutablePlayerInternalData
-import relativitization.universe.game.data.PlayerInternalData
+import relativitization.universe.core.data.MutablePlayerInternalData
+import relativitization.universe.core.data.PlayerInternalData
 import relativitization.universe.game.data.components.defaults.science.application.MutableScienceApplicationData
 import relativitization.universe.game.data.components.defaults.science.application.ScienceApplicationData
 import relativitization.universe.game.data.components.defaults.science.knowledge.AppliedResearchProjectData
@@ -13,8 +13,8 @@ import relativitization.universe.game.data.components.defaults.science.knowledge
 import relativitization.universe.game.data.components.defaults.science.knowledge.MutableBasicResearchData
 import relativitization.universe.game.data.components.defaults.science.knowledge.MutableKnowledgeData
 import relativitization.universe.game.data.global.components.UniverseScienceData
-import relativitization.universe.game.data.serializer.DataSerializer
-import relativitization.universe.game.utils.RelativitizationLogManager
+import relativitization.universe.core.data.serializer.DataSerializer
+import relativitization.universe.core.utils.RelativitizationLogManager
 
 /**
  * Science data of a player

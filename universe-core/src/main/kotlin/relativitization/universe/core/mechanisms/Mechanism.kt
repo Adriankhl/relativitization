@@ -49,7 +49,7 @@ object MechanismCollection {
     fun addMechanismLists(mechanismLists: MechanismLists) {
         val mechanismListsName: String = mechanismLists.name()
         if (mechanismListsNameMap.containsKey(mechanismListsName)) {
-            logger.error(
+            logger.debug(
                 "Already has $mechanismListsName in MechanismCollection, " +
                         "replacing stored $mechanismListsName"
             )

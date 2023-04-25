@@ -8,8 +8,8 @@ plugins {
 
 dependencies {
     implementation(project(":universe-client"))
+    implementation(project(":universe-core"))
     implementation(project(":universe-game"))
-
 
     implementation(libs.gdx)
     implementation(libs.gdx.freetype)

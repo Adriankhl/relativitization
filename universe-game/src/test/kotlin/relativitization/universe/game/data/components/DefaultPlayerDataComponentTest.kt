@@ -1,8 +1,10 @@
 package relativitization.universe.game.data.components
 
-import relativitization.universe.game.data.MutablePlayerData
-import relativitization.universe.game.data.PlayerData
-import relativitization.universe.game.data.serializer.DataSerializer
+import relativitization.universe.core.data.MutablePlayerData
+import relativitization.universe.core.data.PlayerData
+import relativitization.universe.core.data.components.keyI
+import relativitization.universe.core.data.components.keyM
+import relativitization.universe.core.data.serializer.DataSerializer
 import kotlin.reflect.KClass
 import kotlin.reflect.full.createInstance
 import kotlin.test.Test

@@ -1,8 +1,7 @@
 package relativitization.universe.game.data.commands
 
-import relativitization.universe.game.data.commands.ChangeVelocityCommand
-import relativitization.universe.game.data.commands.Command
-import relativitization.universe.game.maths.physics.Velocity
+import relativitization.universe.core.data.commands.Command
+import relativitization.universe.core.maths.physics.Velocity
 import kotlin.test.Test
 
 internal class CommandTest {

@@ -5,7 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.RelativitizationGame
 import relativitization.game.components.upper.UpperInfoPane
-import relativitization.universe.game.data.PlayerData
+import relativitization.universe.core.data.PlayerData
 import relativitization.universe.game.data.commands.ChangeDefaultExportTariffCommand
 import relativitization.universe.game.data.commands.ChangeDefaultImportTariffCommand
 import relativitization.universe.game.data.commands.ChangeFuelRestMassTargetProportionCommand
@@ -26,8 +26,8 @@ import relativitization.universe.game.data.components.defaults.physics.FuelRestM
 import relativitization.universe.game.data.components.economyData
 import relativitization.universe.game.data.components.physicsData
 import relativitization.universe.game.data.components.playerScienceData
-import relativitization.universe.game.maths.number.Notation
-import relativitization.universe.game.maths.physics.Intervals
+import relativitization.universe.core.maths.number.Notation
+import relativitization.universe.core.maths.physics.Intervals
 import kotlin.math.pow
 
 class EconomyInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane>(game) {

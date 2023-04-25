@@ -1,7 +1,7 @@
 package relativitization.universe.game.global.defaults.science
 
-import relativitization.universe.game.data.PlayerData
-import relativitization.universe.game.data.UniverseData
+import relativitization.universe.core.data.PlayerData
+import relativitization.universe.core.data.UniverseData
 import relativitization.universe.game.data.components.defaults.science.knowledge.AppliedResearchField
 import relativitization.universe.game.data.components.defaults.science.knowledge.AppliedResearchProjectData
 import relativitization.universe.game.data.components.defaults.science.knowledge.BasicResearchField
@@ -9,13 +9,13 @@ import relativitization.universe.game.data.components.defaults.science.knowledge
 import relativitization.universe.game.data.components.defaults.science.knowledge.MutableAppliedResearchData
 import relativitization.universe.game.data.components.defaults.science.knowledge.MutableBasicResearchData
 import relativitization.universe.game.data.components.playerScienceData
-import relativitization.universe.game.data.global.MutableUniverseGlobalData
+import relativitization.universe.core.data.global.MutableUniverseGlobalData
 import relativitization.universe.game.data.global.components.MutableUniverseScienceData
 import relativitization.universe.game.data.global.components.UniverseScienceData
 import relativitization.universe.game.data.global.components.universeScienceData
-import relativitization.universe.game.data.serializer.DataSerializer
+import relativitization.universe.core.data.serializer.DataSerializer
 import relativitization.universe.game.generate.random.science.DefaultGenerateUniverseScienceData
-import relativitization.universe.game.global.GlobalMechanism
+import relativitization.universe.core.global.GlobalMechanism
 import kotlin.math.max
 import kotlin.random.Random
 

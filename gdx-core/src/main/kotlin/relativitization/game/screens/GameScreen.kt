@@ -13,7 +13,7 @@ import relativitization.game.components.GameScreenControlBar
 import relativitization.game.components.GameScreenInfoPane
 import relativitization.game.components.GameScreenWorldMap
 import relativitization.game.utils.TableScreen
-import relativitization.universe.game.utils.RelativitizationLogManager
+import relativitization.universe.core.utils.RelativitizationLogManager
 import kotlin.math.max
 
 class GameScreen(val game: RelativitizationGame) : TableScreen(game.assets) {

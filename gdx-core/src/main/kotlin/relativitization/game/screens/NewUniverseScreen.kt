@@ -7,25 +7,26 @@ import io.ktor.http.HttpStatusCode
 import kotlinx.coroutines.runBlocking
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.TableScreen
-import relativitization.universe.game.data.UniverseBoundary
-import relativitization.universe.game.data.UniverseSettings
-import relativitization.universe.game.data.commands.CommandCollection
-import relativitization.universe.game.data.serializer.DataSerializer
-import relativitization.universe.game.generate.GenerateSettings
-import relativitization.universe.game.generate.GenerateUniverseMethodCollection
-import relativitization.universe.game.global.GlobalMechanismCollection
-import relativitization.universe.game.maths.physics.Int3D
-import relativitization.universe.game.maths.physics.Intervals
-import relativitization.universe.game.mechanisms.MechanismCollection
-import relativitization.universe.game.utils.RelativitizationLogManager
+import relativitization.universe.core.data.UniverseBoundary
+import relativitization.universe.core.data.UniverseSettings
+import relativitization.universe.core.data.commands.CommandCollection
+import relativitization.universe.core.data.serializer.DataSerializer
+import relativitization.universe.core.generate.GenerateSettings
+import relativitization.universe.core.generate.GenerateUniverseMethodCollection
+import relativitization.universe.core.global.GlobalMechanismCollection
+import relativitization.universe.core.maths.physics.Int3D
+import relativitization.universe.core.maths.physics.Intervals
+import relativitization.universe.core.mechanisms.MechanismCollection
+import relativitization.universe.core.utils.RelativitizationLogManager
 import kotlin.collections.set
 import kotlin.collections.toList
 
 class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
     private val gdxSettings = game.gdxSettings
 
-    private val generateSettings: GenerateSettings =
-        DataSerializer.copy(game.universeClient.generateSettings)
+    private val generateSettings: GenerateSettings = DataSerializer.copy(
+        game.universeClient.generateSettings
+    )
 
     init {
         // Use default name
@@ -168,7 +169,7 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
         )
 
         val generateMethodSelectBox = createSelectBox(
-            GenerateUniverseMethodCollection.generateMethodMap.keys.toList(),
+            GenerateUniverseMethodCollection.getGenerateUniverseMethodNames().toList(),
             generateSettings.generateMethod,
             gdxSettings.normalFontSize,
         ) { method, _ ->
@@ -180,7 +181,7 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
 
         table.add(createLabel("Pick game mechanisms: ", gdxSettings.normalFontSize))
         val mechanismSelectBox = createSelectBox(
-            MechanismCollection.mechanismListsMap.keys.toList(),
+            MechanismCollection.getMechanismListsNames().toList(),
             generateSettings.universeSettings.mechanismCollectionName,
             gdxSettings.normalFontSize,
         ) { mechanismCollectionName, _ ->
@@ -193,7 +194,7 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
 
         table.add(createLabel("Pick available commands: ", gdxSettings.normalFontSize))
         val commandSelectBox = createSelectBox(
-            CommandCollection.commandAvailabilityNameMap.keys.toList(),
+            CommandCollection.getCommandAvailabilityNames().toList(),
             generateSettings.universeSettings.commandCollectionName,
             gdxSettings.normalFontSize,
         ) { commandCollectionName, _ ->
@@ -206,7 +207,7 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
 
         table.add(createLabel("Pick global mechanics: ", gdxSettings.normalFontSize))
         val universeScienceDataProcessSelectBox = createSelectBox(
-            GlobalMechanismCollection.globalMechanismListMap.keys.toList(),
+            GlobalMechanismCollection.getGlobalMechanismListNames().toList(),
             generateSettings.universeSettings.globalMechanismCollectionName,
             gdxSettings.normalFontSize,
         ) { globalMechanismCollectionName, _ ->

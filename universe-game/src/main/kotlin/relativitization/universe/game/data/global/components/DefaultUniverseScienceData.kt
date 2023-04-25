@@ -8,11 +8,11 @@ import relativitization.universe.game.data.components.defaults.science.knowledge
 import relativitization.universe.game.data.components.defaults.science.knowledge.MutableAppliedResearchData
 import relativitization.universe.game.data.components.defaults.science.knowledge.MutableBasicResearchData
 import relativitization.universe.game.data.components.defaults.science.knowledge.MutableKnowledgeData
-import relativitization.universe.game.data.global.MutableUniverseGlobalData
-import relativitization.universe.game.data.global.UniverseGlobalData
+import relativitization.universe.core.data.global.MutableUniverseGlobalData
+import relativitization.universe.core.data.global.UniverseGlobalData
 import relativitization.universe.game.data.global.components.defaults.science.knowledge.MutableUniverseProjectGenerationData
 import relativitization.universe.game.data.global.components.defaults.science.knowledge.UniverseProjectGenerationData
-import relativitization.universe.game.utils.RelativitizationLogManager
+import relativitization.universe.core.utils.RelativitizationLogManager
 
 /**
  * Store science data for the whole universe

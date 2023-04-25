@@ -17,6 +17,7 @@ val ramPercentage: String = project.properties.getOrDefault(
 ).toString()
 
 dependencies {
+    implementation(project(":universe-core"))
     implementation(project(":universe-game"))
 
     implementation(libs.kotlinx.serialization.json)

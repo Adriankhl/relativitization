@@ -1,21 +1,33 @@
 package relativitization.universe.game.mechanisms.defaults.dilated.combat
 
 import kotlinx.coroutines.runBlocking
-import relativitization.universe.game.Universe
+import relativitization.universe.core.Universe
+import relativitization.universe.core.data.MutableUniverseSettings
 import relativitization.universe.game.data.commands.DeclareWarCommand
 import relativitization.universe.game.data.components.diplomacyData
-import relativitization.universe.game.generate.GenerateSettings
-import relativitization.universe.game.generate.GenerateUniverseMethodCollection
+import relativitization.universe.core.generate.GenerateSettings
+import relativitization.universe.core.generate.GenerateUniverseMethodCollection
+import relativitization.universe.game.GameUniverseInitializer
+import relativitization.universe.game.data.commands.DefaultCommandAvailability
 import relativitization.universe.game.generate.testing.TestingFixedMinimalGenerate
+import relativitization.universe.game.global.DefaultGlobalMechanismList
+import relativitization.universe.game.mechanisms.DefaultMechanismLists
 import kotlin.test.Test
 
 internal class AutoCombatTest {
     @Test
     fun fixedMinimalTest() {
+        GameUniverseInitializer.initialize()
+
         val universe = Universe(
             GenerateUniverseMethodCollection.generate(
                 GenerateSettings(
                     generateMethod = TestingFixedMinimalGenerate.name(),
+                    universeSettings = MutableUniverseSettings(
+                        commandCollectionName = DefaultCommandAvailability.name(),
+                        mechanismCollectionName = DefaultMechanismLists.name(),
+                        globalMechanismCollectionName = DefaultGlobalMechanismList.name(),
+                    ),
                 )
             )
         )

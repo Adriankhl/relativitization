@@ -19,7 +19,8 @@ import relativitization.game.RelativitizationGame
 import relativitization.server.UniverseServer
 import relativitization.universe.game.UniverseClientSettings
 import relativitization.universe.game.UniverseServerSettings
-import relativitization.universe.game.utils.RelativitizationLogManager
+import relativitization.universe.core.utils.RelativitizationLogManager
+import relativitization.universe.game.GameUniverseInitializer
 import relativitization.utils.ServerPort
 import kotlin.random.Random
 
@@ -41,6 +42,8 @@ class AndroidLauncher : AppCompatActivity(), AndroidFragmentApplication.Callback
         }
 
         super.onCreate(savedInstanceState)
+
+        GameUniverseInitializer.initialize()
 
         val adminPasswordRandom = Random(System.currentTimeMillis())
         val adminPassword: String = List(10) {

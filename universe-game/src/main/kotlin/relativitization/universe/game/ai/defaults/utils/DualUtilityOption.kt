@@ -1,7 +1,7 @@
 package relativitization.universe.game.ai.defaults.utils
 
-import relativitization.universe.game.data.PlanDataAtPlayer
-import relativitization.universe.game.utils.RelativitizationLogManager
+import relativitization.universe.core.data.PlanDataAtPlayer
+import relativitization.universe.core.utils.RelativitizationLogManager
 
 abstract class DualUtilityOption : AINode() {
     abstract fun getConsiderationList(

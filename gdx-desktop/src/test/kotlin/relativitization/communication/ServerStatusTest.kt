@@ -6,13 +6,16 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import relativitization.client.UniverseClient
 import relativitization.server.UniverseServer
+import relativitization.universe.game.GameUniverseInitializer
 import relativitization.universe.game.UniverseClientSettings
 import relativitization.universe.game.UniverseServerSettings
 import kotlin.test.Test
 
 internal class ServerStatusTest {
     @Test
-    fun newServerStatus() {
+    fun newServerStatusTest() {
+        GameUniverseInitializer.initialize()
+
         val universeServer = UniverseServer(UniverseServerSettings(adminPassword = "pwd"))
         val universeClient = UniverseClient(UniverseClientSettings(adminPassword = "pwd"))
         runBlocking {
@@ -28,7 +31,9 @@ internal class ServerStatusTest {
     }
 
     @Test
-    fun newUniverseStatus() {
+    fun newUniverseStatusTest() {
+        GameUniverseInitializer.initialize()
+
         val universeServer = UniverseServer(UniverseServerSettings(adminPassword = "pwd"))
         val universeClient = UniverseClient(UniverseClientSettings(adminPassword = "pwd"))
         runBlocking {

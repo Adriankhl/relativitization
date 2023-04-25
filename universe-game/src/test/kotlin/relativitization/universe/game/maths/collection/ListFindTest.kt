@@ -1,6 +1,6 @@
 package relativitization.universe.game.maths.collection
 
-import relativitization.universe.game.maths.collection.ListFind.minMissing
+import relativitization.universe.core.maths.collection.ListFind.minMissing
 import kotlin.test.Test
 
 internal class ListFindTest {

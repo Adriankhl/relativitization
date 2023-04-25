@@ -1,7 +1,7 @@
 package relativitization.game.utils
 
-import relativitization.universe.game.data.PlayerData
-import relativitization.universe.game.data.UniverseData3DAtPlayer
+import relativitization.universe.core.data.PlayerData
+import relativitization.universe.core.data.UniverseData3DAtPlayer
 import relativitization.universe.game.data.components.defaults.economy.ResourceType
 import relativitization.universe.game.data.components.defaults.popsystem.CarrierData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.CommonPopData

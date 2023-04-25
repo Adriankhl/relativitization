@@ -3,10 +3,10 @@ package relativitization.universe.game.ai.defaults.consideration.fuel
 import relativitization.universe.game.ai.defaults.utils.DualUtilityConsideration
 import relativitization.universe.game.ai.defaults.utils.DualUtilityData
 import relativitization.universe.game.ai.defaults.utils.PlanState
-import relativitization.universe.game.data.PlanDataAtPlayer
+import relativitization.universe.core.data.PlanDataAtPlayer
 import relativitization.universe.game.data.components.physicsData
-import relativitization.universe.game.maths.physics.Movement
-import relativitization.universe.game.maths.physics.Velocity
+import relativitization.universe.core.maths.physics.Movement
+import relativitization.universe.core.maths.physics.Velocity
 
 /**
  * Check whether there is sufficient movement fuel to change the velocity

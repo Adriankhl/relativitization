@@ -16,13 +16,13 @@ import relativitization.game.components.upper.UpperInfoPaneCollection
 import relativitization.game.screens.ClientSettingsScreen
 import relativitization.game.screens.HelpScreen
 import relativitization.game.utils.ScreenComponent
-import relativitization.universe.game.ai.AICollection
+import relativitization.universe.core.ai.AICollection
 import relativitization.universe.game.communication.UniverseServerStatusMessage
-import relativitization.universe.game.data.commands.Command
+import relativitization.universe.core.data.commands.Command
 import relativitization.universe.game.data.components.defaults.physics.FuelRestMassData
 import relativitization.universe.game.data.components.physicsData
-import relativitization.universe.game.maths.number.toScientificNotation
-import relativitization.universe.game.maths.physics.Intervals.intDelay
+import relativitization.universe.core.maths.number.toScientificNotation
+import relativitization.universe.core.maths.physics.Intervals.intDelay
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.random.Random

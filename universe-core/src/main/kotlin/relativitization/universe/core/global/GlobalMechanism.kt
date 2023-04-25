@@ -38,7 +38,7 @@ object GlobalMechanismCollection {
     fun addGlobalMechanismList(globalMechanismList: GlobalMechanismList) {
         val globalMechanismListName: String = globalMechanismList.name()
         if (globalMechanismListNameMap.containsKey(globalMechanismListName)) {
-            logger.error(
+            logger.debug(
                 "Already has $globalMechanismListName in GlobalMechanismCollection, " +
                         "replacing stored $globalMechanismListName"
             )

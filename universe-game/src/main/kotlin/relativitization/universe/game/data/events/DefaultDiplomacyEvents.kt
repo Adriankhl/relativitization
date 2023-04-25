@@ -1,22 +1,23 @@
 package relativitization.universe.game.data.events
 
 import kotlinx.serialization.Serializable
-import relativitization.universe.game.data.MutablePlayerData
-import relativitization.universe.game.data.UniverseData3DAtPlayer
-import relativitization.universe.game.data.UniverseSettings
+import relativitization.universe.core.data.MutablePlayerData
+import relativitization.universe.core.data.UniverseData3DAtPlayer
+import relativitization.universe.core.data.UniverseSettings
 import relativitization.universe.game.data.commands.AcceptAllianceCommand
 import relativitization.universe.game.data.commands.AcceptPeaceCommand
-import relativitization.universe.game.data.commands.Command
-import relativitization.universe.game.data.commands.CommandErrorMessage
-import relativitization.universe.game.data.commands.CommandI18NStringFactory
+import relativitization.universe.core.data.commands.Command
+import relativitization.universe.core.data.commands.CommandErrorMessage
+import relativitization.universe.core.data.commands.CommandI18NStringFactory
+import relativitization.universe.core.data.events.Event
 import relativitization.universe.game.data.components.defaults.diplomacy.ally.MutableAllianceData
 import relativitization.universe.game.data.components.defaults.diplomacy.war.MutableWarData
 import relativitization.universe.game.data.components.defaults.diplomacy.war.WarCoreData
 import relativitization.universe.game.data.components.diplomacyData
-import relativitization.universe.game.data.serializer.DataSerializer
-import relativitization.universe.game.utils.I18NString
-import relativitization.universe.game.utils.IntString
-import relativitization.universe.game.utils.NormalString
+import relativitization.universe.core.data.serializer.DataSerializer
+import relativitization.universe.core.utils.I18NString
+import relativitization.universe.core.utils.IntString
+import relativitization.universe.core.utils.NormalString
 import kotlin.random.Random
 
 /**
@@ -320,8 +321,9 @@ data class CallAllyToWarEvent(
     ): CommandErrorMessage {
         val isEventUnique = CommandErrorMessage(
             playerData.playerInternalData.eventDataMap.values.all {
-                if (it.event is CallAllyToWarEvent) {
-                    (it.fromId != fromId) || (it.event.warTargetId != warTargetId)
+                val event: Event = it.event
+                if (event is CallAllyToWarEvent) {
+                    (it.fromId != fromId) || (event.warTargetId != warTargetId)
                 } else {
                     true
                 }
@@ -475,10 +477,11 @@ data class CallAllyToSubordinateWarEvent(
     ): CommandErrorMessage {
         val isEventUnique = CommandErrorMessage(
             playerData.playerInternalData.eventDataMap.values.all {
-                if (it.event is CallAllyToSubordinateWarEvent) {
+                val event: Event = it.event
+                if (event is CallAllyToSubordinateWarEvent) {
                     (it.fromId != fromId) ||
-                            (it.event.warTargetId != warTargetId) ||
-                            (it.event.subordinateId != subordinateId)
+                            (event.warTargetId != warTargetId) ||
+                            (event.subordinateId != subordinateId)
                 } else {
                     true
                 }

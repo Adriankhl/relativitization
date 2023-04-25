@@ -12,9 +12,10 @@ val assetsFiles = File("../../relativitization-art/assets")
 
 dependencies {
     implementation(project(":gdx-core"))
-    implementation(project(":universe-server"))
     implementation(project(":universe-client"))
+    implementation(project(":universe-core"))
     implementation(project(":universe-game"))
+    implementation(project(":universe-server"))
 
 
     implementation(libs.kotlinx.serialization.json)

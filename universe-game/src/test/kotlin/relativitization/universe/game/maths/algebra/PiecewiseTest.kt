@@ -1,6 +1,6 @@
 package relativitization.universe.game.maths.algebra
 
-import relativitization.universe.game.maths.algebra.Piecewise
+import relativitization.universe.core.maths.algebra.Piecewise
 import kotlin.math.pow
 import kotlin.test.Test
 

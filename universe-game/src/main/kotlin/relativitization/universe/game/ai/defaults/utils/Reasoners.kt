@@ -1,8 +1,8 @@
 package relativitization.universe.game.ai.defaults.utils
 
-import relativitization.universe.game.data.PlanDataAtPlayer
-import relativitization.universe.game.maths.sampling.WeightedReservoir
-import relativitization.universe.game.utils.RelativitizationLogManager
+import relativitization.universe.core.data.PlanDataAtPlayer
+import relativitization.universe.core.maths.sampling.WeightedReservoir
+import relativitization.universe.core.utils.RelativitizationLogManager
 import kotlin.random.Random
 
 abstract class Reasoner : AINode() {

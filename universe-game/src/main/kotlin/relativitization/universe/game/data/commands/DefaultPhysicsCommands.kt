@@ -1,19 +1,21 @@
 package relativitization.universe.game.data.commands
 
 import kotlinx.serialization.Serializable
-import relativitization.universe.game.data.MutablePlayerData
-import relativitization.universe.game.data.UniverseSettings
+import relativitization.universe.core.data.MutablePlayerData
+import relativitization.universe.core.data.UniverseSettings
+import relativitization.universe.core.data.commands.CommandErrorMessage
+import relativitization.universe.core.data.commands.CommandI18NStringFactory
 import relativitization.universe.game.data.components.defaults.physics.FuelRestMassTargetProportionData
 import relativitization.universe.game.data.components.physicsData
-import relativitization.universe.game.data.serializer.DataSerializer
-import relativitization.universe.game.maths.physics.Int4D
-import relativitization.universe.game.maths.physics.Relativistic.targetVelocityByPhotonRocket
-import relativitization.universe.game.maths.physics.TargetVelocityData
-import relativitization.universe.game.maths.physics.Velocity
-import relativitization.universe.game.utils.I18NString
-import relativitization.universe.game.utils.IntString
-import relativitization.universe.game.utils.NormalString
-import relativitization.universe.game.utils.RelativitizationLogManager
+import relativitization.universe.core.data.serializer.DataSerializer
+import relativitization.universe.core.maths.physics.Int4D
+import relativitization.universe.core.maths.physics.Relativistic.targetVelocityByPhotonRocket
+import relativitization.universe.core.maths.physics.TargetVelocityData
+import relativitization.universe.core.maths.physics.Velocity
+import relativitization.universe.core.utils.I18NString
+import relativitization.universe.core.utils.IntString
+import relativitization.universe.core.utils.NormalString
+import relativitization.universe.core.utils.RelativitizationLogManager
 import kotlin.math.min
 
 @Serializable

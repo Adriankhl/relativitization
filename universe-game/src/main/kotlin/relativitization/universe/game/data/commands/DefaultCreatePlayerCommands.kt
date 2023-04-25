@@ -2,9 +2,11 @@ package relativitization.universe.game.data.commands
 
 import kotlinx.serialization.Serializable
 import relativitization.universe.game.ai.DefaultAI
-import relativitization.universe.game.data.MutablePlayerData
-import relativitization.universe.game.data.MutablePlayerInternalData
-import relativitization.universe.game.data.UniverseSettings
+import relativitization.universe.core.data.MutablePlayerData
+import relativitization.universe.core.data.MutablePlayerInternalData
+import relativitization.universe.core.data.UniverseSettings
+import relativitization.universe.core.data.commands.CommandErrorMessage
+import relativitization.universe.core.data.commands.CommandI18NStringFactory
 import relativitization.universe.game.data.components.MutableAIData
 import relativitization.universe.game.data.components.MutableDiplomacyData
 import relativitization.universe.game.data.components.MutableEconomyData
@@ -28,11 +30,11 @@ import relativitization.universe.game.data.components.politicsData
 import relativitization.universe.game.data.components.popSystemData
 import relativitization.universe.game.data.components.syncData
 import relativitization.universe.game.data.components.syncDataComponent
-import relativitization.universe.game.data.serializer.DataSerializer
-import relativitization.universe.game.maths.physics.Int4D
-import relativitization.universe.game.utils.I18NString
-import relativitization.universe.game.utils.IntString
-import relativitization.universe.game.utils.NormalString
+import relativitization.universe.core.data.serializer.DataSerializer
+import relativitization.universe.core.maths.physics.Int4D
+import relativitization.universe.core.utils.I18NString
+import relativitization.universe.core.utils.IntString
+import relativitization.universe.core.utils.NormalString
 
 /**
  * Split carrier to create new player

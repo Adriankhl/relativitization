@@ -12,8 +12,8 @@ import relativitization.universe.game.data.components.defaults.popsystem.pop.lab
 import relativitization.universe.game.data.components.defaults.popsystem.pop.labourer.factory.MutableInputResourceData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.labourer.factory.MutableResourceFactoryInternalData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.labourer.factory.ResourceFactoryInternalData
-import relativitization.universe.game.maths.algebra.Quadratic
-import relativitization.universe.game.utils.RelativitizationLogManager
+import relativitization.universe.core.maths.algebra.Quadratic
+import relativitization.universe.core.utils.RelativitizationLogManager
 import kotlin.math.min
 
 @Serializable

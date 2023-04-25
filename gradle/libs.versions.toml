@@ -29,6 +29,10 @@ gradleVersionPluginVersion = "0.46.0"
 # Documentation
 dokkaVersion = "1.8.10"
 
+# KSP
+kspVersion = "1.8.20-1.0.10"
+ksergenVersion = "0.1"
+
 # Kotlin multiplatform
 kotlinxCoroutineVersion = "1.6.4"
 kotlinxSerializationVersion = "1.5.0"
@@ -62,6 +66,7 @@ kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutine
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutineVersion" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDateTimeVersion" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationVersion" }
+ksergen = { module = "com.github.adriankhl.ksergen:ksergen-ksp", version.ref = "ksergenVersion" }
 ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktorVersion" }
 ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktorVersion" }
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktorVersion" }
@@ -81,3 +86,4 @@ ben-manes-versions = { id = "com.github.ben-manes.versions", version.ref = "grad
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokkaVersion" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlinVersion" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinVersion" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "kspVersion" }

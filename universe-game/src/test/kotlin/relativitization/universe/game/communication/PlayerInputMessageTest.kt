@@ -1,9 +1,8 @@
 package relativitization.universe.game.communication
 
 import relativitization.universe.game.data.commands.ChangeVelocityCommand
-import relativitization.universe.game.data.serializer.DataSerializer
-import relativitization.universe.game.communication.PlayerInputMessage
-import relativitization.universe.game.maths.physics.Velocity
+import relativitization.universe.core.data.serializer.DataSerializer
+import relativitization.universe.core.maths.physics.Velocity
 import kotlin.test.Test
 
 internal class PlayerInputMessageTest {

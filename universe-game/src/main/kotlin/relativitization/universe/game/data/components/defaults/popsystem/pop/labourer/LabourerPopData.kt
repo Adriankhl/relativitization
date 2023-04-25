@@ -7,7 +7,7 @@ import relativitization.universe.game.data.components.defaults.popsystem.pop.lab
 import relativitization.universe.game.data.components.defaults.popsystem.pop.labourer.factory.MutableFuelFactoryData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.labourer.factory.MutableResourceFactoryData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.labourer.factory.ResourceFactoryData
-import relativitization.universe.game.maths.collection.ListFind
+import relativitization.universe.core.maths.collection.ListFind
 
 @Serializable
 data class LabourerPopData(

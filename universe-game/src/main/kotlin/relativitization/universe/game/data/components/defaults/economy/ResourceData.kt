@@ -1,7 +1,7 @@
 package relativitization.universe.game.data.components.defaults.economy
 
 import kotlinx.serialization.Serializable
-import relativitization.universe.game.utils.RelativitizationLogManager
+import relativitization.universe.core.utils.RelativitizationLogManager
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min

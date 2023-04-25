@@ -12,7 +12,7 @@ import kotlin.random.Random
 object EmptyUniverse : GenerateUniverseMethod() {
     override fun generate(generateSettings: GenerateSettings, random: Random): UniverseData {
         return UniverseData(
-            UniverseData4D(mutableListOf()),
+            UniverseData4D(mutableListOf(listOf())),
             UniverseSettings(),
             UniverseState(0),
             mutableMapOf(),

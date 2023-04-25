@@ -1,6 +1,6 @@
 package relativitization.universe.game.data.global.components
 
-import relativitization.universe.game.data.serializer.DataSerializer
+import relativitization.universe.core.data.serializer.DataSerializer
 import kotlin.test.Test
 
 internal class UniverseScienceDataTest {

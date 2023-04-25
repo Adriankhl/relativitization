@@ -1,6 +1,6 @@
 package relativitization.universe.game.ai.defaults.utils
 
-import relativitization.universe.game.data.PlanDataAtPlayer
+import relativitization.universe.core.data.PlanDataAtPlayer
 
 abstract class DualUtilityConsideration {
     abstract fun getDualUtilityData(

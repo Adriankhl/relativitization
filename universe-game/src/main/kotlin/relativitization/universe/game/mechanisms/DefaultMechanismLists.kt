@@ -1,5 +1,7 @@
 package relativitization.universe.game.mechanisms
 
+import relativitization.universe.core.mechanisms.Mechanism
+import relativitization.universe.core.mechanisms.MechanismLists
 import relativitization.universe.game.mechanisms.defaults.dilated.combat.AutoCombat
 import relativitization.universe.game.mechanisms.defaults.dilated.economy.ResourceDecay
 import relativitization.universe.game.mechanisms.defaults.dilated.economy.UpdatePrice

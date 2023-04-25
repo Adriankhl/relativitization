@@ -1,6 +1,8 @@
 package relativitization.universe.game.data.global.components
 
 import org.junit.jupiter.api.Test
+import relativitization.universe.core.data.global.components.keyI
+import relativitization.universe.core.data.global.components.keyM
 import kotlin.reflect.full.createInstance
 
 internal class DefaultGlobalDataComponentTest {

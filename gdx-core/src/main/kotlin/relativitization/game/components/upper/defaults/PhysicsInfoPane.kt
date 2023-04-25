@@ -5,18 +5,18 @@ import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.RelativitizationGame
 import relativitization.game.components.upper.UpperInfoPane
-import relativitization.universe.game.data.PlayerData
+import relativitization.universe.core.data.PlayerData
 import relativitization.universe.game.data.commands.AddEventCommand
 import relativitization.universe.game.data.commands.ChangeVelocityCommand
 import relativitization.universe.game.data.components.physicsData
 import relativitization.universe.game.data.events.MoveToDouble3DEvent
-import relativitization.universe.game.maths.number.Notation
-import relativitization.universe.game.maths.physics.Double3D
-import relativitization.universe.game.maths.physics.Int3D
-import relativitization.universe.game.maths.physics.Movement.displacementToVelocity
-import relativitization.universe.game.maths.physics.Relativistic
-import relativitization.universe.game.maths.physics.Velocity
-import relativitization.universe.game.utils.RelativitizationLogManager
+import relativitization.universe.core.maths.number.Notation
+import relativitization.universe.core.maths.physics.Double3D
+import relativitization.universe.core.maths.physics.Int3D
+import relativitization.universe.core.maths.physics.Movement.displacementToVelocity
+import relativitization.universe.core.maths.physics.Relativistic
+import relativitization.universe.core.maths.physics.Velocity
+import relativitization.universe.core.utils.RelativitizationLogManager
 
 class PhysicsInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane>(game) {
     override val infoName: String = "Physics"

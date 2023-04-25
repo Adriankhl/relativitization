@@ -1,18 +1,20 @@
 package relativitization.universe.game.data.commands
 
 import kotlinx.serialization.Serializable
-import relativitization.universe.game.data.MutablePlayerData
-import relativitization.universe.game.data.UniverseSettings
+import relativitization.universe.core.data.MutablePlayerData
+import relativitization.universe.core.data.UniverseSettings
+import relativitization.universe.core.data.commands.CommandErrorMessage
+import relativitization.universe.core.data.commands.CommandI18NStringFactory
 import relativitization.universe.game.data.components.defaults.popsystem.CarrierType
 import relativitization.universe.game.data.components.defaults.popsystem.MutableCarrierData
 import relativitization.universe.game.data.components.defaults.popsystem.MutableCarrierInternalData
 import relativitization.universe.game.data.components.physicsData
 import relativitization.universe.game.data.components.playerScienceData
 import relativitization.universe.game.data.components.popSystemData
-import relativitization.universe.game.maths.physics.Int4D
-import relativitization.universe.game.utils.I18NString
-import relativitization.universe.game.utils.IntString
-import relativitization.universe.game.utils.NormalString
+import relativitization.universe.core.maths.physics.Int4D
+import relativitization.universe.core.utils.I18NString
+import relativitization.universe.core.utils.IntString
+import relativitization.universe.core.utils.NormalString
 
 /**
  * Build a new carrier locally, can only send to self

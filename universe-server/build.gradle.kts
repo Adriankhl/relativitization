@@ -7,6 +7,7 @@ plugins {
 }
 
 dependencies {
+    implementation(project(":universe-core"))
     implementation(project(":universe-game"))
 
     implementation(libs.kotlinx.serialization.json)

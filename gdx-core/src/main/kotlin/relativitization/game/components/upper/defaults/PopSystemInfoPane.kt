@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.RelativitizationGame
 import relativitization.game.components.upper.UpperInfoPane
-import relativitization.universe.game.data.PlayerData
+import relativitization.universe.core.data.PlayerData
 import relativitization.universe.game.data.commands.BuildForeignFuelFactoryCommand
 import relativitization.universe.game.data.commands.BuildForeignResourceFactoryCommand
 import relativitization.universe.game.data.commands.BuildInstituteCommand
@@ -56,8 +56,8 @@ import relativitization.universe.game.data.components.defaults.popsystem.pop.sol
 import relativitization.universe.game.data.components.economyData
 import relativitization.universe.game.data.components.playerScienceData
 import relativitization.universe.game.data.components.popSystemData
-import relativitization.universe.game.maths.number.Notation
-import relativitization.universe.game.utils.RelativitizationLogManager
+import relativitization.universe.core.maths.number.Notation
+import relativitization.universe.core.utils.RelativitizationLogManager
 
 class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane>(game) {
     override val infoName: String = "Pop System"

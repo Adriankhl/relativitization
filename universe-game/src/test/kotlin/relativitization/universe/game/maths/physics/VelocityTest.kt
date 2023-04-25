@@ -1,6 +1,6 @@
 package relativitization.universe.game.maths.physics
 
-import relativitization.universe.game.maths.physics.Velocity
+import relativitization.universe.core.maths.physics.Velocity
 import kotlin.math.abs
 import kotlin.random.Random
 import kotlin.test.Test

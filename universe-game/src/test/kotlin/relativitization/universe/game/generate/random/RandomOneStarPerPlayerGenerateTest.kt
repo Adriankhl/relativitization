@@ -1,12 +1,12 @@
 package relativitization.universe.game.generate.random
 
 import kotlinx.coroutines.runBlocking
-import relativitization.universe.game.Universe
-import relativitization.universe.game.data.MutableUniverseSettings
-import relativitization.universe.game.data.UniverseData
+import relativitization.universe.core.Universe
+import relativitization.universe.core.data.MutableUniverseSettings
+import relativitization.universe.core.data.UniverseData
 import relativitization.universe.game.data.commands.BuildForeignResourceFactoryCommand
 import relativitization.universe.game.data.commands.ChangeSalaryFactorCommand
-import relativitization.universe.game.data.commands.Command
+import relativitization.universe.core.data.commands.Command
 import relativitization.universe.game.data.commands.DefaultCommandAvailability
 import relativitization.universe.game.data.commands.SendFuelFromStorageCommand
 import relativitization.universe.game.data.components.defaults.economy.ResourceType
@@ -15,8 +15,9 @@ import relativitization.universe.game.data.components.economyData
 import relativitization.universe.game.data.components.physicsData
 import relativitization.universe.game.data.components.playerScienceData
 import relativitization.universe.game.data.components.popSystemData
-import relativitization.universe.game.generate.GenerateSettings
-import relativitization.universe.game.generate.GenerateUniverseMethodCollection
+import relativitization.universe.core.generate.GenerateSettings
+import relativitization.universe.core.generate.GenerateUniverseMethodCollection
+import relativitization.universe.game.GameUniverseInitializer
 import relativitization.universe.game.global.DefaultGlobalMechanismList
 import relativitization.universe.game.mechanisms.DefaultMechanismLists
 import kotlin.test.Test
@@ -25,6 +26,8 @@ import kotlin.test.Ignore
 internal class RandomOneStarPerPlayerGenerateTest {
     @Test
     fun randomSeedTest() {
+        GameUniverseInitializer.initialize()
+
         // Set the initial population to 1E8 to test how the AI do with a big population
         val generateSetting = GenerateSettings(
             generateMethod = RandomOneStarPerPlayerGenerate.name(),
@@ -56,8 +59,10 @@ internal class RandomOneStarPerPlayerGenerateTest {
         assert(universe1 != universe2)
     }
 
-        @Test
+    @Test
     fun onePlayerTest() {
+        GameUniverseInitializer.initialize()
+
         val generateSetting = GenerateSettings(
             generateMethod = RandomOneStarPerPlayerGenerate.name(),
             numPlayer = 1,
@@ -147,6 +152,8 @@ internal class RandomOneStarPerPlayerGenerateTest {
 
     @Ignore
     fun onePlayerHighInitialPopulationTest() {
+        GameUniverseInitializer.initialize()
+
         // Set the initial population to 1E8 to test how the AI do with a big population
         val generateSetting = GenerateSettings(
             generateMethod = RandomOneStarPerPlayerGenerate.name(),

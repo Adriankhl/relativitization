@@ -1,8 +1,10 @@
 package relativitization.universe.game.data.components
 
 import kotlinx.serialization.Serializable
-import relativitization.universe.game.data.MutablePlayerData
-import relativitization.universe.game.data.MutablePlayerInternalData
+import relativitization.universe.core.data.MutablePlayerData
+import relativitization.universe.core.data.MutablePlayerInternalData
+import relativitization.universe.core.data.components.MutablePlayerDataComponent
+import relativitization.universe.core.data.components.PlayerDataComponent
 
 @Serializable
 sealed class DefaultPlayerDataComponent : PlayerDataComponent() {

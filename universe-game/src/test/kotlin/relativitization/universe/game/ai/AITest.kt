@@ -1,7 +1,7 @@
 package relativitization.universe.game.ai
 
 import org.junit.jupiter.api.Test
-import relativitization.universe.game.ai.EmptyAI
+import relativitization.universe.core.ai.EmptyAI
 
 internal class AITest {
     @Test

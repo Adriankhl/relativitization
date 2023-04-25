@@ -1,5 +1,7 @@
 package relativitization.universe.game.data.components
 
+import relativitization.universe.core.data.components.MutablePlayerDataComponent
+import relativitization.universe.core.data.components.PlayerDataComponent
 import kotlin.reflect.KClass
 import kotlin.test.Test
 

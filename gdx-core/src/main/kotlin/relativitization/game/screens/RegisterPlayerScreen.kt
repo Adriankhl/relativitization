@@ -10,7 +10,7 @@ import kotlinx.coroutines.runBlocking
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.TableScreen
 import relativitization.universe.game.UniverseClientSettings
-import relativitization.universe.game.data.serializer.DataSerializer
+import relativitization.universe.core.data.serializer.DataSerializer
 
 class RegisterPlayerScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
     private val gdxSettings = game.gdxSettings

@@ -20,11 +20,11 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.Scaling
-import relativitization.universe.game.utils.I18NString
-import relativitization.universe.game.utils.MessageFormatData
-import relativitization.universe.game.utils.NoTranslateString
-import relativitization.universe.game.utils.RelativitizationLogManager
-import relativitization.universe.game.utils.TranslateString
+import relativitization.universe.core.utils.I18NString
+import relativitization.universe.core.utils.MessageFormatData
+import relativitization.universe.core.utils.NoTranslateString
+import relativitization.universe.core.utils.RelativitizationLogManager
+import relativitization.universe.core.utils.TranslateString
 import kotlin.collections.List
 import kotlin.collections.map
 import kotlin.collections.mapIndexed

@@ -5,7 +5,7 @@ import relativitization.universe.game.data.components.defaults.diplomacy.ally.Al
 import relativitization.universe.game.data.components.defaults.diplomacy.ally.MutableAllianceData
 import relativitization.universe.game.data.components.defaults.diplomacy.war.MutableWarData
 import relativitization.universe.game.data.components.defaults.diplomacy.war.WarData
-import relativitization.universe.game.utils.RelativitizationLogManager
+import relativitization.universe.core.utils.RelativitizationLogManager
 
 /**
  * Store diplomatic relation

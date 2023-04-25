@@ -6,12 +6,15 @@ import org.jetbrains.kotlinx.dataframe.api.concat
 import org.jetbrains.kotlinx.dataframe.io.readCSV
 import org.jetbrains.kotlinx.dataframe.io.writeCSV
 import org.jetbrains.kotlinx.dataframe.size
+import relativitization.universe.game.GameUniverseInitializer
 import java.io.File
 import kotlin.test.Test
 
 internal class GameSimulationKtTest {
     @Test
     fun singleDataFrameTest() {
+        GameUniverseInitializer.initialize()
+
         val df = gameSingleRun(
             printStep = false,
             universeName = "Single dataframe test",
@@ -27,6 +30,8 @@ internal class GameSimulationKtTest {
 
     @Test
     fun multipleDataFrameTest() {
+        GameUniverseInitializer.initialize()
+
         val dfList: MutableList<DataFrame<*>> = mutableListOf()
 
         val randomSeedList: List<Long> = (100L..102L).toList()

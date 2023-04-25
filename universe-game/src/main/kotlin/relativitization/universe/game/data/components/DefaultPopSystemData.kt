@@ -2,8 +2,8 @@ package relativitization.universe.game.data.components
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import relativitization.universe.game.data.MutablePlayerInternalData
-import relativitization.universe.game.data.PlayerInternalData
+import relativitization.universe.core.data.MutablePlayerInternalData
+import relativitization.universe.core.data.PlayerInternalData
 import relativitization.universe.game.data.components.defaults.popsystem.CarrierData
 import relativitization.universe.game.data.components.defaults.popsystem.CarrierType
 import relativitization.universe.game.data.components.defaults.popsystem.GeneralPopSystemData
@@ -11,7 +11,7 @@ import relativitization.universe.game.data.components.defaults.popsystem.Mutable
 import relativitization.universe.game.data.components.defaults.popsystem.MutableCarrierInternalData
 import relativitization.universe.game.data.components.defaults.popsystem.MutableGeneralPopSystemData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.PopType
-import relativitization.universe.game.maths.collection.ListFind
+import relativitization.universe.core.maths.collection.ListFind
 import kotlin.random.Random
 
 @Serializable

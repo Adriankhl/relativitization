@@ -10,9 +10,9 @@ import relativitization.universe.game.ai.defaults.utils.DualUtilityOption
 import relativitization.universe.game.ai.defaults.utils.DualUtilityReasoner
 import relativitization.universe.game.ai.defaults.utils.PlanState
 import relativitization.universe.game.ai.defaults.utils.SequenceReasoner
-import relativitization.universe.game.data.MutablePlayerData
-import relativitization.universe.game.data.PlanDataAtPlayer
-import relativitization.universe.game.data.PlayerData
+import relativitization.universe.core.data.MutablePlayerData
+import relativitization.universe.core.data.PlanDataAtPlayer
+import relativitization.universe.core.data.PlayerData
 import relativitization.universe.game.data.commands.AddEventCommand
 import relativitization.universe.game.data.commands.RemoveAllyCommand
 import relativitization.universe.game.data.components.defaults.diplomacy.war.MutableWarData
@@ -20,7 +20,7 @@ import relativitization.universe.game.data.components.diplomacyData
 import relativitization.universe.game.data.events.CallAllyToSubordinateWarEvent
 import relativitization.universe.game.data.events.CallAllyToWarEvent
 import relativitization.universe.game.data.events.ProposeAllianceEvent
-import relativitization.universe.game.maths.physics.Int3D
+import relativitization.universe.core.maths.physics.Int3D
 import kotlin.random.Random
 
 class AllianceReasoner(private val random: Random) : SequenceReasoner() {

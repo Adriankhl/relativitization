@@ -1,14 +1,14 @@
 package relativitization.universe.game.ai.defaults.utils
 
-import relativitization.universe.game.data.PlanDataAtPlayer
-import relativitization.universe.game.data.PlayerData
+import relativitization.universe.core.data.PlanDataAtPlayer
+import relativitization.universe.core.data.PlayerData
 import relativitization.universe.game.data.components.aiData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.PopType
 import relativitization.universe.game.data.components.physicsData
 import relativitization.universe.game.data.components.playerScienceData
 import relativitization.universe.game.data.components.popSystemData
-import relativitization.universe.game.maths.physics.Int3D
-import relativitization.universe.game.maths.physics.Intervals
+import relativitization.universe.core.maths.physics.Int3D
+import relativitization.universe.core.maths.physics.Intervals
 import kotlin.math.pow
 
 /**

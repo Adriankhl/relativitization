@@ -5,7 +5,7 @@ import relativitization.universe.game.data.components.defaults.popsystem.pop.Com
 import relativitization.universe.game.data.components.defaults.popsystem.pop.MutableCommonPopData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.scholar.institute.InstituteData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.scholar.institute.MutableInstituteData
-import relativitization.universe.game.maths.collection.ListFind
+import relativitization.universe.core.maths.collection.ListFind
 
 @Serializable
 data class ScholarPopData(

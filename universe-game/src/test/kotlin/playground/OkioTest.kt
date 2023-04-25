@@ -2,8 +2,8 @@ package playground
 
 import okio.FileSystem
 import okio.Path.Companion.toPath
-import relativitization.universe.game.data.PlayerData
-import relativitization.universe.game.data.serializer.DataSerializer
+import relativitization.universe.core.data.PlayerData
+import relativitization.universe.core.data.serializer.DataSerializer
 import kotlin.test.Ignore
 
 

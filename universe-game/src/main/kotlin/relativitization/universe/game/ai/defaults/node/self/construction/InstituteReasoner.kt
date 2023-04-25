@@ -11,7 +11,7 @@ import relativitization.universe.game.ai.defaults.utils.DualUtilityOption
 import relativitization.universe.game.ai.defaults.utils.DualUtilityReasoner
 import relativitization.universe.game.ai.defaults.utils.PlanState
 import relativitization.universe.game.ai.defaults.utils.SequenceReasoner
-import relativitization.universe.game.data.PlanDataAtPlayer
+import relativitization.universe.core.data.PlanDataAtPlayer
 import relativitization.universe.game.data.commands.BuildInstituteCommand
 import relativitization.universe.game.data.commands.RemoveInstituteCommand
 import relativitization.universe.game.data.components.defaults.economy.ResourceQualityClass
@@ -22,8 +22,8 @@ import relativitization.universe.game.data.components.defaults.science.knowledge
 import relativitization.universe.game.data.components.economyData
 import relativitization.universe.game.data.components.playerScienceData
 import relativitization.universe.game.data.components.popSystemData
-import relativitization.universe.game.maths.physics.Double2D
-import relativitization.universe.game.maths.physics.Intervals
+import relativitization.universe.core.maths.physics.Double2D
+import relativitization.universe.core.maths.physics.Intervals
 import kotlin.random.Random
 
 class InstituteReasoner(private val random: Random) : SequenceReasoner() {

@@ -1,9 +1,9 @@
 package relativitization.universe.game.mechanisms.defaults.dilated.economy
 
-import relativitization.universe.game.data.MutablePlayerData
-import relativitization.universe.game.data.UniverseData3DAtPlayer
-import relativitization.universe.game.data.UniverseSettings
-import relativitization.universe.game.data.commands.Command
+import relativitization.universe.core.data.MutablePlayerData
+import relativitization.universe.core.data.UniverseData3DAtPlayer
+import relativitization.universe.core.data.UniverseSettings
+import relativitization.universe.core.data.commands.Command
 import relativitization.universe.game.data.components.defaults.economy.MutableResourceData
 import relativitization.universe.game.data.components.defaults.economy.ResourceQualityClass
 import relativitization.universe.game.data.components.defaults.economy.ResourceType
@@ -11,9 +11,9 @@ import relativitization.universe.game.data.components.defaults.popsystem.pop.Mut
 import relativitization.universe.game.data.components.defaults.popsystem.pop.PopType
 import relativitization.universe.game.data.components.economyData
 import relativitization.universe.game.data.components.popSystemData
-import relativitization.universe.game.data.global.UniverseGlobalData
-import relativitization.universe.game.mechanisms.Mechanism
-import relativitization.universe.game.utils.RelativitizationLogManager
+import relativitization.universe.core.data.global.UniverseGlobalData
+import relativitization.universe.core.mechanisms.Mechanism
+import relativitization.universe.core.utils.RelativitizationLogManager
 import kotlin.random.Random
 
 object UpdatePrice : Mechanism() {

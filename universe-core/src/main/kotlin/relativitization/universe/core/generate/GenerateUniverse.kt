@@ -110,7 +110,7 @@ object GenerateUniverseMethodCollection {
     fun addGenerateUniverseMethod(generateUniverseMethod: GenerateUniverseMethod) {
         val generateUniverseMethodName: String = generateUniverseMethod.name()
         if (generateUniverseMethodNameMap.containsKey(generateUniverseMethodName)) {
-            logger.error(
+            logger.debug(
                 "Already has $generateUniverseMethodName in GenerateUniverseMethodCollection, " +
                         "replacing stored $generateUniverseMethodName"
             )

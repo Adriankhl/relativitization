@@ -1,6 +1,6 @@
 package relativitization.universe.game.ai.defaults.score
 
-import relativitization.universe.game.data.PlanDataAtPlayer
+import relativitization.universe.core.data.PlanDataAtPlayer
 import relativitization.universe.game.data.components.PopSystemData
 import relativitization.universe.game.data.components.popSystemData
 
