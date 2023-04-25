@@ -1,0 +1,41 @@
+package relativitization.universe.game.data.components
+
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+import relativitization.universe.game.data.MutablePlayerInternalData
+import relativitization.universe.game.data.PlayerInternalData
+import relativitization.universe.game.data.components.defaults.economy.MutableResourceData
+import relativitization.universe.game.data.components.defaults.economy.MutableSocialSecurityData
+import relativitization.universe.game.data.components.defaults.economy.MutableTaxData
+import relativitization.universe.game.data.components.defaults.economy.ResourceData
+import relativitization.universe.game.data.components.defaults.economy.SocialSecurityData
+import relativitization.universe.game.data.components.defaults.economy.TaxData
+
+/**
+ * @property taxData data about the tax rate of various stuff
+ */
+@Serializable
+@SerialName("EconomyData")
+data class EconomyData(
+    val taxData: TaxData = TaxData(),
+    val resourceData: ResourceData = ResourceData(),
+    val socialSecurityData: SocialSecurityData = SocialSecurityData(),
+) : DefaultPlayerDataComponent()
+
+@Serializable
+@SerialName("EconomyData")
+data class MutableEconomyData(
+    var taxData: MutableTaxData = MutableTaxData(),
+    var resourceData: MutableResourceData = MutableResourceData(),
+    var socialSecurityData: MutableSocialSecurityData = MutableSocialSecurityData(),
+) : MutableDefaultPlayerDataComponent()
+
+fun PlayerInternalData.economyData(): EconomyData =
+    playerDataComponentMap.get()
+
+fun MutablePlayerInternalData.economyData(): MutableEconomyData =
+    playerDataComponentMap.get()
+
+fun MutablePlayerInternalData.economyData(newEconomyData: MutableEconomyData) =
+    playerDataComponentMap.put(newEconomyData)
+

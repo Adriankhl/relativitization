@@ -10,7 +10,7 @@ import relativitization.game.components.upper.DefaultUpperInfoPaneList
 import relativitization.game.components.upper.UpperInfoPaneCollection
 import relativitization.game.utils.Assets
 import relativitization.game.utils.TableScreen
-import relativitization.universe.utils.RelativitizationLogManager
+import relativitization.universe.game.utils.RelativitizationLogManager
 
 class ClientSettingsScreen(
     val game: RelativitizationGame,

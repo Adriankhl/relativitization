@@ -21,8 +21,8 @@ import org.apache.logging.log4j.Level
 import org.apache.logging.log4j.core.config.Configurator
 import relativitization.client.UniverseClient
 import relativitization.server.UniverseServer
-import relativitization.universe.UniverseClientSettings
-import relativitization.universe.UniverseServerSettings
+import relativitization.universe.game.UniverseClientSettings
+import relativitization.universe.game.UniverseServerSettings
 import kotlin.test.Test
 
 internal class CoroutineTest {

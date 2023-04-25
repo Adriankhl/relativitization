@@ -13,15 +13,15 @@ import io.ktor.server.routing.post
 import io.ktor.server.routing.route
 import io.ktor.server.routing.routing
 import relativitization.server.UniverseServerInternal
-import relativitization.universe.communication.CheckIsPlayerDeadMessage
-import relativitization.universe.communication.DeregisterPlayerMessage
-import relativitization.universe.communication.PlayerInputMessage
-import relativitization.universe.communication.RegisterPlayerMessage
-import relativitization.universe.communication.RunUniverseMessage
-import relativitization.universe.communication.StopUniverseMessage
-import relativitization.universe.communication.StopWaitingMessage
-import relativitization.universe.communication.UniverseData3DMessage
-import relativitization.universe.communication.UniverseServerSettingsMessage
+import relativitization.universe.game.communication.CheckIsPlayerDeadMessage
+import relativitization.universe.game.communication.DeregisterPlayerMessage
+import relativitization.universe.game.communication.PlayerInputMessage
+import relativitization.universe.game.communication.RegisterPlayerMessage
+import relativitization.universe.game.communication.RunUniverseMessage
+import relativitization.universe.game.communication.StopUniverseMessage
+import relativitization.universe.game.communication.StopWaitingMessage
+import relativitization.universe.game.communication.UniverseData3DMessage
+import relativitization.universe.game.communication.UniverseServerSettingsMessage
 
 fun Route.runUniverseRouting(universeServerInternal: UniverseServerInternal) {
     route("/run/update-server-settings") {

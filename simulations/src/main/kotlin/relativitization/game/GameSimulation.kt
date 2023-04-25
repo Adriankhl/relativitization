@@ -2,19 +2,19 @@ package relativitization.game
 
 import org.jetbrains.kotlinx.dataframe.DataFrame
 import org.jetbrains.kotlinx.dataframe.api.toDataFrame
-import relativitization.universe.Universe
-import relativitization.universe.data.MutableUniverseSettings
-import relativitization.universe.data.PlayerData
-import relativitization.universe.data.commands.DefaultCommandAvailability
-import relativitization.universe.data.components.diplomacyData
-import relativitization.universe.data.components.physicsData
-import relativitization.universe.data.components.popSystemData
-import relativitization.universe.generate.GenerateSettings
-import relativitization.universe.generate.GenerateUniverseMethodCollection
-import relativitization.universe.generate.random.RandomOneStarPerPlayerGenerate
-import relativitization.universe.global.DefaultGlobalMechanismList
-import relativitization.universe.maths.number.toScientificNotation
-import relativitization.universe.mechanisms.DefaultMechanismLists
+import relativitization.universe.game.Universe
+import relativitization.universe.game.data.MutableUniverseSettings
+import relativitization.universe.game.data.PlayerData
+import relativitization.universe.game.data.commands.DefaultCommandAvailability
+import relativitization.universe.game.data.components.diplomacyData
+import relativitization.universe.game.data.components.physicsData
+import relativitization.universe.game.data.components.popSystemData
+import relativitization.universe.game.generate.GenerateSettings
+import relativitization.universe.game.generate.GenerateUniverseMethodCollection
+import relativitization.universe.game.generate.random.RandomOneStarPerPlayerGenerate
+import relativitization.universe.game.global.DefaultGlobalMechanismList
+import relativitization.universe.game.maths.number.toScientificNotation
+import relativitization.universe.game.mechanisms.DefaultMechanismLists
 
 internal fun gameSingleRun(
     universeName: String = "Game",

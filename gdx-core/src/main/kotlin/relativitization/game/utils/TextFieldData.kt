@@ -2,7 +2,7 @@ package relativitization.game.utils
 
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
-import relativitization.universe.utils.RelativitizationLogManager
+import relativitization.universe.game.utils.RelativitizationLogManager
 import kotlin.properties.Delegates
 
 class DoubleTextField(

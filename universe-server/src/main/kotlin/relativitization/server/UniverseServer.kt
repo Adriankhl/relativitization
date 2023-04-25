@@ -15,9 +15,9 @@ import kotlinx.coroutines.launch
 import relativitization.server.routes.registerCreateUniverseRoutes
 import relativitization.server.routes.registerRunUniverseRoutes
 import relativitization.server.routes.registerUniverseStatusRoutes
-import relativitization.universe.UniverseServerSettings
-import relativitization.universe.data.serializer.DataSerializer
-import relativitization.universe.utils.RelativitizationLogManager
+import relativitization.universe.game.UniverseServerSettings
+import relativitization.universe.game.data.serializer.DataSerializer
+import relativitization.universe.game.utils.RelativitizationLogManager
 
 
 class UniverseServer(

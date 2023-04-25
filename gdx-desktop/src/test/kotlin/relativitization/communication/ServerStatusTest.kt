@@ -6,8 +6,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import relativitization.client.UniverseClient
 import relativitization.server.UniverseServer
-import relativitization.universe.UniverseClientSettings
-import relativitization.universe.UniverseServerSettings
+import relativitization.universe.game.UniverseClientSettings
+import relativitization.universe.game.UniverseServerSettings
 import kotlin.test.Test
 
 internal class ServerStatusTest {

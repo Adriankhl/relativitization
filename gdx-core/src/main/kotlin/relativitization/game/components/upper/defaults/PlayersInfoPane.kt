@@ -8,8 +8,8 @@ import relativitization.game.components.upper.UpperInfoPane
 import relativitization.game.utils.PlayerImage
 import relativitization.game.utils.PlayerSummary
 import relativitization.game.utils.Summary
-import relativitization.universe.data.PlayerData
-import relativitization.universe.data.components.defaults.economy.ResourceType
+import relativitization.universe.game.data.PlayerData
+import relativitization.universe.game.data.components.defaults.economy.ResourceType
 
 class PlayersInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane>(game) {
     override val infoName: String = "Players"

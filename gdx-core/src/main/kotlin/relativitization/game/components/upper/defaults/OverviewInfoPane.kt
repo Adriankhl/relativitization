@@ -5,7 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.RelativitizationGame
 import relativitization.game.components.upper.UpperInfoPane
 import relativitization.game.utils.PlayerImage
-import relativitization.universe.data.PlayerData
+import relativitization.universe.game.data.PlayerData
 
 class OverviewInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane>(game) {
     override val infoName: String = "Overview"

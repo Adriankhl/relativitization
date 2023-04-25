@@ -4,7 +4,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import relativitization.server.UniverseServer
-import relativitization.universe.UniverseServerSettings
+import relativitization.universe.game.UniverseServerSettings
 import kotlin.test.Test
 
 internal class ServerPortTest {

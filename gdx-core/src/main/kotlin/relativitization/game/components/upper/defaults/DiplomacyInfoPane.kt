@@ -4,19 +4,19 @@ import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.RelativitizationGame
 import relativitization.game.components.upper.UpperInfoPane
-import relativitization.universe.data.PlayerData
-import relativitization.universe.data.commands.AddEventCommand
-import relativitization.universe.data.commands.DeclareIndependenceToDirectLeaderCommand
-import relativitization.universe.data.commands.DeclareIndependenceToTopLeaderCommand
-import relativitization.universe.data.commands.DeclareWarCommand
-import relativitization.universe.data.commands.RemoveAllyCommand
-import relativitization.universe.data.commands.SurrenderCommand
-import relativitization.universe.data.components.defaults.diplomacy.war.WarData
-import relativitization.universe.data.components.diplomacyData
-import relativitization.universe.data.events.CallAllyToSubordinateWarEvent
-import relativitization.universe.data.events.CallAllyToWarEvent
-import relativitization.universe.data.events.ProposeAllianceEvent
-import relativitization.universe.data.events.ProposePeaceEvent
+import relativitization.universe.game.data.PlayerData
+import relativitization.universe.game.data.commands.AddEventCommand
+import relativitization.universe.game.data.commands.DeclareIndependenceToDirectLeaderCommand
+import relativitization.universe.game.data.commands.DeclareIndependenceToTopLeaderCommand
+import relativitization.universe.game.data.commands.DeclareWarCommand
+import relativitization.universe.game.data.commands.RemoveAllyCommand
+import relativitization.universe.game.data.commands.SurrenderCommand
+import relativitization.universe.game.data.components.defaults.diplomacy.war.WarData
+import relativitization.universe.game.data.components.diplomacyData
+import relativitization.universe.game.data.events.CallAllyToSubordinateWarEvent
+import relativitization.universe.game.data.events.CallAllyToWarEvent
+import relativitization.universe.game.data.events.ProposeAllianceEvent
+import relativitization.universe.game.data.events.ProposePeaceEvent
 
 class DiplomacyInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane>(game) {
     override val infoName: String = "Diplomacy"

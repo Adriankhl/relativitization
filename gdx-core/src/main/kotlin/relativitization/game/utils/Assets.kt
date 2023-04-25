@@ -24,7 +24,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.badlogic.gdx.utils.I18NBundle
 import relativitization.game.GdxSettings
 import relativitization.game.Language
-import relativitization.universe.utils.RelativitizationLogManager
+import relativitization.universe.game.utils.RelativitizationLogManager
 import java.util.Locale
 import kotlin.random.Random
 

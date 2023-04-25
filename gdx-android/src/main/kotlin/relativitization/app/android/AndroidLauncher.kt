@@ -17,9 +17,9 @@ import relativitization.client.UniverseClient
 import relativitization.game.GdxSettings
 import relativitization.game.RelativitizationGame
 import relativitization.server.UniverseServer
-import relativitization.universe.UniverseClientSettings
-import relativitization.universe.UniverseServerSettings
-import relativitization.universe.utils.RelativitizationLogManager
+import relativitization.universe.game.UniverseClientSettings
+import relativitization.universe.game.UniverseServerSettings
+import relativitization.universe.game.utils.RelativitizationLogManager
 import relativitization.utils.ServerPort
 import kotlin.random.Random
 

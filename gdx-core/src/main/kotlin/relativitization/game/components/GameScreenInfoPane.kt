@@ -8,7 +8,7 @@ import relativitization.game.components.bottom.BottomCommandInfoPane
 import relativitization.game.components.upper.UpperInfoPane
 import relativitization.game.components.upper.UpperInfoPaneCollection
 import relativitization.game.utils.ScreenComponent
-import relativitization.universe.utils.RelativitizationLogManager
+import relativitization.universe.game.utils.RelativitizationLogManager
 
 class GameScreenInfoPane(
     val game: RelativitizationGame,

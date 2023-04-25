@@ -1,16 +1,16 @@
 package relativitization.game.utils
 
-import relativitization.universe.data.PlayerData
-import relativitization.universe.data.UniverseData3DAtPlayer
-import relativitization.universe.data.components.defaults.economy.ResourceType
-import relativitization.universe.data.components.defaults.popsystem.CarrierData
-import relativitization.universe.data.components.defaults.popsystem.pop.CommonPopData
-import relativitization.universe.data.components.defaults.popsystem.pop.PopType
-import relativitization.universe.data.components.defaults.popsystem.pop.ResourceDesireData
-import relativitization.universe.data.components.defaults.popsystem.pop.labourer.factory.InputResourceData
-import relativitization.universe.data.components.popSystemData
-import relativitization.universe.mechanisms.defaults.dilated.production.BaseStellarFuelProduction
-import relativitization.universe.mechanisms.defaults.dilated.production.EntertainmentProduction
+import relativitization.universe.game.data.PlayerData
+import relativitization.universe.game.data.UniverseData3DAtPlayer
+import relativitization.universe.game.data.components.defaults.economy.ResourceType
+import relativitization.universe.game.data.components.defaults.popsystem.CarrierData
+import relativitization.universe.game.data.components.defaults.popsystem.pop.CommonPopData
+import relativitization.universe.game.data.components.defaults.popsystem.pop.PopType
+import relativitization.universe.game.data.components.defaults.popsystem.pop.ResourceDesireData
+import relativitization.universe.game.data.components.defaults.popsystem.pop.labourer.factory.InputResourceData
+import relativitization.universe.game.data.components.popSystemData
+import relativitization.universe.game.mechanisms.defaults.dilated.production.BaseStellarFuelProduction
+import relativitization.universe.game.mechanisms.defaults.dilated.production.EntertainmentProduction
 
 object Summary {
     /**

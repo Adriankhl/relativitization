@@ -8,7 +8,7 @@ import com.badlogic.gdx.audio.Music
 import relativitization.client.UniverseClient
 import relativitization.game.screens.MainMenuScreen
 import relativitization.game.utils.Assets
-import relativitization.universe.utils.RelativitizationLogManager
+import relativitization.universe.game.utils.RelativitizationLogManager
 import java.io.File
 
 /**

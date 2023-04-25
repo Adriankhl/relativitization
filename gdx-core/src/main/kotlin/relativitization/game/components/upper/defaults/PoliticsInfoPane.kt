@@ -4,12 +4,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.RelativitizationGame
 import relativitization.game.components.upper.UpperInfoPane
-import relativitization.universe.data.PlayerData
-import relativitization.universe.data.commands.AddEventCommand
-import relativitization.universe.data.commands.ChangeFactoryPolicyCommand
-import relativitization.universe.data.commands.GrantIndependenceCommand
-import relativitization.universe.data.components.politicsData
-import relativitization.universe.data.events.AskToMergeCarrierEvent
+import relativitization.universe.game.data.PlayerData
+import relativitization.universe.game.data.commands.AddEventCommand
+import relativitization.universe.game.data.commands.ChangeFactoryPolicyCommand
+import relativitization.universe.game.data.commands.GrantIndependenceCommand
+import relativitization.universe.game.data.components.politicsData
+import relativitization.universe.game.data.events.AskToMergeCarrierEvent
 
 class PoliticsInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane>(game) {
     override val infoName: String = "Politics"
