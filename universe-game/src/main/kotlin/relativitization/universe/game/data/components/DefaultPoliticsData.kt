@@ -2,6 +2,7 @@ package relativitization.universe.game.data.components
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import ksergen.annotations.GenerateImmutable
 import relativitization.universe.core.data.MutablePlayerInternalData
 import relativitization.universe.core.data.PlayerInternalData
 import kotlin.math.abs
@@ -16,18 +17,7 @@ import kotlin.math.abs
  *  local factory in the player
  * @property isForeignInvestorAllowed whether foreign player is allowed to build factory
  */
-@Serializable
-@SerialName("PoliticsData")
-data class PoliticsData(
-    val hasAgreedMerge: Boolean = false,
-    val centralizationLevel: Int = 0,
-    val isSubordinateBuildFactoryAllowed: Boolean = false,
-    val isLeaderBuildLocalFactoryAllowed: Boolean = true,
-    val isForeignInvestorAllowed: Boolean = true,
-) : DefaultPlayerDataComponent()
-
-
-@Serializable
+@GenerateImmutable
 @SerialName("PoliticsData")
 data class MutablePoliticsData(
     var hasAgreedMerge: Boolean = false,
