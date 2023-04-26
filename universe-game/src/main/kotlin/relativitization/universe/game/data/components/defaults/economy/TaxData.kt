@@ -44,39 +44,39 @@ data class MutableTaxRateData(
 data class TariffData(
     val defaultTariffRate: TariffRateData = TariffRateData(),
     val tariffRatePlayerMap: Map<Int, TariffRateData> = mapOf(),
-) {
-    fun getResourceTariffRate(topLeaderId: Int, resourceType: ResourceType): Double {
-        return tariffRatePlayerMap.getOrDefault(topLeaderId, defaultTariffRate)
-            .getResourceTariffRate(resourceType)
-    }
-}
+)
 
 @Serializable
 data class MutableTariffData(
     var defaultTariffRate: MutableTariffRateData = MutableTariffRateData(),
     var tariffRatePlayerMap: MutableMap<Int, MutableTariffRateData> = mutableMapOf(),
-) {
-    fun getResourceTariffRate(topLeaderId: Int, resourceType: ResourceType): Double {
-        return tariffRatePlayerMap.getOrDefault(topLeaderId, defaultTariffRate)
-            .getResourceTariffRate(resourceType)
-    }
+)
+
+fun TariffData.getResourceTariffRate(topLeaderId: Int, resourceType: ResourceType): Double {
+    return tariffRatePlayerMap.getOrDefault(topLeaderId, defaultTariffRate)
+        .getResourceTariffRate(resourceType)
+}
+
+fun MutableTariffData.getResourceTariffRate(topLeaderId: Int, resourceType: ResourceType): Double {
+    return tariffRatePlayerMap.getOrDefault(topLeaderId, defaultTariffRate)
+        .getResourceTariffRate(resourceType)
 }
 
 @Serializable
 data class TariffRateData(
     val resourceTariffRateMap: Map<ResourceType, Double> = mapOf(),
-) {
-    fun getResourceTariffRate(resourceType: ResourceType): Double =
-        resourceTariffRateMap.getOrDefault(resourceType, 0.0)
-}
+)
 
 @Serializable
 data class MutableTariffRateData(
     var resourceTariffRateMap: MutableMap<ResourceType, Double> = mutableMapOf(),
-) {
-    fun getResourceTariffRate(resourceType: ResourceType): Double =
-        resourceTariffRateMap.getOrDefault(resourceType, 0.0)
-}
+)
+
+fun TariffRateData.getResourceTariffRate(resourceType: ResourceType): Double =
+    resourceTariffRateMap.getOrDefault(resourceType, 0.0)
+
+fun MutableTariffRateData.getResourceTariffRate(resourceType: ResourceType): Double =
+    resourceTariffRateMap.getOrDefault(resourceType, 0.0)
 
 @Serializable
 data class IncomeTaxData(
@@ -85,17 +85,7 @@ data class IncomeTaxData(
     val highIncomeTaxRate: Double = 0.0,
     val lowMiddleBoundary: Double = 1.0,
     val middleHighBoundary: Double = 2.0,
-) {
-    fun getIncomeTax(
-        salary: Double
-    ): Double {
-        return when {
-            salary < lowMiddleBoundary -> lowIncomeTaxRate
-            salary < middleHighBoundary -> middleIncomeTaxRate
-            else -> highIncomeTaxRate
-        }
-    }
-}
+)
 
 @Serializable
 data class MutableIncomeTaxData(
@@ -104,14 +94,24 @@ data class MutableIncomeTaxData(
     var highIncomeTaxRate: Double = 0.0,
     var lowMiddleBoundary: Double = 1.0,
     var middleHighBoundary: Double = 2.0,
-) {
-    fun getIncomeTax(
-        salary: Double
-    ): Double {
-        return when {
-            salary < lowMiddleBoundary -> lowIncomeTaxRate
-            salary < middleHighBoundary -> middleIncomeTaxRate
-            else -> highIncomeTaxRate
-        }
+)
+
+fun IncomeTaxData.getIncomeTax(
+    salary: Double
+): Double {
+    return when {
+        salary < lowMiddleBoundary -> lowIncomeTaxRate
+        salary < middleHighBoundary -> middleIncomeTaxRate
+        else -> highIncomeTaxRate
+    }
+}
+
+fun MutableIncomeTaxData.getIncomeTax(
+    salary: Double
+): Double {
+    return when {
+        salary < lowMiddleBoundary -> lowIncomeTaxRate
+        salary < middleHighBoundary -> middleIncomeTaxRate
+        else -> highIncomeTaxRate
     }
 }

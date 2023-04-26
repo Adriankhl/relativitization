@@ -24,6 +24,8 @@ import relativitization.universe.game.data.components.playerScienceData
 import relativitization.universe.game.data.components.popSystemData
 import relativitization.universe.core.maths.physics.Double2D
 import relativitization.universe.core.maths.physics.Intervals
+import relativitization.universe.game.data.components.defaults.economy.getTotalResourceAmount
+import relativitization.universe.game.data.components.numCarrier
 import kotlin.random.Random
 
 class InstituteReasoner(private val random: Random) : SequenceReasoner() {

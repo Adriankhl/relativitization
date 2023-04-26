@@ -28,6 +28,9 @@ import relativitization.universe.game.data.components.physicsData
 import relativitization.universe.game.data.components.playerScienceData
 import relativitization.universe.core.maths.number.Notation
 import relativitization.universe.core.maths.physics.Intervals
+import relativitization.universe.game.data.components.defaults.economy.getResourcePrice
+import relativitization.universe.game.data.components.defaults.economy.getResourceTariffRate
+import relativitization.universe.game.data.components.defaults.economy.getSingleResourceData
 import kotlin.math.pow
 
 class EconomyInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane>(game) {

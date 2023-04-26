@@ -27,6 +27,10 @@ import relativitization.universe.core.maths.algebra.Logistic
 import relativitization.universe.core.maths.physics.Intervals
 import relativitization.universe.core.mechanisms.Mechanism
 import relativitization.universe.core.utils.RelativitizationLogManager
+import relativitization.universe.game.data.components.defaults.economy.getResourceAmountData
+import relativitization.universe.game.data.components.defaults.economy.getResourceQuality
+import relativitization.universe.game.data.components.defaults.economy.mag
+import relativitization.universe.game.data.components.defaults.economy.toResourceQualityData
 import kotlin.math.PI
 import kotlin.math.log2
 import kotlin.math.min

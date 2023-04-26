@@ -14,6 +14,12 @@ import relativitization.universe.game.data.components.popSystemData
 import relativitization.universe.core.data.global.UniverseGlobalData
 import relativitization.universe.core.mechanisms.Mechanism
 import relativitization.universe.core.utils.RelativitizationLogManager
+import relativitization.universe.game.data.components.defaults.economy.getResourcePrice
+import relativitization.universe.game.data.components.defaults.economy.getSingleResourceData
+import relativitization.universe.game.data.components.defaults.economy.getTradeResourceAmount
+import relativitization.universe.game.data.components.defaults.economy.tradeQualityClass
+import relativitization.universe.game.data.components.defaults.popsystem.pop.getCommonPopData
+import relativitization.universe.game.data.components.defaults.popsystem.pop.labourer.factory.employeeFraction
 import kotlin.random.Random
 
 object UpdatePrice : Mechanism() {

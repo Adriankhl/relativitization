@@ -9,6 +9,7 @@ import relativitization.universe.game.data.components.defaults.physics.MutableFu
 import relativitization.universe.game.data.components.physicsData
 import relativitization.universe.core.data.global.UniverseGlobalData
 import relativitization.universe.core.mechanisms.Mechanism
+import relativitization.universe.game.data.components.defaults.physics.total
 import kotlin.random.Random
 
 object BalanceFuel : Mechanism() {

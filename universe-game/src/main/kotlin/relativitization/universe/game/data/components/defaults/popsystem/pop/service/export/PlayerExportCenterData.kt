@@ -7,47 +7,7 @@ import relativitization.universe.game.data.components.defaults.economy.ResourceT
 @Serializable
 data class PlayerExportCenterData(
     val exportDataList: List<PlayerSingleExportData> = listOf()
-) {
-    /**
-     * Get resource type by target player id, empty list if export data does not exist
-     */
-    fun getResourceTypeList(
-        targetPlayerId: Int,
-    ): List<ResourceType> {
-        return exportDataList.filter {
-            it.targetPlayerId == targetPlayerId
-        }.map { it.resourceType }.toSet().toList()
-    }
-
-    /**
-     * Get resource type by target player id and resource type,
-     * empty list if export data does not exist
-     */
-    fun getResourceQualityClassList(
-        targetPlayerId: Int,
-        resourceType: ResourceType
-    ): List<ResourceQualityClass> {
-        return exportDataList.filter {
-            (it.targetPlayerId == targetPlayerId) && (it.resourceType == resourceType)
-        }.map { it.resourceQualityClass }.toSet().toList()
-    }
-
-    /**
-     * Get resource type by target player id and resource type,
-     * empty list if export data does not exist
-     */
-    fun getExportDataList(
-        targetPlayerId: Int,
-        resourceType: ResourceType,
-        resourceQualityClass: ResourceQualityClass
-    ): List<PlayerSingleExportData> {
-        return exportDataList.filter {
-            (it.targetPlayerId == targetPlayerId) &&
-                    (it.resourceType == resourceType) &&
-                    (it.resourceQualityClass == resourceQualityClass)
-        }
-    }
-}
+)
 
 @Serializable
 data class MutablePlayerExportCenterData(
@@ -90,6 +50,86 @@ data class MutablePlayerExportCenterData(
         exportDataList.removeAll {
             it.storedFuelRestMass <= 0.0
         }
+    }
+}
+
+/**
+ * Get resource type by target player id, empty list if export data does not exist
+ */
+fun PlayerExportCenterData.getResourceTypeList(
+    targetPlayerId: Int,
+): List<ResourceType> {
+    return exportDataList.filter {
+        it.targetPlayerId == targetPlayerId
+    }.map { it.resourceType }.toSet().toList()
+}
+
+/**
+ * Get resource type by target player id, empty list if export data does not exist
+ */
+fun MutablePlayerExportCenterData.getResourceTypeList(
+    targetPlayerId: Int,
+): List<ResourceType> {
+    return exportDataList.filter {
+        it.targetPlayerId == targetPlayerId
+    }.map { it.resourceType }.toSet().toList()
+}
+
+/**
+ * Get resource type by target player id and resource type,
+ * empty list if export data does not exist
+ */
+fun PlayerExportCenterData.getResourceQualityClassList(
+    targetPlayerId: Int,
+    resourceType: ResourceType
+): List<ResourceQualityClass> {
+    return exportDataList.filter {
+        (it.targetPlayerId == targetPlayerId) && (it.resourceType == resourceType)
+    }.map { it.resourceQualityClass }.toSet().toList()
+}
+
+/**
+ * Get resource type by target player id and resource type,
+ * empty list if export data does not exist
+ */
+fun MutablePlayerExportCenterData.getResourceQualityClassList(
+    targetPlayerId: Int,
+    resourceType: ResourceType
+): List<ResourceQualityClass> {
+    return exportDataList.filter {
+        (it.targetPlayerId == targetPlayerId) && (it.resourceType == resourceType)
+    }.map { it.resourceQualityClass }.toSet().toList()
+}
+
+/**
+ * Get resource type by target player id and resource type,
+ * empty list if export data does not exist
+ */
+fun PlayerExportCenterData.getExportDataList(
+    targetPlayerId: Int,
+    resourceType: ResourceType,
+    resourceQualityClass: ResourceQualityClass
+): List<PlayerSingleExportData> {
+    return exportDataList.filter {
+        (it.targetPlayerId == targetPlayerId) &&
+                (it.resourceType == resourceType) &&
+                (it.resourceQualityClass == resourceQualityClass)
+    }
+}
+
+/**
+ * Get resource type by target player id and resource type,
+ * empty list if export data does not exist
+ */
+fun MutablePlayerExportCenterData.getExportDataList(
+    targetPlayerId: Int,
+    resourceType: ResourceType,
+    resourceQualityClass: ResourceQualityClass
+): List<MutablePlayerSingleExportData> {
+    return exportDataList.filter {
+        (it.targetPlayerId == targetPlayerId) &&
+                (it.resourceType == resourceType) &&
+                (it.resourceQualityClass == resourceQualityClass)
     }
 }
 

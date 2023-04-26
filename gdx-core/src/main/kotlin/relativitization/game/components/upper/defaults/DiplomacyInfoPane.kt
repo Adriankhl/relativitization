@@ -11,6 +11,10 @@ import relativitization.universe.game.data.commands.DeclareIndependenceToTopLead
 import relativitization.universe.game.data.commands.DeclareWarCommand
 import relativitization.universe.game.data.commands.RemoveAllyCommand
 import relativitization.universe.game.data.commands.SurrenderCommand
+import relativitization.universe.game.data.components.defaults.diplomacy.getRelation
+import relativitization.universe.game.data.components.defaults.diplomacy.hasSubordinateWar
+import relativitization.universe.game.data.components.defaults.diplomacy.isAlly
+import relativitization.universe.game.data.components.defaults.diplomacy.isEnemy
 import relativitization.universe.game.data.components.defaults.diplomacy.war.WarData
 import relativitization.universe.game.data.components.diplomacyData
 import relativitization.universe.game.data.events.CallAllyToSubordinateWarEvent

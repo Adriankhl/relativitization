@@ -19,10 +19,7 @@ data class FuelRestMassData(
     val production: Double = 0.0,
     val trade: Double = 0.0,
     val maxMovementDelta: Double = 0.0,
-) {
-    fun total(): Double = storage + movement + production + trade
-    fun maxMovementDeltaRestMass(): Double = min(movement, maxMovementDelta)
-}
+)
 
 @Serializable
 data class MutableFuelRestMassData(
@@ -31,10 +28,15 @@ data class MutableFuelRestMassData(
     var production: Double = 0.0,
     var trade: Double = 0.0,
     var maxMovementDelta: Double = 0.0,
-) {
-    fun total(): Double = storage + movement + production + trade
-    fun maxMovementDeltaRestMass(): Double = min(movement, maxMovementDelta)
-}
+)
+
+fun FuelRestMassData.total(): Double = storage + movement + production + trade
+
+fun MutableFuelRestMassData.total(): Double = storage + movement + production + trade
+
+fun FuelRestMassData.maxMovementDeltaRestMass(): Double = min(movement, maxMovementDelta)
+
+fun MutableFuelRestMassData.maxMovementDeltaRestMass(): Double = min(movement, maxMovementDelta)
 
 
 /**
@@ -51,9 +53,7 @@ data class FuelRestMassTargetProportionData(
     val movement: Double = 0.0,
     val production: Double = 0.5,
     val trade: Double = 0.25,
-) {
-    fun total(): Double = storage + movement + production + trade
-}
+)
 
 @Serializable
 data class MutableFuelRestMassTargetProportionData(
@@ -61,6 +61,8 @@ data class MutableFuelRestMassTargetProportionData(
     var movement: Double = 0.0,
     var production: Double = 0.5,
     var trade: Double = 0.25,
-) {
-    fun total(): Double = storage + movement + production + trade
-}
+)
+
+fun FuelRestMassTargetProportionData.total(): Double = storage + movement + production + trade
+
+fun MutableFuelRestMassTargetProportionData.total(): Double = storage + movement + production + trade

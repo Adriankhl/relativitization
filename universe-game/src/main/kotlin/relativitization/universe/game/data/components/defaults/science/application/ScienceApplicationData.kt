@@ -7,14 +7,18 @@ import relativitization.universe.game.data.components.defaults.economy.ResourceT
 import relativitization.universe.game.data.components.defaults.popsystem.CarrierInternalData
 import relativitization.universe.game.data.components.defaults.popsystem.MutableCarrierInternalData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.labourer.factory.FuelFactoryInternalData
-import relativitization.universe.game.data.components.defaults.popsystem.pop.labourer.factory.InputResourceData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.labourer.factory.MutableFuelFactoryInternalData
-import relativitization.universe.game.data.components.defaults.popsystem.pop.labourer.factory.MutableInputResourceData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.labourer.factory.MutableResourceFactoryInternalData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.labourer.factory.ResourceFactoryInternalData
 import relativitization.universe.core.maths.algebra.Quadratic
 import relativitization.universe.core.utils.RelativitizationLogManager
+import relativitization.universe.game.data.components.defaults.economy.times
+import relativitization.universe.game.data.components.defaults.popsystem.pop.labourer.factory.InputResourceData
+import relativitization.universe.game.data.components.defaults.popsystem.pop.labourer.factory.MutableInputResourceData
 import kotlin.math.min
+
+
+private val logger = RelativitizationLogManager.getLogger()
 
 @Serializable
 data class ScienceApplicationData(
@@ -26,126 +30,7 @@ data class ScienceApplicationData(
     val resourceLogisticsLossFractionPerDistance: Double = 0.9,
     val militaryBaseAttackFactor: Double = 1.0,
     val militaryBaseShieldFactor: Double = 1.0,
-) {
-
-    /**
-     * Fuel factory should depend on num building only
-     */
-    fun newFuelFactoryInternalData(): FuelFactoryInternalData {
-        return idealFuelFactory
-    }
-
-    fun getIdealResourceFactory(resourceType: ResourceType): ResourceFactoryInternalData {
-        return idealResourceFactoryMap.getOrElse(resourceType) {
-            logger.debug("No ideal factory with type $resourceType")
-            ResourceFactoryInternalData(outputResource = resourceType)
-        }
-    }
-
-    fun newResourceFactoryInternalData(
-        outputResourceType: ResourceType,
-        qualityLevel: Double
-    ): ResourceFactoryInternalData {
-        val actualQualityLevel: Double = when {
-            qualityLevel > 1.0 -> {
-                logger.error("quality level greater than 1.0")
-                1.0
-            }
-            qualityLevel < 0.0 -> {
-                logger.error("quality level smaller than 0.0")
-                0.0
-            }
-            else -> {
-                qualityLevel
-            }
-        }
-
-        val idealResourceFactory: ResourceFactoryInternalData =
-            getIdealResourceFactory(outputResourceType)
-
-        val maxOutputResourceQualityData: ResourceQualityData =
-            idealResourceFactory.maxOutputResourceQualityData * actualQualityLevel
-
-        // Max. increase to 5 times
-        val maxOutputAmountPerEmployee: Double = idealResourceFactory.maxOutputAmountPerEmployee * Quadratic.standard(
-            x = actualQualityLevel,
-            xMin = 0.0,
-            xMax = 1.0,
-            yMin = 1.0,
-            yMax = 5.0,
-            increasing = false,
-            accelerate = true
-        )
-
-        // Reduce the required input resource quality and amount
-        val inputResourceMap: Map<ResourceType, InputResourceData> =
-            idealResourceFactory.inputResourceMap.mapValues {
-                val inputResourceData: InputResourceData = it.value
-
-                val qualityFactor: Double = Quadratic.standard(
-                    x = actualQualityLevel,
-                    xMin = 0.0,
-                    xMax = 1.0,
-                    yMin = 0.0,
-                    yMax = 1.0,
-                    increasing = true,
-                    accelerate = true
-                )
-
-                val amountFactor: Double = Quadratic.standard(
-                    x = actualQualityLevel,
-                    xMin = 0.0,
-                    xMax = 1.0,
-                    yMin = 0.2,
-                    yMax = 1.0,
-                    increasing = true,
-                    accelerate = true
-                )
-
-                InputResourceData(
-                    qualityData = inputResourceData.qualityData * qualityFactor,
-                    amountPerOutput = inputResourceData.amountPerOutput * amountFactor
-                )
-            }.toMap()
-
-        // Reduce the fuel rest mass consumption rate
-        val fuelRestMassConsumptionRatePerEmployee: Double =
-            idealResourceFactory.fuelRestMassConsumptionRatePerEmployee * Quadratic.standard(
-                x = actualQualityLevel,
-                xMin = 0.0,
-                xMax = 1.0,
-                yMin = 0.2,
-                yMax = 1.0,
-                increasing = true,
-                accelerate = true
-            )
-
-
-        // Reduce size
-        val sizePerEmployee: Double = idealResourceFactory.sizePerEmployee * Quadratic.standard(
-            x = actualQualityLevel,
-            xMin = 0.0,
-            xMax = 1.0,
-            yMin = 0.2,
-            yMax = 1.0,
-            increasing = true,
-            accelerate = true
-        )
-
-        return ResourceFactoryInternalData(
-            outputResource = outputResourceType,
-            maxOutputResourceQualityData = maxOutputResourceQualityData,
-            maxOutputAmountPerEmployee = maxOutputAmountPerEmployee,
-            inputResourceMap = inputResourceMap,
-            fuelRestMassConsumptionRatePerEmployee = fuelRestMassConsumptionRatePerEmployee,
-            sizePerEmployee = sizePerEmployee,
-        )
-    }
-
-    companion object {
-        private val logger = RelativitizationLogManager.getLogger()
-    }
-}
+)
 
 @Serializable
 data class MutableScienceApplicationData(
@@ -247,10 +132,6 @@ data class MutableScienceApplicationData(
         return carrierInternalData.coreRestMass * 10.0
     }
 
-    fun newFuelFactoryInternalData(): MutableFuelFactoryInternalData {
-        return idealFuelFactory
-    }
-
     /**
      * The fuel rest mass needed to construct a new factory
      *
@@ -262,113 +143,6 @@ data class MutableScienceApplicationData(
         val fuelFactoryInternalData: MutableFuelFactoryInternalData = newFuelFactoryInternalData()
 
         return fuelFactoryInternalData.maxOutputAmountPerEmployee * maxNumEmployee * 20
-    }
-
-    fun getIdealResourceFactory(resourceType: ResourceType): MutableResourceFactoryInternalData {
-        return idealResourceFactoryMap.getOrPut(resourceType) {
-            logger.debug("No ideal factory with type $resourceType")
-            MutableResourceFactoryInternalData(outputResource = resourceType)
-        }
-    }
-
-    fun newResourceFactoryInternalData(
-        outputResourceType: ResourceType,
-        qualityLevel: Double
-    ): MutableResourceFactoryInternalData {
-        val actualQualityLevel: Double = when {
-            qualityLevel > 1.0 -> {
-                logger.error("quality level greater than 1.0")
-                1.0
-            }
-            qualityLevel < 0.0 -> {
-                logger.error("quality level smaller than 0.0")
-                0.0
-            }
-            else -> {
-                qualityLevel
-            }
-        }
-
-        val idealResourceFactory: MutableResourceFactoryInternalData =
-            getIdealResourceFactory(outputResourceType)
-
-        val maxOutputResourceQualityData: MutableResourceQualityData =
-            idealResourceFactory.maxOutputResourceQualityData * actualQualityLevel
-
-        // Max. increase to 5 times
-        val maxOutputAmountPerEmployee: Double = idealResourceFactory.maxOutputAmountPerEmployee * Quadratic.standard(
-            x = actualQualityLevel,
-            xMin = 0.0,
-            xMax = 1.0,
-            yMin = 1.0,
-            yMax = 5.0,
-            increasing = false,
-            accelerate = true
-        )
-
-        // Reduce the required input resource quality and amount
-        val inputResourceMap: MutableMap<ResourceType, MutableInputResourceData> =
-            idealResourceFactory.inputResourceMap.mapValues {
-                val inputResourceData: MutableInputResourceData = it.value
-
-                val qualityFactor: Double = Quadratic.standard(
-                    x = actualQualityLevel,
-                    xMin = 0.0,
-                    xMax = 1.0,
-                    yMin = 0.0,
-                    yMax = 1.0,
-                    increasing = true,
-                    accelerate = true
-                )
-
-                val amountFactor: Double = Quadratic.standard(
-                    x = actualQualityLevel,
-                    xMin = 0.0,
-                    xMax = 1.0,
-                    yMin = 0.2,
-                    yMax = 1.0,
-                    increasing = true,
-                    accelerate = true
-                )
-
-                MutableInputResourceData(
-                    qualityData = inputResourceData.qualityData * qualityFactor,
-                    amountPerOutput = inputResourceData.amountPerOutput * amountFactor
-                )
-            }.toMutableMap()
-
-        // Reduce the fuel rest mass consumption rate
-        val fuelRestMassConsumptionRatePerEmployee: Double =
-            idealResourceFactory.fuelRestMassConsumptionRatePerEmployee * Quadratic.standard(
-                x = actualQualityLevel,
-                xMin = 0.0,
-                xMax = 1.0,
-                yMin = 0.2,
-                yMax = 1.0,
-                increasing = true,
-                accelerate = true
-            )
-
-
-        // Reduce size
-        val sizePerEmployee: Double = idealResourceFactory.sizePerEmployee * Quadratic.standard(
-            x = actualQualityLevel,
-            xMin = 0.0,
-            xMax = 1.0,
-            yMin = 0.2,
-            yMax = 1.0,
-            increasing = true,
-            accelerate = true
-        )
-
-        return MutableResourceFactoryInternalData(
-            outputResource = outputResourceType,
-            maxOutputResourceQualityData = maxOutputResourceQualityData,
-            maxOutputAmountPerEmployee = maxOutputAmountPerEmployee,
-            inputResourceMap = inputResourceMap,
-            fuelRestMassConsumptionRatePerEmployee = fuelRestMassConsumptionRatePerEmployee,
-            sizePerEmployee = sizePerEmployee,
-        )
     }
 
     /**
@@ -391,4 +165,230 @@ data class MutableScienceApplicationData(
     companion object {
         private val logger = RelativitizationLogManager.getLogger()
     }
+}
+
+/**
+ * Fuel factory should depend on num building only
+ */
+fun ScienceApplicationData.newFuelFactoryInternalData(): FuelFactoryInternalData {
+    return idealFuelFactory
+}
+
+fun MutableScienceApplicationData.newFuelFactoryInternalData(): MutableFuelFactoryInternalData {
+    return idealFuelFactory
+}
+
+fun ScienceApplicationData.getIdealResourceFactory(resourceType: ResourceType): ResourceFactoryInternalData {
+    return idealResourceFactoryMap.getOrElse(resourceType) {
+        logger.debug("No ideal factory with type $resourceType")
+        ResourceFactoryInternalData(outputResource = resourceType)
+    }
+}
+
+
+fun MutableScienceApplicationData.getIdealResourceFactory(resourceType: ResourceType): MutableResourceFactoryInternalData {
+    return idealResourceFactoryMap.getOrPut(resourceType) {
+        logger.debug("No ideal factory with type $resourceType")
+        MutableResourceFactoryInternalData(outputResource = resourceType)
+    }
+}
+
+fun ScienceApplicationData.newResourceFactoryInternalData(
+    outputResourceType: ResourceType,
+    qualityLevel: Double
+): ResourceFactoryInternalData {
+    val actualQualityLevel: Double = when {
+        qualityLevel > 1.0 -> {
+            logger.error("quality level greater than 1.0")
+            1.0
+        }
+        qualityLevel < 0.0 -> {
+            logger.error("quality level smaller than 0.0")
+            0.0
+        }
+        else -> {
+            qualityLevel
+        }
+    }
+
+    val idealResourceFactory: ResourceFactoryInternalData =
+        getIdealResourceFactory(outputResourceType)
+
+    val maxOutputResourceQualityData: ResourceQualityData =
+        idealResourceFactory.maxOutputResourceQualityData * actualQualityLevel
+
+    // Max. increase to 5 times
+    val maxOutputAmountPerEmployee: Double = idealResourceFactory.maxOutputAmountPerEmployee * Quadratic.standard(
+        x = actualQualityLevel,
+        xMin = 0.0,
+        xMax = 1.0,
+        yMin = 1.0,
+        yMax = 5.0,
+        increasing = false,
+        accelerate = true
+    )
+
+    // Reduce the required input resource quality and amount
+    val inputResourceMap: Map<ResourceType, InputResourceData> =
+        idealResourceFactory.inputResourceMap.mapValues {
+            val inputResourceData: InputResourceData = it.value
+
+            val qualityFactor: Double = Quadratic.standard(
+                x = actualQualityLevel,
+                xMin = 0.0,
+                xMax = 1.0,
+                yMin = 0.0,
+                yMax = 1.0,
+                increasing = true,
+                accelerate = true
+            )
+
+            val amountFactor: Double = Quadratic.standard(
+                x = actualQualityLevel,
+                xMin = 0.0,
+                xMax = 1.0,
+                yMin = 0.2,
+                yMax = 1.0,
+                increasing = true,
+                accelerate = true
+            )
+
+            InputResourceData(
+                qualityData = inputResourceData.qualityData * qualityFactor,
+                amountPerOutput = inputResourceData.amountPerOutput * amountFactor
+            )
+        }.toMap()
+
+    // Reduce the fuel rest mass consumption rate
+    val fuelRestMassConsumptionRatePerEmployee: Double =
+        idealResourceFactory.fuelRestMassConsumptionRatePerEmployee * Quadratic.standard(
+            x = actualQualityLevel,
+            xMin = 0.0,
+            xMax = 1.0,
+            yMin = 0.2,
+            yMax = 1.0,
+            increasing = true,
+            accelerate = true
+        )
+
+
+    // Reduce size
+    val sizePerEmployee: Double = idealResourceFactory.sizePerEmployee * Quadratic.standard(
+        x = actualQualityLevel,
+        xMin = 0.0,
+        xMax = 1.0,
+        yMin = 0.2,
+        yMax = 1.0,
+        increasing = true,
+        accelerate = true
+    )
+
+    return ResourceFactoryInternalData(
+        outputResource = outputResourceType,
+        maxOutputResourceQualityData = maxOutputResourceQualityData,
+        maxOutputAmountPerEmployee = maxOutputAmountPerEmployee,
+        inputResourceMap = inputResourceMap,
+        fuelRestMassConsumptionRatePerEmployee = fuelRestMassConsumptionRatePerEmployee,
+        sizePerEmployee = sizePerEmployee,
+    )
+}
+
+fun MutableScienceApplicationData.newResourceFactoryInternalData(
+    outputResourceType: ResourceType,
+    qualityLevel: Double
+): MutableResourceFactoryInternalData {
+    val actualQualityLevel: Double = when {
+        qualityLevel > 1.0 -> {
+            logger.error("quality level greater than 1.0")
+            1.0
+        }
+        qualityLevel < 0.0 -> {
+            logger.error("quality level smaller than 0.0")
+            0.0
+        }
+        else -> {
+            qualityLevel
+        }
+    }
+
+    val idealResourceFactory: MutableResourceFactoryInternalData =
+        getIdealResourceFactory(outputResourceType)
+
+    val maxOutputResourceQualityData: MutableResourceQualityData =
+        idealResourceFactory.maxOutputResourceQualityData * actualQualityLevel
+
+    // Max. increase to 5 times
+    val maxOutputAmountPerEmployee: Double = idealResourceFactory.maxOutputAmountPerEmployee * Quadratic.standard(
+        x = actualQualityLevel,
+        xMin = 0.0,
+        xMax = 1.0,
+        yMin = 1.0,
+        yMax = 5.0,
+        increasing = false,
+        accelerate = true
+    )
+
+    // Reduce the required input resource quality and amount
+    val inputResourceMap: MutableMap<ResourceType, MutableInputResourceData> =
+        idealResourceFactory.inputResourceMap.mapValues {
+            val inputResourceData: MutableInputResourceData = it.value
+
+            val qualityFactor: Double = Quadratic.standard(
+                x = actualQualityLevel,
+                xMin = 0.0,
+                xMax = 1.0,
+                yMin = 0.0,
+                yMax = 1.0,
+                increasing = true,
+                accelerate = true
+            )
+
+            val amountFactor: Double = Quadratic.standard(
+                x = actualQualityLevel,
+                xMin = 0.0,
+                xMax = 1.0,
+                yMin = 0.2,
+                yMax = 1.0,
+                increasing = true,
+                accelerate = true
+            )
+
+            MutableInputResourceData(
+                qualityData = inputResourceData.qualityData * qualityFactor,
+                amountPerOutput = inputResourceData.amountPerOutput * amountFactor
+            )
+        }.toMutableMap()
+
+    // Reduce the fuel rest mass consumption rate
+    val fuelRestMassConsumptionRatePerEmployee: Double =
+        idealResourceFactory.fuelRestMassConsumptionRatePerEmployee * Quadratic.standard(
+            x = actualQualityLevel,
+            xMin = 0.0,
+            xMax = 1.0,
+            yMin = 0.2,
+            yMax = 1.0,
+            increasing = true,
+            accelerate = true
+        )
+
+
+    // Reduce size
+    val sizePerEmployee: Double = idealResourceFactory.sizePerEmployee * Quadratic.standard(
+        x = actualQualityLevel,
+        xMin = 0.0,
+        xMax = 1.0,
+        yMin = 0.2,
+        yMax = 1.0,
+        increasing = true,
+        accelerate = true
+    )
+
+    return MutableResourceFactoryInternalData(
+        outputResource = outputResourceType,
+        maxOutputResourceQualityData = maxOutputResourceQualityData,
+        maxOutputAmountPerEmployee = maxOutputAmountPerEmployee,
+        inputResourceMap = inputResourceMap,
+        fuelRestMassConsumptionRatePerEmployee = fuelRestMassConsumptionRatePerEmployee,
+        sizePerEmployee = sizePerEmployee,
+    )
 }

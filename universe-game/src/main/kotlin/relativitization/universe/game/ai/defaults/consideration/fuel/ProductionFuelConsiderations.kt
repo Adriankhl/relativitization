@@ -9,6 +9,7 @@ import relativitization.universe.game.data.components.defaults.ai.MutableFuelRes
 import relativitization.universe.game.data.components.defaults.physics.MutableFuelRestMassData
 import relativitization.universe.game.data.components.physicsData
 import relativitization.universe.game.data.components.popSystemData
+import relativitization.universe.game.data.components.totalSaving
 
 /**
  * Whether production fuel is increasing comparing to historical average

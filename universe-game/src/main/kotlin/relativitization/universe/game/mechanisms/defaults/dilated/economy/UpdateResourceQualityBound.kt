@@ -11,6 +11,12 @@ import relativitization.universe.game.data.components.defaults.economy.ResourceT
 import relativitization.universe.game.data.components.economyData
 import relativitization.universe.core.data.global.UniverseGlobalData
 import relativitization.universe.core.mechanisms.Mechanism
+import relativitization.universe.game.data.components.defaults.economy.geq
+import relativitization.universe.game.data.components.defaults.economy.getSingleResourceData
+import relativitization.universe.game.data.components.defaults.economy.leq
+import relativitization.universe.game.data.components.defaults.economy.plus
+import relativitization.universe.game.data.components.defaults.economy.times
+import relativitization.universe.game.data.components.defaults.economy.total
 import kotlin.random.Random
 
 object UpdateResourceQualityBound : Mechanism() {

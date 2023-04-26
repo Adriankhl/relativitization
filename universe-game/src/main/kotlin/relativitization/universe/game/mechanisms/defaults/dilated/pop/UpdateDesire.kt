@@ -12,6 +12,7 @@ import relativitization.universe.game.data.components.defaults.popsystem.pop.Pop
 import relativitization.universe.game.data.components.popSystemData
 import relativitization.universe.core.data.global.UniverseGlobalData
 import relativitization.universe.core.mechanisms.Mechanism
+import relativitization.universe.game.data.components.defaults.popsystem.pop.getCommonPopData
 import kotlin.random.Random
 
 object UpdateDesire : Mechanism() {

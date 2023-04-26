@@ -8,6 +8,8 @@ import relativitization.universe.game.data.components.defaults.diplomacy.Mutable
 import relativitization.universe.game.data.components.diplomacyData
 import relativitization.universe.core.data.global.UniverseGlobalData
 import relativitization.universe.core.mechanisms.Mechanism
+import relativitization.universe.game.data.components.defaults.diplomacy.hasAllySubordinateWar
+import relativitization.universe.game.data.components.defaults.diplomacy.hasAllyWar
 import kotlin.random.Random
 
 /**

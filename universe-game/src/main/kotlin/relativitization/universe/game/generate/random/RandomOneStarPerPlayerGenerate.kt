@@ -29,10 +29,11 @@ import relativitization.universe.core.generate.GenerateSettings
 import relativitization.universe.game.generate.random.science.DefaultGenerateUniverseScienceData
 import relativitization.universe.game.global.defaults.science.UpdateUniverseScienceData
 import relativitization.universe.core.maths.grid.Grids
+import relativitization.universe.core.utils.RelativitizationLogManager
+import relativitization.universe.game.data.components.defaults.popsystem.pop.getCommonPopData
 import relativitization.universe.game.mechanisms.defaults.dilated.pop.UpdateDesire
 import relativitization.universe.game.mechanisms.defaults.regular.science.UpdateScienceApplicationData
 import relativitization.universe.game.mechanisms.defaults.regular.sync.SyncPlayerScienceData
-import relativitization.universe.core.utils.RelativitizationLogManager
 import kotlin.math.floor
 import kotlin.random.Random
 

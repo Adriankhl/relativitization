@@ -14,6 +14,7 @@ import relativitization.universe.core.maths.physics.Int4D
 import relativitization.universe.core.utils.I18NString
 import relativitization.universe.core.utils.IntString
 import relativitization.universe.core.utils.NormalString
+import relativitization.universe.game.data.components.defaults.diplomacy.isAlly
 
 /**
  * Declare war on target player

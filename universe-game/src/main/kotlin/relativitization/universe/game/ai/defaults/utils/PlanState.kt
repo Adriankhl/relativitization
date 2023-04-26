@@ -9,6 +9,8 @@ import relativitization.universe.game.data.components.playerScienceData
 import relativitization.universe.game.data.components.popSystemData
 import relativitization.universe.core.maths.physics.Int3D
 import relativitization.universe.core.maths.physics.Intervals
+import relativitization.universe.game.data.components.averageSalary
+import relativitization.universe.game.data.components.totalAdultPopulation
 import kotlin.math.pow
 
 /**

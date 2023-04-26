@@ -11,6 +11,8 @@ import relativitization.universe.game.data.components.popSystemData
 import relativitization.universe.core.data.global.UniverseGlobalData
 import relativitization.universe.core.mechanisms.Mechanism
 import relativitization.universe.core.utils.RelativitizationLogManager
+import relativitization.universe.game.data.components.defaults.popsystem.pop.getCommonPopData
+import relativitization.universe.game.data.components.defaults.popsystem.pop.totalAdultPopulation
 import kotlin.math.pow
 import kotlin.random.Random
 

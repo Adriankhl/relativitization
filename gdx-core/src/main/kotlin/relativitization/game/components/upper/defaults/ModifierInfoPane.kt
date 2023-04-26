@@ -8,6 +8,8 @@ import relativitization.universe.core.data.PlayerData
 import relativitization.universe.game.data.components.defaults.modifier.CombatModifierData
 import relativitization.universe.game.data.components.defaults.modifier.DiplomacyModifierData
 import relativitization.universe.game.data.components.defaults.modifier.PhysicsModifierData
+import relativitization.universe.game.data.components.defaults.modifier.getPeaceTreatyLength
+import relativitization.universe.game.data.components.defaults.modifier.getRelationModifier
 import relativitization.universe.game.data.components.modifierData
 
 class ModifierInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane>(game) {

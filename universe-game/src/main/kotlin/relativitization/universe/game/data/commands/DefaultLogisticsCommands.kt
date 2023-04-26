@@ -23,6 +23,14 @@ import relativitization.universe.core.utils.I18NString
 import relativitization.universe.core.utils.IntString
 import relativitization.universe.core.utils.NormalString
 import relativitization.universe.core.utils.RelativitizationLogManager
+import relativitization.universe.game.data.components.defaults.economy.getResourceAmountData
+import relativitization.universe.game.data.components.defaults.economy.getResourceQuality
+import relativitization.universe.game.data.components.defaults.economy.getResourceTariffRate
+import relativitization.universe.game.data.components.defaults.physics.total
+import relativitization.universe.game.data.components.defaults.economy.toMutableResourceQualityData
+import relativitization.universe.game.data.components.defaults.economy.getStorageResourceAmount
+import relativitization.universe.game.data.components.defaults.economy.squareDiff
+import relativitization.universe.game.data.components.defaults.economy.toResourceQualityData
 import kotlin.math.pow
 
 /**
@@ -651,7 +659,7 @@ data class PopBuyResourceCommand(
                 fromId
             ) {
                 MutablePopExportCenterData()
-            }.getSingleExportData(
+            }.getOrPutSingleExportData(
                 carrierId = fromCarrierId,
                 popType = fromPopType,
                 resourceType = resourceType,

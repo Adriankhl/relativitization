@@ -17,6 +17,8 @@ import relativitization.universe.core.utils.I18NString
 import relativitization.universe.core.utils.IntString
 import relativitization.universe.core.utils.IntTranslateString
 import relativitization.universe.core.utils.NormalString
+import relativitization.universe.game.data.components.defaults.economy.getSingleResourceData
+import relativitization.universe.game.data.components.defaults.popsystem.pop.getCommonPopData
 
 /**
  * Change import tariff rate of self

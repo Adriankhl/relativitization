@@ -10,6 +10,7 @@ import relativitization.universe.game.data.components.defaults.physics.MutableFu
 import relativitization.universe.game.data.components.defaults.physics.MutableFuelRestMassTargetProportionData
 import relativitization.universe.game.data.components.defaults.physics.MutableTargetDouble3DData
 import relativitization.universe.game.data.components.defaults.physics.TargetDouble3DData
+import relativitization.universe.game.data.components.defaults.physics.total
 import kotlin.math.min
 
 /**
@@ -29,9 +30,7 @@ data class PhysicsData(
     val fuelRestMassData: FuelRestMassData = FuelRestMassData(),
     val fuelRestMassTargetProportionData: FuelRestMassTargetProportionData = FuelRestMassTargetProportionData(),
     val targetDouble3DData: TargetDouble3DData = TargetDouble3DData(),
-) : DefaultPlayerDataComponent() {
-    fun totalRestMass() = coreRestMass + otherRestMass + fuelRestMassData.total()
-}
+) : DefaultPlayerDataComponent()
 
 @Serializable
 @SerialName("PhysicsData")
@@ -43,8 +42,6 @@ data class MutablePhysicsData(
         MutableFuelRestMassTargetProportionData(),
     var targetDouble3DData: MutableTargetDouble3DData = MutableTargetDouble3DData(),
 ) : MutableDefaultPlayerDataComponent() {
-    fun totalRestMass() = coreRestMass + otherRestMass + fuelRestMassData.total()
-
     /**
      * Add internal fuel from other part of the player,
      * such that it fulfill the target in the order of storage, movement, production, and
@@ -184,7 +181,10 @@ fun PlayerInternalData.physicsData(): PhysicsData =
 fun MutablePlayerInternalData.physicsData(): MutablePhysicsData =
     playerDataComponentMap.get()
 
+
 fun MutablePlayerInternalData.physicsData(newPhysicsData: MutablePhysicsData) =
     playerDataComponentMap.put(newPhysicsData)
 
+fun PhysicsData.totalRestMass() = coreRestMass + otherRestMass + fuelRestMassData.total()
 
+fun MutablePhysicsData.totalRestMass() = coreRestMass + otherRestMass + fuelRestMassData.total()

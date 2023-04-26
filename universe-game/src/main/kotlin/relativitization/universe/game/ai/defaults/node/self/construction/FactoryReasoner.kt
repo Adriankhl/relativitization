@@ -35,6 +35,7 @@ import relativitization.universe.game.data.components.popSystemData
 import relativitization.universe.core.data.serializer.DataSerializer
 import relativitization.universe.core.maths.physics.Int3D
 import relativitization.universe.core.maths.physics.Intervals
+import relativitization.universe.game.data.components.defaults.science.application.newResourceFactoryInternalData
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.random.Random

@@ -15,6 +15,7 @@ import relativitization.universe.core.utils.I18NString
 import relativitization.universe.core.utils.IntString
 import relativitization.universe.core.utils.NormalString
 import relativitization.universe.core.utils.RelativitizationLogManager
+import relativitization.universe.game.data.components.totalRestMass
 import kotlin.random.Random
 
 /**

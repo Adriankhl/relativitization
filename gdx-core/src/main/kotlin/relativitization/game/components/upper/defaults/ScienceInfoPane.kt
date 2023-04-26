@@ -9,6 +9,7 @@ import relativitization.universe.core.data.PlayerData
 import relativitization.universe.game.data.components.defaults.economy.ResourceType
 import relativitization.universe.game.data.components.defaults.popsystem.pop.labourer.factory.ResourceFactoryInternalData
 import relativitization.universe.game.data.components.defaults.science.application.ScienceApplicationData
+import relativitization.universe.game.data.components.defaults.science.application.getIdealResourceFactory
 import relativitization.universe.game.data.components.defaults.science.knowledge.AppliedResearchData
 import relativitization.universe.game.data.components.defaults.science.knowledge.BasicResearchData
 import relativitization.universe.game.data.components.defaults.science.knowledge.KnowledgeData

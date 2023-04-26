@@ -5,6 +5,7 @@ import relativitization.universe.game.ai.defaults.utils.DualUtilityData
 import relativitization.universe.game.ai.defaults.utils.PlanState
 import relativitization.universe.core.data.PlanDataAtPlayer
 import relativitization.universe.game.data.components.defaults.diplomacy.war.MutableWarData
+import relativitization.universe.game.data.components.defaults.diplomacy.war.populationFraction
 import relativitization.universe.game.data.components.diplomacyData
 
 /**

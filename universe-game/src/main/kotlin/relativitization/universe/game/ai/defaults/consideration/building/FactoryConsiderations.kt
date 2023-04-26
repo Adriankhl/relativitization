@@ -9,6 +9,11 @@ import relativitization.universe.core.data.PlayerData
 import relativitization.universe.game.data.components.PopSystemData
 import relativitization.universe.game.data.components.defaults.economy.ResourceQualityClass
 import relativitization.universe.game.data.components.defaults.economy.ResourceType
+import relativitization.universe.game.data.components.defaults.economy.getIncomeTax
+import relativitization.universe.game.data.components.defaults.economy.getResourcePrice
+import relativitization.universe.game.data.components.defaults.economy.mag
+import relativitization.universe.game.data.components.defaults.economy.toResourceQualityData
+import relativitization.universe.game.data.components.defaults.economy.tradeQualityClass
 import relativitization.universe.game.data.components.defaults.popsystem.CarrierData
 import relativitization.universe.game.data.components.defaults.popsystem.CarrierType
 import relativitization.universe.game.data.components.defaults.popsystem.MutableCarrierData
@@ -20,6 +25,8 @@ import relativitization.universe.game.data.components.defaults.popsystem.pop.lab
 import relativitization.universe.game.data.components.defaults.popsystem.pop.labourer.factory.MutableResourceFactoryData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.labourer.factory.MutableResourceFactoryInternalData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.labourer.factory.ResourceFactoryData
+import relativitization.universe.game.data.components.defaults.popsystem.pop.salaryPerEmployee
+import relativitization.universe.game.data.components.defaults.science.application.getIdealResourceFactory
 import relativitization.universe.game.data.components.economyData
 import relativitization.universe.game.data.components.playerScienceData
 import relativitization.universe.game.data.components.popSystemData

@@ -28,6 +28,14 @@ import relativitization.universe.core.maths.physics.Int4D
 import relativitization.universe.core.maths.physics.Intervals
 import relativitization.universe.core.maths.sampling.WeightedReservoir
 import relativitization.universe.core.mechanisms.Mechanism
+import relativitization.universe.game.data.components.defaults.economy.getResourceAmountData
+import relativitization.universe.game.data.components.defaults.economy.getResourcePrice
+import relativitization.universe.game.data.components.defaults.economy.getResourceQuality
+import relativitization.universe.game.data.components.defaults.economy.getResourceTariffRate
+import relativitization.universe.game.data.components.defaults.economy.getTradeResourceAmount
+import relativitization.universe.game.data.components.defaults.economy.toResourceQualityData
+import relativitization.universe.game.data.components.defaults.economy.tradeQualityClass
+import relativitization.universe.game.data.components.defaults.popsystem.pop.getCommonPopData
 import kotlin.math.min
 import kotlin.math.pow
 import kotlin.random.Random

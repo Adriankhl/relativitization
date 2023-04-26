@@ -41,6 +41,8 @@ import relativitization.universe.game.global.defaults.science.UpdateUniverseScie
 import relativitization.universe.core.maths.grid.Grids.create4DGrid
 import relativitization.universe.core.maths.physics.MutableDouble4D
 import relativitization.universe.core.maths.physics.MutableInt4D
+import relativitization.universe.game.data.components.defaults.economy.getSingleResourceData
+import relativitization.universe.game.data.components.defaults.economy.plus
 import kotlin.random.Random
 
 object TestingFixedMinimalGenerate : TestingGenerateUniverseMethod() {

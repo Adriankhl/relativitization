@@ -4,6 +4,7 @@ import kotlinx.serialization.Serializable
 import relativitization.universe.game.data.components.defaults.popsystem.pop.AllPopData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.MutableAllPopData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.PopType
+import relativitization.universe.game.data.components.defaults.popsystem.pop.getCommonPopData
 
 enum class CarrierType {
     STELLAR,
@@ -15,72 +16,73 @@ data class CarrierData(
     val carrierType: CarrierType = CarrierType.SPACESHIP,
     val carrierInternalData: CarrierInternalData = CarrierInternalData(),
     val allPopData: AllPopData = AllPopData(),
-) {
-    /**
-     * The rest mass of the carrier except the core mass
-     */
-    fun totalOtherRestMass(): Double {
-        val factoryStoredRestMass: Double =
-            allPopData.labourerPopData.resourceFactoryMap.values.sumOf { resourceFactoryData ->
-                resourceFactoryData.storedFuelRestMass
-            } + allPopData.labourerPopData.fuelFactoryMap.values.sumOf { fuelFactoryData ->
-                fuelFactoryData.storedFuelRestMass
-            }
-
-        val exportCenterStoredFuelRestMass: Double =
-            allPopData.servicePopData.exportData.playerExportCenterMap.values.sumOf { playerExportCenterData ->
-                playerExportCenterData.exportDataList.sumOf { playerSingleExportData ->
-                    playerSingleExportData.storedFuelRestMass
-                }
-            } + allPopData.servicePopData.exportData.popExportCenterMap.values.sumOf { popExportCenterData ->
-                popExportCenterData.exportDataMap.values.sumOf { exportMap ->
-                    exportMap.values.flatten().sumOf { popSingleExportData ->
-                        popSingleExportData.storedFuelRestMass
-                    }
-                }
-            }
-
-        val popStoredFuelRestMass: Double = PopType.values().sumOf { popType ->
-            allPopData.getCommonPopData(popType).saving
-        }
-
-        return factoryStoredRestMass + exportCenterStoredFuelRestMass + popStoredFuelRestMass
-    }
-}
+)
 
 @Serializable
 data class MutableCarrierData(
     var carrierType: CarrierType = CarrierType.SPACESHIP,
     var carrierInternalData: MutableCarrierInternalData = MutableCarrierInternalData(),
     var allPopData: MutableAllPopData = MutableAllPopData(),
-) {
-    fun totalOtherRestMass(): Double {
-        val factoryStoredRestMass: Double =
-            allPopData.labourerPopData.resourceFactoryMap.values.sumOf { resourceFactoryData ->
-                resourceFactoryData.storedFuelRestMass
-            } + allPopData.labourerPopData.fuelFactoryMap.values.sumOf { fuelFactoryData ->
-                fuelFactoryData.storedFuelRestMass
-            }
+)
 
-        val exportCenterStoredFuelRestMass: Double =
-            allPopData.servicePopData.exportData.playerExportCenterMap.values.sumOf { playerExportCenterData ->
-                playerExportCenterData.exportDataList.sumOf { playerSingleExportData ->
-                    playerSingleExportData.storedFuelRestMass
-                }
-            } + allPopData.servicePopData.exportData.popExportCenterMap.values.sumOf { popExportCenterData ->
-                popExportCenterData.exportDataMap.values.sumOf { exportMap ->
-                    exportMap.values.flatten().sumOf { popSingleExportData ->
-                        popSingleExportData.storedFuelRestMass
-                    }
-                }
-            }
-
-        val popStoredFuelRestMass: Double = PopType.values().sumOf { popType ->
-            allPopData.getCommonPopData(popType).saving
+/**
+ * The rest mass of the carrier except the core mass
+ */
+fun CarrierData.totalOtherRestMass(): Double {
+    val factoryStoredRestMass: Double =
+        allPopData.labourerPopData.resourceFactoryMap.values.sumOf { resourceFactoryData ->
+            resourceFactoryData.storedFuelRestMass
+        } + allPopData.labourerPopData.fuelFactoryMap.values.sumOf { fuelFactoryData ->
+            fuelFactoryData.storedFuelRestMass
         }
 
-        return factoryStoredRestMass + exportCenterStoredFuelRestMass + popStoredFuelRestMass
+    val exportCenterStoredFuelRestMass: Double =
+        allPopData.servicePopData.exportData.playerExportCenterMap.values.sumOf { playerExportCenterData ->
+            playerExportCenterData.exportDataList.sumOf { playerSingleExportData ->
+                playerSingleExportData.storedFuelRestMass
+            }
+        } + allPopData.servicePopData.exportData.popExportCenterMap.values.sumOf { popExportCenterData ->
+            popExportCenterData.exportDataMap.values.sumOf { exportMap ->
+                exportMap.values.flatten().sumOf { popSingleExportData ->
+                    popSingleExportData.storedFuelRestMass
+                }
+            }
+        }
+
+    val popStoredFuelRestMass: Double = PopType.values().sumOf { popType ->
+        allPopData.getCommonPopData(popType).saving
     }
+
+    return factoryStoredRestMass + exportCenterStoredFuelRestMass + popStoredFuelRestMass
+}
+
+
+fun MutableCarrierData.totalOtherRestMass(): Double {
+    val factoryStoredRestMass: Double =
+        allPopData.labourerPopData.resourceFactoryMap.values.sumOf { resourceFactoryData ->
+            resourceFactoryData.storedFuelRestMass
+        } + allPopData.labourerPopData.fuelFactoryMap.values.sumOf { fuelFactoryData ->
+            fuelFactoryData.storedFuelRestMass
+        }
+
+    val exportCenterStoredFuelRestMass: Double =
+        allPopData.servicePopData.exportData.playerExportCenterMap.values.sumOf { playerExportCenterData ->
+            playerExportCenterData.exportDataList.sumOf { playerSingleExportData ->
+                playerSingleExportData.storedFuelRestMass
+            }
+        } + allPopData.servicePopData.exportData.popExportCenterMap.values.sumOf { popExportCenterData ->
+            popExportCenterData.exportDataMap.values.sumOf { exportMap ->
+                exportMap.values.flatten().sumOf { popSingleExportData ->
+                    popSingleExportData.storedFuelRestMass
+                }
+            }
+        }
+
+    val popStoredFuelRestMass: Double = PopType.values().sumOf { popType ->
+        allPopData.getCommonPopData(popType).saving
+    }
+
+    return factoryStoredRestMass + exportCenterStoredFuelRestMass + popStoredFuelRestMass
 }
 
 @Serializable

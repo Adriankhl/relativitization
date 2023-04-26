@@ -10,6 +10,8 @@ import relativitization.universe.core.generate.GenerateSettings
 import relativitization.universe.core.generate.GenerateUniverseMethodCollection
 import relativitization.universe.game.GameUniverseInitializer
 import relativitization.universe.game.data.commands.DefaultCommandAvailability
+import relativitization.universe.game.data.components.defaults.diplomacy.hasSubordinateWar
+import relativitization.universe.game.data.components.defaults.diplomacy.isEnemy
 import relativitization.universe.game.generate.testing.TestingFixedMinimalGenerate
 import relativitization.universe.game.global.DefaultGlobalMechanismList
 import relativitization.universe.game.mechanisms.DefaultMechanismLists

@@ -15,6 +15,9 @@ import relativitization.universe.core.data.serializer.DataSerializer
 import relativitization.universe.core.maths.physics.Intervals
 import relativitization.universe.core.mechanisms.Mechanism
 import relativitization.universe.core.utils.RelativitizationLogManager
+import relativitization.universe.game.data.components.defaults.diplomacy.hasSubordinateWar
+import relativitization.universe.game.data.components.defaults.diplomacy.isAlly
+import relativitization.universe.game.data.components.totalAdultPopulation
 import kotlin.random.Random
 
 object UpdateWar : Mechanism() {

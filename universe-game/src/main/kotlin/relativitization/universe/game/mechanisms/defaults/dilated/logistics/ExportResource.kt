@@ -17,6 +17,12 @@ import relativitization.universe.game.data.components.playerScienceData
 import relativitization.universe.game.data.components.popSystemData
 import relativitization.universe.core.data.global.UniverseGlobalData
 import relativitization.universe.core.mechanisms.Mechanism
+import relativitization.universe.game.data.components.defaults.economy.getResourceAmountData
+import relativitization.universe.game.data.components.defaults.economy.getResourcePrice
+import relativitization.universe.game.data.components.defaults.economy.getResourceQuality
+import relativitization.universe.game.data.components.defaults.economy.getResourceTariffRate
+import relativitization.universe.game.data.components.defaults.economy.getTradeResourceAmount
+import relativitization.universe.game.data.components.defaults.economy.toResourceQualityData
 import kotlin.math.max
 import kotlin.random.Random
 

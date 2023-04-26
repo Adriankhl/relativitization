@@ -29,6 +29,7 @@ import relativitization.universe.game.data.components.playerScienceData
 import relativitization.universe.game.data.components.politicsData
 import relativitization.universe.game.data.components.popSystemData
 import relativitization.universe.core.data.serializer.DataSerializer
+import relativitization.universe.game.data.components.defaults.science.application.newResourceFactoryInternalData
 import kotlin.random.Random
 
 class ForeignFactoryReasoner(private val random: Random) : SequenceReasoner() {

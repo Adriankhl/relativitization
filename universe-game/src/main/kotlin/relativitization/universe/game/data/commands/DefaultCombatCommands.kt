@@ -11,6 +11,8 @@ import relativitization.universe.game.data.components.physicsData
 import relativitization.universe.game.data.components.popSystemData
 import relativitization.universe.core.maths.physics.Int4D
 import relativitization.universe.core.utils.RelativitizationLogManager
+import relativitization.universe.game.data.components.defaults.popsystem.pop.totalAdultPopulation
+import relativitization.universe.game.data.components.defaults.popsystem.totalOtherRestMass
 
 /**
  * Damage from one player to another, send by auto combat mechanism only

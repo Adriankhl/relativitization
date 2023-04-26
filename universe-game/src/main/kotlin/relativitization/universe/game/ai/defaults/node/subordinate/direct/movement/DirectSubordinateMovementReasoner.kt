@@ -16,6 +16,7 @@ import relativitization.universe.game.data.components.physicsData
 import relativitization.universe.game.data.events.MoveToDouble3DEvent
 import relativitization.universe.core.maths.physics.Intervals
 import relativitization.universe.core.maths.physics.Movement
+import relativitization.universe.game.data.components.totalRestMass
 import kotlin.math.min
 import kotlin.random.Random
 

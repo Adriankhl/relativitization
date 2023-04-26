@@ -14,28 +14,16 @@ import kotlinx.serialization.Serializable
 data class WarData(
     val warCoreData: WarCoreData = WarCoreData(),
     val opponentLeaderIdList: List<Int> = listOf(),
-    private val hasInitialized: Boolean = false,
-    private val initialTotalPopulation: Double = 0.0,
-) {
-    fun populationFraction(currentPopulation: Double): Double {
-        return if (hasInitialized) {
-            if (initialTotalPopulation > 0.0) {
-                currentPopulation / initialTotalPopulation
-            } else {
-                1.0
-            }
-        } else {
-            1.0
-        }
-    }
-}
+    val hasInitialized: Boolean = false,
+    val initialTotalPopulation: Double = 0.0,
+)
 
 @Serializable
 data class MutableWarData(
     var warCoreData: WarCoreData = WarCoreData(),
     val opponentLeaderIdList: MutableList<Int> = mutableListOf(),
-    private var hasInitialized: Boolean = false,
-    private var initialTotalPopulation: Double = 0.0,
+    var hasInitialized: Boolean = false,
+    var initialTotalPopulation: Double = 0.0,
 ) {
     fun initializePopulation(totalCurrentPopulation: Double) {
         if (!hasInitialized) {
@@ -43,16 +31,29 @@ data class MutableWarData(
         }
     }
 
-    fun populationFraction(currentPopulation: Double): Double {
-        return if (hasInitialized) {
-            if (initialTotalPopulation > 0.0) {
-                currentPopulation / initialTotalPopulation
-            } else {
-                1.0
-            }
+}
+
+fun WarData.populationFraction(currentPopulation: Double): Double {
+    return if (hasInitialized) {
+        if (initialTotalPopulation > 0.0) {
+            currentPopulation / initialTotalPopulation
         } else {
             1.0
         }
+    } else {
+        1.0
+    }
+}
+
+fun MutableWarData.populationFraction(currentPopulation: Double): Double {
+    return if (hasInitialized) {
+        if (initialTotalPopulation > 0.0) {
+            currentPopulation / initialTotalPopulation
+        } else {
+            1.0
+        }
+    } else {
+        1.0
     }
 }
 

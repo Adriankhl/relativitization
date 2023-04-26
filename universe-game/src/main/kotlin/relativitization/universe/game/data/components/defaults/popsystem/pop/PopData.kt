@@ -22,6 +22,7 @@ import relativitization.universe.game.data.components.defaults.popsystem.pop.ser
 import relativitization.universe.game.data.components.defaults.popsystem.pop.service.ServicePopData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.soldier.MutableSoldierPopData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.soldier.SoldierPopData
+import relativitization.universe.game.data.components.defaults.economy.toMutableResourceQualityData
 import relativitization.universe.core.utils.RelativitizationLogManager
 
 /**
@@ -56,22 +57,7 @@ data class AllPopData(
     val servicePopData: ServicePopData = ServicePopData(),
     val entertainerPopData: EntertainerPopData = EntertainerPopData(),
     val soldierPopData: SoldierPopData = SoldierPopData(),
-) {
-    fun getCommonPopData(popType: PopType): CommonPopData = when (popType) {
-        PopType.LABOURER -> labourerPopData.commonPopData
-        PopType.SCHOLAR -> scholarPopData.commonPopData
-        PopType.ENGINEER -> engineerPopData.commonPopData
-        PopType.EDUCATOR -> educatorPopData.commonPopData
-        PopType.MEDIC -> medicPopData.commonPopData
-        PopType.SERVICE_WORKER -> servicePopData.commonPopData
-        PopType.ENTERTAINER -> entertainerPopData.commonPopData
-        PopType.SOLDIER -> soldierPopData.commonPopData
-    }
-
-    fun totalAdultPopulation(): Double = PopType.values().fold(0.0) { acc, popType ->
-        acc + getCommonPopData(popType).adultPopulation
-    }
-}
+)
 
 @Serializable
 data class MutableAllPopData(
@@ -84,16 +70,6 @@ data class MutableAllPopData(
     var entertainerPopData: MutableEntertainerPopData = MutableEntertainerPopData(),
     var soldierPopData: MutableSoldierPopData = MutableSoldierPopData(),
 ) {
-    fun getCommonPopData(popType: PopType): MutableCommonPopData = when (popType) {
-        PopType.LABOURER -> labourerPopData.commonPopData
-        PopType.SCHOLAR -> scholarPopData.commonPopData
-        PopType.ENGINEER -> engineerPopData.commonPopData
-        PopType.EDUCATOR -> educatorPopData.commonPopData
-        PopType.MEDIC -> medicPopData.commonPopData
-        PopType.SERVICE_WORKER -> servicePopData.commonPopData
-        PopType.ENTERTAINER -> entertainerPopData.commonPopData
-        PopType.SOLDIER -> soldierPopData.commonPopData
-    }
 
     fun addDesireResource(
         popType: PopType,
@@ -109,10 +85,37 @@ data class MutableAllPopData(
             resourceAmount
         )
     }
+}
 
-    fun totalAdultPopulation(): Double = PopType.values().fold(0.0) { acc, popType ->
-        acc + getCommonPopData(popType).adultPopulation
-    }
+
+fun AllPopData.getCommonPopData(popType: PopType): CommonPopData = when (popType) {
+    PopType.LABOURER -> labourerPopData.commonPopData
+    PopType.SCHOLAR -> scholarPopData.commonPopData
+    PopType.ENGINEER -> engineerPopData.commonPopData
+    PopType.EDUCATOR -> educatorPopData.commonPopData
+    PopType.MEDIC -> medicPopData.commonPopData
+    PopType.SERVICE_WORKER -> servicePopData.commonPopData
+    PopType.ENTERTAINER -> entertainerPopData.commonPopData
+    PopType.SOLDIER -> soldierPopData.commonPopData
+}
+
+fun MutableAllPopData.getCommonPopData(popType: PopType): MutableCommonPopData = when (popType) {
+    PopType.LABOURER -> labourerPopData.commonPopData
+    PopType.SCHOLAR -> scholarPopData.commonPopData
+    PopType.ENGINEER -> engineerPopData.commonPopData
+    PopType.EDUCATOR -> educatorPopData.commonPopData
+    PopType.MEDIC -> medicPopData.commonPopData
+    PopType.SERVICE_WORKER -> servicePopData.commonPopData
+    PopType.ENTERTAINER -> entertainerPopData.commonPopData
+    PopType.SOLDIER -> soldierPopData.commonPopData
+}
+
+fun AllPopData.totalAdultPopulation(): Double = PopType.values().fold(0.0) { acc, popType ->
+    acc + getCommonPopData(popType).adultPopulation
+}
+
+fun MutableAllPopData.totalAdultPopulation(): Double = PopType.values().fold(0.0) { acc, popType ->
+    acc + getCommonPopData(popType).adultPopulation
 }
 
 /**
@@ -144,14 +147,7 @@ data class CommonPopData(
     val desireResourceMap: Map<ResourceType, ResourceDesireData> = mapOf(),
     val resourceInputMap: Map<ResourceType, ResourceDesireData> = mapOf(),
     val lastResourceInputMap: Map<ResourceType, ResourceDesireData> = mapOf(),
-) {
-    /**
-     * Compute the salary per employee of this pop
-     */
-    fun salaryPerEmployee(generalPopSystemData: GeneralPopSystemData): Double {
-        return generalPopSystemData.baseSalaryPerEmployee * salaryFactor
-    }
-}
+)
 
 @Serializable
 data class MutableCommonPopData(
@@ -167,10 +163,6 @@ data class MutableCommonPopData(
     var resourceInputMap: MutableMap<ResourceType, MutableResourceDesireData> = mutableMapOf(),
     var lastResourceInputMap: MutableMap<ResourceType, MutableResourceDesireData> = mutableMapOf(),
 ) {
-    fun salaryPerEmployee(generalPopSystemData: MutableGeneralPopSystemData): Double {
-        return generalPopSystemData.baseSalaryPerEmployee * salaryFactor
-    }
-
     fun numEmployee(): Double = when {
         employmentRate > 1.0 -> {
             logger.error("Employment rate > 1.0")
@@ -258,6 +250,17 @@ data class MutableCommonPopData(
     companion object {
         private val logger = RelativitizationLogManager.getLogger()
     }
+}
+
+/**
+ * Compute the salary per employee of this pop
+ */
+fun CommonPopData.salaryPerEmployee(generalPopSystemData: GeneralPopSystemData): Double {
+    return generalPopSystemData.baseSalaryPerEmployee * salaryFactor
+}
+
+fun MutableCommonPopData.salaryPerEmployee(generalPopSystemData: MutableGeneralPopSystemData): Double {
+    return generalPopSystemData.baseSalaryPerEmployee * salaryFactor
 }
 
 /**

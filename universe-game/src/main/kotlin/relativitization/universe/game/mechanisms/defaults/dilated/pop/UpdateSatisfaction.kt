@@ -14,6 +14,12 @@ import relativitization.universe.game.data.components.defaults.popsystem.pop.Pop
 import relativitization.universe.game.data.components.popSystemData
 import relativitization.universe.core.data.global.UniverseGlobalData
 import relativitization.universe.core.mechanisms.Mechanism
+import relativitization.universe.game.data.components.defaults.economy.div
+import relativitization.universe.game.data.components.defaults.economy.mag
+import relativitization.universe.game.data.components.defaults.economy.plus
+import relativitization.universe.game.data.components.defaults.economy.times
+import relativitization.universe.game.data.components.defaults.popsystem.pop.getCommonPopData
+import relativitization.universe.game.data.components.totalAdultPopulation
 import kotlin.math.min
 import kotlin.math.pow
 import kotlin.random.Random

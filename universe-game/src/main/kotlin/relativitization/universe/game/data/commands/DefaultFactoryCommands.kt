@@ -25,6 +25,9 @@ import relativitization.universe.core.utils.I18NString
 import relativitization.universe.core.utils.IntString
 import relativitization.universe.core.utils.NormalString
 import relativitization.universe.core.utils.RelativitizationLogManager
+import relativitization.universe.game.data.components.defaults.popsystem.pop.labourer.factory.squareDiff
+import relativitization.universe.game.data.components.defaults.science.application.newFuelFactoryInternalData
+import relativitization.universe.game.data.components.defaults.science.application.newResourceFactoryInternalData
 import kotlin.math.pow
 
 /**

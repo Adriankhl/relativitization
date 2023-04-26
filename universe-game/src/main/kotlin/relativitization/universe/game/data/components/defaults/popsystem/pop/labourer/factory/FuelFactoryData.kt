@@ -25,13 +25,7 @@ data class FuelFactoryData(
     val lastOutputAmount: Double = 0.0,
     val lastNumEmployee: Double = 0.0,
     val experience: Double = 0.0,
-) {
-    fun employeeFraction(): Double = if (maxNumEmployee > 0.0) {
-        lastNumEmployee / maxNumEmployee
-    } else {
-        0.0
-    }
-}
+)
 
 @Serializable
 data class MutableFuelFactoryData(
@@ -43,12 +37,18 @@ data class MutableFuelFactoryData(
     var lastOutputAmount: Double = 0.0,
     var lastNumEmployee: Double = 0.0,
     var experience: Double = 0.0,
-) {
-    fun employeeFraction(): Double = if (maxNumEmployee > 0.0) {
-        lastNumEmployee / maxNumEmployee
-    } else {
-        0.0
-    }
+)
+
+fun FuelFactoryData.employeeFraction(): Double = if (maxNumEmployee > 0.0) {
+    lastNumEmployee / maxNumEmployee
+} else {
+    0.0
+}
+
+fun MutableFuelFactoryData.employeeFraction(): Double = if (maxNumEmployee > 0.0) {
+    lastNumEmployee / maxNumEmployee
+} else {
+    0.0
 }
 
 /**
@@ -61,42 +61,43 @@ data class MutableFuelFactoryData(
 data class FuelFactoryInternalData(
     val maxOutputAmountPerEmployee: Double = 1.0,
     val sizePerEmployee: Double = 0.0,
-) {
-    fun squareDiff(other: FuelFactoryInternalData): Double {
-        val outputAmountDiff: Double = (maxOutputAmountPerEmployee - other.maxOutputAmountPerEmployee).pow(2)
-
-        val sizeDiff: Double = (sizePerEmployee - other.sizePerEmployee).pow(2)
-
-        return (outputAmountDiff + sizeDiff)
-    }
-
-    fun squareDiff(other: MutableFuelFactoryInternalData): Double {
-        val outputAmountDiff: Double = (maxOutputAmountPerEmployee - other.maxOutputAmountPerEmployee).pow(2)
-
-        val sizeDiff: Double = (sizePerEmployee - other.sizePerEmployee).pow(2)
-
-        return (outputAmountDiff + sizeDiff)
-    }
-}
+)
 
 @Serializable
 data class MutableFuelFactoryInternalData(
     var maxOutputAmountPerEmployee: Double = 1.0,
     var sizePerEmployee: Double = 0.0,
-) {
-    fun squareDiff(other: FuelFactoryInternalData): Double {
-        val outputAmountDiff: Double = (maxOutputAmountPerEmployee - other.maxOutputAmountPerEmployee).pow(2)
+)
 
-        val sizeDiff: Double = (sizePerEmployee - other.sizePerEmployee).pow(2)
+fun FuelFactoryInternalData.squareDiff(other: FuelFactoryInternalData): Double {
+    val outputAmountDiff: Double = (maxOutputAmountPerEmployee - other.maxOutputAmountPerEmployee).pow(2)
 
-        return (outputAmountDiff + sizeDiff)
-    }
+    val sizeDiff: Double = (sizePerEmployee - other.sizePerEmployee).pow(2)
 
-    fun squareDiff(other: MutableFuelFactoryInternalData): Double {
-        val outputAmountDiff: Double = (maxOutputAmountPerEmployee - other.maxOutputAmountPerEmployee).pow(2)
+    return (outputAmountDiff + sizeDiff)
+}
 
-        val sizeDiff: Double = (sizePerEmployee - other.sizePerEmployee).pow(2)
+fun MutableFuelFactoryInternalData.squareDiff(other: FuelFactoryInternalData): Double {
+    val outputAmountDiff: Double = (maxOutputAmountPerEmployee - other.maxOutputAmountPerEmployee).pow(2)
 
-        return (outputAmountDiff + sizeDiff)
-    }
+    val sizeDiff: Double = (sizePerEmployee - other.sizePerEmployee).pow(2)
+
+    return (outputAmountDiff + sizeDiff)
+}
+
+fun FuelFactoryInternalData.squareDiff(other: MutableFuelFactoryInternalData): Double {
+    val outputAmountDiff: Double = (maxOutputAmountPerEmployee - other.maxOutputAmountPerEmployee).pow(2)
+
+    val sizeDiff: Double = (sizePerEmployee - other.sizePerEmployee).pow(2)
+
+    return (outputAmountDiff + sizeDiff)
+}
+
+
+fun MutableFuelFactoryInternalData.squareDiff(other: MutableFuelFactoryInternalData): Double {
+    val outputAmountDiff: Double = (maxOutputAmountPerEmployee - other.maxOutputAmountPerEmployee).pow(2)
+
+    val sizeDiff: Double = (sizePerEmployee - other.sizePerEmployee).pow(2)
+
+    return (outputAmountDiff + sizeDiff)
 }

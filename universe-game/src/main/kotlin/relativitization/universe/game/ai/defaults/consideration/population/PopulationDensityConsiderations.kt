@@ -6,6 +6,7 @@ import relativitization.universe.game.ai.defaults.utils.PlanState
 import relativitization.universe.core.data.PlanDataAtPlayer
 import relativitization.universe.game.data.components.popSystemData
 import relativitization.universe.core.maths.physics.Int3D
+import relativitization.universe.game.data.components.totalAdultPopulation
 
 /**
  * Check if the population in the cube is higher than any of the neighboring cube

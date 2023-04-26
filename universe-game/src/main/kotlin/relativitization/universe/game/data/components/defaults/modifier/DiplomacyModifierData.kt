@@ -14,29 +14,7 @@ import kotlin.math.max
 data class DiplomacyModifierData(
     val peaceTreaty: Map<Int, Int> = mapOf(),
     val relationModifierMap: Map<Int, RelationModifier> = mapOf(),
-) {
-    fun getPeaceTreatyLength(playerId: Int): Int = peaceTreaty.getOrDefault(playerId, 0)
-
-    fun getRelationModifier(playerId: Int): RelationModifier =
-        relationModifierMap.getOrDefault(playerId, RelationModifier())
-
-    /**
-     * Get relation change by modifier
-     *
-     * @param id relation change between the player of the id and this player
-     * @param maxReceiveFuelChange max change from receiving fuel
-     */
-    fun getRelationChange(
-        id: Int,
-        maxReceiveFuelChange: Double
-    ): Double {
-        return if (relationModifierMap.containsKey(id)) {
-            relationModifierMap.getValue(id).getOverallRelationChange(maxReceiveFuelChange)
-        } else {
-            0.0
-        }
-    }
-}
+)
 
 @Serializable
 data class MutableDiplomacyModifierData(
@@ -90,25 +68,6 @@ data class MutableDiplomacyModifierData(
     }
 
     /**
-     * Get relation change by modifier
-     *
-     * @param otherPlayerId relation change between the player of the id and this player
-     * @param maxReceiveFuelChange max change from receiving fuel
-     */
-    fun getRelationChange(
-        otherPlayerId: Int,
-        maxReceiveFuelChange: Double
-    ): Double {
-        return if (relationModifierMap.containsKey(otherPlayerId)) {
-            relationModifierMap.getValue(otherPlayerId).getOverallRelationChange(
-                maxReceiveFuelChange
-            )
-        } else {
-            0.0
-        }
-    }
-
-    /**
      * Add receive fuel relation modifier
      *
      * @param otherPlayerId relation change between the player of the id and this player
@@ -131,32 +90,65 @@ data class MutableDiplomacyModifierData(
     }
 }
 
+fun DiplomacyModifierData.getPeaceTreatyLength(playerId: Int): Int = peaceTreaty.getOrDefault(
+    playerId,
+    0
+)
+
+fun MutableDiplomacyModifierData.getPeaceTreatyLength(playerId: Int): Int = peaceTreaty.getOrDefault(
+    playerId,
+    0
+)
+
+fun DiplomacyModifierData.getRelationModifier(playerId: Int): RelationModifier =
+    relationModifierMap.getOrDefault(playerId, RelationModifier())
+
+fun MutableDiplomacyModifierData.getRelationModifier(playerId: Int): MutableRelationModifier =
+    relationModifierMap.getOrDefault(playerId, MutableRelationModifier())
+
+/**
+ * Get relation change by modifier
+ *
+ * @param id relation change between the player of the id and this player
+ * @param maxReceiveFuelChange max change from receiving fuel
+ */
+fun DiplomacyModifierData.getRelationChange(
+    id: Int,
+    maxReceiveFuelChange: Double
+): Double {
+    return if (relationModifierMap.containsKey(id)) {
+        relationModifierMap.getValue(id).getOverallRelationChange(maxReceiveFuelChange)
+    } else {
+        0.0
+    }
+}
+
+/**
+ * Get relation change by modifier
+ *
+ * @param otherPlayerId relation change between the player of the id and this player
+ * @param maxReceiveFuelChange max change from receiving fuel
+ */
+fun MutableDiplomacyModifierData.getRelationChange(
+    otherPlayerId: Int,
+    maxReceiveFuelChange: Double
+): Double {
+    return if (relationModifierMap.containsKey(otherPlayerId)) {
+        relationModifierMap.getValue(otherPlayerId).getOverallRelationChange(
+            maxReceiveFuelChange
+        )
+    } else {
+        0.0
+    }
+}
+
 /**
  * Modifier the relation
  */
 @Serializable
 data class RelationModifier(
     val receiveFuelList: List<SingleRelationModifier> = listOf(),
-) {
-    /**
-     * Get overall relation change
-     *
-     * @param maxReceiveFuelChange max change from receiving fuel
-     */
-    fun getOverallRelationChange(
-        maxReceiveFuelChange: Double
-    ): Double {
-        val totalChange: Double = receiveFuelList.fold(0.0) { acc, mutableSingleRelationModifier ->
-            acc + mutableSingleRelationModifier.change
-        }
-
-        return when {
-            totalChange > maxReceiveFuelChange -> maxReceiveFuelChange
-            totalChange < -maxReceiveFuelChange -> -maxReceiveFuelChange
-            else -> totalChange
-        }
-    }
-}
+)
 
 @Serializable
 data class MutableRelationModifier(
@@ -175,29 +167,49 @@ data class MutableRelationModifier(
             it.durationLeft -= 1
         }
     }
+}
 
-    /**
-     * Get overall relation change
-     *
-     * @param maxReceiveFuelChange max change from receiving fuel
-     */
-    fun getOverallRelationChange(
-        maxReceiveFuelChange: Double
-    ): Double {
-        val totalChange: Double = receiveFuelList.fold(
-            0.0
-        ) { acc, mutableSingleRelationModifier ->
-            acc + mutableSingleRelationModifier.change
-        }
 
-        return when {
-            totalChange > maxReceiveFuelChange -> maxReceiveFuelChange
-            totalChange < -maxReceiveFuelChange -> -maxReceiveFuelChange
-            else -> totalChange
-        }
+
+/**
+ * Get overall relation change
+ *
+ * @param maxReceiveFuelChange max change from receiving fuel
+ */
+fun RelationModifier.getOverallRelationChange(
+    maxReceiveFuelChange: Double
+): Double {
+    val totalChange: Double = receiveFuelList.fold(0.0) { acc, mutableSingleRelationModifier ->
+        acc + mutableSingleRelationModifier.change
+    }
+
+    return when {
+        totalChange > maxReceiveFuelChange -> maxReceiveFuelChange
+        totalChange < -maxReceiveFuelChange -> -maxReceiveFuelChange
+        else -> totalChange
     }
 }
 
+/**
+ * Get overall relation change
+ *
+ * @param maxReceiveFuelChange max change from receiving fuel
+ */
+fun MutableRelationModifier.getOverallRelationChange(
+    maxReceiveFuelChange: Double
+): Double {
+    val totalChange: Double = receiveFuelList.fold(
+        0.0
+    ) { acc, mutableSingleRelationModifier ->
+        acc + mutableSingleRelationModifier.change
+    }
+
+    return when {
+        totalChange > maxReceiveFuelChange -> maxReceiveFuelChange
+        totalChange < -maxReceiveFuelChange -> -maxReceiveFuelChange
+        else -> totalChange
+    }
+}
 
 /**
  * Effect from a single improve relation act

@@ -11,9 +11,14 @@ import relativitization.universe.game.data.components.physicsData
 import relativitization.universe.game.data.components.popSystemData
 import relativitization.universe.core.generate.GenerateSettings
 import relativitization.universe.core.generate.GenerateUniverseMethodCollection
+import relativitization.universe.core.maths.number.toScientificNotation
+import relativitization.universe.game.data.components.defaults.physics.total
+import relativitization.universe.game.data.components.numCarrier
+import relativitization.universe.game.data.components.totalAdultPopulation
+import relativitization.universe.game.data.components.totalSatisfaction
+import relativitization.universe.game.data.components.totalSaving
 import relativitization.universe.game.generate.random.RandomOneStarPerPlayerGenerate
 import relativitization.universe.game.global.DefaultGlobalMechanismList
-import relativitization.universe.core.maths.number.toScientificNotation
 import relativitization.universe.game.mechanisms.DefaultMechanismLists
 
 internal fun gameSingleRun(

@@ -7,6 +7,7 @@ import relativitization.universe.core.data.PlanDataAtPlayer
 import relativitization.universe.game.data.components.physicsData
 import relativitization.universe.core.maths.physics.Movement
 import relativitization.universe.core.maths.physics.Velocity
+import relativitization.universe.game.data.components.totalRestMass
 
 /**
  * Check whether there is sufficient movement fuel to change the velocity

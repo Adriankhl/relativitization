@@ -14,6 +14,8 @@ import relativitization.universe.game.data.components.popSystemData
 import relativitization.universe.core.maths.physics.Double3D
 import relativitization.universe.core.maths.physics.Velocity
 import relativitization.universe.core.utils.RelativitizationLogManager
+import relativitization.universe.game.data.components.defaults.diplomacy.isAlly
+import relativitization.universe.game.data.components.defaults.diplomacy.isEnemy
 import kotlin.math.abs
 import kotlin.math.ceil
 import kotlin.math.floor

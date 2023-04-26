@@ -13,6 +13,7 @@ import relativitization.universe.game.data.components.playerScienceData
 import relativitization.universe.game.data.components.popSystemData
 import relativitization.universe.core.data.global.UniverseGlobalData
 import relativitization.universe.core.mechanisms.Mechanism
+import relativitization.universe.game.data.components.defaults.popsystem.pop.labourer.factory.employeeFraction
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.random.Random

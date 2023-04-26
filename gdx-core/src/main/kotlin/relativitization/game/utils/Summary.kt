@@ -7,8 +7,12 @@ import relativitization.universe.game.data.components.defaults.popsystem.Carrier
 import relativitization.universe.game.data.components.defaults.popsystem.pop.CommonPopData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.PopType
 import relativitization.universe.game.data.components.defaults.popsystem.pop.ResourceDesireData
+import relativitization.universe.game.data.components.defaults.popsystem.pop.getCommonPopData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.labourer.factory.InputResourceData
+import relativitization.universe.game.data.components.defaults.popsystem.pop.labourer.factory.employeeFraction
+import relativitization.universe.game.data.components.defaults.popsystem.pop.totalAdultPopulation
 import relativitization.universe.game.data.components.popSystemData
+import relativitization.universe.game.data.components.totalSalary
 import relativitization.universe.game.mechanisms.defaults.dilated.production.BaseStellarFuelProduction
 import relativitization.universe.game.mechanisms.defaults.dilated.production.EntertainmentProduction
 

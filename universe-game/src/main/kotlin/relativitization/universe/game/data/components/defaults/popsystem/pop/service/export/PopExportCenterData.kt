@@ -15,54 +15,16 @@ import relativitization.universe.game.data.components.defaults.popsystem.pop.Pop
 data class PopExportCenterData(
     val exportDataMap: Map<Int, Map<PopType, List<PopSingleExportData>>> = mapOf()
 ) {
-    fun hasSingleExportData(
-        carrierId: Int,
-        popType: PopType,
-        resourceType: ResourceType,
-        resourceQualityClass: ResourceQualityClass
-    ): Boolean {
-        return if (exportDataMap.containsKey(carrierId) &&
-            exportDataMap.getValue(carrierId).containsKey(popType)
-        ) {
-            val exportDataList: List<PopSingleExportData> = exportDataMap.getValue(
-                carrierId
-            ).getValue(
-                popType
-            )
 
-            exportDataList.any {
-                (it.resourceType == resourceType) && (it.resourceQualityClass == resourceQualityClass)
-            }
-        } else {
-            false
-        }
-    }
-
-    fun getSingleExportData(
-        carrierId: Int,
-        popType: PopType,
-        resourceType: ResourceType,
-        resourceQualityClass: ResourceQualityClass
-    ): PopSingleExportData {
-        return if (hasSingleExportData(carrierId, popType, resourceType, resourceQualityClass)) {
-            exportDataMap.getValue(
-                carrierId
-            ).getValue(
-                popType
-            ).first {
-                (it.resourceType == resourceType) && (it.resourceQualityClass == resourceQualityClass)
-            }
-        } else {
-            PopSingleExportData()
-        }
-    }
 }
+
+
 
 @Serializable
 data class MutablePopExportCenterData(
     val exportDataMap: MutableMap<Int, MutableMap<PopType, MutableList<MutablePopSingleExportData>>> = mutableMapOf()
 ) {
-    fun getSingleExportData(
+    fun getOrPutSingleExportData(
         carrierId: Int,
         popType: PopType,
         resourceType: ResourceType,
@@ -120,6 +82,90 @@ data class MutablePopExportCenterData(
             popMap.values.removeAll { it.isEmpty() }
         }
         exportDataMap.values.removeAll { it.isEmpty() }
+    }
+}
+
+fun PopExportCenterData.hasSingleExportData(
+    carrierId: Int,
+    popType: PopType,
+    resourceType: ResourceType,
+    resourceQualityClass: ResourceQualityClass
+): Boolean {
+    return if (exportDataMap.containsKey(carrierId) &&
+        exportDataMap.getValue(carrierId).containsKey(popType)
+    ) {
+        val exportDataList: List<PopSingleExportData> = exportDataMap.getValue(
+            carrierId
+        ).getValue(
+            popType
+        )
+
+        exportDataList.any {
+            (it.resourceType == resourceType) && (it.resourceQualityClass == resourceQualityClass)
+        }
+    } else {
+        false
+    }
+}
+
+fun MutablePopExportCenterData.hasSingleExportData(
+    carrierId: Int,
+    popType: PopType,
+    resourceType: ResourceType,
+    resourceQualityClass: ResourceQualityClass
+): Boolean {
+    return if (exportDataMap.containsKey(carrierId) &&
+        exportDataMap.getValue(carrierId).containsKey(popType)
+    ) {
+        val exportDataList: List<MutablePopSingleExportData> = exportDataMap.getValue(
+            carrierId
+        ).getValue(
+            popType
+        )
+
+        exportDataList.any {
+            (it.resourceType == resourceType) && (it.resourceQualityClass == resourceQualityClass)
+        }
+    } else {
+        false
+    }
+}
+
+fun PopExportCenterData.getSingleExportData(
+    carrierId: Int,
+    popType: PopType,
+    resourceType: ResourceType,
+    resourceQualityClass: ResourceQualityClass
+): PopSingleExportData {
+    return if (hasSingleExportData(carrierId, popType, resourceType, resourceQualityClass)) {
+        exportDataMap.getValue(
+            carrierId
+        ).getValue(
+            popType
+        ).first {
+            (it.resourceType == resourceType) && (it.resourceQualityClass == resourceQualityClass)
+        }
+    } else {
+        PopSingleExportData()
+    }
+}
+
+fun MutablePopExportCenterData.getSingleExportData(
+    carrierId: Int,
+    popType: PopType,
+    resourceType: ResourceType,
+    resourceQualityClass: ResourceQualityClass
+): MutablePopSingleExportData {
+    return if (hasSingleExportData(carrierId, popType, resourceType, resourceQualityClass)) {
+        exportDataMap.getValue(
+            carrierId
+        ).getValue(
+            popType
+        ).first {
+            (it.resourceType == resourceType) && (it.resourceQualityClass == resourceQualityClass)
+        }
+    } else {
+        MutablePopSingleExportData()
     }
 }
 

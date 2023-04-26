@@ -13,6 +13,8 @@ import relativitization.universe.core.maths.physics.Movement
 import relativitization.universe.core.maths.physics.TargetVelocityData
 import relativitization.universe.core.mechanisms.Mechanism
 import relativitization.universe.core.utils.RelativitizationLogManager
+import relativitization.universe.game.data.components.defaults.physics.maxMovementDeltaRestMass
+import relativitization.universe.game.data.components.totalRestMass
 import kotlin.math.min
 import kotlin.random.Random
 

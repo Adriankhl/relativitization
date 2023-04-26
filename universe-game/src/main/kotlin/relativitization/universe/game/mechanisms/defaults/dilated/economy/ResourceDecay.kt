@@ -9,6 +9,7 @@ import relativitization.universe.game.data.components.defaults.economy.ResourceT
 import relativitization.universe.game.data.components.economyData
 import relativitization.universe.core.data.global.UniverseGlobalData
 import relativitization.universe.core.mechanisms.Mechanism
+import relativitization.universe.game.data.components.defaults.economy.getSingleResourceData
 import kotlin.random.Random
 
 /**

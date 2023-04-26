@@ -4,20 +4,25 @@ import kotlinx.serialization.Serializable
 import relativitization.universe.core.data.MutablePlayerData
 import relativitization.universe.core.data.UniverseData3DAtPlayer
 import relativitization.universe.core.data.UniverseSettings
-import relativitization.universe.game.data.commands.AcceptAllianceCommand
-import relativitization.universe.game.data.commands.AcceptPeaceCommand
 import relativitization.universe.core.data.commands.Command
 import relativitization.universe.core.data.commands.CommandErrorMessage
 import relativitization.universe.core.data.commands.CommandI18NStringFactory
 import relativitization.universe.core.data.events.Event
-import relativitization.universe.game.data.components.defaults.diplomacy.ally.MutableAllianceData
-import relativitization.universe.game.data.components.defaults.diplomacy.war.MutableWarData
-import relativitization.universe.game.data.components.defaults.diplomacy.war.WarCoreData
-import relativitization.universe.game.data.components.diplomacyData
 import relativitization.universe.core.data.serializer.DataSerializer
 import relativitization.universe.core.utils.I18NString
 import relativitization.universe.core.utils.IntString
 import relativitization.universe.core.utils.NormalString
+import relativitization.universe.game.data.commands.AcceptAllianceCommand
+import relativitization.universe.game.data.commands.AcceptPeaceCommand
+import relativitization.universe.game.data.components.defaults.diplomacy.ally.MutableAllianceData
+import relativitization.universe.game.data.components.defaults.diplomacy.hasAllySubordinateWar
+import relativitization.universe.game.data.components.defaults.diplomacy.hasAllyWar
+import relativitization.universe.game.data.components.defaults.diplomacy.hasSubordinateWar
+import relativitization.universe.game.data.components.defaults.diplomacy.isAlly
+import relativitization.universe.game.data.components.defaults.diplomacy.isEnemy
+import relativitization.universe.game.data.components.defaults.diplomacy.war.MutableWarData
+import relativitization.universe.game.data.components.defaults.diplomacy.war.WarCoreData
+import relativitization.universe.game.data.components.diplomacyData
 import kotlin.random.Random
 
 /**

@@ -58,6 +58,15 @@ import relativitization.universe.game.data.components.playerScienceData
 import relativitization.universe.game.data.components.popSystemData
 import relativitization.universe.core.maths.number.Notation
 import relativitization.universe.core.utils.RelativitizationLogManager
+import relativitization.universe.game.data.components.defaults.economy.getProductionResourceAmount
+import relativitization.universe.game.data.components.defaults.popsystem.pop.getCommonPopData
+import relativitization.universe.game.data.components.defaults.popsystem.pop.labourer.factory.lastInputAmount
+import relativitization.universe.game.data.components.defaults.popsystem.pop.labourer.factory.maxInputAmount
+import relativitization.universe.game.data.components.defaults.popsystem.pop.service.export.getExportDataList
+import relativitization.universe.game.data.components.defaults.popsystem.pop.service.export.getResourceQualityClassList
+import relativitization.universe.game.data.components.defaults.popsystem.pop.service.export.getResourceTypeList
+import relativitization.universe.game.data.components.defaults.science.application.newFuelFactoryInternalData
+import relativitization.universe.game.data.components.defaults.science.application.newResourceFactoryInternalData
 
 class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane>(game) {
     override val infoName: String = "Pop System"

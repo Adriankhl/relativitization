@@ -11,6 +11,8 @@ import relativitization.universe.core.data.global.UniverseGlobalData
 import relativitization.universe.core.maths.physics.Int4D
 import relativitization.universe.core.maths.physics.Intervals
 import relativitization.universe.core.mechanisms.Mechanism
+import relativitization.universe.game.data.components.defaults.diplomacy.isAlly
+import relativitization.universe.game.data.components.defaults.diplomacy.isEnemy
 import kotlin.random.Random
 
 object UpdateAlly : Mechanism() {

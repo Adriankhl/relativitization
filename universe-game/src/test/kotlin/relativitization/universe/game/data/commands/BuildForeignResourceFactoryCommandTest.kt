@@ -9,6 +9,7 @@ import relativitization.universe.game.data.components.playerScienceData
 import relativitization.universe.game.data.components.popSystemData
 import relativitization.universe.core.generate.GenerateSettings
 import relativitization.universe.core.generate.GenerateUniverseMethodCollection
+import relativitization.universe.game.data.components.defaults.science.application.newResourceFactoryInternalData
 import relativitization.universe.game.generate.testing.TestingFixedMinimalGenerate
 import kotlin.test.Test
 

@@ -81,140 +81,7 @@ data class ResourceData(
                 SingleResourceData(resourceTargetProportion = resourceTargetProportion)
             }
         },
-) {
-    /**
-     * Get single resource data, default to SingleResourceData() if it doesn't exist
-     */
-    fun getSingleResourceData(
-        resourceType: ResourceType,
-        resourceQualityClass: ResourceQualityClass,
-    ): SingleResourceData = singleResourceMap.getOrDefault(
-        resourceType,
-        mapOf()
-    ).getOrDefault(
-        resourceQualityClass,
-        SingleResourceData()
-    )
-
-    /**
-     * Get resource quality
-     */
-    fun getResourceQuality(
-        resourceType: ResourceType,
-        resourceQualityClass: ResourceQualityClass
-    ): ResourceQualityData =
-        getSingleResourceData(resourceType, resourceQualityClass).resourceQuality
-
-    /**
-     * Get resource quality lower bound
-     */
-    fun getResourceQualityLowerBound(
-        resourceType: ResourceType,
-        resourceQualityClass: ResourceQualityClass
-    ): ResourceQualityData =
-        getSingleResourceData(resourceType, resourceQualityClass).resourceQualityLowerBound
-
-    /**
-     * Get total resource amount data
-     */
-    fun getResourceAmountData(
-        resourceType: ResourceType,
-        resourceQualityClass: ResourceQualityClass
-    ): ResourceAmountData = getSingleResourceData(resourceType, resourceQualityClass).resourceAmount
-
-
-    /**
-     * Get total resource amount
-     */
-    fun getTotalResourceAmount(
-        resourceType: ResourceType,
-        resourceQualityClass: ResourceQualityClass
-    ): Double = getSingleResourceData(resourceType, resourceQualityClass).resourceAmount.total()
-
-    /**
-     * Get resource storage amount
-     */
-    fun getStorageResourceAmount(
-        resourceType: ResourceType,
-        resourceQualityClass: ResourceQualityClass
-    ): Double = getSingleResourceData(resourceType, resourceQualityClass).resourceAmount.storage
-
-    /**
-     * Get resource amount available for trading
-     */
-    fun getTradeResourceAmount(
-        resourceType: ResourceType,
-        resourceQualityClass: ResourceQualityClass
-    ): Double = getSingleResourceData(resourceType, resourceQualityClass).resourceAmount.trade
-
-    /**
-     * Get resource amount available for trading
-     */
-    fun getProductionResourceAmount(
-        resourceType: ResourceType,
-        resourceQualityClass: ResourceQualityClass
-    ): Double = getSingleResourceData(resourceType, resourceQualityClass).resourceAmount.production
-
-    /**
-     * Get resource target amount
-     */
-    fun getResourceTargetProportionData(
-        resourceType: ResourceType,
-        resourceQualityClass: ResourceQualityClass
-    ): ResourceTargetProportionData =
-        getSingleResourceData(resourceType, resourceQualityClass).resourceTargetProportion
-
-    /**
-     * Get resource price
-     */
-    fun getResourcePrice(
-        resourceType: ResourceType,
-        resourceQualityClass: ResourceQualityClass
-    ): Double = getSingleResourceData(resourceType, resourceQualityClass).resourcePrice
-
-    /**
-     * Get resource quality class with target quality, amount and budget for trade
-     * Default to quality class with maximum amount if none of them satisfy the requirement
-     *
-     * @param resourceType the type of required resource
-     * @param amount the target amount to get
-     * @param targetQuality the target quality of the resource to get
-     * @param budget the budget to buy this resource
-     * @param preferHighQualityClass prefer high quality class that satisfy the requirement,
-     * prefer low quality class if false
-     * @param tariffFactor if the trade is affected by tariff
-     */
-    fun tradeQualityClass(
-        resourceType: ResourceType,
-        amount: Double,
-        targetQuality: ResourceQualityData,
-        budget: Double,
-        preferHighQualityClass: Boolean,
-        tariffFactor: Double = 1.0,
-    ): ResourceQualityClass {
-        val satisfyList: List<Pair<ResourceQualityClass, Boolean>> =
-            ResourceQualityClass.values().toList().map {
-                val b1: Boolean = getResourceQuality(resourceType, it).geq(targetQuality)
-                val b2: Boolean = getTradeResourceAmount(resourceType, it) >= amount
-                val b3: Boolean = budget >= getResourcePrice(resourceType, it) * amount * tariffFactor
-                it to (b1 && b2 && b3)
-            }
-        return if (preferHighQualityClass) {
-            satisfyList.firstOrNull { it.second }?.first ?: run {
-                ResourceQualityClass.values().maxByOrNull {
-                    getTradeResourceAmount(resourceType, it)
-                } ?: ResourceQualityClass.THIRD
-            }
-        } else {
-            satisfyList.lastOrNull { it.second }?.first ?: run {
-                ResourceQualityClass.values().maxByOrNull {
-                    getTradeResourceAmount(resourceType, it)
-                } ?: ResourceQualityClass.THIRD
-            }
-        }
-    }
-
-}
+)
 
 @Serializable
 data class MutableResourceData(
@@ -240,97 +107,6 @@ data class MutableResourceData(
             }.toMutableMap()
         }.toMutableMap(),
 ) {
-    /**
-     * Get single resource data
-     */
-    fun getSingleResourceData(
-        resourceType: ResourceType,
-        resourceQualityClass: ResourceQualityClass,
-    ): MutableSingleResourceData = singleResourceMap.getOrPut(resourceType) {
-        mutableMapOf()
-    }.getOrPut(resourceQualityClass) {
-        MutableSingleResourceData()
-    }
-
-    /**
-     * Get resource quality, default to ResourceQualityData() if the resource doesn't exist
-     */
-    fun getResourceQuality(
-        resourceType: ResourceType,
-        resourceQualityClass: ResourceQualityClass
-    ): MutableResourceQualityData =
-        getSingleResourceData(resourceType, resourceQualityClass).resourceQuality
-
-    /**
-     * Get resource quality lower bound
-     */
-    fun getResourceQualityLowerBound(
-        resourceType: ResourceType,
-        resourceQualityClass: ResourceQualityClass
-    ): MutableResourceQualityData =
-        getSingleResourceData(resourceType, resourceQualityClass).resourceQualityLowerBound
-
-    /**
-     * Get total resource amount data
-     */
-    fun getResourceAmountData(
-        resourceType: ResourceType,
-        resourceQualityClass: ResourceQualityClass
-    ): MutableResourceAmountData =
-        getSingleResourceData(resourceType, resourceQualityClass).resourceAmount
-
-
-    /**
-     * Get total resource amount, default to 0.0 if the resource doesn't exist
-     */
-    fun getTotalResourceAmount(
-        resourceType: ResourceType,
-        resourceQualityClass: ResourceQualityClass
-    ): Double = getSingleResourceData(resourceType, resourceQualityClass).resourceAmount.total()
-
-    /**
-     * Get resource storage amount, default to 0.0 if the resource doesn't exist
-     */
-    fun getStorageResourceAmount(
-        resourceType: ResourceType,
-        resourceQualityClass: ResourceQualityClass
-    ): Double = getSingleResourceData(resourceType, resourceQualityClass).resourceAmount.storage
-
-    /**
-     * Get resource amount available for trading
-     */
-    fun getTradeResourceAmount(
-        resourceType: ResourceType,
-        resourceQualityClass: ResourceQualityClass
-    ): Double = getSingleResourceData(resourceType, resourceQualityClass).resourceAmount.trade
-
-    /**
-     * Get resource amount available for trading
-     */
-    fun getProductionResourceAmount(
-        resourceType: ResourceType,
-        resourceQualityClass: ResourceQualityClass
-    ): Double = getSingleResourceData(resourceType, resourceQualityClass).resourceAmount.production
-
-
-    /**
-     * Get resource target amount
-     */
-    fun getResourceTargetProportionData(
-        resourceType: ResourceType,
-        resourceQualityClass: ResourceQualityClass
-    ): MutableResourceTargetProportionData =
-        getSingleResourceData(resourceType, resourceQualityClass).resourceTargetProportion
-
-
-    /**
-     * Get resource price, default to 1.0 if the resource doesn't exist
-     */
-    fun getResourcePrice(
-        resourceType: ResourceType,
-        resourceQualityClass: ResourceQualityClass
-    ): Double = getSingleResourceData(resourceType, resourceQualityClass).resourcePrice
-
     /**
      * Get resource quality class with target quality and amount for production
      * Default to quality class with maximum amount if none of them satisfy the requirement
@@ -368,48 +144,6 @@ data class MutableResourceData(
         }
     }
 
-    /**
-     * Get resource quality class with target quality, amount and budget for trade
-     * Default to quality class with maximum amount if none of them satisfy the requirement
-     *
-     * @param resourceType the type of required resource
-     * @param amount the target amount to get
-     * @param targetQuality the target quality of the resource to get
-     * @param budget the budget to buy this resource
-     * @param preferHighQualityClass prefer high quality class that satisfy the requirement,
-     * prefer low quality class if false
-     * @param tariffFactor if the trade is affected by tariff
-     */
-    fun tradeQualityClass(
-        resourceType: ResourceType,
-        amount: Double,
-        targetQuality: MutableResourceQualityData,
-        budget: Double,
-        preferHighQualityClass: Boolean,
-        tariffFactor: Double = 1.0,
-    ): ResourceQualityClass {
-        val satisfyList: List<Pair<ResourceQualityClass, Boolean>> =
-            ResourceQualityClass.values().toList().map {
-                val b1: Boolean = getResourceQuality(resourceType, it).geq(targetQuality)
-                val b2: Boolean = getTradeResourceAmount(resourceType, it) >= amount
-                val b3: Boolean = budget >= getResourcePrice(resourceType, it) * amount * tariffFactor
-                it to (b1 && b2 && b3)
-            }
-        return if (preferHighQualityClass) {
-            satisfyList.firstOrNull { it.second }?.first ?: run {
-                ResourceQualityClass.values().maxByOrNull {
-                    getTradeResourceAmount(resourceType, it)
-                } ?: ResourceQualityClass.THIRD
-            }
-        } else {
-            satisfyList.lastOrNull { it.second }?.first ?: run {
-                ResourceQualityClass.values().maxByOrNull {
-                    getTradeResourceAmount(resourceType, it)
-                } ?: ResourceQualityClass.THIRD
-            }
-        }
-    }
-
 
     /**
      * Add resource to storage, production or trading depending on the target
@@ -430,114 +164,282 @@ data class MutableResourceData(
     }
 }
 
+
+/**
+ * Get single resource data, default to SingleResourceData() if it doesn't exist
+ */
+fun ResourceData.getSingleResourceData(
+    resourceType: ResourceType,
+    resourceQualityClass: ResourceQualityClass,
+): SingleResourceData = singleResourceMap.getOrDefault(
+    resourceType,
+    mapOf()
+).getOrDefault(
+    resourceQualityClass,
+    SingleResourceData()
+)
+
+
+/**
+ * Get single resource data, default to SingleResourceData() if it doesn't exist
+ */
+fun MutableResourceData.getSingleResourceData(
+    resourceType: ResourceType,
+    resourceQualityClass: ResourceQualityClass,
+): MutableSingleResourceData = singleResourceMap.getOrPut(resourceType) {
+    mutableMapOf()
+}.getOrPut(resourceQualityClass) {
+    MutableSingleResourceData()
+}
+
+
+/**
+ * Get resource quality
+ */
+fun ResourceData.getResourceQuality(
+    resourceType: ResourceType,
+    resourceQualityClass: ResourceQualityClass
+): ResourceQualityData =
+    getSingleResourceData(resourceType, resourceQualityClass).resourceQuality
+
+/**
+ * Get resource quality, default to ResourceQualityData() if the resource doesn't exist
+ */
+fun MutableResourceData.getResourceQuality(
+    resourceType: ResourceType,
+    resourceQualityClass: ResourceQualityClass
+): MutableResourceQualityData =
+    getSingleResourceData(resourceType, resourceQualityClass).resourceQuality
+
+/**
+ * Get resource quality lower bound
+ */
+fun ResourceData.getResourceQualityLowerBound(
+    resourceType: ResourceType,
+    resourceQualityClass: ResourceQualityClass
+): ResourceQualityData =
+    getSingleResourceData(resourceType, resourceQualityClass).resourceQualityLowerBound
+
+/**
+ * Get resource quality lower bound
+ */
+fun MutableResourceData.getResourceQualityLowerBound(
+    resourceType: ResourceType,
+    resourceQualityClass: ResourceQualityClass
+): MutableResourceQualityData =
+    getSingleResourceData(resourceType, resourceQualityClass).resourceQualityLowerBound
+
+
+/**
+ * Get total resource amount data
+ */
+fun ResourceData.getResourceAmountData(
+    resourceType: ResourceType,
+    resourceQualityClass: ResourceQualityClass
+): ResourceAmountData = getSingleResourceData(resourceType, resourceQualityClass).resourceAmount
+
+/**
+ * Get total resource amount data
+ */
+fun MutableResourceData.getResourceAmountData(
+    resourceType: ResourceType,
+    resourceQualityClass: ResourceQualityClass
+): MutableResourceAmountData =
+    getSingleResourceData(resourceType, resourceQualityClass).resourceAmount
+
+
+/**
+ * Get total resource amount
+ */
+fun ResourceData.getTotalResourceAmount(
+    resourceType: ResourceType,
+    resourceQualityClass: ResourceQualityClass
+): Double = getSingleResourceData(resourceType, resourceQualityClass).resourceAmount.total()
+
+/**
+ * Get total resource amount, default to 0.0 if the resource doesn't exist
+ */
+fun MutableResourceData.getTotalResourceAmount(
+    resourceType: ResourceType,
+    resourceQualityClass: ResourceQualityClass
+): Double = getSingleResourceData(resourceType, resourceQualityClass).resourceAmount.total()
+
+/**
+ * Get resource storage amount
+ */
+fun ResourceData.getStorageResourceAmount(
+    resourceType: ResourceType,
+    resourceQualityClass: ResourceQualityClass
+): Double = getSingleResourceData(resourceType, resourceQualityClass).resourceAmount.storage
+
+/**
+ * Get resource storage amount, default to 0.0 if the resource doesn't exist
+ */
+fun MutableResourceData.getStorageResourceAmount(
+    resourceType: ResourceType,
+    resourceQualityClass: ResourceQualityClass
+): Double = getSingleResourceData(resourceType, resourceQualityClass).resourceAmount.storage
+
+
+/**
+ * Get resource amount available for trading
+ */
+fun ResourceData.getTradeResourceAmount(
+    resourceType: ResourceType,
+    resourceQualityClass: ResourceQualityClass
+): Double = getSingleResourceData(resourceType, resourceQualityClass).resourceAmount.trade
+
+/**
+ * Get resource amount available for trading
+ */
+fun MutableResourceData.getTradeResourceAmount(
+    resourceType: ResourceType,
+    resourceQualityClass: ResourceQualityClass
+): Double = getSingleResourceData(resourceType, resourceQualityClass).resourceAmount.trade
+
+/**
+ * Get resource amount available for trading
+ */
+fun MutableResourceData.getProductionResourceAmount(
+    resourceType: ResourceType,
+    resourceQualityClass: ResourceQualityClass
+): Double = getSingleResourceData(resourceType, resourceQualityClass).resourceAmount.production
+
+/**
+ * Get resource amount available for trading
+ */
+fun ResourceData.getProductionResourceAmount(
+    resourceType: ResourceType,
+    resourceQualityClass: ResourceQualityClass
+): Double = getSingleResourceData(resourceType, resourceQualityClass).resourceAmount.production
+
+/**
+ * Get resource target amount
+ */
+fun ResourceData.getResourceTargetProportionData(
+    resourceType: ResourceType,
+    resourceQualityClass: ResourceQualityClass
+): ResourceTargetProportionData =
+    getSingleResourceData(resourceType, resourceQualityClass).resourceTargetProportion
+
+/**
+ * Get resource target amount
+ */
+fun MutableResourceData.getResourceTargetProportionData(
+    resourceType: ResourceType,
+    resourceQualityClass: ResourceQualityClass
+): MutableResourceTargetProportionData =
+    getSingleResourceData(resourceType, resourceQualityClass).resourceTargetProportion
+
+/**
+ * Get resource price
+ */
+fun ResourceData.getResourcePrice(
+    resourceType: ResourceType,
+    resourceQualityClass: ResourceQualityClass
+): Double = getSingleResourceData(resourceType, resourceQualityClass).resourcePrice
+
+/**
+ * Get resource price, default to 1.0 if the resource doesn't exist
+ */
+fun MutableResourceData.getResourcePrice(
+    resourceType: ResourceType,
+    resourceQualityClass: ResourceQualityClass
+): Double = getSingleResourceData(resourceType, resourceQualityClass).resourcePrice
+
+/**
+ * Get resource quality class with target quality, amount and budget for trade
+ * Default to quality class with maximum amount if none of them satisfy the requirement
+ *
+ * @param resourceType the type of required resource
+ * @param amount the target amount to get
+ * @param targetQuality the target quality of the resource to get
+ * @param budget the budget to buy this resource
+ * @param preferHighQualityClass prefer high quality class that satisfy the requirement,
+ * prefer low quality class if false
+ * @param tariffFactor if the trade is affected by tariff
+ */
+fun ResourceData.tradeQualityClass(
+    resourceType: ResourceType,
+    amount: Double,
+    targetQuality: ResourceQualityData,
+    budget: Double,
+    preferHighQualityClass: Boolean,
+    tariffFactor: Double = 1.0,
+): ResourceQualityClass {
+    val satisfyList: List<Pair<ResourceQualityClass, Boolean>> =
+        ResourceQualityClass.values().toList().map {
+            val b1: Boolean = getResourceQuality(resourceType, it).geq(targetQuality)
+            val b2: Boolean = getTradeResourceAmount(resourceType, it) >= amount
+            val b3: Boolean = budget >= getResourcePrice(resourceType, it) * amount * tariffFactor
+            it to (b1 && b2 && b3)
+        }
+    return if (preferHighQualityClass) {
+        satisfyList.firstOrNull { it.second }?.first ?: run {
+            ResourceQualityClass.values().maxByOrNull {
+                getTradeResourceAmount(resourceType, it)
+            } ?: ResourceQualityClass.THIRD
+        }
+    } else {
+        satisfyList.lastOrNull { it.second }?.first ?: run {
+            ResourceQualityClass.values().maxByOrNull {
+                getTradeResourceAmount(resourceType, it)
+            } ?: ResourceQualityClass.THIRD
+        }
+    }
+}
+
+/**
+ * Get resource quality class with target quality, amount and budget for trade
+ * Default to quality class with maximum amount if none of them satisfy the requirement
+ *
+ * @param resourceType the type of required resource
+ * @param amount the target amount to get
+ * @param targetQuality the target quality of the resource to get
+ * @param budget the budget to buy this resource
+ * @param preferHighQualityClass prefer high quality class that satisfy the requirement,
+ * prefer low quality class if false
+ * @param tariffFactor if the trade is affected by tariff
+ */
+fun MutableResourceData.tradeQualityClass(
+    resourceType: ResourceType,
+    amount: Double,
+    targetQuality: MutableResourceQualityData,
+    budget: Double,
+    preferHighQualityClass: Boolean,
+    tariffFactor: Double = 1.0,
+): ResourceQualityClass {
+    val satisfyList: List<Pair<ResourceQualityClass, Boolean>> =
+        ResourceQualityClass.values().toList().map {
+            val b1: Boolean = getResourceQuality(resourceType, it).geq(targetQuality)
+            val b2: Boolean = getTradeResourceAmount(resourceType, it) >= amount
+            val b3: Boolean = budget >= getResourcePrice(resourceType, it) * amount * tariffFactor
+            it to (b1 && b2 && b3)
+        }
+    return if (preferHighQualityClass) {
+        satisfyList.firstOrNull { it.second }?.first ?: run {
+            ResourceQualityClass.values().maxByOrNull {
+                getTradeResourceAmount(resourceType, it)
+            } ?: ResourceQualityClass.THIRD
+        }
+    } else {
+        satisfyList.lastOrNull { it.second }?.first ?: run {
+            ResourceQualityClass.values().maxByOrNull {
+                getTradeResourceAmount(resourceType, it)
+            } ?: ResourceQualityClass.THIRD
+        }
+    }
+}
+
 @Serializable
 data class ResourceQualityData(
     val quality: Double = 0.0,
-) {
-    operator fun plus(other: ResourceQualityData): ResourceQualityData =
-        ResourceQualityData(
-            quality + other.quality,
-        )
-
-
-    operator fun plus(other: MutableResourceQualityData): ResourceQualityData =
-        ResourceQualityData(
-            quality + other.quality,
-        )
-
-    operator fun plus(num: Double): ResourceQualityData =
-        ResourceQualityData(
-            quality + num,
-        )
-
-    operator fun times(d: Double): ResourceQualityData = ResourceQualityData(
-        quality * d,
-    )
-
-    /**
-     * If quality equals to zero, the output equal to zero instead of undefined
-     */
-    operator fun div(d: Double): ResourceQualityData = ResourceQualityData(
-        if (quality != 0.0) {
-            quality / d
-        } else {
-            0.0
-        }
-    )
-
-    fun square(): Double = quality * quality
-
-    fun mag(): Double = sqrt(square())
-
-    fun toMutableResourceQualityData(): MutableResourceQualityData = MutableResourceQualityData(
-        quality,
-    )
-
-
-    /**
-     * Greater than or equal
-     */
-    fun geq(other: ResourceQualityData): Boolean {
-        return (quality >= other.quality)
-    }
-
-    /**
-     * Less than or equal
-     */
-    fun leq(other: ResourceQualityData): Boolean {
-        return (quality <= other.quality)
-    }
-
-    /**
-     * Resource difference
-     */
-    fun squareDiff(other: ResourceQualityData): Double {
-        return (quality - other.quality).pow(2)
-    }
-
-    fun squareDiff(other: MutableResourceQualityData): Double {
-        return (quality - other.quality).pow(2)
-    }
-}
+)
 
 @Serializable
 data class MutableResourceQualityData(
     var quality: Double = 0.0,
 ) {
-    operator fun plus(other: MutableResourceQualityData): MutableResourceQualityData =
-        MutableResourceQualityData(
-            quality + other.quality,
-        )
-
-    operator fun plus(num: Double): MutableResourceQualityData =
-        MutableResourceQualityData(
-            quality + num,
-        )
-
-    operator fun minus(other: MutableResourceQualityData): MutableResourceQualityData =
-        MutableResourceQualityData(
-            quality - other.quality,
-        )
-
-    operator fun times(d: Double): MutableResourceQualityData = MutableResourceQualityData(
-        quality * d,
-    )
-
-    /**
-     * If quality equals to zero, the output equal to zero instead of undefined
-     */
-    operator fun div(d: Double): MutableResourceQualityData = MutableResourceQualityData(
-        if (quality != 0.0) {
-            quality / d
-        } else {
-            0.0
-        },
-    )
-
-    fun square(): Double = quality * quality
-
-    fun mag(): Double = sqrt(square())
-
     /**
      * Change the quality data to get closer to other quality
      *
@@ -569,10 +471,6 @@ data class MutableResourceQualityData(
         )
     }
 
-    fun toResourceQualityData(): ResourceQualityData = ResourceQualityData(
-        quality,
-    )
-
     fun updateQuality(
         originalAmount: Double,
         newAmount: Double,
@@ -587,20 +485,6 @@ data class MutableResourceQualityData(
     }
 
     /**
-     * Greater than or equal
-     */
-    fun geq(other: MutableResourceQualityData): Boolean {
-        return (quality >= other.quality)
-    }
-
-    /**
-     * Less than or equal
-     */
-    fun leq(other: MutableResourceQualityData): Boolean {
-        return (quality <= other.quality)
-    }
-
-    /**
      * Minimum of this or other
      */
     fun min(other: MutableResourceQualityData): MutableResourceQualityData {
@@ -609,16 +493,6 @@ data class MutableResourceQualityData(
         )
     }
 
-    /**
-     * Resource difference
-     */
-    fun squareDiff(other: ResourceQualityData): Double {
-        return (quality - other.quality).pow(2)
-    }
-
-    fun squareDiff(other: MutableResourceQualityData): Double {
-        return (quality - other.quality).pow(2)
-    }
 
     /**
      * Combine min of the qualities
@@ -643,6 +517,146 @@ data class MutableResourceQualityData(
     }
 }
 
+
+
+fun ResourceQualityData.toMutableResourceQualityData(): MutableResourceQualityData = MutableResourceQualityData(
+    quality,
+)
+
+fun MutableResourceQualityData.toResourceQualityData(): ResourceQualityData = ResourceQualityData(
+    quality,
+)
+
+operator fun ResourceQualityData.plus(other: ResourceQualityData): ResourceQualityData =
+    ResourceQualityData(
+        quality + other.quality,
+    )
+
+operator fun MutableResourceQualityData.plus(other: ResourceQualityData): MutableResourceQualityData =
+    MutableResourceQualityData(
+        quality + other.quality,
+    )
+
+operator fun ResourceQualityData.plus(other: MutableResourceQualityData): ResourceQualityData =
+    ResourceQualityData(
+        quality + other.quality,
+    )
+
+operator fun MutableResourceQualityData.plus(other: MutableResourceQualityData): MutableResourceQualityData =
+    MutableResourceQualityData(
+        quality + other.quality,
+    )
+
+operator fun ResourceQualityData.plus(num: Double): ResourceQualityData =
+    ResourceQualityData(
+        quality + num,
+    )
+operator fun MutableResourceQualityData.plus(num: Double): MutableResourceQualityData =
+    MutableResourceQualityData(
+        quality + num,
+    )
+
+operator fun ResourceQualityData.times(d: Double): ResourceQualityData = ResourceQualityData(
+    quality * d,
+)
+
+operator fun ResourceQualityData.minus(other: MutableResourceQualityData): ResourceQualityData =
+    ResourceQualityData(
+        quality - other.quality,
+    )
+
+operator fun MutableResourceQualityData.minus(other: MutableResourceQualityData): MutableResourceQualityData =
+    MutableResourceQualityData(
+        quality - other.quality,
+    )
+
+
+operator fun MutableResourceQualityData.times(d: Double): MutableResourceQualityData = MutableResourceQualityData(
+    quality * d,
+)
+
+/**
+ * If quality equals to zero, the output equal to zero instead of undefined
+ */
+operator fun ResourceQualityData.div(d: Double): ResourceQualityData = ResourceQualityData(
+    if (quality != 0.0) {
+        quality / d
+    } else {
+        0.0
+    }
+)
+
+/**
+ * If quality equals to zero, the output equal to zero instead of undefined
+ */
+operator fun MutableResourceQualityData.div(d: Double): MutableResourceQualityData = MutableResourceQualityData(
+    if (quality != 0.0) {
+        quality / d
+    } else {
+        0.0
+    },
+)
+
+fun ResourceQualityData.square(): Double = quality * quality
+
+fun MutableResourceQualityData.square(): Double = quality * quality
+
+
+fun ResourceQualityData.mag(): Double = sqrt(square())
+
+fun MutableResourceQualityData.mag(): Double = sqrt(square())
+
+/**
+ * Resource difference
+ */
+fun ResourceQualityData.squareDiff(other: ResourceQualityData): Double {
+    return (quality - other.quality).pow(2)
+}
+
+/**
+ * Resource difference
+ */
+fun MutableResourceQualityData.squareDiff(other: ResourceQualityData): Double {
+    return (quality - other.quality).pow(2)
+}
+
+fun ResourceQualityData.squareDiff(other: MutableResourceQualityData): Double {
+    return (quality - other.quality).pow(2)
+}
+
+fun MutableResourceQualityData.squareDiff(other: MutableResourceQualityData): Double {
+    return (quality - other.quality).pow(2)
+}
+
+/**
+ * Greater than or equal
+ */
+fun ResourceQualityData.geq(other: ResourceQualityData): Boolean {
+    return (quality >= other.quality)
+}
+
+/**
+ * Greater than or equal
+ */
+fun MutableResourceQualityData.geq(other: MutableResourceQualityData): Boolean {
+    return (quality >= other.quality)
+}
+
+/**
+ * Less than or equal
+ */
+fun ResourceQualityData.leq(other: ResourceQualityData): Boolean {
+    return (quality <= other.quality)
+}
+
+/**
+ * Less than or equal
+ */
+fun MutableResourceQualityData.leq(other: MutableResourceQualityData): Boolean {
+    return (quality <= other.quality)
+}
+
+
 /**
  * Amount of resource in different usage
  *
@@ -655,9 +669,7 @@ data class ResourceAmountData(
     val storage: Double = 0.0,
     val production: Double = 0.0,
     val trade: Double = 0.0,
-) {
-    fun total(): Double = storage + trade + production
-}
+)
 
 @Serializable
 data class MutableResourceAmountData(
@@ -670,9 +682,11 @@ data class MutableResourceAmountData(
         production = production * num,
         trade = trade * num
     )
-
-    fun total(): Double = storage + trade + production
 }
+
+fun ResourceAmountData.total(): Double = storage + trade + production
+
+fun MutableResourceAmountData.total(): Double = storage + trade + production
 
 /**
  * Target proportion of resource
@@ -686,18 +700,18 @@ data class ResourceTargetProportionData(
     val storage: Double = 0.5,
     val production: Double = 0.0,
     val trade: Double = 0.5,
-) {
-    fun total(): Double = storage + trade + production
-}
+)
 
 @Serializable
 data class MutableResourceTargetProportionData(
     var storage: Double = 0.5,
     var production: Double = 0.0,
     var trade: Double = 0.5,
-) {
-    fun total(): Double = storage + trade + production
-}
+)
+
+fun ResourceTargetProportionData.total(): Double = storage + trade + production
+
+fun MutableResourceTargetProportionData.total(): Double = storage + trade + production
 
 /**
  * The resource data of a specific type and class

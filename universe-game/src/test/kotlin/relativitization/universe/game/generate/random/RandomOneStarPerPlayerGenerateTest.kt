@@ -18,6 +18,8 @@ import relativitization.universe.game.data.components.popSystemData
 import relativitization.universe.core.generate.GenerateSettings
 import relativitization.universe.core.generate.GenerateUniverseMethodCollection
 import relativitization.universe.game.GameUniverseInitializer
+import relativitization.universe.game.data.components.defaults.science.application.newResourceFactoryInternalData
+import relativitization.universe.game.data.components.totalAdultPopulation
 import relativitization.universe.game.global.DefaultGlobalMechanismList
 import relativitization.universe.game.mechanisms.DefaultMechanismLists
 import kotlin.test.Test

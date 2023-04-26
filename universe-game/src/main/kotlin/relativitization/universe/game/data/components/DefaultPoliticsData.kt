@@ -24,32 +24,8 @@ data class PoliticsData(
     val isSubordinateBuildFactoryAllowed: Boolean = false,
     val isLeaderBuildLocalFactoryAllowed: Boolean = true,
     val isForeignInvestorAllowed: Boolean = true,
-) : DefaultPlayerDataComponent() {
-    /**
-     * Compute the ideology distance between player to represent how different between the two
-     */
-    fun ideologyDistance(politicsData: PoliticsData): Double {
-        val centralizationDistance: Double =
-            abs(centralizationLevel - politicsData.centralizationLevel).toDouble()
-        val isSubordinateBuildFactoryAllowedDistance =
-            if (isSubordinateBuildFactoryAllowed == politicsData.isSubordinateBuildFactoryAllowed) {
-                0.0
-            } else {
-                1.0
-            }
+) : DefaultPlayerDataComponent()
 
-        val isForeignInvestorAllowedDistance =
-            if (isForeignInvestorAllowed == politicsData.isForeignInvestorAllowed) {
-                0.0
-            } else {
-                1.0
-            }
-        return (centralizationDistance +
-                isSubordinateBuildFactoryAllowedDistance +
-                isForeignInvestorAllowedDistance
-                )
-    }
-}
 
 @Serializable
 @SerialName("PoliticsData")
@@ -69,3 +45,28 @@ fun MutablePlayerInternalData.politicsData(): MutablePoliticsData =
 
 fun MutablePlayerInternalData.politicsData(newPoliticsData: MutablePoliticsData) =
     playerDataComponentMap.put(newPoliticsData)
+
+/**
+ * Compute the ideology distance between player to represent how different between the two
+ */
+fun PoliticsData.ideologyDistance(politicsData: PoliticsData): Double {
+    val centralizationDistance: Double =
+        abs(centralizationLevel - politicsData.centralizationLevel).toDouble()
+    val isSubordinateBuildFactoryAllowedDistance =
+        if (isSubordinateBuildFactoryAllowed == politicsData.isSubordinateBuildFactoryAllowed) {
+            0.0
+        } else {
+            1.0
+        }
+
+    val isForeignInvestorAllowedDistance =
+        if (isForeignInvestorAllowed == politicsData.isForeignInvestorAllowed) {
+            0.0
+        } else {
+            1.0
+        }
+    return (centralizationDistance +
+            isSubordinateBuildFactoryAllowedDistance +
+            isForeignInvestorAllowedDistance
+            )
+}

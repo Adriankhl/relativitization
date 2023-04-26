@@ -17,8 +17,6 @@ data class PhysicsModifierData(
 data class MutablePhysicsModifierData(
     var disableRestMassIncreaseTimeLimit: Int = 0,
 ) {
-
-
     /**
      * Update the time by universe time
      */

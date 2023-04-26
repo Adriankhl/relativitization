@@ -16,6 +16,8 @@ import relativitization.universe.game.data.components.MutablePhysicsData
 import relativitization.universe.game.data.components.MutablePopSystemData
 import relativitization.universe.game.data.components.defaults.popsystem.MutableCarrierData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.PopType
+import relativitization.universe.game.data.components.defaults.popsystem.pop.getCommonPopData
+import relativitization.universe.game.data.components.defaults.popsystem.pop.totalAdultPopulation
 import relativitization.universe.game.data.components.physicsData
 import relativitization.universe.game.data.components.popSystemData
 import kotlin.math.max
