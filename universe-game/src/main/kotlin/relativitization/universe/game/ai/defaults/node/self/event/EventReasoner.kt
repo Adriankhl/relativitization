@@ -1,11 +1,11 @@
 package relativitization.universe.game.ai.defaults.node.self.event
 
-import relativitization.universe.game.ai.defaults.utils.AINode
-import relativitization.universe.game.ai.defaults.utils.PlanState
-import relativitization.universe.game.ai.defaults.utils.SequenceReasoner
 import relativitization.universe.core.data.PlanDataAtPlayer
 import relativitization.universe.core.data.events.Event
 import relativitization.universe.core.data.events.MutableEventData
+import relativitization.universe.game.ai.defaults.utils.AINode
+import relativitization.universe.game.ai.defaults.utils.PlanState
+import relativitization.universe.game.ai.defaults.utils.SequenceReasoner
 import kotlin.random.Random
 import kotlin.reflect.KClass
 

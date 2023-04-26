@@ -1,5 +1,8 @@
 package relativitization.universe.game.ai.defaults.node.self.event
 
+import relativitization.universe.core.data.PlanDataAtPlayer
+import relativitization.universe.core.data.commands.Command
+import relativitization.universe.core.data.events.MutableEventData
 import relativitization.universe.game.ai.defaults.consideration.diplomacy.RelationConsideration
 import relativitization.universe.game.ai.defaults.consideration.event.HasMovementTargetConsideration
 import relativitization.universe.game.ai.defaults.consideration.hierarchy.HierarchyRelationConsideration
@@ -10,11 +13,8 @@ import relativitization.universe.game.ai.defaults.utils.DualUtilityOption
 import relativitization.universe.game.ai.defaults.utils.DualUtilityReasoner
 import relativitization.universe.game.ai.defaults.utils.PlanState
 import relativitization.universe.game.ai.defaults.utils.SequenceReasoner
-import relativitization.universe.core.data.PlanDataAtPlayer
-import relativitization.universe.core.data.commands.Command
 import relativitization.universe.game.data.commands.SelectEventChoiceCommand
 import relativitization.universe.game.data.events.MoveToDouble3DEvent
-import relativitization.universe.core.data.events.MutableEventData
 import kotlin.random.Random
 
 /**

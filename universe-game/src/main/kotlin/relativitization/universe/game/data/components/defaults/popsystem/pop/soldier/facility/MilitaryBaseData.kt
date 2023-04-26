@@ -1,6 +1,5 @@
 package relativitization.universe.game.data.components.defaults.popsystem.pop.soldier.facility
 
-import kotlinx.serialization.Serializable
 import ksergen.annotations.GenerateImmutable
 
 @GenerateImmutable

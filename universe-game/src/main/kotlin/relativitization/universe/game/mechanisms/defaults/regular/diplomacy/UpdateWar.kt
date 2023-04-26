@@ -5,11 +5,6 @@ import relativitization.universe.core.data.PlayerData
 import relativitization.universe.core.data.UniverseData3DAtPlayer
 import relativitization.universe.core.data.UniverseSettings
 import relativitization.universe.core.data.commands.Command
-import relativitization.universe.game.data.components.defaults.diplomacy.war.MutableWarData
-import relativitization.universe.game.data.components.defaults.diplomacy.war.WarData
-import relativitization.universe.game.data.components.diplomacyData
-import relativitization.universe.game.data.components.modifierData
-import relativitization.universe.game.data.components.popSystemData
 import relativitization.universe.core.data.global.UniverseGlobalData
 import relativitization.universe.core.data.serializer.DataSerializer
 import relativitization.universe.core.maths.physics.Intervals
@@ -17,6 +12,11 @@ import relativitization.universe.core.mechanisms.Mechanism
 import relativitization.universe.core.utils.RelativitizationLogManager
 import relativitization.universe.game.data.components.defaults.diplomacy.hasSubordinateWar
 import relativitization.universe.game.data.components.defaults.diplomacy.isAlly
+import relativitization.universe.game.data.components.defaults.diplomacy.war.MutableWarData
+import relativitization.universe.game.data.components.defaults.diplomacy.war.WarData
+import relativitization.universe.game.data.components.diplomacyData
+import relativitization.universe.game.data.components.modifierData
+import relativitization.universe.game.data.components.popSystemData
 import relativitization.universe.game.data.components.totalAdultPopulation
 import kotlin.random.Random
 

@@ -1,5 +1,9 @@
 package relativitization.universe.game.ai.defaults.node.self.event
 
+import relativitization.universe.core.data.PlanDataAtPlayer
+import relativitization.universe.core.data.events.Event
+import relativitization.universe.core.data.events.MutableEventData
+import relativitization.universe.core.utils.RelativitizationLogManager
 import relativitization.universe.game.ai.defaults.consideration.diplomacy.RelationConsideration
 import relativitization.universe.game.ai.defaults.consideration.military.InDefensiveWarConsideration
 import relativitization.universe.game.ai.defaults.consideration.military.WarLossConsideration
@@ -10,14 +14,10 @@ import relativitization.universe.game.ai.defaults.utils.DualUtilityReasoner
 import relativitization.universe.game.ai.defaults.utils.PlainDualUtilityConsideration
 import relativitization.universe.game.ai.defaults.utils.PlanState
 import relativitization.universe.game.ai.defaults.utils.SequenceReasoner
-import relativitization.universe.core.data.PlanDataAtPlayer
-import relativitization.universe.core.data.events.Event
 import relativitization.universe.game.data.commands.SelectEventChoiceCommand
 import relativitization.universe.game.data.events.CallAllyToSubordinateWarEvent
 import relativitization.universe.game.data.events.CallAllyToWarEvent
-import relativitization.universe.core.data.events.MutableEventData
 import relativitization.universe.game.data.events.ProposePeaceEvent
-import relativitization.universe.core.utils.RelativitizationLogManager
 import kotlin.random.Random
 
 /**

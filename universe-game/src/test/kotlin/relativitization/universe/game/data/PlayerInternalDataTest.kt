@@ -1,13 +1,13 @@
 package relativitization.universe.game.data
 
-import relativitization.universe.game.data.components.EconomyData
-import relativitization.universe.game.data.components.MutableEconomyData
-import relativitization.universe.game.data.components.MutablePhysicsData
 import relativitization.universe.core.data.components.MutablePlayerDataComponent
-import relativitization.universe.game.data.components.PhysicsData
 import relativitization.universe.core.data.components.PlayerDataComponent
 import relativitization.universe.core.data.serializer.DataSerializer
 import relativitization.universe.game.GameUniverseInitializer
+import relativitization.universe.game.data.components.EconomyData
+import relativitization.universe.game.data.components.MutableEconomyData
+import relativitization.universe.game.data.components.MutablePhysicsData
+import relativitization.universe.game.data.components.PhysicsData
 import kotlin.test.Test
 
 internal class PlayerInternalDataTest {

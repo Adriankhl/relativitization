@@ -5,6 +5,13 @@ import relativitization.universe.core.data.MutablePlayerData
 import relativitization.universe.core.data.UniverseSettings
 import relativitization.universe.core.data.commands.CommandErrorMessage
 import relativitization.universe.core.data.commands.CommandI18NStringFactory
+import relativitization.universe.core.data.serializer.DataSerializer
+import relativitization.universe.core.maths.physics.Int4D
+import relativitization.universe.core.maths.physics.Intervals
+import relativitization.universe.core.utils.I18NString
+import relativitization.universe.core.utils.IntString
+import relativitization.universe.core.utils.NormalString
+import relativitization.universe.core.utils.RelativitizationLogManager
 import relativitization.universe.game.data.components.defaults.economy.ResourceType
 import relativitization.universe.game.data.components.defaults.popsystem.MutableCarrierData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.labourer.factory.FuelFactoryInternalData
@@ -13,21 +20,14 @@ import relativitization.universe.game.data.components.defaults.popsystem.pop.lab
 import relativitization.universe.game.data.components.defaults.popsystem.pop.labourer.factory.MutableResourceFactoryData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.labourer.factory.MutableResourceFactoryInternalData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.labourer.factory.ResourceFactoryInternalData
+import relativitization.universe.game.data.components.defaults.popsystem.pop.labourer.factory.squareDiff
+import relativitization.universe.game.data.components.defaults.science.application.newFuelFactoryInternalData
+import relativitization.universe.game.data.components.defaults.science.application.newResourceFactoryInternalData
 import relativitization.universe.game.data.components.modifierData
 import relativitization.universe.game.data.components.physicsData
 import relativitization.universe.game.data.components.playerScienceData
 import relativitization.universe.game.data.components.politicsData
 import relativitization.universe.game.data.components.popSystemData
-import relativitization.universe.core.data.serializer.DataSerializer
-import relativitization.universe.core.maths.physics.Int4D
-import relativitization.universe.core.maths.physics.Intervals
-import relativitization.universe.core.utils.I18NString
-import relativitization.universe.core.utils.IntString
-import relativitization.universe.core.utils.NormalString
-import relativitization.universe.core.utils.RelativitizationLogManager
-import relativitization.universe.game.data.components.defaults.popsystem.pop.labourer.factory.squareDiff
-import relativitization.universe.game.data.components.defaults.science.application.newFuelFactoryInternalData
-import relativitization.universe.game.data.components.defaults.science.application.newResourceFactoryInternalData
 import kotlin.math.pow
 
 /**

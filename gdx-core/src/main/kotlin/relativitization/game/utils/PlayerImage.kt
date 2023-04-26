@@ -8,14 +8,14 @@ import relativitization.game.MapPlayerColorMode
 import relativitization.universe.core.data.PlayerData
 import relativitization.universe.core.data.PlayerType
 import relativitization.universe.core.data.UniverseData3DAtPlayer
-import relativitization.universe.game.data.components.defaults.popsystem.CarrierType
-import relativitization.universe.game.data.components.diplomacyData
-import relativitization.universe.game.data.components.popSystemData
 import relativitization.universe.core.maths.physics.Double3D
 import relativitization.universe.core.maths.physics.Velocity
 import relativitization.universe.core.utils.RelativitizationLogManager
 import relativitization.universe.game.data.components.defaults.diplomacy.isAlly
 import relativitization.universe.game.data.components.defaults.diplomacy.isEnemy
+import relativitization.universe.game.data.components.defaults.popsystem.CarrierType
+import relativitization.universe.game.data.components.diplomacyData
+import relativitization.universe.game.data.components.popSystemData
 import kotlin.math.abs
 import kotlin.math.ceil
 import kotlin.math.floor

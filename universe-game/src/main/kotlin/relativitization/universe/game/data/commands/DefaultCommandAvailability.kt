@@ -3,8 +3,8 @@ package relativitization.universe.game.data.commands
 import kotlinx.serialization.Serializable
 import relativitization.universe.core.data.commands.Command
 import relativitization.universe.core.data.commands.CommandAvailability
-import relativitization.universe.game.data.events.DefaultEvent
 import relativitization.universe.core.data.events.Event
+import relativitization.universe.game.data.events.DefaultEvent
 import kotlin.reflect.KClass
 
 @Serializable

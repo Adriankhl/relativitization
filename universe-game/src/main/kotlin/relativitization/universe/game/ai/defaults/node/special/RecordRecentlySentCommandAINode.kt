@@ -1,10 +1,10 @@
 package relativitization.universe.game.ai.defaults.node.special
 
+import relativitization.universe.core.data.PlanDataAtPlayer
+import relativitization.universe.core.data.commands.Command
 import relativitization.universe.game.ai.defaults.utils.AINode
 import relativitization.universe.game.ai.defaults.utils.PlanState
-import relativitization.universe.core.data.PlanDataAtPlayer
 import relativitization.universe.game.data.commands.AddRecentCommandTimeCommand
-import relativitization.universe.core.data.commands.Command
 
 class RecordRecentlySentCommandAINode : AINode() {
     override fun updatePlan(planDataAtPlayer: PlanDataAtPlayer, planState: PlanState) {

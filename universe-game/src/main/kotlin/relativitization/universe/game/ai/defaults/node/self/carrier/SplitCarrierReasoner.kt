@@ -1,5 +1,7 @@
 package relativitization.universe.game.ai.defaults.node.self.carrier
 
+import relativitization.universe.core.data.PlanDataAtPlayer
+import relativitization.universe.core.utils.RelativitizationLogManager
 import relativitization.universe.game.ai.defaults.consideration.carrier.NoSpaceShipConsideration
 import relativitization.universe.game.ai.defaults.consideration.carrier.NumberOfSpaceShipConsideration
 import relativitization.universe.game.ai.defaults.consideration.carrier.SufficientPopulationRatioConsideration
@@ -9,13 +11,11 @@ import relativitization.universe.game.ai.defaults.utils.DualUtilityConsideration
 import relativitization.universe.game.ai.defaults.utils.DualUtilityOption
 import relativitization.universe.game.ai.defaults.utils.DualUtilityReasoner
 import relativitization.universe.game.ai.defaults.utils.PlanState
-import relativitization.universe.core.data.PlanDataAtPlayer
 import relativitization.universe.game.data.commands.SplitCarrierCommand
 import relativitization.universe.game.data.components.MutablePopSystemData
 import relativitization.universe.game.data.components.defaults.economy.ResourceType
 import relativitization.universe.game.data.components.defaults.popsystem.CarrierType
 import relativitization.universe.game.data.components.popSystemData
-import relativitization.universe.core.utils.RelativitizationLogManager
 import kotlin.random.Random
 
 class SplitCarrierReasoner(private val random: Random) : DualUtilityReasoner(random) {

@@ -5,13 +5,13 @@ import relativitization.universe.core.data.PlayerData
 import relativitization.universe.core.data.UniverseData3DAtPlayer
 import relativitization.universe.core.data.UniverseSettings
 import relativitization.universe.core.data.commands.Command
+import relativitization.universe.core.data.global.UniverseGlobalData
+import relativitization.universe.core.mechanisms.Mechanism
 import relativitization.universe.game.data.commands.DamageCommand
 import relativitization.universe.game.data.components.MutablePhysicsData
 import relativitization.universe.game.data.components.diplomacyData
 import relativitization.universe.game.data.components.physicsData
 import relativitization.universe.game.data.components.popSystemData
-import relativitization.universe.core.data.global.UniverseGlobalData
-import relativitization.universe.core.mechanisms.Mechanism
 import kotlin.math.min
 import kotlin.random.Random
 

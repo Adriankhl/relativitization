@@ -1,11 +1,11 @@
 package relativitization.universe.game.ai.defaults.consideration.building
 
+import relativitization.universe.core.data.PlanDataAtPlayer
+import relativitization.universe.core.data.PlayerData
 import relativitization.universe.game.ai.defaults.utils.DualUtilityConsideration
 import relativitization.universe.game.ai.defaults.utils.DualUtilityData
 import relativitization.universe.game.ai.defaults.utils.DualUtilityDataFactory
 import relativitization.universe.game.ai.defaults.utils.PlanState
-import relativitization.universe.core.data.PlanDataAtPlayer
-import relativitization.universe.core.data.PlayerData
 import relativitization.universe.game.data.components.PopSystemData
 import relativitization.universe.game.data.components.defaults.economy.ResourceQualityClass
 import relativitization.universe.game.data.components.defaults.economy.ResourceType

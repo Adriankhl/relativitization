@@ -8,14 +8,6 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import relativitization.universe.core.Universe
-import relativitization.universe.core.data.MutableUniverseSettings
-import relativitization.universe.game.UniverseServerSettings
-import relativitization.universe.game.communication.CheckIsPlayerDeadMessage
-import relativitization.universe.game.communication.DeregisterPlayerMessage
-import relativitization.universe.game.communication.PlayerInputMessage
-import relativitization.universe.game.communication.RegisterPlayerMessage
-import relativitization.universe.game.communication.UniverseData3DMessage
-import relativitization.universe.game.communication.UniverseServerStatusMessage
 import relativitization.universe.core.data.UniverseData3DAtPlayer
 import relativitization.universe.core.data.commands.Command
 import relativitization.universe.core.generate.GenerateSettings
@@ -23,10 +15,13 @@ import relativitization.universe.core.generate.GenerateUniverseMethodCollection
 import relativitization.universe.core.utils.CoroutineBoolean
 import relativitization.universe.core.utils.CoroutineVar
 import relativitization.universe.core.utils.RelativitizationLogManager
-import relativitization.universe.game.data.commands.DefaultCommandAvailability
-import relativitization.universe.game.generate.testing.TestingFixedMinimalGenerate
-import relativitization.universe.game.global.DefaultGlobalMechanismList
-import relativitization.universe.game.mechanisms.DefaultMechanismLists
+import relativitization.universe.game.UniverseServerSettings
+import relativitization.universe.game.communication.CheckIsPlayerDeadMessage
+import relativitization.universe.game.communication.DeregisterPlayerMessage
+import relativitization.universe.game.communication.PlayerInputMessage
+import relativitization.universe.game.communication.RegisterPlayerMessage
+import relativitization.universe.game.communication.UniverseData3DMessage
+import relativitization.universe.game.communication.UniverseServerStatusMessage
 import java.io.File
 
 class UniverseServerInternal(

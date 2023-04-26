@@ -1,19 +1,16 @@
 package relativitization.universe.game.data.global.components
 
 import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
 import ksergen.annotations.GenerateImmutable
+import relativitization.universe.core.data.global.MutableUniverseGlobalData
+import relativitization.universe.core.data.global.UniverseGlobalData
+import relativitization.universe.core.utils.RelativitizationLogManager
 import relativitization.universe.game.data.components.defaults.science.knowledge.AppliedResearchProjectData
 import relativitization.universe.game.data.components.defaults.science.knowledge.BasicResearchProjectData
-import relativitization.universe.game.data.components.defaults.science.knowledge.KnowledgeData
 import relativitization.universe.game.data.components.defaults.science.knowledge.MutableAppliedResearchData
 import relativitization.universe.game.data.components.defaults.science.knowledge.MutableBasicResearchData
 import relativitization.universe.game.data.components.defaults.science.knowledge.MutableKnowledgeData
-import relativitization.universe.core.data.global.MutableUniverseGlobalData
-import relativitization.universe.core.data.global.UniverseGlobalData
 import relativitization.universe.game.data.global.components.defaults.science.knowledge.MutableUniverseProjectGenerationData
-import relativitization.universe.game.data.global.components.defaults.science.knowledge.UniverseProjectGenerationData
-import relativitization.universe.core.utils.RelativitizationLogManager
 
 /**
  * Store science data for the whole universe

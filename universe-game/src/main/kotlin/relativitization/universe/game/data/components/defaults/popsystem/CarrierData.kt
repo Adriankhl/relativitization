@@ -1,8 +1,6 @@
 package relativitization.universe.game.data.components.defaults.popsystem
 
-import kotlinx.serialization.Serializable
 import ksergen.annotations.GenerateImmutable
-import relativitization.universe.game.data.components.defaults.popsystem.pop.AllPopData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.MutableAllPopData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.PopType
 import relativitization.universe.game.data.components.defaults.popsystem.pop.getCommonPopData

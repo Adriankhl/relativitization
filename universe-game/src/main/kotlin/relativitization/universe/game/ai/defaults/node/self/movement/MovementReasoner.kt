@@ -1,5 +1,10 @@
 package relativitization.universe.game.ai.defaults.node.self.movement
 
+import relativitization.universe.core.data.PlanDataAtPlayer
+import relativitization.universe.core.data.PlayerData
+import relativitization.universe.core.maths.physics.Int3D
+import relativitization.universe.core.maths.physics.Intervals
+import relativitization.universe.core.maths.physics.Movement
 import relativitization.universe.game.ai.defaults.consideration.event.HasMovementTargetConsideration
 import relativitization.universe.game.ai.defaults.consideration.fuel.SufficientFuelMaxSpeedConsideration
 import relativitization.universe.game.ai.defaults.consideration.population.HigherPopulationDensityThenNeighborCubeConsideration
@@ -10,18 +15,13 @@ import relativitization.universe.game.ai.defaults.utils.DualUtilityConsideration
 import relativitization.universe.game.ai.defaults.utils.DualUtilityOption
 import relativitization.universe.game.ai.defaults.utils.DualUtilityReasoner
 import relativitization.universe.game.ai.defaults.utils.PlanState
-import relativitization.universe.core.data.PlanDataAtPlayer
-import relativitization.universe.core.data.PlayerData
 import relativitization.universe.game.data.commands.AddEventCommand
 import relativitization.universe.game.data.components.diplomacyData
 import relativitization.universe.game.data.components.physicsData
 import relativitization.universe.game.data.components.popSystemData
-import relativitization.universe.game.data.events.MoveToDouble3DEvent
-import relativitization.universe.core.maths.physics.Int3D
-import relativitization.universe.core.maths.physics.Intervals
-import relativitization.universe.core.maths.physics.Movement
 import relativitization.universe.game.data.components.totalAdultPopulation
 import relativitization.universe.game.data.components.totalRestMass
+import relativitization.universe.game.data.events.MoveToDouble3DEvent
 import kotlin.math.min
 import kotlin.random.Random
 

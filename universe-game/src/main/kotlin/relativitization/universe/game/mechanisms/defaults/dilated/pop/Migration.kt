@@ -4,12 +4,12 @@ import relativitization.universe.core.data.MutablePlayerData
 import relativitization.universe.core.data.UniverseData3DAtPlayer
 import relativitization.universe.core.data.UniverseSettings
 import relativitization.universe.core.data.commands.Command
-import relativitization.universe.game.data.components.defaults.popsystem.pop.MutableCommonPopData
-import relativitization.universe.game.data.components.defaults.popsystem.pop.PopType
-import relativitization.universe.game.data.components.popSystemData
 import relativitization.universe.core.data.global.UniverseGlobalData
 import relativitization.universe.core.mechanisms.Mechanism
+import relativitization.universe.game.data.components.defaults.popsystem.pop.MutableCommonPopData
+import relativitization.universe.game.data.components.defaults.popsystem.pop.PopType
 import relativitization.universe.game.data.components.defaults.popsystem.pop.getCommonPopData
+import relativitization.universe.game.data.components.popSystemData
 import kotlin.math.min
 import kotlin.random.Random
 

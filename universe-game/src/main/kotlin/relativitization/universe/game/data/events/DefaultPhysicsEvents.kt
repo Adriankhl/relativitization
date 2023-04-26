@@ -7,7 +7,6 @@ import relativitization.universe.core.data.UniverseSettings
 import relativitization.universe.core.data.commands.Command
 import relativitization.universe.core.data.commands.CommandErrorMessage
 import relativitization.universe.core.data.commands.CommandI18NStringFactory
-import relativitization.universe.game.data.components.physicsData
 import relativitization.universe.core.data.serializer.DataSerializer
 import relativitization.universe.core.maths.physics.Double3D
 import relativitization.universe.core.maths.physics.Movement
@@ -15,6 +14,7 @@ import relativitization.universe.core.utils.I18NString
 import relativitization.universe.core.utils.IntString
 import relativitization.universe.core.utils.NormalString
 import relativitization.universe.core.utils.RelativitizationLogManager
+import relativitization.universe.game.data.components.physicsData
 import relativitization.universe.game.data.components.totalRestMass
 import kotlin.random.Random
 

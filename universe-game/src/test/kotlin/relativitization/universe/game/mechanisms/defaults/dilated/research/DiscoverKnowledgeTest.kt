@@ -4,11 +4,11 @@ import kotlinx.coroutines.runBlocking
 import relativitization.universe.core.Universe
 import relativitization.universe.core.data.MutableUniverseSettings
 import relativitization.universe.core.data.UniverseData3DAtPlayer
-import relativitization.universe.game.data.components.playerScienceData
 import relativitization.universe.core.generate.GenerateSettings
 import relativitization.universe.core.generate.GenerateUniverseMethodCollection
 import relativitization.universe.game.GameUniverseInitializer
 import relativitization.universe.game.data.commands.DefaultCommandAvailability
+import relativitization.universe.game.data.components.playerScienceData
 import relativitization.universe.game.generate.testing.TestingFixedMinimalGenerate
 import relativitization.universe.game.global.DefaultGlobalMechanismList
 import relativitization.universe.game.mechanisms.DefaultMechanismLists

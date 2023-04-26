@@ -19,7 +19,6 @@ import relativitization.universe.core.maths.physics.Intervals
 import relativitization.universe.core.mechanisms.MechanismCollection
 import relativitization.universe.core.utils.RelativitizationLogManager
 import kotlin.collections.set
-import kotlin.collections.toList
 
 class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.assets) {
     private val gdxSettings = game.gdxSettings

@@ -5,8 +5,8 @@ import relativitization.universe.core.data.MutablePlayerData
 import relativitization.universe.core.data.UniverseSettings
 import relativitization.universe.core.data.commands.CommandErrorMessage
 import relativitization.universe.core.data.commands.CommandI18NStringFactory
-import relativitization.universe.game.data.components.aiData
 import relativitization.universe.core.maths.physics.Int4D
+import relativitization.universe.game.data.components.aiData
 
 
 /**

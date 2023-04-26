@@ -1,5 +1,9 @@
 package relativitization.universe.game.ai.defaults.node.other.diplomacy
 
+import relativitization.universe.core.data.MutablePlayerData
+import relativitization.universe.core.data.PlanDataAtPlayer
+import relativitization.universe.core.data.PlayerData
+import relativitization.universe.core.maths.physics.Int3D
 import relativitization.universe.game.ai.defaults.consideration.diplomacy.RelationConsideration
 import relativitization.universe.game.ai.defaults.consideration.diplomacy.TooManyAllyConsideration
 import relativitization.universe.game.ai.defaults.consideration.military.InDefensiveWarConsideration
@@ -10,10 +14,6 @@ import relativitization.universe.game.ai.defaults.utils.DualUtilityOption
 import relativitization.universe.game.ai.defaults.utils.DualUtilityReasoner
 import relativitization.universe.game.ai.defaults.utils.PlanState
 import relativitization.universe.game.ai.defaults.utils.SequenceReasoner
-import relativitization.universe.core.data.MutablePlayerData
-import relativitization.universe.core.data.PlanDataAtPlayer
-import relativitization.universe.core.data.PlayerData
-import relativitization.universe.core.maths.physics.Int3D
 import relativitization.universe.game.data.commands.AddEventCommand
 import relativitization.universe.game.data.commands.RemoveAllyCommand
 import relativitization.universe.game.data.components.defaults.diplomacy.hasAllySubordinateWar

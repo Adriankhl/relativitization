@@ -8,6 +8,8 @@ import relativitization.game.RelativitizationGame
 import relativitization.game.components.upper.UpperInfoPane
 import relativitization.universe.core.data.PlayerData
 import relativitization.universe.core.data.serializer.DataSerializer
+import relativitization.universe.core.maths.number.Notation
+import relativitization.universe.core.utils.RelativitizationLogManager
 import relativitization.universe.game.data.commands.BuildForeignFuelFactoryCommand
 import relativitization.universe.game.data.commands.BuildForeignResourceFactoryCommand
 import relativitization.universe.game.data.commands.BuildInstituteCommand
@@ -33,6 +35,7 @@ import relativitization.universe.game.data.commands.SupplyForeignFuelFactoryComm
 import relativitization.universe.game.data.commands.SupplyForeignResourceFactoryCommand
 import relativitization.universe.game.data.components.defaults.economy.ResourceQualityClass
 import relativitization.universe.game.data.components.defaults.economy.ResourceType
+import relativitization.universe.game.data.components.defaults.economy.getProductionResourceAmount
 import relativitization.universe.game.data.components.defaults.popsystem.CarrierData
 import relativitization.universe.game.data.components.defaults.popsystem.CarrierInternalData
 import relativitization.universe.game.data.components.defaults.popsystem.GeneralPopSystemData
@@ -43,33 +46,30 @@ import relativitization.universe.game.data.components.defaults.popsystem.pop.Res
 import relativitization.universe.game.data.components.defaults.popsystem.pop.engineer.EngineerPopData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.engineer.laboratory.LaboratoryData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.engineer.laboratory.LaboratoryInternalData
+import relativitization.universe.game.data.components.defaults.popsystem.pop.getCommonPopData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.labourer.LabourerPopData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.labourer.factory.FuelFactoryData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.labourer.factory.InputResourceData
+import relativitization.universe.game.data.components.defaults.popsystem.pop.labourer.factory.MutableInputResourceData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.labourer.factory.ResourceFactoryData
+import relativitization.universe.game.data.components.defaults.popsystem.pop.labourer.factory.lastInputAmount
+import relativitization.universe.game.data.components.defaults.popsystem.pop.labourer.factory.maxInputAmount
 import relativitization.universe.game.data.components.defaults.popsystem.pop.scholar.ScholarPopData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.scholar.institute.InstituteData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.scholar.institute.InstituteInternalData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.service.ServicePopData
+import relativitization.universe.game.data.components.defaults.popsystem.pop.service.export.MutablePlayerExportCenterData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.service.export.PlayerExportCenterData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.service.export.PlayerSingleExportData
-import relativitization.universe.game.data.components.defaults.popsystem.pop.soldier.SoldierPopData
-import relativitization.universe.game.data.components.economyData
-import relativitization.universe.game.data.components.playerScienceData
-import relativitization.universe.game.data.components.popSystemData
-import relativitization.universe.core.maths.number.Notation
-import relativitization.universe.core.utils.RelativitizationLogManager
-import relativitization.universe.game.data.components.defaults.economy.getProductionResourceAmount
-import relativitization.universe.game.data.components.defaults.popsystem.pop.getCommonPopData
-import relativitization.universe.game.data.components.defaults.popsystem.pop.labourer.factory.MutableInputResourceData
-import relativitization.universe.game.data.components.defaults.popsystem.pop.labourer.factory.lastInputAmount
-import relativitization.universe.game.data.components.defaults.popsystem.pop.labourer.factory.maxInputAmount
-import relativitization.universe.game.data.components.defaults.popsystem.pop.service.export.MutablePlayerExportCenterData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.service.export.getExportDataList
 import relativitization.universe.game.data.components.defaults.popsystem.pop.service.export.getResourceQualityClassList
 import relativitization.universe.game.data.components.defaults.popsystem.pop.service.export.getResourceTypeList
+import relativitization.universe.game.data.components.defaults.popsystem.pop.soldier.SoldierPopData
 import relativitization.universe.game.data.components.defaults.science.application.newFuelFactoryInternalData
 import relativitization.universe.game.data.components.defaults.science.application.newResourceFactoryInternalData
+import relativitization.universe.game.data.components.economyData
+import relativitization.universe.game.data.components.playerScienceData
+import relativitization.universe.game.data.components.popSystemData
 
 class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane>(game) {
     override val infoName: String = "Pop System"

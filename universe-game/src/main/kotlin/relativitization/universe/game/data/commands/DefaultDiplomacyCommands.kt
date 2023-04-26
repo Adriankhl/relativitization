@@ -5,16 +5,16 @@ import relativitization.universe.core.data.MutablePlayerData
 import relativitization.universe.core.data.UniverseSettings
 import relativitization.universe.core.data.commands.CommandErrorMessage
 import relativitization.universe.core.data.commands.CommandI18NStringFactory
-import relativitization.universe.game.data.components.defaults.diplomacy.ally.MutableAllianceData
-import relativitization.universe.game.data.components.defaults.diplomacy.war.MutableWarData
-import relativitization.universe.game.data.components.defaults.diplomacy.war.WarCoreData
-import relativitization.universe.game.data.components.defaults.diplomacy.war.WarReason
-import relativitization.universe.game.data.components.diplomacyData
 import relativitization.universe.core.maths.physics.Int4D
 import relativitization.universe.core.utils.I18NString
 import relativitization.universe.core.utils.IntString
 import relativitization.universe.core.utils.NormalString
+import relativitization.universe.game.data.components.defaults.diplomacy.ally.MutableAllianceData
 import relativitization.universe.game.data.components.defaults.diplomacy.isAlly
+import relativitization.universe.game.data.components.defaults.diplomacy.war.MutableWarData
+import relativitization.universe.game.data.components.defaults.diplomacy.war.WarCoreData
+import relativitization.universe.game.data.components.defaults.diplomacy.war.WarReason
+import relativitization.universe.game.data.components.diplomacyData
 
 /**
  * Declare war on target player

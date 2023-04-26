@@ -4,9 +4,23 @@ import kotlinx.serialization.Serializable
 import relativitization.universe.core.data.MutablePlayerData
 import relativitization.universe.core.data.UniverseSettings
 import relativitization.universe.core.data.commands.CommandErrorMessage
+import relativitization.universe.core.maths.physics.Int4D
+import relativitization.universe.core.maths.physics.Intervals
+import relativitization.universe.core.utils.I18NString
+import relativitization.universe.core.utils.IntString
+import relativitization.universe.core.utils.NormalString
+import relativitization.universe.core.utils.RelativitizationLogManager
 import relativitization.universe.game.data.components.defaults.economy.ResourceQualityClass
 import relativitization.universe.game.data.components.defaults.economy.ResourceQualityData
 import relativitization.universe.game.data.components.defaults.economy.ResourceType
+import relativitization.universe.game.data.components.defaults.economy.getResourceAmountData
+import relativitization.universe.game.data.components.defaults.economy.getResourceQuality
+import relativitization.universe.game.data.components.defaults.economy.getResourceTariffRate
+import relativitization.universe.game.data.components.defaults.economy.getStorageResourceAmount
+import relativitization.universe.game.data.components.defaults.economy.squareDiff
+import relativitization.universe.game.data.components.defaults.economy.toMutableResourceQualityData
+import relativitization.universe.game.data.components.defaults.economy.toResourceQualityData
+import relativitization.universe.game.data.components.defaults.physics.total
 import relativitization.universe.game.data.components.defaults.popsystem.pop.PopType
 import relativitization.universe.game.data.components.defaults.popsystem.pop.service.export.MutablePlayerExportCenterData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.service.export.MutablePlayerSingleExportData
@@ -17,20 +31,6 @@ import relativitization.universe.game.data.components.modifierData
 import relativitization.universe.game.data.components.physicsData
 import relativitization.universe.game.data.components.playerScienceData
 import relativitization.universe.game.data.components.popSystemData
-import relativitization.universe.core.maths.physics.Int4D
-import relativitization.universe.core.maths.physics.Intervals
-import relativitization.universe.core.utils.I18NString
-import relativitization.universe.core.utils.IntString
-import relativitization.universe.core.utils.NormalString
-import relativitization.universe.core.utils.RelativitizationLogManager
-import relativitization.universe.game.data.components.defaults.economy.getResourceAmountData
-import relativitization.universe.game.data.components.defaults.economy.getResourceQuality
-import relativitization.universe.game.data.components.defaults.economy.getResourceTariffRate
-import relativitization.universe.game.data.components.defaults.physics.total
-import relativitization.universe.game.data.components.defaults.economy.toMutableResourceQualityData
-import relativitization.universe.game.data.components.defaults.economy.getStorageResourceAmount
-import relativitization.universe.game.data.components.defaults.economy.squareDiff
-import relativitization.universe.game.data.components.defaults.economy.toResourceQualityData
 import kotlin.math.pow
 
 /**

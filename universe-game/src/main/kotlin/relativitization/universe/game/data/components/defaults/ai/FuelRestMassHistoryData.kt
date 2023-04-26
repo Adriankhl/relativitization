@@ -1,9 +1,8 @@
 package relativitization.universe.game.data.components.defaults.ai
 
 import ksergen.annotations.GenerateImmutable
-import relativitization.universe.game.data.components.defaults.physics.FuelRestMassData
-import relativitization.universe.game.data.components.defaults.physics.MutableFuelRestMassData
 import relativitization.universe.core.utils.RelativitizationLogManager
+import relativitization.universe.game.data.components.defaults.physics.MutableFuelRestMassData
 
 /**
  * Store the history of fuel rest mass data

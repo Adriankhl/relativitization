@@ -7,11 +7,19 @@ import relativitization.universe.core.data.PlayerType
 import relativitization.universe.core.data.UniverseData
 import relativitization.universe.core.data.UniverseSettings
 import relativitization.universe.core.data.UniverseState
+import relativitization.universe.core.data.global.MutableUniverseGlobalData
+import relativitization.universe.core.data.serializer.DataSerializer
+import relativitization.universe.core.generate.GenerateSettings
+import relativitization.universe.core.maths.grid.Grids.create4DGrid
+import relativitization.universe.core.maths.physics.MutableDouble4D
+import relativitization.universe.core.maths.physics.MutableInt4D
 import relativitization.universe.game.data.components.MutableDefaultPlayerDataComponent
 import relativitization.universe.game.data.components.defaults.diplomacy.ally.MutableAllianceData
 import relativitization.universe.game.data.components.defaults.economy.MutableResourceQualityData
 import relativitization.universe.game.data.components.defaults.economy.ResourceQualityClass
 import relativitization.universe.game.data.components.defaults.economy.ResourceType
+import relativitization.universe.game.data.components.defaults.economy.getSingleResourceData
+import relativitization.universe.game.data.components.defaults.economy.plus
 import relativitization.universe.game.data.components.defaults.popsystem.pop.engineer.laboratory.MutableLaboratoryData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.engineer.laboratory.MutableLaboratoryInternalData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.labourer.factory.MutableFuelFactoryData
@@ -29,20 +37,12 @@ import relativitization.universe.game.data.components.physicsData
 import relativitization.universe.game.data.components.playerScienceData
 import relativitization.universe.game.data.components.popSystemData
 import relativitization.universe.game.data.components.syncData
-import relativitization.universe.core.data.global.MutableUniverseGlobalData
 import relativitization.universe.game.data.global.components.MutableDefaultGlobalDataComponent
 import relativitization.universe.game.data.global.components.defaults.science.knowledge.MutableAppliedResearchProjectGenerationData
 import relativitization.universe.game.data.global.components.defaults.science.knowledge.MutableBasicResearchProjectGenerationData
 import relativitization.universe.game.data.global.components.defaults.science.knowledge.MutableProjectGenerationData
 import relativitization.universe.game.data.global.components.universeScienceData
-import relativitization.universe.core.data.serializer.DataSerializer
-import relativitization.universe.core.generate.GenerateSettings
 import relativitization.universe.game.global.defaults.science.UpdateUniverseScienceData
-import relativitization.universe.core.maths.grid.Grids.create4DGrid
-import relativitization.universe.core.maths.physics.MutableDouble4D
-import relativitization.universe.core.maths.physics.MutableInt4D
-import relativitization.universe.game.data.components.defaults.economy.getSingleResourceData
-import relativitization.universe.game.data.components.defaults.economy.plus
 import kotlin.random.Random
 
 object TestingFixedMinimalGenerate : TestingGenerateUniverseMethod() {

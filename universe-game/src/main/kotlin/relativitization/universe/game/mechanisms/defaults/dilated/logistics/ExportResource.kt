@@ -4,10 +4,18 @@ import relativitization.universe.core.data.MutablePlayerData
 import relativitization.universe.core.data.UniverseData3DAtPlayer
 import relativitization.universe.core.data.UniverseSettings
 import relativitization.universe.core.data.commands.Command
+import relativitization.universe.core.data.global.UniverseGlobalData
+import relativitization.universe.core.mechanisms.Mechanism
 import relativitization.universe.game.data.commands.SendResourceCommand
 import relativitization.universe.game.data.commands.SendResourceToPopCommand
 import relativitization.universe.game.data.components.defaults.economy.MutableResourceData
 import relativitization.universe.game.data.components.defaults.economy.ResourceQualityData
+import relativitization.universe.game.data.components.defaults.economy.getResourceAmountData
+import relativitization.universe.game.data.components.defaults.economy.getResourcePrice
+import relativitization.universe.game.data.components.defaults.economy.getResourceQuality
+import relativitization.universe.game.data.components.defaults.economy.getResourceTariffRate
+import relativitization.universe.game.data.components.defaults.economy.getTradeResourceAmount
+import relativitization.universe.game.data.components.defaults.economy.toResourceQualityData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.service.MutableServicePopData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.service.export.MutablePlayerSingleExportData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.service.export.MutablePopSingleExportData
@@ -15,14 +23,6 @@ import relativitization.universe.game.data.components.economyData
 import relativitization.universe.game.data.components.physicsData
 import relativitization.universe.game.data.components.playerScienceData
 import relativitization.universe.game.data.components.popSystemData
-import relativitization.universe.core.data.global.UniverseGlobalData
-import relativitization.universe.core.mechanisms.Mechanism
-import relativitization.universe.game.data.components.defaults.economy.getResourceAmountData
-import relativitization.universe.game.data.components.defaults.economy.getResourcePrice
-import relativitization.universe.game.data.components.defaults.economy.getResourceQuality
-import relativitization.universe.game.data.components.defaults.economy.getResourceTariffRate
-import relativitization.universe.game.data.components.defaults.economy.getTradeResourceAmount
-import relativitization.universe.game.data.components.defaults.economy.toResourceQualityData
 import kotlin.math.max
 import kotlin.random.Random
 

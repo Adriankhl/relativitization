@@ -4,9 +4,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.ScreenComponent
+import relativitization.universe.core.data.commands.Command
 import relativitization.universe.game.data.commands.AddEventCommand
 import relativitization.universe.game.data.commands.CannotSendCommand
-import relativitization.universe.core.data.commands.Command
 import relativitization.universe.game.data.commands.DummyCommand
 import relativitization.universe.game.data.commands.ExecuteWarningCommand
 

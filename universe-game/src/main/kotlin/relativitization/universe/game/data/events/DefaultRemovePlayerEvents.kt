@@ -8,11 +8,11 @@ import relativitization.universe.core.data.UniverseSettings
 import relativitization.universe.core.data.commands.Command
 import relativitization.universe.core.data.commands.CommandErrorMessage
 import relativitization.universe.core.data.commands.CommandI18NStringFactory
-import relativitization.universe.game.data.commands.DeclareIndependenceToDirectLeaderCommand
-import relativitization.universe.game.data.components.politicsData
 import relativitization.universe.core.utils.I18NString
 import relativitization.universe.core.utils.IntString
 import relativitization.universe.core.utils.NormalString
+import relativitization.universe.game.data.commands.DeclareIndependenceToDirectLeaderCommand
+import relativitization.universe.game.data.components.politicsData
 import kotlin.random.Random
 
 /**

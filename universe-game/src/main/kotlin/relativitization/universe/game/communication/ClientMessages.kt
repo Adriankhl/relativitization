@@ -1,9 +1,9 @@
 package relativitization.universe.game.communication
 
 import kotlinx.serialization.Serializable
-import relativitization.universe.game.UniverseServerSettings
 import relativitization.universe.core.data.commands.Command
 import relativitization.universe.core.generate.GenerateSettings
+import relativitization.universe.game.UniverseServerSettings
 
 @Serializable
 data class NewUniverseMessage(

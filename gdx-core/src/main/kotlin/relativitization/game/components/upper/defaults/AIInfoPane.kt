@@ -6,12 +6,12 @@ import relativitization.game.RelativitizationGame
 import relativitization.game.components.upper.UpperInfoPane
 import relativitization.universe.core.ai.AI
 import relativitization.universe.core.ai.AICollection
-import relativitization.universe.game.ai.DefaultAI
-import relativitization.universe.game.data.commands.CannotSendCommand
 import relativitization.universe.core.data.commands.Command
 import relativitization.universe.core.data.commands.CommandErrorMessage
-import relativitization.universe.game.data.commands.DummyCommand
 import relativitization.universe.core.utils.I18NString
+import relativitization.universe.game.ai.DefaultAI
+import relativitization.universe.game.data.commands.CannotSendCommand
+import relativitization.universe.game.data.commands.DummyCommand
 import kotlin.random.Random
 
 class AIInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane>(game) {

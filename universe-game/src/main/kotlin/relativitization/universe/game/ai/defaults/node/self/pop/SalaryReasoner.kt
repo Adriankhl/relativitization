@@ -1,5 +1,6 @@
 package relativitization.universe.game.ai.defaults.node.self.pop
 
+import relativitization.universe.core.data.PlanDataAtPlayer
 import relativitization.universe.game.ai.defaults.consideration.fuel.IncreasingProductionFuelConsideration
 import relativitization.universe.game.ai.defaults.consideration.fuel.PopulationSavingHighCompareToProductionConsideration
 import relativitization.universe.game.ai.defaults.utils.AINode
@@ -9,7 +10,6 @@ import relativitization.universe.game.ai.defaults.utils.DualUtilityOption
 import relativitization.universe.game.ai.defaults.utils.DualUtilityReasoner
 import relativitization.universe.game.ai.defaults.utils.PlanState
 import relativitization.universe.game.ai.defaults.utils.SequenceReasoner
-import relativitization.universe.core.data.PlanDataAtPlayer
 import relativitization.universe.game.data.commands.ChangeBaseSalaryCommand
 import relativitization.universe.game.data.commands.ChangeSalaryFactorCommand
 import relativitization.universe.game.data.components.MutablePhysicsData

@@ -1,6 +1,5 @@
 package relativitization.universe.game.data.components.defaults.popsystem.pop.service.export
 
-import kotlinx.serialization.Serializable
 import ksergen.annotations.GenerateImmutable
 import relativitization.universe.core.data.serializer.DataSerializer
 import relativitization.universe.game.data.components.defaults.economy.ResourceQualityClass

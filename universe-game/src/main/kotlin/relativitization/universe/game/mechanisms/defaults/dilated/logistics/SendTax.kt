@@ -4,12 +4,12 @@ import relativitization.universe.core.data.MutablePlayerData
 import relativitization.universe.core.data.UniverseData3DAtPlayer
 import relativitization.universe.core.data.UniverseSettings
 import relativitization.universe.core.data.commands.Command
-import relativitization.universe.game.data.commands.SendFuelCommand
-import relativitization.universe.game.data.components.economyData
-import relativitization.universe.game.data.components.playerScienceData
 import relativitization.universe.core.data.global.UniverseGlobalData
 import relativitization.universe.core.maths.collection.Fraction
 import relativitization.universe.core.mechanisms.Mechanism
+import relativitization.universe.game.data.commands.SendFuelCommand
+import relativitization.universe.game.data.components.economyData
+import relativitization.universe.game.data.components.playerScienceData
 import kotlin.random.Random
 
 object SendTax : Mechanism() {

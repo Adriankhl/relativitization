@@ -1,11 +1,9 @@
 package relativitization.universe.game.data.components
 
 import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
 import ksergen.annotations.GenerateImmutable
 import relativitization.universe.core.data.MutablePlayerInternalData
 import relativitization.universe.core.data.PlayerInternalData
-import relativitization.universe.game.data.components.defaults.ai.FuelRestMassHistoryData
 import relativitization.universe.game.data.components.defaults.ai.MutableFuelRestMassHistoryData
 
 /**

@@ -1,14 +1,10 @@
 package relativitization.universe.game.data.components.defaults.popsystem.pop.labourer
 
-import kotlinx.serialization.Serializable
 import ksergen.annotations.GenerateImmutable
-import relativitization.universe.game.data.components.defaults.popsystem.pop.CommonPopData
+import relativitization.universe.core.maths.collection.ListFind
 import relativitization.universe.game.data.components.defaults.popsystem.pop.MutableCommonPopData
-import relativitization.universe.game.data.components.defaults.popsystem.pop.labourer.factory.FuelFactoryData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.labourer.factory.MutableFuelFactoryData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.labourer.factory.MutableResourceFactoryData
-import relativitization.universe.game.data.components.defaults.popsystem.pop.labourer.factory.ResourceFactoryData
-import relativitization.universe.core.maths.collection.ListFind
 
 @GenerateImmutable
 data class MutableLabourerPopData(

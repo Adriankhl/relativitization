@@ -6,10 +6,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.RelativitizationGame
 import relativitization.game.components.upper.UpperInfoPane
 import relativitization.universe.core.data.PlayerData
-import relativitization.universe.game.data.commands.AddEventCommand
-import relativitization.universe.game.data.commands.ChangeVelocityCommand
-import relativitization.universe.game.data.components.physicsData
-import relativitization.universe.game.data.events.MoveToDouble3DEvent
 import relativitization.universe.core.maths.number.Notation
 import relativitization.universe.core.maths.physics.Double3D
 import relativitization.universe.core.maths.physics.Int3D
@@ -17,7 +13,11 @@ import relativitization.universe.core.maths.physics.Movement.displacementToVeloc
 import relativitization.universe.core.maths.physics.Relativistic
 import relativitization.universe.core.maths.physics.Velocity
 import relativitization.universe.core.utils.RelativitizationLogManager
+import relativitization.universe.game.data.commands.AddEventCommand
+import relativitization.universe.game.data.commands.ChangeVelocityCommand
 import relativitization.universe.game.data.components.defaults.physics.total
+import relativitization.universe.game.data.components.physicsData
+import relativitization.universe.game.data.events.MoveToDouble3DEvent
 
 class PhysicsInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane>(game) {
     override val infoName: String = "Physics"

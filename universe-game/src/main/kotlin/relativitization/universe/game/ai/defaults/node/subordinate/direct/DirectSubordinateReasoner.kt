@@ -1,10 +1,10 @@
 package relativitization.universe.game.ai.defaults.node.subordinate.direct
 
+import relativitization.universe.core.data.PlanDataAtPlayer
 import relativitization.universe.game.ai.defaults.node.subordinate.direct.movement.DirectSubordinateMovementReasoner
 import relativitization.universe.game.ai.defaults.utils.AINode
 import relativitization.universe.game.ai.defaults.utils.PlanState
 import relativitization.universe.game.ai.defaults.utils.SequenceReasoner
-import relativitization.universe.core.data.PlanDataAtPlayer
 import kotlin.random.Random
 
 class DirectSubordinateReasoner(private val random: Random) : SequenceReasoner() {

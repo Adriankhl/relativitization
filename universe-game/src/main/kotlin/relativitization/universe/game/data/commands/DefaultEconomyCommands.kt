@@ -5,20 +5,20 @@ import relativitization.universe.core.data.MutablePlayerData
 import relativitization.universe.core.data.UniverseSettings
 import relativitization.universe.core.data.commands.CommandErrorMessage
 import relativitization.universe.core.data.commands.CommandI18NStringFactory
-import relativitization.universe.game.data.components.defaults.economy.ResourceQualityClass
-import relativitization.universe.game.data.components.defaults.economy.ResourceTargetProportionData
-import relativitization.universe.game.data.components.defaults.economy.ResourceType
-import relativitization.universe.game.data.components.defaults.popsystem.pop.PopType
-import relativitization.universe.game.data.components.economyData
-import relativitization.universe.game.data.components.popSystemData
 import relativitization.universe.core.data.serializer.DataSerializer
 import relativitization.universe.core.maths.physics.Int4D
 import relativitization.universe.core.utils.I18NString
 import relativitization.universe.core.utils.IntString
 import relativitization.universe.core.utils.IntTranslateString
 import relativitization.universe.core.utils.NormalString
+import relativitization.universe.game.data.components.defaults.economy.ResourceQualityClass
+import relativitization.universe.game.data.components.defaults.economy.ResourceTargetProportionData
+import relativitization.universe.game.data.components.defaults.economy.ResourceType
 import relativitization.universe.game.data.components.defaults.economy.getSingleResourceData
+import relativitization.universe.game.data.components.defaults.popsystem.pop.PopType
 import relativitization.universe.game.data.components.defaults.popsystem.pop.getCommonPopData
+import relativitization.universe.game.data.components.economyData
+import relativitization.universe.game.data.components.popSystemData
 
 /**
  * Change import tariff rate of self

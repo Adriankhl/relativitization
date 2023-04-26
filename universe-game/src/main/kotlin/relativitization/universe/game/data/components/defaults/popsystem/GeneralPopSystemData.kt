@@ -1,6 +1,5 @@
 package relativitization.universe.game.data.components.defaults.popsystem
 
-import kotlinx.serialization.Serializable
 import ksergen.annotations.GenerateImmutable
 
 /**

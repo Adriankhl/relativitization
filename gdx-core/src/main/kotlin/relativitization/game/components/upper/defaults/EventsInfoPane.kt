@@ -5,8 +5,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.RelativitizationGame
 import relativitization.game.components.upper.UpperInfoPane
 import relativitization.universe.core.data.PlayerData
-import relativitization.universe.game.data.commands.SelectEventChoiceCommand
 import relativitization.universe.core.data.events.EventData
+import relativitization.universe.game.data.commands.SelectEventChoiceCommand
 
 class EventsInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane>(game) {
     override val infoName: String = "Events"

@@ -4,15 +4,15 @@ import kotlinx.serialization.Serializable
 import relativitization.universe.core.data.MutablePlayerData
 import relativitization.universe.core.data.UniverseSettings
 import relativitization.universe.core.data.commands.CommandErrorMessage
+import relativitization.universe.core.maths.physics.Int4D
+import relativitization.universe.core.utils.RelativitizationLogManager
 import relativitization.universe.game.data.components.defaults.popsystem.CarrierType
 import relativitization.universe.game.data.components.defaults.popsystem.MutableCarrierData
+import relativitization.universe.game.data.components.defaults.popsystem.pop.totalAdultPopulation
+import relativitization.universe.game.data.components.defaults.popsystem.totalOtherRestMass
 import relativitization.universe.game.data.components.modifierData
 import relativitization.universe.game.data.components.physicsData
 import relativitization.universe.game.data.components.popSystemData
-import relativitization.universe.core.maths.physics.Int4D
-import relativitization.universe.core.utils.RelativitizationLogManager
-import relativitization.universe.game.data.components.defaults.popsystem.pop.totalAdultPopulation
-import relativitization.universe.game.data.components.defaults.popsystem.totalOtherRestMass
 
 /**
  * Damage from one player to another, send by auto combat mechanism only

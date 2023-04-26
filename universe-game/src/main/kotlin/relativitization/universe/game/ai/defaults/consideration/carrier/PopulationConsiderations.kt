@@ -1,9 +1,9 @@
 package relativitization.universe.game.ai.defaults.consideration.carrier
 
+import relativitization.universe.core.data.PlanDataAtPlayer
 import relativitization.universe.game.ai.defaults.utils.DualUtilityConsideration
 import relativitization.universe.game.ai.defaults.utils.DualUtilityData
 import relativitization.universe.game.ai.defaults.utils.PlanState
-import relativitization.universe.core.data.PlanDataAtPlayer
 import relativitization.universe.game.data.components.defaults.popsystem.pop.PopType
 import relativitization.universe.game.data.components.defaults.popsystem.pop.getCommonPopData
 import relativitization.universe.game.data.components.popSystemData

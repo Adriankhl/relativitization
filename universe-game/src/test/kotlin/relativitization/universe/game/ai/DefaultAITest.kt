@@ -3,13 +3,13 @@ package relativitization.universe.game.ai
 import kotlinx.coroutines.runBlocking
 import relativitization.universe.core.Universe
 import relativitization.universe.core.data.MutableUniverseSettings
+import relativitization.universe.core.generate.GenerateSettings
+import relativitization.universe.core.generate.GenerateUniverseMethodCollection
+import relativitization.universe.game.GameUniverseInitializer
 import relativitization.universe.game.data.commands.DefaultCommandAvailability
 import relativitization.universe.game.data.components.economyData
 import relativitization.universe.game.data.components.physicsData
 import relativitization.universe.game.data.components.popSystemData
-import relativitization.universe.core.generate.GenerateSettings
-import relativitization.universe.core.generate.GenerateUniverseMethodCollection
-import relativitization.universe.game.GameUniverseInitializer
 import relativitization.universe.game.data.components.totalAdultPopulation
 import relativitization.universe.game.generate.random.RandomOneStarPerPlayerGenerate
 import relativitization.universe.game.global.DefaultGlobalMechanismList

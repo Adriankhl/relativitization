@@ -1,5 +1,6 @@
 package relativitization.universe.game.ai.defaults.node.self
 
+import relativitization.universe.core.data.PlanDataAtPlayer
 import relativitization.universe.game.ai.defaults.node.self.carrier.CarrierReasoner
 import relativitization.universe.game.ai.defaults.node.self.carrier.SplitCarrierReasoner
 import relativitization.universe.game.ai.defaults.node.self.construction.FactoryReasoner
@@ -15,7 +16,6 @@ import relativitization.universe.game.ai.defaults.node.self.storage.BalanceResou
 import relativitization.universe.game.ai.defaults.utils.AINode
 import relativitization.universe.game.ai.defaults.utils.PlanState
 import relativitization.universe.game.ai.defaults.utils.SequenceReasoner
-import relativitization.universe.core.data.PlanDataAtPlayer
 import kotlin.random.Random
 
 class SelfReasoner(private val random: Random) : SequenceReasoner() {

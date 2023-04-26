@@ -1,6 +1,5 @@
 package relativitization.universe.game.data.global.components.defaults.science.knowledge
 
-import kotlinx.serialization.Serializable
 import ksergen.annotations.GenerateImmutable
 import relativitization.universe.game.data.components.defaults.science.knowledge.AppliedResearchField
 import relativitization.universe.game.data.components.defaults.science.knowledge.BasicResearchField

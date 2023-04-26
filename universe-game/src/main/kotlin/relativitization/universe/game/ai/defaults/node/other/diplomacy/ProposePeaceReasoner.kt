@@ -1,5 +1,6 @@
 package relativitization.universe.game.ai.defaults.node.other.diplomacy
 
+import relativitization.universe.core.data.PlanDataAtPlayer
 import relativitization.universe.game.ai.defaults.consideration.military.WarLossConsideration
 import relativitization.universe.game.ai.defaults.utils.AINode
 import relativitization.universe.game.ai.defaults.utils.DoNothingDualUtilityOption
@@ -8,7 +9,6 @@ import relativitization.universe.game.ai.defaults.utils.DualUtilityOption
 import relativitization.universe.game.ai.defaults.utils.DualUtilityReasoner
 import relativitization.universe.game.ai.defaults.utils.PlanState
 import relativitization.universe.game.ai.defaults.utils.SequenceReasoner
-import relativitization.universe.core.data.PlanDataAtPlayer
 import relativitization.universe.game.data.commands.AddEventCommand
 import relativitization.universe.game.data.components.diplomacyData
 import relativitization.universe.game.data.events.ProposePeaceEvent

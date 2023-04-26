@@ -6,6 +6,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.RelativitizationGame
 import relativitization.game.components.upper.UpperInfoPane
 import relativitization.universe.core.data.PlayerData
+import relativitization.universe.core.maths.number.Notation
+import relativitization.universe.core.maths.physics.Intervals
 import relativitization.universe.game.data.commands.ChangeDefaultExportTariffCommand
 import relativitization.universe.game.data.commands.ChangeDefaultImportTariffCommand
 import relativitization.universe.game.data.commands.ChangeFuelRestMassTargetProportionCommand
@@ -22,15 +24,13 @@ import relativitization.universe.game.data.components.defaults.economy.ResourceT
 import relativitization.universe.game.data.components.defaults.economy.ResourceType
 import relativitization.universe.game.data.components.defaults.economy.SingleResourceData
 import relativitization.universe.game.data.components.defaults.economy.TaxRateData
+import relativitization.universe.game.data.components.defaults.economy.getResourcePrice
+import relativitization.universe.game.data.components.defaults.economy.getResourceTariffRate
+import relativitization.universe.game.data.components.defaults.economy.getSingleResourceData
 import relativitization.universe.game.data.components.defaults.physics.FuelRestMassTargetProportionData
 import relativitization.universe.game.data.components.economyData
 import relativitization.universe.game.data.components.physicsData
 import relativitization.universe.game.data.components.playerScienceData
-import relativitization.universe.core.maths.number.Notation
-import relativitization.universe.core.maths.physics.Intervals
-import relativitization.universe.game.data.components.defaults.economy.getResourcePrice
-import relativitization.universe.game.data.components.defaults.economy.getResourceTariffRate
-import relativitization.universe.game.data.components.defaults.economy.getSingleResourceData
 import kotlin.math.pow
 
 class EconomyInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane>(game) {

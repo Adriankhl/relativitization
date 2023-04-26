@@ -3,7 +3,6 @@ package relativitization.universe.core.generate.empty
 import relativitization.universe.core.data.MutablePlayerData
 import relativitization.universe.core.data.MutableUniverseData4D
 import relativitization.universe.core.data.UniverseData
-import relativitization.universe.core.data.UniverseData4D
 import relativitization.universe.core.data.UniverseSettings
 import relativitization.universe.core.data.UniverseState
 import relativitization.universe.core.data.global.UniverseGlobalData

@@ -1,16 +1,12 @@
 package relativitization.universe.game.data.components
 
 import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
 import ksergen.annotations.GenerateImmutable
 import relativitization.universe.core.data.MutablePlayerInternalData
 import relativitization.universe.core.data.PlayerInternalData
-import relativitization.universe.game.data.components.defaults.physics.FuelRestMassData
-import relativitization.universe.game.data.components.defaults.physics.FuelRestMassTargetProportionData
 import relativitization.universe.game.data.components.defaults.physics.MutableFuelRestMassData
 import relativitization.universe.game.data.components.defaults.physics.MutableFuelRestMassTargetProportionData
 import relativitization.universe.game.data.components.defaults.physics.MutableTargetDouble3DData
-import relativitization.universe.game.data.components.defaults.physics.TargetDouble3DData
 import relativitization.universe.game.data.components.defaults.physics.total
 import kotlin.math.min
 

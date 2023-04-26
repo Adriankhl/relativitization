@@ -1,5 +1,6 @@
 package relativitization.universe.game.ai.defaults.node.self.carrier
 
+import relativitization.universe.core.data.PlanDataAtPlayer
 import relativitization.universe.game.ai.defaults.consideration.building.SufficientLabourerEmploymentConsideration
 import relativitization.universe.game.ai.defaults.consideration.carrier.NumberOfSpaceShipConsideration
 import relativitization.universe.game.ai.defaults.consideration.fuel.SufficientProductionFuelConsideration
@@ -8,7 +9,6 @@ import relativitization.universe.game.ai.defaults.utils.DualUtilityConsideration
 import relativitization.universe.game.ai.defaults.utils.DualUtilityOption
 import relativitization.universe.game.ai.defaults.utils.DualUtilityReasoner
 import relativitization.universe.game.ai.defaults.utils.PlanState
-import relativitization.universe.core.data.PlanDataAtPlayer
 import relativitization.universe.game.data.commands.BuildLocalCarrierCommand
 import relativitization.universe.game.data.components.defaults.physics.MutableFuelRestMassData
 import relativitization.universe.game.data.components.defaults.science.application.MutableScienceApplicationData

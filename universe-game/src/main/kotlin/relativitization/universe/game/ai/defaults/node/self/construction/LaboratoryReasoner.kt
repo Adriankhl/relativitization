@@ -1,5 +1,8 @@
 package relativitization.universe.game.ai.defaults.node.self.construction
 
+import relativitization.universe.core.data.PlanDataAtPlayer
+import relativitization.universe.core.maths.physics.Double2D
+import relativitization.universe.core.maths.physics.Intervals
 import relativitization.universe.game.ai.defaults.consideration.building.KnownAppliedProjectInRangeConsideration
 import relativitization.universe.game.ai.defaults.consideration.building.NoLaboratoryAtCarrierConsideration
 import relativitization.universe.game.ai.defaults.consideration.building.OnlyOneLaboratoryConsideration
@@ -11,21 +14,18 @@ import relativitization.universe.game.ai.defaults.utils.DualUtilityOption
 import relativitization.universe.game.ai.defaults.utils.DualUtilityReasoner
 import relativitization.universe.game.ai.defaults.utils.PlanState
 import relativitization.universe.game.ai.defaults.utils.SequenceReasoner
-import relativitization.universe.core.data.PlanDataAtPlayer
 import relativitization.universe.game.data.commands.BuildLaboratoryCommand
 import relativitization.universe.game.data.commands.RemoveLaboratoryCommand
 import relativitization.universe.game.data.components.defaults.economy.ResourceQualityClass
 import relativitization.universe.game.data.components.defaults.economy.ResourceType
+import relativitization.universe.game.data.components.defaults.economy.getTotalResourceAmount
 import relativitization.universe.game.data.components.defaults.popsystem.pop.engineer.laboratory.LaboratoryInternalData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.engineer.laboratory.MutableLaboratoryData
 import relativitization.universe.game.data.components.defaults.science.knowledge.AppliedResearchProjectData
 import relativitization.universe.game.data.components.economyData
+import relativitization.universe.game.data.components.numCarrier
 import relativitization.universe.game.data.components.playerScienceData
 import relativitization.universe.game.data.components.popSystemData
-import relativitization.universe.core.maths.physics.Double2D
-import relativitization.universe.core.maths.physics.Intervals
-import relativitization.universe.game.data.components.defaults.economy.getTotalResourceAmount
-import relativitization.universe.game.data.components.numCarrier
 import kotlin.random.Random
 
 class LaboratoryReasoner(private val random: Random) : SequenceReasoner() {

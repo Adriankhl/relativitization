@@ -4,26 +4,26 @@ import kotlinx.coroutines.runBlocking
 import relativitization.universe.core.Universe
 import relativitization.universe.core.data.MutableUniverseSettings
 import relativitization.universe.core.data.UniverseData
+import relativitization.universe.core.data.commands.Command
+import relativitization.universe.core.generate.GenerateSettings
+import relativitization.universe.core.generate.GenerateUniverseMethodCollection
+import relativitization.universe.game.GameUniverseInitializer
 import relativitization.universe.game.data.commands.BuildForeignResourceFactoryCommand
 import relativitization.universe.game.data.commands.ChangeSalaryFactorCommand
-import relativitization.universe.core.data.commands.Command
 import relativitization.universe.game.data.commands.DefaultCommandAvailability
 import relativitization.universe.game.data.commands.SendFuelFromStorageCommand
 import relativitization.universe.game.data.components.defaults.economy.ResourceType
 import relativitization.universe.game.data.components.defaults.popsystem.pop.PopType
+import relativitization.universe.game.data.components.defaults.science.application.newResourceFactoryInternalData
 import relativitization.universe.game.data.components.economyData
 import relativitization.universe.game.data.components.physicsData
 import relativitization.universe.game.data.components.playerScienceData
 import relativitization.universe.game.data.components.popSystemData
-import relativitization.universe.core.generate.GenerateSettings
-import relativitization.universe.core.generate.GenerateUniverseMethodCollection
-import relativitization.universe.game.GameUniverseInitializer
-import relativitization.universe.game.data.components.defaults.science.application.newResourceFactoryInternalData
 import relativitization.universe.game.data.components.totalAdultPopulation
 import relativitization.universe.game.global.DefaultGlobalMechanismList
 import relativitization.universe.game.mechanisms.DefaultMechanismLists
-import kotlin.test.Test
 import kotlin.test.Ignore
+import kotlin.test.Test
 
 internal class RandomOneStarPerPlayerGenerateTest {
     @Test

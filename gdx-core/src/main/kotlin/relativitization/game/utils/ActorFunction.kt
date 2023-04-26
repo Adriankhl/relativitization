@@ -26,10 +26,6 @@ import relativitization.universe.core.utils.NoTranslateString
 import relativitization.universe.core.utils.RelativitizationLogManager
 import relativitization.universe.core.utils.TranslateString
 import kotlin.collections.List
-import kotlin.collections.map
-import kotlin.collections.mapIndexed
-import kotlin.collections.reduce
-import kotlin.collections.toTypedArray
 import com.badlogic.gdx.scenes.scene2d.ui.List as GdxList
 
 object ActorFunction {

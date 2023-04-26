@@ -1,6 +1,5 @@
 package relativitization.universe.game.data.components.defaults.economy
 
-import kotlinx.serialization.Serializable
 import ksergen.annotations.GenerateImmutable
 import relativitization.universe.core.data.serializer.DataSerializer
 import relativitization.universe.core.utils.RelativitizationLogManager

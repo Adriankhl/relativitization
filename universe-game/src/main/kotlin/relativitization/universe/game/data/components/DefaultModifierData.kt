@@ -1,16 +1,12 @@
 package relativitization.universe.game.data.components
 
 import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
 import ksergen.annotations.GenerateImmutable
 import relativitization.universe.core.data.MutablePlayerInternalData
 import relativitization.universe.core.data.PlayerInternalData
-import relativitization.universe.game.data.components.defaults.modifier.CombatModifierData
-import relativitization.universe.game.data.components.defaults.modifier.DiplomacyModifierData
 import relativitization.universe.game.data.components.defaults.modifier.MutableCombatModifierData
 import relativitization.universe.game.data.components.defaults.modifier.MutableDiplomacyModifierData
 import relativitization.universe.game.data.components.defaults.modifier.MutablePhysicsModifierData
-import relativitization.universe.game.data.components.defaults.modifier.PhysicsModifierData
 
 @GenerateImmutable
 @SerialName("ModifierData")

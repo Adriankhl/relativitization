@@ -4,13 +4,13 @@ import relativitization.universe.core.data.MutablePlayerData
 import relativitization.universe.core.data.UniverseData3DAtPlayer
 import relativitization.universe.core.data.UniverseSettings
 import relativitization.universe.core.data.commands.Command
-import relativitization.universe.game.data.components.diplomacyData
-import relativitization.universe.game.data.components.modifierData
 import relativitization.universe.core.data.global.UniverseGlobalData
 import relativitization.universe.core.mechanisms.Mechanism
 import relativitization.universe.game.data.components.defaults.diplomacy.isAlly
 import relativitization.universe.game.data.components.defaults.diplomacy.isEnemy
 import relativitization.universe.game.data.components.defaults.modifier.getRelationChange
+import relativitization.universe.game.data.components.diplomacyData
+import relativitization.universe.game.data.components.modifierData
 import kotlin.random.Random
 
 object UpdateRelation : Mechanism() {

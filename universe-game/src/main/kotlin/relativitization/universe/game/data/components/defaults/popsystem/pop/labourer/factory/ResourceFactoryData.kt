@@ -1,9 +1,7 @@
 package relativitization.universe.game.data.components.defaults.popsystem.pop.labourer.factory
 
-import kotlinx.serialization.Serializable
 import ksergen.annotations.GenerateImmutable
 import relativitization.universe.game.data.components.defaults.economy.MutableResourceQualityData
-import relativitization.universe.game.data.components.defaults.economy.ResourceQualityData
 import relativitization.universe.game.data.components.defaults.economy.ResourceType
 import relativitization.universe.game.data.components.defaults.economy.squareDiff
 import kotlin.math.pow

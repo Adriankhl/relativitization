@@ -1,30 +1,21 @@
 package relativitization.universe.game.data.components.defaults.popsystem.pop
 
-import kotlinx.serialization.Serializable
 import ksergen.annotations.GenerateImmutable
+import relativitization.universe.core.utils.RelativitizationLogManager
 import relativitization.universe.game.data.components.defaults.economy.MutableResourceQualityData
 import relativitization.universe.game.data.components.defaults.economy.ResourceQualityData
 import relativitization.universe.game.data.components.defaults.economy.ResourceType
+import relativitization.universe.game.data.components.defaults.economy.toMutableResourceQualityData
 import relativitization.universe.game.data.components.defaults.popsystem.GeneralPopSystemData
 import relativitization.universe.game.data.components.defaults.popsystem.MutableGeneralPopSystemData
-import relativitization.universe.game.data.components.defaults.popsystem.pop.educator.EducatorPopData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.educator.MutableEducatorPopData
-import relativitization.universe.game.data.components.defaults.popsystem.pop.engineer.EngineerPopData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.engineer.MutableEngineerPopData
-import relativitization.universe.game.data.components.defaults.popsystem.pop.entertainer.EntertainerPopData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.entertainer.MutableEntertainerPopData
-import relativitization.universe.game.data.components.defaults.popsystem.pop.labourer.LabourerPopData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.labourer.MutableLabourerPopData
-import relativitization.universe.game.data.components.defaults.popsystem.pop.medic.MedicPopData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.medic.MutableMedicPopData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.scholar.MutableScholarPopData
-import relativitization.universe.game.data.components.defaults.popsystem.pop.scholar.ScholarPopData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.service.MutableServicePopData
-import relativitization.universe.game.data.components.defaults.popsystem.pop.service.ServicePopData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.soldier.MutableSoldierPopData
-import relativitization.universe.game.data.components.defaults.popsystem.pop.soldier.SoldierPopData
-import relativitization.universe.game.data.components.defaults.economy.toMutableResourceQualityData
-import relativitization.universe.core.utils.RelativitizationLogManager
 
 /**
  * For events and commands specifically for a given type of pop

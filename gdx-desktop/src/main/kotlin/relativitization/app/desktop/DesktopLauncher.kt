@@ -18,10 +18,10 @@ import relativitization.game.GdxSettings
 import relativitization.game.RelativitizationGame
 import relativitization.game.utils.Assets
 import relativitization.server.UniverseServer
-import relativitization.universe.game.UniverseClientSettings
-import relativitization.universe.game.UniverseServerSettings
 import relativitization.universe.core.utils.RelativitizationLogManager
 import relativitization.universe.game.GameUniverseInitializer
+import relativitization.universe.game.UniverseClientSettings
+import relativitization.universe.game.UniverseServerSettings
 import relativitization.utils.ServerPort
 import java.io.File
 import kotlin.random.Random

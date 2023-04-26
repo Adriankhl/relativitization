@@ -1,22 +1,20 @@
 package relativitization.universe.game.data.components.defaults.science.application
 
-import kotlinx.serialization.Serializable
 import ksergen.annotations.GenerateImmutable
 import relativitization.universe.core.data.serializer.DataSerializer
+import relativitization.universe.core.maths.algebra.Quadratic
+import relativitization.universe.core.utils.RelativitizationLogManager
 import relativitization.universe.game.data.components.defaults.economy.MutableResourceQualityData
 import relativitization.universe.game.data.components.defaults.economy.ResourceQualityData
 import relativitization.universe.game.data.components.defaults.economy.ResourceType
-import relativitization.universe.game.data.components.defaults.popsystem.CarrierInternalData
+import relativitization.universe.game.data.components.defaults.economy.times
 import relativitization.universe.game.data.components.defaults.popsystem.MutableCarrierInternalData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.labourer.factory.FuelFactoryInternalData
+import relativitization.universe.game.data.components.defaults.popsystem.pop.labourer.factory.InputResourceData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.labourer.factory.MutableFuelFactoryInternalData
+import relativitization.universe.game.data.components.defaults.popsystem.pop.labourer.factory.MutableInputResourceData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.labourer.factory.MutableResourceFactoryInternalData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.labourer.factory.ResourceFactoryInternalData
-import relativitization.universe.core.maths.algebra.Quadratic
-import relativitization.universe.core.utils.RelativitizationLogManager
-import relativitization.universe.game.data.components.defaults.economy.times
-import relativitization.universe.game.data.components.defaults.popsystem.pop.labourer.factory.InputResourceData
-import relativitization.universe.game.data.components.defaults.popsystem.pop.labourer.factory.MutableInputResourceData
 import kotlin.math.min
 
 

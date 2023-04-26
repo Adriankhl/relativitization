@@ -1,6 +1,5 @@
 package relativitization.universe.game.data.components.defaults.popsystem.pop.labourer.factory
 
-import kotlinx.serialization.Serializable
 import ksergen.annotations.GenerateImmutable
 import kotlin.math.pow
 

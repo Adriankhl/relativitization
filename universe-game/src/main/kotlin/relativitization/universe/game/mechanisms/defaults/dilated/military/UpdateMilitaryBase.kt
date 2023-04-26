@@ -4,14 +4,14 @@ import relativitization.universe.core.data.MutablePlayerData
 import relativitization.universe.core.data.UniverseData3DAtPlayer
 import relativitization.universe.core.data.UniverseSettings
 import relativitization.universe.core.data.commands.Command
+import relativitization.universe.core.data.global.UniverseGlobalData
+import relativitization.universe.core.mechanisms.Mechanism
 import relativitization.universe.game.data.components.MutablePlayerScienceData
 import relativitization.universe.game.data.components.defaults.modifier.MutableCombatModifierData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.soldier.MutableSoldierPopData
 import relativitization.universe.game.data.components.modifierData
 import relativitization.universe.game.data.components.playerScienceData
 import relativitization.universe.game.data.components.popSystemData
-import relativitization.universe.core.data.global.UniverseGlobalData
-import relativitization.universe.core.mechanisms.Mechanism
 import kotlin.math.min
 import kotlin.random.Random
 

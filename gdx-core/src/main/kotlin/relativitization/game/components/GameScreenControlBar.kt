@@ -17,12 +17,12 @@ import relativitization.game.screens.ClientSettingsScreen
 import relativitization.game.screens.HelpScreen
 import relativitization.game.utils.ScreenComponent
 import relativitization.universe.core.ai.AICollection
-import relativitization.universe.game.communication.UniverseServerStatusMessage
 import relativitization.universe.core.data.commands.Command
-import relativitization.universe.game.data.components.defaults.physics.FuelRestMassData
-import relativitization.universe.game.data.components.physicsData
 import relativitization.universe.core.maths.number.toScientificNotation
 import relativitization.universe.core.maths.physics.Intervals.intDelay
+import relativitization.universe.game.communication.UniverseServerStatusMessage
+import relativitization.universe.game.data.components.defaults.physics.FuelRestMassData
+import relativitization.universe.game.data.components.physicsData
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.random.Random

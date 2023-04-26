@@ -3,8 +3,6 @@ package relativitization.universe.game.data.commands
 import kotlinx.serialization.Serializable
 import relativitization.universe.core.data.MutablePlayerData
 import relativitization.universe.core.data.UniverseSettings
-import relativitization.universe.core.data.commands.AllCommandAvailability
-import relativitization.universe.core.data.commands.CommandAvailability
 import relativitization.universe.core.data.commands.CommandCollection
 import relativitization.universe.core.data.commands.CommandErrorMessage
 import relativitization.universe.core.data.commands.CommandI18NStringFactory

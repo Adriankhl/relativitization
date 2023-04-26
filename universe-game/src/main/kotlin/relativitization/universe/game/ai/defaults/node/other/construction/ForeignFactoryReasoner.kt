@@ -1,5 +1,8 @@
 package relativitization.universe.game.ai.defaults.node.other.construction
 
+import relativitization.universe.core.data.PlanDataAtPlayer
+import relativitization.universe.core.data.PlayerData
+import relativitization.universe.core.data.serializer.DataSerializer
 import relativitization.universe.game.ai.defaults.consideration.building.ForeignFuelFactoryLowerCostConsideration
 import relativitization.universe.game.ai.defaults.consideration.building.ForeignResourceFactoryLowerCostConsideration
 import relativitization.universe.game.ai.defaults.consideration.building.NewForeignFuelFactoryLowerCostConsideration
@@ -14,8 +17,6 @@ import relativitization.universe.game.ai.defaults.utils.DualUtilityOption
 import relativitization.universe.game.ai.defaults.utils.DualUtilityReasoner
 import relativitization.universe.game.ai.defaults.utils.PlanState
 import relativitization.universe.game.ai.defaults.utils.SequenceReasoner
-import relativitization.universe.core.data.PlanDataAtPlayer
-import relativitization.universe.core.data.PlayerData
 import relativitization.universe.game.data.commands.BuildForeignFuelFactoryCommand
 import relativitization.universe.game.data.commands.BuildForeignResourceFactoryCommand
 import relativitization.universe.game.data.commands.RemoveForeignFuelFactoryCommand
@@ -25,11 +26,10 @@ import relativitization.universe.game.data.commands.SupplyForeignResourceFactory
 import relativitization.universe.game.data.components.defaults.economy.ResourceType
 import relativitization.universe.game.data.components.defaults.popsystem.pop.labourer.factory.MutableFuelFactoryInternalData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.labourer.factory.MutableResourceFactoryInternalData
+import relativitization.universe.game.data.components.defaults.science.application.newResourceFactoryInternalData
 import relativitization.universe.game.data.components.playerScienceData
 import relativitization.universe.game.data.components.politicsData
 import relativitization.universe.game.data.components.popSystemData
-import relativitization.universe.core.data.serializer.DataSerializer
-import relativitization.universe.game.data.components.defaults.science.application.newResourceFactoryInternalData
 import kotlin.random.Random
 
 class ForeignFactoryReasoner(private val random: Random) : SequenceReasoner() {

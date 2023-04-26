@@ -5,12 +5,12 @@ import relativitization.universe.core.data.PlayerData
 import relativitization.universe.core.data.UniverseData3DAtPlayer
 import relativitization.universe.core.data.UniverseSettings
 import relativitization.universe.core.data.commands.Command
-import relativitization.universe.game.data.commands.MergeCarrierCommand
-import relativitization.universe.game.data.components.politicsData
-import relativitization.universe.game.data.components.popSystemData
 import relativitization.universe.core.data.global.UniverseGlobalData
 import relativitization.universe.core.data.serializer.DataSerializer
 import relativitization.universe.core.mechanisms.Mechanism
+import relativitization.universe.game.data.commands.MergeCarrierCommand
+import relativitization.universe.game.data.components.politicsData
+import relativitization.universe.game.data.components.popSystemData
 import kotlin.random.Random
 
 object MergePlayer : Mechanism() {

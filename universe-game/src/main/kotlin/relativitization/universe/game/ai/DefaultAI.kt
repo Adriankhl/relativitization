@@ -1,6 +1,10 @@
 package relativitization.universe.game.ai
 
 import relativitization.universe.core.ai.AI
+import relativitization.universe.core.data.PlanDataAtPlayer
+import relativitization.universe.core.data.UniverseData3DAtPlayer
+import relativitization.universe.core.data.commands.Command
+import relativitization.universe.core.utils.RelativitizationLogManager
 import relativitization.universe.game.ai.defaults.node.other.OtherPlayerReasoner
 import relativitization.universe.game.ai.defaults.node.self.SelfReasoner
 import relativitization.universe.game.ai.defaults.node.special.RecordRecentlySentCommandAINode
@@ -8,10 +12,6 @@ import relativitization.universe.game.ai.defaults.node.subordinate.SubordinateRe
 import relativitization.universe.game.ai.defaults.utils.AINode
 import relativitization.universe.game.ai.defaults.utils.PlanState
 import relativitization.universe.game.ai.defaults.utils.SequenceReasoner
-import relativitization.universe.core.data.PlanDataAtPlayer
-import relativitization.universe.core.data.UniverseData3DAtPlayer
-import relativitization.universe.core.data.commands.Command
-import relativitization.universe.core.utils.RelativitizationLogManager
 import kotlin.random.Random
 
 object DefaultAI : AI() {

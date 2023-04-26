@@ -1,6 +1,5 @@
 package relativitization.universe.game.data.components.defaults.modifier
 
-import kotlinx.serialization.Serializable
 import ksergen.annotations.GenerateImmutable
 import kotlin.math.max
 

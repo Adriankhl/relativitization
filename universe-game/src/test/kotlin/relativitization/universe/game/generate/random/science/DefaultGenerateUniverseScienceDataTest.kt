@@ -6,14 +6,10 @@ import relativitization.universe.game.data.components.defaults.science.knowledge
 import relativitization.universe.game.data.components.defaults.science.knowledge.BasicResearchField
 import relativitization.universe.game.data.global.components.MutableUniverseScienceData
 import relativitization.universe.game.data.global.components.UniverseScienceData
-import relativitization.universe.game.data.global.components.defaults.science.knowledge.AppliedResearchProjectGenerationData
-import relativitization.universe.game.data.global.components.defaults.science.knowledge.BasicResearchProjectGenerationData
 import relativitization.universe.game.data.global.components.defaults.science.knowledge.MutableAppliedResearchProjectGenerationData
 import relativitization.universe.game.data.global.components.defaults.science.knowledge.MutableBasicResearchProjectGenerationData
 import relativitization.universe.game.data.global.components.defaults.science.knowledge.MutableProjectGenerationData
 import relativitization.universe.game.data.global.components.defaults.science.knowledge.MutableUniverseProjectGenerationData
-import relativitization.universe.game.data.global.components.defaults.science.knowledge.ProjectGenerationData
-import relativitization.universe.game.data.global.components.defaults.science.knowledge.UniverseProjectGenerationData
 import kotlin.random.Random
 import kotlin.test.Test
 

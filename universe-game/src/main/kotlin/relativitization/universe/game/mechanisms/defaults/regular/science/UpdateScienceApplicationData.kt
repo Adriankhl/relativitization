@@ -4,6 +4,8 @@ import relativitization.universe.core.data.MutablePlayerData
 import relativitization.universe.core.data.UniverseData3DAtPlayer
 import relativitization.universe.core.data.UniverseSettings
 import relativitization.universe.core.data.commands.Command
+import relativitization.universe.core.data.global.UniverseGlobalData
+import relativitization.universe.core.mechanisms.Mechanism
 import relativitization.universe.game.data.components.MutablePlayerScienceData
 import relativitization.universe.game.data.components.defaults.economy.MutableResourceQualityData
 import relativitization.universe.game.data.components.defaults.economy.ResourceType
@@ -13,8 +15,6 @@ import relativitization.universe.game.data.components.defaults.popsystem.pop.lab
 import relativitization.universe.game.data.components.defaults.popsystem.pop.labourer.factory.MutableResourceFactoryInternalData
 import relativitization.universe.game.data.components.defaults.science.knowledge.MutableKnowledgeData
 import relativitization.universe.game.data.components.playerScienceData
-import relativitization.universe.core.data.global.UniverseGlobalData
-import relativitization.universe.core.mechanisms.Mechanism
 import kotlin.math.log2
 import kotlin.random.Random
 
