@@ -1,5 +1,4 @@
 [versions]
-appcompatVersion = "1.6.1"
 appName = "relativitization"
 
 # app version
@@ -9,7 +8,6 @@ appVersionPatch = "4"
 appVersionBuild = "0"
 
 # JDK
-fragmentKtx = "1.5.6"
 jdkVersion = "17"
 jvmTargetVersion = "11"
 
@@ -38,7 +36,6 @@ kotlinxCoroutineVersion = "1.6.4"
 kotlinxSerializationVersion = "1.5.0"
 kotlinxDateTimeVersion = "0.4.0"
 ktorVersion = "2.3.0"
-lifecycleRuntimeKtx = "2.6.1"
 okioVersion = "3.3.0"
 
 # JVM
