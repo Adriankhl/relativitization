@@ -20,9 +20,7 @@ dependencies {
     implementation(project(":universe-core"))
     implementation(project(":universe-game"))
 
-    implementation(libs.kotlinx.serialization.json)
     implementation(libs.kotlin.reflect)
-    implementation(libs.kotlinx.coroutines.core)
 
     implementation(libs.log4j.core)
     implementation(libs.dataframe)

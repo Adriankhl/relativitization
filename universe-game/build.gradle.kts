@@ -13,15 +13,15 @@ dependencies {
     implementation(project(":universe-core"))
 
     implementation(libs.kotlinx.serialization.json)
-    implementation(libs.kotlinx.coroutines.core)
-    implementation(libs.kotlinx.datetime)
     implementation(libs.kotlin.reflect)
     implementation(libs.ksergen.annotations)
     implementation(libs.log4j.api)
     implementation(libs.log4j.core)
-    implementation(libs.okio)
+
 
     testImplementation(kotlin("test"))
+    testImplementation(libs.kotlinx.coroutines.core)
+    testImplementation(libs.okio)
 }
 
 kotlin {
