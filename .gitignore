@@ -31,6 +31,7 @@ hs_err_pid*
 
 # Ignore Gradle build output directory
 build
+**/build/
 
 # Ignore intellij .idea folder except dictionaries and code style
 .idea/*
