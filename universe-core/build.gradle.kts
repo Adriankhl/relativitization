@@ -4,6 +4,7 @@ plugins {
     kotlin("jvm")
     kotlin("plugin.serialization")
     id("org.jetbrains.dokka")
+    id("maven-publish")
 }
 
 dependencies {
@@ -21,6 +22,22 @@ dependencies {
 kotlin {
     jvmToolchain {
         languageVersion.set(JavaLanguageVersion.of(libs.versions.jdkVersion.get()))
+    }
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            groupId = "com.github.adriankhl.relativitization"
+            artifactId = "relativitization-core"
+            version = appVersionName(
+                libs.versions.appVersionMajor.get(),
+                libs.versions.appVersionMinor.get(),
+                libs.versions.appVersionPatch.get(),
+            )
+
+            from(components["kotlin"])
+        }
     }
 }
 

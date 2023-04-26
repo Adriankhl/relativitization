@@ -67,7 +67,7 @@ android {
             libs.versions.appVersionPatch.get(),
             libs.versions.appVersionBuild.get(),
         )
-        versionName =  appVersionName(
+        versionName = appVersionName(
             libs.versions.appVersionMajor.get(),
             libs.versions.appVersionMinor.get(),
             libs.versions.appVersionPatch.get(),
