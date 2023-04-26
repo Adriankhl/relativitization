@@ -1,6 +1,7 @@
 package relativitization.universe.game.data.components.defaults.popsystem.pop.service.export
 
 import kotlinx.serialization.Serializable
+import ksergen.annotations.GenerateImmutable
 
 /**
  * Data of export center
@@ -8,13 +9,7 @@ import kotlinx.serialization.Serializable
  * @property playerExportCenterMap a map from owner playerId to PlayerExportCenterData
  * @property popExportCenterMap a map from owner playerId to PopExportCenterData
  */
-@Serializable
-data class ExportData(
-    val playerExportCenterMap: Map<Int, PlayerExportCenterData> = mapOf(),
-    val popExportCenterMap: Map<Int, PopExportCenterData> = mapOf(),
-)
-
-@Serializable
+@GenerateImmutable
 data class MutableExportData(
     val playerExportCenterMap: MutableMap<Int, MutablePlayerExportCenterData> = mutableMapOf(),
     val popExportCenterMap: MutableMap<Int, MutablePopExportCenterData> = mutableMapOf(),

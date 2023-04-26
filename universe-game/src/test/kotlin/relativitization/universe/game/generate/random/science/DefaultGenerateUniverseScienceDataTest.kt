@@ -1,11 +1,17 @@
 package relativitization.universe.game.generate.random.science
 
 
+import relativitization.universe.core.data.serializer.DataSerializer
 import relativitization.universe.game.data.components.defaults.science.knowledge.AppliedResearchField
 import relativitization.universe.game.data.components.defaults.science.knowledge.BasicResearchField
+import relativitization.universe.game.data.global.components.MutableUniverseScienceData
 import relativitization.universe.game.data.global.components.UniverseScienceData
 import relativitization.universe.game.data.global.components.defaults.science.knowledge.AppliedResearchProjectGenerationData
 import relativitization.universe.game.data.global.components.defaults.science.knowledge.BasicResearchProjectGenerationData
+import relativitization.universe.game.data.global.components.defaults.science.knowledge.MutableAppliedResearchProjectGenerationData
+import relativitization.universe.game.data.global.components.defaults.science.knowledge.MutableBasicResearchProjectGenerationData
+import relativitization.universe.game.data.global.components.defaults.science.knowledge.MutableProjectGenerationData
+import relativitization.universe.game.data.global.components.defaults.science.knowledge.MutableUniverseProjectGenerationData
 import relativitization.universe.game.data.global.components.defaults.science.knowledge.ProjectGenerationData
 import relativitization.universe.game.data.global.components.defaults.science.knowledge.UniverseProjectGenerationData
 import kotlin.random.Random
@@ -14,12 +20,12 @@ import kotlin.test.Test
 internal class DefaultGenerateUniverseScienceDataTest {
     @Test
     fun testGenerateDefaultField() {
-        val universeScienceData = UniverseScienceData(
-            universeProjectGenerationData = UniverseProjectGenerationData(
-                basicResearchProjectGenerationDataList = listOf(
-                    BasicResearchProjectGenerationData(
+        val universeScienceData = MutableUniverseScienceData(
+            universeProjectGenerationData = MutableUniverseProjectGenerationData(
+                basicResearchProjectGenerationDataList = mutableListOf(
+                    MutableBasicResearchProjectGenerationData(
                         basicResearchField = BasicResearchField.MATHEMATICS,
-                        projectGenerationData = ProjectGenerationData(
+                        projectGenerationData = MutableProjectGenerationData(
                             centerX = 0.0,
                             centerY = 0.0,
                             range = 1.0,
@@ -27,10 +33,10 @@ internal class DefaultGenerateUniverseScienceDataTest {
                         )
                     )
                 ),
-                appliedResearchProjectGenerationDataList = listOf(
-                   AppliedResearchProjectGenerationData(
+                appliedResearchProjectGenerationDataList = mutableListOf(
+                   MutableAppliedResearchProjectGenerationData(
                        appliedResearchField = AppliedResearchField.ENERGY_TECHNOLOGY,
-                       projectGenerationData = ProjectGenerationData(
+                       projectGenerationData = MutableProjectGenerationData(
                            centerX = 0.0,
                            centerY = 0.0,
                            range = 1.0,
@@ -43,7 +49,7 @@ internal class DefaultGenerateUniverseScienceDataTest {
 
         val newUniverseScienceData: UniverseScienceData =
             DefaultGenerateUniverseScienceData.generate(
-                universeScienceData = universeScienceData,
+                universeScienceData = DataSerializer.copy(universeScienceData),
                 numBasicResearchProjectGenerate = 10,
                 numAppliedResearchProjectGenerate = 10,
                 maxBasicReference = 10,

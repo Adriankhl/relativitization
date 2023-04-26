@@ -1,6 +1,7 @@
 package relativitization.universe.game.data.components.defaults.science.knowledge
 
 import kotlinx.serialization.Serializable
+import ksergen.annotations.GenerateImmutable
 
 /**
  * Classification of applied research field
@@ -37,17 +38,7 @@ data class BasicResearchProjectData(
 /**
  * Level of applied research
  */
-@Serializable
-data class BasicResearchData(
-    val mathematicsLevel: Double = 0.0,
-    val physicsLevel: Double = 0.0,
-    val computerScienceLevel: Double = 0.0,
-    val lifeScienceLevel: Double = 0.0,
-    val socialScienceLevel: Double = 0.0,
-    val humanityLevel: Double = 0.0,
-)
-
-@Serializable
+@GenerateImmutable
 data class MutableBasicResearchData(
     var mathematicsLevel: Double = 0.0,
     var physicsLevel: Double = 0.0,

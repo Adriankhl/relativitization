@@ -1,6 +1,7 @@
 package relativitization.universe.game.data.components.defaults.popsystem.pop.labourer
 
 import kotlinx.serialization.Serializable
+import ksergen.annotations.GenerateImmutable
 import relativitization.universe.game.data.components.defaults.popsystem.pop.CommonPopData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.MutableCommonPopData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.labourer.factory.FuelFactoryData
@@ -9,14 +10,7 @@ import relativitization.universe.game.data.components.defaults.popsystem.pop.lab
 import relativitization.universe.game.data.components.defaults.popsystem.pop.labourer.factory.ResourceFactoryData
 import relativitization.universe.core.maths.collection.ListFind
 
-@Serializable
-data class LabourerPopData(
-    val commonPopData: CommonPopData = CommonPopData(),
-    val fuelFactoryMap: Map<Int, FuelFactoryData> = mapOf(),
-    val resourceFactoryMap: Map<Int, ResourceFactoryData> = mapOf(),
-)
-
-@Serializable
+@GenerateImmutable
 data class MutableLabourerPopData(
     var commonPopData: MutableCommonPopData = MutableCommonPopData(),
     val fuelFactoryMap: MutableMap<Int, MutableFuelFactoryData> = mutableMapOf(),

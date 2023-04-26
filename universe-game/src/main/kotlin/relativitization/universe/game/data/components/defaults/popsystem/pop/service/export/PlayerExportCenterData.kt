@@ -1,15 +1,11 @@
 package relativitization.universe.game.data.components.defaults.popsystem.pop.service.export
 
 import kotlinx.serialization.Serializable
+import ksergen.annotations.GenerateImmutable
 import relativitization.universe.game.data.components.defaults.economy.ResourceQualityClass
 import relativitization.universe.game.data.components.defaults.economy.ResourceType
 
-@Serializable
-data class PlayerExportCenterData(
-    val exportDataList: List<PlayerSingleExportData> = listOf()
-)
-
-@Serializable
+@GenerateImmutable
 data class MutablePlayerExportCenterData(
     val exportDataList: MutableList<MutablePlayerSingleExportData> = mutableListOf()
 ) {
@@ -142,16 +138,7 @@ fun MutablePlayerExportCenterData.getExportDataList(
  * @property amountPerTime the amount of the export per turn
  * @property storedFuelRestMass the stored fuel rest mass in this center for buying the resource
  */
-@Serializable
-data class PlayerSingleExportData(
-    val targetPlayerId: Int,
-    val resourceType: ResourceType,
-    val resourceQualityClass: ResourceQualityClass,
-    val amountPerTime: Double,
-    val storedFuelRestMass: Double,
-)
-
-@Serializable
+@GenerateImmutable
 data class MutablePlayerSingleExportData(
     var targetPlayerId: Int,
     var resourceType: ResourceType,

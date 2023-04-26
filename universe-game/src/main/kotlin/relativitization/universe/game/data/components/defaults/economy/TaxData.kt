@@ -1,17 +1,12 @@
 package relativitization.universe.game.data.components.defaults.economy
 
 import kotlinx.serialization.Serializable
+import ksergen.annotations.GenerateImmutable
 
 /**
  * Store tax rate and temporary tax storage
  */
-@Serializable
-data class TaxData(
-    val taxRateData: TaxRateData = TaxRateData(),
-    val storedFuelRestMass: Double = 0.0,
-)
-
-@Serializable
+@GenerateImmutable
 data class MutableTaxData(
     var taxRateData: MutableTaxRateData = MutableTaxRateData(),
     var storedFuelRestMass: Double = 0.0,
@@ -20,14 +15,7 @@ data class MutableTaxData(
 /**
  * Tax rate data
  */
-@Serializable
-data class TaxRateData(
-    val importTariff: TariffData = TariffData(),
-    val exportTariff: TariffData = TariffData(),
-    val incomeTax: IncomeTaxData = IncomeTaxData(),
-)
-
-@Serializable
+@GenerateImmutable
 data class MutableTaxRateData(
     var importTariff: MutableTariffData = MutableTariffData(),
     var exportTariff: MutableTariffData = MutableTariffData(),
@@ -40,13 +28,7 @@ data class MutableTaxRateData(
  * @property defaultTariffRate the default tariff data, unless specified in tariffRatePlayerMap
  * @property tariffRatePlayerMap map from top leader id to tariff rate
  */
-@Serializable
-data class TariffData(
-    val defaultTariffRate: TariffRateData = TariffRateData(),
-    val tariffRatePlayerMap: Map<Int, TariffRateData> = mapOf(),
-)
-
-@Serializable
+@GenerateImmutable
 data class MutableTariffData(
     var defaultTariffRate: MutableTariffRateData = MutableTariffRateData(),
     var tariffRatePlayerMap: MutableMap<Int, MutableTariffRateData> = mutableMapOf(),
@@ -62,12 +44,7 @@ fun MutableTariffData.getResourceTariffRate(topLeaderId: Int, resourceType: Reso
         .getResourceTariffRate(resourceType)
 }
 
-@Serializable
-data class TariffRateData(
-    val resourceTariffRateMap: Map<ResourceType, Double> = mapOf(),
-)
-
-@Serializable
+@GenerateImmutable
 data class MutableTariffRateData(
     var resourceTariffRateMap: MutableMap<ResourceType, Double> = mutableMapOf(),
 )
@@ -78,16 +55,7 @@ fun TariffRateData.getResourceTariffRate(resourceType: ResourceType): Double =
 fun MutableTariffRateData.getResourceTariffRate(resourceType: ResourceType): Double =
     resourceTariffRateMap.getOrDefault(resourceType, 0.0)
 
-@Serializable
-data class IncomeTaxData(
-    val lowIncomeTaxRate: Double = 0.0,
-    val middleIncomeTaxRate: Double = 0.0,
-    val highIncomeTaxRate: Double = 0.0,
-    val lowMiddleBoundary: Double = 1.0,
-    val middleHighBoundary: Double = 2.0,
-)
-
-@Serializable
+@GenerateImmutable
 data class MutableIncomeTaxData(
     var lowIncomeTaxRate: Double = 0.0,
     var middleIncomeTaxRate: Double = 0.0,

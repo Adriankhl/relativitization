@@ -1,6 +1,8 @@
 package relativitization.universe.game.data.components.defaults.economy
 
 import kotlinx.serialization.Serializable
+import ksergen.annotations.GenerateImmutable
+import relativitization.universe.core.data.serializer.DataSerializer
 import relativitization.universe.core.utils.RelativitizationLogManager
 import kotlin.math.abs
 import kotlin.math.max
@@ -58,32 +60,7 @@ enum class ResourceQualityClass {
  *
  * @property singleResourceMap map from resource type and quality class to SingleResourceData
  */
-@Serializable
-data class ResourceData(
-    val singleResourceMap: Map<ResourceType, Map<ResourceQualityClass, SingleResourceData>> =
-        ResourceType.values().associateWith { resourceType ->
-            ResourceQualityClass.values().associateWith {
-                val resourceTargetProportion: ResourceTargetProportionData =
-                    if (ResourceType.isProductionResource(resourceType)) {
-                        ResourceTargetProportionData(
-                            storage = 0.25,
-                            production = 0.5,
-                            trade = 0.25
-                        )
-                    } else {
-                        ResourceTargetProportionData(
-                            storage = 0.5,
-                            production = 0.0,
-                            trade = 0.5
-                        )
-                    }
-
-                SingleResourceData(resourceTargetProportion = resourceTargetProportion)
-            }
-        },
-)
-
-@Serializable
+@GenerateImmutable
 data class MutableResourceData(
     val singleResourceMap: MutableMap<ResourceType, MutableMap<ResourceQualityClass, MutableSingleResourceData>> =
         ResourceType.values().associateWith { resourceType ->
@@ -176,7 +153,7 @@ fun ResourceData.getSingleResourceData(
     mapOf()
 ).getOrDefault(
     resourceQualityClass,
-    SingleResourceData()
+    DataSerializer.copy(MutableSingleResourceData())
 )
 
 
@@ -431,12 +408,7 @@ fun MutableResourceData.tradeQualityClass(
     }
 }
 
-@Serializable
-data class ResourceQualityData(
-    val quality: Double = 0.0,
-)
-
-@Serializable
+@GenerateImmutable
 data class MutableResourceQualityData(
     var quality: Double = 0.0,
 ) {
@@ -664,14 +636,7 @@ fun MutableResourceQualityData.leq(other: MutableResourceQualityData): Boolean {
  * @property production for production
  * @property trade for trade
  */
-@Serializable
-data class ResourceAmountData(
-    val storage: Double = 0.0,
-    val production: Double = 0.0,
-    val trade: Double = 0.0,
-)
-
-@Serializable
+@GenerateImmutable
 data class MutableResourceAmountData(
     var storage: Double = 0.0,
     var production: Double = 0.0,
@@ -695,14 +660,7 @@ fun MutableResourceAmountData.total(): Double = storage + trade + production
  * @property production for production
  * @property trade for trade
  */
-@Serializable
-data class ResourceTargetProportionData(
-    val storage: Double = 0.5,
-    val production: Double = 0.0,
-    val trade: Double = 0.5,
-)
-
-@Serializable
+@GenerateImmutable
 data class MutableResourceTargetProportionData(
     var storage: Double = 0.5,
     var production: Double = 0.0,
@@ -721,16 +679,7 @@ fun MutableResourceTargetProportionData.total(): Double = storage + trade + prod
  * @property resourceQualityLowerBound the lower bound of resource quality
  * @property resourcePrice resource price in fuel rest mass
  */
-@Serializable
-data class SingleResourceData(
-    val resourceAmount: ResourceAmountData = ResourceAmountData(),
-    val resourceTargetProportion: ResourceTargetProportionData = ResourceTargetProportionData(),
-    val resourceQuality: ResourceQualityData = ResourceQualityData(),
-    val resourceQualityLowerBound: ResourceQualityData = ResourceQualityData(),
-    val resourcePrice: Double = 1E-6,
-)
-
-@Serializable
+@GenerateImmutable
 data class MutableSingleResourceData(
     var resourceAmount: MutableResourceAmountData = MutableResourceAmountData(),
     var resourceTargetProportion: MutableResourceTargetProportionData = MutableResourceTargetProportionData(),

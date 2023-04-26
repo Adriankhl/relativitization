@@ -1,6 +1,7 @@
 package relativitization.universe.game.data.components.defaults.popsystem.pop.labourer.factory
 
 import kotlinx.serialization.Serializable
+import ksergen.annotations.GenerateImmutable
 import kotlin.math.pow
 
 /**
@@ -15,19 +16,7 @@ import kotlin.math.pow
  * @property lastNumEmployee number of employee in the last turn
  * @property experience the longer the factor has been opening, the more the experience
  */
-@Serializable
-data class FuelFactoryData(
-    val ownerPlayerId: Int = -1,
-    val fuelFactoryInternalData: FuelFactoryInternalData = FuelFactoryInternalData(),
-    val maxNumEmployee: Double = 1.0,
-    val isOpened: Boolean = true,
-    val storedFuelRestMass: Double = 0.0,
-    val lastOutputAmount: Double = 0.0,
-    val lastNumEmployee: Double = 0.0,
-    val experience: Double = 0.0,
-)
-
-@Serializable
+@GenerateImmutable
 data class MutableFuelFactoryData(
     var ownerPlayerId: Int = -1,
     var fuelFactoryInternalData: MutableFuelFactoryInternalData = MutableFuelFactoryInternalData(),
@@ -57,13 +46,7 @@ fun MutableFuelFactoryData.employeeFraction(): Double = if (maxNumEmployee > 0.0
  * @property maxOutputAmountPerEmployee maximum output of the factory per employee
  * @property sizePerEmployee the size of this factory per employee
  */
-@Serializable
-data class FuelFactoryInternalData(
-    val maxOutputAmountPerEmployee: Double = 1.0,
-    val sizePerEmployee: Double = 0.0,
-)
-
-@Serializable
+@GenerateImmutable
 data class MutableFuelFactoryInternalData(
     var maxOutputAmountPerEmployee: Double = 1.0,
     var sizePerEmployee: Double = 0.0,

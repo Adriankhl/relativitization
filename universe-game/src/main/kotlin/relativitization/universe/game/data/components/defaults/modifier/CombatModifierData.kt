@@ -1,6 +1,7 @@
 package relativitization.universe.game.data.components.defaults.modifier
 
 import kotlinx.serialization.Serializable
+import ksergen.annotations.GenerateImmutable
 import kotlin.math.max
 
 /**
@@ -9,12 +10,7 @@ import kotlin.math.max
  * @property disableMilitaryBaseRecoveryTimeLimit disable military base recovery by this
  *  number of turn
  */
-@Serializable
-data class CombatModifierData(
-    val disableMilitaryBaseRecoveryTimeLimit: Int = 0,
-)
-
-@Serializable
+@GenerateImmutable
 data class MutableCombatModifierData(
     var disableMilitaryBaseRecoveryTimeLimit: Int = 0,
 ) {

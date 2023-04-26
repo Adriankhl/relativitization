@@ -1,6 +1,7 @@
 package relativitization.universe.game.data.components.defaults.popsystem.pop.engineer.laboratory
 
 import kotlinx.serialization.Serializable
+import ksergen.annotations.GenerateImmutable
 
 /**
  * Data of a research laboratory
@@ -10,15 +11,7 @@ import kotlinx.serialization.Serializable
  * @property reputation reputation of this institute
  * @property lastNumEmployee number of employee in the last round
  */
-@Serializable
-data class LaboratoryData(
-    val laboratoryInternalData: LaboratoryInternalData = LaboratoryInternalData(),
-    val strength: Double = 0.0,
-    val reputation: Double = 0.0,
-    val lastNumEmployee: Double = 0.0,
-)
-
-@Serializable
+@GenerateImmutable
 data class MutableLaboratoryData(
     var laboratoryInternalData: MutableLaboratoryInternalData = MutableLaboratoryInternalData(),
     var strength: Double = 0.0,
@@ -36,17 +29,7 @@ data class MutableLaboratoryData(
  * @property maxNumEmployee maximum number of employee
  * @property size the size of this institut
  */
-@Serializable
-data class LaboratoryInternalData(
-    val xCor: Double = 0.0,
-    val yCor: Double = 0.0,
-    val range: Double = 0.0,
-    val researchEquipmentPerTime: Double = 0.0,
-    val maxNumEmployee: Double = 0.0,
-    val size: Double = 0.0,
-)
-
-@Serializable
+@GenerateImmutable
 data class MutableLaboratoryInternalData(
     var xCor: Double = 0.0,
     var yCor: Double = 0.0,

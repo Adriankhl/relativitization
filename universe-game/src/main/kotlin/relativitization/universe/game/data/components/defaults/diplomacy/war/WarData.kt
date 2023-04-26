@@ -1,6 +1,7 @@
 package relativitization.universe.game.data.components.defaults.diplomacy.war
 
 import kotlinx.serialization.Serializable
+import ksergen.annotations.GenerateImmutable
 
 /**
  * Data describing a war where this player has involved
@@ -10,15 +11,7 @@ import kotlinx.serialization.Serializable
  * @property hasInitialized whether the data has properly initialized
  * @property initialTotalPopulation the population (including subordinates) when the war begin
  */
-@Serializable
-data class WarData(
-    val warCoreData: WarCoreData = WarCoreData(),
-    val opponentLeaderIdList: List<Int> = listOf(),
-    val hasInitialized: Boolean = false,
-    val initialTotalPopulation: Double = 0.0,
-)
-
-@Serializable
+@GenerateImmutable
 data class MutableWarData(
     var warCoreData: WarCoreData = WarCoreData(),
     val opponentLeaderIdList: MutableList<Int> = mutableListOf(),

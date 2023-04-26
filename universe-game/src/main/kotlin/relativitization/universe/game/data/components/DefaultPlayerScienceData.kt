@@ -2,6 +2,7 @@ package relativitization.universe.game.data.components
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import ksergen.annotations.GenerateImmutable
 import relativitization.universe.core.data.MutablePlayerInternalData
 import relativitization.universe.core.data.PlayerInternalData
 import relativitization.universe.game.data.components.defaults.science.application.MutableScienceApplicationData
@@ -29,19 +30,7 @@ import relativitization.universe.core.utils.RelativitizationLogManager
  * @property playerScienceApplicationData the science product data of the player,
  *  based on playerKnowledgeData
  */
-@Serializable
-@SerialName("PlayerScienceData")
-data class PlayerScienceData(
-    val commonSenseKnowledgeData: KnowledgeData = KnowledgeData(),
-    val doneBasicResearchProjectList: List<BasicResearchProjectData> = listOf(),
-    val doneAppliedResearchProjectList: List<AppliedResearchProjectData> = listOf(),
-    val knownBasicResearchProjectList: List<BasicResearchProjectData> = listOf(),
-    val knownAppliedResearchProjectList: List<AppliedResearchProjectData> = listOf(),
-    val playerKnowledgeData: KnowledgeData = KnowledgeData(),
-    val playerScienceApplicationData: ScienceApplicationData = ScienceApplicationData(),
-) : DefaultPlayerDataComponent()
-
-@Serializable
+@GenerateImmutable
 @SerialName("PlayerScienceData")
 data class MutablePlayerScienceData(
     var commonSenseKnowledgeData: MutableKnowledgeData = MutableKnowledgeData(),

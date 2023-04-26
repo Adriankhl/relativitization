@@ -1,13 +1,8 @@
 package relativitization.universe.game.data.components.defaults.diplomacy.ally
 
-import kotlinx.serialization.Serializable
+import ksergen.annotations.GenerateImmutable
 
-@Serializable
-data class AllianceData(
-    val startTime: Int = 0,
-)
-
-@Serializable
+@GenerateImmutable
 data class MutableAllianceData(
     var startTime: Int = 0,
 )

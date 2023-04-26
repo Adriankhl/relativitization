@@ -1,15 +1,9 @@
 package relativitization.universe.game.data.components.defaults.popsystem.pop.soldier.facility
 
 import kotlinx.serialization.Serializable
+import ksergen.annotations.GenerateImmutable
 
-@Serializable
-data class MilitaryBaseData(
-    val attack: Double = 0.0,
-    val shield: Double = 1.0,
-    val lastNumEmployee: Double = 0.0,
-)
-
-@Serializable
+@GenerateImmutable
 data class MutableMilitaryBaseData(
     var attack: Double = 0.0,
     var shield: Double = 1.0,

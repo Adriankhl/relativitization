@@ -2,6 +2,7 @@ package relativitization.universe.game.data.components
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import ksergen.annotations.GenerateImmutable
 import relativitization.universe.core.data.MutablePlayerInternalData
 import relativitization.universe.core.data.PlayerInternalData
 import relativitization.universe.core.maths.collection.ListFind
@@ -18,14 +19,7 @@ import relativitization.universe.game.data.components.defaults.popsystem.pop.tot
 import relativitization.universe.game.data.components.defaults.popsystem.totalOtherRestMass
 import kotlin.random.Random
 
-@Serializable
-@SerialName("PopSystemData")
-data class PopSystemData(
-    val generalPopSystemData: GeneralPopSystemData = GeneralPopSystemData(),
-    val carrierDataMap: Map<Int, CarrierData> = mapOf(),
-) : DefaultPlayerDataComponent()
-
-@Serializable
+@GenerateImmutable
 @SerialName("PopSystemData")
 data class MutablePopSystemData(
     var generalPopSystemData: MutableGeneralPopSystemData = MutableGeneralPopSystemData(),
@@ -97,17 +91,6 @@ data class MutablePopSystemData(
         carrierDataMap[newCarrierId()] = newCarrier
     }
 }
-
-
-
-fun PlayerInternalData.popSystemData(): PopSystemData =
-    playerDataComponentMap.get()
-
-fun MutablePlayerInternalData.popSystemData(): MutablePopSystemData =
-    playerDataComponentMap.get()
-
-fun MutablePlayerInternalData.popSystemData(newPopSystemData: MutablePopSystemData) =
-    playerDataComponentMap.put(newPopSystemData)
 
 fun PopSystemData.totalCoreRestMass(): Double {
     return carrierDataMap.values.sumOf { it.carrierInternalData.coreRestMass }
@@ -337,3 +320,12 @@ fun MutablePopSystemData.totalSatisfaction(): Double {
         }
     }
 }
+
+fun PlayerInternalData.popSystemData(): PopSystemData =
+    playerDataComponentMap.get()
+
+fun MutablePlayerInternalData.popSystemData(): MutablePopSystemData =
+    playerDataComponentMap.get()
+
+fun MutablePlayerInternalData.popSystemData(newPopSystemData: MutablePopSystemData) =
+    playerDataComponentMap.put(newPopSystemData)

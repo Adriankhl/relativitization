@@ -1,6 +1,8 @@
 package relativitization.universe.game.data.components.defaults.science.application
 
 import kotlinx.serialization.Serializable
+import ksergen.annotations.GenerateImmutable
+import relativitization.universe.core.data.serializer.DataSerializer
 import relativitization.universe.game.data.components.defaults.economy.MutableResourceQualityData
 import relativitization.universe.game.data.components.defaults.economy.ResourceQualityData
 import relativitization.universe.game.data.components.defaults.economy.ResourceType
@@ -20,19 +22,7 @@ import kotlin.math.min
 
 private val logger = RelativitizationLogManager.getLogger()
 
-@Serializable
-data class ScienceApplicationData(
-    val idealSpaceship: CarrierInternalData = CarrierInternalData(),
-    val idealFuelFactory: FuelFactoryInternalData = FuelFactoryInternalData(),
-    val idealResourceFactoryMap: Map<ResourceType, ResourceFactoryInternalData> = mapOf(),
-    val idealEntertainmentQuality: ResourceQualityData = ResourceQualityData(),
-    val fuelLogisticsLossFractionPerDistance: Double = 0.9,
-    val resourceLogisticsLossFractionPerDistance: Double = 0.9,
-    val militaryBaseAttackFactor: Double = 1.0,
-    val militaryBaseShieldFactor: Double = 1.0,
-)
-
-@Serializable
+@GenerateImmutable
 data class MutableScienceApplicationData(
     var idealSpaceship: MutableCarrierInternalData = MutableCarrierInternalData(),
     var idealFuelFactory: MutableFuelFactoryInternalData = MutableFuelFactoryInternalData(),
@@ -181,7 +171,7 @@ fun MutableScienceApplicationData.newFuelFactoryInternalData(): MutableFuelFacto
 fun ScienceApplicationData.getIdealResourceFactory(resourceType: ResourceType): ResourceFactoryInternalData {
     return idealResourceFactoryMap.getOrElse(resourceType) {
         logger.debug("No ideal factory with type $resourceType")
-        ResourceFactoryInternalData(outputResource = resourceType)
+        DataSerializer.copy(MutableResourceFactoryInternalData(outputResource = resourceType))
     }
 }
 

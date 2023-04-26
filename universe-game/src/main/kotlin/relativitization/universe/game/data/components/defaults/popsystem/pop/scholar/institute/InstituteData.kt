@@ -1,6 +1,7 @@
 package relativitization.universe.game.data.components.defaults.popsystem.pop.scholar.institute
 
 import kotlinx.serialization.Serializable
+import ksergen.annotations.GenerateImmutable
 
 /**
  * Data of a research institute
@@ -10,15 +11,7 @@ import kotlinx.serialization.Serializable
  * @property reputation reputation of this institute
  * @property lastNumEmployee number of employee in the last round
  */
-@Serializable
-data class InstituteData(
-    val instituteInternalData: InstituteInternalData = InstituteInternalData(),
-    val strength: Double = 0.0,
-    val reputation: Double = 0.0,
-    val lastNumEmployee: Double = 0.0,
-)
-
-@Serializable
+@GenerateImmutable
 data class MutableInstituteData(
     var instituteInternalData: MutableInstituteInternalData = MutableInstituteInternalData(),
     var strength: Double = 0.0,
@@ -36,17 +29,7 @@ data class MutableInstituteData(
  * @property maxNumEmployee maximum number ofBuildInstituteCommand employee
  * @property size the size of this institute
  */
-@Serializable
-data class InstituteInternalData(
-    val xCor: Double = 0.0,
-    val yCor: Double = 0.0,
-    val range: Double = 1.0,
-    val researchEquipmentPerTime: Double = 0.0,
-    val maxNumEmployee: Double = 0.0,
-    val size: Double = 0.0,
-)
-
-@Serializable
+@GenerateImmutable
 data class MutableInstituteInternalData(
     var xCor: Double = 0.0,
     var yCor: Double = 0.0,

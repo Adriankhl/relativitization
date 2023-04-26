@@ -37,15 +37,6 @@ data class MutablePoliticsData(
     var isForeignInvestorAllowed: Boolean = true,
 ) : MutableDefaultPlayerDataComponent()
 
-fun PlayerInternalData.politicsData(): PoliticsData =
-    playerDataComponentMap.get()
-
-fun MutablePlayerInternalData.politicsData(): MutablePoliticsData =
-    playerDataComponentMap.get()
-
-fun MutablePlayerInternalData.politicsData(newPoliticsData: MutablePoliticsData) =
-    playerDataComponentMap.put(newPoliticsData)
-
 /**
  * Compute the ideology distance between player to represent how different between the two
  */
@@ -70,3 +61,12 @@ fun PoliticsData.ideologyDistance(politicsData: PoliticsData): Double {
             isForeignInvestorAllowedDistance
             )
 }
+
+fun PlayerInternalData.politicsData(): PoliticsData =
+    playerDataComponentMap.get()
+
+fun MutablePlayerInternalData.politicsData(): MutablePoliticsData =
+    playerDataComponentMap.get()
+
+fun MutablePlayerInternalData.politicsData(newPoliticsData: MutablePoliticsData) =
+    playerDataComponentMap.put(newPoliticsData)

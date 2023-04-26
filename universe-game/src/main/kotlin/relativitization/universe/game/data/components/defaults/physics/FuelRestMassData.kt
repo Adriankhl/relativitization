@@ -1,6 +1,7 @@
 package relativitization.universe.game.data.components.defaults.physics
 
 import kotlinx.serialization.Serializable
+import ksergen.annotations.GenerateImmutable
 import kotlin.math.min
 
 /**
@@ -12,16 +13,7 @@ import kotlin.math.min
  * @property trade fuel for production
  * @property maxMovementDelta maximum mass to use from movement per time
  */
-@Serializable
-data class FuelRestMassData(
-    val storage: Double = 0.0,
-    val movement: Double = 0.0,
-    val production: Double = 0.0,
-    val trade: Double = 0.0,
-    val maxMovementDelta: Double = 0.0,
-)
-
-@Serializable
+@GenerateImmutable
 data class MutableFuelRestMassData(
     var storage: Double = 0.0,
     var movement: Double = 0.0,
@@ -47,15 +39,7 @@ fun MutableFuelRestMassData.maxMovementDeltaRestMass(): Double = min(movement, m
  * @property production fuel for production
  * @property trade fuel for production
  */
-@Serializable
-data class FuelRestMassTargetProportionData(
-    val storage: Double = 0.25,
-    val movement: Double = 0.0,
-    val production: Double = 0.5,
-    val trade: Double = 0.25,
-)
-
-@Serializable
+@GenerateImmutable
 data class MutableFuelRestMassTargetProportionData(
     var storage: Double = 0.25,
     var movement: Double = 0.0,

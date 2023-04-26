@@ -1,6 +1,6 @@
 package relativitization.universe.game.data.components.defaults.ai
 
-import kotlinx.serialization.Serializable
+import ksergen.annotations.GenerateImmutable
 import relativitization.universe.game.data.components.defaults.physics.FuelRestMassData
 import relativitization.universe.game.data.components.defaults.physics.MutableFuelRestMassData
 import relativitization.universe.core.utils.RelativitizationLogManager
@@ -11,13 +11,7 @@ import relativitization.universe.core.utils.RelativitizationLogManager
  * @property maxStoredTurn maximum stored fuel rest mass data
  * @property historyList store the history in a list
  */
-@Serializable
-data class FuelRestMassHistoryData(
-    val maxStoredTurn: Int = 6,
-    val historyList: List<FuelRestMassData> = listOf(),
-)
-
-@Serializable
+@GenerateImmutable
 data class MutableFuelRestMassHistoryData(
     var maxStoredTurn: Int = 6,
     val historyList: MutableList<MutableFuelRestMassData> = mutableListOf(),

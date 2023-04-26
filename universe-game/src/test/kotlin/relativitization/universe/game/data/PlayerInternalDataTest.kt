@@ -7,12 +7,18 @@ import relativitization.universe.core.data.components.MutablePlayerDataComponent
 import relativitization.universe.game.data.components.PhysicsData
 import relativitization.universe.core.data.components.PlayerDataComponent
 import relativitization.universe.core.data.serializer.DataSerializer
+import relativitization.universe.game.GameUniverseInitializer
 import kotlin.test.Test
 
 internal class PlayerInternalDataTest {
     @Test
     fun serialization() {
-        val l1: List<PlayerDataComponent> = listOf(PhysicsData(), EconomyData())
+        GameUniverseInitializer.initialize()
+
+        val l1: List<PlayerDataComponent> = listOf(
+            DataSerializer.copy<_, PhysicsData>(MutablePhysicsData()),
+            DataSerializer.copy<_, EconomyData>(MutableEconomyData()),
+        )
         val l2: List<PlayerDataComponent> = DataSerializer.copy(l1)
         assert(l1 == l2)
 

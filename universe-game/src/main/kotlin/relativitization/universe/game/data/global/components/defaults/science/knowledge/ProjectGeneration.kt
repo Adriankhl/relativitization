@@ -1,6 +1,7 @@
 package relativitization.universe.game.data.global.components.defaults.science.knowledge
 
 import kotlinx.serialization.Serializable
+import ksergen.annotations.GenerateImmutable
 import relativitization.universe.game.data.components.defaults.science.knowledge.AppliedResearchField
 import relativitization.universe.game.data.components.defaults.science.knowledge.BasicResearchField
 
@@ -10,13 +11,7 @@ import relativitization.universe.game.data.components.defaults.science.knowledge
  * @property basicResearchProjectGenerationDataList determine basic research project generation
  * @property appliedResearchProjectGenerationDataList determine applied research project generation
  */
-@Serializable
-data class UniverseProjectGenerationData(
-    val basicResearchProjectGenerationDataList: List<BasicResearchProjectGenerationData> = listOf(),
-    val appliedResearchProjectGenerationDataList: List<AppliedResearchProjectGenerationData> = listOf(),
-)
-
-@Serializable
+@GenerateImmutable
 data class MutableUniverseProjectGenerationData(
     val basicResearchProjectGenerationDataList: MutableList<MutableBasicResearchProjectGenerationData> = mutableListOf(),
     val appliedResearchProjectGenerationDataList: MutableList<MutableAppliedResearchProjectGenerationData> = mutableListOf(),
@@ -30,15 +25,7 @@ data class MutableUniverseProjectGenerationData(
  * @property range the dispersion of this field in the knowledge plane
  * @property weight the likelihood that a new technology is in this field
  */
-@Serializable
-data class ProjectGenerationData(
-    val centerX: Double = 0.0,
-    val centerY: Double = 0.0,
-    val range: Double = 1.0,
-    val weight: Double = 1.0,
-)
-
-@Serializable
+@GenerateImmutable
 data class MutableProjectGenerationData(
     val centerX: Double = 0.0,
     val centerY: Double = 0.0,
@@ -49,16 +36,7 @@ data class MutableProjectGenerationData(
 /**
  * For generating basic research project
  */
-@Serializable
-data class BasicResearchProjectGenerationData(
-    val basicResearchField: BasicResearchField,
-    val projectGenerationData: ProjectGenerationData,
-)
-
-/**
- * For generating basic research project
- */
-@Serializable
+@GenerateImmutable
 data class MutableBasicResearchProjectGenerationData(
     var basicResearchField: BasicResearchField,
     var projectGenerationData: MutableProjectGenerationData,
@@ -67,13 +45,7 @@ data class MutableBasicResearchProjectGenerationData(
 /**
  * For generating applied research project
  */
-@Serializable
-data class AppliedResearchProjectGenerationData(
-    val appliedResearchField: AppliedResearchField,
-    val projectGenerationData: ProjectGenerationData,
-)
-
-@Serializable
+@GenerateImmutable
 data class MutableAppliedResearchProjectGenerationData(
     var appliedResearchField: AppliedResearchField,
     var projectGenerationData: MutableProjectGenerationData,

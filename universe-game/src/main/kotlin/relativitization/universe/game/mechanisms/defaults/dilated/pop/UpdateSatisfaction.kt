@@ -13,6 +13,7 @@ import relativitization.universe.game.data.components.defaults.popsystem.pop.Mut
 import relativitization.universe.game.data.components.defaults.popsystem.pop.PopType
 import relativitization.universe.game.data.components.popSystemData
 import relativitization.universe.core.data.global.UniverseGlobalData
+import relativitization.universe.core.data.serializer.DataSerializer
 import relativitization.universe.core.mechanisms.Mechanism
 import relativitization.universe.game.data.components.defaults.economy.div
 import relativitization.universe.game.data.components.defaults.economy.mag
@@ -87,7 +88,7 @@ object UpdateSatisfaction : Mechanism() {
                 carrier.allPopData.getCommonPopData(popType).lastResourceInputMap.forEach { (resourceType, desireData) ->
                     val newQualityData: ResourceQualityData = resourceMap.getOrDefault(
                         resourceType,
-                        ResourceQualityData()
+                        DataSerializer.copy(MutableResourceQualityData())
                     ) + (desireData.desireQuality * desireData.desireAmount)
                     resourceMap[resourceType] = newQualityData
                 }
@@ -103,7 +104,7 @@ object UpdateSatisfaction : Mechanism() {
                     carrier.allPopData.getCommonPopData(popType).lastResourceInputMap.forEach { (resourceType, desireData) ->
                         val newQualityData: ResourceQualityData = resourceMap.getOrDefault(
                             resourceType,
-                            ResourceQualityData()
+                            DataSerializer.copy(MutableResourceQualityData())
                         ) + (desireData.desireQuality * desireData.desireAmount)
                         resourceMap[resourceType] = newQualityData
                     }
@@ -185,7 +186,10 @@ object UpdateSatisfaction : Mechanism() {
                     inputDesire.desireAmount / mutableCommonPopData.adultPopulation
 
             val otherAverageQualityData: ResourceQualityData =
-                averageDesireInputQualityMap.getOrDefault(resourceType, ResourceQualityData())
+                averageDesireInputQualityMap.getOrDefault(
+                    resourceType,
+                    DataSerializer.copy(MutableResourceQualityData())
+                )
 
             averageQualityData.mag() - otherAverageQualityData.mag()
         }

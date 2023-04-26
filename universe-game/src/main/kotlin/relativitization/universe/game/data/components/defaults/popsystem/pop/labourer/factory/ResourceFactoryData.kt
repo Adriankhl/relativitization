@@ -1,6 +1,7 @@
 package relativitization.universe.game.data.components.defaults.popsystem.pop.labourer.factory
 
 import kotlinx.serialization.Serializable
+import ksergen.annotations.GenerateImmutable
 import relativitization.universe.game.data.components.defaults.economy.MutableResourceQualityData
 import relativitization.universe.game.data.components.defaults.economy.ResourceQualityData
 import relativitization.universe.game.data.components.defaults.economy.ResourceType
@@ -20,21 +21,7 @@ import kotlin.math.pow
  * @property lastNumEmployee number of employee in the last turn
  * @property experience the longer the factory has been opening, the more the experience
  */
-@Serializable
-data class ResourceFactoryData(
-    val ownerPlayerId: Int = -1,
-    val resourceFactoryInternalData: ResourceFactoryInternalData = ResourceFactoryInternalData(),
-    val maxNumEmployee: Double = 1.0,
-    val isOpened: Boolean = true,
-    val storedFuelRestMass: Double = 0.0,
-    val lastOutputAmount: Double = 0.0,
-    val lastOutputQuality: ResourceQualityData = ResourceQualityData(),
-    val lastInputResourceMap: Map<ResourceType, InputResourceData> = mapOf(),
-    val lastNumEmployee: Double = 0.0,
-    val experience: Double = 0.0,
-)
-
-@Serializable
+@GenerateImmutable
 data class MutableResourceFactoryData(
     var ownerPlayerId: Int = -1,
     var resourceFactoryInternalData: MutableResourceFactoryInternalData = MutableResourceFactoryInternalData(),
@@ -86,13 +73,7 @@ fun MutableResourceFactoryData.employeeFraction(): Double =
  *  won't improve the output quality
  * @property amountPerOutput amount of resource required to produce one unit of output resource
  */
-@Serializable
-data class InputResourceData(
-    val qualityData: ResourceQualityData = ResourceQualityData(),
-    val amountPerOutput: Double = 1.0,
-)
-
-@Serializable
+@GenerateImmutable
 data class MutableInputResourceData(
     var qualityData: MutableResourceQualityData = MutableResourceQualityData(),
     var amountPerOutput: Double = 1.0,
@@ -144,17 +125,7 @@ fun MutableInputResourceData.squareDiff(other: MutableInputResourceData): Double
  * @property fuelRestMassConsumptionRatePerEmployee fuel consumption rate per employee
  * @property sizePerEmployee the size of this factory per employee
  */
-@Serializable
-data class ResourceFactoryInternalData(
-    val outputResource: ResourceType = ResourceType.PLANT,
-    val maxOutputResourceQualityData: ResourceQualityData = ResourceQualityData(),
-    val maxOutputAmountPerEmployee: Double = 0.0,
-    val inputResourceMap: Map<ResourceType, InputResourceData> = mapOf(),
-    val fuelRestMassConsumptionRatePerEmployee: Double = 1.0,
-    val sizePerEmployee: Double = 0.0,
-)
-
-@Serializable
+@GenerateImmutable
 data class MutableResourceFactoryInternalData(
     var outputResource: ResourceType = ResourceType.PLANT,
     var maxOutputResourceQualityData: MutableResourceQualityData = MutableResourceQualityData(),

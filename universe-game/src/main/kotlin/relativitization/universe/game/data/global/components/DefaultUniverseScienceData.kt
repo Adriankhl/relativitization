@@ -2,6 +2,7 @@ package relativitization.universe.game.data.global.components
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import ksergen.annotations.GenerateImmutable
 import relativitization.universe.game.data.components.defaults.science.knowledge.AppliedResearchProjectData
 import relativitization.universe.game.data.components.defaults.science.knowledge.BasicResearchProjectData
 import relativitization.universe.game.data.components.defaults.science.knowledge.KnowledgeData
@@ -22,16 +23,7 @@ import relativitization.universe.core.utils.RelativitizationLogManager
  * @property appliedResearchProjectDataMap applied research project map
  * @property universeProjectGenerationData determine how new research projects are generated
  */
-@Serializable
-@SerialName("UniverseScienceData")
-data class UniverseScienceData(
-    val commonSenseKnowledgeData: KnowledgeData = KnowledgeData(),
-    val basicResearchProjectDataMap: Map<Int, BasicResearchProjectData> = mapOf(),
-    val appliedResearchProjectDataMap: Map<Int, AppliedResearchProjectData> = mapOf(),
-    val universeProjectGenerationData: UniverseProjectGenerationData = UniverseProjectGenerationData(),
-) : DefaultGlobalDataComponent()
-
-@Serializable
+@GenerateImmutable
 @SerialName("UniverseScienceData")
 data class MutableUniverseScienceData(
     var commonSenseKnowledgeData: MutableKnowledgeData = MutableKnowledgeData(),

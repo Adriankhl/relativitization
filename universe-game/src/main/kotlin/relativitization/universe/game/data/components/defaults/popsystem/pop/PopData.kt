@@ -1,6 +1,7 @@
 package relativitization.universe.game.data.components.defaults.popsystem.pop
 
 import kotlinx.serialization.Serializable
+import ksergen.annotations.GenerateImmutable
 import relativitization.universe.game.data.components.defaults.economy.MutableResourceQualityData
 import relativitization.universe.game.data.components.defaults.economy.ResourceQualityData
 import relativitization.universe.game.data.components.defaults.economy.ResourceType
@@ -47,19 +48,7 @@ enum class PopType(val value: String) {
 /**
  * Store all pop data in carrier
  */
-@Serializable
-data class AllPopData(
-    val labourerPopData: LabourerPopData = LabourerPopData(),
-    val engineerPopData: EngineerPopData = EngineerPopData(),
-    val scholarPopData: ScholarPopData = ScholarPopData(),
-    val educatorPopData: EducatorPopData = EducatorPopData(),
-    val medicPopData: MedicPopData = MedicPopData(),
-    val servicePopData: ServicePopData = ServicePopData(),
-    val entertainerPopData: EntertainerPopData = EntertainerPopData(),
-    val soldierPopData: SoldierPopData = SoldierPopData(),
-)
-
-@Serializable
+@GenerateImmutable
 data class MutableAllPopData(
     var labourerPopData: MutableLabourerPopData = MutableLabourerPopData(),
     var engineerPopData: MutableEngineerPopData = MutableEngineerPopData(),
@@ -134,22 +123,7 @@ fun MutableAllPopData.totalAdultPopulation(): Double = PopType.values().fold(0.0
  *  should be cleared after calculating the effect of the input
  * @property lastResourceInputMap store the latest resource input just before it is cleared
  */
-@Serializable
-data class CommonPopData(
-    val childPopulation: Double = 0.0,
-    val adultPopulation: Double = 100.0,
-    val elderlyPopulation: Double = 0.0,
-    val educationLevel: Double = 1.0,
-    val employmentRate: Double = 1.0,
-    val satisfaction: Double = 0.0,
-    val salaryFactor: Double = 1.0,
-    val saving: Double = 0.0,
-    val desireResourceMap: Map<ResourceType, ResourceDesireData> = mapOf(),
-    val resourceInputMap: Map<ResourceType, ResourceDesireData> = mapOf(),
-    val lastResourceInputMap: Map<ResourceType, ResourceDesireData> = mapOf(),
-)
-
-@Serializable
+@GenerateImmutable
 data class MutableCommonPopData(
     var childPopulation: Double = 0.0,
     var adultPopulation: Double = 100.0,
@@ -269,13 +243,7 @@ fun MutableCommonPopData.salaryPerEmployee(generalPopSystemData: MutableGeneralP
  * @property desireAmount the amount desired in one turn
  * @property desireQuality the desired quality of the resource
  */
-@Serializable
-data class ResourceDesireData(
-    val desireAmount: Double = 0.0,
-    val desireQuality: ResourceQualityData = ResourceQualityData(),
-)
-
-@Serializable
+@GenerateImmutable
 data class MutableResourceDesireData(
     var desireAmount: Double = 0.0,
     var desireQuality: MutableResourceQualityData = MutableResourceQualityData(),

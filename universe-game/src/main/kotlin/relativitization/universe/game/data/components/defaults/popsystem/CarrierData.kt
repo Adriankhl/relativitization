@@ -1,6 +1,7 @@
 package relativitization.universe.game.data.components.defaults.popsystem
 
 import kotlinx.serialization.Serializable
+import ksergen.annotations.GenerateImmutable
 import relativitization.universe.game.data.components.defaults.popsystem.pop.AllPopData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.MutableAllPopData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.PopType
@@ -11,14 +12,7 @@ enum class CarrierType {
     SPACESHIP
 }
 
-@Serializable
-data class CarrierData(
-    val carrierType: CarrierType = CarrierType.SPACESHIP,
-    val carrierInternalData: CarrierInternalData = CarrierInternalData(),
-    val allPopData: AllPopData = AllPopData(),
-)
-
-@Serializable
+@GenerateImmutable
 data class MutableCarrierData(
     var carrierType: CarrierType = CarrierType.SPACESHIP,
     var carrierInternalData: MutableCarrierInternalData = MutableCarrierInternalData(),
@@ -85,15 +79,7 @@ fun MutableCarrierData.totalOtherRestMass(): Double {
     return factoryStoredRestMass + exportCenterStoredFuelRestMass + popStoredFuelRestMass
 }
 
-@Serializable
-data class CarrierInternalData(
-    val coreRestMass: Double = 1.0,
-    val maxMovementDeltaFuelRestMass: Double = 0.0,
-    val size: Double = 100.0,
-    val idealPopulation: Double = 100.0,
-)
-
-@Serializable
+@GenerateImmutable
 data class MutableCarrierInternalData(
     var coreRestMass: Double = 1.0,
     var maxMovementDeltaFuelRestMass: Double = 0.0,

@@ -1,6 +1,7 @@
 package relativitization.universe.game.data.components.defaults.modifier
 
 import kotlinx.serialization.Serializable
+import ksergen.annotations.GenerateImmutable
 import kotlin.math.max
 
 /**
@@ -8,12 +9,7 @@ import kotlin.math.max
  *
  * @property disableRestMassIncreaseTimeLimit disable rest mass increase by this amount of turn
  */
-@Serializable
-data class PhysicsModifierData(
-    val disableRestMassIncreaseTimeLimit: Int = 0,
-)
-
-@Serializable
+@GenerateImmutable
 data class MutablePhysicsModifierData(
     var disableRestMassIncreaseTimeLimit: Int = 0,
 ) {

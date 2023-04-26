@@ -1,6 +1,7 @@
 package relativitization.universe.game.data.components.defaults.diplomacy
 
 import kotlinx.serialization.Serializable
+import ksergen.annotations.GenerateImmutable
 import relativitization.universe.game.data.components.defaults.diplomacy.ally.AllianceData
 import relativitization.universe.game.data.components.defaults.diplomacy.ally.MutableAllianceData
 import relativitization.universe.game.data.components.defaults.diplomacy.war.MutableWarData
@@ -19,18 +20,7 @@ import relativitization.universe.core.utils.RelativitizationLogManager
  * @property allyWarDataMap map from ally id to opponent id to the war of ally which this
  *  player has joined
  */
-@Serializable
-data class RelationData(
-    val relationMap: Map<Int, Double> = mapOf(),
-    val enemyIdSet: Set<Int> = setOf(),
-    val allyMap: Map<Int, AllianceData> = mapOf(),
-    val selfWarDataMap: Map<Int, WarData> = mapOf(),
-    val subordinateWarDataMap: Map<Int, Map<Int, WarData>> = mapOf(),
-    val allyWarDataMap: Map<Int, Map<Int, WarData>> = mapOf(),
-    val allySubordinateWarDataMap: Map<Int, Map<Int, Map<Int, WarData>>> = mapOf(),
-)
-
-@Serializable
+@GenerateImmutable
 data class MutableRelationData(
     val relationMap: MutableMap<Int, Double> = mutableMapOf(),
     val enemyIdSet: MutableSet<Int> = mutableSetOf(),

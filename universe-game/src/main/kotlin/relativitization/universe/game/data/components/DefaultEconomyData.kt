@@ -2,6 +2,7 @@ package relativitization.universe.game.data.components
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import ksergen.annotations.GenerateImmutable
 import relativitization.universe.core.data.MutablePlayerInternalData
 import relativitization.universe.core.data.PlayerInternalData
 import relativitization.universe.game.data.components.defaults.economy.MutableResourceData
@@ -14,15 +15,7 @@ import relativitization.universe.game.data.components.defaults.economy.TaxData
 /**
  * @property taxData data about the tax rate of various stuff
  */
-@Serializable
-@SerialName("EconomyData")
-data class EconomyData(
-    val taxData: TaxData = TaxData(),
-    val resourceData: ResourceData = ResourceData(),
-    val socialSecurityData: SocialSecurityData = SocialSecurityData(),
-) : DefaultPlayerDataComponent()
-
-@Serializable
+@GenerateImmutable
 @SerialName("EconomyData")
 data class MutableEconomyData(
     var taxData: MutableTaxData = MutableTaxData(),

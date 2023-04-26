@@ -1,6 +1,7 @@
 package relativitization.universe.game.data.components.defaults.science.knowledge
 
 import kotlinx.serialization.Serializable
+import ksergen.annotations.GenerateImmutable
 import relativitization.universe.core.maths.collection.ListFind
 import relativitization.universe.core.utils.RelativitizationLogManager
 
@@ -18,17 +19,7 @@ import relativitization.universe.core.utils.RelativitizationLogManager
  *  should be higher than or equal to startFromAppliedResearchId
  * @property appliedResearchData the applied research data
  */
-@Serializable
-data class KnowledgeData(
-    val startFromBasicResearchId: Int = 0,
-    val basicResearchIdList: List<Int> = listOf(),
-    val basicResearchData: BasicResearchData = BasicResearchData(),
-    val startFromAppliedResearchId: Int = 0,
-    val appliedResearchIdList: List<Int> = listOf(),
-    val appliedResearchData: AppliedResearchData = AppliedResearchData(),
-)
-
-@Serializable
+@GenerateImmutable
 data class MutableKnowledgeData(
     var startFromBasicResearchId: Int = 0,
     val basicResearchIdList: MutableList<Int> = mutableListOf(),

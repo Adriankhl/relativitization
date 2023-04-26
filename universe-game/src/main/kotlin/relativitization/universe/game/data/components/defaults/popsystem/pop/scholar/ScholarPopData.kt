@@ -1,19 +1,14 @@
 package relativitization.universe.game.data.components.defaults.popsystem.pop.scholar
 
 import kotlinx.serialization.Serializable
+import ksergen.annotations.GenerateImmutable
 import relativitization.universe.game.data.components.defaults.popsystem.pop.CommonPopData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.MutableCommonPopData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.scholar.institute.InstituteData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.scholar.institute.MutableInstituteData
 import relativitization.universe.core.maths.collection.ListFind
 
-@Serializable
-data class ScholarPopData(
-    val commonPopData: CommonPopData = CommonPopData(),
-    val instituteMap: Map<Int, InstituteData> = mapOf(),
-)
-
-@Serializable
+@GenerateImmutable
 data class MutableScholarPopData(
     var commonPopData: MutableCommonPopData = MutableCommonPopData(),
     var instituteMap: MutableMap<Int, MutableInstituteData> = mutableMapOf(),

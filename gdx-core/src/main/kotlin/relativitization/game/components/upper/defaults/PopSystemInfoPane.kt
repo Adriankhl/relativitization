@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import relativitization.game.RelativitizationGame
 import relativitization.game.components.upper.UpperInfoPane
 import relativitization.universe.core.data.PlayerData
+import relativitization.universe.core.data.serializer.DataSerializer
 import relativitization.universe.game.data.commands.BuildForeignFuelFactoryCommand
 import relativitization.universe.game.data.commands.BuildForeignResourceFactoryCommand
 import relativitization.universe.game.data.commands.BuildInstituteCommand
@@ -60,8 +61,10 @@ import relativitization.universe.core.maths.number.Notation
 import relativitization.universe.core.utils.RelativitizationLogManager
 import relativitization.universe.game.data.components.defaults.economy.getProductionResourceAmount
 import relativitization.universe.game.data.components.defaults.popsystem.pop.getCommonPopData
+import relativitization.universe.game.data.components.defaults.popsystem.pop.labourer.factory.MutableInputResourceData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.labourer.factory.lastInputAmount
 import relativitization.universe.game.data.components.defaults.popsystem.pop.labourer.factory.maxInputAmount
+import relativitization.universe.game.data.components.defaults.popsystem.pop.service.export.MutablePlayerExportCenterData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.service.export.getExportDataList
 import relativitization.universe.game.data.components.defaults.popsystem.pop.service.export.getResourceQualityClassList
 import relativitization.universe.game.data.components.defaults.popsystem.pop.service.export.getResourceTypeList
@@ -1193,7 +1196,10 @@ class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
             nestedTable.row().space(10f)
 
             val lastInputResource: InputResourceData = resourceFactoryData.lastInputResourceMap
-                .getOrDefault(resourceType, InputResourceData(amountPerOutput = 0.0))
+                .getOrDefault(
+                    resourceType,
+                    DataSerializer.copy(MutableInputResourceData(amountPerOutput = 0.0))
+                )
 
             nestedTable.add(
                 createLabel(
@@ -2039,6 +2045,7 @@ class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
                     range = range.value,
                     researchEquipmentPerTime = researchEquipmentPerTime.value,
                     maxNumEmployee = maxNumEmployee.value,
+                    size = 1.0,
                 )
             )
 
@@ -2362,6 +2369,7 @@ class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
                     range = range.value,
                     researchEquipmentPerTime = researchEquipmentPerTime.value,
                     maxNumEmployee = maxNumEmployee.value,
+                    size = 1.0,
                 ),
             )
 
@@ -2537,7 +2545,7 @@ class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
         val exportCenterTargetIdSelectBox = createSelectBox(
             servicePopData.exportData.playerExportCenterMap.getOrDefault(
                 exportCenterOwnerId,
-                PlayerExportCenterData()
+                DataSerializer.copy(MutablePlayerExportCenterData())
             ).exportDataList.map { it.targetPlayerId },
             exportCenterTargetId,
             gdxSettings.smallFontSize
@@ -2559,7 +2567,7 @@ class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
         val exportCenterResourceTypeSelectBox = createSelectBox(
             servicePopData.exportData.playerExportCenterMap.getOrDefault(
                 exportCenterOwnerId,
-                PlayerExportCenterData()
+                DataSerializer.copy(MutablePlayerExportCenterData())
             ).getResourceTypeList(exportCenterTargetId),
             exportCenterResourceType,
             gdxSettings.smallFontSize
@@ -2581,7 +2589,7 @@ class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
         val exportCenterResourceQualityClassSelectBox = createSelectBox(
             servicePopData.exportData.playerExportCenterMap.getOrDefault(
                 exportCenterOwnerId,
-                PlayerExportCenterData()
+                DataSerializer.copy(MutablePlayerExportCenterData())
             ).getResourceQualityClassList(exportCenterTargetId, exportCenterResourceType),
             exportCenterResourceQualityClass,
             gdxSettings.smallFontSize

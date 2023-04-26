@@ -5,20 +5,14 @@ import relativitization.universe.core.data.MutablePlayerData
 import relativitization.universe.core.data.MutablePlayerInternalData
 import relativitization.universe.core.data.components.MutablePlayerDataComponent
 import relativitization.universe.core.data.components.PlayerDataComponent
+import relativitization.universe.core.data.serializer.DataSerializer
 
 @Serializable
 sealed class DefaultPlayerDataComponent : PlayerDataComponent() {
     companion object {
         fun createComponentList(): List<DefaultPlayerDataComponent> {
-            return listOf(
-                AIData(),
-                DiplomacyData(),
-                EconomyData(),
-                ModifierData(),
-                PhysicsData(),
-                PlayerScienceData(),
-                PoliticsData(),
-                PopSystemData(),
+            return DataSerializer.copy(
+                MutableDefaultPlayerDataComponent.createComponentList()
             )
         }
     }

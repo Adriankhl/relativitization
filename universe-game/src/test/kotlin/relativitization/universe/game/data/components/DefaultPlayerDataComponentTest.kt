@@ -39,13 +39,14 @@ internal class DefaultPlayerDataComponentTest {
 
     @Test
     fun componentListTest() {
-        val l1: List<DefaultPlayerDataComponent> = DefaultPlayerDataComponent::class
-            .sealedSubclasses.sortedBy {
-                it.keyI()
-            }.map {
-                it.createInstance()
-            }
-
+        val l1: List<DefaultPlayerDataComponent> = DataSerializer.copy(
+            MutableDefaultPlayerDataComponent::class
+                .sealedSubclasses.sortedBy {
+                    it.keyM()
+                }.map {
+                    it.createInstance()
+                }
+        )
         val l2: List<DefaultPlayerDataComponent> = DefaultPlayerDataComponent.createComponentList()
 
         assert(l1 == l2)

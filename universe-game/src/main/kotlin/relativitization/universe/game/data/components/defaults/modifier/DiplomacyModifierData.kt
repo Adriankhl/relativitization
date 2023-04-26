@@ -1,6 +1,8 @@
 package relativitization.universe.game.data.components.defaults.modifier
 
 import kotlinx.serialization.Serializable
+import ksergen.annotations.GenerateImmutable
+import relativitization.universe.core.data.serializer.DataSerializer
 import kotlin.math.max
 
 /**
@@ -10,13 +12,7 @@ import kotlin.math.max
  * @property relationModifierMap store relation modifier, map from other player id to
  *  relation modifier
  */
-@Serializable
-data class DiplomacyModifierData(
-    val peaceTreaty: Map<Int, Int> = mapOf(),
-    val relationModifierMap: Map<Int, RelationModifier> = mapOf(),
-)
-
-@Serializable
+@GenerateImmutable
 data class MutableDiplomacyModifierData(
     var peaceTreaty: MutableMap<Int, Int> = mutableMapOf(),
     var relationModifierMap: MutableMap<Int, MutableRelationModifier> = mutableMapOf(),
@@ -101,7 +97,7 @@ fun MutableDiplomacyModifierData.getPeaceTreatyLength(playerId: Int): Int = peac
 )
 
 fun DiplomacyModifierData.getRelationModifier(playerId: Int): RelationModifier =
-    relationModifierMap.getOrDefault(playerId, RelationModifier())
+    relationModifierMap.getOrDefault(playerId, DataSerializer.copy(MutableRelationModifier()))
 
 fun MutableDiplomacyModifierData.getRelationModifier(playerId: Int): MutableRelationModifier =
     relationModifierMap.getOrDefault(playerId, MutableRelationModifier())
@@ -145,12 +141,7 @@ fun MutableDiplomacyModifierData.getRelationChange(
 /**
  * Modifier the relation
  */
-@Serializable
-data class RelationModifier(
-    val receiveFuelList: List<SingleRelationModifier> = listOf(),
-)
-
-@Serializable
+@GenerateImmutable
 data class MutableRelationModifier(
     var receiveFuelList: MutableList<MutableSingleRelationModifier> = mutableListOf(),
 ) {
@@ -218,13 +209,7 @@ fun MutableRelationModifier.getOverallRelationChange(
  * @property durationLeft the duration of this effect left, in player time, affected by
  *  time dilation
  */
-@Serializable
-data class SingleRelationModifier(
-    val change: Double = 0.0,
-    val durationLeft: Int = 0,
-)
-
-@Serializable
+@GenerateImmutable
 data class MutableSingleRelationModifier(
     var change: Double = 0.0,
     var durationLeft: Int = 0,

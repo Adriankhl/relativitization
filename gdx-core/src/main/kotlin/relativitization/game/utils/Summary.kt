@@ -2,13 +2,16 @@ package relativitization.game.utils
 
 import relativitization.universe.core.data.PlayerData
 import relativitization.universe.core.data.UniverseData3DAtPlayer
+import relativitization.universe.core.data.serializer.DataSerializer
 import relativitization.universe.game.data.components.defaults.economy.ResourceType
 import relativitization.universe.game.data.components.defaults.popsystem.CarrierData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.CommonPopData
+import relativitization.universe.game.data.components.defaults.popsystem.pop.MutableResourceDesireData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.PopType
 import relativitization.universe.game.data.components.defaults.popsystem.pop.ResourceDesireData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.getCommonPopData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.labourer.factory.InputResourceData
+import relativitization.universe.game.data.components.defaults.popsystem.pop.labourer.factory.MutableInputResourceData
 import relativitization.universe.game.data.components.defaults.popsystem.pop.labourer.factory.employeeFraction
 import relativitization.universe.game.data.components.defaults.popsystem.pop.totalAdultPopulation
 import relativitization.universe.game.data.components.popSystemData
@@ -94,7 +97,7 @@ object Summary {
                 val popDesire: Double = PopType.values().sumOf { popType ->
                     carrierData.allPopData.getCommonPopData(popType).desireResourceMap.getOrDefault(
                         resourceType,
-                        ResourceDesireData()
+                        DataSerializer.copy(MutableResourceDesireData())
                     ).desireAmount
                 }
 
@@ -102,7 +105,7 @@ object Summary {
                     .values.sumOf { resourceFactory ->
                         resourceFactory.resourceFactoryInternalData.inputResourceMap.getOrDefault(
                             resourceType,
-                            InputResourceData(),
+                            DataSerializer.copy(MutableInputResourceData()),
                         ).amountPerOutput * resourceFactory.resourceFactoryInternalData.maxOutputAmountPerEmployee *
                                 resourceFactory.maxNumEmployee *
                                 resourceFactory.employeeFraction()

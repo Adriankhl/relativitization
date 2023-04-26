@@ -1,6 +1,8 @@
 package relativitization.universe.game.data.components.defaults.popsystem.pop.service.export
 
 import kotlinx.serialization.Serializable
+import ksergen.annotations.GenerateImmutable
+import relativitization.universe.core.data.serializer.DataSerializer
 import relativitization.universe.game.data.components.defaults.economy.ResourceQualityClass
 import relativitization.universe.game.data.components.defaults.economy.ResourceType
 import relativitization.universe.game.data.components.defaults.popsystem.pop.PopType
@@ -11,16 +13,7 @@ import relativitization.universe.game.data.components.defaults.popsystem.pop.Pop
  * @property exportDataMap map from carrier id in other player to pop type to a list of export
  * to consider,
  */
-@Serializable
-data class PopExportCenterData(
-    val exportDataMap: Map<Int, Map<PopType, List<PopSingleExportData>>> = mapOf()
-) {
-
-}
-
-
-
-@Serializable
+@GenerateImmutable
 data class MutablePopExportCenterData(
     val exportDataMap: MutableMap<Int, MutableMap<PopType, MutableList<MutablePopSingleExportData>>> = mutableMapOf()
 ) {
@@ -146,7 +139,7 @@ fun PopExportCenterData.getSingleExportData(
             (it.resourceType == resourceType) && (it.resourceQualityClass == resourceQualityClass)
         }
     } else {
-        PopSingleExportData()
+        DataSerializer.copy(MutablePopSingleExportData())
     }
 }
 
@@ -169,15 +162,7 @@ fun MutablePopExportCenterData.getSingleExportData(
     }
 }
 
-@Serializable
-data class PopSingleExportData(
-    val resourceType: ResourceType = ResourceType.PLANT,
-    val resourceQualityClass: ResourceQualityClass = ResourceQualityClass.FIRST,
-    val amountPerTime: Double = 0.0,
-    val storedFuelRestMass: Double = 0.0,
-)
-
-@Serializable
+@GenerateImmutable
 data class MutablePopSingleExportData(
     var resourceType: ResourceType = ResourceType.PLANT,
     var resourceQualityClass: ResourceQualityClass = ResourceQualityClass.FIRST,

@@ -2,6 +2,7 @@ package relativitization.universe.game.data.components
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import ksergen.annotations.GenerateImmutable
 import relativitization.universe.core.data.MutablePlayerInternalData
 import relativitization.universe.core.data.PlayerInternalData
 import relativitization.universe.game.data.components.defaults.physics.FuelRestMassData
@@ -22,17 +23,7 @@ import kotlin.math.min
  * @property fuelRestMassTargetProportionData target fuel rest mass proportion in the categories
  * @property targetDouble3DData the target position to move to
  */
-@Serializable
-@SerialName("PhysicsData")
-data class PhysicsData(
-    val coreRestMass: Double = 1.0,
-    val otherRestMass: Double = 0.0,
-    val fuelRestMassData: FuelRestMassData = FuelRestMassData(),
-    val fuelRestMassTargetProportionData: FuelRestMassTargetProportionData = FuelRestMassTargetProportionData(),
-    val targetDouble3DData: TargetDouble3DData = TargetDouble3DData(),
-) : DefaultPlayerDataComponent()
-
-@Serializable
+@GenerateImmutable
 @SerialName("PhysicsData")
 data class MutablePhysicsData(
     var coreRestMass: Double = 1.0,
@@ -175,6 +166,10 @@ data class MutablePhysicsData(
     }
 }
 
+fun PhysicsData.totalRestMass() = coreRestMass + otherRestMass + fuelRestMassData.total()
+
+fun MutablePhysicsData.totalRestMass() = coreRestMass + otherRestMass + fuelRestMassData.total()
+
 fun PlayerInternalData.physicsData(): PhysicsData =
     playerDataComponentMap.get()
 
@@ -184,7 +179,3 @@ fun MutablePlayerInternalData.physicsData(): MutablePhysicsData =
 
 fun MutablePlayerInternalData.physicsData(newPhysicsData: MutablePhysicsData) =
     playerDataComponentMap.put(newPhysicsData)
-
-fun PhysicsData.totalRestMass() = coreRestMass + otherRestMass + fuelRestMassData.total()
-
-fun MutablePhysicsData.totalRestMass() = coreRestMass + otherRestMass + fuelRestMassData.total()
