@@ -28,7 +28,7 @@ kotlin {
 publishing {
     publications {
         create<MavenPublication>("maven") {
-            groupId = "com.github.adriankhl.relativitization"
+            groupId = "io.github.adriankhl"
             artifactId = "relativitization-core"
             version = appVersionName(
                 libs.versions.appVersionMajor.get(),
