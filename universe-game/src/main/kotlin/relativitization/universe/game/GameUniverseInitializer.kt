@@ -1,6 +1,6 @@
 package relativitization.universe.game
 
-import ksergen.serializers.module.GeneratedModule
+import ksergen.GeneratedModule
 import relativitization.universe.core.RelativitizationInitializer
 import relativitization.universe.game.ai.DefaultAI
 import relativitization.universe.game.data.commands.DefaultCommandAvailability
