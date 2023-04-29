@@ -1,5 +1,7 @@
-## 0.2.4
+## 1.0.0
 
+* Complete refactor the implementation of the framework, now it can be published as a library
+* Depends on `ksergen` for code generation
 
 ## 0.2.3
 
