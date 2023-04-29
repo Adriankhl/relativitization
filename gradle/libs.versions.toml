@@ -28,7 +28,7 @@ gradleVersionPluginVersion = "0.46.0"
 dokkaVersion = "1.8.10"
 
 # KSP
-kspVersion = "1.8.20-1.0.11"
+kspVersion = "1.8.21-1.0.11"
 ksergenVersion = "0.1.0"
 
 # Kotlin multiplatform
