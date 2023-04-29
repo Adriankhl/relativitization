@@ -2,9 +2,9 @@
 appName = "relativitization"
 
 # app version
-appVersionMajor = "0"
-appVersionMinor = "2"
-appVersionPatch = "4"
+appVersionMajor = "1"
+appVersionMinor = "0"
+appVersionPatch = "0"
 appVersionBuild = "0"
 
 # JDK
