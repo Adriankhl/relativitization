@@ -29,7 +29,7 @@ dokkaVersion = "1.8.10"
 
 # KSP
 kspVersion = "1.8.20-1.0.11"
-ksergenVersion = "0.1"
+ksergenVersion = "0.1.0"
 
 # Kotlin multiplatform
 kotlinxCoroutineVersion = "1.6.4"
