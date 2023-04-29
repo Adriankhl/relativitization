@@ -95,6 +95,10 @@ publishing {
     }
 }
 
+signing {
+    sign(publishing.publications["maven"])
+}
+
 tasks.withType<KotlinCompile>().configureEach {
     kotlinOptions.jvmTarget = libs.versions.jvmTargetVersion.get()
 }
