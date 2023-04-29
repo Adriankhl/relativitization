@@ -22,15 +22,19 @@ spacetime.
 
 ## Project layout
 
-* `universe`: core of this project
-* `simulations`: model simulation examples, depends on `universe`
-* `universe-server`: server to run the game, depends on `universe`
-* `universe-client`: store non-gui functions that are useful to game client, depends on `universe`
-* `gdx-core`: libgdx gui core, depends on `universe` and  `universe-client`
-* `gdx-desktop`: libgdx gui desktop launcher, depends on `gdx-core`, `universe`,  `universe-client`,
-  and `universe-server`
-* `gdx-android`: libgdx gui android launcher, depends on `gdx-core`, `universe`,  `universe-client`,
-  and `universe-server`
+* `universe-core`: core 4D relativistic agent-based simulation framework
+* `universe-game`: the game mechanics, depends on `universe-core`
+* `simulations`: for simulating the game, aka the big social model, on the command line, 
+  depends on `universe-core` and `universe-game`
+* `universe-server`: server to run the game, depends on `universe-core` and `universe-game`
+* `universe-client`: store non-gui functions that are useful to game client,
+  depends on `universe-core` and `universe-game`
+* `gdx-core`: libgdx gui core, depends on `universe-core`, `universe-game`
+  and  `universe-client`
+* `gdx-desktop`: libgdx gui desktop launcher, depends on `gdx-core`, `universe-core`, `universe-game`
+  , `universe-client`, and `universe-server`
+* `gdx-android`: libgdx gui android launcher, depends on `gdx-core`, `universe-core`, `universe-game`
+  , `universe-client`, and `universe-server`
 
 ## Introduction
 
