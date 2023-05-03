@@ -44,7 +44,7 @@ log4jVersion = "2.20.0"
 dataframeVersion = "0.10.0"
 
 # Android
-androidGradlePluginVersion = "8.0.0"
+androidGradlePluginVersion = "8.0.1"
 androidAppCompatVersion = "1.6.1"
 androidLifeCycleKtxVersion = "2.6.1"
 androidFragmentKtxVersion = "1.5.7"
