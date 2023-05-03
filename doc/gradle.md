@@ -4,35 +4,21 @@
 
 Clean and test:
 
-```
+```shell
 ./gradlew clean test
-```
-
-## Simulation
-
-Update `model-gitignore.txt`:
-
-```
-./gradlew updateModelGitignore
-```
-
-Generate base project:
-
-```
-./gradlew createModelBase
 ```
 
 ## Desktop
 
 Run application:
 
-```
+```shell
 ./gradlew :gdx-desktop:run
 ```
 
 Build fat jar:
 
-```
+```shell
 ./gradlew :gdx-desktop:fatJar
 ```
 
@@ -40,20 +26,34 @@ Build fat jar:
 
 Standalone apk:
 
-```
+```shell
 ./gradlew :gdx-android:assembleStandalone
 ```
 
 Release aab:
 
-```
+```shell
 ./gradlew :gdx-android:bundleRelease
 ```
 
-## Publish
+## Publish core library
+
+Maven local:
+
+```shell
+./gradlew publishToMavenLocal
+```
+
+Maven central:
+
+```shell
+./gradlew :universe-core:publishMavenPublicationToOSSRHRepository
+```
+
+## Publish game
 
 Package desktop and android:
 
-```
-./gradlew clean packageAll
+```shell
+./gradlew cleanAll packageAll
 ```
