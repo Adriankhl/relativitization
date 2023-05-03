@@ -24,16 +24,18 @@ spacetime.
 
 * `universe-core`: core 4D relativistic agent-based simulation framework
 * `universe-game`: the game mechanics, depends on `universe-core`
-* `simulations`: for simulating the game, aka the big social model, on the command line, 
+* `simulations`: for simulating the game, aka the big social model, on the command line,
   depends on `universe-core` and `universe-game`
 * `universe-server`: server to run the game, depends on `universe-core` and `universe-game`
 * `universe-client`: store non-gui functions that are useful to game client,
   depends on `universe-core` and `universe-game`
 * `gdx-core`: libgdx gui core, depends on `universe-core`, `universe-game`
   and  `universe-client`
-* `gdx-desktop`: libgdx gui desktop launcher, depends on `gdx-core`, `universe-core`, `universe-game`
+* `gdx-desktop`: libgdx gui desktop launcher, depends
+  on `gdx-core`, `universe-core`, `universe-game`
   , `universe-client`, and `universe-server`
-* `gdx-android`: libgdx gui android launcher, depends on `gdx-core`, `universe-core`, `universe-game`
+* `gdx-android`: libgdx gui android launcher, depends
+  on `gdx-core`, `universe-core`, `universe-game`
   , `universe-client`, and `universe-server`
 
 ## Introduction
@@ -61,27 +63,29 @@ It is recommended to use jdk 17 to build and run the game.
 
 First create a directory to hold everything related to Relativitization:
 
-```
+```shell
 mkdir relativitization-project
 ```
 
 Navigate into the directory, clone this project:
 
-```
+```shell
 cd relativitization-project
 git clone https://github.com/Adriankhl/relativitization.git
 ```
 
 Create a `relativitization-art` directory and download the
-[game assets](https://filedn.com/lT8KEAGhB7RXdUYN4ykED5Y/relativitization-assets/assets.zip) to the directory:
+[game assets](https://filedn.com/lT8KEAGhB7RXdUYN4ykED5Y/relativitization-assets/assets.zip) to the
+directory:
 
-```
+```shell
 mkdir relativitization-art
 wget -P relativitization-art https://filedn.com/lT8KEAGhB7RXdUYN4ykED5Y/relativitization-assets/assets.zip
 ```
 
 Extract the zip file to `./relativitization-art/assets`:
-```
+
+```shell
 7z x relativitization-art/assets.zip -orelativitization-art/
 ```
 
@@ -94,7 +98,7 @@ You should have:
 
 Now, navigate into `./relativitization` and you are ready to build the game:
 
-```
+```shell
 cd relativitization
 ```
 
@@ -102,7 +106,7 @@ cd relativitization
 
 In your terminal, run:
 
-```
+```shell
 ./gradlew :gdx-desktop:run
 ```
 
@@ -110,7 +114,7 @@ In your terminal, run:
 
 This will produce a `Relativitization.jar` in `../relativitization-art/assets`:
 
-```
+```shell
 ./gradlew :gdx-desktop:fatJar
 ```
 
@@ -119,7 +123,7 @@ This will produce a `Relativitization.jar` in `../relativitization-art/assets`:
 This will produce a `relativitization-free-standalone.apk`
 in `gdx-android/build/outputs/apk/free/standalone`:
 
-```
+```shell
 ./gradlew :gdx-android:assembleStandalone
 ```
 
@@ -130,7 +134,7 @@ You can create your own model and run it on your command line. This is an simple
 
 Run the main function with 2 active processor and 25% maximum ram usage:
 
-```
+```shell
 ./gradlew :simulations:run -PmainClass=relativitization.game.TypicalGameKt -PprocessorCount=2 -PramPercentage=25
 ```
 
@@ -140,7 +144,7 @@ Note that the main class has an additional `Kt` after the file name in Kotlin's 
 
 This will produce html documentation pages to `build/dokka/htmlMultiModule`:
 
-```
+```shell
 ./gradlew dokkaHtmlMultiModule
 ```
 
@@ -183,7 +187,7 @@ the [Contributor License Agreement](./CLA.md).
 
 If you use this framework in a publication, please cite:
 
-```
+```text
 @software{relativitization,
   author       = {Lai, Kwun Hang},
   title        = {Relativitization},
@@ -197,7 +201,7 @@ If you use this framework in a publication, please cite:
 Also consider citing
 this [paper](https://arxiv.org/abs/2206.11019):
 
-```
+```text
 @article{lai2022social,
   title={On social simulation in 4D relativistic spacetime},
   author={Lai, Kwun Hang},
