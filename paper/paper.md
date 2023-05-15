@@ -19,11 +19,18 @@ bibliography: paper.bib
 
 # Summary
 
+`Relativitization` is a Kotlin project which provides a simulation framework for
+agent-based modeling in 4D, relativistics spacetime.
+Agent-based simulation is a popular technique in social science to explore how
+microscopic individual behaviours produce macroscopic social phenomena.
+
 
 # Statement of need
 
 # Algorithms
 Test [@lai2022social]
+
+![Test figure](./simulation-flow.svg)
 
 # Projects
 
