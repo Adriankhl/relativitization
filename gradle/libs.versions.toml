@@ -44,10 +44,10 @@ log4jVersion = "2.20.0"
 dataframeVersion = "0.10.0"
 
 # Android
-androidGradlePluginVersion = "8.0.1"
+androidGradlePluginVersion = "8.0.2"
 androidAppCompatVersion = "1.6.1"
 androidLifeCycleKtxVersion = "2.6.1"
-androidFragmentKtxVersion = "1.5.7"
+androidFragmentKtxVersion = "1.6.0"
 
 [libraries]
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidAppCompatVersion" }
