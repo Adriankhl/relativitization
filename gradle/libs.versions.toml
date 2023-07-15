@@ -19,7 +19,7 @@ androidNdkVersion = "25.2.9519652"
 # Dependency
 
 # Kotlin
-kotlinVersion = "1.8.21"
+kotlinVersion = "1.9.0"
 
 # Gradle plugin
 gradleVersionPluginVersion = "0.46.0"
@@ -28,7 +28,7 @@ gradleVersionPluginVersion = "0.46.0"
 dokkaVersion = "1.8.10"
 
 # KSP
-kspVersion = "1.8.21-1.0.11"
+kspVersion = "1.9.0-1.0.11"
 ksergenVersion = "0.1.0"
 
 # Kotlin multiplatform
