@@ -51,8 +51,8 @@ object UpdatePrice : Mechanism() {
         val baseSalaryPerEmployee: Double =
             mutablePlayerData.playerInternalData.popSystemData().generalPopSystemData.baseSalaryPerEmployee
 
-        ResourceType.values().forEach { resourceType ->
-            ResourceQualityClass.values().forEach { resourceQualityClass ->
+        ResourceType.entries.forEach { resourceType ->
+            ResourceQualityClass.entries.forEach { resourceQualityClass ->
                 val resourceData: MutableResourceData =
                     mutablePlayerData.playerInternalData.economyData().resourceData
 
@@ -84,15 +84,15 @@ object UpdatePrice : Mechanism() {
         playerData: MutablePlayerData
     ): Map<ResourceType, Map<ResourceQualityClass, Double>> {
         val tradeNeedMap: Map<ResourceType, MutableMap<ResourceQualityClass, Double>> =
-            ResourceType.values().associateWith {
-                ResourceQualityClass.values().associateWith {
+            ResourceType.entries.associateWith {
+                ResourceQualityClass.entries.associateWith {
                     0.0
                 }.toMutableMap()
             }
 
         // Add trade needed by pop desire
         playerData.playerInternalData.popSystemData().carrierDataMap.values.forEach { carrierData ->
-            PopType.values().forEach { popType ->
+            PopType.entries.forEach { popType ->
                 val commonPopData: MutableCommonPopData =
                     carrierData.allPopData.getCommonPopData(popType)
 

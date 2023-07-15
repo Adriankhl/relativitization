@@ -378,7 +378,7 @@ class PlayersInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane
         )
 
         val summaryOptionSelectBox = createSelectBox(
-            PlayerSummaryOption.values().toList(),
+            PlayerSummaryOption.entries,
             playerSummaryOption,
             gdxSettings.smallFontSize
         ) { newPlayerSummaryOption, _ ->
@@ -512,7 +512,7 @@ class PlayersInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane
         )
 
         val resourceTypeSelectBox = createSelectBox(
-            ResourceType.values().toList(),
+            ResourceType.entries,
             selectedPlayerSummaryResourceType,
             gdxSettings.smallFontSize
         ) { resourceType, _ ->

@@ -33,7 +33,7 @@ object Educate : Mechanism() {
                 PopType.EDUCATOR
             ).satisfaction
 
-            PopType.values().forEach { popType ->
+            PopType.entries.forEach { popType ->
                 val commonPopData: MutableCommonPopData =
                     mutableCarrierData.allPopData.getCommonPopData(
                         popType

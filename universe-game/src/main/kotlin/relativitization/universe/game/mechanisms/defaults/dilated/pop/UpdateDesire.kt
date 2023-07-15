@@ -28,7 +28,7 @@ object UpdateDesire : Mechanism() {
         val desireQualityUpdateDiff = 0.2
 
         mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.forEach { carrier ->
-            PopType.values().forEach { popType ->
+            PopType.entries.forEach { popType ->
                 val mutableCommonPopData: MutableCommonPopData =
                     carrier.allPopData.getCommonPopData(popType)
 

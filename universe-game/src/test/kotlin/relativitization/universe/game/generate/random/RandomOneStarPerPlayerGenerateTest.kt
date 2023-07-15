@@ -130,7 +130,7 @@ internal class RandomOneStarPerPlayerGenerateTest {
             )
         }
 
-        PopType.values().forEach {
+        PopType.entries.forEach {
             commandList.add(
                 ChangeSalaryFactorCommand(
                     toId = 1,

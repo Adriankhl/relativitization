@@ -30,7 +30,7 @@ object PopulationGrowth : Mechanism() {
             val totalPopulation: Double = mutableCarrierData.allPopData.totalAdultPopulation()
 
             val averageSalaryFactor: Double = if (totalPopulation > 0.0) {
-                PopType.values().sumOf { popType ->
+                PopType.entries.sumOf { popType ->
                     mutableCarrierData.allPopData.getCommonPopData(popType).adultPopulation *
                             mutableCarrierData.allPopData.getCommonPopData(popType).salaryFactor
                 } / totalPopulation
@@ -43,7 +43,7 @@ object PopulationGrowth : Mechanism() {
                 totalPopulation,
             )
 
-            PopType.values().forEach { popType ->
+            PopType.entries.forEach { popType ->
                 val commonPopData: MutableCommonPopData =
                     mutableCarrierData.allPopData.getCommonPopData(
                         popType

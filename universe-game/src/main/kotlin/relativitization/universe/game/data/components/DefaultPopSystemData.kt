@@ -158,7 +158,7 @@ fun MutablePopSystemData.totalAdultPopulation(popType: PopType): Double {
  */
 fun PopSystemData.totalSalary(): Double {
     return carrierDataMap.values.fold(0.0) { acc, carrierData ->
-        acc + PopType.values().sumOf { popType ->
+        acc + PopType.entries.sumOf { popType ->
             val commonPopData = carrierData.allPopData.getCommonPopData(popType)
             commonPopData.salaryPerEmployee(generalPopSystemData) *
                     commonPopData.adultPopulation *
@@ -172,7 +172,7 @@ fun PopSystemData.totalSalary(): Double {
  */
 fun MutablePopSystemData.totalSalary(): Double {
     return carrierDataMap.values.fold(0.0) { acc, carrierData ->
-        acc + PopType.values().sumOf { popType ->
+        acc + PopType.entries.sumOf { popType ->
             val commonPopData = carrierData.allPopData.getCommonPopData(popType)
             commonPopData.salaryPerEmployee(generalPopSystemData) *
                     commonPopData.adultPopulation *
@@ -274,7 +274,7 @@ fun MutablePopSystemData.averageSalary(popType: PopType): Double {
  */
 fun PopSystemData.totalSaving(): Double {
     return carrierDataMap.values.fold(0.0) { acc, carrierData ->
-        acc + PopType.values().sumOf { popType ->
+        acc + PopType.entries.sumOf { popType ->
             carrierData.allPopData.getCommonPopData(popType).saving
         }
     }
@@ -285,7 +285,7 @@ fun PopSystemData.totalSaving(): Double {
  */
 fun MutablePopSystemData.totalSaving(): Double {
     return carrierDataMap.values.fold(0.0) { acc, carrierData ->
-        acc + PopType.values().sumOf { popType ->
+        acc + PopType.entries.sumOf { popType ->
             carrierData.allPopData.getCommonPopData(popType).saving
         }
     }
@@ -296,7 +296,7 @@ fun MutablePopSystemData.totalSaving(): Double {
  */
 fun PopSystemData.totalSatisfaction(): Double {
     return carrierDataMap.values.fold(0.0) { acc, carrierData ->
-        acc + PopType.values().sumOf { popType ->
+        acc + PopType.entries.sumOf { popType ->
             val commonPopData = carrierData.allPopData.getCommonPopData(popType)
             commonPopData.satisfaction * commonPopData.adultPopulation
         }
@@ -308,7 +308,7 @@ fun PopSystemData.totalSatisfaction(): Double {
  */
 fun MutablePopSystemData.totalSatisfaction(): Double {
     return carrierDataMap.values.fold(0.0) { acc, carrierData ->
-        acc + PopType.values().sumOf { popType ->
+        acc + PopType.entries.sumOf { popType ->
             val commonPopData = carrierData.allPopData.getCommonPopData(popType)
             val totalSatisfaction: Double = commonPopData.satisfaction *
                     commonPopData.adultPopulation

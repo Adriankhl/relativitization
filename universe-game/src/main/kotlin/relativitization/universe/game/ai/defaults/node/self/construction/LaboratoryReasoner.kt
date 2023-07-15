@@ -121,7 +121,7 @@ class NewLaboratoryAtCarrierOption(
             .knownAppliedResearchProjectList
 
         // Compute the total research equipment available and need
-        val totalResearchEquipment: Double = ResourceQualityClass.values().fold(
+        val totalResearchEquipment: Double = ResourceQualityClass.entries.fold(
             0.0
         ) { acc, resourceQualityClass ->
             acc + planDataAtPlayer.getCurrentMutablePlayerData()

@@ -121,7 +121,7 @@ object DiscoverKnowledge : Mechanism() {
             mutableInstituteData.instituteInternalData.researchEquipmentPerTime
 
         val resourceAmountMap: Map<ResourceQualityClass, Double> =
-            ResourceQualityClass.values().associateWith {
+            ResourceQualityClass.entries.associateWith {
                 mutableResourceData.getResourceAmountData(
                     ResourceType.RESEARCH_EQUIPMENT,
                     it
@@ -171,7 +171,7 @@ object DiscoverKnowledge : Mechanism() {
             mutableLaboratoryData.laboratoryInternalData.researchEquipmentPerTime
 
         val resourceAmountMap: Map<ResourceQualityClass, Double> =
-            ResourceQualityClass.values().associateWith {
+            ResourceQualityClass.entries.associateWith {
                 mutableResourceData.getResourceAmountData(
                     ResourceType.RESEARCH_EQUIPMENT,
                     it

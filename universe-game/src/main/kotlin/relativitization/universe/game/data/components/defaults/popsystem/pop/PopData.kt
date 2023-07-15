@@ -90,11 +90,11 @@ fun MutableAllPopData.getCommonPopData(popType: PopType): MutableCommonPopData =
     PopType.SOLDIER -> soldierPopData.commonPopData
 }
 
-fun AllPopData.totalAdultPopulation(): Double = PopType.values().fold(0.0) { acc, popType ->
+fun AllPopData.totalAdultPopulation(): Double = PopType.entries.fold(0.0) { acc, popType ->
     acc + getCommonPopData(popType).adultPopulation
 }
 
-fun MutableAllPopData.totalAdultPopulation(): Double = PopType.values().fold(0.0) { acc, popType ->
+fun MutableAllPopData.totalAdultPopulation(): Double = PopType.entries.fold(0.0) { acc, popType ->
     acc + getCommonPopData(popType).adultPopulation
 }
 

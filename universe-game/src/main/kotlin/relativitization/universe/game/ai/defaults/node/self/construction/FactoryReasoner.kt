@@ -555,7 +555,7 @@ class BuildNewResourceFactoryOption(
         val maxNumEmployee: Double = max(
             min(
                 maxUsableFuel / fuelNeededPerEmployee,
-                numLabourer / ResourceType.values().size * 0.5,
+                numLabourer / ResourceType.entries.size * 0.5,
             ),
             1.0
         )

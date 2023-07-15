@@ -38,9 +38,9 @@ object UpdateResourceQualityBound : Mechanism() {
         random: Random
     ): List<Command> {
 
-        ResourceType.values().forEach { resourceType ->
+        ResourceType.entries.forEach { resourceType ->
             val qualityMap: Map<ResourceQualityClass, MutableSingleResourceData> =
-                ResourceQualityClass.values().associateWith { resourceQualityClass ->
+                ResourceQualityClass.entries.associateWith { resourceQualityClass ->
                     mutablePlayerData.playerInternalData.economyData()
                         .resourceData.getSingleResourceData(resourceType, resourceQualityClass)
                 }

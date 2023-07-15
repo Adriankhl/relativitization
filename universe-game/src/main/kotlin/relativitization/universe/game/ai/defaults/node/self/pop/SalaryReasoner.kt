@@ -88,10 +88,10 @@ class AdjustSalaryFactorAINode(
 
         val totalCarrierPopulation: Double = carrier.allPopData.totalAdultPopulation()
 
-        PopType.values().forEach { popType ->
+        PopType.entries.forEach { popType ->
 
             // Target to get even population for all type
-            val targetPopulationFraction: Double = 1.0 / PopType.values().size
+            val targetPopulationFraction: Double = 1.0 / PopType.entries.size
 
             val currentPopulationFraction: Double = if (totalCarrierPopulation > 0.0) {
                 carrier.allPopData.getCommonPopData(

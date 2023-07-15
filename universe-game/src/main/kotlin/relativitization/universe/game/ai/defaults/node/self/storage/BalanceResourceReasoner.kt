@@ -16,8 +16,8 @@ class BalanceResourceReasoner : SequenceReasoner() {
     override fun getSubNodeList(
         planDataAtPlayer: PlanDataAtPlayer,
         planState: PlanState
-    ): List<AINode> = ResourceType.values().map { resourceType ->
-        ResourceQualityClass.values().map { resourceQualityClass ->
+    ): List<AINode> = ResourceType.entries.map { resourceType ->
+        ResourceQualityClass.entries.map { resourceQualityClass ->
             listOf(
                 BalanceResourceProportionAINode(
                     resourceType,

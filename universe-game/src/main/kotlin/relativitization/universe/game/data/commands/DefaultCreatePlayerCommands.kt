@@ -169,8 +169,8 @@ data class SplitCarrierCommand(
             DataSerializer.copy(playerData.playerInternalData.economyData())
 
         // clear stored resource
-        ResourceType.values().forEach { resourceType ->
-            ResourceQualityClass.values().forEach { resourceQualityClass ->
+        ResourceType.entries.forEach { resourceType ->
+            ResourceQualityClass.entries.forEach { resourceQualityClass ->
                 val singleResourceData: MutableSingleResourceData =
                     newEconomyData.resourceData.getSingleResourceData(
                         resourceType,
@@ -183,8 +183,8 @@ data class SplitCarrierCommand(
         }
 
         // Add resource to new player
-        ResourceType.values().forEach { resourceType ->
-            ResourceQualityClass.values().forEach { resourceQualityClass ->
+        ResourceType.entries.forEach { resourceType ->
+            ResourceQualityClass.entries.forEach { resourceQualityClass ->
                 newEconomyData.resourceData.addResource(
                     resourceType,
                     playerData.playerInternalData.economyData().resourceData.getResourceQuality(

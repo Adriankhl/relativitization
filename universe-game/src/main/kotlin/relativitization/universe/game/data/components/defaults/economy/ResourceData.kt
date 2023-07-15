@@ -30,7 +30,7 @@ enum class ResourceType(val value: String) {
 
     companion object {
         // Entertainment is not produced by factory
-        val factoryResourceList: List<ResourceType> = values().toList() - ENTERTAINMENT
+        val factoryResourceList: List<ResourceType> = entries - ENTERTAINMENT
 
         private val productionResourceList: List<ResourceType> = listOf(
             PLANT,
@@ -62,8 +62,8 @@ enum class ResourceQualityClass {
 @GenerateImmutable
 data class MutableResourceData(
     val singleResourceMap: MutableMap<ResourceType, MutableMap<ResourceQualityClass, MutableSingleResourceData>> =
-        ResourceType.values().associateWith { resourceType ->
-            ResourceQualityClass.values().associateWith {
+        ResourceType.entries.associateWith { resourceType ->
+            ResourceQualityClass.entries.associateWith {
                 val resourceTargetProportion: MutableResourceTargetProportionData =
                     if (ResourceType.isProductionResource(resourceType)) {
                         MutableResourceTargetProportionData(
@@ -100,20 +100,20 @@ data class MutableResourceData(
         preferHighQualityClass: Boolean,
     ): ResourceQualityClass {
         val satisfyList: List<Pair<ResourceQualityClass, Boolean>> =
-            ResourceQualityClass.values().toList().map {
+            ResourceQualityClass.entries.map {
                 val b1: Boolean = getResourceQuality(resourceType, it).geq(targetQuality)
                 val b2: Boolean = getProductionResourceAmount(resourceType, it) >= amount
                 it to (b1 && b2)
             }
         return if (preferHighQualityClass) {
             satisfyList.firstOrNull { it.second }?.first ?: run {
-                ResourceQualityClass.values().maxByOrNull {
+                ResourceQualityClass.entries.maxByOrNull {
                     getProductionResourceAmount(resourceType, it)
                 } ?: ResourceQualityClass.THIRD
             }
         } else {
             satisfyList.lastOrNull { it.second }?.first ?: run {
-                ResourceQualityClass.values().maxByOrNull {
+                ResourceQualityClass.entries.maxByOrNull {
                     getProductionResourceAmount(resourceType, it)
                 } ?: ResourceQualityClass.THIRD
             }
@@ -129,7 +129,7 @@ data class MutableResourceData(
         newResourceQuality: MutableResourceQualityData,
         newResourceAmount: Double,
     ) {
-        val qualityClass: ResourceQualityClass = ResourceQualityClass.values().firstOrNull {
+        val qualityClass: ResourceQualityClass = ResourceQualityClass.entries.firstOrNull {
             newResourceQuality.geq(getResourceQualityLowerBound(newResourceType, it))
         } ?: ResourceQualityClass.THIRD
 
@@ -344,7 +344,7 @@ fun ResourceData.tradeQualityClass(
     tariffFactor: Double = 1.0,
 ): ResourceQualityClass {
     val satisfyList: List<Pair<ResourceQualityClass, Boolean>> =
-        ResourceQualityClass.values().toList().map {
+        ResourceQualityClass.entries.map {
             val b1: Boolean = getResourceQuality(resourceType, it).geq(targetQuality)
             val b2: Boolean = getTradeResourceAmount(resourceType, it) >= amount
             val b3: Boolean = budget >= getResourcePrice(resourceType, it) * amount * tariffFactor
@@ -352,13 +352,13 @@ fun ResourceData.tradeQualityClass(
         }
     return if (preferHighQualityClass) {
         satisfyList.firstOrNull { it.second }?.first ?: run {
-            ResourceQualityClass.values().maxByOrNull {
+            ResourceQualityClass.entries.maxByOrNull {
                 getTradeResourceAmount(resourceType, it)
             } ?: ResourceQualityClass.THIRD
         }
     } else {
         satisfyList.lastOrNull { it.second }?.first ?: run {
-            ResourceQualityClass.values().maxByOrNull {
+            ResourceQualityClass.entries.maxByOrNull {
                 getTradeResourceAmount(resourceType, it)
             } ?: ResourceQualityClass.THIRD
         }
@@ -386,7 +386,7 @@ fun MutableResourceData.tradeQualityClass(
     tariffFactor: Double = 1.0,
 ): ResourceQualityClass {
     val satisfyList: List<Pair<ResourceQualityClass, Boolean>> =
-        ResourceQualityClass.values().toList().map {
+        ResourceQualityClass.entries.map {
             val b1: Boolean = getResourceQuality(resourceType, it).geq(targetQuality)
             val b2: Boolean = getTradeResourceAmount(resourceType, it) >= amount
             val b3: Boolean = budget >= getResourcePrice(resourceType, it) * amount * tariffFactor
@@ -394,13 +394,13 @@ fun MutableResourceData.tradeQualityClass(
         }
     return if (preferHighQualityClass) {
         satisfyList.firstOrNull { it.second }?.first ?: run {
-            ResourceQualityClass.values().maxByOrNull {
+            ResourceQualityClass.entries.maxByOrNull {
                 getTradeResourceAmount(resourceType, it)
             } ?: ResourceQualityClass.THIRD
         }
     } else {
         satisfyList.lastOrNull { it.second }?.first ?: run {
-            ResourceQualityClass.values().maxByOrNull {
+            ResourceQualityClass.entries.maxByOrNull {
                 getTradeResourceAmount(resourceType, it)
             } ?: ResourceQualityClass.THIRD
         }

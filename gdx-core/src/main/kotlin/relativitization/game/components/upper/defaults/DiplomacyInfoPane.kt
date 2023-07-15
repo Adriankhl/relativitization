@@ -148,7 +148,7 @@ class DiplomacyInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
         )
 
         val diplomacyInfoRelationTypeSelectBox = createSelectBox(
-            DiplomacyInfoRelationType.values().toList(),
+            DiplomacyInfoRelationType.entries,
             currentDiplomacyInfoRelationType,
             gdxSettings.smallFontSize
         ) { diplomacyInfoRelationType, _ ->

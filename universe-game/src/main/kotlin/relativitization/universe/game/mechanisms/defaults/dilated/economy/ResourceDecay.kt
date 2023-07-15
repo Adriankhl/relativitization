@@ -26,8 +26,8 @@ object ResourceDecay : Mechanism() {
         // Parameters
         val decayFactor = 0.99
 
-        ResourceType.values().forEach { resourceType ->
-            ResourceQualityClass.values().forEach { resourceQualityClass ->
+        ResourceType.entries.forEach { resourceType ->
+            ResourceQualityClass.entries.forEach { resourceQualityClass ->
                 mutablePlayerData.playerInternalData.economyData().resourceData
                     .getSingleResourceData(
                         resourceType,

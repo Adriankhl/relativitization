@@ -412,7 +412,7 @@ class NewUniverseScreen(val game: RelativitizationGame) : TableScreen(game.asset
 
         table.add(createLabel("Universe boundary: ", gdxSettings.normalFontSize))
         val universeBoundarySelectBox = createSelectBox(
-            UniverseBoundary.values().toList(),
+            UniverseBoundary.entries,
             generateSettings.universeSettings.universeBoundary,
             gdxSettings.normalFontSize
         ) { universeBoundary, _ ->

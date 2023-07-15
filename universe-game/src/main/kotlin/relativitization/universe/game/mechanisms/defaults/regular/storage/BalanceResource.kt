@@ -27,8 +27,8 @@ object BalanceResource : Mechanism() {
         random: Random
     ): List<Command> {
         val resourceData: MutableResourceData = mutablePlayerData.playerInternalData.economyData().resourceData
-        ResourceType.values().forEach { resourceType ->
-            ResourceQualityClass.values().forEach { resourceQualityClass ->
+        ResourceType.entries.forEach { resourceType ->
+            ResourceQualityClass.entries.forEach { resourceQualityClass ->
                 val target: MutableResourceTargetProportionData = resourceData.getResourceTargetProportionData(
                     resourceType, resourceQualityClass
                 )

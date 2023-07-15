@@ -57,7 +57,7 @@ object PopBuyResource : Mechanism() {
 
         val commandList: List<Command> = mutablePlayerData.playerInternalData.popSystemData()
             .carrierDataMap.map { (carrierId, mutableCarrierData) ->
-                PopType.values().map { popType ->
+                PopType.entries.map { popType ->
                     val commonPopData = mutableCarrierData.allPopData.getCommonPopData(popType)
 
                     // available saving for this resource, compute before buying resource

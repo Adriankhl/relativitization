@@ -420,7 +420,7 @@ class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
         carrierTable.row()
 
         val popTypeSelectBox = createSelectBox(
-            PopType.values().toList(),
+            PopType.entries,
             popType,
             gdxSettings.smallFontSize,
         ) { type, _ ->
@@ -992,7 +992,7 @@ class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
         val nestedTable = Table()
 
         val resourceTypeSelectBox = createSelectBox(
-            ResourceType.values().toList(),
+            ResourceType.entries,
             resourceFactoryType,
             gdxSettings.smallFontSize,
         ) { type, _ ->
@@ -1998,7 +1998,7 @@ class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
     private fun createBuildInstituteTable(scholarPopData: ScholarPopData): Table {
         val nestedTable = Table()
 
-        val allProductionResearchEquipment: Double = ResourceQualityClass.values().sumOf {
+        val allProductionResearchEquipment: Double = ResourceQualityClass.entries.sumOf {
             playerData.playerInternalData.economyData().resourceData.getProductionResourceAmount(
                 ResourceType.RESEARCH_EQUIPMENT,
                 it,
@@ -2322,7 +2322,7 @@ class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
     private fun createBuildLaboratoryTable(engineerPopData: EngineerPopData): Table {
         val nestedTable = Table()
 
-        val allProductionResearchEquipment: Double = ResourceQualityClass.values().sumOf {
+        val allProductionResearchEquipment: Double = ResourceQualityClass.entries.sumOf {
             playerData.playerInternalData.economyData().resourceData.getProductionResourceAmount(
                 ResourceType.RESEARCH_EQUIPMENT,
                 it,
@@ -2654,14 +2654,14 @@ class PopSystemInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPa
         )
 
         val resourceTypeSelectBox = createSelectBox(
-            ResourceType.values().toList(),
-            ResourceType.values().first(),
+            ResourceType.entries,
+            ResourceType.entries.first(),
             gdxSettings.smallFontSize
         )
 
         val resourceQualityClassSelectBox = createSelectBox(
-            ResourceQualityClass.values().toList(),
-            ResourceQualityClass.values().first(),
+            ResourceQualityClass.entries,
+            ResourceQualityClass.entries.first(),
             gdxSettings.smallFontSize
         )
 

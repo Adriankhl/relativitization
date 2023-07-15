@@ -90,9 +90,9 @@ object Summary {
         }
 
 
-        val totalResourceDemandMap: Map<ResourceType, Double> = ResourceType.values().associateWith { resourceType ->
+        val totalResourceDemandMap: Map<ResourceType, Double> = ResourceType.entries.associateWith { resourceType ->
             carrierList.sumOf { carrierData ->
-                val popDesire: Double = PopType.values().sumOf { popType ->
+                val popDesire: Double = PopType.entries.sumOf { popType ->
                     carrierData.allPopData.getCommonPopData(popType).desireResourceMap.getOrDefault(
                         resourceType,
                         DataSerializer.copy(MutableResourceDesireData())
@@ -123,7 +123,7 @@ object Summary {
             }
         }
 
-        val totalResourceSupplyMap: Map<ResourceType, Double> = ResourceType.values().associateWith { resourceType ->
+        val totalResourceSupplyMap: Map<ResourceType, Double> = ResourceType.entries.associateWith { resourceType ->
             carrierList.sumOf { carrierData ->
                 val resourceFactoryOutput: Double = carrierData.allPopData.labourerPopData.resourceFactoryMap
                     .values.sumOf { resourceFactory ->
@@ -150,7 +150,7 @@ object Summary {
 
         val averageSatisfaction: Double = if (totalPopulation > 0.0) {
             carrierList.sumOf { carrierData ->
-                PopType.values().sumOf { popType ->
+                PopType.entries.sumOf { popType ->
                     val commonPopData: CommonPopData = carrierData.allPopData.getCommonPopData(popType)
                     commonPopData.satisfaction * commonPopData.adultPopulation
                 }
@@ -208,6 +208,6 @@ data class PlayerSummary(
     val totalShield: Double = 0.0,
     val totalFuelDemand: Double = 0.0,
     val totalFuelSupply: Double = 0.0,
-    val totalResourceDemandMap: Map<ResourceType, Double> = ResourceType.values().associateWith { 0.0 },
-    val totalResourceSupplyMap: Map<ResourceType, Double> = ResourceType.values().associateWith { 0.0 },
+    val totalResourceDemandMap: Map<ResourceType, Double> = ResourceType.entries.associateWith { 0.0 },
+    val totalResourceSupplyMap: Map<ResourceType, Double> = ResourceType.entries.associateWith { 0.0 },
 )

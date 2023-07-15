@@ -41,7 +41,7 @@ fun CarrierData.totalOtherRestMass(): Double {
             }
         }
 
-    val popStoredFuelRestMass: Double = PopType.values().sumOf { popType ->
+    val popStoredFuelRestMass: Double = PopType.entries.sumOf { popType ->
         allPopData.getCommonPopData(popType).saving
     }
 
@@ -70,7 +70,7 @@ fun MutableCarrierData.totalOtherRestMass(): Double {
             }
         }
 
-    val popStoredFuelRestMass: Double = PopType.values().sumOf { popType ->
+    val popStoredFuelRestMass: Double = PopType.entries.sumOf { popType ->
         allPopData.getCommonPopData(popType).saving
     }
 

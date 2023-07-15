@@ -27,7 +27,7 @@ object Migration : Mechanism() {
         // determine the rate of migration
         val migrationRate = 0.01
 
-        PopType.values().forEach { popType ->
+        PopType.entries.forEach { popType ->
             // carrier id to common pop data of a specific pop type
             val commonPopMap: Map<Int, MutableCommonPopData> = mutablePlayerData
                 .playerInternalData.popSystemData().carrierDataMap.mapValues { (_, carrier) ->

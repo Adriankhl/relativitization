@@ -58,7 +58,7 @@ class MapModeInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane
         nestedTable.add(createLabel("Map color mode: ", gdxSettings.smallFontSize))
 
         val mapColorModeSelectBox = createSelectBox(
-            MapPlayerColorMode.values().toList(),
+            MapPlayerColorMode.entries,
             gdxSettings.mapPlayerColorMode,
             gdxSettings.smallFontSize
         ) { mapPlayerColorMode, _ ->

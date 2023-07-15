@@ -392,7 +392,7 @@ class EconomyInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane
         )
 
         val resourceTypeSelectBox = createSelectBox(
-            ResourceType.values().toList(),
+            ResourceType.entries,
             selectedResourceType,
             gdxSettings.smallFontSize
         ) { resourceType, _ ->
@@ -411,7 +411,7 @@ class EconomyInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane
         )
 
         val resourceQualityClassSelectBox = createSelectBox(
-            ResourceQualityClass.values().toList(),
+            ResourceQualityClass.entries,
             selectedResourceQualityClass,
             gdxSettings.smallFontSize
         ) { resourceQualityClass, _ ->
@@ -691,7 +691,7 @@ class EconomyInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane
         )
 
         val resourceTypeSelectBox = createSelectBox(
-            ResourceType.values().toList(),
+            ResourceType.entries,
             selectedResourceType,
             gdxSettings.smallFontSize
         ) { resourceType, _ ->

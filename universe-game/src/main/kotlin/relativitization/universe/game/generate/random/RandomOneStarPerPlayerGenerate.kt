@@ -323,7 +323,7 @@ object RandomOneStarPerPlayerGenerate : RandomGenerateUniverseMethod() {
 
             // Change initial population
             mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.forEach { carrier ->
-                PopType.values().forEach { popType ->
+                PopType.entries.forEach { popType ->
                     carrier.allPopData.getCommonPopData(
                         popType
                     ).adultPopulation = generateSettings.otherDoubleMap.getOrElse("initialPopulation") {

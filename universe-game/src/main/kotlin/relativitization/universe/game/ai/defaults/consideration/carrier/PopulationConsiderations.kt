@@ -43,7 +43,7 @@ class SufficientPopulationRatioConsideration(
             .playerInternalData.popSystemData().carrierDataMap.values.fold(
                 0.0
             ) { acc, mutableCarrierData ->
-                acc + PopType.values().sumOf { popType ->
+                acc + PopType.entries.sumOf { popType ->
                     mutableCarrierData.allPopData.getCommonPopData(popType).adultPopulation
                 }
             }

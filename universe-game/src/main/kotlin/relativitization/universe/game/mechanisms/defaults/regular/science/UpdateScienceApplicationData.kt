@@ -51,7 +51,7 @@ object UpdateScienceApplicationData : Mechanism() {
 
         // Update all ideal resource factories, ensure loop through all resource type
         // Entertainment does not have factory, rely on entertainer pop
-        ResourceType.values().forEach {
+        ResourceType.entries.forEach {
             scienceData.playerScienceApplicationData.idealResourceFactoryMap[it] = when (it) {
                 ResourceType.PLANT -> computeIdealPlantFactory(scienceData.playerKnowledgeData)
                 ResourceType.ANIMAL -> computeIdealAnimalFactory(scienceData.playerKnowledgeData)

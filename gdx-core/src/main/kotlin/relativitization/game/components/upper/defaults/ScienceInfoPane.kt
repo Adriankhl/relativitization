@@ -535,7 +535,7 @@ class ScienceInfoPane(val game: RelativitizationGame) : UpperInfoPane<ScrollPane
         // Entertainment resource is not produced by factory
         val idealResourceFactorySelectBox = createSelectBox(
             ResourceType.factoryResourceList,
-            ResourceType.values().first(),
+            ResourceType.entries.first(),
             gdxSettings.smallFontSize
         ) { resourceType, _ ->
             container.actor = createIdealResourceFactoryTable(

@@ -47,7 +47,7 @@ object UpdateSatisfaction : Mechanism() {
             )
 
         mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.forEach { carrier ->
-            PopType.values().forEach { popType ->
+            PopType.entries.forEach { popType ->
                 val mutableCommonPopData: MutableCommonPopData =
                     carrier.allPopData.getCommonPopData(popType)
 
@@ -84,7 +84,7 @@ object UpdateSatisfaction : Mechanism() {
         // Add the resource quality times the amount to resource map, then divide by total
         // population later
         mutablePlayerData.playerInternalData.popSystemData().carrierDataMap.values.forEach { carrier ->
-            PopType.values().forEach { popType ->
+            PopType.entries.forEach { popType ->
                 carrier.allPopData.getCommonPopData(popType).lastResourceInputMap.forEach { (resourceType, desireData) ->
                     val newQualityData: ResourceQualityData = resourceMap.getOrDefault(
                         resourceType,
@@ -100,7 +100,7 @@ object UpdateSatisfaction : Mechanism() {
 
         neighbors.forEach { playerData ->
             playerData.playerInternalData.popSystemData().carrierDataMap.values.forEach { carrier ->
-                PopType.values().forEach { popType ->
+                PopType.entries.forEach { popType ->
                     carrier.allPopData.getCommonPopData(popType).lastResourceInputMap.forEach { (resourceType, desireData) ->
                         val newQualityData: ResourceQualityData = resourceMap.getOrDefault(
                             resourceType,
