@@ -41,7 +41,7 @@ okioVersion = "3.4.0"
 # JVM
 gdxVersion = "1.11.0"
 log4jVersion = "2.20.0"
-dataframeVersion = "0.10.0"
+dataframeVersion = "0.11.0"
 
 # Android
 androidGradlePluginVersion = "8.0.2"
