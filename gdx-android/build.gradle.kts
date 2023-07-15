@@ -159,7 +159,7 @@ dependencies {
     implementation(libs.androidx.fragment.ktx)
     implementation(libs.androidx.appcompat)
 
-
+    implementation(libs.gdx)
     implementation(libs.gdx.backend.android)
 
     natives("com.badlogicgames.gdx:gdx-platform:${libs.versions.gdxVersion.get()}:natives-armeabi-v7a")
