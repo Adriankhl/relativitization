@@ -46,8 +46,8 @@ dataframeVersion = "0.11.0"
 # Android
 androidGradlePluginVersion = "8.0.2"
 androidAppCompatVersion = "1.6.1"
-androidLifeCycleKtxVersion = "2.6.1"
-androidFragmentKtxVersion = "1.6.0"
+androidLifeCycleKtxVersion = "2.6.2"
+androidFragmentKtxVersion = "1.6.2"
 
 [libraries]
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidAppCompatVersion" }
