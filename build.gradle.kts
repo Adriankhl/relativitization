@@ -2,6 +2,7 @@ import com.github.benmanes.gradle.versions.reporter.PlainTextReporter
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import java.nio.file.Files
 import java.nio.file.StandardCopyOption
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     alias(libs.plugins.kotlin.jvm)
@@ -21,6 +22,14 @@ allprojects {
         mavenCentral()
         google()
     }
+}
+
+tasks.withType<KotlinCompile>().configureEach {
+    kotlinOptions.jvmTarget = libs.versions.jvmTargetVersion.get()
+}
+
+tasks.withType<JavaCompile>().configureEach {
+    options.release.set(libs.versions.jvmTargetVersion.get().toInt())
 }
 
 tasks.withType<DependencyUpdatesTask> {
@@ -416,3 +425,4 @@ tasks.register("packageAll") {
         }
     }
 }
+
