@@ -25,7 +25,7 @@ kotlinVersion = "1.9.21"
 gradleVersionPluginVersion = "0.47.0"
 
 # Documentation
-dokkaVersion = "1.8.20"
+dokkaVersion = "1.9.10"
 
 # KSP
 kspVersion = "1.9.21-1.0.15"
