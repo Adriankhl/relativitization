@@ -12,9 +12,9 @@ jdkVersion = "17"
 jvmTargetVersion = "11"
 
 # Android SDK
-androidSdkVersion = "33"
+androidSdkVersion = "34"
 androidMinSdkVersion = "26"
-androidNdkVersion = "25.2.9519652"
+androidNdkVersion = "26.1.10909125"
 
 # Dependency
 
@@ -44,7 +44,7 @@ log4jVersion = "2.20.0"
 dataframeVersion = "0.11.0"
 
 # Android
-androidGradlePluginVersion = "8.0.2"
+androidGradlePluginVersion = "8.2.0"
 androidAppCompatVersion = "1.6.1"
 androidLifeCycleKtxVersion = "2.6.2"
 androidFragmentKtxVersion = "1.6.2"
