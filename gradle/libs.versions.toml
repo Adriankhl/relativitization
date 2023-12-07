@@ -32,16 +32,16 @@ kspVersion = "1.9.21-1.0.15"
 ksergenVersion = "0.1.0"
 
 # Kotlin multiplatform
-kotlinxCoroutineVersion = "1.7.2"
-kotlinxSerializationVersion = "1.5.1"
-kotlinxDateTimeVersion = "0.4.0"
-ktorVersion = "2.3.2"
-okioVersion = "3.4.0"
+kotlinxCoroutineVersion = "1.7.3"
+kotlinxSerializationVersion = "1.6.2"
+kotlinxDateTimeVersion = "0.5.0"
+ktorVersion = "2.3.7"
+okioVersion = "3.6.0"
 
 # JVM
-gdxVersion = "1.12.0"
-log4jVersion = "2.20.0"
-dataframeVersion = "0.11.0"
+gdxVersion = "1.12.1"
+log4jVersion = "2.22.0"
+dataframeVersion = "0.12.0"
 
 # Android
 androidGradlePluginVersion = "8.2.0"
