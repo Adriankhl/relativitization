@@ -19,6 +19,9 @@ data class UniverseData3DAtGrid(
     val playerId3DMap: List<List<List<Map<Int, List<Int>>>>>,
     val universeSettings: UniverseSettings,
 ) {
+    /**
+     * Get a map from player id to a view of the universe centered at that player
+     */
     fun idToUniverseData3DAtPlayer(): Map<Int, UniverseData3DAtPlayer> {
         // group by group id
         val playerGroupMap: Map<Int, List<PlayerData>> = centerPlayerDataList.groupBy {

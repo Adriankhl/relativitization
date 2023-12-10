@@ -129,6 +129,12 @@ data class UniverseData(
             }
     }
 
+    /**
+     * Get the view of the universe for observers in a specific grid
+     *
+     * @param center the coordinate of the grid
+     * @return a data structure representing the view for further processing
+     */
     fun toUniverseData3DAtGrid(center: Int4D): UniverseData3DAtGrid {
         val centerPlayerDataList: List<PlayerData> = getPlayerDataMapAt(center)
             .values.flatten()

@@ -274,7 +274,9 @@ class Universe(
     }
 
     /**
-     * Run all the mechanism, add generated commands to commandMap
+     * Run all mechanisms on each player, for each player, a list of commands is generated,
+     * execute the commands if they are sending to neighbors within the same group of the sender
+     * add the rest of generated commands to commandMap
      */
     private suspend fun processMechanism() {
         val time: Int = universeData.universeState.getCurrentTime()
@@ -286,13 +288,13 @@ class Universe(
         }.pmap { int3D ->
             val random: Random = int3DRandomMap.getValue(int3D)
 
-            val viewMap = universeData.toUniverseData3DAtGrid(
+            val viewMap: Map<Int, UniverseData3DAtPlayer> = universeData.toUniverseData3DAtGrid(
                 Int4D(time, int3D)
             ).idToUniverseData3DAtPlayer()
 
             val playerIdAtGrid: List<Int> = playerId3D[int3D.x][int3D.y][int3D.z].sorted()
 
-            // Process the mechanisms and compute a map from player id and the command it produces
+            // Process the mechanisms and compute a map from player id to the generated commands
             val commandMap: Map<Int, List<CommandData>> = playerIdAtGrid.associateWith { id ->
                 val universeData3DAtPlayer = viewMap.getValue(id)
 
@@ -312,10 +314,11 @@ class Universe(
                 }
             }
 
-            // Differentiate the commands should be executed immediately, e.g., self and same
-            // group player or commands to be saved to command Map
-            // In principle, this shouldn't contain self commands since they should
-            // be integrated in the mechanism process
+            // Differentiate the commands into two groups
+            // (1) immediate execution, i.e., sending to neighbors within the same group
+            // (2) commands to be saved to command Map
+            // In principle, (1) also works for commands sending to self, but it is recommended that
+            // the execution should be integrated into the mechanism process
             val commandPairMap: Map<Int, Pair<List<CommandData>, List<CommandData>>> =
                 playerIdAtGrid.associateWith { fromId ->
                     val otherCommandList: List<CommandData> = commandMap.getValue(fromId)
@@ -323,7 +326,7 @@ class Universe(
                     val (sameGroupCommandList, commandStoreList) = otherCommandList
                         .partition { commandData ->
                             val inGrid: Boolean = playerIdAtGrid.contains(commandData.command.toId)
-                            // prevent get non existing player
+                            // Ignore get non existing player
                             val sameGroup: Boolean = if (inGrid) {
                                 playerCollection.getPlayer(
                                     commandData.fromId
@@ -337,7 +340,8 @@ class Universe(
                     Pair(sameGroupCommandList, commandStoreList)
                 }
 
-            // Shuffled by fromId and execute command on neighbour (same group)
+            // Randomize the execution order by fromId (key of commandPairMap)
+            // and execute command on neighbours (players in the same group)
             commandPairMap.keys.sorted().shuffled(random).forEach { fromId ->
                 commandPairMap.getValue(fromId).first.forEach { commandData ->
                     commandData.command.checkAndExecute(
