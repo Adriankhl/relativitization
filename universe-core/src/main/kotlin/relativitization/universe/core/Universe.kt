@@ -541,9 +541,8 @@ class Universe(
     }
 
     /**
-     * First part of the main step
-     * Preprocess after the beginning of the turn
-     * Save the latest slice and other information of the universe after that
+     * First half of a simulation/game step
+     * Pre-process the universe before accepting commands from human/AI
      */
     suspend fun preProcessUniverse() {
         // beginning of the turn
@@ -570,6 +569,7 @@ class Universe(
         logger.debug("Replace the latest slice of the universe")
         universeData.updateUniverseReplaceLatest(universeSlice)
 
+        // Save the latest slice and other information of the universe if the option is on
         if (alwaysSaveLatest) {
             logger.debug("Save latest universe data")
             saveLatest()
@@ -579,8 +579,11 @@ class Universe(
     }
 
     /**
-     * Post process universe
-     * Happens before AI and human input command list
+     * Second half of a simulation/game step
+     * Post-process universe based on the received commands from human/AI
+     *
+     * @param humanInputCommands a map from player id to a list of input commands from human
+     * @param aiInputCommands a map from player id to a list of input commands from AI
      */
     suspend fun postProcessUniverse(
         humanInputCommands: Map<Int, List<Command>>,
