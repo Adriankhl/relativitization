@@ -341,7 +341,7 @@ class Universe(
                 }
 
             // Randomize the execution order by fromId (key of commandPairMap)
-            // and execute command on neighbours (players in the same group)
+            // and execute commands on neighbours (players in the same group)
             commandPairMap.keys.sorted().shuffled(random).forEach { fromId ->
                 commandPairMap.getValue(fromId).first.forEach { commandData ->
                     commandData.command.checkAndExecute(
