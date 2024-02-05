@@ -22,7 +22,7 @@ androidNdkVersion = "26.1.10909125"
 kotlinVersion = "1.9.22"
 
 # Gradle plugin
-gradleVersionPluginVersion = "0.50.0"
+gradleVersionPluginVersion = "0.51.0"
 
 # Documentation
 dokkaVersion = "1.9.10"
